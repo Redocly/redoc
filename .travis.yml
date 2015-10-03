@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "0.12"
+env:
+  global:
+    - GH_REF: "github.com/RomanGotsiy/redoc-prototype.git"
+    - secure: "gpLnG4Jgac401YmoOPVD5D2oiCAlOAgDXIQmISYDQOX1HwzDK0B+9210Nu+Vf1HY5OCWEYK+9Fc+MliAQgX1JIX3VXODd7PKLBY53YJEha9KyiQePBvH8QLzVEhVWb4PU/Rird/h4ndBLhlVeVZ9kXH5Qi2wAFV0GJHIOl3lapRqqDO5l3OcHTT/q9E4NdgTBa5tX0xRDB6015nb8We55lL+RvmAAFKaDY0g11LySj8aCVsyEgRgnFAHiM27GrsulDLcEXxu2+Om9Lwx7cnMzRs773GNVAyFeE+JChO94XHB4C0cVmTSXZE57lxRFhtAGcwdSpVSDU++xIGbdhCpuQ5swT3bk/Old0kxbvp6OpWlZTYzFTY40G/E+bs3NmITBc5mxy1hRYHyTi6nMBE0UpczEiFSOLr0eOMEFVKcOhusGrGD4veKm9Ho3M9fJYh6m8jLvqLKovui3Td3W2i/x9NIA88UWlfOUVfpIbNmxgWVBCKnQFMR+5XxkLeSV6E6Hx/zUNGuRSLEQNIBw9aj8FPOem0Rg3PmSjExyAx+QWB+vW1s90J4S+r7LZPsvSJNMAQI9kBDP75D9qrv1YBfs+kNY+PPRXjk2MhyGJLByhdxQsYQ7nOV0OPjxj3gUm2kH9uQIYx7zgSv4rcTphdh6rWfWCggbHJBeWBdrtdnf+M="
+before_script:
+  - npm install -g gulp
+before_deploy:
+  - gulp build
+deploy:
+  provider: script
+  script: ./deploy_gh_pages.sh
+  on:
+    branch: master
