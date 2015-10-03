@@ -2,6 +2,8 @@
   "name": "redoc-proto",
   "description": "Prototype of component based Swagger documentation",
   "version": "0.0.1",
+  "private": true,
+  "repository": "RomanGotsiy/redoc-prototype",
   "scripts": {
     "server": "webpack-dev-server --hot --inline --colors --display-error-details --display-cached",
     "start": "npm run server",
