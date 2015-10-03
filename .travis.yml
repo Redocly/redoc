@@ -17,6 +17,7 @@ before_script:
 before_deploy:
 - gulp build
 deploy:
+  skip_cleanup: true
   provider: script
   script: "./deploy_gh_pages.sh"
   on:
