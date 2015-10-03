@@ -1,0 +1,43 @@
+{
+  "name": "redoc-proto",
+  "description": "Prototype of component based Swagger documentation",
+  "version": "0.0.1",
+  "scripts": {
+    "server": "webpack-dev-server --hot --inline --colors --display-error-details --display-cached",
+    "start": "npm run server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Swagger",
+    "JSON-Schema",
+    "API",
+    "documentation",
+    "Angular 2"
+  ],
+  "author": "Roman Hotsiy",
+  "license": "MIT",
+  "jspm": {
+    "configFile": "system.config.js",
+    "dependencies": {
+      "angular2": "npm:angular2@^2.0.0-alpha.37",
+      "es6-shim": "github:es-shims/es6-shim@^0.33.6",
+      "reflect-metadata": "npm:reflect-metadata@^0.1.2",
+      "zone.js": "npm:zone.js@^0.5.7"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  },
+  "devDependencies": {
+    "browser-sync": "^2.9.8",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "jspm": "^0.16.11",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.4",
+    "systemjs-builder": "^0.14.7",
+    "vinyl-paths": "^2.0.0"
+  }
+}
