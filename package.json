@@ -34,6 +34,7 @@
     "browser-sync": "^2.9.8",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
+    "gulp-inline-ng2-template": "0.0.7",
     "jspm": "^0.16.11",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.4",
