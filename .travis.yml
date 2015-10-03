@@ -1,16 +1,23 @@
 language: node_js
 node_js:
-  - "0.12"
+- '0.12'
 env:
   global:
-    - GH_REF: "github.com/RomanGotsiy/redoc-prototype.git"
-    - secure: "gpLnG4Jgac401YmoOPVD5D2oiCAlOAgDXIQmISYDQOX1HwzDK0B+9210Nu+Vf1HY5OCWEYK+9Fc+MliAQgX1JIX3VXODd7PKLBY53YJEha9KyiQePBvH8QLzVEhVWb4PU/Rird/h4ndBLhlVeVZ9kXH5Qi2wAFV0GJHIOl3lapRqqDO5l3OcHTT/q9E4NdgTBa5tX0xRDB6015nb8We55lL+RvmAAFKaDY0g11LySj8aCVsyEgRgnFAHiM27GrsulDLcEXxu2+Om9Lwx7cnMzRs773GNVAyFeE+JChO94XHB4C0cVmTSXZE57lxRFhtAGcwdSpVSDU++xIGbdhCpuQ5swT3bk/Old0kxbvp6OpWlZTYzFTY40G/E+bs3NmITBc5mxy1hRYHyTi6nMBE0UpczEiFSOLr0eOMEFVKcOhusGrGD4veKm9Ho3M9fJYh6m8jLvqLKovui3Td3W2i/x9NIA88UWlfOUVfpIbNmxgWVBCKnQFMR+5XxkLeSV6E6Hx/zUNGuRSLEQNIBw9aj8FPOem0Rg3PmSjExyAx+QWB+vW1s90J4S+r7LZPsvSJNMAQI9kBDP75D9qrv1YBfs+kNY+PPRXjk2MhyGJLByhdxQsYQ7nOV0OPjxj3gUm2kH9uQIYx7zgSv4rcTphdh6rWfWCggbHJBeWBdrtdnf+M="
+  - GH_REF: github.com/RomanGotsiy/redoc-prototype.git
+  - secure: gpLnG4Jgac401YmoOPVD5D2oiCAlOAgDXIQmISYDQOX1HwzDK0B+9210Nu+Vf1HY5OCWEYK+9Fc+MliAQgX1JIX3VXODd7PKLBY53YJEha9KyiQePBvH8QLzVEhVWb4PU/Rird/h4ndBLhlVeVZ9kXH5Qi2wAFV0GJHIOl3lapRqqDO5l3OcHTT/q9E4NdgTBa5tX0xRDB6015nb8We55lL+RvmAAFKaDY0g11LySj8aCVsyEgRgnFAHiM27GrsulDLcEXxu2+Om9Lwx7cnMzRs773GNVAyFeE+JChO94XHB4C0cVmTSXZE57lxRFhtAGcwdSpVSDU++xIGbdhCpuQ5swT3bk/Old0kxbvp6OpWlZTYzFTY40G/E+bs3NmITBc5mxy1hRYHyTi6nMBE0UpczEiFSOLr0eOMEFVKcOhusGrGD4veKm9Ho3M9fJYh6m8jLvqLKovui3Td3W2i/x9NIA88UWlfOUVfpIbNmxgWVBCKnQFMR+5XxkLeSV6E6Hx/zUNGuRSLEQNIBw9aj8FPOem0Rg3PmSjExyAx+QWB+vW1s90J4S+r7LZPsvSJNMAQI9kBDP75D9qrv1YBfs+kNY+PPRXjk2MhyGJLByhdxQsYQ7nOV0OPjxj3gUm2kH9uQIYx7zgSv4rcTphdh6rWfWCggbHJBeWBdrtdnf+M=
+  - secure: EbOO3vHJAsuzvW1encS7lGFOQtoHrTF45HP+tcu9YW6VmMr9FPJXsf7AFmquama3w3miWJayAXtoEdrx3WM5kRnK7sP9xg/X4emWKIE8MAlS//PyiQlrRRNakA5L7vlEX/w/goIApapWiwQ9OFDlVZAnH1/y05Hf411qsVCThfuKCdUfrbjnMkaVBuWVXggfllBVyFKVzk97AJiYrZtOw4rUljyG6pb3EhHKwP6QbJN/I4rKRtlQ0gMFnDFCqrcBntaQjMRZK3HNMuAoEzhzLRjNc6j8mcJdBHcon0+HhLCpn2Isoo3WRQQB85eaAg9xryPBWXGAGS/e2yyL6nHNqnrbrA7O27HA53L5jQFNnzrWtCJMSApVJXGtLxwYpdHFln4QYNSKVXP5tNyLidvq+7iUFRHMyIyAlOiOXNDcYk7Wo0/TBbAawmfhQ0oSj8SweA2XEfH0gqFEiYedjlzafyLkB6tmiX6POOEgDRkDB6QrI5gWJpRsNbcA+/lMwBbaZbfncZ1zolyMA8l71Q/yuMFfrw32qJlwFG7cwMqHqMhUlVri3129XYOzkuE5DDsK5xpd9n/jRMgZXz+hJdAPCeUds9TTjXP0f4NGhxPL8vJpuHiiQ6dnZ9YuQqz4AHKbWqlEYaF681XnOlEb1360hIQOFT7ixcWl1A//bq5Ip3w=
+cache:
+  directories:
+    - node_modules
+before_install:
+- npm install -g jspm
+- jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
 before_script:
-  - npm install -g gulp
+- npm install -g gulp
 before_deploy:
-  - gulp build
+- gulp build
 deploy:
   provider: script
-  script: ./deploy_gh_pages.sh
+  script: "./deploy_gh_pages.sh"
   on:
     branch: master
