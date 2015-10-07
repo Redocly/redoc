@@ -5,15 +5,15 @@
   </head>
   <body>
     <!-- The wrapper component-->
-    <redoc-test>
+    <redoc>
       Loading...
-    </redoc-test>
+    </redoc>
 
     <!-- ReDoc built file with all dependencies included -->
     <script src="dist/redoc.full.js"> </script>
     <script>
       //init redoc
-      Redoc.init();
+      Redoc.init('petstore.json');
     </script>
   </body>
 </html>
