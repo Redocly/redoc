@@ -26,7 +26,8 @@ gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       path.join(paths.output, 'redoc.full.js'),
-      { globalName: 'Redoc' })
+      { globalName: 'Redoc', sourceMaps: true }
+    )
     .then(function() {
       cb();
     })
