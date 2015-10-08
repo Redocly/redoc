@@ -6,8 +6,8 @@ System.config({
     "optional": [
       "runtime",
       "optimisation.modules.system",
-      'es7.decorators',
-      'es7.classProperties'
+      "es7.decorators",
+      "es7.classProperties"
     ]
   },
   paths: {
@@ -28,21 +28,23 @@ System.config({
   },
 
   map: {
-    "angular2": "npm:angular2@2.0.0-alpha.37",
+    "@reactivex/rxjs": "npm:@reactivex/rxjs@5.0.0-alpha.2",
+    "angular2": "npm:angular2@2.0.0-alpha.39",
     "babel": "npm:babel-core@5.8.25",
     "babel-runtime": "npm:babel-runtime@5.8.25",
     "core-js": "npm:core-js@1.2.0",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
+    "json": "github:systemjs/plugin-json@0.1.0",
+    "json-pointer": "npm:json-pointer@0.3.0",
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
     "swagger-parser": "npm:swagger-parser@3.3.0",
-    "json": "github:systemjs/plugin-json@0.1.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.0",
-    "zone.js": "npm:zone.js@0.5.7",
+    "zone.js": "npm:zone.js@0.5.8",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
-      "buffer": "npm:buffer@3.5.0"
+      "buffer": "npm:buffer@3.5.1"
     },
     "github:jspm/nodelibs-constants@0.1.0": {
       "constants-browserify": "npm:constants-browserify@0.0.1"
@@ -110,15 +112,19 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:angular2@2.0.0-alpha.37": {
+    "npm:@reactivex/rxjs@5.0.0-alpha.2": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:angular2@2.0.0-alpha.39": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rx": "npm:rx@2.5.1",
-      "url": "github:jspm/nodelibs-url@0.1.0",
-      "zone.js": "npm:zone.js@0.5.7"
+      "zone.js": "npm:zone.js@0.5.8"
     },
     "npm:argparse@1.0.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -231,7 +237,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
-    "npm:buffer@3.5.0": {
+    "npm:buffer@3.5.1": {
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.6",
       "is-array": "npm:is-array@1.0.1"
@@ -459,6 +465,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:json-pointer@0.3.0": {
+      "foreach": "npm:foreach@2.0.5"
     },
     "npm:json-schema-ref-parser@1.4.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -739,7 +748,7 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
       "validator": "npm:validator@4.1.0"
     },
-    "npm:zone.js@0.5.7": {
+    "npm:zone.js@0.5.8": {
       "es6-promise": "npm:es6-promise@3.0.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
