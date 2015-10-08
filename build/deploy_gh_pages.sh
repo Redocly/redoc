@@ -10,5 +10,5 @@ set -o pipefail
   cp -r ../dist ./dist
   git add .
   git commit -m "Deployed to Github Pages"
-  git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
+  git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages 2>&1
 ) 2>&1 | sed "s/${GH_TOKEN}/xxPASSxx/"

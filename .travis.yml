@@ -19,6 +19,6 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: "./deploy_gh_pages.sh"
+  script: "./build/deploy_gh_pages.sh"
   on:
     branch: master
