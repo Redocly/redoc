@@ -1,7 +1,8 @@
-<div>
-  <h2>{{data.methodInfo.summary}}</h2>
-  <p> <strong>{{data.method}}</strong> <code>{{data.path}}</code> </p>
-  <p class="description">
-    {{data.methodInfo.description}}
-  </p>
-</div>
+<h2>{{data.methodInfo.summary}}</h2>
+<h3>
+  <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
+  <span class="path">{{data.path}}</span>
+</h3>
+<p class="method-summary">
+  {{data.methodInfo.description}}
+</p>

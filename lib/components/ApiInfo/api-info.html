@@ -2,7 +2,7 @@
 <p *ng-if="data.description"> {{data.description}} </p>
 <p>
   <!-- TODO: create separate components for contact and license ? -->
-  <span *ng-if="data.contact"> Contatct:
+  <span *ng-if="data.contact"> Contact:
     <a *ng-if="data.contact.url" href="{{data.contact.url}}">
       {{data.contact.name || data.contact.url}}</a>
     <a *ng-if="data.contact.email" href="mailto:{{data.contact.email}}">

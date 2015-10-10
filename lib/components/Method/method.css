@@ -1,0 +1,44 @@
+h2 {
+  font-size: 32px;
+  font-weight: 200;
+}
+
+h3 {
+  margin: 0;
+  font-weight: 200;
+}
+
+h3 > span {
+  padding: 5px 10px;
+  vertical-align: middle;
+}
+
+.http-method {
+  font-size: 13px;
+  color: white;
+  background-color: #1976D3;
+}
+
+.http-method.delete {
+  background-color: red;
+}
+
+.http-method.post {
+  background-color: green;
+}
+
+.http-method.patch {
+  background-color: orange;
+}
+
+.http-method.put {
+  background-color: crimson;
+}
+
+.http-method.options {
+  background-color: black;
+}
+
+.http-method.head {
+  background-color: darkkhaki;
+}
