@@ -6,7 +6,8 @@
   "repository": "RomanGotsiy/redoc-prototype",
   "scripts": {
     "test": "gulp lint",
-    "postinstall": "jspm install"
+    "postinstall": "jspm install",
+    "start": "gulp serve"
   },
   "keywords": [
     "Swagger",
