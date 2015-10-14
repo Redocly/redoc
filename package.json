@@ -41,14 +41,18 @@
     "browser-sync": "^2.9.8",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.0.0",
     "gulp-inline-ng2-template": "0.0.7",
     "gulp-jshint": "^1.11.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sourcemaps": "^1.6.0",
     "jshint-stylish": "^2.0.1",
     "jspm": "^0.16.11",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.4",
     "systemjs-builder": "^0.14.7",
-    "vinyl-paths": "^2.0.0"
+    "vinyl-paths": "^2.0.0",
+    "zone.js": "^0.5.8"
   }
 }
