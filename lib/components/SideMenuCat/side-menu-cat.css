@@ -1,0 +1,23 @@
+label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+ul {
+  padding-left: 20px;
+  margin: 0;
+  display: none;
+}
+
+ul.active {
+  display: block;
+}
+
+li {
+  list-style: none inside none;
+  padding: 5px 0;
+}
+
+li.active {
+  color: #1976D3;
+}

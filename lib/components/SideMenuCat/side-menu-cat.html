@@ -1,0 +1,6 @@
+<label> {{data.name}}</label>
+<ul [ng-class]="{active: data.active}">
+  <li *ng-for="var method of data.methods" [ng-class]="{active: method.active}">
+    {{method.summary}}
+  </li>
+</ul>
