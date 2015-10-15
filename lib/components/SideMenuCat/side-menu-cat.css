@@ -1,21 +1,24 @@
 label {
   font-weight: bold;
   font-size: 18px;
+  cursor: pointer;
 }
 
 ul {
   padding-left: 20px;
   margin: 0;
-  display: none;
+  height: 0;
+  overflow: hidden;
 }
 
 ul.active {
-  display: block;
+  height: auto;
 }
 
 li {
   list-style: none inside none;
   padding: 5px 0;
+  cursor: pointer;
 }
 
 li.active {
