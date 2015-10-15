@@ -1,6 +1,23 @@
 body {
   font-family: Verdana, Geneva, sans-serif;
   font-size: 14px;
-  padding: 10px 20px;
   color: #333;
+  margin: 0;
+}
+
+side-menu, redoc {
+  display: block;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+side-menu {
+  position: fixed;
+  width: 260px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+redoc {
+  margin-left: 260px;
 }
