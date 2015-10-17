@@ -10,7 +10,7 @@ h4 {
 
 .param > span {
   padding: 5px 10px;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .param-name {
@@ -18,7 +18,12 @@ h4 {
 }
 
 .param-type {
-  padding: 2px 10px;
   background-color: #EAEAEA;
   border: silver 1px solid;
+}
+
+.body-schema {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 10px;
 }

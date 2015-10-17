@@ -1,5 +1,6 @@
 <h4> Parameters </h4>
 <small class="no-params" *ng-if="data.noParams"> No parameters </small>
+<!-- General parameters -->
 <div *ng-for="#param of data.params">
   <div class="param">
     <span class="param-name">{{param.name}}</span>
@@ -7,12 +8,14 @@
     <span class="param-description">{{param.description}}</span>
   </div>
 </div>
+<!-- in-body parameter -->
 <div class="param body-param" *ng-if="data.bodyParam">
   <span class="param-name">{{data.bodyParam.name}}</span>
-  <span class="param-type" *ng-if="data.bodyParam.type"
-    [ng-class]="data.bodyParam.type">{{data.bodyParam.type}}</span>
-  <span class="param-description" *ng-if="data.bodyParamdescription" >
-    {{data.bodyParam.description}}
-  </span>
-  <span> <em>Body Schema would be somewhere here (unimplemented yet) </em></span>
+  <div class="body-schema">
+    <schema
+      [title]="data.bodyParam.type"
+      [description]="data.bodyParam.description"
+      pointer="{{data.bodyParam.pointer}}/schema">
+    </schema>
+  </div>
 </div>
