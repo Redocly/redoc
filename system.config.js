@@ -27,15 +27,28 @@ System.config({
     }
   },
 
+  meta: {
+    "jspm_packages/npm/json-formatter-js@0.2.0/src/*": {
+      "format": "es6"
+    },
+    "jspm_packages/npm/json-schema-view-js@0.2.0/src/*": {
+      "format": "es6"
+    }
+  },
+
   map: {
     "@reactivex/rxjs": "npm:@reactivex/rxjs@5.0.0-alpha.2",
     "angular2": "npm:angular2@2.0.0-alpha.39",
     "babel": "npm:babel-core@5.8.25",
     "babel-runtime": "npm:babel-runtime@5.8.25",
+    "clean-css": "npm:clean-css@3.4.6",
     "core-js": "npm:core-js@1.2.0",
+    "css": "github:systemjs/plugin-css@0.1.18",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
     "json": "github:systemjs/plugin-json@0.1.0",
+    "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
+    "json-schema-view-js": "npm:json-schema-view-js@0.2.0",
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
     "swagger-parser": "npm:swagger-parser@3.3.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.0",
@@ -76,6 +89,9 @@ System.config({
       "timers": "github:jspm/nodelibs-timers@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "github:jspm/nodelibs-os@0.1.0": {
+      "os-browserify": "npm:os-browserify@0.1.2"
+    },
     "github:jspm/nodelibs-path@0.1.0": {
       "path-browserify": "npm:path-browserify@0.0.0"
     },
@@ -114,6 +130,12 @@ System.config({
     },
     "npm:@reactivex/rxjs@5.0.0-alpha.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:amdefine@1.0.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "module": "github:jspm/nodelibs-module@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:angular2@2.0.0-alpha.39": {
@@ -258,6 +280,19 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
+    },
+    "npm:clean-css@3.4.6": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "commander": "npm:commander@2.8.1",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "http": "github:jspm/nodelibs-http@1.7.1",
+      "https": "github:jspm/nodelibs-https@0.1.0",
+      "os": "github:jspm/nodelibs-os@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "source-map": "npm:source-map@0.4.4",
+      "url": "github:jspm/nodelibs-url@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:combined-stream@1.0.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -466,6 +501,11 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "npm:json-formatter-js@0.2.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
     "npm:json-pointer@0.3.0": {
       "foreach": "npm:foreach@2.0.5"
     },
@@ -487,6 +527,11 @@ System.config({
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:json-schema-view-js@0.2.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:jsonpointer@2.0.0": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
@@ -528,6 +573,9 @@ System.config({
     "npm:ono@1.0.22": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:os-browserify@0.1.2": {
+      "os": "github:jspm/nodelibs-os@0.1.0"
     },
     "npm:pako@0.2.8": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -652,6 +700,10 @@ System.config({
       "dgram": "github:jspm/nodelibs-dgram@0.1.0",
       "dns": "github:jspm/nodelibs-dns@0.1.0",
       "hoek": "npm:hoek@2.16.3",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:source-map@0.4.4": {
+      "amdefine": "npm:amdefine@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:stream-browserify@1.0.0": {
