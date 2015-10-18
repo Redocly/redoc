@@ -1,21 +1,30 @@
 <h4> Parameters </h4>
 <small class="no-params" *ng-if="data.noParams"> No parameters </small>
 <!-- General parameters -->
-<div *ng-for="#param of data.params">
-  <div class="param">
-    <span class="param-name">{{param.name}}</span>
-    <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
-    <span class="param-description">{{param.description}}</span>
-  </div>
-</div>
-<!-- in-body parameter -->
-<div class="param body-param" *ng-if="data.bodyParam">
-  <span class="param-name">{{data.bodyParam.name}}</span>
-  <div class="body-schema">
-    <schema
-      [title]="data.bodyParam.type"
-      [description]="data.bodyParam.description"
-      pointer="{{data.bodyParam.pointer}}/schema">
-    </schema>
-  </div>
-</div>
+<table *ng-if="!data.noParams">
+  <thead>
+    <tr>
+      <th> Name </th>
+      <th> Type </th>
+      <th> Description </th>
+    </tr>
+  </thead>
+  <tr *ng-for="#param of data.params">
+    <!--<div class="param">-->
+      <td class="param-name">{{param.name}}</td>
+      <td>
+        <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
+      </td>
+      <td class="param-description">{{param.description}}</td>
+    <!--</div>-->
+  </tr>
+  <!-- in-body parameter -->
+  <tr class="param body-param" *ng-if="data.bodyParam">
+    <td class="param-name">{{data.bodyParam.name}}</td>
+    <td>
+      <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
+      </schema>
+    </td>
+    <td class="param-description">{{data.bodyParam.description}}</td>
+  </tr>
+</table>

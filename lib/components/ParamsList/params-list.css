@@ -4,13 +4,26 @@ h4 {
   color: black;
 }
 
-.param {
-  padding: 10px 0;
+table {
+  border-collapse: collapse;
 }
 
-.param > span {
-  padding: 5px 10px;
+td, th {
   vertical-align: top;
+  padding: 10px 15px;
+  font-size: 12px;
+}
+
+th {
+  background-color: #DCDCDC;
+  color: black;
+  padding: 5px 15px;
+  text-align: left;
+  border-bottom: 2px solid #afafaf;
+}
+
+td {
+  border-bottom: 1px solid #afafaf;
 }
 
 .param-name {
@@ -20,10 +33,11 @@ h4 {
 .param-type {
   background-color: #EAEAEA;
   border: silver 1px solid;
+  padding: 5px 10px;
+  line-height: 14px;
+  font-family: monospace;
 }
 
 .body-schema {
   display: inline-block;
-  vertical-align: top;
-  padding: 0 10px;
 }
