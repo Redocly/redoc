@@ -1,3 +1,4 @@
 <div *ng-for="#method of data.methods">
-  <method pointer="{{pointer}}/{{method}}" attr.pointer="{{pointer}}/{{method}}"></method>
+  <method [pointer]="method.pointer" [attr.pointer]="method.pointer"
+  [attr.tag]="method.tag"></method>
 </div>
