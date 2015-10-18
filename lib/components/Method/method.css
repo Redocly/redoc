@@ -13,6 +13,10 @@ h3 > span {
   vertical-align: middle;
 }
 
+.method-description {
+  padding: 30px 0;
+}
+
 .http-method {
   font-size: 13px;
   color: white;

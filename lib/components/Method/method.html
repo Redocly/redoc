@@ -3,7 +3,7 @@
   <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
   <span class="path">{{data.path}}</span>
 </h3>
-<p class="method-summary">
+<p *ng-if="data.methodInfo.description" class="method-description">
   {{data.methodInfo.description}}
 </p>
 <params-list pointer="{{pointer}}/parameters"> </params-list>
