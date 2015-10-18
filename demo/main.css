@@ -16,6 +16,8 @@ side-menu {
   width: 260px;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;;
+  background-color: #E9E9F9;
 }
 
 redoc {
