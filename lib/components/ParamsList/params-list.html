@@ -1,17 +1,23 @@
-<small class="no-params" *ng-if="data.noParams"> No parameters </small>
-<!-- General parameters -->
-<table *ng-if="!data.noParams" class="inline">
+<table class="inline">
+  <!-- No params -->
+  <tr *ng-if="data.noParams">
+    <td colspan="3">
+      <small class="no-params" > No parameters </small>
+    </td>
+  </tr>
+
   <thead>
     <tr>
       <th colspan="3"> Parameters </th>
     </tr>
-    <tr>
+    <tr *ng-if="!data.noParams">
       <th> Name </th>
       <th> Description </th>
       <th> Type </th>
     </tr>
   </thead>
   <tbody>
+    <!-- General parameters -->
     <tr *ng-for="#param of data.params">
       <!--<div class="param">-->
         <td class="param-name">{{param.name}}</td>
