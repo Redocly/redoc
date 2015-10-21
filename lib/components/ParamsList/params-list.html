@@ -30,11 +30,11 @@
     <!-- in-body parameter -->
     <tr class="param body-param" *ng-if="data.bodyParam">
       <td class="param-name">{{data.bodyParam.name}}</td>
+      <td class="param-description">{{data.bodyParam.description}}</td>
       <td>
         <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
         </schema>
       </td>
-      <td class="param-description">{{data.bodyParam.description}}</td>
     </tr>
   </tbody>
 </table>
