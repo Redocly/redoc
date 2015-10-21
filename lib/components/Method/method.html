@@ -1,12 +1,19 @@
-<h2>{{data.methodInfo.summary}}</h2>
-<h3>
-  <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
-  <span class="path">{{data.path}}</span>
-</h3>
-<p *ng-if="data.methodInfo.description" class="method-description">
-  {{data.methodInfo.description}}
-</p>
-<br>
-<params-list pointer="{{pointer}}/parameters"> </params-list>
-<br>
-<responses-list pointer="{{pointer}}/responses"> </responses-list>
+<div class="method">
+  <div class="content">
+    <h2>{{data.methodInfo.summary}}</h2>
+    <h3>
+      <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
+      <span class="path">{{data.path}}</span>
+    </h3>
+    <p *ng-if="data.methodInfo.description" class="method-description">
+      {{data.methodInfo.description}}
+    </p>
+    <br>
+    <params-list pointer="{{pointer}}/parameters"> </params-list>
+    <br>
+    <responses-list pointer="{{pointer}}/responses"> </responses-list>
+  </div>
+  <div class="samples">
+
+  </div>
+<div>

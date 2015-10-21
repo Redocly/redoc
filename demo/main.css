@@ -7,8 +7,12 @@ body {
 
 side-menu, redoc {
   display: block;
-  padding: 10px 20px;
   box-sizing: border-box;
+}
+
+api-info, side-menu {
+  display: block;
+  padding: 10px 20px;
 }
 
 side-menu {

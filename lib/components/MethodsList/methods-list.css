@@ -1,5 +1,21 @@
 method {
   padding-bottom: 100px;
   display: block;
-  border-bottom: 1px solid silver;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.methods {
+  display: block;
+  position: relative;;
+}
+
+.methods:before {
+  content: "";
+  background: rgb(59, 59, 105);
+  height: 100%;
+  width: 50%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }

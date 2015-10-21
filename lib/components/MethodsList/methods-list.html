@@ -1,4 +1,4 @@
-<div *ng-for="#method of data.methods">
-  <method [pointer]="method.pointer" [attr.pointer]="method.pointer"
+<div class="methods">
+  <method *ng-for="#method of data.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
   [attr.tag]="method.tag"></method>
 </div>
