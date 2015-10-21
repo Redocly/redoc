@@ -21,15 +21,26 @@ h3 > span {
   display: block;
   box-sizing: border-box;
   float: left;
-  padding: 0 20px;
 }
 
 .content {
   width: 60%;
+  padding: 0 20px;
 }
 
 .samples {
+  color: white;
   width: 40%;
+}
+
+.samples header {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #231416;
+}
+
+.samples .snippet {
+  padding: 10px 20px;
 }
 
 .method:after {
