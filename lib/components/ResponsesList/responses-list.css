@@ -1,17 +1,11 @@
-h4 {
-  font-size: 16px;
-  font-weight: 200;
-  color: black;
-}
-
 table {
   width: 100%;
   border-spacing: 0;
-  border: 2px solid #1976D3;
+  border: 2px solid green;
 }
 
 thead tr:first-child {
-  background: #1976D3;
+  background: green;
   color: #fff;
   border: none;
 }
@@ -35,16 +29,4 @@ td, th {
 
 th {
   text-align: left;
-}
-
-.param-type {
-  background-color: #EAEAEA;
-  border: silver 1px solid;
-  padding: 5px 10px;
-  line-height: 14px;
-  font-family: monospace;
-}
-
-.body-schema {
-  display: inline-block;
 }

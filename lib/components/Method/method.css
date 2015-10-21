@@ -1,3 +1,7 @@
+responses-list, params-list {
+  display: block;
+}
+
 h2 {
   font-size: 32px;
   font-weight: 200;
