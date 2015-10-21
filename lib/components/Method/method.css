@@ -20,11 +20,17 @@ h3 > span {
 .content, .samples {
   display: block;
   box-sizing: border-box;
-  width: 50%;
   float: left;
   padding: 0 20px;
 }
 
+.content {
+  width: 60%;
+}
+
+.samples {
+  width: 40%;
+}
 
 .method:after {
   content: "";
