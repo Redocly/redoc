@@ -16,6 +16,7 @@
       <td>
         <schema *ng-if="response.schema" class="schema type" pointer="{{response.pointer}}/schema">
         </schema>
+        <small *ng-if="!response.schema"> N/A </small>
       </td>
     </tr>
   </tbody>
