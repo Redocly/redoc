@@ -1,0 +1,20 @@
+ul {
+  display: block;
+  margin: 0;
+  padding: 10px 0px 0 0;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: #8F1B1B;
+  border-left: 1px solid #771D1D;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+li.active {
+  border-bottom: 2px solid red;
+}
