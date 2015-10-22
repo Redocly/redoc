@@ -1,5 +1,5 @@
 <div class="snippet">
   <!-- in case sample is not available for some reason -->
-  <pre *ng-if="!data.sample"> Sample unavailable </pre>
+  <pre *ng-if="data.sample == null"> Sample unavailable </pre>
   <pre>{{data.sample | json}}</pre>
 </div>
