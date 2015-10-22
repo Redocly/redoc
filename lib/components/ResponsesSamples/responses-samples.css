@@ -1,0 +1,11 @@
+header {
+  font-size: 20px;
+}
+
+tab, tabs {
+  display: block;
+}
+
+schema-sample {
+  display: block;
+}
