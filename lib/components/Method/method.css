@@ -33,13 +33,8 @@ h3 > span {
   width: 40%;
 }
 
-.samples header {
-  padding: 10px 20px;
-  font-size: 20px;
-  background-color: #231416;
-}
-
-.samples .snippet {
+responses-samples {
+  display: block;
   padding: 10px 20px;
 }
 

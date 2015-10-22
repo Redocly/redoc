@@ -11,7 +11,7 @@ method {
 
 .methods:before {
   content: "";
-  background: rgb(64, 33, 37);
+  background: #48040D;
   height: 100%;
   width: 40%;
   top: 0;
