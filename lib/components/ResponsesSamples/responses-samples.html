@@ -1,6 +1,6 @@
 <header> Responses samples </header>
 <tabs>
   <tab *ng-for="#response of data.responses" [tab-title]="response.code">
-    <schema-sample pointer="{{response.pointer}}/schema"><schema-sample>
+    <schema-sample [pointer]="response.pointer"><schema-sample>
   </tab>
 </tabs>

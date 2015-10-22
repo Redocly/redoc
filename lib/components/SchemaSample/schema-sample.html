@@ -1,4 +1,5 @@
 <div class="snippet">
-  <pre *ng-if="!data.sample"> Not supported yet (any-of)</pre>
+  <!-- in case sample is not available for some reason -->
+  <pre *ng-if="!data.sample"> Sample unavailable </pre>
   <pre>{{data.sample | json}}</pre>
 </div>
