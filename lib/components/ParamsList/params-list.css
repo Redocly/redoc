@@ -10,6 +10,14 @@ table {
   border: 2px solid #1976D3;
 }
 
+td.param-name {
+  width: 20%;
+}
+
+td.param-description {
+  width: 30%;
+}
+
 thead tr:first-child {
   background: #1976D3;
   color: #fff;
@@ -29,7 +37,7 @@ tbody td {
 
 td, th {
   vertical-align: top;
-  padding: 10px 15px;
+  padding: 10px 10px;
   font-size: 12px;
 }
 

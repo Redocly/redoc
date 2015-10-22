@@ -8,6 +8,14 @@ table {
   border: 2px solid green;
 }
 
+th.response-code {
+  width: 10%;
+}
+
+th.response-description {
+  width: 30%;
+}
+
 thead tr:first-child {
   background: green;
   color: #fff;
@@ -27,7 +35,7 @@ tbody td {
 
 td, th {
   vertical-align: top;
-  padding: 10px 15px;
+  padding: 10px 10px;
   font-size: 12px;
 }
 
