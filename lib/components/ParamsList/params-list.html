@@ -21,7 +21,7 @@
     <tr *ng-for="#param of data.params">
       <!--<div class="param">-->
         <td class="param-name">{{param.name}}</td>
-        <td class="param-description">{{param.description}}</td>
+        <td class="param-description" inner-html="{{param.description | marked}}"></td>
         <td>
           <span class="type" [ng-class]="param.type">{{param.type}}</span>
         </td>
@@ -30,7 +30,7 @@
     <!-- in-body parameter -->
     <tr class="param body-param" *ng-if="data.bodyParam">
       <td class="param-name">{{data.bodyParam.name}}</td>
-      <td class="param-description">{{data.bodyParam.description}}</td>
+      <td class="param-description" inner-html="{{data.bodyParam.description | marked}}"></td>
       <td>
         <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
         </schema>

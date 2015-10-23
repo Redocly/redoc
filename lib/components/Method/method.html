@@ -5,8 +5,8 @@
       <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
       <span class="path">{{data.path}}</span>
     </h3>
-    <p *ng-if="data.methodInfo.description" class="method-description">
-      {{data.methodInfo.description}}
+    <p *ng-if="data.methodInfo.description" class="method-description"
+      inner-html="{{data.methodInfo.description | marked}}">
     </p>
     <br>
     <params-list pointer="{{pointer}}/parameters"> </params-list>

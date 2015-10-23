@@ -12,7 +12,7 @@
   <tbody>
     <tr *ng-for="#response of data.responses">
       <td>{{response.code}}</td>
-      <td>{{response.description}}</td>
+      <td inner-html="{{response.description | marked}}"></td>
       <td>
         <schema *ng-if="response.schema" class="schema type" pointer="{{response.pointer}}/schema">
         </schema>
