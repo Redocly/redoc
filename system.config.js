@@ -49,6 +49,7 @@ System.config({
     "json-pointer": "npm:json-pointer@0.3.0",
     "json-schema-instantiator": "npm:json-schema-instantiator@0.2.2",
     "json-schema-view-js": "npm:json-schema-view-js@0.2.0",
+    "marked": "npm:marked@0.3.5",
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
     "swagger-parser": "npm:swagger-parser@3.3.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.0",
