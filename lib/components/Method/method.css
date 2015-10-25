@@ -31,11 +31,22 @@ h3 > span {
 .samples {
   color: white;
   width: 40%;
+  padding: 10px 20px;
 }
 
 responses-samples {
   display: block;
-  padding: 10px 20px;
+}
+
+.samples header {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.samples schema-sample {
+  display: block;
+  padding: 5px;
+  background-color: rgb(18, 20, 39);
 }
 
 .method:after {
