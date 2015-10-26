@@ -7,7 +7,11 @@ gulp.task('serve', ['watch'], function (done) {
     notify: false,
     port: 9000,
     server: {
-      baseDir: ['./demo', '.']
-    }
+      baseDir: './demo',
+      routes: {
+        '/dist': './dist'
+      },
+    },
+    reloadDelay: 500
   }, done);
 });
