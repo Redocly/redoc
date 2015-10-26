@@ -39,7 +39,12 @@ gulp.task('concatDeps', ['bundleSfx'], function() {
 });
 
 gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
+  fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
+  builder.config({
+    separateCSS: true
+  });
+
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       paths.redocBuilt,
