@@ -34,7 +34,7 @@ gulp.task('concatDeps', ['bundleSfx'], function() {
   gulp.src(JS_DEV_DEPS.concat([paths.redocBuilt]))
   .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(concat(paths.outputName))
-  .pipe(sourcemaps.write())
+  .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.output))
 });
 
@@ -43,7 +43,7 @@ gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       paths.redocBuilt,
-      { globalName: 'Redoc', sourceMaps: true }
+      { globalName: 'Redoc', sourceMaps: true, lowResSourceMaps: true }
     )
     .then(function() {
       cb();
