@@ -12,10 +12,8 @@ cache:
 before_install:
 - npm install -g jspm
 - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
-before_script:
-- npm install -g gulp
 before_deploy:
-- gulp build
+- npm run build
 deploy:
   skip_cleanup: true
   provider: script
