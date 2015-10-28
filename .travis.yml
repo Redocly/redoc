@@ -10,7 +10,7 @@ cache:
   directories:
     - node_modules
 before_install:
-- npm install -g jspm
+- travis_retry npm install -g jspm
 - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
 before_deploy:
 - npm run build
