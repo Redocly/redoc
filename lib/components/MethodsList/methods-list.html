@@ -1,4 +1,8 @@
 <div class="methods">
-  <method *ng-for="#method of data.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
-  [attr.tag]="method.tag"></method>
+  <div class="tag" *ng-for="#tag of data.tags">
+    <h1> {{tag.name}} </h1>
+    <p *ng-if="tag.description" inner-html="{{ tag.description | marked }}"> </p>
+    <method *ng-for="#method of tag.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
+    [attr.tag]="method.tag"></method>
+  </tag>
 </div>
