@@ -3,8 +3,9 @@ responses-list, params-list {
 }
 
 h2 {
-  font-size: 32px;
+  font-size: 25px;
   font-weight: 200;
+  color: #666;
 }
 
 h3 {
