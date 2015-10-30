@@ -27,3 +27,10 @@ side-menu {
 redoc {
   margin-left: 260px;
 }
+
+pre {
+  white-space: pre-wrap;
+  background-color: #f2f2f2;
+  padding: 10px;
+  overflow-x: auto;
+}
