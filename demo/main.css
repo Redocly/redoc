@@ -3,6 +3,7 @@ body {
   font-size: 14px;
   color: #333;
   margin: 0;
+  line-height: 1.5;
 }
 
 side-menu, redoc {
@@ -33,4 +34,9 @@ pre {
   background-color: #f2f2f2;
   padding: 10px;
   overflow-x: auto;
+  line-height: normal;
+}
+
+code {
+  background-color: #f2f2f2;
 }

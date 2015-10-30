@@ -3,6 +3,7 @@ label {
   font-size: 15px;
   cursor: pointer;
   color: #666;
+  text-transform: capitalize;
 }
 
 ul {

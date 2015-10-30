@@ -5,7 +5,7 @@ small {
 table {
   width: 100%;
   border-spacing: 0;
-  border: 2px solid green;
+  border: 2px solid darkgreen;
 }
 
 th.response-code {
@@ -17,7 +17,7 @@ th.response-description {
 }
 
 thead tr:first-child {
-  background: green;
+  background: darkgreen;
   color: #fff;
   border: none;
 }

@@ -18,6 +18,11 @@ h3 > span {
   vertical-align: middle;
 }
 
+span.path {
+  font-family: monospace;
+  font-weight: bold;
+}
+
 .method-tags {
   margin-top: 10px;
   color: #666;
@@ -78,6 +83,8 @@ responses-samples {
   font-size: 13px;
   color: white;
   background-color: #1976D3;
+  border-radius: 0 10px 10px 0;
+  font-weight: bold;
 }
 
 .http-method.delete {

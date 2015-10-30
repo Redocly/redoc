@@ -7,7 +7,7 @@ h4 {
 table {
   width: 100%;
   border-spacing: 0;
-  border: 2px solid #1976D3;
+  border: 2px solid #053361;
 }
 
 td.param-name {
@@ -19,7 +19,7 @@ td.param-description {
 }
 
 thead tr:first-child {
-  background: #1976D3;
+  background: #053361;
   color: #fff;
   border: none;
 }

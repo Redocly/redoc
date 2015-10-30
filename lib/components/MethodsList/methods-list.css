@@ -6,15 +6,20 @@ method {
 
 .tag-info {
   padding: 0 20px;
-  width: 60%;
   box-sizing: border-box;
+  background-color: white;
+}
+
+.tag-info:after, .tag-info:before {
+  content: "";
+  display: table;
 }
 
 .tag-info h1 {
   color: rgb(102, 102, 102);
   text-transform: capitalize;
   padding-left: 10px;
-  border-left: 5px solid green;
+  border-left: 5px solid darkgreen;
 }
 
 .methods {
