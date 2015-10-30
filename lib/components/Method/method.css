@@ -18,6 +18,20 @@ h3 > span {
   vertical-align: middle;
 }
 
+.method-tags {
+  margin-top: 10px;
+  color: #666;
+  font-weight: bold;
+}
+
+.method-tags a {
+  color: #666;
+  font-weight: bold;
+  display: inline-block;
+  padding: 0 5px;
+  font-style: italic;
+}
+
 .content, .samples {
   display: block;
   box-sizing: border-box;
