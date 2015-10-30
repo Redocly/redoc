@@ -22,6 +22,6 @@ li {
   cursor: pointer;
 }
 
-li.active {
+label.active, li.active {
   color: #1976D3;
 }

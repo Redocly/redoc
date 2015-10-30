@@ -1,4 +1,4 @@
-<label (click)="expandCat()"> {{data.name}}</label>
+<label (click)="expandCat()" [ng-class]="{active: data.active}"> {{data.name}}</label>
 <ul [ng-class]="{active: data.active}">
   <li *ng-for="var method of data.methods; var idx = index"
     [ng-class]="{active: method.active}"
