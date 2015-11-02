@@ -26,7 +26,8 @@ gulp.task('inlineTemplates', function() {
 });
 
 var JS_DEV_DEPS = [
-  'node_modules/zone.js/dist/zone-microtask.js'
+  'node_modules/zone.js/dist/zone-microtask.js',
+  'node_modules/reflect-metadata/Reflect.js'
 ];
 
 // concatenate angular2 deps

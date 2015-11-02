@@ -55,6 +55,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "jshint-stylish": "^2.0.1",
     "jspm": "^0.16.11",
+    "reflect-metadata": "^0.1.2",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.4",
     "systemjs-builder": "^0.14.7",
