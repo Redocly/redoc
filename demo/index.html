@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="dist/redoc.full.css">
   </head>
   <body>
+    <nav>
+      <input id="schema-url-input" value='swagger.json'>
+      <button id="load-button"> Explore </button>
+    </nav>
+    </nav>
     <side-menu>
     </side-menu>
     <!-- The wrapper component -->
@@ -15,6 +20,7 @@
 
     <!-- ReDoc built file with all dependencies included -->
     <script src="dist/redoc.full.js"> </script>
+    <script src="main.js"> </script>
     <script>
       /* init redoc */
       Redoc.init('swagger.json');
