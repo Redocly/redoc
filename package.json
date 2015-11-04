@@ -22,6 +22,7 @@
   "jspm": {
     "configFile": "system.config.js",
     "dependencies": {
+      "RomanGotsiy/json-schema-ref-parser": "github:RomanGotsiy/json-schema-ref-parser@master",
       "angular2": "npm:angular2@^2.0.0-alpha.45",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "json-formatter-js": "npm:json-formatter-js@^0.2.0",
@@ -40,6 +41,11 @@
       "core-js": "npm:core-js@^1.1.4",
       "css": "github:systemjs/plugin-css@^0.1.18",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
+    },
+    "overrides": {
+      "github:RomanGotsiy/json-schema-ref-parser@master": {
+        "registry": "npm"
+      }
     }
   },
   "devDependencies": {
