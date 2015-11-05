@@ -16,7 +16,13 @@ nav input, nav button  {
   line-height: 1;
   outline: none;
 }
-
+nav header {
+  float: left;
+  margin-left: 20px;
+  font-size: 25px;
+  color: white;
+  position: absolute;
+}
 nav input {
   width: 50%;
   box-sizing: border-box;
