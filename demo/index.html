@@ -1,0 +1,30 @@
+<!-- index.html -->
+<html>
+  <head>
+    <title>ReDoc prototype</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="dist/redoc.full.css">
+  </head>
+  <body>
+    <nav>
+      <header> ReDoc </header>
+      <input id="schema-url-input" value='swagger.json'>
+      <button id="load-button"> Explore </button>
+    </nav>
+    </nav>
+    <side-menu>
+    </side-menu>
+    <!-- The wrapper component -->
+    <redoc>
+      Loading...
+    </redoc>
+
+    <!-- ReDoc built file with all dependencies included -->
+    <script src="dist/redoc.full.js"> </script>
+    <script src="main.js"> </script>
+    <script>
+      /* init redoc */
+      Redoc.init('swagger.json');
+    </script>
+  </body>
+</html>

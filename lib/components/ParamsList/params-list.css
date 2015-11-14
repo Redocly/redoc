@@ -1,0 +1,58 @@
+h4 {
+  font-size: 16px;
+  font-weight: 200;
+  color: black;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+  border: 2px solid #053361;
+}
+
+td.param-name {
+  width: 20%;
+}
+
+td.param-description {
+  width: 30%;
+}
+
+thead tr:first-child {
+  background: #053361;
+  color: #fff;
+  border: none;
+}
+
+thead tr:last-child th {
+  border-bottom: 3px solid #ddd;
+}
+
+tbody tr:last-child td {
+  border: none;
+}
+tbody td {
+  border-bottom: 1px solid #ddd;
+}
+
+td, th {
+  vertical-align: top;
+  padding: 10px 10px;
+  font-size: 12px;
+}
+
+th {
+  text-align: left;
+}
+
+.param-type {
+  background-color: #EAEAEA;
+  border: silver 1px solid;
+  padding: 5px 10px;
+  line-height: 14px;
+  font-family: monospace;
+}
+
+.body-schema {
+  display: inline-block;
+}

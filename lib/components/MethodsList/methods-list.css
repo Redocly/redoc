@@ -1,0 +1,39 @@
+method {
+  padding-bottom: 100px;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tag-info {
+  padding: 0 20px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.tag-info:after, .tag-info:before {
+  content: "";
+  display: table;
+}
+
+.tag-info h1 {
+  color: rgb(102, 102, 102);
+  text-transform: capitalize;
+  padding-left: 10px;
+  border-left: 5px solid darkgreen;
+}
+
+.methods {
+  display: block;
+  position: relative;;
+}
+
+.methods:before {
+  content: "";
+  background: #2C2E3E;
+  height: 100%;
+  width: 40%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}

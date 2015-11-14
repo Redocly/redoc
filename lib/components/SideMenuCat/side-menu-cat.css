@@ -1,0 +1,28 @@
+label {
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  color: #666;
+  text-transform: capitalize;
+}
+
+ul {
+  padding-left: 20px;
+  margin: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+ul.active {
+  height: auto;
+}
+
+li {
+  list-style: none inside none;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+label.active, li.active {
+  color: #1976D3;
+}

@@ -1,0 +1,44 @@
+small {
+  color: #999;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+  border: 2px solid darkgreen;
+}
+
+th.response-code {
+  width: 10%;
+}
+
+th.response-description {
+  width: 30%;
+}
+
+thead tr:first-child {
+  background: darkgreen;
+  color: #fff;
+  border: none;
+}
+
+thead tr:last-child th {
+  border-bottom: 3px solid #ddd;
+}
+
+tbody tr:last-child td {
+  border: none;
+}
+tbody td {
+  border-bottom: 1px solid #ddd;
+}
+
+td, th {
+  vertical-align: top;
+  padding: 10px 10px;
+  font-size: 12px;
+}
+
+th {
+  text-align: left;
+}

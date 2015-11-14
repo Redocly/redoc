@@ -1,0 +1,26 @@
+### Linux ###
+*~
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules
+
+#jspm
+jspm_packages
+
+/dist
+/demo/build
+.tmp
