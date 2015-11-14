@@ -1,9 +1,9 @@
 {
-  "name": "redoc-proto",
-  "description": "Prototype of component based Swagger documentation",
+  "name": "ReDoc",
+  "description": "Swagger-generated API Reference Documentation",
   "version": "0.0.1",
   "private": true,
-  "repository": "RomanGotsiy/redoc-prototype",
+  "repository": "Rebilly/ReDoc",
   "scripts": {
     "test": "gulp lint",
     "postinstall": "jspm install",
