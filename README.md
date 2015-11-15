@@ -1,5 +1,5 @@
 # ReDoc
-![travis-ci-status]
+[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
 
 Swagger-generated API Reference Documentation
 
@@ -20,4 +20,5 @@ Swagger-generated API Reference Documentation
 
 
 [travis-ci-status]: https://travis-ci.org/Rebilly/ReDoc.svg?branch=master "TravisCI Status"
+[license-badge]: https://img.shields.io/github/license/rebilly/redoc.svg "Github license"
 [demo]: http://rebilly.github.io/ReDoc/
