@@ -49,27 +49,9 @@ nav {
   z-index: 1;
 }
 
-side-menu, redoc {
+redoc {
   display: block;
   box-sizing: border-box;
-}
-
-api-info, side-menu {
-  display: block;
-  padding: 10px 20px;
-}
-
-side-menu {
-  position: fixed;
-  width: 260px;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;;
-  background-color: #f2f2f2;
-}
-
-redoc {
-  margin-left: 260px;
 }
 
 pre {
