@@ -3,7 +3,7 @@
     <h2>{{data.methodInfo.summary}}</h2>
     <h3>
       <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
-      <span class="path">{{data.path}}</span>
+      <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>
     </h3>
     <div class="method-tags"> Tags:
       <a *ng-for="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
