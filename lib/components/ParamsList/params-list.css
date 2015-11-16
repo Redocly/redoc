@@ -1,58 +1,92 @@
-h4 {
-  font-size: 16px;
-  font-weight: 200;
-  color: black;
+h2 {
+  border-bottom: 1px solid #999;
+  font-size: 18px;
+  padding: 0.2em 0;
+  margin: 0.5em 0;
+  color: #253137;
 }
 
-table {
+.params-wrap {
+  display: table;
+}
+
+.param-name {
+  display: table-cell;
+  padding: 0 5px;
+  font-weight: bold;
+}
+
+.param-info {
+  display: table-cell;
   width: 100%;
-  border-spacing: 0;
-  border: 2px solid #053361;
+  padding: 0 5px;
 }
 
-td.param-name {
-  width: 20%;
+.param {
+  display: table-row;
 }
 
-td.param-description {
-  width: 30%;
-}
-
-thead tr:first-child {
-  background: #053361;
-  color: #fff;
-  border: none;
-}
-
-thead tr:last-child th {
-  border-bottom: 3px solid #ddd;
-}
-
-tbody tr:last-child td {
-  border: none;
-}
-tbody td {
-  border-bottom: 1px solid #ddd;
-}
-
-td, th {
-  vertical-align: top;
-  padding: 10px 10px;
+.param-required {
+  color: red;
+  font-weight: bold;
   font-size: 12px;
 }
 
-th {
-  text-align: left;
+.param-description {
+  padding: 0.5em 0;
+  border-bottom: 1px solid #999;
 }
 
 .param-type {
-  background-color: #EAEAEA;
-  border: silver 1px solid;
-  padding: 5px 10px;
-  line-height: 14px;
-  font-family: monospace;
+  text-transform: capitalize;
+  color: #999;
+  font-weight: bold;
+  font-size: 12px;
 }
 
-.body-schema {
+.param-name {
+  border-left: 2px solid #7D97CE;
+  white-space: nowrap;
+  position: relative;
+}
+/* tree */
+.param-name > span:before {
+  content: "";
   display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #7D97CE;
+  margin: 0 5px;
+  top: -1px;
+  position: relative;
+}
+
+.param-name > span:after {
+  content: "";
+  position: absolute;
+  border-top: 2px solid #7D97CE;
+  width: 10px;
+  left: 0;
+  top: 10px;
+}
+
+.param:first-of-type .param-name:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -2px;
+  width: 2px;
+  background-color: white;
+  height: 10px;
+}
+
+.param:last-of-type .param-name:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -2px;
+  width: 2px;
+  top: 18px;
+  background-color: white;
+  bottom: 0;
 }

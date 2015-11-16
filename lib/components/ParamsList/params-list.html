@@ -1,5 +1,31 @@
+<h2 *ng-if="data.params.length"> Parameters </h2>
+<div class="params-wrap">
+  <div *ng-for="#param of data.params" class="param">
+    <div class="param-name">
+      <span> {{param.name}} </span>
+    </div>
+    <div class="param-info">
+      <div>
+        <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
+        <span *ng-if="param.required" class="param-required">Required</span>
+      </div>
+      <div class="param-description" inner-html="{{param.description | marked}}"></div>
+    </div>
+  </div>
+</div>
+
+<div *ng-if="data.bodyParam">
+  <h2 *ng-if="data.bodyParam"> Request Body </h2>
+
+  <div class="body-param-description" inner-html="{{data.bodyParam.description | marked}}"></div>
+  <div>
+    <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
+    </schema>
+  </div>
+</div>
+<!--
 <table class="inline">
-  <!-- No params -->
+  <!- No params ->
   <tr *ng-if="data.noParams">
     <td colspan="3">
       <small class="no-params" > No parameters </small>
@@ -17,17 +43,17 @@
     </tr>
   </thead>
   <tbody>
-    <!-- General parameters -->
+    <!- General parameters ->
     <tr *ng-for="#param of data.params">
-      <!--<div class="param">-->
+      <!-<div class="param">->
         <td class="param-name">{{param.name}}</td>
         <td class="param-description" inner-html="{{param.description | marked}}"></td>
         <td>
           <span class="type" [ng-class]="param.type">{{param.type}}</span>
         </td>
-      <!--</div>-->
+      <!-</div>->
     </tr>
-    <!-- in-body parameter -->
+    <!- in-body parameter ->
     <tr class="param body-param" *ng-if="data.bodyParam">
       <td class="param-name">{{data.bodyParam.name}}</td>
       <td class="param-description" inner-html="{{data.bodyParam.description | marked}}"></td>
@@ -38,3 +64,4 @@
     </tr>
   </tbody>
 </table>
+-->

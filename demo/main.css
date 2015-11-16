@@ -7,6 +7,10 @@ body {
   padding-top: 50px;
 }
 
+p {
+  margin: 0;
+}
+
 nav input, nav button  {
   font-size: 16px;
   line-height: 28px;
