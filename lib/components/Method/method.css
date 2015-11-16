@@ -5,22 +5,31 @@ responses-list, params-list {
 h2 {
   font-size: 25px;
   font-weight: 200;
-  color: #666;
+  color: #253137;
 }
 
 h3 {
   margin: 0;
   font-weight: 200;
+  font-size: 0;
 }
 
 h3 > span {
-  padding: 5px 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   vertical-align: middle;
+  font-size: 14px;
+}
+
+span.api-url {
+  color: #999;
+  margin-left: 10px;
 }
 
 span.path {
   font-family: monospace;
   font-weight: bold;
+  color: #00329F;
 }
 
 .method-tags {
@@ -80,11 +89,10 @@ responses-samples {
 }
 
 .http-method {
-  font-size: 13px;
   color: white;
   background-color: #1976D3;
-  border-radius: 0 10px 10px 0;
-  font-weight: bold;
+  padding: 3px 10px;
+  text-transform: uppercase;
 }
 
 .http-method.delete {
@@ -92,7 +100,7 @@ responses-samples {
 }
 
 .http-method.post {
-  background-color: green;
+  background-color: #00329F;
 }
 
 .http-method.patch {

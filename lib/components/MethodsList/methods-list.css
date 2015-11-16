@@ -16,10 +16,9 @@ method {
 }
 
 .tag-info h1 {
-  color: rgb(102, 102, 102);
+  color: #00329F;
   text-transform: capitalize;
-  padding-left: 10px;
-  border-left: 5px solid darkgreen;
+  font-weight: bold;
 }
 
 .methods {
