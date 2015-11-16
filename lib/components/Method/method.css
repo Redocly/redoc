@@ -33,17 +33,24 @@ span.path {
 }
 
 .method-tags {
-  margin-top: 10px;
-  color: #666;
-  font-weight: bold;
+  margin-top: 20px;
 }
 
 .method-tags a {
-  color: #666;
-  font-weight: bold;
+  font-size: 16px;
+  color: #999;
   display: inline-block;
-  padding: 0 5px;
-  font-style: italic;
+  padding: 0 0.5em;
+  text-decoration: none;
+}
+
+.method-tags a:before{
+  content: '#';
+  margin-right: -0.4em;
+}
+
+.method-tags a:first-of-type {
+  padding: 0;
 }
 
 .content, .samples {
