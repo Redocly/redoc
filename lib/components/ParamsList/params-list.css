@@ -45,7 +45,7 @@ h2 {
 }
 
 .param-name {
-  border-left: 2px solid #7D97CE;
+  border-left: 1px solid #7D97CE;
   white-space: nowrap;
   position: relative;
 }
@@ -64,7 +64,7 @@ h2 {
 .param-name > span:after {
   content: "";
   position: absolute;
-  border-top: 2px solid #7D97CE;
+  border-top: 1px solid #7D97CE;
   width: 10px;
   left: 0;
   top: 10px;
@@ -86,7 +86,7 @@ h2 {
   position: absolute;
   left: -2px;
   width: 2px;
-  top: 18px;
+  top: 11px;
   background-color: white;
   bottom: 0;
 }

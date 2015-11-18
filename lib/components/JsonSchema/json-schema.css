@@ -9,7 +9,7 @@ h2 {
 .param-schema {
   padding-left: 13px;
   padding-top: 5px;
-  border-left: 2px solid #7D97CE;
+  border-left: 1px solid #7D97CE;
 }
 
 .param-wrap {
@@ -19,10 +19,10 @@ h2 {
 .param-schema:before {
   content: "";
   position: absolute;
-  left: 15px;
+  left: 14px;
   top: 10px;
   bottom: 0;
-  border-left: 2px solid #7D97CE;
+  border-left: 1px solid #7D97CE;
 }
 
 .param-name {
@@ -62,7 +62,7 @@ h2 {
 }
 
 .param-name {
-  border-left: 2px solid #7D97CE;
+  border-left: 1px solid #7D97CE;
   white-space: nowrap;
   position: relative;
 }
@@ -81,7 +81,7 @@ h2 {
 .param-name > span:after {
   content: "";
   position: absolute;
-  border-top: 2px solid #7D97CE;
+  border-top: 1px solid #7D97CE;
   width: 10px;
   left: 0;
   top: 10px;
@@ -91,8 +91,8 @@ h2 {
   content: "";
   display: block;
   position: absolute;
-  left: -2px;
-  width: 2px;
+  left: -1px;
+  width: 1px;
   background-color: white;
   height: 10px;
 }
@@ -101,9 +101,9 @@ h2 {
   content: "";
   display: block;
   position: absolute;
-  left: -2px;
-  width: 2px;
-  top: 18px;
+  left: -1px;
+  width: 1px;
+  top: 11px;
   background-color: white;
   bottom: 0;
 }
