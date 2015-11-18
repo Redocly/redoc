@@ -19,49 +19,7 @@
 
   <div class="body-param-description" inner-html="{{data.bodyParam.description | marked}}"></div>
   <div>
-    <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
-    </schema>
+    <json-schema pointer="{{data.bodyParam.pointer}}/schema">
+    </json-schema>
   </div>
 </div>
-<!--
-<table class="inline">
-  <!- No params ->
-  <tr *ng-if="data.noParams">
-    <td colspan="3">
-      <small class="no-params" > No parameters </small>
-    </td>
-  </tr>
-
-  <thead>
-    <tr>
-      <th colspan="3"> Parameters </th>
-    </tr>
-    <tr *ng-if="!data.noParams">
-      <th> Name </th>
-      <th> Description </th>
-      <th> Type </th>
-    </tr>
-  </thead>
-  <tbody>
-    <!- General parameters ->
-    <tr *ng-for="#param of data.params">
-      <!-<div class="param">->
-        <td class="param-name">{{param.name}}</td>
-        <td class="param-description" inner-html="{{param.description | marked}}"></td>
-        <td>
-          <span class="type" [ng-class]="param.type">{{param.type}}</span>
-        </td>
-      <!-</div>->
-    </tr>
-    <!- in-body parameter ->
-    <tr class="param body-param" *ng-if="data.bodyParam">
-      <td class="param-name">{{data.bodyParam.name}}</td>
-      <td class="param-description" inner-html="{{data.bodyParam.description | marked}}"></td>
-      <td>
-        <schema class="body-schema param-type" pointer="{{data.bodyParam.pointer}}/schema">
-        </schema>
-      </td>
-    </tr>
-  </tbody>
-</table>
--->

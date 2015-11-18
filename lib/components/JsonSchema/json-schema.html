@@ -1,0 +1,20 @@
+<div class="params-wrap">
+  <div *ng-for="#prop of data.properties" class="param-wrap">
+    <div class="param">
+      <div class="param-name">
+        <span> {{prop._name}} </span>
+      </div>
+      <div class="param-info">
+        <div>
+          <span class="param-type" [ng-class]="prop.type">{{prop.type}} {{prop.format}}</span>
+          <span *ng-if="prop.isRequired" class="param-required">Required</span>
+        </div>
+        <div class="param-description" inner-html="{{prop.description | marked}}"></div>
+      </div>
+    </div>
+    <div class="param-schema" *ng-if="prop._pointer">
+      <json-schema pointer="{{prop._pointer}}">
+      </json-schema>
+    </div>
+  </div>
+</div>

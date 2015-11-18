@@ -1,0 +1,113 @@
+h2 {
+  border-bottom: 1px solid #999;
+  font-size: 18px;
+  padding: 0.2em 0;
+  margin: 0.5em 0;
+  color: #253137;
+}
+
+.param-schema {
+  padding-left: 13px;
+  padding-top: 5px;
+  border-left: 2px solid #7D97CE;
+}
+
+.param-wrap {
+    position: relative;
+}
+
+.param-schema:before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  bottom: 0;
+  border-left: 2px solid #7D97CE;
+}
+
+.param-name {
+  /*display: table-cell;*/
+  padding: 0 5px;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.param-info {
+  /*display: table-cell;*/
+  width: 100%;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+
+.param {
+  display: flex;
+}
+
+.param-required {
+  color: red;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.param-description {
+  padding: 0.5em 0;
+  border-bottom: 1px solid #999;
+}
+
+.param-type {
+  text-transform: capitalize;
+  color: #999;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.param-name {
+  border-left: 2px solid #7D97CE;
+  white-space: nowrap;
+  position: relative;
+}
+/* tree */
+.param-name > span:before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #7D97CE;
+  margin: 0 5px;
+  top: -1px;
+  position: relative;
+}
+
+.param-name > span:after {
+  content: "";
+  position: absolute;
+  border-top: 2px solid #7D97CE;
+  width: 10px;
+  left: 0;
+  top: 10px;
+}
+
+.param-wrap:first-of-type .param-name:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -2px;
+  width: 2px;
+  background-color: white;
+  height: 10px;
+}
+
+.param-wrap:last-of-type .param-name:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -2px;
+  width: 2px;
+  top: 18px;
+  background-color: white;
+  bottom: 0;
+}
+
+.param-schema .param-wrap:first-of-type .param-name:before {
+  display: none !important;
+}
