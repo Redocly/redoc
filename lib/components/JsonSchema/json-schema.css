@@ -97,7 +97,7 @@ h2 {
   height: 10px;
 }
 
-.param-wrap:last-of-type .param-name:after {
+.param-wrap:last-of-type > .param > .param-name:after {
   content: "";
   display: block;
   position: absolute;
@@ -106,6 +106,10 @@ h2 {
   top: 11px;
   background-color: white;
   bottom: 0;
+}
+
+.param-wrap:last-of-type > .param-schema {
+  border-left-color: transparent;
 }
 
 .param-schema .param-wrap:first-of-type .param-name:before {
