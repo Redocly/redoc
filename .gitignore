@@ -3,6 +3,8 @@
 
 # KDE directory preferences
 .directory
+# OS X folder attributes
+.DS_Store
 
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
