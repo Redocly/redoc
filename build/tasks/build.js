@@ -35,7 +35,7 @@ var JS_DEV_DEPS = [
 ];
 
 gulp.task('sass', function () {
-  return gulp.src(paths.css, { base: './' })
+  return gulp.src(paths.scss, { base: './' })
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(gulp.dest(paths.tmp));
 });

@@ -1,7 +1,7 @@
 module.exports = {
   source: 'lib/**/*.js',
   html: 'lib/**/*.html',
-  css: 'lib/**/*.css',
+  scss: 'lib/**/*.scss',
   sourceEntryPoint: 'lib/index.js',
   outputName: 'redoc.full.js',
   output: 'dist/',
