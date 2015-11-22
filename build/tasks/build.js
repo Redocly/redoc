@@ -7,6 +7,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var paths = require('../paths');
 var fs= require('fs');
 var concat = require('gulp-concat');
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var replace = require('gulp-replace');
 
 paths.redocBuilt = path.join(paths.output, paths.outputName);
 gulp.task('build', function (callback) {
@@ -19,8 +22,9 @@ gulp.task('build', function (callback) {
 
 gulp.task('bundle', ['bundleSfx', 'concatDeps']);
 
-gulp.task('inlineTemplates', function() {
+gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
+    .pipe(replace(/'(.*?\.css)'/g, '\'.tmp/$1\''))
     .pipe(inlineNg2Template({ base: '/' }))
     .pipe(gulp.dest(paths.tmp));
 });
@@ -29,6 +33,12 @@ var JS_DEV_DEPS = [
   'node_modules/zone.js/dist/zone-microtask.js',
   'node_modules/reflect-metadata/Reflect.js'
 ];
+
+gulp.task('sass', function () {
+  return gulp.src(paths.css, { base: './' })
+    .pipe(sass.sync().on('error', sass.logError))
+    .pipe(gulp.dest(paths.tmp));
+});
 
 // concatenate angular2 deps
 gulp.task('concatDeps', ['bundleSfx'], function() {

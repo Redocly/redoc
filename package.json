@@ -58,6 +58,7 @@
     "gulp-inline-ng2-template": "0.0.7",
     "gulp-jshint": "^1.11.2",
     "gulp-replace": "^0.5.4",
+    "gulp-sass": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "jshint-stylish": "^2.0.1",
     "jspm": "^0.16.11",
