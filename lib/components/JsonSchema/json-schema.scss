@@ -1,9 +1,19 @@
 @import '../../common/styles/variables';
+$lines-width: 1px;
+$bullet-size: 7px;
+$cell-spacing: 25px;
+$cell-padding: 5px;
+$bullet-margin: 10px;
+$line-border: $lines-width solid $tree-lines-color;
+$line-border-erase: $lines-width solid white;
+
+$param-name-height: 20px;
+
+$sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-schema {
-  padding-left: 13px;
-  padding-top: 5px;
-  border-left: 1px solid #7D97CE;
+  padding-left: $sub-schema-offset - $lines-width;
+  border-left: $line-border;
 }
 
 .param-wrap {
@@ -13,22 +23,32 @@
 .param-schema:before {
   content: "";
   position: absolute;
-  left: 14px;
-  top: 10px;
+  left: $sub-schema-offset;
+  top: ($param-name-height/2) + $cell-padding;
   bottom: 0;
-  border-left: 1px solid $tree-lines-color;
+  border-left: $line-border;
 }
 
 .param-name {
-  padding: 0 5px;
+  font-size: 14px;
+  padding: $cell-padding $cell-spacing $cell-padding 0;
   font-weight: bold;
   box-sizing: border-box;
+  line-height: $param-name-height;
+  border-left: $line-border;
+  white-space: nowrap;
+  position: relative;
+
+  > span {
+    vertical-align: middle;
+  }
 }
 
 .param-info {
   width: 100%;
-  padding: 0 5px;
+  padding: $cell-padding 0;
   box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
 }
 
 .param {
@@ -39,64 +59,58 @@
   color: red;
   font-weight: bold;
   font-size: 12px;
-}
-
-.param-description {
-  padding: 0.5em 0;
-  border-bottom: 1px solid #999;
+  line-height: $param-name-height;
+  vertical-align: middle;
 }
 
 .param-type {
   text-transform: capitalize;
   color: #999;
   font-size: 12px;
-  line-height: 2;
+  line-height: $param-name-height;
+  vertical-align: middle;
   font-weight: bold;
 }
 
-.param-name {
-  border-left: 1px solid $tree-lines-color;
-  white-space: nowrap;
-  position: relative;
-}
 /* tree */
+
+// Bullet
 .param-name > span:before {
   content: "";
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: $bullet-size;
+  height: $bullet-size;
   background-color: $tree-lines-color;
-  margin: 0 5px;
-  top: -1px;
-  position: relative;
+  margin: 0 $bullet-margin;
+  vertical-align: middle;
 }
 
 .param-name > span:after {
   content: "";
   position: absolute;
-  border-top: 1px solid $tree-lines-color;
-  width: 10px;
+  border-top: $line-border;
+  width: $bullet-margin;
   left: 0;
-  top: 10px;
+  top: ($param-name-height/2) + $cell-padding;
 }
 
 .param-wrap:first-of-type .param-name:before {
   content: "";
   display: block;
   position: absolute;
-  left: -1px;
-  width: 1px;
-  background-color: white;
-  height: 10px;
+  left: -$lines-width;
+  top: 0;
+  border-left: $line-border-erase;
+  height: ($param-name-height/2) + $cell-padding;
 }
 
 .param-wrap:last-of-type > .param > .param-name:after {
   content: "";
   display: block;
   position: absolute;
-  left: -1px;
-  width: 1px;
-  top: 11px;
+  left: -$lines-width;
+  border-left: $line-border-erase;
+  top: ($param-name-height/2) + $cell-padding + $lines-width;
   background-color: white;
   bottom: 0;
 }

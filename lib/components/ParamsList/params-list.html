@@ -1,16 +1,16 @@
 <h2 class="param-list-header" *ng-if="data.params.length"> Parameters </h2>
 <div class="params-wrap">
   <div *ng-for="#param of data.params" class="param">
-    <div class="param-name">
-      <span> {{param.name}} </span>
-    </div>
-    <div class="param-info">
-      <div>
-        <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
-        <span *ng-if="param.required" class="param-required">Required</span>
+      <div class="param-name">
+        <span> {{param.name}} </span>
       </div>
-      <div class="param-description" inner-html="{{param.description | marked}}"></div>
-    </div>
+      <div class="param-info">
+        <div>
+          <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
+          <span *ng-if="param.required" class="param-required">Required</span>
+        </div>
+        <div class="param-description" inner-html="{{param.description | marked}}"></div>
+      </div>
   </div>
 </div>
 

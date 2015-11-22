@@ -1,5 +1,3 @@
-@import '../../common/styles/variables';
-
 .param-list-header {
   border-bottom: 1px solid #999;
   font-size: 18px;
@@ -8,87 +6,44 @@
   color: #253137;
 }
 
+@import '../JsonSchema/json-schema.scss';
+
+
+// paramters can't be multilevel so table representation works for it without javascript
 .params-wrap {
   display: table;
 }
 
 .param-name {
   display: table-cell;
-  padding: 0 5px;
-  font-weight: bold;
+  vertical-align: top;
 }
 
 .param-info {
   display: table-cell;
-  width: 100%;
-  padding: 0 5px;
 }
 
 .param {
   display: table-row;
 }
 
-.param-required {
-  color: red;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.param-description {
-  padding: 0.5em 0;
-  border-bottom: 1px solid #999;
-}
-
-.param-type {
-  text-transform: capitalize;
-  color: #999;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.param-name {
-  border-left: 1px solid $tree-lines-color;
-  white-space: nowrap;
-  position: relative;
-}
-/* tree */
-.param-name > span:before {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: $tree-lines-color;
-  margin: 0 5px;
-  top: -1px;
-  position: relative;
-}
-
-.param-name > span:after {
-  content: "";
-  position: absolute;
-  border-top: 1px solid $tree-lines-color;
-  width: 10px;
-  left: 0;
-  top: 10px;
-}
-
 .param:first-of-type .param-name:before {
   content: "";
   display: block;
   position: absolute;
-  left: -2px;
-  width: 2px;
-  background-color: white;
-  height: 10px;
+  left: -$lines-width;
+  top: 0;
+  border-left: $line-border-erase;
+  height: ($param-name-height/2) + $cell-padding;
 }
 
 .param:last-of-type .param-name:after {
   content: "";
   display: block;
   position: absolute;
-  left: -2px;
-  width: 2px;
-  top: 11px;
+  left: -$lines-width;
+  border-left: $line-border-erase;
+  top: ($param-name-height/2) + $cell-padding + $lines-width;
   background-color: white;
   bottom: 0;
 }
