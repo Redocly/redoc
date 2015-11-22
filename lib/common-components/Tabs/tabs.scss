@@ -1,3 +1,5 @@
+@import '../../common/styles/variables';
+
 ul {
   display: block;
   margin: 0;
@@ -5,16 +7,51 @@ ul {
 }
 
 li {
+  font-size: 13px;
   list-style: none;
-  margin: 0;
+  margin: 2px 0;
+  padding: 2px 5px;
   display: inline-block;
-  padding: 5px 15px;
-  background-color: #262673;
-  border-left: 1px solid #1C1C50;
-  border-bottom: 2px solid transparent;
   cursor: pointer;
+  color: #8A9094;
+  line-height: 1.25;
+  color: $sample-panel-headers-color;
 }
 
 li.active {
-  border-bottom: 2px solid blue;
+  background-color: white;
+  color: #666;
+}
+
+.tab-success, .tab-error, .tab-redirect, .tab-info {
+  &:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+  }
+
+
+}
+
+.tab-success:before {
+  box-shadow: 0 0 3px 0 #00aa11;
+  background-color: #00aa11;
+}
+
+.tab-error:before {
+  box-shadow: 0 0 3px 0 #E53935;
+  background-color: #E53935;
+}
+
+.tab-redirect:before {
+  box-shadow: 0 0 3px 0 #F88F00;
+  background-color: #F88F00;
+}
+
+.tab-info:before {
+  box-shadow: 0 0 3px 0 #66C2FF;
+  background-color: #66C2FF;
 }

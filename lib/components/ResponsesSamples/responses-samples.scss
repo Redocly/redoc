@@ -1,7 +1,16 @@
+@import '../../common/styles/variables';
+
 tab, tabs {
   display: block;
 }
 
 schema-sample {
   display: block;
+}
+
+header {
+  font-size: 16px;
+  margin: 5px 0;
+  color: $sample-panel-headers-color;
+  text-transform: uppercase;
 }

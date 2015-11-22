@@ -1,6 +1,7 @@
-<small *ng-if="!data.responses.length"> No samples </small>
+<header *ng-if="data.responses.length"> Responses samples </header>
 <tabs *ng-if="data.responses.length">
-  <tab *ng-for="#response of data.responses" [tab-title]="response.code">
+  <tab *ng-for="#response of data.responses" tab-title="{{response.code}} {{response.description}}"
+    [tab-status]="response.type">
     <schema-sample [pointer]="response.pointer"><schema-sample>
   </tab>
 </tabs>
