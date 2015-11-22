@@ -1,35 +1,37 @@
+@import '../../common/styles/variables';
+
 responses-list, params-list {
   display: block;
 }
 
-h2 {
+.method-header {
   font-size: 25px;
   font-weight: 200;
-  color: #253137;
+  color: $method-headers-color;
 }
 
-h3 {
+.method-endpoint {
   margin: 0;
   font-weight: 200;
   font-size: 0;
 }
 
-h3 > span {
+.method-endpoint > span {
   padding-top: 3px;
   padding-bottom: 3px;
   vertical-align: middle;
   font-size: 14px;
 }
 
-span.api-url {
+.api-url {
   color: #999;
   margin-left: 10px;
 }
 
-span.path {
+.path {
   font-family: monospace;
   font-weight: bold;
-  color: #00329F;
+  color: $headers-color;
 }
 
 .method-tags {
@@ -44,7 +46,7 @@ span.path {
   text-decoration: none;
 }
 
-.method-tags a:before{
+.method-tags a:before {
   content: '#';
   margin-right: -0.4em;
 }
@@ -53,19 +55,19 @@ span.path {
   padding: 0;
 }
 
-.content, .samples {
+.method-content, .method-samples {
   display: block;
   box-sizing: border-box;
   float: left;
 }
 
-.content {
-  width: 60%;
+.method-content {
+  width: 100% - $samples-panel-width;
   padding: 0 20px;
 }
 
-.samples {
-  color: white;
+.method-samples {
+  color: $sample-panel-color;
   width: 40%;
   padding: 10px 20px;
 }
@@ -74,15 +76,15 @@ responses-samples {
   display: block;
 }
 
-.samples header {
-  font-size: 20px;
+.method-samples header {
+  font-size: 16px;
   margin: 5px 0;
+  color: $sample-panel-headers-color;
+  text-transform: uppercase;
 }
 
-.samples schema-sample {
+.method-samples schema-sample {
   display: block;
-  padding: 5px;
-  background-color: rgb(18, 20, 39);
 }
 
 .method:after {

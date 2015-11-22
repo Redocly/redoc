@@ -1,3 +1,5 @@
+@import '../../common/styles/variables';
+
 side-menu {
   display: block;
   box-sizing: border-box;
@@ -10,13 +12,13 @@ api-info, side-menu {
 
 side-menu {
   position: fixed;
-  width: 260px;
+  width: $side-menu-width;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;;
-  background-color: #f2f2f2;
+  background-color: $side-menu-bg-color;
 }
 
 .api-content {
-  margin-left: 260px;
+  margin-left: $side-menu-width;
 }

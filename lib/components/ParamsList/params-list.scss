@@ -1,4 +1,6 @@
-h2 {
+@import '../../common/styles/variables';
+
+.param-list-header {
   border-bottom: 1px solid #999;
   font-size: 18px;
   padding: 0.2em 0;
@@ -45,7 +47,7 @@ h2 {
 }
 
 .param-name {
-  border-left: 1px solid #7D97CE;
+  border-left: 1px solid $tree-lines-color;
   white-space: nowrap;
   position: relative;
 }
@@ -55,7 +57,7 @@ h2 {
   display: inline-block;
   width: 8px;
   height: 8px;
-  background-color: #7D97CE;
+  background-color: $tree-lines-color;
   margin: 0 5px;
   top: -1px;
   position: relative;
@@ -64,7 +66,7 @@ h2 {
 .param-name > span:after {
   content: "";
   position: absolute;
-  border-top: 1px solid #7D97CE;
+  border-top: 1px solid $tree-lines-color;
   width: 10px;
   left: 0;
   top: 10px;

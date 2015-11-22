@@ -1,3 +1,5 @@
+@import '../../common/styles/variables';
+
 method {
   padding-bottom: 100px;
   display: block;
@@ -16,7 +18,7 @@ method {
 }
 
 .tag-info h1 {
-  color: #00329F;
+  color: $headers-color;
   text-transform: capitalize;
   font-weight: bold;
 }
@@ -28,9 +30,9 @@ method {
 
 .methods:before {
   content: "";
-  background: #2C2E3E;
+  background: $samples-panel-bg-color;
   height: 100%;
-  width: 40%;
+  width: $samples-panel-width;
   top: 0;
   right: 0;
   position: absolute;

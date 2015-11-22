@@ -1,10 +1,4 @@
-h2 {
-  border-bottom: 1px solid #999;
-  font-size: 18px;
-  padding: 0.2em 0;
-  margin: 0.5em 0;
-  color: #253137;
-}
+@import '../../common/styles/variables';
 
 .param-schema {
   padding-left: 13px;
@@ -13,7 +7,7 @@ h2 {
 }
 
 .param-wrap {
-    position: relative;
+  position: relative;
 }
 
 .param-schema:before {
@@ -22,18 +16,16 @@ h2 {
   left: 14px;
   top: 10px;
   bottom: 0;
-  border-left: 1px solid #7D97CE;
+  border-left: 1px solid $tree-lines-color;
 }
 
 .param-name {
-  /*display: table-cell;*/
   padding: 0 5px;
   font-weight: bold;
   box-sizing: border-box;
 }
 
 .param-info {
-  /*display: table-cell;*/
   width: 100%;
   padding: 0 5px;
   box-sizing: border-box;
@@ -59,10 +51,11 @@ h2 {
   color: #999;
   font-size: 12px;
   line-height: 2;
+  font-weight: bold;
 }
 
 .param-name {
-  border-left: 1px solid #7D97CE;
+  border-left: 1px solid $tree-lines-color;
   white-space: nowrap;
   position: relative;
 }
@@ -72,7 +65,7 @@ h2 {
   display: inline-block;
   width: 8px;
   height: 8px;
-  background-color: #7D97CE;
+  background-color: $tree-lines-color;
   margin: 0 5px;
   top: -1px;
   position: relative;
@@ -81,7 +74,7 @@ h2 {
 .param-name > span:after {
   content: "";
   position: absolute;
-  border-top: 1px solid #7D97CE;
+  border-top: 1px solid $tree-lines-color;
   width: 10px;
   left: 0;
   top: 10px;

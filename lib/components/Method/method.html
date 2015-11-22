@@ -1,7 +1,7 @@
 <div class="method">
-  <div class="content">
-    <h2>{{data.methodInfo.summary}}</h2>
-    <h3>
+  <div class="method-content">
+    <h2 class="method-header">{{data.methodInfo.summary}}</h2>
+    <h3 class="method-endpoint">
       <span class="http-method" [ng-class]="data.method">{{data.method}}</span>
       <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>
     </h3>
@@ -16,7 +16,7 @@
     <br>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
   </div>
-  <div class="samples">
+  <div class="method-samples">
     <div *ng-if="data.bodyParam">
       <header> Body sample </header>
       <schema-sample pointer="{{data.bodyParam._pointer}}/schema"> </schema-sample>

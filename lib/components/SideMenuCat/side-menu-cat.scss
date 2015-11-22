@@ -1,4 +1,4 @@
-label {
+.menu-item {
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
@@ -6,23 +6,23 @@ label {
   text-transform: capitalize;
 }
 
-ul {
+.menu-subitems {
   padding-left: 20px;
   margin: 0;
   height: 0;
   overflow: hidden;
 }
 
-ul.active {
+.menu-subitems.active {
   height: auto;
 }
 
-li {
+.menu-subitems li {
   list-style: none inside none;
   padding: 5px 0;
   cursor: pointer;
 }
 
-label.active, li.active {
+.menu-item.active, .menu-subitems li.active {
   color: #1976D3;
 }
