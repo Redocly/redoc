@@ -3,7 +3,7 @@
     {{title}}
     <span class="zippy-indicator"> {{ visible ? '&blacktriangledown;' : '&blacktriangleright;' }} </span>
   </div>
-  <div class="zippy-content" [hidden]="!visible">
+  <div class="zippy-content" [ng-class]="{'zippy-hidden': !visible}">
     <ng-content></ng-content>
   </div>
 </div>

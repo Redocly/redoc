@@ -47,6 +47,10 @@ span.zippy-indicator {
 }
 
 .zippy-empty {
+  .zippy-title {
+    cursor: default;
+  }
+
   .zippy-indicator {
     display: none;
   }
@@ -54,4 +58,10 @@ span.zippy-indicator {
   .zippy-content {
     display: none;
   }
+}
+
+.zippy-hidden {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
 }
