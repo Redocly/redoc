@@ -11,9 +11,7 @@
     <p *ng-if="data.methodInfo.description" class="method-description"
       inner-html="{{data.methodInfo.description | marked}}">
     </p>
-    <br>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
-    <br>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
   </div>
   <div class="method-samples">
