@@ -1,0 +1,57 @@
+$zippy-success-bg-color: #E1F5E3;
+$zippy-success-color: #09AC1C;
+
+$zippy-error-bg-color: #FBE7E7;
+$zippy-error-color: #E54541;
+
+$zippy-info-bg-color: #E1EFF5;
+$zippy-info-color: #096DAC;
+
+$zippy-redirect-bg-color: #F5F0E1;
+$zippy-redirect-color: #AC7C09;
+
+.zippy-title {
+  padding: 10px;
+  margin: 2px 0;
+  background-color: #f2f2f2;
+  cursor: pointer;
+
+  .zippy-success > & {
+    color: $zippy-success-color;
+    background-color: $zippy-success-bg-color;
+  }
+
+  .zippy-error > & {
+    color: $zippy-error-color;
+    background-color: $zippy-error-bg-color;
+  }
+
+  .zippy-redirect > & {
+    color: $zippy-redirect-color;
+    background-color: $zippy-redirect-bg-color;
+  }
+
+  .zippy-info > & {
+    color: $zippy-info-color;
+    background-color: $zippy-info-bg-color;
+  }
+}
+
+span.zippy-indicator {
+  float: right;
+  font-size: 1.2em;
+}
+
+.zippy-content {
+  padding: 15px 0;
+}
+
+.zippy-empty {
+  .zippy-indicator {
+    display: none;
+  }
+
+  .zippy-content {
+    display: none;
+  }
+}

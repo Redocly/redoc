@@ -1,0 +1,9 @@
+<div class="zippy zippy-{{type}}" [ng-class]="{'zippy-empty': empty}">
+  <div class="zippy-title" (click)="toggle()">
+    {{title}}
+    <span class="zippy-indicator"> {{ visible ? '&blacktriangledown;' : '&blacktriangleright;' }} </span>
+  </div>
+  <div class="zippy-content" [hidden]="!visible">
+    <ng-content></ng-content>
+  </div>
+</div>
