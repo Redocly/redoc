@@ -4,3 +4,22 @@
   margin: 0.5em 0;
   color: #253137;
 }
+
+.header-name {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.header-type {
+  display: inline-block;
+  font-weight: bold;
+  color: #999;
+}
+
+.response-headers header {
+  font-size: 18px;
+}
+
+.header {
+  margin-bottom: 10px;
+}

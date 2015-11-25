@@ -1,6 +1,16 @@
 <h2 class="responses-list-header" *ng-if="data.responses.length"> Responses </h2>
 <zippy *ng-for="#response of data.responses" title="{{response.code}} {{response.description}}"
   [type]="response.type" [empty]="!response.schema">
+  <div *ng-if="response.headers" class="response-headers">
+    <header>
+      Headers
+    </header>
+    <div class="header" *ng-for="#header of response.headers">
+      <div class="header-name"> {{header.name}} </div>
+      <div class="header-type"> {{header.type}} </div>
+      <div class="header-description" inner-html="{{header.description | marked}}"> </div>
+    </div>
+  </div>
   <json-schema *ng-if="response.schema" class="schema type" pointer="{{response.pointer}}/schema">
   </json-schema>
 </zippy>
