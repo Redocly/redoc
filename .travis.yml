@@ -9,6 +9,7 @@ env:
 cache:
   directories:
   - node_modules
+  - jspm_packages
 before_install:
 - travis_retry npm install jspm
 - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
