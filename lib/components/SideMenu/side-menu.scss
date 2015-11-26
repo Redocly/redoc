@@ -1,12 +1,10 @@
+@import '../../common/styles/variables';
+
 .menu-header {
   text-transform: uppercase;
-  color: #1976D3;
+  color: $headers-color;
+  padding: 0 $side-menu-item-hpadding;
 }
-
-$side-menu-item-color: #384248;
-$side-menu-bg: #FAFAFA;
-$side-menu-even-bg: #F0F0F0;
-$side-menu-active-bg-color: #E6E6E6;
 
 .menu-cat-header {
   font-weight: bold;
@@ -14,12 +12,19 @@ $side-menu-active-bg-color: #E6E6E6;
   cursor: pointer;
   color: $side-menu-item-color;
   text-transform: uppercase;
-  background-color: $side-menu-bg;
+  background-color: $side-menu-bg-color;
+
+  display: block;
+  padding: $side-menu-item-vpadding $side-menu-item-hpadding;
+}
+
+.menu-cat:nth-of-type(even) .menu-cat-header {
+  background-color: $side-menu-even-bg-color;
 }
 
 .menu-subitems {
-  padding-left: 20px;
   margin: 0;
+  padding: 0;
   height: 0;
   overflow: hidden;
 }
@@ -30,10 +35,31 @@ $side-menu-active-bg-color: #E6E6E6;
 
 .menu-subitems li {
   list-style: none inside none;
-  padding: 5px 0;
   cursor: pointer;
+
+  padding: $side-menu-item-vpadding 0;
+  padding-left: $side-menu-item-hpadding*2;
+  background-color: $side-menu-bg-color;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.menu-item.active, .menu-subitems li.active {
-  color: #1976D3;
+.menu-subitems li:nth-of-type(even) {
+  background-color: $side-menu-even-bg-color;
+}
+
+// invert item colors for odd categories
+.menu-cat:nth-of-type(odd) {
+  .menu-subitems li {
+    background-color: $side-menu-even-bg-color;
+  }
+
+  .menu-subitems li:nth-of-type(even) {
+    background-color: $side-menu-bg-color;
+  }
+}
+
+.menu-cat-header.active, .menu-subitems li.active {
+  background-color: $side-menu-active-bg-color !important;
+  font-weight: bold;
 }
