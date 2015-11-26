@@ -11,6 +11,9 @@
       <div class="header-description" inner-html="{{header.description | marked}}"> </div>
     </div>
   </div>
+  <header>
+    Response schema
+  </header>
   <json-schema *ng-if="response.schema" class="schema type" pointer="{{response.pointer}}/schema">
   </json-schema>
 </zippy>
