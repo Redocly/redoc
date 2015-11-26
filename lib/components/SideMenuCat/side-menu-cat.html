@@ -1,8 +1,0 @@
-<label class="menu-item" (click)="expandCat()" [ng-class]="{active: data.active}"> {{data.name}}</label>
-<ul class="menu-subitems" [ng-class]="{active: data.active}">
-  <li *ng-for="var method of data.methods; var idx = index"
-    [ng-class]="{active: method.active}"
-    (click)="activateMethod(idx)">
-    {{method.summary}}
-  </li>
-</ul>

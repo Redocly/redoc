@@ -2,3 +2,38 @@
   text-transform: uppercase;
   color: #1976D3;
 }
+
+$side-menu-item-color: #384248;
+$side-menu-bg: #FAFAFA;
+$side-menu-even-bg: #F0F0F0;
+$side-menu-active-bg-color: #E6E6E6;
+
+.menu-cat-header {
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  color: $side-menu-item-color;
+  text-transform: uppercase;
+  background-color: $side-menu-bg;
+}
+
+.menu-subitems {
+  padding-left: 20px;
+  margin: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.menu-subitems.active {
+  height: auto;
+}
+
+.menu-subitems li {
+  list-style: none inside none;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.menu-item.active, .menu-subitems li.active {
+  color: #1976D3;
+}

@@ -1,6 +1,13 @@
 <h2 class="menu-header"> Api reference </h2>
-<div *ng-for="var cat of data.menu; var idx = index">
-  <side-menu-cat [cat-details]="cat" (expand)="activateAndScroll(idx, -1)"
-  (activate)="activateAndScroll(idx, $event.methodIdx)">
-  </side-menu-cat>
+<div *ng-for="var cat of data.menu; #idx = index">
+
+  <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ng-class]="{active: cat.active}"> {{cat.name}}</label>
+  <ul class="menu-subitems" [ng-class]="{active: cat.active}">
+    <li *ng-for="var method of cat.methods; var methIdx = index"
+      [ng-class]="{active: method.active}"
+      (click)="activateAndScroll(idx, methIdx)">
+      {{method.summary}}
+    </li>
+  </ul>
+
 </div>
