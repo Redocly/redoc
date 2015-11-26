@@ -30,7 +30,7 @@ responses-list, params-list {
   vertical-align: middle;
 }
 
-.method-link:hover:before {
+.method-header:hover .method-link:before, .method-link:hover:before {
   visibility: visible;
 }
 
