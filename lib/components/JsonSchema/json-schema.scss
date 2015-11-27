@@ -122,3 +122,44 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 .param-schema .param-wrap:first-of-type .param-name:before {
   display: none !important;
 }
+
+
+/* styles for array-schema for array */
+$array-marker-font-sz: 12px;
+$array-marker-line-height: 1.5;
+.params-wrap.params-array:before, .params-wrap.params-array:after {
+  display: block;
+  font-weight: bold;
+  color: #999;
+  font-size: $array-marker-font-sz;
+  line-height: $array-marker-line-height;
+}
+
+.params-wrap.params-array:after {
+  content: "]";
+}
+
+.params-wrap.params-array:before {
+  content: "Array [";
+}
+
+.params-wrap.params-array {
+  padding-left: $bullet-margin;
+}
+
+.param-schema.param-array:before {
+  bottom: ($array-marker-font-sz * $array-marker-line-height) / 2;
+  width: $bullet-margin;
+  border-left-style: dashed;
+  border-bottom: $lines-width dashed $tree-lines-color;
+}
+
+.params-wrap.params-array > .param-wrap:first-of-type > .param > .param-name:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -$lines-width;
+  top: 0;
+  border-left: $line-border-erase;
+  height: ($param-name-height/2) + $cell-padding;
+}
