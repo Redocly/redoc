@@ -52,6 +52,7 @@ System.config({
     "json-schema-view-js": "npm:json-schema-view-js@0.2.0",
     "marked": "npm:marked@0.3.5",
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
+    "scrollparent": "npm:scrollparent@0.1.0",
     "swagger-parser": "npm:swagger-parser@3.3.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.0",
     "zone.js": "npm:zone.js@0.5.8",
