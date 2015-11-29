@@ -1,5 +1,5 @@
 <small *ng-if="errorMessage">{{errorMessage}}</small>
-<div class="params-wrap" [ng-class]="{'params-array': _isArray}">
+<div class="params-wrap" [ng-class]="{'params-array': isArray}">
   <div *ng-for="#prop of data.properties" class="param-wrap">
     <div class="param">
       <div class="param-name">
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="param-schema" [ng-class]="{'param-array': prop._isArray}" *ng-if="prop._pointer">
-      <json-schema pointer="{{prop._pointer}}">
+      <json-schema pointer="{{prop._pointer}}" [is-array]='prop._isArray'>
       </json-schema>
     </div>
   </div>
