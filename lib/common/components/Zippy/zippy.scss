@@ -13,6 +13,7 @@ $zippy-redirect-color: #AC7C09;
 .zippy-title {
   padding: 10px;
   margin: 2px 0;
+  line-height: 1.5em;
   background-color: #f2f2f2;
   cursor: pointer;
 
@@ -38,8 +39,9 @@ $zippy-redirect-color: #AC7C09;
 }
 
 span.zippy-indicator {
-  float: right;
-  font-size: 1.2em;
+  float: left;
+  font-size: 1.5em;
+  margin-right: 0.1em;
 }
 
 .zippy-content {
