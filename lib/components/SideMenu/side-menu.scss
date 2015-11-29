@@ -37,7 +37,7 @@
   list-style: none inside none;
   cursor: pointer;
 
-  padding: $side-menu-item-vpadding 0;
+  padding: $side-menu-item-vpadding $side-menu-item-hpadding;
   padding-left: $side-menu-item-hpadding*2;
   background-color: $side-menu-bg-color;
   overflow: hidden;
