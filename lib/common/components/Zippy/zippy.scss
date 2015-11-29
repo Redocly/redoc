@@ -39,9 +39,10 @@ $zippy-redirect-color: #AC7C09;
 }
 
 span.zippy-indicator {
-  float: left;
   font-size: 1.5em;
-  margin-right: 0.1em;
+  line-height: 1;
+  margin-right: 0.2em;
+  vertical-align: text-bottom;
 }
 
 .zippy-content {
