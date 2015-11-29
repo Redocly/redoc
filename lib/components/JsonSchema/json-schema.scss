@@ -72,6 +72,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   font-weight: bold;
 }
 
+.param-type-trivial {
+  margin: 10px 10px 0;
+  display: inline-block;  
+}
+
 /* tree */
 
 // Bullet
