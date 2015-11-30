@@ -17,7 +17,7 @@
   "basePath": "/v2",
   "tags": [{
     "name": "Pagination",
-    "x-secondaryTag": true,
+    "x-traitTag": true,
     "description": "Sometimes you just can't get enough. For this reason, we've provided a convenient way to access more data in any request for sequential data. Simply call the url in the next_url parameter and we'll respond with the next set of data.\n```json\n{\n    ...\n    \"pagination\": {\n        \"next_url\": \"https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296\",\n        \"next_max_id\": \"13872296\"\n    }\n}\n```\n On views where pagination is present, we also support the `count` parameter. Simply set this to the number of items you'd like to receive. Note that the default values should be fine for most applications - but if you decide to increase this number there is a maximum value defined on each endpoint.",
     "externalDocs": {
       "description": "Find out more",
@@ -25,7 +25,7 @@
     }
   },{
     "name": "JSONP",
-    "x-secondaryTag": true,
+    "x-traitTag": true,
     "description": "If you're writing an AJAX application, and you'd like to wrap our response with a callback, all you have to do is specify a callback parameter with any API call:\n```\n https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction\n```\nWould respond with:\n```js\ncallbackFunction({\n    ...\n});\n```",
     "externalDocs": {
       "description": "Find out more",
