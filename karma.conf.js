@@ -23,7 +23,7 @@ module.exports = function (config) {
         },
         reporters: ['mocha'],
 
-        browsers: ['PhantomJS2'],
+        browsers: ['PhantomJS'],
 
         browserNoActivityTimeout: 60000
     });
