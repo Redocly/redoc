@@ -14,29 +14,43 @@ describe("Schema manager", () => {
     (new SchemaManager()).should.be.equal(schemaMgr);
   });
 
-  describe("load method", ()=> {
-    let req = null;
-    let xhr = null;
-    before(function () {
-      // fake XHR
-      xhr = sinon.useFakeXMLHttpRequest();
+  it("load should return a promise", ()=> {
+    schemaMgr.load('/tests/schemas/extended-petstore.json').should.be.instanceof(Promise);
+  });
+
+  it("load should resolve promise for valid url", (done)=> {
+    schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
+      done();
+    }, (err) => {
+      throw new Error("Error handler should not be called")
     });
+  });
 
-
-    it("should return a promise", ()=> {
-      schemaMgr.load('http://test').should.be.instanceof(Promise);
-    });
-
-    it("should reject promise for non-existing schema", (done)=> {
-      schemaMgr.load('http://test').then(() => {
-        throw new Error("Should not be called")
-      }, (err) => {
+  describe("Schema manager with loaded schema", ()=> {
+    before(function (done) {
+      schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
         done();
+      }, (err) => {
+        throw new Error("Error handler should not be called")
       });
     });
 
-    after(function () {
-      xhr.restore();
+
+    it("should contain non-empty schema", ()=> {
+      schemaMgr.schema.should.be.an("object");
+      schemaMgr.schema.should.be.not.empty;
+    });
+
+    it("should correctly init api url", ()=> {
+      schemaMgr.apiUrl.should.be.equal("http://petstore.swagger.io/v2");
+    });
+
+    it("byPointer should return correct schema part", ()=> {
+      var part = schemaMgr.byPointer('/tags/3');
+      part.should.be.deep.equal({
+        name: "store",
+        description: "Access to Petstore orders"
+      });
     });
   })
 })
