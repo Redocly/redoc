@@ -1,3 +1,5 @@
+'use strict';
+
 import SchemaManager from 'lib/utils/SchemaManager';
 describe("Schema manager", () => {
   let schemaMgr;
@@ -45,12 +47,80 @@ describe("Schema manager", () => {
       schemaMgr.apiUrl.should.be.equal("http://petstore.swagger.io/v2");
     });
 
-    it("byPointer should return correct schema part", ()=> {
-      var part = schemaMgr.byPointer('/tags/3');
-      part.should.be.deep.equal({
-        name: "store",
-        description: "Access to Petstore orders"
+    describe("byPointer method", () => {
+      it("should return correct schema part", ()=> {
+        let part = schemaMgr.byPointer('/tags/3');
+        part.should.be.deep.equal(schemaMgr.schema.tags[3]);
+        part.should.be.equal(schemaMgr.schema.tags[3]);
+      });
+
+      it("should return null for incorrect pointer", ()=> {
+        let part = schemaMgr.byPointer('/incorrect/pointer');
+        should.not.exist(part);
       });
     });
-  })
-})
+
+    describe("getTagsMap method", () => {
+      it("should return correct tags map", () => {
+        let tagsMap = schemaMgr.getTagsMap();
+        let i = 0;
+        let origTags = schemaMgr.schema.tags;
+
+        origTags.length.should.be.equal(Object.keys(tagsMap).length);
+        for (let tagName of Object.keys(tagsMap)) {
+          tagName.should.be.equal(origTags[i].name);
+          tagsMap[tagName].description.should.be.equal(origTags[i].description);
+          if (origTags[i]['x-traitTag']) {
+            tagsMap[tagName]['x-traitTag'].should.be.equal(origTags[i]['x-traitTag']);
+          }
+          i++;
+        }
+      });
+    });
+
+    describe("buildMenuTree method", () => {
+      var menuTree;
+      let entries;
+
+      before(() => {
+        menuTree = schemaMgr.buildMenuTree();
+        entries = Array.from(menuTree.entries());
+      });
+
+      it("should return instance of Map", () => {
+        menuTree.should.be.instanceof(Map);
+      });
+
+      it("should return Map with correct number of entries", () => {
+        entries.length.should.be.at.least(schemaMgr.schema.tags.length);
+      });
+
+      it("methods for tag should contain valid pointer and summary", () => {
+        for (let entr of entries) {
+          let [tag, info] = entr;
+          info.should.be.an("object");
+          info.methods.should.be.an("array");
+          for (let methodInfo of info.methods) {
+            methodInfo.should.include.keys('pointer', 'summary');
+            let methSchema = schemaMgr.byPointer(methodInfo.pointer);
+            should.exist(methSchema);
+            if (methSchema.summary) {
+              methSchema.summary.should.be.equal(methodInfo.summary)
+            }
+          }
+        }
+      });
+
+      it("should map x-traitTag to empty methods list", () => {
+        for (let entr of entries) {
+          let [tag, info] = entr;
+          info.should.be.an("object");
+          if (info['x-traitTag']) {
+            info.methods.should.be.empty;
+          }
+        }
+      });
+
+    });
+  });
+});
