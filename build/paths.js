@@ -6,5 +6,6 @@ module.exports = {
   outputName: 'redoc.full.js',
   output: 'dist/',
   tmp: '.tmp/',
-  demo: 'demo/**/*'
+  demo: 'demo/**/*',
+  tests: '{lib,tests}/**/*.spec.js'
 };
