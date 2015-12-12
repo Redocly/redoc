@@ -14,7 +14,7 @@
     }
   },
   "host": "petstore.swagger.io",
-  "basePath": "/v2",
+  "basePath": "/v2/",
   "tags": [{
     "name": "Pagination",
     "x-traitTag": true,
