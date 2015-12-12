@@ -1,0 +1,58 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test schema"
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2/",
+  "definitions": {
+    "Simple": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      }
+    },
+    "Nested": {
+      "type": "object",
+      "title": "NesteTitle",
+      "properties": {
+        "subschema": {
+          "$ref": "#/definitions/Simple"
+        }
+      }
+    },
+    "ArrayOfSimple": {
+      "type": "array",
+      "items": {
+        "schema": {
+          "$ref": "#/definitions/Simple"
+        }
+      }
+    }
+  },
+  "paths": {
+    "test1": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/Simple"
+          }
+        ]
+      }
+    },
+    "test2": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/Nested"
+          }
+        ]
+      }
+    }
+  }
+}
