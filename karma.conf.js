@@ -2,6 +2,11 @@ module.exports = function (config) {
     config.set({
         frameworks: ['phantomjs-shim', 'jspm', 'mocha', 'chai', 'sinon'],
 
+        client: {
+          chai: {
+            truncateThreshold: 0
+          }
+        },
         //load angular dependencies and browser polyfills
         files: [
           'node_modules/zone.js/dist/zone-microtask.js',

@@ -67,7 +67,7 @@
     "jshint-stylish": "^2.0.1",
     "jspm": "^0.16.11",
     "karma": "^0.13.15",
-    "karma-chai": "^0.1.0",
+    "karma-chai": "github:randing89/karma-chai",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jspm": "^2.0.2",
     "karma-mocha": "^0.2.1",
