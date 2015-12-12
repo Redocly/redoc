@@ -53,6 +53,16 @@
           }
         ]
       }
+    },
+    "test3": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/ArrayOfSimple"
+          }
+        ]
+      }
     }
   }
 }
