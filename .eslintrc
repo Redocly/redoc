@@ -3,6 +3,13 @@
   "extends": "eslint:recommended",
   "env": {
     "browser": true,
+    "mocha": true
+  },
+  // currently eslint doesn't support extension-typed configs
+  "globals": {
+    "should": true,
+    "expect": true,
+    "sinon": true
   },
   "rules": {
     "quotes": [2, "single"],
