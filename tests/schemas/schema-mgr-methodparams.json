@@ -1,0 +1,67 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test schema"
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2/",
+  "parameters": {
+    "extparam": {
+      "name": "extParam",
+      "in": "query",
+      "type": "integer"
+    }
+  },
+  "paths": {
+    "test1": {
+      "parameters": [
+        {
+          "name": "pathParam",
+          "in": "path",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "name": "methodParam",
+            "in": "path",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "test2": {
+      "parameters": [
+        { "$ref": "#/parameters/extparam" }
+      ],
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "name": "methodParam",
+            "in": "path",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "test3": {
+      "parameters": [
+        {
+          "name": "pathParam",
+          "in": "path",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          { "$ref": "#/parameters/extparam" }
+        ]
+      }
+    }
+  }
+}
