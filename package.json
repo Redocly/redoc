@@ -73,6 +73,7 @@
     "karma-chai": "github:randing89/karma-chai",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "github:douglasduteil/karma-coverage#next",
+    "karma-coveralls": "^1.1.2",
     "karma-jspm": "^2.0.2",
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.3",
