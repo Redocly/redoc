@@ -1,7 +1,37 @@
 module.exports = function (config) {
+    var travis = process.env.TRAVIS;
     config.set({
         frameworks: ['phantomjs-shim', 'jspm', 'mocha', 'chai', 'sinon'],
+        preprocessors: {
+          'lib/**/!(*spec).js': ['babel', 'coverage']
+        },
+        babelPreprocessor: {
+            options: {
+                sourceMap: 'inline',
+                "optional": [
+                  "runtime",
+                  "optimisation.modules.system",
+                  "es7.decorators",
+                  "es7.classProperties"
+                ]
+            },
+            sourceFileName: function(file) {
+              return file.originalPath;
+            }
+        },
 
+        coverageReporter: {
+            instrumenters: { isparta : require('isparta') },
+            instrumenter: {
+                'lib/**/!(*spec).js': 'isparta'
+            },
+            dir: 'coverage/',
+            reporters: [
+                {type: 'html'},
+                {type: 'text-summary'},
+                {type: 'lcov'}
+            ]
+        },
         client: {
           chai: {
             truncateThreshold: 0
@@ -27,7 +57,7 @@ module.exports = function (config) {
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
         },
-        reporters: ['mocha'],
+        reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
 
         browsers: ['PhantomJS'],
 

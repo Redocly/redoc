@@ -26,3 +26,4 @@ jspm_packages
 /dist
 /demo/build
 .tmp
+/coverage
