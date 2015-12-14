@@ -14,10 +14,19 @@ describe('Schema manager', () => {
 
   it('Should be a singleton', ()=> {
     (new SchemaManager()).should.be.equal(schemaMgr);
+    SchemaManager.instance().should.be.equal(schemaMgr);
   });
 
   it('load should return a promise', ()=> {
     schemaMgr.load('/tests/schemas/extended-petstore.json').should.be.instanceof(Promise);
+  });
+
+  it('load should reject promise for invalid url', (done)=> {
+    schemaMgr.load('/nonexisting/schema.json').then(() => {
+      throw new Error('Succees handler should not be called');
+    }, () => {
+      done();
+    });
   });
 
   it('load should resolve promise for valid url', (done)=> {
@@ -78,6 +87,12 @@ describe('Schema manager', () => {
         tag2: {description: 'info2', 'x-traitTag': true}
       };
       tagsMap.should.be.deep.equal(expectedResult);
+    });
+
+    it('should return empty array for non-specified tags', () => {
+      delete schemaMgr._schema.tags;
+      let tagsMap = schemaMgr.getTagsMap();
+      tagsMap.should.be.empty;
     });
   });
 
@@ -169,7 +184,7 @@ describe('Schema manager', () => {
       });
     });
 
-    it('should merge path and method parameters', () => {
+    it('should propagate path parameters', () => {
       let params = schemaMgr.getMethodParams('/paths/test1/get');
       params.length.should.be.equal(2);
       params[0].name.should.be.equal('methodParam');
@@ -182,6 +197,12 @@ describe('Schema manager', () => {
       params[1]._pointer.should.be.equal('/paths/test1/parameters/0');
     });
 
+    it('should accept pointer directly to parameters', () => {
+      let params = schemaMgr.getMethodParams('/paths/test1/get/parameters', true);
+      expect(params).to.exist;
+      params.length.should.be.equal(2);
+    });
+
     it('should resolve path params from Parameters Definitions Object', () => {
       let params = schemaMgr.getMethodParams('/paths/test2/get', true);
       params.length.should.be.equal(2);
@@ -192,10 +213,14 @@ describe('Schema manager', () => {
 
     it('should resolve method params from Parameters Definitions Object', () => {
       let params = schemaMgr.getMethodParams('/paths/test3/get', true);
-      params.length.should.be.equal(2);
+      params.length.should.be.equal(1);
       params[0].name.should.be.equal('extParam');
       params[0]._pointer.should.be.equal('#/parameters/extparam');
-      params[1].name.should.be.equal('pathParam');
+    });
+
+    it('should throw for parameters other than array', () => {
+      let func = () => schemaMgr.getMethodParams('/paths/test4/get', true);
+      func.should.throw();
     });
   });
 
