@@ -1,0 +1,90 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test schema"
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2/",
+  "definitions": {
+    "Simple": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      }
+    },
+    "SimpleAllOf": {
+      "allOf": [
+        {
+          "type": "object",
+          "required": ["prop1"],
+          "properties": {
+            "prop1": {
+              "type": "string"
+            },
+            "prop2": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["prop3"],
+          "properties": {
+            "prop3": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "AllOfWithRef": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Simple"
+        },
+        {
+          "type": "object",
+          "required": ["prop3"],
+          "properties": {
+            "prop3": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "BadAllOf1": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Simple"
+        },
+        {
+          "type": "string",
+        }
+      ]
+    },
+    "BadAllOf2": {
+      "properties": {},
+      "allOf": [
+        {
+          "$ref": "#/definitions/Simple"
+        },
+        {
+          "type": "object",
+          "required": ["prop3"],
+          "properties": {
+            "prop3": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "paths": {
+  }
+}
