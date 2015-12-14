@@ -1,7 +1,7 @@
-<header *ng-if="data.responses.length"> Responses samples </header>
-<tabs *ng-if="data.responses.length">
-  <tab *ng-for="#response of data.responses" tab-title="{{response.code}} {{response.description}}"
-    [tab-status]="response.type">
-    <schema-sample [pointer]="response.pointer"><schema-sample>
+<header *ngIf="data.responses.length"> Responses samples </header>
+<tabs *ngIf="data.responses.length">
+  <tab *ngFor="#response of data.responses" tabTitle="{{response.code}} {{response.description}}"
+    [tabStatus]="response.type">
+    <schema-sample [pointer]="response.pointer"></schema-sample>
   </tab>
 </tabs>

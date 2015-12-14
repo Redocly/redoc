@@ -1,23 +1,23 @@
-<h2 class="param-list-header" *ng-if="data.params.length"> Parameters </h2>
+<h2 class="param-list-header" *ngIf="data.params.length"> Parameters </h2>
 <div class="params-wrap">
-  <div *ng-for="#param of data.params" class="param">
+  <div *ngFor="#param of data.params" class="param">
       <div class="param-name">
         <span> {{param.name}} </span>
       </div>
       <div class="param-info">
         <div>
-          <span class="param-type" [ng-class]="param.type">{{param.type}}</span>
-          <span *ng-if="param.required" class="param-required">Required</span>
+          <span class="param-type" [ngClass]="param.type">{{param.type}}</span>
+          <span *ngIf="param.required" class="param-required">Required</span>
         </div>
-        <div class="param-description" inner-html="{{param.description | marked}}"></div>
+        <div class="param-description" innerHtml="{{param.description | marked}}"></div>
       </div>
   </div>
 </div>
 
-<div *ng-if="data.bodyParam">
-  <h2 class="param-list-header" *ng-if="data.bodyParam"> Request Body </h2>
+<div *ngIf="data.bodyParam">
+  <h2 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h2>
 
-  <div class="body-param-description" inner-html="{{data.bodyParam.description | marked}}"></div>
+  <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>
     <json-schema pointer="{{data.bodyParam.pointer}}/schema">
     </json-schema>

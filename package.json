@@ -23,7 +23,7 @@
     "configFile": "system.config.js",
     "dependencies": {
       "RomanGotsiy/json-schema-ref-parser": "github:RomanGotsiy/json-schema-ref-parser@master",
-      "angular2": "npm:angular2@^2.0.0-alpha.46",
+      "angular2": "npm:angular2@^2.0.0-alpha.53",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "json-formatter-js": "npm:json-formatter-js@^0.2.0",
       "json-pointer": "npm:json-pointer@^0.3.0",

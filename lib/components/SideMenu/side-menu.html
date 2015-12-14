@@ -1,10 +1,10 @@
 <h2 class="menu-header"> Api reference </h2>
-<div *ng-for="var cat of data.menu; #idx = index" class="menu-cat">
+<div *ngFor="var cat of data.menu; #idx = index" class="menu-cat">
 
-  <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ng-class]="{active: cat.active}"> {{cat.name}}</label>
-  <ul class="menu-subitems" [ng-class]="{active: cat.active}">
-    <li *ng-for="var method of cat.methods; var methIdx = index"
-      [ng-class]="{active: method.active}"
+  <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>
+  <ul class="menu-subitems" [ngClass]="{active: cat.active}">
+    <li *ngFor="var method of cat.methods; var methIdx = index"
+      [ngClass]="{active: method.active}"
       (click)="activateAndScroll(idx, methIdx)">
       {{method.summary}}
     </li>

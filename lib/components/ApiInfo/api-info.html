@@ -1,15 +1,15 @@
 <h1 class="api-info-header">{{data.title}} ({{data.version}})</h1>
-<p *ng-if="data.description" inner-html="{{data.description | marked}}"> </p>
+<p *ngIf="data.description" innerHtml="{{data.description | marked}}"> </p>
 <p>
   <!-- TODO: create separate components for contact and license ? -->
-  <span *ng-if="data.contact"> Contact:
-    <a *ng-if="data.contact.url" href="{{data.contact.url}}">
+  <span *ngIf="data.contact"> Contact:
+    <a *ngIf="data.contact.url" href="{{data.contact.url}}">
       {{data.contact.name || data.contact.url}}</a>
-    <a *ng-if="data.contact.email" href="mailto:{{data.contact.email}}">
+    <a *ngIf="data.contact.email" href="mailto:{{data.contact.email}}">
       {{data.contact.email}}</a>
   </span>
-  <span *ng-if="data.license"> License:
-    <a *ng-if="data.license.url" href="{{data.license.url}}"> {{data.license.name}} </a>
-    <span *ng-if="!data.license.url"> {{data.license.name}} </span>
+  <span *ngIf="data.license"> License:
+    <a *ngIf="data.license.url" href="{{data.license.url}}"> {{data.license.name}} </a>
+    <span *ngIf="!data.license.url"> {{data.license.name}} </span>
   </span>
 </p>

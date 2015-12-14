@@ -1,20 +1,20 @@
-<small *ng-if="errorMessage">{{errorMessage}}</small>
-<span *ng-if="isTrivial" class="param-type param-type-trivial" [ng-class]="type">{{_displayType}}</span>
-<div *ng-if="!isTrivial" class="params-wrap" [ng-class]="{'params-array': isArray}">
-  <div *ng-for="#prop of data.properties" class="param-wrap">
+<small *ngIf="errorMessage">{{errorMessage}}</small>
+<span *ngIf="isTrivial" class="param-type param-type-trivial" [ngClass]="type">{{_displayType}}</span>
+<div *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
+  <div *ngFor="#prop of data.properties" class="param-wrap">
     <div class="param">
       <div class="param-name">
         <span>{{prop._name}}</span>
       </div>
       <div class="param-info">
         <div>
-          <span class="param-type" [ng-class]="prop.type">{{prop._displayType}} {{prop._displayFormat}}</span>
-          <span *ng-if="prop.isRequired" class="param-required">Required</span>
+          <span class="param-type" [ngClass]="prop.type">{{prop._displayType}} {{prop._displayFormat}}</span>
+          <span *ngIf="prop.isRequired" class="param-required">Required</span>
         </div>
-        <div class="param-description" inner-html="{{prop.description | marked}}"></div>
+        <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
       </div>
     </div>
-    <div class="param-schema" [ng-class]="{'param-array': prop._isArray}" *ng-if="prop._pointer">
+    <div class="param-schema" [ngClass]="{'param-array': prop._isArray}" *ngIf="prop._pointer">
       <json-schema pointer="{{prop._pointer}}" [is-array]='prop._isArray'>
       </json-schema>
     </div>
