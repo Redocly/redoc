@@ -24,7 +24,11 @@ describe('KeysPipe and ValuesPipe', () => {
 
     it('should not support other objects', () => {
       (() => keysPipe.transform(45)).should.throw();
-      (() => keysPipe.transform(null)).should.throw();
+      (() => keysPipe.transform('45')).should.throw();
+    });
+
+    it('should not throw on blank input', () => {
+      (() => valuesPipe.transform()).should.not.throw();
     });
   });
 
@@ -36,7 +40,11 @@ describe('KeysPipe and ValuesPipe', () => {
 
     it('should not support other objects', () => {
       (() => valuesPipe.transform(45)).should.throw();
-      (() => valuesPipe.transform(null)).should.throw();
+      (() => valuesPipe.transform('45')).should.throw();
+    });
+
+    it('should not throw on blank input', () => {
+      (() => keysPipe.transform()).should.not.throw();
     });
   });
 });
@@ -52,7 +60,7 @@ describe('JsonPointerEscapePipe', () => {
     pipe = new JsonPointerEscapePipe();
   });
 
-  describe('KeysPipe transform', () => {
+  describe('JsonPointerEscapePipe transform', () => {
     it('should escpae pointer', () => {
       var val = pipe.transform(unescaped);
       val.should.be.equal(escaped);
@@ -61,6 +69,10 @@ describe('JsonPointerEscapePipe', () => {
     it('should not support other objects', () => {
       (() => pipe.transform(45)).should.throw();
       (() => pipe.transform({})).should.throw();
+    });
+
+    it('should not throw on blank input', () => {
+      (() => pipe.transform()).should.not.throw();
     });
   });
 });
@@ -76,7 +88,7 @@ describe('MarkedPipe', () => {
     pipe = new MarkedPipe();
   });
 
-  describe('KeysPipe transform', () => {
+  describe('MarkedPipe transform', () => {
     it('should escpae pointer', () => {
       var val = pipe.transform(unmarked);
       val.should.be.equal(marked);
@@ -85,6 +97,10 @@ describe('MarkedPipe', () => {
     it('should not support other objects', () => {
       (() => pipe.transform(45)).should.throw();
       (() => pipe.transform({})).should.throw();
+    });
+
+    it('should not throw on blank input', () => {
+      (() => pipe.transform()).should.not.throw();
     });
   });
 });
