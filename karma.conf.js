@@ -3,7 +3,13 @@ module.exports = function (config) {
     config.set({
         frameworks: ['phantomjs-shim', 'jspm', 'jasmine', 'sinon', 'should'],
         preprocessors: {
-          'lib/**/!(*spec).js': ['babel', 'coverage']
+          'lib/**/!(*spec).js': ['babel', 'regex', 'coverage']
+        },
+
+        regexPreprocessor: {
+          rules: [
+            [ /'\.(.*?)\.css'/g, '\'.tmp$1.css\'']
+          ]
         },
         babelPreprocessor: {
             options: {
@@ -47,7 +53,7 @@ module.exports = function (config) {
         jspm: {
             config: 'system.config.js',
             loadFiles: ['tests/**/*.spec.js', 'tests/helpers.js', 'lib/**/*.js'],
-            serveFiles: ['tests/schemas/**/*.json', 'lib/**/*.{html,css}'],
+            serveFiles: ['tests/schemas/**/*.json', 'lib/**/*.html', '.tmp/lib/**/*.css'],
             nocache: true
         },
 
@@ -56,6 +62,7 @@ module.exports = function (config) {
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
+            '/.tmp/': '/base/.tmp/'
         },
         reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
 
