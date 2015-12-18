@@ -17,7 +17,7 @@ describe('JsonPointer', () => {
   });
 
   it('should handle relative pointers (starting with #) without errors', ()=> {
-    JsonPointer.parse('#/level1/level2/name').should.be.deep.equal(['level1', 'level2', 'name']);
+    JsonPointer.parse('#/level1/level2/name').should.be.deepEqual(['level1', 'level2', 'name']);
   });
 
   it('should join correctly', ()=> {

@@ -38,7 +38,7 @@ describe('Schema manager', () => {
   });
 
   describe('Schema manager basic functionality', ()=> {
-    before(function (done) {
+    beforeAll(function (done) {
       schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
         done();
       }, () => {
@@ -48,7 +48,7 @@ describe('Schema manager', () => {
 
 
     it('should contain non-empty schema', ()=> {
-      schemaMgr.schema.should.be.an('object');
+      schemaMgr.schema.should.be.an.Object();
       schemaMgr.schema.should.be.not.empty;
     });
 
@@ -59,19 +59,19 @@ describe('Schema manager', () => {
     describe('byPointer method', () => {
       it('should return correct schema part', ()=> {
         let part = schemaMgr.byPointer('/tags/3');
-        part.should.be.deep.equal(schemaMgr.schema.tags[3]);
+        part.should.be.deepEqual(schemaMgr.schema.tags[3]);
         part.should.be.equal(schemaMgr.schema.tags[3]);
       });
 
       it('should return null for incorrect pointer', ()=> {
         let part = schemaMgr.byPointer('/incorrect/pointer');
-        should.not.exist(part);
+        expect(part).toBeNull();
       });
     });
   });
 
   describe('getTagsMap method', () => {
-    before(function () {
+    beforeAll(function () {
       schemaMgr._schema = {
         tags: [
           {name: 'tag1', description: 'info1'},
@@ -86,7 +86,7 @@ describe('Schema manager', () => {
         tag1: {description: 'info1', 'x-traitTag': false},
         tag2: {description: 'info2', 'x-traitTag': true}
       };
-      tagsMap.should.be.deep.equal(expectedResult);
+      tagsMap.should.be.deepEqual(expectedResult);
     });
 
     it('should return empty array for non-specified tags', () => {
@@ -123,7 +123,7 @@ describe('Schema manager', () => {
     let menuTree;
     let entries;
 
-    before(() => {
+    beforeAll(() => {
       schemaMgr._schema = suitSchema;
       menuTree = schemaMgr.buildMenuTree();
       entries = Array.from(menuTree.entries());
@@ -161,12 +161,12 @@ describe('Schema manager', () => {
     it('methods for tag should contain valid pointer and summary', () => {
       for (let entr of entries) {
         let [, info] = entr;
-        info.should.be.an('object');
-        info.methods.should.be.an('array');
+        info.should.be.an.Object();
+        info.methods.should.be.an.Array();
         for (let methodInfo of info.methods) {
-          methodInfo.should.include.keys('pointer', 'summary');
+          methodInfo.should.have.keys('pointer', 'summary');
           let methSchema = schemaMgr.byPointer(methodInfo.pointer);
-          should.exist(methSchema);
+          expect(methSchema).not.toBeNull();
           if (methSchema.summary) {
             methSchema.summary.should.be.equal(methodInfo.summary);
           }
@@ -176,7 +176,7 @@ describe('Schema manager', () => {
   });
 
   describe('getMethodParams method', () => {
-    before((done) => {
+    beforeAll((done) => {
       schemaMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(() => {
         done();
       }, () => {
@@ -199,7 +199,7 @@ describe('Schema manager', () => {
 
     it('should accept pointer directly to parameters', () => {
       let params = schemaMgr.getMethodParams('/paths/test1/get/parameters', true);
-      expect(params).to.exist;
+      expect(params).not.toBeNull();
       params.length.should.be.equal(2);
     });
 
@@ -220,7 +220,7 @@ describe('Schema manager', () => {
 
     it('should throw for parameters other than array', () => {
       let func = () => schemaMgr.getMethodParams('/paths/test4/get', true);
-      func.should.throw();
+      expect(func).toThrow();
     });
   });
 

@@ -19,7 +19,7 @@ describe('KeysPipe and ValuesPipe', () => {
   describe('KeysPipe transform', () => {
     it('should return keys', () => {
       var val = keysPipe.transform(obj);
-      val.should.be.deep.equal(['a', 'b', 'c']);
+      val.should.be.deepEqual(['a', 'b', 'c']);
     });
 
     it('should not support other objects', () => {
@@ -35,7 +35,7 @@ describe('KeysPipe and ValuesPipe', () => {
   describe('KeysPipe transform', () => {
     it('should return values', () => {
       var val = valuesPipe.transform(obj);
-      val.should.be.deep.equal([1, 2, 3]);
+      val.should.be.deepEqual([1, 2, 3]);
     });
 
     it('should not support other objects', () => {

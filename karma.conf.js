@@ -1,7 +1,7 @@
 module.exports = function (config) {
     var travis = process.env.TRAVIS;
     config.set({
-        frameworks: ['phantomjs-shim', 'jspm', 'mocha', 'chai', 'sinon'],
+        frameworks: ['phantomjs-shim', 'jspm', 'jasmine', 'sinon', 'should'],
         preprocessors: {
           'lib/**/!(*spec).js': ['babel', 'coverage']
         },
@@ -46,8 +46,8 @@ module.exports = function (config) {
 
         jspm: {
             config: 'system.config.js',
-            loadFiles: ['tests/**/*.spec.js', 'lib/**/*.js'],
-            serveFiles: ['tests/schemas/**/*.json'],
+            loadFiles: ['tests/**/*.spec.js', 'tests/helpers.js', 'lib/**/*.js'],
+            serveFiles: ['tests/schemas/**/*.json', 'lib/**/*.{html,css}'],
             nocache: true
         },
 
