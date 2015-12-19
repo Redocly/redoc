@@ -39,10 +39,10 @@ System.config({
   map: {
     "RomanGotsiy/json-schema-ref-parser": "github:RomanGotsiy/json-schema-ref-parser@master",
     "angular2": "npm:angular2@2.0.0-beta.0",
-    "babel": "npm:babel-core@5.8.25",
-    "babel-runtime": "npm:babel-runtime@5.8.25",
+    "babel": "npm:babel-core@5.8.34",
+    "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.6",
-    "core-js": "npm:core-js@1.2.0",
+    "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.18",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
     "json": "github:systemjs/plugin-json@0.1.0",
@@ -138,7 +138,7 @@ System.config({
       "string_decoder": "npm:string_decoder@0.10.31"
     },
     "github:jspm/nodelibs-timers@0.1.0": {
-      "timers-browserify": "npm:timers-browserify@1.4.1"
+      "timers-browserify": "npm:timers-browserify@1.4.2"
     },
     "github:jspm/nodelibs-tty@0.1.0": {
       "tty-browserify": "npm:tty-browserify@0.0.0"
@@ -210,7 +210,7 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
-    "npm:babel-runtime@5.8.25": {
+    "npm:babel-runtime@5.8.34": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:bl@1.0.0": {
@@ -336,8 +336,9 @@ System.config({
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
-    "npm:core-js@1.2.0": {
+    "npm:core-js@1.2.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
@@ -765,7 +766,7 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0",
       "z-schema": "npm:z-schema@3.15.3"
     },
-    "npm:timers-browserify@1.4.1": {
+    "npm:timers-browserify@1.4.2": {
       "process": "npm:process@0.11.2"
     },
     "npm:tough-cookie@2.1.0": {

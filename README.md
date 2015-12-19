@@ -1,5 +1,5 @@
 # ReDoc
-[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![coverage-status-badge]](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![coverage-status-badge]](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE) [![dev-dependency-badge]](https://david-dm.org/Rebilly/ReDoc#info=devDependencies)
 
 Swagger-generated API Reference Documentation
 
@@ -23,4 +23,5 @@ Swagger-generated API Reference Documentation
 [travis-ci-status]: https://travis-ci.org/Rebilly/ReDoc.svg?branch=master "TravisCI Status"
 [license-badge]: https://img.shields.io/github/license/rebilly/redoc.svg "Github license"
 [coverage-status-badge]:https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github) "Coverage Status"
+[dev-dependency-badge]: https://david-dm.org/Rebilly/ReDoc/dev-status.svg
 [demo]: http://rebilly.github.io/ReDoc/
