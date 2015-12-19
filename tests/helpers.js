@@ -10,6 +10,13 @@ export function getChildDebugElement(parent, tagName) {
   });
 }
 
+/** Gets a child DebugElements by tag name. */
+export function getChildDebugElementAll(parent, tagName) {
+  return parent.queryAll(debugEl => {
+    return debugEl.nativeElement.tagName && debugEl.nativeElement.tagName.toLowerCase() === tagName;
+  });
+}
+
 export function mouseclick( element ) {
     // create a mouse click event
     var event = document.createEvent( 'MouseEvents' );
