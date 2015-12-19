@@ -1,0 +1,28 @@
+{
+  "swagger": "2.0",
+  "info": {
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2/",
+  "tags": [{
+    "name": "traitTag",
+    "x-traitTag": true,
+    "description": "description1"
+  },{
+    "name": "tag1",
+    "description": "tag1",
+  }],
+  "schemes": ["http"],
+  "paths": {
+    "/pet": {
+      "post": {
+        "tags": ["tag1"],
+        "summary": "tag1"
+      },
+      "put": {
+        "tags": ["tag1", "traitTag"],
+        "summary": "two tags",
+      }
+    }
+  }
+}
