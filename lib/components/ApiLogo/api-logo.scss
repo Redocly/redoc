@@ -1,0 +1,10 @@
+@import '../../common/styles/variables';
+
+img {
+  max-height: 150px;
+  width: auto;
+  display: inline-block;
+  max-width: 100%;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
