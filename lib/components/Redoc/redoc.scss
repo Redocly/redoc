@@ -5,7 +5,7 @@ side-menu {
   box-sizing: border-box;
 }
 
-api-info, side-menu {
+api-info, .side-bar {
   display: block;
   padding: 10px 0;
 }
@@ -14,15 +14,15 @@ api-info {
   padding: 10px 20px;
 }
 
-side-menu {
+.side-bar {
   position: fixed;
-  width: $side-menu-width;
+  width: $side-bar-width;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;;
-  background-color: $side-menu-bg-color;
+  background-color: $side-bar-bg-color;
 }
 
 .api-content {
-  margin-left: $side-menu-width;
+  margin-left: $side-bar-width;
 }

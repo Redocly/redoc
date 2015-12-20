@@ -4,15 +4,17 @@
   text-transform: uppercase;
   color: $headers-color;
   padding: 0 $side-menu-item-hpadding;
+  margin: 10px 0;
+  font-size: 16px;
 }
 
 .menu-cat-header {
-  font-weight: bold;
+  //font-weight: bold;
   font-size: 15px;
   cursor: pointer;
   color: $side-menu-item-color;
   text-transform: uppercase;
-  background-color: $side-menu-bg-color;
+  background-color: $side-bar-bg-color;
 
   display: block;
   padding: $side-menu-item-vpadding $side-menu-item-hpadding;
@@ -39,7 +41,7 @@
 
   padding: $side-menu-item-vpadding $side-menu-item-hpadding;
   padding-left: $side-menu-item-hpadding*2;
-  background-color: $side-menu-bg-color;
+  background-color: $side-bar-bg-color;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -55,7 +57,7 @@
   }
 
   .menu-subitems li:nth-of-type(even) {
-    background-color: $side-menu-bg-color;
+    background-color: $side-bar-bg-color;
   }
 }
 
