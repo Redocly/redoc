@@ -47,6 +47,7 @@ module.exports = function (config) {
         files: [
           'node_modules/zone.js/dist/zone-microtask.js',
           'node_modules/zone.js/dist/long-stack-trace-zone.js',
+          'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/babel-polyfill/dist/polyfill.js',
           'node_modules/reflect-metadata/Reflect.js'
         ],
