@@ -68,7 +68,7 @@ module.exports = function (config) {
         },
         reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
 
-        browsers: ['PhantomJS', 'Chrome'],
+        browsers: ['PhantomJS'],
 
         browserNoActivityTimeout: 60000
     });
