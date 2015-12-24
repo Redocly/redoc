@@ -1,0 +1,12 @@
+engines: 
+  eslint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+   paths:
+   - "lib/**"
+exclude_paths:
+  - **.spec.js

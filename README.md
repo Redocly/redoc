@@ -1,5 +1,5 @@
 # ReDoc
-[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![coverage-status-badge]](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE) [![dev-dependency-badge]](https://david-dm.org/Rebilly/ReDoc#info=devDependencies)
+[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![coverage-status-badge]](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![code-climate-badge]](https://codeclimate.com/github/Rebilly/ReDoc) [![dev-dependency-badge]](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
 
 Swagger-generated API Reference Documentation
 
@@ -24,4 +24,5 @@ Swagger-generated API Reference Documentation
 [license-badge]: https://img.shields.io/github/license/rebilly/redoc.svg "Github license"
 [coverage-status-badge]:https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github) "Coverage Status"
 [dev-dependency-badge]: https://david-dm.org/Rebilly/ReDoc/dev-status.svg
+[code-climate-badge]: https://codeclimate.com/github/Rebilly/ReDoc/badges/gpa.svg "Code Climate"
 [demo]: http://rebilly.github.io/ReDoc/
