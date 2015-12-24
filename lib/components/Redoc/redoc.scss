@@ -31,3 +31,19 @@ api-logo {
 .api-content {
   margin-left: $side-bar-width;
 }
+
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 15px;
+
+  a {
+    color: #999;
+    text-decoration: none;
+  }
+
+  strong {
+    font-size: 18px;
+    color: $headers-color;
+  }
+}
