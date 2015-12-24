@@ -13,7 +13,6 @@ p {
 
 nav input, nav button  {
   font-size: 16px;
-  line-height: 28px;
   height: 28px;
   box-sizing: border-box;
   vertical-align: middle;
@@ -34,7 +33,6 @@ nav input {
 }
 
 nav button {
-  background-color: white;
   border: 1px solid #FFFFFF;
   cursor: pointer;
   color: white;
