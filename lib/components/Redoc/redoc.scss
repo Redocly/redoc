@@ -1,8 +1,17 @@
 @import '../../common/styles/variables';
 
+.redoc-wrap {
+  position: relative;
+}
+
 side-menu {
   display: block;
   box-sizing: border-box;
+}
+
+methods-list {
+  display: block;
+  overflow: hidden;
 }
 
 api-info, .side-bar {
@@ -19,21 +28,19 @@ api-logo {
   text-align: center;
 }
 
-.side-bar {
-  position: fixed;
+sticky-sidebar {
   width: $side-bar-width;
-  height: 100%;
   overflow-y: auto;
-  overflow-x: hidden;;
+  overflow-x: hidden;
   background-color: $side-bar-bg-color;
 }
 
-.api-content {
+#api-content {
   margin-left: $side-bar-width;
 }
 
 footer {
-  text-align: center;
+  text-align: right;
   padding: 10px;
   font-size: 15px;
 
