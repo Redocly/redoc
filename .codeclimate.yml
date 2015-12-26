@@ -1,4 +1,4 @@
-engines: 
+engines:
   eslint:
     enabled: true
   scss-lint:
@@ -9,4 +9,4 @@ ratings:
    paths:
    - "lib/**"
 exclude_paths:
-  - **.spec.js
+  - "**.spec.js"
