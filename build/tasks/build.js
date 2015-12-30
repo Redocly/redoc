@@ -59,7 +59,7 @@ gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       paths.redocBuilt,
-      { globalName: 'Redoc', sourceMaps: true, lowResSourceMaps: true }
+      { format:'amd', sourceMaps: true, lowResSourceMaps: true }
     )
     .then(function() {
       cb();
