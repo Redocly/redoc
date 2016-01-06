@@ -54,7 +54,7 @@
   "devDependencies": {
     "babel-eslint": "^4.1.6",
     "babel-polyfill": "^6.3.14",
-    "branch-release": "^0.2.1",
+    "branch-release": "^0.2.2",
     "browser-sync": "^2.10.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
