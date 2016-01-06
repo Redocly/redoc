@@ -92,5 +92,8 @@
     "systemjs-builder": "^0.14.15",
     "vinyl-paths": "^2.0.0",
     "zone.js": "^0.5.10"
+  },
+  "dependencies": {
+    "branch-release": "^0.2.0"
   }
 }
