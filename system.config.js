@@ -810,6 +810,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "request": "npm:request@2.64.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0",
       "validator": "npm:validator@4.1.0"
     },
     "npm:zone.js@0.5.10": {
