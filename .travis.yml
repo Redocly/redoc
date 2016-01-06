@@ -23,6 +23,7 @@ deploy:
   on:
     branch: master
 deploy:
+  skip_cleanup: true
   provider: script
   script: "npm run branch-release"
   on:
