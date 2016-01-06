@@ -15,10 +15,15 @@ before_install:
 - travis_retry npm install jspm
 - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
 before_deploy:
-- npm run build
+- npm run build-dist
 deploy:
   skip_cleanup: true
   provider: script
   script: ./build/deploy_gh_pages.sh
+  on:
+    branch: master
+deploy:
+  provider: script
+  script: "npm run branch-release"
   on:
     branch: master

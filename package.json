@@ -3,12 +3,16 @@
   "description": "Swagger-generated API Reference Documentation",
   "version": "0.0.1",
   "private": true,
-  "repository": "Rebilly/ReDoc",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Rebilly/ReDoc"
+  },
   "scripts": {
     "test": "gulp lint && gulp test",
     "postinstall": "jspm install",
     "start": "gulp serve",
-    "build": "gulp build"
+    "build-dist": "gulp build",
+    "branch-release": "branch-release"
   },
   "keywords": [
     "Swagger",
@@ -50,15 +54,18 @@
   "devDependencies": {
     "babel-eslint": "^4.1.6",
     "babel-polyfill": "^6.3.14",
+    "branch-release": "^0.1.1",
     "browser-sync": "^2.10.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
     "gulp-inline-ng2-template": "^0.0.9",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.1.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
     "isparta": "^4.0.0",
     "istanbul": "github:gotwarlost/istanbul#source-map",
     "jasmine-core": "^2.4.1",
