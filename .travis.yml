@@ -1,6 +1,9 @@
 language: node_js
 node_js:
 - '4.0'
+branches:
+  except:
+    - releases
 env:
   global:
   - GH_REF: github.com/Rebilly/ReDoc.git
