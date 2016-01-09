@@ -238,7 +238,7 @@ describe('Utils', () => {
         let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Pet');
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.not.be.empty;
-        deriveDefs.should.be.deepEqual(['Cat']);
+        deriveDefs.should.be.deepEqual([{name: 'Cat', $ref: '#/definitions/Cat'}]);
       });
 
       it('should return emtpy array for definitions that dont have discriminator', () => {

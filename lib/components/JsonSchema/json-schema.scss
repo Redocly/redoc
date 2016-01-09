@@ -74,7 +74,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-type-trivial {
   margin: 10px 10px 0;
-  display: inline-block;  
+  display: inline-block;
 }
 
 /* tree */
@@ -146,6 +146,7 @@ $array-marker-line-height: 1.5;
 
 .params-wrap.params-array:before {
   content: "Array [";
+  padding-top: 1em;
 }
 
 .params-wrap.params-array {
@@ -167,4 +168,27 @@ $array-marker-line-height: 1.5;
   top: 0;
   border-left: $line-border-erase;
   height: ($param-name-height/2) + $cell-padding;
+}
+
+.discriminator {
+  margin-top: 1em;
+}
+
+:host tabs li {
+  padding: 0.2em 0;
+  margin-right: 1em;
+  font-size: 14px;
+  color: green;
+
+  &:before, &:after {
+    content: '"';
+  }
+
+  &:last-of-type {
+    margin: 0;
+  }
+
+  &.active {
+    border-bottom: 2px solid $tree-lines-color;
+  }
 }

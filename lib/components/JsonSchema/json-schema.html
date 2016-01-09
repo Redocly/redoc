@@ -1,5 +1,5 @@
 <span *ngIf="isTrivial" class="param-type param-type-trivial" [ngClass]="type">{{_displayType}}</span>
-<div *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
+<div *ngIf="!isTrivial && !data.derived.length" class="params-wrap" [ngClass]="{'params-array': isArray}">
   <div *ngFor="#prop of data.properties" class="param-wrap">
     <div class="param">
       <div class="param-name">
@@ -18,4 +18,13 @@
       </json-schema>
     </div>
   </div>
+</div>
+<div *ngIf="data.derived.length">
+  <div class="discriminator"> Based on <strong>{{data.discriminator}}</strong> field value: </div>
+  <tabs>
+    <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">
+      <json-schema pointer="{{derived.$ref}}" [final]="derived.final" [isArray]='isArray'>
+      </json-schema>
+    </tab>
+  </tabs>
 </div>
