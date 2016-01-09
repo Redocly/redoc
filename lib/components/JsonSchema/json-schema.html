@@ -1,4 +1,3 @@
-<small *ngIf="errorMessage">{{errorMessage}}</small>
 <span *ngIf="isTrivial" class="param-type param-type-trivial" [ngClass]="type">{{_displayType}}</span>
 <div *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
   <div *ngFor="#prop of data.properties" class="param-wrap">
