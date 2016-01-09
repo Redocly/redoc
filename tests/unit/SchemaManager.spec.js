@@ -225,5 +225,27 @@ describe('Utils', () => {
       });
     });
 
+    describe('findDerivedDefinitions method', () => {
+      beforeAll((done) => {
+        schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
+          done();
+        }, () => {
+          done(new Error('Error handler should not be called'));
+        });
+      });
+
+      it('should find derived definitions for Pet', () => {
+        let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Pet');
+        deriveDefs.should.be.instanceof(Array);
+        deriveDefs.should.not.be.empty;
+        deriveDefs.should.be.deepEqual(['Cat']);
+      });
+
+      it('should return emtpy array for definitions that dont have discriminator', () => {
+        let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Order');
+        deriveDefs.should.be.instanceof(Array);
+        deriveDefs.should.be.empty;
+      });
+    });
   });
 });
