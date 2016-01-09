@@ -3,24 +3,16 @@
 ul {
   display: block;
   margin: 0;
-  padding: 10px 0px 0 0;
+  padding: 0;
 }
 
 li {
-  font-size: 13px;
   list-style: none;
-  margin: 2px 0;
-  padding: 2px 5px;
   display: inline-block;
   cursor: pointer;
-  color: #8A9094;
-  line-height: 1.25;
-  color: $sample-panel-headers-color;
 }
 
 li.active {
-  background-color: white;
-  color: #666;
 }
 
 .tab-success, .tab-error, .tab-redirect, .tab-info {
@@ -31,9 +23,8 @@ li.active {
     height: 6px;
     width: 6px;
     border-radius: 50%;
+    margin-right: 0.5em;
   }
-
-
 }
 
 .tab-success:before {
