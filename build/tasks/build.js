@@ -17,12 +17,13 @@ paths.redocBuilt = path.join(paths.output, paths.outputName) + '.js';
 gulp.task('build', function (callback) {
   return runSequence(
     'clean',
-    'bundle',
+    'bundleProd',
     callback
   );
 });
 
 gulp.task('bundle', ['bundleSfx', 'concatDeps', 'uglify']);
+gulp.task('bundleProd', ['bundle', 'uglify']);
 
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
