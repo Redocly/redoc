@@ -20,14 +20,13 @@ before_install:
 before_deploy:
 - npm run build-dist
 deploy:
-  skip_cleanup: true
-  provider: script
-  script: ./build/deploy_gh_pages.sh
-  on:
-    branch: master
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: "npm run branch-release"
-  on:
-    branch: master
+  - skip_cleanup: true
+    provider: script
+    script: ./build/deploy_gh_pages.sh
+    on:
+      branch: master
+  - skip_cleanup: true
+    provider: script
+    script: "npm run branch-release"
+    on:
+      branch: master
