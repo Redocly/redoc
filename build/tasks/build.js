@@ -22,7 +22,16 @@ gulp.task('build', function (callback) {
   );
 });
 
-gulp.task('bundle', ['bundleSfx', 'concatDeps', 'uglify']);
+gulp.task('buildDev', function (callback) {
+  return runSequence(
+    'clean',
+    'bundle',
+    callback
+  );
+});
+
+
+gulp.task('bundle', ['bundleSfx', 'concatDeps']);
 gulp.task('bundleProd', ['bundle', 'uglify']);
 
 gulp.task('inlineTemplates', ['sass'], function() {
