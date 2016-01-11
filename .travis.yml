@@ -27,7 +27,8 @@ deploy:
   script: ./build/deploy_gh_pages.sh
   on:
     branch: master
-- provider: script
+- skip_cleanup: true
+  provider: script
   script: npm run branch-release
   on:
     branch: master
