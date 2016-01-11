@@ -92,7 +92,7 @@ function bundle(outputFile, minify, cb) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       outputFile,
-      { format:'amd', sourceMaps: true, lowResSourceMaps: true, minify: minify }
+      { format:'umd', sourceMaps: true, lowResSourceMaps: true, minify: minify }
     )
     .then(function() {
       cb();
