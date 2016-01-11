@@ -10,10 +10,10 @@ var concat = require('gulp-concat');
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var replace = require('gulp-replace');
-var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 
-paths.redocBuilt = path.join(paths.output, paths.outputName) + '.js';
+paths.redocBuilt = path.join(paths.output, paths.outputName);
+
 gulp.task('build', function (callback) {
   return runSequence(
     'clean',
@@ -31,8 +31,8 @@ gulp.task('buildDev', function (callback) {
 });
 
 
-gulp.task('bundle', ['bundleSfx', 'concatDeps']);
-gulp.task('bundleProd', ['bundle', 'uglify']);
+gulp.task('bundle', ['buildStatic', 'concatDeps']);
+gulp.task('bundleProd', ['bundle', 'buildStaticMin', 'concatDepsMin']);
 
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
@@ -41,20 +41,15 @@ gulp.task('inlineTemplates', ['sass'], function() {
     .pipe(gulp.dest(paths.tmp));
 });
 
-// produces minimized verstion of sfx bundle
-gulp.task('uglify', ['concatDeps'], function() {
-  return gulp.src(paths.redocBuilt)
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(rename(paths.outputName + '.min.js'))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(paths.output));
-});
-
 var JS_DEV_DEPS = [
   'node_modules/zone.js/dist/zone-microtask.js',
   'node_modules/reflect-metadata/Reflect.js'
 ];
+
+var JS_DEV_DEPS_MIN = [
+  'node_modules/zone.js/dist/zone-microtask.min.js',
+  'node_modules/reflect-metadata/Reflect.js'
+]
 
 gulp.task('sass', function () {
   return gulp.src(paths.scss, { base: './' })
@@ -63,15 +58,31 @@ gulp.task('sass', function () {
 });
 
 // concatenate angular2 deps
-gulp.task('concatDeps', ['bundleSfx'], function() {
-  gulp.src(JS_DEV_DEPS.concat([paths.redocBuilt]))
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(concat(paths.outputName + '.js'))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.output))
+gulp.task('concatDeps', ['buildStatic'], function() {
+  return concatDeps(JS_DEV_DEPS, paths.redocBuilt + '.js');
 });
 
-gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
+gulp.task('concatDepsMin', ['buildStatic'], function() {
+  return concatDeps(JS_DEV_DEPS_MIN, paths.redocBuilt + '.min.js');
+});
+
+gulp.task('buildStatic', ['inlineTemplates'], function(cb) {
+  bundle(paths.redocBuilt + '.js', false, cb);
+});
+
+gulp.task('buildStaticMin', ['inlineTemplates'], function(cb) {
+  bundle(paths.redocBuilt + '.min.js', true, cb);
+});
+
+function concatDeps(deps, file) {
+  return gulp.src(deps.concat([file]))
+  .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(concat(file))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest('.'))
+}
+
+function bundle(outputFile, minify, cb) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
   builder.config({
@@ -80,8 +91,8 @@ gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
 
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
-      paths.redocBuilt,
-      { format:'amd', sourceMaps: true, lowResSourceMaps: true }
+      outputFile,
+      { format:'amd', sourceMaps: true, lowResSourceMaps: true, minify: minify }
     )
     .then(function() {
       cb();
@@ -89,4 +100,4 @@ gulp.task('bundleSfx', ['inlineTemplates'], function(cb) {
     .catch(function(err) {
       cb(new Error(err));
     });
-});
+}
