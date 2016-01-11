@@ -38,10 +38,6 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-left: $line-border;
   white-space: nowrap;
   position: relative;
-
-  > span {
-    vertical-align: middle;
-  }
 }
 
 .param-info {
