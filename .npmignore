@@ -1,4 +1,12 @@
-build
-demo
+.DS_Store
+**/.*
+.tmp
+
+node_modules
+jspm_packages
+
 tests
 lib
+demo
+build
+coverage
