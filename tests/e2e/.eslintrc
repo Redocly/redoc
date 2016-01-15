@@ -5,5 +5,8 @@
     "node": true,
     "jasmine": true,
     "protractor": true
+  },
+  "rules": {
+    "no-console": 0,
   }
 }

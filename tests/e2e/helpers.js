@@ -22,20 +22,29 @@ function loadJson(url) {
   return promise;
 }
 
+const LogLevel = {
+  INFO: 800,
+  WARNING: 900
+};
 
+const MAX_ERROR_MESSAGE_SYMBOLS = 128;
 //copied from angular/modules/angular2/src/testing/e2e_util.ts
 function verifyNoBrowserErrors() {
   // Bug in ChromeDriver: Need to execute at least one command
   // so that the browser logs can be read out!
   browser.executeScript('1+1');
   browser.manage().logs().get('browser').then(function(browserLog) {
-    var filteredLog = browserLog.filter(function(logEntry) {
-      if (logEntry.level.value >= browser.webdriver.logging.Level.INFO.value) {
-        //console.log('>> ' + logEntry.message);
+    let filteredLog = browserLog.filter((logEntry) => {
+      if (logEntry.level.value >= LogLevel.INFO) {
+        let message = logEntry.message;
+        if (message.length > MAX_ERROR_MESSAGE_SYMBOLS) {
+          message = message.substr(0, MAX_ERROR_MESSAGE_SYMBOLS) + '...';
+        }
+        console.log('>> ' + message);
       }
-      return logEntry.level.value > browser.webdriver.logging.Level.WARNING.value;
+      return logEntry.level.value > LogLevel.WARNING;
     });
-    expect(filteredLog.length).toEqual(0);
+    expect(filteredLog.length).toEqual(0, `Found ${filteredLog.length} browser errors`);
   });
 }
 

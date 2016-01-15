@@ -15,7 +15,7 @@ function basicTests(swaggerUrl, title) {
       verifyNoBrowserErrors();
     });
 
-    it('should exist redoc element', () => {
+    it('should init redoc without errors', () => {
       browser.get(specUrl);
       let $redoc = $('redoc');
       expect($redoc.isPresent()).toBe(true);
@@ -25,7 +25,7 @@ function basicTests(swaggerUrl, title) {
   });
 }
 
-basicTests();
+basicTests(null, 'Extended Petstore');
 
 
 describe('Scroll sync', () => {
@@ -48,6 +48,6 @@ describe('APIs.guru specs test', ()=> {
     // temporary hack due to this issue: https://github.com/substack/https-browserify/issues/6
     url = url.replace('https://', 'http://');
     url = url.replace('apis-guru.github.io/', 'apis-guru.github.io:80/');
-    basicTests(url, `${apiName} ${apiInfo.version}`);
+    basicTests(url, `${apiName}:${apiInfo.info.version}\n${url}`);
   }
 });
