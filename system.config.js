@@ -48,6 +48,7 @@ System.config({
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
     "json-schema-instantiator": "npm:json-schema-instantiator@0.3.0",
+    "json-schema-ref-parser": "npm:json-schema-ref-parser@2.2.0",
     "marked": "npm:marked@0.3.5",
     "scrollparent": "npm:scrollparent@0.1.0",
     "swagger-parser": "npm:swagger-parser@3.4.0",
@@ -556,6 +557,25 @@ System.config({
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
+    "npm:json-schema-ref-parser@2.2.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "call-me-maybe": "npm:call-me-maybe@1.0.1",
+      "debug": "npm:debug@2.2.0",
+      "es6-promise": "npm:es6-promise@3.0.2",
+      "events": "github:jspm/nodelibs-events@0.1.1",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "http": "github:jspm/nodelibs-http@1.7.1",
+      "https": "github:jspm/nodelibs-https@0.1.0",
+      "js-yaml": "npm:js-yaml@3.5.2",
+      "ono": "npm:ono@2.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "punycode": "github:jspm/nodelibs-punycode@0.1.0",
+      "querystring": "github:jspm/nodelibs-querystring@0.1.0",
+      "stream": "github:jspm/nodelibs-stream@0.1.0",
+      "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0",
+      "url": "github:jspm/nodelibs-url@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
     "npm:jsonpointer@2.0.0": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
@@ -791,7 +811,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "http": "github:jspm/nodelibs-http@1.7.1",
       "https": "github:jspm/nodelibs-https@0.1.0",
-      "json-schema-ref-parser": "npm:json-schema-ref-parser@1.4.1",
+      "json-schema-ref-parser": "npm:json-schema-ref-parser@2.2.0",
       "ono": "npm:ono@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "punycode": "github:jspm/nodelibs-punycode@0.1.0",
