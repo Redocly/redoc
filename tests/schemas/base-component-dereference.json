@@ -31,6 +31,14 @@
           "$ref": "#/definitions/Simple"
         }
       }
+    },
+    "Circular": {
+      "type": "array",
+      "items": {
+        "schema": {
+          "$ref": "#/definitions/Circular"
+        }
+      }
     }
   },
   "paths": {
@@ -60,6 +68,16 @@
         "parameters": [
           {
             "$ref": "#/definitions/ArrayOfSimple"
+          }
+        ]
+      }
+    },
+    "test4": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/Circular"
           }
         ]
       }
