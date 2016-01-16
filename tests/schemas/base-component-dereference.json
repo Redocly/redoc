@@ -81,6 +81,18 @@
           }
         ]
       }
+    },
+    "test5": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/Simple",
+            "title": "test",
+            "description": "test"
+          }
+        ]
+      }
     }
   }
 }
