@@ -8,12 +8,14 @@
   },
   "main": "dist/redoc.full.min.js",
   "scripts": {
-    "test": "gulp lint && gulp test",
+    "test": "gulp lint && ./build/run_tests.sh",
     "prepublish": "gulp build",
     "postinstall": "jspm install",
     "start": "gulp serve",
     "build-dist": "gulp build",
-    "branch-release": "branch-release"
+    "branch-release": "branch-release",
+    "unit": "gulp test",
+    "e2e": "gulp e2e"
   },
   "keywords": [
     "Swagger",

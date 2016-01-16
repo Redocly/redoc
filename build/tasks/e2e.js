@@ -19,7 +19,7 @@ gulp.task('test-server', function (done) {
 });
 
 
-gulp.task('e2e', ['test-server'], function(done) {
+gulp.task('e2e', ['bundleProd', 'test-server'], function(done) {
   gulp.src(['tests/e2e/**/*.js'], { read:false })
   		.pipe(gp.protractor({
   			configFile: './protractor.conf.js'

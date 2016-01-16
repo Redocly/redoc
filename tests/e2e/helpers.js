@@ -35,13 +35,16 @@ function verifyNoBrowserErrors() {
   browser.executeScript('1+1');
   browser.manage().logs().get('browser').then(function(browserLog) {
     let filteredLog = browserLog.filter((logEntry) => {
+      let message = logEntry.message;
       if (logEntry.level.value >= LogLevel.INFO) {
-        let message = logEntry.message;
         if (message.length > MAX_ERROR_MESSAGE_SYMBOLS) {
           message = message.substr(0, MAX_ERROR_MESSAGE_SYMBOLS) + '...';
         }
         console.log('>> ' + message);
       }
+
+      // skip browser-sync errors
+      if (message.indexOf('browser-sync') > -1) return false;
       return logEntry.level.value > LogLevel.WARNING;
     });
     expect(filteredLog.length).toEqual(0, `Found ${filteredLog.length} browser errors`);
