@@ -22,7 +22,7 @@
   <div *ngIf="data.derived.length" class="param-wrap">
     <tabs>
       <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">
-        <json-schema pointer="{{derived.$ref}}" [final]="derived.final" [isArray]='isArray'>
+        <json-schema pointer="{{derived.$ref}}" [final]="derived.final">
         </json-schema>
       </tab>
     </tabs>
