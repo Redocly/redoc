@@ -20,12 +20,32 @@ let config = {
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 60000,
     print: function() {}
   },
   multiCapabilities: [{
     browserName: 'chrome',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    name: 'Redoc Chrome/Linux build ' + process.env.TRAVIS_BUILD_NUMBER
+  },{
+    browserName: 'safari',
+    platform: 'OS X 10.11',
+    version: '9.0',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    name: 'Redoc Safari Latest/OSX build ' + process.env.TRAVIS_BUILD_NUMBER
+  },{
+    browserName: 'firefox',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    name: 'Redoc Firefox Latest/Win build ' + process.env.TRAVIS_BUILD_NUMBER
+  },{
+    browserName: 'internet explorer',
+    version: '11.0',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER,
+    name: 'Redoc Firefox Latest/Win build ' + process.env.TRAVIS_BUILD_NUMBER
   }]
 };
 
