@@ -1,6 +1,7 @@
 'use strict';
 const verifyNoBrowserErrors = require('./helpers').verifyNoBrowserErrors;
 const scrollToEl = require('./helpers').scrollToEl;
+const fixFFTest = require('./helpers').fixFFTest;
 
 const URL = 'index.html';
 
@@ -11,12 +12,16 @@ function basicTests(swaggerUrl, title) {
       specUrl += `?url=${encodeURIComponent(swaggerUrl)}`;
     }
 
+    beforeEach((done) => {
+      browser.get(specUrl);
+      fixFFTest(done);
+    });
+
     afterEach(() => {
       verifyNoBrowserErrors();
     });
 
     it('should init redoc without errors', () => {
-      browser.get(specUrl);
       let $redoc = $('redoc');
       expect($redoc.isPresent()).toBe(true);
       let $methods = $$('method');
@@ -29,8 +34,14 @@ basicTests(null, 'Extended Petstore');
 
 
 describe('Scroll sync', () => {
+  let specUrl = URL;
+  
+  beforeEach((done) => {
+    browser.get(specUrl);
+    fixFFTest(done);
+  });
+
   it('should update active menu entries on page scroll', () => {
-    browser.get(URL);
     scrollToEl('[tag="store"]').then(function() {
       expect($('.menu-cat-header.active').getText()).toBe('STORE');
     });

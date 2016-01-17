@@ -13,6 +13,9 @@ let config = {
     // load APIs.guru list
     return loadJson('https://apis-guru.github.io/api-models/api/v1/list.json').then((list) => {
       global.apisGuruList = list;
+      return browser.getCapabilities().then(function (cap) {
+        browser.isIE = cap.caps_.browserName === 'internet explorer';
+      });
     });
   },
   //directConnect: true,
@@ -20,10 +23,20 @@ let config = {
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
-    defaultTimeoutInterval: 60000,
+    defaultTimeoutInterval: 120000,
     print: function() {}
   },
-  multiCapabilities: [{
+  multiCapabilities: [
+    { browserName: 'chrome' },
+    { browserName: 'firefox' }
+  ]
+};
+
+if (travis) {
+  config.sauceUser = process.env.SAUCE_USERNAME;
+  config.sauceKey = process.env.SAUCE_ACCESS_KEY;
+  config.sauceSeleniumAddres = 'localhost:4445/wd/hub';
+  config.multiCapabilities = [{
     browserName: 'chrome',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER,
@@ -45,14 +58,8 @@ let config = {
     version: '11.0',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER,
-    name: 'Redoc Firefox Latest/Win build ' + process.env.TRAVIS_BUILD_NUMBER
-  }]
-};
-
-if (travis) {
-  config.sauceUser = process.env.SAUCE_USERNAME;
-  config.sauceKey = process.env.SAUCE_ACCESS_KEY;
-  config.sauceSeleniumAddres = 'localhost:4445/wd/hub';
+    name: 'Redoc IE11/Win build ' + process.env.TRAVIS_BUILD_NUMBER
+  }];
 } else {
   config.directConnect = true;
 }

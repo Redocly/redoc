@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>ReDoc</title>
   </head>
   <body>
-    <redoc scroll-y-offset="body > nav">
+    <redoc>
       Loading...
     </redoc>
 
     <!-- ReDoc built file with all dependencies included -->
     <script src="dist/redoc.full.min.js"> </script>
     <script>
+      window.redocError = null;
       /* init redoc */
       var url = window.location.search.substr(5) || 'swagger.json';
-      Redoc.init(decodeURIComponent(url));
+      Redoc.init(decodeURIComponent(url)).then(function() {}, function(err) {
+        window.redocError = err;
+      });
     </script>
   </body>
 </html>
