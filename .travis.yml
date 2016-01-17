@@ -6,8 +6,13 @@ branches:
   - releases
 env:
   matrix:
-  - JOB: unit
-  - JOB: e2e
+    include:
+      - JOB: unit
+      - JOB: e2e
+    fast_finish: true
+    allow_failures:
+      - JOB: e2e
+
   global:
   - GH_REF: github.com/Rebilly/ReDoc.git
   - GIT_AUTHOR_EMAIL: redoc-bot@users.noreply.github.com
