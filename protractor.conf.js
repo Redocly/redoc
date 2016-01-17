@@ -20,6 +20,7 @@ let config = {
   },
   //directConnect: true,
   useAllAngular2AppRoots: true,
+  allScriptsTimeout: 120000,
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
@@ -47,7 +48,8 @@ if (travis) {
     version: '9.0',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER,
-    name: 'Redoc Safari Latest/OSX build ' + process.env.TRAVIS_BUILD_NUMBER
+    name: 'Redoc Safari Latest/OSX build ' + process.env.TRAVIS_BUILD_NUMBER,
+    idleTimeout: 180
   },{
     browserName: 'firefox',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
