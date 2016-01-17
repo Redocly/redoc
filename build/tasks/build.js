@@ -43,12 +43,14 @@ gulp.task('inlineTemplates', ['sass'], function() {
 
 var JS_DEV_DEPS = [
   'node_modules/zone.js/dist/zone-microtask.js',
-  'node_modules/reflect-metadata/Reflect.js'
+  'node_modules/reflect-metadata/Reflect.js',
+  'node_modules/babel-polyfill/dist/polyfill.js'
 ];
 
 var JS_DEV_DEPS_MIN = [
   'node_modules/zone.js/dist/zone-microtask.min.js',
-  'node_modules/reflect-metadata/Reflect.js'
+  'node_modules/reflect-metadata/Reflect.js',
+  'node_modules/babel-polyfill/dist/polyfill.min.js'
 ]
 
 gulp.task('sass', function () {
