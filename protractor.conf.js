@@ -20,11 +20,11 @@ let config = {
   },
   //directConnect: true,
   useAllAngular2AppRoots: true,
-  allScriptsTimeout: 120000,
+  allScriptsTimeout: 180000,
   jasmineNodeOpts: {
     showTiming: true,
     showColors: true,
-    defaultTimeoutInterval: 120000,
+    defaultTimeoutInterval: 180000,
     print: function() {}
   },
   multiCapabilities: [
