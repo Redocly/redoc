@@ -5,7 +5,7 @@ $cell-spacing: 25px;
 $cell-padding: 10px;
 $bullet-margin: 10px;
 $line-border: $lines-width solid $tree-lines-color;
-$line-border-erase: $lines-width solid white;
+$line-border-erase: ($lines-width + 1px) solid white;
 
 $param-name-height: 20px;
 
@@ -38,10 +38,6 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-left: $line-border;
   white-space: nowrap;
   position: relative;
-
-  > span {
-    vertical-align: middle;
-  }
 }
 
 .param-info {
@@ -74,7 +70,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-type-trivial {
   margin: 10px 10px 0;
-  display: inline-block;  
+  display: inline-block;
 }
 
 /* tree */
@@ -113,7 +109,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   content: "";
   display: block;
   position: absolute;
-  left: -$lines-width;
+  left: -$lines-width - 1px;
   border-left: $line-border-erase;
   top: ($param-name-height/2) + $cell-padding + $lines-width;
   background-color: white;
@@ -146,6 +142,7 @@ $array-marker-line-height: 1.5;
 
 .params-wrap.params-array:before {
   content: "Array [";
+  padding-top: 1em;
 }
 
 .params-wrap.params-array {
@@ -167,4 +164,38 @@ $array-marker-line-height: 1.5;
   top: 0;
   border-left: $line-border-erase;
   height: ($param-name-height/2) + $cell-padding;
+}
+
+.param.discriminator {
+  > div {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.discriminator-info {
+  font-weight: bold;
+}
+
+:host tabs {
+  display: block;
+  border-left: 1px solid $tree-lines-color;
+}
+
+:host tabs li {
+  margin: 0.2em 0.5em 0.2em 0;
+  font-size: 14px;
+  border: 0;
+  color: white;
+  padding: 0 15px;
+  border-radius: 10px;
+  background-color: #8A9094;
+
+  &:last-of-type {
+    margin: 0;
+  }
+
+  &.active {
+    background-color: $headers-color;
+  }
 }

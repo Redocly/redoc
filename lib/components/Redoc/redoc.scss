@@ -1,5 +1,28 @@
 @import '../../common/styles/variables';
 
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+:host {
+  pre {
+    white-space: pre-wrap;
+    background-color: #f2f2f2;
+    padding: 10px;
+    overflow-x: auto;
+    line-height: normal;
+  }
+
+  code {
+    background-color: #f2f2f2;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
 .redoc-wrap {
   position: relative;
 }

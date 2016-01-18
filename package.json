@@ -1,18 +1,21 @@
 {
-  "name": "ReDoc",
+  "name": "redoc",
   "description": "Swagger-generated API Reference Documentation",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/Rebilly/ReDoc"
   },
+  "main": "dist/redoc.full.min.js",
   "scripts": {
-    "test": "gulp lint && gulp test",
+    "test": "gulp lint && ./build/run_tests.sh",
+    "prepublish": "gulp build",
     "postinstall": "jspm install",
     "start": "gulp serve",
     "build-dist": "gulp build",
-    "branch-release": "branch-release"
+    "branch-release": "git reset --hard && branch-release",
+    "unit": "gulp test",
+    "e2e": "gulp e2e"
   },
   "keywords": [
     "Swagger",
@@ -26,16 +29,15 @@
   "jspm": {
     "configFile": "system.config.js",
     "dependencies": {
-      "RomanGotsiy/json-schema-ref-parser": "github:RomanGotsiy/json-schema-ref-parser@master",
       "angular2": "npm:angular2@^2.0.0-beta.0",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "json-formatter-js": "npm:json-formatter-js@^0.2.0",
       "json-pointer": "npm:json-pointer@^0.3.0",
       "json-schema-instantiator": "npm:json-schema-instantiator@^0.3.0",
-      "json-schema-view-js": "npm:json-schema-view-js@^0.2.0",
+      "json-schema-ref-parser": "npm:json-schema-ref-parser@2.2.0",
       "marked": "npm:marked@^0.3.5",
       "scrollparent": "npm:scrollparent@^0.1.0",
-      "swagger-parser": "npm:swagger-parser@^3.3.0"
+      "swagger-parser": "npm:swagger-parser@^3.4.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.34",
@@ -44,31 +46,27 @@
       "core-js": "npm:core-js@^1.2.6",
       "css": "github:systemjs/plugin-css@^0.1.18",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
-    },
-    "overrides": {
-      "github:RomanGotsiy/json-schema-ref-parser@master": {
-        "registry": "npm"
-      }
     }
   },
   "devDependencies": {
     "babel-eslint": "^4.1.6",
     "babel-polyfill": "^6.3.14",
-    "branch-release": "^0.2.1",
+    "branch-release": "^0.3.1",
     "browser-sync": "^2.10.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
     "gulp-inline-ng2-template": "^0.0.9",
+    "gulp-protractor": "^2.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.1.1",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.1",
     "isparta": "^4.0.0",
     "istanbul": "github:gotwarlost/istanbul#source-map",
     "jasmine-core": "^2.4.1",
+    "jasmine-spec-reporter": "^2.4.0",
     "jspm": "^0.16.19",
     "karma": "^0.13.15",
     "karma-babel-preprocessor": "^5.2.2",
@@ -84,12 +82,13 @@
     "karma-should": "^1.0.0",
     "karma-sinon": "^1.0.4",
     "phantomjs": "^1.9.19",
+    "protractor": "^3.0.0",
     "reflect-metadata": "^0.1.2",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
-    "systemjs-builder": "^0.14.15",
+    "systemjs-builder": "^0.15.2",
     "vinyl-paths": "^2.0.0",
     "zone.js": "^0.5.10"
   }

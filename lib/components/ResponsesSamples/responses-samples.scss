@@ -14,3 +14,21 @@ header {
   color: $sample-panel-headers-color;
   text-transform: uppercase;
 }
+
+:host tabs li {
+  font-size: 13px;
+  margin: 2px 0;
+  padding: 2px 5px;
+  color: #8A9094;
+  line-height: 1.25;
+  color: $sample-panel-headers-color;
+
+  &.active {
+    background-color: white;
+    color: #666;
+  }
+}
+
+:host tabs ul {
+  padding-top: 10px;
+}

@@ -54,7 +54,7 @@ module.exports = function (config) {
 
         jspm: {
             config: 'system.config.js',
-            loadFiles: ['tests/**/*.spec.js', 'tests/helpers.js', 'lib/**/*.js'],
+            loadFiles: ['tests/unit/*.spec.js', 'tests/helpers.js', 'lib/**/*.js'],
             serveFiles: ['tests/schemas/**/*.json', 'lib/**/*.html', '.tmp/lib/**/*.css'],
             nocache: true
         },

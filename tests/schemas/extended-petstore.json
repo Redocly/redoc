@@ -772,8 +772,12 @@
     },
     "Pet": {
       "type": "object",
-      "required": ["name", "photoUrls"],
+      "required": ["name", "photoUrls", "petType"],
+      "discriminator": "petType",
       "properties": {
+        "petType": {
+          "type": "string"
+        },
         "id": {
           "type": "integer",
           "format": "int64"
@@ -814,6 +818,33 @@
       "xml": {
         "name": "Pet"
       }
+    },
+    "Cat": {
+      "description": "A representation of a cat",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "huntingSkill": {
+              "type": "string",
+              "description": "The measured skill for hunting",
+              "default": "lazy",
+              "enum": [
+                "clueless",
+                "lazy",
+                "adventurous",
+                "aggressive"
+              ]
+            }
+          },
+          "required": [
+            "huntingSkill"
+          ]
+        },
+        {
+          "$ref": "#/definitions/Pet"
+        },
+      ]
     },
     "ApiResponse": {
       "type": "object",

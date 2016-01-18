@@ -1,11 +1,15 @@
 # ReDoc
-[![travis-ci-status]](https://travis-ci.org/Rebilly/ReDoc) [![coverage-status-badge]](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![code-climate-badge]](https://codeclimate.com/github/Rebilly/ReDoc) [![dev-dependency-badge]](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![license-badge]](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Code Climate](https://codeclimate.com/github/Rebilly/ReDoc/badges/gpa.svg)](https://codeclimate.com/github/Rebilly/ReDoc) [![David](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies)
+
+[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/swagger-parser) [![Bower](http://img.shields.io/bower/v/redoc.svg)](http://bower.io/) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+
+[![Browser Compatibility](https://saucelabs.com/browser-matrix/redoc.svg)](https://saucelabs.com/u/redoc)
 
 Swagger-generated API Reference Documentation
 
 **Under development**
 
-[Live demo][demo]
+[Live demo](http://rebilly.github.io/ReDoc/)
 
 ## Running locally
 1. Clone repository
@@ -18,11 +22,3 @@ Swagger-generated API Reference Documentation
 5. Start the server
 `npm start`
 6. Open `http://localhost:9000`
-
-
-[travis-ci-status]: https://travis-ci.org/Rebilly/ReDoc.svg?branch=master "TravisCI Status"
-[license-badge]: https://img.shields.io/github/license/rebilly/redoc.svg "Github license"
-[coverage-status-badge]:https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github) "Coverage Status"
-[dev-dependency-badge]: https://david-dm.org/Rebilly/ReDoc/dev-status.svg
-[code-climate-badge]: https://codeclimate.com/github/Rebilly/ReDoc/badges/gpa.svg "Code Climate"
-[demo]: http://rebilly.github.io/ReDoc/
