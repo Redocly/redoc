@@ -10,6 +10,13 @@ export function getChildDebugElement(parent, tagName) {
   });
 }
 
+/** Gets a child DebugElement by Component Type. */
+export function getChildDebugElementByType(parent, type) {
+  return parent.query(debugEl => {
+    return debugEl.componentInstance instanceof type;
+  });
+}
+
 /** Gets a child DebugElements by tag name. */
 export function getChildDebugElementAll(parent, tagName) {
   return parent.queryAll(debugEl => {
