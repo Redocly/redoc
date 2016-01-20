@@ -2,6 +2,7 @@
 const verifyNoBrowserErrors = require('./helpers').verifyNoBrowserErrors;
 const scrollToEl = require('./helpers').scrollToEl;
 const fixFFTest = require('./helpers').fixFFTest;
+const eachNth = require('./helpers').eachNth;
 
 const URL = 'index.html';
 
@@ -35,7 +36,7 @@ basicTests(null, 'Extended Petstore');
 
 describe('Scroll sync', () => {
   let specUrl = URL;
-  
+
   beforeEach((done) => {
     browser.get(specUrl);
     fixFFTest(done);
@@ -58,6 +59,14 @@ describe('APIs.guru specs test', ()=> {
   delete apisGuruList['learnifier.com']; // allof object and no type
   delete apisGuruList['googleapis.com:mirror']; // bad urls in images
   delete apisGuruList['googleapis.com:discovery']; // non-string references
+
+  // run quick version of e2e test on all builds except releases
+  if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
+    console.log('Running on short APIs guru list');
+    apisGuruList = eachNth(apisGuruList, 10);
+  } else {
+    console.log('Running on full APIs guru list')
+  }
 
   for (let apiName of Object.keys(apisGuruList)) {
     let apiInfo = apisGuruList[apiName].versions[apisGuruList[apiName].preferred];

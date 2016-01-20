@@ -82,9 +82,21 @@ function fixFFTest(done) {
   })
 }
 
+/* picks each n-th property from object */
+function eachNth(obj, n) {
+  let res = {};
+  Object.keys(obj).forEach((k, idx) => {
+    if (idx % n === 0) {
+      res[k] = obj[k];
+    }
+  });
+  return res;
+}
+
 module.exports = {
   loadJson: loadJson,
   verifyNoBrowserErrors: verifyNoBrowserErrors,
   scrollToEl: scrollToEl,
-  fixFFTest: fixFFTest
+  fixFFTest: fixFFTest,
+  eachNth: eachNth
 }
