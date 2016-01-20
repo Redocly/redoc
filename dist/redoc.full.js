@@ -8179,20 +8179,38 @@ $__System.register('1a', ['2', '3', '4', '5', '6', '7', '8', '10', '12', '13', '
             });
           }
         }, {
+          key: 'autoInit',
+          value: function autoInit() {
+            var specUrlAttributeName = 'spec-url';
+            var dom = new BrowserDomAdapter();
+            var redocEl = dom.query('redoc');
+            if (!redocEl) return;
+            if (dom.hasAttribute(redocEl, specUrlAttributeName)) {
+              var url = dom.getAttribute(redocEl, specUrlAttributeName);
+              Redoc.init(url);
+            }
+          }
+        }, {
           key: 'dispose',
           value: function dispose() {
             var dom = new BrowserDomAdapter();
             var el = dom.query('redoc');
-            var parent = el.parentElement;
-            var nextSibling = el.nextElementSibling;
+            var parent = undefined;
+            var nextSibling = undefined;
+            if (el) {
+              parent = el.parentElement;
+              nextSibling = el.nextElementSibling;
+            }
 
-            Redoc.appRef && Redoc.appRef.dispose();
-            Redoc.appRef = null;
+            if (Redoc.appRef) {
+              Redoc.appRef.dispose();
+              Redoc.appRef = null;
 
-            // Redoc dispose removes host element, so need to restore it
-            el = dom.createElement('redoc');
-            el.innerText = 'Loading...';
-            parent.insertBefore(el, nextSibling);
+              // Redoc dispose removes host element, so need to restore it
+              el = dom.createElement('redoc');
+              el.innerText = 'Loading...';
+              parent && parent.insertBefore(el, nextSibling);
+            }
           }
         }]);
 
@@ -55466,6 +55484,7 @@ $__System.register('1', ['14', '1a9'], function (_export) {
 
       window.Redoc = Redoc;
       enableProdMode();
+      Redoc.autoInit();
     }
   };
 });
