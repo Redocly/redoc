@@ -12,16 +12,12 @@
     </nav>
     </nav>
 
-    <redoc scroll-y-offset="body > nav">
+    <redoc scroll-y-offset="body > nav" spec-url='swagger.json'>
       Loading...
     </redoc>
 
     <!-- ReDoc built file with all dependencies included -->
     <script src="dist/redoc.full.js"> </script>
     <script src="main.js"> </script>
-    <script>
-      /* init redoc */
-      Redoc.init('swagger.json', {scrollYOffset: 'body>nav'});
-    </script>
   </body>
 </html>
