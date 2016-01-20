@@ -1,6 +1,12 @@
 @import '../../common/styles/variables';
 @import '../../common/styles/share-link';
 
+:host {
+  padding-bottom: 100px;
+  display: block;
+  border-bottom: 2px solid rgba(127, 127, 127, 0.25);
+}
+
 responses-list, params-list {
   display: block;
 }
@@ -71,6 +77,7 @@ responses-list, params-list {
   color: $sample-panel-color;
   width: 40%;
   padding: 10px 20px;
+  background: $samples-panel-bg-color;
 }
 
 responses-samples {
@@ -127,4 +134,22 @@ responses-samples {
 
 .http-method.head {
   background-color: darkkhaki;
+}
+
+@media (max-width: 1100px) {
+  .methods:before {
+    display: none;
+  }
+
+  .method-samples, .method-content  {
+    width: 100%;
+  }
+
+  .method-samples {
+    margin-top: 2em;
+  }
+
+  :host {
+    padding-bottom: 0;
+  }
 }

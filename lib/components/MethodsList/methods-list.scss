@@ -1,12 +1,6 @@
 @import '../../common/styles/variables';
 @import '../../common/styles/share-link';
 
-method {
-  padding-bottom: 100px;
-  display: block;
-  border-bottom: 2px solid rgba(127, 127, 127, 0.25);
-}
-
 .tag-info {
   padding: 0 20px;
   box-sizing: border-box;
@@ -38,4 +32,10 @@ method {
   right: 0;
   position: absolute;
   z-index: -1;
+}
+
+@media (max-width: 1100px) {
+  .methods:before {
+    display: none;
+  }
 }
