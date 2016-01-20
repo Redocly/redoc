@@ -37,11 +37,13 @@ deploy:
     script: ./build/deploy_gh_pages.sh
     on:
       branch: master
+      condition: $JOB != e2e
   - skip_cleanup: true
     provider: script
     script: npm run branch-release
     on:
       branch: master
+      condition: $JOB != e2e
   - provider: npm
     skip_cleanup: true
     email: gotsijroman@gmail.com
