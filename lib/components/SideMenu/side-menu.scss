@@ -1,4 +1,5 @@
 @import '../../common/styles/variables';
+$mobile-menu-compact-breakpoint: 550px;
 
 .menu-header {
   text-transform: uppercase;
@@ -22,6 +23,11 @@
 
 .menu-cat:nth-of-type(even) .menu-cat-header {
   background-color: $side-menu-even-bg-color;
+}
+
+.menu-cat .menu-cat-header.active {
+  background-color: $side-menu-active-bg-color;
+  font-weight: bold;
 }
 
 .menu-subitems {
@@ -61,7 +67,90 @@
   }
 }
 
-.menu-cat-header.active, .menu-subitems li.active {
-  background-color: $side-menu-active-bg-color !important;
-  font-weight: bold;
+.menu-cat .menu-subitems {
+  li.active, li.active:nth-of-type(even) {
+    background-color: $side-menu-active-bg-color;
+    font-weight: bold;
+  }
+}
+
+.mobile-nav {
+  display: none;
+  height: 3em;
+  line-height: 3em;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 100 100" version="1.1" viewBox="0 0 100 100" xml:space="preserve"><polygon fill="#010101" points="23.1 34.1 51.5 61.7 80 34.1 81.5 35 51.5 64.1 21.5 35 23.1 34.1 "/></svg>');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    float: right;
+    vertical-align: middle;
+  }
+
+  .menu-header {
+    padding: 0 10px;
+    font-size: 0.95em;
+
+    @media (max-width: $mobile-menu-compact-breakpoint) {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $side-menu-mobile-breakpoint) {
+  .mobile-nav {
+    display: block;
+  }
+
+  #resources-nav {
+    height: 0;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+  }
+
+  #resources-nav .menu-header {
+    display: none;
+  }
+
+  .menu-subitems {
+    height: auto;
+  }
+}
+
+.selected-tag {
+  text-transform: capitalize;
+}
+
+.selected-endpoint:before {
+  content: "/";
+  padding: 0 2px;
+  color: #ccc;
+}
+
+.selected-endpoint:empty:before {
+  display: none;
+}
+
+.selected-item-info {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 350px;
+
+  @media (max-width: $mobile-menu-compact-breakpoint) {
+    display: inline-block;
+    padding: 0 10px;
+    max-width: 80%;
+    max-width: calc(100% - 4em);
+  }
 }

@@ -49,17 +49,48 @@ api-info {
 api-logo {
   display: block;
   text-align: center;
+
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    display: none;
+  }
 }
 
 [sticky-sidebar] {
   width: $side-bar-width;
+  background-color: $side-bar-bg-color;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: $side-bar-bg-color;
+
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    z-index: 1;
+    width: 100%;
+    bottom: auto !important;
+  }
 }
 
 #api-content {
   margin-left: $side-bar-width;
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    padding-top: 3em;
+    margin-left: 0;
+  }
+}
+
+#api-content:after {
+  content: "";
+  position: absolute;;
+  left:0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+#api-content.menu-opened:after {
+  display: block;;
 }
 
 footer {

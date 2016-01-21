@@ -1,13 +1,22 @@
-<h2 class="menu-header"> Api reference </h2>
-<div *ngFor="var cat of data.menu; #idx = index" class="menu-cat">
+<div class="mobile-nav" (click)="toggleMobileNav()">
+  <span class="menu-header"> API Reference: </span>
+  <span class="selected-item-info">
+    <span class="selected-tag"> {{activeCatCaption}} </span>
+    <span class="selected-endpoint">{{activeItemCaption}}</span>
+  </span>
+</div>
+<div id="resources-nav">
+  <h2 class="menu-header"> API reference </h2>
+  <div *ngFor="var cat of data.menu; #idx = index" class="menu-cat">
 
-  <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>
-  <ul class="menu-subitems" [ngClass]="{active: cat.active}">
-    <li *ngFor="var method of cat.methods; var methIdx = index"
-      [ngClass]="{active: method.active}"
-      (click)="activateAndScroll(idx, methIdx)">
-      {{method.summary}}
-    </li>
-  </ul>
+    <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>
+    <ul class="menu-subitems" [ngClass]="{active: cat.active}">
+      <li *ngFor="var method of cat.methods; var methIdx = index"
+        [ngClass]="{active: method.active}"
+        (click)="activateAndScroll(idx, methIdx)">
+        {{method.summary}}
+      </li>
+    </ul>
 
+  </div>
 </div>
