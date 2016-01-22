@@ -97,7 +97,7 @@ $mobile-menu-compact-breakpoint: 550px;
   }
 
   .menu-header {
-    padding: 0 10px;
+    padding: 0 10px 0 20px;
     font-size: 0.95em;
 
     @media (max-width: $mobile-menu-compact-breakpoint) {
@@ -149,7 +149,7 @@ $mobile-menu-compact-breakpoint: 550px;
 
   @media (max-width: $mobile-menu-compact-breakpoint) {
     display: inline-block;
-    padding: 0 10px;
+    padding: 0 20px;
     max-width: 80%;
     max-width: calc(100% - 4em);
   }
