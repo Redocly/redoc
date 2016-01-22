@@ -5,24 +5,6 @@
   box-sizing: border-box;
 }
 
-:host {
-  pre {
-    white-space: pre-wrap;
-    background-color: #f2f2f2;
-    padding: 10px;
-    overflow-x: auto;
-    line-height: normal;
-  }
-
-  code {
-    background-color: #f2f2f2;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
 .redoc-wrap {
   position: relative;
 }
@@ -106,5 +88,72 @@ footer {
   strong {
     font-size: 18px;
     color: $headers-color;
+  }
+}
+
+
+/* markdown elements */
+
+:host {
+  pre {
+    font-family: Courier, monospace;
+    white-space: pre-wrap;
+    background-color: rgba(0,0,0,0.04);
+    padding: 10px;
+    overflow-x: auto;
+    line-height: normal;
+    border-radius: 3px;
+
+    code {
+      background-color: transparent;
+    }
+  }
+
+  code {
+    font-family: Courier, monospace;
+    background-color: rgba(0,0,0,0.04);
+    padding: 0.2em 0;
+    font-size: 0.85em;
+    border-radius: 3px;
+
+    &:before, &:after {
+      letter-spacing: -0.2em;
+      content: "\\00a0";
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  table tr {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+
+    &:nth-child(2n) {
+      background-color: #f8f8f8;
+    }
+  }
+
+  table th, table td {
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+  }
+
+  table th {
+    text-align: left;
+    font-weight: bold;
   }
 }
