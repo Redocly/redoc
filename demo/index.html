@@ -8,8 +8,10 @@
   <body>
     <nav>
       <header> ReDoc </header>
-      <input id="schema-url-input" value='swagger.json'>
-      <button id="load-button"> Explore </button>
+      <form id="schema-url-form">
+        <input id="schema-url-input" value='swagger.json'>
+        <button type="submit"> Explore </button>
+      </form>
     </nav>
 
     <redoc scroll-y-offset="body > nav" spec-url='swagger.json'>

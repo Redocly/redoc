@@ -1,9 +1,10 @@
 ;(function() {
   'use strict';
 
-  var loadButton = document.getElementById('load-button');
+  var schemaUrlForm = document.getElementById('schema-url-form');
   var schemaUrlInput = document.getElementById('schema-url-input');
-  loadButton.addEventListener('click', function() {
+  schemaUrlForm.addEventListener('submit', function(event) {
     Redoc.init(schemaUrlInput.value);
+    event.preventDefault(); 
   })
 })();
