@@ -10,7 +10,6 @@ $mobile-menu-compact-breakpoint: 550px;
 }
 
 .menu-cat-header {
-  //font-weight: bold;
   font-size: 15px;
   cursor: pointer;
   color: $side-menu-item-color;
@@ -26,8 +25,7 @@ $mobile-menu-compact-breakpoint: 550px;
 }
 
 .menu-cat .menu-cat-header.active {
-  background-color: $side-menu-active-bg-color;
-  font-weight: bold;
+  background-color: darken($side-menu-active-bg-color, 5%);
 }
 
 .menu-subitems {
@@ -70,7 +68,6 @@ $mobile-menu-compact-breakpoint: 550px;
 .menu-cat .menu-subitems {
   li.active, li.active:nth-of-type(even) {
     background-color: $side-menu-active-bg-color;
-    font-weight: bold;
   }
 }
 
