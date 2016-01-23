@@ -67,6 +67,23 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   font-weight: bold;
 }
 
+.param-type.array:before {
+  content: "Array of ";
+  color: #999;
+}
+
+.param-type.string {
+  color: rgba(0, 80, 0, 0.7);
+}
+
+.param-type.integer {
+  color: rgba(30, 0, 80, 0.7);
+}
+
+.param-type.object {
+  color: rgba(139, 0, 0, 0.67);
+}
+
 .param-type.with-hint {
   &:before, &:after {
     content: "\\00a0";
