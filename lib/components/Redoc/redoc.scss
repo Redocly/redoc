@@ -149,6 +149,17 @@ footer {
     border-left: 4px solid #ddd;
   }
 
+  img {
+    max-width: 100%;
+    box-sizing: content-box;
+  }
+
+  ul, ol {
+    padding-left: 2em;
+    margin: 0;
+    margin-bottom: 1em;
+  }
+
   table {
     display: block;
     width: 100%;
