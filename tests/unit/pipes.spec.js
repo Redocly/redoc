@@ -85,12 +85,12 @@ describe('Pipes', () => {
 
     beforeEach(() => {
       unmarked = 'test\n';
-      marked = '<p>test</p>\n';
+      marked = '<span class="redoc-markdown-block"><p>test</p>\n</span>';
       pipe = new MarkedPipe();
     });
 
     describe('MarkedPipe transform', () => {
-      it('should escpae pointer', () => {
+      it('should wrap in markdown span', () => {
         var val = pipe.transform(unmarked);
         val.should.be.equal(marked);
       });
