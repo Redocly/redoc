@@ -94,7 +94,7 @@ footer {
 
 /* markdown elements */
 
-:host {
+:host .redoc-markdown-block {
   pre {
     font-family: Courier, monospace;
     white-space: pre-wrap;
@@ -106,6 +106,10 @@ footer {
 
     code {
       background-color: transparent;
+
+      &:before, &:after {
+        content: none;
+      }
     }
   }
 
