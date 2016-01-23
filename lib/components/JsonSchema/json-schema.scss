@@ -60,12 +60,22 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-type {
-  text-transform: capitalize;
   color: #999;
   font-size: 12px;
   line-height: $param-name-height;
   vertical-align: middle;
   font-weight: bold;
+}
+
+.param-type.with-hint {
+  &:before, &:after {
+    content: "\\00a0";
+  }
+  background-color: rgba(0, 50, 159, 0.1);
+  padding: 0.2em 0;
+  font-size: 0.85em;
+  border-radius: 3px;
+  cursor: help;
 }
 
 .param-type-trivial {
