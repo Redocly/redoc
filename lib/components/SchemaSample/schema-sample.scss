@@ -1,0 +1,112 @@
+pre {
+  background-color: transparent;
+  padding: 0;
+}
+:host {
+  .property {
+    //font-weight: bold;
+  }
+
+  .type-null {
+    color: gray;
+  }
+
+  .type-boolean {
+    color: firebrick;
+  }
+
+  .type-number {
+    color: #4A8BB3;
+  }
+
+  .type-string {
+    color: #66B16E;
+  }
+
+  .callback-function {
+    color: gray;
+  }
+
+  .collapser:after {
+    content: "-";
+    cursor: pointer;
+  }
+
+  .collapsed > .collapser:after {
+    content: "+";
+    cursor: pointer;
+  }
+
+  .ellipsis:after {
+    content: " … ";
+  }
+
+  .collapsible {
+    margin-left: 2em;
+  }
+
+  .hoverable {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+  }
+
+  .hovered {
+    background-color: rgba(235, 238, 249, 1);
+  }
+
+  .collapser {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  ul, .redoc-json ul {
+  	list-style-type: none;
+  	padding: 0px;
+  	margin: 0px 0px 0px 26px;
+  }
+
+  li {
+  	position: relative;
+  }
+
+  .hoverable {
+  	transition: background-color .2s ease-out 0s;
+  	-webkit-transition: background-color .2s ease-out 0s;
+  	display: inline-block;
+  }
+
+  .hovered {
+  	transition-delay: .2s;
+  	-webkit-transition-delay: .2s;
+  }
+
+  .selected {
+  	outline-style: solid;
+  	outline-width: 1px;
+  	outline-style: dotted;
+  }
+
+  .collapsed>.collapsible {
+  	display: none;
+  }
+
+  .ellipsis {
+  	display: none;
+  }
+
+  .collapsed>.ellipsis {
+  	display: inherit;
+  }
+
+  .collapser {
+  	position: absolute;
+  	top: 1px;
+  	left: -1.5em;
+  	cursor: default;
+  	user-select: none;
+  	-webkit-user-select: none;
+  }
+}

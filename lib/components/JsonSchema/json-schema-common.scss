@@ -76,12 +76,16 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   color: rgba(0, 80, 0, 0.7);
 }
 
-.param-type.integer {
-  color: rgba(30, 0, 80, 0.7);
+.param-type.integer, .param-type.number {
+  color: rgba(74, 139, 179, 0.8);
 }
 
 .param-type.object {
-  color: rgba(139, 0, 0, 0.67);
+  color: rgba(0, 50, 159, 0.7);
+}
+
+.param-type.boolean {
+  color: firebrick;
 }
 
 .param-type.with-hint {

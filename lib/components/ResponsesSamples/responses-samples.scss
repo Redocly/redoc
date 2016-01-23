@@ -16,7 +16,7 @@ header {
   font-weight: normal;
 }
 
-:host tabs li {
+:host > tabs > ul li {
   font-size: 13px;
   margin: 2px 0;
   padding: 2px 5px;
