@@ -91,6 +91,12 @@ footer {
   }
 }
 
+/* global redoc styles */
+
+:host p {
+  margin: 0;
+  margin-bottom: 1em;
+}
 
 /* markdown elements */
 
@@ -128,6 +134,19 @@ footer {
 
   p {
     margin: 0;
+    margin-bottom: 1em;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  blockquote {
+    margin: 0;
+    margin-bottom: 1em;
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
   }
 
   table {
