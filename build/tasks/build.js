@@ -55,7 +55,7 @@ var JS_DEV_DEPS_MIN = [
 
 gulp.task('sass', function () {
   return gulp.src(paths.scss, { base: './' })
-    .pipe(sass.sync().on('error', sass.logError))
+    .pipe(sass.sync({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(gulp.dest(paths.tmp));
 });
 
