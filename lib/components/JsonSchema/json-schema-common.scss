@@ -1,0 +1,156 @@
+@import '../../common/styles/variables';
+$lines-width: 1px;
+$bullet-size: 7px;
+$cell-spacing: 25px;
+$cell-padding: 10px;
+$bullet-margin: 10px;
+$line-border: $lines-width solid $tree-lines-color;
+$line-border-erase: ($lines-width + 1px) solid white;
+
+$param-name-height: 20px;
+
+$sub-schema-offset: ($bullet-size/2) + $bullet-margin;
+
+.param-schema {
+  padding-left: $sub-schema-offset - $lines-width;
+  border-left: $line-border;
+}
+
+.param-wrap {
+  position: relative;
+}
+
+.param-schema:before {
+  content: "";
+  position: absolute;
+  left: $sub-schema-offset;
+  top: ($param-name-height/2) + $cell-padding;
+  bottom: 0;
+  border-left: $line-border;
+}
+
+.param-name {
+  font-size: 14px;
+  padding: $cell-padding $cell-spacing $cell-padding 0;
+  font-weight: bold;
+  box-sizing: border-box;
+  line-height: $param-name-height;
+  border-left: $line-border;
+  white-space: nowrap;
+  position: relative;
+}
+
+.param-info {
+  width: 100%;
+  padding: $cell-padding 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}
+
+.param {
+  display: flex;
+}
+
+.param-required {
+  color: red;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: $param-name-height;
+  vertical-align: middle;
+}
+
+.param-type {
+  color: #999;
+  font-size: 12px;
+  line-height: $param-name-height;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.param-type.array:before {
+  content: "Array of ";
+  color: #999;
+}
+
+.param-type.string {
+  color: rgba(0, 80, 0, 0.7);
+}
+
+.param-type.integer {
+  color: rgba(30, 0, 80, 0.7);
+}
+
+.param-type.object {
+  color: rgba(139, 0, 0, 0.67);
+}
+
+.param-type.with-hint {
+  &:before, &:after {
+    content: "\\00a0";
+  }
+  background-color: rgba(0, 50, 159, 0.1);
+  padding: 0.2em 0;
+  font-size: 0.85em;
+  border-radius: 3px;
+  cursor: help;
+}
+
+.param-type-trivial {
+  margin: 10px 10px 0;
+  display: inline-block;
+}
+
+/* tree */
+
+// Bullet
+.param-name > span:before {
+  content: "";
+  display: inline-block;
+  width: $bullet-size;
+  height: $bullet-size;
+  background-color: $tree-lines-color;
+  margin: 0 $bullet-margin;
+  vertical-align: middle;
+}
+
+.param-name > span:after {
+  content: "";
+  position: absolute;
+  border-top: $line-border;
+  width: $bullet-margin;
+  left: 0;
+  top: ($param-name-height/2) + $cell-padding;
+}
+
+.param-wrap:first-of-type > .param > .param-name:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -$lines-width;
+  top: 0;
+  border-left: $line-border-erase;
+  height: ($param-name-height/2) + $cell-padding;
+}
+
+.param-wrap:last-of-type > .param > .param-name {
+  position: static;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: -$lines-width;
+    border-left: $line-border-erase;
+    top: ($param-name-height/2) + $cell-padding + $lines-width;
+    background-color: white;
+    bottom: 0;
+  }
+}
+
+.param-wrap:last-of-type > .param-schema {
+  border-left-color: transparent;
+}
+
+.param-schema .param-wrap:first-of-type .param-name:before {
+  display: none !important;
+}
