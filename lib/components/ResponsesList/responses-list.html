@@ -1,6 +1,6 @@
 <h2 class="responses-list-header" *ngIf="data.responses.length"> Responses </h2>
 <zippy *ngFor="#response of data.responses" title="{{response.code}} {{response.description}}"
-  [type]="response.type" [empty]="!response.schema" (open)="lazy.load()">
+  [type]="response.type" [empty]="response.empty" (open)="lazySchema.load()">
   <div *ngIf="response.headers" class="response-headers">
     <header>
       Headers
@@ -14,8 +14,8 @@
   <header>
     Response schema
   </header>
-  <!--<json-schema *ngIf="response.schema" class="schema type" pointer="{{response.pointer}}/schema">
-  </json-schema>-->
-  <json-schema-lazy #lazy class="schema type" pointer="{{response.pointer}}/schema">
+  <json-schema *ngIf="response.schema && !enabledLazy" class="schema type" pointer="{{response.pointer}}/schema">
+  </json-schema>
+  <json-schema-lazy #lazySchema pointer="{{response.schema ? response.pointer + '/schema' : null}}">
   </json-schema-lazy>
 </zippy>
