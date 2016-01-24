@@ -11,7 +11,7 @@ Swagger-generated API Reference Documentation
 
 ## Deployment
 
-## tl;dr
+#### tl;dr
 ```html
 <!DOCTYPE html>
 <html>
@@ -85,7 +85,7 @@ Instead of adding `spec-url` attribute to the `<redoc>` element you can initiali
 Redoc.init(specUrl, options)
 ```
 
-`options` is javascript object with camel-cased versions of options names as the keys. For example:
+`options` is javascript object with camel-cased version of options names as the keys. For example:
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
   scrollYOffset: 50
