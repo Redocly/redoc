@@ -44,7 +44,8 @@ describe('Scroll sync', () => {
 
   it('should update active menu entries on page scroll', () => {
     scrollToEl('[tag="store"]').then(function() {
-      expect($('.menu-cat-header.active').getText()).toBe('STORE');
+      expect($('.menu-cat-header.active').getInnerHtml()).toContain('store');
+      expect($('.selected-tag').getInnerHtml()).toContain('store');
     });
   });
 });

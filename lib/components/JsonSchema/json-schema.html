@@ -1,4 +1,7 @@
-<span *ngIf="isTrivial" class="param-type param-type-trivial" [ngClass]="type">{{_displayType}}</span>
+<span *ngIf="isTrivial" class="param-wrap">
+  <span class="param-type param-type-trivial {{type}}"
+  [ngClass]="{'with-hint': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>
+</span>
 <div *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
   <div *ngFor="#prop of data.properties" class="param-wrap">
     <div class="param" [ngClass]="{'discriminator': prop.isDiscriminator}">
@@ -7,7 +10,8 @@
       </div>
       <div class="param-info">
         <div>
-          <span class="param-type" [ngClass]="prop.type">{{prop._displayType}} {{prop._displayFormat}}</span>
+          <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint}"
+          title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>
           <span *ngIf="prop.isRequired" class="param-required">Required</span>
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>

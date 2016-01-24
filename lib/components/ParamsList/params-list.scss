@@ -4,9 +4,10 @@
   padding: 0.2em 0;
   margin: 0.5em 0;
   color: #253137;
+  font-weight: normal;
 }
 
-@import '../JsonSchema/json-schema.scss';
+@import '../JsonSchema/json-schema-common';
 
 
 // paramters can't be multilevel so table representation works for it without javascript

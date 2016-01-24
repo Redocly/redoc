@@ -29,7 +29,7 @@
   },{
     "name": "JSONP",
     "x-traitTag": true,
-    "description": "If you're writing an AJAX application, and you'd like to wrap our response with a callback, all you have to do is specify a callback parameter with any API call:\n```\n https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction\n```\nWould respond with:\n```js\ncallbackFunction({\n    ...\n});\n```",
+    "description": "If you're writing an AJAX application, and you'd like to wrap our response with a callback, all you have to do is specify a callback parameter with any API call:\n```\n https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction\n```\nWould respond with:\n```js\ncallbackFunction({\n    ...\n});\n``` \n > Example of markdown blockquote",
     "externalDocs": {
       "description": "Find out more",
       "url": "http://swagger.io"

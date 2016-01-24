@@ -10,12 +10,12 @@
     </redoc>
 
     <!-- ReDoc built file with all dependencies included -->
-    <script src="dist/redoc.full.min.js"> </script>
+    <script src="dist/redoc.min.js"> </script>
     <script>
       window.redocError = null;
       /* init redoc */
       var url = window.location.search.substr(5) || 'swagger.json';
-      Redoc.init(decodeURIComponent(url)).then(function() {}, function(err) {
+      Redoc.init(decodeURIComponent(url), {disableLazySchemas: true}).then(function() {}, function(err) {
         window.redocError = err;
       });
     </script>

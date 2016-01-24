@@ -65,7 +65,7 @@ function verifyNoBrowserErrors() {
 function scrollToEl(selector) {
   let script = `
     document.querySelector('${selector}').scrollIntoView(true);
-    window.scrollBy(0, 10);
+    window.scrollBy(0, 200);
   `;
 
   return browser.driver.executeScript(script);

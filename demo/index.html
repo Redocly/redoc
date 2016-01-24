@@ -3,21 +3,21 @@
   <head>
     <title>ReDoc</title>
     <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <nav>
       <header> ReDoc </header>
-      <input id="schema-url-input" value='swagger.json'>
-      <button id="load-button"> Explore </button>
-    </nav>
+      <form id="schema-url-form">
+        <input id="schema-url-input" value='swagger.json'>
+        <button type="submit"> Explore </button>
+      </form>
     </nav>
 
-    <redoc scroll-y-offset="body > nav" spec-url='swagger.json'>
-      Loading...
-    </redoc>
+    <redoc scroll-y-offset="body > nav" spec-url='swagger.json'></redoc>
 
     <!-- ReDoc built file with all dependencies included -->
-    <script src="dist/redoc.full.js"> </script>
+    <script src="dist/redoc.js"> </script>
     <script src="main.js"> </script>
   </body>
 </html>
