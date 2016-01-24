@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git://github.com/Rebilly/ReDoc"
   },
-  "main": "dist/redoc.full.min.js",
+  "main": "dist/redoc.min.js",
   "scripts": {
     "test": "gulp lint && ./build/run_tests.sh",
     "prepublish": "gulp build",

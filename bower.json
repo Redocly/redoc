@@ -1,7 +1,7 @@
 {
   "name": "redoc",
   "description": "Swagger-generated API Reference Documentation",
-  "main": "dist/redoc.full.min.js",
+  "main": "dist/redoc.min.js",
   "authors": [
     "Roman Hotsiy"
   ],

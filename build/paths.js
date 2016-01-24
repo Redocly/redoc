@@ -3,7 +3,7 @@ module.exports = {
   html: 'lib/**/*.html',
   scss: 'lib/**/*.scss',
   sourceEntryPoint: 'lib/index.js',
-  outputName: 'redoc.full',
+  outputName: 'redoc',
   output: 'dist/',
   tmp: '.tmp/',
   demo: 'demo/**/*',
