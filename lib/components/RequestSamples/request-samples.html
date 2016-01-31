@@ -1,0 +1,10 @@
+<header *ngIf="data.bodySchemaPtr || data.samples.length"> Request samples </header>
+<schema-sample *ngIf="!data.samples.length" [pointer]="data.bodySchemaPtr"> </schema-sample>
+<tabs *ngIf="data.samples.length">
+  <tab tabTitle="json">
+    <schema-sample [pointer]="data.bodySchemaPtr"> </schema-sample>
+  </tab>
+  <tab *ngFor="#sample of data.samples" [tabTitle]="sample.lang">
+    <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>
+  </tab>
+</tabs>

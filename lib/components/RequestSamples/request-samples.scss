@@ -1,0 +1,31 @@
+@import '../../common/styles/variables';
+
+header {
+  font-size: 16px;
+  margin: 5px 0;
+  color: $sample-panel-headers-color;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+:host > tabs > ul li {
+  font-size: 13px;
+  margin: 2px 0;
+  padding: 2px 10px;
+  color: #8A9094;
+  line-height: 1.25;
+  color: $sample-panel-headers-color;
+
+  &.active {
+    background-color: white;
+    color: #666;
+  }
+}
+
+:host tabs ul {
+  padding-top: 10px;
+}
+
+pre {
+  overflow-x: auto;
+}
