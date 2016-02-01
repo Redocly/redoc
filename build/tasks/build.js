@@ -87,9 +87,6 @@ function concatDeps(deps, file) {
 function bundle(outputFile, minify, cb) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
-  builder.config({
-    separateCSS: true
-  });
 
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),

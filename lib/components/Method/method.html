@@ -18,8 +18,8 @@
   </div>
   <div class="method-samples">
     <div *ngIf="data.bodyParam">
-      <header> Body sample </header>
-      <schema-sample pointer="{{data.bodyParam._pointer}}/schema"> </schema-sample>
+      <request-samples [pointer]="pointer" [bodySchemaPtr]="data.bodyParam._pointer">
+      </request-samples>
     </div>
     <div>
       <responses-samples pointer="{{pointer}}/responses"> </responses-samples>
