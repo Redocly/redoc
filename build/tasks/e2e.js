@@ -12,7 +12,7 @@ gulp.task('test-server', function (done) {
       baseDir: './tests/e2e',
       routes: {
         '/dist': './dist',
-        '/swagger.json': './demo/swagger.json'
+        '/swagger.yml': './demo/swagger.yml'
       },
     }
   }, done);
