@@ -72,6 +72,13 @@ For npm:
 
 ## Configuration
 
+#### Swagger vendor extensions
+ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions):
+* [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
+* [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
+* [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
+
+#### Options
 * `spec-url` - relative or absolute url to your spec file
 * `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc.
 `scroll-y-offset` can be specified in various ways:
