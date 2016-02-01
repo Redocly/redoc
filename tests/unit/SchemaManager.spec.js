@@ -19,7 +19,7 @@ describe('Utils', () => {
     });
 
     it('load should return a promise', ()=> {
-      schemaMgr.load('/tests/schemas/extended-petstore.json').should.be.instanceof(Promise);
+      schemaMgr.load('/tests/schemas/extended-petstore.yml').should.be.instanceof(Promise);
     });
 
     it('load should reject promise for invalid url', (done)=> {
@@ -31,7 +31,7 @@ describe('Utils', () => {
     });
 
     it('load should resolve promise for valid url', (done)=> {
-      schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
+      schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
         done();
       }, () => {
         throw new Error('Error handler should not be called');
@@ -40,7 +40,7 @@ describe('Utils', () => {
 
     describe('Schema manager basic functionality', ()=> {
       beforeAll(function (done) {
-        schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
+        schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {
           throw new Error('Error handler should not be called');
@@ -227,7 +227,7 @@ describe('Utils', () => {
 
     describe('findDerivedDefinitions method', () => {
       beforeAll((done) => {
-        schemaMgr.load('/tests/schemas/extended-petstore.json').then(() => {
+        schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {
           done(new Error('Error handler should not be called'));
@@ -237,8 +237,8 @@ describe('Utils', () => {
       it('should find derived definitions for Pet', () => {
         let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Pet');
         deriveDefs.should.be.instanceof(Array);
-        deriveDefs.should.not.be.empty;
-        deriveDefs.should.be.deepEqual([{name: 'Cat', $ref: '#/definitions/Cat'}]);
+        deriveDefs.should.not.be.empty();
+        deriveDefs.should.be.deepEqual([{name: 'Cat', $ref: '#/definitions/Cat'}, {name: 'Dog', $ref: '#/definitions/Dog'}]);
       });
 
       it('should return emtpy array for definitions that dont have discriminator', () => {
