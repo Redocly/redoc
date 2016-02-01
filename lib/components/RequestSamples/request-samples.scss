@@ -11,7 +11,7 @@ header {
 :host > tabs > ul li {
   font-size: 13px;
   margin: 2px 0;
-  padding: 2px 10px;
+  padding: 2px 5px;
   color: #8A9094;
   line-height: 1.25;
   color: $sample-panel-headers-color;
@@ -28,4 +28,7 @@ header {
 
 pre {
   overflow-x: auto;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
