@@ -10,7 +10,7 @@
   "scripts": {
     "test": "gulp lint && ./build/run_tests.sh",
     "prepublish": "gulp build",
-    "postinstall": "jspm install",
+    "postinstall": "npm install jspm && jspm install",
     "start": "gulp serve",
     "build-dist": "gulp build",
     "branch-release": "git reset --hard && branch-release",
