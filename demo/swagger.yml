@@ -184,26 +184,6 @@
               } catch (UnprocessableEntityException $e) {
                   var_dump($e->getErrors());
               }
-          -
-            lang: C#
-            source: |-
-              PetStore.v1.Pet pet = new PetStore.v1.Pet();
-              pet.setApiKey("your api key");
-              pet.petType = PetStore.v1.Pet.TYPE_DOG;
-              pet.id = 1;
-              pet.name = "Rex";
-              // set other fields
-
-              PetStoreResponse response = pet.update();
-              if (response.statusCode == HttpStatusCode.OK)
-              {
-                // Successfully updated
-              }
-              else
-              {
-                // Something wrong -- check response for errors
-                Console.WriteLine(response.getRawResponse());
-              }
         security:
           -
             petstore_auth:
