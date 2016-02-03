@@ -2150,9 +2150,9 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
+"use strict";
 var Reflect;
 (function (Reflect) {
-    "use strict";
     // Load global or shim versions of Map, Set, and WeakMap
     var functionPrototype = Object.getPrototypeOf(Function);
     var _Map = typeof Map === "function" ? Map : CreateMapPolyfill();
@@ -2290,7 +2290,7 @@ var Reflect;
                 if (!IsConstructor(target)) {
                     throw new TypeError();
                 }
-                OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, /*targetKey*/ undefined);
+                OrdinaryDefineOwnMetadata(metadataKey, metadataValue, target, undefined);
             }
         }
         return decorator;
@@ -2649,7 +2649,7 @@ var Reflect;
             targetKey = ToPropertyKey(targetKey);
         }
         // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#deletemetadata-metadatakey-p-
-        var metadataMap = GetOrCreateMetadataMap(target, targetKey, /*create*/ false);
+        var metadataMap = GetOrCreateMetadataMap(target, targetKey, false);
         if (IsUndefined(metadataMap)) {
             return false;
         }
@@ -2734,7 +2734,7 @@ var Reflect;
     }
     // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#ordinaryhasownmetadata--metadatakey-o-p-
     function OrdinaryHasOwnMetadata(MetadataKey, O, P) {
-        var metadataMap = GetOrCreateMetadataMap(O, P, /*create*/ false);
+        var metadataMap = GetOrCreateMetadataMap(O, P, false);
         if (metadataMap === undefined) {
             return false;
         }
@@ -2754,7 +2754,7 @@ var Reflect;
     }
     // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#ordinarygetownmetadata--metadatakey-o-p-
     function OrdinaryGetOwnMetadata(MetadataKey, O, P) {
-        var metadataMap = GetOrCreateMetadataMap(O, P, /*create*/ false);
+        var metadataMap = GetOrCreateMetadataMap(O, P, false);
         if (metadataMap === undefined) {
             return undefined;
         }
@@ -2762,7 +2762,7 @@ var Reflect;
     }
     // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#ordinarydefineownmetadata--metadatakey-metadatavalue-o-p-
     function OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P) {
-        var metadataMap = GetOrCreateMetadataMap(O, P, /*create*/ true);
+        var metadataMap = GetOrCreateMetadataMap(O, P, true);
         metadataMap.set(MetadataKey, MetadataValue);
     }
     // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#ordinarymetadatakeys--o-p-
@@ -2801,7 +2801,7 @@ var Reflect;
     }
     // https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md#ordinaryownmetadatakeys--o-p-
     function OrdinaryOwnMetadataKeys(target, targetKey) {
-        var metadataMap = GetOrCreateMetadataMap(target, targetKey, /*create*/ false);
+        var metadataMap = GetOrCreateMetadataMap(target, targetKey, false);
         var keys = [];
         if (metadataMap) {
             metadataMap.forEach(function (_, key) { return keys.push(key); });
@@ -2984,26 +2984,26 @@ var Reflect;
         }
         WeakMap.prototype = {
             has: function (target) {
-                var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                var table = GetOrCreateWeakMapTable(target, false);
                 if (table) {
                     return this._key in table;
                 }
                 return false;
             },
             get: function (target) {
-                var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                var table = GetOrCreateWeakMapTable(target, false);
                 if (table) {
                     return table[this._key];
                 }
                 return undefined;
             },
             set: function (target, value) {
-                var table = GetOrCreateWeakMapTable(target, /*create*/ true);
+                var table = GetOrCreateWeakMapTable(target, true);
                 table[this._key] = value;
                 return this;
             },
             delete: function (target) {
-                var table = GetOrCreateWeakMapTable(target, /*create*/ false);
+                var table = GetOrCreateWeakMapTable(target, false);
                 if (table && this._key in table) {
                     return delete table[this._key];
                 }
@@ -7651,21 +7651,28 @@ $__System.register('9', ['3', '4', '5', '6', '7', 'a'], function (_export) {
     }
   };
 });
-$__System.register('b', ['3', '4', '5', '6', '7', 'c', 'd', 'e', 'f'], function (_export) {
-  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, JsonPointer, Tabs, Tab, SchemaSample, PrismPipe, RequestSamples;
+$__System.register('b', ['3', '4', '5', '6', '7', '10', '11', 'c', 'd', 'e', 'f'], function (_export) {
+  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, redocEvents, ViewChildren, QueryList, ChangeDetectorRef, ChangeDetectionStrategy, JsonPointer, Tabs, Tab, SchemaSample, PrismPipe, RequestSamples;
 
   return {
-    setters: [function (_5) {
-      RedocComponent = _5.RedocComponent;
-      BaseComponent = _5.BaseComponent;
-    }, function (_) {
-      _get = _['default'];
+    setters: [function (_6) {
+      RedocComponent = _6.RedocComponent;
+      BaseComponent = _6.BaseComponent;
     }, function (_2) {
-      _inherits = _2['default'];
+      _get = _2['default'];
     }, function (_3) {
-      _createClass = _3['default'];
+      _inherits = _3['default'];
     }, function (_4) {
-      _classCallCheck = _4['default'];
+      _createClass = _4['default'];
+    }, function (_5) {
+      _classCallCheck = _5['default'];
+    }, function (_8) {
+      redocEvents = _8.redocEvents;
+    }, function (_7) {
+      ViewChildren = _7.ViewChildren;
+      QueryList = _7.QueryList;
+      ChangeDetectorRef = _7.ChangeDetectorRef;
+      ChangeDetectionStrategy = _7.ChangeDetectionStrategy;
     }, function (_c) {
       JsonPointer = _c['default'];
     }, function (_d) {
@@ -7682,13 +7689,36 @@ $__System.register('b', ['3', '4', '5', '6', '7', 'c', 'd', 'e', 'f'], function 
       RequestSamples = (function (_BaseComponent) {
         _inherits(RequestSamples, _BaseComponent);
 
-        function RequestSamples(schemaMgr) {
+        function RequestSamples(schemaMgr, tabs, changeDetector) {
+          var _this = this;
+
           _classCallCheck(this, _RequestSamples);
 
           _get(Object.getPrototypeOf(_RequestSamples.prototype), 'constructor', this).call(this, schemaMgr);
+          tabs.changes.subscribe(function (_) {
+            _this.tabs = tabs.first;
+            _this.subscribeForEvents(_);
+          });
+          this.changeDetector = changeDetector;
         }
 
         _createClass(RequestSamples, [{
+          key: 'changeLangNotify',
+          value: function changeLangNotify(lang) {
+            redocEvents.samplesLanguageChanged.next(lang);
+          }
+        }, {
+          key: 'subscribeForEvents',
+          value: function subscribeForEvents() {
+            var _this2 = this;
+
+            if (!this.tabs) return;
+            redocEvents.samplesLanguageChanged.subscribe(function (sampleLang) {
+              _this2.tabs.selectyByTitle(sampleLang);
+              _this2.changeDetector.markForCheck();
+            });
+          }
+        }, {
           key: 'prepareModel',
           value: function prepareModel() {
             this.data = {};
@@ -7700,20 +7730,23 @@ $__System.register('b', ['3', '4', '5', '6', '7', 'c', 'd', 'e', 'f'], function 
         var _RequestSamples = RequestSamples;
         RequestSamples = RedocComponent({
           selector: 'request-samples',
-          template: '\n    <header *ngIf="data.bodySchemaPtr || data.samples.length"> Request samples </header>\n    <schema-sample *ngIf="!data.samples.length" [pointer]="data.bodySchemaPtr"> </schema-sample>\n    <tabs *ngIf="data.samples.length">\n      <tab tabTitle="JSON">\n        <schema-sample [pointer]="data.bodySchemaPtr"> </schema-sample>\n      </tab>\n      <tab *ngFor="#sample of data.samples" [tabTitle]="sample.lang">\n        <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>\n      </tab>\n    </tabs>\n  ',
+          template: '\n    <header *ngIf="data.bodySchemaPtr || data.samples.length"> Request samples </header>\n    <schema-sample *ngIf="!data.samples.length" [pointer]="data.bodySchemaPtr"> </schema-sample>\n    <tabs *ngIf="data.samples.length" (change)=changeLangNotify($event)>\n      <tab tabTitle="JSON">\n        <schema-sample [pointer]="data.bodySchemaPtr"> </schema-sample>\n      </tab>\n      <tab *ngFor="#sample of data.samples" [tabTitle]="sample.lang">\n        <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>\n      </tab>\n    </tabs>\n  ',
           styles: ['\n    header{font-size:16px;margin:5px 0;color:#8A9094;text-transform:uppercase;font-weight:normal}:host>tabs>ul li{font-size:13px;margin:2px 0;padding:2px 5px;color:#8A9094;line-height:1.25;color:#8A9094}:host>tabs>ul li.active{background-color:white;color:#666}:host tabs ul{padding-top:10px}pre{overflow-x:auto;word-break:break-all;word-wrap:break-word;white-space:pre-wrap}\n  '],
           directives: [SchemaSample, Tabs, Tab],
           inputs: ['bodySchemaPtr'],
-          pipes: [PrismPipe]
+          pipes: [PrismPipe],
+          changeDetection: ChangeDetectionStrategy.OnPush
         })(RequestSamples) || RequestSamples;
         return RequestSamples;
       })(BaseComponent);
 
       _export('default', RequestSamples);
+
+      RequestSamples.parameters = RequestSamples.parameters.concat([[new ViewChildren(Tabs), QueryList], [ChangeDetectorRef]]);
     }
   };
 });
-$__System.register('10', ['3', '4', '5', '6', '7', '9', '11', '12', 'c', 'e', 'b'], function (_export) {
+$__System.register('12', ['3', '4', '5', '6', '7', '9', '13', '14', 'c', 'e', 'b'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, ParamsList, ResponsesList, ResponsesSamples, JsonPointer, SchemaSample, RequestSamples, Method;
 
   return {
@@ -7799,7 +7832,7 @@ $__System.register('10', ['3', '4', '5', '6', '7', '9', '11', '12', 'c', 'e', 'b
     }
   };
 });
-$__System.register('13', ['3', '4', '5', '6', '7', '10', '14', '15'], function (_export) {
+$__System.register('15', ['3', '4', '5', '6', '7', '12', '16', '17'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, Method, _slicedToArray, _Array$from, MethodsList;
 
   return {
@@ -7879,7 +7912,7 @@ $__System.register('13', ['3', '4', '5', '6', '7', '10', '14', '15'], function (
     }
   };
 });
-$__System.register('16', ['6', '7', '17', '18'], function (_export) {
+$__System.register('18', ['6', '7', '11', '19'], function (_export) {
   var _createClass, _classCallCheck, Directive, ElementRef, BrowserDomAdapter, StickySidebar;
 
   return {
@@ -7978,7 +8011,7 @@ $__System.register('16', ['6', '7', '17', '18'], function (_export) {
     }
   };
 });
-$__System.registerDynamic("19", [], true, function($__require, exports, module) {
+$__System.registerDynamic("1a", [], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
@@ -8022,18 +8055,18 @@ $__System.registerDynamic("19", [], true, function($__require, exports, module) 
   return module.exports;
 });
 
-$__System.registerDynamic("1a", ["19"], true, function($__require, exports, module) {
+$__System.registerDynamic("1b", ["1a"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
   global.define = undefined;
-  module.exports = $__require('19');
+  module.exports = $__require('1a');
   global.define = __define;
   return module.exports;
 });
 
-$__System.register('1b', ['2', '3', '4', '5', '6', '7', '8', '13', '15', '16', '17', '18', '20', '21', '22', '1c', '1d', '1e', '1f', '1a'], function (_export) {
-  var ApiInfo, RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, ApiLogo, MethodsList, _Array$from, StickySidebar, ChangeDetectionStrategy, ElementRef, BrowserDomAdapter, bootstrap, _Set, _Object$assign, isFunction, isString, SchemaManager, SideMenu, OptionsManager, redocEvents, detectScollParent, optionNames, dom, Redoc;
+$__System.register('1c', ['2', '3', '4', '5', '6', '7', '8', '10', '11', '15', '17', '18', '19', '20', '21', '22', '1d', '1e', '1f', '1b'], function (_export) {
+  var ApiInfo, RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, ApiLogo, redocEvents, ChangeDetectionStrategy, ElementRef, MethodsList, _Array$from, StickySidebar, BrowserDomAdapter, bootstrap, _Set, _Object$assign, isFunction, isString, SchemaManager, SideMenu, OptionsManager, detectScollParent, optionNames, dom, Redoc;
 
   return {
     setters: [function (_9) {
@@ -8051,35 +8084,35 @@ $__System.register('1b', ['2', '3', '4', '5', '6', '7', '8', '13', '15', '16', '
       _classCallCheck = _4['default'];
     }, function (_10) {
       ApiLogo = _10['default'];
+    }, function (_13) {
+      redocEvents = _13.redocEvents;
+    }, function (_14) {
+      ChangeDetectionStrategy = _14.ChangeDetectionStrategy;
+      ElementRef = _14.ElementRef;
     }, function (_11) {
       MethodsList = _11['default'];
     }, function (_7) {
       _Array$from = _7['default'];
     }, function (_12) {
       StickySidebar = _12['default'];
-    }, function (_13) {
-      ChangeDetectionStrategy = _13.ChangeDetectionStrategy;
-      ElementRef = _13.ElementRef;
-    }, function (_14) {
-      BrowserDomAdapter = _14.BrowserDomAdapter;
-      bootstrap = _14.bootstrap;
+    }, function (_15) {
+      BrowserDomAdapter = _15.BrowserDomAdapter;
+      bootstrap = _15.bootstrap;
     }, function (_5) {
       _Set = _5['default'];
     }, function (_6) {
       _Object$assign = _6['default'];
-    }, function (_15) {
-      isFunction = _15.isFunction;
-      isString = _15.isString;
-    }, function (_c) {
-      SchemaManager = _c['default'];
+    }, function (_16) {
+      isFunction = _16.isFunction;
+      isString = _16.isString;
     }, function (_d) {
-      SideMenu = _d['default'];
+      SchemaManager = _d['default'];
     }, function (_e) {
-      OptionsManager = _e['default'];
+      SideMenu = _e['default'];
     }, function (_f) {
-      redocEvents = _f.redocEvents;
-    }, function (_a) {
-      detectScollParent = _a['default'];
+      OptionsManager = _f['default'];
+    }, function (_b) {
+      detectScollParent = _b['default'];
     }],
     execute: function () {
       'use strict';
@@ -8267,7 +8300,7 @@ $__System.register('1b', ['2', '3', '4', '5', '6', '7', '8', '13', '15', '16', '
     }
   };
 });
-$__System.register('23', ['6', '7', '17', '24', '25', 'a', '1e'], function (_export) {
+$__System.register('23', ['6', '7', '11', '24', '25', 'a', '1f'], function (_export) {
   var _createClass, _classCallCheck, Component, View, ElementRef, CORE_DIRECTIVES, DynamicComponentLoader, JsonSchema, OptionsManager, JsonSchemaLazy;
 
   return {
@@ -8285,8 +8318,8 @@ $__System.register('23', ['6', '7', '17', '24', '25', 'a', '1e'], function (_exp
       DynamicComponentLoader = _5.DynamicComponentLoader;
     }, function (_a) {
       JsonSchema = _a['default'];
-    }, function (_e) {
-      OptionsManager = _e['default'];
+    }, function (_f) {
+      OptionsManager = _f['default'];
     }],
     execute: function () {
       'use strict';
@@ -8333,7 +8366,7 @@ $__System.register('23', ['6', '7', '17', '24', '25', 'a', '1e'], function (_exp
     }
   };
 });
-$__System.register('26', ['6', '7', '17', '24'], function (_export) {
+$__System.register('26', ['6', '7', '11', '24'], function (_export) {
   var _createClass, _classCallCheck, Component, View, EventEmitter, CORE_DIRECTIVES, Zippy;
 
   return {
@@ -8389,7 +8422,7 @@ $__System.register('26', ['6', '7', '17', '24'], function (_export) {
     }
   };
 });
-$__System.register('1e', ['6', '7', '21'], function (_export) {
+$__System.register('1f', ['6', '7', '21'], function (_export) {
   var _createClass, _classCallCheck, _Object$assign, options, OptionsManager;
 
   return {
@@ -8451,7 +8484,7 @@ $__System.register('1e', ['6', '7', '21'], function (_export) {
     }
   };
 });
-$__System.register('11', ['3', '4', '5', '6', '7', '23', '26', '27', '28', 'c', 'a', '1e'], function (_export) {
+$__System.register('13', ['3', '4', '5', '6', '7', '23', '26', '27', '28', 'c', 'a', '1f'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, JsonSchemaLazy, Zippy, statusCodeType, _Object$keys, JsonPointer, JsonSchema, OptionsManager, ResponsesList;
 
   function isNumeric(n) {
@@ -8482,8 +8515,8 @@ $__System.register('11', ['3', '4', '5', '6', '7', '23', '26', '27', '28', 'c', 
       JsonPointer = _c['default'];
     }, function (_a) {
       JsonSchema = _a['default'];
-    }, function (_e) {
-      OptionsManager = _e['default'];
+    }, function (_f) {
+      OptionsManager = _f['default'];
     }],
     execute: function () {
       'use strict';
@@ -8578,7 +8611,7 @@ $__System.register('27', [], function (_export) {
     execute: function () {}
   };
 });
-$__System.register('12', ['3', '4', '5', '6', '7', '27', '28', 'c', 'd', 'e'], function (_export) {
+$__System.register('14', ['3', '4', '5', '6', '7', '27', '28', 'c', 'd', 'e'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, statusCodeType, _Object$keys, JsonPointer, Tabs, Tab, SchemaSample, ResponsesSamples;
 
   function isNumeric(n) {
@@ -8759,7 +8792,7 @@ $__System.registerDynamic("2b", ["2a"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.register('2c', ['6', '7', '17', '22', '28'], function (_export) {
+$__System.register('2c', ['6', '7', '11', '22', '28'], function (_export) {
   var _createClass, _classCallCheck, Pipe, isBlank, _Object$keys, level, COLLAPSE_LEVEL, JsonFormatter;
 
   function htmlEncode(t) {
@@ -8892,7 +8925,7 @@ $__System.register('2c', ['6', '7', '17', '22', '28'], function (_export) {
     }
   };
 });
-$__System.register('e', ['3', '4', '5', '6', '7', '17', '2b', '2c'], function (_export) {
+$__System.register('e', ['3', '4', '5', '6', '7', '11', '2b', '2c'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, ElementRef, SchemaSampler, JsonFormatter, SchemaSample;
 
   return {
@@ -9022,7 +9055,7 @@ $__System.registerDynamic("35", ["32"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("14", ["36", "35"], true, function($__require, exports, module) {
+$__System.registerDynamic("16", ["36", "35"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -9072,18 +9105,20 @@ $__System.registerDynamic("14", ["36", "35"], true, function($__require, exports
   return module.exports;
 });
 
-$__System.register('1f', ['17'], function (_export) {
+$__System.register('10', ['11'], function (_export) {
   'use strict';
 
-  var EventEmitter, bootsrEmmiter, redocEvents;
+  var EventEmitter, bootsrEmmiter, langChanged, redocEvents;
   return {
     setters: [function (_) {
       EventEmitter = _.EventEmitter;
     }],
     execute: function () {
       bootsrEmmiter = new EventEmitter();
+      langChanged = new EventEmitter();
       redocEvents = {
-        bootstrapped: bootsrEmmiter
+        bootstrapped: bootsrEmmiter,
+        samplesLanguageChanged: langChanged
       };
 
       _export('redocEvents', redocEvents);
@@ -10012,7 +10047,7 @@ $__System.registerDynamic("43", ["3b", "22", "3a", "41"], true, function($__requ
   return module.exports;
 });
 
-$__System.registerDynamic("44", ["22", "3a", "17"], true, function($__require, exports, module) {
+$__System.registerDynamic("44", ["22", "3a", "11"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -10020,7 +10055,7 @@ $__System.registerDynamic("44", ["22", "3a", "17"], true, function($__require, e
   global.define = undefined;
   var lang_1 = $__require('22');
   var dom_adapter_1 = $__require('3a');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var PublicTestability = (function() {
     function PublicTestability(testability) {
       this._testability = testability;
@@ -10499,7 +10534,7 @@ $__System.registerDynamic("4a", ["22"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("4e", ["3d", "4d", "22", "40", "4f", "50", "17", "3c", "51", "52", "53", "54", "3a", "4a"], true, function($__require, exports, module) {
+$__System.registerDynamic("4e", ["3d", "4d", "22", "40", "4f", "50", "11", "3c", "51", "52", "53", "54", "3a", "4a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -10541,7 +10576,7 @@ $__System.registerDynamic("4e", ["3d", "4d", "22", "40", "4f", "50", "17", "3c",
   var exceptions_1 = $__require('40');
   var shared_styles_host_1 = $__require('4f');
   var profile_1 = $__require('50');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var event_manager_1 = $__require('3c');
   var dom_tokens_1 = $__require('51');
   var view_factory_1 = $__require('52');
@@ -10943,7 +10978,7 @@ $__System.registerDynamic("4f", ["3a", "3d", "3b", "51"], true, function($__requ
   return module.exports;
 });
 
-$__System.registerDynamic("55", ["3a", "17", "3c"], true, function($__require, exports, module) {
+$__System.registerDynamic("55", ["3a", "11", "3c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -10975,7 +11010,7 @@ $__System.registerDynamic("55", ["3a", "17", "3c"], true, function($__require, e
       return Reflect.metadata(k, v);
   };
   var dom_adapter_1 = $__require('3a');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var event_manager_1 = $__require('3c');
   var DomEventsPlugin = (function(_super) {
     __extends(DomEventsPlugin, _super);
@@ -11354,7 +11389,7 @@ $__System.registerDynamic("60", ["22", "5e"], true, function($__require, exports
   return module.exports;
 });
 
-$__System.registerDynamic("61", ["22", "3d", "17", "24", "62", "3a", "55", "39", "3f", "51", "4e", "4f", "4c", "4d", "43", "44", "45", "3c", "46", "5c", "60"], true, function($__require, exports, module) {
+$__System.registerDynamic("61", ["22", "3d", "11", "24", "62", "3a", "55", "39", "3f", "51", "4e", "4f", "4c", "4d", "43", "44", "45", "3c", "46", "5c", "60"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -11362,7 +11397,7 @@ $__System.registerDynamic("61", ["22", "3d", "17", "24", "62", "3a", "55", "39",
   global.define = undefined;
   var lang_1 = $__require('22');
   var di_1 = $__require('3d');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var common_1 = $__require('24');
   var testability_1 = $__require('62');
   var dom_adapter_1 = $__require('3a');
@@ -11758,7 +11793,7 @@ $__System.registerDynamic("66", ["22", "40", "3b", "67", "68", "69", "3d", "6a",
   return module.exports;
 });
 
-$__System.registerDynamic("6e", ["3b", "22", "17", "40", "72", "73", "74", "75", "76", "77", "78", "79", "7a", "7b", "71", "38"], true, function($__require, exports, module) {
+$__System.registerDynamic("6e", ["3b", "22", "11", "40", "72", "73", "74", "75", "76", "77", "78", "79", "7a", "7b", "71", "38"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
@@ -11797,7 +11832,7 @@ $__System.registerDynamic("6e", ["3b", "22", "17", "40", "72", "73", "74", "75",
     };
     var collection_1 = $__require('3b');
     var lang_1 = $__require('22');
-    var core_1 = $__require('17');
+    var core_1 = $__require('11');
     var lang_2 = $__require('22');
     var exceptions_1 = $__require('40');
     var change_detection_1 = $__require('72');
@@ -16806,7 +16841,7 @@ $__System.registerDynamic("42", ["8f", "22", "7d"], true, function($__require, e
   return module.exports;
 });
 
-$__System.registerDynamic("18", ["37", "61", "22", "8e", "17", "90", "42", "3d", "38"], true, function($__require, exports, module) {
+$__System.registerDynamic("19", ["37", "61", "22", "8e", "11", "90", "42", "3d", "38"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
@@ -16829,7 +16864,7 @@ $__System.registerDynamic("18", ["37", "61", "22", "8e", "17", "90", "42", "3d",
     var lang_1 = $__require('22');
     var browser_common_2 = $__require('61');
     var compiler_1 = $__require('8e');
-    var core_1 = $__require('17');
+    var core_1 = $__require('11');
     var reflection_capabilities_1 = $__require('90');
     var xhr_impl_1 = $__require('42');
     var compiler_2 = $__require('8e');
@@ -16846,8 +16881,8 @@ $__System.registerDynamic("18", ["37", "61", "22", "8e", "17", "90", "42", "3d",
   return module.exports;
 });
 
-$__System.register('1d', ['3', '4', '5', '6', '7', '14', '15', '17', '18', '22', '1f', '5d'], function (_export) {
-  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, _slicedToArray, _Array$from, NgZone, ChangeDetectionStrategy, ElementRef, BrowserDomAdapter, global, redocEvents, document, CHANGE, INVIEW_POSITION, SideMenu;
+$__System.register('1e', ['3', '4', '5', '6', '7', '10', '11', '16', '17', '19', '22', '5d'], function (_export) {
+  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, redocEvents, NgZone, ChangeDetectionStrategy, ElementRef, _slicedToArray, _Array$from, BrowserDomAdapter, global, document, CHANGE, INVIEW_POSITION, SideMenu;
 
   return {
     setters: [function (_7) {
@@ -16861,20 +16896,20 @@ $__System.register('1d', ['3', '4', '5', '6', '7', '14', '15', '17', '18', '22',
       _createClass = _3['default'];
     }, function (_4) {
       _classCallCheck = _4['default'];
+    }, function (_8) {
+      redocEvents = _8.redocEvents;
+    }, function (_9) {
+      NgZone = _9.NgZone;
+      ChangeDetectionStrategy = _9.ChangeDetectionStrategy;
+      ElementRef = _9.ElementRef;
     }, function (_5) {
       _slicedToArray = _5['default'];
     }, function (_6) {
       _Array$from = _6['default'];
-    }, function (_8) {
-      NgZone = _8.NgZone;
-      ChangeDetectionStrategy = _8.ChangeDetectionStrategy;
-      ElementRef = _8.ElementRef;
-    }, function (_9) {
-      BrowserDomAdapter = _9.BrowserDomAdapter;
     }, function (_10) {
-      global = _10.global;
-    }, function (_f) {
-      redocEvents = _f.redocEvents;
+      BrowserDomAdapter = _10.BrowserDomAdapter;
+    }, function (_11) {
+      global = _11.global;
     }, function (_d) {
       document = _d.document;
     }],
@@ -17224,7 +17259,7 @@ $__System.registerDynamic("9a", ["34", "91", "31"], true, function($__require, e
   return module.exports;
 });
 
-$__System.registerDynamic("15", ["9a"], true, function($__require, exports, module) {
+$__System.registerDynamic("17", ["9a"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
@@ -17237,13 +17272,13 @@ $__System.registerDynamic("15", ["9a"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("9b", ["15"], true, function($__require, exports, module) {
+$__System.registerDynamic("9b", ["17"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
       __define = global.define;
   global.define = undefined;
-  var _Array$from = $__require('15')["default"];
+  var _Array$from = $__require('17')["default"];
   exports["default"] = function(arr) {
     if (Array.isArray(arr)) {
       for (var i = 0,
@@ -34139,7 +34174,7 @@ $__System.register('16f', ['20'], function (_export) {
     }
   };
 });
-$__System.register('1c', ['6', '7', '28', '36', 'b9', 'c2', '15c', 'c', '16f'], function (_export) {
+$__System.register('1d', ['6', '7', '28', '36', 'b9', 'c2', '15c', 'c', '16f'], function (_export) {
   var _createClass, _classCallCheck, _Object$keys, _getIterator, _Promise, _Map, SwaggerParser, JsonPointer, swaggerMethods, SchemaManager;
 
   return {
@@ -36557,7 +36592,7 @@ $__System.registerDynamic("189", [], true, function($__require, exports, module)
 
 $__System.register("18a", [], function() { return { setters: [], execute: function() {} } });
 
-$__System.register('f', ['4', '5', '6', '7', '17', '22', '28', '40', '174', '176', '177', '178', '179', '180', '181', '182', '183', '184', '185', '186', '187', '188', '189', 'c', '17a', '17b', '17c', '17d', '17e', '17f', '18a'], function (_export) {
+$__System.register('f', ['4', '5', '6', '7', '11', '22', '28', '40', '174', '176', '177', '178', '179', '180', '181', '182', '183', '184', '185', '186', '187', '188', '189', 'c', '17a', '17b', '17c', '17d', '17e', '17f', '18a'], function (_export) {
   var _get, _inherits, _createClass, _classCallCheck, Pipe, isString, stringify, isBlank, _Object$keys, BaseException, marked, Prism, JsonPointer, InvalidPipeArgumentException, KeysPipe, ValuesPipe, JsonPointerEscapePipe, MarkedPipe, langMap, PrismPipe;
 
   return {
@@ -36749,7 +36784,7 @@ $__System.register('f', ['4', '5', '6', '7', '17', '22', '28', '40', '174', '176
 });
 
 //import 'prismjs/components/prism-scala.js';
-$__System.register('3', ['6', '7', '17', '21', '24', '28', '36', '9b', '1c', 'c', 'f'], function (_export) {
+$__System.register('3', ['6', '7', '11', '21', '24', '28', '36', '9b', '1d', 'c', 'f'], function (_export) {
   var _createClass, _classCallCheck, Component, View, OnInit, OnDestroy, ChangeDetectionStrategy, _Object$assign, CORE_DIRECTIVES, JsonPipe, AsyncPipe, _Object$keys, _getIterator, _toConsumableArray, SchemaManager, JsonPointer, MarkedPipe, JsonPointerEscapePipe, commonInputs, BaseComponent;
 
   // json pointer to the schema chunk
@@ -36847,10 +36882,10 @@ $__System.register('3', ['6', '7', '17', '21', '24', '28', '36', '9b', '1c', 'c'
       _getIterator = _5['default'];
     }, function (_b) {
       _toConsumableArray = _b['default'];
+    }, function (_d) {
+      SchemaManager = _d['default'];
     }, function (_c) {
-      SchemaManager = _c['default'];
-    }, function (_c2) {
-      JsonPointer = _c2['default'];
+      JsonPointer = _c['default'];
     }, function (_f) {
       MarkedPipe = _f.MarkedPipe;
       JsonPointerEscapePipe = _f.JsonPointerEscapePipe;
@@ -37047,7 +37082,7 @@ $__System.register('3', ['6', '7', '17', '21', '24', '28', '36', '9b', '1c', 'c'
     }
   };
 });
-$__System.registerDynamic("18b", ["22", "67", "17", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("18b", ["22", "67", "11", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37071,7 +37106,7 @@ $__System.registerDynamic("18b", ["22", "67", "17", "18c"], true, function($__re
   };
   var lang_1 = $__require('22');
   var async_1 = $__require('67');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var ObservableStrategy = (function() {
     function ObservableStrategy() {}
@@ -37172,7 +37207,7 @@ $__System.registerDynamic("18b", ["22", "67", "17", "18c"], true, function($__re
   return module.exports;
 });
 
-$__System.registerDynamic("18d", ["22", "17", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("18d", ["22", "11", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37195,7 +37230,7 @@ $__System.registerDynamic("18d", ["22", "17", "18c"], true, function($__require,
       return Reflect.metadata(k, v);
   };
   var lang_1 = $__require('22');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var UpperCasePipe = (function() {
     function UpperCasePipe() {}
@@ -37218,7 +37253,7 @@ $__System.registerDynamic("18d", ["22", "17", "18c"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("18e", ["22", "17", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("18e", ["22", "11", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37241,7 +37276,7 @@ $__System.registerDynamic("18e", ["22", "17", "18c"], true, function($__require,
       return Reflect.metadata(k, v);
   };
   var lang_1 = $__require('22');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var LowerCasePipe = (function() {
     function LowerCasePipe() {}
@@ -37264,7 +37299,7 @@ $__System.registerDynamic("18e", ["22", "17", "18c"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("18f", ["22", "17"], true, function($__require, exports, module) {
+$__System.registerDynamic("18f", ["22", "11"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37287,7 +37322,7 @@ $__System.registerDynamic("18f", ["22", "17"], true, function($__require, export
       return Reflect.metadata(k, v);
   };
   var lang_1 = $__require('22');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var JsonPipe = (function() {
     function JsonPipe() {}
     JsonPipe.prototype.transform = function(value, args) {
@@ -37307,7 +37342,7 @@ $__System.registerDynamic("18f", ["22", "17"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("190", ["22", "40", "3b", "17", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("190", ["22", "40", "3b", "11", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37332,7 +37367,7 @@ $__System.registerDynamic("190", ["22", "40", "3b", "17", "18c"], true, function
   var lang_1 = $__require('22');
   var exceptions_1 = $__require('40');
   var collection_1 = $__require('3b');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var SlicePipe = (function() {
     function SlicePipe() {}
@@ -37369,7 +37404,7 @@ $__System.registerDynamic("190", ["22", "40", "3b", "17", "18c"], true, function
   return module.exports;
 });
 
-$__System.registerDynamic("191", ["22", "192", "17", "3b", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("191", ["22", "192", "11", "3b", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37393,7 +37428,7 @@ $__System.registerDynamic("191", ["22", "192", "17", "3b", "18c"], true, functio
   };
   var lang_1 = $__require('22');
   var intl_1 = $__require('192');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var collection_1 = $__require('3b');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var defaultLocale = 'en-US';
@@ -37588,7 +37623,7 @@ $__System.registerDynamic("18c", ["22", "40"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("193", ["22", "40", "192", "17", "3b", "18c"], true, function($__require, exports, module) {
+$__System.registerDynamic("193", ["22", "40", "192", "11", "3b", "18c"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37622,7 +37657,7 @@ $__System.registerDynamic("193", ["22", "40", "192", "17", "3b", "18c"], true, f
   var lang_1 = $__require('22');
   var exceptions_1 = $__require('40');
   var intl_1 = $__require('192');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var collection_1 = $__require('3b');
   var invalid_pipe_argument_exception_1 = $__require('18c');
   var defaultLocale = 'en-US';
@@ -37752,7 +37787,7 @@ $__System.registerDynamic("194", ["18b", "18d", "18e", "18f", "190", "191", "193
   return module.exports;
 });
 
-$__System.registerDynamic("195", ["22", "67", "17", "196", "197", "198", "199", "19a"], true, function($__require, exports, module) {
+$__System.registerDynamic("195", ["22", "67", "11", "196", "197", "198", "199", "19a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37790,7 +37825,7 @@ $__System.registerDynamic("195", ["22", "67", "17", "196", "197", "198", "199", 
   };
   var lang_1 = $__require('22');
   var async_1 = $__require('67');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_container_1 = $__require('196');
   var ng_control_1 = $__require('197');
   var control_value_accessor_1 = $__require('198');
@@ -37876,7 +37911,7 @@ $__System.registerDynamic("195", ["22", "67", "17", "196", "197", "198", "199", 
   return module.exports;
 });
 
-$__System.registerDynamic("19b", ["22", "3b", "67", "17", "197", "19a", "198", "199"], true, function($__require, exports, module) {
+$__System.registerDynamic("19b", ["22", "3b", "67", "11", "197", "19a", "198", "199"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -37915,7 +37950,7 @@ $__System.registerDynamic("19b", ["22", "3b", "67", "17", "197", "19a", "198", "
   var lang_1 = $__require('22');
   var collection_1 = $__require('3b');
   var async_1 = $__require('67');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var ng_control_1 = $__require('197');
   var validators_1 = $__require('19a');
   var control_value_accessor_1 = $__require('198');
@@ -37991,7 +38026,7 @@ $__System.registerDynamic("19b", ["22", "3b", "67", "17", "197", "19a", "198", "
   return module.exports;
 });
 
-$__System.registerDynamic("19c", ["22", "67", "17", "198", "197", "19d", "19a", "199"], true, function($__require, exports, module) {
+$__System.registerDynamic("19c", ["22", "67", "11", "198", "197", "19d", "19a", "199"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38029,7 +38064,7 @@ $__System.registerDynamic("19c", ["22", "67", "17", "198", "197", "19d", "19a", 
   };
   var lang_1 = $__require('22');
   var async_1 = $__require('67');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_value_accessor_1 = $__require('198');
   var ng_control_1 = $__require('197');
   var model_1 = $__require('19d');
@@ -38106,7 +38141,7 @@ $__System.registerDynamic("19c", ["22", "67", "17", "198", "197", "19d", "19a", 
   return module.exports;
 });
 
-$__System.registerDynamic("19e", ["17", "22", "196", "199", "19a"], true, function($__require, exports, module) {
+$__System.registerDynamic("19e", ["11", "22", "196", "199", "19a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38142,7 +38177,7 @@ $__System.registerDynamic("19e", ["17", "22", "196", "199", "19a"], true, functi
       decorator(target, key, paramIndex);
     };
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var control_container_1 = $__require('196');
   var shared_1 = $__require('199');
@@ -38212,7 +38247,7 @@ $__System.registerDynamic("19e", ["17", "22", "196", "199", "19a"], true, functi
   return module.exports;
 });
 
-$__System.registerDynamic("19f", ["22", "3b", "67", "17", "196", "199", "19a"], true, function($__require, exports, module) {
+$__System.registerDynamic("19f", ["22", "3b", "67", "11", "196", "199", "19a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38251,7 +38286,7 @@ $__System.registerDynamic("19f", ["22", "3b", "67", "17", "196", "199", "19a"], 
   var lang_1 = $__require('22');
   var collection_1 = $__require('3b');
   var async_1 = $__require('67');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_container_1 = $__require('196');
   var shared_1 = $__require('199');
   var validators_1 = $__require('19a');
@@ -38518,7 +38553,7 @@ $__System.registerDynamic("199", ["3b", "22", "40", "19a", "1a2", "1a3", "1a4", 
   return module.exports;
 });
 
-$__System.registerDynamic("1a6", ["67", "3b", "22", "17", "196", "19d", "199", "19a"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a6", ["67", "3b", "22", "11", "196", "19d", "199", "19a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38557,7 +38592,7 @@ $__System.registerDynamic("1a6", ["67", "3b", "22", "17", "196", "19d", "199", "
   var async_1 = $__require('67');
   var collection_1 = $__require('3b');
   var lang_1 = $__require('22');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_container_1 = $__require('196');
   var model_1 = $__require('19d');
   var shared_1 = $__require('199');
@@ -38675,7 +38710,7 @@ $__System.registerDynamic("1a6", ["67", "3b", "22", "17", "196", "19d", "199", "
   return module.exports;
 });
 
-$__System.registerDynamic("1a2", ["17", "198", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a2", ["11", "198", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38697,7 +38732,7 @@ $__System.registerDynamic("1a2", ["17", "198", "22"], true, function($__require,
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_value_accessor_1 = $__require('198');
   var lang_1 = $__require('22');
   var DEFAULT_VALUE_ACCESSOR = lang_1.CONST_EXPR(new core_1.Provider(control_value_accessor_1.NG_VALUE_ACCESSOR, {
@@ -38738,7 +38773,7 @@ $__System.registerDynamic("1a2", ["17", "198", "22"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("1a4", ["17", "198", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a4", ["11", "198", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38760,7 +38795,7 @@ $__System.registerDynamic("1a4", ["17", "198", "22"], true, function($__require,
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_value_accessor_1 = $__require('198');
   var lang_1 = $__require('22');
   var CHECKBOX_VALUE_ACCESSOR = lang_1.CONST_EXPR(new core_1.Provider(control_value_accessor_1.NG_VALUE_ACCESSOR, {
@@ -38800,7 +38835,7 @@ $__System.registerDynamic("1a4", ["17", "198", "22"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("1a3", ["17", "198", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a3", ["11", "198", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38822,7 +38857,7 @@ $__System.registerDynamic("1a3", ["17", "198", "22"], true, function($__require,
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var control_value_accessor_1 = $__require('198');
   var lang_1 = $__require('22');
   var NUMBER_VALUE_ACCESSOR = lang_1.CONST_EXPR(new core_1.Provider(control_value_accessor_1.NG_VALUE_ACCESSOR, {
@@ -38865,7 +38900,7 @@ $__System.registerDynamic("1a3", ["17", "198", "22"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("1a7", ["17", "197", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a7", ["11", "197", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38892,7 +38927,7 @@ $__System.registerDynamic("1a7", ["17", "197", "22"], true, function($__require,
       decorator(target, key, paramIndex);
     };
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var ng_control_1 = $__require('197');
   var lang_1 = $__require('22');
   var NgControlStatus = (function() {
@@ -38959,20 +38994,20 @@ $__System.registerDynamic("1a7", ["17", "197", "22"], true, function($__require,
   return module.exports;
 });
 
-$__System.registerDynamic("198", ["17", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("198", ["11", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
       __define = global.define;
   global.define = undefined;
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   exports.NG_VALUE_ACCESSOR = lang_1.CONST_EXPR(new core_1.OpaqueToken("NgValueAccessor"));
   global.define = __define;
   return module.exports;
 });
 
-$__System.registerDynamic("1a5", ["17", "67", "198", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a5", ["11", "67", "198", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -38999,7 +39034,7 @@ $__System.registerDynamic("1a5", ["17", "67", "198", "22"], true, function($__re
       decorator(target, key, paramIndex);
     };
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var async_1 = $__require('67');
   var control_value_accessor_1 = $__require('198');
   var lang_1 = $__require('22');
@@ -39233,7 +39268,7 @@ $__System.registerDynamic("1a8", ["22", "195", "19b", "19c", "19e", "19f", "1a6"
   return module.exports;
 });
 
-$__System.registerDynamic("19a", ["22", "8f", "67", "3b", "17", "38"], true, function($__require, exports, module) {
+$__System.registerDynamic("19a", ["22", "8f", "67", "3b", "11", "38"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
@@ -39244,7 +39279,7 @@ $__System.registerDynamic("19a", ["22", "8f", "67", "3b", "17", "38"], true, fun
     var promise_1 = $__require('8f');
     var async_1 = $__require('67');
     var collection_1 = $__require('3b');
-    var core_1 = $__require('17');
+    var core_1 = $__require('11');
     exports.NG_VALIDATORS = lang_1.CONST_EXPR(new core_1.OpaqueToken("NgValidators"));
     exports.NG_ASYNC_VALIDATORS = lang_1.CONST_EXPR(new core_1.OpaqueToken("NgAsyncValidators"));
     var Validators = (function() {
@@ -39320,7 +39355,7 @@ $__System.registerDynamic("19a", ["22", "8f", "67", "3b", "17", "38"], true, fun
   return module.exports;
 });
 
-$__System.registerDynamic("1a9", ["17", "22", "19a"], true, function($__require, exports, module) {
+$__System.registerDynamic("1a9", ["11", "22", "19a"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -39347,7 +39382,7 @@ $__System.registerDynamic("1a9", ["17", "22", "19a"], true, function($__require,
       decorator(target, key, paramIndex);
     };
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var validators_1 = $__require('19a');
   var lang_2 = $__require('22');
@@ -39848,7 +39883,7 @@ $__System.registerDynamic("19d", ["22", "67", "8f", "3b"], true, function($__req
   return module.exports;
 });
 
-$__System.registerDynamic("1aa", ["17", "3b", "22", "19d"], true, function($__require, exports, module) {
+$__System.registerDynamic("1aa", ["11", "3b", "22", "19d"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -39870,7 +39905,7 @@ $__System.registerDynamic("1aa", ["17", "3b", "22", "19d"], true, function($__re
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var collection_1 = $__require('3b');
   var lang_1 = $__require('22');
   var modelModule = $__require('19d');
@@ -40007,7 +40042,7 @@ $__System.registerDynamic("1ac", [], true, function($__require, exports, module)
   return module.exports;
 });
 
-$__System.registerDynamic("1ad", ["22", "17", "3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("1ad", ["22", "11", "3b"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -40030,7 +40065,7 @@ $__System.registerDynamic("1ad", ["22", "17", "3b"], true, function($__require, 
       return Reflect.metadata(k, v);
   };
   var lang_1 = $__require('22');
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var collection_1 = $__require('3b');
   var NgClass = (function() {
     function NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
@@ -40164,7 +40199,7 @@ $__System.registerDynamic("1ad", ["22", "17", "3b"], true, function($__require, 
   return module.exports;
 });
 
-$__System.registerDynamic("1ae", ["17", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1ae", ["11", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -40186,7 +40221,7 @@ $__System.registerDynamic("1ae", ["17", "22"], true, function($__require, export
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var NgFor = (function() {
     function NgFor(_viewContainer, _templateRef, _iterableDiffers, _cdr) {
@@ -40296,7 +40331,7 @@ $__System.registerDynamic("1ae", ["17", "22"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("1af", ["17", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1af", ["11", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -40318,7 +40353,7 @@ $__System.registerDynamic("1af", ["17", "22"], true, function($__require, export
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var NgIf = (function() {
     function NgIf(_viewContainer, _templateRef) {
@@ -40350,7 +40385,7 @@ $__System.registerDynamic("1af", ["17", "22"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("1b0", ["17", "22"], true, function($__require, exports, module) {
+$__System.registerDynamic("1b0", ["11", "22"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -40372,7 +40407,7 @@ $__System.registerDynamic("1b0", ["17", "22"], true, function($__require, export
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var NgStyle = (function() {
     function NgStyle(_differs, _ngEl, _renderer) {
@@ -40424,7 +40459,7 @@ $__System.registerDynamic("1b0", ["17", "22"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("1b1", ["17", "22", "3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("1b1", ["11", "22", "3b"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -40451,7 +40486,7 @@ $__System.registerDynamic("1b1", ["17", "22", "3b"], true, function($__require, 
       decorator(target, key, paramIndex);
     };
   };
-  var core_1 = $__require('17');
+  var core_1 = $__require('11');
   var lang_1 = $__require('22');
   var collection_1 = $__require('3b');
   var _WHEN_DEFAULT = lang_1.CONST_EXPR(new Object());
@@ -40661,8 +40696,8 @@ $__System.registerDynamic("24", ["194", "1b3", "1ab", "1b4"], true, function($__
   return module.exports;
 });
 
-$__System.register('d', ['6', '7', '17', '24'], function (_export) {
-  var _createClass, _classCallCheck, Component, View, CORE_DIRECTIVES, Tabs, Tab;
+$__System.register('d', ['6', '7', '11', '24'], function (_export) {
+  var _createClass, _classCallCheck, Component, View, EventEmitter, CORE_DIRECTIVES, Tabs, Tab;
 
   return {
     setters: [function (_) {
@@ -40672,6 +40707,7 @@ $__System.register('d', ['6', '7', '17', '24'], function (_export) {
     }, function (_3) {
       Component = _3.Component;
       View = _3.View;
+      EventEmitter = _3.EventEmitter;
     }, function (_4) {
       CORE_DIRECTIVES = _4.CORE_DIRECTIVES;
     }],
@@ -40683,15 +40719,41 @@ $__System.register('d', ['6', '7', '17', '24'], function (_export) {
           _classCallCheck(this, _Tabs);
 
           this.tabs = [];
+          this.change = new EventEmitter();
         }
 
         _createClass(Tabs, [{
           key: 'selectTab',
           value: function selectTab(tab) {
+            var notify = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
+            if (tab.active) return;
             this.tabs.forEach(function (tab) {
               tab.active = false;
             });
             tab.active = true;
+            notify && this.change.next(tab.tabTitle);
+          }
+        }, {
+          key: 'selectyByTitle',
+          value: function selectyByTitle(tabTitle) {
+            var notify = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+            var prevActive = undefined;
+            var newActive = undefined;
+            this.tabs.forEach(function (tab) {
+              if (tab.active) prevActive = tab;
+              tab.active = false;
+              if (tab.tabTitle === tabTitle) {
+                newActive = tab;
+              }
+            });
+            if (newActive) {
+              newActive.active = true;
+            } else {
+              prevActive.active = true;
+            }
+            notify && this.change.next(tabTitle);
           }
         }, {
           key: 'addTab',
@@ -40710,7 +40772,8 @@ $__System.register('d', ['6', '7', '17', '24'], function (_export) {
           styles: ['\n    ul{display:block;margin:0;padding:0}li{list-style:none;display:inline-block;cursor:pointer}.tab-success:before,.tab-error:before,.tab-redirect:before,.tab-info:before{content:"";display:inline-block;vertical-align:middle;height:6px;width:6px;border-radius:50%;margin-right:0.5em}.tab-success:before{box-shadow:0 0 3px 0 #00aa11;background-color:#00aa11}.tab-error:before{box-shadow:0 0 3px 0 #E53935;background-color:#E53935}.tab-redirect:before{box-shadow:0 0 3px 0 #F88F00;background-color:#F88F00}.tab-info:before{box-shadow:0 0 3px 0 #66C2FF;background-color:#66C2FF}\n  ']
         })(Tabs) || Tabs;
         Tabs = Component({
-          selector: 'tabs'
+          selector: 'tabs',
+          events: ['change']
         })(Tabs) || Tabs;
         return Tabs;
       })();
@@ -41570,7 +41633,7 @@ $__System.register('c', ['4', '5', '6', '7', '1c2'], function (_export) {
     }
   };
 });
-$__System.register('a', ['3', '4', '5', '6', '7', '17', '21', '28', '9b', 'd', 'c'], function (_export) {
+$__System.register('a', ['3', '4', '5', '6', '7', '11', '21', '28', '9b', 'd', 'c'], function (_export) {
   var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, ElementRef, _Object$assign, _Object$keys, _toConsumableArray, Tabs, Tab, JsonPointer, JsonSchema;
 
   return {
@@ -41761,7 +41824,7 @@ $__System.register('a', ['3', '4', '5', '6', '7', '17', '21', '28', '9b', 'd', '
     }
   };
 });
-$__System.register('1c3', ['2', '8', '9', '10', '11', '12', '13', '1b', 'e', '1d', 'a'], function (_export) {
+$__System.register('1c3', ['2', '8', '9', '12', '13', '14', '15', '1c', 'e', '1e', 'a'], function (_export) {
   'use strict';
 
   var ApiInfo, ApiLogo, ParamsList, Method, ResponsesList, ResponsesSamples, MethodsList, Redoc, SchemaSample, SideMenu, JsonSchema, REDOC_COMPONENTS;
@@ -41780,12 +41843,12 @@ $__System.register('1c3', ['2', '8', '9', '10', '11', '12', '13', '1b', 'e', '1d
       ResponsesSamples = _7['default'];
     }, function (_4) {
       MethodsList = _4['default'];
-    }, function (_b) {
-      Redoc = _b['default'];
+    }, function (_c) {
+      Redoc = _c['default'];
     }, function (_e) {
       SchemaSample = _e['default'];
-    }, function (_d) {
-      SideMenu = _d['default'];
+    }, function (_e2) {
+      SideMenu = _e2['default'];
     }, function (_a) {
       JsonSchema = _a['default'];
     }],
@@ -57007,7 +57070,7 @@ $__System.registerDynamic("85", ["21b", "90"], true, function($__require, export
   return module.exports;
 });
 
-$__System.registerDynamic("17", ["54", "1c4", "1c6", "3d", "1c7", "22", "5f", "8c", "1cb", "1cc", "1cd", "5b", "62", "211", "86", "1d4", "21a", "85"], true, function($__require, exports, module) {
+$__System.registerDynamic("11", ["54", "1c4", "1c6", "3d", "1c7", "22", "5f", "8c", "1cb", "1cc", "1cd", "5b", "62", "211", "86", "1d4", "21a", "85"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -57054,7 +57117,7 @@ $__System.registerDynamic("17", ["54", "1c4", "1c6", "3d", "1c7", "22", "5f", "8
   return module.exports;
 });
 
-$__System.register('1', ['17', '1c3'], function (_export) {
+$__System.register('1', ['11', '1c3'], function (_export) {
   'use strict';
 
   var enableProdMode, Redoc, init;
