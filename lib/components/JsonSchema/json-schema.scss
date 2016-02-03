@@ -78,3 +78,10 @@ $array-marker-line-height: 1.5;
     background-color: $headers-color;
   }
 }
+
+tabs .params-wrap > .param-wrap:first-of-type .param-name {
+  border-left: 0;
+  &:before {
+    display: none;
+  }
+}
