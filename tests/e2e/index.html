@@ -14,7 +14,7 @@
     <script>
       window.redocError = null;
       /* init redoc */
-      var url = window.location.search.substr(5) || 'swagger.json';
+      var url = window.location.search.substr(5) || 'swagger.yml';
       Redoc.init(decodeURIComponent(url), {disableLazySchemas: true}).then(function() {}, function(err) {
         window.redocError = err;
       });

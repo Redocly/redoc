@@ -1,6 +1,6 @@
 <header *ngIf="data.bodySchemaPtr || data.samples.length"> Request samples </header>
 <schema-sample *ngIf="!data.samples.length" [pointer]="data.bodySchemaPtr"> </schema-sample>
-<tabs *ngIf="data.samples.length">
+<tabs *ngIf="data.samples.length" (change)=changeLangNotify($event)>
   <tab tabTitle="JSON">
     <schema-sample [pointer]="data.bodySchemaPtr"> </schema-sample>
   </tab>
