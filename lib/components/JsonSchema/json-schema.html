@@ -12,7 +12,7 @@
         <div>
           <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint}"
           title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>
-          <span *ngIf="prop.isRequired" class="param-required">Required</span>
+          <span *ngIf="prop.required" class="param-required">Required</span>
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>

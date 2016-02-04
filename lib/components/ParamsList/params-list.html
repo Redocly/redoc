@@ -6,7 +6,8 @@
       </div>
       <div class="param-info">
         <div>
-          <span class="param-type" [ngClass]="param.type">{{param.type}}</span>
+          <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
+          title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
           <span *ngIf="param.required" class="param-required">Required</span>
         </div>
         <div class="param-description" innerHtml="{{param.description | marked}}"></div>
