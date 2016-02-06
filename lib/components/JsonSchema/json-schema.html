@@ -6,7 +6,7 @@
   <div *ngFor="#prop of data.properties" class="param-wrap">
     <div class="param" [ngClass]="{'discriminator': prop.isDiscriminator}">
       <div class="param-name">
-        <span>{{prop._name}}</span>
+        <span class="param-name-content">{{prop._name}}</span>
       </div>
       <div class="param-info">
         <div>

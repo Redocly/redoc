@@ -30,8 +30,9 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-name {
+  display: inline-block;
   font-size: 14px;
-  padding: $cell-padding $cell-spacing $cell-padding 0;
+  padding: $cell-padding 0 $cell-padding 0;
   font-weight: bold;
   box-sizing: border-box;
   line-height: $param-name-height;
@@ -40,11 +41,17 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   position: relative;
 }
 
+.param-name-content {
+  padding-right: $cell-spacing;
+  display: inline-block;
+}
+
 .param-info {
   width: 100%;
   padding: $cell-padding 0;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+  display: inline-block;
 }
 
 .param {
