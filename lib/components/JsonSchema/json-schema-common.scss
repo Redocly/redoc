@@ -72,11 +72,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   color: #999;
 }
 
-.param-type.string {
+.param-type.string, .enum-value.string {
   color: rgba(0, 80, 0, 0.7);
 }
 
-.param-type.integer, .param-type.number {
+.param-type.integer, .param-type.number, .enum-value.number {
   color: rgba(74, 139, 179, 0.8);
 }
 
@@ -84,7 +84,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   color: rgba(0, 50, 159, 0.7);
 }
 
-.param-type.boolean {
+.param-type.boolean, .enum-value.boolean {
   color: firebrick;
 }
 
@@ -157,4 +157,26 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-schema .param-wrap:first-of-type .param-name:before {
   display: none !important;
+}
+
+.param-enum {
+  color: #666;
+
+  &:before {
+    content: "Values: {"
+  }
+
+  &:after {
+    content: "}"
+  }
+
+  > .enum-value {
+    &:after {
+      content: ", ";
+    }
+
+    &:last-of-type:after {
+      content: none;
+    }
+  }
 }

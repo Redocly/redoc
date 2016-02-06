@@ -13,6 +13,9 @@
           <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint}"
           title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>
           <span *ngIf="prop.required" class="param-required">Required</span>
+          <div *ngIf="prop.enum" class="param-enum">
+            <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+          </div>
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>
