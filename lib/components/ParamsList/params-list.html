@@ -23,7 +23,7 @@
 
   <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>
-    <json-schema pointer="{{data.bodyParam.pointer}}/schema">
-    </json-schema>
+    <json-schema-lazy [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">
+    </json-schema-lazy>
   </div>
 </div>
