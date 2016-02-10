@@ -61,6 +61,7 @@ module.exports = function (config) {
 
         proxies: {
             '/tests/': '/base/tests/',
+            '/lib/components/Redoc/redoc-loading-styles.css': '/base/.tmp/lib/components/Redoc/redoc-loading-styles.css',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
