@@ -30,6 +30,8 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-name {
+  flex-grow: 0;
+  -ms-flex-grow: 0;
   display: inline-block;
   font-size: 14px;
   padding: $cell-padding 0 $cell-padding 0;
@@ -47,7 +49,9 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-info {
-  width: 100%;
+  //width: 100%;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
   padding: $cell-padding 0;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
@@ -56,6 +60,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param {
   display: flex;
+  display: -ms-flexbox;
 }
 
 .param-required {
