@@ -9,7 +9,6 @@
   "main": "dist/redoc.min.js",
   "scripts": {
     "test": "gulp lint && ./build/run_tests.sh",
-    "prepublish": "gulp build",
     "jspm-install": "jspm install",
     "start": "gulp serve",
     "build-dist": "gulp build",
