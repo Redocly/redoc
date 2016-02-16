@@ -29,6 +29,8 @@ cache:
 before_install:
 - travis_retry npm install jspm
 - jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
+before_script:
+- npm run jspm-install
 before_deploy:
 - npm run build-dist
 deploy:
