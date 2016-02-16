@@ -37,7 +37,7 @@ System.config({
   },
 
   map: {
-    "angular2": "npm:angular2@2.0.0-beta.3",
+    "angular2": "npm:angular2@2.0.0-beta.6",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.6",
@@ -135,14 +135,14 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:angular2@2.0.0-beta.3": {
+    "npm:angular2@2.0.0-beta.6": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "es6-promise": "npm:es6-promise@3.0.2",
       "es6-shim": "npm:es6-shim@0.33.13",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.0",
-      "zone.js": "npm:zone.js@0.5.11"
+      "zone.js": "npm:zone.js@0.5.14"
     },
     "npm:argparse@1.0.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -866,7 +866,7 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
       "validator": "npm:validator@4.5.0"
     },
-    "npm:zone.js@0.5.11": {
+    "npm:zone.js@0.5.14": {
       "es6-promise": "npm:es6-promise@3.0.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
