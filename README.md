@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Rebilly/ReDoc.png?label=ready&title=Ready)](https://waffle.io/Rebilly/ReDoc)
 # ReDoc
 [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Code Climate](https://codeclimate.com/github/Rebilly/ReDoc/badges/gpa.svg)](https://codeclimate.com/github/Rebilly/ReDoc) [![David](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies)
 
