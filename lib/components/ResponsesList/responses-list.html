@@ -14,7 +14,7 @@
   <header>
     Response schema
   </header>
-  <json-schema *ngIf="response.schema && !enabledLazy" class="schema type" pointer="{{response.pointer}}/schema">
+  <json-schema *ngIf="response.schema && options.disableLazySchemas" class="schema type" pointer="{{response.pointer}}/schema">
   </json-schema>
   <json-schema-lazy #lazySchema pointer="{{response.schema ? response.pointer + '/schema' : null}}">
   </json-schema-lazy>

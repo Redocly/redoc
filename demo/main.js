@@ -8,4 +8,6 @@
     Redoc.init(schemaUrlInput.value);
     return false;
   })
+
+  //window.redocDebugMode = true;
 })();

@@ -2,12 +2,16 @@
 <div class="params-wrap">
   <div *ngFor="#param of data.params" class="param">
       <div class="param-name">
-        <span> {{param.name}} </span>
+        <span class="param-name-content"> {{param.name}} </span>
       </div>
       <div class="param-info">
         <div>
-          <span class="param-type" [ngClass]="param.type">{{param.type}}</span>
+          <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
+          title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
           <span *ngIf="param.required" class="param-required">Required</span>
+          <div *ngIf="param.enum" class="param-enum">
+            <span *ngFor="#enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+          </div>
         </div>
         <div class="param-description" innerHtml="{{param.description | marked}}"></div>
       </div>
@@ -19,7 +23,7 @@
 
   <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>
-    <json-schema pointer="{{data.bodyParam.pointer}}/schema">
-    </json-schema>
+    <json-schema-lazy [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">
+    </json-schema-lazy>
   </div>
 </div>

@@ -9,7 +9,8 @@
   "globals": {
     "should": true,
     "expect": true,
-    "sinon": true
+    "sinon": true,
+    "Reflect": true
   },
   "rules": {
     "quotes": [2, "single"],

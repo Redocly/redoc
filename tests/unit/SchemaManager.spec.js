@@ -165,7 +165,7 @@ describe('Utils', () => {
           info.should.be.an.Object();
           info.methods.should.be.an.Array();
           for (let methodInfo of info.methods) {
-            methodInfo.should.have.keys('pointer', 'summary');
+            methodInfo.should.have.properties(['pointer', 'summary']);
             let methSchema = schemaMgr.byPointer(methodInfo.pointer);
             expect(methSchema).not.toBeNull();
             if (methSchema.summary) {

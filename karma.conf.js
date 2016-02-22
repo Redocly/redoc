@@ -49,18 +49,19 @@ module.exports = function (config) {
           'node_modules/zone.js/dist/long-stack-trace-zone.js',
           'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/babel-polyfill/dist/polyfill.js',
-          'node_modules/reflect-metadata/Reflect.js'
+          './node_modules/reflect-metadata/Reflect.js'
         ],
 
         jspm: {
             config: 'system.config.js',
-            loadFiles: ['tests/unit/*.spec.js', 'tests/helpers.js', 'lib/**/*.js'],
+            loadFiles: ['tests/setup.js', 'tests/helpers.js', 'tests/unit/*.spec.js', 'lib/**/*.js'],
             serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html', '.tmp/lib/**/*.css'],
             nocache: true
         },
 
         proxies: {
             '/tests/': '/base/tests/',
+            '/lib/components/Redoc/redoc-loading-styles.css': '/base/.tmp/lib/components/Redoc/redoc-loading-styles.css',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',

@@ -42,12 +42,14 @@ gulp.task('inlineTemplates', ['sass'], function() {
 });
 
 var JS_DEV_DEPS = [
+  'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone-microtask.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];
 
 var JS_DEV_DEPS_MIN = [
+  'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone-microtask.min.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.min.js'
@@ -91,7 +93,7 @@ function bundle(outputFile, minify, cb) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       outputFile,
-      { format:'umd', sourceMaps: true, lowResSourceMaps: true, minify: minify }
+      { format:'umd', sourceMaps: true, mangle: false, lowResSourceMaps: true, minify: minify }
     )
     .then(function() {
       cb();

@@ -30,8 +30,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-name {
+  flex-grow: 0;
+  -ms-flex-grow: 0;
+  display: inline-block;
   font-size: 14px;
-  padding: $cell-padding $cell-spacing $cell-padding 0;
+  padding: $cell-padding 0 $cell-padding 0;
   font-weight: bold;
   box-sizing: border-box;
   line-height: $param-name-height;
@@ -40,15 +43,24 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   position: relative;
 }
 
+.param-name-content {
+  padding-right: $cell-spacing;
+  display: inline-block;
+}
+
 .param-info {
-  width: 100%;
+  //width: 100%;
+  flex-grow: 1;
+  -ms-flex-grow: 1;
   padding: $cell-padding 0;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+  display: inline-block;
 }
 
 .param {
   display: flex;
+  display: -ms-flexbox;
 }
 
 .param-required {
@@ -72,11 +84,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   color: #999;
 }
 
-.param-type.string {
+.param-type.string, .enum-value.string {
   color: rgba(0, 80, 0, 0.7);
 }
 
-.param-type.integer, .param-type.number {
+.param-type.integer, .param-type.number, .enum-value.number {
   color: rgba(74, 139, 179, 0.8);
 }
 
@@ -84,7 +96,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   color: rgba(0, 50, 159, 0.7);
 }
 
-.param-type.boolean {
+.param-type.boolean, .enum-value.boolean {
   color: firebrick;
 }
 
@@ -157,4 +169,26 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-schema .param-wrap:first-of-type .param-name:before {
   display: none !important;
+}
+
+.param-enum {
+  color: #666;
+
+  &:before {
+    content: "Values: {"
+  }
+
+  &:after {
+    content: "}"
+  }
+
+  > .enum-value {
+    &:after {
+      content: ", ";
+    }
+
+    &:last-of-type:after {
+      content: none;
+    }
+  }
 }

@@ -64,6 +64,7 @@ span.zippy-indicator {
 }
 
 .zippy-hidden {
+  overflow: hidden;
   visibility: hidden;
   height: 0;
   padding: 0;
