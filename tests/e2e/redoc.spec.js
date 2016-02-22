@@ -60,6 +60,7 @@ describe('APIs.guru specs test', ()=> {
   delete apisGuruList['learnifier.com']; // allof object and no type
   delete apisGuruList['googleapis.com:mirror']; // bad urls in images
   delete apisGuruList['googleapis.com:discovery']; // non-string references
+  delete apisGuruList['clarify.io']; // non-string references
 
   // run quick version of e2e test on all builds except releases
   if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
