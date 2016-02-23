@@ -9,10 +9,15 @@
 
 @import '../JsonSchema/json-schema-common';
 
+header.paramType {
+  margin: 10px 0;
+  text-transform: capitalize;
+}
 
 // paramters can't be multilevel so table representation works for it without javascript
 .params-wrap {
   display: table;
+  width: 100%;
 }
 
 .param-name {
@@ -22,6 +27,7 @@
 
 .param-info {
   display: table-cell;
+  width: 100%;
 }
 
 .param {

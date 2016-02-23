@@ -1,22 +1,25 @@
 <h2 class="param-list-header" *ngIf="data.params.length"> Parameters </h2>
-<div class="params-wrap">
-  <div *ngFor="#param of data.params" class="param">
-      <div class="param-name">
-        <span class="param-name-content"> {{param.name}} </span>
-      </div>
-      <div class="param-info">
-        <div>
-          <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
-          title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
-          <span *ngIf="param.required" class="param-required">Required</span>
-          <div *ngIf="param.enum" class="param-enum">
-            <span *ngFor="#enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
-          </div>
+<template ngFor [ngForOf]="data.params" #paramType="$implicit">
+  <header class="paramType"> {{paramType.place}} Parameters </header>
+  <div class="params-wrap">
+    <div *ngFor="#param of paramType.params" class="param">
+        <div class="param-name">
+          <span class="param-name-content"> {{param.name}} </span>
         </div>
-        <div class="param-description" innerHtml="{{param.description | marked}}"></div>
-      </div>
+        <div class="param-info">
+          <div>
+            <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
+            title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
+            <span *ngIf="param.required" class="param-required">Required</span>
+            <div *ngIf="param.enum" class="param-enum">
+              <span *ngFor="#enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+            </div>
+          </div>
+          <div class="param-description" innerHtml="{{param.description | marked}}"></div>
+        </div>
+    </div>
   </div>
-</div>
+</template>
 
 <div *ngIf="data.bodyParam">
   <h2 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h2>
