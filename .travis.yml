@@ -36,7 +36,7 @@ before_deploy:
 deploy:
   - skip_cleanup: true
     provider: script
-    script: ./build/deploy_gh_pages.sh
+    script: npm run deploy
     on:
       branch: master
       condition: $JOB != e2e
