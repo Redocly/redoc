@@ -11,9 +11,12 @@
   },
   "license": "MIT",
   "keywords": [
+    "OpenAPI",
+    "OpenAPI Specification",
     "Swagger",
     "JSON-Schema",
     "API",
+    "REST",
     "documentation",
     "Angular 2"
   ],

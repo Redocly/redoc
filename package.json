@@ -18,9 +18,12 @@
     "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo"
   },
   "keywords": [
+    "OpenAPI",
+    "OpenAPI Specification",
     "Swagger",
     "JSON-Schema",
     "API",
+    "REST",
     "documentation",
     "Angular 2"
   ],
