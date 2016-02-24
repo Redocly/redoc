@@ -25,6 +25,10 @@
     "tests",
     "lib",
     "demo",
-    "build"
+    "build",
+    "docs",
+    "gulpfile.js",
+    "*.conf.js",
+    "*.config.js"
   ]
 }
