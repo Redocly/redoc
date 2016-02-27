@@ -11,9 +11,12 @@
   },
   "license": "MIT",
   "keywords": [
+    "OpenAPI",
+    "OpenAPI Specification",
     "Swagger",
     "JSON-Schema",
     "API",
+    "REST",
     "documentation",
     "Angular 2"
   ],
@@ -25,6 +28,10 @@
     "tests",
     "lib",
     "demo",
-    "build"
+    "build",
+    "docs",
+    "gulpfile.js",
+    "*.conf.js",
+    "*.config.js"
   ]
 }
