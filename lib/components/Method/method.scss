@@ -4,7 +4,7 @@
 :host {
   padding-bottom: 100px;
   display: block;
-  border-bottom: 2px solid rgba(127, 127, 127, 0.25);
+  border-bottom: 1px solid rgba(127, 127, 127, 0.25);
 }
 
 responses-list, params-list {
@@ -12,9 +12,7 @@ responses-list, params-list {
 }
 
 .method-header {
-  font-size: 25px;
-  font-weight: 200;
-  color: $method-headers-color;
+  margin-bottom: 1em;
 }
 
 .method-endpoint {
@@ -70,7 +68,7 @@ responses-list, params-list {
 
 .method-content {
   width: 100% - $samples-panel-width;
-  padding: 0 20px;
+  padding: 20px 20px;
 }
 
 .method-samples {

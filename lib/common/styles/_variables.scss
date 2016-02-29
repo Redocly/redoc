@@ -1,15 +1,60 @@
-$headers-color: #00329F;
-$method-headers-color: #253137;
+// Colors
+// ---------------------------
+$primary-color : #0033a0;
+$secondary-color : #263238;
+$green : #00aa13;
+$yellow : #f1c400;
+$red : #e53935;
 
+// Font
+// ---------------------------
+$em-size : 14px;
+
+// Font weights
+// ---------------------------
+$light : 300;
+$regular : 400;
+$bold : 700;
+
+// Base Font
+// ---------------------------
+$base-font : Roboto;
+$base-font-family : sans-serif;
+$base-font-weight : $regular;
+$base-font-size : 1em;
+$base-line-height : 1.4;
+$text-color : $secondary-color;
+
+// Heading Font
+// ---------------------------
+$headers-font : Montserrat;
+$headers-font-family : sans-serif;
+$headers-font-weight : $regular;
+$headers-color : $primary-color;
+$method-headers-color : $primary-color;
+$h1: 1.85714285714286em;
+$h2: 1.5714285714285714em;
+$h3: 1.2857142857142858em;
+$h4: 1.1428571428571428em;
+$h5: 1em;
+
+// Google Fonts
+// ---------------------------
+@import url(http://fonts.googleapis.com/css?family=#{$base-font}:#{$light},#{$regular},#{$bold});
+@import url(http://fonts.googleapis.com/css?family=#{$headers-font}:#{$light},#{$regular});
+
+// Side Bar
+// ---------------------------
 $side-bar-width: 260px;
 $side-bar-bg-color: #FAFAFA;
-
 $side-menu-item-color: #384248;
 $side-menu-even-bg-color: #F0F0F0;
 $side-menu-active-bg-color: #DEDEDE;
 $side-menu-item-hpadding: 20px;
 $side-menu-item-vpadding: 5px;
 
+// Sample Panel
+// ---------------------------
 $samples-panel-bg-color: #263238;
 $samples-panel-width: 40%;
 $sample-panel-headers-color: #8A9094;
@@ -18,3 +63,141 @@ $sample-panel-color: #CFD2D3;
 $tree-lines-color: #7D97CE;
 
 $side-menu-mobile-breakpoint: 1000px;
+
+// Global Styles
+// ---------------------------
+@for $index from 1 through 5 {
+  h#{$index}{
+    font-family: $headers-font, $headers-font-family;
+    color: $headers-color;
+    font-weight: $headers-font-weight;
+  }
+}
+
+h1 { font-size: $h1; }
+h2 { font-size: $h2; }
+h3 { font-size: $h3; }
+h4 { font-size: $h4; }
+h5 { font-size: $h5; }
+
+p {
+  font-size: $base-font-size;
+}
+
+footer {
+  text-align: right;
+  padding: 10px;
+  font-size: 15px;
+
+  a {
+    color: #999;
+    text-decoration: none;
+  }
+
+  strong {
+    font-size: 18px;
+    color: $headers-color;
+  }
+}
+
+/* global redoc styles */
+
+:host p {
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+/* markdown elements */
+
+:host .redoc-markdown-block {
+  pre {
+    font-family: Courier, monospace;
+    white-space: pre-wrap;
+    background-color: rgba(0,0,0,0.04);
+    padding: 10px;
+    overflow-x: auto;
+    line-height: normal;
+    border-radius: 3px;
+
+    code {
+      background-color: transparent;
+
+      &:before, &:after {
+        content: none;
+      }
+    }
+  }
+
+  code {
+    font-family: Courier, monospace;
+    background-color: rgba(0,0,0,0.04);
+    padding: 0.2em 0;
+    font-size: 0.85em;
+    border-radius: 3px;
+
+    &:before, &:after {
+      letter-spacing: -0.2em;
+      content: "\\00a0";
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: $base-font-size;
+    margin-bottom: 1em;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  blockquote {
+    margin: 0;
+    margin-bottom: 1em;
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
+  }
+
+  img {
+    max-width: 100%;
+    box-sizing: content-box;
+  }
+
+  ul, ol {
+    padding-left: 2em;
+    margin: 0;
+    margin-bottom: 1em;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  table tr {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+
+    &:nth-child(2n) {
+      background-color: #f8f8f8;
+    }
+  }
+
+  table th, table td {
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+  }
+
+  table th {
+    text-align: left;
+    font-weight: bold;
+  }
+}

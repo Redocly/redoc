@@ -1,9 +1,5 @@
 body {
-  font-family: Verdana, Geneva, sans-serif;
-  font-size: 14px;
-  color: #333;
   margin: 0;
-  line-height: 1.5;
   padding-top: 50px;
 }
 
@@ -16,6 +12,7 @@ nav input, nav button  {
   outline: none;
 }
 nav header {
+  font-family: Monserrat, sans-serif;
   float: left;
   margin-left: 20px;
   font-size: 25px;

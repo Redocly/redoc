@@ -7,6 +7,10 @@
 
 .redoc-wrap {
   position: relative;
+  font-family: $base-font, $base-font-family;
+  font-size: $em-size;
+  line-height: $base-line-height;
+  color: $text-color;
 }
 
 side-menu {
@@ -73,121 +77,4 @@ api-logo {
 
 #api-content.menu-opened:after {
   display: block;;
-}
-
-footer {
-  text-align: right;
-  padding: 10px;
-  font-size: 15px;
-
-  a {
-    color: #999;
-    text-decoration: none;
-  }
-
-  strong {
-    font-size: 18px;
-    color: $headers-color;
-  }
-}
-
-/* global redoc styles */
-
-:host p {
-  margin: 0;
-  margin-bottom: 1em;
-}
-
-/* markdown elements */
-
-:host .redoc-markdown-block {
-  pre {
-    font-family: Courier, monospace;
-    white-space: pre-wrap;
-    background-color: rgba(0,0,0,0.04);
-    padding: 10px;
-    overflow-x: auto;
-    line-height: normal;
-    border-radius: 3px;
-
-    code {
-      background-color: transparent;
-
-      &:before, &:after {
-        content: none;
-      }
-    }
-  }
-
-  code {
-    font-family: Courier, monospace;
-    background-color: rgba(0,0,0,0.04);
-    padding: 0.2em 0;
-    font-size: 0.85em;
-    border-radius: 3px;
-
-    &:before, &:after {
-      letter-spacing: -0.2em;
-      content: "\\00a0";
-    }
-  }
-
-  p {
-    margin: 0;
-    margin-bottom: 1em;
-  }
-
-  p:last-of-type {
-    margin-bottom: 0;
-  }
-
-  blockquote {
-    margin: 0;
-    margin-bottom: 1em;
-    padding: 0 15px;
-    color: #777;
-    border-left: 4px solid #ddd;
-  }
-
-  img {
-    max-width: 100%;
-    box-sizing: content-box;
-  }
-
-  ul, ol {
-    padding-left: 2em;
-    margin: 0;
-    margin-bottom: 1em;
-  }
-
-  table {
-    display: block;
-    width: 100%;
-    overflow: auto;
-    word-break: normal;
-    word-break: keep-all;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  table tr {
-    background-color: #fff;
-    border-top: 1px solid #ccc;
-
-    &:nth-child(2n) {
-      background-color: #f8f8f8;
-    }
-  }
-
-  table th, table td {
-    padding: 6px 13px;
-    border: 1px solid #ddd;
-  }
-
-  table th {
-    text-align: left;
-    font-weight: bold;
-  }
 }
