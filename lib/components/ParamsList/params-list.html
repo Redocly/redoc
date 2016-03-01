@@ -1,6 +1,7 @@
-<h2 class="param-list-header" *ngIf="data.params.length"> Parameters </h2>
+<h4 class="param-list-header" *ngIf="data.params.length"> Parameters </h4>
 <template ngFor [ngForOf]="data.params" #paramType="$implicit">
   <header class="paramType"> {{paramType.place}} Parameters </header>
+  <br>
   <div class="params-wrap">
     <div *ngFor="#param of paramType.params" class="param">
         <div class="param-name">
@@ -22,10 +23,11 @@
 </template>
 
 <div *ngIf="data.bodyParam">
-  <h2 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h2>
+  <h4 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h4>
 
   <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>
+    <br>
     <json-schema-lazy [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">
     </json-schema-lazy>
   </div>

@@ -12,31 +12,40 @@ responses-list, params-list {
 }
 
 .method-header {
-  margin-bottom: 1em;
+  margin-bottom: .5em;
 }
 
 .method-endpoint {
-  margin: 0;
-  font-weight: 200;
-  font-size: 0;
+  margin: 0 0 2em 0;
+  display: block;
+  font-weight: $light;
 }
 
-.method-endpoint > span {
-  padding-top: 3px;
+.method-endpoint > h5 {
+  padding-top: 4px;
   padding-bottom: 3px;
+  margin: 0;
+  font-size: .8em;
   vertical-align: middle;
-  font-size: 14px;
+  display: inline-block;
+  border-radius: $border-radius;
 }
 
 .api-url {
-  color: #999;
+  color: lighten($text-color, 30%);
   margin-left: 10px;
+  margin-top: 2px;
+  position: relative;
+  top: 1px;
+  font-size: 1em!important;
 }
 
 .path {
-  font-family: monospace;
-  font-weight: bold;
+  font-weight: $bold;
+  position: relative;
+  top: 1px;
   color: $headers-color;
+  font-size: 1em!important;
 }
 
 .method-tags {
@@ -68,13 +77,13 @@ responses-list, params-list {
 
 .method-content {
   width: 100% - $samples-panel-width;
-  padding: 20px 20px;
+  padding: 40px;
 }
 
 .method-samples {
   color: $sample-panel-color;
   width: 40%;
-  padding: 10px 20px;
+  padding: 40px;
   background: $samples-panel-bg-color;
 }
 
@@ -124,7 +133,7 @@ responses-samples {
 }
 
 .http-method.put {
-  background-color: crimson;
+  background-color: $red;
 }
 
 .http-method.options {

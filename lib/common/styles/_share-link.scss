@@ -18,6 +18,10 @@
   vertical-align: middle;
 }
 
+.sharable-header {
+  color: $secondary-color;
+}
+
 .sharable-header:hover .share-link:before, .share-link:hover:before {
   visibility: visible;
 }

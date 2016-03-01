@@ -3,10 +3,10 @@
     <h2 class="method-header sharable-header">
       <a class="share-link" href="#{{data.methodAnchor}}"></a>{{data.methodInfo.summary}}
     </h2>
-    <h3 class="method-endpoint">
-      <span class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</span>
+    <span class="method-endpoint">
+      <h5 class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</h5>
       <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>
-    </h3>
+    </span>
     <div class="method-tags" *ngIf="data.methodInfo.tags.length">
       <a *ngFor="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
     </div>

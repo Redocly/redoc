@@ -2,6 +2,7 @@
 // ---------------------------
 $primary-color : #0033a0;
 $secondary-color : #263238;
+$black : #263238;
 $green : #00aa13;
 $yellow : #f1c400;
 $red : #e53935;
@@ -23,7 +24,7 @@ $base-font-family : sans-serif;
 $base-font-weight : $regular;
 $base-font-size : 1em;
 $base-line-height : 1.4;
-$text-color : $secondary-color;
+$text-color : $black;
 
 // Heading Font
 // ---------------------------
@@ -55,19 +56,24 @@ $side-menu-item-vpadding: 5px;
 
 // Sample Panel
 // ---------------------------
-$samples-panel-bg-color: #263238;
+$samples-panel-bg-color: $black;
 $samples-panel-width: 40%;
-$sample-panel-headers-color: #8A9094;
-$sample-panel-color: #CFD2D3;
+$sample-panel-headers-color: lighten($black, 50%);
+$sample-panel-color: lighten($black, 80%);
 
 $tree-lines-color: #7D97CE;
 
 $side-menu-mobile-breakpoint: 1000px;
 
+// Border Radius
+// ---------------------------
+$border-radius: 2px;
+
 // Global Styles
 // ---------------------------
 @for $index from 1 through 5 {
   h#{$index}{
+    margin-top: 0;
     font-family: $headers-font, $headers-font-family;
     color: $headers-color;
     font-weight: $headers-font-weight;
@@ -97,107 +103,5 @@ footer {
   strong {
     font-size: 18px;
     color: $headers-color;
-  }
-}
-
-/* global redoc styles */
-
-:host p {
-  margin: 0;
-  margin-bottom: 1em;
-}
-
-/* markdown elements */
-
-:host .redoc-markdown-block {
-  pre {
-    font-family: Courier, monospace;
-    white-space: pre-wrap;
-    background-color: rgba(0,0,0,0.04);
-    padding: 10px;
-    overflow-x: auto;
-    line-height: normal;
-    border-radius: 3px;
-
-    code {
-      background-color: transparent;
-
-      &:before, &:after {
-        content: none;
-      }
-    }
-  }
-
-  code {
-    font-family: Courier, monospace;
-    background-color: rgba(0,0,0,0.04);
-    padding: 0.2em 0;
-    font-size: 0.85em;
-    border-radius: 3px;
-
-    &:before, &:after {
-      letter-spacing: -0.2em;
-      content: "\\00a0";
-    }
-  }
-
-  p {
-    margin: 0;
-    font-size: $base-font-size;
-    margin-bottom: 1em;
-  }
-
-  p:last-of-type {
-    margin-bottom: 0;
-  }
-
-  blockquote {
-    margin: 0;
-    margin-bottom: 1em;
-    padding: 0 15px;
-    color: #777;
-    border-left: 4px solid #ddd;
-  }
-
-  img {
-    max-width: 100%;
-    box-sizing: content-box;
-  }
-
-  ul, ol {
-    padding-left: 2em;
-    margin: 0;
-    margin-bottom: 1em;
-  }
-
-  table {
-    display: block;
-    width: 100%;
-    overflow: auto;
-    word-break: normal;
-    word-break: keep-all;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  table tr {
-    background-color: #fff;
-    border-top: 1px solid #ccc;
-
-    &:nth-child(2n) {
-      background-color: #f8f8f8;
-    }
-  }
-
-  table th, table td {
-    padding: 6px 13px;
-    border: 1px solid #ddd;
-  }
-
-  table th {
-    text-align: left;
-    font-weight: bold;
   }
 }

@@ -9,8 +9,10 @@ schema-sample {
 }
 
 header {
-  font-size: 16px;
-  margin: 5px 0;
+  font-family: $headers-font;
+  font-size: .9em;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
   color: $sample-panel-headers-color;
   text-transform: uppercase;
   font-weight: normal;
