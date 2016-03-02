@@ -35,7 +35,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   display: inline-block;
   font-size: 14px;
   padding: $cell-padding 0 $cell-padding 0;
-  font-weight: bold;
+  font-weight: $regular;
   box-sizing: border-box;
   line-height: $param-name-height;
   border-left: $line-border;
@@ -76,7 +76,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   font-size: 12px;
   line-height: $param-name-height;
   vertical-align: middle;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .param-type.array:before {

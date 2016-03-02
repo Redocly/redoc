@@ -23,7 +23,7 @@ $base-font : Roboto;
 $base-font-family : sans-serif;
 $base-font-weight : $regular;
 $base-font-size : 1em;
-$base-line-height : 1.4;
+$base-line-height : 1.55em;
 $text-color : $black;
 
 // Heading Font
@@ -37,7 +37,7 @@ $h1: 1.85714285714286em;
 $h2: 1.5714285714285714em;
 $h3: 1.2857142857142858em;
 $h4: 1.1428571428571428em;
-$h5: 1em;
+$h5: 0.929em;
 
 // Google Fonts
 // ---------------------------
@@ -50,7 +50,7 @@ $side-bar-width: 260px;
 $side-bar-bg-color: #FAFAFA;
 $side-menu-item-color: #384248;
 $side-menu-even-bg-color: #F0F0F0;
-$side-menu-active-bg-color: #DEDEDE;
+$side-menu-active-bg-color: #f0f0f0;
 $side-menu-item-hpadding: 20px;
 $side-menu-item-vpadding: 5px;
 
@@ -68,40 +68,3 @@ $side-menu-mobile-breakpoint: 1000px;
 // Border Radius
 // ---------------------------
 $border-radius: 2px;
-
-// Global Styles
-// ---------------------------
-@for $index from 1 through 5 {
-  h#{$index}{
-    margin-top: 0;
-    font-family: $headers-font, $headers-font-family;
-    color: $headers-color;
-    font-weight: $headers-font-weight;
-  }
-}
-
-h1 { font-size: $h1; }
-h2 { font-size: $h2; }
-h3 { font-size: $h3; }
-h4 { font-size: $h4; }
-h5 { font-size: $h5; }
-
-p {
-  font-size: $base-font-size;
-}
-
-footer {
-  text-align: right;
-  padding: 10px;
-  font-size: 15px;
-
-  a {
-    color: #999;
-    text-decoration: none;
-  }
-
-  strong {
-    font-size: 18px;
-    color: $headers-color;
-  }
-}

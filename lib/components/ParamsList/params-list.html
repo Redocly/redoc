@@ -1,4 +1,4 @@
-<h4 class="param-list-header" *ngIf="data.params.length"> Parameters </h4>
+<h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>
 <template ngFor [ngForOf]="data.params" #paramType="$implicit">
   <header class="paramType"> {{paramType.place}} Parameters </header>
   <br>
@@ -23,7 +23,7 @@
 </template>
 
 <div *ngIf="data.bodyParam">
-  <h4 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h4>
+  <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>
 
   <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>

@@ -12,7 +12,7 @@ responses-list, params-list {
 }
 
 .method-header {
-  margin-bottom: .5em;
+  margin-bottom: .9em;
 }
 
 .method-endpoint {
@@ -22,8 +22,8 @@ responses-list, params-list {
 }
 
 .method-endpoint > h5 {
-  padding-top: 4px;
-  padding-bottom: 3px;
+  padding-top: 1px;
+  padding-bottom: 0;
   margin: 0;
   font-size: .8em;
   vertical-align: middle;
@@ -32,11 +32,11 @@ responses-list, params-list {
 }
 
 .api-url {
-  color: lighten($text-color, 30%);
+  color: rgba($text-color, .6);
   margin-left: 10px;
   margin-top: 2px;
   position: relative;
-  top: 1px;
+  top: 2px;
   font-size: 1em!important;
 }
 

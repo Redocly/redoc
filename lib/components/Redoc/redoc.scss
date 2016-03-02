@@ -1,177 +1,219 @@
 @import '../../common/styles/variables';
 
 :host {
-  display: block;
-  box-sizing: border-box;
+    display: block;
+    box-sizing: border-box;
 }
 
 .redoc-wrap {
-  position: relative;
-  font-family: $base-font, $base-font-family;
-  font-size: $em-size;
-  line-height: $base-line-height;
-  color: $text-color;
+    position: relative;
+    font-family: $base-font, $base-font-family;
+    font-size: $em-size;
+    line-height: $base-line-height;
+    color: $text-color;
 }
 
 side-menu {
-  display: block;
-  box-sizing: border-box;
+    display: block;
+    box-sizing: border-box;
 }
 
 methods-list {
-  display: block;
-  overflow: hidden;
+    display: block;
+    overflow: hidden;
 }
 
 api-info, .side-bar {
-  display: block;
-  padding: 10px 0;
+    display: block;
+    padding: 10px 0;
 }
 
 api-info {
-  padding: 40px;
+    padding: 40px;
 }
 
 api-logo {
-  display: block;
-  text-align: center;
+    display: block;
+    text-align: center;
 
-  @media (max-width: $side-menu-mobile-breakpoint) {
-    display: none;
-  }
+    @media (max-width: $side-menu-mobile-breakpoint) {
+        display: none;
+    }
 }
 
 [sticky-sidebar] {
-  width: $side-bar-width;
-  background-color: $side-bar-bg-color;
-  overflow-y: auto;
-  overflow-x: hidden;
+    width: $side-bar-width;
+    background-color: $side-bar-bg-color;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-  @media (max-width: $side-menu-mobile-breakpoint) {
-    z-index: 1;
-    width: 100%;
-    bottom: auto !important;
-  }
+    @media (max-width: $side-menu-mobile-breakpoint) {
+        z-index: 1;
+        width: 100%;
+        bottom: auto !important;
+    }
 }
 
 #api-content {
-  margin-left: $side-bar-width;
-  @media (max-width: $side-menu-mobile-breakpoint) {
-    padding-top: 3em;
-    margin-left: 0;
-  }
+    margin-left: $side-bar-width;
+    @media (max-width: $side-menu-mobile-breakpoint) {
+        padding-top: 3em;
+        margin-left: 0;
+    }
 }
 
 #api-content:after {
-  content: "";
-  position: absolute;;
-  left:0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: black;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-  display: none;
+    content: "";
+    position: absolute;;
+    left:0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    display: none;
 }
 
 #api-content.menu-opened:after {
-  display: block;;
+    display: block;;
 }
 
 /* global redoc styles */
 
-:host p {
-  margin: 0;
-  margin-bottom: 1em;
+@for $index from 1 through 5 {
+    :host h#{$index}{
+        margin-top: 0;
+        font-family: $headers-font, $headers-font-family;
+        color: $headers-color;
+        font-weight: $headers-font-weight;
+    }
 }
+
+:host {
+    h1 { font-size: $h1; }
+    h2 { font-size: $h2; }
+    h3 { font-size: $h3; }
+    h4 { font-size: $h4; }
+    h5 { font-size: $h5; }
+
+    p {
+        font-family: $base-font, $base-font-family;
+        margin: 0;
+        margin-bottom: 1em;
+        line-height: $base-line-height;
+    }
+
+    a {
+        text-decoration: none;
+        color: $primary-color;
+    }
+
+    p > code {
+        color: $red;
+        border: 1px solid rgba(38,50,56,0.1);
+    }
+
+    strong {
+        font-size: 18px;
+        color: $headers-color;
+    }
+
+    footer {
+        text-align: right;
+        padding: 10px;
+        font-size: 15px;
+    }
+}
+
+
 
 /* markdown elements */
 
 :host .redoc-markdown-block {
-  pre {
-    font-family: Courier, monospace;
-    white-space: pre-wrap;
-    background-color: rgba(38,50,56,0.04);
-    padding: 12px 14px 15px 14px;
-    overflow-x: auto;
-    line-height: normal;
-    border-radius: $border-radius;
-    border: 1px solid rgba(38,50,56,0.1);
+    pre {
+        font-family: Courier, monospace;
+        white-space: pre-wrap;
+        background-color: rgba(38,50,56,0.04);
+        padding: 12px 14px 15px 14px;
+        overflow-x: auto;
+        line-height: normal;
+        border-radius: $border-radius;
+        border: 1px solid rgba(38,50,56,0.1);
+
+        code {
+            background-color: transparent;
+
+            &:before, &:after {
+                content: none;
+            }
+        }
+    }
 
     code {
-      background-color: transparent;
+        font-family: Courier, monospace;
+        background-color: rgba(38,50,56,0.04);
+        padding: 0.1em 0 0.2em 0;
+        font-size: 1em;
+        border-radius: $border-radius;
 
-      &:before, &:after {
-        content: none;
-      }
+        &:before, &:after {
+            letter-spacing: -0.2em;
+            content: "\\00a0";
+        }
     }
-  }
 
-  code {
-    font-family: Courier, monospace;
-    background-color: rgba(0,0,0,0.04);
-    padding: 0.2em 0;
-    font-size: 1em;
-    border-radius: 3px;
-
-    &:before, &:after {
-      letter-spacing: -0.2em;
-      content: "\\00a0";
+    p:last-of-type {
+        margin-bottom: 1em;
     }
-  }
 
-  p:last-of-type {
-    margin-bottom: 1em;
-  }
-
-  blockquote {
-    margin: 0;
-    margin-bottom: 1em;
-    padding: 0 15px;
-    color: #777;
-    border-left: 4px solid #ddd;
-  }
-
-  img {
-    max-width: 100%;
-    box-sizing: content-box;
-  }
-
-  ul, ol {
-    padding-left: 2em;
-    margin: 0;
-    margin-bottom: 1em;
-  }
-
-  table {
-    display: block;
-    width: 100%;
-    overflow: auto;
-    word-break: normal;
-    word-break: keep-all;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  table tr {
-    background-color: #fff;
-    border-top: 1px solid #ccc;
-
-    &:nth-child(2n) {
-      background-color: #f8f8f8;
+    blockquote {
+        margin: 0;
+        margin-bottom: 1em;
+        padding: 0 15px;
+        color: #777;
+        border-left: 4px solid #ddd;
     }
-  }
 
-  table th, table td {
-    padding: 6px 13px;
-    border: 1px solid #ddd;
-  }
+    img {
+        max-width: 100%;
+        box-sizing: content-box;
+    }
 
-  table th {
-    text-align: left;
-    font-weight: bold;
-  }
+    ul, ol {
+        padding-left: 2em;
+        margin: 0;
+        margin-bottom: 1em;
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow: auto;
+        word-break: normal;
+        word-break: keep-all;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    table tr {
+        background-color: #fff;
+        border-top: 1px solid #ccc;
+
+        &:nth-child(2n) {
+            background-color: #f8f8f8;
+        }
+    }
+
+    table th, table td {
+        padding: 6px 13px;
+        border: 1px solid #ddd;
+    }
+
+    table th {
+        text-align: left;
+        font-weight: bold;
+    }
 }
