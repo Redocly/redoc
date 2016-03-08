@@ -11,6 +11,7 @@ $param-name-height: 20px;
 
 $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
+/*
 .param-schema {
   padding-left: $sub-schema-offset - $lines-width;
   border-left: $line-border;
@@ -18,21 +19,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-wrap {
   position: relative;
-}
-
-.param-schema:before {
-  content: "";
-  position: absolute;
-  left: $sub-schema-offset;
-  top: ($param-name-height/2) + $cell-padding;
-  bottom: 0;
-  border-left: $line-border;
-}
+}*/
 
 .param-name {
-  flex-grow: 0;
-  -ms-flex-grow: 0;
-  display: inline-block;
+
   font-size: 0.929em;
   padding: $cell-padding 0 $cell-padding 0;
   font-weight: $regular;
@@ -41,6 +31,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-left: $line-border;
   white-space: nowrap;
   position: relative;
+  vertical-align: top;
 }
 
 .param-name-content {
@@ -49,18 +40,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-info {
-  //width: 100%;
-  flex-grow: 1;
-  -ms-flex-grow: 1;
   padding: $cell-padding 0;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
-  display: inline-block;
-}
-
-.param {
-  display: flex;
-  display: -ms-flexbox;
+  width: 75%;
 }
 
 .param-required {
@@ -108,6 +91,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 /* tree */
 
 // Bullet
+
 .param-name > span:before {
   content: "";
   display: inline-block;
@@ -127,7 +111,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   top: ($param-name-height/2) + $cell-padding;
 }
 
-.param-wrap:first-of-type > .param > .param-name:before {
+ .param:first-of-type > .param-name:before {
   content: "";
   display: block;
   position: absolute;
@@ -137,14 +121,14 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   height: ($param-name-height/2) + $cell-padding;
 }
 
-.param-wrap:last-of-type > .param > .param-name {
-  position: static;
+.param:last-of-type > .param-name {
+  position: relative;
 
   &:after {
     content: "";
     display: block;
     position: absolute;
-    left: -$lines-width;
+    left: -$lines-width - 1px;
     border-left: $line-border-erase;
     top: ($param-name-height/2) + $cell-padding + $lines-width;
     background-color: white;
