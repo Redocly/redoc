@@ -19,30 +19,31 @@ li.active {
   &:before {
     content: "";
     display: inline-block;
-    vertical-align: middle;
-    height: 6px;
-    width: 6px;
+    position: relative;
+    top: -2px;
+    height: 4px;
+    width: 4px;
     border-radius: 50%;
     margin-right: 0.5em;
   }
 }
 
 .tab-success:before {
-  box-shadow: 0 0 3px 0 #00aa11;
-  background-color: #00aa11;
+  box-shadow: 0 0 3px 0 $green;
+  background-color: $green;
 }
 
 .tab-error:before {
-  box-shadow: 0 0 3px 0 #E53935;
-  background-color: #E53935;
+  box-shadow: 0 0 3px 0 $red;
+  background-color: $red;
 }
 
 .tab-redirect:before {
-  box-shadow: 0 0 3px 0 #F88F00;
-  background-color: #F88F00;
+  box-shadow: 0 0 3px 0 $yellow;
+  background-color: $yellow;
 }
 
 .tab-info:before {
-  box-shadow: 0 0 3px 0 #66C2FF;
-  background-color: #66C2FF;
+  box-shadow: 0 0 3px 0 $primary-color;
+  background-color: $primary-color;
 }

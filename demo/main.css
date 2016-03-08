@@ -1,6 +1,8 @@
 body {
   margin: 0;
   padding-top: 50px;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 nav input, nav button  {

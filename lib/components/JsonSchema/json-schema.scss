@@ -1,7 +1,7 @@
 @import 'json-schema-common';
 
 /* styles for array-schema for array */
-$array-marker-font-sz: 12px;
+$array-marker-font-sz: 13px;
 $array-marker-line-height: 1.5;
 :host {
   display: block;
@@ -9,8 +9,8 @@ $array-marker-line-height: 1.5;
 
 .params-wrap.params-array:before, .params-wrap.params-array:after {
   display: block;
-  font-weight: bold;
-  color: #999;
+  font-weight: $base-font-weight;
+  color: $black;
   font-size: $array-marker-font-sz;
   line-height: $array-marker-line-height;
 }

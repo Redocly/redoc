@@ -17,6 +17,9 @@ responses-list, params-list {
 
 .method-endpoint {
   margin: 0 0 2em 0;
+  padding: 10px 20px;
+  border-radius: $border-radius*2;
+  background-color: darken($black, 2%);
   display: block;
   font-weight: $light;
 }
@@ -26,26 +29,28 @@ responses-list, params-list {
   padding-bottom: 0;
   margin: 0;
   font-size: .8em;
+    color: $black;
   vertical-align: middle;
   display: inline-block;
   border-radius: $border-radius;
 }
 
 .api-url {
-  color: rgba($text-color, .6);
+  color: rgba(#ffffff, .8);
   margin-left: 10px;
   margin-top: 2px;
   position: relative;
-  top: 2px;
-  font-size: 1em!important;
+  top: 1px;
+  font-family: $headers-font, $headers-font-family;
+  font-size: 0.929em!important;
 }
 
 .path {
-  font-weight: $bold;
+  font-family: $headers-font, $headers-font-family;
   position: relative;
   top: 1px;
-  color: $headers-color;
-  font-size: 1em!important;
+  color: #ffffff;
+  font-size: 0.929em!important;
 }
 
 .method-tags {
@@ -91,11 +96,14 @@ responses-samples {
   display: block;
 }
 
-.method-samples header {
-  font-size: 16px;
-  margin: 5px 0;
+.method-samples header,
+.method-samples > h5 {
   color: $sample-panel-headers-color;
   text-transform: uppercase;
+}
+
+.method-samples > h5 {
+    margin-bottom: 8px;
 }
 
 .method-samples schema-sample {
@@ -109,39 +117,15 @@ responses-samples {
 }
 
 .method-description {
-  padding: 30px 0;
+  padding: 6px 0 10px 0;
   margin: 0;
 }
 
 .http-method {
-  color: white;
-  background-color: #1976D3;
+  color: $black;
+  background: #ffffff;
   padding: 3px 10px;
   text-transform: uppercase;
-}
-
-.http-method.delete {
-  background-color: red;
-}
-
-.http-method.post {
-  background-color: #00329F;
-}
-
-.http-method.patch {
-  background-color: orange;
-}
-
-.http-method.put {
-  background-color: $red;
-}
-
-.http-method.options {
-  background-color: black;
-}
-
-.http-method.head {
-  background-color: darkkhaki;
 }
 
 @media (max-width: 1100px) {

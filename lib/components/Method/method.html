@@ -1,28 +1,31 @@
 <div class="method">
-  <div class="method-content">
-    <h2 class="method-header sharable-header">
-      <a class="share-link" href="#{{data.methodAnchor}}"></a>{{data.methodInfo.summary}}
-    </h2>
-    <span class="method-endpoint">
-      <h5 class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</h5>
-      <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>
-    </span>
-    <div class="method-tags" *ngIf="data.methodInfo.tags.length">
-      <a *ngFor="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
-    </div>
-    <p *ngIf="data.methodInfo.description" class="method-description"
-      innerHtml="{{data.methodInfo.description | marked}}">
+    <div class="method-content">
+        <h2 class="method-header sharable-header">
+            <a class="share-link" href="#{{data.methodAnchor}}"></a>{{data.methodInfo.summary}}
+        </h2>
+        <div class="method-tags" *ngIf="data.methodInfo.tags.length">
+            <a *ngFor="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
+        </div>
+        <p *ngIf="data.methodInfo.description" class="method-description"
+        innerHtml="{{data.methodInfo.description | marked}}">
     </p>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
-  </div>
-  <div class="method-samples">
+</div>
+<div class="method-samples">
+    <h5>Definition</h5>
+    <span class="method-endpoint">
+        <h5 class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</h5>
+        <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>
+    </span>
     <div *ngIf="data.bodyParam">
-      <request-samples [pointer]="pointer" [bodySchemaPtr]="data.bodyParam._pointer">
-      </request-samples>
+        <br>
+        <request-samples [pointer]="pointer" [bodySchemaPtr]="data.bodyParam._pointer">
+        </request-samples>
     </div>
     <div>
-      <responses-samples pointer="{{pointer}}/responses"> </responses-samples>
+        <br>
+        <responses-samples pointer="{{pointer}}/responses"> </responses-samples>
     </div>
-  </div>
+</div>
 <div>

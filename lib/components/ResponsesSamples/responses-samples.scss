@@ -1,37 +1,38 @@
 @import '../../common/styles/variables';
 
 tab, tabs {
-  display: block;
+    display: block;
 }
 
 schema-sample {
-  display: block;
+    display: block;
 }
 
 header {
-  font-family: $headers-font;
-  font-size: .9em;
-  text-transform: uppercase;
-  margin: 0 0 12px 0;
-  color: $sample-panel-headers-color;
-  text-transform: uppercase;
-  font-weight: normal;
+    font-family: $headers-font;
+    font-size: 0.929em;
+    text-transform: uppercase;
+    margin: 0;
+    color: $sample-panel-headers-color;
+    text-transform: uppercase;
+    font-weight: normal;
 }
 
 :host > tabs > ul li {
-  font-size: 13px;
-  margin: 2px 0;
-  padding: 2px 5px;
-  color: #8A9094;
-  line-height: 1.25;
-  color: $sample-panel-headers-color;
+    font-family: $headers-font;
+    font-size: 0.929em;
+    border-radius: $border-radius;
+    margin: 2px 0;
+    padding: 2px 8px 3px 8px;
+    color: $sample-panel-headers-color;
+    line-height: 1.25;
 
-  &.active {
-    background-color: white;
-    color: #666;
-  }
+    &.active {
+        background-color: white;
+        color: $black;
+    }
 }
 
 :host tabs ul {
-  padding-top: 10px;
+    padding-top: 10px;
 }

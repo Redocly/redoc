@@ -13,7 +13,7 @@ $mobile-menu-compact-breakpoint: 550px;
     font-family: $headers-font, $headers-font-family;
     font-weight: $light;
     cursor: pointer;
-    color: $text-color;
+    color: rgba($text-color, .6);
     text-transform: uppercase;
     background-color: $side-bar-bg-color;
     -webkit-transition: all .15s ease-in-out;
@@ -22,7 +22,7 @@ $mobile-menu-compact-breakpoint: 550px;
     -o-transition: all .15s ease-in-out;
     transition: all .15s ease-in-out;
     display: block;
-    padding: $side-menu-item-vpadding $side-menu-item-hpadding;
+    padding: $side-menu-item-vpadding*2.5 $side-menu-item-hpadding;
 
     &:hover,
     &.active {
@@ -33,9 +33,10 @@ $mobile-menu-compact-breakpoint: 550px;
 
 .menu-subitems {
     margin: 0;
-    font-size: 13px;
-    font-weight: $regular;
-    color: rgba($text-color, .6);
+    font-size: 0.929em;
+    line-height: 1.2em;
+    font-weight: $light;
+    color: rgba($text-color, .9);
     padding: 0;
     height: 0;
     overflow: hidden;
@@ -53,7 +54,7 @@ $mobile-menu-compact-breakpoint: 550px;
         list-style: none inside none;
         cursor: pointer;
         background-color: $side-menu-active-bg-color;
-        padding: $side-menu-item-vpadding $side-menu-item-hpadding;
+        padding: $side-menu-item-vpadding*2 $side-menu-item-hpadding*2;
         padding-left: $side-menu-item-hpadding*2;
         overflow: hidden;
         text-overflow: ellipsis;

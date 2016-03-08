@@ -1,3 +1,5 @@
+@import '../../common/styles/variables';
+
 pre {
   background-color: transparent;
   padding: 0;
@@ -60,6 +62,13 @@ pre {
   .collapser {
     padding-right: 6px;
     padding-left: 6px;
+  }
+
+  .redoc-json {
+      padding: 20px;
+      border-radius: $border-radius*2;
+      background-color: darken($black, 2%);
+      margin-bottom: 36px;
   }
 
   ul, .redoc-json ul {

@@ -33,7 +33,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   flex-grow: 0;
   -ms-flex-grow: 0;
   display: inline-block;
-  font-size: 14px;
+  font-size: 0.929em;
   padding: $cell-padding 0 $cell-padding 0;
   font-weight: $regular;
   box-sizing: border-box;
@@ -72,8 +72,8 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-type {
-  color: #999;
-  font-size: 12px;
+  color: $black;
+  font-size: 0.929em;
   line-height: $param-name-height;
   vertical-align: middle;
   font-weight: normal;
@@ -81,23 +81,12 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-type.array:before {
   content: "Array of ";
-  color: #999;
+  color: $black;
+  font-weight: $base-font-weight;
 }
 
-.param-type.string, .enum-value.string {
-  color: rgba(0, 80, 0, 0.7);
-}
-
-.param-type.integer, .param-type.number, .enum-value.number {
-  color: rgba(74, 139, 179, 0.8);
-}
-
-.param-type.object {
-  color: rgba(0, 50, 159, 0.7);
-}
-
-.param-type.boolean, .enum-value.boolean {
-  color: firebrick;
+.param-type {
+    color: rgba($black, 0.4);
 }
 
 .param-type.with-hint {
