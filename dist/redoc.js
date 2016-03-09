@@ -7830,8 +7830,8 @@ $__System.register('f', ['5', '6', '7', '8', '9', '10', '11', '12', '13', '14', 
     }
   };
 });
-$__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '13', '17', '18', 'b', 'f'], function (_export) {
-  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, JsonPointer, SchemaSample, EncodeURIComponentPipe, ResponsesList, ResponsesSamples, ParamsList, RequestSamples, Method;
+$__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '17', '18', 'b', 'f'], function (_export) {
+  var RedocComponent, BaseComponent, _get, _inherits, _createClass, _classCallCheck, JsonPointer, SchemaSample, ResponsesList, ResponsesSamples, ParamsList, RequestSamples, Method;
 
   return {
     setters: [function (_6) {
@@ -7849,8 +7849,6 @@ $__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '13', '17', '18',
       JsonPointer = _5.JsonPointer;
     }, function (_9) {
       SchemaSample = _9['default'];
-    }, function (_10) {
-      EncodeURIComponentPipe = _10.EncodeURIComponentPipe;
     }, function (_7) {
       ResponsesList = _7['default'];
     }, function (_8) {
@@ -7883,7 +7881,7 @@ $__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '13', '17', '18',
             this.data.methodInfo.tags = this.filterMainTags(this.data.methodInfo.tags);
             this.data.bodyParam = this.findBodyParam();
             if (this.componentSchema.operationId) {
-              this.data.methodAnchor = 'operation/' + this.componentSchema.operationId;
+              this.data.methodAnchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
             } else {
               this.data.methodAnchor = 'tag/' + this.tag + this.pointer;
             }
@@ -7911,11 +7909,10 @@ $__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '13', '17', '18',
         var _Method = Method;
         Method = RedocComponent({
           selector: 'method',
-          template: '\n    <div class="method">\n      <div class="method-content">\n        <h2 class="method-header sharable-header">\n          <a class="share-link" href="#{{data.methodAnchor | encodeURIComponent }}"></a>{{data.methodInfo.summary}}\n        </h2>\n        <h3 class="method-endpoint">\n          <span class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</span>\n          <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>\n        </h3>\n        <div class="method-tags" *ngIf="data.methodInfo.tags.length">\n          <a *ngFor="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>\n        </div>\n        <p *ngIf="data.methodInfo.description" class="method-description"\n          innerHtml="{{data.methodInfo.description | marked}}">\n        </p>\n        <params-list pointer="{{pointer}}/parameters"> </params-list>\n        <responses-list pointer="{{pointer}}/responses"> </responses-list>\n      </div>\n      <div class="method-samples">\n        <div *ngIf="data.bodyParam">\n          <request-samples [pointer]="pointer" [bodySchemaPtr]="data.bodyParam._pointer">\n          </request-samples>\n        </div>\n        <div>\n          <responses-samples pointer="{{pointer}}/responses"> </responses-samples>\n        </div>\n      </div>\n    <div>\n  ',
+          template: '\n    <div class="method">\n      <div class="method-content">\n        <h2 class="method-header sharable-header">\n          <a class="share-link" href="#{{data.methodAnchor}}"></a>{{data.methodInfo.summary}}\n        </h2>\n        <h3 class="method-endpoint">\n          <span class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</span>\n          <span class="api-url">{{data.apiUrl}}</span> <span class="path">{{data.path}}</span>\n        </h3>\n        <div class="method-tags" *ngIf="data.methodInfo.tags.length">\n          <a *ngFor="#tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>\n        </div>\n        <p *ngIf="data.methodInfo.description" class="method-description"\n          innerHtml="{{data.methodInfo.description | marked}}">\n        </p>\n        <params-list pointer="{{pointer}}/parameters"> </params-list>\n        <responses-list pointer="{{pointer}}/responses"> </responses-list>\n      </div>\n      <div class="method-samples">\n        <div *ngIf="data.bodyParam">\n          <request-samples [pointer]="pointer" [bodySchemaPtr]="data.bodyParam._pointer">\n          </request-samples>\n        </div>\n        <div>\n          <responses-samples pointer="{{pointer}}/responses"> </responses-samples>\n        </div>\n      </div>\n    <div>\n  ',
           styles: ['\n    .share-link{cursor:pointer;margin-left:-15px;padding:0;line-height:1;width:15px;display:inline-block}.share-link:before{content:"";width:15px;height:15px;background-size:contain;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==");opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle}.sharable-header:hover .share-link:before,.share-link:hover:before{visibility:visible}:host{padding-bottom:100px;display:block;border-bottom:2px solid rgba(127,127,127,0.25)}responses-list,params-list{display:block}.method-header{font-size:25px;font-weight:200;color:#253137}.method-endpoint{margin:0;font-weight:200;font-size:0}.method-endpoint>span{padding-top:3px;padding-bottom:3px;vertical-align:middle;font-size:14px}.api-url{color:#999;margin-left:10px}.path{font-family:monospace;font-weight:bold;color:#00329F}.method-tags{margin-top:20px}.method-tags a{font-size:16px;color:#999;display:inline-block;padding:0 0.5em;text-decoration:none}.method-tags a:before{content:\'#\';margin-right:-0.4em}.method-tags a:first-of-type{padding:0}.method-content,.method-samples{display:block;box-sizing:border-box;float:left}.method-content{width:60%;padding:0 20px}.method-samples{color:#CFD2D3;width:40%;padding:10px 20px;background:#263238}responses-samples{display:block}.method-samples header{font-size:16px;margin:5px 0;color:#8A9094;text-transform:uppercase}.method-samples schema-sample{display:block}.method:after{content:"";display:table;clear:both}.method-description{padding:30px 0;margin:0}.http-method{color:white;background-color:#1976D3;padding:3px 10px;text-transform:uppercase}.http-method.delete{background-color:red}.http-method.post{background-color:#00329F}.http-method.patch{background-color:orange}.http-method.put{background-color:crimson}.http-method.options{background-color:black}.http-method.head{background-color:darkkhaki}@media (max-width: 1100px){.methods:before{display:none}.method-samples,.method-content{width:100%}.method-samples{margin-top:2em}:host{padding-bottom:0}}\n  '],
           directives: [ParamsList, ResponsesList, ResponsesSamples, SchemaSample, RequestSamples],
-          inputs: ['tag'],
-          pipes: [EncodeURIComponentPipe]
+          inputs: ['tag']
         })(Method) || Method;
         return Method;
       })(BaseComponent);
