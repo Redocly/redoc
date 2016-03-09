@@ -7883,7 +7883,7 @@ $__System.register('16', ['5', '6', '7', '8', '9', '10', '12', '17', '18', 'b', 
             if (this.componentSchema.operationId) {
               this.data.methodAnchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
             } else {
-              this.data.methodAnchor = 'tag/' + this.tag + this.pointer;
+              this.data.methodAnchor = 'tag/' + encodeURIComponent(this.tag + this.pointer);
             }
           }
         }, {
