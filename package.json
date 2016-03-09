@@ -1,7 +1,7 @@
 {
   "name": "redoc",
   "description": "Swagger-generated API Reference Documentation",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/Rebilly/ReDoc"
