@@ -1,0 +1,6619 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2.1",
+    "title": "Rebilly REST API",
+    "contact": {
+      "name": "Rebilly API Support",
+      "url": "https://www.rebilly.com/contact/",
+      "email": "integrations@rebilly.com"
+    },
+    "license": {
+      "name": "Rebilly",
+      "url": "https://www.rebilly.com/api/license/"
+    },
+    "termsOfService": "https://www.rebilly.com/terms/"
+  },
+  "host": "api.rebilly.com",
+  "basePath": "/v2.1",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "Introduction",
+      "description": "The Rebilly API is built on HTTP.  Our API is RESTful.  It has predictable\nresource URLs.  It returns HTTP response codes to indicate errors.  It also\naccepts and returns JSON int he HTTP body.  You can use your favorite\nHTTP/REST library for your programming language to use Rebilly's API, or\nyou can use one of our SDKs (currently available in PHP and C#).\n"
+    },
+    {
+      "name": "Authentication",
+      "description": "When you sign up for an account, you are given your first API key.\nYou can generate additional API keys, and delete API keys (as you may\nneed to rotate your keys in the future). You authenticate to the\nRebilly API by providing your secret key in the request header.\nRebilly authenticates each request by searching for the presence\nof an HTTP header: REB-APIKEY. JWT authentication may be coming soon.\nRebilly also has a client-side authentication scheme that uses an\napiUser and HMAC-SHA1 signature (only for the Tokens resource), so\nthat you may safely create tokens from the client-side without compromising\nyour secret keys. Never share your secret keys. Keep them guarded and secure.\nThe client-side authentication scheme uses one HTTP header named REB-AUTH.\n"
+    },
+    {
+      "name": "Customer",
+      "description": "Customers are your customers, sometimes known as accounts, clients,\nmembers, patrons, or players in other systems.\n"
+    },
+    {
+      "name": "Contact",
+      "description": "Contacts belong to Customers. A Customer can have many contacts.\nSome contacts are associated to Invoices, Payment Cards, Subscriptions\nand Transactions.\n"
+    },
+    {
+      "name": "Blacklist",
+      "description": "Your blacklists contains values of customerIds, email addresses,\nipAddresses, bank identification numbers, countries or payment cards that\nyou do NOT want to do business with. They are a good tool for managing\nrisk. A blacklist entry that expires after a period of time we call a\ngreylist.\n"
+    },
+    {
+      "name": "Layout",
+      "description": "Layouts are used to hold collections of plans. A layout can be used to\npower a pricing page. You can make multiple layouts, and use rules to\ntarget them to different audiences.\n"
+    },
+    {
+      "name": "Organization",
+      "description": "Organizations include the name and address of the entities related to your\naccount. An account may be multi-national, and support multiple\norganizations. Note: Organizations are share between \"Live\" and \"Sandbox\"\n"
+    },
+    {
+      "name": "Payment",
+      "description": "Collect money from your customers with payments.\n"
+    },
+    {
+      "name": "Product",
+      "description": "Your product includes digital goods, services, and physical goods.\n"
+    },
+    {
+      "name": "Taxes",
+      "description": "You can map a product to a tax category.  The tax category is used by\ntax providers to calculate taxes for invoices.\n"
+    },
+    {
+      "name": "Website",
+      "description": "Website is your website accepting payments\n"
+    },
+    {
+      "name": "User",
+      "description": "User operations\n"
+    },
+    {
+      "name": "Session",
+      "description": "Sessions operations\n"
+    }
+  ],
+  "securityDefinitions": {
+    "ApiKey": {
+      "description": "When you sign up for an account, you are given your first API key.\nTo do so please follow this link: https://www.rebilly.com/site/signup/\nAlso you can generate additional API keys, and delete API keys (as you may\nneed to rotate your keys in the future).\n",
+      "name": "REB-APIKEY",
+      "type": "apiKey",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "ApiKey": []
+    }
+  ],
+  "responses": {
+    "AccessForbidden": {
+      "description": "Access forbidden, invalid API-KEY was used",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "NotFound": {
+      "description": "Resource was not found",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "Conflict": {
+      "description": "Conflict",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "InvalidDataError": {
+      "description": "Invalid data was sent",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  },
+  "parameters": {
+    "resourceId": {
+      "name": "id",
+      "in": "path",
+      "description": "The resource identifier string",
+      "type": "string",
+      "required": true
+    },
+    "collectionLimit": {
+      "name": "limit",
+      "in": "query",
+      "description": "The collection items limit",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "collectionOffset": {
+      "name": "offset",
+      "in": "query",
+      "description": "The collection items offset",
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "paths": {
+    "/authentication-options": {
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Read current authentication options",
+        "description": "Read current authentication options\n",
+        "responses": {
+          "200": {
+            "description": "Current authentication options was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AuthenticationOptions"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Change authentication options",
+        "description": "Change options\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Authentication Options resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthenticationOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication Options were updated",
+            "schema": {
+              "$ref": "#/definitions/AuthenticationOptions"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/authentication-tokens/{token}": {
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "description": "The token identifier string",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Verify",
+        "description": "Verify an authentication token\n",
+        "responses": {
+          "200": {
+            "description": "Authentication Token was verified",
+            "schema": {
+              "$ref": "#/definitions/AuthenticationToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Logout a user",
+        "description": "Logout a user\n",
+        "responses": {
+          "204": {
+            "description": "User was logged out"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/authentication-tokens": {
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Retrieve a list of auth tokens",
+        "description": "Retrieve a list of auth tokens\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of auth tokens was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AuthenticationToken"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Login",
+        "description": "Login a user (customer)\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "AuthenticationToken resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthenticationToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Login successful",
+            "schema": {
+              "$ref": "#/definitions/AuthenticationToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/bank-accounts/{id}/deactivation": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "BankAccount",
+          "Public"
+        ],
+        "summary": "Deactivate a Bank Account",
+        "description": "Deactivate a Bank Account\n",
+        "responses": {
+          "201": {
+            "description": "Deactivated successful",
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/bank-accounts/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "BankAccount",
+          "Public"
+        ],
+        "summary": "Retrieve a Bank Account",
+        "description": "Retrieve a Bank Account with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "BankAccount was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "BankAccount",
+          "Public"
+        ],
+        "summary": "Create a BankAccount with predefined ID",
+        "description": "Create or update a BankAccount with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "BankAccount resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BankAccount was updated",
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          },
+          "201": {
+            "description": "BankAccount was created",
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/bank-accounts": {
+      "get": {
+        "tags": [
+          "BankAccount",
+          "Public"
+        ],
+        "summary": "Retrieve a list of bank accounts",
+        "description": "Retrieve a list of Bank Accounts\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Bank Accounts was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BankAccount"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "BankAccount",
+          "Public"
+        ],
+        "summary": "Create a Bank Account",
+        "description": "Create a Bank Account\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "BankAccount resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bank Account was created",
+            "schema": {
+              "$ref": "#/definitions/BankAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/blacklists/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Blacklist"
+        ],
+        "summary": "Retrieve a blacklist",
+        "description": "Retrieve a blacklist with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Blacklist was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Blacklist"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Blacklist"
+        ],
+        "summary": "Create a blacklist with predefined ID",
+        "description": "Create a blacklist with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Blacklist resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Blacklist"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Blacklist was created",
+            "schema": {
+              "$ref": "#/definitions/Blacklist"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "409": {
+            "description": "Blacklist exist and cannot be updated",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Blacklist"
+        ],
+        "summary": "Delete a blacklist",
+        "description": "Delete a blacklist with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Blacklist was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/blacklists": {
+      "get": {
+        "tags": [
+          "Blacklists"
+        ],
+        "summary": "Retrieve a list of blacklists",
+        "description": "Retrieve a list of blacklists\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Blacklists was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Blacklist"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Blacklists"
+        ],
+        "summary": "Create a blacklist",
+        "description": "Create a blacklist\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Blacklist resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Blacklist"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Blacklist was created",
+            "schema": {
+              "$ref": "#/definitions/Blacklist"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/contacts/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Retrieve a contact",
+        "description": "Retrieve a contact with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Contact was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Create or update a contact with predefined ID",
+        "description": "Create or update a contact with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Contact resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Contact was created",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "Contact exists and cannot be updated"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Retrieve a list of contacts",
+        "description": "Retrieve a list of contacts\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Contacts was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Contact"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Create a contact",
+        "description": "Create a contact\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Contact resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Contact was created",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/credentials/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Retrieve a credential",
+        "description": "Retrieve a credential with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Credential was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Create or update a credential with predefined ID",
+        "description": "Create or update a credential with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Credential resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential was updated",
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          },
+          "201": {
+            "description": "Credential was created",
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Delete a credential",
+        "description": "Delete a credential with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Credential was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/credentials": {
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Retrieve a list of credentials",
+        "description": "Retrieve a list of credentials\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Credentials was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Credential"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Create a credential",
+        "description": "Create a credential\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Credential resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Credential was created",
+            "schema": {
+              "$ref": "#/definitions/Credential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/custom-fields/{resource}/{name}": {
+      "parameters": [
+        {
+          "name": "resource",
+          "in": "path",
+          "description": "The resource type string",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "customers",
+            "payment-cards",
+            "subscriptions",
+            "payments",
+            "websites",
+            "contacts"
+          ]
+        },
+        {
+          "name": "name",
+          "in": "path",
+          "description": "The custom field's identifier string",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Retrieve a Custom Field",
+        "description": "Retrieve a schema of the given Custom Field for the given resource type\n",
+        "responses": {
+          "200": {
+            "description": "A schema of the Custom Field was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/CustomField"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Create or alter a Custom Field",
+        "description": "Create or alter a schema of the given Custom Field for the given resource type.\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Custom Fields schema of the given resource type",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomField"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Custom Field was updated",
+            "schema": {
+              "$ref": "#/definitions/CustomField"
+            }
+          },
+          "201": {
+            "description": "The Custom Fields was created",
+            "schema": {
+              "$ref": "#/definitions/CustomField"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "409": {
+            "description": "The schema is in use: remove all the associated data in order to remove or alter the schema",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Delete a custom field",
+        "description": "Delete a custom field by its name\n",
+        "responses": {
+          "204": {
+            "description": "Custom field has been deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "The field is in use: remove all the associated data first",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/custom-fields/{resource}": {
+      "parameters": [
+        {
+          "name": "resource",
+          "in": "path",
+          "description": "The resource type string",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "customers",
+            "payment-cards",
+            "subscriptions",
+            "payments",
+            "websites",
+            "contacts"
+          ]
+        }
+      ],
+      "get": {
+        "tags": [
+          "Custom Fields"
+        ],
+        "summary": "Retrieve Custom Fields",
+        "description": "Retrieve a schema of Custom Fields for the given resource type\n",
+        "responses": {
+          "200": {
+            "description": "A schema of Custom Fields was retrieved successfully",
+            "schema": {
+              "description": "The list of custom fields",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CustomField"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Retrieve a customer",
+        "description": "Retrieve a customer with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Customer was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Create a customer with predefined ID",
+        "description": "Create a customer with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Customer resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer was updated",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "201": {
+            "description": "Customer was created",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Retrieve a list of customers",
+        "description": "Retrieve a list of customers\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Customers was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Create a customer",
+        "description": "Create a customer\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Customer resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Customer was created",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/email-credentials/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "EmailCredential"
+        ],
+        "summary": "Retrieve email credential",
+        "description": "Retrieve email credential with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Email credential was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EmailCredential"
+        ],
+        "summary": "Create or update email credential with predefined ID",
+        "description": "Create or update email credential with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "EmailCredential resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email credential was updated",
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          },
+          "201": {
+            "description": "Email credential was created",
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EmailCredential"
+        ],
+        "summary": "Delete an email credential",
+        "description": "Delete an email credential with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Email credential was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/email-credentials": {
+      "get": {
+        "tags": [
+          "EmailCredential"
+        ],
+        "summary": "Retrieve a list of email credentials",
+        "description": "Retrieve a list of email credentials\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of email credentials was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/EmailCredential"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "EmailCredential"
+        ],
+        "summary": "Create email credential",
+        "description": "Create email credential",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "EmailCredential resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Email credential was created",
+            "schema": {
+              "$ref": "#/definitions/EmailCredential"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sends an email with a link containing a token to reset user password",
+        "description": "Sends an email with a link containing a token to reset user password\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Email resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Email"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Email sent successfully"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/gateway-accounts/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Gateway Account"
+        ],
+        "summary": "Retrieve a Gateway Account",
+        "description": "Retrieve a Gateway Account with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Gateway Account was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Gateway Account"
+        ],
+        "summary": "Create or update a Gateway Account with predefined ID",
+        "description": "Create or update a GatewayAccount with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Gateway Account resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gateway Account was updated",
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          },
+          "201": {
+            "description": "Gateway Account was created",
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Gateway Account"
+        ],
+        "summary": "Delete a Gateway Account",
+        "description": "Delete a Gateway Account with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Gateway Account was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/gateway-accounts": {
+      "get": {
+        "tags": [
+          "Gateway Account"
+        ],
+        "summary": "Retrieve a list of gateway accounts",
+        "description": "Retrieve a list of gateway accounts\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Gateway Accounts was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GatewayAccount"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Gateway Account"
+        ],
+        "summary": "Create a Gateway Account",
+        "description": "Create a Gateway Account\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Gateway Account resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Gateway Account was created",
+            "schema": {
+              "$ref": "#/definitions/GatewayAccount"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{id}/abandon": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Abandon an invoice",
+        "description": "Abandon an invoice with specified identifier string\n",
+        "responses": {
+          "201": {
+            "description": "Invoice was abandoned successfully",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/invoices/{id}/issue": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Issue an invoice",
+        "description": "Issue an invoice with specified identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "InvoiceItem resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InvoiceIssue"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Invoice was abandoned successfully",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/invoices/{id}/items": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieve invoice items",
+        "description": "Retrieve an invoice items with specified invoice identifier string\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice items were retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/InvoiceItem"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create an invoice item",
+        "description": "Create an invoice item\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "InvoiceItem resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InvoiceItem"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "InvoiceItem was created",
+            "schema": {
+              "$ref": "#/definitions/InvoiceItem"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{id}/void": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Void an invoice",
+        "description": "Void an invoice with specified identifier string\n",
+        "responses": {
+          "201": {
+            "description": "Invoice was voided successfully",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/invoices/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieve an invoice",
+        "description": "Retrieve an invoice with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Invoice was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create or update an invoice with predefined ID",
+        "description": "Create or update an invoice with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Invoice resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice was updated",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "201": {
+            "description": "Invoice was created",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieve a list of invoices",
+        "description": "Retrieve a list of invoices\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of invoices was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Invoice"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create an invoice",
+        "description": "Create an invoice\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Invoice resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Invoice was created",
+            "schema": {
+              "$ref": "#/definitions/Invoice"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/layouts/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Layout"
+        ],
+        "summary": "Retrieve a layout",
+        "description": "Retrieve a layout with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Layout was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Layout"
+        ],
+        "summary": "Create or update a layout with predefined ID",
+        "description": "Create or update a layout with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Layout resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Layout was updated",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          },
+          "201": {
+            "description": "Layout was created",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/layouts": {
+      "get": {
+        "tags": [
+          "Layout"
+        ],
+        "summary": "Retrieve a layout list",
+        "description": "Retrieve a layout list\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Layout list was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Layout"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Layout"
+        ],
+        "summary": "Create a layout",
+        "description": "Create a layout\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Layout resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Layout was created",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/lead-sources/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Lead Source"
+        ],
+        "summary": "Retrieve a LeadSource",
+        "description": "Retrieve a LeadSource with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "LeadSource was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Lead Source"
+        ],
+        "summary": "Create a LeadSource with predefined ID",
+        "description": "Create a LeadSource with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "LeadSource resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "LeadSource was updated",
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          },
+          "201": {
+            "description": "LeadSource was created",
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/lead-sources": {
+      "get": {
+        "tags": [
+          "Lead Source"
+        ],
+        "summary": "Retrieve a list of LeadSources",
+        "description": "Retrieve a list of LeadSources\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of LeadSources was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LeadSource"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Lead Source"
+        ],
+        "summary": "Create a LeadSource",
+        "description": "Create a LeadSource\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "LeadSource resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "LeadSource was created",
+            "schema": {
+              "$ref": "#/definitions/LeadSource"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/notes/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Note"
+        ],
+        "summary": "Retrieve a note",
+        "description": "Retrieve a note with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Note was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Note"
+        ],
+        "summary": "Create or update a note with predefined ID",
+        "description": "Create or update a note with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Note resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Note was updated",
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          },
+          "201": {
+            "description": "Note was created",
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/notes": {
+      "get": {
+        "tags": [
+          "Note"
+        ],
+        "summary": "Retrieve a list of notes",
+        "description": "Retrieve a list of notes\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Notes was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Note"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Note"
+        ],
+        "summary": "Create a note",
+        "description": "Create a note\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Note resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Note was created",
+            "schema": {
+              "$ref": "#/definitions/Note"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Retrieve a organization",
+        "description": "Retrieve a organization with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Organization was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Create or update a organization with predefined ID",
+        "description": "Create or update a organization with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Organization resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization was updated",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "201": {
+            "description": "Organization was created",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Delete a organization",
+        "description": "Delete a organization with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Organization was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "Organization has related resources and cannot be deleted",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Retrieve a list of organizations",
+        "description": "Retrieve a list of organizations\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of organizations was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Organization"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Create a organization",
+        "description": "Create a organization\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Organization resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Organization was created",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/password-tokens/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Retrieve a Reset Password Token",
+        "description": "Retrieve a Reset Password Token with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "ResetPasswordToken was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Delete a Reset Password Token",
+        "description": "Delete a Reset Password Token with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "ResetPasswordToken was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "ResetPasswordToken has related resources and cannot be deleted"
+          }
+        }
+      }
+    },
+    "/password-tokens": {
+      "get": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Retrieve a list of tokens",
+        "description": "Retrieve a list of tokens\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Reset Password Tokens was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ResetPasswordToken"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customer Authentication"
+        ],
+        "summary": "Create a Reset Password Token",
+        "description": "Create a Reset Password Token\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "ResetPasswordToken resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reset Password Token was created",
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/payment-cards/{id}/authorization": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "PaymentCard",
+          "Public"
+        ],
+        "summary": "Authorize a Payment Card",
+        "description": "Authorize a Payment Card\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "PaymentCard resource",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "websiteId",
+                "currency"
+              ],
+              "properties": {
+                "websiteId": {
+                  "description": "The Website ID",
+                  "type": "string"
+                },
+                "currency": {
+                  "description": "Currency (three letter code)",
+                  "type": "string"
+                },
+                "gatewayAccountId": {
+                  "description": "The Gateway account ID",
+                  "type": "string"
+                },
+                "amount": {
+                  "description": "Amount",
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Authorization successful",
+            "schema": {
+              "$ref": "#/definitions/PaymentCard"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/payment-cards/{id}/deactivation": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Payment Card"
+        ],
+        "summary": "Deactivate a Payment Card",
+        "description": "Deactivate a Payment Card\n",
+        "responses": {
+          "201": {
+            "description": "Authorization successful",
+            "schema": {
+              "$ref": "#/definitions/PaymentCard"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/payment-cards/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Payment Card"
+        ],
+        "summary": "Retrieve a Payment Card",
+        "description": "Retrieve a Payment Card with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "PaymentCard was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/PaymentCard"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/payment-cards": {
+      "get": {
+        "tags": [
+          "Payment Card"
+        ],
+        "summary": "Retrieve a list of Payment Cards",
+        "description": "Retrieve a list of Payments Cards\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Payment Card was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentCard"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Payment Card"
+        ],
+        "summary": "Create a Payment Card",
+        "description": "Create a Payment Card\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "PaymentCard resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaymentCard"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Payment Card was created",
+            "schema": {
+              "$ref": "#/definitions/PaymentCard"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Retrieve a payment",
+        "description": "Retrieve a payment with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Payment was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create a payment with predefined ID",
+        "description": "Make a payment with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Payment resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Payment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Payment was processed",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentResponse"
+              }
+            }
+          },
+          "202": {
+            "description": "Payment was accepted",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Retrieve a payment list",
+        "description": "Retrieve a payment list\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment list was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentResponse"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create a payment",
+        "description": "Create a payment\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Payment resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Payment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Payment was processed",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentResponse"
+              }
+            }
+          },
+          "202": {
+            "description": "Payment was accepted",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "409": {
+            "$ref": "#/responses/Conflict"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/plans/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Retrieve a plan",
+        "description": "Retrieve a plan with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Plan was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Create or update a Plan with predefined ID",
+        "description": "Create or update a Plan with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Plan resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan was updated",
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          },
+          "201": {
+            "description": "Plan was created",
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Delete a Plan",
+        "description": "Delete a Plan with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Plan was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/plans": {
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Retrieve a list of plans",
+        "description": "Retrieve a list of plans\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Plans was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Plan"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Create a plan",
+        "description": "Create a plan\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Plan resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Plan was created",
+            "schema": {
+              "$ref": "#/definitions/Plan"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Retrieve a product",
+        "description": "Retrieve a product with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Product was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create a product with predefined ID",
+        "description": "Create a product with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Product resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product was updated",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "201": {
+            "description": "Product was created",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Retrieve a list of products",
+        "description": "Retrieve a list of products\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create a Product",
+        "description": "Create a Product\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Product resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product was created",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "$ref": "#/responses/InvalidDataError"
+          }
+        }
+      }
+    },
+    "/queue/payments/{id}/cancel": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Cancel a scheduled payment",
+        "description": "Cancel a scheduled payment with specified identifier string\n",
+        "responses": {
+          "201": {
+            "description": "Successful cancel the payment",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/queue/payments/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Retrieve a scheduled payment",
+        "description": "Retrieve a payment with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Successful retrieve the payment that still waiting to be processed",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "303": {
+            "description": "Payment was successfully processed and moved out from queue",
+            "schema": {
+              "$ref": "#/definitions/PaymentResponse"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/queue/payments": {
+      "get": {
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "summary": "Retrieve a scheduled payment list",
+        "description": "Retrieve a scheduled payment list\n",
+        "responses": {
+          "200": {
+            "description": "Successful retrieve the payments list that still waiting to be processed",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentResponse"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      }
+    },
+    "/sessions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Retrieve a Session",
+        "description": "Retrieve a Session with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Session was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Create or update a Session with predefined ID",
+        "description": "Create or update a Session with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Session resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session was updated",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "201": {
+            "description": "Session was created",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Delete a Session",
+        "description": "Delete a Session with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Session was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "Session has related resources and cannot be deleted"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Retrieve a list of sessions",
+        "description": "Retrieve a list of sessions\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Sessions was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Session"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Create a session",
+        "description": "Create a session\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Sessions resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Session was created",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/signin": {
+      "post": {
+        "tags": [
+          "User",
+          "Session"
+        ],
+        "summary": "Create a session with email and password",
+        "description": "Create a session with email and password\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Signin resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Signin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Session was created",
+            "schema": {
+              "$ref": "#/definitions/Session"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Creates a new user and sends an email confirmation",
+        "description": "Creates a new user and sends an email confirmation\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Signup resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Signup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User was created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "tags": [
+          "Status"
+        ],
+        "summary": "Retrieve API current status",
+        "description": "Retrieve API current status\n",
+        "responses": {
+          "200": {
+            "description": "Status was received",
+            "schema": {
+              "$ref": "#/definitions/Status"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{id}/cancel": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Cancel a subscription",
+        "description": "Cancel a subscription\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Only policy",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionCancel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subscription was switched",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{id}/switch": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Switch a subscription",
+        "description": "Switch a subscription\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "SubscriptionSwitch resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionSwitch"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subscription was switched",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Retrieve a subscription",
+        "description": "Retrieve a subscription with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Subscription was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Create or update a subscription with predefined ID",
+        "description": "Create or update a subscription with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Subscription resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription was updated",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "201": {
+            "description": "Subscription was created",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Retrieve a list of subscriptions",
+        "description": "Retrieve a list of subscriptions\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of subscriptions was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Subscription"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Create a subscription",
+        "description": "Create a subscription\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Subscription resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subscription was created",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/tax-categories": {
+      "get": {
+        "tags": [
+          "Taxes"
+        ],
+        "summary": "Retrieve a list of tax categories",
+        "description": "Retrieve a list of tax categories\n",
+        "responses": {
+          "200": {
+            "description": "A list of tax categories was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TaxCategory"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      }
+    },
+    "/tokens/{token}/expiration": {
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "description": "The token identifier string",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "PaymentToken",
+          "Public"
+        ],
+        "summary": "Expire a token",
+        "description": "Expire a token\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "PaymentToken resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaymentToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Token expiration successful",
+            "schema": {
+              "$ref": "#/definitions/PaymentToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/tokens/{token}": {
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "description": "The token identifier string",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "PaymentToken",
+          "Public"
+        ],
+        "summary": "Retrieve a token",
+        "description": "Retrieve a token with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Token was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/PaymentToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/tokens": {
+      "get": {
+        "tags": [
+          "PaymentToken",
+          "Public"
+        ],
+        "summary": "Retrieve a list of tokens",
+        "description": "Retrieve a list of tokens\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of tokens was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentToken"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PaymentToken",
+          "Public"
+        ],
+        "summary": "Create a payment token",
+        "description": "Create a token\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "PaymentToken resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaymentToken"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Token was created",
+            "schema": {
+              "$ref": "#/definitions/PaymentToken"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{id}/refund": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Refund a Transaction",
+        "description": "Refund a Transaction with specified identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Transaction resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransactionRefund"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transaction was refunded successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/transactions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Retrieve a Transaction",
+        "description": "Retrieve a Transaction with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Transaction was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Retrieve a list of transactions",
+        "description": "Retrieve a list of transactions\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of transactions was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      }
+    },
+    "/users/{id}/reset-password/{token}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        },
+        {
+          "name": "token",
+          "in": "path",
+          "description": "The token string",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Reset user password",
+        "description": "Reset user password\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "ResetPassword resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Password was reseted successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve an user",
+        "description": "Retrieve an user with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "User was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create or update an user with predefined ID",
+        "description": "Create or update an user with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User was updated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "201": {
+            "description": "User was created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a list of users",
+        "description": "Retrieve a list of users\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of users was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create an user",
+        "description": "Create an user\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User was created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    },
+    "/websites/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/resourceId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Website"
+        ],
+        "summary": "Retrieve a website",
+        "description": "Retrieve a website with specified identifier string\n",
+        "responses": {
+          "200": {
+            "description": "Website was retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Website"
+        ],
+        "summary": "Create or update a website with predefined ID",
+        "description": "Create or update a website with predefined identifier string\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Website resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Website was updated",
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          },
+          "201": {
+            "description": "Website was created",
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Website"
+        ],
+        "summary": "Delete a website",
+        "description": "Delete a website with predefined identifier string\n",
+        "responses": {
+          "204": {
+            "description": "Website was deleted"
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "description": "Website has related resources and cannot be deleted"
+          }
+        }
+      }
+    },
+    "/websites": {
+      "get": {
+        "tags": [
+          "Website"
+        ],
+        "summary": "Retrieve a list of websites",
+        "description": "Retrieve a list of websites\n",
+        "parameters": [
+          {
+            "$ref": "#/parameters/collectionLimit"
+          },
+          {
+            "$ref": "#/parameters/collectionOffset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Websites was retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Website"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Website"
+        ],
+        "summary": "Create a website",
+        "description": "Create a website\n",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Website resource",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Website was created",
+            "schema": {
+              "$ref": "#/definitions/Website"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/AccessForbidden"
+          },
+          "422": {
+            "description": "Invalid data was sent",
+            "schema": {
+              "$ref": "#/definitions/InvalidError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AuthenticationOptions": {
+      "type": "object",
+      "properties": {
+        "passwordPattern": {
+          "description": "Allowed password pattern",
+          "type": "string"
+        },
+        "credentialTtl": {
+          "description": "The default lifetime of the credential in seconds",
+          "type": "integer"
+        },
+        "authTokenTtl": {
+          "description": "The default lifetime of the auth-token in seconds",
+          "type": "integer"
+        },
+        "resetTokenTtl": {
+          "description": "The default lifetime of the reset-token in seconds",
+          "type": "integer"
+        }
+      }
+    },
+    "AuthenticationToken": {
+      "type": "object",
+      "required": [
+        "username",
+        "password"
+      ],
+      "properties": {
+        "token": {
+          "description": "The token identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "username": {
+          "description": "The token's username",
+          "type": "string"
+        },
+        "password": {
+          "description": "The token's password (write-only)",
+          "type": "string",
+          "format": "password"
+        },
+        "credentialId": {
+          "description": "The credential's ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "The token's customer ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "expiredTime": {
+          "description": "Token's expired time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to token",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "BankAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The bank account identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "The Customer's ID.",
+          "type": "string"
+        },
+        "bankName": {
+          "description": "Bank's name.",
+          "type": "string"
+        },
+        "routingNumber": {
+          "description": "Bank's Routing Number. Required if bank account is not created from Token",
+          "type": "string"
+        },
+        "accountNumber": {
+          "description": "Bank's Account Number. Required if bank account is not created from Token",
+          "type": "string"
+        },
+        "accountType": {
+          "description": "Banks's Account type. Required if bank account is not created from Token",
+          "type": "string"
+        },
+        "token": {
+          "description": "Bank Account Token. Use without any other fields",
+          "type": "string"
+        },
+        "contactId": {
+          "description": "The Contact ID. Required if bank account is not created from Token",
+          "type": "string"
+        },
+        "status": {
+          "description": "Bank Account status",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "active",
+            "deactivated"
+          ]
+        },
+        "createdTime": {
+          "description": "Bank Account created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Bank Account updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to Bank Account",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    },
+    "Blacklist": {
+      "type": "object",
+      "required": [
+        "type",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "description": "The blacklist identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "type": {
+          "description": "The blacklist type",
+          "type": "string",
+          "enum": [
+            "paymentCardId",
+            "customerId",
+            "email",
+            "ipAddress",
+            "country"
+          ]
+        },
+        "value": {
+          "description": "The blacklist value",
+          "type": "string"
+        },
+        "ttl": {
+          "description": "The blacklist time to live",
+          "type": "integer",
+          "minimum": 30
+        },
+        "expireTime": {
+          "description": "The blacklist expire time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "The blacklist created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The blacklist updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to blacklist",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The contact identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "The contact ID",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The contact first name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The contact last name",
+          "type": "string"
+        },
+        "organization": {
+          "description": "The contact organization",
+          "type": "string"
+        },
+        "address": {
+          "description": "The contact street address",
+          "type": "string",
+          "maxLength": 60
+        },
+        "address2": {
+          "description": "The contact street address (second line)",
+          "type": "string",
+          "maxLength": 60
+        },
+        "city": {
+          "description": "The contact city",
+          "type": "string",
+          "maxLength": 45
+        },
+        "region": {
+          "description": "The contact region (state)",
+          "type": "string",
+          "maxLength": 45
+        },
+        "country": {
+          "description": "The contact country ISO Alpha-2 code",
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "postalCode": {
+          "description": "The contact postal code",
+          "type": "string",
+          "maxLength": 10
+        },
+        "phoneNumber": {
+          "description": "The contact phone number",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "The contact created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The contact updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to contact",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    },
+    "Credential": {
+      "type": "object",
+      "required": [
+        "username",
+        "password",
+        "customerId"
+      ],
+      "properties": {
+        "id": {
+          "description": "The credential identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "username": {
+          "description": "Credential's username",
+          "type": "string"
+        },
+        "password": {
+          "description": "The credential's password",
+          "type": "string",
+          "format": "password"
+        },
+        "customerId": {
+          "description": "The credential's customer ID",
+          "type": "string"
+        },
+        "expiredTime": {
+          "description": "The credential's expired time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to credential",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The customer identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "email": {
+          "description": "The customer email",
+          "type": "string",
+          "format": "email",
+          "maxLength": 100
+        },
+        "firstName": {
+          "description": "The customer first name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The customer last name",
+          "type": "string"
+        },
+        "ipAddress": {
+          "description": "The customer IP",
+          "type": "string",
+          "format": "ipv4"
+        },
+        "defaultCardId": {
+          "description": "The customer default card ID",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "The customer created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The customer updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to customer",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    },
+    "CustomField": {
+      "description": "A separate Custom Field schema",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "description": "The name of the custom field",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type value    | Description\n------------- | -------------\narray         | An array of strings up to 255 characters, maximum size is 1000 elements\nboolean       | true or false\ndate          | String of format \"full-date\" (YYYY-MM-DD) from RFC-3339 (full-date)\ndatetime      | String of format \"date-time\" (YYYY-MM-DDTHH:MM:SSZ) from RFC-3339 (date-time)\ninteger       | Cardinal value of -2^31..2^31-1\nnumber        | Float value. It can take cardinal values also which are interpreted as float\nstring        | Regular string up to 255 characters\nmonetary      | A map of 3-letters currency code and amount, e.g. {\"currency\": \"EUR\", \"amount\": 25.30}\n",
+          "type": "string",
+          "enum": [
+            "array",
+            "boolean",
+            "datetime",
+            "integer",
+            "number",
+            "string",
+            "monetary"
+          ]
+        },
+        "description": {
+          "description": "The custom field description",
+          "type": "string"
+        },
+        "additionalSchema": {
+          "description": "Additional parameters which can be added according to type:\nParameter Name | Types         | Description\n-------------- | ------------- | -------------\nallowedValues  | string, array | List of allowed values\n"
+        }
+      }
+    },
+    "DeclineInstructions": {
+      "type": "object",
+      "description": "Dunning instructions object for payment declines",
+      "properties": {
+        "dunningId": {
+          "description": "The dunning identifier string",
+          "type": "string"
+        },
+        "dunningIndex": {
+          "readOnly": true,
+          "description": "The position in the sequence of dunning",
+          "type": "integer"
+        }
+      }
+    },
+    "Email": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "description": "Email",
+          "type": "string",
+          "format": "email"
+        }
+      }
+    },
+    "EmailCredential": {
+      "type": "object",
+      "required": [
+        "senderName",
+        "senderEmail",
+        "host",
+        "port",
+        "username",
+        "password"
+      ],
+      "properties": {
+        "id": {
+          "description": "Credential's identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "senderName": {
+          "description": "Credential's sender name",
+          "type": "string"
+        },
+        "senderEmail": {
+          "description": "Credential's sender email address",
+          "type": "string",
+          "format": "email"
+        },
+        "host": {
+          "description": "Credential's host",
+          "type": "string"
+        },
+        "port": {
+          "description": "Credential's port",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "username": {
+          "description": "Credential's username",
+          "type": "string"
+        },
+        "password": {
+          "description": "Credential's password",
+          "type": "string",
+          "format": "password"
+        },
+        "authenticationMethod": {
+          "description": "Credential's authentication method",
+          "type": "string",
+          "enum": [
+            "none",
+            "plain",
+            "login",
+            "cram-md5"
+          ]
+        },
+        "encryprionMethod": {
+          "description": "Credential's encryption method",
+          "type": "string",
+          "enum": [
+            "none",
+            "tls",
+            "ssl"
+          ]
+        },
+        "createdTime": {
+          "description": "Credential's created time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedTime": {
+          "description": "Credential's updated time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to credential",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 600
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "GatewayAccount": {
+      "type": "object",
+      "required": [
+        "gatewayName",
+        "merchantCategoryCode",
+        "websites",
+        "acquirerName",
+        "acceptedCurrencies",
+        "organizationId"
+      ],
+      "properties": {
+        "id": {
+          "description": "The gateway identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "gatewayName": {
+          "description": "The gateway name",
+          "type": "string"
+        },
+        "gatewayConfig": {
+          "type": "object",
+          "description": "Gateway config. Fields depends on gatewayName"
+        },
+        "merchantCategoryCode": {
+          "description": "The gateway's merchant category code",
+          "type": "integer",
+          "minimum": 742,
+          "maximum": 9950
+        },
+        "dccMarkup": {
+          "description": "Dynamic currency conversion markup in basis points (disabled if null)",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "descriptor": {
+          "description": "The gateway's desciptor",
+          "type": "string"
+        },
+        "city": {
+          "description": "The gateway's city field",
+          "type": "string"
+        },
+        "organizationId": {
+          "description": "Organization ID",
+          "type": "string"
+        },
+        "websites": {
+          "description": "Websites IDs",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Website ID"
+          }
+        },
+        "acquirerName": {
+          "description": "Acquirer name",
+          "type": "string"
+        },
+        "monthlyLimit": {
+          "description": "Monthly Limit",
+          "type": "integer",
+          "format": "double",
+          "minimum": 0
+        },
+        "threeDSecure": {
+          "description": "True, if Gateway Account allows 3DSecure",
+          "type": "boolean"
+        },
+        "threeDSecureType": {
+          "description": "Type of 3DSecure",
+          "type": "string",
+          "enum": [
+            null,
+            "integrated",
+            "external"
+          ]
+        },
+        "dynamicDescriptor": {
+          "description": "True, if Gateway Account allows dynamic descriptor",
+          "type": "boolean"
+        },
+        "acceptedCurrencies": {
+          "description": "Accepted currencies (array of the currency three letter code)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "method": {
+          "description": "Accepted payment method",
+          "type": "string",
+          "enum": [
+            "payment_card",
+            "ach",
+            "paypal"
+          ]
+        },
+        "paymentCardSchemes": {
+          "description": "Accepted payment card brands",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Visa",
+              "MasterCard",
+              "American Express",
+              "Discover",
+              "Maestro",
+              "Solo",
+              "Electron",
+              "JCB",
+              "Voyager",
+              "Diners Club",
+              "Switch",
+              "Laser"
+            ]
+          }
+        },
+        "downtimeStart": {
+          "description": "Gateway downtime start",
+          "type": "string",
+          "format": "date-time"
+        },
+        "downtimeEnd": {
+          "description": "Gateway downtime end",
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdTime": {
+          "description": "Gateway Account created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Gateway Account updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to gateway account",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "InvalidError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Error"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "details": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Invoice": {
+      "type": "object",
+      "required": [
+        "customerId",
+        "websiteId",
+        "currency"
+      ],
+      "properties": {
+        "id": {
+          "description": "The invoice identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "The customer's ID",
+          "type": "string"
+        },
+        "websiteId": {
+          "description": "The website's ID",
+          "type": "string"
+        },
+        "currency": {
+          "description": "The currency three letter code",
+          "type": "string"
+        },
+        "billingContactId": {
+          "description": "Invoice's billing contact ID",
+          "type": "string",
+          "format": "email"
+        },
+        "deliveryContactId": {
+          "description": "Invoice's delivery contact ID",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "description": "Invoice items array",
+          "readOnly": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "abandonedTime": {
+          "description": "Invoice abandoned time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "voidedTime": {
+          "description": "Invoice voided time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "closedTime": {
+          "description": "Invoice closed time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "dueTime": {
+          "description": "Invoice due time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "issuedTime": {
+          "description": "Invoice issued time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "Invoice created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to invoice",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "InvoiceIssue": {
+      "type": "object",
+      "properties": {
+        "issueTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "InvoiceItem": {
+      "type": "object",
+      "required": [
+        "type",
+        "unitPrice"
+      ],
+      "properties": {
+        "id": {
+          "description": "The website identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "type": {
+          "description": "Invoice item's type",
+          "type": "string",
+          "enum": [
+            "debit",
+            "credit"
+          ]
+        },
+        "unitPrice": {
+          "description": "Invoice item's price",
+          "type": "number",
+          "format": "double"
+        },
+        "quantity": {
+          "description": "Invoice item's quantity",
+          "type": "integer"
+        },
+        "description": {
+          "description": "Invoice item's description",
+          "type": "string"
+        },
+        "periodStartTime": {
+          "description": "Start time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "periodEndTime": {
+          "description": "End time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to invoice item",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Layout": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "description": "The layout identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "description": "The name of the layout string",
+          "type": "string"
+        },
+        "items": {
+          "description": "The array of layout items (planId and starred)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LayoutItem"
+          }
+        },
+        "createdBy": {
+          "description": "The process that created this layout",
+          "type": "string",
+          "readOnly": true
+        },
+        "updatedBy": {
+          "description": "The process that updated this layout",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "Layout created time",
+          "type": "string",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Layout updated time",
+          "type": "string",
+          "readOnly": true
+        },
+        "customFields": {
+          "description": "Any custom object that must be stored with layout",
+          "type": "object"
+        },
+        "_links": {
+          "description": "The links related to this layout",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "LayoutItem": {
+      "type": "object",
+      "properties": {
+        "planId": {
+          "description": "The plan identifier string",
+          "type": "string"
+        },
+        "starred": {
+          "description": "Boolean if the plan should be starred (special callout presentation)",
+          "type": "boolean"
+        },
+        "order": {
+          "description": "Item's order in Layout",
+          "type": "integer",
+          "readOnly": true
+        }
+      }
+    },
+    "LeadSource": {
+      "type": "object",
+      "required": [
+        "customerId"
+      ],
+      "properties": {
+        "id": {
+          "description": "The lead source identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "Customer ID",
+          "type": "string"
+        },
+        "medium": {
+          "description": "Lead Source's medium (eg search, display)",
+          "type": "string"
+        },
+        "source": {
+          "description": "Lead Source's source (eg google, yahoo)",
+          "type": "string"
+        },
+        "campaign": {
+          "description": "Lead Source's campaign (eg go-big-123)",
+          "type": "string"
+        },
+        "term": {
+          "description": "Lead Source's term (eg salt shakers)",
+          "type": "string"
+        },
+        "content": {
+          "description": "Lead Source's content (eg smiley faces)",
+          "type": "string"
+        },
+        "affiliate": {
+          "description": "Lead Source's affiliate (eg 123, Bob Smith)",
+          "type": "string"
+        },
+        "subAffiliate": {
+          "description": "Lead Source's sub-affiliate also called a sub-id or click id in some circles (eg 123456)",
+          "type": "string"
+        },
+        "salesAgent": {
+          "description": "Lead Source's sales agent (eg James Bond)",
+          "type": "string"
+        },
+        "clickId": {
+          "description": "Lead Source's click id (may come from an ad server)",
+          "type": "string"
+        },
+        "path": {
+          "description": "Lead Source's path uri (eg www.example.com/some/landing/path)",
+          "type": "string"
+        },
+        "ipAddress": {
+          "description": "Customer's IP Address",
+          "type": "string"
+        },
+        "currency": {
+          "description": "Currency (three letter ISO 4217 alpha code) (eg USD, EUR)",
+          "type": "string"
+        },
+        "amount": {
+          "description": "The amount that the lead cost",
+          "type": "number",
+          "format": "double"
+        },
+        "createdTime": {
+          "description": "LeadSource created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "LeadSource updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to LeadSource",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "rel": {
+          "description": "The link type",
+          "type": "string",
+          "enum": [
+            "self"
+          ]
+        },
+        "href": {
+          "description": "The link URL",
+          "type": "string"
+        }
+      }
+    },
+    "Note": {
+      "type": "object",
+      "required": [
+        "content",
+        "relatedType",
+        "relatedId"
+      ],
+      "properties": {
+        "id": {
+          "description": "The note identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdBy": {
+          "description": "The note's creator",
+          "type": "string",
+          "readOnly": true
+        },
+        "content": {
+          "description": "The note's name",
+          "type": "string"
+        },
+        "archived": {
+          "description": "Is the note archived (excluded from List method)",
+          "type": "boolean"
+        },
+        "relatedType": {
+          "description": "The note's related resource type (customer, paymentCard, paymentGateway, subscription, transaction)",
+          "type": "string"
+        },
+        "relatedId": {
+          "description": "The note's related resource ID",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "Note created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Note updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "archivedTime": {
+          "description": "Note archived time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to note",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Organization": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "description": "The organization identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "The organization created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The organization updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "name": {
+          "description": "The organization name",
+          "type": "string",
+          "maxLength": 60
+        },
+        "address": {
+          "description": "The organization street address",
+          "type": "string",
+          "maxLength": 60
+        },
+        "address2": {
+          "description": "The organization street address",
+          "type": "string",
+          "maxLength": 60
+        },
+        "city": {
+          "description": "The organization city",
+          "type": "string",
+          "maxLength": 45
+        },
+        "region": {
+          "description": "The organization region (state)",
+          "type": "string",
+          "maxLength": 45
+        },
+        "country": {
+          "description": "The organization country ISO Alpha-2 code",
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "postalCode": {
+          "description": "The organization postal code",
+          "type": "string",
+          "maxLength": 10
+        },
+        "_links": {
+          "description": "The links related to organization",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Payment": {
+      "type": "object",
+      "required": [
+        "websiteId",
+        "customerId",
+        "currency",
+        "amount",
+        "method",
+        "paymentInstrument"
+      ],
+      "properties": {
+        "websiteId": {
+          "description": "The website identifier string",
+          "type": "string"
+        },
+        "customerId": {
+          "description": "The customer identifier string",
+          "type": "string"
+        },
+        "currency": {
+          "description": "The payment currency ISO Alpha code",
+          "type": "string"
+        },
+        "amount": {
+          "description": "The payment amount",
+          "type": "integer",
+          "format": "double"
+        },
+        "scheduledTime": {
+          "description": "The time the payment is scheduled for collection",
+          "type": "string",
+          "format": "date-time"
+        },
+        "invoiceIds": {
+          "description": "The array of invoice identifiers",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "method": {
+          "description": "The payment method",
+          "type": "string",
+          "enum": [
+            "payment_card",
+            "paypal",
+            "cash"
+          ]
+        },
+        "description": {
+          "description": "The payment description",
+          "type": "string",
+          "maxLength": 255
+        },
+        "paymentInstrument": {
+          "$ref": "#/definitions/PaymentInstrument"
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        },
+        "declineInstructions": {
+          "$ref": "#/definitions/DeclineInstructions"
+        }
+      }
+    },
+    "PaymentCard": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The card identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "The Customer's ID. Required if card is creating not from Token",
+          "type": "string"
+        },
+        "pan": {
+          "description": "The card PAN (Primary Account Number). Required if card is creating not from Token",
+          "type": "string"
+        },
+        "expYear": {
+          "description": "Card's expiry year. Required if card is creating not from Token",
+          "type": "integer"
+        },
+        "expMonth": {
+          "description": "Card's expiry month. Required if card is creating not from Token",
+          "type": "integer"
+        },
+        "cvv": {
+          "description": "Card's cvv (card verification value). Required if card is creating not from Token",
+          "type": "string"
+        },
+        "billingContactId": {
+          "description": "The Billing Contact ID. Required if card is creating not from Token",
+          "type": "string"
+        },
+        "token": {
+          "description": "PaymentCardToken. Use without any other fields",
+          "type": "string"
+        },
+        "status": {
+          "description": "Payment Card status",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "active",
+            "expired",
+            "inactive",
+            "deactivated",
+            "pending"
+          ]
+        },
+        "createdTime": {
+          "description": "Card created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Card updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to card",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    },
+    "PaymentInstrument": {
+      "type": "object",
+      "description": "Payment instrument object",
+      "properties": {
+        "paymentCardId": {
+          "description": "The payment card identifier string, required when paying by payment card",
+          "type": "string"
+        },
+        "gatewayAccountId": {
+          "description": "The payment gateway identifier string",
+          "type": "string"
+        }
+      }
+    },
+    "PaymentResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Payment"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "The payment identifier string",
+              "type": "string"
+            },
+            "createdBy": {
+              "description": "The process that created this payment",
+              "type": "string"
+            },
+            "updatedBy": {
+              "description": "The process that updated this payment",
+              "type": "string"
+            },
+            "state": {
+              "description": "Payment state",
+              "type": "string"
+            },
+            "createdTime": {
+              "description": "Payment created time",
+              "type": "string"
+            },
+            "updatedTime": {
+              "description": "Payment updated time",
+              "type": "string"
+            },
+            "_links": {
+              "description": "The links related to payment",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Link"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "PaymentToken": {
+      "type": "object",
+      "required": [
+        "method",
+        "paymentInstrument",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "id": {
+          "description": "The token identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "method": {
+          "description": "Payment token's method",
+          "type": "string"
+        },
+        "paymentInstrument": {
+          "$ref": "#/definitions/PaymentTokenInstrument"
+        },
+        "firstName": {
+          "description": "First name on payment card",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Last name on payment card",
+          "type": "string"
+        },
+        "address": {
+          "description": "Customer's billing address 1",
+          "type": "string"
+        },
+        "address2": {
+          "description": "Customer's billing address 2",
+          "type": "string"
+        },
+        "city": {
+          "description": "Billing address city",
+          "type": "string"
+        },
+        "region": {
+          "description": "Billing region",
+          "type": "string"
+        },
+        "country": {
+          "description": "Billing country - Two letter code",
+          "type": "string"
+        },
+        "phoneNumber": {
+          "description": "Phone number",
+          "type": "string"
+        },
+        "postalCode": {
+          "description": "Billing postal code",
+          "type": "string"
+        },
+        "fingerprint": {
+          "description": "Device fingerprint hash",
+          "type": "string"
+        },
+        "_links": {
+          "description": "The links related to token",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "PaymentTokenInstrument": {
+      "type": "object",
+      "description": "Payment Token instrument object",
+      "properties": {
+        "pan": {
+          "description": "The card PAN (Primary Account Number)",
+          "type": "string"
+        },
+        "expMonth": {
+          "description": "Card's expiry month",
+          "type": "integer"
+        },
+        "expYear": {
+          "description": "Card's expiry year",
+          "type": "integer"
+        },
+        "cvv": {
+          "description": "The CVV/CVC of the payment card",
+          "type": "string"
+        },
+        "routingNumber": {
+          "description": "Routing Number",
+          "type": "integer"
+        },
+        "accountNumber": {
+          "description": "AccountNumber",
+          "type": "integer"
+        },
+        "accountType": {
+          "description": "Account Type",
+          "type": "string"
+        },
+        "bankName": {
+          "description": "Bank name",
+          "type": "string"
+        }
+      }
+    },
+    "Plan": {
+      "type": "object",
+      "required": [
+        "name",
+        "currency"
+      ],
+      "properties": {
+        "id": {
+          "description": "The website identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "description": "The plan name",
+          "type": "string"
+        },
+        "currency": {
+          "description": "Currency (three letter ISO 4217 code)",
+          "type": "string"
+        },
+        "currencySign": {
+          "description": "Currency sign",
+          "type": "string"
+        },
+        "isActive": {
+          "description": "If the plan is not active, customers cannot subscribe to the plan (default to true)",
+          "type": "boolean"
+        },
+        "description": {
+          "description": "The plan description",
+          "type": "string"
+        },
+        "richDescription": {
+          "description": "The plan rich description - supports HTML",
+          "type": "string"
+        },
+        "recurringAmount": {
+          "description": "The amount that recurs according to the schedule",
+          "type": "number",
+          "format": "double"
+        },
+        "recurringPeriodUnit": {
+          "description": "The unit of time",
+          "type": "string",
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "recurringPeriodLength": {
+          "description": "The length of time (used with the recurringPeriodUnit)",
+          "type": "integer"
+        },
+        "trialAmount": {
+          "description": "The amount of a trial - 0 is a valid value (for free)",
+          "type": "number",
+          "format": "double"
+        },
+        "trialPeriodUnit": {
+          "description": "The unit of time",
+          "type": "string",
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "trialPeriodLength": {
+          "description": "The length of time (used with the trialPeriodUnit)",
+          "type": "integer"
+        },
+        "setupAmount": {
+          "description": "The amount of a trial - 0 is a valid value (for free)",
+          "type": "number",
+          "format": "double"
+        },
+        "expireTime": {
+          "description": "Time when the plan is not longer valid",
+          "type": "string",
+          "format": "date-time"
+        },
+        "contractTermUnit": {
+          "description": "The unit of time",
+          "type": "string",
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "contractTermLength": {
+          "description": "The length that corresponds with the contractTermUnit",
+          "type": "integer"
+        },
+        "recurringPeriodLimit": {
+          "description": "The number of times a subscription will rebill until the contract is over",
+          "type": "integer"
+        },
+        "minQuantity": {
+          "description": "Minimum quantity per order, defaults to 1",
+          "type": "integer"
+        },
+        "maxQuantity": {
+          "description": "Maximum quantity per order (NULL if no maximum)",
+          "type": "integer"
+        },
+        "createdTime": {
+          "description": "Plan created time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedTime": {
+          "description": "Plan updated time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to plan",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "description": "Your product includes digital goods, services, and physical goods.  \nProducts appear on invoice line items.  If you set a tax category identifier,\ntaxes will be calculated upon invoice generation.\n",
+      "example": "{\n  \"id\": \"stringid\",\n  \"name\": \"Widget\",\n  \"description\": \"Fantastic widget\",\n  \"taxCategoryId\": null,\n  \"customFields\": [],\n  \"createdTime\": \"2015-08-27 13:45:12\",\n  \"updatedTime\": \"2015-08-27 13:45:12\",\n  \"_links\": [\n      {\n        \"self\": \"https://api.rebilly.com/v2.1/products/stringid\"\n      }\n  ]\n}\n",
+      "properties": {
+        "id": {
+          "description": "The product identifier string",
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 50
+        },
+        "name": {
+          "description": "The product name",
+          "type": "string",
+          "maxLength": 255
+        },
+        "description": {
+          "description": "The product description",
+          "type": "string",
+          "maxLength": 512
+        },
+        "taxCategoryId": {
+          "description": "The product's tax category identifier string",
+          "type": "string",
+          "enum": [
+            "99999",
+            "20010",
+            "40030",
+            "51020",
+            "51010",
+            "31000",
+            "30070"
+          ]
+        },
+        "customFields": {
+          "description": "Any custom object that may be stored with product (see custom fields)",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "The product created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The product updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to product",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "ResetPassword": {
+      "type": "object",
+      "required": [
+        "newPassword"
+      ],
+      "properties": {
+        "newPassword": {
+          "description": "New password",
+          "type": "string",
+          "format": "password"
+        }
+      }
+    },
+    "ResetPasswordToken": {
+      "type": "object",
+      "required": [
+        "username",
+        "password"
+      ],
+      "properties": {
+        "token": {
+          "description": "The token's identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "username": {
+          "description": "The token's username",
+          "type": "string"
+        },
+        "password": {
+          "description": "Token's password (only for POST)",
+          "type": "string",
+          "format": "password"
+        },
+        "credential": {
+          "description": "Token's credential ID",
+          "type": "string"
+        },
+        "expiredTime": {
+          "description": "Password expired time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to token",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "ResourceCustomFields": {
+      "description": "\"Custom Fields list as a map `{\"custom field name\": \"custom field value\", ...}\"`.\nThe format must follow the saved format (see Custom Fields section for the formats).\n",
+      "type": "object"
+    },
+    "Session": {
+      "type": "object",
+      "required": [
+        "permissions"
+      ],
+      "properties": {
+        "id": {
+          "description": "The session identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "token": {
+          "description": "The session's token used for authentication",
+          "type": "string"
+        },
+        "permissions": {
+          "type": "object",
+          "description": "The session's permissions. It's an array with following format: [ { resourceName: '<resourceName>' methods: ['GET', 'POST', 'PUT', 'HEAD', 'DELETE'], id: [<allowed resources ids>] }, { resourceName: '<resourceName2>' methods: ['GET', 'POST', 'PUT', 'HEAD', 'DELETE'], id: [<allowed resources ids>] } ]\nIt can contain wildcard (*) for any field: [ { resourceName: '*' id: '*', methods: '*' } ] "
+        },
+        "createdTime": {
+          "description": "Session created time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedTime": {
+          "description": "Session updated time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiredTime": {
+          "description": "Session expired time. Defaults to one hour",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to session",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Signin": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "description": "Email",
+          "type": "string"
+        },
+        "password": {
+          "description": "Password",
+          "type": "string",
+          "format": "password"
+        },
+        "expiredTime": {
+          "description": "Session expired time. Defaults to one hour",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Signup": {
+      "type": "object",
+      "required": [
+        "email",
+        "company",
+        "firstName",
+        "lastName",
+        "businessPhone",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "description": "The user email",
+          "type": "string",
+          "format": "email",
+          "maxLength": 100
+        },
+        "company": {
+          "description": "The user's company name",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The user first name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The user last name",
+          "type": "string"
+        },
+        "businessPhone": {
+          "description": "The user business phone number",
+          "type": "string"
+        },
+        "password": {
+          "description": "The user password",
+          "type": "string",
+          "format": "password"
+        }
+      }
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "The API status. If everything is ok - value is 'ok'",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "ok"
+          ]
+        },
+        "time": {
+          "description": "Current time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      }
+    },
+    "Subscription": {
+      "type": "object",
+      "required": [
+        "customerId",
+        "planId",
+        "websiteId"
+      ],
+      "properties": {
+        "id": {
+          "description": "The Subscription identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "Unique id for each customer",
+          "type": "string"
+        },
+        "planId": {
+          "description": "Unique id for each plan",
+          "type": "string"
+        },
+        "websiteId": {
+          "description": "Unique id for each website",
+          "type": "string"
+        },
+        "initialInvoiceId": {
+          "description": "Unique id for the initial invoice",
+          "type": "string"
+        },
+        "deliveryContactId": {
+          "description": "Unique id for each delivery contact",
+          "type": "string"
+        },
+        "billingContactId": {
+          "description": "Unique id for each billing contact",
+          "type": "string"
+        },
+        "status": {
+          "description": "Subscription status",
+          "type": "string",
+          "readOnly": true
+        },
+        "quantity": {
+          "description": "Quantity for each subscription. Default value to 1",
+          "type": "integer"
+        },
+        "autopay": {
+          "description": "Autopay determines if a payment attempt will be automatic",
+          "type": "boolean",
+          "default": true
+        },
+        "startTime": {
+          "description": "Subscription start time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "activationTime": {
+          "description": "Subscription activation time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "endTime": {
+          "description": "Subscription end time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "renewalTime": {
+          "description": "Subscription renewal time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "cancelledTime": {
+          "description": "Subscription cancelled time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "Subscription created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Subscription updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to subscription",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    },
+    "SubscriptionCancel": {
+      "type": "object",
+      "required": [
+        "policy"
+      ],
+      "properties": {
+        "policy": {
+          "description": "Cancel policy",
+          "type": "string",
+          "enum": [
+            "AT_NEXT_RENEWAL",
+            "NOW_WITH_PRORATA_REFUND",
+            "NOW_WITH_PRORATA_CREDIT",
+            "NOW_WITHOUT_REFUND",
+            "NOW_WITH_FULL_REFUND"
+          ]
+        }
+      }
+    },
+    "SubscriptionSwitch": {
+      "type": "object",
+      "required": [
+        "planId",
+        "policy"
+      ],
+      "properties": {
+        "planId": {
+          "description": "The plan identifier string",
+          "type": "string"
+        },
+        "policy": {
+          "description": "Switch policy",
+          "type": "string",
+          "enum": [
+            "AT_NEXT_RENEWAL",
+            "NOW_WITH_PRORATA_REFUND",
+            "NOW_WITH_PRORATA_CREDIT",
+            "NOW_WITHOUT_REFUND"
+          ]
+        },
+        "websiteId": {
+          "description": "The website's ID",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "Quantity for each subscription. Default value to 1",
+          "type": "integer"
+        }
+      }
+    },
+    "TaxCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The tax category identifier string",
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 50,
+          "enum": [
+            "99999",
+            "20010",
+            "40030",
+            "51020",
+            "51010",
+            "31000",
+            "30070"
+          ]
+        },
+        "description": {
+          "description": "The tax category description",
+          "type": "string",
+          "maxLength": 512
+        },
+        "taxProvider": {
+          "description": "The tax category maps to a provider",
+          "type": "string",
+          "enum": [
+            "TaxJar"
+          ]
+        },
+        "_links": {
+          "description": "The links related to tax category",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The transaction identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "type": {
+          "description": "Transaction type",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "authorize",
+            "capture",
+            "credit",
+            "refund",
+            "sale",
+            "void"
+          ]
+        },
+        "result": {
+          "description": "Transaction result",
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "approved",
+            "conn_error",
+            "declined",
+            "never_sent",
+            "pending",
+            "pending_processor",
+            "timeout",
+            "unknown"
+          ]
+        },
+        "amount": {
+          "description": "The transactions's amount",
+          "type": "number",
+          "format": "double",
+          "readOnly": true
+        },
+        "currency": {
+          "description": "The transactions's currency",
+          "type": "string",
+          "readOnly": true
+        },
+        "parentTransactionId": {
+          "description": "The transactions's parent ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "rebillNumber": {
+          "description": "The transactions's rebill number",
+          "type": "integer",
+          "readOnly": true
+        },
+        "gatewayAccountId": {
+          "description": "The transactions's Gateway Account ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "gatewayResponse": {
+          "description": "The transactions's processor response",
+          "type": "string",
+          "readOnly": true
+        },
+        "websiteId": {
+          "description": "Website's ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "customerId": {
+          "description": "Customer's ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "paymentCardId": {
+          "description": "Payment Card's ID",
+          "type": "string",
+          "readOnly": true
+        },
+        "createdTime": {
+          "description": "Transaction created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "Transaction updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to transaction",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "TransactionRefund": {
+      "type": "object",
+      "required": [
+        "amount"
+      ],
+      "properties": {
+        "amount": {
+          "description": "Refund amount",
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The user identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "email": {
+          "description": "The user email",
+          "type": "string",
+          "format": "email",
+          "maxLength": 100
+        },
+        "firstName": {
+          "description": "The user first name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The user last name",
+          "type": "string"
+        },
+        "phoneNumber": {
+          "description": "The user phone number",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "The user created time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updatedTime": {
+          "description": "The user updated time",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "_links": {
+          "description": "The links related to user",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        }
+      }
+    },
+    "Website": {
+      "type": "object",
+      "required": [
+        "name",
+        "url",
+        "servicePhone",
+        "serviceEmail"
+      ],
+      "properties": {
+        "id": {
+          "description": "The website identifier string",
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "description": "The website's name",
+          "type": "string"
+        },
+        "url": {
+          "description": "The website's domain address",
+          "type": "string"
+        },
+        "servicePhone": {
+          "description": "The website's customer service phone number",
+          "type": "string"
+        },
+        "serviceEmail": {
+          "description": "The website's customer service email address",
+          "type": "string",
+          "format": "email"
+        },
+        "checkoutPageUri": {
+          "description": "Your own custom URI for this Checkout Page",
+          "type": "string"
+        },
+        "webHookUrl": {
+          "description": "Webhook Url (only for POST/PUT)",
+          "type": "string"
+        },
+        "webHookUsername": {
+          "description": "Webhook HTTP Authentication Username (only for POST/PUT)",
+          "type": "string"
+        },
+        "webHookPassword": {
+          "description": "Webhook HTTP Authentication Password (only for POST/PUT)",
+          "type": "string"
+        },
+        "createdTime": {
+          "description": "Website created time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedTime": {
+          "description": "Website updated time",
+          "type": "string",
+          "format": "date-time"
+        },
+        "_links": {
+          "description": "The links related to website",
+          "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/Link"
+          }
+        },
+        "customFields": {
+          "$ref": "#/definitions/ResourceCustomFields"
+        }
+      }
+    }
+  }
+}
