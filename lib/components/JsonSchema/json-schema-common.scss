@@ -73,13 +73,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-type.with-hint {
-  &:before, &:after {
-    content: "\\00a0";
-  }
-  background-color: rgba(0, 50, 159, 0.1);
-  padding: 0.2em 0;
-  font-size: 0.85em;
-  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 0.4em;
+  border-bottom: 1px dotted rgba(38,50,56,0.4);
+  padding: 0;
   cursor: help;
 }
 
