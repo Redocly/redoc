@@ -13,9 +13,10 @@ $array-marker-line-height: 1.5;
 }
 
 json-schema.nested-schema {
-  background-color: #F1F1F1;
+  background-color: $side-menu-active-bg-color;
   padding: 10px 20px;
   position: relative;
+  border-radius: $border-radius;
 
   &:before, &:after {
     content: "";

@@ -1,6 +1,6 @@
 @import '../../common/styles/variables';
 $lines-width: 1px;
-$bullet-size: 7px;
+$bullet-size: 1px;
 $cell-spacing: 25px;
 $cell-padding: 10px;
 $bullet-margin: 10px;
@@ -44,6 +44,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
   width: 75%;
+}
+
+.param-description {
+    font-size: 13px;
 }
 
 .param-required {
@@ -93,8 +97,8 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   content: "";
   display: inline-block;
   width: $bullet-size;
-  height: $bullet-size;
-  background-color: $tree-lines-color;
+  height: $bullet-size + 6;
+  background-color: $primary-color;
   margin: 0 $bullet-margin;
   vertical-align: middle;
 }
@@ -142,7 +146,8 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-enum {
-  color: #666;
+  color: $text-color;
+  font-size: 13px;
 
   &:before {
     content: "Values: {"

@@ -61,7 +61,7 @@ $samples-panel-width: 40%;
 $sample-panel-headers-color: lighten($black, 50%);
 $sample-panel-color: lighten($black, 80%);
 
-$tree-lines-color: #7D97CE;
+$tree-lines-color: rgba($primary-color, .5);
 
 $side-menu-mobile-breakpoint: 1000px;
 

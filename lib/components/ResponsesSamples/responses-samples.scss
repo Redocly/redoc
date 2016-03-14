@@ -27,6 +27,11 @@ header {
     color: $sample-panel-headers-color;
     line-height: 1.25;
 
+    &:hover {
+        color: #ffffff;
+        background-color: rgba(white, .1);
+    }
+
     &.active {
         background-color: white;
         color: $black;

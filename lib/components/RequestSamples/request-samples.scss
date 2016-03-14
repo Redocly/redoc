@@ -1,41 +1,42 @@
 @import '../../common/styles/variables';
 
 header {
-  font-family: $headers-font;
-  font-size: $h5;
-  text-transform: uppercase;
-  margin: 0;
-  color: $sample-panel-headers-color;
-  text-transform: uppercase;
-  font-weight: normal;
+    font-family: $headers-font;
+    font-size: $h5;
+    text-transform: uppercase;
+    margin: 0;
+    color: $sample-panel-headers-color;
+    text-transform: uppercase;
+    font-weight: normal;
 }
 
 :host > tabs > ul li {
-  font-family: $headers-font;
-  font-size: .9em;
-  border-radius: $border-radius;
-  margin: 2px 0;
-  padding: 3px 10px 2px 10px;
-  line-height: 1.25;
-  color: $sample-panel-headers-color;
+    font-family: $headers-font;
+    font-size: .9em;
+    border-radius: $border-radius;
+    margin: 2px 0;
+    padding: 3px 10px 2px 10px;
+    line-height: 1.25;
+    color: $sample-panel-headers-color;
 
-  &.hover {
-    color: #ffffff;
-  }
+    &.hover {
+        background-color: rgba(white, .1);
+        color: #ffffff;
+    }
 
-  &.active {
-    background-color: #ffffff;
-    color: $text-color;
-  }
+    &.active {
+        background-color: #ffffff;
+        color: $text-color;
+    }
 }
 
 :host tabs ul {
-  padding-top: 10px;
+    padding-top: 10px;
 }
 
 pre {
-  overflow-x: auto;
-  word-break: break-all;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+    overflow-x: auto;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
