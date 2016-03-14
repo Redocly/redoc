@@ -37,6 +37,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 .param-name-content {
   padding-right: $cell-spacing;
   display: inline-block;
+  font-family: $headers-font, $headers-font-family;
 }
 
 .param-info {
@@ -109,7 +110,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-top: $line-border;
   width: $bullet-margin;
   left: 0;
-  top: ($param-name-height/2) + $cell-padding;
+  top: ($param-name-height/2) + $cell-padding + 1px;
 }
 
  .param:first-of-type > .param-name:before {

@@ -8,6 +8,10 @@
   font-weight: normal;
 }
 
+:host .zippy-title {
+  font-family: $headers-font, $headers-font-family;
+}
+
 .header-name {
   font-weight: bold;
   display: inline-block;
