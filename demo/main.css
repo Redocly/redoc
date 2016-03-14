@@ -1,5 +1,3 @@
-// Google Fonts
-// ---------------------------
 @import url(http://fonts.googleapis.com/css?family=#{$base-font}:#{$light},#{$regular},#{$bold});
 @import url(http://fonts.googleapis.com/css?family=#{$headers-font}:#{$light},#{$regular});
 
