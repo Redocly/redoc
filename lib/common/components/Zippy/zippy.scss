@@ -1,17 +1,18 @@
-$zippy-success-bg-color: #E1F5E3;
-$zippy-success-color: #09AC1C;
+$zippy-success-color: #00aa13;
+$zippy-success-bg-color: rgba($zippy-success-color, .08);
 
-$zippy-error-bg-color: #FBE7E7;
-$zippy-error-color: #E54541;
+$zippy-error-color: #e53935;
+$zippy-error-bg-color: rgba($zippy-error-color, .06);
 
-$zippy-info-bg-color: #E1EFF5;
-$zippy-info-color: #096DAC;
+$zippy-info-color: #0033a0;
+$zippy-info-bg-color: rgba($zippy-info-color, .08);
 
-$zippy-redirect-bg-color: #F5F0E1;
-$zippy-redirect-color: #AC7C09;
+$zippy-redirect-color: #263238;
+$zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
 
 .zippy-title {
   padding: 10px;
+  border-radius: 2px;
   margin: 2px 0;
   line-height: 1.5em;
   background-color: #f2f2f2;
@@ -39,10 +40,10 @@ $zippy-redirect-color: #AC7C09;
 }
 
 span.zippy-indicator {
-  font-size: 1.5em;
-  line-height: 1;
+  font-size: 1.2em;
   margin-right: 0.2em;
-  vertical-align: text-bottom;
+  position: relative;
+  top: 0;
 }
 
 .zippy-content {

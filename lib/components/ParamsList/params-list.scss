@@ -1,10 +1,12 @@
+@import '../../common/styles/variables';
+
 .param-list-header {
-  border-bottom: 1px solid #999;
-  font-size: 18px;
+  border-bottom: 1px solid rgba($text-color, .3);
   padding: 0.2em 0;
-  margin: 0.5em 0;
-  color: #253137;
+  margin: 3.5em 0 .8em 0;
+  color: rgba($text-color, .5);
   font-weight: normal;
+  text-transform: uppercase;
 }
 
 @import '../JsonSchema/json-schema-common';

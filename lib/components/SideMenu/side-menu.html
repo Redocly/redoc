@@ -6,7 +6,7 @@
   </span>
 </div>
 <div id="resources-nav">
-  <h2 class="menu-header"> API reference </h2>
+  <h5 class="menu-header"> API reference </h5>
   <div *ngFor="var cat of data.menu; #idx = index" class="menu-cat">
 
     <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>

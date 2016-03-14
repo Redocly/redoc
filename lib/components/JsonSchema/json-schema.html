@@ -2,13 +2,13 @@
   <span class="param-type param-type-trivial {{type}}"
   [ngClass]="{'with-hint': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>
 </span>
-<div *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
-  <div *ngFor="#prop of data.properties" class="param-wrap">
-    <div class="param" [ngClass]="{'discriminator': prop.isDiscriminator}">
-      <div class="param-name">
+<table *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
+  <template ngFor [ngForOf]="data.properties" #prop="$implicit">
+    <tr class="param" [ngClass]="{'discriminator': prop.isDiscriminator, 'complex': prop._pointer}">
+      <td class="param-name">
         <span class="param-name-content">{{prop._name}}</span>
-      </div>
-      <div class="param-info">
+      </td>
+      <td class="param-info">
         <div>
           <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint}"
           title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>
@@ -19,19 +19,23 @@
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>
-      </div>
-    </div>
-    <div class="param-schema" [ngClass]="{'param-array': prop._isArray}" *ngIf="prop._pointer">
-      <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray'>
-      </json-schema>
-    </div>
-  </div>
-  <div *ngIf="data.derived.length" class="param-wrap">
-    <tabs>
-      <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">
-        <json-schema pointer="{{derived.$ref}}" [final]="derived.final">
+      </td>
+    </tr>
+    <tr class="param-schema" [ngClass]="{'param-array': prop._isArray}" *ngIf="prop._pointer">
+      <td colspan="2">
+        <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray' class="nested-schema">
         </json-schema>
-      </tab>
-    </tabs>
-  </div>
-</div>
+      </td>
+    </tr>
+  </template>
+  <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">
+    <td colspan="2">
+      <tabs>
+        <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">
+          <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
+          </json-schema>
+        </tab>
+      </tabs>
+    </td>
+  </tr>
+</table>

@@ -1,6 +1,6 @@
 @import '../../common/styles/variables';
 $lines-width: 1px;
-$bullet-size: 7px;
+$bullet-size: 1px;
 $cell-spacing: 25px;
 $cell-padding: 10px;
 $bullet-margin: 10px;
@@ -11,6 +11,7 @@ $param-name-height: 20px;
 
 $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
+/*
 .param-schema {
   padding-left: $sub-schema-offset - $lines-width;
   border-left: $line-border;
@@ -18,29 +19,19 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-wrap {
   position: relative;
-}
-
-.param-schema:before {
-  content: "";
-  position: absolute;
-  left: $sub-schema-offset;
-  top: ($param-name-height/2) + $cell-padding;
-  bottom: 0;
-  border-left: $line-border;
-}
+}*/
 
 .param-name {
-  flex-grow: 0;
-  -ms-flex-grow: 0;
-  display: inline-block;
-  font-size: 14px;
+
+  font-size: 0.929em;
   padding: $cell-padding 0 $cell-padding 0;
-  font-weight: bold;
+  font-weight: $regular;
   box-sizing: border-box;
   line-height: $param-name-height;
   border-left: $line-border;
   white-space: nowrap;
   position: relative;
+  vertical-align: top;
 }
 
 .param-name-content {
@@ -49,18 +40,14 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-info {
-  //width: 100%;
-  flex-grow: 1;
-  -ms-flex-grow: 1;
   padding: $cell-padding 0;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
-  display: inline-block;
+  width: 75%;
 }
 
-.param {
-  display: flex;
-  display: -ms-flexbox;
+.param-description {
+    font-size: 13px;
 }
 
 .param-required {
@@ -72,32 +59,21 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-type {
-  color: #999;
-  font-size: 12px;
+  color: $black;
+  font-size: 0.929em;
   line-height: $param-name-height;
   vertical-align: middle;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .param-type.array:before {
   content: "Array of ";
-  color: #999;
+  color: $black;
+  font-weight: $base-font-weight;
 }
 
-.param-type.string, .enum-value.string {
-  color: rgba(0, 80, 0, 0.7);
-}
-
-.param-type.integer, .param-type.number, .enum-value.number {
-  color: rgba(74, 139, 179, 0.8);
-}
-
-.param-type.object {
-  color: rgba(0, 50, 159, 0.7);
-}
-
-.param-type.boolean, .enum-value.boolean {
-  color: firebrick;
+.param-type {
+    color: rgba($black, 0.4);
 }
 
 .param-type.with-hint {
@@ -116,12 +92,13 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 /* tree */
 
 // Bullet
+
 .param-name > span:before {
   content: "";
   display: inline-block;
   width: $bullet-size;
-  height: $bullet-size;
-  background-color: $tree-lines-color;
+  height: $bullet-size + 6;
+  background-color: $primary-color;
   margin: 0 $bullet-margin;
   vertical-align: middle;
 }
@@ -135,7 +112,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   top: ($param-name-height/2) + $cell-padding;
 }
 
-.param-wrap:first-of-type > .param > .param-name:before {
+ .param:first-of-type > .param-name:before {
   content: "";
   display: block;
   position: absolute;
@@ -145,14 +122,14 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   height: ($param-name-height/2) + $cell-padding;
 }
 
-.param-wrap:last-of-type > .param > .param-name {
-  position: static;
+.param:last-of-type > .param-name {
+  position: relative;
 
   &:after {
     content: "";
     display: block;
     position: absolute;
-    left: -$lines-width;
+    left: -$lines-width - 1px;
     border-left: $line-border-erase;
     top: ($param-name-height/2) + $cell-padding + $lines-width;
     background-color: white;
@@ -169,7 +146,8 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-enum {
-  color: #666;
+  color: $text-color;
+  font-size: 13px;
 
   &:before {
     content: "Values: {"

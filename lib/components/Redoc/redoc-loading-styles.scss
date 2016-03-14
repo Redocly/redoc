@@ -13,11 +13,12 @@ redoc.loading {
 }
 
 redoc.loading:before {
+  font-family: Montserrat;
   content: "Loading...";
   font-size: 28px;
   text-align: center;
   padding-top: 40px;
-  color: #3F5C9C;
+  color: #0033a0;
   font-weight: bold;
   display: block;
   position: absolute;
