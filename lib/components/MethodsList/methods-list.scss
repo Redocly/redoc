@@ -5,6 +5,7 @@
   padding: 40px;
   box-sizing: border-box;
   background-color: white;
+  width: 60%;
 }
 
 .tag-info:after, .tag-info:before {
@@ -21,21 +22,4 @@
 .methods {
   display: block;
   position: relative;;
-}
-
-.methods:before {
-  content: "";
-  background: $samples-panel-bg-color;
-  height: 100%;
-  width: $samples-panel-width;
-  top: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
-}
-
-@media (max-width: 1100px) {
-  .methods:before {
-    display: none;
-  }
 }

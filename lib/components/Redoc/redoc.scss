@@ -55,28 +55,30 @@ api-logo {
 }
 
 #api-content {
-    margin-left: $side-bar-width;
-    @media (max-width: $side-menu-mobile-breakpoint) {
-        padding-top: 3em;
-        margin-left: 0;
-    }
+  margin-left: $side-bar-width;
+  position: relative;
+  @media (max-width: $side-menu-mobile-breakpoint) {
+      padding-top: 3em;
+      margin-left: 0;
+  }
 }
 
-#api-content:after {
-    content: "";
-    position: absolute;;
-    left:0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: black;
-    opacity: 0.5;
-    transition: all 0.3s ease;
+#api-content:before {
+  content: "";
+  background: $samples-panel-bg-color;
+  height: 100%;
+  width: $samples-panel-width;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+
+@media (max-width: 1100px) {
+  #api-content:before {
     display: none;
-}
-
-#api-content.menu-opened:after {
-    display: block;;
+  }
 }
 
 /* global redoc styles */
