@@ -139,19 +139,19 @@ api-logo {
         color: $red;
         border: 1px solid rgba(38,50,56,0.1);
     }
+}
+
+footer {
+    text-align: right;
+    padding: 10px;
+    font-size: 15px;
+    background-color: white;
 
     strong {
         font-size: 18px;
         color: $headers-color;
     }
-
-    footer {
-        text-align: right;
-        padding: 10px;
-        font-size: 15px;
-    }
 }
-
 
 
 /* markdown elements */

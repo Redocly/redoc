@@ -61,6 +61,7 @@ describe('APIs.guru specs test', ()=> {
   delete apisGuruList['googleapis.com:mirror']; // bad urls in images
   delete apisGuruList['googleapis.com:discovery']; // non-string references
   delete apisGuruList['clarify.io']; // non-string references
+  delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
 
   // run quick version of e2e test on all builds except releases
   if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
