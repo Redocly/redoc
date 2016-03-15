@@ -8,6 +8,7 @@
   "basePath": "/v2/",
   "definitions": {
     "Simple": {
+      "description": "simple",
       "type": "object",
       "required": ["id"],
       "properties": {
@@ -57,6 +58,15 @@
         }
       ]
     },
+    "AllOfWithOther": {
+      "description": "Test",
+      "readOnly": true,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Simple"
+        }
+      ]
+    },
     "BadAllOf1": {
       "allOf": [
         {
@@ -67,8 +77,12 @@
         }
       ]
     },
-    "BadAllOf2": {
-      "properties": {},
+    "PropertiesOnAllOfLevel": {
+      "properties": {
+        "prop": {
+          "type": "string"
+        }
+      },
       "allOf": [
         {
           "$ref": "#/definitions/Simple"
