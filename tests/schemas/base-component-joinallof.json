@@ -97,6 +97,21 @@
           }
         }
       ]
+    },
+    "NestedAllOf": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SimpleAllOf"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "prop4": {
+              "type": "string"
+            }
+          }
+        }
+      ]
     }
   },
   "paths": {
