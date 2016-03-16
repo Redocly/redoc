@@ -11,7 +11,9 @@
       <td class="param-info">
         <div>
           <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint}"
-          title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>
+          title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}
+          <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
+          </span>
           <span *ngIf="prop.required" class="param-required">Required</span>
           <div *ngIf="prop.enum" class="param-enum">
             <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
