@@ -20,7 +20,13 @@
           </div>
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
-        <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>
+        <div class="discriminator-info" *ngIf="prop.isDiscriminator">
+          This field value determines the exact schema:
+          <ul>
+            <li *ngFor="#derived of data.derived"
+            (click)="selectDerived(derived)" [ngClass]="{active: derived.active}"> {{derived.name}} </li>
+          </ul>
+        </div>
       </td>
     </tr>
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray}" *ngIf="prop._pointer">
@@ -32,12 +38,10 @@
   </template>
   <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">
     <td colspan="2">
-      <tabs>
-        <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">
-          <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
-          </json-schema>
-        </tab>
-      </tabs>
+      <div class="derived-schema" *ngFor="#derived of data.derived" [ngClass]="{active: derived.active}">
+        <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
+        </json-schema>
+      </div>
     </td>
   </tr>
 </table>

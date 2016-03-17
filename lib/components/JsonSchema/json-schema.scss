@@ -12,6 +12,13 @@ $array-marker-line-height: 1.5;
   padding: 0 10px;
 }
 
+.derived-schema {
+  display: none;
+}
+.derived-schema.active {
+  display: block;
+}
+
 json-schema.nested-schema {
   background-color: $side-menu-active-bg-color;
   padding: 10px 20px;
@@ -114,15 +121,14 @@ json-schema.nested-schema {
   padding: 0;
 }
 
-:host tabs {
+ul {
+  text-align: left;
+  margin: 0;
+  padding: 0;
   display: block;
 }
 
-:host ul {
-    text-align: center;
-}
-
-:host tabs li {
+li {
   margin: 0.2em 0.3em 0.2em 0;
   font-family: $headers-font, $headers-font-family;
   font-size: .929em;
@@ -132,6 +138,8 @@ json-schema.nested-schema {
   padding: 2px 8px 4px 8px;
   border-radius: $border-radius;
   background-color: rgba($black, 0.3);
+  display: inline-block;
+  cursor: pointer;
 
   &:last-of-type {
     margin-right: 0;
