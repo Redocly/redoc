@@ -49,6 +49,12 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-range {
   color: rgba($primary-color, .7);
+  position: relative;
+  top: 1px;
+  padding: 0 4px;
+  border-radius: $border-radius;
+  background-color: rgba($primary-color, .1);
+  margin-left: 6px;
 }
 
 .param-description {
@@ -114,7 +120,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-top: $line-border;
   width: $bullet-margin;
   left: 0;
-  top: ($param-name-height/2) + $cell-padding + 1px;
+  top: ($param-name-height/2) + $cell-padding + 1;
 }
 
  .param:first-of-type > .param-name:before {
@@ -124,7 +130,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   left: -$lines-width;
   top: 0;
   border-left: $line-border-erase;
-  height: ($param-name-height/2) + $cell-padding;
+  height: ($param-name-height/2) + $cell-padding + 1;
 }
 
 .param:last-of-type > .param-name {
@@ -136,7 +142,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
     position: absolute;
     left: -$lines-width - 1px;
     border-left: $line-border-erase;
-    top: ($param-name-height/2) + $cell-padding + $lines-width;
+    top: ($param-name-height/2) + $cell-padding + $lines-width + 1;
     background-color: white;
     bottom: 0;
   }

@@ -19,7 +19,7 @@ header {
     line-height: 1.25;
     color: $sample-panel-headers-color;
 
-    &.hover {
+    &:hover {
         background-color: rgba(white, .1);
         color: #ffffff;
     }
