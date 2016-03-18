@@ -114,6 +114,7 @@ json-schema.nested-schema {
 
 .discriminator-info {
   font-weight: $regular;
+  margin-bottom: 10px;
 }
 
 .discriminator-wrap > td {
@@ -129,7 +130,7 @@ ul {
 }
 
 li {
-  margin: 0.2em 0.3em 0.2em 0;
+  margin: 0.5em 0.3em 0.2em 0;
   font-family: $headers-font, $headers-font-family;
   font-size: .929em;
   line-height: .929em;
