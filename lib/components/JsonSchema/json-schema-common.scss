@@ -47,6 +47,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   width: 75%;
 }
 
+.param-range {
+  color: rgba($primary-color, .7);
+}
+
 .param-description {
     font-size: 13px;
 }
