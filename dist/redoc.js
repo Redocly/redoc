@@ -7733,7 +7733,7 @@ $__System.register('b', ['5', '6', '7', '8', '9', 'e', 'c', 'd'], function (_exp
             paramsList = paramsList.map(function (paramData) {
               var propPointer = paramData._pointer;
               if (paramData['in'] === 'body') return paramData;
-              return JsonSchema.injectPropData(paramData, paramData.name, propPointer);
+              return JsonSchema.injectPropertyData(paramData, paramData.name, propPointer);
             });
 
             var paramsMap = this.orderParams(paramsList);
@@ -7771,7 +7771,7 @@ $__System.register('b', ['5', '6', '7', '8', '9', 'e', 'c', 'd'], function (_exp
         ParamsList = RedocComponent({
           selector: 'params-list',
           template: '\n    <h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>\n    <template ngFor [ngForOf]="data.params" #paramType="$implicit">\n      <header class="paramType"> {{paramType.place}} Parameters </header>\n      <br>\n      <div class="params-wrap">\n        <div *ngFor="#param of paramType.params" class="param">\n            <div class="param-name">\n              <span class="param-name-content"> {{param.name}} </span>\n            </div>\n            <div class="param-info">\n              <div>\n                <span class="param-type {{param.type}}" [ngClass]="{\'with-hint\': param._displayTypeHint}"\n                title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>\n                <span *ngIf="param.required" class="param-required">Required</span>\n                <div *ngIf="param.enum" class="param-enum">\n                  <span *ngFor="#enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n                </div>\n              </div>\n              <div class="param-description" innerHtml="{{param.description | marked}}"></div>\n            </div>\n        </div>\n      </div>\n    </template>\n\n    <div *ngIf="data.bodyParam">\n      <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>\n\n      <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>\n      <div>\n        <br>\n        <json-schema-lazy [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">\n        </json-schema-lazy>\n      </div>\n    </div>\n  ',
-          styles: ['\n    .param-list-header{border-bottom:1px solid rgba(38,50,56,0.3);padding:0.2em 0;margin:3.5em 0 .8em 0;color:rgba(38,50,56,0.5);font-weight:normal;text-transform:uppercase}.param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:21px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}header.paramType{margin:10px 0;text-transform:capitalize}.params-wrap{display:table;width:100%}.param-name{display:table-cell;vertical-align:top}.param-info{display:table-cell;width:100%}.param{display:table-row}.param:last-of-type>.param-name{border-left:0}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;background-color:white;top:0}.param:first-of-type .param-name:after{content:"";display:block;position:absolute;left:-1px;border-left:2px solid #fff;height:20px;background-color:white;top:0}\n  '],
+          styles: ['\n    .param-list-header{border-bottom:1px solid rgba(38,50,56,0.3);padding:0.2em 0;margin:3.5em 0 .8em 0;color:rgba(38,50,56,0.5);font-weight:normal;text-transform:uppercase}.param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7)}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:21px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}header.paramType{margin:10px 0;text-transform:capitalize}.params-wrap{display:table;width:100%}.param-name{display:table-cell;vertical-align:top}.param-info{display:table-cell;width:100%}.param{display:table-row}.param:last-of-type>.param-name{border-left:0}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;background-color:white;top:0}.param:first-of-type .param-name:after{content:"";display:block;position:absolute;left:-1px;border-left:2px solid #fff;height:20px;background-color:white;top:0}\n  '],
           directives: [JsonSchema, JsonSchemaLazy]
         })(ParamsList) || ParamsList;
         return ParamsList;
@@ -56812,7 +56812,16 @@ $__System.register('10', ['6', '7', '8', '9', '96', '217'], function (_export) {
   };
 });
 $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], function (_export) {
-  var RedocComponent, BaseComponent, SchemaManager, _get, _inherits, _createClass, _classCallCheck, JsonPointer, Tabs, Tab, ElementRef, _Object$assign, _Object$keys, JsonSchema;
+  var RedocComponent, BaseComponent, SchemaManager, _get, _inherits, _createClass, _classCallCheck, JsonPointer, Tabs, Tab, ElementRef, _Object$assign, _Object$keys, JsonSchema, injectors;
+
+  function runInjectors(injectTo, propertySchema, propertyPointer) {
+    for (var injName in injectors) {
+      var injector = injectors[injName];
+      if (injector.check(propertySchema)) {
+        injector.inject(injectTo, propertySchema, propertyPointer);
+      }
+    }
+  }
 
   return {
     setters: [function (_7) {
@@ -56909,11 +56918,13 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
 
             var discriminatorFieldIdx = -1;
             var props = _Object$keys(schema.properties).map(function (prop, idx) {
-              var propData = schema.properties[prop];
+              var propertySchema = schema.properties[prop];
               var propPointer = JsonPointer.join(_this.pointer, ['properties', prop]);
-              propData = JsonSchema.injectPropData(propData, prop, propPointer, _this.requiredMap, schema);
-              if (propData.isDiscriminator) discriminatorFieldIdx = idx;
-              return propData;
+              propertySchema = JsonSchema.injectPropertyData(propertySchema, prop, propPointer);
+              propertySchema.required = !!_this.requiredMap[prop];
+              propertySchema.isDiscriminator = schema.discriminator === prop;
+              if (propertySchema.isDiscriminator) discriminatorFieldIdx = idx;
+              return propertySchema;
             });
             // Move discriminator field to the end of properties list
             if (discriminatorFieldIdx > -1) {
@@ -56923,50 +56934,14 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
             this.data.properties = props;
           }
         }], [{
-          key: 'injectPropData',
-          value: function injectPropData(propData, propName, propPointer, requiredMap, schema) {
-            var propEnum = undefined;
+          key: 'injectPropertyData',
+          value: function injectPropertyData(propertySchema, propertyName, propPointer) {
+            propertySchema = _Object$assign({}, propertySchema);
 
-            propData = _Object$assign({}, propData);
-            propData._name = propName;
-            propData.required = propData.required || requiredMap && requiredMap[propName];
-            propData._displayType = propData.type;
-            propData.isDiscriminator = schema && schema.discriminator === propName;
-            propEnum = propData['enum'];
-            if (propData.type === 'array') {
-              var itemType = propData.items.type;
-              var itemFormat = propData.items.format;
-              propEnum = propData.items['enum'];
-              if (itemType === 'object' || !itemType) {
-                itemType = propData.items.title || 'object';
-                propData._pointer = propData.items._pointer || JsonPointer.join(propPointer, ['items']);
-              }
-              propData._displayType = '' + itemType;
-              propData.format = itemFormat;
-              propData._isArray = true;
-              propData.type = 'array ' + propData.items.type;
-            } else if (propData.type === 'object' && propData.properties) {
-              propData._displayType = propData.title || 'object';
-            } else if (!propData.type) {
-              propData._displayType = '< * >';
-              propData._displayTypeHint = 'This field may contain data of any type';
-            } else {
-              // here we are sure that property has simple type (integer, string, object withou properties)
-              // delete pointer for simple types to not show it as subschema
-              if (propData._pointer) {
-                propData._pointer = undefined;
-                propData._displayType = propData.title ? propData.title + ' (' + propData.type + ')' : propData.type;
-              }
-            }
+            propertySchema._name = propertyName;
+            runInjectors(propertySchema, propertySchema, propPointer);
 
-            if (propData.format) propData._displayFormat = '<' + propData.format + '>';
-            if (propEnum) {
-              propData['enum'] = propEnum.map(function (value) {
-                return { val: value, type: typeof value };
-              });
-            }
-
-            return propData;
+            return propertySchema;
           }
         }]);
 
@@ -56974,8 +56949,8 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
         JsonSchema = Reflect.metadata('parameters', [[SchemaManager], [ElementRef]])(JsonSchema) || JsonSchema;
         JsonSchema = RedocComponent({
           selector: 'json-schema',
-          template: '\n    <span *ngIf="isTrivial" class="param-wrap">\n      <span class="param-type param-type-trivial {{type}}"\n      [ngClass]="{\'with-hint\': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>\n    </span>\n    <table *ngIf="!isTrivial" class="params-wrap" [ngClass]="{\'params-array\': isArray}">\n      <template ngFor [ngForOf]="data.properties" #prop="$implicit">\n        <tr class="param" [ngClass]="{\'discriminator\': prop.isDiscriminator, \'complex\': prop._pointer}">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}</span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum" class="param-enum">\n                <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\' class="nested-schema">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">\n        <td colspan="2">\n          <tabs>\n            <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">\n              <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">\n              </json-schema>\n            </tab>\n          </tabs>\n        </td>\n      </tr>\n    </table>\n  ',
-          styles: ['\n    .param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:21px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}:host{display:block}.param-schema>td{border-left:1px solid rgba(0,51,160,0.5);padding:0 10px}json-schema.nested-schema{background-color:#f0f0f0;padding:10px 20px;position:relative;border-radius:2px}json-schema.nested-schema:before,json-schema.nested-schema:after{content:"";width:0;height:0;position:absolute;top:0;border-style:solid;border-color:transparent;border-width:10px 15px 0;margin-left:-7.5px;border-top-color:white}json-schema.nested-schema:before{left:10%}json-schema.nested-schema:after{right:10%}json-schema.nested-schema .param:first-of-type>.param-name:before,json-schema.nested-schema .param:last-of-type>.param-name:after{border-color:#f1f1f1}.param.complex>.param-info{border-bottom:0}.params-wrap{border-collapse:collapse;width:100%}.params-wrap.params-array:before,.params-wrap.params-array:after{display:block;font-weight:300;color:#263238;font-size:13px;line-height:1.5}.params-wrap.params-array:after{content:"]"}.params-wrap.params-array:before{content:"Array [";padding-top:1em}.params-wrap.params-array{padding-left:10px}.param-schema.param-array:before{bottom:9.75px;width:10px;border-left-style:dashed;border-bottom:1px dashed rgba(0,51,160,0.5)}.params-wrap.params-array>.param-wrap:first-of-type>.param>.param-name:after{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.params-wrap>.param>.param-schema.param-array{border-left-color:transparent}.param.discriminator>.param-info{padding-bottom:0;border-bottom:0}.param.discriminator>.param-name:after{display:none}.discriminator-info{font-weight:bold}.discriminator-wrap>td{border-left:1px solid rgba(0,51,160,0.5);padding:0}:host tabs{display:block}:host ul{text-align:center}:host tabs li{margin:0.2em 0.5em 0.2em 0;font-size:14px;border:0;color:white;padding:0 15px;border-radius:10px;background-color:#8A9094}:host tabs li:last-of-type{margin:0}:host tabs li.active{background-color:#0033a0}\n  '],
+          template: '\n    <span *ngIf="isTrivial" class="param-wrap">\n      <span class="param-type param-type-trivial {{type}}"\n      [ngClass]="{\'with-hint\': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>\n    </span>\n    <table *ngIf="!isTrivial" class="params-wrap" [ngClass]="{\'params-array\': isArray}">\n      <template ngFor [ngForOf]="data.properties" #prop="$implicit">\n        <tr class="param" [ngClass]="{\'discriminator\': prop.isDiscriminator, \'complex\': prop._pointer}">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}\n              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>\n              </span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum" class="param-enum">\n                <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator"> This field value determines the exact schema: </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\' class="nested-schema">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">\n        <td colspan="2">\n          <tabs>\n            <tab *ngFor="#derived of data.derived" tabTitle="{{derived.name}}">\n              <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">\n              </json-schema>\n            </tab>\n          </tabs>\n        </td>\n      </tr>\n    </table>\n  ',
+          styles: ['\n    .param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7)}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:21px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}:host{display:block}.param-schema>td{border-left:1px solid rgba(0,51,160,0.5);padding:0 10px}json-schema.nested-schema{background-color:#f0f0f0;padding:10px 20px;position:relative;border-radius:2px}json-schema.nested-schema:before,json-schema.nested-schema:after{content:"";width:0;height:0;position:absolute;top:0;border-style:solid;border-color:transparent;border-width:10px 15px 0;margin-left:-7.5px;border-top-color:white}json-schema.nested-schema:before{left:10%}json-schema.nested-schema:after{right:10%}json-schema.nested-schema .param:first-of-type>.param-name:before,json-schema.nested-schema .param:last-of-type>.param-name:after{border-color:#f1f1f1}.param.complex>.param-info{border-bottom:0}.params-wrap{border-collapse:collapse;width:100%}.params-wrap.params-array:before,.params-wrap.params-array:after{display:block;font-weight:300;color:#263238;font-size:13px;line-height:1.5}.params-wrap.params-array:after{content:"]"}.params-wrap.params-array:before{content:"Array [";padding-top:1em}.params-wrap.params-array{padding-left:10px}.param-schema.param-array:before{bottom:9.75px;width:10px;border-left-style:dashed;border-bottom:1px dashed rgba(0,51,160,0.5)}.params-wrap.params-array>.param-wrap:first-of-type>.param>.param-name:after{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.params-wrap>.param>.param-schema.param-array{border-left-color:transparent}.param.discriminator>.param-info{padding-bottom:0;border-bottom:0}.param.discriminator>.param-name:after{display:none}.discriminator-info{font-weight:bold}.discriminator-wrap>td{border-left:1px solid rgba(0,51,160,0.5);padding:0}:host tabs{display:block}:host ul{text-align:center}:host tabs li{margin:0.2em 0.5em 0.2em 0;font-size:14px;border:0;color:white;padding:0 15px;border-radius:10px;background-color:#8A9094}:host tabs li:last-of-type{margin:0}:host tabs li.active{background-color:#0033a0}\n  '],
           directives: [JsonSchema, Tabs, Tab],
           inputs: ['isArray', 'final']
         })(JsonSchema) || JsonSchema;
@@ -56983,6 +56958,105 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
       })(BaseComponent);
 
       _export('default', JsonSchema);
+
+      injectors = {
+        general: {
+          check: function check() {
+            return true;
+          },
+          inject: function inject(injectTo, propertySchema) {
+            injectTo._displayType = propertySchema.type;
+            if (propertySchema.format) injectTo._displayFormat = '<' + propertySchema.format + '>';
+            if (propertySchema['enum']) {
+              injectTo['enum'] = propertySchema['enum'].map(function (value) {
+                return { val: value, type: typeof value };
+              });
+            }
+          }
+        },
+
+        array: {
+          check: function check(propertySchema) {
+            return propertySchema.type === 'array';
+          },
+          inject: function inject(injectTo, propertySchema, propPointer) {
+            if (propertySchema === undefined) propertySchema = injectTo;
+            return (function () {
+              injectTo._isArray = true;
+              injectTo._pointer = propertySchema.items._pointer || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
+
+              runInjectors(injectTo, propertySchema.items, propPointer);
+            })();
+          }
+        },
+
+        object: {
+          check: function check(propertySchema) {
+            return propertySchema.type === 'object' && propertySchema.properties;
+          },
+          inject: function inject(injectTo) {
+            var propertySchema = arguments.length <= 1 || arguments[1] === undefined ? injectTo : arguments[1];
+            return (function () {
+              injectTo._displayType = propertySchema.title || 'object';
+            })();
+          }
+        },
+        noType: {
+          check: function check(propertySchema) {
+            return !propertySchema.type;
+          },
+          inject: function inject(injectTo) {
+            injectTo._displayType = '< * >';
+            injectTo._displayTypeHint = 'This field may contain data of any type';
+          }
+        },
+
+        simpleType: {
+          check: function check(propertySchema) {
+            if (propertySchema.type === 'object') {
+              return !propertySchema.properties;
+            }
+            return propertySchema.type !== 'array' && propertySchema.type;
+          },
+          inject: function inject(injectTo) {
+            var propertySchema = arguments.length <= 1 || arguments[1] === undefined ? injectTo : arguments[1];
+            return (function () {
+              if (injectTo._pointer) {
+                injectTo._pointer = undefined;
+                injectTo._displayType = propertySchema.title ? propertySchema.title + ' (' + propertySchema.type + ')' : propertySchema.type;
+              }
+            })();
+          }
+        },
+        integer: {
+          check: function check(propertySchema) {
+            return propertySchema.type === 'integer' || propertySchema.type === 'number';
+          },
+          inject: function inject(injectTo) {
+            var propertySchema = arguments.length <= 1 || arguments[1] === undefined ? injectTo : arguments[1];
+            return (function () {
+              var range = '';
+              if (propertySchema.minimum && propertySchema.maximum) {
+                range += propertySchema.exclusiveMinimum ? '( ' : '[ ';
+                range += propertySchema.minimum;
+                range += ' .. ';
+                range += propertySchema.maximum;
+                range += propertySchema.exclusiveMaximum ? ' )' : ' ]';
+              } else if (propertySchema.maximum) {
+                range += propertySchema.exclusiveMaximum ? '< ' : '<= ';
+                range += propertySchema.maximum;
+              } else if (propertySchema.minimum) {
+                range += propertySchema.exclusiveMinimum ? '> ' : '>= ';
+                range += propertySchema.minimum;
+              }
+
+              if (range) {
+                injectTo._range = range;
+              }
+            })();
+          }
+        }
+      };
     }
   };
 });
