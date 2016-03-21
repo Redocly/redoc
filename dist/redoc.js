@@ -7675,7 +7675,7 @@ $__System.register('a', ['5', '6', '7', '8', '9'], function (_export) {
         var _ApiLogo = ApiLogo;
         ApiLogo = RedocComponent({
           selector: 'api-logo',
-          styles: ['\n    img{max-height:150px;width:auto;display:inline-block;max-width:100%;padding:0 5px;box-sizing:border-box}\n  '],
+          styles: ['\n    img{max-height:150px;width:auto;display:inline-block;max-width:100%;box-sizing:border-box}\n  '],
           template: '\n    <img *ngIf="data.imgUrl" [attr.src]="data.imgUrl" [ngStyle]="{\'background-color\': data.bgColor}">\n  '
         })(ApiLogo) || ApiLogo;
         return ApiLogo;
