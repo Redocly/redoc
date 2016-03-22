@@ -12,6 +12,13 @@ $array-marker-line-height: 1.5;
   padding: 0 10px;
 }
 
+.derived-schema {
+  display: none;
+}
+.derived-schema.active {
+  display: block;
+}
+
 json-schema.nested-schema {
   background-color: $side-menu-active-bg-color;
   padding: 10px 20px;
@@ -106,7 +113,8 @@ json-schema.nested-schema {
 }
 
 .discriminator-info {
-  font-weight: bold;
+  font-weight: $regular;
+  margin-bottom: 10px;
 }
 
 .discriminator-wrap > td {
@@ -114,28 +122,31 @@ json-schema.nested-schema {
   padding: 0;
 }
 
-:host tabs {
+ul {
+  text-align: left;
+  margin: 0;
+  padding: 0;
   display: block;
 }
 
-:host ul {
-    text-align: center;
-}
-
-:host tabs li {
-  margin: 0.2em 0.5em 0.2em 0;
-  font-size: 14px;
+li {
+  margin: 0.5em 0.3em 0.2em 0;
+  font-family: $headers-font, $headers-font-family;
+  font-size: .929em;
+  line-height: .929em;
   border: 0;
   color: white;
-  padding: 0 15px;
-  border-radius: 10px;
-  background-color: #8A9094;
+  padding: 2px 8px 4px 8px;
+  border-radius: $border-radius;
+  background-color: rgba($black, 0.3);
+  display: inline-block;
+  cursor: pointer;
 
   &:last-of-type {
-    margin: 0;
+    margin-right: 0;
   }
 
   &.active {
-    background-color: $headers-color;
+    background-color: $primary-color;
   }
 }
