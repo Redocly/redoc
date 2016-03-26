@@ -1,10 +1,17 @@
-<span *ngIf="isTrivial" class="param-wrap">
-  <span class="param-type param-type-trivial {{type}}"
-  [ngClass]="{'with-hint': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>
+<span *ngIf="schema.isTrivial" class="param-wrap">
+  <span class="param-type param-type-trivial {{schema.type}}"
+    [ngClass]="{'with-hint': schema._displayTypeHint}"
+    title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
+    <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
+  </span>
+  <div *ngIf="schema.enum" class="param-enum">
+    <span *ngFor="#enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+  </div>
 </span>
-<table *ngIf="!isTrivial" class="params-wrap" [ngClass]="{'params-array': isArray}">
-  <template ngFor [ngForOf]="data.properties" #prop="$implicit">
-    <tr class="param" [ngClass]="{'discriminator': prop.isDiscriminator, 'complex': prop._pointer}">
+<table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
+  <caption> {{_displayType}} </caption>
+  <template ngFor [ngForOf]="schema.properties" #prop="$implicit" #last="last">
+    <tr class="param" [ngClass]="{'last': last, 'discriminator': prop.isDiscriminator, 'complex': prop._pointer}">
       <td class="param-name">
         <span class="param-name-content">{{prop._name}}</span>
       </td>
@@ -23,22 +30,22 @@
         <div class="discriminator-info" *ngIf="prop.isDiscriminator">
           This field value determines the exact schema:
           <ul>
-            <li *ngFor="#derived of data.derived"
+            <li *ngFor="#derived of schema.derived"
             (click)="selectDerived(derived)" [ngClass]="{active: derived.active}"> {{derived.name}} </li>
           </ul>
         </div>
       </td>
     </tr>
-    <tr class="param-schema" [ngClass]="{'param-array': prop._isArray}" *ngIf="prop._pointer">
+    <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" *ngIf="prop._pointer">
       <td colspan="2">
         <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray' class="nested-schema">
         </json-schema>
       </td>
     </tr>
   </template>
-  <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">
+  <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap">
     <td colspan="2">
-      <div class="derived-schema" *ngFor="#derived of data.derived" [ngClass]="{active: derived.active}">
+      <div class="derived-schema" *ngFor="#derived of schema.derived" [ngClass]="{active: derived.active}">
         <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
         </json-schema>
       </div>

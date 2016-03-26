@@ -133,7 +133,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   height: ($param-name-height/2) + $cell-padding + 1;
 }
 
-.param:last-of-type > .param-name {
+.param:last-of-type > .param-name, .param.last > .param-name {
   position: relative;
 
   &:after {
@@ -154,6 +154,10 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
 .param-schema .param-wrap:first-of-type .param-name:before {
   display: none !important;
+}
+
+.param-schema.last > td {
+  border-left: 0;
 }
 
 .param-enum {
