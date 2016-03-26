@@ -7771,7 +7771,7 @@ $__System.register('b', ['5', '6', '7', '8', '9', 'e', 'c', 'd'], function (_exp
         ParamsList = RedocComponent({
           selector: 'params-list',
           template: '\n    <h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>\n    <template ngFor [ngForOf]="data.params" #paramType="$implicit">\n      <header class="paramType"> {{paramType.place}} Parameters </header>\n      <br>\n      <div class="params-wrap">\n        <div *ngFor="#param of paramType.params" class="param">\n            <div class="param-name">\n              <span class="param-name-content"> {{param.name}} </span>\n            </div>\n            <div class="param-info">\n              <div>\n                <span class="param-type {{param.type}}" [ngClass]="{\'with-hint\': param._displayTypeHint}"\n                title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>\n                <span *ngIf="param.required" class="param-required">Required</span>\n                <div *ngIf="param.enum" class="param-enum">\n                  <span *ngFor="#enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n                </div>\n              </div>\n              <div class="param-description" innerHtml="{{param.description | marked}}"></div>\n            </div>\n        </div>\n      </div>\n    </template>\n\n    <div *ngIf="data.bodyParam">\n      <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>\n\n      <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>\n      <div>\n        <br>\n        <json-schema-lazy [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">\n        </json-schema-lazy>\n      </div>\n    </div>\n  ',
-          styles: ['\n    .param-list-header{border-bottom:1px solid rgba(38,50,56,0.3);padding:0.2em 0;margin:3.5em 0 .8em 0;color:rgba(38,50,56,0.5);font-weight:normal;text-transform:uppercase}.param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}header.paramType{margin:10px 0;text-transform:capitalize}.params-wrap{display:table;width:100%}.param-name{display:table-cell;vertical-align:top}.param-info{display:table-cell;width:100%}.param{display:table-row}.param:last-of-type>.param-name{border-left:0}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;background-color:white;top:0}.param:first-of-type .param-name:after{content:"";display:block;position:absolute;left:-1px;border-left:2px solid #fff;height:20px;background-color:white;top:0}\n  '],
+          styles: ['\n    .param-list-header{border-bottom:1px solid rgba(38,50,56,0.3);padding:0.2em 0;margin:3.5em 0 .8em 0;color:rgba(38,50,56,0.5);font-weight:normal;text-transform:uppercase}.param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name,.param.last>.param-name{position:relative}.param:last-of-type>.param-name:after,.param.last>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-schema.last>td{border-left:0}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}header.paramType{margin:10px 0;text-transform:capitalize}.params-wrap{display:table;width:100%}.param-name{display:table-cell;vertical-align:top}.param-info{display:table-cell;width:100%}.param{display:table-row}.param:last-of-type>.param-name{border-left:0}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;background-color:white;top:0}.param:first-of-type .param-name:after{content:"";display:block;position:absolute;left:-1px;border-left:2px solid #fff;height:20px;background-color:white;top:0}\n  '],
           directives: [JsonSchema, JsonSchemaLazy]
         })(ParamsList) || ParamsList;
         return ParamsList;
@@ -8387,7 +8387,8 @@ $__System.register('d', ['8', '9', '15', '20', '22', '23', '24', 'c'], function 
                   var $element = compRef.location.nativeElement;
 
                   // skip caching view with tabs inside (discriminator) as it needs attached controller
-                  if ($element.querySelector('tabs')) {
+                  // FIXME: get rid of dependency on selector
+                  if ($element.querySelector('.discriminator-wrap')) {
                     _this2.dcl.loadNextToLocation(JsonSchema, _this2.elementRef).then(function (compRef) {
                       compRef.instance.pointer = _this2.pointer;
                       compRef.hostView.changeDetectorRef.markForCheck();
@@ -37652,7 +37653,6 @@ $__System.register('5', ['8', '9', '10', '13', '15', '20', '23', '35', '96', 'a1
           _classCallCheck(this, _BaseComponent);
 
           this.schemaMgr = schemaMgr;
-          this.schema = schemaMgr.schema;
           this.componentSchema = null;
         }
 
@@ -37730,13 +37730,35 @@ $__System.register('5', ['8', '9', '10', '13', '15', '20', '23', '35', '96', 'a1
               return schema;
             };
 
-            this.componentSchema = resolve(schema, 1);
+            this.componentSchema = snapshot(resolve(schema, 1));
           }
         }, {
+          key: 'prepareModel',
+
+          /**
+           * Used to prepare model based on component schema
+           * @abstract
+           */
+          value: function prepareModel() {}
+
+          /**
+           * Used to initialize component. Run after prepareModel
+           * @abstract
+           */
+        }, {
+          key: 'init',
+          value: function init() {}
+
+          /**
+           + Used to destroy component
+           * @abstract
+           */
+        }, {
+          key: 'destroy',
+          value: function destroy() {}
+        }], [{
           key: 'joinAllOf',
           value: function joinAllOf(schema, opts) {
-            if (schema === undefined) schema = this.componentSchema;
-
             function merge(into, schemas) {
               var _iteratorNormalCompletion = true;
               var _didIteratorError = false;
@@ -37753,21 +37775,23 @@ $__System.register('5', ['8', '9', '10', '13', '15', '20', '23', '35', '96', 'a1
                     throw new Error(errMessage);
                   }
 
-                  if (into.type && into.type !== subSchema.type) {
+                  if (into.type && subSchema.type && into.type !== subSchema.type) {
                     var errMessage = 'allOf merging error: schemas with different types can\'t be merged';
                     throw new Error(errMessage);
                   }
+
+                  into.type = into.type || subSchema.type;
 
                   if (into.type === 'array') {
                     console.warn('allOf: subschemas with type array are not supported yet');
                   }
 
                   // TODO: add check if can be merged correctly (no different properties with the same name)
-                  if (subSchema.type === 'object' && subSchema.properties) {
+                  if (into.type === 'object' && subSchema.properties) {
                     into.properties || (into.properties = {});
                     _Object$assign(into.properties, subSchema.properties);
                   }
-                  if (subSchema.type === 'object' && subSchema.required) {
+                  if (into.type === 'object' && subSchema.required) {
                     var _into$required;
 
                     into.required || (into.required = []);
@@ -37812,30 +37836,6 @@ $__System.register('5', ['8', '9', '10', '13', '15', '20', '23', '35', '96', 'a1
 
             traverse(schema);
           }
-
-          /**
-           * Used to prepare model based on component schema
-           * @abstract
-           */
-        }, {
-          key: 'prepareModel',
-          value: function prepareModel() {}
-
-          /**
-           * Used to initialize component. Run after prepareModel
-           * @abstract
-           */
-        }, {
-          key: 'init',
-          value: function init() {}
-
-          /**
-           + Used to destroy component
-           * @abstract
-           */
-        }, {
-          key: 'destroy',
-          value: function destroy() {}
         }]);
 
         var _BaseComponent = BaseComponent;
@@ -56866,72 +56866,64 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
           key: 'selectDerived',
           value: function selectDerived(subClass) {
             if (subClass.active) return;
-            this.data.derived.forEach(function (subSchema) {
+            this.schema.derived.forEach(function (subSchema) {
               subSchema.active = false;
             });
             subClass.active = true;
           }
         }, {
+          key: 'unwrapArray',
+          value: function unwrapArray(schema) {
+            var res = schema;
+            if (schema && schema.type === 'array') {
+              var ptr = schema.items._pointer || JsonPointer.join(schema._pointer || this.pointer, ['items']);
+              res = schema.items;
+              res._isArray = true;
+              res._pointer = ptr;
+              res = this.unwrapArray(res);
+            }
+            return res;
+          }
+        }, {
           key: 'prepareModel',
           value: function prepareModel() {
-            var _this = this;
-
-            this.data = {};
-            this.data.properties = [];
-            this.data.derived = [];
-
             if (!this.componentSchema) {
               throw new Error('Can\'t load component schema at ' + this.pointer);
             }
-
             this.dereference();
+
             var schema = this.componentSchema;
+            BaseComponent.joinAllOf(schema, { omitParent: true });
+            schema = this.unwrapArray(schema);
+            runInjectors(schema, schema, schema._pointer || this.pointer);
 
-            if (schema.type === 'array') {
-              this.isArray = true;
-              if (schema._pointer) {
-                this.pointer = JsonPointer.join(schema._pointer, 'items');
-              }
-              schema = schema.items;
-            }
-            var normPtr = schema._pointer || this.pointer;
-            var derived = this.schemaMgr.findDerivedDefinitions(normPtr);
-            if (!this.final && derived.length) {
-              derived[0].active = true;
-              this.data.derived = derived;
-              this.data.discriminator = schema.discriminator;
+            schema.derived = schema.derived || [];
+            if (schema.derived.length) schema.derived[0].active = true;
+
+            if (!schema.isTrivial) {
+              this.prepareObjectPropertiesData(schema);
             }
 
-            this.joinAllOf(schema, { omitParent: true });
+            this.schema = schema;
+          }
+        }, {
+          key: 'prepareObjectPropertiesData',
+          value: function prepareObjectPropertiesData(schema) {
+            var _this = this;
 
-            if (schema.type !== 'object') {
-              this.isTrivial = true;
-              this._displayType = schema.type;
-              if (schema.format) this._displayType = this.displayType + ' <' + schema.format + '>';
-              return;
-            }
-
-            this.pointer = schema._pointer || this.pointer;
-
-            this.requiredMap = {};
-            if (this.componentSchema.required) {
-              this.componentSchema.required.forEach(function (prop) {
-                return _this.requiredMap[prop] = true;
+            var requiredMap = {};
+            if (schema.required) {
+              schema.required.forEach(function (prop) {
+                return requiredMap[prop] = true;
               });
-            }
-
-            if (!schema.properties) {
-              this.isTrivial = true;
-              this._displayType = schema.type;
-              return;
             }
 
             var discriminatorFieldIdx = -1;
             var props = _Object$keys(schema.properties).map(function (prop, idx) {
               var propertySchema = schema.properties[prop];
-              var propPointer = JsonPointer.join(_this.pointer, ['properties', prop]);
+              var propPointer = JsonPointer.join(schema._pointer || _this.pointer, ['properties', prop]);
               propertySchema = JsonSchema.injectPropertyData(propertySchema, prop, propPointer);
-              propertySchema.required = !!_this.requiredMap[prop];
+              propertySchema.required = !!requiredMap[prop];
               propertySchema.isDiscriminator = schema.discriminator === prop;
               if (propertySchema.isDiscriminator) discriminatorFieldIdx = idx;
               return propertySchema;
@@ -56941,7 +56933,7 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
               var discrProp = props.splice(discriminatorFieldIdx, 1);
               props.push(discrProp[0]);
             }
-            this.data.properties = props;
+            schema.properties = props;
           }
         }], [{
           key: 'injectPropertyData',
@@ -56959,8 +56951,8 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
         JsonSchema = Reflect.metadata('parameters', [[SchemaManager], [ElementRef]])(JsonSchema) || JsonSchema;
         JsonSchema = RedocComponent({
           selector: 'json-schema',
-          template: '\n    <span *ngIf="isTrivial" class="param-wrap">\n      <span class="param-type param-type-trivial {{type}}"\n      [ngClass]="{\'with-hint\': _displayTypeHint}" title="{{_displayTypeHint}}">{{_displayType}}</span>\n    </span>\n    <table *ngIf="!isTrivial" class="params-wrap" [ngClass]="{\'params-array\': isArray}">\n      <template ngFor [ngForOf]="data.properties" #prop="$implicit">\n        <tr class="param" [ngClass]="{\'discriminator\': prop.isDiscriminator, \'complex\': prop._pointer}">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}\n              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>\n              </span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum" class="param-enum">\n                <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator">\n              This field value determines the exact schema:\n              <ul>\n                <li *ngFor="#derived of data.derived"\n                (click)="selectDerived(derived)" [ngClass]="{active: derived.active}"> {{derived.name}} </li>\n              </ul>\n            </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\' class="nested-schema">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="data.derived.length" class="param-wrap discriminator-wrap">\n        <td colspan="2">\n          <div class="derived-schema" *ngFor="#derived of data.derived" [ngClass]="{active: derived.active}">\n            <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">\n            </json-schema>\n          </div>\n        </td>\n      </tr>\n    </table>\n  ',
-          styles: ['\n    .param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name{position:relative}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}:host{display:block}.param-schema>td{border-left:1px solid rgba(0,51,160,0.5);padding:0 10px}.derived-schema{display:none}.derived-schema.active{display:block}json-schema.nested-schema{background-color:#f0f0f0;padding:10px 20px;position:relative;border-radius:2px}json-schema.nested-schema:before,json-schema.nested-schema:after{content:"";width:0;height:0;position:absolute;top:0;border-style:solid;border-color:transparent;border-width:10px 15px 0;margin-left:-7.5px;border-top-color:white}json-schema.nested-schema:before{left:10%}json-schema.nested-schema:after{right:10%}json-schema.nested-schema .param:first-of-type>.param-name:before,json-schema.nested-schema .param:last-of-type>.param-name:after{border-color:#f1f1f1}.param.complex>.param-info{border-bottom:0}.params-wrap{border-collapse:collapse;width:100%}.params-wrap.params-array:before,.params-wrap.params-array:after{display:block;font-weight:300;color:#263238;font-size:13px;line-height:1.5}.params-wrap.params-array:after{content:"]"}.params-wrap.params-array:before{content:"Array [";padding-top:1em}.params-wrap.params-array{padding-left:10px}.param-schema.param-array:before{bottom:9.75px;width:10px;border-left-style:dashed;border-bottom:1px dashed rgba(0,51,160,0.5)}.params-wrap.params-array>.param-wrap:first-of-type>.param>.param-name:after{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.params-wrap>.param>.param-schema.param-array{border-left-color:transparent}.param.discriminator>.param-info{padding-bottom:0;border-bottom:0}.param.discriminator>.param-name:after{display:none}.discriminator-info{font-weight:400;margin-bottom:10px}.discriminator-wrap>td{border-left:1px solid rgba(0,51,160,0.5);padding:0}ul{text-align:left;margin:0;padding:0;display:block}li{margin:0.5em 0.3em 0.2em 0;font-family:Montserrat,sans-serif;font-size:.929em;line-height:.929em;border:0;color:white;padding:2px 8px 4px 8px;border-radius:2px;background-color:rgba(38,50,56,0.3);display:inline-block;cursor:pointer}li:last-of-type{margin-right:0}li.active{background-color:#0033a0}\n  '],
+          template: '\n    <span *ngIf="schema.isTrivial" class="param-wrap">\n      <span class="param-type param-type-trivial {{schema.type}}"\n        [ngClass]="{\'with-hint\': schema._displayTypeHint}"\n        title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}\n        <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>\n      </span>\n      <div *ngIf="schema.enum" class="param-enum">\n        <span *ngFor="#enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n      </div>\n    </span>\n    <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{\'params-array\': schema._isArray}">\n      <caption> {{_displayType}} </caption>\n      <template ngFor [ngForOf]="schema.properties" #prop="$implicit" #last="last">\n        <tr class="param" [ngClass]="{\'last\': last, \'discriminator\': prop.isDiscriminator, \'complex\': prop._pointer}">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}\n              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>\n              </span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum" class="param-enum">\n                <span *ngFor="#enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator">\n              This field value determines the exact schema:\n              <ul>\n                <li *ngFor="#derived of schema.derived"\n                (click)="selectDerived(derived)" [ngClass]="{active: derived.active}"> {{derived.name}} </li>\n              </ul>\n            </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray, \'last\': last}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\' class="nested-schema">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap">\n        <td colspan="2">\n          <div class="derived-schema" *ngFor="#derived of schema.derived" [ngClass]="{active: derived.active}">\n            <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">\n            </json-schema>\n          </div>\n        </td>\n      </tr>\n    </table>\n  ',
+          styles: ['\n    .param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:#263238;font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type{color:rgba(38,50,56,0.4)}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name,.param.last>.param-name{position:relative}.param:last-of-type>.param-name:after,.param.last>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-schema.last>td{border-left:0}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}:host{display:block}.param-schema>td{border-left:1px solid rgba(0,51,160,0.5);padding:0 10px}.derived-schema{display:none}.derived-schema.active{display:block}json-schema.nested-schema{background-color:#f0f0f0;padding:10px 20px;position:relative;border-radius:2px}json-schema.nested-schema:before,json-schema.nested-schema:after{content:"";width:0;height:0;position:absolute;top:0;border-style:solid;border-color:transparent;border-width:10px 15px 0;margin-left:-7.5px;border-top-color:white}json-schema.nested-schema:before{left:10%}json-schema.nested-schema:after{right:10%}json-schema.nested-schema .param:first-of-type>.param-name:before,json-schema.nested-schema .param:last-of-type>.param-name:after{border-color:#f1f1f1}.param.complex>.param-info{border-bottom:0}.params-wrap{border-collapse:collapse;width:100%}.params-wrap.params-array:before,.params-wrap.params-array:after{display:block;font-weight:300;color:#263238;font-size:13px;line-height:1.5}.params-wrap.params-array:after{content:"]"}.params-wrap.params-array:before{content:"Array [";padding-top:1em}.params-wrap.params-array{padding-left:10px}.param-schema.param-array:before{bottom:9.75px;width:10px;border-left-style:dashed;border-bottom:1px dashed rgba(0,51,160,0.5)}.params-wrap.params-array>.param-wrap:first-of-type>.param>.param-name:after{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.params-wrap>.param>.param-schema.param-array{border-left-color:transparent}.param.discriminator>.param-info{padding-bottom:0;border-bottom:0}.param.discriminator>.param-name:after{display:none}.discriminator-info{font-weight:400;margin-bottom:10px}.discriminator-wrap>td{padding:0;position:relative}.discriminator-wrap>td:before{content:"";display:block;position:absolute;left:0;top:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;z-index:1}ul{text-align:left;margin:0;padding:0;display:block}li{margin:0.5em 0.3em 0.2em 0;font-family:Montserrat,sans-serif;font-size:.929em;line-height:.929em;border:0;color:white;padding:2px 8px 4px 8px;border-radius:2px;background-color:rgba(38,50,56,0.3);display:inline-block;cursor:pointer}li:last-of-type{margin-right:0}li.active{background-color:#0033a0}\n  '],
           directives: [JsonSchema, Tabs, Tab],
           inputs: ['isArray', 'final']
         })(JsonSchema) || JsonSchema;
@@ -56974,7 +56966,8 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
           check: function check() {
             return true;
           },
-          inject: function inject(injectTo, propertySchema) {
+          inject: function inject(injectTo, propertySchema, pointer) {
+            injectTo._pointer = propertySchema._pointer || pointer;
             injectTo._displayType = propertySchema.type;
             if (propertySchema.format) injectTo._displayFormat = '<' + propertySchema.format + '>';
             if (propertySchema['enum']) {
@@ -56984,7 +56977,18 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
             }
           }
         },
-
+        discriminator: {
+          check: function check(propertySchema) {
+            return propertySchema.discriminator;
+          },
+          inject: function inject(injectTo, propertySchema, pointer) {
+            if (propertySchema === undefined) propertySchema = injectTo;
+            return (function () {
+              injectTo.derived = SchemaManager.instance().findDerivedDefinitions(pointer);
+              injectTo.discriminator = propertySchema.discriminator;
+            })();
+          }
+        },
         array: {
           check: function check(propertySchema) {
             return propertySchema.type === 'array';
@@ -57007,7 +57011,8 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
           inject: function inject(injectTo) {
             var propertySchema = arguments.length <= 1 || arguments[1] === undefined ? injectTo : arguments[1];
             return (function () {
-              injectTo._displayType = propertySchema.title || 'object';
+              var baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
+              injectTo._displayType = propertySchema.title || baseName || 'object';
             })();
           }
         },
@@ -57018,6 +57023,7 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
           inject: function inject(injectTo) {
             injectTo._displayType = '< * >';
             injectTo._displayTypeHint = 'This field may contain data of any type';
+            injectTo.isTrivial = true;
           }
         },
 
@@ -57031,6 +57037,7 @@ $__System.register('c', ['5', '6', '7', '8', '9', '10', '11', '15', '96', 'e'], 
           inject: function inject(injectTo) {
             var propertySchema = arguments.length <= 1 || arguments[1] === undefined ? injectTo : arguments[1];
             return (function () {
+              injectTo.isTrivial = true;
               if (injectTo._pointer) {
                 injectTo._pointer = undefined;
                 injectTo._displayType = propertySchema.title ? propertySchema.title + ' (' + propertySchema.type + ')' : propertySchema.type;
