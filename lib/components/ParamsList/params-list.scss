@@ -1,5 +1,7 @@
 @import '../../common/styles/variables';
 
+$hint-color: #999999;
+
 .param-list-header {
   border-bottom: 1px solid rgba($text-color, .3);
   padding: 0.2em 0;
@@ -59,4 +61,30 @@ header.paramType {
   height: ($param-name-height/2) + $cell-padding;
   background-color: white;
   top: 0;
+}
+
+[data-hint] {
+  width: 1.2em;
+  text-align: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  color: $hint-color;
+  line-height: 1.2;
+  text-transform: none;
+  cursor: help;
+  border: 1px solid $hint-color;
+  margin-left: 0.5em;
+}
+
+@media (max-width: 520px) {
+  [data-hint] {
+    float: right;
+  }
+
+  [data-hint]:after {
+    margin-left: 12px;
+    transform: translateX(-100%) translateY(-8px);
+    -moz-transform: translateX(-100%) translateY(-8px);
+    -webkit-transform: translateX(-100%) translateY(-8px);
+  }
 }

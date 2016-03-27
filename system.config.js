@@ -44,6 +44,7 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.18",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
+    "hint.css": "npm:hint.css@2.2.1",
     "json": "github:systemjs/plugin-json@0.1.0",
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
