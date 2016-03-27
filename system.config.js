@@ -37,13 +37,14 @@ System.config({
   },
 
   map: {
-    "angular2": "npm:angular2@2.0.0-beta.6",
+    "angular2": "npm:angular2@2.0.0-beta.12",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.6",
     "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.18",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
+    "hint.css": "npm:hint.css@2.2.1",
     "json": "github:systemjs/plugin-json@0.1.0",
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
@@ -135,14 +136,10 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:angular2@2.0.0-beta.6": {
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "es6-promise": "npm:es6-promise@3.1.2",
-      "es6-shim": "npm:es6-shim@0.33.13",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.0",
-      "zone.js": "npm:zone.js@0.5.14"
+    "npm:angular2@2.0.0-beta.12": {
+      "reflect-metadata": "npm:reflect-metadata@0.1.3",
+      "rxjs": "npm:rxjs@5.0.0-beta.3",
+      "zone.js": "npm:zone.js@0.5.15"
     },
     "npm:argparse@1.0.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -419,9 +416,6 @@ System.config({
     "npm:es6-promise@3.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:es6-shim@0.33.13": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:esprima@2.7.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
@@ -691,10 +685,6 @@ System.config({
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
     },
-    "npm:reflect-metadata@0.1.2": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:request@2.67.0": {
       "aws-sign2": "npm:aws-sign2@0.6.0",
       "bl": "npm:bl@1.0.0",
@@ -732,7 +722,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.0": {
+    "npm:rxjs@5.0.0-beta.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -866,10 +856,6 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "validator": "npm:validator@4.5.0"
-    },
-    "npm:zone.js@0.5.14": {
-      "es6-promise": "npm:es6-promise@3.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }
 });

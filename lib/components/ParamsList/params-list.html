@@ -1,6 +1,9 @@
 <h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>
 <template ngFor [ngForOf]="data.params" #paramType="$implicit">
-  <header class="paramType"> {{paramType.place}} Parameters </header>
+  <header class="paramType">
+    {{paramType.place}} Parameters
+    <span class="hint--top-right hint--large" [attr.data-hint]="paramType.placeHint">?</span>
+  </header>
   <br>
   <div class="params-wrap">
     <div *ngFor="#param of paramType.params" class="param">
