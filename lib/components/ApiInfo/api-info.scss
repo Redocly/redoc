@@ -7,3 +7,11 @@
 :host > div {
   width: 60%;
 }
+
+a.openapi-button {
+  padding: 3px 8px 4px 8px;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  margin-left: 0.5em;
+  font-weight: normal;
+}
