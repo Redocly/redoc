@@ -20,7 +20,7 @@ $array-marker-line-height: 1.5;
 }
 
 json-schema.nested-schema {
-  background-color: $side-menu-active-bg-color;
+  background-color: white;
   padding: 10px 20px;
   position: relative;
   border-radius: $border-radius;
@@ -35,7 +35,7 @@ json-schema.nested-schema {
     border-color: transparent;
     border-width: 10px 15px 0;
     margin-left: -7.5px;
-    border-top-color: white;
+    border-top-color: $side-menu-active-bg-color;
   }
   &:before {
     left: 10%;
@@ -46,7 +46,20 @@ json-schema.nested-schema {
   }
 
   .param:first-of-type > .param-name:before, .param:last-of-type > .param-name:after {
-    border-color: #f1f1f1;
+    border-color: white;
+  }
+}
+
+json-schema[nesteven="true"] {
+  background-color: $side-menu-active-bg-color;
+  border-radius: $border-radius;
+
+  &:before, &:after {
+    border-top-color: white;
+  }
+
+  > .params-wrap > .param:first-of-type > .param-name:before, > .params-wrap > .param:last-of-type > .param-name:after {
+    border-color: $side-menu-active-bg-color;
   }
 }
 

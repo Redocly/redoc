@@ -9,7 +9,7 @@
   </div>
 </span>
 <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
-  <caption> {{_displayType}} </caption>
+  <!-- <caption> {{_displayType}} </caption> -->
   <template ngFor [ngForOf]="schema.properties" #prop="$implicit" #last="last">
     <tr class="param" [ngClass]="{'last': last, 'discriminator': prop.isDiscriminator, 'complex': prop._pointer}">
       <td class="param-name">
@@ -38,7 +38,8 @@
     </tr>
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" *ngIf="prop._pointer">
       <td colspan="2">
-        <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray' class="nested-schema">
+        <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray'
+        class="nested-schema" [nestOdd]="!nestOdd" [attr.nesteven]="!nestOdd">
         </json-schema>
       </td>
     </tr>
