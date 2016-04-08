@@ -15,7 +15,8 @@
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
     "e2e": "gulp e2e",
-    "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo"
+    "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo",
+    "github-release": "gulp github-release"
   },
   "keywords": [
     "OpenAPI",
