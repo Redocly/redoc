@@ -43,6 +43,11 @@ deploy:
       tags: true
   - skip_cleanup: true
     provider: script
+    script: npm run github-release
+    on:
+      tags: true
+  - skip_cleanup: true
+    provider: script
     script: npm run branch-release
     on:
       branch: master

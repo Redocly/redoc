@@ -12,8 +12,6 @@ var sass = require('gulp-sass');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 
-paths.redocBuilt = path.join(paths.output, paths.outputName);
-
 gulp.task('build', function (callback) {
   return runSequence(
     'clean',
@@ -96,7 +94,8 @@ function bundle(outputFile, minify, cb) {
       { format:'umd', sourceMaps: true, mangle: false, lowResSourceMaps: true, minify: minify }
     )
     .then(function() {
-      cb();
+      // wait some time to allow flush
+      setTimeout(() => cb(), 500);
     })
     .catch(function(err) {
       cb(new Error(err));
