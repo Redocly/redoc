@@ -64,6 +64,7 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
+    "gulp-github-release": "^1.1.2",
     "gulp-inline-ng2-template": "^1.1.2",
     "gulp-protractor": "^2.1.0",
     "gulp-rename": "^1.2.2",
