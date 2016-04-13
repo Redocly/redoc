@@ -47,7 +47,7 @@
   <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap">
     <td colspan="2">
       <div class="derived-schema" *ngFor="#derived of schema.derived" [ngClass]="{active: derived.active}">
-        <json-schema pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
+        <json-schema [childFor]="pointer" pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
         </json-schema>
       </div>
     </td>
