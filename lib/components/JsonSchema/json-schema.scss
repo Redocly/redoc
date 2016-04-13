@@ -141,7 +141,7 @@ json-schema[nesteven="true"] {
   }
 }
 
-.discriminator-wrap > td {
+.discriminator-wrap:not(.empty) > td {
   //border-left: $line-border;
   padding: 0;
   position: relative;

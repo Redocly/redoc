@@ -11,7 +11,7 @@
 <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
   <!-- <caption> {{_displayType}} </caption> -->
   <template ngFor [ngForOf]="schema.properties" #prop="$implicit" #last="last">
-    <tr class="param" [ngClass]="{'last': last, 'discriminator': prop.isDiscriminator, 'complex': prop._pointer}">
+    <tr class="param" [ngClass]="{'last': last, 'discriminator': prop.isDiscriminator && !derivedEmtpy, 'complex': prop._pointer}">
       <td class="param-name">
         <span class="param-name-content">{{prop._name}}</span>
       </td>
@@ -44,10 +44,10 @@
       </td>
     </tr>
   </template>
-  <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap">
+  <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap" [ngClass]="{'empty': derivedEmtpy}">
     <td colspan="2">
       <div class="derived-schema" *ngFor="#derived of schema.derived" [ngClass]="{active: derived.active}">
-        <json-schema [childFor]="pointer" pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
+        <json-schema *ngIf="!derived.empty" [childFor]="pointer" pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
         </json-schema>
       </div>
     </td>
