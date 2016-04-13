@@ -61,6 +61,12 @@ json-schema[nesteven="true"] {
   > .params-wrap > .param:first-of-type > .param-name:before, > .params-wrap > .param:last-of-type > .param-name:after {
     border-color: $side-menu-active-bg-color;
   }
+
+  > .params-wrap > .param:last-of-type, > .params-wrap > .param.last {
+    > .param-name:after {
+      border-color: $side-menu-active-bg-color;
+    }
+  }
 }
 
 .param.complex > .param-info {
