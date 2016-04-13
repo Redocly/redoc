@@ -61,6 +61,12 @@ json-schema[nesteven="true"] {
   > .params-wrap > .param:first-of-type > .param-name:before, > .params-wrap > .param:last-of-type > .param-name:after {
     border-color: $side-menu-active-bg-color;
   }
+
+  > .params-wrap > .param:last-of-type, > .params-wrap > .param.last {
+    > .param-name:after {
+      border-color: $side-menu-active-bg-color;
+    }
+  }
 }
 
 .param.complex > .param-info {
@@ -128,9 +134,14 @@ json-schema[nesteven="true"] {
 .discriminator-info {
   font-weight: $regular;
   margin-bottom: 10px;
+
+  > span {
+    font-size: 0.9em;
+    font-weight: $light;
+  }
 }
 
-.discriminator-wrap > td {
+.discriminator-wrap:not(.empty) > td {
   //border-left: $line-border;
   padding: 0;
   position: relative;
