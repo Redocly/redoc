@@ -28,7 +28,7 @@
         </div>
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator">
-          This field value determines the exact schema:
+          <span>This field value determines the exact schema:</span>
           <ul>
             <li *ngFor="#derived of schema.derived"
             (click)="selectDerived(derived)" [ngClass]="{active: derived.active}"> {{derived.name}} </li>

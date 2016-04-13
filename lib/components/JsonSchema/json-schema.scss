@@ -134,6 +134,11 @@ json-schema[nesteven="true"] {
 .discriminator-info {
   font-weight: $regular;
   margin-bottom: 10px;
+
+  > span {
+    font-size: 0.9em;
+    font-weight: $light;
+  }
 }
 
 .discriminator-wrap > td {
