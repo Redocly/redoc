@@ -33,6 +33,7 @@
   "jspm": {
     "configFile": "system.config.js",
     "dependencies": {
+      "Robdel12/DropKick": "github:Robdel12/DropKick@^2.1.7",
       "angular2": "npm:angular2@^2.0.0-beta.12",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
@@ -53,6 +54,11 @@
       "core-js": "npm:core-js@^1.2.6",
       "css": "github:systemjs/plugin-css@^0.1.18",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
+    },
+    "overrides": {
+      "github:Robdel12/DropKick@2.1.7": {
+        "format": "global"
+      }
     }
   },
   "devDependencies": {

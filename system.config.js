@@ -37,6 +37,7 @@ System.config({
   },
 
   map: {
+    "Robdel12/DropKick": "github:Robdel12/DropKick@2.1.7",
     "angular2": "npm:angular2@2.0.0-beta.12",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
