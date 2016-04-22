@@ -30,7 +30,7 @@ json
     "title": "Swagger Petstore",
     "x-logo": {
       "url": "https://rebilly.github.io/ReDoc/petstore-logo.png",
-      "backgroundColor": "white"
+      "backgroundColor": "#FFFFFF"
     }
   }
 }
@@ -42,7 +42,7 @@ info:
   title: "Swagger Petstore"
   x-logo:
     url: "https://rebilly.github.io/ReDoc/petstore-logo.png"
-    backgroundColor: "white"
+    backgroundColor: "#FFFFFF"
 ```
 
 
