@@ -38,8 +38,8 @@
     </tr>
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" *ngIf="prop._pointer">
       <td colspan="2">
-        <json-schema pointer="{{prop._pointer}}" [isArray]='prop._isArray'
-        class="nested-schema" [nestOdd]="!nestOdd" [attr.nesteven]="!nestOdd">
+        <json-schema class="nested-schema" pointer="{{prop._pointer}}" [isArray]='prop._isArray'
+        [nestOdd]="!nestOdd" [skipReadOnly]="skipReadOnly" [attr.nesteven]="!nestOdd">
         </json-schema>
       </td>
     </tr>
@@ -47,7 +47,8 @@
   <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap" [ngClass]="{'empty': derivedEmtpy}">
     <td colspan="2">
       <div class="derived-schema" *ngFor="#derived of schema.derived" [ngClass]="{active: derived.active}">
-        <json-schema *ngIf="!derived.empty" [childFor]="pointer" pointer="{{derived.$ref}}" [final]="derived.final" class="discriminator-part">
+        <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"
+        pointer="{{derived.$ref}}" [final]="derived.final" [skipReadOnly]="skipReadOnly">
         </json-schema>
       </div>
     </td>
