@@ -1,0 +1,70 @@
+@import '../../styles/variables';
+
+$silver: #666D71;
+$background-silver: #EEEFEF;
+$border: darken($background-silver, 2%);
+
+:host {
+  .dk-select {
+    max-width: 100%;
+    font-family: $headers-font;
+  }
+
+  .dk-selected:after {
+    display: none;
+  }
+
+  // button
+
+  .dk-selected {
+    color: $silver;
+    border-color: $silver;
+    padding: 0.4em 0.9em 0.4em 0.4em;
+    border-radius: 0.4rem;
+  }
+
+  .dk-select-open-down .dk-selected {
+    border-radius: 0.4rem;
+  }
+
+  .dk-select-open-down .dk-selected, .dk-selected:focus, .dk-selected:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+
+  // tick
+  .dk-selected:before {
+    border-top-color: $silver;
+    border-width: .35em .35em 0;
+  }
+
+  .dk-select-open-down .dk-selected:before,
+  .dk-select-open-up .dk-selected:before {
+    border-bottom-color: $primary-color;
+    border-width: 0 .35em .35em;
+  }
+
+  // items
+  .dk-select-multi:focus .dk-select-options,
+  .dk-select-open-down .dk-select-options,
+  .dk-select-open-up .dk-select-options {
+    border-color: $silver;
+  }
+
+  .dk-select-options {
+    margin-top: 0.2em;
+    border-radius: 0.4em;
+  }
+
+  .dk-option {
+    color: $black;
+    padding: 0.4em 0.4em;
+    &:hover {
+      background-color: $background-silver;
+    }
+  }
+
+  .dk-option-selected {
+    background-color: $background-silver;
+  }
+}

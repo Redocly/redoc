@@ -18,7 +18,7 @@ The information about API logo
 | Field Name      |	Type	   | Description |
 | :-------------- | :------: | :---------- |
 | url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL
-| backgroundColor | string   | background color to be used. MUST be in [CSS color syntax](https://developer.mozilla.org/en/docs/Web/CSS/color) |
+| backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)
 
 
 ###### x-logo example
@@ -30,7 +30,7 @@ json
     "title": "Swagger Petstore",
     "x-logo": {
       "url": "https://rebilly.github.io/ReDoc/petstore-logo.png",
-      "backgroundColor": "white"
+      "backgroundColor": "#FFFFFF"
     }
   }
 }
@@ -42,7 +42,7 @@ info:
   title: "Swagger Petstore"
   x-logo:
     url: "https://rebilly.github.io/ReDoc/petstore-logo.png"
-    backgroundColor: "white"
+    backgroundColor: "#FFFFFF"
 ```
 
 
