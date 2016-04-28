@@ -28,8 +28,7 @@ gulp.task('buildDev', function (callback) {
   );
 });
 
-
-gulp.task('bundle', ['buildStatic', 'concatDeps']);
+gulp.task('bundle', ['concatPrism', 'buildStatic', 'concatDeps']);
 gulp.task('bundleProd', ['bundle', 'buildStaticMin', 'concatDepsMin']);
 
 gulp.task('inlineTemplates', ['sass'], function() {
@@ -101,3 +100,35 @@ function bundle(outputFile, minify, cb) {
       cb(new Error(err));
     });
 }
+
+gulp.task('concatPrism', function() {
+  require('../../system.config.js');
+  var prismFolder = System.normalizeSync('prismjs').substring(8);
+  prismFolder = prismFolder.substring(0, prismFolder.length -3);
+  var prismFiles = [
+    'prism.js',
+    'components/prism-actionscript.js',
+    'components/prism-c.js',
+    'components/prism-cpp.js',
+    'components/prism-csharp.js',
+    'components/prism-php.js',
+    'components/prism-coffeescript.js',
+    'components/prism-go.js',
+    'components/prism-haskell.js',
+    'components/prism-java.js',
+    'components/prism-lua.js',
+    'components/prism-matlab.js',
+    'components/prism-perl.js',
+    'components/prism-python.js',
+    'components/prism-r.js',
+    'components/prism-ruby.js',
+    'components/prism-bash.js',
+    'components/prism-swift.js',
+    'components/prism-objectivec.js',
+    'components/prism-scala.js'
+  ].map(file => path.join(prismFolder, file));
+
+  gulp.src(prismFiles)
+  .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
+  .pipe(gulp.dest('.'))
+});
