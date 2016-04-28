@@ -57771,15 +57771,15 @@ $__System.register('d', ['5', '7', '8', '9', '11', '16', '95', '211', 'a', 'f'],
               }
               return propertySchema;
             });
-            if (this.skipReadOnly) {
-              props = props.filter(function (prop) {
-                return !prop.readOnly;
-              });
-            }
             // Move discriminator field to the end of properties list
             if (discriminatorFieldIdx > -1) {
               var discrProp = props.splice(discriminatorFieldIdx, 1);
               props.push(discrProp[0]);
+            }
+            if (this.skipReadOnly) {
+              props = props.filter(function (prop) {
+                return !prop.readOnly;
+              });
             }
             schema.properties = props;
           }
