@@ -73,6 +73,10 @@ json-schema[nesteven="true"] {
   border-bottom: 0;
 }
 
+.param.additional > .param-name {
+  color: rgba($black, 0.4);
+}
+
 .params-wrap {
   border-collapse: collapse;
   width: 100%;

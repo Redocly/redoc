@@ -11,7 +11,11 @@
 <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
   <!-- <caption> {{_displayType}} </caption> -->
   <template ngFor [ngForOf]="schema.properties" #prop="$implicit" #last="last">
-    <tr class="param" [ngClass]="{'last': last, 'discriminator': prop.isDiscriminator && !derivedEmtpy, 'complex': prop._pointer}">
+    <tr class="param" [ngClass]="{'last': last,
+        'discriminator': prop.isDiscriminator && !derivedEmtpy,
+        'complex': prop._pointer,
+        'additional': prop._additional
+      }">
       <td class="param-name">
         <span class="param-name-content">{{prop._name}}</span>
       </td>

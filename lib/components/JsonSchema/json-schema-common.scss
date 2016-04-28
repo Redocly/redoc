@@ -70,7 +70,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 }
 
 .param-type {
-  color: $black;
+  color: rgba($black, 0.4);
   font-size: 0.929em;
   line-height: $param-name-height;
   vertical-align: middle;
@@ -81,10 +81,6 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   content: "Array of ";
   color: $black;
   font-weight: $base-font-weight;
-}
-
-.param-type {
-    color: rgba($black, 0.4);
 }
 
 .param-type.with-hint {
