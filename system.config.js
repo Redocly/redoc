@@ -38,7 +38,7 @@ System.config({
 
   map: {
     "Robdel12/DropKick": "github:Robdel12/DropKick@2.1.7",
-    "angular2": "npm:angular2@2.0.0-beta.12",
+    "angular2": "npm:angular2@2.0.0-beta.17",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.6",
@@ -137,10 +137,10 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:angular2@2.0.0-beta.12": {
-      "reflect-metadata": "npm:reflect-metadata@0.1.3",
-      "rxjs": "npm:rxjs@5.0.0-beta.3",
-      "zone.js": "npm:zone.js@0.5.15"
+    "npm:angular2@2.0.0-beta.17": {
+      "reflect-metadata": "npm:reflect-metadata@0.1.2",
+      "rxjs": "npm:rxjs@5.0.0-beta.7",
+      "zone.js": "npm:zone.js@0.6.12"
     },
     "npm:argparse@1.0.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -743,6 +743,10 @@ System.config({
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
     },
+    "npm:reflect-metadata@0.1.2": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:request@2.72.0": {
       "aws-sign2": "npm:aws-sign2@0.6.0",
       "aws4": "npm:aws4@1.3.2",
@@ -781,9 +785,10 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.3": {
+    "npm:rxjs@5.0.0-beta.7": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "symbol-observable": "npm:symbol-observable@0.2.4"
     },
     "npm:sha.js@2.4.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -912,6 +917,10 @@ System.config({
       "request": "npm:request@2.72.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
       "validator": "npm:validator@5.2.0"
+    },
+    "npm:zone.js@0.6.12": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }
 });

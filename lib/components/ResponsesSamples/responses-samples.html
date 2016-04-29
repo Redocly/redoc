@@ -1,6 +1,6 @@
 <header *ngIf="data.responses.length"> Response samples </header>
 <tabs *ngIf="data.responses.length">
-  <tab *ngFor="#response of data.responses" tabTitle="{{response.code}} {{response.description}}"
+  <tab *ngFor="let response of data.responses" tabTitle="{{response.code}} {{response.description}}"
     [tabStatus]="response.type">
     <schema-sample [pointer]="response.pointer"></schema-sample>
   </tab>

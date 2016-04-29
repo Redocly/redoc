@@ -4,7 +4,7 @@
   <tab tabTitle="JSON">
     <schema-sample [pointer]="data.bodySchemaPtr"> </schema-sample>
   </tab>
-  <tab *ngFor="#sample of data.samples" [tabTitle]="sample.lang">
+  <tab *ngFor="let sample of data.samples" [tabTitle]="sample.lang">
     <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>
   </tab>
 </tabs>

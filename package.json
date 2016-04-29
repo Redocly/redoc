@@ -34,7 +34,7 @@
     "configFile": "system.config.js",
     "dependencies": {
       "Robdel12/DropKick": "github:Robdel12/DropKick@^2.1.7",
-      "angular2": "npm:angular2@^2.0.0-beta.12",
+      "angular2": "npm:angular2@2.0.0-beta.17",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
       "json": "github:systemjs/plugin-json@^0.1.0",
