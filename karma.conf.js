@@ -46,6 +46,8 @@ module.exports = function (config) {
         //load angular dependencies and browser polyfills
         files: [
           'node_modules/zone.js/dist/zone.js',
+          'node_modules/zone.js/dist/fake-async-test.js',
+          'node_modules/zone.js/dist/async-test.js',
           'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/zone.js/dist/long-stack-trace-zone.js',
           'node_modules/babel-polyfill/dist/polyfill.js',

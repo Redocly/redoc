@@ -105,6 +105,6 @@
     "sinon": "^1.17.2",
     "systemjs-builder": "^0.15.2",
     "vinyl-paths": "^2.0.0",
-    "zone.js": "^0.6.6"
+    "zone.js": "^0.6.12"
   }
 }
