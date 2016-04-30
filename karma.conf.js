@@ -46,6 +46,8 @@ module.exports = function (config) {
         //load angular dependencies and browser polyfills
         files: [
           'node_modules/zone.js/dist/zone.js',
+          'node_modules/zone.js/dist/fake-async-test.js',
+          'node_modules/zone.js/dist/async-test.js',
           'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/zone.js/dist/long-stack-trace-zone.js',
           'node_modules/babel-polyfill/dist/polyfill.js',
@@ -55,7 +57,7 @@ module.exports = function (config) {
         jspm: {
             config: 'system.config.js',
             loadFiles: ['tests/setup.js', 'tests/helpers.js', 'tests/unit/*.spec.js', 'lib/**/*.js'],
-            serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html', '.tmp/lib/**/*.css'],
+            serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html', '.tmp/*js', '.tmp/lib/**/*.css'],
             nocache: true
         },
 
@@ -65,6 +67,7 @@ module.exports = function (config) {
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
+            '/prismjs-bundle.js': '/base/.tmp/prismjs-bundle.js',
             '/.tmp/': '/base/.tmp/'
         },
         reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],

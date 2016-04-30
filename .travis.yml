@@ -41,11 +41,7 @@ deploy:
       secure: PuhWLERrCEFmXmdFpw2OVFlqpOIVDmgwk5JUJOYaFdVCh/smp0+jZCQ4vrdFpuG96rnDVirD+A8xvW6NgsNNaRthLgOB/LRdFN69rU6Gvn3At6wlnC55t5dlhxPvCfnzJcHVBLXX4EmMkjnZqDg2uczXTzPodr3FnQJNuXmP8B33fzDVLyHccvXZ90abwXWVrgRIXPU28niqCR8DOC2OTzs7wqz+BLNkYDRRbyYXsg62HWuD33x5iof5IqBmhzBt3usCGmF3QGcgHrXHdZw3sZnit8+Bua++3KrXR0x6HGXXN1AoXVmCAkCa5OTQ5R3tCRxiJN3P2KLnvWeZR74sTFkovJB/6pGCvbJ/c7Wnuw6sD7SgOUBD359ULB6lAf5OnxBLoNebX4JxxVXF+zA4E3Bl44VxkzDpPWc15xqBPMB5vBREzMVmJ5mExn2s5cmLQjADbl9h0y6gZnhnNJ+iTmqtrVyM0ZkF2rPrzrTdGD+ULmRIlTMkdD1bh+/TJ3RdXT3P4/zNUJmiNnvgnnJVYYvsGaXWF+7uCVHT/8k2RsoSHqgkqh0gkDqGSwVix55y5mC7T2Vk9lMBhm6MvFJXaonOX0kxJS4EDQ3plPd6/ybG+TLhwggYnQ8o9msU5Nt6FpUShKiezjKurIhbQZdwlVivX3tahjW2QjNDO58xGgY=
     on:
       tags: true
-  - skip_cleanup: true
-    provider: script
-    script: npm run github-release
-    on:
-      tags: true
+      condition: $JOB != e2e
   - skip_cleanup: true
     provider: script
     script: npm run branch-release
@@ -56,5 +52,5 @@ deploy:
     provider: script
     script: npm run deploy
     on:
-      branch: master
+      tags: true
       condition: $JOB != e2e

@@ -1,10 +1,10 @@
 <div class="methods">
-  <div class="tag" *ngFor="#tag of data.tags">
+  <div class="tag" *ngFor="let tag of data.tags">
     <div class="tag-info" [attr.tag]="tag.name">
       <h1 class="sharable-header"> <a class="share-link" href="#tag/{{tag.name | encodeURIComponent}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" innerHtml="{{ tag.description | marked }}"> </p>
     </div>
-    <method *ngFor="#method of tag.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
+    <method *ngFor="let method of tag.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
     [attr.tag]="method.tag" [tag]="method.tag" [attr.operation-id]="method.operationId"></method>
   </div>
 </div>

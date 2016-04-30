@@ -1,13 +1,12 @@
 @import '../../styles/variables';
 
-$silver: #666D71;
-$background-silver: #EEEFEF;
-$border: darken($background-silver, 2%);
-
 :host {
   .dk-select {
     max-width: 100%;
-    font-family: $headers-font;
+    font-family: $headers-font, $headers-font-family;
+    font-size: .929em;
+    min-width: 100px;
+    width: auto;
   }
 
   .dk-selected:after {
@@ -15,16 +14,11 @@ $border: darken($background-silver, 2%);
   }
 
   // button
-
   .dk-selected {
-    color: $silver;
-    border-color: $silver;
-    padding: 0.4em 0.9em 0.4em 0.4em;
-    border-radius: 0.4rem;
-  }
-
-  .dk-select-open-down .dk-selected {
-    border-radius: 0.4rem;
+    color: $secondary-color;
+    border-color: rgba($secondary-color, .5);
+    padding: 0.15em 0.6em 0.2em 0.5em;
+    border-radius: $border-radius;
   }
 
   .dk-select-open-down .dk-selected, .dk-selected:focus, .dk-selected:hover {
@@ -34,37 +28,45 @@ $border: darken($background-silver, 2%);
 
   // tick
   .dk-selected:before {
-    border-top-color: $silver;
+    border-top-color: $secondary-color;
     border-width: .35em .35em 0;
   }
 
   .dk-select-open-down .dk-selected:before,
   .dk-select-open-up .dk-selected:before {
     border-bottom-color: $primary-color;
-    border-width: 0 .35em .35em;
   }
 
   // items
   .dk-select-multi:focus .dk-select-options,
   .dk-select-open-down .dk-select-options,
   .dk-select-open-up .dk-select-options {
-    border-color: $silver;
+    border-color: rgba($secondary-color, .2);
+  }
+
+  .dk-select-options .dk-option-highlight {
+      background: #ffffff;
   }
 
   .dk-select-options {
     margin-top: 0.2em;
-    border-radius: 0.4em;
+    padding: 0;
+    border-radius: $border-radius;
+    box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08) !important
   }
 
   .dk-option {
-    color: $black;
-    padding: 0.4em 0.4em;
+    color: $secondary-color;
+    padding: 0.16em 0.6em 0.2em 0.5em;
     &:hover {
-      background-color: $background-silver;
+      background-color: rgba($secondary-color, .12);
+    }
+    &:focus {
+      background-color: rgba($secondary-color, .12);
     }
   }
 
   .dk-option-selected {
-    background-color: $background-silver;
+    background-color: rgba(0, 0, 0, 0.05)!important;
   }
 }

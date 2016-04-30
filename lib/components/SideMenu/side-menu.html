@@ -7,11 +7,11 @@
 </div>
 <div id="resources-nav">
   <h5 class="menu-header"> API reference </h5>
-  <div *ngFor="var cat of data.menu; #idx = index" class="menu-cat">
+  <div *ngFor="let cat of data.menu; let idx = index" class="menu-cat">
 
     <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>
     <ul class="menu-subitems" [ngClass]="{active: cat.active}">
-      <li *ngFor="var method of cat.methods; var methIdx = index"
+      <li *ngFor="let method of cat.methods; let methIdx = index"
         [ngClass]="{active: method.active}"
         (click)="activateAndScroll(idx, methIdx)">
         {{method.summary}}
