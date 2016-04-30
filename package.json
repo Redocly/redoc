@@ -15,8 +15,7 @@
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
     "e2e": "gulp e2e",
-    "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo",
-    "github-release": "gulp github-release"
+    "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo"
   },
   "keywords": [
     "OpenAPI",
@@ -41,7 +40,6 @@
       "json-formatter-js": "npm:json-formatter-js@^0.2.0",
       "json-pointer": "npm:json-pointer@^0.3.0",
       "json-schema-instantiator": "npm:json-schema-instantiator@^0.3.0",
-      "json-schema-ref-parser": "npm:json-schema-ref-parser@2.2.0",
       "marked": "npm:marked@^0.3.5",
       "prismjs": "npm:prismjs@^1.3.0",
       "scrollparent": "npm:scrollparent@^0.1.0",
@@ -77,7 +75,6 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
-    "gulp-github-release": "^1.1.2",
     "gulp-inline-ng2-template": "^1.1.2",
     "gulp-protractor": "^2.1.0",
     "gulp-rename": "^1.2.2",

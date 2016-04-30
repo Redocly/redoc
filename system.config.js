@@ -50,7 +50,6 @@ System.config({
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
     "json-schema-instantiator": "npm:json-schema-instantiator@0.3.0",
-    "json-schema-ref-parser": "npm:json-schema-ref-parser@2.2.0",
     "marked": "npm:marked@0.3.5",
     "prismjs": "npm:prismjs@1.3.0",
     "scrollparent": "npm:scrollparent@0.1.0",
@@ -142,15 +141,6 @@ System.config({
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.7",
       "zone.js": "npm:zone.js@0.6.12"
-    },
-    "npm:argparse@1.0.3": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "lodash": "npm:lodash@3.10.1",
-      "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "sprintf-js": "npm:sprintf-js@1.0.3",
-      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:argparse@1.0.7": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -447,10 +437,6 @@ System.config({
     "npm:es6-promise@3.1.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:esprima@2.7.1": {
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:evp_bytestokey@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
@@ -569,13 +555,6 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "jsbn": "npm:jsbn@0.1.0"
     },
-    "npm:js-yaml@3.5.2": {
-      "argparse": "npm:argparse@1.0.3",
-      "esprima": "npm:esprima@2.7.1",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
-    },
     "npm:js-yaml@3.6.0": {
       "argparse": "npm:argparse@1.0.7",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -602,7 +581,6 @@ System.config({
       "es6-promise": "npm:es6-promise@3.1.2",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "http": "npm:stream-http@2.3.0",
       "https": "github:jspm/nodelibs-https@0.1.0",
       "js-yaml": "npm:js-yaml@3.6.0",
       "ono": "npm:ono@2.2.1",
@@ -632,9 +610,6 @@ System.config({
     "npm:lodash.get@4.2.1": {
       "lodash._stringtopath": "npm:lodash._stringtopath@4.7.1"
     },
-    "npm:lodash@3.10.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:lru-cache@4.0.1": {
       "pseudomap": "npm:pseudomap@1.0.2",
       "util": "github:jspm/nodelibs-util@0.1.0",
@@ -660,10 +635,6 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "querystring": "github:jspm/nodelibs-querystring@0.1.0"
-    },
-    "npm:ono@2.0.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:ono@2.2.1": {
       "process": "github:jspm/nodelibs-process@0.1.2",

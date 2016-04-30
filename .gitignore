@@ -27,3 +27,4 @@ jspm_packages
 /demo/build
 .tmp
 /coverage
+.ghpages-tmp

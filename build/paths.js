@@ -9,7 +9,8 @@ var paths = {
   output: 'dist/',
   tmp: '.tmp/',
   demo: 'demo/**/*',
-  tests: '{lib,tests}/**/*.spec.js'
+  tests: '{lib,tests}/**/*.spec.js',
+  releases: 'demo/releases/'
 }
 
 paths.redocBuilt = path.join(paths.output, paths.outputName);
