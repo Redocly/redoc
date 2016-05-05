@@ -41,6 +41,7 @@ gulp.task('inlineTemplates', ['sass'], function() {
 var JS_DEV_DEPS = [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
+  'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];

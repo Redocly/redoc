@@ -149,7 +149,6 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:@angular/core@2.0.0-rc.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"
     },
