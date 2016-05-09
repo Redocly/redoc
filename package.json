@@ -37,7 +37,6 @@
       "@angular/core": "npm:@angular/core@^2.0.0-rc.1",
       "@angular/platform-browser": "npm:@angular/platform-browser@^2.0.0-rc.1",
       "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^2.0.0-rc.1",
-      "@angular/platform-browser-dynamic-dynamic": "npm:@angular/platform-browser-dynamic-dynamic@^2.0.0-rc.1",
       "Robdel12/DropKick": "github:Robdel12/DropKick@^2.1.7",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
