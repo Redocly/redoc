@@ -8,7 +8,7 @@ git reset --hard
 git fetch origin gh-pages:gh-pages
 git checkout gh-pages
 cp -R ../releases/* .
-git checkout master
+git checkout @{-1}
 cd -
 
 # build

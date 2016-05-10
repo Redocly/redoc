@@ -1,11 +1,11 @@
-<div class="mobile-nav" (click)="toggleMobileNav()">
+<div #mobile class="mobile-nav" (click)="toggleMobileNav()">
   <span class="menu-header"> API Reference: </span>
   <span class="selected-item-info">
     <span class="selected-tag"> {{activeCatCaption}} </span>
     <span class="selected-endpoint">{{activeItemCaption}}</span>
   </span>
 </div>
-<div id="resources-nav">
+<div #desktop id="resources-nav">
   <h5 class="menu-header"> API reference </h5>
   <div *ngFor="let cat of data.menu; let idx = index" class="menu-cat">
 
