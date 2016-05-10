@@ -51,34 +51,36 @@ describe('Scroll sync', () => {
   });
 });
 
-describe('APIs.guru specs test', ()=> {
+if (process.env.JOB === 'e2e-guru') {
+  describe('APIs.guru specs test', ()=> {
 
-  // global.apisGuruList was loaded in onPrepare method of protractor config
-  let apisGuruList = global.apisGuruList;
+    // global.apisGuruList was loaded in onPrepare method of protractor config
+    let apisGuruList = global.apisGuruList;
 
-  // Remove certain APIs that are known to cause problems
-  delete apisGuruList['motaword.com']; // invalid (see https://github.com/BigstickCarpet/swagger-parser/issues/26)
-  delete apisGuruList['learnifier.com']; // allof object and no type
-  delete apisGuruList['googleapis.com:mirror']; // bad urls in images
-  delete apisGuruList['googleapis.com:discovery']; // non-string references
-  delete apisGuruList['clarify.io']; // non-string references
-  delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
+    // Remove certain APIs that are known to cause problems
+    delete apisGuruList['motaword.com']; // invalid (see https://github.com/BigstickCarpet/swagger-parser/issues/26)
+    delete apisGuruList['learnifier.com']; // allof object and no type
+    delete apisGuruList['googleapis.com:mirror']; // bad urls in images
+    delete apisGuruList['googleapis.com:discovery']; // non-string references
+    delete apisGuruList['clarify.io']; // non-string references
+    delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
 
-  // run quick version of e2e test on all builds except releases
-  if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
-    console.log('Running on short APIs guru list');
-    apisGuruList = eachNth(apisGuruList, 10);
-  } else {
-    console.log('Running on full APIs guru list')
-  }
+    // run quick version of e2e test on all builds except releases
+    if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
+      console.log('Running on short APIs guru list');
+      apisGuruList = eachNth(apisGuruList, 10);
+    } else {
+      console.log('Running on full APIs guru list')
+    }
 
-  for (let apiName of Object.keys(apisGuruList)) {
-    let apiInfo = apisGuruList[apiName].versions[apisGuruList[apiName].preferred];
-    let url = apiInfo.swaggerUrl;
+    for (let apiName of Object.keys(apisGuruList)) {
+      let apiInfo = apisGuruList[apiName].versions[apisGuruList[apiName].preferred];
+      let url = apiInfo.swaggerUrl;
 
-    // temporary hack due to this issue: https://github.com/substack/https-browserify/issues/6
-    url = url.replace('https://', 'http://');
-    url = url.replace('apis-guru.github.io/', 'apis-guru.github.io:80/');
-    basicTests(url, `${apiName}:${apiInfo.info.version}\n${url}`);
-  }
-});
+      // temporary hack due to this issue: https://github.com/substack/https-browserify/issues/6
+      url = url.replace('https://', 'http://');
+      url = url.replace('apis-guru.github.io/', 'apis-guru.github.io:80/');
+      basicTests(url, `${apiName}:${apiInfo.info.version}\n${url}`);
+    }
+  });
+}
