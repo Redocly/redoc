@@ -31,7 +31,7 @@
   <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
   <div>
     <br>
-    <json-schema-lazy [skipReadOnly]="true" [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">
+    <json-schema-lazy [isRequestSchema]="true" [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">
     </json-schema-lazy>
   </div>
 </div>
