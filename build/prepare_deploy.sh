@@ -14,7 +14,7 @@ cd -
 # build
 gulp build
 cd demo
-cp -R ../dist ./dist
+cp -R ../dist/* ./dist/
 mkdir -p releases
 cp -R ../.ghpages-tmp/* ./releases/
 cd -

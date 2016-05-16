@@ -1,4 +1,13 @@
-<span *ngIf="schema.isTrivial" class="param-wrap">
+<span *ngIf="schema.isFile" class="param-wrap">
+  <span class="param-file">file</span>
+  <div *ngIf="schema._produces && !isRequestSchema" class="file produces">
+    Produces: {{ schema._produces | json }}
+  </div>
+  <div *ngIf="schema._consumes && isRequestSchema" class="file consume">
+    Consumes: {{ schema._consumes | json }}
+  </div>
+</span>
+<span *ngIf="schema.isTrivial && !schema.isFile" class="param-wrap">
   <span class="param-type param-type-trivial {{schema.type}}"
     [ngClass]="{'with-hint': schema._displayTypeHint}"
     title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
@@ -43,7 +52,7 @@
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" *ngIf="prop._pointer">
       <td colspan="2">
         <json-schema class="nested-schema" pointer="{{prop._pointer}}" [isArray]='prop._isArray'
-        [nestOdd]="!nestOdd" [skipReadOnly]="skipReadOnly" [attr.nesteven]="!nestOdd">
+        [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" [attr.nesteven]="!nestOdd">
         </json-schema>
       </td>
     </tr>
@@ -52,7 +61,7 @@
     <td colspan="2">
       <div class="derived-schema" *ngFor="let derived of schema.derived" [ngClass]="{active: derived.active}">
         <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"
-        pointer="{{derived.$ref}}" [final]="derived.final" [skipReadOnly]="skipReadOnly">
+        pointer="{{derived.$ref}}" [final]="derived.final" [isRequestSchema]="isRequestSchema">
         </json-schema>
       </div>
     </td>
