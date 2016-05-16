@@ -25787,13 +25787,15 @@ $__System.register('8c', ['85', '87', '88', '89', '8a', '8f', '8d', '8e'], funct
         _createClass(ParamsList, [{
           key: 'prepareModel',
           value: function prepareModel() {
+            var _this = this;
+
             this.data = {};
             var paramsList = this.schemaMgr.getMethodParams(this.pointer, true);
 
             paramsList = paramsList.map(function (paramData) {
               var propPointer = paramData._pointer;
               if (paramData['in'] === 'body') return paramData;
-              return JsonSchema.injectPropertyData(paramData, paramData.name, propPointer);
+              return JsonSchema.injectPropertyData(paramData, paramData.name, propPointer, _this.pointer);
             });
 
             var paramsMap = this.orderParams(paramsList);
@@ -25836,7 +25838,7 @@ $__System.register('8c', ['85', '87', '88', '89', '8a', '8f', '8d', '8e'], funct
         var _ParamsList = ParamsList;
         ParamsList = RedocComponent({
           selector: 'params-list',
-          template: '\n    <h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>\n    <template ngFor [ngForOf]="data.params" let-paramType="$implicit">\n      <header class="paramType">\n        {{paramType.place}} Parameters\n        <span class="hint--top-right hint--large" [attr.data-hint]="paramType.placeHint">?</span>\n      </header>\n      <br>\n      <div class="params-wrap">\n        <div *ngFor="let param of paramType.params" class="param">\n            <div class="param-name">\n              <span class="param-name-content"> {{param.name}} </span>\n            </div>\n            <div class="param-info">\n              <div>\n                <span class="param-type {{param.type}}" [ngClass]="{\'with-hint\': param._displayTypeHint}"\n                title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>\n                <span *ngIf="param.required" class="param-required">Required</span>\n                <div *ngIf="param.enum" class="param-enum">\n                  <span *ngFor="let enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n                </div>\n              </div>\n              <div class="param-description" innerHtml="{{param.description | marked}}"></div>\n            </div>\n        </div>\n      </div>\n    </template>\n\n    <div *ngIf="data.bodyParam">\n      <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>\n\n      <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>\n      <div>\n        <br>\n        <json-schema-lazy [skipReadOnly]="true" [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">\n        </json-schema-lazy>\n      </div>\n    </div>\n  ',
+          template: '\n    <h5 class="param-list-header" *ngIf="data.params.length"> Parameters </h5>\n    <template ngFor [ngForOf]="data.params" let-paramType="$implicit">\n      <header class="paramType">\n        {{paramType.place}} Parameters\n        <span class="hint--top-right hint--large" [attr.data-hint]="paramType.placeHint">?</span>\n      </header>\n      <br>\n      <div class="params-wrap">\n        <div *ngFor="let param of paramType.params" class="param">\n            <div class="param-name">\n              <span class="param-name-content"> {{param.name}} </span>\n            </div>\n            <div class="param-info">\n              <div>\n                <span class="param-type {{param.type}}" [ngClass]="{\'with-hint\': param._displayTypeHint}"\n                title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>\n                <span *ngIf="param.required" class="param-required">Required</span>\n                <div *ngIf="param.enum" class="param-enum">\n                  <span *ngFor="let enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n                </div>\n              </div>\n              <div class="param-description" innerHtml="{{param.description | marked}}"></div>\n            </div>\n        </div>\n      </div>\n    </template>\n\n    <div *ngIf="data.bodyParam">\n      <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>\n\n      <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>\n      <div>\n        <br>\n        <json-schema-lazy [isRequestSchema]="true" [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">\n        </json-schema-lazy>\n      </div>\n    </div>\n  ',
           styles: ['\n    .param-list-header{border-bottom:1px solid rgba(38,50,56,0.3);padding:0.2em 0;margin:3.5em 0 .8em 0;color:rgba(38,50,56,0.5);font-weight:normal;text-transform:uppercase}.param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:rgba(38,50,56,0.4);font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name,.param.last>.param-name{position:relative}.param:last-of-type>.param-name:after,.param.last>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-schema.last>td{border-left:0}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}header.paramType{margin:10px 0;text-transform:capitalize}.params-wrap{display:table;width:100%}.param-name{display:table-cell;vertical-align:top}.param-info{display:table-cell;width:100%}.param{display:table-row}.param:last-of-type>.param-name{border-left:0}.param:last-of-type>.param-name:after{content:"";display:block;position:absolute;left:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;background-color:white;top:0}.param:first-of-type .param-name:after{content:"";display:block;position:absolute;left:-1px;border-left:2px solid #fff;height:20px;background-color:white;top:0}[data-hint]{width:1.2em;text-align:center;border-radius:50%;vertical-align:middle;color:#999;line-height:1.2;text-transform:none;cursor:help;border:1px solid #999;margin-left:0.5em}@media (max-width: 520px){[data-hint]{float:right}[data-hint]:after{margin-left:12px;transform:translateX(-100%) translateY(-8px);-moz-transform:translateX(-100%) translateY(-8px);-webkit-transform:translateX(-100%) translateY(-8px)}}\n  '],
           directives: [JsonSchema, JsonSchemaLazy]
         })(ParamsList) || ParamsList;
@@ -25850,11 +25852,11 @@ $__System.register('8c', ['85', '87', '88', '89', '8a', '8f', '8d', '8e'], funct
 $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', '8f'], function (_export) {
   var ElementRef, RedocComponent, BaseComponent, SchemaManager, _get, _inherits, _createClass, DropDown, JsonPointer, _Object$assign, _classCallCheck, _Object$keys, JsonSchema, injectors;
 
-  function runInjectors(injectTo, propertySchema, propertyPointer) {
+  function runInjectors(injectTo, propertySchema, propertyPointer, hostPointer) {
     for (var injName in injectors) {
       var injector = injectors[injName];
       if (injector.check(propertySchema)) {
-        injector.inject(injectTo, propertySchema, propertyPointer);
+        injector.inject(injectTo, propertySchema, propertyPointer, hostPointer);
       }
     }
   }
@@ -25932,8 +25934,8 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
 
             var schema = this.componentSchema;
             BaseComponent.joinAllOf(schema, { omitParent: true });
-            schema = this.unwrapArray(schema);
-            runInjectors(schema, schema, schema._pointer || this.pointer);
+            this.schema = schema = this.unwrapArray(schema);
+            runInjectors(schema, schema, schema._pointer || this.pointer, this.pointer);
 
             schema.derived = schema.derived || [];
 
@@ -25941,7 +25943,6 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
               this.prepareObjectPropertiesData(schema);
             }
 
-            this.schema = schema;
             this.initDerived();
           }
         }, {
@@ -26007,7 +26008,8 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
               var discrProp = props.splice(discriminatorFieldIdx, 1);
               props.push(discrProp[0]);
             }
-            if (this.skipReadOnly) {
+            // filter readOnly props for request schemas
+            if (this.isRequestSchema) {
               props = props.filter(function (prop) {
                 return !prop.readOnly;
               });
@@ -26022,11 +26024,11 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
           }
         }], [{
           key: 'injectPropertyData',
-          value: function injectPropertyData(propertySchema, propertyName, propPointer) {
+          value: function injectPropertyData(propertySchema, propertyName, propPointer, hostPointer) {
             propertySchema = _Object$assign({}, propertySchema);
 
             propertySchema._name = propertyName;
-            runInjectors(propertySchema, propertySchema, propPointer);
+            runInjectors(propertySchema, propertySchema, propPointer, hostPointer);
 
             return propertySchema;
           }
@@ -26036,10 +26038,10 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
         JsonSchema = Reflect.metadata('parameters', [[SchemaManager], [ElementRef]])(JsonSchema) || JsonSchema;
         JsonSchema = RedocComponent({
           selector: 'json-schema',
-          template: '\n    <span *ngIf="schema.isTrivial" class="param-wrap">\n      <span class="param-type param-type-trivial {{schema.type}}"\n        [ngClass]="{\'with-hint\': schema._displayTypeHint}"\n        title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}\n        <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>\n      </span>\n      <div *ngIf="schema.enum" class="param-enum">\n        <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n      </div>\n    </span>\n    <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{\'params-array\': schema._isArray}">\n      <!-- <caption> {{_displayType}} </caption> -->\n      <template ngFor [ngForOf]="schema.properties" let-prop="$implicit" let-last="last">\n        <tr class="param" [ngClass]="{\'last\': last,\n            \'discriminator\': prop.isDiscriminator && !derivedEmtpy,\n            \'complex\': prop._pointer,\n            \'additional\': prop._additional\n          }">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}\n              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>\n              </span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">\n                <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator">\n              <span>This field value determines the exact schema:</span>\n              <dropdown (change)="selectDerived($event)">\n                <option *ngFor="let derived of schema.derived; let i=index"\n                [value]="i">{{derived.name}}</option>\n              </dropdown>\n            </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray, \'last\': last}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema class="nested-schema" pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\'\n            [nestOdd]="!nestOdd" [skipReadOnly]="skipReadOnly" [attr.nesteven]="!nestOdd">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap" [ngClass]="{\'empty\': derivedEmtpy}">\n        <td colspan="2">\n          <div class="derived-schema" *ngFor="let derived of schema.derived" [ngClass]="{active: derived.active}">\n            <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"\n            pointer="{{derived.$ref}}" [final]="derived.final" [skipReadOnly]="skipReadOnly">\n            </json-schema>\n          </div>\n        </td>\n      </tr>\n    </table>\n  ',
+          template: '\n    <span *ngIf="schema.isFile" class="param-wrap">\n      <span class="param-file">file</span>\n      <div *ngIf="schema._produces && !isRequestSchema" class="file produces">\n        Produces: {{ schema._produces | json }}\n      </div>\n      <div *ngIf="schema._consumes && isRequestSchema" class="file consume">\n        Consumes: {{ schema._consumes | json }}\n      </div>\n    </span>\n    <span *ngIf="schema.isTrivial && !schema.isFile" class="param-wrap">\n      <span class="param-type param-type-trivial {{schema.type}}"\n        [ngClass]="{\'with-hint\': schema._displayTypeHint}"\n        title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}\n        <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>\n      </span>\n      <div *ngIf="schema.enum" class="param-enum">\n        <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n      </div>\n    </span>\n    <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{\'params-array\': schema._isArray}">\n      <!-- <caption> {{_displayType}} </caption> -->\n      <template ngFor [ngForOf]="schema.properties" let-prop="$implicit" let-last="last">\n        <tr class="param" [ngClass]="{\'last\': last,\n            \'discriminator\': prop.isDiscriminator && !derivedEmtpy,\n            \'complex\': prop._pointer,\n            \'additional\': prop._additional\n          }">\n          <td class="param-name">\n            <span class="param-name-content">{{prop._name}}</span>\n          </td>\n          <td class="param-info">\n            <div>\n              <span class="param-type {{prop.type}}" [ngClass]="{\'with-hint\': prop._displayTypeHint}"\n              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}\n              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>\n              </span>\n              <span *ngIf="prop.required" class="param-required">Required</span>\n              <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">\n                <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>\n              </div>\n            </div>\n            <div class="param-description" innerHtml="{{prop.description | marked}}"></div>\n            <div class="discriminator-info" *ngIf="prop.isDiscriminator">\n              <span>This field value determines the exact schema:</span>\n              <dropdown (change)="selectDerived($event)">\n                <option *ngFor="let derived of schema.derived; let i=index"\n                [value]="i">{{derived.name}}</option>\n              </dropdown>\n            </div>\n          </td>\n        </tr>\n        <tr class="param-schema" [ngClass]="{\'param-array\': prop._isArray, \'last\': last}" *ngIf="prop._pointer">\n          <td colspan="2">\n            <json-schema class="nested-schema" pointer="{{prop._pointer}}" [isArray]=\'prop._isArray\'\n            [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" [attr.nesteven]="!nestOdd">\n            </json-schema>\n          </td>\n        </tr>\n      </template>\n      <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap" [ngClass]="{\'empty\': derivedEmtpy}">\n        <td colspan="2">\n          <div class="derived-schema" *ngFor="let derived of schema.derived" [ngClass]="{active: derived.active}">\n            <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"\n            pointer="{{derived.$ref}}" [final]="derived.final" [isRequestSchema]="isRequestSchema">\n            </json-schema>\n          </div>\n        </td>\n      </tr>\n    </table>\n  ',
           styles: ['\n    .param-name{font-size:0.929em;padding:10px 0 10px 0;font-weight:400;box-sizing:border-box;line-height:20px;border-left:1px solid rgba(0,51,160,0.5);white-space:nowrap;position:relative;vertical-align:top}.param-name-content{padding-right:25px;display:inline-block;font-family:Montserrat,sans-serif}.param-info{padding:10px 0;box-sizing:border-box;border-bottom:1px solid #ccc;width:75%}.param-range{color:rgba(0,51,160,0.7);position:relative;top:1px;padding:0 4px;border-radius:2px;background-color:rgba(0,51,160,0.1);margin-left:6px}.param-description{font-size:13px}.param-required{color:red;font-weight:bold;font-size:12px;line-height:20px;vertical-align:middle}.param-type{color:rgba(38,50,56,0.4);font-size:0.929em;line-height:20px;vertical-align:middle;font-weight:normal}.param-type.array:before{content:"Array of ";color:#263238;font-weight:300}.param-type.with-hint{display:inline-block;margin-bottom:0.4em;border-bottom:1px dotted rgba(38,50,56,0.4);padding:0;cursor:help}.param-type-trivial{margin:10px 10px 0;display:inline-block}.param-name>span:before{content:"";display:inline-block;width:1px;height:7px;background-color:#0033a0;margin:0 10px;vertical-align:middle}.param-name>span:after{content:"";position:absolute;border-top:1px solid rgba(0,51,160,0.5);width:10px;left:0;top:21px}.param:first-of-type>.param-name:before{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:21px}.param:last-of-type>.param-name,.param.last>.param-name{position:relative}.param:last-of-type>.param-name:after,.param.last>.param-name:after{content:"";display:block;position:absolute;left:-2px;border-left:2px solid #fff;top:22px;background-color:white;bottom:0}.param-wrap:last-of-type>.param-schema{border-left-color:transparent}.param-schema .param-wrap:first-of-type .param-name:before{display:none !important}.param-schema.last>td{border-left:0}.param-enum{color:#263238;font-size:13px}.param-enum:before{content:"Values: {"}.param-enum:after{content:"}"}.param-enum>.enum-value:after{content:", "}.param-enum>.enum-value:last-of-type:after{content:none}:host{display:block}.param-schema>td{border-left:1px solid rgba(0,51,160,0.5);padding:0 10px}.derived-schema{display:none}.derived-schema.active{display:block}json-schema.nested-schema{background-color:white;padding:10px 20px;position:relative;border-radius:2px}json-schema.nested-schema:before,json-schema.nested-schema:after{content:"";width:0;height:0;position:absolute;top:0;border-style:solid;border-color:transparent;border-width:10px 15px 0;margin-left:-7.5px;border-top-color:#f0f0f0}json-schema.nested-schema:before{left:10%}json-schema.nested-schema:after{right:10%}json-schema.nested-schema .param:first-of-type>.param-name:before,json-schema.nested-schema .param:last-of-type>.param-name:after{border-color:white}json-schema[nesteven="true"]{background-color:#f0f0f0;border-radius:2px}json-schema[nesteven="true"]:before,json-schema[nesteven="true"]:after{border-top-color:white}json-schema[nesteven="true"]>.params-wrap>.param:first-of-type>.param-name:before,json-schema[nesteven="true"]>.params-wrap>.param:last-of-type>.param-name:after{border-color:#f0f0f0}json-schema[nesteven="true"]>.params-wrap>.param:last-of-type>.param-name:after,json-schema[nesteven="true"]>.params-wrap>.param.last>.param-name:after{border-color:#f0f0f0}.param.complex>.param-info{border-bottom:0}.param.additional>.param-name{color:rgba(38,50,56,0.4)}.params-wrap{border-collapse:collapse;width:100%}.params-wrap.params-array:before,.params-wrap.params-array:after{display:block;font-weight:300;color:#263238;font-size:13px;line-height:1.5}.params-wrap.params-array:after{content:"]"}.params-wrap.params-array:before{content:"Array [";padding-top:1em}.params-wrap.params-array{padding-left:10px}.param-schema.param-array:before{bottom:9.75px;width:10px;border-left-style:dashed;border-bottom:1px dashed rgba(0,51,160,0.5)}.params-wrap.params-array>.param-wrap:first-of-type>.param>.param-name:after{content:"";display:block;position:absolute;left:-1px;top:0;border-left:2px solid #fff;height:20px}.params-wrap>.param>.param-schema.param-array{border-left-color:transparent}.param.discriminator>.param-info{padding-bottom:0;border-bottom:0}.param.discriminator>.param-name:after{display:none}.discriminator-info{font-weight:400;margin-bottom:10px}.discriminator-info>span{font-size:0.9em;font-weight:300}.discriminator-wrap:not(.empty)>td{padding:0;position:relative}.discriminator-wrap:not(.empty)>td:before{content:"";display:block;position:absolute;left:0;top:0;border-left:1px solid rgba(0,51,160,0.5);height:21px;z-index:1}ul{text-align:left;margin:0;padding:0;display:block}li{margin:0.5em 0.3em 0.2em 0;font-family:Montserrat,sans-serif;font-size:.929em;line-height:.929em;border:0;color:white;padding:2px 8px 4px 8px;border-radius:2px;background-color:rgba(38,50,56,0.3);display:inline-block;cursor:pointer}li:last-of-type{margin-right:0}li.active{background-color:#0033a0}\n  '],
           directives: [JsonSchema, DropDown],
-          inputs: ['isArray', 'final', 'nestOdd', 'childFor', 'skipReadOnly']
+          inputs: ['isArray', 'final', 'nestOdd', 'childFor', 'isRequestSchema']
         })(JsonSchema) || JsonSchema;
         return JsonSchema;
       })(BaseComponent);
@@ -26088,7 +26090,6 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
             })();
           }
         },
-
         object: {
           check: function check(propertySchema) {
             return propertySchema.type === 'object' && propertySchema.properties;
@@ -26111,7 +26112,6 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
             injectTo.isTrivial = true;
           }
         },
-
         simpleType: {
           check: function check(propertySchema) {
             if (propertySchema.type === 'object') {
@@ -26177,6 +26177,28 @@ $__System.register('8d', ['11', '85', '87', '88', '89', '90', '91', '92', '8a', 
               if (range) {
                 injectTo._range = range + ' characters';
               }
+            })();
+          }
+        },
+        file: {
+          check: function check(propertySchema) {
+            return propertySchema.type === 'file';
+          },
+          inject: function inject(injectTo, propertySchema, propPointer, hostPointer) {
+            if (propertySchema === undefined) propertySchema = injectTo;
+            return (function () {
+              injectTo.isFile = true;
+              var parentPtr = undefined;
+              if (propertySchema['in'] === 'formData') {
+                parentPtr = JsonPointer.dirName(hostPointer, 1);
+              } else {
+                parentPtr = JsonPointer.dirName(hostPointer, 3);
+              }
+
+              var parentParam = SchemaManager.instance().byPointer(parentPtr);
+              var root = SchemaManager.instance().schema;
+              injectTo._produces = parentParam && parentParam.produces || root.produces;
+              injectTo._consumes = parentParam && parentParam.consumes || root.consumes;
             })();
           }
         }
@@ -26296,7 +26318,7 @@ $__System.register('8e', ['11', '76', '86', '89', '93', '8a', '8d'], function (_
           key: 'initComponent',
           value: function initComponent(compRef) {
             compRef.instance.pointer = this.pointer;
-            compRef.instance.skipReadOnly = this.skipReadOnly;
+            compRef.instance.isRequestSchema = this.isRequestSchema;
           }
         }, {
           key: 'ngAfterViewInit',
@@ -26316,7 +26338,7 @@ $__System.register('8e', ['11', '76', '86', '89', '93', '8a', '8d'], function (_
         JsonSchemaLazy = Reflect.metadata('parameters', [[SchemaManager], [ViewContainerRef], [ElementRef], [DynamicComponentLoader], [OptionsService]])(JsonSchemaLazy) || JsonSchemaLazy;
         JsonSchemaLazy = Component({
           selector: 'json-schema-lazy',
-          inputs: ['pointer', 'auto', 'skipReadOnly'],
+          inputs: ['pointer', 'auto', 'isRequestSchema'],
           template: '',
           directives: [CORE_DIRECTIVES]
         })(JsonSchemaLazy) || JsonSchemaLazy;
