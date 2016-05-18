@@ -12,7 +12,7 @@ git checkout @{-1}
 cd -
 
 # build
-gulp build
+npm run build-dist
 cd demo
 cp -R ../dist/* ./dist/
 mkdir -p releases

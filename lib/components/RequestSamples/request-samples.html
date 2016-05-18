@@ -1,6 +1,6 @@
 <header *ngIf="data.schemaPointer || data.samples.length"> Request samples </header>
 <schema-sample *ngIf="!data.samples.length" [pointer]="data.schemaPointer"> </schema-sample>
-<tabs *ngIf="data.samples.length" (change)=changeLangNotify($event)>
+<tabs *ngIf="data.samples.length" [selected] = "selectedLang" (change)=changeLangNotify($event)>
   <tab tabTitle="JSON">
     <schema-sample [pointer]="data.schemaPointer"> </schema-sample>
   </tab>

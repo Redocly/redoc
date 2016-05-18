@@ -35,6 +35,7 @@
           <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
           </span>
           <span *ngIf="prop.required" class="param-required">Required</span>
+          <div *ngIf="prop.default">Default: {{prop.default | json}}</div>
           <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
             <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
           </div>
