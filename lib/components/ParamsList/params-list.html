@@ -15,6 +15,7 @@
             <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
             title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
             <span *ngIf="param.required" class="param-required">Required</span>
+            <div class="default" *ngIf="param.default">Default: {{param.default | json}}</div>
             <div *ngIf="param.enum" class="param-enum">
               <span *ngFor="let enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
             </div>

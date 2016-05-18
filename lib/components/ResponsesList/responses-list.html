@@ -8,6 +8,7 @@
     <div class="header" *ngFor="let header of response.headers">
       <div class="header-name"> {{header.name}} </div>
       <div class="header-type"> {{header.type}} </div>
+      <div *ngIf="header.default" class="header-default"> Default: {{header.default}} </div>
       <div class="header-description" innerHtml="{{header.description | marked}}"> </div>
     </div>
   </div>
