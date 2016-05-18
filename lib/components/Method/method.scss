@@ -22,6 +22,8 @@ responses-list, params-list {
   background-color: darken($black, 2%);
   display: block;
   font-weight: $light;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .method-endpoint > h5 {
