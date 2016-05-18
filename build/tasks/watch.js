@@ -6,7 +6,7 @@ function changed(event) {
   console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 }
 
-gulp.task('watch', ['buildDev'], function () {
+gulp.task('watch', ['build'], function () {
   gulp.watch([ paths.source ], [ 'bundle', browserSync.reload ]).on('change', changed);
   gulp.watch([ paths.html ], [ 'bundle', browserSync.reload]).on('change', changed);
   gulp.watch([ paths.scss ], [ 'bundle', browserSync.reload]).on('change', changed);

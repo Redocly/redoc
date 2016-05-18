@@ -11,25 +11,21 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
+var argv = require('yargs').argv;
 
 gulp.task('build', function (callback) {
+  if (argv.skipRebuild) {
+    console.log('>>> Rebuild skipped')
+    return callback();
+  }
   return runSequence(
     'clean',
-    'bundleProd',
-    callback
-  );
-});
-
-gulp.task('buildDev', function (callback) {
-  return runSequence(
-    'clean',
+    'concatPrism',
     'bundle',
+    'concatDeps',
     callback
   );
 });
-
-gulp.task('bundle', ['concatPrism', 'buildStatic', 'concatDeps']);
-gulp.task('bundleProd', ['bundle', 'buildStaticMin', 'concatDepsMin']);
 
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
@@ -38,20 +34,20 @@ gulp.task('inlineTemplates', ['sass'], function() {
     .pipe(gulp.dest(paths.tmp));
 });
 
-var JS_DEV_DEPS = [
+var JS_DEPS = argv.prod ? [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
   'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
-];
-
-var JS_DEV_DEPS_MIN = [
+] : [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.min.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.min.js'
-]
+];
+
+var outputFileName = paths.redocBuilt + (argv.prod ? '.min.js' : '.js');
 
 gulp.task('sass', function () {
   return gulp.src(paths.scss, { base: './' })
@@ -60,38 +56,22 @@ gulp.task('sass', function () {
 });
 
 // concatenate angular2 deps
-gulp.task('concatDeps', ['buildStatic'], function() {
-  return concatDeps(JS_DEV_DEPS, paths.redocBuilt + '.js');
+gulp.task('concatDeps', function() {
+  return gulp.src(JS_DEPS.concat([outputFileName]))
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(concat(outputFileName))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('.'))
 });
 
-gulp.task('concatDepsMin', ['buildStatic'], function() {
-  return concatDeps(JS_DEV_DEPS_MIN, paths.redocBuilt + '.min.js');
-});
-
-gulp.task('buildStatic', ['inlineTemplates'], function(cb) {
-  bundle(paths.redocBuilt + '.js', false, cb);
-});
-
-gulp.task('buildStaticMin', ['inlineTemplates'], function(cb) {
-  bundle(paths.redocBuilt + '.min.js', true, cb);
-});
-
-function concatDeps(deps, file) {
-  return gulp.src(deps.concat([file]))
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(concat(file))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest('.'))
-}
-
-function bundle(outputFile, minify, cb) {
+gulp.task('bundle', ['inlineTemplates'], function bundle(cb) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
 
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
-      outputFile,
-      { format:'umd', sourceMaps: true, lowResSourceMaps: true, minify: minify }
+      outputFileName,
+      { format:'umd', sourceMaps: !argv.prod, lowResSourceMaps: true, minify: argv.prod }
     )
     .then(function() {
       // wait some time to allow flush
@@ -100,7 +80,7 @@ function bundle(outputFile, minify, cb) {
     .catch(function(err) {
       cb(new Error(err));
     });
-}
+});
 
 gulp.task('concatPrism', function() {
   require('../../system.config.js');
@@ -129,7 +109,7 @@ gulp.task('concatPrism', function() {
     'components/prism-scala.js'
   ].map(file => path.join(prismFolder, file));
 
-  gulp.src(prismFiles)
-  .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
-  .pipe(gulp.dest('.'))
+  return gulp.src(prismFiles)
+    .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
+    .pipe(gulp.dest('.'))
 });

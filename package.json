@@ -11,10 +11,10 @@
     "test": "gulp lint && ./build/run_tests.sh",
     "jspm-install": "jspm install",
     "start": "gulp serve",
-    "build-dist": "gulp build",
+    "build-dist": "gulp build --prod",
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
-    "e2e": "gulp e2e",
+    "e2e": "gulp e2e --prod",
     "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo"
   },
   "keywords": [
@@ -114,6 +114,7 @@
     "sinon": "^1.17.2",
     "systemjs-builder": "^0.15.16",
     "vinyl-paths": "^2.0.0",
+    "yargs": "^4.7.1",
     "zone.js": "^0.6.12"
   }
 }
