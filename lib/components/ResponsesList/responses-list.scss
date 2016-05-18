@@ -28,6 +28,11 @@ header {
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 15px;
+
+  &:not(:first-child) {
+    margin-top: 15px;
+    margin-bottom: 0;
+  }
 }
 
 .header {
