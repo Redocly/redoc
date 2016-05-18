@@ -43,10 +43,37 @@ describe('Scroll sync', () => {
     fixFFTest(done);
   });
 
-  it('should update active menu entries on page scroll', () => {
-    scrollToEl('[tag="store"]').then(function() {
+  it('should update active menu entries on page scroll forwards', () => {
+    scrollToEl('[tag="store"]').then(() => {
       expect($('.menu-cat-header.active').getInnerHtml()).toContain('store');
       expect($('.selected-tag').getInnerHtml()).toContain('store');
+    });
+  });
+
+  it('should update active menu entries on page scroll backwards', () => {
+    scrollToEl('[operation-id="getPetById"]').then(() => {
+      expect($('.menu-cat-header.active').getInnerHtml()).toContain('pet');
+      expect($('.selected-tag').getInnerHtml()).toContain('pet');
+      expect($('.menu-cat li.active').getInnerHtml()).toContain('Find pet by ID');
+      expect($('.selected-endpoint').getInnerHtml()).toContain('Find pet by ID');
+    });
+  });
+});
+
+describe('Language tabs sync', () => {
+  let specUrl = URL;
+
+  beforeEach((done) => {
+    browser.get(specUrl);
+    fixFFTest(done);
+  });
+
+  it('should sync language tabs', () => {
+    var $item = $$('[operation-id="addPet"] tabs > ul > li').last();
+    // check if correct item
+    expect($item.getText()).toContain('PHP');
+    $item.click().then(() => {
+      expect($('[operation-id="updatePet"] li.active').getText()).toContain('PHP');
     });
   });
 });
