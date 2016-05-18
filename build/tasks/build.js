@@ -27,6 +27,14 @@ gulp.task('build', function (callback) {
   );
 });
 
+gulp.task('rebuild', function(done) {
+  return runSequence(
+    'bundle',
+    'concatDeps',
+    callback
+  );
+});
+
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
     .pipe(replace(/'(.*?\.css)'/g, '\'.tmp/$1\''))
