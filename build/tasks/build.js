@@ -31,7 +31,7 @@ gulp.task('rebuild', function(done) {
   return runSequence(
     'bundle',
     'concatDeps',
-    callback
+    done
   );
 });
 
