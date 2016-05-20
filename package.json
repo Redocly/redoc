@@ -106,6 +106,7 @@
     "reflect-metadata": "^0.1.2",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
+    "shelljs": "^0.7.0",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
     "systemjs-builder": "^0.15.16",

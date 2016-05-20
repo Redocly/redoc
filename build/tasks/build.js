@@ -24,8 +24,16 @@ gulp.task('build', function (callback) {
     'concatPrism',
     'bundle',
     'concatDeps',
+    'copyDebug',
     callback
   );
+});
+
+gulp.task('copyDebug', () => {
+  if (!argv.prod) {
+    // copy for be accessible from demo for debug
+    cp(paths.redocBuilt + '.js', paths.redocBuilt + '.min.js');
+  }
 });
 
 gulp.task('rebuild', function(done) {
@@ -73,7 +81,7 @@ gulp.task('concatDeps', function() {
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(cb) {
+gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(done) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
 
@@ -82,13 +90,11 @@ gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(cb
       outputFileName,
       { format:'umd', sourceMaps: !argv.prod, lowResSourceMaps: true, minify: argv.prod }
     )
-    .then(function() {
+    .then(() => {
       // wait some time to allow flush
-      setTimeout(() => cb(), 500);
+      setTimeout(() => done(), 500);
     })
-    .catch(function(err) {
-      cb(new Error(err));
-    });
+    .catch(err => done(err));
 });
 
 gulp.task('concatPrism', function() {
