@@ -12,6 +12,7 @@ var sass = require('gulp-sass');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var argv = require('yargs').argv;
+var gulpIf = require('gulp-if');
 
 gulp.task('build', function (callback) {
   if (argv.skipRebuild) {
@@ -66,9 +67,9 @@ gulp.task('sass', function () {
 // concatenate angular2 deps
 gulp.task('concatDeps', function() {
   return gulp.src(JS_DEPS.concat([outputFileName]))
-    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(gulpIf(!argv.prod, sourcemaps.init({loadMaps: true})))
     .pipe(concat(outputFileName))
-    .pipe(sourcemaps.write('.'))
+    .pipe(gulpIf(!argv.prod, sourcemaps.write('.')))
     .pipe(gulp.dest('.'))
 });
 
