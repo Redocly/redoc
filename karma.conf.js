@@ -57,13 +57,15 @@ module.exports = function (config) {
         jspm: {
             config: 'system.config.js',
             loadFiles: ['tests/setup.js', 'tests/helpers.js', 'tests/unit/*.spec.js', 'lib/**/*.js'],
-            serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html', '.tmp/*js', '.tmp/lib/**/*.css'],
+            serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
+            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css'],
             nocache: true
         },
 
         proxies: {
             '/tests/': '/base/tests/',
             '/lib/components/Redoc/redoc-initial-styles.css': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.css',
+            '/lib/version.json': '/base/.tmp/lib/version.json',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
