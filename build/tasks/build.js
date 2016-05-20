@@ -12,6 +12,7 @@ var sass = require('gulp-sass');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var argv = require('yargs').argv;
+var gulpIf = require('gulp-if');
 
 gulp.task('build', function (callback) {
   if (argv.skipRebuild) {
@@ -23,8 +24,16 @@ gulp.task('build', function (callback) {
     'concatPrism',
     'bundle',
     'concatDeps',
+    'copyDebug',
     callback
   );
+});
+
+gulp.task('copyDebug', () => {
+  if (!argv.prod) {
+    // copy for be accessible from demo for debug
+    cp(paths.redocBuilt + '.js', paths.redocBuilt + '.min.js');
+  }
 });
 
 gulp.task('rebuild', function(done) {
@@ -44,15 +53,15 @@ gulp.task('inlineTemplates', ['sass'], function() {
 
 var JS_DEPS = argv.prod ? [
   'lib/utils/browser-update.js',
+  'node_modules/zone.js/dist/zone.min.js',
+  'node_modules/reflect-metadata/Reflect.js',
+  'node_modules/babel-polyfill/dist/polyfill.min.js'
+]: [
+  'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
   'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
-] : [
-  'lib/utils/browser-update.js',
-  'node_modules/zone.js/dist/zone.min.js',
-  'node_modules/reflect-metadata/Reflect.js',
-  'node_modules/babel-polyfill/dist/polyfill.min.js'
 ];
 
 var outputFileName = paths.redocBuilt + (argv.prod ? '.min.js' : '.js');
@@ -66,13 +75,13 @@ gulp.task('sass', function () {
 // concatenate angular2 deps
 gulp.task('concatDeps', function() {
   return gulp.src(JS_DEPS.concat([outputFileName]))
-    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(gulpIf(!argv.prod, sourcemaps.init({loadMaps: true})))
     .pipe(concat(outputFileName))
-    .pipe(sourcemaps.write('.'))
+    .pipe(gulpIf(!argv.prod, sourcemaps.write('.')))
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', ['inlineTemplates'], function bundle(cb) {
+gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(done) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
 
@@ -81,13 +90,11 @@ gulp.task('bundle', ['inlineTemplates'], function bundle(cb) {
       outputFileName,
       { format:'umd', sourceMaps: !argv.prod, lowResSourceMaps: true, minify: argv.prod }
     )
-    .then(function() {
+    .then(() => {
       // wait some time to allow flush
-      setTimeout(() => cb(), 500);
+      setTimeout(() => done(), 500);
     })
-    .catch(function(err) {
-      cb(new Error(err));
-    });
+    .catch(err => done(err));
 });
 
 gulp.task('concatPrism', function() {
@@ -121,3 +128,9 @@ gulp.task('concatPrism', function() {
     .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
     .pipe(gulp.dest('.'))
 });
+
+// needs inlineTemplates run before to create .tmp/lib folder
+gulp.task('injectVersionFile', ['inlineTemplates'], function() {
+  var version = require('../../package.json').version;
+  fs.writeFileSync(path.join(paths.tmp, 'lib/version.json'), JSON.stringify(version));
+})
