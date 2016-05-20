@@ -72,6 +72,8 @@ describe('Language tabs sync', () => {
     var $item = $$('[operation-id="addPet"] tabs > ul > li').last();
     // check if correct item
     expect($item.getText()).toContain('PHP');
+    var EC = protractor.ExpectedConditions;
+    browser.wait(EC.elementToBeClickable($item), 2000);
     $item.click().then(() => {
       expect($('[operation-id="updatePet"] li.active').getText()).toContain('PHP');
     });
