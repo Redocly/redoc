@@ -73,7 +73,7 @@ gulp.task('concatDeps', function() {
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', ['inlineTemplates'], function bundle(cb) {
+gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(cb) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
 
@@ -122,3 +122,9 @@ gulp.task('concatPrism', function() {
     .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
     .pipe(gulp.dest('.'))
 });
+
+// needs inlineTemplates run before to create .tmp/lib folder
+gulp.task('injectVersionFile', ['inlineTemplates'], function() {
+  var version = require('../../package.json').version;
+  fs.writeFileSync(path.join(paths.tmp, 'lib/version.json'), JSON.stringify(version));
+})
