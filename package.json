@@ -8,14 +8,14 @@
   },
   "main": "dist/redoc.min.js",
   "scripts": {
-    "test": "gulp lint && ./build/run_tests.sh",
+    "test": "gulp lint && node ./build/run_tests.js",
     "jspm-install": "jspm install",
     "start": "gulp serve",
     "build-dist": "gulp build --prod",
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
     "e2e": "gulp e2e --prod",
-    "deploy": "build/prepare_deploy.sh && deploy-to-gh-pages demo"
+    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages demo"
   },
   "keywords": [
     "OpenAPI",
