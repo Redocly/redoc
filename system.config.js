@@ -138,15 +138,12 @@ System.config({
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
     "npm:@angular/common@2.0.0-rc.1": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "@angular/core": "npm:@angular/core@2.0.0-rc.1"
     },
     "npm:@angular/compiler@2.0.0-rc.1": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "@angular/core": "npm:@angular/core@2.0.0-rc.1"
     },
     "npm:@angular/core@2.0.0-rc.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"
     },
@@ -154,14 +151,12 @@ System.config({
       "@angular/common": "npm:@angular/common@2.0.0-rc.1",
       "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
       "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.1"
     },
     "npm:@angular/platform-browser@2.0.0-rc.1": {
       "@angular/common": "npm:@angular/common@2.0.0-rc.1",
       "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "@angular/core": "npm:@angular/core@2.0.0-rc.1"
     },
     "npm:amdefine@1.0.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

@@ -63,16 +63,39 @@
     "overrides": {
       "github:Robdel12/DropKick@2.1.7": {
         "format": "global"
+      },
+      "npm:@angular/core@2.0.0-rc.1": {
+        "main": "esm/index.js",
+        "format": "esm"
+      },
+      "npm:@angular/common@2.0.0-rc.1": {
+        "main": "esm/index.js",
+        "format": "esm"
+      },
+      "npm:@angular/compiler@2.0.0-rc.1": {
+        "main": "esm/index.js",
+        "format": "esm"
+      },
+      "npm:@angular/platform-browser-dynamic@2.0.0-rc.1": {
+        "main": "esm/index.js",
+        "format": "esm"
+      },
+      "npm:@angular/platform-browser@2.0.0-rc.1": {
+        "main": "esm/index.js",
+        "format": "esm"
       }
     }
   },
   "devDependencies": {
+    "@angular/compiler-cli": "^0.2.0",
+    "@angular/platform-server": "^2.0.0-rc.1",
     "babel-eslint": "^4.1.6",
     "babel-polyfill": "^6.3.14",
     "branch-release": "^0.3.2",
     "browser-sync": "^2.10.1",
     "del": "^2.2.0",
     "deploy-to-gh-pages": "^1.0.0",
+    "dropkickjs": "github:robdel12/DropKick",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
@@ -87,6 +110,7 @@
     "istanbul": "github:gotwarlost/istanbul#source-map",
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0",
+    "json-schema-instantiator": "^0.3.0",
     "jspm": "^0.16.34",
     "karma": "^0.13.15",
     "karma-babel-preprocessor": "^5.2.2",
@@ -101,17 +125,35 @@
     "karma-regex-preprocessor": "github:makern/karma-regex-preprocessor",
     "karma-should": "^1.0.0",
     "karma-sinon": "^1.0.4",
+    "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
     "protractor": "^3.0.0",
     "reflect-metadata": "^0.1.2",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
+    "rxjs-es": "^5.0.0-beta.7",
     "shelljs": "^0.7.0",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
     "systemjs-builder": "^0.15.16",
+    "typescript": "^1.8.10",
     "vinyl-paths": "^2.0.0",
     "yargs": "^4.7.1",
+    "zone.js": "^0.6.12"
+  },
+  "dependencies": {
+    "@angular/common": "^2.0.0-rc.1",
+    "@angular/compiler": "^2.0.0-rc.1",
+    "@angular/core": "^2.0.0-rc.1",
+    "@angular/platform-browser": "^2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "gulp-inline-ng2-template": "^1.1.4",
+    "json-pointer": "^0.5.0",
+    "json-schema-ref-parser": "^3.1.2",
+    "marked": "^0.3.5",
+    "rollup-plugin-commonjs": "^2.2.1",
+    "rxjs": "^5.0.0-beta.6",
+    "scrollparent": "^1.0.0",
     "zone.js": "^0.6.12"
   }
 }

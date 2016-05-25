@@ -13,6 +13,7 @@ var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var argv = require('yargs').argv;
 var gulpIf = require('gulp-if');
+var sassCopm = require('node-sass');
 
 gulp.task('build', function (callback) {
   if (argv.skipRebuild) {
@@ -20,7 +21,7 @@ gulp.task('build', function (callback) {
     return callback();
   }
   return runSequence(
-    'clean',
+    //'clean',
     'concatPrism',
     'bundle',
     'concatDeps',
@@ -46,10 +47,24 @@ gulp.task('rebuild', function(done) {
 
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src(paths.source, { base: './' })
-    .pipe(replace(/'(.*?\.css)'/g, '\'.tmp/$1\''))
-    .pipe(inlineNg2Template({ base: '/' }))
+    .pipe(replace(/'(.*?)\.css'/g, '\'$1.scss\''))
+    .pipe(inlineNg2Template({ 
+      base: '/', 
+      useRelativePaths: true,
+      styleProcessor: compileSass
+    }))
     .pipe(gulp.dest(paths.tmp));
 });
+
+function compileSass(ext, file) {
+    file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
+    file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+    file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
+    file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+    file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
+    
+    return sassCopm.renderSync({data: file}).css;
+}
 
 var JS_DEPS = argv.prod ? [
   'lib/utils/browser-update.js',
@@ -59,7 +74,7 @@ var JS_DEPS = argv.prod ? [
 ]: [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
-  'node_modules/zone.js/dist/long-stack-trace-zone.js',
+  //'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];
@@ -73,15 +88,15 @@ gulp.task('sass', function () {
 });
 
 // concatenate angular2 deps
-gulp.task('concatDeps', function() {
-  return gulp.src(JS_DEPS.concat([outputFileName]))
+gulp.task('concatDeps', ['concatPrism'], function() {
+  return gulp.src(JS_DEPS.concat([path.join(paths.tmp, 'prismjs-bundle.js'), outputFileName]))
     .pipe(gulpIf(!argv.prod, sourcemaps.init({loadMaps: true})))
     .pipe(concat(outputFileName))
     .pipe(gulpIf(!argv.prod, sourcemaps.write('.')))
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(done) {
+gulp.task('bundle', function bundle(done) {
   fs.existsSync('dist') || fs.mkdirSync('dist');
   var builder = new Builder('./', 'system.config.js');
 

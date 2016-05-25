@@ -1,7 +1,7 @@
 var path = require('path');
 
 var paths = {
-  source: 'lib/**/*.js',
+  source: 'lib/**/*.ts',
   html: 'lib/**/*.html',
   scss: 'lib/**/*.scss',
   sourceEntryPoint: 'lib/index.js',
