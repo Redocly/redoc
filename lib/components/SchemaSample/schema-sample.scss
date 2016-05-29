@@ -65,6 +65,7 @@ pre {
   }
 
   .redoc-json {
+      overflow-x: auto;
       padding: 20px;
       border-radius: $border-radius*2;
       background-color: darken($black, 2%);
