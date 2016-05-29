@@ -15,7 +15,7 @@
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
     "e2e": "gulp e2e --prod",
-    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages demo"
+    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo"
   },
   "keywords": [
     "OpenAPI",
@@ -76,7 +76,7 @@
     "branch-release": "^0.3.2",
     "browser-sync": "^2.10.1",
     "del": "^2.2.0",
-    "deploy-to-gh-pages": "^1.0.0",
+    "deploy-to-gh-pages": "^1.1.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
