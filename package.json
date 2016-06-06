@@ -38,14 +38,15 @@
       "@angular/platform-browser": "npm:@angular/platform-browser@^2.0.0-rc.1",
       "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^2.0.0-rc.1",
       "Robdel12/DropKick": "github:Robdel12/DropKick@^2.1.7",
+      "dropkickjs": "npm:dropkickjs@^2.1.8",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
       "json": "github:systemjs/plugin-json@^0.1.0",
       "json-formatter-js": "npm:json-formatter-js@^0.2.0",
       "json-pointer": "npm:json-pointer@^0.3.0",
-      "json-schema-instantiator": "npm:json-schema-instantiator@^0.3.0",
       "json-schema-ref-parser": "npm:json-schema-ref-parser@^3.1.2",
       "marked": "npm:marked@^0.3.5",
+      "openapi-sampler": "npm:openapi-sampler@^0.1.2",
       "prismjs": "npm:prismjs@^1.3.0",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "scrollparent": "npm:scrollparent@^0.1.0",
@@ -55,15 +56,12 @@
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.34",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "clean-css": "npm:clean-css@^3.4.6",
+      "clean-css": "npm:clean-css@^3.4.17",
       "core-js": "npm:core-js@^1.2.6",
       "css": "github:systemjs/plugin-css@^0.1.18",
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
     },
     "overrides": {
-      "github:Robdel12/DropKick@2.1.7": {
-        "format": "global"
-      },
       "npm:@angular/core@2.0.0-rc.1": {
         "main": "esm/index.js",
         "format": "esm"
@@ -83,6 +81,13 @@
       "npm:@angular/platform-browser@2.0.0-rc.1": {
         "main": "esm/index.js",
         "format": "esm"
+      },
+      "npm:openapi-sampler@0.1.2": {
+        "main": "src/openapi-sampler",
+        "format": "esm"
+      },
+      "npm:dropkickjs@2.1.8": {
+        "format": "global"
       }
     }
   },
@@ -100,7 +105,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.1.1",
     "gulp-if": "^2.0.1",
-    "gulp-inline-ng2-template": "^1.1.2",
+    "gulp-inline-ng2-template": "^1.1.5",
     "gulp-protractor": "^2.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
@@ -111,7 +116,7 @@
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0",
     "json-schema-instantiator": "^0.3.0",
-    "jspm": "^0.16.34",
+    "jspm": "^0.16.36",
     "karma": "^0.13.15",
     "karma-babel-preprocessor": "^5.2.2",
     "karma-chrome-launcher": "^0.2.2",
@@ -126,6 +131,7 @@
     "karma-should": "^1.0.0",
     "karma-sinon": "^1.0.4",
     "node-sass": "^3.7.0",
+    "openapi-sampler": "^0.1.2",
     "phantomjs-prebuilt": "^2.1.7",
     "protractor": "^3.0.0",
     "reflect-metadata": "^0.1.2",

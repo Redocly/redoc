@@ -5,11 +5,7 @@ import {isString, stringify, isBlank} from '@angular/core/src/facade/lang';
 import {BaseException} from '@angular/core/src/facade/exceptions';
 import JsonPointer from './JsonPointer';
 
-//import '../../prismjs-bundle';
 declare var Prism: any;
-
-//import 'prismjs/themes/prism-dark.css!css';
-//import 'hint.css/hint.base.css!css';
 
 import marked from 'marked';
 

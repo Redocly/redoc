@@ -6,15 +6,16 @@
 		"target": "es6",
 		"noImplicitAny": false,
 		"sourceMap": false,
-		"outDir": ".tmp-es/",
+		"outDir": ".tmp/lib",
 		"moduleResolution": "node"
 	},
 	"exclude": [
 		"node_modules",
-		"lib",
 		"jspm_packages",
+		".tmp",
 		"build",
 		"docs",
-		"*.spec.js"
+		"*.spec.js",
+		"lib/index.js"
 	]
 }

@@ -2,7 +2,7 @@
 
 import { ElementRef } from '@angular/core';
 
-import SchemaSampler from 'json-schema-instantiator';
+import * as OpenAPISampler from 'openapi-sampler';
 
 import { RedocComponent, BaseComponent, SchemaManager } from '../base';
 import { JsonFormatter } from '../../utils/JsonFormatterPipe';
@@ -37,7 +37,11 @@ export class SchemaSample extends BaseComponent {
       sample = base.examples['application/json'];
     } else {
       this.dereference(this.componentSchema);
-      sample = SchemaSampler.instantiate(this.componentSchema);
+      try {
+         sample = OpenAPISampler.sample(this.componentSchema);
+      } catch(e) {
+        // no sample available
+      }
     }
 
     this.data.sample = sample;

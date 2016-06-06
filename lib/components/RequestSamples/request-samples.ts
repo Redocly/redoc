@@ -27,9 +27,7 @@ export class RequestSamples extends BaseComponent {
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
   constructor(schemaMgr:SchemaManager, public events:RedocEventsService) {
     super(schemaMgr);
-    this.childQuery.changes.subscribe(() => {
-      this.childTabs = this.childQuery.first;
-    });
+
     this.selectedLang = this.events.samplesLanguageChanged;
   }
 

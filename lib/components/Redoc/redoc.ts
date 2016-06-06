@@ -17,9 +17,6 @@ import {SchemaManager} from '../../utils/SchemaManager';
 import { OptionsService, RedocEventsService } from '../../services/index';
 //import redocVersion from '../../version.js';
 
-
-//import './redoc-initial-styles.css!css';
-
 var dom = new BrowserDomAdapter();
 var _modeLocked = false;
 
@@ -40,8 +37,8 @@ export class Redoc extends BaseComponent {
   private element: any;
   options: any;
   static appRef: ComponentRef<any>;
-  
-  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef, 
+
+  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef,
     public events:RedocEventsService) {
     super(schemaMgr);
     this.element = elementRef.nativeElement;

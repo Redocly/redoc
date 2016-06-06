@@ -42,20 +42,20 @@ System.config({
     "@angular/core": "npm:@angular/core@2.0.0-rc.1",
     "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.1",
     "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.1",
-    "Robdel12/DropKick": "github:Robdel12/DropKick@2.1.7",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
-    "clean-css": "npm:clean-css@3.4.6",
+    "clean-css": "npm:clean-css@3.4.17",
     "core-js": "npm:core-js@1.2.6",
     "css": "github:systemjs/plugin-css@0.1.18",
+    "dropkickjs": "npm:dropkickjs@2.1.8",
     "es6-shim": "github:es-shims/es6-shim@0.33.6",
     "hint.css": "npm:hint.css@2.2.1",
     "json": "github:systemjs/plugin-json@0.1.2",
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
-    "json-schema-instantiator": "npm:json-schema-instantiator@0.3.0",
     "json-schema-ref-parser": "npm:json-schema-ref-parser@3.1.2",
     "marked": "npm:marked@0.3.5",
+    "openapi-sampler": "npm:openapi-sampler@0.1.2",
     "prismjs": "npm:prismjs@1.3.0",
     "rxjs": "npm:rxjs@5.0.0-beta.6",
     "scrollparent": "npm:scrollparent@0.1.0",
@@ -63,7 +63,7 @@ System.config({
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.2",
     "zone.js": "npm:zone.js@0.6.12",
     "github:jspm/nodelibs-assert@0.1.0": {
-      "assert": "npm:assert@1.4.0"
+      "assert": "npm:assert@1.4.1"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.6.0"
@@ -201,10 +201,9 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:assert@1.4.0": {
+    "npm:assert@1.4.1": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "buffer-shims": "npm:buffer-shims@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "npm:util@0.10.3"
     },
@@ -292,9 +291,6 @@ System.config({
       "readable-stream": "npm:readable-stream@2.0.6",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:buffer-shims@1.0.0": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.0"
-    },
     "npm:buffer-xor@1.0.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -333,7 +329,7 @@ System.config({
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:clean-css@3.4.6": {
+    "npm:clean-css@3.4.17": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "commander": "npm:commander@2.8.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -450,6 +446,9 @@ System.config({
       "miller-rabin": "npm:miller-rabin@4.0.0",
       "randombytes": "npm:randombytes@2.0.3",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:dropkickjs@2.1.8": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:ecc-jsbn@0.1.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -666,6 +665,9 @@ System.config({
     "npm:ono@2.2.1": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:openapi-sampler@0.1.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"

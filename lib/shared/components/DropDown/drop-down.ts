@@ -3,7 +3,6 @@
 import {Component, EventEmitter, ElementRef, Output} from '@angular/core';
 import {CORE_DIRECTIVES} from '@angular/common';
 import DropKick from 'dropkickjs';
-//import 'Robdel12/DropKick/build/css/dropkick.css!css';
 
 @Component({
   selector: 'dropdown',
@@ -24,7 +23,7 @@ export class DropDown {
   }
 
   ngAfterContentInit() {
-    //this.inst = new DropKick(this.elem.firstElementChild, {autoWidth: true});
+    this.inst = new DropKick(this.elem.firstElementChild, {autoWidth: true});
   }
 
   onChange(value) {

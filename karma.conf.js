@@ -8,7 +8,7 @@ module.exports = function (config) {
 
         regexPreprocessor: {
           rules: [
-            [ /'\.(.*?)\.css'/g, '\'.tmp$1.css\'']
+            [ /'\.(.*?)\.scss'/g, '\'.tmp$1.css\'']
           ]
         },
         babelPreprocessor: {
@@ -58,13 +58,13 @@ module.exports = function (config) {
             config: 'system.config.js',
             loadFiles: ['tests/setup.js', 'tests/helpers.js', 'tests/unit/*.spec.js', 'lib/**/*.js'],
             serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
-            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css'],
+            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.scss'],
             nocache: true
         },
 
         proxies: {
             '/tests/': '/base/tests/',
-            '/lib/components/Redoc/redoc-initial-styles.css': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.css',
+            '/lib/components/Redoc/redoc-initial-styles.scss': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.scss',
             '/lib/version.json': '/base/.tmp/lib/version.json',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
