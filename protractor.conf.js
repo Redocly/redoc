@@ -11,7 +11,7 @@ let config = {
      // add jasmine spec reporter
     jasmine.getEnv().addReporter(new SpecReporter({displaySpecDuration: true}));
     // load APIs.guru list
-    return loadJson('https://apis-guru.github.io/api-models/api/v1/list.json').then((list) => {
+    return loadJson('https://api.apis.guru/v2/list.json').then((list) => {
       global.apisGuruList = list;
       return browser.getCapabilities().then(function (cap) {
         browser.isIE = cap.browserName === 'internet explorer'
