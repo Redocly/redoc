@@ -20,7 +20,8 @@ export function getChildDebugElementAll(parent, tagName) {
 export function mouseclick( element ) {
     // create a mouse click event
     var event = document.createEvent( 'MouseEvents' );
-    event.initMouseEvent( 'click', true, true, window, 1, 0, 0 );
+    event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false,
+      false, false, false, 0, element);
 
     // send click to element
     element.dispatchEvent( event );

@@ -1,6 +1,6 @@
 'use strict';
 
-import { getChildDebugElementByType } from 'tests/helpers';
+import { getChildDebugElementByType } from '../../../../tests/helpers';
 import { Component, provide } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
@@ -13,7 +13,7 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { StickySidebar } from 'lib/shared/components/index';
+import { StickySidebar } from '../index';
 
 describe('Common components', () => {
   describe('StickySidebar Component', () => {
@@ -75,6 +75,8 @@ describe('Common components', () => {
 
 })
 class TestApp {
+  options: any;
+  scrollParent: Window;
   constructor() {
     this.options = {};
     this.scrollParent = window;

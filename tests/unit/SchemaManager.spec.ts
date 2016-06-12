@@ -1,6 +1,6 @@
 'use strict';
 
-import SchemaManager from 'lib/utils/SchemaManager';
+import { SchemaManager } from '../../lib/utils/SchemaManager';
 describe('Utils', () => {
   describe('Schema manager', () => {
     let schemaMgr;

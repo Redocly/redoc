@@ -1,6 +1,6 @@
 'use strict';
 
-import {statusCodeType} from 'lib/utils/helpers';
+import {statusCodeType} from '../../lib/utils/helpers';
 describe('Utils', () => {
   describe('statusCodeType', () => {
     it('Should return info for status codes within 100 and 200', ()=> {

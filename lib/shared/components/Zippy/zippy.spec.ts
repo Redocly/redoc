@@ -1,16 +1,17 @@
 'use strict';
 
-import { getChildDebugElement, mouseclick } from 'tests/helpers';
+import { getChildDebugElement, mouseclick } from '../../../../tests/helpers';
 
 import { Component } from '@angular/core';
 import {
   inject,
   beforeEach,
-  it
+  it,
+  expect
 } from '@angular/core/testing';
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
-import { Zippy } from 'lib/shared/components/index';
+import { Zippy } from '../index';
 
 describe('Common components', () => {
   describe('Zippy Component', () => {
@@ -54,7 +55,7 @@ describe('Common components', () => {
     it('project inner content', () => {
       fixture.detectChanges();
       let contentEl = nativeElement.querySelector('.zippy-content');
-      expect(contentEl).toHaveText('\n    test\n  ');
+      expect(contentEl.innerText).toMatch('test');
     });
 
     it('should open and close zippy', () => {
@@ -101,6 +102,8 @@ describe('Common components', () => {
       `<zippy title="Zippy" type="test" visible="true" empty="true" (open)="open()" (close)="close()">test</zippy>`
 })
 class TestApp {
+  opened: boolean;
+  clickCount: number;
   constructor() {
     this.opened = false;
     this.clickCount = 0;

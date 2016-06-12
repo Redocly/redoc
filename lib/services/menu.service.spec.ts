@@ -16,8 +16,8 @@ import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
 import { ScrollService } from './scroll.service';
 import { RedocEventsService } from './events.service';
-import { MethodsList } from 'lib/components/index';
-import SchemaManager from 'lib/utils/SchemaManager';
+import { MethodsList } from '../components/index';
+import { SchemaManager } from '../utils/SchemaManager';;
 
 describe('Menu service', () => {
   let menu, hashService, scroll;
@@ -73,9 +73,9 @@ describe('Menu service', () => {
     spyOn(window, 'scrollTo').and.stub();
     hashService.changed.subscribe(() => {
       expect(menu.hashScroll).toHaveBeenCalled();
-      let scrollY = window.scrollTo.calls.argsFor(0)[1];
+      let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
-      window.scrollTo.and.callThrough();
+      (<jasmine.Spy>window.scrollTo).and.callThrough();
       done();
     });
     hashService.changed.next(hash);
@@ -87,7 +87,7 @@ describe('Menu service', () => {
     spyOn(window, 'scrollTo').and.stub();
     hashService.changed.subscribe(() => {
       expect(menu.hashScroll).toHaveBeenCalled();
-      let scrollY = window.scrollTo.calls.argsFor(0)[1];
+      let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
       done();
     });

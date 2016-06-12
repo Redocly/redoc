@@ -1,11 +1,12 @@
 'use strict';
 
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 import { Component, provide } from '@angular/core';
 
 import {
   inject,
   async,
+  expect,
   beforeEach,
   beforeEachProviders,
   it
@@ -13,11 +14,9 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { ApiInfo } from 'lib/components/ApiInfo/api-info';
-import SchemaManager from 'lib/utils/SchemaManager';
-import { OptionsService } from 'lib/services/index';
-
-let optionsService = new OptionsService();
+import { ApiInfo } from './api-info';
+import { SchemaManager } from '../../utils/SchemaManager';
+import { OptionsService } from '../../services/index';
 
 describe('Redoc components', () => {
   describe('ApiInfo Component', () => {
@@ -26,7 +25,7 @@ describe('Redoc components', () => {
     let fixture;
     beforeEachProviders(() => [
         provide(SchemaManager, {useValue: new SchemaManager()}),
-        provide(OptionsService, {useValue: optionsService})
+        provide(OptionsService, {useClass: OptionsService})
     ]);
 
     beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {

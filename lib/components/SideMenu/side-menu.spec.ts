@@ -1,9 +1,8 @@
 'use strict';
 
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 import { Component, provide } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-import { OptionsService, RedocEventsService } from 'lib/services/index';
+import { OptionsService } from '../../services/index';
 
 import {
   inject,
@@ -15,17 +14,11 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { MethodsList, SideMenu } from 'lib/components/index';
+import { MethodsList, SideMenu } from '../index';
 
-import SchemaManager from 'lib/utils/SchemaManager';
+import { SchemaManager } from '../../utils/SchemaManager';;
 
-let testOptions = new OptionsService();
-testOptions.options = {
-  scrollYOffset: () => 0,
-  scrollParent: window
-};
-
-let redocEvents = new RedocEventsService();
+let testOptions;
 
 describe('Redoc components', () => {
   describe('SideMenu Component', () => {
@@ -33,13 +26,16 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()}),
-        provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()}),
-        provide(OptionsService, {useValue: testOptions}),
-        provide(RedocEventsService, {useValue: redocEvents})
+        provide(SchemaManager, {useValue: new SchemaManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SchemaManager, OptionsService],
+      (tcb, schemaMgr, opts) => {
       builder = tcb;
+      testOptions = opts;
+      testOptions.options = {
+        scrollYOffset: () => 0,
+        scrollParent: window
+      };
       return schemaMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 

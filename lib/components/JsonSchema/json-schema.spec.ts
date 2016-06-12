@@ -9,12 +9,11 @@ import {
 } from '@angular/core/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { OptionsService } from 'lib/services/index';
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 
 
-import { JsonSchema } from 'lib/components/JsonSchema/json-schema';
-import SchemaManager from 'lib/utils/SchemaManager';
+import { JsonSchema } from './json-schema';
+import { SchemaManager } from '../../utils/SchemaManager';;
 
 describe('Redoc components', () => {
   describe('JsonSchema Component', () => {
@@ -23,8 +22,7 @@ describe('Redoc components', () => {
     let schemaMgr = new SchemaManager();
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: schemaMgr}),
-        provide(OptionsService, {useClass: OptionsService})
+        provide(SchemaManager, {useValue: schemaMgr})
     ]);
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
@@ -40,21 +38,21 @@ describe('Redoc components', () => {
 
     it('should init component', () => {
       component.pointer = '';
-      schemaMgr._schema = {type: 'object'};
+      (<any>schemaMgr)._schema = {type: 'object'};
       fixture.detectChanges();
       expect(component).not.toBeNull();
     });
 
     it('should set isTrivial for non-object/array types', () => {
       component.pointer = '';
-      schemaMgr._schema = {type: 'string'};
+      (<any>schemaMgr)._schema = {type: 'string'};
       fixture.detectChanges();
       component.schema.isTrivial.should.be.true();
     });
 
     it('should use < * > notation for prop without type', () => {
       component.pointer = '';
-      schemaMgr._schema = {type: 'object', properties: {
+      (<any>schemaMgr)._schema = {type: 'object', properties: {
         test: {}
       }};
       fixture.detectChanges();

@@ -5,9 +5,9 @@ import JsonPointer from './JsonPointer';
 import {methods as swaggerMethods} from  './swagger-defs';
 
 export class SchemaManager {
-  private _schema:any = {};
+  public _schema:any = {};
   private _instance:any;
-  
+
   apiUrl: string;
   constructor() {
     if (SchemaManager.prototype._instance) {

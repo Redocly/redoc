@@ -1,6 +1,6 @@
 'use strict';
 
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 import {Component, provide} from '@angular/core';
 
 import {
@@ -13,8 +13,8 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { ApiLogo } from 'lib/components/ApiLogo/api-logo';
-import SchemaManager from 'lib/utils/SchemaManager';
+import { ApiLogo } from './api-logo';
+import { SchemaManager } from '../../utils/SchemaManager';
 
 
 describe('Redoc components', () => {

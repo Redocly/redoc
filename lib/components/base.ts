@@ -95,10 +95,9 @@ export function RedocComponent(options) {
  * @class
  */
 export class BaseComponent {
-  componentSchema: any;
+  componentSchema: any = null;
   pointer: String;
   constructor(public schemaMgr: SchemaManager) {
-    this.componentSchema = null;
   }
 
   /**
@@ -169,7 +168,7 @@ export class BaseComponent {
     this.componentSchema = snapshot(resolve(schema));
   }
 
-  static joinAllOf(schema, opts) {
+  static joinAllOf(schema: any, opts?: any) {
     function merge(into, schemas) {
       for (let subSchema of schemas) {
         if (opts && opts.omitParent && subSchema.discriminator) continue;

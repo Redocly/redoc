@@ -1,7 +1,6 @@
 'use strict';
 
 import { Component, provide } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import {
   inject,
   async,
@@ -11,11 +10,11 @@ import {
 } from '@angular/core/testing';
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 
-import { OptionsService, RedocEventsService } from 'lib/services/index';
-import { MethodsList } from 'lib/components/MethodsList/methods-list';
-import SchemaManager from 'lib/utils/SchemaManager';
+
+import { MethodsList } from './methods-list';
+import { SchemaManager } from '../../utils/SchemaManager';
 
 describe('Redoc components', () => {
   describe('MethodsList Component', () => {
@@ -23,10 +22,7 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()}),
-        provide(OptionsService, {useClass: OptionsService}),
-        provide(BrowserDomAdapter, {useClass: BrowserDomAdapter}),
-        provide(RedocEventsService, {useClass: RedocEventsService})
+        provide(SchemaManager, {useValue: new SchemaManager()})
     ]);
     beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
       builder = tcb;

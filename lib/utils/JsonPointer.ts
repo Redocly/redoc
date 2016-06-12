@@ -6,7 +6,7 @@ const origParse = JsonPointerLib.parse;
  * Wrapper for JsonPointer. Provides common operations
  */
 
-class JsonPointer {
+export class JsonPointer {
   /**
    * returns last JsonPointer token
    * if level > 1 returns levels last (second last/third last)
@@ -60,15 +60,15 @@ class JsonPointer {
      let resTokens = baseTokens.concat(tokens);
      return JsonPointerLib.compile(resTokens);
    }
-   
+
    static get(object: Object, pointer:string) {
      return JsonPointerLib.get(object, pointer);
    }
-   
+
    static compile(tokens: string[]) {
      return JsonPointerLib.compile(tokens);
    }
-   
+
    static escape(pointer: string) {
      return JsonPointerLib.escape(pointer);
    }

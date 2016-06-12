@@ -1,7 +1,7 @@
 'use strict';
 
-import { getChildDebugElement } from 'tests/helpers';
-import { Component, provide } from '@angular/core';
+import { getChildDebugElement } from '../../../tests/helpers';
+import { Component, provide, ComponentRef } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
 import {
@@ -14,27 +14,31 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { Redoc } from 'lib/components/Redoc/redoc';
-import SchemaManager from 'lib/utils/SchemaManager';
-import { OptionsService } from 'lib/services/index';
+import { Redoc } from './redoc';
+import { SchemaManager } from '../../utils/SchemaManager';
+import { OptionsService } from '../../services/index';
 
-let optsMgr = new OptionsService(new BrowserDomAdapter());
+let optsMgr:OptionsService;
 
 describe('Redoc components', () => {
   describe('Redoc Component', () => {
     let builder;
+    let schemaMgr;
     beforeEachProviders(() => [
         provide(SchemaManager, {useValue: new SchemaManager()}),
-        provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()}),
-        provide(OptionsService, {useValue: optsMgr})
     ]);
-    beforeEachProviders(() => [
-        provide(OptionsService, {useValue: optsMgr})
-    ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SchemaManager, OptionsService],
+      (tcb, _schemaMgr, _optsMgr) => {
+      optsMgr = _optsMgr;
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml');
+      schemaMgr = _schemaMgr;
     })));
+
+    beforeEach((done) => {
+      return schemaMgr.load('/tests/schemas/extended-petstore.yml')
+        .then(() => done())
+        .catch(err => done.fail(err));
+    });
 
 
     it('should init component', (done) => {
@@ -51,7 +55,9 @@ describe('Redoc components', () => {
         (() => fixture.detectChanges()).should.not.throw();
         fixture.destroy();
         done();
-      }, err => done.fail(err));
+      }, err => {
+        return done.fail(err)
+      });
     });
   });
 
@@ -114,7 +120,7 @@ describe('Redoc components', () => {
         fixture = _fixture;
         element = getChildDebugElement(fixture.debugElement, 'methods-list').nativeElement;
         destroySpy = jasmine.createSpy('spy');
-        Redoc.appRef = {
+        Redoc.appRef = <ComponentRef<any>>{
           destroy: destroySpy
         };
         fixture.detectChanges();
@@ -148,7 +154,9 @@ describe('Redoc components', () => {
   describe('Redoc autoInit', () => {
     const testURL = 'testurl';
     let dom = new BrowserDomAdapter();
-    let elem;
+    //let redocInitSpy;
+    let elem: HTMLElement;
+
     beforeEach(() => {
       spyOn(Redoc, 'init').and.stub();
       elem = dom.createElement('redoc');
@@ -159,7 +167,7 @@ describe('Redoc components', () => {
     it('should call Redoc.init with url from param spec-url', () => {
       Redoc.autoInit();
       expect(Redoc.init).toHaveBeenCalled();
-      expect(Redoc.init.calls.argsFor(0)).toEqual([testURL]);
+      expect((<jasmine.Spy>Redoc.init).calls.argsFor(0)).toEqual([testURL]);
     });
 
     it('should not call Redoc.init when spec-url param is not provided', () => {
@@ -169,7 +177,7 @@ describe('Redoc components', () => {
     });
 
     afterEach(() => {
-      Redoc.init.and.callThrough();
+      (<jasmine.Spy>Redoc.init).and.callThrough();
       dom.defaultDoc().body.removeChild(elem);
     });
   });

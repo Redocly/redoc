@@ -69,7 +69,7 @@ export class Redoc extends BaseComponent {
     }, 400);
   }
 
-  static init(specUrl, options?) {
+  static init(specUrl?, options?) {
     var optionsService = new OptionsService(dom);
     optionsService.options = options;
     optionsService.options.specUrl = optionsService.options.specUrl || specUrl;

@@ -1,6 +1,6 @@
 'use strict';
 
-import {JsonPointer} from 'lib/utils/JsonPointer';
+import {JsonPointer} from '../../lib/utils/JsonPointer';
 // test extended JsonPointer
 describe('Utils', () => {
   describe('JsonPointer', () => {

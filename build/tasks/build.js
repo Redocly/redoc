@@ -40,7 +40,6 @@ gulp.task('copyDebug', () => {
 
 gulp.task('rebuild', function(done) {
   return runSequence(
-    'tsc',
     'inlineTemplates',
     'bundle',
     'concatDeps',
@@ -53,8 +52,8 @@ gulp.task('tsc', function() {
   exec('tsc -p ./tsconfig.json');
 });
 
-gulp.task('inlineTemplates', ['sass'], function() {
-  return gulp.src('.tmp/lib/**/*.js', { base: './tmp' })
+gulp.task('inlineTemplates', ['tsc', 'sass'], function() {
+  return gulp.src('.tmp/**/*.js', { base: './tmp' })
     .pipe(replace(/'(.*?)\.css'/g, '\'$1.scss\''))
     .pipe(inlineNg2Template({
       base: './',

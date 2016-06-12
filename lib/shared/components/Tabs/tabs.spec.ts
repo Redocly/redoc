@@ -1,6 +1,6 @@
 'use strict';
 
-import { getChildDebugElement, getChildDebugElementAll } from 'tests/helpers';
+import { getChildDebugElement, getChildDebugElementAll } from '../../../../tests/helpers';
 import {Component} from '@angular/core';
 
 import {
@@ -11,7 +11,7 @@ import {
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import {Tabs, Tab} from 'lib/shared/components/index';
+import {Tabs, Tab} from '../index';
 
 describe('Common components', () => {
   describe('Tabs Component', () => {
@@ -148,6 +148,7 @@ describe('Common components', () => {
       </tabs>`
 })
 class TestApp {
+  eventLog: any;
   constructor() {
     this.eventLog = [];
   }

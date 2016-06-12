@@ -1,7 +1,7 @@
 'use strict';
 
-import SchemaManager from 'lib/utils/SchemaManager';
-import { BaseComponent } from 'lib/components/base';
+import { SchemaManager } from '../utils/SchemaManager';
+import { BaseComponent } from '../components/base';
 
 describe('Redoc components', () => {
   describe('BaseComponent', () => {
@@ -30,11 +30,14 @@ describe('Redoc components', () => {
     });
 
     it('should call prepareModel and init virtual methods after init', () => {
-      sinon.spy(component, 'prepareModel');
-      sinon.spy(component, 'init');
+      spyOn(component, 'prepareModel');
+      spyOn(component, 'init');
       component.ngOnInit();
-      component.prepareModel.calledOnce.should.be.true;
-      component.init.calledOnce.should.be.true;
+
+      component.prepareModel.calls.count().should.be.equal(1);
+      component.init.calls.count().should.be.equal(1);
+      component.prepareModel.and.callThrough();
+      component.init.and.callThrough();
     });
 
     describe('dereference', () => {

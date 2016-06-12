@@ -1,9 +1,8 @@
 'use strict';
 
-import { getChildDebugElement } from 'tests/helpers';
+import { getChildDebugElement } from '../../../tests/helpers';
 import { Component, provide } from '@angular/core';
 import { DynamicComponentLoader } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
 import {
   inject,
@@ -15,9 +14,8 @@ import {
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
 
-import { JsonSchemaLazy } from 'lib/components/JsonSchema/json-schema-lazy';
-import SchemaManager from 'lib/utils/SchemaManager';
-import { OptionsService } from 'lib/services/index';
+import { JsonSchemaLazy } from './json-schema-lazy';
+import { SchemaManager } from '../../utils/SchemaManager';
 
 describe('Redoc components', () => {
   describe('JsonSchemaLazy Component', () => {
@@ -26,25 +24,25 @@ describe('Redoc components', () => {
     let schemaMgr = new SchemaManager();
     let fixture;
     let loader;
-    let appRef = {
-      instance: {},
+    let appRefMock = {
+      instance: {
+        pointer: ''
+      },
       hostView: {changeDetectorRef: {detectChanges : function() {} }}
     };
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: schemaMgr}),
-        provide(BrowserDomAdapter, {useClass: BrowserDomAdapter}),
-        provide(OptionsService, {useClass: OptionsService})
+        provide(SchemaManager, {useValue: schemaMgr})
     ]);
     beforeEach(inject([TestComponentBuilder, DynamicComponentLoader], (tcb, dcl) => {
       builder = tcb;
       loader = dcl;
-      spyOn(loader, 'loadNextToLocation').and.returnValue({then: (fn) => fn(appRef)});
+      spyOn(loader, 'loadNextToLocation').and.returnValue({then: (fn) => fn(appRefMock)});
     }));
     beforeEach((done) => {
       builder.createAsync(TestApp).then(_fixture => {
         fixture = _fixture;
         let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
-        component = debugEl.componentInstance;
+        component = <JsonSchemaLazy>debugEl.componentInstance;
         done();
       }, err => done.fail(err));
     });
@@ -76,7 +74,7 @@ describe('Redoc components', () => {
       component.pointer = '#/def';
       fixture.detectChanges();
       component.load();
-      expect(appRef.instance.pointer).toEqual(component.pointer);
+      expect(appRefMock.instance.pointer).toEqual(component.pointer);
     });
   });
 });

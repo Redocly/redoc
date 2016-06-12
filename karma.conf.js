@@ -51,25 +51,26 @@ module.exports = function (config) {
           'node_modules/zone.js/dist/jasmine-patch.js',
           'node_modules/zone.js/dist/long-stack-trace-zone.js',
           'node_modules/babel-polyfill/dist/polyfill.js',
-          './node_modules/reflect-metadata/Reflect.js'
+          './node_modules/reflect-metadata/Reflect.js',
+          '.tmp/prismjs-bundle.js'
         ],
 
         jspm: {
             config: 'system.config.js',
-            loadFiles: ['tests/setup.js', 'tests/helpers.js', 'tests/unit/*.spec.js', 'lib/**/*.js'],
+            loadFiles: ['.tmp/tests/setup.js', '.tmp/tests/helpers.js', '.tmp/lib/**/*.js',
+            '.tmp/tests/unit/*.js'],
             serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
-            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.scss'],
+            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css'],
             nocache: true
         },
 
         proxies: {
-            '/tests/': '/base/tests/',
-            '/lib/components/Redoc/redoc-initial-styles.scss': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.scss',
+            '/tests/schemas': '/base/tests/schemas',
+            '/lib/components/redoc/redoc-initial-styles.scss': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.scss',
             '/lib/version.json': '/base/.tmp/lib/version.json',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/',
-            '/prismjs-bundle.js': '/base/.tmp/prismjs-bundle.js',
             '/.tmp/': '/base/.tmp/'
         },
         reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
