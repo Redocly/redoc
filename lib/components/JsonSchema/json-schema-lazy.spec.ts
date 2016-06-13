@@ -28,7 +28,7 @@ describe('Redoc components', () => {
       instance: {
         pointer: ''
       },
-      hostView: {changeDetectorRef: {detectChanges : function() {} }}
+      hostView: { changeDetectorRef: {detectChanges : () => undefined} }
     };
     beforeEachProviders(() => [
         provide(SchemaManager, {useValue: schemaMgr})
@@ -39,7 +39,7 @@ describe('Redoc components', () => {
       spyOn(loader, 'loadNextToLocation').and.returnValue({then: (fn) => fn(appRefMock)});
     }));
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
         component = <JsonSchemaLazy>debugEl.componentInstance;
@@ -87,5 +87,5 @@ describe('Redoc components', () => {
   template:
       `<json-schema-lazy></json-schema-lazy>`
 })
-class TestApp {
+class TestAppComponent {
 }

@@ -26,7 +26,7 @@ export class ScrollService {
   }
 
   scrollY() {
-    return (this.$scrollParent.pageYOffset != null) ? this.$scrollParent.pageYOffset : this.$scrollParent.scrollTop;
+    return (this.$scrollParent.pageYOffset != undefined) ? this.$scrollParent.pageYOffset : this.$scrollParent.scrollTop;
   }
 
   /* returns 1 if element if above the view, 0 if in view and -1 below the view */

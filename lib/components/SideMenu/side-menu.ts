@@ -24,8 +24,8 @@ export class SideMenu extends BaseComponent {
   activeItemCaption: string;
   options: any;
   data: any;
-  constructor(schemaMgr:SchemaManager, elementRef:ElementRef, private dom:BrowserDomAdapter, 
-  private scrollService:ScrollService, private menuService:MenuService, private hash:Hash, 
+  constructor(schemaMgr:SchemaManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
+  private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
     super(schemaMgr);
     this.$element = elementRef.nativeElement;

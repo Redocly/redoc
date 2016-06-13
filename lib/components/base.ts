@@ -13,7 +13,7 @@ let commonInputs = ['pointer']; // json pointer to the schema chunk
 // internal helper function
 function safeConcat(a, b) {
   let res = a && a.slice() || [];
-  b = (b == null) ? [] : b;
+  b = (b == undefined) ? [] : b;
   return res.concat(b);
 }
 
@@ -33,7 +33,7 @@ function defaults(target, src) {
 }
 
 function snapshot(obj) {
-  if(obj == null || typeof(obj) != 'object') {
+  if(obj == undefined || typeof(obj) !== 'object') {
     return obj;
   }
 
@@ -97,6 +97,70 @@ export function RedocComponent(options) {
 export class BaseComponent {
   componentSchema: any = null;
   pointer: String;
+
+  static joinAllOf(schema: any, opts?: any) {
+    function merge(into, schemas) {
+      for (let subSchema of schemas) {
+        if (opts && opts.omitParent && subSchema.discriminator) continue;
+        // TODO: add support for merge array schemas
+        if (typeof subSchema !== 'object') {
+          let errMessage = `Items of allOf should be Object: ${typeof subSchema} found
+            ${subSchema}`;
+          throw new Error(errMessage);
+        }
+
+        if (into.type && subSchema.type && into.type !== subSchema.type) {
+          let errMessage = `allOf merging error: schemas with different types can't be merged`;
+          throw new Error(errMessage);
+        }
+
+
+        if (into.type === 'array') {
+          console.warn('allOf: subschemas with type array are not supported yet');
+        }
+
+        // TODO: add check if can be merged correctly (no different properties with the same name)
+        into.type = into.type || subSchema.type;
+        if (into.type === 'object' && subSchema.properties) {
+          if (!into.properties) into.properties = {};
+          Object.assign(into.properties, subSchema.properties);
+          Object.keys(subSchema.properties).forEach(propName => {
+            if (!subSchema.properties[propName]._pointer) {
+              subSchema.properties[propName]._pointer = subSchema._pointer ?
+                JsonPointer.join(subSchema._pointer, ['properties', propName]) : null;
+            }
+          });
+        }
+        if (into.type === 'object' && subSchema.required) {
+          if (!into.required) into.required = [];
+          into.required.push(...subSchema.required);
+        }
+        // don't merge _pointer
+        subSchema._pointer = null;
+        defaults(into, subSchema);
+      }
+      into.allOf = null;
+    }
+
+    function traverse(obj) {
+      if (obj === undefined || typeof(obj) !== 'object') {
+        return;
+      }
+
+      for(var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          traverse(obj[key]);
+        }
+      }
+
+      if (obj.allOf) {
+        merge(obj, obj.allOf);
+      }
+    }
+
+    traverse(schema);
+  }
+
   constructor(public schemaMgr: SchemaManager) {
   }
 
@@ -168,84 +232,27 @@ export class BaseComponent {
     this.componentSchema = snapshot(resolve(schema));
   }
 
-  static joinAllOf(schema: any, opts?: any) {
-    function merge(into, schemas) {
-      for (let subSchema of schemas) {
-        if (opts && opts.omitParent && subSchema.discriminator) continue;
-        // TODO: add support for merge array schemas
-        if (typeof subSchema !== 'object') {
-          let errMessage = `Items of allOf should be Object: ${typeof subSchema} found
-            ${subSchema}`;
-          throw new Error(errMessage);
-        }
-
-        if (into.type && subSchema.type && into.type !== subSchema.type) {
-          let errMessage = `allOf merging error: schemas with different types can't be merged`;
-          throw new Error(errMessage);
-        }
-
-
-        if (into.type === 'array') {
-          console.warn('allOf: subschemas with type array are not supported yet');
-        }
-
-        // TODO: add check if can be merged correctly (no different properties with the same name)
-        into.type = into.type || subSchema.type;
-        if (into.type === 'object' && subSchema.properties) {
-          into.properties || (into.properties = {});
-          Object.assign(into.properties, subSchema.properties);
-          Object.keys(subSchema.properties).forEach(propName => {
-            if (!subSchema.properties[propName]._pointer) {
-              subSchema.properties[propName]._pointer = subSchema._pointer ?
-                JsonPointer.join(subSchema._pointer, ['properties', propName]) : null;
-            }
-          });
-        }
-        if (into.type === 'object' && subSchema.required) {
-          into.required || (into.required = []);
-          into.required.push(...subSchema.required);
-        }
-        // don't merge _pointer
-        subSchema._pointer = null;
-        defaults(into, subSchema);
-      }
-      into.allOf = null;
-    }
-
-    function traverse(obj) {
-      if (obj === null || typeof(obj) !== 'object') {
-        return;
-      }
-
-      for(var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          traverse(obj[key]);
-        }
-      }
-
-      if (obj.allOf) {
-        merge(obj, obj.allOf);
-      }
-    }
-
-    traverse(schema);
-  }
-
   /**
    * Used to prepare model based on component schema
    * @abstract
    */
-  prepareModel() {}
+  prepareModel():any {
+    // emtpy
+  }
 
   /**
    * Used to initialize component. Run after prepareModel
    * @abstract
    */
-  init() {}
+  init() {
+    // empty
+  }
 
   /**
    + Used to destroy component
    * @abstract
    */
-  destroy() {}
+  destroy() {
+    // emtpy
+  }
 }

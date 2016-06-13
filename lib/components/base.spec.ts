@@ -284,6 +284,7 @@ describe('Redoc components', () => {
       });
 
       xdescribe('Merge array allOf', () => {
+        //emtpy
       });
     });
   });

@@ -9,7 +9,7 @@ import {RedocComponent, BaseComponent, SchemaManager} from '../base';
 })
 export class ApiLogo extends BaseComponent {
   data:any = {};
-  
+
   constructor(schemaMgr:SchemaManager) {
     super(schemaMgr);
   }

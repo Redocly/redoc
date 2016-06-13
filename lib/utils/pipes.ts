@@ -1,8 +1,8 @@
 'use strict';
 
-import {Pipe} from '@angular/core';
-import {isString, stringify, isBlank} from '@angular/core/src/facade/lang';
-import {BaseException} from '@angular/core/src/facade/exceptions';
+import { Pipe, PipeTransform } from '@angular/core';
+import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
+import { BaseException } from '@angular/core/src/facade/exceptions';
 import JsonPointer from './JsonPointer';
 
 declare var Prism: any;
@@ -31,7 +31,7 @@ class InvalidPipeArgumentException extends BaseException {
 }
 
 @Pipe({ name: 'keys' })
-export class KeysPipe {
+export class KeysPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (typeof value !== 'object') {
@@ -42,7 +42,7 @@ export class KeysPipe {
 }
 
 @Pipe({ name: 'values' })
-export class ValuesPipe {
+export class ValuesPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (typeof value !== 'object') {
@@ -53,7 +53,7 @@ export class ValuesPipe {
 }
 
 @Pipe({ name: 'jsonPointerEscape' })
-export class JsonPointerEscapePipe {
+export class JsonPointerEscapePipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
@@ -64,7 +64,7 @@ export class JsonPointerEscapePipe {
 }
 
 @Pipe({ name: 'marked' })
-export class MarkedPipe {
+export class MarkedPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
@@ -83,7 +83,7 @@ const langMap = {
 };
 
 @Pipe({ name: 'prism' })
-export class PrismPipe {
+export class PrismPipe implements PipeTransform {
   transform(value, args) {
     if (isBlank(args) || args.length === 0) {
       throw new BaseException('Prism pipe requires one argument');
@@ -103,7 +103,7 @@ export class PrismPipe {
 }
 
 @Pipe({ name: 'encodeURIComponent' })
-export class EncodeURIComponentPipe {
+export class EncodeURIComponentPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (!isString(value)) {

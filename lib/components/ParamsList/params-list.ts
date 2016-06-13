@@ -16,9 +16,9 @@ function safePush(obj, prop, item) {
   directives: [JsonSchema, JsonSchemaLazy]
 })
 export class ParamsList extends BaseComponent {
-  
+
   data:any;
-  
+
   constructor(schemaMgr:SchemaManager) {
     super(schemaMgr);
   }

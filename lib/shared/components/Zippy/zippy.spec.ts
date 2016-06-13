@@ -39,15 +39,15 @@ describe('Common components', () => {
     });
 
     it('should init component defaults', () => {
-      component.empty.should.be.false;
-      component.visible.should.be.false;
+      component.empty.should.be.false();
+      component.visible.should.be.false();
       component.type.should.be.equal('general');
     });
 
     it('should init properties from dom params', () => {
       fixture.detectChanges();
-      component.visible.should.be.true;
-      component.empty.should.be.true;
+      component.visible.should.be.true();
+      component.empty.should.be.true();
       component.title.should.be.equal('Zippy');
       component.type.should.be.equal('test');
     });
@@ -58,7 +58,7 @@ describe('Common components', () => {
       expect(contentEl.innerText).toMatch('test');
     });
 
-    it('should open and close zippy', () => {
+    it('should open and close zippy', (done) => {
       fixture.detectChanges();
       component.empty = false;
       component.visible = true;
@@ -69,13 +69,17 @@ describe('Common components', () => {
       let titleEl = nativeElement.querySelector('.zippy-title');
       mouseclick(titleEl);
       fixture.detectChanges();
-      component.visible.should.be.false;
-      testComponent.opened.should.be.false;
+      component.visible.should.be.false();
+      testComponent.opened.should.be.false();
 
       mouseclick(titleEl);
       fixture.detectChanges();
-      component.visible.should.be.true;
-      testComponent.opened.should.be.true;
+      setTimeout(() => {
+        component.visible.should.be.true();
+        testComponent.opened.should.be.true();
+        testComponent.clickCount.should.be.equal(2);
+        done();
+      });
     });
 
     it('should disable empty zippy', () => {
@@ -99,7 +103,7 @@ describe('Common components', () => {
   selector: 'test-app',
   directives: [Zippy],
   template:
-      `<zippy title="Zippy" type="test" visible="true" empty="true" (open)="open()" (close)="close()">test</zippy>`
+      `<zippy title="Zippy" type="test" [visible]="true" [empty]="true" (open)="open()" (close)="close()">test</zippy>`
 })
 class TestApp {
   opened: boolean;

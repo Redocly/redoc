@@ -34,7 +34,7 @@ describe('Redoc components', () => {
     })));
 
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         component = getChildDebugElement(fixture.debugElement, 'api-info').componentInstance;
         fixture.detectChanges();
@@ -67,5 +67,5 @@ describe('Redoc components', () => {
   template:
       `<api-info></api-info>`
 })
-class TestApp {
+class TestAppComponent {
 }

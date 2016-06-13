@@ -42,7 +42,7 @@ describe('Redoc components', () => {
 
 
     it('should init component', (done) => {
-      builder.createAsync(TestApp).then(fixture => {
+      builder.createAsync(TestAppComponent).then(fixture => {
         let component = getChildDebugElement(fixture.debugElement, 'redoc').componentInstance;
         expect(component).not.toBeNull();
         fixture.destroy();
@@ -51,12 +51,12 @@ describe('Redoc components', () => {
     });
 
     it('should init components tree without errors', (done) => {
-      builder.createAsync(TestApp).then(fixture => {
+      builder.createAsync(TestAppComponent).then(fixture => {
         (() => fixture.detectChanges()).should.not.throw();
         fixture.destroy();
         done();
       }, err => {
-        return done.fail(err)
+        return done.fail(err);
       });
     });
   });
@@ -116,7 +116,7 @@ describe('Redoc components', () => {
     })));
 
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         element = getChildDebugElement(fixture.debugElement, 'methods-list').nativeElement;
         destroySpy = jasmine.createSpy('spy');
@@ -190,5 +190,5 @@ describe('Redoc components', () => {
   template:
       `<redoc disable-lazy-schemas></redoc>`
 })
-class TestApp {
+class TestAppComponent {
 }

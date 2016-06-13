@@ -14,7 +14,7 @@ export class ApiInfo extends BaseComponent {
   constructor(schemaMgr:SchemaManager, private optionsService:OptionsService) {
     super(schemaMgr);
   }
-  
+
   prepareModel() {
     this.data = this.componentSchema.info;
     this.specUrl = this.optionsService.options.specUrl;

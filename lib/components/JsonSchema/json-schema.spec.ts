@@ -28,7 +28,7 @@ describe('Redoc components', () => {
       builder = tcb;
     }));
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema');
         component = debugEl.componentInstance;
@@ -70,5 +70,5 @@ describe('Redoc components', () => {
   template:
       `<json-schema></json-schema>`
 })
-class TestApp {
+class TestAppComponent {
 }

@@ -1,12 +1,12 @@
 'use strict';
-import {Pipe} from '@angular/core';
-import {isBlank} from '@angular/core/src/facade/lang';
+import { Pipe, PipeTransform } from '@angular/core';
+import { isBlank } from '@angular/core/src/facade/lang';
 
 var level = 1;
 const COLLAPSE_LEVEL = 2;
 
 @Pipe({ name: 'jsonFormatter' })
-export class JsonFormatter {
+export class JsonFormatter implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     return jsonToHTML(value);
@@ -14,7 +14,8 @@ export class JsonFormatter {
 }
 
 function htmlEncode(t) {
-  return t != null ? t.toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+  return t != undefined ?
+    t.toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
 }
 
 function decorateWithSpan(value, className) {
@@ -23,25 +24,22 @@ function decorateWithSpan(value, className) {
 
 function valueToHTML(value) {
   var valueType = typeof value, output = '';
-  if (value == null) {
+  if (value == undefined) {
     output += decorateWithSpan('null', 'type-null');
-  }
-  else if (value && value.constructor === Array) {
+  } else if (value && value.constructor === Array) {
     level++;
     output += arrayToHTML(value);
     level--;
-  }
-  else if (valueType === 'object') {
+  } else if (valueType === 'object') {
     level++;
     output += objectToHTML(value);
     level--;
-  }
-  else if (valueType === 'number') {
+  } else if (valueType === 'number') {
     output += decorateWithSpan(value, 'type-number');
-  }
-  else if (valueType === 'string') {
+  } else if (valueType === 'string') {
     if (/^(http|https):\/\/[^\\s]+$/.test(value)) {
-      output += decorateWithSpan('"', 'type-string') + '<a href="' + value + '">' + htmlEncode(value) + '</a>' + decorateWithSpan('"', 'type-string');
+      output += decorateWithSpan('"', 'type-string') + '<a href="' + value + '">' + htmlEncode(value) + '</a>' +
+        decorateWithSpan('"', 'type-string');
     } else {
       output += decorateWithSpan('"' + value + '"', 'type-string');
     }

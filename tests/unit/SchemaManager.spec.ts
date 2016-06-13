@@ -9,10 +9,6 @@ describe('Utils', () => {
       schemaMgr = new SchemaManager();
     });
 
-    it('Should initialize with empty schema', ()=> {
-      schemaMgr.schema.should.be.empty;
-    });
-
     it('Should be a singleton', ()=> {
       (new SchemaManager()).should.be.equal(schemaMgr);
       SchemaManager.instance().should.be.equal(schemaMgr);
@@ -50,7 +46,7 @@ describe('Utils', () => {
 
       it('should contain non-empty schema', ()=> {
         schemaMgr.schema.should.be.an.Object();
-        schemaMgr.schema.should.be.not.empty;
+        schemaMgr.schema.should.be.not.empty();
       });
 
       it('should correctly init api url', ()=> {
@@ -93,7 +89,7 @@ describe('Utils', () => {
       it('should return empty array for non-specified tags', () => {
         delete schemaMgr._schema.tags;
         let tagsMap = schemaMgr.getTagsMap();
-        tagsMap.should.be.empty;
+        tagsMap.should.be.empty();
       });
     });
 
@@ -155,8 +151,8 @@ describe('Utils', () => {
 
       it('should map x-traitTag to empty methods list', () => {
         let [, info] = entries[0];
-        info['x-traitTag'].should.be.true;
-        info.methods.should.be.empty;
+        info['x-traitTag'].should.be.true();
+        info.methods.should.be.empty();
       });
 
       it('methods for tag should contain valid pointer and summary', () => {
@@ -238,13 +234,16 @@ describe('Utils', () => {
         let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Pet');
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.not.be.empty();
-        deriveDefs.should.be.deepEqual([{name: 'Cat', empty: false, $ref: '#/definitions/Cat'}, {name: 'Dog', empty: false, $ref: '#/definitions/Dog'}]);
+        deriveDefs.should.be.deepEqual([
+          {name: 'Cat', empty: false, $ref: '#/definitions/Cat'},
+          {name: 'Dog', empty: false, $ref: '#/definitions/Dog'}
+        ]);
       });
 
       it('should return emtpy array for definitions that dont have discriminator', () => {
         let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Order');
         deriveDefs.should.be.instanceof(Array);
-        deriveDefs.should.be.empty;
+        deriveDefs.should.be.empty();
       });
     });
   });

@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { isFunction, isString } from '@angular/core/src/facade/lang';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-import { global } from '@angular/core/src/facade/lang';
 
 const defaults = {
   scrollYOffset: 0,
@@ -15,7 +14,7 @@ const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl'])
 @Injectable()
 export class OptionsService {
   private _options: any;
-  
+
   constructor(private dom:BrowserDomAdapter) {
     this._options = defaults;
     this.dom = dom;

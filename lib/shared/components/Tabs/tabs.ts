@@ -29,7 +29,7 @@ export class Tabs {
       tab.active = false;
     });
     tab.active = true;
-    notify && this.change.next(tab.tabTitle);
+    if (notify) this.change.next(tab.tabTitle);
   }
 
   selectyByTitle(tabTitle, notify = false) {
@@ -47,7 +47,7 @@ export class Tabs {
     } else {
       prevActive.active = true;
     }
-    notify && this.change.next(tabTitle);
+    if (notify) this.change.next(tabTitle);
     this.changeDetector.markForCheck();
   }
 

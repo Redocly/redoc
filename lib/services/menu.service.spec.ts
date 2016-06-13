@@ -50,7 +50,7 @@ describe('Menu service', () => {
   });
 
   beforeEach((done) => {
-    builder.createAsync(TestApp).then((fixture) => {
+    builder.createAsync(TestAppComponent).then((fixture) => {
       fixture.detectChanges();
       done();
     }).catch((err) => done.fail(err));
@@ -122,5 +122,5 @@ describe('Menu service', () => {
         <methods-list></methods-list>
       </div>`
 })
-class TestApp {
+class TestAppComponent {
 }

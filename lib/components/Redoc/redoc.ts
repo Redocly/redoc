@@ -34,26 +34,11 @@ var _modeLocked = false;
   onPushOnly: false
 })
 export class Redoc extends BaseComponent {
-  private element: any;
-  options: any;
   static appRef: ComponentRef<any>;
 
-  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef,
-    public events:RedocEventsService) {
-    super(schemaMgr);
-    this.element = elementRef.nativeElement;
-    //parse options (top level component doesn't support inputs)
-    optionsMgr.parseOptions( this.element );
-    optionsMgr.options.$scrollParent = detectScollParent( this.element );
-    this.options = optionsMgr.options;
-    this.events = events;
-  }
+  options: any;
 
-  ngAfterViewInit() {
-    setTimeout( () => {
-      this.events.bootstrapped.next({});
-    });
-  }
+  private element: any;
 
   static showLoadingAnimation() {
     let elem = dom.query('redoc');
@@ -143,7 +128,24 @@ export class Redoc extends BaseComponent {
 
       // Redoc destroy removes host element, so need to restore it
       elClone.innerHTML = 'Loading...';
-      parent && parent.insertBefore(elClone, nextSibling);
+      if (parent) parent.insertBefore(elClone, nextSibling);
     }
+  }
+
+  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef,
+    public events:RedocEventsService) {
+    super(schemaMgr);
+    this.element = elementRef.nativeElement;
+    //parse options (top level component doesn't support inputs)
+    optionsMgr.parseOptions( this.element );
+    optionsMgr.options.$scrollParent = detectScollParent( this.element );
+    this.options = optionsMgr.options;
+    this.events = events;
+  }
+
+  ngAfterViewInit() {
+    setTimeout( () => {
+      this.events.bootstrapped.next({});
+    });
   }
 }

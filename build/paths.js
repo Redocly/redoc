@@ -9,7 +9,7 @@ var paths = {
   output: 'dist/',
   tmp: '.tmp/',
   demo: 'demo/**/*',
-  tests: '{lib,tests}/**/*.spec.js',
+  tests: '{lib,tests}/**/*.spec.ts',
   releases: 'demo/releases/'
 }
 

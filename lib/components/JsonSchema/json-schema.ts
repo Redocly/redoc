@@ -22,7 +22,16 @@ export class JsonSchema extends BaseComponent {
   @Input() nestOdd: boolean;
   @Input() childFor: string;
   @Input() isRequestSchema: boolean;
- 
+
+  static injectPropertyData(propertySchema, propertyName, propPointer, hostPointer?) {
+    propertySchema = Object.assign({}, propertySchema);
+
+    propertySchema._name = propertyName;
+    runInjectors(propertySchema, propertySchema, propPointer, hostPointer);
+
+    return propertySchema;
+  }
+
   constructor(schemaMgr:SchemaManager, elementRef:ElementRef) {
     super(schemaMgr);
     this.$element = elementRef.nativeElement;
@@ -136,24 +145,6 @@ export class JsonSchema extends BaseComponent {
     var addProps = schema.additionalProperties;
     return JsonSchema.injectPropertyData(addProps, '<Additional Properties> *',
       JsonPointer.join(addProps._pointer || schema._pointer || this.pointer, ['additionalProperties']));
-  }
-
-  static injectPropertyData(propertySchema, propertyName, propPointer, hostPointer?) {
-    propertySchema = Object.assign({}, propertySchema);
-
-    propertySchema._name = propertyName;
-    runInjectors(propertySchema, propertySchema, propPointer, hostPointer);
-
-    return propertySchema;
-  }
-}
-
-function runInjectors(injectTo, propertySchema, propertyPointer, hostPointer?) {
-  for (var injName in injectors) {
-    let injector = injectors[injName];
-    if (injector.check(propertySchema)) {
-      injector.inject(injectTo, propertySchema, propertyPointer, hostPointer);
-    }
   }
 }
 
@@ -283,3 +274,12 @@ const injectors = {
     }
   }
 };
+
+function runInjectors(injectTo, propertySchema, propertyPointer, hostPointer?) {
+  for (var injName in injectors) {
+    let injector = injectors[injName];
+    if (injector.check(propertySchema)) {
+      injector.inject(injectTo, propertySchema, propertyPointer, hostPointer);
+    }
+  }
+}

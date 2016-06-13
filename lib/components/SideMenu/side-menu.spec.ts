@@ -40,7 +40,7 @@ describe('Redoc components', () => {
     })));
 
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         component = getChildDebugElement(fixture.debugElement, 'side-menu').componentInstance;
         fixture.detectChanges();
@@ -69,5 +69,5 @@ describe('Redoc components', () => {
       `<side-menu></side-menu>
       <methods-list></methods-list>`
 })
-class TestApp {
+class TestAppComponent {
 }

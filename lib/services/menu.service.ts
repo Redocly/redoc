@@ -14,7 +14,7 @@ const CHANGE = {
 export class MenuService {
   changed: EventEmitter<any> = new EventEmitter();
   categories: any;
-  
+
   activeCatIdx: number = 0;
   activeMethodIdx: number = -1;
   activeMethodPtr: string;

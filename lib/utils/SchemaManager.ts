@@ -6,19 +6,19 @@ import {methods as swaggerMethods} from  './swagger-defs';
 
 export class SchemaManager {
   public _schema:any = {};
+  public apiUrl: string;
   private _instance:any;
 
-  apiUrl: string;
+  static instance() {
+    return new SchemaManager();
+  }
+
   constructor() {
     if (SchemaManager.prototype._instance) {
       return SchemaManager.prototype._instance;
     }
 
     SchemaManager.prototype._instance = this;
-  }
-
-  static instance() {
-    return new SchemaManager();
   }
 
   load(url) {

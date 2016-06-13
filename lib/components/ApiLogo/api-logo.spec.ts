@@ -34,7 +34,7 @@ describe('Redoc components', () => {
       return schemaMgr.load(schemaUrl);
     })));
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         component = getChildDebugElement(fixture.debugElement, 'api-logo').componentInstance;
         fixture.detectChanges();
@@ -49,7 +49,7 @@ describe('Redoc components', () => {
     });
 
     it('should not display image when no x-logo', () => {
-      component.data.should.be.empty;
+      component.data.should.be.empty();
       let nativeElement = getChildDebugElement(fixture.debugElement, 'api-logo').nativeElement;
       let imgElement = nativeElement.querySelector('img');
       expect(imgElement).toBeNull();
@@ -74,5 +74,5 @@ describe('Redoc components', () => {
   template:
       `<api-logo></api-logo>`
 })
-class TestApp {
+class TestAppComponent {
 }

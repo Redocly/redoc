@@ -29,7 +29,7 @@ describe('Redoc components', () => {
       return schemaMgr.load('/tests/schemas/methods-list-component.json');
     })));
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
+      builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;
         fixture.detectChanges();
@@ -46,7 +46,7 @@ describe('Redoc components', () => {
       expect(component.data.tags).not.toBeNull();
       component.data.tags.should.have.lengthOf(2);
       component.data.tags[0].name.should.be.equal('traitTag');
-      component.data.tags[0].methods.should.be.empty;
+      component.data.tags[0].methods.should.be.empty();
       component.data.tags[1].name.should.be.equal('tag1');
       component.data.tags[1].methods.should.have.lengthOf(2);
     });
@@ -59,5 +59,5 @@ describe('Redoc components', () => {
   template:
       `<methods-list></methods-list>`
 })
-class TestApp {
+class TestAppComponent {
 }

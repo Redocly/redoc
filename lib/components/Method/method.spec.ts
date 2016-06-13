@@ -27,7 +27,7 @@ describe('Redoc components', () => {
       return schemaMgr.load('/tests/schemas/extended-petstore.yml');
     })));
     beforeEach((done) => {
-      builder.createAsync(TestApp).then(fixture => {
+      builder.createAsync(TestAppComponent).then(fixture => {
         component = getChildDebugElement(fixture.debugElement, 'method').componentInstance;
         fixture.detectChanges();
         done();
@@ -47,7 +47,7 @@ describe('Redoc components', () => {
 
 
     it('should main tag', () => {
-      component.data.methodInfo.tags.should.be.empty;
+      component.data.methodInfo.tags.should.be.empty();
     });
   });
 });
@@ -61,5 +61,5 @@ describe('Redoc components', () => {
   template:
       `<method pointer='#/paths/~1user~1{username}/put'></method>`
 })
-class TestApp {
+class TestAppComponent {
 }

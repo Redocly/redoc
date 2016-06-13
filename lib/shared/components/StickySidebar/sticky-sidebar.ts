@@ -13,7 +13,7 @@ export class StickySidebar {
   $redocEl: any;
   @Input() scrollParent:any;
   @Input() scrollYOffset:any;
-  
+
   constructor(elementRef:ElementRef, private dom:BrowserDomAdapter) {
     this.$element = elementRef.nativeElement;
 
@@ -30,7 +30,7 @@ export class StickySidebar {
   }
 
   unbind() {
-    this.cancelScrollBinding && this.cancelScrollBinding();
+    if (this.cancelScrollBinding) this.cancelScrollBinding();
   }
 
   updatePosition() {
@@ -52,7 +52,7 @@ export class StickySidebar {
   }
 
   get scrollY() {
-    return (this.scrollParent.pageYOffset != null) ? this.scrollParent.pageYOffset : this.scrollParent.scrollTop;
+    return (this.scrollParent.pageYOffset != undefined) ? this.scrollParent.pageYOffset : this.scrollParent.scrollTop;
   }
 
   ngOnInit() {
