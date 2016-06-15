@@ -116,6 +116,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.1.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-tslint": "^5.0.0",
     "isparta": "^4.0.0",
     "istanbul": "github:gotwarlost/istanbul#source-map",
     "jasmine-core": "^2.4.1",
