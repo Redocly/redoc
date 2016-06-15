@@ -1,6 +1,6 @@
 'use strict';
 
-import JsonSchemaRefParser from 'json-schema-ref-parser/dist/ref-parser';
+import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
 import {methods as swaggerMethods} from  './swagger-defs';
 
