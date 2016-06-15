@@ -1,11 +1,11 @@
 'use strict';
 
-import {Component, EventEmitter, ElementRef, Output} from '@angular/core';
-import {CORE_DIRECTIVES} from '@angular/common';
+import { Component, EventEmitter, ElementRef, Output, AfterContentInit } from '@angular/core';
+import { CORE_DIRECTIVES } from '@angular/common';
 import DropKick from 'dropkickjs';
 
 @Component({
-  selector: 'dropdown',
+  selector: 'drop-down',
   template: `
     <select (change)=onChange($event.target.value)>
       <ng-content></ng-content>
@@ -14,7 +14,7 @@ import DropKick from 'dropkickjs';
   directives: [CORE_DIRECTIVES],
   styleUrls: ['./drop-down.css']
 })
-export class DropDown {
+export class DropDown implements AfterContentInit {
   @Output() change = new EventEmitter();
   elem: any;
   inst: any;

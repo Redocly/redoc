@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
 import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
@@ -17,7 +17,7 @@ import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['tabs.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Tabs {
+export class Tabs implements OnInit {
   @Input() selected: any;
   @Output() change = new EventEmitter();
   tabs: Tab[] = [];

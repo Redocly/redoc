@@ -1,5 +1,5 @@
 'use strict';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { CORE_DIRECTIVES, JsonPipe, AsyncPipe } from '@angular/common';
 import { SchemaManager } from '../utils/SchemaManager';
 import JsonPointer from '../utils/JsonPointer';
@@ -94,7 +94,7 @@ export function RedocComponent(options) {
  * Generic Component
  * @class
  */
-export class BaseComponent {
+export class BaseComponent implements OnInit, OnDestroy {
   componentSchema: any = null;
   pointer: String;
 

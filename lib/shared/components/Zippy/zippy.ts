@@ -1,7 +1,7 @@
 'use strict';
 
-import {Component, EventEmitter, Output, Input} from '@angular/core';
-import {CORE_DIRECTIVES} from '@angular/common';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { CORE_DIRECTIVES } from '@angular/common';
 
 @Component({
   selector: 'zippy',

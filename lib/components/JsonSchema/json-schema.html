@@ -43,10 +43,10 @@
         <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator">
           <span>This field value determines the exact schema:</span>
-          <dropdown (change)="selectDerived($event)">
+          <drop-down (change)="selectDerived($event)">
             <option *ngFor="let derived of schema.derived; let i=index"
             [value]="i">{{derived.name}}</option>
-          </dropdown>
+          </drop-down>
         </div>
       </td>
     </tr>

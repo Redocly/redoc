@@ -1,13 +1,12 @@
 'use strict';
 
-import {Directive, ElementRef, Input} from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
 import {BrowserDomAdapter} from '@angular/platform-browser/src/browser/browser_adapter';
 
 @Directive({
-  selector: '[sticky-sidebar]',
-  inputs: ['scrollParent', 'scrollYOffset']
+  selector: '[sticky-sidebar]'
 })
-export class StickySidebar {
+export class StickySidebar implements OnInit, OnDestroy {
   $element: any;
   cancelScrollBinding: any;
   $redocEl: any;

@@ -1,6 +1,7 @@
 'use strict';
 
-import { provide, enableProdMode, ElementRef, ComponentRef } from '@angular/core';
+import { provide, enableProdMode, ElementRef,
+  ComponentRef, AfterViewInit } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { RedocComponent, BaseComponent } from '../base';
@@ -33,7 +34,7 @@ var _modeLocked = false;
   detect: true,
   onPushOnly: false
 })
-export class Redoc extends BaseComponent {
+export class Redoc extends BaseComponent implements AfterViewInit {
   static appRef: ComponentRef<any>;
 
   options: any;

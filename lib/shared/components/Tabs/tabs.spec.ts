@@ -1,7 +1,7 @@
 'use strict';
 
 import { getChildDebugElement, getChildDebugElementAll } from '../../../../tests/helpers';
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   inject,

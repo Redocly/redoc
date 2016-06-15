@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, ElementRef, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, ViewContainerRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
 import { DynamicComponentLoader, Input } from '@angular/core';
 
@@ -17,7 +17,7 @@ var cache = {};
   template: '',
   directives: [CORE_DIRECTIVES]
 })
-export class JsonSchemaLazy {
+export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() pointer: string;
   @Input() auto: boolean;
   @Input() isRequestSchema: boolean;
