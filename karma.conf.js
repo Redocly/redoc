@@ -65,13 +65,13 @@ module.exports = function (config) {
         },
 
         proxies: {
+            '/.tmp/': '/base/.tmp/',
             '/tests/schemas': '/base/tests/schemas',
             '/lib/components/redoc/redoc-initial-styles.scss': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.scss',
             '/lib/version.json': '/base/.tmp/lib/version.json',
             '/lib/': '/base/lib/',
             '/jspm_packages/': '/base/jspm_packages/',
-            '/node_modules/': '/base/node_modules/',
-            '/.tmp/': '/base/.tmp/'
+            '/node_modules/': '/base/node_modules/'
         },
         reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
 

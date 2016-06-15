@@ -37,7 +37,6 @@
       "@angular/core": "npm:@angular/core@^2.0.0-rc.1",
       "@angular/platform-browser": "npm:@angular/platform-browser@^2.0.0-rc.1",
       "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^2.0.0-rc.1",
-      "Robdel12/DropKick": "github:Robdel12/DropKick@^2.1.7",
       "dropkickjs": "npm:dropkickjs@^2.1.8",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
@@ -62,26 +61,6 @@
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
     },
     "overrides": {
-      "npm:@angular/core@2.0.0-rc.1": {
-        "main": "esm/index.js",
-        "format": "esm"
-      },
-      "npm:@angular/common@2.0.0-rc.1": {
-        "main": "esm/index.js",
-        "format": "esm"
-      },
-      "npm:@angular/compiler@2.0.0-rc.1": {
-        "main": "esm/index.js",
-        "format": "esm"
-      },
-      "npm:@angular/platform-browser-dynamic@2.0.0-rc.1": {
-        "main": "esm/index.js",
-        "format": "esm"
-      },
-      "npm:@angular/platform-browser@2.0.0-rc.1": {
-        "main": "esm/index.js",
-        "format": "esm"
-      },
       "npm:openapi-sampler@0.1.2": {
         "main": "src/openapi-sampler",
         "format": "esm"
@@ -131,7 +110,7 @@
     "karma-coverage": "github:douglasduteil/karma-coverage#next",
     "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^0.3.6",
-    "karma-jspm": "^2.0.2",
+    "karma-jspm": "^2.1.1",
     "karma-mocha-reporter": "^2.0.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-phantomjs-shim": "^1.1.2",
