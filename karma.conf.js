@@ -1,5 +1,4 @@
 module.exports = function (config) {
-    var travis = process.env.TRAVIS;
     config.set({
         frameworks: ['phantomjs-shim', 'jspm', 'jasmine', 'sinon', 'should'],
         preprocessors: {
@@ -66,7 +65,7 @@ module.exports = function (config) {
             '/jspm_packages/': '/base/jspm_packages/',
             '/node_modules/': '/base/node_modules/'
         },
-        reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
+        reporters: ['mocha', 'coverage'],
 
         browsers: ['PhantomJS'],
 
