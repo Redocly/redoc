@@ -5,7 +5,7 @@
 		"module": "es6",
 		"target": "es6",
 		"noImplicitAny": false,
-		"sourceMap": false,
+		"sourceMap": true,
 		"outDir": ".tmp/",
 		"moduleResolution": "node"
 	},

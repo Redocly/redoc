@@ -3,13 +3,7 @@ module.exports = function (config) {
     config.set({
         frameworks: ['phantomjs-shim', 'jspm', 'jasmine', 'sinon', 'should'],
         preprocessors: {
-          'lib/**/!(*spec).js': ['babel', 'regex', 'coverage']
-        },
-
-        regexPreprocessor: {
-          rules: [
-            [ /'\.(.*?)\.scss'/g, '\'.tmp$1.css\'']
-          ]
+          '.tmp/lib/**/!(*spec).js': ['babel', 'coverage']
         },
         babelPreprocessor: {
             options: {
@@ -29,13 +23,13 @@ module.exports = function (config) {
         coverageReporter: {
             instrumenters: { isparta : require('isparta') },
             instrumenter: {
-                'lib/**/!(*spec).js': 'isparta'
+                '.tmp/lib/**/!(*spec).js': 'isparta'
             },
             dir: 'coverage/',
             reporters: [
                 {type: 'html'},
-                {type: 'text-summary'},
-                {type: 'lcov'}
+                {type: 'lcov'},
+                {type: 'json'}
             ]
         },
         client: {
@@ -60,8 +54,7 @@ module.exports = function (config) {
             loadFiles: ['.tmp/tests/setup.js', '.tmp/tests/helpers.js', '.tmp/lib/**/*.js',
             '.tmp/tests/unit/*.js'],
             serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
-            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css'],
-            nocache: true
+            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css']
         },
 
         proxies: {
