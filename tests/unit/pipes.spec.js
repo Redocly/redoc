@@ -1,6 +1,6 @@
 'use strict';
 
-import {KeysPipe, ValuesPipe, JsonPointerEscapePipe, MarkedPipe} from 'lib/utils/pipes';
+import {KeysPipe, ValuesPipe, JsonPointerEscapePipe, MarkedPipe} from '../../lib/utils/pipes';
 
 describe('Pipes', () => {
   describe('KeysPipe and ValuesPipe', () => {
