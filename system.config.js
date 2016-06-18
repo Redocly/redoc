@@ -34,7 +34,7 @@ System.config({
     "json-pointer": "npm:json-pointer@0.3.0",
     "json-schema-ref-parser": "npm:json-schema-ref-parser@3.1.2",
     "marked": "npm:marked@0.3.5",
-    "openapi-sampler": "npm:openapi-sampler@0.1.2",
+    "openapi-sampler": "npm:openapi-sampler@0.2.0",
     "prismjs": "npm:prismjs@1.3.0",
     "rxjs": "npm:rxjs@5.0.0-beta.6",
     "scrollparent": "npm:scrollparent@0.1.0",
@@ -641,7 +641,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
-    "npm:openapi-sampler@0.1.2": {
+    "npm:openapi-sampler@0.2.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:os-browserify@0.1.2": {

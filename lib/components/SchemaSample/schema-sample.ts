@@ -1,6 +1,6 @@
 'use strict';
 
-import { ElementRef } from '@angular/core';
+import { ElementRef, Input } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
 
@@ -16,6 +16,7 @@ import { JsonFormatter } from '../../utils/JsonFormatterPipe';
 export class SchemaSample extends BaseComponent {
   element: any;
   data: any;
+  @Input() skipReadOnly:boolean;
   constructor(schemaMgr:SchemaManager, elementRef:ElementRef) {
     super(schemaMgr);
     this.element = elementRef.nativeElement;
@@ -38,7 +39,9 @@ export class SchemaSample extends BaseComponent {
     } else {
       this.dereference(this.componentSchema);
       try {
-        sample = OpenAPISampler.sample(this.componentSchema);
+        sample = OpenAPISampler.sample(this.componentSchema, {
+          skipReadOnly: this.skipReadOnly
+        });
       } catch(e) {
         // no sample available
       }
