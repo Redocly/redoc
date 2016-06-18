@@ -15,27 +15,6 @@ System.config({
     "npm:*": "jspm_packages/npm/*"
   },
 
-  packages: {
-    "npm:swagger-schema-official@2.0.0-bab6bed": {
-      "defaultExtension": "json",
-      "main": "schema.json",
-      "meta": {
-        "*": {
-          "loader": "json"
-        }
-      }
-    }
-  },
-
-  meta: {
-    "jspm_packages/npm/json-formatter-js@0.2.0/src/*": {
-      "format": "esm"
-    },
-    "jspm_packages/npm/json-schema-view-js@0.2.0/src/*": {
-      "format": "esm"
-    }
-  },
-
   map: {
     "@angular/common": "npm:@angular/common@2.0.0-rc.1",
     "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
