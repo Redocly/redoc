@@ -1,8 +1,8 @@
 <header *ngIf="data.schemaPointer || data.samples.length"> Request samples </header>
-<schema-sample *ngIf="!data.samples.length" [pointer]="data.schemaPointer"> </schema-sample>
+<schema-sample *ngIf="!data.samples.length" [skipReadOnly]="true" [pointer]="data.schemaPointer"> </schema-sample>
 <tabs *ngIf="data.samples.length" [selected] = "selectedLang" (change)=changeLangNotify($event)>
   <tab tabTitle="JSON">
-    <schema-sample [pointer]="data.schemaPointer"> </schema-sample>
+    <schema-sample [pointer]="data.schemaPointer" [skipReadOnly]="true"> </schema-sample>
   </tab>
   <tab *ngFor="let sample of data.samples" [tabTitle]="sample.lang">
     <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>

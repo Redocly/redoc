@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"module": "es6",
+		"target": "es6",
+		"noImplicitAny": false,
+		"sourceMap": true,
+		"outDir": ".tmp/",
+		"moduleResolution": "node"
+	},
+	"exclude": [
+		"node_modules",
+		"jspm_packages",
+		".tmp",
+		"build",
+		"docs",
+		"*.spec.js",
+		"lib/index.js"
+	]
+}

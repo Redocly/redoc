@@ -13,6 +13,8 @@ var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var argv = require('yargs').argv;
 var gulpIf = require('gulp-if');
+var sassCopm = require('node-sass');
+var ts = require('typescript');
 
 gulp.task('build', function (callback) {
   if (argv.skipRebuild) {
@@ -21,7 +23,8 @@ gulp.task('build', function (callback) {
   }
   return runSequence(
     'clean',
-    'concatPrism',
+    'tsc',
+    'inlineTemplates',
     'bundle',
     'concatDeps',
     'copyDebug',
@@ -38,18 +41,72 @@ gulp.task('copyDebug', () => {
 
 gulp.task('rebuild', function(done) {
   return runSequence(
+    'inlineTemplates',
     'bundle',
     'concatDeps',
+    'copyDebug',
     done
   );
 });
 
-gulp.task('inlineTemplates', ['sass'], function() {
-  return gulp.src(paths.source, { base: './' })
-    .pipe(replace(/'(.*?\.css)'/g, '\'.tmp/$1\''))
-    .pipe(inlineNg2Template({ base: '/' }))
+gulp.task('tsc', function() {
+  exec('tsc -p ./tsconfig.json');
+});
+
+
+// function compileTs(files, es5) {
+//     var tsProject = ts.createProject('tsconfig.json');
+//     var allFiles = [].concat(files, ['typings/**/*.d.ts']);
+//     var res = gulp.src(allFiles, {
+//             base: config.src,
+//             outDir: config.tmp
+//         })
+//         .pipe(tslint())
+//         .pipe(tslint.report('prose', {
+//             summarizeFailureOutput: true,
+//             emitError: !watchMode
+//         }))
+//         .pipe(sourcemaps.init())
+//         .pipe(ts(tsProject))
+//         .on('error', function () {
+//             if (watchMode) {
+//                 return;
+//             }
+//             process.exit(1);
+//         });
+//     return res.js
+//         .pipe(sourcemaps.write('.', {
+//             includeContent: inline
+//         }))
+//         .pipe(gulp.dest(config.tmp));
+// }
+
+gulp.task('inlineTemplates', ['tsc', 'sass'], function() {
+  return gulp.src('.tmp/**/*.js', { base: './tmp' })
+    .pipe(replace(/'(.*?)\.css'/g, '\'$1.scss\''))
+    .pipe(inlineNg2Template({
+      base: './',
+      useRelativePaths: true,
+      styleProcessor: compileSass,
+      customFilePath: function(ext, file) {
+        var cwd = process.cwd();
+        var relative = path.relative(cwd, file);
+        relative = relative.substring('5');
+        return path.join(cwd, relative);
+      }
+    }))
     .pipe(gulp.dest(paths.tmp));
 });
+
+function compileSass(ext, file) {
+    file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
+    file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+    file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
+    file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+    file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
+
+    return sassCopm.renderSync({data: file}).css;
+}
 
 var JS_DEPS = argv.prod ? [
   'lib/utils/browser-update.js',
@@ -59,7 +116,7 @@ var JS_DEPS = argv.prod ? [
 ]: [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
-  'node_modules/zone.js/dist/long-stack-trace-zone.js',
+  //'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];
@@ -73,16 +130,17 @@ gulp.task('sass', function () {
 });
 
 // concatenate angular2 deps
-gulp.task('concatDeps', function() {
-  return gulp.src(JS_DEPS.concat([outputFileName]))
+gulp.task('concatDeps', ['concatPrism'], function() {
+  return gulp.src(JS_DEPS.concat([path.join(paths.tmp, 'prismjs-bundle.js'), outputFileName]))
     .pipe(gulpIf(!argv.prod, sourcemaps.init({loadMaps: true})))
     .pipe(concat(outputFileName))
     .pipe(gulpIf(!argv.prod, sourcemaps.write('.')))
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', ['injectVersionFile', 'inlineTemplates'], function bundle(done) {
-  fs.existsSync('dist') || fs.mkdirSync('dist');
+gulp.task('bundle', function bundle(done) {
+  mkdir('-p', 'dist');
+  cp('lib/index.js', path.join(paths.tmp, paths.sourceEntryPoint));
   var builder = new Builder('./', 'system.config.js');
 
   builder
@@ -126,7 +184,7 @@ gulp.task('concatPrism', function() {
 
   return gulp.src(prismFiles)
     .pipe(concat(path.join(paths.tmp, 'prismjs-bundle.js')))
-    .pipe(gulp.dest('.'))
+    .pipe(gulp.dest('.'));
 });
 
 // needs inlineTemplates run before to create .tmp/lib folder

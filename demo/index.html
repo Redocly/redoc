@@ -4,6 +4,11 @@
     <title>ReDoc</title>
     <link rel="stylesheet" href="main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      @import url(//fonts.googleapis.com/css?family=Roboto:300,400,700);
+      @import url(//fonts.googleapis.com/css?family=Montserrat:400,700);
+    </style>
   </head>
   <body>
     <nav>
@@ -12,13 +17,13 @@
         <input id="schema-url-input" value='http://rebilly.github.io/SwaggerTemplateRepo/swagger.yaml'>
         <button type="submit"> Explore </button>
       </form>
-      <iframe src="https://ghbtns.com/github-btn.html?user=Rebilly&repo=ReDoc&type=star&count=true&size=large"
-      frameborder="0" scrolling="0" width="130px" height="30px"></iframe>
+      <!--<iframe src="https://ghbtns.com/github-btn.html?user=Rebilly&repo=ReDoc&type=star&count=true&size=large"
+      frameborder="0" scrolling="0" width="130px" height="30px"></iframe>-->
     </nav>
 
-    <redoc scroll-y-offset="body > nav" spec-url='http://rebilly.github.io/SwaggerTemplateRepo/swagger.yaml'></redoc>
+    <redoc scroll-y-offset="body > nav" spec-url='swagger.yaml'></redoc>
 
     <script src="main.js"> </script>
-    <script src="dist/redoc.min.js"> </script>
+    <script src="../dist/redoc.min.js"> </script>
   </body>
 </html>

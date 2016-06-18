@@ -1,7 +1,7 @@
 var path = require('path');
 
 var paths = {
-  source: 'lib/**/*.js',
+  source: 'lib/**/*.ts',
   html: 'lib/**/*.html',
   scss: 'lib/**/*.scss',
   sourceEntryPoint: 'lib/index.js',
@@ -9,7 +9,7 @@ var paths = {
   output: 'dist/',
   tmp: '.tmp/',
   demo: 'demo/**/*',
-  tests: '{lib,tests}/**/*.spec.js',
+  tests: '{lib,tests}/**/*.spec.ts',
   releases: 'demo/releases/'
 }
 
