@@ -84,7 +84,7 @@
     "@angular/platform-server": "2.0.0-rc.1",
     "babel-eslint": "^4.1.6",
     "babel-polyfill": "^6.3.14",
-    "branch-release": "^0.3.2",
+    "branch-release": "^1.0.3",
     "browser-sync": "^2.10.1",
     "codelyzer": "0.0.23",
     "coveralls": "^2.11.9",
