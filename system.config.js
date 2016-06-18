@@ -586,8 +586,6 @@ System.config({
       "es6-promise": "npm:es6-promise@3.2.1",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "http": "github:jspm/nodelibs-http@1.7.1",
-      "https": "github:jspm/nodelibs-https@0.1.0",
       "js-yaml": "npm:js-yaml@3.6.1",
       "ono": "npm:ono@2.2.1",
       "process": "github:jspm/nodelibs-process@0.1.2",

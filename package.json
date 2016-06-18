@@ -67,9 +67,11 @@
       "npm:dropkickjs@2.1.8": {
         "format": "global"
       },
-      "npm:openapi-sampler@0.1.2": {
-        "main": "src/openapi-sampler",
-        "format": "esm"
+      "npm:json-schema-ref-parser@3.1.2": {
+        "map": {
+          "http": "stream-http",
+          "https": "stream-http"
+        }
       }
     }
   },
