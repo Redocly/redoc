@@ -143,7 +143,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
 
     function traverse(obj) {
-      if (obj === undefined || typeof(obj) !== 'object') {
+      if (obj == undefined || typeof(obj) !== 'object') {
         return;
       }
 
