@@ -16,11 +16,11 @@ System.config({
   },
 
   map: {
-    "@angular/common": "npm:@angular/common@2.0.0-rc.1",
-    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
-    "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.1",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.1",
+    "@angular/common": "npm:@angular/common@2.0.0-rc.2",
+    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.2",
+    "@angular/core": "npm:@angular/core@2.0.0-rc.2",
+    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.2",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.2",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.17",
@@ -116,30 +116,30 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@2.0.0-rc.1": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
+    "npm:@angular/common@2.0.0-rc.2": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/compiler@2.0.0-rc.1": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
+    "npm:@angular/compiler@2.0.0-rc.2": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/core@2.0.0-rc.1": {
+    "npm:@angular/core@2.0.0-rc.2": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"
     },
-    "npm:@angular/platform-browser-dynamic@2.0.0-rc.1": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.1",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
-      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.1",
+    "npm:@angular/platform-browser-dynamic@2.0.0-rc.2": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.2",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.2",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.2",
+      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/platform-browser@2.0.0-rc.1": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.1",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.1",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.1",
+    "npm:@angular/platform-browser@2.0.0-rc.2": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.2",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.2",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:amdefine@1.0.0": {
