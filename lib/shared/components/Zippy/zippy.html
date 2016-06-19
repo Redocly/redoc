@@ -3,7 +3,9 @@
     <span class="zippy-indicator">{{ visible ? '&#9662;' : '&#9656;' }}</span>
     {{title}}
   </div>
-  <div class="zippy-content" [ngClass]="{'zippy-hidden': !visible}">
-    <ng-content></ng-content>
+  <div class="zippy-content" @openClose="visible ? 'expanded' : 'collapsed'">
+    <div class="zippy-content-wrap">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

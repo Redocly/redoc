@@ -10,7 +10,7 @@
   <div *ngFor="let cat of data.menu; let idx = index" class="menu-cat">
 
     <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [ngClass]="{active: cat.active}"> {{cat.name}}</label>
-    <ul class="menu-subitems" [ngClass]="{active: cat.active}">
+    <ul class="menu-subitems" @itemAnimation="cat.active ? 'expanded' : 'collapsed'">
       <li *ngFor="let method of cat.methods; let methIdx = index"
         [ngClass]="{active: method.active}"
         (click)="activateAndScroll(idx, methIdx)">

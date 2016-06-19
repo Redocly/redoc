@@ -79,6 +79,7 @@ export function RedocComponent(options) {
       changeDetection: options.detect ?
         (options.onPushOnly ? ChangeDetectionStrategy.OnPush : ChangeDetectionStrategy.Default) :
         ChangeDetectionStrategy.Detached,
+      animations: options.animations,
       templateUrl: options.templateUrl,
       template: options.template,
       styles: options.styles,

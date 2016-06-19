@@ -47,6 +47,10 @@ span.zippy-indicator {
 }
 
 .zippy-content {
+  overflow: hidden;
+}
+
+.zippy-content-wrap {
   padding: 15px 0;
 }
 
