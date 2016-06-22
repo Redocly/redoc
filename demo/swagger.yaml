@@ -25,18 +25,12 @@ tags:
       Sometimes you just can't get enough. For this reason, we've provided a convenient way to access more data in any request for sequential data. Simply call the url in the next_url parameter and we'll respond with the next set of data.
       ```json
       {
-
           ...
-
           "pagination": {
-
               "next_url":
       "https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296",
-
               "next_max_id": "13872296"
-
           }
-
       }
       ```
 
