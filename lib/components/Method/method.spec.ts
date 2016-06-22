@@ -13,16 +13,16 @@ import { TestComponentBuilder } from '@angular/compiler/testing';
 import { getChildDebugElement } from '../../../tests/helpers';
 
 import { Method } from './method';
-import { SchemaManager } from '../../utils/SchemaManager';;
+import { SpecManager } from '../../utils/SpecManager';;
 
 describe('Redoc components', () => {
   describe('Method Component', () => {
     let builder;
     let component;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()})
+        provide(SpecManager, {useValue: new SpecManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, schemaMgr) => {
       builder = tcb;
       return schemaMgr.load('/tests/schemas/extended-petstore.yml');
     })));
@@ -57,7 +57,7 @@ describe('Redoc components', () => {
 @Component({
   selector: 'test-app',
   directives: [Method],
-  providers: [SchemaManager],
+  providers: [SpecManager],
   template:
       `<method pointer='#/paths/~1user~1{username}/put'></method>`
 })

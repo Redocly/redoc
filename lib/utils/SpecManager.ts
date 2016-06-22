@@ -4,21 +4,21 @@ import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
 import {methods as swaggerMethods} from  './swagger-defs';
 
-export class SchemaManager {
+export class SpecManager {
   public _schema:any = {};
   public apiUrl: string;
   private _instance:any;
 
   static instance() {
-    return new SchemaManager();
+    return new SpecManager();
   }
 
   constructor() {
-    if (SchemaManager.prototype._instance) {
-      return SchemaManager.prototype._instance;
+    if (SpecManager.prototype._instance) {
+      return SpecManager.prototype._instance;
     }
 
-    SchemaManager.prototype._instance = this;
+    SpecManager.prototype._instance = this;
   }
 
   load(url) {
@@ -26,14 +26,11 @@ export class SchemaManager {
       this._schema = {};
 
       JsonSchemaRefParser.bundle(url, {http: {withCredentials: false}})
-        .then(
-          (schema) => {
-            this._schema = schema;
-            resolve(this._schema);
-            this.init();
-          },
-          (err) => reject(err)
-        );
+      .then(schema => {
+          this._schema = schema;
+          resolve(this._schema);
+          this.init();
+      }, err => reject(err));
     });
 
     return promise;
@@ -49,14 +46,12 @@ export class SchemaManager {
   }
 
   get schema() {
-    // TODO: consider returning promise
     return this._schema;
   }
 
   byPointer(pointer) {
     let res = null;
     try {
-      // TODO: remove decodeURIComponent after this issue is fixed: https://github.com/BigstickCarpet/swagger-parser/issues/31
       res = JsonPointer.get(this._schema, decodeURIComponent(pointer));
     } catch(e)  {/*skip*/ }
     return res;

@@ -13,16 +13,16 @@ import { getChildDebugElement } from '../../../tests/helpers';
 
 
 import { JsonSchema } from './json-schema';
-import { SchemaManager } from '../../utils/SchemaManager';;
+import { SpecManager } from '../../utils/SpecManager';;
 
 describe('Redoc components', () => {
   describe('JsonSchema Component', () => {
     let builder;
     let component;
-    let schemaMgr = new SchemaManager();
+    let schemaMgr = new SpecManager();
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: schemaMgr})
+        provide(SpecManager, {useValue: schemaMgr})
     ]);
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
@@ -66,7 +66,7 @@ describe('Redoc components', () => {
 @Component({
   selector: 'test-app',
   directives: [JsonSchema],
-  providers: [SchemaManager],
+  providers: [SpecManager],
   template:
       `<json-schema></json-schema>`
 })

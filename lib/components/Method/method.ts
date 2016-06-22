@@ -1,7 +1,7 @@
 'use strict';
 import { Input } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
-import { RedocComponent, BaseComponent, SchemaManager} from '../base';
+import { RedocComponent, BaseComponent, SpecManager} from '../base';
 
 import { ParamsList } from '../ParamsList/params-list';
 import { ResponsesList } from '../ResponsesList/responses-list';
@@ -19,7 +19,7 @@ import { RequestSamples } from '../RequestSamples/request-samples';
 export class Method extends BaseComponent {
   data:any;
   @Input() tag:string;
-  constructor(schemaMgr:SchemaManager) {
+  constructor(schemaMgr:SpecManager) {
     super(schemaMgr);
   }
 

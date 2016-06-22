@@ -1,8 +1,9 @@
 'use strict';
 
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { JsonSchema } from '../JsonSchema/json-schema';
-import {JsonSchemaLazy} from '../JsonSchema/json-schema-lazy';
+import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
+import { SchemaHelper } from '../../services/schema-helper.service';
 
 function safePush(obj, prop, item) {
   if (!obj[prop]) obj[prop] = [];
@@ -19,7 +20,7 @@ export class ParamsList extends BaseComponent {
 
   data:any;
 
-  constructor(schemaMgr:SchemaManager) {
+  constructor(schemaMgr:SpecManager) {
     super(schemaMgr);
   }
 
@@ -27,10 +28,10 @@ export class ParamsList extends BaseComponent {
     this.data = {};
     let paramsList = this.schemaMgr.getMethodParams(this.pointer, true);
 
-    paramsList = paramsList.map((paramData) => {
-      let propPointer = paramData._pointer;
-      if (paramData.in === 'body') return paramData;
-      return JsonSchema.injectPropertyData(paramData, paramData.name, propPointer, this.pointer);
+    paramsList = paramsList.map(paramSchema => {
+      let propPointer = paramSchema._pointer;
+      if (paramSchema.in === 'body') return paramSchema;
+      return SchemaHelper.preprocess(paramSchema, paramSchema.name, propPointer, this.pointer);
     });
 
     let paramsMap = this.orderParams(paramsList);

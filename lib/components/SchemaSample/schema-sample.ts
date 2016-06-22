@@ -4,9 +4,9 @@ import { ElementRef, Input } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
 
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { JsonFormatter } from '../../utils/JsonFormatterPipe';
-import { SchemaNormalizator } from '../../services/spec-helper.service';
+import { SchemaNormalizer } from '../../services/schema-normalizer.service';
 
 @RedocComponent({
   selector: 'schema-sample',
@@ -19,12 +19,12 @@ export class SchemaSample extends BaseComponent {
   data: any;
   @Input() skipReadOnly:boolean;
 
-  private _normalizer:SchemaNormalizator;
+  private _normalizer:SchemaNormalizer;
 
-  constructor(schemaMgr:SchemaManager, elementRef:ElementRef) {
+  constructor(schemaMgr:SpecManager, elementRef:ElementRef) {
     super(schemaMgr);
     this.element = elementRef.nativeElement;
-    this._normalizer = new SchemaNormalizator(schemaMgr);
+    this._normalizer = new SchemaNormalizer(schemaMgr);
   }
 
   init() {

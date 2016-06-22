@@ -1,6 +1,6 @@
 'use strict';
 
-import {RedocComponent, BaseComponent, SchemaManager} from '../base';
+import {RedocComponent, BaseComponent, SpecManager} from '../base';
 
 @RedocComponent({
   selector: 'api-logo',
@@ -10,7 +10,7 @@ import {RedocComponent, BaseComponent, SchemaManager} from '../base';
 export class ApiLogo extends BaseComponent {
   data:any = {};
 
-  constructor(schemaMgr:SchemaManager) {
+  constructor(schemaMgr:SpecManager) {
     super(schemaMgr);
   }
 

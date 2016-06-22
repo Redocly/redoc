@@ -17,7 +17,7 @@ import { Hash } from './hash.service';
 import { ScrollService } from './scroll.service';
 import { RedocEventsService } from './events.service';
 import { MethodsList } from '../components/index';
-import { SchemaManager } from '../utils/SchemaManager';;
+import { SpecManager } from '../utils/SpecManager';;
 
 describe('Menu service', () => {
   let menu, hashService, scroll;
@@ -30,10 +30,10 @@ describe('Menu service', () => {
       provide(Hash, {useClass: Hash}),
       provide(ScrollService, {useClass: ScrollService}),
       provide(RedocEventsService, {useClass: RedocEventsService}),
-      provide(SchemaManager, {useClass: SchemaManager})
+      provide(SpecManager, {useClass: SpecManager})
   ]);
 
-  beforeEach(inject([Hash, ScrollService, SchemaManager, TestComponentBuilder],
+  beforeEach(inject([Hash, ScrollService, SpecManager, TestComponentBuilder],
     (_hash, _scroll, _schemaMgr, tcb) => {
     hashService = _hash;
     scroll = _scroll;

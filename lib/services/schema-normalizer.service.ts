@@ -1,6 +1,6 @@
 'use strict';
 import { Injectable } from '@angular/core';
-import { SchemaManager } from '../utils/SchemaManager';
+import { SpecManager } from '../utils/SpecManager';
 import { JsonPointer } from '../utils/JsonPointer';
 import { defaults } from '../utils/helpers';
 
@@ -17,7 +17,7 @@ interface Schema {
 }
 
 @Injectable()
-export class SchemaNormalizator {
+export class SchemaNormalizer {
   _dereferencer:SchemaDereferencer;
   constructor(private _schema:any) {
     this._dereferencer = new SchemaDereferencer(_schema, this);
@@ -161,7 +161,7 @@ class RefCounter {
 class SchemaDereferencer {
   private _refCouner = new RefCounter();
 
-  constructor(private _spec: SchemaManager, private normalizator: SchemaNormalizator) {
+  constructor(private _spec: SpecManager, private normalizator: SchemaNormalizer) {
   }
 
   dereference(schema: Reference, pointer:string):any {

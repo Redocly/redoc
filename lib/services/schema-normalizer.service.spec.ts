@@ -1,15 +1,15 @@
 'use strict';
-import { SchemaNormalizator } from './spec-helper.service';
+import { SchemaNormalizer } from './schema-normalizer.service';
 import {
   describe,
   it
 } from '@angular/core/testing';
 
-import { SchemaManager } from '../utils/SchemaManager';;
+import { SpecManager } from '../utils/SpecManager';;
 
 describe('Spec Helper', () => {
-  let schemaMgr:SchemaManager = new SchemaManager();
-  let normalizer = new SchemaNormalizator(schemaMgr);
+  let schemaMgr:SpecManager = new SpecManager();
+  let normalizer = new SchemaNormalizer(schemaMgr);
 
   describe('Dereference', () => {
     beforeAll(done => {

@@ -2,7 +2,7 @@
 
 import { ViewChildren, QueryList, EventEmitter, Input} from '@angular/core';
 
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { Tabs, Tab } from '../../shared/components/index';
 import { SchemaSample } from '../SchemaSample/schema-sample';
@@ -25,7 +25,7 @@ export class RequestSamples extends BaseComponent {
   data: any;
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
-  constructor(schemaMgr:SchemaManager, public events:RedocEventsService) {
+  constructor(schemaMgr:SpecManager, public events:RedocEventsService) {
     super(schemaMgr);
 
     this.selectedLang = this.events.samplesLanguageChanged;

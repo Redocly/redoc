@@ -6,7 +6,7 @@ import { DynamicComponentLoader, Input } from '@angular/core';
 
 import { JsonSchema } from './json-schema';
 import { OptionsService } from '../../services/options.service';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 
 
 var cache = {};
@@ -22,7 +22,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() auto: boolean;
   @Input() isRequestSchema: boolean;
   loaded: boolean = false;
-  constructor(private schemaMgr:SchemaManager, private viewRef:ViewContainerRef, private elementRef:ElementRef,
+  constructor(private schemaMgr:SpecManager, private viewRef:ViewContainerRef, private elementRef:ElementRef,
     private dcl:DynamicComponentLoader, private optionsService:OptionsService) {
   }
 
@@ -61,7 +61,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
 
           // skip caching view with tabs inside (discriminator)
           // as it needs attached controller
-          if (compRef.instance.hasDiscriminator) {
+          if (compRef.instance.hasDescendants) {
             this._loadAfterSelf();
             return;
           }

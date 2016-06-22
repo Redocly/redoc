@@ -1,6 +1,6 @@
 'use strict';
 
-import { SchemaManager, RedocComponent, BaseComponent } from '../base';
+import { SpecManager, RedocComponent, BaseComponent } from '../base';
 import { OptionsService } from '../../services/index';
 
 @RedocComponent({
@@ -11,7 +11,7 @@ import { OptionsService } from '../../services/index';
 export class ApiInfo extends BaseComponent {
   data: any;
   specUrl: String;
-  constructor(schemaMgr:SchemaManager, private optionsService:OptionsService) {
+  constructor(schemaMgr:SpecManager, private optionsService:OptionsService) {
     super(schemaMgr);
   }
 

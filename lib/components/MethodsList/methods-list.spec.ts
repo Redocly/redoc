@@ -14,7 +14,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 
 
 import { MethodsList } from './methods-list';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 
 describe('Redoc components', () => {
   describe('MethodsList Component', () => {
@@ -22,9 +22,9 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()})
+        provide(SpecManager, {useValue: new SpecManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, schemaMgr) => {
       builder = tcb;
       return schemaMgr.load('/tests/schemas/methods-list-component.json');
     })));

@@ -15,13 +15,13 @@ import { TestComponentBuilder } from '@angular/compiler/testing';
 
 
 import { JsonSchemaLazy } from './json-schema-lazy';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 
 describe('Redoc components', () => {
   describe('JsonSchemaLazy Component', () => {
     let builder;
     let component;
-    let schemaMgr = new SchemaManager();
+    let schemaMgr = new SpecManager();
     let fixture;
     let loader;
     let appRefMock = {
@@ -31,7 +31,7 @@ describe('Redoc components', () => {
       hostView: { changeDetectorRef: {detectChanges : () => undefined} }
     };
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: schemaMgr})
+        provide(SpecManager, {useValue: schemaMgr})
     ]);
     beforeEach(inject([TestComponentBuilder, DynamicComponentLoader], (tcb, dcl) => {
       builder = tcb;

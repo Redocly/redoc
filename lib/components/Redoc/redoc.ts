@@ -17,7 +17,7 @@ import { MethodsList } from '../MethodsList/methods-list';
 import { SideMenu } from '../SideMenu/side-menu';
 
 import { StickySidebar } from '../../shared/components/index';
-import {SchemaManager} from '../../utils/SchemaManager';
+import {SpecManager} from '../../utils/SpecManager';
 import { OptionsService, RedocEventsService } from '../../services/index';
 //import redocVersion from '../../version.js';
 
@@ -27,7 +27,7 @@ var _modeLocked = false;
 @RedocComponent({
   selector: 'redoc',
   providers: [
-    SchemaManager,
+    SpecManager,
     BrowserDomAdapter,
     RedocEventsService
   ],
@@ -71,7 +71,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
       Redoc.destroy();
     }
     Redoc.showLoadingAnimation();
-    return SchemaManager.instance().load(specUrl)
+    return SpecManager.instance().load(specUrl)
     .then(() => {
       if (!_modeLocked && !optionsService.options.debugMode) {
         enableProdMode();
@@ -139,7 +139,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     }
   }
 
-  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef,
+  constructor(schemaMgr: SpecManager, optionsMgr:OptionsService, elementRef:ElementRef,
     public events:RedocEventsService) {
     super(schemaMgr);
     this.element = elementRef.nativeElement;

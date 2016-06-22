@@ -4,7 +4,7 @@ import { ElementRef, ChangeDetectorRef } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 
 @RedocComponent({
@@ -35,7 +35,7 @@ export class SideMenu extends BaseComponent {
   activeItemCaption: string;
   options: any;
   data: any;
-  constructor(schemaMgr:SchemaManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
+  constructor(schemaMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
     super(schemaMgr);

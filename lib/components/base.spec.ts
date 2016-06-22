@@ -1,6 +1,6 @@
 'use strict';
 
-import { SchemaManager } from '../utils/SchemaManager';
+import { SpecManager } from '../utils/SpecManager';
 import { BaseComponent } from '../components/base';
 
 describe('Redoc components', () => {
@@ -9,7 +9,7 @@ describe('Redoc components', () => {
     let component;
 
     beforeAll(() => {
-      schemaMgr = new SchemaManager();
+      schemaMgr = new SpecManager();
       schemaMgr._schema = {tags: []};
     });
 

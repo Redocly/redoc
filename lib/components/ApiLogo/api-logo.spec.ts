@@ -14,7 +14,7 @@ import {
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { ApiLogo } from './api-logo';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 
 
 describe('Redoc components', () => {
@@ -26,9 +26,9 @@ describe('Redoc components', () => {
 
     let schemaUrl = '/tests/schemas/api-info-test.json';
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()})
+        provide(SpecManager, {useValue: new SpecManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, _schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, _schemaMgr) => {
       builder = tcb;
       schemaMgr = _schemaMgr;
       return schemaMgr.load(schemaUrl);
@@ -70,7 +70,7 @@ describe('Redoc components', () => {
 @Component({
   selector: 'test-app',
   directives: [ApiLogo],
-  providers: [SchemaManager],
+  providers: [SpecManager],
   template:
       `<api-logo></api-logo>`
 })

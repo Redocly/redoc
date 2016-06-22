@@ -1,7 +1,7 @@
 'use strict';
 
 import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { Method } from '../Method/method';
 import { EncodeURIComponentPipe } from '../../utils/pipes';
 
@@ -15,7 +15,7 @@ import { EncodeURIComponentPipe } from '../../utils/pipes';
 })
 export class MethodsList extends BaseComponent {
   data:any;
-  constructor(schemaMgr:SchemaManager) {
+  constructor(schemaMgr:SpecManager) {
     super(schemaMgr);
   }
 

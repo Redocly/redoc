@@ -1,6 +1,6 @@
 'use strict';
 
-import {RedocComponent, BaseComponent, SchemaManager} from '../base';
+import {RedocComponent, BaseComponent, SpecManager} from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { JsonSchema } from '../JsonSchema/json-schema';
 import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
@@ -22,7 +22,7 @@ function isNumeric(n) {
 export class ResponsesList extends BaseComponent {
   data: any;
   options: any;
-  constructor(schemaMgr:SchemaManager, optionsMgr:OptionsService) {
+  constructor(schemaMgr:SpecManager, optionsMgr:OptionsService) {
     super(schemaMgr);
     this.options = optionsMgr.options;
   }

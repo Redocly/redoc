@@ -21,7 +21,7 @@
   <!-- <caption> {{_displayType}} </caption> -->
   <template ngFor [ngForOf]="schema._properties" let-prop="$implicit" let-last="last">
     <tr class="param" [ngClass]="{'last': last,
-        'discriminator': prop.isDiscriminator && !derivedEmtpy,
+        'discriminator': hasDescendants && !activeDescendant.empty,
         'complex': prop._pointer,
         'additional': prop._additional
       }">
@@ -43,9 +43,9 @@
         <div class="param-description" [innerHtml]="prop.description | marked"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator">
           <span>This field value determines the exact schema:</span>
-          <drop-down (change)="selectDerived($event)">
-            <option *ngFor="let derived of schema._derived; let i=index"
-            [value]="i">{{derived.name}}</option>
+          <drop-down (change)="selectDescendant($event)">
+            <option *ngFor="let descendant of schema._descendants; let i=index"
+            [value]="i">{{descendant.name}}</option>
           </drop-down>
         </div>
       </td>
@@ -58,11 +58,11 @@
       </td>
     </tr>
   </template>
-  <tr *ngIf="schema._derived.length" class="param-wrap discriminator-wrap" [ngClass]="{'empty': derivedEmtpy}">
+  <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap">
     <td colspan="2">
-      <div class="derived-schema" *ngFor="let derived of schema._derived" [ngClass]="{active: derived.active}">
-        <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"
-        pointer="{{derived.$ref}}" [final]="derived.final" [isRequestSchema]="isRequestSchema">
+      <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: activeDescendant.empty}">
+        <json-schema class="discriminator-part" *ngIf="!descendant.empty" [childFor]="pointer"
+        pointer="{{descendant.$ref}}" [final]="descendant.final" [isRequestSchema]="isRequestSchema">
         </json-schema>
       </div>
     </td>

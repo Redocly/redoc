@@ -1,17 +1,17 @@
 'use strict';
 
-import { SchemaManager } from '../../lib/utils/SchemaManager';
+import { SpecManager } from '../../lib/utils/SpecManager';
 describe('Utils', () => {
   describe('Schema manager', () => {
     let schemaMgr;
 
     beforeEach(() => {
-      schemaMgr = new SchemaManager();
+      schemaMgr = new SpecManager();
     });
 
     it('Should be a singleton', ()=> {
-      (new SchemaManager()).should.be.equal(schemaMgr);
-      SchemaManager.instance().should.be.equal(schemaMgr);
+      (new SpecManager()).should.be.equal(schemaMgr);
+      SpecManager.instance().should.be.equal(schemaMgr);
     });
 
     it('load should return a promise', ()=> {

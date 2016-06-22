@@ -1,10 +1,10 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { CORE_DIRECTIVES, JsonPipe, AsyncPipe } from '@angular/common';
-import { SchemaManager } from '../utils/SchemaManager';
+import { SpecManager } from '../utils/SpecManager';
 import { MarkedPipe, JsonPointerEscapePipe } from '../utils/pipes';
 
-export { SchemaManager };
+export { SpecManager };
 
 // common inputs for all components
 let commonInputs = ['pointer']; // json pointer to the schema chunk
@@ -84,7 +84,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   pointer: String;
   dereferencedCache = {};
 
-  constructor(public schemaMgr: SchemaManager) {
+  constructor(public schemaMgr: SpecManager) {
   }
 
   /**
