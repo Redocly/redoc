@@ -59,9 +59,10 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
         setTimeout( ()=> {
           let $element = compRef.location.nativeElement;
 
-          // skip caching view with tabs inside (discriminator) as it needs attached controller
-          // FIXME: get rid of dependency on selector
-          if ($element.querySelector('.discriminator-wrap')) {
+          // skip caching view with tabs inside (discriminator)
+          // as it needs attached controller
+          if (compRef.instance.hasDiscriminator) {
+            this._loadAfterSelf();
             return;
           }
           insertAfter($element.cloneNode(true), this.elementRef.nativeElement);

@@ -173,13 +173,11 @@ export class SchemaManager {
     let globalDefs = this._schema.definitions || {};
     let res = [];
     for (let defName of Object.keys(globalDefs)) {
-      if (!globalDefs[defName].allOf) continue;
-
-      let subTypes = globalDefs[defName].allOf;
-      let idx = subTypes.findIndex((subType) => {
-        if (subType.$ref === defPointer) return true;
-        return false;
-      });
+      if (!globalDefs[defName].allOf &&
+        !globalDefs[defName]['x-derived-from']) continue;
+      let subTypes = globalDefs[defName]['x-derived-from'] ||
+        globalDefs[defName].allOf.map(subType => subType.$ref);
+      let idx = subTypes.findIndex(ref => ref === defPointer);
       if (idx < 0) continue;
 
       let empty = false;

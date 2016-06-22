@@ -27,17 +27,13 @@
     "ArrayOfSimple": {
       "type": "array",
       "items": {
-        "schema": {
-          "$ref": "#/definitions/Simple"
-        }
+        "$ref": "#/definitions/Simple"
       }
     },
     "Circular": {
       "type": "array",
       "items": {
-        "schema": {
-          "$ref": "#/definitions/Circular"
-        }
+        "$ref": "#/definitions/Circular"
       }
     }
   },

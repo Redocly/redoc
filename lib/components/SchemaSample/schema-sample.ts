@@ -6,6 +6,7 @@ import * as OpenAPISampler from 'openapi-sampler';
 
 import { RedocComponent, BaseComponent, SchemaManager } from '../base';
 import { JsonFormatter } from '../../utils/JsonFormatterPipe';
+import { SchemaNormalizator } from '../../services/spec-helper.service';
 
 @RedocComponent({
   selector: 'schema-sample',
@@ -17,12 +18,17 @@ export class SchemaSample extends BaseComponent {
   element: any;
   data: any;
   @Input() skipReadOnly:boolean;
+
+  private _normalizer:SchemaNormalizator;
+
   constructor(schemaMgr:SchemaManager, elementRef:ElementRef) {
     super(schemaMgr);
     this.element = elementRef.nativeElement;
+    this._normalizer = new SchemaNormalizator(schemaMgr);
   }
 
   init() {
+    this.bindEvents();
     this.data = {};
 
     let base:any = {};
@@ -37,7 +43,10 @@ export class SchemaSample extends BaseComponent {
     if (base.examples && base.examples['application/json']) {
       sample = base.examples['application/json'];
     } else {
-      this.dereference(this.componentSchema);
+      this.componentSchema = this._normalizer.normalize(this.componentSchema, this.pointer);
+      if (this.fromCache()) {
+        return;
+      }
       try {
         sample = OpenAPISampler.sample(this.componentSchema, {
           skipReadOnly: this.skipReadOnly
@@ -46,10 +55,30 @@ export class SchemaSample extends BaseComponent {
         // no sample available
       }
     }
-
+    this.cache(sample);
     this.data.sample = sample;
+  }
 
+  cache(sample) {
+    if (this.skipReadOnly) {
+      this.componentSchema['x-redoc-ro-sample'] = sample;
+    } else {
+      this.componentSchema['x-redoc-rw-sample'] = sample;
+    }
+  }
 
+  fromCache() {
+    if (this.skipReadOnly && this.componentSchema['x-redoc-ro-sample']) {
+      this.data.sample = this.componentSchema['x-redoc-ro-sample'];
+      return true;
+    } else if (this.componentSchema['x-redoc-rw-sample']) {
+      this.data.sample = this.componentSchema['x-redoc-rw-sample'];
+      return true;
+    }
+    return false;
+  }
+
+  bindEvents() {
     this.element.addEventListener('click', (event) => {
       var collapsed, target = event.target;
       if (event.target.className === 'collapser') {

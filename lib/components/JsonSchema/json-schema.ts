@@ -5,6 +5,7 @@ import { ElementRef, Input } from '@angular/core';
 import { RedocComponent, BaseComponent, SchemaManager } from '../base';
 import { DropDown } from '../../shared/components/index';
 import JsonPointer from '../../utils/JsonPointer';
+import { SchemaNormalizator } from '../../services/spec-helper.service';
 
 @RedocComponent({
   selector: 'json-schema',
@@ -17,11 +18,13 @@ export class JsonSchema extends BaseComponent {
   $element: any;
   schema: any;
   derivedEmtpy: boolean;
+  hasDiscriminator: boolean = false;
   @Input() isArray: boolean;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
   @Input() childFor: string;
   @Input() isRequestSchema: boolean;
+  normalizer: SchemaNormalizator;
 
   static injectPropertyData(propertySchema, propertyName, propPointer, hostPointer?) {
     propertySchema = Object.assign({}, propertySchema);
@@ -35,12 +38,13 @@ export class JsonSchema extends BaseComponent {
   constructor(schemaMgr:SchemaManager, elementRef:ElementRef) {
     super(schemaMgr);
     this.$element = elementRef.nativeElement;
+    this.normalizer = new SchemaNormalizator(schemaMgr);
   }
 
   selectDerived(subClassIdx) {
-    let subClass = this.schema.derived[subClassIdx];
+    let subClass = this.schema._derived[subClassIdx];
     if (!subClass || subClass.active) return;
-    this.schema.derived.forEach((subSchema) => {
+    this.schema._derived.forEach((subSchema) => {
       subSchema.active = false;
     });
     subClass.active = true;
@@ -65,14 +69,18 @@ export class JsonSchema extends BaseComponent {
     if (!this.componentSchema) {
       throw new Error(`Can't load component schema at ${this.pointer}`);
     }
-    this.dereference();
+    if (this.componentSchema['x-redoc-js-precompiled']) {
+      this.schema = this.unwrapArray(this.componentSchema);
+      return;
+    }
+    this.componentSchema = this.normalizer.normalize(this.componentSchema, this.pointer);
+    this.componentSchema['x-redoc-js-precompiled'] = true;
 
     let schema = this.componentSchema;
-    BaseComponent.joinAllOf(schema, {omitParent: true});
     this.schema = schema = this.unwrapArray(schema);
     runInjectors(schema, schema, schema._pointer || this.pointer, this.pointer);
 
-    schema.derived = schema.derived || [];
+    this.schema._derived = this.schema._derived || [];
 
     if (!schema.isTrivial) {
       this.prepareObjectPropertiesData(schema);
@@ -82,16 +90,17 @@ export class JsonSchema extends BaseComponent {
   }
 
   initDerived() {
-    if (!this.schema.derived.length) return;
-    let enumArr = this.schema.properties[this.schema.properties.length - 1].enum;
+    if (!this.schema._derived.length) return;
+    this.hasDiscriminator = true;
+    let enumArr = this.schema._properties[this.schema._properties.length - 1].enum;
     if (enumArr) {
       let enumOrder = {};
       enumArr.forEach((enumItem, idx) => {
         enumOrder[enumItem.val] = idx;
       });
 
-      this.schema.derived.sort((a, b) => {
-        return enumOrder[a.name] > enumOrder[b.name];
+      this.schema._derived.sort((a, b) => {
+        return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
     }
     this.selectDerived(0);
@@ -138,7 +147,7 @@ export class JsonSchema extends BaseComponent {
     if (this.isRequestSchema) {
       props = props.filter(prop => !prop.readOnly);
     }
-    schema.properties = props;
+    schema._properties = props;
   }
 
   prepareAdditionalProperties(schema) {
@@ -165,7 +174,7 @@ const injectors = {
   discriminator: {
     check: (propertySchema) => propertySchema.discriminator,
     inject: (injectTo, propertySchema = injectTo, pointer) => {
-      injectTo.derived = SchemaManager.instance().findDerivedDefinitions(pointer);
+      injectTo._derived = SchemaManager.instance().findDerivedDefinitions(pointer);
       injectTo.discriminator = propertySchema.discriminator;
     }
   },

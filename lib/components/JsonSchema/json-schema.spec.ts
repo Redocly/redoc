@@ -56,7 +56,7 @@ describe('Redoc components', () => {
         test: {}
       }};
       fixture.detectChanges();
-      component.schema.properties[0]._displayType.should.be.equal('< * >');
+      component.schema._properties[0]._displayType.should.be.equal('< * >');
     });
   });
 });

@@ -19,7 +19,7 @@
 </span>
 <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
   <!-- <caption> {{_displayType}} </caption> -->
-  <template ngFor [ngForOf]="schema.properties" let-prop="$implicit" let-last="last">
+  <template ngFor [ngForOf]="schema._properties" let-prop="$implicit" let-last="last">
     <tr class="param" [ngClass]="{'last': last,
         'discriminator': prop.isDiscriminator && !derivedEmtpy,
         'complex': prop._pointer,
@@ -40,11 +40,11 @@
             <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
           </div>
         </div>
-        <div class="param-description" innerHtml="{{prop.description | marked}}"></div>
+        <div class="param-description" [innerHtml]="prop.description | marked"></div>
         <div class="discriminator-info" *ngIf="prop.isDiscriminator">
           <span>This field value determines the exact schema:</span>
           <drop-down (change)="selectDerived($event)">
-            <option *ngFor="let derived of schema.derived; let i=index"
+            <option *ngFor="let derived of schema._derived; let i=index"
             [value]="i">{{derived.name}}</option>
           </drop-down>
         </div>
@@ -58,9 +58,9 @@
       </td>
     </tr>
   </template>
-  <tr *ngIf="schema.derived.length" class="param-wrap discriminator-wrap" [ngClass]="{'empty': derivedEmtpy}">
+  <tr *ngIf="schema._derived.length" class="param-wrap discriminator-wrap" [ngClass]="{'empty': derivedEmtpy}">
     <td colspan="2">
-      <div class="derived-schema" *ngFor="let derived of schema.derived" [ngClass]="{active: derived.active}">
+      <div class="derived-schema" *ngFor="let derived of schema._derived" [ngClass]="{active: derived.active}">
         <json-schema class="discriminator-part" *ngIf="!derived.empty" [childFor]="pointer"
         pointer="{{derived.$ref}}" [final]="derived.final" [isRequestSchema]="isRequestSchema">
         </json-schema>
