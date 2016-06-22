@@ -7,7 +7,7 @@
             <a *ngFor="let tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
         </div>
         <p *ngIf="data.methodInfo.description" class="method-description"
-        innerHtml="{{data.methodInfo.description | marked}}">
+        [innerHtml]="data.methodInfo.description | marked">
     </p>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>

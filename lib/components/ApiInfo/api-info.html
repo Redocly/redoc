@@ -1,6 +1,6 @@
 <div>
   <h1 class="api-info-header">{{data.title}} ({{data.version}})</h1>
-  <p *ngIf="data.description" innerHtml="{{data.description | marked}}"> </p>
+  <p *ngIf="data.description" [innerHtml]="data.description | marked"> </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->
     <span *ngIf="data.contact"> Contact:

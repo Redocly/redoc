@@ -20,7 +20,7 @@
               <span *ngFor="let enumItem of param.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
             </div>
           </div>
-          <div class="param-description" innerHtml="{{param.description | marked}}"></div>
+          <div class="param-description" [innerHtml]="param.description | marked"></div>
         </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
 <div *ngIf="data.bodyParam">
   <h5 class="param-list-header" *ngIf="data.bodyParam"> Request Body </h5>
 
-  <div class="body-param-description" innerHtml="{{data.bodyParam.description | marked}}"></div>
+  <div class="body-param-description" [innerHtml]="data.bodyParam.description | marked"></div>
   <div>
     <br>
     <json-schema-lazy [isRequestSchema]="true" [auto]="true" pointer="{{data.bodyParam.pointer}}/schema">

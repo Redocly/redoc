@@ -32,6 +32,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   _loadAfterSelf() {
+    // FIXME: get rid of DynamicComponentLoader as it is deprecated
     return this.dcl.loadNextToLocation(JsonSchema, this.viewRef).then((compRef) => {
       this.initComponent(compRef);
       if (compRef.changeDetectorRef) {
