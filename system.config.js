@@ -33,9 +33,9 @@ System.config({
     "json-formatter-js": "npm:json-formatter-js@0.2.0",
     "json-pointer": "npm:json-pointer@0.3.0",
     "json-schema-ref-parser": "npm:json-schema-ref-parser@3.1.2",
-    "marked": "npm:marked@0.3.5",
     "openapi-sampler": "npm:openapi-sampler@0.2.0",
     "prismjs": "npm:prismjs@1.3.0",
+    "remarkable": "npm:remarkable@1.6.2",
     "rxjs": "npm:rxjs@5.0.0-beta.6",
     "scrollparent": "npm:scrollparent@0.1.0",
     "stream-http": "npm:stream-http@2.3.0",
@@ -148,6 +148,15 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:argparse@0.1.16": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "underscore": "npm:underscore@1.7.0",
+      "underscore.string": "npm:underscore.string@2.4.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
     "npm:argparse@1.0.7": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
@@ -191,6 +200,10 @@ System.config({
       "util": "npm:util@0.10.3"
     },
     "npm:async@1.5.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:autolinker@0.15.3": {
+      "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:aws-sign2@0.6.0": {
@@ -742,6 +755,16 @@ System.config({
       "process-nextick-args": "npm:process-nextick-args@1.0.6",
       "string_decoder": "npm:string_decoder@0.10.31",
       "util-deprecate": "npm:util-deprecate@1.0.2"
+    },
+    "npm:remarkable@1.6.2": {
+      "argparse": "npm:argparse@0.1.16",
+      "autolinker": "npm:autolinker@0.15.3",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:request@2.72.0": {
       "aws-sign2": "npm:aws-sign2@0.6.0",

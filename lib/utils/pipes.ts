@@ -1,27 +1,27 @@
 'use strict';
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizationService } from '@angular/platform-browser';
 import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
 import { BaseException } from '@angular/core/src/facade/exceptions';
 import JsonPointer from './JsonPointer';
 
 declare var Prism: any;
 
-import marked from 'marked';
+import Remarkable from 'remarkable';
 
-// in gfm mode marked doesn't parse #Heading (without space after #) as heading
-// https://github.com/chjj/marked/issues/642
-marked['Lexer'].rules.gfm.heading = marked['Lexer'].rules.normal.heading;
-marked['Lexer'].rules.tables.heading = marked['Lexer'].rules.normal.heading;
-
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
+const md = new Remarkable({
+  html: true,
+  linkify: true,
   breaks: false,
-  pedantic: false,
-  smartLists: true,
-  smartypants: false
+  typographer: false,
+  highlight: (str, lang) => {
+    if (lang === 'json') lang = 'js';
+    let grammar = Prism.languages[lang];
+    //fallback to clike
+    if (!grammar) return str;
+    return Prism.highlight(str, grammar);
+  }
 });
 
 class InvalidPipeArgumentException extends BaseException {
@@ -65,12 +65,16 @@ export class JsonPointerEscapePipe implements PipeTransform {
 
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizationService) {}
   transform(value) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
     }
-    return `<span class="redoc-markdown-block">${marked(value)}</span>`;
+
+    return this.sanitizer.bypassSecurityTrustHtml(
+      `<span class="redoc-markdown-block">${md.render(value)}</span>`
+    );
   }
 }
 
@@ -84,6 +88,7 @@ const langMap = {
 
 @Pipe({ name: 'prism' })
 export class PrismPipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizationService) {}
   transform(value, args) {
     if (isBlank(args) || args.length === 0) {
       throw new BaseException('Prism pipe requires one argument');
@@ -98,7 +103,7 @@ export class PrismPipe implements PipeTransform {
     let grammar = Prism.languages[lang];
     //fallback to clike
     if (!grammar) grammar = Prism.languages.clike;
-    return Prism.highlight(value, grammar);
+    return this.sanitizer.bypassSecurityTrustHtml(Prism.highlight(value, grammar));
   }
 }
 
