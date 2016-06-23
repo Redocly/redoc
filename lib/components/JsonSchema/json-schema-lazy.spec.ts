@@ -21,7 +21,7 @@ describe('Redoc components', () => {
   describe('JsonSchemaLazy Component', () => {
     let builder;
     let component;
-    let schemaMgr = new SpecManager();
+    let specMgr = new SpecManager();
     let fixture;
     let loader;
     let appRefMock = {
@@ -31,7 +31,7 @@ describe('Redoc components', () => {
       hostView: { changeDetectorRef: {detectChanges : () => undefined} }
     };
     beforeEachProviders(() => [
-        provide(SpecManager, {useValue: schemaMgr})
+        provide(SpecManager, {useValue: specMgr})
     ]);
     beforeEach(inject([TestComponentBuilder, DynamicComponentLoader], (tcb, dcl) => {
       builder = tcb;

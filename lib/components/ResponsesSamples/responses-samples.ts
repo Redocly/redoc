@@ -25,8 +25,8 @@ function hasExample(response) {
 })
 export class ResponsesSamples extends BaseComponent {
   data: any;
-  constructor(schemaMgr:SpecManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {
@@ -44,7 +44,7 @@ export class ResponsesSamples extends BaseComponent {
       resp.pointer = JsonPointer.join(this.pointer, respCode);
       if (resp.$ref) {
         let ref = resp.$ref;
-        resp = this.schemaMgr.byPointer(resp.$ref);
+        resp = this.specMgr.byPointer(resp.$ref);
         resp.pointer = ref;
       }
 

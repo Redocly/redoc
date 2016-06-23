@@ -20,13 +20,13 @@ export class ParamsList extends BaseComponent {
 
   data:any;
 
-  constructor(schemaMgr:SpecManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {
     this.data = {};
-    let paramsList = this.schemaMgr.getMethodParams(this.pointer, true);
+    let paramsList = this.specMgr.getMethodParams(this.pointer, true);
 
     paramsList = paramsList.map(paramSchema => {
       let propPointer = paramSchema._pointer;

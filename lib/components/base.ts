@@ -84,14 +84,14 @@ export class BaseComponent implements OnInit, OnDestroy {
   pointer: String;
   dereferencedCache = {};
 
-  constructor(public schemaMgr: SpecManager) {
+  constructor(public specMgr: SpecManager) {
   }
 
   /**
    * onInit method is run by angular2 after all component inputs are resolved
    */
   ngOnInit() {
-    this.componentSchema = this.schemaMgr.byPointer(this.pointer || '');
+    this.componentSchema = this.specMgr.byPointer(this.pointer || '');
     this.prepareModel();
     this.init();
   }

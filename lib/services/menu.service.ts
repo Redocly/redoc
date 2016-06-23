@@ -19,10 +19,9 @@ export class MenuService {
   activeMethodIdx: number = -1;
   activeMethodPtr: string;
 
-  constructor(private hash:Hash, private scrollService:ScrollService, schemaMgr:SpecManager) {
+  constructor(private hash:Hash, private scrollService:ScrollService, specMgr:SpecManager) {
     this.hash = hash;
-
-    this.categories = Array.from(schemaMgr.buildMenuTree().entries()).map(
+    this.categories = Array.from(specMgr.buildMenuTree().entries()).map(
       el => ({name: el[0], description: el[1].description, methods: el[1].methods})
     );
 

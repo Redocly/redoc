@@ -28,9 +28,9 @@ describe('Redoc components', () => {
         provide(OptionsService, {useClass: OptionsService})
     ]);
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/api-info-test.json');
+      return specMgr.load('/tests/schemas/api-info-test.json');
     })));
 
     beforeEach((done) => {

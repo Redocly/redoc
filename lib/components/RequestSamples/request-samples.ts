@@ -25,8 +25,8 @@ export class RequestSamples extends BaseComponent {
   data: any;
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
-  constructor(schemaMgr:SpecManager, public events:RedocEventsService) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager, public events:RedocEventsService) {
+    super(specMgr);
 
     this.selectedLang = this.events.samplesLanguageChanged;
   }

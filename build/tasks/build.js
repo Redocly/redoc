@@ -123,7 +123,7 @@ var JS_DEPS = argv.prod ? [
 ]: [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
-  //'node_modules/zone.js/dist/long-stack-trace-zone.js',
+  'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];
@@ -145,7 +145,7 @@ gulp.task('concatDeps', ['concatPrism'], function() {
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', function bundle(done) {
+gulp.task('bundle', ['injectVersionFile'], function bundle(done) {
   mkdir('-p', 'dist');
   cp('lib/index.js', path.join(paths.tmp, paths.sourceEntryPoint));
   var builder = new Builder('./', 'system.config.js');
@@ -197,5 +197,6 @@ gulp.task('concatPrism', function() {
 // needs inlineTemplates run before to create .tmp/lib folder
 gulp.task('injectVersionFile', function() {
   var version = require('../../package.json').version;
-  fs.writeFileSync(path.join(paths.tmp, 'lib/version.json'), JSON.stringify(version));
+  var exportStatement = `export var redocVersion = "${version}"`;
+  fs.writeFileSync(path.join(paths.tmp, 'lib/version.js'), exportStatement);
 })

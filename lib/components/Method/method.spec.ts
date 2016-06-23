@@ -22,9 +22,9 @@ describe('Redoc components', () => {
     beforeEachProviders(() => [
         provide(SpecManager, {useValue: new SpecManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml');
+      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
     beforeEach((done) => {
       builder.createAsync(TestAppComponent).then(fixture => {

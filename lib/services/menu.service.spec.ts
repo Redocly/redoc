@@ -6,56 +6,53 @@ import {
   beforeEach,
   describe,
   beforeEachProviders,
-  it
+  it,
+  async
 } from '@angular/core/testing';
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
-import { OptionsService } from './options.service';
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
 import { ScrollService } from './scroll.service';
-import { RedocEventsService } from './events.service';
 import { MethodsList } from '../components/index';
 import { SpecManager } from '../utils/SpecManager';;
 
 describe('Menu service', () => {
   let menu, hashService, scroll;
   let builder;
-  let schemaMgr;
+  let specMgr = new SpecManager();
 
   beforeEachProviders(() => [
-      provide(BrowserDomAdapter, {useClass: BrowserDomAdapter}),
-      provide(OptionsService, {useClass: OptionsService}),
-      provide(Hash, {useClass: Hash}),
-      provide(ScrollService, {useClass: ScrollService}),
-      provide(RedocEventsService, {useClass: RedocEventsService}),
-      provide(SpecManager, {useClass: SpecManager})
+    provide(BrowserDomAdapter, {useClass: BrowserDomAdapter}),
+    provide(Hash, {useClass: Hash}),
+    provide(ScrollService, {useClass: ScrollService}),
+    provide(SpecManager, {useValue: new SpecManager()})
   ]);
 
-  beforeEach(inject([Hash, ScrollService, SpecManager, TestComponentBuilder],
-    (_hash, _scroll, _schemaMgr, tcb) => {
+  beforeEach(async(inject([Hash, ScrollService, TestComponentBuilder, SpecManager],
+  (_hash, _scroll, tcb, _specMgr) => {
     hashService = _hash;
     scroll = _scroll;
-    schemaMgr = _schemaMgr;
     builder = tcb;
-  }));
+    specMgr = _specMgr;
+  })));
 
-
-  beforeEach((done) => {
-    schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
-      menu = new MenuService(hashService, scroll, schemaMgr);
+  beforeEach(done => {
+    specMgr.load('/tests/schemas/extended-petstore.yml').then(r => {
       done();
-    }).catch((err) => done.fail(err));
+    }).catch(e => {
+      done.fail(e);
+    });
   });
 
-  beforeEach((done) => {
-    builder.createAsync(TestAppComponent).then((fixture) => {
+  beforeEach(done => {
+    menu = new MenuService(hashService, scroll, specMgr);
+    builder.createAsync(TestAppComponent).then(fixture => {
       fixture.detectChanges();
       done();
-    }).catch((err) => done.fail(err));
+    }).catch(err => done.fail(err) );
   });
-
 
   it('should run hashScroll when hash changed', (done) => {
     spyOn(menu, 'hashScroll').and.callThrough();

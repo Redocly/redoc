@@ -8,6 +8,7 @@ gulp.task('prepare-test', function(cb) {
     'clean',
     'transpile',
     'concatPrism',
+    'injectVersionFile',
     cb
   );
 })

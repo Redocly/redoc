@@ -11,8 +11,8 @@ import { OptionsService } from '../../services/index';
 export class ApiInfo extends BaseComponent {
   data: any;
   specUrl: String;
-  constructor(schemaMgr:SpecManager, private optionsService:OptionsService) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager, private optionsService:OptionsService) {
+    super(specMgr);
   }
 
   prepareModel() {

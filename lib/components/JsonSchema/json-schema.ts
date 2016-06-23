@@ -24,9 +24,9 @@ export class JsonSchema extends BaseComponent {
   @Input() isRequestSchema: boolean;
   normalizer: SchemaNormalizer;
 
-  constructor(schemaMgr:SpecManager) {
-    super(schemaMgr);
-    this.normalizer = new SchemaNormalizer(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
+    this.normalizer = new SchemaNormalizer(specMgr);
   }
 
   get normPointer() {

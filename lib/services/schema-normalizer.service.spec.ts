@@ -8,12 +8,12 @@ import {
 import { SpecManager } from '../utils/SpecManager';;
 
 describe('Spec Helper', () => {
-  let schemaMgr:SpecManager = new SpecManager();
-  let normalizer = new SchemaNormalizer(schemaMgr);
+  let specMgr:SpecManager = new SpecManager();
+  let normalizer = new SchemaNormalizer(specMgr);
 
   describe('Dereference', () => {
     beforeAll(done => {
-      schemaMgr.load('/tests/schemas/base-component-dereference.json').then(
+      specMgr.load('/tests/schemas/base-component-dereference.json').then(
         () => done()
       );
     });
@@ -23,7 +23,7 @@ describe('Spec Helper', () => {
       let pointer;
       beforeAll(() => {
         pointer = '/paths/test1/get/parameters/0';
-        resolved = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should not contain $ref property', () => {
@@ -41,7 +41,7 @@ describe('Spec Helper', () => {
       it('should insert correct definition instead of reference', () => {
         delete resolved.title;
         delete resolved._pointer;
-        resolved.should.be.deepEqual(schemaMgr.schema.definitions.Simple);
+        resolved.should.be.deepEqual(specMgr.schema.definitions.Simple);
       });
     });
 
@@ -49,7 +49,7 @@ describe('Spec Helper', () => {
       let resolved;
       beforeAll(() => {
         let pointer = '/paths/test2/get/parameters/0';
-        resolved = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should not touch title if exist', () => {
@@ -68,11 +68,10 @@ describe('Spec Helper', () => {
       let resolved;
       beforeAll(() => {
         let pointer = '/paths/test3/get/parameters/0';
-        resolved = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should resolve array schema', () => {
-        console.log(resolved);
         expect(resolved.$ref).toBeUndefined();
         expect(resolved.items.$ref).toBeUndefined();
         resolved.type.should.be.equal('array');
@@ -86,7 +85,7 @@ describe('Spec Helper', () => {
       let resolved;
       beforeAll(() => {
         let pointer = '/paths/test4/get/parameters/0';
-        resolved = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should resolve circular schema', () => {
@@ -103,7 +102,7 @@ describe('Spec Helper', () => {
       let resolved;
       beforeAll(() => {
         let pointer = '/paths/test5/get/parameters/0';
-        resolved = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should skip other fields', () => {
@@ -122,14 +121,14 @@ describe('Spec Helper', () => {
 
   describe('mergeAllOf', () => {
     beforeAll((done) => {
-      schemaMgr.load('tests/schemas/base-component-joinallof.json').then(() => done());
+      specMgr.load('tests/schemas/base-component-joinallof.json').then(() => done());
     });
 
     describe('Simple allOf merge', () => {
       let joined;
       beforeAll(() => {
         let pointer = '/definitions/SimpleAllOf';
-        joined = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        joined = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should remove $allOf field', () => {
@@ -155,7 +154,7 @@ describe('Spec Helper', () => {
       let joined;
       beforeAll(() => {
         let pointer = '/definitions/AllOfWithRef';
-        joined = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        joined = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should remove $allOf field', () => {
@@ -181,7 +180,7 @@ describe('Spec Helper', () => {
       let joined;
       beforeAll(() => {
         let pointer = '/definitions/AllOfWithOther';
-        joined = normalizer.normalize(schemaMgr.byPointer(pointer), pointer);
+        joined = normalizer.normalize(specMgr.byPointer(pointer), pointer);
       });
 
       it('should remove $allOf field', () => {
@@ -212,19 +211,19 @@ describe('Spec Helper', () => {
       it('should merge properties and required when defined on allOf level', () => {
         let pointer = '/definitions/PropertiesOnAllOfLevel';
         let joined;
-        (() => joined = normalizer.normalize(schemaMgr.byPointer(pointer), pointer)).should.not.throw();
+        (() => joined = normalizer.normalize(specMgr.byPointer(pointer), pointer)).should.not.throw();
         Object.keys(joined.properties).length.should.be.equal(3);
       });
 
       it('should throw when merging schemas with different types', () => {
         let pointer = '/definitions/BadAllOf1';
-        (() => normalizer.normalize(schemaMgr.byPointer(pointer), pointer)).should.throw();
+        (() => normalizer.normalize(specMgr.byPointer(pointer), pointer)).should.throw();
       });
 
       it('should handle nested allOF', () => {
         let pointer = '/definitions/NestedAllOf';
         let joined;
-        (() => joined = normalizer.normalize(schemaMgr.byPointer(pointer), pointer)).should.not.throw();
+        (() => joined = normalizer.normalize(specMgr.byPointer(pointer), pointer)).should.not.throw();
         Object.keys(joined.properties).length.should.be.equal(4);
         Object.keys(joined.properties).should.be.deepEqual(['prop1', 'prop2', 'prop3', 'prop4']);
         joined.required.should.be.deepEqual(['prop1', 'prop3']);

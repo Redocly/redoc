@@ -29,14 +29,14 @@ describe('Redoc components', () => {
         provide(SpecManager, {useValue: new SpecManager()})
     ]);
     beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
-      (tcb, schemaMgr, opts) => {
+      (tcb, specMgr, opts) => {
       builder = tcb;
       testOptions = opts;
       testOptions.options = {
         scrollYOffset: () => 0,
         scrollParent: window
       };
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml');
+      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
     beforeEach((done) => {

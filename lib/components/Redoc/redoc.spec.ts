@@ -23,19 +23,19 @@ let optsMgr:OptionsService;
 describe('Redoc components', () => {
   describe('Redoc Component', () => {
     let builder;
-    let schemaMgr;
+    let specMgr;
     beforeEachProviders(() => [
         provide(SpecManager, {useValue: new SpecManager()}),
     ]);
     beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
-      (tcb, _schemaMgr, _optsMgr) => {
+      (tcb, _specMgr, _optsMgr) => {
       optsMgr = _optsMgr;
       builder = tcb;
-      schemaMgr = _schemaMgr;
+      specMgr = _specMgr;
     })));
 
     beforeEach((done) => {
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml')
+      return specMgr.load('/tests/schemas/extended-petstore.yml')
         .then(() => done())
         .catch(err => done.fail(err));
     });
@@ -110,9 +110,9 @@ describe('Redoc components', () => {
         provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()}),
         provide(OptionsService, {useValue: optsMgr})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/methods-list-component.json');
+      return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
 
     beforeEach((done) => {

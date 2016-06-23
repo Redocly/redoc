@@ -21,10 +21,10 @@ export class SchemaSample extends BaseComponent {
 
   private _normalizer:SchemaNormalizer;
 
-  constructor(schemaMgr:SpecManager, elementRef:ElementRef) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager, elementRef:ElementRef) {
+    super(specMgr);
     this.element = elementRef.nativeElement;
-    this._normalizer = new SchemaNormalizer(schemaMgr);
+    this._normalizer = new SchemaNormalizer(specMgr);
   }
 
   init() {

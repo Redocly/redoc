@@ -53,7 +53,7 @@ module.exports = function (config) {
             loadFiles: ['.tmp/tests/setup.js', '.tmp/tests/helpers.js', '.tmp/lib/**/*.js',
             '.tmp/tests/unit/*.js'],
             serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
-            '.tmp/lib/**/*.json', '.tmp/*js', '.tmp/lib/**/*.css']
+            '.tmp/*js', '.tmp/lib/**/*.css']
         },
 
         proxies: {

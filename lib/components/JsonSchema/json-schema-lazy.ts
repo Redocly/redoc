@@ -8,9 +8,7 @@ import { JsonSchema } from './json-schema';
 import { OptionsService } from '../../services/options.service';
 import { SpecManager } from '../../utils/SpecManager';
 
-
 var cache = {};
-
 
 @Component({
   selector: 'json-schema-lazy',
@@ -22,23 +20,26 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() auto: boolean;
   @Input() isRequestSchema: boolean;
   loaded: boolean = false;
-  constructor(private schemaMgr:SpecManager, private viewRef:ViewContainerRef, private elementRef:ElementRef,
+  constructor(private specMgr:SpecManager, private viewRef:ViewContainerRef, private elementRef:ElementRef,
     private dcl:DynamicComponentLoader, private optionsService:OptionsService) {
   }
 
   normalizePointer() {
-    let schema = this.schemaMgr.byPointer(this.pointer);
+    let schema = this.specMgr.byPointer(this.pointer);
     return schema && schema.$ref || this.pointer;
   }
 
   _loadAfterSelf() {
     // FIXME: get rid of DynamicComponentLoader as it is deprecated
-    return this.dcl.loadNextToLocation(JsonSchema, this.viewRef).then((compRef) => {
+    return this.dcl.loadNextToLocation(JsonSchema, this.viewRef).then(compRef => {
       this.initComponent(compRef);
       if (compRef.changeDetectorRef) {
         compRef.changeDetectorRef.detectChanges();
       }
       return compRef;
+    }, err => {
+      console.log(err);
+      throw err;
     });
   }
 

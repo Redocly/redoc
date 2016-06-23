@@ -22,8 +22,8 @@ function isNumeric(n) {
 export class ResponsesList extends BaseComponent {
   data: any;
   options: any;
-  constructor(schemaMgr:SpecManager, optionsMgr:OptionsService) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager, optionsMgr:OptionsService) {
+    super(specMgr);
     this.options = optionsMgr.options;
   }
 
@@ -42,7 +42,7 @@ export class ResponsesList extends BaseComponent {
       resp.pointer = JsonPointer.join(this.pointer, respCode);
       if (resp.$ref) {
         let ref = resp.$ref;
-        resp = this.schemaMgr.byPointer(resp.$ref);
+        resp = this.specMgr.byPointer(resp.$ref);
         resp.pointer = ref;
       }
 

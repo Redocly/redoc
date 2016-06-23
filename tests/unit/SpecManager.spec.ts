@@ -3,23 +3,23 @@
 import { SpecManager } from '../../lib/utils/SpecManager';
 describe('Utils', () => {
   describe('Schema manager', () => {
-    let schemaMgr;
+    let specMgr;
 
     beforeEach(() => {
-      schemaMgr = new SpecManager();
+      specMgr = new SpecManager();
     });
 
     it('Should be a singleton', ()=> {
-      (new SpecManager()).should.be.equal(schemaMgr);
-      SpecManager.instance().should.be.equal(schemaMgr);
+      (new SpecManager()).should.be.equal(specMgr);
+      SpecManager.instance().should.be.equal(specMgr);
     });
 
     it('load should return a promise', ()=> {
-      schemaMgr.load('/tests/schemas/extended-petstore.yml').should.be.instanceof(Promise);
+      specMgr.load('/tests/schemas/extended-petstore.yml').should.be.instanceof(Promise);
     });
 
     it('load should reject promise for invalid url', (done)=> {
-      schemaMgr.load('/nonexisting/schema.json').then(() => {
+      specMgr.load('/nonexisting/schema.json').then(() => {
         throw new Error('Succees handler should not be called');
       }, () => {
         done();
@@ -27,7 +27,7 @@ describe('Utils', () => {
     });
 
     it('load should resolve promise for valid url', (done)=> {
-      schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
+      specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
         done();
       }, () => {
         throw new Error('Error handler should not be called');
@@ -36,7 +36,7 @@ describe('Utils', () => {
 
     describe('Schema manager basic functionality', ()=> {
       beforeAll(function (done) {
-        schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
+        specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {
           throw new Error('Error handler should not be called');
@@ -45,23 +45,23 @@ describe('Utils', () => {
 
 
       it('should contain non-empty schema', ()=> {
-        schemaMgr.schema.should.be.an.Object();
-        schemaMgr.schema.should.be.not.empty();
+        specMgr.schema.should.be.an.Object();
+        specMgr.schema.should.be.not.empty();
       });
 
       it('should correctly init api url', ()=> {
-        schemaMgr.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
+        specMgr.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
       });
 
       describe('byPointer method', () => {
         it('should return correct schema part', ()=> {
-          let part = schemaMgr.byPointer('/tags/3');
-          part.should.be.deepEqual(schemaMgr.schema.tags[3]);
-          part.should.be.equal(schemaMgr.schema.tags[3]);
+          let part = specMgr.byPointer('/tags/3');
+          part.should.be.deepEqual(specMgr.schema.tags[3]);
+          part.should.be.equal(specMgr.schema.tags[3]);
         });
 
         it('should return null for incorrect pointer', ()=> {
-          let part = schemaMgr.byPointer('/incorrect/pointer');
+          let part = specMgr.byPointer('/incorrect/pointer');
           expect(part).toBeNull();
         });
       });
@@ -69,7 +69,7 @@ describe('Utils', () => {
 
     describe('getTagsMap method', () => {
       beforeAll(function () {
-        schemaMgr._schema = {
+        specMgr._schema = {
           tags: [
             {name: 'tag1', description: 'info1'},
             {name: 'tag2', description: 'info2', 'x-traitTag': true}
@@ -78,7 +78,7 @@ describe('Utils', () => {
       });
 
       it('should return correct tags map', () => {
-        let tagsMap = schemaMgr.getTagsMap();
+        let tagsMap = specMgr.getTagsMap();
         let expectedResult = {
           tag1: {description: 'info1', 'x-traitTag': false},
           tag2: {description: 'info2', 'x-traitTag': true}
@@ -87,8 +87,8 @@ describe('Utils', () => {
       });
 
       it('should return empty array for non-specified tags', () => {
-        delete schemaMgr._schema.tags;
-        let tagsMap = schemaMgr.getTagsMap();
+        delete specMgr._schema.tags;
+        let tagsMap = specMgr.getTagsMap();
         tagsMap.should.be.empty();
       });
     });
@@ -121,8 +121,8 @@ describe('Utils', () => {
       let entries;
 
       beforeAll(() => {
-        schemaMgr._schema = suitSchema;
-        menuTree = schemaMgr.buildMenuTree();
+        specMgr._schema = suitSchema;
+        menuTree = specMgr.buildMenuTree();
         entries = Array.from(menuTree.entries());
       });
 
@@ -162,7 +162,7 @@ describe('Utils', () => {
           info.methods.should.be.an.Array();
           for (let methodInfo of info.methods) {
             methodInfo.should.have.properties(['pointer', 'summary']);
-            let methSchema = schemaMgr.byPointer(methodInfo.pointer);
+            let methSchema = specMgr.byPointer(methodInfo.pointer);
             expect(methSchema).not.toBeNull();
             if (methSchema.summary) {
               methSchema.summary.should.be.equal(methodInfo.summary);
@@ -174,7 +174,7 @@ describe('Utils', () => {
 
     describe('getMethodParams method', () => {
       beforeAll((done) => {
-        schemaMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(() => {
+        specMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(() => {
           done();
         }, () => {
           done(new Error('Error handler should not be called'));
@@ -182,26 +182,26 @@ describe('Utils', () => {
       });
 
       it('should propagate path parameters', () => {
-        let params = schemaMgr.getMethodParams('/paths/test1/get');
+        let params = specMgr.getMethodParams('/paths/test1/get');
         params.length.should.be.equal(2);
         params[0].name.should.be.equal('methodParam');
         params[1].name.should.be.equal('pathParam');
       });
 
       it('should inject correct pointers', () => {
-        let params = schemaMgr.getMethodParams('/paths/test1/get');
+        let params = specMgr.getMethodParams('/paths/test1/get');
         params[0]._pointer.should.be.equal('/paths/test1/get/parameters/0');
         params[1]._pointer.should.be.equal('/paths/test1/parameters/0');
       });
 
       it('should accept pointer directly to parameters', () => {
-        let params = schemaMgr.getMethodParams('/paths/test1/get/parameters', true);
+        let params = specMgr.getMethodParams('/paths/test1/get/parameters', true);
         expect(params).not.toBeNull();
         params.length.should.be.equal(2);
       });
 
       it('should resolve path params from Parameters Definitions Object', () => {
-        let params = schemaMgr.getMethodParams('/paths/test2/get', true);
+        let params = specMgr.getMethodParams('/paths/test2/get', true);
         params.length.should.be.equal(2);
         params[0].name.should.be.equal('methodParam');
         params[1].name.should.be.equal('extParam');
@@ -209,21 +209,21 @@ describe('Utils', () => {
       });
 
       it('should resolve method params from Parameters Definitions Object', () => {
-        let params = schemaMgr.getMethodParams('/paths/test3/get', true);
+        let params = specMgr.getMethodParams('/paths/test3/get', true);
         params.length.should.be.equal(1);
         params[0].name.should.be.equal('extParam');
         params[0]._pointer.should.be.equal('#/parameters/extparam');
       });
 
       it('should throw for parameters other than array', () => {
-        let func = () => schemaMgr.getMethodParams('/paths/test4/get', true);
+        let func = () => specMgr.getMethodParams('/paths/test4/get', true);
         expect(func).toThrow();
       });
     });
 
     describe('findDerivedDefinitions method', () => {
       beforeAll((done) => {
-        schemaMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
+        specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {
           done(new Error('Error handler should not be called'));
@@ -231,7 +231,7 @@ describe('Utils', () => {
       });
 
       it('should find derived definitions for Pet', () => {
-        let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Pet');
+        let deriveDefs = specMgr.findDerivedDefinitions('#/definitions/Pet');
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.not.be.empty();
         deriveDefs.should.be.deepEqual([
@@ -241,7 +241,7 @@ describe('Utils', () => {
       });
 
       it('should return emtpy array for definitions that dont have discriminator', () => {
-        let deriveDefs = schemaMgr.findDerivedDefinitions('#/definitions/Order');
+        let deriveDefs = specMgr.findDerivedDefinitions('#/definitions/Order');
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.be.empty();
       });

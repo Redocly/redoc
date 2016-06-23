@@ -35,10 +35,10 @@ export class SideMenu extends BaseComponent {
   activeItemCaption: string;
   options: any;
   data: any;
-  constructor(schemaMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
+  constructor(specMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
-    super(schemaMgr);
+    super(specMgr);
     this.$element = elementRef.nativeElement;
 
     this.activeCatCaption = '';

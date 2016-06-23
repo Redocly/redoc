@@ -19,10 +19,10 @@ describe('Redoc components', () => {
   describe('JsonSchema Component', () => {
     let builder;
     let component;
-    let schemaMgr = new SpecManager();
+    let specMgr = new SpecManager();
     let fixture;
     beforeEachProviders(() => [
-        provide(SpecManager, {useValue: schemaMgr})
+        provide(SpecManager, {useValue: specMgr})
     ]);
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
@@ -38,21 +38,21 @@ describe('Redoc components', () => {
 
     it('should init component', () => {
       component.pointer = '';
-      (<any>schemaMgr)._schema = {type: 'object'};
+      (<any>specMgr)._schema = {type: 'object'};
       fixture.detectChanges();
       expect(component).not.toBeNull();
     });
 
     it('should set isTrivial for non-object/array types', () => {
       component.pointer = '';
-      (<any>schemaMgr)._schema = {type: 'string'};
+      (<any>specMgr)._schema = {type: 'string'};
       fixture.detectChanges();
       component.schema.isTrivial.should.be.true();
     });
 
     it('should use < * > notation for prop without type', () => {
       component.pointer = '';
-      (<any>schemaMgr)._schema = {type: 'object', properties: {
+      (<any>specMgr)._schema = {type: 'object', properties: {
         test: {}
       }};
       fixture.detectChanges();

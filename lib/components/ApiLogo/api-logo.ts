@@ -10,8 +10,8 @@ import {RedocComponent, BaseComponent, SpecManager} from '../base';
 export class ApiLogo extends BaseComponent {
   data:any = {};
 
-  constructor(schemaMgr:SpecManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {

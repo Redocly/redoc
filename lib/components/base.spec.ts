@@ -5,20 +5,20 @@ import { BaseComponent } from '../components/base';
 
 describe('Redoc components', () => {
   describe('BaseComponent', () => {
-    let schemaMgr;
+    let specMgr;
     let component;
 
     beforeAll(() => {
-      schemaMgr = new SpecManager();
-      schemaMgr._schema = {tags: []};
+      specMgr = new SpecManager();
+      specMgr._schema = {tags: []};
     });
 
     beforeEach(() => {
-      component = new BaseComponent(schemaMgr);
+      component = new BaseComponent(specMgr);
     });
 
     it('should set instance properties', () => {
-      component.schemaMgr.should.be.equal(schemaMgr);
+      component.specMgr.should.be.equal(specMgr);
       //component.schema.should.be.of.type('object');
       expect(component.componentSchema).toBeNull();
     });
@@ -26,7 +26,7 @@ describe('Redoc components', () => {
     it('should set componentSchema based on pointer on ngOnInit', () => {
       component.pointer = '/tags';
       component.ngOnInit();
-      component.componentSchema.should.be.deepEqual(schemaMgr._schema.tags);
+      component.componentSchema.should.be.deepEqual(specMgr._schema.tags);
     });
 
     it('should call prepareModel and init virtual methods after init', () => {
