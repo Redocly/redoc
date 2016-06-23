@@ -2,9 +2,6 @@
 
 import { provide, enableProdMode, ElementRef,
   ComponentRef, AfterViewInit } from '@angular/core';
-import {enableProdMode as compilerProd} from '@angular/compiler/src/facade/lang';
-import {enableProdMode as browserProd } from '@angular/platform-browser/src/facade/lang';
-import {CompilerConfig} from '@angular/compiler';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { RedocComponent, BaseComponent } from '../base';
@@ -63,8 +60,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     optionsService.options = options;
     optionsService.options.specUrl = optionsService.options.specUrl || specUrl;
     var providers = [
-      provide(OptionsService, {useValue: optionsService}),
-      provide(CompilerConfig, {useValue: new CompilerConfig({genDebugInfo: false, logBindingUpdate: false})})
+      provide(OptionsService, {useValue: optionsService})
     ];
 
     if (Redoc.appRef) {
@@ -75,8 +71,6 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     .then(() => {
       if (!_modeLocked && !optionsService.options.debugMode) {
         enableProdMode();
-        compilerProd();
-        browserProd();
         _modeLocked = true;
       }
       return bootstrap(Redoc, providers);

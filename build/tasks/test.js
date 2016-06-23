@@ -1,12 +1,20 @@
 var gulp = require('gulp');
-
+var runSequence = require('run-sequence');
 var Server = require('karma').Server;
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
+gulp.task('prepare-test', function(cb) {
+  return runSequence(
+    'clean',
+    'transpile',
+    'concatPrism',
+    cb
+  );
+})
 /**
  * Run test once and exit
  */
-gulp.task('test', ['concatPrism', 'inlineTemplates', 'injectVersionFile'], function (done) {
+gulp.task('test', ['prepare-test'], function (done) {
   new Server({
     configFile: __dirname + '/../../karma.conf.js',
     singleRun: true

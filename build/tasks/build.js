@@ -23,12 +23,19 @@ gulp.task('build', function (callback) {
   }
   return runSequence(
     'clean',
-    'tsc',
-    'inlineTemplates',
+    'transpile',
     'bundle',
     'concatDeps',
     'copyDebug',
     callback
+  );
+});
+
+gulp.task('transpile', function(cb) {
+  return runSequence(
+    'tsc',
+    'inlineTemplates',
+    cb
   );
 });
 
@@ -41,8 +48,7 @@ gulp.task('copyDebug', () => {
 
 gulp.task('rebuild', function(done) {
   return runSequence(
-    'tsc',
-    'inlineTemplates',
+    'transpile',
     'bundle',
     'concatDeps',
     'copyDebug',
@@ -99,14 +105,14 @@ gulp.task('inlineTemplates', ['sass'], function() {
     .pipe(gulp.dest(paths.tmp));
 });
 
-function compileSass(ext, file) {
-    file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
-    file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
-    file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
-    file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
-    file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
+function compileSass(ext, file, cb) {
+  file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
+  file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+  file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
+  file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+  file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
 
-    return sassCopm.renderSync({data: file}).css;
+  cb(null, sassCopm.renderSync({data: file}).css);
 }
 
 var JS_DEPS = argv.prod ? [
@@ -189,7 +195,7 @@ gulp.task('concatPrism', function() {
 });
 
 // needs inlineTemplates run before to create .tmp/lib folder
-gulp.task('injectVersionFile', ['inlineTemplates'], function() {
+gulp.task('injectVersionFile', function() {
   var version = require('../../package.json').version;
   fs.writeFileSync(path.join(paths.tmp, 'lib/version.json'), JSON.stringify(version));
 })

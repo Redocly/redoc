@@ -1,5 +1,4 @@
 'use strict';
-console.log('here');
 const verifyNoBrowserErrors = require('./helpers').verifyNoBrowserErrors;
 const scrollToEl = require('./helpers').scrollToEl;
 const fixFFTest = require('./helpers').fixFFTest;
