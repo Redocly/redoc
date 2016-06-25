@@ -46,9 +46,15 @@ class SchemaWalker {
       let ptr = JsonPointer.join(pointer, ['properties']);
       SchemaWalker.walkEach(obj.properties, ptr, visitor);
     }
+
     if (obj.additionalProperties) {
       let ptr = JsonPointer.join(pointer, ['additionalProperties']);
-      SchemaWalker.walkEach(obj.additionalProperties, ptr, visitor);
+      if (Array.isArray(obj.additionalProperties)) {
+        SchemaWalker.walkEach(obj.additionalProperties, ptr, visitor);
+      } else {
+        let res = SchemaWalker.walk(obj.additionalProperties, ptr, visitor);
+        if (res) obj.additionalProperties = res;
+      }
     }
 
     if (obj.allOf) {

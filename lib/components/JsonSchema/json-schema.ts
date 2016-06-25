@@ -55,7 +55,7 @@ export class JsonSchema extends BaseComponent {
         enumOrder[enumItem.val] = idx;
       });
 
-      this.schema._derived.sort((a, b) => {
+      this.schema._descendants.sort((a, b) => {
         return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
     }
@@ -63,17 +63,17 @@ export class JsonSchema extends BaseComponent {
   }
 
   prepareModel() {
-    let schema = this.schema = this.componentSchema;
-    if (!schema) {
+    this.schema = this.componentSchema;
+    if (!this.schema) {
       throw new Error(`Can't load component schema at ${this.pointer}`);
     }
 
-    schema = this.normalizer.normalize(schema, this.normPointer);
-    this.schema = schema = SchemaHelper.unwrapArray(schema, this.normPointer);
-    SchemaHelper.preprocess(schema, schema, this.normPointer, this.pointer);
+    this.schema = this.normalizer.normalize(this.schema, this.normPointer);
+    this.schema = SchemaHelper.unwrapArray(this.schema, this.normPointer);
+    SchemaHelper.preprocess(this.schema, this.normPointer, this.pointer);
 
-    if (!schema.isTrivial) {
-      SchemaHelper.preprocessProperties(schema, this.normPointer, {
+    if (!this.schema.isTrivial) {
+      SchemaHelper.preprocessProperties(this.schema, this.normPointer, {
         childFor: this.childFor,
         skipReadOnly: this.isRequestSchema
       });

@@ -135,12 +135,11 @@ const injectors = {
 };
 
 export class SchemaHelper {
-  static preprocess(schema, name, pointer, hostPointer?) {
+  static preprocess(schema, pointer, hostPointer?) {
     //propertySchema = Object.assign({}, propertySchema);
     if (schema['x-redoc-schema-precompiled']) {
       return schema;
     }
-    schema._name = name;
     SchemaHelper.runInjectors(schema, schema, pointer, hostPointer);
     schema['x-redoc-schema-precompiled'] = true;
     return schema;
@@ -163,15 +162,16 @@ export class SchemaHelper {
 
     let discriminatorFieldIdx = -1;
     let props = schema.properties && Object.keys(schema.properties).map((propName, idx) => {
-      let propertySchema = schema.properties[propName];
+      let propertySchema = Object.assign({}, schema.properties[propName]);
       let propPointer = propertySchema._pointer ||
         JsonPointer.join(pointer, ['properties', propName]);
-      propertySchema = SchemaHelper.preprocess(propertySchema, propName, propPointer);
+      propertySchema = SchemaHelper.preprocess(propertySchema, propPointer);
+      propertySchema._name = propName;
       // stop endless discriminator recursion
       if (propertySchema._pointer === opts.childFor) {
         propertySchema._pointer = null;
       }
-      propertySchema.required = !!requiredMap[propName];
+      propertySchema._required = !!requiredMap[propName];
       propertySchema.isDiscriminator = (schema.discriminator === propName);
       if (propertySchema.isDiscriminator) {
         discriminatorFieldIdx = idx;
@@ -202,7 +202,9 @@ export class SchemaHelper {
   static preprocessAdditionalProperties(schema:any, pointer:string) {
     var addProps = schema.additionalProperties;
     let ptr = addProps._pointer || JsonPointer.join(pointer, ['additionalProperties']);
-    return SchemaHelper.preprocess(addProps, '<Additional Properties> *', ptr);
+    let res = SchemaHelper.preprocess(addProps, ptr);
+    res._name = '<Additional Properties> *';
+    return res;
   }
 
   static unwrapArray(schema, pointer) {
