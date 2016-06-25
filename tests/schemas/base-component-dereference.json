@@ -35,6 +35,20 @@
       "items": {
         "$ref": "#/definitions/Circular"
       }
+    },
+    "CircularTransitive": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/CircularTransitive2"
+      }
+    },
+    "CircularTransitive2": {
+      "type": "array",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/definitions/CircularTransitive"
+        }
+      }
     }
   },
   "paths": {
@@ -84,6 +98,18 @@
         "parameters": [
           {
             "$ref": "#/definitions/Simple",
+            "title": "test",
+            "description": "test"
+          }
+        ]
+      }
+    },
+    "test6": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/CircularTransitive",
             "title": "test",
             "description": "test"
           }

@@ -93,8 +93,22 @@ describe('Spec Helper', () => {
         expect(resolved.items.$ref).toBeUndefined();
         resolved.type.should.be.equal('array');
         resolved._pointer.should.be.equal('#/definitions/Circular');
+      });
+
+      it('should remove _pointer when detect circularity', () => {
         expect(resolved.items._pointer).toBeUndefined();
         resolved.items.title.should.be.equal('Circular');
+      });
+
+      it('should resolve transitive circular ref', () => {
+        let pointer = '/paths/test6/get/parameters/0';
+        resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
+        expect(resolved.additionalProperties.$ref).toBeUndefined();
+        expect(resolved.additionalProperties.items.additionalProperties.$ref).toBeUndefined();
+        resolved.additionalProperties.type.should.be.equal('array');
+        resolved.additionalProperties._pointer.should.be.equal('#/definitions/CircularTransitive2');
+        expect(resolved.additionalProperties.items.additionalProperties._pointer).toBeUndefined();
+        resolved.additionalProperties.items.additionalProperties.title.should.be.equal('CircularTransitive');
       });
     });
 
