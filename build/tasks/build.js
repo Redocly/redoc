@@ -46,16 +46,6 @@ gulp.task('copyDebug', () => {
   }
 });
 
-gulp.task('rebuild', function(done) {
-  return runSequence(
-    'transpile',
-    'bundle',
-    'concatDeps',
-    'copyDebug',
-    done
-  );
-});
-
 gulp.task('tsc', function() {
   exec('tsc -p ./tsconfig.json');
 });
