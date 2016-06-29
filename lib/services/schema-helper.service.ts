@@ -181,7 +181,7 @@ export class SchemaHelper {
 
     props = props || [];
 
-    if (schema.additionalProperties && schema.additionalProperties !== false) {
+    if (schema.additionalProperties && (typeof schema.additionalProperties === 'object')) {
       let propsSchema = SchemaHelper.preprocessAdditionalProperties(schema, pointer);
       propsSchema._additional = true;
       props.push(propsSchema);
