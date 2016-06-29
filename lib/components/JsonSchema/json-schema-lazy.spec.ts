@@ -2,7 +2,6 @@
 
 import { getChildDebugElement } from '../../../tests/helpers';
 import { Component, provide } from '@angular/core';
-import { DynamicComponentLoader } from '@angular/core';
 
 import {
   inject,
@@ -23,32 +22,20 @@ describe('Redoc components', () => {
     let component;
     let specMgr = new SpecManager();
     let fixture;
-    let loader;
-    let appRefMock = {
-      instance: {
-        pointer: ''
-      },
-      hostView: { changeDetectorRef: {detectChanges : () => undefined} }
-    };
     beforeEachProviders(() => [
         provide(SpecManager, {useValue: specMgr})
     ]);
-    beforeEach(inject([TestComponentBuilder, DynamicComponentLoader], (tcb, dcl) => {
+    beforeEach(inject([TestComponentBuilder], (tcb, dcl) => {
       builder = tcb;
-      loader = dcl;
-      spyOn(loader, 'loadNextToLocation').and.returnValue({then: (fn) => fn(appRefMock)});
     }));
     beforeEach((done) => {
       builder.createAsync(TestAppComponent).then(_fixture => {
         fixture = _fixture;
         let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
         component = <JsonSchemaLazy>debugEl.componentInstance;
+        spyOn(component, '_loadAfterSelf').and.callThrough();
         done();
       }, err => done.fail(err));
-    });
-
-    afterEach(() => {
-      loader.loadNextToLocation.and.callThrough();
     });
 
     it('should init component', () => {
@@ -59,7 +46,7 @@ describe('Redoc components', () => {
       component.pointer = '#/def';
       fixture.detectChanges();
       component.load();
-      expect(loader.loadNextToLocation).toHaveBeenCalled();
+      expect(component._loadAfterSelf).toHaveBeenCalled();
     });
 
     it('should not run loadNextToLocation if already loaded', () => {
@@ -67,14 +54,7 @@ describe('Redoc components', () => {
       fixture.detectChanges();
       component.load();
       component.load();
-      expect(loader.loadNextToLocation.calls.count()).toEqual(1);
-    });
-
-    it('should init json-schema with correct pointer', () => {
-      component.pointer = '#/def';
-      fixture.detectChanges();
-      component.load();
-      expect(appRefMock.instance.pointer).toEqual(component.pointer);
+      expect(component._loadAfterSelf.calls.count()).toEqual(1);
     });
   });
 });
