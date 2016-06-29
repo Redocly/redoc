@@ -1,31 +1,20 @@
 'use strict';
 
-import { Component, EventEmitter, Output, Input,
-   trigger, state, animate, transition, style } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
 
 @Component({
   selector: 'zippy',
   templateUrl: './zippy.html',
   styleUrls: ['./zippy.css'],
-  directives: [CORE_DIRECTIVES],
-  animations: [
-    trigger('openClose', [
-      state('collapsed, void',
-        style({ height: '0px' })),
-      state('expanded',
-        style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate(200)
-      ])
-    ])
-  ],
+  directives: [CORE_DIRECTIVES]
 })
 export class Zippy {
   @Input() type = 'general';
   @Input() visible = false;
   @Input() empty = false;
   @Input() title;
+  @Input() headless: boolean = false;
   @Output() open = new EventEmitter();
   @Output() close = new EventEmitter();
   toggle() {

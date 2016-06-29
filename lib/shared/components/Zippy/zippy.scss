@@ -38,19 +38,42 @@ $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
     background-color: $zippy-info-bg-color;
   }
 }
+.zippy-indicator svg {
+  height: 1.2em;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+  transform: rotateZ(-180deg);
+}
+
+.zippy-hidden > .zippy-title svg {
+  transform: rotateZ(0);
+}
+
+.zippy-title polygon {
+  .zippy-success > & {
+    fill: $zippy-success-color;
+  }
+  .zippy-error > & {
+    fill: $zippy-error-color;
+  }
+
+  .zippy-redirect > & {
+    fill: $zippy-redirect-color;
+  }
+
+  .zippy-info > & {
+    fill: $zippy-info-color;
+  }
+}
 
 span.zippy-indicator {
+  width: 1em;
   font-size: 1.2em;
-  margin-right: 0.2em;
-  position: relative;
-  top: 0;
+  text-align: center;
+  display: inline-block;
 }
 
 .zippy-content {
-  overflow: hidden;
-}
-
-.zippy-content-wrap {
   padding: 15px 0;
 }
 
@@ -60,7 +83,13 @@ span.zippy-indicator {
   }
 
   .zippy-indicator {
-    display: none;
+    svg {
+      display: none;
+    }
+    &:before {
+      content: "—";
+      font-weight: bold;
+    }
   }
 
   .zippy-content {
@@ -68,7 +97,7 @@ span.zippy-indicator {
   }
 }
 
-.zippy-hidden {
+.zippy-hidden > .zippy-content {
   overflow: hidden;
   visibility: hidden;
   height: 0;
