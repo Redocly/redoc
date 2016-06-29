@@ -14,9 +14,8 @@ import { MethodsList } from '../MethodsList/methods-list';
 import { SideMenu } from '../SideMenu/side-menu';
 
 import { StickySidebar } from '../../shared/components/index';
-import {SchemaManager} from '../../utils/SchemaManager';
+import {SpecManager} from '../../utils/SpecManager';
 import { OptionsService, RedocEventsService } from '../../services/index';
-//import redocVersion from '../../version.js';
 
 var dom = new BrowserDomAdapter();
 var _modeLocked = false;
@@ -24,7 +23,7 @@ var _modeLocked = false;
 @RedocComponent({
   selector: 'redoc',
   providers: [
-    SchemaManager,
+    SpecManager,
     BrowserDomAdapter,
     RedocEventsService
   ],
@@ -48,6 +47,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
 
   static hideLoadingAnimation() {
     let redocEl = dom.query('redoc');
+    if (!redocEl) return;
     dom.addClass(redocEl, 'loading-remove');
     setTimeout(() => {
       dom.removeClass(redocEl, 'loading-remove');
@@ -67,7 +67,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
       Redoc.destroy();
     }
     Redoc.showLoadingAnimation();
-    return SchemaManager.instance().load(specUrl)
+    return SpecManager.instance().load(specUrl)
     .then(() => {
       if (!_modeLocked && !optionsService.options.debugMode) {
         enableProdMode();
@@ -99,6 +99,7 @@ export class Redoc extends BaseComponent implements AfterViewInit {
   static displayError(err) {
     console.log(err);
     let redocEl = dom.query('redoc');
+    if (!redocEl) return;
     let heading = 'Oops... ReDoc failed to render this spec';
     let details = err.message;
     let erroHtml = `<div class="redoc-error">
@@ -106,10 +107,6 @@ export class Redoc extends BaseComponent implements AfterViewInit {
       <div class='redoc-error-details'>${details}</div>`;
     redocEl.innerHTML = erroHtml;
   }
-
-  // static get version() {
-  //   return redocVersion;
-  // }
 
   static destroy() {
     let el = dom.query('redoc');
@@ -133,9 +130,9 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     }
   }
 
-  constructor(schemaMgr: SchemaManager, optionsMgr:OptionsService, elementRef:ElementRef,
+  constructor(specMgr: SpecManager, optionsMgr:OptionsService, elementRef:ElementRef,
     public events:RedocEventsService) {
-    super(schemaMgr);
+    super(specMgr);
     this.element = elementRef.nativeElement;
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );

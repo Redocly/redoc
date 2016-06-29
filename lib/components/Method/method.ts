@@ -1,7 +1,7 @@
 'use strict';
 import { Input } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
-import { RedocComponent, BaseComponent, SchemaManager} from '../base';
+import { RedocComponent, BaseComponent, SpecManager} from '../base';
 
 import { ParamsList } from '../ParamsList/params-list';
 import { ResponsesList } from '../ResponsesList/responses-list';
@@ -19,13 +19,13 @@ import { RequestSamples } from '../RequestSamples/request-samples';
 export class Method extends BaseComponent {
   data:any;
   @Input() tag:string;
-  constructor(schemaMgr:SchemaManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {
     this.data = {};
-    this.data.apiUrl = this.schemaMgr.apiUrl;
+    this.data.apiUrl = this.specMgr.apiUrl;
     this.data.httpMethod = JsonPointer.baseName(this.pointer);
     this.data.path = JsonPointer.baseName(this.pointer, 2);
     this.data.methodInfo = this.componentSchema;
@@ -39,13 +39,13 @@ export class Method extends BaseComponent {
   }
 
   filterMainTags(tags) {
-    var tagsMap = this.schemaMgr.getTagsMap();
+    var tagsMap = this.specMgr.getTagsMap();
     if (!tags) return [];
     return tags.filter(tag => tagsMap[tag] && tagsMap[tag]['x-traitTag']);
   }
 
   findBodyParam() {
-    let pathParams = this.schemaMgr.getMethodParams(this.pointer, true);
+    let pathParams = this.specMgr.getMethodParams(this.pointer, true);
     let bodyParam = pathParams.find(param => param.in === 'body');
     return bodyParam;
   }

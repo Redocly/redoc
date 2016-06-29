@@ -14,12 +14,16 @@ export class Zippy {
   @Input() visible = false;
   @Input() empty = false;
   @Input() title;
+  @Input() headless: boolean = false;
   @Output() open = new EventEmitter();
   @Output() close = new EventEmitter();
-
   toggle() {
     this.visible = !this.visible;
     if (this.empty) return;
-    (this.visible) ? this.open.next({}) : this.close.next({});
+    if (this.visible) {
+      this.open.next({});
+    } else {
+      this.close.next({});
+    }
   }
 }

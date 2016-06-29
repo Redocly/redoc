@@ -23,12 +23,19 @@ gulp.task('build', function (callback) {
   }
   return runSequence(
     'clean',
-    'tsc',
-    'inlineTemplates',
+    'transpile',
     'bundle',
     'concatDeps',
     'copyDebug',
     callback
+  );
+});
+
+gulp.task('transpile', function(cb) {
+  return runSequence(
+    'tsc',
+    'inlineTemplates',
+    cb
   );
 });
 
@@ -37,16 +44,6 @@ gulp.task('copyDebug', () => {
     // copy for be accessible from demo for debug
     cp(paths.redocBuilt + '.js', paths.redocBuilt + '.min.js');
   }
-});
-
-gulp.task('rebuild', function(done) {
-  return runSequence(
-    'inlineTemplates',
-    'bundle',
-    'concatDeps',
-    'copyDebug',
-    done
-  );
 });
 
 gulp.task('tsc', function() {
@@ -81,7 +78,7 @@ gulp.task('tsc', function() {
 //         .pipe(gulp.dest(config.tmp));
 // }
 
-gulp.task('inlineTemplates', ['tsc', 'sass'], function() {
+gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src('.tmp/**/*.js', { base: './tmp' })
     .pipe(replace(/'(.*?)\.css'/g, '\'$1.scss\''))
     .pipe(inlineNg2Template({
@@ -98,14 +95,14 @@ gulp.task('inlineTemplates', ['tsc', 'sass'], function() {
     .pipe(gulp.dest(paths.tmp));
 });
 
-function compileSass(ext, file) {
-    file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
-    file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
-    file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
-    file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
-    file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
+function compileSass(ext, file, cb) {
+  file = file.replace('../../shared/styles/variables', 'lib/shared/styles/variables');
+  file = file.replace('json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+  file = file.replace('../../shared/styles/share-link', 'lib/shared/styles/share-link');
+  file = file.replace('../JsonSchema/lib/components/JsonSchema/json-schema-common', 'lib/components/JsonSchema/json-schema-common');
+  file = file.replace('../../styles/variables', 'lib/shared/styles/variables');
 
-    return sassCopm.renderSync({data: file}).css;
+  cb(null, sassCopm.renderSync({data: file}).css);
 }
 
 var JS_DEPS = argv.prod ? [
@@ -116,7 +113,7 @@ var JS_DEPS = argv.prod ? [
 ]: [
   'lib/utils/browser-update.js',
   'node_modules/zone.js/dist/zone.js',
-  //'node_modules/zone.js/dist/long-stack-trace-zone.js',
+  'node_modules/zone.js/dist/long-stack-trace-zone.js',
   'node_modules/reflect-metadata/Reflect.js',
   'node_modules/babel-polyfill/dist/polyfill.js'
 ];
@@ -138,7 +135,7 @@ gulp.task('concatDeps', ['concatPrism'], function() {
     .pipe(gulp.dest('.'))
 });
 
-gulp.task('bundle', function bundle(done) {
+gulp.task('bundle', ['injectVersionFile'], function bundle(done) {
   mkdir('-p', 'dist');
   cp('lib/index.js', path.join(paths.tmp, paths.sourceEntryPoint));
   var builder = new Builder('./', 'system.config.js');
@@ -188,7 +185,8 @@ gulp.task('concatPrism', function() {
 });
 
 // needs inlineTemplates run before to create .tmp/lib folder
-gulp.task('injectVersionFile', ['inlineTemplates'], function() {
+gulp.task('injectVersionFile', function() {
   var version = require('../../package.json').version;
-  fs.writeFileSync(path.join(paths.tmp, 'lib/version.json'), JSON.stringify(version));
+  var exportStatement = `export var redocVersion = "${version}"`;
+  fs.writeFileSync(path.join(paths.tmp, 'lib/version.js'), exportStatement);
 })

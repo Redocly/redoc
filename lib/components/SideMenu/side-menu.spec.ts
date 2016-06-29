@@ -16,7 +16,7 @@ import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { MethodsList, SideMenu } from '../index';
 
-import { SchemaManager } from '../../utils/SchemaManager';;
+import { SpecManager } from '../../utils/SpecManager';;
 
 let testOptions;
 
@@ -26,17 +26,17 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()})
+        provide(SpecManager, {useValue: new SpecManager()})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager, OptionsService],
-      (tcb, schemaMgr, opts) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
+      (tcb, specMgr, opts) => {
       builder = tcb;
       testOptions = opts;
       testOptions.options = {
         scrollYOffset: () => 0,
         scrollParent: window
       };
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml');
+      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
     beforeEach((done) => {

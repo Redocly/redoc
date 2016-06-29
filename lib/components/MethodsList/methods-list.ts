@@ -1,7 +1,7 @@
 'use strict';
 
 import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { Method } from '../Method/method';
 import { EncodeURIComponentPipe } from '../../utils/pipes';
 
@@ -15,8 +15,8 @@ import { EncodeURIComponentPipe } from '../../utils/pipes';
 })
 export class MethodsList extends BaseComponent {
   data:any;
-  constructor(schemaMgr:SchemaManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {
@@ -24,7 +24,7 @@ export class MethodsList extends BaseComponent {
     // follow SwaggerUI behavior for cases when one method has more than one tag:
     // duplicate methods
 
-    let menuStructure = this.schemaMgr.buildMenuTree();
+    let menuStructure = this.specMgr.buildMenuTree();
     let tags = Array.from<any>(menuStructure.entries())
       .map((entry) => {
         let [tag, {description, methods}] = entry;

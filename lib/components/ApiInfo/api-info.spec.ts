@@ -15,7 +15,7 @@ import {
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { ApiInfo } from './api-info';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 import { OptionsService } from '../../services/index';
 
 describe('Redoc components', () => {
@@ -24,13 +24,13 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()}),
+        provide(SpecManager, {useValue: new SpecManager()}),
         provide(OptionsService, {useClass: OptionsService})
     ]);
 
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/api-info-test.json');
+      return specMgr.load('/tests/schemas/api-info-test.json');
     })));
 
     beforeEach((done) => {

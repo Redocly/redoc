@@ -5,6 +5,6 @@
     <schema-sample [pointer]="data.schemaPointer" [skipReadOnly]="true"> </schema-sample>
   </tab>
   <tab *ngFor="let sample of data.samples" [tabTitle]="sample.lang">
-    <pre innerHtml="{{sample.source | prism:sample.lang}}"></pre>
+    <pre [innerHtml]="sample.source | prism:sample.lang"></pre>
   </tab>
 </tabs>

@@ -15,7 +15,7 @@ import {
 import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { Redoc } from './redoc';
-import { SchemaManager } from '../../utils/SchemaManager';
+import { SpecManager } from '../../utils/SpecManager';
 import { OptionsService } from '../../services/index';
 
 let optsMgr:OptionsService;
@@ -23,19 +23,19 @@ let optsMgr:OptionsService;
 describe('Redoc components', () => {
   describe('Redoc Component', () => {
     let builder;
-    let schemaMgr;
+    let specMgr;
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()}),
+        provide(SpecManager, {useValue: new SpecManager()}),
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager, OptionsService],
-      (tcb, _schemaMgr, _optsMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
+      (tcb, _specMgr, _optsMgr) => {
       optsMgr = _optsMgr;
       builder = tcb;
-      schemaMgr = _schemaMgr;
+      specMgr = _specMgr;
     })));
 
     beforeEach((done) => {
-      return schemaMgr.load('/tests/schemas/extended-petstore.yml')
+      return specMgr.load('/tests/schemas/extended-petstore.yml')
         .then(() => done())
         .catch(err => done.fail(err));
     });
@@ -106,13 +106,13 @@ describe('Redoc components', () => {
     let destroySpy;
     let dom = new BrowserDomAdapter();
     beforeEachProviders(() => [
-        provide(SchemaManager, {useValue: new SchemaManager()}),
+        provide(SpecManager, {useValue: new SpecManager()}),
         provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()}),
         provide(OptionsService, {useValue: optsMgr})
     ]);
-    beforeEach(async(inject([TestComponentBuilder, SchemaManager], (tcb, schemaMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
-      return schemaMgr.load('/tests/schemas/methods-list-component.json');
+      return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
 
     beforeEach((done) => {

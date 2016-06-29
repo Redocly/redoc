@@ -3,8 +3,8 @@
 import { ElementRef, ChangeDetectorRef } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
-
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { trigger, state, animate, transition, style } from '@angular/core';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 
 @RedocComponent({
@@ -13,7 +13,18 @@ import { ScrollService, Hash, MenuService, OptionsService } from '../../services
   providers: [ScrollService, MenuService, Hash],
   styleUrls: ['./side-menu.css'],
   detect: true,
-  onPushOnly: false
+  onPushOnly: false,
+  animations: [
+    trigger('itemAnimation', [
+      state('collapsed, void',
+        style({ height: '0px' })),
+      state('expanded',
+        style({ height: '*' })),
+      transition('collapsed <=> expanded', [
+        animate(200)
+      ])
+    ])
+  ],
 })
 export class SideMenu extends BaseComponent {
   $element: any;
@@ -24,10 +35,10 @@ export class SideMenu extends BaseComponent {
   activeItemCaption: string;
   options: any;
   data: any;
-  constructor(schemaMgr:SchemaManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
+  constructor(specMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
-    super(schemaMgr);
+    super(specMgr);
     this.$element = elementRef.nativeElement;
 
     this.activeCatCaption = '';

@@ -19,7 +19,7 @@ $array-marker-line-height: 1.5;
   display: block;
 }
 
-json-schema.nested-schema {
+:host.nested-schema {
   background-color: white;
   padding: 10px 20px;
   position: relative;
@@ -50,7 +50,7 @@ json-schema.nested-schema {
   }
 }
 
-json-schema[nesteven="true"] {
+:host[nestodd="true"]  {
   background-color: $side-menu-active-bg-color;
   border-radius: $border-radius;
 
@@ -69,8 +69,27 @@ json-schema[nesteven="true"] {
   }
 }
 
-.param.complex > .param-info {
+.zippy-content-wrap {
+  padding: 0;
+}
+
+.param.complex.expanded > .param-info {
   border-bottom: 0;
+}
+
+.param.complex > .param-name .param-name-content {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.param.complex > .param-name svg {
+  height: 1.2em;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+}
+
+.param.complex.expanded > .param-name svg{
+  transform: rotateZ(-180deg);
 }
 
 .param.additional > .param-name {
@@ -127,7 +146,6 @@ json-schema[nesteven="true"] {
 .param.discriminator {
   > .param-info {
     padding-bottom: 0;
-    border-bottom: 0;
   }
 
   > .param-name:after {

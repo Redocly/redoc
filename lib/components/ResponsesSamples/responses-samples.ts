@@ -1,7 +1,7 @@
 'use strict';
 
 import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SchemaManager } from '../base';
+import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { Tabs, Tab } from '../../shared/components/index';
 import { SchemaSample } from '../index';
@@ -25,8 +25,8 @@ function hasExample(response) {
 })
 export class ResponsesSamples extends BaseComponent {
   data: any;
-  constructor(schemaMgr:SchemaManager) {
-    super(schemaMgr);
+  constructor(specMgr:SpecManager) {
+    super(specMgr);
   }
 
   prepareModel() {
@@ -44,7 +44,7 @@ export class ResponsesSamples extends BaseComponent {
       resp.pointer = JsonPointer.join(this.pointer, respCode);
       if (resp.$ref) {
         let ref = resp.$ref;
-        resp = this.schemaMgr.byPointer(resp.$ref);
+        resp = this.specMgr.byPointer(resp.$ref);
         resp.pointer = ref;
       }
 

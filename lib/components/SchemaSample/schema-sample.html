@@ -1,5 +1,5 @@
 <div class="snippet">
   <!-- in case sample is not available for some reason -->
   <pre *ngIf="data.sample == undefined"> Sample unavailable </pre>
-  <pre innerHtml="{{data.sample | jsonFormatter}}"></pre>
+  <pre [innerHtml]="data.sample | jsonFormatter"></pre>
 </div>

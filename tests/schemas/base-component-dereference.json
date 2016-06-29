@@ -27,16 +27,26 @@
     "ArrayOfSimple": {
       "type": "array",
       "items": {
-        "schema": {
-          "$ref": "#/definitions/Simple"
-        }
+        "$ref": "#/definitions/Simple"
       }
     },
     "Circular": {
       "type": "array",
       "items": {
-        "schema": {
-          "$ref": "#/definitions/Circular"
+        "$ref": "#/definitions/Circular"
+      }
+    },
+    "CircularTransitive": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/CircularTransitive2"
+      }
+    },
+    "CircularTransitive2": {
+      "type": "array",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/definitions/CircularTransitive"
         }
       }
     }
@@ -88,6 +98,18 @@
         "parameters": [
           {
             "$ref": "#/definitions/Simple",
+            "title": "test",
+            "description": "test"
+          }
+        ]
+      }
+    },
+    "test6": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "$ref": "#/definitions/CircularTransitive",
             "title": "test",
             "description": "test"
           }
