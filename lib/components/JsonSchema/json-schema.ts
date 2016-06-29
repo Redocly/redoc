@@ -1,16 +1,18 @@
 'use strict';
 
-import { Input } from '@angular/core';
+import { Input, Renderer, ElementRef } from '@angular/core';
 
 import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { DropDown } from '../../shared/components/index';
 import { SchemaNormalizer, SchemaHelper } from '../../services/index';
+import { JsonSchemaLazy } from './json-schema-lazy';
+import { Zippy } from '../../shared/components/Zippy/zippy';
 
 @RedocComponent({
   selector: 'json-schema',
   templateUrl: './json-schema.html',
   styleUrls: ['./json-schema.css'],
-  directives: [JsonSchema, DropDown],
+  directives: [JsonSchema, DropDown, JsonSchemaLazy, Zippy],
   detect: true
 })
 export class JsonSchema extends BaseComponent {
@@ -24,7 +26,7 @@ export class JsonSchema extends BaseComponent {
   @Input() isRequestSchema: boolean;
   normalizer: SchemaNormalizer;
 
-  constructor(specMgr:SpecManager) {
+  constructor(specMgr:SpecManager, private _renderer: Renderer, private _elementRef: ElementRef) {
     super(specMgr);
     this.normalizer = new SchemaNormalizer(specMgr);
   }
@@ -63,6 +65,9 @@ export class JsonSchema extends BaseComponent {
   }
 
   prepareModel() {
+    if (this.nestOdd) {
+      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'nestodd', 'true');
+    }
     this.schema = this.componentSchema;
     if (!this.schema) {
       throw new Error(`Can't load component schema at ${this.pointer}`);
@@ -80,5 +85,9 @@ export class JsonSchema extends BaseComponent {
     }
 
     this.initDescendants();
+  }
+
+  trackByName(index: number, item: any): string {
+    return item['name'];
   }
 }

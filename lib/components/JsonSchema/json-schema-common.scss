@@ -11,16 +11,6 @@ $param-name-height: 20px;
 
 $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
 
-/*
-.param-schema {
-  padding-left: $sub-schema-offset - $lines-width;
-  border-left: $line-border;
-}
-
-.param-wrap {
-  position: relative;
-}*/
-
 .param-name {
 
   font-size: 0.929em;
@@ -34,7 +24,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   vertical-align: top;
 }
 
-.param-name-content {
+.param-name-wrap {
   padding-right: $cell-spacing;
   display: inline-block;
   font-family: $headers-font, $headers-font-family;
@@ -45,6 +35,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
   width: 75%;
+  line-height: 1em;
 }
 
 .param-range {

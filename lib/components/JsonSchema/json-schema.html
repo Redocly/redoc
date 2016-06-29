@@ -19,14 +19,20 @@
 </span>
 <table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
   <!-- <caption> {{_displayType}} </caption> -->
-  <template ngFor [ngForOf]="schema._properties" let-prop="$implicit" let-last="last">
+  <template ngFor [ngForOf]="schema._properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
     <tr class="param" [ngClass]="{'last': last,
-        'discriminator': hasDescendants && !activeDescendant.empty,
+        'discriminator': prop.isDiscriminator,
         'complex': prop._pointer,
-        'additional': prop._additional
+        'additional': prop._additional,
+        'expanded': subSchema.visible
       }">
       <td class="param-name">
-        <span class="param-name-content">{{prop._name}}</span>
+        <span class="param-name-wrap">
+          <span (click)="subSchema.toggle()" class="param-name-content" >{{prop._name}}</span>
+          <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
+            <polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
+          </svg>
+        </span>
       </td>
       <td class="param-info">
         <div>
@@ -50,11 +56,13 @@
         </div>
       </td>
     </tr>
-    <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" *ngIf="prop._pointer">
+    <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" [hidden]="!prop._pointer">
       <td colspan="2">
-        <json-schema class="nested-schema" pointer="{{prop._pointer}}" [isArray]='prop._isArray'
-        [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" [attr.nesteven]="!nestOdd">
-        </json-schema>
+        <zippy #subSchema title="test" [headless]="true" (open)="lazySchema.load()">
+          <json-schema-lazy #lazySchema class="nested-schema" pointer="{{prop._pointer}}" [isArray]='prop._isArray'
+          [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+          </json-schema-lazy>
+        </zippy>
       </td>
     </tr>
   </template>

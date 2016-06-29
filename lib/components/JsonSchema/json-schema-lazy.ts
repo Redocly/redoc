@@ -1,8 +1,8 @@
 'use strict';
 
-import { Component, ElementRef, ViewContainerRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewContainerRef, OnDestroy, Input,
+  AfterViewInit, ComponentResolver, Renderer } from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
-import { DynamicComponentLoader, Input } from '@angular/core';
 
 import { JsonSchema } from './json-schema';
 import { OptionsService } from '../../services/options.service';
@@ -19,9 +19,13 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() pointer: string;
   @Input() auto: boolean;
   @Input() isRequestSchema: boolean;
+  @Input() final: boolean = false;
+  @Input() nestOdd: boolean;
+  @Input() childFor: string;
+  @Input() isArray: boolean;
   loaded: boolean = false;
-  constructor(private specMgr:SpecManager, private viewRef:ViewContainerRef, private elementRef:ElementRef,
-    private dcl:DynamicComponentLoader, private optionsService:OptionsService) {
+  constructor(private specMgr:SpecManager, private location:ViewContainerRef, private elementRef:ElementRef,
+    private resolver:ComponentResolver, private optionsService:OptionsService, private _renderer: Renderer) {
   }
 
   normalizePointer() {
@@ -31,13 +35,15 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
 
   _loadAfterSelf() {
     // FIXME: get rid of DynamicComponentLoader as it is deprecated
-    return this.dcl.loadNextToLocation(JsonSchema, this.viewRef).then(compRef => {
-      this.initComponent(compRef);
-      if (compRef.changeDetectorRef) {
-        compRef.changeDetectorRef.detectChanges();
-      }
+    return this.resolver.resolveComponent(JsonSchema).then(componentFactory => {
+      let contextInjector = this.location.parentInjector;
+      let compRef = this.location.createComponent(
+          componentFactory, null, contextInjector, null);
+      this.initComponent(compRef.instance);
+      this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
+      compRef.changeDetectorRef.markForCheck();
       return compRef;
-    }, err => {
+    }).catch(err => {
       console.log(err);
       throw err;
     });
@@ -74,9 +80,8 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
     }
   }
 
-  initComponent(compRef) {
-    compRef.instance.pointer = this.pointer;
-    compRef.instance.isRequestSchema = this.isRequestSchema;
+  initComponent(instance:JsonSchema) {
+    Object.assign(instance, this);
   }
 
   ngAfterViewInit() {
