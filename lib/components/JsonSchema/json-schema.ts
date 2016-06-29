@@ -1,6 +1,6 @@
 'use strict';
 
-import { Input, Renderer, ElementRef } from '@angular/core';
+import { Input, Renderer, ElementRef, forwardRef } from '@angular/core';
 
 import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { DropDown } from '../../shared/components/index';
@@ -12,13 +12,14 @@ import { Zippy } from '../../shared/components/Zippy/zippy';
   selector: 'json-schema',
   templateUrl: './json-schema.html',
   styleUrls: ['./json-schema.css'],
-  directives: [JsonSchema, DropDown, JsonSchemaLazy, Zippy],
+  directives: [JsonSchema, DropDown, forwardRef(() => JsonSchemaLazy), Zippy],
   detect: true
 })
 export class JsonSchema extends BaseComponent {
   schema: any;
   activeDescendant:any = {};
   hasDescendants: boolean = false;
+  _hasSubSchemas: boolean = false;
   @Input() isArray: boolean;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
@@ -85,6 +86,8 @@ export class JsonSchema extends BaseComponent {
     }
 
     this.initDescendants();
+    this._hasSubSchemas = this.schema._properties && this.schema._properties.some(
+      propSchema => propSchema.type === 'object' && propSchema._pointer);
   }
 
   trackByName(index: number, item: any): string {
