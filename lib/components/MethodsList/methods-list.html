@@ -4,7 +4,7 @@
       <h1 class="sharable-header"> <a class="share-link" href="#tag/{{tag.name | encodeURIComponent}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
     </div>
-    <method *ngFor="let method of tag.methods" [pointer]="method.pointer" [attr.pointer]="method.pointer"
+    <method *ngFor="let method of tag.methods;trackBy:trackByPointer" [pointer]="method.pointer" [attr.pointer]="method.pointer"
     [attr.tag]="method.tag" [tag]="method.tag" [attr.operation-id]="method.operationId"></method>
   </div>
 </div>

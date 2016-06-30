@@ -1,5 +1,5 @@
 <h2 class="responses-list-header" *ngIf="data.responses.length"> Responses </h2>
-<zippy *ngFor="let response of data.responses" title="{{response.code}} {{response.description}}"
+<zippy *ngFor="let response of data.responses;trackBy:trackByCode" title="{{response.code}} {{response.description}}"
   [type]="response.type" [empty]="response.empty" (open)="lazySchema.load()">
   <div *ngIf="response.headers" class="response-headers">
     <header>

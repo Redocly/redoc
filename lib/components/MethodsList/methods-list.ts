@@ -42,4 +42,8 @@ export class MethodsList extends BaseComponent {
     this.data.tags = tags;
     // TODO: check $ref field
   }
+
+  trackByPointer(idx, el) {
+    return el.pointer;
+  }
 }
