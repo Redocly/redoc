@@ -51,7 +51,9 @@ or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 
     npm install redoc --save
 
-Alternatively you can just download [`redoc.min.js`](https://raw.githubusercontent.com/Rebilly/ReDoc/releases/dist/redoc.min.js).
+Alternatively, you can **reference redoc directly** from CDN:
+- latest release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
+- particular release, e.g. v0.14.0: https://rebilly.github.io/ReDoc/releases/v0.14.0/redoc.min.js
 
 #### 2. Reference redoc script in HTML
 Then reference [`redoc.min.js`](https://raw.githubusercontent.com/Rebilly/ReDoc/releases/dist/redoc.min.js) in your HTML page:

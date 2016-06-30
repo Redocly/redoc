@@ -4,7 +4,7 @@ import { SpecManager } from '../utils/SpecManager';
 
 interface PropertyPreprocessOptions {
   childFor: string;
-  skipReadOnly: boolean;
+  skipReadOnly?: boolean;
 }
 
 const injectors = {

@@ -20,6 +20,8 @@ export class JsonSchema extends BaseComponent {
   activeDescendant:any = {};
   hasDescendants: boolean = false;
   _hasSubSchemas: boolean = false;
+  properties: any;
+  _isArray: boolean;
   @Input() isArray: boolean;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
@@ -80,17 +82,27 @@ export class JsonSchema extends BaseComponent {
 
     if (!this.schema.isTrivial) {
       SchemaHelper.preprocessProperties(this.schema, this.normPointer, {
-        childFor: this.childFor,
-        skipReadOnly: this.isRequestSchema
+        childFor: this.childFor
       });
     }
 
+    this.properties = this.schema._properties;
+    this._isArray = this.isArray || this.schema._isArray;
+    if (this.isRequestSchema) {
+      this.properties = this.properties && this.properties.filter(prop => !prop.readOnly);
+    }
+
     this.initDescendants();
-    this._hasSubSchemas = this.schema._properties && this.schema._properties.some(
-      propSchema => propSchema.type === 'object' && propSchema._pointer);
+    this._hasSubSchemas = this.properties && this.properties.some(
+      propSchema => {
+        if (propSchema.type === 'array') {
+          propSchema = propSchema.items;
+        }
+        return (propSchema && propSchema.type === 'object' && propSchema._pointer);
+      });
   }
 
-  trackByName(index: number, item: any): string {
-    return item['name'];
+  trackByIdx(index: number, item: any): number {
+    return index;
   }
 }

@@ -17,11 +17,11 @@
     <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
   </div>
 </span>
-<table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
+<table *ngIf="!schema.isTrivial" class="params-wrap" [ngClass]="{'params-array': _isArray}">
   <!-- <caption> {{_displayType}} </caption> -->
-  <template ngFor [ngForOf]="schema._properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
+  <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByIdx">
     <tr class="param" [ngClass]="{'last': last,
-        'discriminator': prop.isDiscriminator,
+        'discriminator': prop.isDiscriminator && !activeDescendant.empty,
         'complex': prop._pointer,
         'additional': prop._additional,
         'expanded': subSchema.visible
@@ -59,16 +59,16 @@
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" [hidden]="!prop._pointer">
       <td colspan="2">
         <zippy #subSchema title="test" [headless]="true" (open)="lazySchema.load()">
-          <json-schema-lazy #lazySchema class="nested-schema" pointer="{{prop._pointer}}" [isArray]='prop._isArray'
+          <json-schema-lazy #lazySchema class="nested-schema" [pointer]="prop._pointer" [isArray]='prop._isArray'
           [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
           </json-schema-lazy>
         </zippy>
       </td>
     </tr>
   </template>
-  <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap">
+  <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap" [ngClass]="{empty:activeDescendant.empty}">
     <td colspan="2">
-      <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: activeDescendant.empty}">
+      <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: descendant.empty}">
         <json-schema class="discriminator-part" *ngIf="!descendant.empty" [childFor]="pointer"
         pointer="{{descendant.$ref}}" [final]="descendant.final" [isRequestSchema]="isRequestSchema">
         </json-schema>

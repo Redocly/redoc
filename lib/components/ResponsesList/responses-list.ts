@@ -49,7 +49,7 @@ export class ResponsesList extends BaseComponent {
       resp.empty = !resp.schema;
       resp.code = respCode;
       resp.type = statusCodeType(resp.code);
-      if (resp.headers) {
+      if (resp.headers && !(resp.headers instanceof Array)) {
         resp.headers = Object.keys(resp.headers).map((k) => {
           let respInfo = resp.headers[k];
           respInfo.name = k;
@@ -61,5 +61,9 @@ export class ResponsesList extends BaseComponent {
       return resp;
     });
     this.data.responses = responses;
+  }
+
+  trackByCode(idx, el) {
+    return el.code;
   }
 }
