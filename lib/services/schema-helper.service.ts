@@ -1,6 +1,7 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
+import {methods as swaggerMethods} from  '../utils/swagger-defs';
 
 interface PropertyPreprocessOptions {
   childFor: string;
@@ -217,5 +218,58 @@ export class SchemaHelper {
       res = SchemaHelper.unwrapArray(res, ptr);
     }
     return res;
+  }
+
+  static methodSummary(method) {
+    return method.summary || method.operationId || method.description.substring(0, 50);
+  }
+
+  static buildMenuTree(schema) {
+    let tag2MethodMapping = {};
+
+    let definedTags = schema.tags || [];
+    // add tags into map to preserve order
+    for (let tag of definedTags) {
+      tag2MethodMapping[tag.name] = {
+        'description': tag.description,
+        'x-traitTag': tag['x-traitTag'],
+        'methods': []
+      };
+    }
+
+    let paths = schema.paths;
+    for (let path of Object.keys(paths)) {
+      let methods = Object.keys(paths[path]).filter((k) => swaggerMethods.has(k));
+      for (let method of methods) {
+        let methodInfo = paths[path][method];
+        let tags = methodInfo.tags;
+
+        //TODO: mb need to do something cleverer
+        if (!tags || !tags.length) {
+          tags = [''];
+        }
+        let methodPointer = JsonPointer.compile(['paths', path, method]);
+        let methodSummary = SchemaHelper.methodSummary(methodInfo);
+        for (let tag of tags) {
+          let tagDetails = tag2MethodMapping[tag];
+          if (!tagDetails) {
+            tagDetails = {
+              name: tag,
+              empty: !tag
+            };
+            tag2MethodMapping[tag] = tagDetails;
+          }
+          if (tagDetails['x-traitTag']) continue;
+          if (!tagDetails.methods) tagDetails.methods = [];
+          tagDetails.methods.push({
+            pointer: methodPointer,
+            summary: methodSummary,
+            operationId: methodInfo.operationId,
+            tag: tag
+          });
+        }
+      }
+    }
+    return Object.keys(tag2MethodMapping).map(tag => tag2MethodMapping[tag]);
   }
 }
