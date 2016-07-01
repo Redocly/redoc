@@ -232,6 +232,7 @@ export class SchemaHelper {
     for (let tag of definedTags) {
       tag2MethodMapping[tag.name] = {
         'description': tag.description,
+        'name': tag.name,
         'x-traitTag': tag['x-traitTag'],
         'methods': []
       };
@@ -244,7 +245,6 @@ export class SchemaHelper {
         let methodInfo = paths[path][method];
         let tags = methodInfo.tags;
 
-        //TODO: mb need to do something cleverer
         if (!tags || !tags.length) {
           tags = [''];
         }
@@ -252,10 +252,10 @@ export class SchemaHelper {
         let methodSummary = SchemaHelper.methodSummary(methodInfo);
         for (let tag of tags) {
           let tagDetails = tag2MethodMapping[tag];
-          if (!tagDetails) {
+          if (!tag2MethodMapping[tag]) {
             tagDetails = {
               name: tag,
-              empty: !tag
+              empty: tag === ''
             };
             tag2MethodMapping[tag] = tagDetails;
           }
