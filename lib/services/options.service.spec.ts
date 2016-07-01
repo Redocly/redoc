@@ -1,10 +1,6 @@
 'use strict';
 
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-import {
-  it
-} from '@angular/core/testing';
-
 import { OptionsService } from './options.service';
 
 describe('Options Service', () => {

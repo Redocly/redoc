@@ -1,13 +1,10 @@
 'use strict';
 
-import { Component, provide } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   inject,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
 
@@ -19,21 +16,17 @@ describe('Redoc components', () => {
   describe('JsonSchema Component', () => {
     let builder;
     let component;
-    let specMgr = new SpecManager();
     let fixture;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: specMgr})
-    ]);
-    beforeEach(inject([TestComponentBuilder], (tcb) => {
+    let specMgr;
+
+    beforeEach(inject([TestComponentBuilder, SpecManager], (tcb, _spec) => {
       builder = tcb;
+      specMgr = _spec;
     }));
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema');
-        component = debugEl.componentInstance;
-        done();
-      }, err => done.fail(err));
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema');
+      component = debugEl.componentInstance;
     });
 
     it('should init component', () => {

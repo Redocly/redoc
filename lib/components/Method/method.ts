@@ -8,6 +8,7 @@ import { ResponsesList } from '../ResponsesList/responses-list';
 import { ResponsesSamples } from '../ResponsesSamples/responses-samples';
 import { SchemaSample } from '../SchemaSample/schema-sample';
 import { RequestSamples } from '../RequestSamples/request-samples';
+import { SchemaHelper } from '../../services/schema-helper.service';
 
 @RedocComponent({
   selector: 'method',
@@ -31,6 +32,7 @@ export class Method extends BaseComponent {
     this.data.methodInfo = this.componentSchema;
     this.data.methodInfo.tags = this.filterMainTags(this.data.methodInfo.tags);
     this.data.bodyParam = this.findBodyParam();
+    this.data.summary = SchemaHelper.methodSummary(this.componentSchema);
     if (this.componentSchema.operationId) {
       this.data.methodAnchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
     } else {

@@ -1,10 +1,14 @@
 <span *ngIf="schema.isFile" class="param-wrap">
-  <span class="param-file">file</span>
+  <span class="param-type-file">file</span>
   <div *ngIf="schema._produces && !isRequestSchema" class="file produces">
-    Produces: {{ schema._produces | json }}
+    <ul>
+      <li *ngFor="let type of schema._produces">{{type}}</li>
+    </ul>
   </div>
   <div *ngIf="schema._consumes && isRequestSchema" class="file consume">
-    Consumes: {{ schema._consumes | json }}
+    <ul>
+      <li *ngFor="let type of schema._consumes">{{type}}</li>
+    </ul>
   </div>
 </span>
 <span *ngIf="schema.isTrivial && !schema.isFile" class="param-wrap">

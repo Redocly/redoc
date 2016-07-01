@@ -3,6 +3,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/SpecManager';
+import { SchemaHelper } from './schema-helper.service';
 
 const CHANGE = {
   NEXT : 1,
@@ -21,9 +22,7 @@ export class MenuService {
 
   constructor(private hash:Hash, private scrollService:ScrollService, specMgr:SpecManager) {
     this.hash = hash;
-    this.categories = Array.from(specMgr.buildMenuTree().entries()).map(
-      el => ({name: el[0], description: el[1].description, methods: el[1].methods})
-    );
+    this.categories = SchemaHelper.buildMenuTree(specMgr.schema);
 
     scrollService.scroll.subscribe((evt) => {
       this.scrollUpdate(evt.isScrolledDown);

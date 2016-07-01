@@ -1,16 +1,10 @@
 'use strict';
-import { provide, Component } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { Component } from '@angular/core';
 import {
   inject,
-  beforeEach,
-  describe,
-  beforeEachProviders,
-  it,
-  async
+  async,
+  TestComponentBuilder
 } from '@angular/core/testing';
-
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
@@ -21,37 +15,21 @@ import { SpecManager } from '../utils/SpecManager';;
 describe('Menu service', () => {
   let menu, hashService, scroll;
   let builder;
-  let specMgr = new SpecManager();
+  let specMgr;
 
-  beforeEachProviders(() => [
-    provide(BrowserDomAdapter, {useClass: BrowserDomAdapter}),
-    provide(Hash, {useClass: Hash}),
-    provide(ScrollService, {useClass: ScrollService}),
-    provide(SpecManager, {useValue: new SpecManager()})
-  ]);
-
-  beforeEach(async(inject([Hash, ScrollService, TestComponentBuilder, SpecManager],
-  (_hash, _scroll, tcb, _specMgr) => {
+  beforeEach(async(inject([TestComponentBuilder, SpecManager, Hash, ScrollService],
+  (tcb, _specMgr, _hash, _scroll, _menu) => {
     hashService = _hash;
     scroll = _scroll;
     builder = tcb;
     specMgr = _specMgr;
+    return specMgr.load('/tests/schemas/extended-petstore.yml');
   })));
 
-  beforeEach(done => {
-    specMgr.load('/tests/schemas/extended-petstore.yml').then(r => {
-      done();
-    }).catch(e => {
-      done.fail(e);
-    });
-  });
-
-  beforeEach(done => {
+  beforeEach(() => {
     menu = new MenuService(hashService, scroll, specMgr);
-    builder.createAsync(TestAppComponent).then(fixture => {
-      fixture.detectChanges();
-      done();
-    }).catch(err => done.fail(err) );
+    let fixture = builder.createSync(TestAppComponent);
+    fixture.detectChanges();
   });
 
   it('should run hashScroll when hash changed', (done) => {

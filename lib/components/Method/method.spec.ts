@@ -1,14 +1,11 @@
 'use strict';
 
-import { Component, provide } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   inject,
   async,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
 
@@ -19,19 +16,16 @@ describe('Redoc components', () => {
   describe('Method Component', () => {
     let builder;
     let component;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()})
-    ]);
+
     beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
       return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(fixture => {
-        component = getChildDebugElement(fixture.debugElement, 'method').componentInstance;
-        fixture.detectChanges();
-        done();
-      }, err => done.fail(err));
+
+    beforeEach(() => {
+      let fixture = builder.createSync(TestAppComponent);
+      component = getChildDebugElement(fixture.debugElement, 'method').componentInstance;
+      fixture.detectChanges();
     });
 
 

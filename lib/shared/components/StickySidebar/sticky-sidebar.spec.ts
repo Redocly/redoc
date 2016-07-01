@@ -1,17 +1,11 @@
 'use strict';
 
 import { getChildDebugElementByType } from '../../../../tests/helpers';
-import { Component, provide } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-
+import { Component } from '@angular/core';
 import {
   inject,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { StickySidebar } from '../index';
 
@@ -21,20 +15,12 @@ describe('Common components', () => {
     let component;
     let fixture;
 
-    beforeEachProviders(() => [
-      provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()})
-    ]);
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
+      fixture = builder.createSync(TestApp);
+      let debugEl = getChildDebugElementByType(fixture.debugElement, StickySidebar);
+      component = debugEl.injector.get(StickySidebar);
     }));
-    beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
-        fixture = _fixture;
-        let debugEl = getChildDebugElementByType(fixture.debugElement, StickySidebar);
-        component = debugEl.injector.get(StickySidebar);
-        done();
-      }, err => done.fail(err));
-    });
 
 
     it('should init component', () => {

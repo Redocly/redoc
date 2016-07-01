@@ -2,7 +2,6 @@
 
 import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
-import {methods as swaggerMethods} from  './swagger-defs';
 
 export class SpecManager {
   public _schema:any = {};
@@ -112,52 +111,6 @@ export class SpecManager {
     }
 
     return tagsMap;
-  }
-
-  /* returns ES6 Map */
-  buildMenuTree():Map<string, any> {
-    let tag2MethodMapping = new Map();
-
-    let definedTags = this._schema.tags || [];
-    // add tags into map to preserve order
-    for (let tag of definedTags) {
-      tag2MethodMapping.set(tag.name, {
-        'description': tag.description,
-        'x-traitTag': tag['x-traitTag'],
-        'methods': []
-      });
-    }
-
-    let paths = this._schema.paths;
-    for (let path of Object.keys(paths)) {
-      let methods = Object.keys(paths[path]).filter((k) => swaggerMethods.has(k));
-      for (let method of methods) {
-        let methodInfo = paths[path][method];
-        let tags = methodInfo.tags;
-
-        //TODO: mb need to do something cleverer
-        if (!tags || !tags.length) {
-          tags = ['[Other]'];
-        }
-        let methodPointer = JsonPointer.compile(['paths', path, method]);
-        let methodSummary = methodInfo.summary || methodInfo.operationId;
-        for (let tag of tags) {
-          let tagDetails = tag2MethodMapping.get(tag);
-          if (!tagDetails) {
-            tagDetails = {};
-            tag2MethodMapping.set(tag, tagDetails);
-          }
-          if (tagDetails['x-traitTag']) continue;
-          if (!tagDetails.methods) tagDetails.methods = [];
-          tagDetails.methods.push({
-            pointer: methodPointer,
-            summary: methodSummary,
-            operationId: methodInfo.operationId
-          });
-        }
-      }
-    }
-    return tag2MethodMapping;
   }
 
   findDerivedDefinitions(defPointer) {

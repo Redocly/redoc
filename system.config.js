@@ -16,17 +16,11 @@ System.config({
   },
 
   map: {
-    "@angular/common": "npm:@angular/common@2.0.0-rc.3",
-    "@angular/common@2.0.0-rc.3": "npm:@angular/common@2.0.0-rc.3",
-    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.3",
-    "@angular/compiler@2.0.0-rc.3": "npm:@angular/compiler@2.0.0-rc.3",
-    "@angular/core": "npm:@angular/core@2.0.0-rc.3",
-    "@angular/core@2.0.0-rc.3": "npm:@angular/core@2.0.0-rc.3",
-    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.3",
-    "@angular/platform-browser-dynamic@2.0.0-rc.3": "npm:@angular/platform-browser-dynamic@2.0.0-rc.3",
-    "@angular/platform-browser@2.0.0-rc.3": "npm:@angular/platform-browser@2.0.0-rc.3",
-    "@angular/platform-server@2.0.0-rc.3": "npm:@angular/platform-server@2.0.0-rc.3",
+    "@angular/common": "npm:@angular/common@2.0.0-rc.4",
+    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
+    "@angular/core": "npm:@angular/core@2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.4",
+    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.4",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.17",
@@ -122,38 +116,31 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@2.0.0-rc.3": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.3",
+    "npm:@angular/common@2.0.0-rc.4": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/compiler@2.0.0-rc.3": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.3",
+    "npm:@angular/compiler@2.0.0-rc.4": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/core@2.0.0-rc.3": {
+    "npm:@angular/core@2.0.0-rc.4": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"
     },
-    "npm:@angular/platform-browser-dynamic@2.0.0-rc.3": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.3",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.3",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.3",
+    "npm:@angular/platform-browser-dynamic@2.0.0-rc.4": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.4",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
+      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/platform-browser@2.0.0-rc.3": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.3",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.3",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.3",
+    "npm:@angular/platform-browser@2.0.0-rc.4": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.4",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
       "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:@angular/platform-server@2.0.0-rc.3": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.3",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.3",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.3",
-      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.3",
-      "parse5": "npm:parse5@1.3.2"
     },
     "npm:amdefine@1.0.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -685,9 +672,6 @@ System.config({
       "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
       "pbkdf2": "npm:pbkdf2@3.0.4",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
-    },
-    "npm:parse5@1.3.2": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"

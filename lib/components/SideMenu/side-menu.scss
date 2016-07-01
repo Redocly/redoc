@@ -29,6 +29,10 @@ $mobile-menu-compact-breakpoint: 550px;
         color: $primary-color;
         background-color: $side-menu-active-bg-color;
     }
+
+    &[hidden] {
+      display: none;
+    }
 }
 
 .menu-subitems {

@@ -1,10 +1,5 @@
 'use strict';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import {
-  describe,
-  it
-} from '@angular/core/testing';
-
 import { SpecManager } from '../utils/SpecManager';;
 
 describe('Spec Helper', () => {
@@ -116,7 +111,16 @@ describe('Spec Helper', () => {
       let resolved;
       beforeAll(() => {
         let pointer = '/paths/test5/get/parameters/0';
+        spyOn(console, 'warn').and.stub();
         resolved = normalizer.normalize(specMgr.byPointer(pointer), pointer);
+      });
+
+      afterAll(() => {
+        (<jasmine.Spy>console.warn).and.callThrough();
+      });
+
+      it('should print warning to console', () => {
+        expect(console.warn).toHaveBeenCalled();
       });
 
       it('should skip other fields', () => {
