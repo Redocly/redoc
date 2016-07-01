@@ -87,6 +87,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   display: inline-block;
 }
 
+.param-type-file {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
 /* tree */
 
 // Bullet
