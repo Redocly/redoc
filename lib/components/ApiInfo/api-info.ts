@@ -18,5 +18,8 @@ export class ApiInfo extends BaseComponent {
   prepareModel() {
     this.data = this.componentSchema.info;
     this.specUrl = this.optionsService.options.specUrl;
+    if (parseInt(this.data.version.substring(0, 1)) !== NaN) {
+      this.data.version = 'v' + this.data.version;
+    }
   }
 }

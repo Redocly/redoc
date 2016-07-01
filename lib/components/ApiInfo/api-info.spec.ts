@@ -39,7 +39,7 @@ describe('Redoc components', () => {
     it('should render api name and version', () => {
       let nativeElement = getChildDebugElement(fixture.debugElement, 'api-info').nativeElement;
       let headerElement = nativeElement.querySelector('h1');
-      expect(headerElement.innerText).toContain('Swagger Petstore (1.0.0)');
+      expect(headerElement.innerText).toContain('Swagger Petstore (v1.0.0)');
     });
   });
 });
