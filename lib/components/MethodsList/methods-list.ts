@@ -30,7 +30,7 @@ export class MethodsList extends BaseComponent {
       // inject tag name into method info
       tagInfo.methods = tagInfo.methods || [];
       tagInfo.methods.forEach(method => {
-        method.tag = name;
+        method.tag = tagInfo.name;
       });
     });
     this.data.tags = tags;

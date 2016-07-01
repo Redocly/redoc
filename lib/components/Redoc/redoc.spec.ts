@@ -95,7 +95,7 @@ describe('Redoc components', () => {
       builder = tcb;
       optsMgr = opts;
       dom = _dom;
-      return specMgr.load('/tests/schemas/methods-list-component.json');
+      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
     beforeEach(() => {
