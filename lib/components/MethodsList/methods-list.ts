@@ -46,4 +46,8 @@ export class MethodsList extends BaseComponent {
   trackByPointer(idx, el) {
     return el.pointer;
   }
+
+  trackByTagName(idx, el) {
+    return el.name;
+  }
 }
