@@ -1,7 +1,7 @@
 'use strict';
 
 import { getChildDebugElement } from '../../../tests/helpers';
-import { Component, provide } from '@angular/core';
+import { Component } from '@angular/core';
 import { OptionsService } from '../../services/index';
 
 import {

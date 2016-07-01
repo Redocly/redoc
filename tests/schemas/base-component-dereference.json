@@ -110,8 +110,6 @@
         "parameters": [
           {
             "$ref": "#/definitions/CircularTransitive",
-            "title": "test",
-            "description": "test"
           }
         ]
       }

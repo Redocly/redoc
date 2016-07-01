@@ -58,7 +58,7 @@ describe('Redoc components', () => {
     });
 
     it('should return promise', () => {
-      let res = Redoc.init();
+      let res = Redoc.init().catch(() => {/**/});
       res.should.be.instanceof(Promise);
     });
 
@@ -66,7 +66,7 @@ describe('Redoc components', () => {
       spyOn(Redoc, 'hideLoadingAnimation').and.callThrough();
       spyOn(Redoc, 'displayError').and.callThrough();
       let res = Redoc.init();
-      return res.then(() => {
+      return res.catch(() => {
         expect(Redoc.hideLoadingAnimation).toHaveBeenCalled();
         expect(Redoc.displayError).toHaveBeenCalled();
       });

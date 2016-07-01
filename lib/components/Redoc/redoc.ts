@@ -79,10 +79,10 @@ export class Redoc extends BaseComponent implements AfterViewInit {
       Redoc.hideLoadingAnimation();
       Redoc.appRef = appRef;
       console.log('ReDoc bootstrapped!');
-    }, err => {
-      console.log(err);
+    }).catch(err => {
       Redoc.hideLoadingAnimation();
       Redoc.displayError(err);
+      throw err;
     });
   }
 
@@ -97,7 +97,6 @@ export class Redoc extends BaseComponent implements AfterViewInit {
   }
 
   static displayError(err) {
-    console.log(err);
     let redocEl = dom.query('redoc');
     if (!redocEl) return;
     let heading = 'Oops... ReDoc failed to render this spec';
