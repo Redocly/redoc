@@ -1,17 +1,13 @@
 'use strict';
 
 import { getChildDebugElement } from '../../../tests/helpers';
-import {Component, provide} from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   inject,
   async,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { ApiLogo } from './api-logo';
 import { SpecManager } from '../../utils/SpecManager';
@@ -25,21 +21,15 @@ describe('Redoc components', () => {
     let specMgr;
 
     let schemaUrl = '/tests/schemas/api-info-test.json';
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()})
-    ]);
     beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, _specMgr) => {
       builder = tcb;
       specMgr = _specMgr;
       return specMgr.load(schemaUrl);
     })));
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        component = getChildDebugElement(fixture.debugElement, 'api-logo').componentInstance;
-        fixture.detectChanges();
-        done();
-      }, err => done.fail(err));
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      component = getChildDebugElement(fixture.debugElement, 'api-logo').componentInstance;
+      fixture.detectChanges();
     });
 
 

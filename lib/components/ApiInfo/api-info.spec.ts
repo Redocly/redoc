@@ -1,47 +1,32 @@
 'use strict';
 
 import { getChildDebugElement } from '../../../tests/helpers';
-import { Component, provide } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   inject,
   async,
-  expect,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { ApiInfo } from './api-info';
 import { SpecManager } from '../../utils/SpecManager';
-import { OptionsService } from '../../services/index';
 
 describe('Redoc components', () => {
   describe('ApiInfo Component', () => {
     let builder;
     let component;
     let fixture;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()}),
-        provide(OptionsService, {useClass: OptionsService})
-    ]);
 
     beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
       return specMgr.load('/tests/schemas/api-info-test.json');
     })));
 
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        component = getChildDebugElement(fixture.debugElement, 'api-info').componentInstance;
-        fixture.detectChanges();
-        done();
-      }, err => {
-        done.fail(err);
-      });
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      component = getChildDebugElement(fixture.debugElement, 'api-info').componentInstance;
+      fixture.detectChanges();
     });
 
 
@@ -54,7 +39,7 @@ describe('Redoc components', () => {
     it('should render api name and version', () => {
       let nativeElement = getChildDebugElement(fixture.debugElement, 'api-info').nativeElement;
       let headerElement = nativeElement.querySelector('h1');
-      expect(headerElement).toHaveText('Swagger Petstore (1.0.0)');
+      expect(headerElement.innerText).toContain('Swagger Petstore (1.0.0)');
     });
   });
 });

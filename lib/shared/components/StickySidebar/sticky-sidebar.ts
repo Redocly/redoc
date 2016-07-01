@@ -1,7 +1,7 @@
 'use strict';
 
 import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
-import {BrowserDomAdapter} from '@angular/platform-browser/src/browser/browser_adapter';
+import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
 @Directive({
   selector: '[sticky-sidebar]'

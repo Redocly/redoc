@@ -1,10 +1,5 @@
 'use strict';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import {
-  describe,
-  it
-} from '@angular/core/testing';
-
 import { SpecManager } from '../utils/SpecManager';;
 
 describe('Spec Helper', () => {

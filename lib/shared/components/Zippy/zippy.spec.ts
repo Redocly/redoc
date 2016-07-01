@@ -5,12 +5,10 @@ import { getChildDebugElement, mouseclick } from '../../../../tests/helpers';
 import { Component } from '@angular/core';
 import {
   inject,
-  beforeEach,
-  it,
-  expect
+  expect,
+  TestComponentBuilder
 } from '@angular/core/testing';
 
-import { TestComponentBuilder } from '@angular/compiler/testing';
 import { Zippy } from '../index';
 
 describe('Common components', () => {
@@ -22,17 +20,11 @@ describe('Common components', () => {
 
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
+      fixture = builder.createSync(TestApp);
+      let debugEl = getChildDebugElement(fixture.debugElement, 'zippy');
+      component = debugEl.componentInstance;
+      nativeElement = debugEl.nativeElement;
     }));
-    beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
-        fixture = _fixture;
-        let debugEl = getChildDebugElement(fixture.debugElement, 'zippy');
-        component = debugEl.componentInstance;
-        nativeElement = debugEl.nativeElement;
-        done();
-      }, err => done.fail(err));
-    });
-
 
     it('should init component', () => {
       expect(component).not.toBeNull();

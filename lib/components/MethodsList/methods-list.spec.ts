@@ -4,11 +4,8 @@ import { Component, provide } from '@angular/core';
 import {
   inject,
   async,
-  beforeEach,
-  beforeEachProviders,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
 
@@ -21,20 +18,15 @@ describe('Redoc components', () => {
     let builder;
     let component;
     let fixture;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()})
-    ]);
+
     beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
       builder = tcb;
       return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;
-        fixture.detectChanges();
-        done();
-      }, err => done.fail(err) );
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;
+      fixture.detectChanges();
     });
 
 

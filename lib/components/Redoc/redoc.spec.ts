@@ -1,15 +1,12 @@
 'use strict';
 
 import { getChildDebugElement } from '../../../tests/helpers';
-import { Component, provide, ComponentRef } from '@angular/core';
+import { Component, ComponentRef } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
 import {
   inject,
-  async,
-  beforeEach,
-  beforeEachProviders,
-  it
+  async
 } from '@angular/core/testing';
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
@@ -24,40 +21,27 @@ describe('Redoc components', () => {
   describe('Redoc Component', () => {
     let builder;
     let specMgr;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()}),
-    ]);
+
     beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
       (tcb, _specMgr, _optsMgr) => {
       optsMgr = _optsMgr;
       builder = tcb;
       specMgr = _specMgr;
+      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
-    beforeEach((done) => {
-      return specMgr.load('/tests/schemas/extended-petstore.yml')
-        .then(() => done())
-        .catch(err => done.fail(err));
+
+    it('should init component', () => {
+      let fixture = builder.createSync(TestAppComponent);
+      let component = getChildDebugElement(fixture.debugElement, 'redoc').componentInstance;
+      expect(component).not.toBeNull();
+      fixture.destroy();
     });
 
-
-    it('should init component', (done) => {
-      builder.createAsync(TestAppComponent).then(fixture => {
-        let component = getChildDebugElement(fixture.debugElement, 'redoc').componentInstance;
-        expect(component).not.toBeNull();
-        fixture.destroy();
-        done();
-      }, err => done.fail(err));
-    });
-
-    it('should init components tree without errors', (done) => {
-      builder.createAsync(TestAppComponent).then(fixture => {
-        (() => fixture.detectChanges()).should.not.throw();
-        fixture.destroy();
-        done();
-      }, err => {
-        return done.fail(err);
-      });
+    it('should init components tree without errors', () => {
+      let fixture = builder.createSync(TestAppComponent);
+      (() => fixture.detectChanges()).should.not.throw();
+      fixture.destroy();
     });
   });
 
@@ -103,29 +87,25 @@ describe('Redoc components', () => {
     let builder;
     let fixture;
     let element;
+    let dom;
     let destroySpy;
-    let dom = new BrowserDomAdapter();
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()}),
-        provide(BrowserDomAdapter, {useValue: new BrowserDomAdapter()}),
-        provide(OptionsService, {useValue: optsMgr})
-    ]);
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
+
+    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService, BrowserDomAdapter],
+      (tcb, specMgr, opts, _dom) => {
       builder = tcb;
+      optsMgr = opts;
+      dom = _dom;
       return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
 
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        element = getChildDebugElement(fixture.debugElement, 'methods-list').nativeElement;
-        destroySpy = jasmine.createSpy('spy');
-        Redoc.appRef = <ComponentRef<any>>{
-          destroy: destroySpy
-        };
-        fixture.detectChanges();
-        done();
-      }, err => { throw err; });
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      element = getChildDebugElement(fixture.debugElement, 'methods-list').nativeElement;
+      destroySpy = jasmine.createSpy('spy');
+      Redoc.appRef = <ComponentRef<any>>{
+        destroy: destroySpy
+      };
+      fixture.detectChanges();
     });
 
     afterEach(()=> {

@@ -6,10 +6,7 @@ import { OptionsService } from '../../services/index';
 
 import {
   inject,
-  async,
-  beforeEach,
-  beforeEachProviders,
-  it
+  async
 } from '@angular/core/testing';
 
 import { TestComponentBuilder } from '@angular/compiler/testing';
@@ -25,9 +22,7 @@ describe('Redoc components', () => {
     let builder;
     let component;
     let fixture;
-    beforeEachProviders(() => [
-        provide(SpecManager, {useValue: new SpecManager()})
-    ]);
+
     beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
       (tcb, specMgr, opts) => {
       builder = tcb;
@@ -39,15 +34,10 @@ describe('Redoc components', () => {
       return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
-    beforeEach((done) => {
-      builder.createAsync(TestAppComponent).then(_fixture => {
-        fixture = _fixture;
-        component = getChildDebugElement(fixture.debugElement, 'side-menu').componentInstance;
-        fixture.detectChanges();
-        done();
-      }, err => {
-        throw err;
-      });
+    beforeEach(() => {
+      fixture = builder.createSync(TestAppComponent);
+      component = getChildDebugElement(fixture.debugElement, 'side-menu').componentInstance;
+      fixture.detectChanges();
     });
 
     afterEach(() => {

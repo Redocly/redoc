@@ -5,11 +5,8 @@ import { Component } from '@angular/core';
 
 import {
   inject,
-  beforeEach,
-  it
+  TestComponentBuilder
 } from '@angular/core/testing';
-
-import { TestComponentBuilder } from '@angular/compiler/testing';
 
 import {Tabs, Tab} from '../index';
 
@@ -24,18 +21,12 @@ describe('Common components', () => {
 
     beforeEach(inject([TestComponentBuilder], (tcb) => {
       builder = tcb;
+      fixture = builder.createSync(TestApp);
+      hostComponent = fixture.debugElement.componentInstance;
+      debugEl = getChildDebugElement(fixture.debugElement, 'tabs');
+      childDebugEls = getChildDebugElementAll(debugEl, 'tab');
+      component = debugEl.componentInstance;
     }));
-    beforeEach((done) => {
-      builder.createAsync(TestApp).then(_fixture => {
-        fixture = _fixture;
-        hostComponent = fixture.debugElement.componentInstance;
-        debugEl = getChildDebugElement(fixture.debugElement, 'tabs');
-        childDebugEls = getChildDebugElementAll(debugEl, 'tab');
-        component = debugEl.componentInstance;
-        done();
-      }, err => done.fail(err));
-    });
-
 
     it('should init component', () => {
       expect(component).not.toBeNull();
