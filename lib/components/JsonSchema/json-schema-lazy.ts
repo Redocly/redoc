@@ -34,7 +34,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   _loadAfterSelf() {
-    // FIXME: get rid of DynamicComponentLoader as it is deprecated
+    this.loaded = true;
     return this.resolver.resolveComponent(JsonSchema).then(componentFactory => {
       let contextInjector = this.location.parentInjector;
       let compRef = this.location.createComponent(
@@ -42,7 +42,6 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
       this.initComponent(compRef.instance);
       this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
       compRef.changeDetectorRef.detectChanges();
-      this.loaded = true;
       return compRef;
     }).catch(err => {
       console.log(err);
