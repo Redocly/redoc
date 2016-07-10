@@ -7,6 +7,10 @@
   border-bottom: 1px solid rgba(127, 127, 127, 0.25);
 }
 
+:host:last-of-type {
+  border-bottom: 0;
+}
+
 responses-list, params-list {
   display: block;
 }
