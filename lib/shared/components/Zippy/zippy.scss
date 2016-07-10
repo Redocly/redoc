@@ -10,6 +10,13 @@ $zippy-info-bg-color: rgba($zippy-info-color, .08);
 $zippy-redirect-color: #263238;
 $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
 
+:host {
+  // performance optimization
+  transform: translate3d(0, 0, 0);
+  overflow: hidden;
+  display: block;
+}
+
 .zippy-title {
   padding: 10px;
   border-radius: 2px;
