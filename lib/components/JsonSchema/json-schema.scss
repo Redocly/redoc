@@ -97,8 +97,11 @@ $array-marker-line-height: 1.5;
 }
 
 .params-wrap {
-  border-collapse: collapse;
   width: 100%;
+}
+
+table {
+  border-spacing: 0;
 }
 
 .params-wrap.params-array:before, .params-wrap.params-array:after {
