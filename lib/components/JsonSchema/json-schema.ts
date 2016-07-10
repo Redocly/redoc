@@ -28,6 +28,7 @@ export class JsonSchema extends BaseComponent {
   @Input() childFor: string;
   @Input() isRequestSchema: boolean;
   normalizer: SchemaNormalizer;
+  autoExpand = false;
 
   constructor(specMgr:SpecManager, private _renderer: Renderer, private _elementRef: ElementRef) {
     super(specMgr);
@@ -100,6 +101,8 @@ export class JsonSchema extends BaseComponent {
         }
         return (propSchema && propSchema.type === 'object' && propSchema._pointer);
       });
+
+    this.autoExpand = this.properties && this.properties.length === 1;
   }
 
   trackByIdx(index: number, item: any): number {

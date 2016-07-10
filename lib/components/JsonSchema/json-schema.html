@@ -62,8 +62,8 @@
     </tr>
     <tr class="param-schema" [ngClass]="{'param-array': prop._isArray, 'last': last}" [hidden]="!prop._pointer">
       <td colspan="2">
-        <zippy #subSchema title="test" [headless]="true" (open)="lazySchema.load()">
-          <json-schema-lazy #lazySchema class="nested-schema" [pointer]="prop._pointer" [isArray]='prop._isArray'
+        <zippy #subSchema title="Expand" [headless]="true" (open)="lazySchema.load()" [visible]="autoExpand">
+          <json-schema-lazy #lazySchema [auto]="autoExpand" class="nested-schema" [pointer]="prop._pointer" [isArray]='prop._isArray'
           [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
           </json-schema-lazy>
         </zippy>

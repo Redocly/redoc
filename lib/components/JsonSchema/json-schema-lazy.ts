@@ -42,6 +42,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
       this.initComponent(compRef.instance);
       this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
       compRef.changeDetectorRef.detectChanges();
+      this.loaded = true;
       return compRef;
     }).catch(err => {
       console.log(err);
@@ -55,7 +56,6 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
     if (this.pointer) {
       this._loadAfterSelf();
     }
-    this.loaded = true;
   }
 
   // cache JsonSchema view
@@ -73,7 +73,8 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
             return;
           }
           insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
-        } );
+          this.loaded = true;
+        });
       });
     } else {
       cache[this.pointer] = this._loadAfterSelf();
