@@ -12,7 +12,7 @@
       <div class="header-description" [innerHtml]="header.description | marked"> </div>
     </div>
   </div>
-  <header *ngIf="response.headers">
+  <header *ngIf="response.schema">
     Response Schema
   </header>
   <json-schema-lazy #lazySchema pointer="{{response.schema ? response.pointer + '/schema' : null}}">
