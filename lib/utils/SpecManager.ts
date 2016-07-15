@@ -124,7 +124,7 @@ export class SpecManager {
       if (!globalDefs[defName].allOf &&
         !globalDefs[defName]['x-derived-from']) continue;
       let subTypes = globalDefs[defName]['x-derived-from'] ||
-        globalDefs[defName].allOf.map(subType => subType.$ref);
+        globalDefs[defName].allOf.map(subType => subType._pointer || subType.$ref);
       let idx = subTypes.findIndex(ref => ref === defPointer);
       if (idx < 0) continue;
 
