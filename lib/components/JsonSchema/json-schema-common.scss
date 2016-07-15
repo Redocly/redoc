@@ -46,6 +46,7 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   border-radius: $border-radius;
   background-color: rgba($primary-color, .1);
   margin-left: 6px;
+  margin-right: 6px;
 }
 
 .param-description {
