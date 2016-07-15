@@ -17,7 +17,7 @@
   .dk-selected {
     color: $secondary-color;
     border-color: rgba($secondary-color, .5);
-    padding: 0.15em 0.6em 0.2em 0.5em;
+    padding: 0.15em 1.5em 0.2em 0.5em;
     border-radius: $border-radius;
   }
 
@@ -52,7 +52,9 @@
     margin-top: 0.2em;
     padding: 0;
     border-radius: $border-radius;
-    box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08) !important
+    box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08) !important;
+    right: auto;
+    min-width: 100%;
   }
 
   .dk-option {
