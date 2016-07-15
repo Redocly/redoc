@@ -43,7 +43,7 @@
       "json": "github:systemjs/plugin-json@^0.1.0",
       "json-pointer": "npm:json-pointer@^0.3.0",
       "json-schema-ref-parser": "npm:json-schema-ref-parser@^3.1.2",
-      "openapi-sampler": "npm:openapi-sampler@0.2.0",
+      "openapi-sampler": "npm:openapi-sampler@^0.3.0",
       "prismjs": "npm:prismjs@^1.3.0",
       "remarkable": "npm:remarkable@^1.6.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
@@ -60,10 +60,6 @@
       "systemjs/plugin-json": "github:systemjs/plugin-json@^0.1.0"
     },
     "overrides": {
-      "npm:openapi-sampler@0.2.0": {
-        "main": "src/openapi-sampler",
-        "format": "esm"
-      },
       "npm:dropkickjs@2.1.8": {
         "format": "global"
       },
@@ -72,6 +68,10 @@
           "http": "stream-http",
           "https": "stream-http"
         }
+      },
+      "npm:openapi-sampler@0.3.0": {
+        "main": "src/openapi-sampler",
+        "format": "esm"
       }
     }
   },
