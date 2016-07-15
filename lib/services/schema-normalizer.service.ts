@@ -22,13 +22,14 @@ export class SchemaNormalizer {
   constructor(private _schema:any) {
     this._dereferencer = new SchemaDereferencer(_schema, this);
   }
-  normalize(schema, ptr) {
+  normalize(schema, ptr, opts:any ={}) {
+    opts.omitParent = opts.omitParent !== false;
     if (schema['x-redoc-normalized']) return schema;
     let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
       if (resolved.allOf) {
         resolved._pointer = resolved._pointer || ptr;
-        AllOfMerger.merge(resolved, resolved.allOf, {omitParent: true});
+        AllOfMerger.merge(resolved, resolved.allOf, {omitParent: opts.omitParent});
       }
       return resolved;
     });

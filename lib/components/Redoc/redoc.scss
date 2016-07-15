@@ -142,14 +142,17 @@ api-logo {
 }
 
 footer {
+    position: relative;
     text-align: right;
-    padding: 10px;
+    padding: 10px 40px;
     font-size: 15px;
-    background-color: white;
-
+    margin-top: -35px;
+    color: white;
+    a {
+      color: white;
+    }
     strong {
-        font-size: 18px;
-        color: $headers-color;
+      font-size: 18px;
     }
 }
 

@@ -43,7 +43,21 @@ export class SchemaSample extends BaseComponent {
     if (base.examples && base.examples['application/json']) {
       sample = base.examples['application/json'];
     } else {
+      let selectedDescendant;
+
       this.componentSchema = this._normalizer.normalize(this.componentSchema, this.pointer);
+
+      let discriminator = this.componentSchema.discriminator;
+      if (discriminator) {
+        let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer);
+        if (descendants.length) {
+          // TODO: sync up with dropdown
+          selectedDescendant = descendants[0];
+          let descSchema = this.specMgr.byPointer(selectedDescendant.$ref);
+          this.componentSchema  = this._normalizer.normalize(Object.assign({}, descSchema), selectedDescendant.$ref,
+            {omitParent: false});
+        }
+      }
       if (this.fromCache()) {
         return;
       }
@@ -53,6 +67,9 @@ export class SchemaSample extends BaseComponent {
         });
       } catch(e) {
         // no sample available
+      }
+      if (selectedDescendant) {
+        sample[discriminator] = selectedDescendant.name;
       }
     }
     this.cache(sample);

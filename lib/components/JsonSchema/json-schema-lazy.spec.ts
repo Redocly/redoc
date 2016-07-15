@@ -23,11 +23,15 @@ describe('Redoc components', () => {
       fixture = builder.createSync(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
       component = <JsonSchemaLazy>debugEl.componentInstance;
-      spyOn(component, '_loadAfterSelf').and.stub();
+      spyOn(component, '_loadAfterSelf').and.callThrough();
+      spyOn(component.resolver, 'resolveComponent').and.returnValue({ then: () => {
+        return { catch: () => {/**/} };
+      }});
     });
 
     afterEach(() => {
       component._loadAfterSelf.and.callThrough();
+      component.resolver.resolveComponent.and.callThrough();
     });
 
     it('should init component', () => {

@@ -21,7 +21,7 @@ import { ScrollService, Hash, MenuService, OptionsService } from '../../services
       state('expanded',
         style({ height: '*' })),
       transition('collapsed <=> expanded', [
-        animate(200)
+        animate('200ms ease')
       ])
     ])
   ],

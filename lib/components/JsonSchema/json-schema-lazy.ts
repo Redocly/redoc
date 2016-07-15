@@ -34,7 +34,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   _loadAfterSelf() {
-    // FIXME: get rid of DynamicComponentLoader as it is deprecated
+    this.loaded = true;
     return this.resolver.resolveComponent(JsonSchema).then(componentFactory => {
       let contextInjector = this.location.parentInjector;
       let compRef = this.location.createComponent(
@@ -55,7 +55,6 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
     if (this.pointer) {
       this._loadAfterSelf();
     }
-    this.loaded = true;
   }
 
   // cache JsonSchema view
@@ -73,7 +72,8 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
             return;
           }
           insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
-        } );
+          this.loaded = true;
+        });
       });
     } else {
       cache[this.pointer] = this._loadAfterSelf();

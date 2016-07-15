@@ -69,6 +69,10 @@ $array-marker-line-height: 1.5;
   }
 }
 
+zippy {
+  overflow: visible;
+}
+
 .zippy-content-wrap {
   padding: 0;
 }
@@ -77,9 +81,10 @@ $array-marker-line-height: 1.5;
   border-bottom: 0;
 }
 
-.param.complex > .param-name .param-name-content {
+.param.complex > .param-name .param-name-wrap {
   font-weight: bold;
   cursor: pointer;
+  color: $black;
 }
 
 .param.complex > .param-name svg {
@@ -97,8 +102,11 @@ $array-marker-line-height: 1.5;
 }
 
 .params-wrap {
-  border-collapse: collapse;
   width: 100%;
+}
+
+table {
+  border-spacing: 0;
 }
 
 .params-wrap.params-array:before, .params-wrap.params-array:after {

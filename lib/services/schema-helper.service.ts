@@ -221,7 +221,8 @@ export class SchemaHelper {
   }
 
   static methodSummary(method) {
-    return method.summary || method.operationId || method.description.substring(0, 50);
+    return method.summary || method.operationId ||
+      (method.description && method.description.substring(0, 50)) || '<no description>';
   }
 
   static buildMenuTree(schema) {
