@@ -63,6 +63,7 @@ export class SchemaSample extends BaseComponent {
         }
       }
       if (this.fromCache()) {
+        this.initButtons();
         return;
       }
       try {
@@ -78,8 +79,11 @@ export class SchemaSample extends BaseComponent {
     }
     this.cache(sample);
     this.data.sample = sample;
+    this.initButtons();
+  }
 
-    if (typeof sample === 'object') {
+  initButtons() {
+    if (typeof this.data.sample === 'object') {
       this.enableButtons = true;
     }
   }

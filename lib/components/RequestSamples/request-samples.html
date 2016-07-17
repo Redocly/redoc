@@ -7,7 +7,7 @@
   <tab *ngFor="let sample of data.samples" [tabTitle]="sample.lang">
     <div class="code-sample">
       <div class="action-buttons">
-        <span copy-button [copyText]="sample.source" class="hint--top hint--inversed"> <a>Copy</a> </span>
+        <span copy-button [copyText]="sample.source" class="hint--top-left hint--inversed"><a>Copy</a></span>
       </div>
       <pre [innerHtml]="sample.source | prism:sample.lang"></pre>
     </div>
