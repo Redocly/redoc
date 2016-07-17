@@ -1,8 +1,8 @@
 # ReDoc vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions)
 
-### [Info Object](http://swagger.io/specification/#infoObject) vendor extensions
-
+### Info Object vendor extensions
+Extends OpenAPI [Info Object](http://swagger.io/specification/#infoObject)
 #### x-logo
 
 | Field Name     |	Type	       | Description |
@@ -47,8 +47,8 @@ info:
 
 
 
-### [Tag object](http://swagger.io/specification/#tagObject) vendor extensions
-
+### Tag Object vendor extensions
+Extends OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
 #### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
@@ -74,8 +74,8 @@ description: Pagination description (can use markdown syntax)
 x-traitTag: true
 ```
 
-### [Operation Object](http://swagger.io/specification/#operationObject) vendor extensions
-
+### Operation Object vendor extensions
+Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
 #### x-code-samples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
