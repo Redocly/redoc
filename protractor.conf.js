@@ -51,20 +51,20 @@ if (travis) {
     build: process.env.TRAVIS_BUILD_NUMBER,
     name: 'Redoc Safari Latest/OSX build ' + process.env.TRAVIS_BUILD_NUMBER,
     idleTimeout: 180,
-    maxDuration: 180000*2
+    maxDuration: 1800*2
   },{
     browserName: 'firefox',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER,
     name: 'Redoc Firefox Latest/Win build ' + process.env.TRAVIS_BUILD_NUMBER,
-    maxDuration: 180000*2
+    maxDuration: 1800*2
   },{
     browserName: 'internet explorer',
     version: '11.0',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER,
     name: 'Redoc IE11/Win build ' + process.env.TRAVIS_BUILD_NUMBER,
-    maxDuration: 180000*2
+    maxDuration: 1800*2
   }];
 } else {
   config.directConnect = true;
