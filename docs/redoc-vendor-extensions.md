@@ -1,9 +1,9 @@
 # ReDoc vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions)
 
-### <a name="infoObject"></a>[Info Object](http://swagger.io/specification/#infoObject) vendor extensions
+### [Info Object](http://swagger.io/specification/#infoObject) vendor extensions
 
-#### <a name="x-logo"></a> x-logo
+#### x-logo
 
 | Field Name     |	Type	       | Description |
 | :------------- | :-----------: | :---------- |
@@ -49,7 +49,7 @@ info:
 
 ### [Tag object](http://swagger.io/specification/#tagObject) vendor extensions
 
-#### <a name="x-traitTag"></a> x-traitTag
+#### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-traitTag     | boolean  | In Swagger two operations can have multiply tags. This property distinguish between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
@@ -76,7 +76,7 @@ x-traitTag: true
 
 ### [Operation Object](http://swagger.io/specification/#operationObject) vendor extensions
 
-#### <a name="x-code-samples"></a> x-code-samples
+#### x-code-samples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-code-samples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
