@@ -50,34 +50,6 @@ gulp.task('tsc', function() {
   exec('tsc -p ./tsconfig.json');
 });
 
-
-// function compileTs(files, es5) {
-//     var tsProject = ts.createProject('tsconfig.json');
-//     var allFiles = [].concat(files, ['typings/**/*.d.ts']);
-//     var res = gulp.src(allFiles, {
-//             base: config.src,
-//             outDir: config.tmp
-//         })
-//         .pipe(tslint())
-//         .pipe(tslint.report('prose', {
-//             summarizeFailureOutput: true,
-//             emitError: !watchMode
-//         }))
-//         .pipe(sourcemaps.init())
-//         .pipe(ts(tsProject))
-//         .on('error', function () {
-//             if (watchMode) {
-//                 return;
-//             }
-//             process.exit(1);
-//         });
-//     return res.js
-//         .pipe(sourcemaps.write('.', {
-//             includeContent: inline
-//         }))
-//         .pipe(gulp.dest(config.tmp));
-// }
-
 gulp.task('inlineTemplates', ['sass'], function() {
   return gulp.src('.tmp/**/*.js', { base: './tmp' })
     .pipe(replace(/'(.*?)\.css'/g, '\'$1.scss\''))
