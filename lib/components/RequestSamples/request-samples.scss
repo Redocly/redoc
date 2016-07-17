@@ -1,5 +1,37 @@
 @import '../../shared/styles/variables';
 
+.action-buttons {
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translateY(100%);
+
+  > span {
+    float: right;
+  }
+
+  > span > a {
+    padding: 2px 10px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: darken($black, 4%);
+
+    &:hover {
+      background-color: $black;
+    }
+  }
+
+  &:after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+.code-sample:hover > .action-buttons {
+  opacity: 1;
+}
+
 header {
     font-family: $headers-font;
     font-size: $h5;
@@ -39,4 +71,10 @@ pre {
     word-break: break-all;
     word-wrap: break-word;
     white-space: pre-wrap;
+    margin-top: 0;
+    overflow-x: auto;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: #222d32;
+    margin-bottom: 36px;
 }

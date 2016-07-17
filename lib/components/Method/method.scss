@@ -134,6 +134,10 @@ responses-samples {
   text-transform: uppercase;
 }
 
+[select-on-click] {
+  cursor: pointer;
+}
+
 @media (max-width: 1100px) {
   .methods:before {
     display: none;

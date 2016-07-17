@@ -9,11 +9,13 @@ import { SchemaSample } from '../SchemaSample/schema-sample';
 import { PrismPipe } from '../../utils/pipes';
 import { RedocEventsService } from '../../services/index';
 
+import { CopyButton } from '../../shared/components/CopyButton/copy-button.directive';
+
 @RedocComponent({
   selector: 'request-samples',
   templateUrl: './request-samples.html',
   styleUrls: ['./request-samples.css'],
-  directives: [SchemaSample, Tabs, Tab],
+  directives: [SchemaSample, Tabs, Tab, CopyButton],
   inputs: ['schemaPointer'],
   pipes: [PrismPipe],
   detect: true,

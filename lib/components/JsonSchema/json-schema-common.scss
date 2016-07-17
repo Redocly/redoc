@@ -5,67 +5,69 @@ $cell-spacing: 25px;
 $cell-padding: 10px;
 $bullet-margin: 10px;
 $line-border: $lines-width solid $tree-lines-color;
-$line-border-erase: ($lines-width + 1px) solid white;
+$line-border-erase: ($lines-width + 1px) solid #fff;
 
 $param-name-height: 20px;
 
-$sub-schema-offset: ($bullet-size/2) + $bullet-margin;
+$sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 
 .param-name {
-
-  font-size: 0.929em;
-  padding: $cell-padding 0 $cell-padding 0;
-  font-weight: $regular;
-  box-sizing: border-box;
-  line-height: $param-name-height;
-  border-left: $line-border;
-  white-space: nowrap;
   position: relative;
+  border-left: $line-border;
+  padding: $cell-padding 0;
   vertical-align: top;
+  line-height: $param-name-height;
+
+  white-space: nowrap;
+  font-size: 0.929em;
+  font-weight: $regular;
+
+  box-sizing: border-box;
 }
 
 .param-name-wrap {
-  padding-right: $cell-spacing;
   display: inline-block;
+  padding-right: $cell-spacing;
   font-family: $headers-font, $headers-font-family;
 }
 
 .param-info {
-  padding: $cell-padding 0;
-  box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+  padding: $cell-padding 0;
   width: 75%;
   line-height: 1em;
+
+  box-sizing: border-box;
 }
 
 .param-range {
-  color: rgba($primary-color, .7);
   position: relative;
   top: 1px;
-  padding: 0 4px;
+  margin-right: 6px;
+  margin-left: 6px;
   border-radius: $border-radius;
   background-color: rgba($primary-color, .1);
-  margin-left: 6px;
-  margin-right: 6px;
+  padding: 0 4px;
+  color: rgba($primary-color, 0.7);
 }
 
 .param-description {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 .param-required {
-  color: red;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: $param-name-height;
   vertical-align: middle;
+  line-height: $param-name-height;
+  color: #f00;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .param-type {
+  vertical-align: middle;
+  line-height: $param-name-height;
   color: rgba($black, 0.4);
   font-size: 0.929em;
-  line-height: $param-name-height;
-  vertical-align: middle;
   font-weight: normal;
 }
 
@@ -158,11 +160,11 @@ $sub-schema-offset: ($bullet-size/2) + $bullet-margin;
   font-size: 13px;
 
   &:before {
-    content: "Values: {"
+    content: 'Values: {';
   }
 
   &:after {
-    content: "}"
+    content: '}';
   }
 
   > .enum-value {

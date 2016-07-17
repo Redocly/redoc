@@ -5,6 +5,11 @@
     <schema-sample [pointer]="data.schemaPointer" [skipReadOnly]="true"> </schema-sample>
   </tab>
   <tab *ngFor="let sample of data.samples" [tabTitle]="sample.lang">
-    <pre [innerHtml]="sample.source | prism:sample.lang"></pre>
+    <div class="code-sample">
+      <div class="action-buttons">
+        <span copy-button [copyText]="sample.source" class="hint--top hint--inversed"> <a>Copy</a> </span>
+      </div>
+      <pre [innerHtml]="sample.source | prism:sample.lang"></pre>
+    </div>
   </tab>
 </tabs>
