@@ -139,6 +139,17 @@ api-logo {
         color: $red;
         border: 1px solid rgba(38,50,56,0.1);
     }
+
+    .hint--inversed {
+      &:before {
+        border-top-color: #fff;
+      }
+
+      &:after {
+        background: #fff;
+        color: #383838;
+      }
+    }
 }
 
 footer {

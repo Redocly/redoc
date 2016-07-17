@@ -8,15 +8,19 @@ import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { JsonFormatter } from '../../utils/JsonFormatterPipe';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
 
+import { CopyButton } from '../../shared/components/CopyButton/copy-button.directive';
+
 @RedocComponent({
   selector: 'schema-sample',
   templateUrl: './schema-sample.html',
   pipes: [JsonFormatter],
+  directives: [CopyButton],
   styleUrls: ['./schema-sample.css']
 })
 export class SchemaSample extends BaseComponent {
   element: any;
   data: any;
+  enableButtons: boolean = false;
   @Input() skipReadOnly:boolean;
 
   private _normalizer:SchemaNormalizer;
@@ -74,6 +78,10 @@ export class SchemaSample extends BaseComponent {
     }
     this.cache(sample);
     this.data.sample = sample;
+
+    if (typeof sample === 'object') {
+      this.enableButtons = true;
+    }
   }
 
   cache(sample) {
@@ -107,5 +115,22 @@ export class SchemaSample extends BaseComponent {
         }
       }
     });
+  }
+
+  expandAll() {
+    let elements = this.element.getElementsByClassName('collapsible');
+    for (let i = 0; i < elements.length; i++) {
+      let collapsed = elements[i];
+      collapsed.parentNode.classList.remove('collapsed');
+    }
+  }
+
+  collapseAll() {
+    let elements = this.element.getElementsByClassName('collapsible');
+    for (let i = 0; i < elements.length; i++) {
+      let expanded = elements[i];
+      if (expanded.parentNode.classList.contains('redoc-json')) continue;
+      expanded.parentNode.classList.add('collapsed');
+    }
   }
 }

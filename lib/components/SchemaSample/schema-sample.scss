@@ -3,7 +3,56 @@
 pre {
   background-color: transparent;
   padding: 0;
+  margin: 0;
+  clear: both;
 }
+
+.action-buttons {
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translateY(100%);
+
+  > span {
+    float: right;
+  }
+
+  > span > a {
+    padding: 2px 10px;
+    color: #ffffff;
+    cursor: pointer;
+
+    &:before {
+      content: '|';
+      display: inline-block;
+      transform: translateX(-10px);
+    }
+
+    &:last-child:before {
+      display: none;
+      margin-left: 0;
+    }
+
+    &:first-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: $black;
+    }
+  }
+
+  &:after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+.snippet:hover .action-buttons {
+  opacity: 1;
+}
+
 :host {
   .property {
     //font-weight: bold;
@@ -107,7 +156,7 @@ pre {
   	display: none;
   }
 
-  .collapsed>.ellipsis {
+  .collapsed > .ellipsis {
   	display: inherit;
   }
 
