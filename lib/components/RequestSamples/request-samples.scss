@@ -1,5 +1,9 @@
 @import '../../shared/styles/variables';
 
+:host {
+  overflow: hidden;
+}
+
 .action-buttons {
   display: block;
   opacity: 0;

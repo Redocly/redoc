@@ -1,5 +1,9 @@
 @import '../../shared/styles/variables';
 
+:host {
+  overflow: hidden;
+}
+
 tab, tabs {
     display: block;
 }

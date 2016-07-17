@@ -5,6 +5,12 @@ pre {
   padding: 0;
   margin: 0;
   clear: both;
+  position: relative;
+}
+
+// hide top-level collapser
+.redoc-json > .collapser {
+  display: none;
 }
 
 .action-buttons {
@@ -12,9 +18,15 @@ pre {
   opacity: 0;
   transition: opacity 0.3s ease;
   transform: translateY(100%);
+  z-index: 1;
+  position: relative;
 
   > span {
     float: right;
+
+    &:last-child > a:before {
+      display: none;
+    }
   }
 
   > span > a {
@@ -26,11 +38,6 @@ pre {
       content: '|';
       display: inline-block;
       transform: translateX(-10px);
-    }
-
-    &:last-child:before {
-      display: none;
-      margin-left: 0;
     }
 
     &:first-child {
