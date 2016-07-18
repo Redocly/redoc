@@ -16,47 +16,28 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 externalDocs:
-  description: Find out more about Swagger
-  url: 'http://swagger.io'
+  description: Find out how to create Github repo for your OpenAPI spec.
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
 tags:
-  - name: Pagination
+  - name: Introduction
     x-traitTag: true
-    description: |-
-      Sometimes you just can't get enough. For this reason, we've provided a convenient way to access more data in any request for sequential data. Simply call the url in the next_url parameter and we'll respond with the next set of data.
-      ```json
-      {
-          ...
-          "pagination": {
-              "next_url":
-      "https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296",
-              "next_max_id": "13872296"
-          }
-      }
-      ```
-
-       On views where pagination is present, we also support the `count`
-      parameter. Simply set this to the number of items you'd like to receive. Note that the default values should be fine for most applications - but if you decide to increase this number there is a maximum value defined on each endpoint.
+    description: 'This API is documented in **OpenAPI format** and is based on [Pestore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team. It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and [ReDoc](https://github.com/Rebilly/ReDoc) documentation. In addition to standard OpenAPI syntax we use a few [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).'
+  - name: OpenAPI Specification
+    description: 'The goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can understand and interact with the remote service with a minimal amount of implementation logic. Similar to what interfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.'
     externalDocs:
       description: Find out more
-      url: 'http://swagger.io'
-  - name: JSONP
-    x-traitTag: true
-    description: "If you're writing an AJAX application, and you'd like to wrap our response with a callback, all you have to do is specify a callback parameter with any API call:\n```\n https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction\n```\nWould respond with:\n```js\ncallbackFunction({\n    ...\n});\n``` \n > Example of markdown blockquote"
-    externalDocs:
-      description: Find out more
-      url: 'http://swagger.io'
+      url: 'https://openapis.org/'
+  - name: Cross-Origin Resource Sharing
+    description: |
+      This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+      And that allows cross-domain communication from the browser.
+      All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
   - name: pet
     description: Everything about your Pets
-    externalDocs:
-      description: Find out more
-      url: 'http://swagger.io'
   - name: store
     description: Access to Petstore orders
   - name: user
     description: Operations about user
-    externalDocs:
-      description: Find out more about our store
-      url: 'http://swagger.io'
 securityDefinitions:
   petstore_auth:
     type: oauth2
@@ -75,7 +56,7 @@ paths:
       tags:
         - pet
       summary: Add a new pet to the store
-      description: ''
+      description: Add new pet to the store inventory.
       operationId: addPet
       consumes:
         - application/json
@@ -154,7 +135,6 @@ paths:
     get:
       tags:
         - pet
-        - JSONP
       summary: Find pet by ID
       description: Returns a single pet
       operationId: getPetById
@@ -242,40 +222,6 @@ paths:
             - 'write:pets'
             - 'read:pets'
   '/pet/{petId}/uploadImage':
-    get:
-      tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
-      consumes:
-        - image/jpeg
-        - image/png
-      produces:
-        - image/jpeg
-        - image/png
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          type: integer
-          format: int64
-        - name: file
-          in: body
-          description: file to upload
-          required: false
-          schema:
-            type: file
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: file
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
     post:
       tags:
         - pet
@@ -316,8 +262,6 @@ paths:
     get:
       tags:
         - pet
-        - Pagination
-        - JSONP
       summary: Finds Pets by status
       description: Multiple status values can be provided with comma seperated strings
       operationId: findPetsByStatus
@@ -355,8 +299,6 @@ paths:
     get:
       tags:
         - pet
-        - Pagination
-        - JSONP
       summary: Finds Pets by tags
       description: 'Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.'
       operationId: findPetsByTags
@@ -389,7 +331,6 @@ paths:
     get:
       tags:
         - store
-        - JSONP
       summary: Returns pet inventories by status
       description: Returns a map of status codes to quantities
       operationId: getInventory
@@ -434,7 +375,6 @@ paths:
     get:
       tags:
         - store
-        - JSONP
       summary: Find purchase order by ID
       description: 'For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions'
       operationId: getOrderById
@@ -504,7 +444,6 @@ paths:
     get:
       tags:
         - user
-        - JSONP
       summary: Get user by user name
       description: ''
       operationId: getUserByName
@@ -642,6 +581,8 @@ paths:
           description: successful operation
           schema:
             type: string
+          examples:
+            application/json: OK
           headers:
             X-Rate-Limit:
               type: integer
@@ -699,10 +640,13 @@ definitions:
     type: object
     properties:
       id:
-        type: integer
-        format: int64
+        description: Category ID
+        allOf:
+          - $ref: '#/definitions/Id'
       name:
+        description: Category name
         type: string
+        minLength: 1
     xml:
       name: Category
   Dog:
@@ -714,24 +658,44 @@ definitions:
           packSize:
             type: integer
             format: int32
-            description: the size of the pack the dog is from
-            default: 0
-            minimum: 0
+            description: The size of the pack the dog is from
+            default: 1
+            minimum: 1
         required:
           - packSize
+  HoneyBee:
+    description: A representation of a honey bee
+    allOf:
+      - $ref: '#/definitions/Pet'
+      - type: object
+        properties:
+          honeyPerDay:
+            type: number
+            description: Average amount of honey produced per day in ounces
+            example: 3.14
+        required:
+          - honeyPerDay
+  Id:
+    type: integer
+    format: int64
   Order:
     type: object
     properties:
       id:
-        type: integer
-        format: int64
+        description: Order ID
+        allOf:
+          - $ref: '#/definitions/Id'
       petId:
-        type: integer
-        format: int64
+        description: Pet ID
+        allOf:
+          - $ref: '#/definitions/Id'
       quantity:
         type: integer
         format: int32
+        minimum: 1
+        default: 1
       shipDate:
+        description: Estimated ship date
         type: string
         format: date-time
       status:
@@ -742,6 +706,7 @@ definitions:
           - approved
           - delivered
       complete:
+        description: Indicates whenever order was completed or not
         type: boolean
         default: false
     xml:
@@ -754,23 +719,31 @@ definitions:
     discriminator: petType
     properties:
       petType:
+        description: Type of a pet
         type: string
       id:
-        type: integer
-        format: int64
+        description: Pet ID
+        allOf:
+          - $ref: '#/definitions/Id'
       category:
-        $ref: '#/definitions/Category'
+        description: Categories this pet belongs to
+        allOf:
+          - $ref: '#/definitions/Category'
       name:
+        description: The name given to a pet
         type: string
-        example: doggie
+        example: Guru
       photoUrls:
+        description: The list of URL to a cute photos featuring pet
         type: array
         xml:
           name: photoUrl
           wrapped: true
         items:
           type: string
+          format: url
       tags:
+        description: Tags attached to the pet
         type: array
         xml:
           name: tag
@@ -779,7 +752,7 @@ definitions:
           $ref: '#/definitions/Tag'
       status:
         type: string
-        description: pet status in the store
+        description: Pet status in the store
         enum:
           - available
           - pending
@@ -790,33 +763,56 @@ definitions:
     type: object
     properties:
       id:
-        type: integer
-        format: int64
+        description: Tag ID
+        allOf:
+          - $ref: '#/definitions/Id'
       name:
+        description: Tag name
         type: string
+        minLength: 1
     xml:
       name: Tag
   User:
     type: object
     properties:
       id:
-        type: integer
-        format: int64
+        description: User ID
+        $ref: '#/definitions/Id'
       username:
+        description: User supplied username
         type: string
+        minLength: 4
+        example: John78
       firstName:
+        description: User first name
         type: string
+        minLength: 1
+        example: John
       lastName:
+        description: User last name
         type: string
+        minLength: 1
+        example: Smith
       email:
+        description: User email address
         type: string
+        format: email
+        example: john.smith@example.com
       password:
         type: string
+        description: 'User password, MUST contain a mix of upper and lower case letters, as well as digits'
+        format: password
+        minLength: 8
+        pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'
+        example: drowssaP123
       phone:
+        description: User phone number in international format
         type: string
+        pattern: "^\\+(?:[0-9]-?){6,14}[0-9]$"
+        example: +1-202-555-0192
       userStatus:
+        description: User status
         type: integer
         format: int32
-        description: User Status
     xml:
       name: User
