@@ -35,12 +35,12 @@ describe('Redoc components', () => {
     });
 
     it('should get correct tags list', () => {
-      expect(component.data.tags).not.toBeNull();
-      component.data.tags.should.have.lengthOf(2);
-      component.data.tags[0].name.should.be.equal('traitTag');
-      component.data.tags[0].methods.should.be.empty();
-      component.data.tags[1].name.should.be.equal('tag1');
-      component.data.tags[1].methods.should.have.lengthOf(2);
+      expect(component.tags).not.toBeNull();
+      component.tags.should.have.lengthOf(2);
+      component.tags[0].name.should.be.equal('traitTag');
+      component.tags[0].methods.should.be.empty();
+      component.tags[1].name.should.be.equal('tag1');
+      component.tags[1].methods.should.have.lengthOf(2);
     });
   });
 });

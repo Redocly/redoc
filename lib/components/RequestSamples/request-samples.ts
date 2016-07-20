@@ -24,7 +24,9 @@ import { CopyButton } from '../../shared/components/CopyButton/copy-button.direc
 export class RequestSamples extends BaseComponent {
   childTabs: Tabs;
   selectedLang: EventEmitter<any>;
-  data: any;
+
+  samples: Array<any>;
+
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
   constructor(specMgr:SpecManager, public events:RedocEventsService) {
@@ -38,9 +40,8 @@ export class RequestSamples extends BaseComponent {
     this.events.samplesLanguageChanged.next(lang);
   }
 
-  prepareModel() {
-    this.data = {};
-    this.data.schemaPointer = JsonPointer.join(this.schemaPointer, 'schema');
-    this.data.samples = this.componentSchema['x-code-samples'] || [];
+  init() {
+    this.schemaPointer = JsonPointer.join(this.schemaPointer, 'schema');;
+    this.samples = this.componentSchema['x-code-samples'] || [];
   }
 }

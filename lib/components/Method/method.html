@@ -1,13 +1,13 @@
 <div class="method">
     <div class="method-content">
         <h2 class="method-header sharable-header">
-            <a class="share-link" href="#{{data.methodAnchor}}"></a>{{data.summary}}
+            <a class="share-link" href="#{{method.anchor}}"></a>{{method.summary}}
         </h2>
-        <div class="method-tags" *ngIf="data.methodInfo.tags.length">
-            <a *ngFor="let tag of data.methodInfo.tags" attr.href="#{{tag}}"> {{tag}} </a>
+        <div class="method-tags" *ngIf="method.info.tags.length">
+            <a *ngFor="let tag of method.info.tags" attr.href="#{{tag}}"> {{tag}} </a>
         </div>
-        <p *ngIf="data.methodInfo.description" class="method-description"
-        [innerHtml]="data.methodInfo.description | marked">
+        <p *ngIf="method.info.description" class="method-description"
+        [innerHtml]="method.info.description | marked">
     </p>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
@@ -16,15 +16,15 @@
     <h5>Definition</h5>
 
     <div class="method-endpoint">
-      <h5 class="http-method" [ngClass]="data.httpMethod">{{data.httpMethod}}</h5>
+      <h5 class="http-method" [ngClass]="method.httpMethod">{{method.httpMethod}}</h5>
       <span select-on-click><!--
-      --><span class="api-url">{{data.apiUrl}}</span><span class="path">{{data.path}}</span><!--
+      --><span class="api-url">{{method.apiUrl}}</span><span class="path">{{method.path}}</span><!--
   --></span>
     </div>
 
-    <div *ngIf="data.bodyParam">
+    <div *ngIf="method.bodyParam">
         <br>
-        <request-samples [pointer]="pointer" [schemaPointer]="data.bodyParam._pointer">
+        <request-samples [pointer]="pointer" [schemaPointer]="method.bodyParam._pointer">
         </request-samples>
     </div>
     <div>

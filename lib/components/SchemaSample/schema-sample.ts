@@ -19,7 +19,7 @@ import { CopyButton } from '../../shared/components/CopyButton/copy-button.direc
 })
 export class SchemaSample extends BaseComponent {
   element: any;
-  data: any;
+  sample: any;
   enableButtons: boolean = false;
   @Input() skipReadOnly:boolean;
 
@@ -33,7 +33,6 @@ export class SchemaSample extends BaseComponent {
 
   init() {
     this.bindEvents();
-    this.data = {};
 
     let base:any = {};
     let sample;
@@ -78,12 +77,12 @@ export class SchemaSample extends BaseComponent {
       }
     }
     this.cache(sample);
-    this.data.sample = sample;
+    this.sample = sample;
     this.initButtons();
   }
 
   initButtons() {
-    if (typeof this.data.sample === 'object') {
+    if (typeof this.sample === 'object') {
       this.enableButtons = true;
     }
   }
@@ -98,10 +97,10 @@ export class SchemaSample extends BaseComponent {
 
   fromCache() {
     if (this.skipReadOnly && this.componentSchema['x-redoc-ro-sample']) {
-      this.data.sample = this.componentSchema['x-redoc-ro-sample'];
+      this.sample = this.componentSchema['x-redoc-ro-sample'];
       return true;
     } else if (this.componentSchema['x-redoc-rw-sample']) {
-      this.data.sample = this.componentSchema['x-redoc-rw-sample'];
+      this.sample = this.componentSchema['x-redoc-rw-sample'];
       return true;
     }
     return false;

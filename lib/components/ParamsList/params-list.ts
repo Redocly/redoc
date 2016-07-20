@@ -18,14 +18,16 @@ function safePush(obj, prop, item) {
 })
 export class ParamsList extends BaseComponent {
 
-  data:any;
+  params: Array<any>;
+  empty: boolean;
+  bodyParam: any;
 
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
 
-  prepareModel() {
-    this.data = {};
+  init() {
+    this.params = [];
     let paramsList = this.specMgr.getMethodParams(this.pointer, true);
 
     paramsList = paramsList.map(paramSchema => {
@@ -40,11 +42,11 @@ export class ParamsList extends BaseComponent {
     if (paramsMap.body && paramsMap.body.length) {
       let bodyParam = paramsMap.body[0];
       bodyParam.pointer = bodyParam._pointer;
-      this.data.bodyParam = bodyParam;
+      this.bodyParam = bodyParam;
       paramsMap.body = undefined;
     }
 
-    this.data.noParams = !(Object.keys(paramsMap).length || this.data.bodyParam);
+    this.empty = !(Object.keys(paramsMap).length || this.bodyParam);
 
     let paramsPlaces = ['path', 'query', 'formData', 'header', 'body'];
     let placeHint = {
@@ -64,7 +66,7 @@ export class ParamsList extends BaseComponent {
         params.push({place: place, placeHint: placeHint[place], params: paramsMap[place]});
       }
     });
-    this.data.params = params;
+    this.params = params;
   }
 
   orderParams(params):any {

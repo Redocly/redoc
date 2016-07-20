@@ -90,7 +90,6 @@ export class BaseComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.componentSchema = this.specMgr.byPointer(this.pointer || '');
-    this.prepareModel();
     this.init();
   }
 
@@ -99,15 +98,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Used to prepare model based on component schema
-   * @abstract
-   */
-  prepareModel():any {
-    // emtpy
-  }
-
-  /**
-   * Used to initialize component. Run after prepareModel
+   * Used to initialize component
    * @abstract
    */
   init() {

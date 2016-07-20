@@ -34,14 +34,14 @@ describe('Redoc components', () => {
     });
 
     it('should init basic component data', () => {
-      component.data.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
-      component.data.httpMethod.should.be.equal('put');
-      component.data.path.should.be.equal('/user/{username}');
+      component.method.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
+      component.method.httpMethod.should.be.equal('put');
+      component.method.path.should.be.equal('/user/{username}');
     });
 
 
     it('should main tag', () => {
-      component.data.methodInfo.tags.should.be.empty();
+      component.method.info.tags.should.be.empty();
     });
   });
 });

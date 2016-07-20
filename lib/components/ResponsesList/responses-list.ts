@@ -20,16 +20,15 @@ function isNumeric(n) {
   detect: true
 })
 export class ResponsesList extends BaseComponent {
-  data: any;
+  responses: Array<any>;
   options: any;
   constructor(specMgr:SpecManager, optionsMgr:OptionsService) {
     super(specMgr);
     this.options = optionsMgr.options;
   }
 
-  prepareModel() {
-    this.data = {};
-    this.data.responses = [];
+  init() {
+    this.responses = [];
 
     let responses = this.componentSchema;
     if (!responses) return;
@@ -60,7 +59,7 @@ export class ResponsesList extends BaseComponent {
       resp.extendable = resp.headers || resp.length;
       return resp;
     });
-    this.data.responses = responses;
+    this.responses = responses;
   }
 
   trackByCode(idx, el) {

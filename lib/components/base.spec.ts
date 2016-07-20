@@ -29,14 +29,11 @@ describe('Redoc components', () => {
       component.componentSchema.should.be.deepEqual(specMgr._schema.tags);
     });
 
-    it('should call prepareModel and init virtual methods after init', () => {
-      spyOn(component, 'prepareModel');
+    it('should call init virtual methods after init', () => {
       spyOn(component, 'init');
       component.ngOnInit();
 
-      component.prepareModel.calls.count().should.be.equal(1);
       component.init.calls.count().should.be.equal(1);
-      component.prepareModel.and.callThrough();
       component.init.and.callThrough();
     });
   });

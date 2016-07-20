@@ -32,8 +32,8 @@ describe('Redoc components', () => {
 
     it('should init component data', () => {
       expect(component).not.toBeNull();
-      expect(component.data).not.toBeNull();
-      component.data.title.should.be.equal('Swagger Petstore');
+      expect(component.info).not.toBeNull();
+      component.info.title.should.be.equal('Swagger Petstore');
     });
 
     it('should render api name and version', () => {

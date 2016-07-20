@@ -15,13 +15,13 @@ import { SchemaHelper } from '../../services/index';
   detect: true
 })
 export class MethodsList extends BaseComponent {
-  data:any;
+  tags:Array<any>;
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
 
-  prepareModel() {
-    this.data = {};
+  init() {
+    this.tags = [];
     // follow SwaggerUI behavior for cases when one method has more than one tag:
     // duplicate methods
 
@@ -33,8 +33,7 @@ export class MethodsList extends BaseComponent {
         method.tag = tagInfo.name;
       });
     });
-    this.data.tags = tags;
-    // TODO: check $ref field
+    this.tags = tags;
   }
 
   trackByPointer(idx, el) {

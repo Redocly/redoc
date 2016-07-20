@@ -27,14 +27,16 @@ import { ScrollService, Hash, MenuService, OptionsService } from '../../services
   ],
 })
 export class SideMenu extends BaseComponent {
-  $element: any;
-  $mobileNav: any;
-  $resourcesNav: any;
-  $scrollParent: any;
   activeCatCaption: string;
   activeItemCaption: string;
-  options: any;
-  data: any;
+  categories: any;
+
+  private options: any;
+  private $element: any;
+  private $mobileNav: any;
+  private $resourcesNav: any;
+  private $scrollParent: any;
+
   constructor(specMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
@@ -66,6 +68,8 @@ export class SideMenu extends BaseComponent {
   }
 
   init() {
+    this.categories = this.menuService.categories;
+
     this.$mobileNav = this.dom.querySelector(this.$element, '.mobile-nav');
     this.$resourcesNav = this.dom.querySelector(this.$element, '#resources-nav');
 
@@ -74,11 +78,6 @@ export class SideMenu extends BaseComponent {
       let mobileNavOffset = this.$mobileNav.clientHeight;
       return this.options.scrollYOffset() + mobileNavOffset;
     };
-  }
-
-  prepareModel() {
-    this.data = {};
-    this.data.menu = this.menuService.categories;
   }
 
   mobileMode() {

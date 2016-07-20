@@ -7,9 +7,9 @@
 </div>
 <div #desktop id="resources-nav">
   <h5 class="menu-header"> API reference </h5>
-  <div *ngFor="let cat of data.menu; let idx = index" class="menu-cat">
+  <div *ngFor="let cat of categories; let idx = index" class="menu-cat">
 
-    <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [hidden]="cat.empty" 
+    <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [hidden]="cat.empty"
     [ngClass]="{active: cat.active}"> {{cat.name}}</label>
     <ul class="menu-subitems" @itemAnimation="cat.active ? 'expanded' : 'collapsed'">
       <li *ngFor="let method of cat.methods; let methIdx = index"

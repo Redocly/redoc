@@ -68,7 +68,7 @@ export class JsonSchema extends BaseComponent {
     this.selectDescendant(0);
   }
 
-  prepareModel() {
+  init() {
     if (this.nestOdd) {
       this._renderer.setElementAttribute(this._elementRef.nativeElement, 'nestodd', 'true');
     }

@@ -9,17 +9,17 @@ import { OptionsService } from '../../services/index';
   templateUrl: './api-info.html'
 })
 export class ApiInfo extends BaseComponent {
-  data: any;
+  info: any;
   specUrl: String;
   constructor(specMgr:SpecManager, private optionsService:OptionsService) {
     super(specMgr);
   }
 
-  prepareModel() {
-    this.data = this.componentSchema.info;
+  init() {
+    this.info = this.componentSchema.info;
     this.specUrl = this.optionsService.options.specUrl;
-    if (parseInt(this.data.version.substring(0, 1)) !== NaN) {
-      this.data.version = 'v' + this.data.version;
+    if (parseInt(this.info.version.substring(0, 1)) !== NaN) {
+      this.info.version = 'v' + this.info.version;
     }
   }
 }

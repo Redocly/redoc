@@ -20,25 +20,25 @@ import { SchemaHelper } from '../../services/schema-helper.service';
   detect: true
 })
 export class Method extends BaseComponent {
-  data:any;
+  method:any;
   @Input() tag:string;
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
 
-  prepareModel() {
-    this.data = {};
-    this.data.apiUrl = this.specMgr.apiUrl;
-    this.data.httpMethod = JsonPointer.baseName(this.pointer);
-    this.data.path = JsonPointer.baseName(this.pointer, 2);
-    this.data.methodInfo = this.componentSchema;
-    this.data.methodInfo.tags = this.filterMainTags(this.data.methodInfo.tags);
-    this.data.bodyParam = this.findBodyParam();
-    this.data.summary = SchemaHelper.methodSummary(this.componentSchema);
+  init() {
+    this.method = {};
+    this.method.apiUrl = this.specMgr.apiUrl;
+    this.method.httpMethod = JsonPointer.baseName(this.pointer);
+    this.method.path = JsonPointer.baseName(this.pointer, 2);
+    this.method.info = this.componentSchema;
+    this.method.info.tags = this.filterMainTags(this.method.info.tags);
+    this.method.bodyParam = this.findBodyParam();
+    this.method.summary = SchemaHelper.methodSummary(this.componentSchema);
     if (this.componentSchema.operationId) {
-      this.data.methodAnchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
+      this.method.anchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
     } else {
-      this.data.methodAnchor = 'tag/' + encodeURIComponent(this.tag + this.pointer);
+      this.method.anchor = 'tag/' + encodeURIComponent(this.tag + this.pointer);
     }
   }
 
