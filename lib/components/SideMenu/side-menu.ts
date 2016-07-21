@@ -1,16 +1,18 @@
 'use strict';
 
 import { ElementRef, ChangeDetectorRef } from '@angular/core';
+
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 
+import { MenuCategory } from '../../services/schema-helper.service';
+
 @RedocComponent({
   selector: 'side-menu',
   templateUrl: './side-menu.html',
-  providers: [ScrollService, MenuService, Hash],
   styleUrls: ['./side-menu.css'],
   detect: true,
   onPushOnly: false,
@@ -29,7 +31,7 @@ import { ScrollService, Hash, MenuService, OptionsService } from '../../services
 export class SideMenu extends BaseComponent {
   activeCatCaption: string;
   activeItemCaption: string;
-  categories: any;
+  categories: Array<MenuCategory>;
 
   private options: any;
   private $element: any;
@@ -87,7 +89,7 @@ export class SideMenu extends BaseComponent {
   toggleMobileNav() {
     let dom = this.dom;
     let $overflowParent = (this.options.$scrollParent === global) ? dom.defaultDoc().body
-      : this.$scrollParent.$scrollParent;
+      : this.$scrollParent;
     if (dom.hasStyle(this.$resourcesNav, 'height')) {
       dom.removeStyle(this.$resourcesNav, 'height');
       dom.removeStyle($overflowParent, 'overflow-y');

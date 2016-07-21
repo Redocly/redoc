@@ -1,5 +1,4 @@
 @import '../../shared/styles/variables';
-@import '../../shared/styles/share-link';
 
 .tag-info {
   padding: 40px;
@@ -21,6 +20,7 @@
   color: $headers-color;
   text-transform: capitalize;
   font-weight: normal;
+  margin-top: 0;
 }
 
 .methods {

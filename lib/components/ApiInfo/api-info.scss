@@ -6,6 +6,8 @@
 
 :host > div {
   width: 60%;
+  padding: 40px;
+  box-sizing: border-box;
 }
 
 a.openapi-button {
@@ -14,4 +16,8 @@ a.openapi-button {
   border: 1px solid $primary-color;
   margin-left: 0.5em;
   font-weight: normal;
+}
+
+:host [section] {
+  padding-top: 80px;
 }

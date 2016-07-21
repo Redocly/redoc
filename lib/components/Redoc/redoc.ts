@@ -15,7 +15,8 @@ import { SideMenu } from '../SideMenu/side-menu';
 
 import { StickySidebar } from '../../shared/components/index';
 import {SpecManager} from '../../utils/SpecManager';
-import { OptionsService, RedocEventsService } from '../../services/index';
+import { OptionsService, RedocEventsService, MenuService,
+  ScrollService, Hash } from '../../services/index';
 
 var dom = new BrowserDomAdapter();
 var _modeLocked = false;
@@ -25,7 +26,10 @@ var _modeLocked = false;
   providers: [
     SpecManager,
     BrowserDomAdapter,
-    RedocEventsService
+    RedocEventsService,
+    ScrollService,
+    Hash,
+    MenuService,
   ],
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],

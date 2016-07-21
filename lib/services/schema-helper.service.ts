@@ -8,6 +8,22 @@ interface PropertyPreprocessOptions {
   skipReadOnly?: boolean;
 }
 
+export interface MenuMethod {
+  active: boolean;
+  summary: string;
+  tag: string;
+}
+
+export interface MenuCategory {
+  name: string;
+
+  active?: boolean;
+  methods?: Array<MenuMethod>;
+  description?: string;
+  empty?: string;
+  virtual?: boolean;
+}
+
 const injectors = {
   general: {
     check: () => true,
@@ -225,17 +241,22 @@ export class SchemaHelper {
       (method.description && method.description.substring(0, 50)) || '<no description>';
   }
 
-  static buildMenuTree(schema) {
+  static buildMenuTree(schema):Array<MenuCategory> {
     let tag2MethodMapping = {};
 
-    let definedTags = schema.tags || [];
-    // add tags into map to preserve order
-    for (let tag of definedTags) {
+    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
+      tag2MethodMapping[header] = {
+        name: header, virtual: true, methods: []
+      };
+    }
+
+    for (let tag of schema.tags || []) {
       tag2MethodMapping[tag.name] = {
-        'description': tag.description,
-        'name': tag.name,
-        'x-traitTag': tag['x-traitTag'],
-        'methods': []
+        name: tag.name,
+        description: tag.description,
+        headless: tag.name === '',
+        empty: !!tag['x-traitTag'],
+        methods: [],
       };
     }
 
@@ -256,11 +277,11 @@ export class SchemaHelper {
           if (!tag2MethodMapping[tag]) {
             tagDetails = {
               name: tag,
-              empty: tag === ''
+              headless: tag === ''
             };
             tag2MethodMapping[tag] = tagDetails;
           }
-          if (tagDetails['x-traitTag']) continue;
+          if (tagDetails.empty) continue;
           if (!tagDetails.methods) tagDetails.methods = [];
           tagDetails.methods.push({
             pointer: methodPointer,

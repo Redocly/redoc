@@ -29,7 +29,7 @@ describe('Redoc components', () => {
       testOptions = opts;
       testOptions.options = {
         scrollYOffset: () => 0,
-        scrollParent: window
+        $scrollParent: window
       };
       return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));

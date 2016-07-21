@@ -1,6 +1,6 @@
 <div>
   <h1 class="api-info-header">{{info.title}} ({{info.version}})</h1>
-  <p *ngIf="info.description" [innerHtml]="info.description | marked"> </p>
+  <p *ngIf="info.description" [innerHtml]="info['x-redoc-html-description'] | safe"> </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->
     <span *ngIf="info.contact"> Contact:

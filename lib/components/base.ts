@@ -2,7 +2,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { CORE_DIRECTIVES, JsonPipe, AsyncPipe } from '@angular/common';
 import { SpecManager } from '../utils/SpecManager';
-import { MarkedPipe, JsonPointerEscapePipe } from '../utils/pipes';
+import { MarkedPipe, JsonPointerEscapePipe, SafePipe } from '../utils/pipes';
 
 export { SpecManager };
 
@@ -50,7 +50,7 @@ function snapshot(obj) {
 export function RedocComponent(options) {
   let inputs = safeConcat(options.inputs, commonInputs);
   let directives = safeConcat(options.directives, CORE_DIRECTIVES);
-  let pipes = safeConcat(options.pipes, [JsonPointerEscapePipe, MarkedPipe, JsonPipe, AsyncPipe]);
+  let pipes = safeConcat(options.pipes, [JsonPointerEscapePipe, MarkedPipe, JsonPipe, AsyncPipe, SafePipe]);
   if (options.onPushOnly === undefined) options.onPushOnly = true;
 
   return function decorator(target) {

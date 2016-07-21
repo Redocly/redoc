@@ -51,10 +51,6 @@ api-info, .side-bar {
     padding: 10px 0;
 }
 
-api-info {
-    padding: 40px;
-}
-
 api-logo {
     display: block;
     text-align: center;
@@ -150,6 +146,8 @@ api-logo {
         color: #383838;
       }
     }
+
+    @import '../../shared/styles/share-link';
 }
 
 footer {

@@ -59,9 +59,13 @@ describe('Spec Helper', () => {
       info.methods[0].summary.should.be.equal('test post');
     });
 
+    it('should map x-traitTag to empty section', () => {
+      let info = menuTree[0];
+      info.empty.should.be.true();
+    });
+
     it('should map x-traitTag to empty methods list', () => {
       let info = menuTree[0];
-      info['x-traitTag'].should.be.true();
       info.methods.should.be.empty();
     });
 

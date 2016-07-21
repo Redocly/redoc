@@ -2,6 +2,7 @@
 
 import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
+import { renderMd, safePush } from './helpers';
 
 export class SpecManager {
   public _schema:any = {};
@@ -42,6 +43,22 @@ export class SpecManager {
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }
+
+    this.preprocess();
+  }
+
+  preprocess() {
+    this._schema.info['x-redoc-html-description'] = renderMd( this._schema.info.description, {
+      open: (tokens, idx) => {
+        let content = tokens[idx + 1].content;
+        safePush(this._schema.info, 'x-redoc-markdown-headers', content);
+        return `<h${tokens[idx].hLevel} section="${content}">` +
+          `<a class="share-link" href="#section/${content}"></a>`;
+      },
+      close: (tokens, idx) => {
+        return `</h${tokens[idx].hLevel}>`;
+      }
+      });
   }
 
   get schema() {
