@@ -50,6 +50,7 @@
       "scrollparent": "npm:scrollparent@^0.1.0",
       "slugify": "npm:slugify@^0.1.1",
       "stream-http": "npm:stream-http@^2.3.0",
+      "url": "github:jspm/nodelibs-url@^0.1.0",
       "zone.js": "npm:zone.js@0.6.12"
     },
     "devDependencies": {

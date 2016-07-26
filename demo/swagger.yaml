@@ -1,6 +1,7 @@
 swagger: '2.0'
 schemes:
   - http
+  - https
 host: petstore.swagger.io
 basePath: /v2
 info:

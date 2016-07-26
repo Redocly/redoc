@@ -53,6 +53,12 @@ describe('Utils', () => {
         specMgr.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
       });
 
+      it('should correctly init api url if both http and https', ()=> {
+        specMgr._schema.schemes.push('https');
+        specMgr.init();
+        specMgr.apiUrl.should.be.equal('https://petstore.swagger.io/v2');
+      });
+
       describe('byPointer method', () => {
         it('should return correct schema part', ()=> {
           let part = specMgr.byPointer('/tags/3');

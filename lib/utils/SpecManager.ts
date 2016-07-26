@@ -4,11 +4,13 @@ import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
 import { renderMd, safePush } from './helpers';
 import slugify from 'slugify';
+import { parse as urlParse } from 'url';
 
 export class SpecManager {
-  public _schema:any = {};
+  public _schema: any = {};
   public apiUrl: string;
-  private _instance:any;
+  private _instance: any;
+  private _url: string;
 
   static instance() {
     return new SpecManager();
@@ -28,6 +30,7 @@ export class SpecManager {
 
       JsonSchemaRefParser.bundle(url, {http: {withCredentials: false}})
       .then(schema => {
+          this._url = url;
           this._schema = schema;
           resolve(this._schema);
           this.init();
@@ -39,8 +42,16 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
-    if (!this._schema || !this._schema.schemes) return;
-    this.apiUrl = this._schema.schemes[0] + '://' + this._schema.host + this._schema.basePath;
+    let protocol;
+    if (!this._schema.schemes || !this._schema.schemes.length) {
+      protocol = this._url ? urlParse(this._url).protocol : 'http';
+    } else {
+      protocol = this._schema.schemes[0];
+      if (protocol === 'http' && this._schema.schemes.indexOf('https') >= 0) {
+        protocol = 'https';
+      }
+    }
+    this.apiUrl = protocol + '://' + this._schema.host + this._schema.basePath;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }
