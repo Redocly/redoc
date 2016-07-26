@@ -48,6 +48,7 @@
       "remarkable": "npm:remarkable@^1.6.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "scrollparent": "npm:scrollparent@^0.1.0",
+      "slugify": "npm:slugify@^0.1.1",
       "stream-http": "npm:stream-http@^2.3.0",
       "zone.js": "npm:zone.js@0.6.12"
     },
@@ -132,6 +133,7 @@
     "shelljs": "^0.7.0",
     "should": "^9.0.2",
     "sinon": "^1.17.2",
+    "slugify": "^0.1.1",
     "systemjs-builder": "^0.15.16",
     "tslint": "^3.13.0",
     "tslint-stylish": "^2.1.0-beta",
