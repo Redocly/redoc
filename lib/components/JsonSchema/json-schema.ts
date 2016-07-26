@@ -16,7 +16,7 @@ import { Zippy } from '../../shared/components/Zippy/zippy';
   detect: true
 })
 export class JsonSchema extends BaseComponent {
-  schema: any;
+  schema: any = {};
   activeDescendant:any = {};
   hasDescendants: boolean = false;
   _hasSubSchemas: boolean = false;
@@ -69,6 +69,7 @@ export class JsonSchema extends BaseComponent {
   }
 
   init() {
+    if (!this.pointer) return;
     if (this.nestOdd) {
       this._renderer.setElementAttribute(this._elementRef.nativeElement, 'nestodd', 'true');
     }

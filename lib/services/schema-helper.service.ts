@@ -1,7 +1,7 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
-import {methods as swaggerMethods} from  '../utils/swagger-defs';
+import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
 import slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
@@ -27,6 +27,17 @@ export interface MenuCategory {
 }
 
 const injectors = {
+  notype: {
+    check: (propertySchema) => !propertySchema.type,
+    inject: (injectTo, propertySchema, pointer) => {
+      injectTo.type = SchemaHelper.detectType(propertySchema);
+      propertySchema.type = injectTo.type;
+      let message = `No "type" specified at ${pointer}. `;
+      message += injectTo.type ? `Automatically detected: "${injectTo.type}"` :
+        `Can't detect automatically`;
+      console.warn(message);
+    }
+  },
   general: {
     check: () => true,
     inject: (injectTo, propertySchema, pointer) => {
@@ -241,6 +252,17 @@ export class SchemaHelper {
   static methodSummary(method) {
     return method.summary || method.operationId ||
       (method.description && method.description.substring(0, 50)) || '<no description>';
+  }
+
+  static detectType(schema) {
+    let keywords = Object.keys(keywordTypes);
+    for (var i=0; i < keywords.length; i++) {
+      let keyword = keywords[i];
+      let type = keywordTypes[keyword];
+      if (schema[keyword]) {
+        return type;
+      }
+    }
   }
 
   static buildMenuTree(schema):Array<MenuCategory> {
