@@ -3,6 +3,7 @@
 import JsonSchemaRefParser from 'json-schema-ref-parser';
 import JsonPointer from './JsonPointer';
 import { renderMd, safePush } from './helpers';
+import slugify from 'slugify';
 
 export class SpecManager {
   public _schema:any = {};
@@ -52,7 +53,8 @@ export class SpecManager {
       open: (tokens, idx) => {
         let content = tokens[idx + 1].content;
         safePush(this._schema.info, 'x-redoc-markdown-headers', content);
-        return `<h${tokens[idx].hLevel} section="${content}">` +
+        content = slugify(content);
+        return `<h${tokens[idx].hLevel} section="section/${content}">` +
           `<a class="share-link" href="#section/${content}"></a>`;
       },
       close: (tokens, idx) => {

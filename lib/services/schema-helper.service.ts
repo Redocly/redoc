@@ -2,6 +2,7 @@
 import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
 import {methods as swaggerMethods} from  '../utils/swagger-defs';
+import slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
   childFor: string;
@@ -16,6 +17,7 @@ export interface MenuMethod {
 
 export interface MenuCategory {
   name: string;
+  id: string;
 
   active?: boolean;
   methods?: Array<MenuMethod>;
@@ -245,14 +247,17 @@ export class SchemaHelper {
     let tag2MethodMapping = {};
 
     for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
-      tag2MethodMapping[header] = {
-        name: header, virtual: true, methods: []
+      let id = 'section/' + slugify(header);
+      tag2MethodMapping[id] = {
+        name: header, id: id, virtual: true, methods: []
       };
     }
 
     for (let tag of schema.tags || []) {
-      tag2MethodMapping[tag.name] = {
+      let id = 'tag/' + slugify(tag.name);
+      tag2MethodMapping[id] = {
         name: tag.name,
+        id: id,
         description: tag.description,
         headless: tag.name === '',
         empty: !!tag['x-traitTag'],
@@ -273,13 +278,15 @@ export class SchemaHelper {
         let methodPointer = JsonPointer.compile(['paths', path, method]);
         let methodSummary = SchemaHelper.methodSummary(methodInfo);
         for (let tag of tags) {
-          let tagDetails = tag2MethodMapping[tag];
-          if (!tag2MethodMapping[tag]) {
+          let id = 'tag/' + slugify(tag);
+          let tagDetails = tag2MethodMapping[id];
+          if (!tagDetails) {
             tagDetails = {
               name: tag,
+              id: id,
               headless: tag === ''
             };
-            tag2MethodMapping[tag] = tagDetails;
+            tag2MethodMapping[id] = tagDetails;
           }
           if (tagDetails.empty) continue;
           if (!tagDetails.methods) tagDetails.methods = [];

@@ -43,7 +43,7 @@ describe('Menu service', () => {
   });
 
   it('should scroll to method when location hash is present [jp]', (done) => {
-    let hash = '#section/pet/paths/~1pet~1findByStatus/get';
+    let hash = '#tag/pet/paths/~1pet~1findByStatus/get';
     spyOn(menu, 'hashScroll').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
     hashService.changed.subscribe(() => {

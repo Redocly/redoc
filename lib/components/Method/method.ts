@@ -38,7 +38,7 @@ export class Method extends BaseComponent {
     if (this.componentSchema.operationId) {
       this.method.anchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
     } else {
-      this.method.anchor = 'tag/' + encodeURIComponent(this.tag + this.pointer);
+      this.method.anchor = this.tag + encodeURIComponent(this.pointer);
     }
   }
 

@@ -43,7 +43,7 @@ describe('Scroll sync', () => {
   });
 
   it('should update active menu entries on page scroll forwards', () => {
-    scrollToEl('[tag="store"]').then(() => {
+    scrollToEl('[section="tag/store"]').then(() => {
       expect($('.menu-cat-header.active').getInnerHtml()).toContain('store');
       expect($('.selected-tag').getInnerHtml()).toContain('store');
     });

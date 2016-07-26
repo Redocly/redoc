@@ -55,7 +55,7 @@ export class MenuService {
 
   getCurrentMethodEl() {
     return this.getMethodElByPtr(this.activeMethodPtr,
-      this.categories[this.activeCatIdx].name);
+      this.categories[this.activeCatIdx].id);
   }
 
   getMethodElByPtr(ptr, section) {
@@ -141,10 +141,11 @@ export class MenuService {
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'operation') {
       $el = this.getMethodElByOperId(ptr);
-    } else if (namespace === 'section') {
-      let tag = ptr.split('/')[0];
-      ptr = ptr.substr(tag.length);
-      $el = this.getMethodElByPtr(ptr, tag);
+    } else {
+      let sectionId = ptr.split('/')[0];
+      ptr = ptr.substr(sectionId.length) || null;
+      sectionId = namespace + (sectionId ? '/' + sectionId : '');
+      $el = this.getMethodElByPtr(ptr, sectionId);
     }
 
     if ($el) this.scrollService.scrollTo($el);

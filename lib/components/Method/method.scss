@@ -11,6 +11,10 @@
   border-bottom: 0;
 }
 
+h2 {
+  color: $secondary-color;
+}
+
 responses-list, params-list {
   display: block;
 }

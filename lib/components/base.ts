@@ -79,7 +79,7 @@ export function RedocComponent(options) {
  */
 export class BaseComponent implements OnInit, OnDestroy {
   componentSchema: any = null;
-  pointer: String;
+  pointer: string;
   dereferencedCache = {};
 
   constructor(public specMgr: SpecManager) {

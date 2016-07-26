@@ -6,7 +6,7 @@
   </span>
 </div>
 <div #desktop id="resources-nav">
-  <h5 class="menu-header" (click)="onclk()"> API reference </h5>
+  <h5 class="menu-header"> API reference </h5>
   <div *ngFor="let cat of categories; let idx = index" class="menu-cat">
 
     <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [hidden]="cat.headless"
