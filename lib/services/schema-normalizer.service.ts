@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SpecManager } from '../utils/SpecManager';
 import { JsonPointer } from '../utils/JsonPointer';
 import { defaults } from '../utils/helpers';
+import { WarningsService } from './warnings.service';
 
 interface Reference {
   $ref: string;
@@ -127,20 +128,22 @@ class AllOfMerger {
   private static checkCanMerge(subSchema, into) {
     // TODO: add support for merge array schemas
     if (typeof subSchema !== 'object') {
-      let errMessage = `Items of allOf should be Object: ${typeof subSchema} found
-        ${subSchema}`;
+      let errMessage = `Items of allOf should be Object: ${typeof subSchema} found ` +
+        `${subSchema} at "#${into._pointer}"`;
       throw new Error(errMessage);
     }
 
     if (into.type && subSchema.type && into.type !== subSchema.type) {
-      let errMessage = `allOf merging error: schemas with different types can't be merged`;
+      let errMessage = `allOf merging error: schemas with different types can't be merged: ` +
+      `"${into.type}" and "${subSchema.type}" at "#${into._pointer}"`;
       throw new Error(errMessage);
     }
 
     if (into.type === 'array') {
-      console.warn('allOf: subschemas with type array are not supported yet');
+      WarningsService.warn('allOf: subschemas with type "array" are not supported yet');
     }
     // TODO: add check if can be merged correctly (no different properties with the same name)
+    // TODO: merge properties
   }
 }
 
@@ -191,8 +194,8 @@ class SchemaDereferencer {
 
     let keysCount = Object.keys(schema).length;
     if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
-      console.warn(`other properties defined at the same level as $ref at '${pointer}'.
-        They are IGNORRED according to JsonSchema spec`);
+      WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
+        'They are IGNORRED according to the JsonSchema spec');
       resolved.description = resolved.description || schema.description;
     }
 

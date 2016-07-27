@@ -12,11 +12,12 @@ import { ApiInfo } from '../ApiInfo/api-info';
 import { ApiLogo } from '../ApiLogo/api-logo';
 import { MethodsList } from '../MethodsList/methods-list';
 import { SideMenu } from '../SideMenu/side-menu';
+import { Warnings } from '../Warnings/warnings';
 
 import { StickySidebar } from '../../shared/components/index';
 import {SpecManager} from '../../utils/SpecManager';
 import { OptionsService, RedocEventsService, MenuService,
-  ScrollService, Hash } from '../../services/index';
+  ScrollService, Hash, WarningsService } from '../../services/index';
 
 var dom = new BrowserDomAdapter();
 var _modeLocked = false;
@@ -30,10 +31,11 @@ var _modeLocked = false;
     ScrollService,
     Hash,
     MenuService,
+    WarningsService
   ],
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],
-  directives: [ ApiInfo, ApiLogo, MethodsList, SideMenu, StickySidebar ],
+  directives: [ ApiInfo, ApiLogo, MethodsList, SideMenu, StickySidebar, Warnings ],
   detect: true,
   onPushOnly: false
 })

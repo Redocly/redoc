@@ -9,7 +9,7 @@ const defaults = {
   debugMode: false//global && global.redocDebugMode
 };
 
-const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl']);
+const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl', 'suppressWarnings']);
 
 @Injectable()
 export class OptionsService {
@@ -70,5 +70,6 @@ export class OptionsService {
     }
 
     if (isString(this._options.disableLazySchemas)) this._options.disableLazySchemas = true;
+    if (isString(this._options.suppressWarnings)) this._options.suppressWarnings = true;
   }
 }

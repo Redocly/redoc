@@ -2,6 +2,7 @@
 import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
 import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
+import { WarningsService } from './warnings.service';
 import slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
@@ -32,10 +33,10 @@ const injectors = {
     inject: (injectTo, propertySchema, pointer) => {
       injectTo.type = SchemaHelper.detectType(propertySchema);
       propertySchema.type = injectTo.type;
-      let message = `No "type" specified at ${pointer}. `;
-      message += injectTo.type ? `Automatically detected: "${injectTo.type}"` :
-        `Can't detect automatically`;
-      console.warn(message);
+      if (injectTo.type) {
+        let message = `No "type" specified at "${pointer}". Automatically detected: "${injectTo.type}"`;
+        WarningsService.warn(message);
+      }
     }
   },
   general: {
