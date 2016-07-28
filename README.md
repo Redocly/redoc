@@ -21,16 +21,12 @@ Swagger-generated API Reference Documentation
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--
-    ReDoc uses font options from the parent element
-    So override default browser styles
+    ReDoc doesn't change outer page styles
     -->
     <style>
       body {
         margin: 0;
         padding: 0;
-        font-family: Verdana, Geneva, sans-serif;
-        font-size: 14px;
-        color: #333;
       }
     </style>
   </head>
