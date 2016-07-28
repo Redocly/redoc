@@ -4,7 +4,7 @@
             <a class="share-link" href="#{{method.anchor}}"></a>{{method.summary}}
         </h2>
         <div class="method-tags" *ngIf="method.info.tags.length">
-            <a *ngFor="let tag of method.info.tags" attr.href="#{{tag}}"> {{tag}} </a>
+            <a *ngFor="let tag of method.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
         </div>
         <p *ngIf="method.info.description" class="method-description"
         [innerHtml]="method.info.description | marked">
