@@ -11,14 +11,19 @@
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
+## Roadmap
+  - [ ] performance and SEO (docs pre-rendering)
+  - [ ] ability to simple customization
+  - [ ] built-in API-Console
 
-## CDN
+## Releases
+We host latest and all the previous ReDoc releases on GitHub pages-based **CDN**:
 - latest release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
 - particular release, e.g. v0.16.1: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
 
 ## Deployment
 
-#### tl;dr
+### TL;DR
 ```html
 <!DOCTYPE html>
 <html>
@@ -38,8 +43,7 @@
     </style>
   </head>
   <body>
-    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'>
-    </redoc>
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
     <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
   </body>
 </html>
@@ -58,7 +62,7 @@ or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 Alternatively, you can **reference redoc directly** from CDN:
 
 
-#### 2. Reference redoc script in HTML
+### 2. Reference redoc script in HTML
 For **CDN**:
 ```html
 <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
@@ -73,22 +77,22 @@ For npm:
 <script src="node_modules/redoc/dist/redoc.min.js"> </script>
 ```
 
-#### 3. Add `<redoc>` element to your page
+### 3. Add `<redoc>` element to your page
 ```html
 <redoc spec-url="<url to your spec>"></redoc>
 ```
 
-#### 4. Enjoy :smile:
+### 4. Enjoy :smile:
 
 ## Configuration
 
-#### Swagger vendor extensions
+### Swagger vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
 
-#### Options
+### Options
 * `spec-url` - relative or absolute url to your spec file
 * `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc.
 `scroll-y-offset` can be specified in various ways:
