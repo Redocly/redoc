@@ -12,14 +12,14 @@
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
 ## Roadmap
-  - [ ] performance and SEO (docs pre-rendering)
-  - [ ] ability to simple customization
-  - [ ] built-in API-Console
+  - [ ] docs pre-rendering (performance and SEO)
+  - [ ] support for styling
+  - [ ] built-in API Console
 
 ## Releases
-We host latest and all the previous ReDoc releases on GitHub pages-based **CDN**:
-- latest release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
-- particular release, e.g. v0.16.1: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
+We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
+- particular release, e.g. `v0.16.1`: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
 
 ## Deployment
 
@@ -59,9 +59,6 @@ or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 
     npm install redoc --save
 
-Alternatively, you can **reference redoc directly** from CDN:
-
-
 ### 2. Reference redoc script in HTML
 For **CDN**:
 ```html
@@ -79,7 +76,7 @@ For npm:
 
 ### 3. Add `<redoc>` element to your page
 ```html
-<redoc spec-url="<url to your spec>"></redoc>
+<redoc spec-url="url/to/your/spec"></redoc>
 ```
 
 ### 4. Enjoy :smile:
@@ -93,13 +90,13 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
 
 ### Options
-* `spec-url` - relative or absolute url to your spec file
-* `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc.
+* `spec-url` - relative or absolute url to your spec file;
+* `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scroll-y-offset` can be specified in various ways:
-  * **number**: A fixed number of pixels to be used as offset
-  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
-  * **function**: A getter function. Must return a number representing the offset (in pixels).
-* `suppress-warnings` - if set, warnings are not rendered at the top of page (they still are logged to the console)
+  * **number**: A fixed number of pixels to be used as offset;
+  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
+  * **function**: A getter function. Must return a number representing the offset (in pixels);
+* `suppress-warnings` - if set, warnings are not rendered at the top of page (they still are logged to the console).
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
