@@ -30,6 +30,7 @@ export class SchemaNormalizer {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
       if (resolved.allOf) {
         resolved._pointer = resolved._pointer || ptr;
+        resolved = Object.assign({}, resolved);
         AllOfMerger.merge(resolved, resolved.allOf, {omitParent: opts.omitParent});
       }
       return resolved;
