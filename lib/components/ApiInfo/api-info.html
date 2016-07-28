@@ -1,5 +1,9 @@
 <div>
   <h1 class="api-info-header">{{info.title}} ({{info.version}})</h1>
+  <p>
+    Download OpenAPI (fka Swagger) specification:
+    <a class="openapi-button" target="_blank" attr.href='{{specUrl}}'> Download </a>
+  </p>
   <p *ngIf="info.description" [innerHtml]="info['x-redoc-html-description'] | safe"> </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->
@@ -13,9 +17,5 @@
       <a *ngIf="info.license.url" href="{{info.license.url}}"> {{info.license.name}} </a>
       <span *ngIf="!info.license.url"> {{info.license.name}} </span>
     </span>
-  </p>
-  <p>
-    Download OpenAPI (fka Swagger) specification:
-    <a class="openapi-button" target="_blank" attr.href='{{specUrl}}'> Download </a>
   </p>
 </div>
