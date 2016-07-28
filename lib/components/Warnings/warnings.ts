@@ -20,7 +20,6 @@ export class Warnings extends BaseComponent {
 
   init() {
     WarningsService.warnings.subscribe((warns) => {
-      console.log(warns);
       this.warnings = warns;
     });
   }
