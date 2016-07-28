@@ -7,7 +7,14 @@
 
 Swagger-generated API Reference Documentation
 
+![ReDoc demo](demo/redoc-demo.png)
+
 [Live demo](http://rebilly.github.io/ReDoc/)
+
+
+## CDN
+- latest release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
+- particular release, e.g. v0.16.1: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
 
 ## Deployment
 
@@ -33,12 +40,13 @@ Swagger-generated API Reference Documentation
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'>
     </redoc>
-    <script src="bower_components/redoc/dist/redoc.min.js"> </script>
+    <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
   </body>
 </html>
 ```
+That's it!
 
-#### 1. Install redoc
+### 1. Install ReDoc (skip this step for CDN)
 Install using [bower](bower.io):
 
     bower install redoc
@@ -48,11 +56,15 @@ or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
     npm install redoc --save
 
 Alternatively, you can **reference redoc directly** from CDN:
-- latest release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
-- particular release, e.g. v0.14.0: https://rebilly.github.io/ReDoc/releases/v0.14.0/redoc.min.js
+
 
 #### 2. Reference redoc script in HTML
-Then reference [`redoc.min.js`](https://raw.githubusercontent.com/Rebilly/ReDoc/releases/dist/redoc.min.js) in your HTML page:
+For CDN:
+```html
+<script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
+```
+
+For bower:
 ```html
 <script src="bower_components/redoc/dist/redoc.min.js"> </script>
 ```
