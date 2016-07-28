@@ -1,15 +1,15 @@
 # ReDoc
+**OpenAPI/Swagger-generated API Reference Documentation**
+
 [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru) [![Code Climate](https://codeclimate.com/github/Rebilly/ReDoc/badges/gpa.svg)](https://codeclimate.com/github/Rebilly/ReDoc) [![David](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![Stories in Ready](https://badge.waffle.io/Rebilly/ReDoc.png?label=ready&title=Ready)](https://waffle.io/Rebilly/ReDoc)
 
 [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![Bower](http://img.shields.io/bower/v/redoc.svg)](http://bower.io/) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/redoc.svg)](https://saucelabs.com/u/redoc)
 
-Swagger-generated API Reference Documentation
-
 ![ReDoc demo](demo/redoc-demo.png)
 
-[Live demo](http://rebilly.github.io/ReDoc/)
+## [Live demo](http://rebilly.github.io/ReDoc/)
 
 
 ## CDN
@@ -59,7 +59,7 @@ Alternatively, you can **reference redoc directly** from CDN:
 
 
 #### 2. Reference redoc script in HTML
-For CDN:
+For **CDN**:
 ```html
 <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
 ```
