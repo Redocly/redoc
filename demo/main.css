@@ -23,6 +23,7 @@ body {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    font-family: Monserrat, sans-serif;
 }
 
 nav input, nav button  {
