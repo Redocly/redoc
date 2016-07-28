@@ -11,16 +11,19 @@ import { WarningsService, OptionsService } from '../../services/index';
   onPushOnly: false
 })
 export class Warnings extends BaseComponent {
-  warnings: Array<string>;
-  shown: boolean;
+  warnings: Array<string> = [];
+  shown: boolean = false;
+  suppressWarnings: boolean;
   constructor(specMgr:SpecManager, optionsMgr: OptionsService) {
     super(specMgr);
-    this.shown = !optionsMgr.options.suppressWarnings;
+    this.suppressWarnings = optionsMgr.options.suppressWarnings;
   }
 
   init() {
+    this.shown = !this.suppressWarnings && !!this.warnings.length;
     WarningsService.warnings.subscribe((warns) => {
       this.warnings = warns;
+      this.shown = !this.suppressWarnings && !!warns.length;
     });
   }
 
