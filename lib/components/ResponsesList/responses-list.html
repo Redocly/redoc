@@ -7,8 +7,13 @@
     </header>
     <div class="header" *ngFor="let header of response.headers">
       <div class="header-name"> {{header.name}} </div>
-      <div class="header-type"> {{header.type}} </div>
+      <div class="header-type {{header.type}}"> {{header._displayType}} {{header._displayFormat}}
+        <span class="header-range" *ngIf="header._range"> {{header._range}} </span>
+      </div>
       <div *ngIf="header.default" class="header-default"> Default: {{header.default}} </div>
+      <div *ngIf="header.enum" class="header-enum">
+        <span *ngFor="let enumItem of header.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+      </div>
       <div class="header-description" [innerHtml]="header.description | marked"> </div>
     </div>
   </div>

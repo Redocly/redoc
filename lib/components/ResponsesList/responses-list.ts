@@ -7,6 +7,7 @@ import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
 import { Zippy } from '../../shared/components/index';
 import { statusCodeType } from '../../utils/helpers';
 import { OptionsService } from '../../services/index';
+import { SchemaHelper } from '../../services/schema-helper.service';
 
 function isNumeric(n) {
   return (!isNaN(parseFloat(n)) && isFinite(n));
@@ -52,7 +53,7 @@ export class ResponsesList extends BaseComponent {
         resp.headers = Object.keys(resp.headers).map((k) => {
           let respInfo = resp.headers[k];
           respInfo.name = k;
-          return respInfo;
+          return SchemaHelper.preprocess(respInfo, this.pointer, this.pointer);
         });
         resp.empty = false;
       }

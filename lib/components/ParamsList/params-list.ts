@@ -34,7 +34,7 @@ export class ParamsList extends BaseComponent {
       let propPointer = paramSchema._pointer;
       if (paramSchema.in === 'body') return paramSchema;
       paramSchema._name = paramSchema.name;
-      return SchemaHelper.preprocess(paramSchema,propPointer, this.pointer);
+      return SchemaHelper.preprocess(paramSchema, propPointer, this.pointer);
     });
 
     let paramsMap = this.orderParams(paramsList);
