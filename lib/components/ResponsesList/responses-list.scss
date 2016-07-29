@@ -38,3 +38,20 @@ header {
 .header {
   margin-bottom: 10px;
 }
+
+.header-range {
+  position: relative;
+  top: 1px;
+  margin-right: 6px;
+  margin-left: 6px;
+  border-radius: $border-radius;
+  background-color: rgba($primary-color, .1);
+  padding: 0 4px;
+  color: rgba($primary-color, 0.7);
+}
+
+.header-type.array:before {
+  content: "Array of ";
+  color: $black;
+  font-weight: $base-font-weight;
+}

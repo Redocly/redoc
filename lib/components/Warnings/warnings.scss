@@ -1,0 +1,33 @@
+:host {
+  width: 60%;
+  display: block;
+}
+
+.message {
+  padding: 5px 40px;
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+
+  &:before {
+    content: "Warning: ";
+    font-weight: bold;
+  }
+}
+
+.warnings-close {
+  font-size: 150%;
+  color: black;
+  opacity: 0.4;
+  float: right;
+  margin: 5px 20px 0 0;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+p {
+  display: inline;
+}

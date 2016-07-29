@@ -29,7 +29,7 @@ export class ResponsesSamples extends BaseComponent {
     super(specMgr);
   }
 
-  prepareModel() {
+  init() {
     this.data = {};
     this.data.responses = [];
 

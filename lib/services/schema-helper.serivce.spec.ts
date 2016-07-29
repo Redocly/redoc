@@ -59,9 +59,13 @@ describe('Spec Helper', () => {
       info.methods[0].summary.should.be.equal('test post');
     });
 
+    it('should map x-traitTag to empty section', () => {
+      let info = menuTree[0];
+      info.empty.should.be.true();
+    });
+
     it('should map x-traitTag to empty methods list', () => {
       let info = menuTree[0];
-      info['x-traitTag'].should.be.true();
       info.methods.should.be.empty();
     });
 
@@ -79,6 +83,21 @@ describe('Spec Helper', () => {
           }
         }
       }
+    });
+  });
+
+  describe('injectors', () => {
+    it('should autodetect type if not-specified', () => {
+      spyOn(console, 'warn').and.stub();
+      let schema = {
+        type: undefined,
+        properties: {}
+      };
+
+      SchemaHelper.runInjectors(schema, schema, '#/');
+      schema.type.should.be.equal('object');
+      expect(console.warn).toHaveBeenCalled();
+      (<jasmine.Spy>console.warn).and.callThrough();
     });
   });
 });

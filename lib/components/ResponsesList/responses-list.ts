@@ -7,6 +7,7 @@ import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
 import { Zippy } from '../../shared/components/index';
 import { statusCodeType } from '../../utils/helpers';
 import { OptionsService } from '../../services/index';
+import { SchemaHelper } from '../../services/schema-helper.service';
 
 function isNumeric(n) {
   return (!isNaN(parseFloat(n)) && isFinite(n));
@@ -20,16 +21,15 @@ function isNumeric(n) {
   detect: true
 })
 export class ResponsesList extends BaseComponent {
-  data: any;
+  responses: Array<any>;
   options: any;
   constructor(specMgr:SpecManager, optionsMgr:OptionsService) {
     super(specMgr);
     this.options = optionsMgr.options;
   }
 
-  prepareModel() {
-    this.data = {};
-    this.data.responses = [];
+  init() {
+    this.responses = [];
 
     let responses = this.componentSchema;
     if (!responses) return;
@@ -53,14 +53,14 @@ export class ResponsesList extends BaseComponent {
         resp.headers = Object.keys(resp.headers).map((k) => {
           let respInfo = resp.headers[k];
           respInfo.name = k;
-          return respInfo;
+          return SchemaHelper.preprocess(respInfo, this.pointer, this.pointer);
         });
         resp.empty = false;
       }
       resp.extendable = resp.headers || resp.length;
       return resp;
     });
-    this.data.responses = responses;
+    this.responses = responses;
   }
 
   trackByCode(idx, el) {

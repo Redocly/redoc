@@ -23,6 +23,7 @@ describe('Redoc components', () => {
       builder = tcb;
       specMgr = _spec;
     }));
+
     beforeEach(() => {
       fixture = builder.createSync(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema');
@@ -37,14 +38,14 @@ describe('Redoc components', () => {
     });
 
     it('should set isTrivial for non-object/array types', () => {
-      component.pointer = '';
+      component.pointer = '#';
       (<any>specMgr)._schema = {type: 'string'};
       fixture.detectChanges();
       component.schema.isTrivial.should.be.true();
     });
 
     it('should use < * > notation for prop without type', () => {
-      component.pointer = '';
+      component.pointer = '#';
       (<any>specMgr)._schema = {type: 'object', properties: {
         test: {}
       }};

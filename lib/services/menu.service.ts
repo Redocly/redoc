@@ -3,7 +3,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/SpecManager';
-import { SchemaHelper } from './schema-helper.service';
+import { SchemaHelper, MenuCategory } from './schema-helper.service';
 
 const CHANGE = {
   NEXT : 1,
@@ -14,7 +14,7 @@ const CHANGE = {
 @Injectable()
 export class MenuService {
   changed: EventEmitter<any> = new EventEmitter();
-  categories: any;
+  categories: Array<MenuCategory>;
 
   activeCatIdx: number = 0;
   activeMethodIdx: number = -1;
@@ -55,11 +55,11 @@ export class MenuService {
 
   getCurrentMethodEl() {
     return this.getMethodElByPtr(this.activeMethodPtr,
-      this.categories[this.activeCatIdx].name);
+      this.categories[this.activeCatIdx].id);
   }
 
-  getMethodElByPtr(ptr, tag) {
-    let selector = ptr ? `[pointer="${ptr}"][tag="${tag}"]` : `[tag="${tag}"]`;
+  getMethodElByPtr(ptr, section) {
+    let selector = ptr ? `[pointer="${ptr}"][section="${section}"]` : `[section="${section}"]`;
     return document.querySelector(selector);
   }
 
@@ -95,6 +95,7 @@ export class MenuService {
   _calcActiveIndexes(offset) {
     let menu = this.categories;
     let catCount = menu.length;
+    if (!catCount) return [0, -1];
     let catLength = menu[this.activeCatIdx].methods.length;
 
     let resMethodIdx = this.activeMethodIdx + offset;
@@ -140,10 +141,11 @@ export class MenuService {
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'operation') {
       $el = this.getMethodElByOperId(ptr);
-    } else if (namespace === 'tag') {
-      let tag = ptr.split('/')[0];
-      ptr = ptr.substr(tag.length);
-      $el = this.getMethodElByPtr(ptr, tag);
+    } else {
+      let sectionId = ptr.split('/')[0];
+      ptr = ptr.substr(sectionId.length) || null;
+      sectionId = namespace + (sectionId ? '/' + sectionId : '');
+      $el = this.getMethodElByPtr(ptr, sectionId);
     }
 
     if ($el) this.scrollService.scrollTo($el);

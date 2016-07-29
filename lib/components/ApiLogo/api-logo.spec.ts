@@ -35,11 +35,11 @@ describe('Redoc components', () => {
 
     it('should init component data', () => {
       expect(component).not.toBeNull();
-      expect(component.data).not.toBeNull();
+      expect(component.logo).not.toBeNull();
     });
 
     it('should not display image when no x-logo', () => {
-      component.data.should.be.empty();
+      component.logo.should.be.empty();
       let nativeElement = getChildDebugElement(fixture.debugElement, 'api-logo').nativeElement;
       let imgElement = nativeElement.querySelector('img');
       expect(imgElement).toBeNull();
@@ -49,8 +49,8 @@ describe('Redoc components', () => {
     });
 
     it('should load values from spec and use transparent bgColor by default', () => {
-      component.data.imgUrl.should.endWith('petstore-logo.png');
-      component.data.bgColor.should.be.equal('transparent');
+      component.logo.imgUrl.should.endWith('petstore-logo.png');
+      component.logo.bgColor.should.be.equal('transparent');
     });
   });
 });

@@ -38,8 +38,10 @@ System.config({
     "remarkable": "npm:remarkable@1.6.2",
     "rxjs": "npm:rxjs@5.0.0-beta.6",
     "scrollparent": "npm:scrollparent@0.1.0",
+    "slugify": "npm:slugify@0.1.1",
     "stream-http": "npm:stream-http@2.3.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.2",
+    "url": "github:jspm/nodelibs-url@0.1.0",
     "zone.js": "npm:zone.js@0.6.12",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"

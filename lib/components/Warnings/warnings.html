@@ -1,0 +1,4 @@
+<div *ngIf="shown">
+  <a class="warnings-close" (click)="close()">×</a>
+  <div class="message" *ngFor="let message of warnings">{{message}}</div>
+</div>

@@ -1,16 +1,18 @@
 'use strict';
 
 import { ElementRef, ChangeDetectorRef } from '@angular/core';
+
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { RedocComponent, BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 
+import { MenuCategory } from '../../services/schema-helper.service';
+
 @RedocComponent({
   selector: 'side-menu',
   templateUrl: './side-menu.html',
-  providers: [ScrollService, MenuService, Hash],
   styleUrls: ['./side-menu.css'],
   detect: true,
   onPushOnly: false,
@@ -27,14 +29,16 @@ import { ScrollService, Hash, MenuService, OptionsService } from '../../services
   ],
 })
 export class SideMenu extends BaseComponent {
-  $element: any;
-  $mobileNav: any;
-  $resourcesNav: any;
-  $scrollParent: any;
   activeCatCaption: string;
   activeItemCaption: string;
-  options: any;
-  data: any;
+  categories: Array<MenuCategory>;
+
+  private options: any;
+  private $element: any;
+  private $mobileNav: any;
+  private $resourcesNav: any;
+  private $scrollParent: any;
+
   constructor(specMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
@@ -66,6 +70,8 @@ export class SideMenu extends BaseComponent {
   }
 
   init() {
+    this.categories = this.menuService.categories;
+
     this.$mobileNav = this.dom.querySelector(this.$element, '.mobile-nav');
     this.$resourcesNav = this.dom.querySelector(this.$element, '#resources-nav');
 
@@ -76,11 +82,6 @@ export class SideMenu extends BaseComponent {
     };
   }
 
-  prepareModel() {
-    this.data = {};
-    this.data.menu = this.menuService.categories;
-  }
-
   mobileMode() {
     return this.$mobileNav.clientHeight > 0;
   }
@@ -88,7 +89,7 @@ export class SideMenu extends BaseComponent {
   toggleMobileNav() {
     let dom = this.dom;
     let $overflowParent = (this.options.$scrollParent === global) ? dom.defaultDoc().body
-      : this.$scrollParent.$scrollParent;
+      : this.$scrollParent;
     if (dom.hasStyle(this.$resourcesNav, 'height')) {
       dom.removeStyle(this.$resourcesNav, 'height');
       dom.removeStyle($overflowParent, 'overflow-y');

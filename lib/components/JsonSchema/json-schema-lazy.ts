@@ -23,9 +23,11 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() nestOdd: boolean;
   @Input() childFor: string;
   @Input() isArray: boolean;
+  disableLazy: boolean = false;
   loaded: boolean = false;
   constructor(private specMgr:SpecManager, private location:ViewContainerRef, private elementRef:ElementRef,
     private resolver:ComponentResolver, private optionsService:OptionsService, private _renderer: Renderer) {
+      this.disableLazy = this.optionsService.options.disableLazySchemas;
   }
 
   normalizePointer() {
@@ -67,7 +69,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
 
           // skip caching view with tabs inside (discriminator)
           // as it needs attached controller
-          if (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas) {
+          if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
             this._loadAfterSelf();
             return;
           }
@@ -85,11 +87,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.optionsService.options.disableLazySchemas) {
-      this._loadAfterSelf();
-      return;
-    }
-    if (!this.auto) return;
+    if (!this.auto && !this.disableLazy) return;
     this.loadCached();
   }
 

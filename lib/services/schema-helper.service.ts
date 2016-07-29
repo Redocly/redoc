@@ -1,14 +1,44 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
-import {methods as swaggerMethods} from  '../utils/swagger-defs';
+import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
+import { WarningsService } from './warnings.service';
+import slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
   childFor: string;
   skipReadOnly?: boolean;
 }
 
+export interface MenuMethod {
+  active: boolean;
+  summary: string;
+  tag: string;
+}
+
+export interface MenuCategory {
+  name: string;
+  id: string;
+
+  active?: boolean;
+  methods?: Array<MenuMethod>;
+  description?: string;
+  empty?: string;
+  virtual?: boolean;
+}
+
 const injectors = {
+  notype: {
+    check: (propertySchema) => !propertySchema.type,
+    inject: (injectTo, propertySchema, pointer) => {
+      injectTo.type = SchemaHelper.detectType(propertySchema);
+      propertySchema.type = injectTo.type;
+      if (injectTo.type) {
+        let message = `No "type" specified at "${pointer}". Automatically detected: "${injectTo.type}"`;
+        WarningsService.warn(message);
+      }
+    }
+  },
   general: {
     check: () => true,
     inject: (injectTo, propertySchema, pointer) => {
@@ -225,17 +255,36 @@ export class SchemaHelper {
       (method.description && method.description.substring(0, 50)) || '<no description>';
   }
 
-  static buildMenuTree(schema) {
+  static detectType(schema) {
+    let keywords = Object.keys(keywordTypes);
+    for (var i=0; i < keywords.length; i++) {
+      let keyword = keywords[i];
+      let type = keywordTypes[keyword];
+      if (schema[keyword]) {
+        return type;
+      }
+    }
+  }
+
+  static buildMenuTree(schema):Array<MenuCategory> {
     let tag2MethodMapping = {};
 
-    let definedTags = schema.tags || [];
-    // add tags into map to preserve order
-    for (let tag of definedTags) {
-      tag2MethodMapping[tag.name] = {
-        'description': tag.description,
-        'name': tag.name,
-        'x-traitTag': tag['x-traitTag'],
-        'methods': []
+    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
+      let id = 'section/' + slugify(header);
+      tag2MethodMapping[id] = {
+        name: header, id: id, virtual: true, methods: []
+      };
+    }
+
+    for (let tag of schema.tags || []) {
+      let id = 'tag/' + slugify(tag.name);
+      tag2MethodMapping[id] = {
+        name: tag.name,
+        id: id,
+        description: tag.description,
+        headless: tag.name === '',
+        empty: !!tag['x-traitTag'],
+        methods: [],
       };
     }
 
@@ -252,15 +301,17 @@ export class SchemaHelper {
         let methodPointer = JsonPointer.compile(['paths', path, method]);
         let methodSummary = SchemaHelper.methodSummary(methodInfo);
         for (let tag of tags) {
-          let tagDetails = tag2MethodMapping[tag];
-          if (!tag2MethodMapping[tag]) {
+          let id = 'tag/' + slugify(tag);
+          let tagDetails = tag2MethodMapping[id];
+          if (!tagDetails) {
             tagDetails = {
               name: tag,
-              empty: tag === ''
+              id: id,
+              headless: tag === ''
             };
-            tag2MethodMapping[tag] = tagDetails;
+            tag2MethodMapping[id] = tagDetails;
           }
-          if (tagDetails['x-traitTag']) continue;
+          if (tagDetails.empty) continue;
           if (!tagDetails.methods) tagDetails.methods = [];
           tagDetails.methods.push({
             pointer: methodPointer,

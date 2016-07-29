@@ -15,26 +15,21 @@ import { SchemaHelper } from '../../services/index';
   detect: true
 })
 export class MethodsList extends BaseComponent {
-  data:any;
+  tags:Array<any> = [];
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
 
-  prepareModel() {
-    this.data = {};
-    // follow SwaggerUI behavior for cases when one method has more than one tag:
-    // duplicate methods
-
+  init() {
     let tags = SchemaHelper.buildMenuTree(this.specMgr.schema);
-    tags.forEach(tagInfo => {
+    this.tags = tags.filter(tagInfo => !tagInfo.virtual);
+    this.tags.forEach(tagInfo => {
       // inject tag name into method info
       tagInfo.methods = tagInfo.methods || [];
       tagInfo.methods.forEach(method => {
-        method.tag = tagInfo.name;
+        method.tag = tagInfo.id;
       });
     });
-    this.data.tags = tags;
-    // TODO: check $ref field
   }
 
   trackByPointer(idx, el) {

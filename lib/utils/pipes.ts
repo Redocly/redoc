@@ -5,24 +5,11 @@ import { DomSanitizationService } from '@angular/platform-browser';
 import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
 import { BaseException } from '@angular/core/src/facade/exceptions';
 import JsonPointer from './JsonPointer';
+import { renderMd } from './helpers';
 
 declare var Prism: any;
 
-import Remarkable from 'remarkable';
 
-const md = new Remarkable({
-  html: true,
-  linkify: true,
-  breaks: false,
-  typographer: false,
-  highlight: (str, lang) => {
-    if (lang === 'json') lang = 'js';
-    let grammar = Prism.languages[lang];
-    //fallback to clike
-    if (!grammar) return str;
-    return Prism.highlight(str, grammar);
-  }
-});
 
 class InvalidPipeArgumentException extends BaseException {
   constructor(type, value) {
@@ -73,8 +60,21 @@ export class MarkedPipe implements PipeTransform {
     }
 
     return this.sanitizer.bypassSecurityTrustHtml(
-      `<span class="redoc-markdown-block">${md.render(value)}</span>`
+      `<span class="redoc-markdown-block">${renderMd(value)}</span>`
     );
+  }
+}
+
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizationService) {}
+  transform(value) {
+    if (isBlank(value)) return value;
+    if (!isString(value)) {
+      throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
+    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(value);
   }
 }
 

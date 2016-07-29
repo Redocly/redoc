@@ -2,6 +2,7 @@
 
 import { getChildDebugElement } from '../../../tests/helpers';
 import { Component } from '@angular/core';
+import { OptionsService } from '../../services/index';
 
 import {
   inject,
@@ -17,8 +18,14 @@ describe('Redoc components', () => {
     let builder;
     let component;
     let fixture;
+    let opts;
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
+    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService], (tcb, specMgr, _opts) => {
+      opts = _opts;
+      opts.options = {
+        scrollYOffset: () => 0,
+        $scrollParent: window
+      };
       builder = tcb;
       return specMgr.load('/tests/schemas/api-info-test.json');
     })));
@@ -32,8 +39,8 @@ describe('Redoc components', () => {
 
     it('should init component data', () => {
       expect(component).not.toBeNull();
-      expect(component.data).not.toBeNull();
-      component.data.title.should.be.equal('Swagger Petstore');
+      expect(component.info).not.toBeNull();
+      component.info.title.should.be.equal('Swagger Petstore');
     });
 
     it('should render api name and version', () => {

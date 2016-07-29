@@ -1,10 +1,10 @@
 <div class="snippet">
   <!-- in case sample is not available for some reason -->
-  <pre *ngIf="data.sample == undefined"> Sample unavailable </pre>
+  <pre *ngIf="sample == undefined"> Sample unavailable </pre>
   <div class="action-buttons">
     <span> <a *ngIf="enableButtons" (click)="collapseAll()">Collapse all</a> </span>
     <span> <a *ngIf="enableButtons" (click)="expandAll()">Expand all</a> </span>
-    <span copy-button [copyText]="data.sample | json" class="hint--top hint--inversed"> <a>Copy</a> </span>
+    <span copy-button [copyText]="sample | json" class="hint--top hint--inversed"> <a>Copy</a> </span>
   </div>
-  <pre [innerHtml]="data.sample | jsonFormatter"></pre>
+  <pre [innerHtml]="sample | jsonFormatter"></pre>
 </div>
