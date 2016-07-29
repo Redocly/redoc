@@ -4,14 +4,20 @@
     <title>ReDoc</title>
     <link rel="stylesheet" href="main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.vaadin.com/vaadin-core-elements/latest/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="https://cdn.vaadin.com/vaadin-core-elements/master/vaadin-combo-box/vaadin-combo-box-light.html">
   </head>
   <body>
     <nav>
       <header> ReDoc </header>
-      <form id="schema-url-form">
-        <input id="schema-url-input" value='http://rebilly.github.io/SwaggerTemplateRepo/swagger.yaml'>
-        <button type="submit"> Explore </button>
-      </form>
+      <template is="dom-bind" id="specs">
+        <form id="schema-url-form" is="iron-form">
+          <vaadin-combo-box-light id="spec-input" items="[[specs]]" attr-for-value="value" allow-custom-value>
+            <input placeholder="URL to a spec to try" id="schema-url-input" type="text" is="iron-input" value="https://rebilly.github.io/RebillyAPI/swagger.json">
+          </vaadin-combo-box-light>
+          <button type="submit"> Explore </button>
+        </form>
+      </template>
       <iframe src="https://ghbtns.com/github-btn.html?user=Rebilly&repo=ReDoc&type=star&count=true&size=large"
       frameborder="0" scrolling="0" width="130px" height="30px"></iframe>
     </nav>
