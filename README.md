@@ -13,7 +13,7 @@
 
 ## Roadmap
   - [ ] docs pre-rendering (performance and SEO)
-  - [ ] support for styling
+  - [ ] ability to simple customization
   - [ ] built-in API Console
 
 ## Releases
@@ -24,6 +24,7 @@ We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**
 ## Deployment
 
 ### TL;DR
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,7 @@ We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**
   </body>
 </html>
 ```
-That's it!
+That's all folks!
 
 ### 1. Install ReDoc (skip this step for CDN)
 Install using [bower](bower.io):
