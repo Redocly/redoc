@@ -97,7 +97,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
   * **number**: A fixed number of pixels to be used as offset;
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
   * **function**: A getter function. Must return a number representing the offset (in pixels);
-* `suppress-warnings` - if set, warnings are not rendered at the top of page (they still are logged to the console).
+* `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
@@ -105,12 +105,13 @@ Instead of adding `spec-url` attribute to the `<redoc>` element you can initiali
 Redoc.init(specUrl, options)
 ```
 
-`options` is javascript object with camel-cased version of options names as the keys. For example:
+`options` is javascript object with camel-cased version of options names as the keys, e.g.:
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
   scrollYOffset: 50
 })
 ```
+
 -----------
 ## Running locally
 1. Clone repository
