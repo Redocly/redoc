@@ -43,7 +43,7 @@ export class SpecManager {
   /* calculate common used values */
   init() {
     let protocol;
-    const urlParts = urlParse(this._url);
+    let urlParts = urlParse(this._url);
     if (!this._schema.schemes || !this._schema.schemes.length) {
       protocol = this._url ? urlParts.protocol : 'http';
     } else {
