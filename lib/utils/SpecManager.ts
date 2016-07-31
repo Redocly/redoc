@@ -43,15 +43,17 @@ export class SpecManager {
   /* calculate common used values */
   init() {
     let protocol;
+    const urlParts = urlParse(this._url);
     if (!this._schema.schemes || !this._schema.schemes.length) {
-      protocol = this._url ? urlParse(this._url).protocol : 'http';
+      protocol = this._url ? urlParts.protocol : 'http';
     } else {
       protocol = this._schema.schemes[0];
       if (protocol === 'http' && this._schema.schemes.indexOf('https') >= 0) {
         protocol = 'https';
       }
     }
-    this.apiUrl = protocol + '://' + this._schema.host + this._schema.basePath;
+    let host = (!this._schema.host && urlParts.host) ? urlParts.host : this._schema.host;
+    this.apiUrl = protocol + '://' + host + this._schema.basePath;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }
