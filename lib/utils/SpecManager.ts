@@ -42,16 +42,21 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
+    let urlParts = this._url ? urlParse(this._url) : {};
+    let schemes = this._schema.schemes;
     let protocol;
-    if (!this._schema.schemes || !this._schema.schemes.length) {
-      protocol = this._url ? urlParse(this._url).protocol : 'http';
+    if (!schemes || !schemes.length) {
+      // url parser incudles ':' in protocol so remove it
+      protocol = urlParts.protocol ? urlParts.protocol.slice(0, -1) : 'http';
     } else {
-      protocol = this._schema.schemes[0];
-      if (protocol === 'http' && this._schema.schemes.indexOf('https') >= 0) {
+      protocol = schemes[0];
+      if (protocol === 'http' && schemes.indexOf('https') >= 0) {
         protocol = 'https';
       }
     }
-    this.apiUrl = protocol + '://' + this._schema.host + this._schema.basePath;
+
+    let host = this._schema.host || urlParts.host;
+    this.apiUrl = protocol + '://' + host + this._schema.basePath;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }
