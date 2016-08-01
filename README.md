@@ -11,6 +11,15 @@
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
+## Features
+- Extremely easy deployment
+- It’s free and open-source project under MIT license
+- The widest OpenAPI features support (yes, it supports even discriminator)
+- Neat documentation for nested objects
+- Code samples support (via vendor extension)
+- Responsive three-panel design with menu/scrolling synchronization
+- Integrate API introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
+
 ## Roadmap
   - [ ] docs pre-rendering (performance and SEO)
   - [ ] ability to simple customization
