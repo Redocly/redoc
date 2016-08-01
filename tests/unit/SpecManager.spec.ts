@@ -59,6 +59,20 @@ describe('Utils', () => {
         specMgr.apiUrl.should.be.equal('https://petstore.swagger.io/v2');
       });
 
+      it('should substitute api scheme when spec schemes are undefined', () => {
+        specMgr._schema.schemes = undefined;
+        specMgr._url = 'https://petstore.swagger.io/v2';
+        specMgr.init();
+        specMgr.apiUrl.should.be.equal('https://petstore.swagger.io/v2');
+      });
+
+      it('should substitute api host when spec host is undefined', () => {
+        specMgr._schema.host = undefined;
+        specMgr._url = 'https://petstore.swagger.io/v2';
+        specMgr.init();
+        specMgr.apiUrl.should.be.equal('https://petstore.swagger.io/v2');
+      });
+
       describe('byPointer method', () => {
         it('should return correct schema part', ()=> {
           let part = specMgr.byPointer('/tags/3');
