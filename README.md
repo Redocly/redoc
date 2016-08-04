@@ -99,7 +99,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
 
-### Options
+### `<redoc>` tag attributes
 * `spec-url` - relative or absolute url to your spec file;
 * `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scroll-y-offset` can be specified in various ways:
@@ -114,7 +114,7 @@ Instead of adding `spec-url` attribute to the `<redoc>` element you can initiali
 Redoc.init(specUrl, options)
 ```
 
-`options` is javascript object with camel-cased version of options names as the keys, e.g.:
+`options` is javascript object with camel-cased version of `<redoc>` tag attribute names as the keys, e.g.:
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
   scrollYOffset: 50
