@@ -1,92 +1,107 @@
-<span *ngIf="schema.isFile" class="param-wrap">
-  <span class="param-type-file">file</span>
-  <div *ngIf="schema._produces && !isRequestSchema" class="file produces">
-    <ul>
-      <li *ngFor="let type of schema._produces">{{type}}</li>
-    </ul>
-  </div>
-  <div *ngIf="schema._consumes && isRequestSchema" class="file consume">
-    <ul>
-      <li *ngFor="let type of schema._consumes">{{type}}</li>
-    </ul>
-  </div>
-</span>
-<span *ngIf="schema.isTrivial && !schema.isFile" class="param-wrap">
-  <span class="param-type param-type-trivial {{schema.type}}"
-    [ngClass]="{'with-hint': schema._displayTypeHint}"
-    title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
-    <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
-  </span>
-  <div *ngIf="schema.enum" class="param-enum">
-    <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
-  </div>
-</span>
-<div *ngIf="schema._isTuple" class="params-wrap params-array array-tuple">
-  <template ngFor [ngForOf]="schema.items" let-item="$implicit" let-idx="index" [ngForTrackBy]="trackByIdx">
-    <div class="tuple-item">
-      <span class="tuple-item-index"> [{{idx}}]: </span>
-      <json-schema class="nested-schema" [pointer]="item._pointer" [isArray]='item._isArray'
-      [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
-      </json-schema>
+<ng-container [ngSwitch]="schema._widgetType">
+  <template ngSwitchCase="file">
+    <span class="param-wrap">
+      <span class="param-type-file">file</span>
+      <div *ngIf="schema._produces && !isRequestSchema" class="file produces">
+        <ul>
+          <li *ngFor="let type of schema._produces">{{type}}</li>
+        </ul>
+      </div>
+      <div *ngIf="schema._consumes && isRequestSchema" class="file consume">
+        <ul>
+          <li *ngFor="let type of schema._consumes">{{type}}</li>
+        </ul>
+      </div>
+    </span>
+  </template>
+  <template ngSwitchCase="trivial">
+    <span class="param-wrap">
+      <span class="param-type param-type-trivial {{schema.type}}"
+        [ngClass]="{'with-hint': schema._displayTypeHint}"
+        title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
+        <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
+      </span>
+      <div *ngIf="schema.enum" class="param-enum">
+        <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+      </div>
+    </span>
+  </template>
+  <template ngSwitchCase="tuple">
+    <div class="params-wrap params-array array-tuple">
+      <template ngFor [ngForOf]="schema.items" let-item="$implicit" let-idx="index" [ngForTrackBy]="trackByIdx">
+        <div class="tuple-item">
+          <span class="tuple-item-index"> [{{idx}}]: </span>
+          <json-schema class="nested-schema" [pointer]="item._pointer"
+          [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+          </json-schema>
+        </div>
+      </template>
     </div>
   </template>
-</div>
-<table *ngIf="!schema.isTrivial && !schema.isTuple" class="params-wrap" [ngClass]="{'params-array': _isArray}">
-  <!-- <caption> {{_displayType}} </caption> -->
-  <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByIdx">
-    <tr class="param" [ngClass]="{'last': last,
-        'discriminator': prop.isDiscriminator && !activeDescendant.empty,
-        'complex': prop._pointer,
-        'additional': prop._additional,
-        'expanded': subSchema.visible
-      }">
-      <td class="param-name">
-        <span class="param-name-wrap" (click)="subSchema.toggle()">
-          <span class="param-name-content" >{{prop._name}}</span>
-          <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
-            <polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
-          </svg>
-        </span>
-      </td>
-      <td class="param-info">
-        <div>
-          <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint, 'tuple': prop._isTuple}"
-          title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}
-          <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
-          </span>
-          <span *ngIf="prop._required" class="param-required">Required</span>
-          <div *ngIf="prop.default">Default: {{prop.default | json}}</div>
-          <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
-            <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
-          </div>
-        </div>
-        <div class="param-description" [innerHtml]="prop.description | marked"></div>
-        <div class="discriminator-info" *ngIf="prop.isDiscriminator">
-          <span>This field value determines the exact schema:</span>
-          <drop-down (change)="selectDescendant($event)">
-            <option *ngFor="let descendant of schema._descendants; let i=index"
-            [value]="i">{{descendant.name}}</option>
-          </drop-down>
-        </div>
-      </td>
-    </tr>
-    <tr class="param-schema" [ngClass]="{'last': last}" [hidden]="!prop._pointer">
-      <td colspan="2">
-        <zippy #subSchema title="Expand" [headless]="true" (open)="lazySchema.load()" [visible]="autoExpand">
-          <json-schema-lazy #lazySchema [auto]="autoExpand" class="nested-schema" [pointer]="prop._pointer" [isArray]='prop._isArray'
-          [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
-          </json-schema-lazy>
-        </zippy>
-      </td>
-    </tr>
+  <template ngSwitchCase="array">
+    <json-schema class="nested-schema" [pointer]="schema._pointer" [isArray]='true'
+    [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>
   </template>
-  <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap" [ngClass]="{empty:activeDescendant.empty}">
-    <td colspan="2">
-      <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: descendant.empty}">
-        <json-schema class="discriminator-part" *ngIf="!descendant.empty" [childFor]="pointer" [nestOdd]="nestOdd"
-        pointer="{{descendant.$ref}}" [final]="descendant.final" [isRequestSchema]="isRequestSchema">
-        </json-schema>
-      </div>
-    </td>
-  </tr>
-</table>
+  <template ngSwitchCase="object">
+    <table class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
+      <!-- <caption> {{_displayType}} </caption> -->
+      <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByIdx">
+        <tr class="param" [ngClass]="{'last': last,
+            'discriminator': prop.isDiscriminator && !activeDescendant.empty,
+            'complex': prop._pointer,
+            'additional': prop._additional,
+            'expanded': subSchema.visible
+          }">
+          <td class="param-name">
+            <span class="param-name-wrap" (click)="subSchema.toggle()">
+              <span class="param-name-content" >{{prop._name}}</span>
+              <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
+                <polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
+              </svg>
+            </span>
+          </td>
+          <td class="param-info">
+            <div>
+              <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint, 'tuple': prop._isTuple}"
+              title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}
+              <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
+              </span>
+              <span *ngIf="prop._required" class="param-required">Required</span>
+              <div *ngIf="prop.default">Default: {{prop.default | json}}</div>
+              <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
+                <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+              </div>
+            </div>
+            <div class="param-description" [innerHtml]="prop.description | marked"></div>
+            <div class="discriminator-info" *ngIf="prop.isDiscriminator">
+              <span>This field value determines the exact schema:</span>
+              <drop-down (change)="selectDescendant($event)">
+                <option *ngFor="let descendant of schema._descendants; let i=index"
+                [value]="i">{{descendant.name}}</option>
+              </drop-down>
+            </div>
+          </td>
+        </tr>
+        <tr class="param-schema" [ngClass]="{'last': last}" [hidden]="!prop._pointer">
+          <td colspan="2">
+            <zippy #subSchema title="Expand" [headless]="true" (open)="lazySchema.load()" [visible]="autoExpand">
+              <json-schema-lazy #lazySchema [auto]="autoExpand" class="nested-schema" [pointer]="prop._pointer"
+              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+              </json-schema-lazy>
+            </zippy>
+          </td>
+        </tr>
+      </template>
+      <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap" [ngClass]="{empty:activeDescendant.empty}">
+        <td colspan="2">
+          <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: descendant.empty}">
+            <json-schema class="discriminator-part" *ngIf="!descendant.empty" [childFor]="pointer" [nestOdd]="nestOdd"
+            pointer="{{descendant.$ref}}" [final]="descendant.final" [isRequestSchema]="isRequestSchema">
+            </json-schema>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </template>
+
+</ng-container>

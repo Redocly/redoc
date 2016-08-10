@@ -69,6 +69,7 @@ const injectors = {
         || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
 
       SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+      injectTo._widgetType = 'array';
     }
   },
   tuple: {
@@ -83,7 +84,7 @@ const injectors = {
         let itemSchema = propertySchema.items[i];
         itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
       }
-
+      injectTo._widgetType = 'tuple';
       // SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
     }
   },
@@ -94,14 +95,16 @@ const injectors = {
     inject: (injectTo, propertySchema = injectTo) => {
       let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
       injectTo._displayType = propertySchema.title || baseName || 'object';
+      injectTo._widgetType = 'object';
     }
   },
   noType: {
     check: (propertySchema) => !propertySchema.type,
     inject: (injectTo) => {
-      injectTo._displayType = '< * >';
+      injectTo._displayType = '< anything >';
       injectTo._displayTypeHint = 'This field may contain data of any type';
       injectTo.isTrivial = true;
+      injectTo._widgetType = 'trivial';
     }
   },
   simpleType: {
@@ -119,6 +122,7 @@ const injectors = {
         injectTo._displayType = propertySchema.title ?
           `${propertySchema.title} (${propertySchema.type})` : propertySchema.type;
       }
+      injectTo._widgetType = 'trivial';
     }
   },
   integer: {
@@ -176,7 +180,7 @@ const injectors = {
       let root = SpecManager.instance().schema;
       injectTo._produces = parentParam && parentParam.produces || root.produces;
       injectTo._consumes = parentParam && parentParam.consumes || root.consumes;
-
+      injectTo._widgetType = 'file';
     }
   }
 };
