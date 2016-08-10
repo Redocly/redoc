@@ -59,9 +59,9 @@ const injectors = {
       injectTo.discriminator = propertySchema.discriminator;
     }
   },
-  array: {
+  simpleArray: {
     check: (propertySchema) => {
-      return propertySchema.type === 'array';
+      return propertySchema.type === 'array' && !Array.isArray(propertySchema.items);
     },
     inject: (injectTo, propertySchema = injectTo, propPointer) => {
       injectTo._isArray = true;
@@ -69,6 +69,22 @@ const injectors = {
         || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
 
       SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+    }
+  },
+  tuple: {
+    check: (propertySchema) => {
+      return propertySchema.type === 'array' && Array.isArray(propertySchema.items);
+    },
+    inject: (injectTo, propertySchema = injectTo, propPointer) => {
+      injectTo._isTuple = true;
+      injectTo._displayType = '';
+      let itemsPtr = JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
+      for (let i=0; i < propertySchema.items.length; i++) {
+        let itemSchema = propertySchema.items[i];
+        itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
+      }
+
+      // SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
     }
   },
   object: {
@@ -240,7 +256,7 @@ export class SchemaHelper {
 
   static unwrapArray(schema, pointer) {
     var res = schema;
-    if (schema && schema.type === 'array') {
+    if (schema && schema.type === 'array' && !Array.isArray(schema.items)) {
       let ptr = schema.items._pointer || JsonPointer.join(pointer, ['items']);
       res = schema.items;
       res._isArray = true;

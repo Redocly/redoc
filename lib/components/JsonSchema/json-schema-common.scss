@@ -77,6 +77,12 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   font-weight: $base-font-weight;
 }
 
+.param-type.tuple:before {
+  content: "Tuple";
+  color: $black;
+  font-weight: $base-font-weight;
+}
+
 .param-type.with-hint {
   display: inline-block;
   margin-bottom: 0.4em;
@@ -86,7 +92,6 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 }
 
 .param-type-trivial {
-  margin: 10px 10px 0;
   display: inline-block;
 }
 
