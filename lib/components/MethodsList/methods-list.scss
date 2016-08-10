@@ -6,7 +6,7 @@
   background-color: white;
   width: 60%;
 
-  @media (max-width: 1100px) {
+  @media (max-width: $right-panel-squash-breakpoint) {
     width: 100%;
   }
 }

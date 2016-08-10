@@ -94,7 +94,7 @@ api-logo {
 }
 
 
-@media (max-width: 1100px) {
+@media (max-width: $right-panel-squash-breakpoint) {
   #api-content:before {
     display: none;
   }

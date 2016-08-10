@@ -8,6 +8,10 @@
   width: 60%;
   padding: 40px;
   box-sizing: border-box;
+
+  @media (max-width: $right-panel-squash-breakpoint) {
+    width: 100%;
+  }
 }
 
 a.openapi-button {
