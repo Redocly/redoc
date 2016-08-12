@@ -142,7 +142,7 @@ responses-samples {
   cursor: pointer;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: $right-panel-squash-breakpoint) {
   .methods:before {
     display: none;
   }

@@ -22,7 +22,6 @@ export class JsonSchema extends BaseComponent {
   _hasSubSchemas: boolean = false;
   properties: any;
   _isArray: boolean;
-  @Input() isArray: boolean;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
   @Input() childFor: string;
@@ -89,7 +88,6 @@ export class JsonSchema extends BaseComponent {
     }
 
     this.properties = this.schema._properties;
-    this._isArray = this.isArray || this.schema._isArray;
     if (this.isRequestSchema) {
       this.properties = this.properties && this.properties.filter(prop => !prop.readOnly);
     }

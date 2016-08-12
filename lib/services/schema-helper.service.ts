@@ -49,6 +49,10 @@ const injectors = {
         injectTo.enum = propertySchema.enum.map((value) => {
           return {val: value, type: typeof value};
         });
+        if (propertySchema.enum && propertySchema.enum.length === 1) {
+          injectTo._enumItem = propertySchema.enum[0];
+          injectTo.enum = null;
+        }
       }
     }
   },
@@ -59,9 +63,9 @@ const injectors = {
       injectTo.discriminator = propertySchema.discriminator;
     }
   },
-  array: {
+  simpleArray: {
     check: (propertySchema) => {
-      return propertySchema.type === 'array';
+      return propertySchema.type === 'array' && !Array.isArray(propertySchema.items);
     },
     inject: (injectTo, propertySchema = injectTo, propPointer) => {
       injectTo._isArray = true;
@@ -69,6 +73,23 @@ const injectors = {
         || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
 
       SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+      injectTo._widgetType = 'array';
+    }
+  },
+  tuple: {
+    check: (propertySchema) => {
+      return propertySchema.type === 'array' && Array.isArray(propertySchema.items);
+    },
+    inject: (injectTo, propertySchema = injectTo, propPointer) => {
+      injectTo._isTuple = true;
+      injectTo._displayType = '';
+      let itemsPtr = JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
+      for (let i=0; i < propertySchema.items.length; i++) {
+        let itemSchema = propertySchema.items[i];
+        itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
+      }
+      injectTo._widgetType = 'tuple';
+      // SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
     }
   },
   object: {
@@ -78,14 +99,16 @@ const injectors = {
     inject: (injectTo, propertySchema = injectTo) => {
       let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
       injectTo._displayType = propertySchema.title || baseName || 'object';
+      injectTo._widgetType = 'object';
     }
   },
   noType: {
     check: (propertySchema) => !propertySchema.type,
     inject: (injectTo) => {
-      injectTo._displayType = '< * >';
+      injectTo._displayType = '< anything >';
       injectTo._displayTypeHint = 'This field may contain data of any type';
       injectTo.isTrivial = true;
+      injectTo._widgetType = 'trivial';
     }
   },
   simpleType: {
@@ -103,6 +126,7 @@ const injectors = {
         injectTo._displayType = propertySchema.title ?
           `${propertySchema.title} (${propertySchema.type})` : propertySchema.type;
       }
+      injectTo._widgetType = 'trivial';
     }
   },
   integer: {
@@ -160,7 +184,7 @@ const injectors = {
       let root = SpecManager.instance().schema;
       injectTo._produces = parentParam && parentParam.produces || root.produces;
       injectTo._consumes = parentParam && parentParam.consumes || root.consumes;
-
+      injectTo._widgetType = 'file';
     }
   }
 };
@@ -240,7 +264,7 @@ export class SchemaHelper {
 
   static unwrapArray(schema, pointer) {
     var res = schema;
-    if (schema && schema.type === 'array') {
+    if (schema && schema.type === 'array' && !Array.isArray(schema.items)) {
       let ptr = schema.items._pointer || JsonPointer.join(pointer, ['items']);
       res = schema.items;
       res._isArray = true;
