@@ -44,13 +44,13 @@ describe('Redoc components', () => {
       component.schema.isTrivial.should.be.true();
     });
 
-    it('should use < * > notation for prop without type', () => {
+    it('should use < anything > notation for prop without type', () => {
       component.pointer = '#';
       (<any>specMgr)._schema = {type: 'object', properties: {
         test: {}
       }};
       fixture.detectChanges();
-      component.schema._properties[0]._displayType.should.be.equal('< * >');
+      component.schema._properties[0]._displayType.should.be.equal('< anything >');
     });
   });
 });

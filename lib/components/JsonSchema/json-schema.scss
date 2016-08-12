@@ -223,3 +223,12 @@ li:before {
     }
   }
 }
+
+.param-enum-value {
+  padding: 2px;
+  background-color: #e6ebf6;
+
+  &:before {
+    content: " = ";
+  }
+}
