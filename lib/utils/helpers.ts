@@ -5,7 +5,7 @@ declare var Prism: any;
 const md = new Remarkable({
   html: true,
   linkify: true,
-  breaks: true,
+  breaks: false,
   typographer: false,
   highlight: (str, lang) => {
     if (lang === 'json') lang = 'js';
