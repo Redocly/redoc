@@ -1,3 +1,13 @@
+# 1.1.2 (2016-08-21)
+### Bug fixes
+* Revert "Fix markdown newlines to be GFM" (#82)
+* Move license and contact info above description
+
+# 1.1.1 (2016-08-21)
+### Bug fixes
+* Fix markdown newlines to be GFM (#82)
+* Fix markdown code blocks in api description
+
 # 1.1.0 (2016-08-12)
 ### Bug fixes
 
