@@ -109,6 +109,10 @@ nav iframe {
   top: 0;
 }
 
+header a {
+  color: inherit;
+  text-decoration: none;
+}
 @media (min-width: 1000px) {
     nav header {
         position: absolute;
