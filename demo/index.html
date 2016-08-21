@@ -9,10 +9,10 @@
   </head>
   <body>
     <nav>
-      <header> ReDoc </header>
+      <header> <a href="/"> ReDoc </a> </header>
       <template is="dom-bind" id="specs">
         <form id="schema-url-form" is="iron-form">
-          <vaadin-combo-box-light id="spec-input" items="[[specs]]" attr-for-value="value" allow-custom-value>
+          <vaadin-combo-box-light id="spec-input" items="[[specs]]" allow-custom-value>
             <input placeholder="URL to a spec to try" id="schema-url-input" type="text" is="iron-input" value="https://rebilly.github.io/RebillyAPI/swagger.json">
           </vaadin-combo-box-light>
           <button type="submit"> Explore </button>

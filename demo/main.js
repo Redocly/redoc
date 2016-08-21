@@ -48,10 +48,27 @@
       'https://api.apis.guru/v2/specs/data2crm.com/1/swagger.yaml',
       'https://api.apis.guru/v2/specs/graphhopper.com/1.0/swagger.yaml'
     ];
+
     var $specInput = document.getElementById('spec-input');
-    $specInput.addEventListener('value-changed', function(e) {
-      schemaUrlInput.value = e.detail.value;
+
+    // $specInput.addEventListener('value-changed', function(e) {
+    //   schemaUrlInput.value = e.detail.value;
+    //   location.search = updateQueryStringParameter(location.search, 'url', schemaUrlInput.value);
+    // });
+
+    function selectItem() {
+      let value = this.innerText.trim();
+      schemaUrlInput.value = value;
       location.search = updateQueryStringParameter(location.search, 'url', schemaUrlInput.value);
+    }
+
+    // for some reason events are not triggered so have to dirty fix this
+    $specInput.addEventListener('click', function(event) {
+      let $elems = document.querySelectorAll('.item.vaadin-combo-box-overlay');
+      $elems.forEach(function($el) {
+        $el.addEventListener('mousedown', selectItem);
+        $el.addEventListener('mousedown', selectItem);
+      });
     });
   });
   //window.redocDebugMode = true;
