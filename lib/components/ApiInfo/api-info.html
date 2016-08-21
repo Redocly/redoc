@@ -4,7 +4,7 @@
     Download OpenAPI (fka Swagger) specification:
     <a class="openapi-button" target="_blank" attr.href='{{specUrl}}'> Download </a>
   </p>
-  <p *ngIf="info.description" [innerHtml]="info['x-redoc-html-description'] | safe"> </p>
+  <p *ngIf="info.description" class="redoc-markdown-block" [innerHtml]="info['x-redoc-html-description'] | safe"> </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->
     <span *ngIf="info.contact"> Contact:
