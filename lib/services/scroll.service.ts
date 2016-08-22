@@ -2,6 +2,7 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { OptionsService } from './options.service';
+import { throttle } from '../utils/helpers';
 
 export const INVIEW_POSITION = {
   ABOVE : 1,
@@ -60,7 +61,8 @@ export class ScrollService {
 
   bind() {
     this.prevOffsetY = this.scrollY();
-    this._cancel = this.dom.onAndCancel(this.$scrollParent, 'scroll', (evt) => { this.scrollHandler(evt); });
+    this._cancel = this.dom.onAndCancel(this.$scrollParent, 'scroll',
+      throttle((evt) => { this.scrollHandler(evt); }, 100, this));
   }
 
   unbind() {
