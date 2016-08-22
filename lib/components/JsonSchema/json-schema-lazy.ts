@@ -1,8 +1,7 @@
 'use strict';
 
 import { Component, ElementRef, ViewContainerRef, OnDestroy, Input,
-  AfterViewInit, ComponentResolver, Renderer } from '@angular/core';
-import { CORE_DIRECTIVES } from '@angular/common';
+  AfterViewInit, ComponentFactoryResolver, Renderer } from '@angular/core';
 
 import { JsonSchema } from './json-schema';
 import { OptionsService } from '../../services/options.service';
@@ -12,8 +11,8 @@ var cache = {};
 
 @Component({
   selector: 'json-schema-lazy',
-  template: '',
-  directives: [CORE_DIRECTIVES]
+  entryComponents: [ JsonSchema ],
+  template: ''
 })
 export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() pointer: string;
@@ -26,7 +25,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   disableLazy: boolean = false;
   loaded: boolean = false;
   constructor(private specMgr:SpecManager, private location:ViewContainerRef, private elementRef:ElementRef,
-    private resolver:ComponentResolver, private optionsService:OptionsService, private _renderer: Renderer) {
+    private resolver:ComponentFactoryResolver, private optionsService:OptionsService, private _renderer: Renderer) {
       this.disableLazy = this.optionsService.options.disableLazySchemas;
   }
 
@@ -36,19 +35,14 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   _loadAfterSelf() {
+    var componentFactory = this.resolver.resolveComponentFactory(JsonSchema);
+    let contextInjector = this.location.parentInjector;
+    let compRef = this.location.createComponent(componentFactory, null, contextInjector, null);
+    this.initComponent(compRef.instance);
+    this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
+    compRef.changeDetectorRef.detectChanges();
     this.loaded = true;
-    return this.resolver.resolveComponent(JsonSchema).then(componentFactory => {
-      let contextInjector = this.location.parentInjector;
-      let compRef = this.location.createComponent(
-          componentFactory, null, contextInjector, null);
-      this.initComponent(compRef.instance);
-      this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
-      compRef.changeDetectorRef.detectChanges();
-      return compRef;
-    }).catch(err => {
-      console.log(err);
-      throw err;
-    });
+    return compRef;
   }
 
   load() {
@@ -63,19 +57,18 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   loadCached() {
     this.pointer = this.normalizePointer();
     if (cache[this.pointer]) {
-      cache[this.pointer].then((compRef) => {
-        setTimeout( ()=> {
-          let $element = compRef.location.nativeElement;
+      let compRef = cache[this.pointer];
+      setTimeout( ()=> {
+        let $element = compRef.location.nativeElement;
 
-          // skip caching view with tabs inside (discriminator)
-          // as it needs attached controller
-          if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
-            this._loadAfterSelf();
-            return;
-          }
-          insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
-          this.loaded = true;
-        });
+        // skip caching view with descendant schemas
+        // as it needs attached controller
+        if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
+          this._loadAfterSelf();
+          return;
+        }
+        insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
+        this.loaded = true;
       });
     } else {
       cache[this.pointer] = this._loadAfterSelf();

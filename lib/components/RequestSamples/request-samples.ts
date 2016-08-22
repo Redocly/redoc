@@ -1,34 +1,28 @@
 'use strict';
 
-import { ViewChildren, QueryList, EventEmitter, Input} from '@angular/core';
+import { Component, ViewChildren, QueryList, EventEmitter, Input,
+ ChangeDetectionStrategy } from '@angular/core';
 
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
+import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
-import { Tabs, Tab } from '../../shared/components/index';
-import { SchemaSample } from '../SchemaSample/schema-sample';
-import { PrismPipe } from '../../utils/pipes';
+import { Tabs } from '../../shared/components/index';
 import { RedocEventsService } from '../../services/index';
 
-import { CopyButton } from '../../shared/components/CopyButton/copy-button.directive';
-
-@RedocComponent({
+@Component({
   selector: 'request-samples',
   templateUrl: './request-samples.html',
   styleUrls: ['./request-samples.css'],
-  directives: [SchemaSample, Tabs, Tab, CopyButton],
-  inputs: ['schemaPointer'],
-  pipes: [PrismPipe],
-  detect: true,
-  onPushOnly: false
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RequestSamples extends BaseComponent {
-  childTabs: Tabs;
-  selectedLang: EventEmitter<any>;
-
-  samples: Array<any>;
-
+  @Input() pointer:string;
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
+
+  childTabs: Tabs;
+  selectedLang: EventEmitter<any>;
+  samples: Array<any>;
+
   constructor(specMgr:SpecManager, public events:RedocEventsService) {
     super(specMgr);
 

@@ -16,11 +16,11 @@ System.config({
   },
 
   map: {
-    "@angular/common": "npm:@angular/common@2.0.0-rc.4",
-    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
-    "@angular/core": "npm:@angular/core@2.0.0-rc.4",
-    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.4",
-    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.4",
+    "@angular/common": "npm:@angular/common@2.0.0-rc.5",
+    "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.5",
+    "@angular/core": "npm:@angular/core@2.0.0-rc.5",
+    "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@2.0.0-rc.5",
     "babel": "npm:babel-core@5.8.34",
     "babel-runtime": "npm:babel-runtime@5.8.34",
     "clean-css": "npm:clean-css@3.4.17",
@@ -42,7 +42,7 @@ System.config({
     "stream-http": "npm:stream-http@2.3.0",
     "systemjs/plugin-json": "github:systemjs/plugin-json@0.1.2",
     "url": "github:jspm/nodelibs-url@0.1.0",
-    "zone.js": "npm:zone.js@0.6.12",
+    "zone.js": "npm:zone.js@0.6.14",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -86,7 +86,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.5"
+      "process": "npm:process@0.11.8"
     },
     "github:jspm/nodelibs-punycode@0.1.0": {
       "punycode": "npm:punycode@1.3.2"
@@ -118,30 +118,30 @@ System.config({
     "github:jspm/nodelibs-zlib@0.1.0": {
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
-    "npm:@angular/common@2.0.0-rc.4": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
+    "npm:@angular/common@2.0.0-rc.5": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.5",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/compiler@2.0.0-rc.4": {
-      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
+    "npm:@angular/compiler@2.0.0-rc.5": {
+      "@angular/core": "npm:@angular/core@2.0.0-rc.5",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/core@2.0.0-rc.4": {
+    "npm:@angular/core@2.0.0-rc.5": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"
     },
-    "npm:@angular/platform-browser-dynamic@2.0.0-rc.4": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.4",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
-      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.4",
+    "npm:@angular/platform-browser-dynamic@2.0.0-rc.5": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.5",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.5",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.5",
+      "@angular/platform-browser": "npm:@angular/platform-browser@2.0.0-rc.5",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:@angular/platform-browser@2.0.0-rc.4": {
-      "@angular/common": "npm:@angular/common@2.0.0-rc.4",
-      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.4",
-      "@angular/core": "npm:@angular/core@2.0.0-rc.4",
+    "npm:@angular/platform-browser@2.0.0-rc.5": {
+      "@angular/common": "npm:@angular/common@2.0.0-rc.5",
+      "@angular/compiler": "npm:@angular/compiler@2.0.0-rc.5",
+      "@angular/core": "npm:@angular/core@2.0.0-rc.5",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:amdefine@1.0.0": {
@@ -705,6 +705,11 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
+    "npm:process@0.11.8": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "vm": "github:jspm/nodelibs-vm@0.1.0"
+    },
     "npm:public-encrypt@4.0.0": {
       "bn.js": "npm:bn.js@4.11.4",
       "browserify-rsa": "npm:browserify-rsa@4.0.1",
@@ -932,6 +937,10 @@ System.config({
       "validator": "npm:validator@5.4.0"
     },
     "npm:zone.js@0.6.12": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:zone.js@0.6.14": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }

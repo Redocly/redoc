@@ -1,10 +1,8 @@
 'use strict';
 
-import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
+import { Component, Input } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
-import { Tabs, Tab } from '../../shared/components/index';
-import { SchemaSample } from '../index';
 import { statusCodeType } from '../../utils/helpers';
 
 
@@ -17,14 +15,16 @@ function hasExample(response) {
     response.schema);
 }
 
-@RedocComponent({
+@Component({
   selector: 'responses-samples',
   templateUrl: './responses-samples.html',
   styleUrls: ['./responses-samples.css'],
-  directives: [forwardRef( ()=> SchemaSample), Tabs, Tab]
 })
 export class ResponsesSamples extends BaseComponent {
+  @Input() pointer:string;
+
   data: any;
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }

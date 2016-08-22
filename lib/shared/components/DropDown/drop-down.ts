@@ -1,7 +1,6 @@
 'use strict';
 
 import { Component, EventEmitter, ElementRef, Output, AfterContentInit } from '@angular/core';
-import { CORE_DIRECTIVES } from '@angular/common';
 import DropKick from 'dropkickjs';
 
 @Component({
@@ -11,7 +10,6 @@ import DropKick from 'dropkickjs';
       <ng-content></ng-content>
     </select>
   `,
-  directives: [CORE_DIRECTIVES],
   styleUrls: ['./drop-down.css']
 })
 export class DropDown implements AfterContentInit {

@@ -39,7 +39,7 @@
     </div>
   </template>
   <template ngSwitchCase="array">
-    <json-schema class="nested-schema" [pointer]="schema._pointer" [isArray]='true'
+    <json-schema class="nested-schema" [pointer]="schema._pointer"
     [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>
   </template>
   <template ngSwitchCase="object">

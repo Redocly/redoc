@@ -11,7 +11,7 @@
 
     <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [hidden]="cat.headless"
     [ngClass]="{active: cat.active}"> {{cat.name}}</label>
-    <ul class="menu-subitems" @itemAnimation="cat.active ? 'expanded' : 'collapsed'">
+    <ul class="menu-subitems" [@itemAnimation]="cat.active ? 'expanded' : 'collapsed'">
       <li *ngFor="let method of cat.methods; trackBy:summary; let methIdx = index"
         [ngClass]="{active: method.active}"
         (click)="activateAndScroll(idx, methIdx)">

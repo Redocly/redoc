@@ -1,31 +1,28 @@
 'use strict';
 
-import { Input, Renderer, ElementRef, forwardRef } from '@angular/core';
+import { Component, Input, Renderer, ElementRef } from '@angular/core';
 
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
-import { DropDown } from '../../shared/components/index';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer, SchemaHelper } from '../../services/index';
-import { JsonSchemaLazy } from './json-schema-lazy';
-import { Zippy } from '../../shared/components/Zippy/zippy';
 
-@RedocComponent({
+@Component({
   selector: 'json-schema',
   templateUrl: './json-schema.html',
-  styleUrls: ['./json-schema.css'],
-  directives: [JsonSchema, DropDown, forwardRef(() => JsonSchemaLazy), Zippy],
-  detect: true
+  styleUrls: ['./json-schema.css']
 })
 export class JsonSchema extends BaseComponent {
+  @Input() pointer: string;
+  @Input() final: boolean = false;
+  @Input() nestOdd: boolean;
+  @Input() childFor: string;
+  @Input() isRequestSchema: boolean;
+
   schema: any = {};
   activeDescendant:any = {};
   hasDescendants: boolean = false;
   _hasSubSchemas: boolean = false;
   properties: any;
   _isArray: boolean;
-  @Input() final: boolean = false;
-  @Input() nestOdd: boolean;
-  @Input() childFor: string;
-  @Input() isRequestSchema: boolean;
   normalizer: SchemaNormalizer;
   autoExpand = false;
 

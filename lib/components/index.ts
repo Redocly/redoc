@@ -1,16 +1,25 @@
 'use strict';
 
-export * from './ApiInfo/api-info';
-export * from './ApiLogo/api-logo';
-export * from './JsonSchema/json-schema';
-export * from './JsonSchema/json-schema-lazy';
-export * from './ParamsList/params-list';
-export * from './RequestSamples/request-samples';
-export * from './ResponsesList/responses-list';
-export * from './ResponsesSamples/responses-samples';
-export * from './SchemaSample/schema-sample';
-export * from './SideMenu/side-menu';
-export * from './MethodsList/methods-list';
-export * from './Method/method';
+import { ApiInfo } from './ApiInfo/api-info';
+import { ApiLogo } from './ApiLogo/api-logo';
+import { JsonSchema } from './JsonSchema/json-schema';
+import { JsonSchemaLazy } from './JsonSchema/json-schema-lazy';
+import { ParamsList } from './ParamsList/params-list';
+import { RequestSamples } from './RequestSamples/request-samples';
+import { ResponsesList } from './ResponsesList/responses-list';
+import { ResponsesSamples } from './ResponsesSamples/responses-samples';
+import { SchemaSample } from './SchemaSample/schema-sample';
+import { SideMenu } from './SideMenu/side-menu';
+import { MethodsList } from './MethodsList/methods-list';
+import { Method } from './Method/method';
+import { Warnings } from './Warnings/warnings';
 
-export * from './Redoc/redoc';
+import { Redoc } from './Redoc/redoc';
+
+export const REDOC_DIRECTIVES = [
+  ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
+  ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc
+];
+
+export { ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
+ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc }

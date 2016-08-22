@@ -32,8 +32,8 @@ export class SpecManager {
       .then(schema => {
           this._url = url;
           this._schema = schema;
-          resolve(this._schema);
           this.init();
+          return resolve(this._schema);
       }, err => reject(err));
     });
 

@@ -1,12 +1,13 @@
 'use strict';
-
-import { SpecManager, RedocComponent, BaseComponent } from '../base';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { SpecManager, BaseComponent } from '../base';
 import { OptionsService, MenuService } from '../../services/index';
 
-@RedocComponent({
+@Component({
   selector: 'api-info',
   styleUrls: ['./api-info.css'],
-  templateUrl: './api-info.html'
+  templateUrl: './api-info.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApiInfo extends BaseComponent {
   info: any;

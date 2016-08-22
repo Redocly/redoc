@@ -115,7 +115,7 @@ gulp.task('bundle', ['injectVersionFile'], function bundle(done) {
   builder
     .buildStatic(path.join(paths.tmp, paths.sourceEntryPoint),
       outputFileName,
-      { format:'umd', sourceMaps: !argv.prod, lowResSourceMaps: true, minify: argv.prod }
+      { format:'umd', sourceMaps: !argv.prod, lowResSourceMaps: true, minify: argv.prod, globalName: 'Redoc' }
     )
     .then(() => {
       // wait some time to allow flush

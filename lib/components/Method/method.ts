@@ -1,27 +1,20 @@
 'use strict';
-import { Input } from '@angular/core';
+import { Input, Component } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
-import { RedocComponent, BaseComponent, SpecManager} from '../base';
-
-import { SelectOnClick } from '../../shared/components/SelectOnClick/select-on-click.directive';
-
-import { ParamsList } from '../ParamsList/params-list';
-import { ResponsesList } from '../ResponsesList/responses-list';
-import { ResponsesSamples } from '../ResponsesSamples/responses-samples';
-import { SchemaSample } from '../SchemaSample/schema-sample';
-import { RequestSamples } from '../RequestSamples/request-samples';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 
-@RedocComponent({
+@Component({
   selector: 'method',
   templateUrl: './method.html',
   styleUrls: ['./method.css'],
-  directives: [ ParamsList, ResponsesList, ResponsesSamples, SchemaSample, RequestSamples, SelectOnClick ],
-  detect: true
 })
 export class Method extends BaseComponent {
-  method:any;
+  @Input() pointer:string;
   @Input() tag:string;
+
+  method:any;
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }

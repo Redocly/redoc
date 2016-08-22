@@ -23,15 +23,11 @@ describe('Redoc components', () => {
       fixture = builder.createSync(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
       component = <JsonSchemaLazy>debugEl.componentInstance;
-      spyOn(component, '_loadAfterSelf').and.callThrough();
-      spyOn(component.resolver, 'resolveComponent').and.returnValue({ then: () => {
-        return { catch: () => {/**/} };
-      }});
+      spyOn(component, '_loadAfterSelf').and.stub();
     });
 
     afterEach(() => {
       component._loadAfterSelf.and.callThrough();
-      component.resolver.resolveComponent.and.callThrough();
     });
 
     it('should init component', () => {
@@ -43,14 +39,6 @@ describe('Redoc components', () => {
       fixture.detectChanges();
       component.load();
       expect(component._loadAfterSelf).toHaveBeenCalled();
-    });
-
-    it('should not run loadNextToLocation if already loaded', () => {
-      component.pointer = '#/def';
-      fixture.detectChanges();
-      component.load();
-      component.load();
-      expect(component._loadAfterSelf.calls.count()).toEqual(1);
     });
   });
 });

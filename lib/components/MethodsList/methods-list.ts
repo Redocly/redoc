@@ -1,21 +1,18 @@
 'use strict';
-
-import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
-import { Method } from '../Method/method';
-import { EncodeURIComponentPipe } from '../../utils/pipes';
+import { Component, Input } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/index';
 
-@RedocComponent({
+@Component({
   selector: 'methods-list',
   templateUrl: './methods-list.html',
-  styleUrls: ['./methods-list.css'],
-  directives: [ forwardRef(() => Method) ],
-  pipes: [ EncodeURIComponentPipe ],
-  detect: true
+  styleUrls: ['./methods-list.css']
 })
 export class MethodsList extends BaseComponent {
+  @Input() pointer:string;
+
   tags:Array<any> = [];
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }

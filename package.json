@@ -32,11 +32,11 @@
   "jspm": {
     "configFile": "system.config.js",
     "dependencies": {
-      "@angular/common@2.0.0-rc.4": "npm:@angular/common@2.0.0-rc.4",
-      "@angular/compiler@2.0.0-rc.4": "npm:@angular/compiler@2.0.0-rc.4",
-      "@angular/core@2.0.0-rc.4": "npm:@angular/core@2.0.0-rc.4",
-      "@angular/platform-browser-dynamic@2.0.0-rc.4": "npm:@angular/platform-browser-dynamic@2.0.0-rc.4",
-      "@angular/platform-browser@2.0.0-rc.4": "npm:@angular/platform-browser@2.0.0-rc.4",
+      "@angular/common": "npm:@angular/common@^2.0.0-rc.5",
+      "@angular/compiler": "npm:@angular/compiler@^2.0.0-rc.5",
+      "@angular/core": "npm:@angular/core@^2.0.0-rc.5",
+      "@angular/platform-browser": "npm:@angular/platform-browser@^2.0.0-rc.5",
+      "@angular/platform-browser-dynamic": "npm:@angular/platform-browser-dynamic@^2.0.0-rc.5",
       "dropkickjs": "npm:dropkickjs@^2.1.8",
       "es6-shim": "github:es-shims/es6-shim@^0.33.6",
       "hint.css": "npm:hint.css@^2.2.1",
@@ -51,7 +51,7 @@
       "slugify": "npm:slugify@^0.1.1",
       "stream-http": "npm:stream-http@^2.3.0",
       "url": "github:jspm/nodelibs-url@^0.1.0",
-      "zone.js": "npm:zone.js@0.6.12"
+      "zone.js": "npm:zone.js@^0.6.14"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.34",
@@ -78,12 +78,11 @@
     }
   },
   "devDependencies": {
-    "@angular/common": "^2.0.0-rc.4",
-    "@angular/compiler": "^2.0.0-rc.4",
-    "@angular/core": "^2.0.0-rc.4",
-    "@angular/platform-browser": "^2.0.0-rc.4",
-    "@angular/platform-browser-dynamic": "^2.0.0-rc.4",
-    "@angular/platform-server": "^2.0.0-rc.4",
+    "@angular/common": "^2.0.0-rc.5",
+    "@angular/compiler": "^2.0.0-rc.5",
+    "@angular/core": "^2.0.0-rc.5",
+    "@angular/platform-browser": "^2.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.5",
     "babel-polyfill": "^6.3.14",
     "branch-release": "^1.0.3",
     "browser-sync": "^2.10.1",
@@ -141,6 +140,6 @@
     "typescript": "^1.8.10",
     "vinyl-paths": "^2.0.0",
     "yargs": "^4.7.1",
-    "zone.js": "^0.6.12"
+    "zone.js": "^0.6.14"
   }
 }

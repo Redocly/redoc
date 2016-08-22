@@ -1,11 +1,12 @@
 'use strict';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 
-import {RedocComponent, BaseComponent, SpecManager} from '../base';
-
-@RedocComponent({
+@Component({
   selector: 'api-logo',
   styleUrls: ['./api-logo.css'],
-  templateUrl: './api-logo.html'
+  templateUrl: './api-logo.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApiLogo extends BaseComponent {
   logo:any = {};

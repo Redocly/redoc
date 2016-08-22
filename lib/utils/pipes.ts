@@ -117,3 +117,7 @@ export class EncodeURIComponentPipe implements PipeTransform {
     return encodeURIComponent(value);
   }
 }
+
+export const REDOC_PIPES = [
+  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe
+];

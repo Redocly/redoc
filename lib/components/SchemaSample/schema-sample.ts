@@ -1,27 +1,27 @@
 'use strict';
 
-import { ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
 
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
+import { BaseComponent, SpecManager } from '../base';
 import { JsonFormatter } from '../../utils/JsonFormatterPipe';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
 
-import { CopyButton } from '../../shared/components/CopyButton/copy-button.directive';
-
-@RedocComponent({
+@Component({
   selector: 'schema-sample',
   templateUrl: './schema-sample.html',
   pipes: [JsonFormatter],
-  directives: [CopyButton],
-  styleUrls: ['./schema-sample.css']
+  styleUrls: ['./schema-sample.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SchemaSample extends BaseComponent {
+  @Input() pointer:string;
+  @Input() skipReadOnly:boolean;
+
   element: any;
   sample: any;
   enableButtons: boolean = false;
-  @Input() skipReadOnly:boolean;
 
   private _normalizer:SchemaNormalizer;
 

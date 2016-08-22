@@ -1,21 +1,19 @@
 'use strict';
 
-import { ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ChangeDetectorRef } from '@angular/core';
 
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
+import { BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 
 import { MenuCategory } from '../../services/schema-helper.service';
 
-@RedocComponent({
+@Component({
   selector: 'side-menu',
   templateUrl: './side-menu.html',
   styleUrls: ['./side-menu.css'],
-  detect: true,
-  onPushOnly: false,
   animations: [
     trigger('itemAnimation', [
       state('collapsed, void',

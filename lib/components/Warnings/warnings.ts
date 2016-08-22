@@ -1,14 +1,14 @@
 'use strict';
 
-import { SpecManager, RedocComponent, BaseComponent } from '../base';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { SpecManager, BaseComponent } from '../base';
 import { WarningsService, OptionsService } from '../../services/index';
 
-@RedocComponent({
+@Component({
   selector: 'warnings',
   styleUrls: ['./warnings.css'],
   templateUrl: './warnings.html',
-  detect: true,
-  onPushOnly: false
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Warnings extends BaseComponent {
   warnings: Array<string> = [];

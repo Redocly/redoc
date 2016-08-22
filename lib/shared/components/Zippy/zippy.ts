@@ -1,13 +1,10 @@
 'use strict';
 
 import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { CORE_DIRECTIVES } from '@angular/common';
-
 @Component({
   selector: 'zippy',
   templateUrl: './zippy.html',
-  styleUrls: ['./zippy.css'],
-  directives: [CORE_DIRECTIVES]
+  styleUrls: ['./zippy.css']
 })
 export class Zippy {
   @Input() type = 'general';

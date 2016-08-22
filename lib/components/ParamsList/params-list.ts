@@ -1,8 +1,6 @@
 'use strict';
-
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
-import { JsonSchema } from '../JsonSchema/json-schema';
-import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 
 function safePush(obj, prop, item) {
@@ -10,13 +8,14 @@ function safePush(obj, prop, item) {
   obj[prop].push(item);
 }
 
-@RedocComponent({
+@Component({
   selector: 'params-list',
   templateUrl: './params-list.html',
   styleUrls: ['./params-list.css'],
-  directives: [JsonSchema, JsonSchemaLazy]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ParamsList extends BaseComponent {
+  @Input() pointer:string;
 
   params: Array<any>;
   empty: boolean;
