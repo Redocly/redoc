@@ -109,6 +109,7 @@ gulp.task('concatDeps', ['concatPrism'], function() {
 
 gulp.task('bundle', ['injectVersionFile'], function bundle(done) {
   mkdir('-p', 'dist');
+  cp('lib/index.js', path.join(paths.tmp, paths.sourceEntryPoint));
   var builder = new Builder('./', 'system.config.js');
 
   builder
