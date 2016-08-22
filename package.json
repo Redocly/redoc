@@ -15,7 +15,8 @@
     "branch-release": "git reset --hard && branch-release",
     "unit": "gulp test",
     "e2e": "gulp e2e --prod",
-    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo"
+    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo",
+    "ngc": "ngc -p . && copy lib/* .compiled/lib"
   },
   "keywords": [
     "OpenAPI",
@@ -80,9 +81,14 @@
   "devDependencies": {
     "@angular/common": "^2.0.0-rc.5",
     "@angular/compiler": "^2.0.0-rc.5",
+    "@angular/compiler-cli": "^0.5.0",
     "@angular/core": "^2.0.0-rc.5",
     "@angular/platform-browser": "^2.0.0-rc.5",
     "@angular/platform-browser-dynamic": "^2.0.0-rc.5",
+    "@angular/platform-server": "^2.0.0-rc.5",
+    "@types/core-js": "^0.9.31",
+    "@types/jasmine": "^2.2.32",
+    "@types/should": "^8.1.28",
     "babel-polyfill": "^6.3.14",
     "branch-release": "^1.0.3",
     "browser-sync": "^2.10.1",
@@ -135,9 +141,9 @@
     "sinon": "^1.17.2",
     "slugify": "^0.1.1",
     "systemjs-builder": "0.15.16",
-    "tslint": "^3.13.0",
+    "tslint": "^3.14.0",
     "tslint-stylish": "^2.1.0-beta",
-    "typescript": "^1.8.10",
+    "typescript": "^2.0.0",
     "vinyl-paths": "^2.0.0",
     "yargs": "^4.7.1",
     "zone.js": "^0.6.15"

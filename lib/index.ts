@@ -9,7 +9,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
 import { RedocModule } from './redoc.module';
 import { Redoc } from './components/index';
-import { optionsService } from './redoc.module';
+//import { getOptions } from './redoc.module';
 import { SpecManager } from './utils/SpecManager';
 import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 
@@ -18,16 +18,16 @@ var dom = new BrowserDomAdapter();
 //Redoc.version = redocVersion;
 var moduleRef;
 export function init(specUrl:string, options?) {
-  if (!optionsService.options.debugMode) {
-    enableProdMode();
-  }
-
-  if (moduleRef) {
-    destroy();
-  }
-
-  optionsService.options = options;
-  optionsService.options.specUrl = optionsService.options.specUrl || specUrl;
+  // if (!optionsService.options.debugMode) {
+  //   enableProdMode();
+  // }
+  //
+  // if (moduleRef) {
+  //   destroy();
+  // }
+  //
+  // optionsService.options = options;
+  // optionsService.options.specUrl = optionsService.options.specUrl || specUrl;
 
   Redoc.showLoadingAnimation();
   return SpecManager.instance().load(specUrl)

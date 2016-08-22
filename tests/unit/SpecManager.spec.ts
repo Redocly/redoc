@@ -114,7 +114,7 @@ describe('Utils', () => {
     });
 
     describe('getMethodParams method', () => {
-      beforeAll((done) => {
+      beforeAll((done:any) => {
         specMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(() => {
           done();
         }, () => {
@@ -163,7 +163,7 @@ describe('Utils', () => {
     });
 
     describe('findDerivedDefinitions method', () => {
-      beforeAll((done) => {
+      beforeAll((done:any) => {
         specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {

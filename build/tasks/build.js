@@ -47,6 +47,7 @@ gulp.task('copyDebug', () => {
 });
 
 gulp.task('tsc', function() {
+  exec('tsc -v');
   exec('tsc -p ./tsconfig.json');
 });
 

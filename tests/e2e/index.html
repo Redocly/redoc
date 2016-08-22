@@ -14,6 +14,7 @@
     <script>
       window.redocError = null;
       /* init redoc */
+      window.redocDebugMode = true;
       var url = window.location.search.substr(5) || 'http://rebilly.github.io/SwaggerTemplateRepo/swagger.json';
       Redoc.init(decodeURIComponent(url), {disableLazySchemas: true}).then(function() {}, function(err) {
         window.redocError = err;

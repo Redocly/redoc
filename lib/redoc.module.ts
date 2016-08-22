@@ -10,8 +10,6 @@ import { OptionsService, RedocEventsService, MenuService,
   ScrollService, Hash, WarningsService } from './services/index';
 import { SpecManager } from './utils/SpecManager';
 
-export const optionsService = new OptionsService(new BrowserDomAdapter());
-
 @NgModule({
   imports: [ BrowserModule ],
   declarations: [ REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES],
@@ -24,8 +22,8 @@ export const optionsService = new OptionsService(new BrowserDomAdapter());
     Hash,
     MenuService,
     WarningsService,
-    provide(OptionsService, {useValue: optionsService})
-  ],
+    OptionsService
+  ]
 })
 export class RedocModule {
 }
