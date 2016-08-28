@@ -13,9 +13,8 @@ let config = {
     // load APIs.guru list
     return loadJson('https://api.apis.guru/v2/list.json').then((list) => {
       global.apisGuruList = list;
-      return browser.getCapabilities().then(function (cap) {
-        browser.isIE = cap.browserName === 'internet explorer'
-          || (cap.caps_ && cap.caps_.browserName === 'internet explorer')
+      return browser.getCapabilities().then(function (caps) {
+        browser.isIE = caps.get('browserName') === 'internet explorer';
       });
     });
   },
