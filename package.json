@@ -51,6 +51,8 @@
     "coveralls": "^2.11.9",
     "css-loader": "^0.24.0",
     "deploy-to-gh-pages": "^1.1.2",
+    "http-server": "^0.9.0",
+    "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0",
     "karma": "^0.13.15",
