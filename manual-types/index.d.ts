@@ -7,7 +7,10 @@ declare module "slugify"
 declare module "url"
 declare module "json-pointer";
 
-declare module "*!css" {
+declare module "*.css" {
   const content: string;
   export default content;
 }
+
+declare var LIB_VERSION: any;
+declare var IS_PRODUCTION: any;

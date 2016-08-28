@@ -1,5 +1,5 @@
 'use strict';
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 
@@ -14,7 +14,7 @@ function safePush(obj, prop, item) {
   styleUrls: ['./params-list.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ParamsList extends BaseComponent {
+export class ParamsList extends BaseComponent implements OnInit {
   @Input() pointer:string;
 
   params: Array<any>;
@@ -72,5 +72,9 @@ export class ParamsList extends BaseComponent {
     let res = {};
     params.forEach((param) => safePush(res, param.in, param));
     return res;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

@@ -6,7 +6,7 @@
   </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->
-    <span *ngIf="info.contact"> Contact:
+    <span *ngIf="info?.contact"> Contact:
       <a *ngIf="info.contact.url" href="{{info.contact.url}}">
         {{info.contact.name || info.contact.url}}</a>
       <a *ngIf="info.contact.email" href="mailto:{{info.contact.email}}">

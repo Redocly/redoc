@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, ElementRef, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
 
@@ -15,7 +15,7 @@ import { SchemaNormalizer } from '../../services/schema-normalizer.service';
   styleUrls: ['./schema-sample.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SchemaSample extends BaseComponent {
+export class SchemaSample extends BaseComponent implements OnInit {
   @Input() pointer:string;
   @Input() skipReadOnly:boolean;
 
@@ -135,5 +135,9 @@ export class SchemaSample extends BaseComponent {
       if (expanded.parentNode.classList.contains('redoc-json')) continue;
       expanded.parentNode.classList.add('collapsed');
     }
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

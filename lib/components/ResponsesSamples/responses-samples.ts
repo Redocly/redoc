@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { statusCodeType } from '../../utils/helpers';
@@ -20,7 +20,7 @@ function hasExample(response) {
   templateUrl: './responses-samples.html',
   styleUrls: ['./responses-samples.css'],
 })
-export class ResponsesSamples extends BaseComponent {
+export class ResponsesSamples extends BaseComponent implements OnInit {
   @Input() pointer:string;
 
   data: any;
@@ -54,5 +54,9 @@ export class ResponsesSamples extends BaseComponent {
     })
     .filter(response => hasExample(response));
     this.data.responses = responses;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

@@ -1,5 +1,5 @@
 'use strict';
-import JsonPointerLib from 'json-pointer';
+import * as JsonPointerLib from 'json-pointer';
 
 const origParse = JsonPointerLib.parse;
 /**

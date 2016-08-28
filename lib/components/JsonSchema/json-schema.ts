@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input, Renderer, ElementRef } from '@angular/core';
+import { Component, Input, Renderer, ElementRef, OnInit } from '@angular/core';
 
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer, SchemaHelper } from '../../services/index';
@@ -10,7 +10,7 @@ import { SchemaNormalizer, SchemaHelper } from '../../services/index';
   templateUrl: './json-schema.html',
   styleUrls: ['./json-schema.css']
 })
-export class JsonSchema extends BaseComponent {
+export class JsonSchema extends BaseComponent implements OnInit {
   @Input() pointer: string;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
@@ -103,5 +103,9 @@ export class JsonSchema extends BaseComponent {
 
   trackByIdx(index: number, item: any): number {
     return index;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

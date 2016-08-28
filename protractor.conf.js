@@ -3,7 +3,7 @@ const loadJson = require('./tests/e2e/helpers').loadJson;
 const travis = process.env.TRAVIS;
 
 let config = {
-  specs: ['./tests/e2e/**/*.js'],
+  specs: ['./tests/e2e/**/*.e2e.js'],
   baseUrl: 'http://localhost:3000',
   framework: 'jasmine2',
   onPrepare: function() {
@@ -29,8 +29,8 @@ let config = {
     print: function() {}
   },
   multiCapabilities: [
-    { browserName: 'chrome' },
-    { browserName: 'firefox' }
+    { browserName: 'chrome' }
+    // { browserName: 'firefox' }
   ]
 };
 

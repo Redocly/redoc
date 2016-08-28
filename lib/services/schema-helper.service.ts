@@ -3,7 +3,7 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
 import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
-import slugify from 'slugify';
+import * as slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
   childFor: string;

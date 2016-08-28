@@ -1,5 +1,4 @@
-import { NgModule, provide } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { Redoc, REDOC_DIRECTIVES } from './components/index';
@@ -16,7 +15,6 @@ import { SpecManager } from './utils/SpecManager';
   bootstrap: [ Redoc ],
   providers: [
     SpecManager,
-    BrowserDomAdapter,
     RedocEventsService,
     ScrollService,
     Hash,

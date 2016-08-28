@@ -1,9 +1,9 @@
 'use strict';
 
-import JsonSchemaRefParser from 'json-schema-ref-parser';
-import JsonPointer from './JsonPointer';
+import * as JsonSchemaRefParser from 'json-schema-ref-parser';
+import { JsonPointer } from './JsonPointer';
 import { renderMd, safePush } from './helpers';
-import slugify from 'slugify';
+import * as slugify from 'slugify';
 import { parse as urlParse } from 'url';
 
 export class SpecManager {

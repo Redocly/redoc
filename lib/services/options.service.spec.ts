@@ -1,6 +1,5 @@
 'use strict';
 
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { OptionsService } from './options.service';
 
 describe('Options Service', () => {
@@ -19,7 +18,7 @@ describe('Options Service', () => {
   });
 
   beforeEach(() => {
-    optionsService = new OptionsService(new BrowserDomAdapter());
+    optionsService = new OptionsService();
   });
 
   it('should parse numeric scrollYOffset', () => {

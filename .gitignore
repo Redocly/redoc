@@ -20,11 +20,17 @@ npm-debug.log*
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 
-#jspm
-jspm_packages
+# compiled css
+lib/**/*.css
 
+# files produced by ngc
+lib/**/*.ngfactory.ts
+lib/**/*.css.shim.ts
+
+# other
 /dist
 /demo/build
 .tmp
 /coverage
 .ghpages-tmp
+stats.json

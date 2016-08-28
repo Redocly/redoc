@@ -1,5 +1,5 @@
 'use strict';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
 import { OptionsService, MenuService } from '../../services/index';
 
@@ -9,8 +9,8 @@ import { OptionsService, MenuService } from '../../services/index';
   templateUrl: './api-info.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApiInfo extends BaseComponent {
-  info: any;
+export class ApiInfo extends BaseComponent implements OnInit {
+  info: any = {};
   specUrl: String;
   constructor(specMgr:SpecManager, private optionsService:OptionsService, private menuServ: MenuService) {
     super(specMgr);
@@ -22,5 +22,9 @@ export class ApiInfo extends BaseComponent {
     if (parseInt(this.info.version.substring(0, 1)) !== NaN) {
       this.info.version = 'v' + this.info.version;
     }
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

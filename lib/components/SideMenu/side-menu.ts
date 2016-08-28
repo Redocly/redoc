@@ -1,13 +1,12 @@
 'use strict';
 
-import { Component, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ChangeDetectorRef, OnInit } from '@angular/core';
 
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
 import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
-
+import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { MenuCategory } from '../../services/schema-helper.service';
 
 @Component({
@@ -26,7 +25,7 @@ import { MenuCategory } from '../../services/schema-helper.service';
     ])
   ],
 })
-export class SideMenu extends BaseComponent {
+export class SideMenu extends BaseComponent implements OnInit {
   activeCatCaption: string;
   activeItemCaption: string;
   categories: Array<MenuCategory>;
@@ -37,7 +36,7 @@ export class SideMenu extends BaseComponent {
   private $resourcesNav: any;
   private $scrollParent: any;
 
-  constructor(specMgr:SpecManager, elementRef:ElementRef, private dom:BrowserDomAdapter,
+  constructor(specMgr:SpecManager, elementRef:ElementRef,
   private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
     super(specMgr);
@@ -56,6 +55,7 @@ export class SideMenu extends BaseComponent {
     this.activeItemCaption = item && item.summary || '';
 
     //safari doesn't update bindings if not run changeDetector manually :(
+
     this.detectorRef.detectChanges();
   }
 
@@ -70,8 +70,8 @@ export class SideMenu extends BaseComponent {
   init() {
     this.categories = this.menuService.categories;
 
-    this.$mobileNav = this.dom.querySelector(this.$element, '.mobile-nav');
-    this.$resourcesNav = this.dom.querySelector(this.$element, '#resources-nav');
+    this.$mobileNav = DOM.querySelector(this.$element, '.mobile-nav');
+    this.$resourcesNav = DOM.querySelector(this.$element, '#resources-nav');
 
     //decorate scrollYOffset to account mobile nav
     this.scrollService.scrollYOffset = () => {
@@ -85,23 +85,26 @@ export class SideMenu extends BaseComponent {
   }
 
   toggleMobileNav() {
-    let dom = this.dom;
-    let $overflowParent = (this.options.$scrollParent === global) ? dom.defaultDoc().body
+    let $overflowParent = (this.options.$scrollParent === global) ? DOM.defaultDoc().body
       : this.$scrollParent;
-    if (dom.hasStyle(this.$resourcesNav, 'height')) {
-      dom.removeStyle(this.$resourcesNav, 'height');
-      dom.removeStyle($overflowParent, 'overflow-y');
+    if (DOM.hasStyle(this.$resourcesNav, 'height')) {
+      DOM.removeStyle(this.$resourcesNav, 'height');
+      DOM.removeStyle($overflowParent, 'overflow-y');
     } else {
       let viewportHeight = this.options.$scrollParent.innerHeight
        || this.options.$scrollParent.clientHeight;
       let height = viewportHeight - this.$mobileNav.getBoundingClientRect().bottom;
-      dom.setStyle($overflowParent, 'overflow-y', 'hidden');
-      dom.setStyle(this.$resourcesNav, 'height', height + 'px');
+      DOM.setStyle($overflowParent, 'overflow-y', 'hidden');
+      DOM.setStyle(this.$resourcesNav, 'height', height + 'px');
     }
   }
 
   destroy() {
     this.scrollService.unbind();
     this.hash.unbind();
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

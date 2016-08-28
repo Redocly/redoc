@@ -1,5 +1,5 @@
 'use strict';
-import Remarkable from 'remarkable';
+import * as Remarkable from 'remarkable';
 declare var Prism: any;
 
 const md = new Remarkable({

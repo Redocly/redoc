@@ -2,15 +2,13 @@
 
 import { ElementRef, ComponentRef, AfterViewInit, Component } from '@angular/core';
 
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { BaseComponent } from '../base';
 
-import detectScollParent from 'scrollparent';
+import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/SpecManager';
 import { OptionsService, RedocEventsService } from '../../services/index';
-
-var dom = new BrowserDomAdapter();
 
 @Component({
   selector: 'redoc',
@@ -25,22 +23,22 @@ export class Redoc extends BaseComponent implements AfterViewInit {
   private element: any;
 
   static showLoadingAnimation() {
-    let elem = dom.query('redoc');
-    dom.addClass(elem, 'loading');
+    let elem = DOM.query('redoc');
+    DOM.addClass(elem, 'loading');
   }
 
   static hideLoadingAnimation() {
-    let redocEl = dom.query('redoc');
+    let redocEl = DOM.query('redoc');
     if (!redocEl) return;
-    dom.addClass(redocEl, 'loading-remove');
+    DOM.addClass(redocEl, 'loading-remove');
     setTimeout(() => {
-      dom.removeClass(redocEl, 'loading-remove');
-      dom.removeClass(redocEl, 'loading');
+      DOM.removeClass(redocEl, 'loading-remove');
+      DOM.removeClass(redocEl, 'loading');
     }, 400);
   }
 
   static displayError(err) {
-    let redocEl = dom.query('redoc');
+    let redocEl = DOM.query('redoc');
     if (!redocEl) return;
     let heading = 'Oops... ReDoc failed to render this spec';
     let details = err.message;
@@ -56,7 +54,9 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     this.element = elementRef.nativeElement;
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
-    optionsMgr.options.$scrollParent = detectScollParent( this.element );
+    let scrollParent = detectScollParent( this.element );
+    if (scrollParent === DOM.defaultDoc().body) scrollParent = window;
+    optionsMgr.options.$scrollParent = scrollParent;
     this.options = optionsMgr.options;
     this.events = events;
   }

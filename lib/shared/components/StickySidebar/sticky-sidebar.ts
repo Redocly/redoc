@@ -1,7 +1,7 @@
 'use strict';
 
 import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { BrowserDomAdapter as DOM } from '../../../utils/browser-adapter';
 
 @Directive({
   selector: '[sticky-sidebar]'
@@ -13,18 +13,18 @@ export class StickySidebar implements OnInit, OnDestroy {
   @Input() scrollParent:any;
   @Input() scrollYOffset:any;
 
-  constructor(elementRef:ElementRef, private dom:BrowserDomAdapter) {
+  constructor(elementRef:ElementRef) {
     this.$element = elementRef.nativeElement;
 
     // initial styling
-    this.dom.setStyle(this.$element, 'position', 'absolute');
-    this.dom.setStyle(this.$element, 'top', '0');
-    this.dom.setStyle(this.$element, 'bottom', '0');
-    this.dom.setStyle(this.$element, 'max-height', '100%');
+    DOM.setStyle(this.$element, 'position', 'absolute');
+    DOM.setStyle(this.$element, 'top', '0');
+    DOM.setStyle(this.$element, 'bottom', '0');
+    DOM.setStyle(this.$element, 'max-height', '100%');
   }
 
   bind() {
-    this.cancelScrollBinding = this.dom.onAndCancel(this.scrollParent, 'scroll', () => { this.updatePosition(); });
+    this.cancelScrollBinding = DOM.onAndCancel(this.scrollParent, 'scroll', () => { this.updatePosition(); });
     this.updatePosition();
   }
 
@@ -41,13 +41,13 @@ export class StickySidebar implements OnInit, OnDestroy {
   }
 
   stick() {
-    this.dom.setStyle(this.$element, 'position', 'fixed');
-    this.dom.setStyle(this.$element, 'top', this.scrollYOffset() + 'px');
+    DOM.setStyle(this.$element, 'position', 'fixed');
+    DOM.setStyle(this.$element, 'top', this.scrollYOffset() + 'px');
   }
 
   unstick() {
-    this.dom.setStyle(this.$element, 'position', 'absolute');
-    this.dom.setStyle(this.$element, 'top', '0');
+    DOM.setStyle(this.$element, 'position', 'absolute');
+    DOM.setStyle(this.$element, 'top', '0');
   }
 
   get scrollY() {
@@ -56,7 +56,7 @@ export class StickySidebar implements OnInit, OnDestroy {
 
   ngOnInit() {
     // FIXME use more reliable code
-    this.$redocEl = this.$element.offsetParent || this.dom.defaultDoc().body;
+    this.$redocEl = this.$element.offsetParent || DOM.defaultDoc().body;
     this.bind();
   }
 

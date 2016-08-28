@@ -13,7 +13,7 @@ import { TestComponentBuilder } from '@angular/core/testing';
 
 import { MethodsList, SideMenu } from '../index';
 
-import { SpecManager } from '../../utils/SpecManager';;
+import { SpecManager } from '../../utils/SpecManager';
 
 let testOptions;
 

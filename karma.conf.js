@@ -1,75 +1,47 @@
 module.exports = function (config) {
-    config.set({
-        frameworks: ['phantomjs-shim', 'jspm', 'jasmine', 'sinon', 'should'],
-        preprocessors: {
-          '.tmp/lib/**/!(*spec).js': ['babel', 'coverage']
-        },
-        babelPreprocessor: {
-            options: {
-                sourceMap: 'inline',
-                "optional": [
-                  "runtime",
-                  "optimisation.modules.system",
-                  "es7.decorators",
-                  "es7.classProperties"
-                ]
-            },
-            sourceFileName: function(file) {
-              return file.originalPath;
-            }
-        },
+  const testWebpackConfig = require('./build/webpack.test.js');
+  const travis = process.env.TRAVIS;
 
-        coverageReporter: {
-            instrumenters: { isparta : require('isparta') },
-            instrumenter: {
-                '.tmp/lib/**/!(*spec).js': 'isparta'
-            },
-            dir: 'coverage/',
-            reporters: [
-                {type: 'html'},
-                {type: 'lcov'},
-                {type: 'json'}
-            ]
-        },
-        client: {
-          chai: {
-            truncateThreshold: 0
-          }
-        },
-        //load angular dependencies and browser polyfills
-        files: [
-          'node_modules/zone.js/dist/zone.js',
-          'node_modules/zone.js/dist/async-test.js',
-          'node_modules/zone.js/dist/sync-test.js',
-          'node_modules/zone.js/dist/proxy.js',
-          'node_modules/zone.js/dist/jasmine-patch.js',
-          'node_modules/zone.js/dist/long-stack-trace-zone.js',
-          'node_modules/babel-polyfill/dist/polyfill.js',
-          './node_modules/reflect-metadata/Reflect.js',
-          '.tmp/prismjs-bundle.js'
-        ],
+  config.set({
+    frameworks: ['phantomjs-shim', 'jasmine', 'sinon', 'should'],
+    preprocessors: {
+      './tests/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
+    },
 
-        jspm: {
-            config: 'system.config.js',
-            loadFiles: ['.tmp/tests/setup.js', '.tmp/tests/helpers.js', '.tmp/lib/**/*.js',
-            '.tmp/tests/unit/*.js'],
-            serveFiles: ['tests/schemas/**/*.json','tests/schemas/**/*.yml', 'lib/**/*.html',
-            '.tmp/*js', '.tmp/lib/**/*.css']
-        },
+    coverageReporter: {
+      dir: 'coverage/',
+      reporters: [
+        {type: 'html'},
+        {type: 'lcov'},
+        {type: 'json'},
+        {type: 'text-summary'}
+      ]
+    },
+    webpack: testWebpackConfig,
+    client: {
+      chai: {
+        truncateThreshold: 0
+      }
+    },
+    files: [
+      { pattern: './tests/spec-bundle.js', watched: false },
+      { pattern: 'tests/schemas/**/*.json', included: false },
+      { pattern: 'tests/schemas/**/*.yml', included: false },
+      { pattern: 'lib/**/*.html', included: false },
+      { pattern: 'lib/**/*.css', included: false }
+    ],
 
-        proxies: {
-            '/.tmp/': '/base/.tmp/',
-            '/tests/schemas': '/base/tests/schemas',
-            '/lib/components/redoc/redoc-initial-styles.scss': '/base/.tmp/lib/components/Redoc/redoc-initial-styles.scss',
-            '/lib/version.json': '/base/.tmp/lib/version.json',
-            '/lib/': '/base/lib/',
-            '/jspm_packages/': '/base/jspm_packages/',
-            '/node_modules/': '/base/node_modules/'
-        },
-        reporters: ['mocha', 'coverage'],
+    proxies: {
+      '/tests/schemas': '/base/tests/schemas',
+      '/lib/': '/base/lib/',
+      '/node_modules/': '/base/node_modules/'
+    },
+    colors: true,
+    singleRun: true,
+    reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
 
-        browsers: ['PhantomJS'],
+    browsers: ['PhantomJS'],
 
-        browserNoActivityTimeout: 60000
-    });
+    browserNoActivityTimeout: 60000
+  });
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { statusCodeType } from '../../utils/helpers';
@@ -16,7 +16,7 @@ function isNumeric(n) {
   templateUrl: './responses-list.html',
   styleUrls: ['./responses-list.css']
 })
-export class ResponsesList extends BaseComponent {
+export class ResponsesList extends BaseComponent implements OnInit {
   @Input() pointer:string;
 
   responses: Array<any>;
@@ -64,5 +64,9 @@ export class ResponsesList extends BaseComponent {
 
   trackByCode(idx, el) {
     return el.code;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

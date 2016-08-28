@@ -37,6 +37,10 @@ export class BaseComponent implements OnInit, OnDestroy {
    * onInit method is run by angular2 after all component inputs are resolved
    */
   ngOnInit() {
+    this.preinit();
+  }
+
+  preinit() {
     this.componentSchema = this.specMgr.byPointer(this.pointer || '');
     this.init();
   }

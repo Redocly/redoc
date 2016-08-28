@@ -1,5 +1,5 @@
 'use strict';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/index';
 
@@ -8,7 +8,7 @@ import { SchemaHelper } from '../../services/index';
   templateUrl: './methods-list.html',
   styleUrls: ['./methods-list.css']
 })
-export class MethodsList extends BaseComponent {
+export class MethodsList extends BaseComponent implements OnInit {
   @Input() pointer:string;
 
   tags:Array<any> = [];
@@ -35,5 +35,9 @@ export class MethodsList extends BaseComponent {
 
   trackByTagName(idx, el) {
     return el.name;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

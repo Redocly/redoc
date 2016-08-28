@@ -1,12 +1,13 @@
 'use strict';
 import './components/Redoc/redoc-initial-styles.css';
 
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
+import { RedocModule } from './redoc.module';
 import { Redoc } from './components/index';
 import { SpecManager } from './utils/SpecManager';
 import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
-import { bootstrapRedoc } from './bootstrap';
 
 export const version = LIB_VERSION;
 
@@ -27,7 +28,7 @@ export function init(specUrl:string, options?) {
   Redoc.showLoadingAnimation();
   return SpecManager.instance().load(specUrl)
   .then(() => {
-    return bootstrapRedoc();
+    return platformBrowserDynamic().bootstrapModule(RedocModule);
   })
   .then(appRef => {
     Redoc.hideLoadingAnimation();

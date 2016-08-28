@@ -6,22 +6,25 @@
 		"target": "es5",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"outDir": ".tmp/",
+		"outDir": ".tmp/lib",
 		"pretty": true,
 		"moduleResolution": "node",
 		"types": [
 			"core-js",
 			"jasmine",
-			"should"
-		]
+			"should",
+			"requirejs"
+		],
+		"noEmitHelpers": true
 	},
+	"compileOnSave": false,
+
 	"exclude": [
-		"node_modules",
-		"jspm_packages",
-		".tmp",
-		"build",
-		"docs",
-		"*.spec.js",
-		"lib/index.js"
-	]
+    "node_modules",
+    ".tmp"
+  ],
+	"awesomeTypescriptLoaderOptions": {
+    "resolveGlobs": true,
+    "forkChecker": true
+  }
 }

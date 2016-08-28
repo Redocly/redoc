@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component, ViewChildren, QueryList, EventEmitter, Input,
- ChangeDetectionStrategy } from '@angular/core';
+ ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
@@ -14,7 +14,7 @@ import { RedocEventsService } from '../../services/index';
   styleUrls: ['./request-samples.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RequestSamples extends BaseComponent {
+export class RequestSamples extends BaseComponent implements OnInit {
   @Input() pointer:string;
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
@@ -37,5 +37,9 @@ export class RequestSamples extends BaseComponent {
   init() {
     this.schemaPointer = JsonPointer.join(this.schemaPointer, 'schema');;
     this.samples = this.componentSchema['x-code-samples'] || [];
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

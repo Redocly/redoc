@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
 import { WarningsService, OptionsService } from '../../services/index';
 
@@ -10,7 +10,7 @@ import { WarningsService, OptionsService } from '../../services/index';
   templateUrl: './warnings.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Warnings extends BaseComponent {
+export class Warnings extends BaseComponent implements OnInit {
   warnings: Array<string> = [];
   shown: boolean = false;
   suppressWarnings: boolean;
@@ -29,5 +29,9 @@ export class Warnings extends BaseComponent {
 
   close() {
     this.shown = false;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

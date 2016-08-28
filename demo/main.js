@@ -71,5 +71,4 @@
       });
     });
   });
-  //window.redocDebugMode = true;
 })();

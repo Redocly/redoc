@@ -1,5 +1,5 @@
 'use strict';
-import { Input, Component } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
@@ -9,7 +9,7 @@ import { SchemaHelper } from '../../services/schema-helper.service';
   templateUrl: './method.html',
   styleUrls: ['./method.css'],
 })
-export class Method extends BaseComponent {
+export class Method extends BaseComponent implements OnInit {
   @Input() pointer:string;
   @Input() tag:string;
 
@@ -45,5 +45,9 @@ export class Method extends BaseComponent {
     let pathParams = this.specMgr.getMethodParams(this.pointer, true);
     let bodyParam = pathParams.find(param => param.in === 'body');
     return bodyParam;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

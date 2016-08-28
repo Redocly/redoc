@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component, EventEmitter, ElementRef, Output, AfterContentInit } from '@angular/core';
-import DropKick from 'dropkickjs';
+import * as DropKick from 'dropkickjs';
 
 @Component({
   selector: 'drop-down',

@@ -25,12 +25,11 @@ addons:
 cache:
   directories:
   - node_modules
-  - jspm_packages
-before_install:
-- travis_retry npm install jspm
-- jspm config registries.github.auth $JSPM_GITHUB_AUTH_TOKEN
 before_script:
-- npm run jspm-install
+  - npm run e2e-server > /dev/null & # kill e2e server
+  - sleep 3 # give server time to start
+after_script:
+  - kill %1 # kill e2e server
 before_deploy:
 - npm run build-dist
 deploy:
