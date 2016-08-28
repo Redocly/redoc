@@ -18,6 +18,13 @@ module.exports = function (config) {
       ]
     },
     webpack: testWebpackConfig,
+    webpackMiddleware: {
+      stats: {
+        modules: false,
+        cached: false,
+        chunk: false
+      }
+    },
     client: {
       chai: {
         truncateThreshold: 0
