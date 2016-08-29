@@ -1,12 +1,11 @@
 const webpack = require('webpack');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 const root = require('./helpers').root;
 const VERSION = JSON.stringify(require('../package.json').version);
 
 
 module.exports = {
-  //context: root(),
+
   devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
@@ -90,14 +89,18 @@ module.exports = {
     ]
   },
 
-
   plugins: [
-
     new webpack.DefinePlugin({
       'IS_PRODUCTION': false,
       'LIB_VERSION': VERSION
     }),
-
-    new ForkCheckerPlugin()
+    // ignore changes during tests
+    new webpack.WatchIgnorePlugin([
+      /\/ReDoc$/i, // ignore change of ReDoc folder itself
+      /node_modules\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
+      /\.tmp\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
+      /dist\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
+      /(?:[^\/]*(?:\/|$))*[^\/]*\.css$/ // ignore css files
+    ])
   ],
 }

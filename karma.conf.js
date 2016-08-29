@@ -19,12 +19,8 @@ module.exports = function (config) {
     },
     webpack: testWebpackConfig,
     webpackMiddleware: {
-      stats: {
-        modules: false,
-        cached: false,
-        chunk: false
-      },
-      noInfo: true
+      stats: 'errors-only',
+      state: true
     },
     client: {
       chai: {
