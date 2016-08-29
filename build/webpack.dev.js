@@ -26,7 +26,7 @@ module.exports = {
     }
   },
   externals: {
-      "jquery": "jQuery"
+    "jquery": "jQuery"
   },
   node: {
     fs: "empty"

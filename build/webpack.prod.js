@@ -7,7 +7,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   context: root(),
-  debug: false,
   devtool: 'cheap-module-source-map',
 
   resolve: {
@@ -24,7 +23,7 @@ module.exports = {
     }
   },
   externals: {
-      "jquery": "jQuery"
+    "jquery": "jQuery"
   },
   node: {
     fs: "empty"
@@ -43,10 +42,10 @@ module.exports = {
   },
 
   module: {
-    // preLoaders: [{
-    //   test: /\.js$/,
-    //   loader: 'source-map'
-    // // },
+    preLoaders: [{
+      test: /\.js$/,
+      loader: 'source-map'
+    }],
     loaders: [{
       test: /\.ts$/,
       loader: 'awesome-typescript-loader',
@@ -71,7 +70,7 @@ module.exports = {
       output: {
         comments: false
       },
-      sourceMap: false
+      sourceMap: true
     }),
 
     new webpack.DefinePlugin({

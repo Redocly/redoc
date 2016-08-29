@@ -8,7 +8,6 @@ const VERSION = JSON.stringify(require('../package.json').version);
 module.exports = {
   //context: root(),
   devtool: 'inline-source-map',
-  debug: true,
   resolve: {
     extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
     root: root('lib'),
@@ -24,7 +23,7 @@ module.exports = {
     }
   },
   externals: {
-      "jquery": "jQuery"
+    "jquery": "jQuery"
   },
   node: {
     fs: "empty"
@@ -38,6 +37,10 @@ module.exports = {
   },
 
   module: {
+    preLoaders: [{
+      test: /\.js$/,
+      loader: 'source-map'
+    }],
     loaders: [ {
       test: /\.ts$/,
       loaders: [
