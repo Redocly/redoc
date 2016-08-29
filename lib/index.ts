@@ -20,9 +20,9 @@ export function init(specUrl:string, options?) {
   if (moduleRef) {
     destroy();
   }
-  //
-  // optionsService.options = options;
-  // optionsService.options.specUrl = optionsService.options.specUrl || specUrl;
+
+  Redoc._preOptions = options;
+  options.specUrl = options.specUrl || specUrl;
 
   Redoc.showLoadingAnimation();
   return SpecManager.instance().load(specUrl)

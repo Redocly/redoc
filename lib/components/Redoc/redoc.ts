@@ -17,8 +17,9 @@ import { OptionsService, RedocEventsService } from '../../services/index';
 })
 export class Redoc extends BaseComponent implements AfterViewInit {
   static appRef: ComponentRef<any>;
+  static _preOptions: any;
 
-  options: any;
+  public options: any;
 
   private element: any;
 
@@ -51,6 +52,8 @@ export class Redoc extends BaseComponent implements AfterViewInit {
   constructor(specMgr: SpecManager, optionsMgr:OptionsService, elementRef:ElementRef,
     public events:RedocEventsService) {
     super(specMgr);
+    // merge options passed before init
+    optionsMgr.options = Redoc._preOptions;
     this.element = elementRef.nativeElement;
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
