@@ -8,15 +8,15 @@ import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
 import { bootstrapRedoc } from './bootstrap';
 
+if (IS_PRODUCTION) {
+  disableDebugTools();
+  enableProdMode();
+}
+
 export const version = LIB_VERSION;
 
 var moduleRef;
 export function init(specUrl:string, options?) {
-  if (IS_PRODUCTION) {
-    disableDebugTools();
-    enableProdMode();
-  }
-
   if (moduleRef) {
     destroy();
   }
