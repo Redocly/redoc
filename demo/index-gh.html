@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReDoc</title>
+    <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.vaadin.com/vaadin-core-elements/latest/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="https://cdn.vaadin.com/vaadin-core-elements/master/vaadin-combo-box/vaadin-combo-box-light.html">
+  </head>
+  <body>
+    <nav>
+      <header> <a href="/ReDoc"> ReDoc </a> </header>
+      <template is="dom-bind" id="specs">
+        <form id="schema-url-form" is="iron-form">
+          <vaadin-combo-box-light id="spec-input" items="[[specs]]" allow-custom-value>
+            <input placeholder="URL to a spec to try" id="schema-url-input" type="text" is="iron-input" value="https://rebilly.github.io/RebillyAPI/swagger.json">
+          </vaadin-combo-box-light>
+          <button type="submit"> Explore </button>
+        </form>
+      </template>
+      <iframe src="https://ghbtns.com/github-btn.html?user=Rebilly&repo=ReDoc&type=star&count=true&size=large"
+      frameborder="0" scrolling="0" width="130px" height="30px"></iframe>
+    </nav>
+
+    <redoc scroll-y-offset="body > nav" spec-url='swagger.yaml'></redoc>
+
+    <script src="main.js"> </script>
+    <script src="./dist/redoc.min.js"> </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-81703547-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

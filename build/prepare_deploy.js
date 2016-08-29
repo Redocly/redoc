@@ -11,6 +11,7 @@ set('-v');
 // build
 exec('npm run build-dist');
 cd('demo');
+mv('index-gh.html', 'index.html');
 mkdir('-p', 'dist');
 cp('-R', '../dist/*', './dist/');
 cd('..');
