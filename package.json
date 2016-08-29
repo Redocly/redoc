@@ -81,6 +81,7 @@
     "tslint-stylish": "^2.1.0-beta",
     "typescript": "^2.0.0",
     "webpack": "^2.1.0-beta.21",
+    "webpack-dev-server": "^1.15.0",
     "yargs": "^4.7.1"
   },
   "dependencies": {
