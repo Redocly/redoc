@@ -23,7 +23,8 @@ module.exports = function (config) {
         modules: false,
         cached: false,
         chunk: false
-      }
+      },
+      noInfo: true
     },
     client: {
       chai: {

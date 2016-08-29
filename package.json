@@ -16,7 +16,7 @@
     "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo",
     "ngc": "ngc -p .",
     "webpack:prod": "webpack --config build/webpack.prod.js --profile --bail",
-    "build:sass": "node-sass -o lib lib",
+    "build:sass": "node-sass -q -o lib lib",
     "build:prod": "npm run build:sass && npm run ngc && npm run webpack:prod",
     "build-dist": "npm run build:prod",
     "stats": "webpack --config build/webpack.prod.js --json > stats.json",
