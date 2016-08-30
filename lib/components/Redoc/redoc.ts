@@ -1,6 +1,6 @@
 'use strict';
 
-import { ElementRef, ComponentRef, AfterViewInit, Component } from '@angular/core';
+import { ElementRef, ComponentRef, AfterViewInit, Component, ChangeDetectionStrategy} from '@angular/core';
 
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { BaseComponent } from '../base';
@@ -14,6 +14,7 @@ import { OptionsService, RedocEventsService } from '../../services/index';
   selector: 'redoc',
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements AfterViewInit {
   static appRef: ComponentRef<any>;

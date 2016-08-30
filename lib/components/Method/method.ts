@@ -1,5 +1,5 @@
 'use strict';
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
@@ -8,6 +8,7 @@ import { SchemaHelper } from '../../services/schema-helper.service';
   selector: 'method',
   templateUrl: './method.html',
   styleUrls: ['./method.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Method extends BaseComponent implements OnInit {
   @Input() pointer:string;

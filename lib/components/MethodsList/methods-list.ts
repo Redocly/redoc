@@ -1,12 +1,13 @@
 'use strict';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/index';
 
 @Component({
   selector: 'methods-list',
   templateUrl: './methods-list.html',
-  styleUrls: ['./methods-list.css']
+  styleUrls: ['./methods-list.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MethodsList extends BaseComponent implements OnInit {
   @Input() pointer:string;

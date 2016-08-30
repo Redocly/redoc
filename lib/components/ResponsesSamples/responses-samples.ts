@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { statusCodeType } from '../../utils/helpers';
@@ -19,6 +19,7 @@ function hasExample(response) {
   selector: 'responses-samples',
   templateUrl: './responses-samples.html',
   styleUrls: ['./responses-samples.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResponsesSamples extends BaseComponent implements OnInit {
   @Input() pointer:string;

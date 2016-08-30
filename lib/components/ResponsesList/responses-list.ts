@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { statusCodeType } from '../../utils/helpers';
@@ -14,7 +14,8 @@ function isNumeric(n) {
 @Component({
   selector: 'responses-list',
   templateUrl: './responses-list.html',
-  styleUrls: ['./responses-list.css']
+  styleUrls: ['./responses-list.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResponsesList extends BaseComponent implements OnInit {
   @Input() pointer:string;

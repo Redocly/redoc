@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, Input, Renderer, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, Renderer, ElementRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer, SchemaHelper } from '../../services/index';
@@ -8,7 +8,8 @@ import { SchemaNormalizer, SchemaHelper } from '../../services/index';
 @Component({
   selector: 'json-schema',
   templateUrl: './json-schema.html',
-  styleUrls: ['./json-schema.css']
+  styleUrls: ['./json-schema.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class JsonSchema extends BaseComponent implements OnInit {
   @Input() pointer: string;
