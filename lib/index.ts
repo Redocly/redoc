@@ -16,7 +16,7 @@ if (IS_PRODUCTION) {
 export const version = LIB_VERSION;
 
 var moduleRef;
-export function init(specUrl:string, options?) {
+export function init(specUrl:string, options:any = {}) {
   if (moduleRef) {
     destroy();
   }
