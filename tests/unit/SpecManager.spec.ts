@@ -176,8 +176,8 @@ describe('Utils', () => {
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.not.be.empty();
         deriveDefs.should.be.deepEqual([
-          {name: 'Cat', empty: false, $ref: '#/definitions/Cat'},
-          {name: 'Dog', empty: false, $ref: '#/definitions/Dog'}
+          {name: 'Cat', $ref: '#/definitions/Cat'},
+          {name: 'Dog', $ref: '#/definitions/Dog'}
         ]);
       });
 

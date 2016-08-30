@@ -27,10 +27,10 @@ describe('Common components', () => {
       expect(component).not.toBeNull();
     });
 
-    it('should start unsticked', () => {
+    it('should start sticked', () => {
       spyOn(component, 'stick').and.callThrough();
       fixture.detectChanges();
-      expect(component.stick).not.toHaveBeenCalled();
+      expect(component.stick).toHaveBeenCalled();
     });
 
     it('should stick if scrolled more than scrollYOffset', () => {

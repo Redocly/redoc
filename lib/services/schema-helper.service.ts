@@ -97,7 +97,7 @@ const injectors = {
   object: {
     check: (propertySchema) => {
       return propertySchema.type === 'object' && (propertySchema.properties ||
-        typeof propertySchema.additionalProperties === 'object')
+        typeof propertySchema.additionalProperties === 'object');
     },
     inject: (injectTo, propertySchema = injectTo) => {
       let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
