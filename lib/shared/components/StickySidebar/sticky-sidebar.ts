@@ -25,7 +25,6 @@ export class StickySidebar implements OnInit, OnDestroy {
 
   bind() {
     this.cancelScrollBinding = DOM.onAndCancel(this.scrollParent, 'scroll', () => { this.updatePosition(); });
-    this.updatePosition();
   }
 
   unbind() {
@@ -56,8 +55,9 @@ export class StickySidebar implements OnInit, OnDestroy {
 
   ngOnInit() {
     // FIXME use more reliable code
-    this.$redocEl = this.$element.offsetParent || DOM.defaultDoc().body;
+    this.$redocEl = this.$element.offsetParent.parentNode || DOM.defaultDoc().body;
     this.bind();
+    this.updatePosition();
   }
 
   ngOnDestroy() {

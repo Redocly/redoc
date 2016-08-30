@@ -1,6 +1,6 @@
 <div class="methods">
   <div class="tag" *ngFor="let tag of tags;trackBy:trackByTagName">
-    <div class="tag-info" [attr.section]="tag.id" *ngIf="!tag.virtual">
+    <div class="tag-info" [attr.section]="tag.id" *ngIf="!tag.headless">
       <h1 class="sharable-header"> <a class="share-link" href="#tag/{{tag.name | encodeURIComponent}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
     </div>
