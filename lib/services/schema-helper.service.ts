@@ -67,11 +67,15 @@ const injectors = {
       return propertySchema.type === 'array' && !Array.isArray(propertySchema.items);
     },
     inject: (injectTo, propertySchema = injectTo, propPointer) => {
-      injectTo._isArray = true;
-      injectTo._pointer = propertySchema.items._pointer
-        || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
+      if (!(SchemaHelper.detectType(propertySchema.items) === 'object')) {
+        injectTo._isArray = true;
+        injectTo._pointer = propertySchema.items._pointer
+          || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
 
-      SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+        SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+      } else {
+        injectors.object.inject(injectTo, propertySchema.items);
+      }
       injectTo._widgetType = 'array';
     }
   },
@@ -270,6 +274,7 @@ export class SchemaHelper {
   }
 
   static detectType(schema) {
+    if (schema.type) return schema.type;
     let keywords = Object.keys(keywordTypes);
     for (var i=0; i < keywords.length; i++) {
       let keyword = keywords[i];
