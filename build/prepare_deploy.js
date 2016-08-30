@@ -23,6 +23,6 @@ var v1Dir = path.join(paths.releases, '1.x.x/');
 mkdir('-p', versionDir)
 mkdir('-p', latestDir);
 mkdir('-p', v1Dir);
-cp(paths.redocBuilt + '.min.js', versionDir);
-cp(paths.redocBuilt + '.min.js', latestDir);
-cp(paths.redocBuilt + '.min.js', v1Dir);
+cp(paths.redocBuilt, versionDir);
+cp(paths.redocBuilt, latestDir);
+cp(paths.redocBuilt, v1Dir);
