@@ -27,8 +27,9 @@
 
 ## Releases
 We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
-- particular release, e.g. `v0.16.1`: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
+- particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
+- `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js **[not for production]**
 
 ## Deployment
 
