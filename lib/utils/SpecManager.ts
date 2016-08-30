@@ -163,11 +163,7 @@ export class SpecManager {
       let idx = subTypes.findIndex(ref => ref === defPointer);
       if (idx < 0) continue;
 
-      let empty = false;
-      if (subTypes.length === 1) {
-        empty = true;
-      }
-      res.push({name: defName, $ref: `#/definitions/${defName}`, empty});
+      res.push({name: defName, $ref: `#/definitions/${defName}`});
     }
     return res;
   }

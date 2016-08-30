@@ -102,8 +102,10 @@ class AllOfMerger {
         AllOfMerger.mergeObject(into, subSchema, i);
       }
       // don't merge _pointer
+      let tmpPtr = subSchema._pointer;
       subSchema._pointer = null;
       defaults(into, subSchema);
+      subSchema._pointer = tmpPtr;
     }
     into.allOf = null;
   }

@@ -25,6 +25,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
   _isArray: boolean;
   normalizer: SchemaNormalizer;
   autoExpand = false;
+  descendants: any;
 
   constructor(specMgr:SpecManager, private _renderer: Renderer, private _elementRef: ElementRef) {
     super(specMgr);
@@ -36,46 +37,40 @@ export class JsonSchema extends BaseComponent implements OnInit {
   }
 
   selectDescendant(idx) {
-    let activeDescendant = this.schema._descendants[idx];
+    let activeDescendant = this.descendants[idx];
     if (!activeDescendant || activeDescendant.active) return;
-    this.schema._descendants.forEach(subSchema => {
-      subSchema.active = false;
+    this.descendants.forEach(d => {
+      d.active = false;
     });
     activeDescendant.active = true;
-    this.activeDescendant = activeDescendant;
+
+    this.pointer = activeDescendant.$ref;
+    this.schema = this.specMgr.byPointer(this.pointer);
+    this.schema = this.normalizer.normalize(this.schema, this.normPointer, {omitParent: false});
+    this.preprocessSchema();
   }
 
   initDescendants() {
-    if (!this.schema._descendants || !this.schema._descendants.length) {
-      return;
-    }
-    this.hasDescendants = true;
-    let enumArr = this.schema._properties[this.schema._properties.length - 1].enum;
-    if (enumArr) {
-      let enumOrder = {};
-      enumArr.forEach((enumItem, idx) => {
-        enumOrder[enumItem.val] = idx;
-      });
-
-      this.schema._descendants.sort((a, b) => {
-        return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
-      });
-    }
+    this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer);
     this.selectDescendant(0);
   }
 
   init() {
     if (!this.pointer) return;
-    if (this.nestOdd) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'nestodd', 'true');
-    }
     this.schema = this.componentSchema;
     if (!this.schema) {
       throw new Error(`Can't load component schema at ${this.pointer}`);
     }
 
+    this.applyStyling();
+
     this.schema = this.normalizer.normalize(this.schema, this.normPointer);
+    this.initDescendants();
     this.schema = SchemaHelper.unwrapArray(this.schema, this.normPointer);
+    this.preprocessSchema();
+  }
+
+  preprocessSchema() {
     SchemaHelper.preprocess(this.schema, this.normPointer, this.pointer);
 
     if (!this.schema.isTrivial) {
@@ -89,7 +84,6 @@ export class JsonSchema extends BaseComponent implements OnInit {
       this.properties = this.properties && this.properties.filter(prop => !prop.readOnly);
     }
 
-    this.initDescendants();
     this._hasSubSchemas = this.properties && this.properties.some(
       propSchema => {
         if (propSchema.type === 'array') {
@@ -101,8 +95,14 @@ export class JsonSchema extends BaseComponent implements OnInit {
     this.autoExpand = this.properties && this.properties.length === 1;
   }
 
-  trackByIdx(index: number, item: any): number {
-    return index;
+  applyStyling() {
+    if (this.nestOdd) {
+      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'nestodd', 'true');
+    }
+  }
+
+  trackByName(index: number, item: any): number {
+    return item.name;
   }
 
   ngOnInit() {

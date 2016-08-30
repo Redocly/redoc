@@ -59,7 +59,6 @@ const injectors = {
   discriminator: {
     check: (propertySchema) => propertySchema.discriminator,
     inject: (injectTo, propertySchema = injectTo, pointer) => {
-      injectTo._descendants = SpecManager.instance().findDerivedDefinitions(pointer);
       injectTo.discriminator = propertySchema.discriminator;
     }
   },
@@ -215,7 +214,6 @@ export class SchemaHelper {
       schema.required.forEach(prop => requiredMap[prop] = true);
     }
 
-    let discriminatorFieldIdx = -1;
     let props = schema.properties && Object.keys(schema.properties).map((propName, idx) => {
       let propertySchema = Object.assign({}, schema.properties[propName]);
       let propPointer = propertySchema._pointer ||
@@ -228,9 +226,6 @@ export class SchemaHelper {
       }
       propertySchema._required = !!requiredMap[propName];
       propertySchema.isDiscriminator = (schema.discriminator === propName);
-      if (propertySchema.isDiscriminator) {
-        discriminatorFieldIdx = idx;
-      }
       return propertySchema;
     });
 
@@ -242,11 +237,6 @@ export class SchemaHelper {
       props.push(propsSchema);
     }
 
-    // Move discriminator field to the end of properties list
-    if (discriminatorFieldIdx > -1) {
-      let discrProp = props.splice(discriminatorFieldIdx, 1);
-      props.push(discrProp[0]);
-    }
     // filter readOnly props for request schemas
     if (opts.skipReadOnly) {
       props = props.filter(prop => !prop.readOnly);

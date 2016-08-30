@@ -155,16 +155,6 @@ table {
   border-left-color: transparent;
 }
 
-.param.discriminator {
-  > .param-info {
-    padding-bottom: 0;
-  }
-
-  > .param-name:after {
-    display: none;
-  }
-}
-
 .discriminator-info {
   font-weight: $regular;
   margin-bottom: 10px;

@@ -45,9 +45,9 @@
   <template ngSwitchCase="object">
     <table class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
       <!-- <caption> {{_displayType}} </caption> -->
-      <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByIdx">
+      <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
         <tr class="param" [ngClass]="{'last': last,
-            'discriminator': prop.isDiscriminator && !activeDescendant.empty,
+            'discriminator': prop.isDiscriminator,
             'complex': prop._pointer,
             'additional': prop._additional,
             'expanded': subSchema.visible
@@ -79,8 +79,8 @@
             <div class="discriminator-info" *ngIf="prop.isDiscriminator">
               <span>This field value determines the exact schema:</span>
               <drop-down (change)="selectDescendant($event)">
-                <option *ngFor="let descendant of schema._descendants; let i=index"
-                [value]="i">{{descendant.name}}</option>
+                <option *ngFor="let descendant of descendants; let i=index"
+                [value]="i" [attr.selected]="descendant.active ? '' : null" >{{descendant.name}}</option>
               </drop-down>
             </div>
           </td>
@@ -95,15 +95,6 @@
           </td>
         </tr>
       </template>
-      <tr *ngIf="hasDescendants" class="param-wrap discriminator-wrap" [ngClass]="{empty:activeDescendant.empty}">
-        <td colspan="2">
-          <div class="derived-schema" *ngFor="let descendant of schema._descendants" [ngClass]="{active: descendant.active, empty: descendant.empty}">
-            <json-schema class="discriminator-part" *ngIf="!descendant.empty" [childFor]="pointer" [nestOdd]="nestOdd"
-            pointer="{{descendant.$ref}}" [final]="descendant.final" [isRequestSchema]="isRequestSchema">
-            </json-schema>
-          </div>
-        </td>
-      </tr>
     </table>
   </template>
 
