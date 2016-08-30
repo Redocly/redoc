@@ -4,6 +4,11 @@ const VERSION = JSON.stringify(require('../package.json').version);
 
 const root = require('./helpers').root;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BANNER =
+`ReDoc - OpenAPI/Swagger-generated API Reference Documentation
+-------------------------------------------------------------
+  Version: ${VERSION}
+  Repo: https://github.com/Rebilly/ReDoc`;
 
 module.exports = {
   context: root(),
@@ -72,7 +77,7 @@ module.exports = {
       },
       sourceMap: true
     }),
-
+    new webpack.BannerPlugin(BANNER),
     new webpack.DefinePlugin({
       'IS_PRODUCTION': true,
       'LIB_VERSION': VERSION

@@ -3,12 +3,12 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 
 const root = require('./helpers').root;
 const VERSION = JSON.stringify(require('../package.json').version);
-
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
 // TODO Refactor common parts of config
 
 module.exports = {
   context: root(),
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   debug: false,
 
   resolve: {
@@ -43,22 +43,22 @@ module.exports = {
       poll: true
     },
     port: 9000,
-    hot: true,
-    stats: {
-      modules: false,
-      cached: false,
-      chunk: false
-    }
+    hot: false,
+    stats: 'errors-only'
   },
 
   output: {
     path: root('dist'),
     filename: '[name].js',
-    sourceMapFilename: '[name].map',
+    sourceMapFilename: '[name].[id].map',
     chunkFilename: '[id].chunk.js'
   },
 
   module: {
+    preLoaders: [{
+      test: /\.js$/,
+      loader: 'source-map'
+    }],
     loaders: [{
       test: /\.ts$/,
       loaders: [
@@ -89,7 +89,7 @@ module.exports = {
     }),
 
     new webpack.DefinePlugin({
-      'IS_PRODUCTION': false,
+      'IS_PRODUCTION': IS_PRODUCTION,
       'LIB_VERSION': VERSION
     }),
 
