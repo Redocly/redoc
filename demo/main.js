@@ -31,7 +31,6 @@
     schemaUrlInput = document.getElementById('schema-url-input');
 
     schemaUrlForm.addEventListener('submit', function(event) {
-      console.log('test')
       event.preventDefault();
       event.stopPropagation();
       location.search = updateQueryStringParameter(location.search, 'url', schemaUrlInput.value)
@@ -71,5 +70,4 @@
       });
     });
   });
-  //window.redocDebugMode = true;
 })();

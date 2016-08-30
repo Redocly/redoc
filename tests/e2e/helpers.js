@@ -48,6 +48,11 @@ function verifyNoBrowserErrors() {
       if (message.indexOf('browser-sync') > -1) return false;
       // skip firefox-specific warning
       if (message.indexOf('mutating the [[Prototype]]') > -1) return false;
+      if (message.match(/^Unknown property.*Declaration dropped/)) return false;
+      if (message.match(/^Error in parsing value for.*Declaration dropped/)) return false;
+      if (message.indexOf('The character encoding of the HTML document was not declared') > -1) return false;
+      if (message.match(/addons.manager\s+DEBUG/)) return false;
+
 
       if (logEntry.level.value >= LogLevel.INFO) {
         if (message.length > MAX_ERROR_MESSAGE_SYMBOLS) {

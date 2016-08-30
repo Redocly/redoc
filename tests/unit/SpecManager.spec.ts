@@ -114,7 +114,7 @@ describe('Utils', () => {
     });
 
     describe('getMethodParams method', () => {
-      beforeAll((done) => {
+      beforeAll((done:any) => {
         specMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(() => {
           done();
         }, () => {
@@ -163,7 +163,7 @@ describe('Utils', () => {
     });
 
     describe('findDerivedDefinitions method', () => {
-      beforeAll((done) => {
+      beforeAll((done:any) => {
         specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
           done();
         }, () => {
@@ -176,8 +176,8 @@ describe('Utils', () => {
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.not.be.empty();
         deriveDefs.should.be.deepEqual([
-          {name: 'Cat', empty: false, $ref: '#/definitions/Cat'},
-          {name: 'Dog', empty: false, $ref: '#/definitions/Dog'}
+          {name: 'Cat', $ref: '#/definitions/Cat'},
+          {name: 'Dog', $ref: '#/definitions/Dog'}
         ]);
       });
 

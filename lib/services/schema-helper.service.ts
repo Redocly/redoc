@@ -3,7 +3,7 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { SpecManager } from '../utils/SpecManager';
 import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
-import slugify from 'slugify';
+import * as slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
   childFor: string;
@@ -59,7 +59,6 @@ const injectors = {
   discriminator: {
     check: (propertySchema) => propertySchema.discriminator,
     inject: (injectTo, propertySchema = injectTo, pointer) => {
-      injectTo._descendants = SpecManager.instance().findDerivedDefinitions(pointer);
       injectTo.discriminator = propertySchema.discriminator;
     }
   },
@@ -68,11 +67,15 @@ const injectors = {
       return propertySchema.type === 'array' && !Array.isArray(propertySchema.items);
     },
     inject: (injectTo, propertySchema = injectTo, propPointer) => {
-      injectTo._isArray = true;
-      injectTo._pointer = propertySchema.items._pointer
-        || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
+      if (!(SchemaHelper.detectType(propertySchema.items) === 'object')) {
+        injectTo._isArray = true;
+        injectTo._pointer = propertySchema.items._pointer
+          || JsonPointer.join(propertySchema._pointer || propPointer, ['items']);
 
-      SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+        SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
+      } else {
+        injectors.object.inject(injectTo, propertySchema.items);
+      }
       injectTo._widgetType = 'array';
     }
   },
@@ -89,12 +92,12 @@ const injectors = {
         itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
       }
       injectTo._widgetType = 'tuple';
-      // SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
     }
   },
   object: {
     check: (propertySchema) => {
-      return propertySchema.type === 'object' && propertySchema.properties;
+      return propertySchema.type === 'object' && (propertySchema.properties ||
+        typeof propertySchema.additionalProperties === 'object');
     },
     inject: (injectTo, propertySchema = injectTo) => {
       let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
@@ -215,7 +218,6 @@ export class SchemaHelper {
       schema.required.forEach(prop => requiredMap[prop] = true);
     }
 
-    let discriminatorFieldIdx = -1;
     let props = schema.properties && Object.keys(schema.properties).map((propName, idx) => {
       let propertySchema = Object.assign({}, schema.properties[propName]);
       let propPointer = propertySchema._pointer ||
@@ -228,9 +230,6 @@ export class SchemaHelper {
       }
       propertySchema._required = !!requiredMap[propName];
       propertySchema.isDiscriminator = (schema.discriminator === propName);
-      if (propertySchema.isDiscriminator) {
-        discriminatorFieldIdx = idx;
-      }
       return propertySchema;
     });
 
@@ -242,11 +241,6 @@ export class SchemaHelper {
       props.push(propsSchema);
     }
 
-    // Move discriminator field to the end of properties list
-    if (discriminatorFieldIdx > -1) {
-      let discrProp = props.splice(discriminatorFieldIdx, 1);
-      props.push(discrProp[0]);
-    }
     // filter readOnly props for request schemas
     if (opts.skipReadOnly) {
       props = props.filter(prop => !prop.readOnly);
@@ -280,6 +274,7 @@ export class SchemaHelper {
   }
 
   static detectType(schema) {
+    if (schema.type) return schema.type;
     let keywords = Object.keys(keywordTypes);
     for (var i=0; i < keywords.length; i++) {
       let keyword = keywords[i];

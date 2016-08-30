@@ -1,12 +1,11 @@
 'use strict';
 import { Injectable } from '@angular/core';
 import { isFunction, isString } from '@angular/core/src/facade/lang';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { BrowserDomAdapter as DOM } from '../utils/browser-adapter';
 
 const defaults = {
   scrollYOffset: 0,
-  disableLazySchemas: false,
-  debugMode: false//global && global.redocDebugMode
+  disableLazySchemas: false
 };
 
 const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl', 'suppressWarnings']);
@@ -15,9 +14,8 @@ const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl', 
 export class OptionsService {
   private _options: any;
 
-  constructor(private dom:BrowserDomAdapter) {
+  constructor() {
     this._options = defaults;
-    this.dom = dom;
   }
 
   get options() {
@@ -30,7 +28,7 @@ export class OptionsService {
 
   parseOptions(el) {
     let parsedOpts;
-    let attributesMap = this.dom.attributeMap(el);
+    let attributesMap = DOM.attributeMap(el);
     parsedOpts = {};
     Array.from(attributesMap.keys())
       //camelCasify
@@ -59,7 +57,7 @@ export class OptionsService {
         // if selector or node function that returns bottom offset of this node
         let el = this._options.scrollYOffset;
         if (!(el instanceof Node)) {
-          el = this.dom.query(el);
+          el = DOM.query(el);
         }
         if (!el) {
           this._options.scrollYOffset = () => 0;

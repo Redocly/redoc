@@ -32,7 +32,7 @@ describe('Redoc components', () => {
 
     it('should init component', () => {
       component.pointer = '';
-      (<any>specMgr)._schema = {type: 'object'};
+      (<SpecManager>specMgr)._schema = {type: 'object'};
       fixture.detectChanges();
       expect(component).not.toBeNull();
     });

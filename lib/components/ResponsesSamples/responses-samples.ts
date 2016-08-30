@@ -1,10 +1,8 @@
 'use strict';
 
-import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
-import { Tabs, Tab } from '../../shared/components/index';
-import { SchemaSample } from '../index';
 import { statusCodeType } from '../../utils/helpers';
 
 
@@ -17,14 +15,17 @@ function hasExample(response) {
     response.schema);
 }
 
-@RedocComponent({
+@Component({
   selector: 'responses-samples',
   templateUrl: './responses-samples.html',
   styleUrls: ['./responses-samples.css'],
-  directives: [forwardRef( ()=> SchemaSample), Tabs, Tab]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResponsesSamples extends BaseComponent {
+export class ResponsesSamples extends BaseComponent implements OnInit {
+  @Input() pointer:string;
+
   data: any;
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
@@ -54,5 +55,9 @@ export class ResponsesSamples extends BaseComponent {
     })
     .filter(response => hasExample(response));
     this.data.responses = responses;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

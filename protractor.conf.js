@@ -3,7 +3,7 @@ const loadJson = require('./tests/e2e/helpers').loadJson;
 const travis = process.env.TRAVIS;
 
 let config = {
-  specs: ['./tests/e2e/**/*.js'],
+  specs: ['./tests/e2e/**/*.e2e.js'],
   baseUrl: 'http://localhost:3000',
   framework: 'jasmine2',
   onPrepare: function() {
@@ -13,9 +13,8 @@ let config = {
     // load APIs.guru list
     return loadJson('https://api.apis.guru/v2/list.json').then((list) => {
       global.apisGuruList = list;
-      return browser.getCapabilities().then(function (cap) {
-        browser.isIE = cap.browserName === 'internet explorer'
-          || (cap.caps_ && cap.caps_.browserName === 'internet explorer')
+      return browser.getCapabilities().then(function (caps) {
+        browser.isIE = caps.get('browserName') === 'internet explorer';
       });
     });
   },
@@ -29,8 +28,8 @@ let config = {
     print: function() {}
   },
   multiCapabilities: [
-    { browserName: 'chrome' },
-    { browserName: 'firefox' }
+    { browserName: 'chrome' }
+    // { browserName: 'firefox' }
   ]
 };
 

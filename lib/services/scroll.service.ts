@@ -1,7 +1,8 @@
 'use strict';
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
+import { BrowserDomAdapter as DOM } from '../utils/browser-adapter';
 import { OptionsService } from './options.service';
+import { throttle } from '../utils/helpers';
 
 export const INVIEW_POSITION = {
   ABOVE : 1,
@@ -16,12 +17,11 @@ export class ScrollService {
   @Output() scroll = new EventEmitter();
   private prevOffsetY: number;
   private _cancel:any;
-  constructor(private dom:BrowserDomAdapter, optionsService:OptionsService) {
+  constructor(optionsService:OptionsService) {
     //events.bootstrapped.subscribe(() => this.hashScroll());
     this.scrollYOffset = () => optionsService.options.scrollYOffset();
     this.$scrollParent = optionsService.options.$scrollParent;
     this.scroll = new EventEmitter();
-    this.dom = dom;
     this.bind();
   }
 
@@ -60,7 +60,8 @@ export class ScrollService {
 
   bind() {
     this.prevOffsetY = this.scrollY();
-    this._cancel = this.dom.onAndCancel(this.$scrollParent, 'scroll', (evt) => { this.scrollHandler(evt); });
+    this._cancel = DOM.onAndCancel(this.$scrollParent, 'scroll',
+      throttle((evt) => { this.scrollHandler(evt); }, 100, this));
   }
 
   unbind() {

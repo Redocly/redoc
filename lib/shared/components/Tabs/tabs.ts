@@ -1,7 +1,6 @@
 'use strict';
 
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { CORE_DIRECTIVES } from '@angular/common';
 import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
@@ -13,7 +12,6 @@ import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
     </ul>
     <ng-content></ng-content>
   `,
-  directives: [CORE_DIRECTIVES],
   styleUrls: ['tabs.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -70,7 +68,6 @@ export class Tabs implements OnInit {
       <ng-content></ng-content>
     </div>
   `,
-  directives: [CORE_DIRECTIVES],
   styles: [`
     .tab-wrap {
       display: none;

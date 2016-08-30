@@ -1,109 +1,46 @@
 'use strict';
 
-import { provide, enableProdMode, ElementRef,
-  ComponentRef, AfterViewInit } from '@angular/core';
-import { bootstrap } from '@angular/platform-browser-dynamic';
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-import { RedocComponent, BaseComponent } from '../base';
+import { ElementRef, ComponentRef, AfterViewInit, Component, ChangeDetectionStrategy} from '@angular/core';
 
-import detectScollParent from 'scrollparent';
+import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
+import { BaseComponent } from '../base';
 
-import { ApiInfo } from '../ApiInfo/api-info';
-import { ApiLogo } from '../ApiLogo/api-logo';
-import { MethodsList } from '../MethodsList/methods-list';
-import { SideMenu } from '../SideMenu/side-menu';
-import { Warnings } from '../Warnings/warnings';
+import * as detectScollParent from 'scrollparent';
 
-import { StickySidebar } from '../../shared/components/index';
-import {SpecManager} from '../../utils/SpecManager';
-import { OptionsService, RedocEventsService, MenuService,
-  ScrollService, Hash, WarningsService } from '../../services/index';
+import { SpecManager } from '../../utils/SpecManager';
+import { OptionsService, RedocEventsService } from '../../services/index';
 
-var dom = new BrowserDomAdapter();
-var _modeLocked = false;
-
-@RedocComponent({
+@Component({
   selector: 'redoc',
-  providers: [
-    SpecManager,
-    BrowserDomAdapter,
-    RedocEventsService,
-    ScrollService,
-    Hash,
-    MenuService,
-    WarningsService
-  ],
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],
-  directives: [ ApiInfo, ApiLogo, MethodsList, SideMenu, StickySidebar, Warnings ],
-  detect: true,
-  onPushOnly: false
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements AfterViewInit {
   static appRef: ComponentRef<any>;
+  static _preOptions: any;
 
-  options: any;
+  public options: any;
 
   private element: any;
 
   static showLoadingAnimation() {
-    let elem = dom.query('redoc');
-    dom.addClass(elem, 'loading');
+    let elem = DOM.query('redoc');
+    DOM.addClass(elem, 'loading');
   }
 
   static hideLoadingAnimation() {
-    let redocEl = dom.query('redoc');
+    let redocEl = DOM.query('redoc');
     if (!redocEl) return;
-    dom.addClass(redocEl, 'loading-remove');
+    DOM.addClass(redocEl, 'loading-remove');
     setTimeout(() => {
-      dom.removeClass(redocEl, 'loading-remove');
-      dom.removeClass(redocEl, 'loading');
+      DOM.removeClass(redocEl, 'loading-remove');
+      DOM.removeClass(redocEl, 'loading');
     }, 400);
   }
 
-  static init(specUrl?, options?) {
-    var optionsService = new OptionsService(dom);
-    optionsService.options = options;
-    optionsService.options.specUrl = optionsService.options.specUrl || specUrl;
-    var providers = [
-      provide(OptionsService, {useValue: optionsService})
-    ];
-
-    if (Redoc.appRef) {
-      Redoc.destroy();
-    }
-    Redoc.showLoadingAnimation();
-    return SpecManager.instance().load(specUrl)
-    .then(() => {
-      if (!_modeLocked && !optionsService.options.debugMode) {
-        enableProdMode();
-        _modeLocked = true;
-      }
-      return bootstrap(Redoc, providers);
-    })
-    .then(appRef => {
-      Redoc.hideLoadingAnimation();
-      Redoc.appRef = appRef;
-      console.log('ReDoc bootstrapped!');
-    }).catch(err => {
-      Redoc.hideLoadingAnimation();
-      Redoc.displayError(err);
-      throw err;
-    });
-  }
-
-  static autoInit() {
-    const specUrlAttributeName = 'spec-url';
-    let redocEl = dom.query('redoc');
-    if (!redocEl) return;
-    if (dom.hasAttribute(redocEl, specUrlAttributeName)) {
-      let url = dom.getAttribute(redocEl, specUrlAttributeName);
-      Redoc.init(url);
-    }
-  }
-
   static displayError(err) {
-    let redocEl = dom.query('redoc');
+    let redocEl = DOM.query('redoc');
     if (!redocEl) return;
     let heading = 'Oops... ReDoc failed to render this spec';
     let details = err.message;
@@ -113,35 +50,17 @@ export class Redoc extends BaseComponent implements AfterViewInit {
     redocEl.innerHTML = erroHtml;
   }
 
-  static destroy() {
-    let el = dom.query('redoc');
-    let elClone;
-    let parent;
-    let nextSibling;
-    if (el) {
-      parent = el.parentElement;
-      nextSibling = el.nextElementSibling;
-    }
-
-    elClone = el.cloneNode(false);
-
-    if (Redoc.appRef) {
-      Redoc.appRef.destroy();
-      Redoc.appRef = null;
-
-      // Redoc destroy removes host element, so need to restore it
-      elClone.innerHTML = 'Loading...';
-      if (parent) parent.insertBefore(elClone, nextSibling);
-    }
-  }
-
   constructor(specMgr: SpecManager, optionsMgr:OptionsService, elementRef:ElementRef,
     public events:RedocEventsService) {
     super(specMgr);
+    // merge options passed before init
+    optionsMgr.options = Redoc._preOptions;
     this.element = elementRef.nativeElement;
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
-    optionsMgr.options.$scrollParent = detectScollParent( this.element );
+    let scrollParent = detectScollParent( this.element );
+    if (scrollParent === DOM.defaultDoc().body) scrollParent = window;
+    optionsMgr.options.$scrollParent = scrollParent;
     this.options = optionsMgr.options;
     this.events = events;
   }

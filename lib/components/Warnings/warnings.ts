@@ -1,16 +1,15 @@
 'use strict';
 
-import { SpecManager, RedocComponent, BaseComponent } from '../base';
+import { Component, OnInit } from '@angular/core';
+import { SpecManager, BaseComponent } from '../base';
 import { WarningsService, OptionsService } from '../../services/index';
 
-@RedocComponent({
+@Component({
   selector: 'warnings',
   styleUrls: ['./warnings.css'],
-  templateUrl: './warnings.html',
-  detect: true,
-  onPushOnly: false
+  templateUrl: './warnings.html'
 })
-export class Warnings extends BaseComponent {
+export class Warnings extends BaseComponent implements OnInit {
   warnings: Array<string> = [];
   shown: boolean = false;
   suppressWarnings: boolean;
@@ -29,5 +28,9 @@ export class Warnings extends BaseComponent {
 
   close() {
     this.shown = false;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

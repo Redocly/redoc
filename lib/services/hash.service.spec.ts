@@ -1,7 +1,5 @@
 'use strict';
 
-import { BrowserDomAdapter } from '@angular/platform-browser/src/browser/browser_adapter';
-
 import { RedocEventsService } from './events.service';
 import { Hash } from './hash.service';
 
@@ -10,7 +8,7 @@ describe('Hash Service', () => {
   let hashService;
 
   beforeEach(() => {
-    hashService = new Hash(new BrowserDomAdapter(), events);
+    hashService = new Hash(events);
   });
 
   afterEach(() => {

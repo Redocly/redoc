@@ -1,27 +1,21 @@
 'use strict';
-import { Input } from '@angular/core';
+import { Input, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
-import { RedocComponent, BaseComponent, SpecManager} from '../base';
-
-import { SelectOnClick } from '../../shared/components/SelectOnClick/select-on-click.directive';
-
-import { ParamsList } from '../ParamsList/params-list';
-import { ResponsesList } from '../ResponsesList/responses-list';
-import { ResponsesSamples } from '../ResponsesSamples/responses-samples';
-import { SchemaSample } from '../SchemaSample/schema-sample';
-import { RequestSamples } from '../RequestSamples/request-samples';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 
-@RedocComponent({
+@Component({
   selector: 'method',
   templateUrl: './method.html',
   styleUrls: ['./method.css'],
-  directives: [ ParamsList, ResponsesList, ResponsesSamples, SchemaSample, RequestSamples, SelectOnClick ],
-  detect: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Method extends BaseComponent {
-  method:any;
+export class Method extends BaseComponent implements OnInit {
+  @Input() pointer:string;
   @Input() tag:string;
+
+  method:any;
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
@@ -52,5 +46,9 @@ export class Method extends BaseComponent {
     let pathParams = this.specMgr.getMethodParams(this.pointer, true);
     let bodyParam = pathParams.find(param => param.in === 'body');
     return bodyParam;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

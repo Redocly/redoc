@@ -1,21 +1,19 @@
 'use strict';
-
-import { forwardRef } from '@angular/core';
-import { RedocComponent, BaseComponent, SpecManager } from '../base';
-import { Method } from '../Method/method';
-import { EncodeURIComponentPipe } from '../../utils/pipes';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/index';
 
-@RedocComponent({
+@Component({
   selector: 'methods-list',
   templateUrl: './methods-list.html',
   styleUrls: ['./methods-list.css'],
-  directives: [ forwardRef(() => Method) ],
-  pipes: [ EncodeURIComponentPipe ],
-  detect: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MethodsList extends BaseComponent {
+export class MethodsList extends BaseComponent implements OnInit {
+  @Input() pointer:string;
+
   tags:Array<any> = [];
+
   constructor(specMgr:SpecManager) {
     super(specMgr);
   }
@@ -38,5 +36,9 @@ export class MethodsList extends BaseComponent {
 
   trackByTagName(idx, el) {
     return el.name;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

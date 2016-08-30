@@ -1,13 +1,14 @@
 'use strict';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 
-import {RedocComponent, BaseComponent, SpecManager} from '../base';
-
-@RedocComponent({
+@Component({
   selector: 'api-logo',
   styleUrls: ['./api-logo.css'],
-  templateUrl: './api-logo.html'
+  templateUrl: './api-logo.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApiLogo extends BaseComponent {
+export class ApiLogo extends BaseComponent implements OnInit {
   logo:any = {};
 
   constructor(specMgr:SpecManager) {
@@ -19,5 +20,9 @@ export class ApiLogo extends BaseComponent {
     if (!logoInfo) return;
     this.logo.imgUrl = logoInfo.url;
     this.logo.bgColor = logoInfo.backgroundColor || 'transparent';
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

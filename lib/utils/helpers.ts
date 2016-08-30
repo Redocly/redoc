@@ -1,5 +1,5 @@
 'use strict';
-import Remarkable from 'remarkable';
+import * as Remarkable from 'remarkable';
 declare var Prism: any;
 
 const md = new Remarkable({
@@ -88,4 +88,28 @@ export function defaults(target, src) {
 export function safePush(obj, prop, val) {
   if (!obj[prop]) obj[prop] = [];
   obj[prop].push(val);
+}
+
+// credits https://remysharp.com/2010/07/21/throttling-function-calls
+export function throttle(fn, threshhold, scope) {
+  threshhold = threshhold || 250;
+  var last,
+      deferTimer;
+  return function () {
+    var context = scope || this;
+
+    var now = +new Date,
+        args = arguments;
+    if (last && now < last + threshhold) {
+      // hold on to it
+      clearTimeout(deferTimer);
+      deferTimer = setTimeout(function () {
+        last = now;
+        fn.apply(context, args);
+      }, threshhold);
+    } else {
+      last = now;
+      fn.apply(context, args);
+    }
+  };
 }

@@ -1,9 +1,9 @@
 'use strict';
 
-import JsonSchemaRefParser from 'json-schema-ref-parser';
-import JsonPointer from './JsonPointer';
+import * as JsonSchemaRefParser from 'json-schema-ref-parser';
+import { JsonPointer } from './JsonPointer';
 import { renderMd, safePush } from './helpers';
-import slugify from 'slugify';
+import * as slugify from 'slugify';
 import { parse as urlParse } from 'url';
 
 export class SpecManager {
@@ -32,8 +32,8 @@ export class SpecManager {
       .then(schema => {
           this._url = url;
           this._schema = schema;
-          resolve(this._schema);
           this.init();
+          return resolve(this._schema);
       }, err => reject(err));
     });
 
@@ -163,11 +163,7 @@ export class SpecManager {
       let idx = subTypes.findIndex(ref => ref === defPointer);
       if (idx < 0) continue;
 
-      let empty = false;
-      if (subTypes.length === 1) {
-        empty = true;
-      }
-      res.push({name: defName, $ref: `#/definitions/${defName}`, empty});
+      res.push({name: defName, $ref: `#/definitions/${defName}`});
     }
     return res;
   }

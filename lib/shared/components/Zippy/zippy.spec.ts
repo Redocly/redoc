@@ -5,7 +5,6 @@ import { getChildDebugElement, mouseclick } from '../../../../tests/helpers';
 import { Component } from '@angular/core';
 import {
   inject,
-  expect,
   TestComponentBuilder
 } from '@angular/core/testing';
 

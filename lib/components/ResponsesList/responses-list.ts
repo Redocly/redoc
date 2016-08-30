@@ -1,10 +1,8 @@
 'use strict';
 
-import {RedocComponent, BaseComponent, SpecManager} from '../base';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
-import { JsonSchema } from '../JsonSchema/json-schema';
-import { JsonSchemaLazy } from '../JsonSchema/json-schema-lazy';
-import { Zippy } from '../../shared/components/index';
 import { statusCodeType } from '../../utils/helpers';
 import { OptionsService } from '../../services/index';
 import { SchemaHelper } from '../../services/schema-helper.service';
@@ -13,16 +11,18 @@ function isNumeric(n) {
   return (!isNaN(parseFloat(n)) && isFinite(n));
 }
 
-@RedocComponent({
+@Component({
   selector: 'responses-list',
   templateUrl: './responses-list.html',
   styleUrls: ['./responses-list.css'],
-  directives: [JsonSchema, Zippy, JsonSchemaLazy],
-  detect: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResponsesList extends BaseComponent {
+export class ResponsesList extends BaseComponent implements OnInit {
+  @Input() pointer:string;
+
   responses: Array<any>;
   options: any;
+
   constructor(specMgr:SpecManager, optionsMgr:OptionsService) {
     super(specMgr);
     this.options = optionsMgr.options;
@@ -65,5 +65,9 @@ export class ResponsesList extends BaseComponent {
 
   trackByCode(idx, el) {
     return el.code;
+  }
+
+  ngOnInit() {
+    this.preinit();
   }
 }

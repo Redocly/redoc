@@ -8,11 +8,6 @@ pre {
   position: relative;
 }
 
-// hide top-level collapser
-.redoc-json > .collapser {
-  display: none;
-}
-
 .action-buttons {
   display: block;
   opacity: 0;
@@ -174,5 +169,10 @@ pre {
   	cursor: default;
   	user-select: none;
   	-webkit-user-select: none;
+  }
+
+  // hide top-level collapser
+  .redoc-json > .collapser {
+    display: none;
   }
 }
