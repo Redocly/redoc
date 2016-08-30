@@ -88,12 +88,12 @@ const injectors = {
         itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
       }
       injectTo._widgetType = 'tuple';
-      // SchemaHelper.runInjectors(injectTo, propertySchema.items, propPointer);
     }
   },
   object: {
     check: (propertySchema) => {
-      return propertySchema.type === 'object' && propertySchema.properties;
+      return propertySchema.type === 'object' && (propertySchema.properties ||
+        typeof propertySchema.additionalProperties === 'object')
     },
     inject: (injectTo, propertySchema = injectTo) => {
       let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
