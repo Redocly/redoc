@@ -1,14 +1,13 @@
 'use strict';
 
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
 import { WarningsService, OptionsService } from '../../services/index';
 
 @Component({
   selector: 'warnings',
   styleUrls: ['./warnings.css'],
-  templateUrl: './warnings.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './warnings.html'
 })
 export class Warnings extends BaseComponent implements OnInit {
   warnings: Array<string> = [];
