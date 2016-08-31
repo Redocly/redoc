@@ -21,6 +21,7 @@
         title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
         <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
       </span>
+      <span *ngIf="prop['x-nullable']" class="param-nullable">Nullable</span>
       <div *ngIf="schema.enum" class="param-enum">
         <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
       </div>
@@ -70,7 +71,7 @@
               <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
               </span>
               <span *ngIf="prop._required" class="param-required">Required</span>
-              <span *ngIf="prop._nullable" class="param-nullable">Nullable</span>
+              <span *ngIf="prop['x-nullable']" class="param-nullable">Nullable</span>
               <div *ngIf="prop.default">Default: {{prop.default | json}}</div>
               <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
                 <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>

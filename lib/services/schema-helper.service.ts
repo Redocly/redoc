@@ -163,7 +163,7 @@ const injectors = {
         range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
       } else if (propertySchema.maxLength) {
         range = '<= ' + propertySchema.maxLength;
-      } else if (propertySchema.minimum) {
+      } else if (propertySchema.minLength) {
         range = '>= ' + propertySchema.minLength;
       }
 
@@ -229,7 +229,6 @@ export class SchemaHelper {
         propertySchema._pointer = null;
       }
       propertySchema._required = !!requiredMap[propName];
-      propertySchema._nullable = !!propertySchema['x-nullable'];
       propertySchema.isDiscriminator = (schema.discriminator === propName);
       return propertySchema;
     });
