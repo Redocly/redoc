@@ -51,7 +51,8 @@ function verifyNoBrowserErrors() {
       if (message.match(/^Unknown property.*Declaration dropped/)) return false;
       if (message.match(/^Error in parsing value for.*Declaration dropped/)) return false;
       if (message.indexOf('The character encoding of the HTML document was not declared') > -1) return false;
-      if (message.match(/addons.manager\s+DEBUG/)) return false;
+      if (message.match(/^\d{13}\s+(DeferredSave|addons)/)) return false;
+      if (message.match(/This site makes use of a SHA-1 Certificate/)) return false;
 
 
       if (logEntry.level.value >= LogLevel.INFO) {

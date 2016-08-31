@@ -91,6 +91,7 @@ if (process.env.JOB === 'e2e-guru') {
     delete apisGuruList['googleapis.com:mirror']; // bad urls in images
     delete apisGuruList['googleapis.com:discovery']; // non-string references
     delete apisGuruList['clarify.io']; // non-string references
+    delete apisGuruList['clickmeter.com']; // some complex circular reference
     //delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
     delete apisGuruList['bbci.co.uk']; // too big
 

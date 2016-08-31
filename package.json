@@ -24,7 +24,8 @@
     "e2e-server": "http-server -p 3000 tests/e2e",
     "e2e-copy": "cp dist/redoc.min.js tests/e2e/",
     "webdriver": "webdriver-manager update",
-    "serve:prod": "NODE_ENV=production npm start"
+    "serve:prod": "NODE_ENV=production npm start",
+    "protractor": "protractor"
   },
   "keywords": [
     "OpenAPI",
