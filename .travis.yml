@@ -31,8 +31,6 @@ before_script:
   - sleep 3 # give server time to start
 after_script:
   - kill %1 # kill e2e server
-before_deploy:
-- npm run build-dist
 deploy:
   - provider: npm
     skip_cleanup: true

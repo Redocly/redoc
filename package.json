@@ -9,6 +9,7 @@
   "main": "dist/redoc.min.js",
   "scripts": {
     "test": "npm run lint && node ./build/run_tests.js",
+    "prepublish": "npm run build:prod",
     "branch-release": "git reset --hard && branch-release",
     "lint": "tslint -e \"lib/**/*{ngfactory|css.shim}.ts\" lib/**/*.ts",
     "unit": "npm run build:sass && karma start",
