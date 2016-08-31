@@ -106,3 +106,13 @@ yaml
 lang: JavaScript
 source: console.log('Hello World');
 ```
+
+### Schema Object vendor extensions
+Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
+#### x-code-samples
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-nullable | boolean | marks schema as a nullable |
+
+###### Usage in ReDoc
+Schemas marked as `x-nullable` are marked in ReDoc with the label Nullable
