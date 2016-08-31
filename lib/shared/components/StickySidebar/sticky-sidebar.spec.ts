@@ -27,10 +27,23 @@ describe('Common components', () => {
       expect(component).not.toBeNull();
     });
 
-    it('should start sticked', () => {
+    it('should start unsticked', () => {
       spyOn(component, 'stick').and.callThrough();
+      spyOn(component, 'stickBottom').and.callThrough();
       fixture.detectChanges();
-      expect(component.stick).toHaveBeenCalled();
+      expect(component.stick).not.toHaveBeenCalled();
+      expect(component.stickBottom).not.toHaveBeenCalled();
+    });
+
+    it('should stick to the top on the next VM tick', (done) => {
+      spyOn(component, 'stick').and.callThrough();
+      spyOn(component, 'stickBottom').and.callThrough();
+      fixture.detectChanges();
+      setTimeout(() => {
+        expect(component.stick).toHaveBeenCalled();
+        expect(component.stickBottom).toHaveBeenCalled();
+        done();
+      });
     });
 
     it('should stick if scrolled more than scrollYOffset', () => {
@@ -42,6 +55,8 @@ describe('Common components', () => {
       component.updatePosition();
       expect(component.stick).toHaveBeenCalled();
     });
+
+    // TODO: add tests for stickBottom
   });
 });
 
