@@ -229,6 +229,7 @@ export class SchemaHelper {
         propertySchema._pointer = null;
       }
       propertySchema._required = !!requiredMap[propName];
+      propertySchema._nullable = !!propertySchema['x-nullable'];
       propertySchema.isDiscriminator = (schema.discriminator === propName);
       return propertySchema;
     });

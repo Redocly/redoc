@@ -63,6 +63,14 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   font-weight: bold;
 }
 
+.param-nullable {
+  vertical-align: middle;
+  line-height: $param-name-height;
+  color: #3195a6;
+  font-size: 12px;
+  font-weight: bold;
+}
+
 .param-type {
   vertical-align: middle;
   line-height: $param-name-height;
