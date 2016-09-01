@@ -27,8 +27,9 @@
 
 ## Releases
 We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js
-- particular release, e.g. `v0.16.1`: https://rebilly.github.io/ReDoc/releases/v0.16.0/redoc.min.js
+- particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
+- `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js **[not for production]**
 
 ## Deployment
 
@@ -98,6 +99,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
+* [`x-nullable`](docs/redoc-vendor-extensions.md#nullable) - mark schema param as a nullable
 
 ### `<redoc>` tag attributes
 * `spec-url` - relative or absolute url to your spec file;

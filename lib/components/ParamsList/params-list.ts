@@ -40,7 +40,6 @@ export class ParamsList extends BaseComponent implements OnInit {
 
     if (paramsMap.body && paramsMap.body.length) {
       let bodyParam = paramsMap.body[0];
-      bodyParam.pointer = bodyParam._pointer;
       this.bodyParam = bodyParam;
       paramsMap.body = undefined;
     }

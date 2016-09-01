@@ -1,7 +1,7 @@
 'use strict';
 
 import { Component, ViewChildren, QueryList, EventEmitter, Input,
- ChangeDetectionStrategy, OnInit } from '@angular/core';
+ ChangeDetectionStrategy, OnInit, HostBinding } from '@angular/core';
 
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
@@ -18,6 +18,7 @@ export class RequestSamples extends BaseComponent implements OnInit {
   @Input() pointer:string;
   @Input() schemaPointer:string;
   @ViewChildren(Tabs) childQuery:QueryList<Tabs>;
+  @HostBinding('attr.hidden') hidden;
 
   childTabs: Tabs;
   selectedLang: EventEmitter<any>;
@@ -35,8 +36,9 @@ export class RequestSamples extends BaseComponent implements OnInit {
   }
 
   init() {
-    this.schemaPointer = JsonPointer.join(this.schemaPointer, 'schema');;
+    this.schemaPointer = this.schemaPointer ? JsonPointer.join(this.schemaPointer, 'schema') : null;
     this.samples = this.componentSchema['x-code-samples'] || [];
+    if (!this.schemaPointer && !this.samples.length) this.hidden = true;
   }
 
   ngOnInit() {

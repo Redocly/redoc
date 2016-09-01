@@ -41,7 +41,7 @@ export class ValuesPipe implements PipeTransform {
 
 @Pipe({ name: 'jsonPointerEscape' })
 export class JsonPointerEscapePipe implements PipeTransform {
-  transform(value) {
+  transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
@@ -53,7 +53,7 @@ export class JsonPointerEscapePipe implements PipeTransform {
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizationService) {}
-  transform(value) {
+  transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
@@ -68,7 +68,7 @@ export class MarkedPipe implements PipeTransform {
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizationService) {}
-  transform(value) {
+  transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
@@ -109,7 +109,7 @@ export class PrismPipe implements PipeTransform {
 
 @Pipe({ name: 'encodeURIComponent' })
 export class EncodeURIComponentPipe implements PipeTransform {
-  transform(value) {
+  transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(EncodeURIComponentPipe, value);

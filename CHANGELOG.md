@@ -1,3 +1,22 @@
+# 1.2.0 (2016-08-30)
+### Bug fixes
+* Fix sticky sidebar top sticking (#75)
+* Fix array inside objects if referenced directly (#84)
+* Add banner to the bundle file (#89)
+* Fix broken additionalProperties
+* Fix version render issue (extra "v" letter)
+
+### Features/Improvements
+* Change the way discriminator is rendered
+* Created CDN major release 1.x.x (#87)
+* Smaller bundle size (371KB gzipped)
+* Better start-up time due to [AoT](http://blog.mgechev.com/2016/08/14/ahead-of-time-compilation-angular-offline-precompilation/)
+
+### Code refactoring
+* Moved build-system to Webpack
+* Moved to latest Typescript + get rid of typings
+* Upgrade to the latest Angular2 RC.5
+
 # 1.1.2 (2016-08-21)
 ### Bug fixes
 * Revert "Fix markdown newlines to be GFM" (#82)

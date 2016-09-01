@@ -47,12 +47,28 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
     this.pointer = activeDescendant.$ref;
     this.schema = this.specMgr.byPointer(this.pointer);
-    this.schema = this.normalizer.normalize(this.schema, this.normPointer, {omitParent: false});
+    this.schema = this.normalizer.normalize(this.schema, this.normPointer,
+      {resolved: true});
     this.preprocessSchema();
   }
 
   initDescendants() {
     this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer);
+    if (!this.descendants.length) return;
+    this.hasDescendants = true;
+    let discriminator = this.schema.discriminator;
+    let discrProperty = this.schema._properties &&
+      this.schema._properties.filter((prop) => prop.name === discriminator)[0];
+    if (discrProperty && discrProperty.enum) {
+      let enumOrder = {};
+      discrProperty.enum.forEach((enumItem, idx) => {
+        enumOrder[enumItem.val] = idx;
+      });
+
+      this.schema._descendants.sort((a, b) => {
+        return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
+      });
+    }
     this.selectDescendant(0);
   }
 
@@ -65,7 +81,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
     this.applyStyling();
 
-    this.schema = this.normalizer.normalize(this.schema, this.normPointer);
+    this.schema = this.normalizer.normalize(this.schema, this.normPointer, {resolved: true});
     this.schema = SchemaHelper.unwrapArray(this.schema, this.normPointer);
     this.initDescendants();
     this.preprocessSchema();

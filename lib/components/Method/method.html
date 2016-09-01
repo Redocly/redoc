@@ -22,9 +22,8 @@
   --></span>
     </div>
 
-    <div *ngIf="method.bodyParam">
-        <br>
-        <request-samples [pointer]="pointer" [schemaPointer]="method.bodyParam._pointer">
+    <div>
+        <request-samples [pointer]="pointer" [schemaPointer]="method.bodyParam?._pointer">
         </request-samples>
     </div>
     <div>

@@ -819,6 +819,7 @@ definitions:
         type: string
         pattern: "^\\+(?:[0-9]-?){6,14}[0-9]$"
         example: +1-202-555-0192
+        x-nullable: true
       userStatus:
         description: User status
         type: integer

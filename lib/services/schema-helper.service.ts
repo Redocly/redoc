@@ -163,7 +163,7 @@ const injectors = {
         range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
       } else if (propertySchema.maxLength) {
         range = '<= ' + propertySchema.maxLength;
-      } else if (propertySchema.minimum) {
+      } else if (propertySchema.minLength) {
         range = '>= ' + propertySchema.minLength;
       }
 

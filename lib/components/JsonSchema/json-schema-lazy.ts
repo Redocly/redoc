@@ -46,7 +46,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   }
 
   load() {
-    if (this.optionsService.options.disableLazySchemas) return;
+    if (this.disableLazy) return;
     if (this.loaded) return;
     if (this.pointer) {
       this._loadAfterSelf();
