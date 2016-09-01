@@ -24,17 +24,20 @@ export class SchemaNormalizer {
     this._dereferencer = new SchemaDereferencer(_schema, this);
   }
   normalize(schema, ptr, opts:any ={}) {
-    opts.omitParent = opts.omitParent !== false;
+    let hasPtr = !!schema.$ref;
+    if (opts.resolved && !hasPtr) this._dereferencer.visit(ptr);
+
     if (schema['x-redoc-normalized']) return schema;
     let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
       if (resolved.allOf) {
         resolved._pointer = resolved._pointer || ptr;
         resolved = Object.assign({}, resolved);
-        AllOfMerger.merge(resolved, resolved.allOf, {omitParent: opts.omitParent});
+        AllOfMerger.merge(resolved, resolved.allOf);
       }
       return resolved;
     });
+    if (opts.resolved && !hasPtr) this._dereferencer.exit(ptr);
     res['x-redoc-normalized'] = true;
     return res;
   }
@@ -88,12 +91,11 @@ class SchemaWalker {
 }
 
 class AllOfMerger {
-  static merge(into, schemas, opts) {
+  static merge(into, schemas) {
     into['x-derived-from'] = [];
     for (let i=0; i < schemas.length; i++) {
       let subSchema = schemas[i];
       into['x-derived-from'].push(subSchema._pointer);
-      if (opts && opts.omitParent && subSchema.discriminator) continue;
 
       AllOfMerger.checkCanMerge(subSchema, into);
 
@@ -175,6 +177,14 @@ class SchemaDereferencer {
   private _refCouner = new RefCounter();
 
   constructor(private _spec: SpecManager, private normalizator: SchemaNormalizer) {
+  }
+
+  visit($ref) {
+    this._refCouner.visit($ref);
+  }
+
+  exit($ref) {
+    this._refCouner.exit($ref);
   }
 
   dereference(schema: Reference, pointer:string):any {
