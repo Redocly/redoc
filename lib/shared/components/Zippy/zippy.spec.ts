@@ -5,21 +5,23 @@ import { getChildDebugElement, mouseclick } from '../../../../tests/helpers';
 import { Component } from '@angular/core';
 import {
   inject,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { Zippy } from '../index';
 
 describe('Common components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestApp ] });
+  });
   describe('Zippy Component', () => {
     let builder;
     let component;
     let nativeElement;
     let fixture;
 
-    beforeEach(inject([TestComponentBuilder], (tcb) => {
-      builder = tcb;
-      fixture = builder.createSync(TestApp);
+    beforeEach(inject([TestBed], (tcb) => {
+      fixture = TestBed.createComponent(TestApp);
       let debugEl = getChildDebugElement(fixture.debugElement, 'zippy');
       component = debugEl.componentInstance;
       nativeElement = debugEl.nativeElement;
@@ -92,7 +94,6 @@ describe('Common components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [Zippy],
   template:
       `<zippy title="Zippy" type="test" [visible]="true" [empty]="true" (open)="open()" (close)="close()">test</zippy>`
 })

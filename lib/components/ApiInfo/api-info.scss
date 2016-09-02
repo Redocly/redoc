@@ -22,7 +22,7 @@ a.openapi-button {
   font-weight: normal;
 }
 
-:host [section] {
+:host /deep/ [section] {
   padding-top: 60px;
   margin-top: 20px;
 }

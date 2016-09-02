@@ -9,7 +9,7 @@ import {
   async
 } from '@angular/core/testing';
 
-import { TestComponentBuilder } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { MethodsList, SideMenu } from '../index';
 
@@ -18,14 +18,17 @@ import { SpecManager } from '../../utils/SpecManager';
 let testOptions;
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
   describe('SideMenu Component', () => {
     let builder;
     let component;
     let fixture;
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
-      (tcb, specMgr, opts) => {
-      builder = tcb;
+    beforeEach(async(inject([SpecManager, OptionsService],
+      ( specMgr, opts) => {
+
       testOptions = opts;
       testOptions.options = {
         scrollYOffset: () => 0,
@@ -35,7 +38,7 @@ describe('Redoc components', () => {
     })));
 
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'side-menu').componentInstance;
       fixture.detectChanges();
     });
@@ -54,7 +57,6 @@ describe('Redoc components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [MethodsList, SideMenu],
   template:
       `<side-menu></side-menu>
       <methods-list></methods-list>`

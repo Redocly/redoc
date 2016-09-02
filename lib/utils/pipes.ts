@@ -1,15 +1,21 @@
 'use strict';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizationService } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
-import { BaseException } from '@angular/core/src/facade/exceptions';
 import JsonPointer from './JsonPointer';
 import { renderMd } from './helpers';
+import { JsonFormatter } from './JsonFormatterPipe';
 
 declare var Prism: any;
 
 
+class BaseException {
+  message: string;
+  constructor(message) {
+    this.message = message;
+  }
+}
 
 class InvalidPipeArgumentException extends BaseException {
   constructor(type, value) {
@@ -52,7 +58,7 @@ export class JsonPointerEscapePipe implements PipeTransform {
 
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizationService) {}
+  constructor(private sanitizer: DomSanitizer) {}
   transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
@@ -67,7 +73,7 @@ export class MarkedPipe implements PipeTransform {
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizationService) {}
+  constructor(private sanitizer: DomSanitizer) {}
   transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
@@ -88,7 +94,7 @@ const langMap = {
 
 @Pipe({ name: 'prism' })
 export class PrismPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizationService) {}
+  constructor(private sanitizer: DomSanitizer) {}
   transform(value, args) {
     if (isBlank(args) || args.length === 0) {
       throw new BaseException('Prism pipe requires one argument');
@@ -119,5 +125,5 @@ export class EncodeURIComponentPipe implements PipeTransform {
 }
 
 export const REDOC_PIPES = [
-  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe
+  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter
 ];

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import {
   inject,
   async,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
@@ -13,17 +13,20 @@ import { Method } from './method';
 import { SpecManager } from '../../utils/SpecManager';;
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
   describe('Method Component', () => {
     let builder;
     let component;
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
-      builder = tcb;
+    beforeEach(async(inject([SpecManager], ( specMgr) => {
+
       return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
     beforeEach(() => {
-      let fixture = builder.createSync(TestAppComponent);
+      let fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'method').componentInstance;
       fixture.detectChanges();
     });
@@ -50,7 +53,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Method. */
 @Component({
   selector: 'test-app',
-  directives: [Method],
   providers: [SpecManager],
   template:
       `<method pointer='#/paths/~1user~1{username}/put'></method>`

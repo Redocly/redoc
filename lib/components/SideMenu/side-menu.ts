@@ -2,12 +2,14 @@
 
 import { Component, ElementRef, ChangeDetectorRef, OnInit } from '@angular/core';
 
-import { global } from '@angular/core/src/facade/lang';
+//import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { MenuCategory } from '../../services/schema-helper.service';
+
+const global = window;
 
 @Component({
   selector: 'side-menu',

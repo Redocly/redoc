@@ -5,22 +5,26 @@ import { Component } from '@angular/core';
 
 import {
   inject,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { JsonSchemaLazy } from './json-schema-lazy';
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
+
   describe('JsonSchemaLazy Component', () => {
     let builder;
     let component;
     let fixture;
 
-    beforeEach(inject([TestComponentBuilder], (tcb) => {
-      builder = tcb;
+    beforeEach(inject([TestBed], (tcb) => {
+
     }));
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');
       component = <JsonSchemaLazy>debugEl.componentInstance;
       spyOn(component, '_loadAfterSelf').and.stub();
@@ -47,7 +51,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Method. */
 @Component({
   selector: 'test-app',
-  directives: [JsonSchemaLazy],
   template:
       `<json-schema-lazy></json-schema-lazy>`
 })

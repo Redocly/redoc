@@ -5,12 +5,15 @@ import { Component } from '@angular/core';
 
 import {
   inject,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import {Tabs, Tab} from '../index';
 
 describe('Common components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestApp ] });
+  });
   describe('Tabs Component', () => {
     let builder;
     let component;
@@ -19,9 +22,9 @@ describe('Common components', () => {
     let fixture;
     let hostComponent;
 
-    beforeEach(inject([TestComponentBuilder], (tcb) => {
-      builder = tcb;
-      fixture = builder.createSync(TestApp);
+    beforeEach(inject([TestBed], (tcb) => {
+
+      fixture = TestBed.createComponent(TestApp);
       hostComponent = fixture.debugElement.componentInstance;
       debugEl = getChildDebugElement(fixture.debugElement, 'tabs');
       childDebugEls = getChildDebugElementAll(debugEl, 'tab');
@@ -131,7 +134,6 @@ describe('Common components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [Tabs, Tab],
   template:
       `<tabs (change)="onEvent($event)">
         <tab tabTitle="Tab1" tabStatus="test">Test</tab>

@@ -1,14 +1,18 @@
 'use strict';
 import { Pipe, PipeTransform } from '@angular/core';
-import { isBlank } from '@angular/core/src/facade/lang';
-import { DomSanitizationService } from '@angular/platform-browser';
+//import { isBlank } from '@angular/core/src/facade/lang';
+import { DomSanitizer } from '@angular/platform-browser';
+
+function isBlank(obj) {
+  return obj === undefined || obj === null;
+}
 
 var level = 1;
 const COLLAPSE_LEVEL = 2;
 
 @Pipe({ name: 'jsonFormatter' })
 export class JsonFormatter implements PipeTransform {
-  constructor(private sanitizer: DomSanitizationService) {}
+  constructor(private sanitizer: DomSanitizer) {}
   transform(value) {
     if (isBlank(value)) return value;
     return this.sanitizer.bypassSecurityTrustHtml(jsonToHTML(value));
