@@ -12,13 +12,9 @@ module.exports = {
   debug: false,
 
   resolve: {
-    extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
+    extensions: ['', '.ts', '.js', '.json', '.css'],
     root: root('lib'),
-    descriptionFiles: ['package.json'],
-    modules: [
-      'node_modules',
-      root('lib')
-    ],
+    modulesDirectories: ['node_modules'],
     alias: {
       './lib/bootstrap': root('lib/bootstrap.dev'),
       http: 'stream-http',
@@ -26,10 +22,17 @@ module.exports = {
     }
   },
   externals: {
-    "jquery": "jQuery"
+    "jquery": "jQuery",
+    'esprima': 'esprima' // optional dep of ys-yaml not needed for redoc
   },
   node: {
-    fs: "empty"
+    fs: "empty",
+    crypto: "empty",
+    global: "window",
+    process: true,
+    module: false,
+    clearImmediate: false,
+    setImmediate: false
   },
   entry: {
     'redoc': './lib/index.ts',
@@ -57,7 +60,10 @@ module.exports = {
   module: {
     preLoaders: [{
       test: /\.js$/,
-      loader: 'source-map'
+      loader: 'source-map-loader',
+      exclude: [
+        /node_modules/
+      ]
     }],
     loaders: [{
       test: /\.ts$/,

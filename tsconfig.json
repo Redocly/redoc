@@ -2,11 +2,11 @@
 	"compilerOptions": {
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"module": "es6",
+    "module": "commonjs",
 		"target": "es5",
 		"noImplicitAny": false,
 		"sourceMap": true,
-		"outDir": ".tmp/lib",
+		"outDir": ".tmp",
 		"pretty": true,
 		"moduleResolution": "node",
 		"types": [
@@ -21,10 +21,12 @@
 
 	"exclude": [
     "node_modules",
-    ".tmp"
+    ".tmp",
+		"dist"
   ],
 	"awesomeTypescriptLoaderOptions": {
     "resolveGlobs": true,
-    "forkChecker": true
+    "forkChecker": true,
+		"useWebpackText": true
   }
 }
