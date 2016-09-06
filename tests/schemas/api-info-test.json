@@ -14,7 +14,6 @@
     }
   },
   "host": "petstore.swagger.io",
-  "basePath": "/v2/",
   "schemes": ["http"],
   "paths": {
     "/pet": {
