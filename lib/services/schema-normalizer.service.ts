@@ -208,7 +208,7 @@ class SchemaDereferencer {
     let keysCount = Object.keys(schema).length;
     if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
-        'They are IGNORRED according to the JsonSchema spec');
+        'They are IGNORED according to the JsonSchema spec');
       resolved.description = resolved.description || schema.description;
     }
 
