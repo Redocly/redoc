@@ -3,32 +3,34 @@ import { Component } from '@angular/core';
 import {
   inject,
   async,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
 import { ScrollService } from './scroll.service';
-import { MethodsList } from '../components/index';
 import { SpecManager } from '../utils/SpecManager';;
 
 describe('Menu service', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
+
   let menu, hashService, scroll;
-  let builder;
   let specMgr;
 
-  beforeEach(async(inject([TestComponentBuilder, SpecManager, Hash, ScrollService],
-  (tcb, _specMgr, _hash, _scroll, _menu) => {
+  beforeEach(async(inject([SpecManager, Hash, ScrollService],
+  ( _specMgr, _hash, _scroll, _menu) => {
     hashService = _hash;
     scroll = _scroll;
-    builder = tcb;
+
     specMgr = _specMgr;
     return specMgr.load('/tests/schemas/extended-petstore.yml');
   })));
 
   beforeEach(() => {
     menu = new MenuService(hashService, scroll, specMgr);
-    let fixture = builder.createSync(TestAppComponent);
+    let fixture = TestBed.createComponent(TestAppComponent);
     fixture.detectChanges();
   });
 
@@ -91,7 +93,6 @@ describe('Menu service', () => {
 
 @Component({
   selector: 'test-app',
-  directives: [ MethodsList ],
   template:
       `<div id='parent' style='height: 500px; overflow:auto'>
         <methods-list></methods-list>

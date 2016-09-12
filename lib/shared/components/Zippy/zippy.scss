@@ -21,7 +21,7 @@ $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
 .zippy-title {
   padding: 10px;
   border-radius: 2px;
-  margin: 2px 0;
+  margin-bottom: 4px;
   line-height: 1.5em;
   background-color: #f2f2f2;
   cursor: pointer;
@@ -46,16 +46,12 @@ $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
     background-color: $zippy-info-bg-color;
   }
 }
+
 .zippy-indicator svg {
   height: 1.2em;
   vertical-align: middle;
-  transition: all 0.3s ease;
-  transform: rotateZ(-180deg);
 }
 
-.zippy-hidden > .zippy-title svg {
-  transform: rotateZ(0);
-}
 
 .zippy-title polygon {
   .zippy-success > & {

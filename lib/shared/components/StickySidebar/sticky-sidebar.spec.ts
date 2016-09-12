@@ -4,20 +4,23 @@ import { getChildDebugElementByType } from '../../../../tests/helpers';
 import { Component } from '@angular/core';
 import {
   inject,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { StickySidebar } from '../index';
 
 describe('Common components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestApp ] });
+  });
   describe('StickySidebar Component', () => {
     let builder;
     let component;
     let fixture;
 
-    beforeEach(inject([TestComponentBuilder], (tcb) => {
-      builder = tcb;
-      fixture = builder.createSync(TestApp);
+    beforeEach(inject([TestBed], (tcb) => {
+
+      fixture = TestBed.createComponent(TestApp);
       let debugEl = getChildDebugElementByType(fixture.debugElement, StickySidebar);
       component = debugEl.injector.get(StickySidebar);
     }));
@@ -64,7 +67,6 @@ describe('Common components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [StickySidebar],
   template:
       `<div style="padding-top: 20px">
         <div style="height: 20px; position: fixed; top: 0;"> </div>

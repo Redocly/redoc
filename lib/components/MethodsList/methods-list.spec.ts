@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import {
   inject,
   async,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
@@ -14,17 +14,20 @@ import { MethodsList } from './methods-list';
 import { SpecManager } from '../../utils/SpecManager';
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
   describe('MethodsList Component', () => {
     let builder;
     let component;
     let fixture;
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, specMgr) => {
-      builder = tcb;
+    beforeEach(async(inject([SpecManager], ( specMgr) => {
+
       return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;
       fixture.detectChanges();
     });
@@ -47,7 +50,6 @@ describe('Redoc components', () => {
 
 @Component({
   selector: 'test-app',
-  directives: [ MethodsList ],
   template:
       `<methods-list></methods-list>`
 })

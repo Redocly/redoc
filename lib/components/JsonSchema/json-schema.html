@@ -72,7 +72,7 @@
               </span>
               <span *ngIf="prop._required" class="param-required">Required</span>
               <span *ngIf="prop['x-nullable']" class="param-nullable">Nullable</span>
-              <div *ngIf="prop.default">Default: {{prop.default | json}}</div>
+              <div *ngIf="prop.default != null">Default: {{prop.default | json}}</div>
               <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
                 <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
               </div>

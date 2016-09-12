@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 import {
   inject,
   async,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { ApiLogo } from './api-logo';
@@ -21,13 +21,15 @@ describe('Redoc components', () => {
     let specMgr;
 
     let schemaUrl = '/tests/schemas/api-info-test.json';
-    beforeEach(async(inject([TestComponentBuilder, SpecManager], (tcb, _specMgr) => {
-      builder = tcb;
+    beforeEach(() => {
+      TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+    });
+    beforeEach(async(inject([SpecManager], ( _specMgr) => {
       specMgr = _specMgr;
       return specMgr.load(schemaUrl);
     })));
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'api-logo').componentInstance;
       fixture.detectChanges();
     });
@@ -59,7 +61,6 @@ describe('Redoc components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [ApiLogo],
   providers: [SpecManager],
   template:
       `<api-logo></api-logo>`

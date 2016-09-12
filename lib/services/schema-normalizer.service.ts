@@ -41,6 +41,10 @@ export class SchemaNormalizer {
     res['x-redoc-normalized'] = true;
     return res;
   }
+
+  reset() {
+    this._dereferencer.reset();
+  }
 }
 
 class SchemaWalker {
@@ -178,6 +182,9 @@ class SchemaDereferencer {
 
   constructor(private _spec: SpecManager, private normalizator: SchemaNormalizer) {
   }
+  reset() {
+    this._refCouner.reset();
+  }
 
   visit($ref) {
     this._refCouner.visit($ref);
@@ -208,7 +215,7 @@ class SchemaDereferencer {
     let keysCount = Object.keys(schema).length;
     if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
-        'They are IGNORRED according to the JsonSchema spec');
+        'They are IGNORED according to the JsonSchema spec');
       resolved.description = resolved.description || schema.description;
     }
 

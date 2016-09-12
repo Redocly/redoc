@@ -103,7 +103,7 @@ api-logo {
 /* global redoc styles */
 
 @for $index from 1 through 5 {
-    :host h#{$index}{
+    :host /deep/ h#{$index}{
         margin-top: 0;
         font-family: $headers-font, $headers-font-family;
         color: $headers-color;
@@ -111,7 +111,7 @@ api-logo {
     }
 }
 
-:host {
+:host /deep/ {
     h1 { font-size: $h1; }
     h2 { font-size: $h2; }
     h3 { font-size: $h3; }
@@ -168,7 +168,7 @@ footer {
 
 /* markdown elements */
 
-:host .redoc-markdown-block {
+:host /deep/ .redoc-markdown-block {
     pre {
         font-family: Courier, monospace;
         white-space: pre-wrap;

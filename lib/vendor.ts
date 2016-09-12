@@ -23,9 +23,12 @@ import 'dropkickjs/build/css/dropkick.css';
 import 'prismjs/themes/prism-dark.css';
 import 'hint.css/hint.base.css';
 
-import '@angular/common';
-import '@angular/core';
-import '@angular/platform-browser';
+if (!IS_PRODUCTION) {
+  require('@angular/platform-browser');
+  require('@angular/platform-browser-dynamic');
+  require('@angular/core');
+  require('@angular/common');
 
-// RxJS
-import 'rxjs/Rx';
+  // RxJS
+  require('rxjs/Rx');
+}

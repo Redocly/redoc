@@ -1,6 +1,6 @@
 @import '../../styles/variables';
 
-:host {
+:host /deep/ {
   .dk-select {
     max-width: 100%;
     font-family: $headers-font, $headers-font-family;

@@ -7,7 +7,7 @@ import { OptionsService } from '../../services/index';
 import {
   inject,
   async,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { ApiInfo } from './api-info';
@@ -15,23 +15,23 @@ import { SpecManager } from '../../utils/SpecManager';
 
 describe('Redoc components', () => {
   describe('ApiInfo Component', () => {
-    let builder;
     let component;
     let fixture;
     let opts;
-
-    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService], (tcb, specMgr, _opts) => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+    });
+    beforeEach(async(inject([SpecManager, OptionsService], (specMgr, _opts) => {
       opts = _opts;
       opts.options = {
         scrollYOffset: () => 0,
         $scrollParent: window
       };
-      builder = tcb;
       return specMgr.load('/tests/schemas/api-info-test.json');
     })));
 
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'api-info').componentInstance;
       fixture.detectChanges();
     });
@@ -55,7 +55,6 @@ describe('Redoc components', () => {
 /** Test component that contains an ApiInfo. */
 @Component({
   selector: 'test-app',
-  directives: [ApiInfo],
   template:
       `<api-info></api-info>`
 })

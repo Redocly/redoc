@@ -5,13 +5,11 @@ import { Component, ElementRef, Input, ChangeDetectionStrategy, OnInit } from '@
 import * as OpenAPISampler from 'openapi-sampler';
 
 import { BaseComponent, SpecManager } from '../base';
-import { JsonFormatter } from '../../utils/JsonFormatterPipe';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
 
 @Component({
   selector: 'schema-sample',
   templateUrl: './schema-sample.html',
-  pipes: [JsonFormatter],
   styleUrls: ['./schema-sample.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

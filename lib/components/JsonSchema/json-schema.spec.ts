@@ -3,7 +3,7 @@
 import { Component } from '@angular/core';
 import {
   inject,
-  TestComponentBuilder
+  TestBed
 } from '@angular/core/testing';
 
 import { getChildDebugElement } from '../../../tests/helpers';
@@ -13,19 +13,22 @@ import { JsonSchema } from './json-schema';
 import { SpecManager } from '../../utils/SpecManager';;
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
   describe('JsonSchema Component', () => {
     let builder;
     let component;
     let fixture;
     let specMgr;
 
-    beforeEach(inject([TestComponentBuilder, SpecManager], (tcb, _spec) => {
-      builder = tcb;
+    beforeEach(inject([SpecManager], ( _spec) => {
+
       specMgr = _spec;
     }));
 
     beforeEach(() => {
-      fixture = builder.createSync(TestAppComponent);
+      fixture = TestBed.createComponent(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema');
       component = debugEl.componentInstance;
     });
@@ -59,7 +62,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Method. */
 @Component({
   selector: 'test-app',
-  directives: [JsonSchema],
   providers: [SpecManager],
   template:
       `<json-schema></json-schema>`

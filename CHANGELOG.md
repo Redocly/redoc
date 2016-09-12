@@ -1,3 +1,12 @@
+# 1.3.0 (2014-08-31)
+### Bug fixes
+* Fix code samples are not shown for operations without body param (#93)
+* Fixed side menu overlapped site footer (#75)
+* Fix broken order in discriminator dropdown
+
+### Features/Improvements
+* Support "x-nullable" property by @kedashoe (#92)
+
 # 1.2.0 (2016-08-30)
 ### Bug fixes
 * Fix sticky sidebar top sticking (#75)

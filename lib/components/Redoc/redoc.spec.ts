@@ -8,7 +8,7 @@ import {
   async
 } from '@angular/core/testing';
 
-import { TestComponentBuilder } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { Redoc } from './redoc';
 import { SpecManager } from '../../utils/SpecManager';
@@ -17,28 +17,31 @@ import { OptionsService } from '../../services/index';
 let optsMgr:OptionsService;
 
 describe('Redoc components', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+  });
   describe('Redoc Component', () => {
     let builder;
     let specMgr;
 
-    beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService],
-      (tcb, _specMgr, _optsMgr) => {
+    beforeEach(async(inject([SpecManager, OptionsService],
+      ( _specMgr, _optsMgr) => {
       optsMgr = _optsMgr;
-      builder = tcb;
+
       specMgr = _specMgr;
       return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
 
     it('should init component', () => {
-      let fixture = builder.createSync(TestAppComponent);
+      let fixture = TestBed.createComponent(TestAppComponent);
       let component = getChildDebugElement(fixture.debugElement, 'redoc').componentInstance;
       expect(component).not.toBeNull();
       fixture.destroy();
     });
 
     it('should init components tree without errors', () => {
-      let fixture = builder.createSync(TestAppComponent);
+      let fixture = TestBed.createComponent(TestAppComponent);
       (() => fixture.detectChanges()).should.not.throw();
       fixture.destroy();
     });
@@ -89,16 +92,16 @@ describe('Redoc components', () => {
   //   let dom;
   //   let destroySpy;
   //
-  //   beforeEach(async(inject([TestComponentBuilder, SpecManager, OptionsService, BrowserDomAdapter],
-  //     (tcb, specMgr, opts, _dom) => {
-  //     builder = tcb;
+  //   beforeEach(async(inject([SpecManager, OptionsService, BrowserDomAdapter],
+  //     ( specMgr, opts, _dom) => {
+  //
   //     optsMgr = opts;
   //     dom = _dom;
   //     return specMgr.load('/tests/schemas/extended-petstore.yml');
   //   })));
   //
   //   beforeEach(() => {
-  //     fixture = builder.createSync(TestAppComponent);
+  //     fixture = TestBed.createComponent(TestAppComponent);
   //     element = getChildDebugElement(fixture.debugElement, 'methods-list').nativeElement;
   //     destroySpy = jasmine.createSpy('spy');
   //     Redoc.appRef = <ComponentRef<any>>{
@@ -165,7 +168,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Redoc. */
 @Component({
   selector: 'test-app',
-  directives: [Redoc],
   template:
       `<redoc disable-lazy-schemas></redoc>`
 })

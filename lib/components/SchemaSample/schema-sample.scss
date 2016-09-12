@@ -55,7 +55,7 @@ pre {
   opacity: 1;
 }
 
-:host {
+:host /deep/ {
   .property {
     //font-weight: bold;
   }
