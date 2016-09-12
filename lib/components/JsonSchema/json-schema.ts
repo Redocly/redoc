@@ -47,6 +47,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
     this.pointer = activeDescendant.$ref;
     this.schema = this.specMgr.byPointer(this.pointer);
+    this.normalizer.reset();
     this.schema = this.normalizer.normalize(this.schema, this.normPointer,
       {resolved: true});
     this.preprocessSchema();
@@ -119,7 +120,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
   }
 
   trackByName(index: number, item: any): number {
-    return item.name;
+    return item.name + (item._pointer || '');
   }
 
   ngOnInit() {

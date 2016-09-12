@@ -41,6 +41,10 @@ export class SchemaNormalizer {
     res['x-redoc-normalized'] = true;
     return res;
   }
+
+  reset() {
+    this._dereferencer.reset();
+  }
 }
 
 class SchemaWalker {
@@ -177,6 +181,9 @@ class SchemaDereferencer {
   private _refCouner = new RefCounter();
 
   constructor(private _spec: SpecManager, private normalizator: SchemaNormalizer) {
+  }
+  reset() {
+    this._refCouner.reset();
   }
 
   visit($ref) {
