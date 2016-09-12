@@ -4,7 +4,7 @@ import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { JsonPointer } from './JsonPointer';
 import { renderMd, safePush } from './helpers';
 import * as slugify from 'slugify';
-import { parse as urlParse } from 'url';
+import { parse as urlParse, resolve as urlResolve } from 'url';
 
 export class SpecManager {
   public _schema: any = {};
@@ -42,7 +42,7 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
-    let urlParts = this._url ? urlParse(this._url) : {};
+    let urlParts = this._url ? urlParse(urlResolve(window.location.href, this._url)) : {};
     let schemes = this._schema.schemes;
     let protocol;
     if (!schemes || !schemes.length) {
