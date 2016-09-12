@@ -19,7 +19,7 @@ cd('..');
 var version = 'v' + require(path.join(__dirname, '../package.json')).version + '/';
 var versionDir = path.join(paths.releases, version);
 var latestDir = path.join(paths.releases, 'latest/');
-var v1Dir = path.join(paths.releases, '1.x.x/');
+var v1Dir = path.join(paths.releases, 'v1.x.x/');
 mkdir('-p', versionDir)
 mkdir('-p', latestDir);
 mkdir('-p', v1Dir);

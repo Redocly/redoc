@@ -22,7 +22,7 @@ header {
     font-weight: normal;
 }
 
-:host > tabs > ul li {
+:host /deep/ > tabs > ul li {
     font-family: $headers-font;
     font-size: 0.929em;
     border-radius: $border-radius;
@@ -42,6 +42,6 @@ header {
     }
 }
 
-:host tabs ul {
+:host /deep/ tabs ul {
     padding-top: 10px;
 }
