@@ -126,16 +126,17 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 -----------
 ## Development
 #### Running local dev-server
-1. Clone repository
+- Clone repository
 `git clone https://github.com/Rebilly/ReDoc.git`
-2. Go to the project folder
+- Go to the project folder
 `cd ReDoc`
-3. Install node modules and front-end dependencies
+- Install dependencies
+`npm install`
+- *(Temporary step, will be obsolete after fixing #97)* Compile CSS
+```bash
+npm run build:sass
 ```
-npm install
-npm run jspm-install
-```
-4. _(optional)_ Replace `demo/swagger.json` with your own schema
-5. Start the server
+- _(optional)_ Replace `demo/swagger.json` with your own schema
+- Start the server
 `npm start`
-6. Open `http://localhost:9000`
+- Open `http://localhost:9000`
