@@ -20,7 +20,7 @@
     "build:prod": "npm run build:sass && npm run ngc && npm run webpack:prod",
     "build-dist": "npm run build:prod",
     "stats": "webpack --config build/webpack.prod.js --json > stats.json",
-    "start": "webpack-dev-server --config build/webpack.dev.js --content-base demo",
+    "start": "npm install webpack@2.1.0-beta.22 --save-dev && webpack-dev-server --config build/webpack.dev.js --content-base demo",
     "e2e-server": "http-server -p 3000 tests/e2e",
     "e2e-copy": "cp dist/redoc.min.js tests/e2e/",
     "webdriver": "webdriver-manager update",
