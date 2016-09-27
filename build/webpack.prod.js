@@ -15,9 +15,7 @@ module.exports = {
   devtool: 'source-map',
 
   resolve: {
-    extensions: ['', '.ts', '.js', '.json', '.css'],
-    root: root('lib'),
-    modulesDirectories: ['node_modules'],
+    extensions: ['.ts', '.js', '.json', '.css'],
     alias: {
       http: 'stream-http',
       https: 'stream-http'
@@ -30,7 +28,7 @@ module.exports = {
   node: {
     fs: "empty",
     crypto: "empty",
-    global: "window",
+    global: true,
     process: true,
     module: false,
     clearImmediate: false,
@@ -50,14 +48,14 @@ module.exports = {
   },
 
   module: {
-    preLoaders: [{
+    loaders: [{
+      enforce: 'pre',
       test: /\.js$/,
       loader: 'source-map-loader',
       exclude: [
         /node_modules/
       ]
-    }],
-    loaders: [{
+    },{
       test: /\.ts$/,
       loader: 'awesome-typescript-loader',
       exclude: /(node_modules)/
