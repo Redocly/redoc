@@ -13,7 +13,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css'],
     alias: {
-      './lib/bootstrap': root('lib/bootstrap.dev'),
       http: 'stream-http',
       https: 'stream-http'
     }
@@ -55,7 +54,8 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
+    exprContextCritical: false,
+    rules: [{
       enforce: 'pre',
       test: /\.js$/,
       loader: 'source-map-loader',
@@ -70,13 +70,13 @@ module.exports = {
       ],
       exclude: [/\.(spec|e2e)\.ts$/]
     }, {
-      test: /lib\/.*\.css$/,
+      test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
       exclude: [/redoc-initial-styles\.css$/]
     }, {
       test: /\.css$/,
       loaders: ['style', 'css?-import'],
-      exclude: [/lib\/(?!.*redoc-initial-styles).*\.css$/]
+      exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.css$/]
     }, {
       test: /\.html$/,
       loader: 'raw-loader'
@@ -93,7 +93,8 @@ module.exports = {
 
     new webpack.DefinePlugin({
       'IS_PRODUCTION': IS_PRODUCTION,
-      'LIB_VERSION': VERSION
+      'LIB_VERSION': VERSION,
+      'AOT': IS_PRODUCTION
     }),
 
     new ForkCheckerPlugin()

@@ -48,7 +48,8 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
+    exprContextCritical: false,
+    rules: [{
       enforce: 'pre',
       test: /\.js$/,
       loader: 'source-map-loader',
@@ -84,7 +85,8 @@ module.exports = {
     new webpack.BannerPlugin(BANNER),
     new webpack.DefinePlugin({
       'IS_PRODUCTION': true,
-      'LIB_VERSION': VERSION
+      'LIB_VERSION': VERSION,
+      'AOT': true
     })
   ],
 }

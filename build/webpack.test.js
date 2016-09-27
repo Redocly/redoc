@@ -10,7 +10,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css'],
     alias: {
-      './lib/bootstrap': root('lib/bootstrap.dev'),
       http: 'stream-http',
       https: 'stream-http'
     }
@@ -37,6 +36,7 @@ module.exports = {
   },
 
   module: {
+    exprContextCritical: false,
     rules: [{
       enforce: 'pre',
       test: /\.js$/,
@@ -56,13 +56,13 @@ module.exports = {
       ],
       exclude: [/\.(spec|e2e)\.ts$/]
     }, {
-      test: /lib\/.*\.css$/,
+      test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
       exclude: [/redoc-initial-styles\.css$/]
     }, {
       test: /\.css$/,
       loaders: ['style', 'css?-import'],
-      exclude: [/lib\/(?!.*redoc-initial-styles).*\.css$/]
+      exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.css$/]
     }, {
       test: /\.html$/,
       loader: 'raw-loader'
@@ -86,7 +86,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'IS_PRODUCTION': false,
-      'LIB_VERSION': VERSION
+      'LIB_VERSION': VERSION,
+      'AOT': 'false'
     }),
     new webpack.LoaderOptionsPlugin({
 			test: /\.ts$/,
@@ -97,11 +98,11 @@ module.exports = {
 		}),
     // ignore changes during tests
     new webpack.WatchIgnorePlugin([
-      /\/ReDoc$/i, // ignore change of ReDoc folder itself
-      /node_modules\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
-      /\.tmp\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
-      /dist\/(?:[^\/]*(?:\/|$))*[^\/]*$/,
-      /(?:[^\/]*(?:\/|$))*[^\/]*\.css$/ // ignore css files
+      /[\\\/]ReDoc$/i, // ignore change of ReDoc folder itself
+      /node_modules[\\\/].*$/,
+      /\.tmp[\\\/].*$/,
+      /dist[\\\/].*$/,
+      /(?:[^\\\/]*(?:[\\\/]|$))*[^\\\/]*\.css$/ // ignore css files
     ])
   ],
 }
