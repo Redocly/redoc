@@ -6,6 +6,10 @@
     "type": "git",
     "url": "git://github.com/Rebilly/ReDoc"
   },
+  "engines": {
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
+  },
   "main": "dist/redoc.min.js",
   "scripts": {
     "test": "npm run lint && node ./build/run_tests.js",
