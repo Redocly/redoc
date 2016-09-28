@@ -57,9 +57,10 @@ const injectors = {
     }
   },
   discriminator: {
-    check: (propertySchema) => propertySchema.discriminator,
+    check: (propertySchema) => propertySchema.discriminator || propertySchema['x-extendedDiscriminator'],
     inject: (injectTo, propertySchema = injectTo, pointer) => {
       injectTo.discriminator = propertySchema.discriminator;
+      injectTo['x-extendedDiscriminator'] = propertySchema['x-extendedDiscriminator'];
     }
   },
   simpleArray: {
@@ -229,7 +230,8 @@ export class SchemaHelper {
         propertySchema._pointer = null;
       }
       propertySchema._required = !!requiredMap[propName];
-      propertySchema.isDiscriminator = (schema.discriminator === propName);
+      propertySchema.isDiscriminator = (schema.discriminator === propName
+        || schema['x-extendedDiscriminator'] === propName);
       return propertySchema;
     });
 

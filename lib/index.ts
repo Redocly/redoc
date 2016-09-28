@@ -6,7 +6,13 @@ import { Redoc } from './components/index';
 import { SpecManager } from './utils/SpecManager';
 import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
-import { bootstrapRedoc } from './bootstrap';
+
+var bootstrapRedoc;
+if (AOT) {
+  bootstrapRedoc = require('./bootstrap').bootstrapRedoc;
+} else {
+  bootstrapRedoc = require('./bootstrap.dev').bootstrapRedoc;
+}
 
 if (IS_PRODUCTION) {
   disableDebugTools();

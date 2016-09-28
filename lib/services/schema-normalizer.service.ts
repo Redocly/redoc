@@ -118,7 +118,7 @@ class AllOfMerger {
 
   private static mergeObject(into, subSchema, allOfNumber) {
     if (subSchema.properties) {
-      if (!into.properties) into.properties = {};
+      into.properties = Object.assign({}, into.properties || {});
       Object.assign(into.properties, subSchema.properties);
       Object.keys(subSchema.properties).forEach(propName => {
         let prop = subSchema.properties[propName];

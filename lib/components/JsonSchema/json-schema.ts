@@ -57,7 +57,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
     this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer);
     if (!this.descendants.length) return;
     this.hasDescendants = true;
-    let discriminator = this.schema.discriminator;
+    let discriminator = this.schema.discriminator || this.schema['x-extendedDiscriminator'];
     let discrProperty = this.schema._properties &&
       this.schema._properties.filter((prop) => prop.name === discriminator)[0];
     if (discrProperty && discrProperty.enum) {
