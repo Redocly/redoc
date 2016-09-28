@@ -152,19 +152,29 @@ export class SpecManager {
   findDerivedDefinitions(defPointer) {
     let definition = this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
-    if (!definition.discriminator) return [];
+    if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
 
     let globalDefs = this._schema.definitions || {};
     let res = [];
+    let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
     for (let defName of Object.keys(globalDefs)) {
-      if (!globalDefs[defName].allOf &&
-        !globalDefs[defName]['x-derived-from']) continue;
-      let subTypes = globalDefs[defName]['x-derived-from'] ||
-        globalDefs[defName].allOf.map(subType => subType._pointer || subType.$ref);
+      let def = globalDefs[defName];
+      if (!def.allOf &&
+        !def['x-derived-from']) continue;
+      let subTypes = def['x-derived-from'] ||
+        def.allOf.map(subType => subType._pointer || subType.$ref);
       let idx = subTypes.findIndex(ref => ref === defPointer);
       if (idx < 0) continue;
 
-      res.push({name: defName, $ref: `#/definitions/${defName}`});
+      let derivedName = defName;
+      if (extendedDiscriminatorProp) {
+        let prop = def.properties && def.properties[extendedDiscriminatorProp];
+        if (prop && prop.enum && prop.enum.length === 1) {
+          derivedName = prop.enum[0];
+        }
+      }
+
+      res.push({name: derivedName, $ref: `#/definitions/${defName}`});
     }
     return res;
   }
