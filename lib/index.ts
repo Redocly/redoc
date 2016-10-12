@@ -48,6 +48,7 @@ export function init(specUrl:string, options:any = {}) {
 
 export function destroy() {
   moduleRef.destroy();
+  moduleRef = null;
 };
 
 
