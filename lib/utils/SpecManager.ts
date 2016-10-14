@@ -30,10 +30,14 @@ export class SpecManager {
 
       JsonSchemaRefParser.bundle(url, {http: {withCredentials: false}})
       .then(schema => {
+        try {
           this._url = url;
           this._schema = schema;
           this.init();
-          return resolve(this._schema);
+          resolve(this._schema);
+        } catch(err) {
+          reject(err);
+        }
       }, err => reject(err));
     });
 
