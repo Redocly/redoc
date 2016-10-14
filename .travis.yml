@@ -32,7 +32,7 @@ before_script:
 after_script:
   - kill %1 # kill e2e server
 before_deploy:
-- npm run build-dist
+- npm run build:prod-module
 deploy:
   - provider: npm
     skip_cleanup: true
