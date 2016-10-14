@@ -44,7 +44,13 @@
   "author": "Roman Hotsiy",
   "license": "MIT",
   "devDependencies": {
+    "@angular/common": "^2.1.0",
+    "@angular/compiler": "^2.1.0",
     "@angular/compiler-cli": "^2.1.0",
+    "@angular/core": "^2.1.0",
+    "@angular/platform-browser": "^2.1.0",
+    "@angular/platform-browser-dynamic": "^2.1.0",
+    "@angular/platform-server": "^2.1.0",
     "@types/core-js": "^0.9.31",
     "@types/jasmine": "^2.2.32",
     "@types/requirejs": "^2.1.26",
@@ -55,6 +61,7 @@
     "chalk": "^1.1.3",
     "codelyzer": "^1.0.0-beta.0",
     "copy-webpack-plugin": "^3.0.1",
+    "core-js": "^2.4.1",
     "coveralls": "^2.11.9",
     "css-loader": "^0.24.0",
     "deploy-to-gh-pages": "^1.1.2",
@@ -78,6 +85,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "protractor": "^4.0.4",
     "raw-loader": "^0.5.1",
+    "rxjs": "^5.0.0-beta.12",
     "shelljs": "^0.7.0",
     "should": "^11.1.0",
     "sinon": "^1.17.2",
@@ -88,7 +96,8 @@
     "tslint-stylish": "^2.1.0-beta",
     "typescript": "^2.0.3",
     "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.6"
+    "webpack-dev-server": "^2.1.0-beta.6",
+    "zone.js": "^0.6.25"
   },
   "dependencies": {
     "dropkickjs": "^2.1.10",
@@ -110,7 +119,7 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/platform-server": "^2.1.0",
     "core-js": "^2.4.1",
-    "rxjs": "^5.0.0-beta.12",
+    "rxjs": "5.0.0-beta.12",
     "zone.js": "^0.6.25"
   }
 }
