@@ -137,16 +137,16 @@ const injectors = {
     check: (propertySchema) => (propertySchema.type === 'integer' || propertySchema.type === 'number'),
     inject: (injectTo, propertySchema = injectTo) => {
       var range = '';
-      if (propertySchema.minimum && propertySchema.maximum) {
+      if (propertySchema.minimum != null && propertySchema.maximum != null) {
         range += propertySchema.exclusiveMinimum ? '( ' : '[ ';
         range += propertySchema.minimum;
         range += ' .. ';
         range += propertySchema.maximum;
         range += propertySchema.exclusiveMaximum ? ' )' : ' ]';
-      } else if (propertySchema.maximum) {
+      } else if (propertySchema.maximum != null) {
         range += propertySchema.exclusiveMaximum? '< ' : '<= ';
         range += propertySchema.maximum;
-      } else if (propertySchema.minimum) {
+      } else if (propertySchema.minimum != null) {
         range += propertySchema.exclusiveMinimum ? '> ' : '>= ';
         range += propertySchema.minimum;
       }
@@ -160,11 +160,11 @@ const injectors = {
     check: propertySchema => (propertySchema.type === 'string'),
     inject: (injectTo, propertySchema = injectTo) => {
       var range;
-      if (propertySchema.minLength && propertySchema.maxLength) {
+      if (propertySchema.minLength != null && propertySchema.maxLength != null) {
         range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
-      } else if (propertySchema.maxLength) {
+      } else if (propertySchema.maxLength != null) {
         range = '<= ' + propertySchema.maxLength;
-      } else if (propertySchema.minLength) {
+      } else if (propertySchema.minLength != null) {
         range = '>= ' + propertySchema.minLength;
       }
 
