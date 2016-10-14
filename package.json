@@ -21,7 +21,7 @@
     "ngc": "ngc -p .",
     "webpack:prod": "webpack --config build/webpack.prod.js --profile --bail",
     "build:sass": "node-sass -q -o lib lib",
-    "build:prod": "npm run build:sass && npm run ngc && npm run webpack:prod",
+    "build:prod": "npm run build:sass && npm run ngc && npm run webpack:prod && IS_MODULE=true npm run webpack:prod",
     "build-dist": "npm run build:prod",
     "stats": "webpack --config build/webpack.prod.js --json > stats.json",
     "start": "webpack-dev-server --config build/webpack.dev.js --content-base demo",
@@ -44,7 +44,7 @@
   "author": "Roman Hotsiy",
   "license": "MIT",
   "devDependencies": {
-    "@angular/compiler-cli": "^0.6.3",
+    "@angular/compiler-cli": "^2.1.0",
     "@types/core-js": "^0.9.31",
     "@types/jasmine": "^2.2.32",
     "@types/requirejs": "^2.1.26",
@@ -91,13 +91,6 @@
     "webpack-dev-server": "^2.1.0-beta.6"
   },
   "dependencies": {
-    "@angular/common": "^2.0.1",
-    "@angular/compiler": "^2.0.1",
-    "@angular/core": "^2.0.1",
-    "@angular/platform-browser": "^2.0.1",
-    "@angular/platform-browser-dynamic": "^2.0.1",
-    "@angular/platform-server": "^2.0.1",
-    "core-js": "^2.4.1",
     "dropkickjs": "^2.1.10",
     "hint.css": "^2.3.2",
     "json-pointer": "^0.5.0",
@@ -105,10 +98,19 @@
     "openapi-sampler": "^0.3.1",
     "prismjs": "^1.5.1",
     "remarkable": "^1.6.2",
-    "rxjs": "^5.0.0-beta.12",
     "scrollparent": "^1.0.0",
     "slugify": "^1.0.2",
-    "stream-http": "^2.3.1",
+    "stream-http": "^2.3.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "^2.1.0",
+    "@angular/compiler": "^2.1.0",
+    "@angular/core": "^2.1.0",
+    "@angular/platform-browser": "^2.1.0",
+    "@angular/platform-browser-dynamic": "^2.1.0",
+    "@angular/platform-server": "^2.1.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.0.0-beta.12",
     "zone.js": "^0.6.25"
   }
 }
