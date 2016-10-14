@@ -21,7 +21,10 @@ import { SpecManager } from './utils/SpecManager';
     MenuService,
     WarningsService,
     OptionsService
-  ]
+  ],
+  exports: [Redoc]
 })
 export class RedocModule {
 }
+
+export { Redoc, SpecManager };

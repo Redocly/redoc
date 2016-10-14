@@ -29,18 +29,11 @@ export function init(specUrl:string, options:any = {}) {
 
   Redoc._preOptions = options;
   options.specUrl = options.specUrl || specUrl;
-
-  Redoc.showLoadingAnimation();
-  return SpecManager.instance().load(specUrl)
-  .then(() => {
-    return bootstrapRedoc();
-  })
+  return bootstrapRedoc()
   .then(appRef => {
-    Redoc.hideLoadingAnimation();
     moduleRef = appRef;
     console.log('ReDoc initialized!');
   }).catch(err => {
-    Redoc.hideLoadingAnimation();
     Redoc.displayError(err);
     throw err;
   });
@@ -48,6 +41,7 @@ export function init(specUrl:string, options:any = {}) {
 
 export function destroy() {
   moduleRef.destroy();
+  moduleRef = null;
 };
 
 
