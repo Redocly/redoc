@@ -12,6 +12,18 @@ const BANNER =
 
 const IS_MODULE = process.env.IS_MODULE != null;
 
+const TS_RULE = {
+  test: /\.ts$/,
+  loader: 'awesome-typescript-loader',
+  exclude: /(node_modules)/,
+};
+//
+// if (IS_MODULE) {
+//   TS_RULE.query = {
+//     noEmitHelpers: false
+//   }
+// }
+
 const config = {
   context: root(),
   devtool: 'source-map',
@@ -24,7 +36,7 @@ const config = {
     }
   },
   externals: {
-    'jquery': 'jQuery',
+    'jquery': 'jquery',
     'esprima': 'esprima' // optional dep of ys-yaml not needed for redoc
   },
   node: {
@@ -58,11 +70,7 @@ const config = {
       exclude: [
         /node_modules/
       ]
-    },{
-      test: /\.ts$/,
-      loader: 'awesome-typescript-loader',
-      exclude: /(node_modules)/
-    }, {
+    }, TS_RULE, {
       test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
       exclude: [/redoc-initial-styles\.css$/]
@@ -100,7 +108,7 @@ const config = {
 
 if (IS_MODULE) {
   config.externals = {
-    'jquery': 'jQuery',
+    'jquery': 'jquery',
     'esprima': 'esprima', // optional dep of ys-yaml not needed for redoc
     '@angular/platform-browser-dynamic': '@angular/platform-browser-dynamic',
     '@angular/platform-browser': '@angular/platform-browser',

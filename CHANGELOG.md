@@ -1,4 +1,43 @@
-# 1.3.0 (2014-08-31)
+# 1.4.0 (2016-10-14)
+### Bug fixes
+* Fix destroy/reinit
+* Fix minimum/maximum zero not rendered (#123)
+
+### Features/Improvements
+* Do spec load after bootstrap
+* Build and publish angular2 module (#126)
+
+# 1.3.3 (2016-09-28)
+### Features/Improvements
+* implemented x-extendedDiscriminator to workaround name clashes in big specs
+* Add engines to package.json (#83)
+* Fix npm start on windows (#119, #118)
+* Update webpack to latest beta
+* Update angular to 2.0.1
+* Update local dev steps
+* Update openapi-sampler lib (#111)
+
+# 1.3.2 (2016-09-13)
+### Bug fixes
+* Fix broken tabs styling for response samples
+* fix v1.x.x deployment
+
+# 1.3.1 (2016-09-13)
+### Bug fixes
+* makes basePath optional (by @LeFnord)
+* fixed little typo (by @adamd)
+* Typo s/IGNORRED/IGNORED (by @MikeRalphson)
+* Fixed indentation (by @bennyn)
+* Fix default hostname (#108)
+* Fix default value for falsy values is not displayed (#109)
+* Fix schema collapse after change discriminator
+
+### Features/Improvements
+* Update to latest Angular RC.6
+* Smaller bundle size by removing esprima dep from bundle
+* Updated dependencies
+
+# 1.3.0 (2016-08-31)
 ### Bug fixes
 * Fix code samples are not shown for operations without body param (#93)
 * Fixed side menu overlapped site footer (#75)
