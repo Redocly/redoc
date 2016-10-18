@@ -17,7 +17,7 @@ const TS_RULE = {
   loader: 'awesome-typescript-loader',
   exclude: /(node_modules)/,
 };
-// 
+//
 // if (IS_MODULE) {
 //   TS_RULE.query = {
 //     noEmitHelpers: false
@@ -108,7 +108,7 @@ const config = {
 
 if (IS_MODULE) {
   config.externals = {
-    'jquery': 'jQuery',
+    'jquery': 'jquery',
     'esprima': 'esprima', // optional dep of ys-yaml not needed for redoc
     '@angular/platform-browser-dynamic': '@angular/platform-browser-dynamic',
     '@angular/platform-browser': '@angular/platform-browser',
