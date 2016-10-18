@@ -18,7 +18,7 @@ module.exports = {
     }
   },
   externals: {
-    "jquery": "jQuery",
+    'jquery': 'jquery',
     'esprima': 'esprima' // optional dep of ys-yaml not needed for redoc
   },
   node: {

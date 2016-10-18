@@ -24,7 +24,7 @@ const config = {
     }
   },
   externals: {
-    'jquery': 'jQuery',
+    'jquery': 'jquery',
     'esprima': 'esprima' // optional dep of ys-yaml not needed for redoc
   },
   node: {
@@ -61,7 +61,10 @@ const config = {
     },{
       test: /\.ts$/,
       loader: 'awesome-typescript-loader',
-      exclude: /(node_modules)/
+      exclude: /(node_modules)/,
+      query: IS_MODULE ? {
+        noEmitHelpers: false,
+      } : {}
     }, {
       test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
