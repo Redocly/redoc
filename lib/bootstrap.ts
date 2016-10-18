@@ -1,6 +1,6 @@
 import { platformBrowser } from '@angular/platform-browser';
-import { RedocModuleNgFactory } from './redoc.module.ngfactory';
+import { AppModuleNgFactory } from './app.module.ngfactory';
 
 export function bootstrapRedoc() {
-  return platformBrowser().bootstrapModuleFactory(RedocModuleNgFactory);
+  return platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
 }

@@ -1,6 +1,6 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { RedocModule } from './redoc.module';
+import { AppModule } from './app.module';
 
 export function bootstrapRedoc() {
-  return platformBrowserDynamic().bootstrapModule(RedocModule);
+  return platformBrowserDynamic().bootstrapModule(AppModule);
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { Redoc, REDOC_DIRECTIVES } from './components/index';
 import { REDOC_COMMON_DIRECTIVES } from './shared/components/index';
@@ -10,7 +10,7 @@ import { OptionsService, RedocEventsService, MenuService,
 import { SpecManager } from './utils/SpecManager';
 
 @NgModule({
-  imports: [ BrowserModule ],
+  imports: [ CommonModule ],
   declarations: [ REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES],
   bootstrap: [ Redoc ],
   providers: [
