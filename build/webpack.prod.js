@@ -17,12 +17,12 @@ const TS_RULE = {
   loader: 'awesome-typescript-loader',
   exclude: /(node_modules)/,
 };
-
-if (IS_MODULE) {
-  TS_RULE.query = {
-    noEmitHelpers: false
-  }
-}
+// 
+// if (IS_MODULE) {
+//   TS_RULE.query = {
+//     noEmitHelpers: false
+//   }
+// }
 
 const config = {
   context: root(),
