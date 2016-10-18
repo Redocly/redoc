@@ -12,6 +12,18 @@ const BANNER =
 
 const IS_MODULE = process.env.IS_MODULE != null;
 
+const TS_RULE = {
+  test: /\.ts$/,
+  loader: 'awesome-typescript-loader',
+  exclude: /(node_modules)/,
+};
+
+if (IS_MODULE) {
+  TS_RULE.query = {
+    noEmitHelpers: false
+  }
+}
+
 const config = {
   context: root(),
   devtool: 'source-map',
@@ -58,14 +70,7 @@ const config = {
       exclude: [
         /node_modules/
       ]
-    },{
-      test: /\.ts$/,
-      loader: 'awesome-typescript-loader',
-      exclude: /(node_modules)/,
-      query: IS_MODULE ? {
-        noEmitHelpers: false,
-      } : {}
-    }, {
+    }, TS_RULE, {
       test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
       exclude: [/redoc-initial-styles\.css$/]
