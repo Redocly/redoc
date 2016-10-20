@@ -136,7 +136,7 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 ```bash
 npm run build:sass
 ```
-- _(optional)_ Replace `demo/swagger.json` with your own schema
+- _(optional)_ Replace `demo/swagger.yaml` with your own schema
 - Start the server
 `npm start`
 - Open `http://localhost:9000`
