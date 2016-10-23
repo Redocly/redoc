@@ -5,10 +5,13 @@ import { JsonPointer } from './JsonPointer';
 import { renderMd, safePush } from './helpers';
 import * as slugify from 'slugify';
 import { parse as urlParse, resolve as urlResolve } from 'url';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
+
+  public spec = new BehaviorSubject<any|null>(null);
   private _instance: any;
   private _url: string;
 
@@ -24,17 +27,19 @@ export class SpecManager {
     SpecManager.prototype._instance = this;
   }
 
-  load(url) {
+  load(urlOrObject: string|Object) {
+    this.schema = null;
     let promise = new Promise((resolve, reject) => {
-      this._schema = {};
-
-      JsonSchemaRefParser.bundle(url, {http: {withCredentials: false}})
+      JsonSchemaRefParser.bundle(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
+        if (typeof urlOrObject === 'string') {
+          this._url = urlOrObject;
+        }
+        this._schema = schema;
         try {
-          this._url = url;
-          this._schema = schema;
           this.init();
           resolve(this._schema);
+          this.spec.next(this._schema);
         } catch(err) {
           reject(err);
         }
@@ -86,6 +91,11 @@ export class SpecManager {
 
   get schema() {
     return this._schema;
+  }
+
+  set schema(val:any) {
+    this._schema = val;
+    this.spec.next(this._schema);
   }
 
   byPointer(pointer) {

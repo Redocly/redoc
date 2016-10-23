@@ -10,7 +10,7 @@ import {
 } from '@angular/core/testing';
 
 import { ApiLogo } from './api-logo';
-import { SpecManager } from '../../utils/SpecManager';
+import { SpecManager } from '../../utils/spec-manager';
 
 
 describe('Redoc components', () => {

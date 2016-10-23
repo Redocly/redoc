@@ -1,6 +1,6 @@
 'use strict';
 
-import { SpecManager } from '../../lib/utils/SpecManager';
+import { SpecManager } from '../../lib/utils/spec-manager';
 describe('Utils', () => {
   describe('Schema manager', () => {
     let specMgr;

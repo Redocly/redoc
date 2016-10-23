@@ -1,6 +1,6 @@
 'use strict';
 import { OnInit, OnDestroy } from '@angular/core';
-import { SpecManager } from '../utils/SpecManager';
+import { SpecManager } from '../utils/spec-manager';
 
 
 export { SpecManager };

@@ -2,7 +2,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
-import { SpecManager } from '../utils/SpecManager';
+import { SpecManager } from '../utils/spec-manager';
 import { SchemaHelper, MenuCategory } from './schema-helper.service';
 
 const CHANGE = {
@@ -30,7 +30,7 @@ export class MenuService {
 
     this.changeActive(CHANGE.INITIAL);
 
-    this.hash.changed.subscribe((hash) => {
+    this.hash.value.subscribe((hash) => {
       this.hashScroll(hash);
     });
   }

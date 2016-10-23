@@ -1,6 +1,6 @@
 'use strict';
 import { Injectable } from '@angular/core';
-import { SpecManager } from '../utils/SpecManager';
+import { SpecManager } from '../utils/spec-manager';
 import { JsonPointer } from '../utils/JsonPointer';
 import { defaults } from '../utils/helpers';
 import { WarningsService } from './warnings.service';

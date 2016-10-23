@@ -1,4 +1,8 @@
-<div class="redoc-wrap" *ngIf="specLoaded">
+<div class="redoc-error" *ngIf="error">
+  <h1>Oops... ReDoc failed to render this spec</h1>
+  <div class='redoc-error-details'>{{_error.message}}</div>
+</div>
+<div class="redoc-wrap" *ngIf="specLoaded && !error">
   <div class="menu-content" sticky-sidebar [scrollParent]="options.$scrollParent" [scrollYOffset]="options.scrollYOffset">
       <api-logo> </api-logo>
       <side-menu> </side-menu>

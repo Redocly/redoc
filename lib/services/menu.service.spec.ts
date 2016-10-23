@@ -9,7 +9,7 @@ import {
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
 import { ScrollService } from './scroll.service';
-import { SpecManager } from '../utils/SpecManager';;
+import { SpecManager } from '../utils/spec-manager';;
 
 describe('Menu service', () => {
   beforeEach(() => {
@@ -36,39 +36,42 @@ describe('Menu service', () => {
 
   it('should run hashScroll when hash changed', (done) => {
     spyOn(menu, 'hashScroll').and.callThrough();
-    hashService.changed.subscribe(() => {
+    hashService.value.subscribe((hash) => {
+      if (!hash) return;
       expect(menu.hashScroll).toHaveBeenCalled();
       menu.hashScroll.and.callThrough();
       done();
     });
-    hashService.changed.next();
+    hashService.value.next('nonFalsy');
   });
 
   it('should scroll to method when location hash is present [jp]', (done) => {
     let hash = '#tag/pet/paths/~1pet~1findByStatus/get';
     spyOn(menu, 'hashScroll').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
-    hashService.changed.subscribe(() => {
+    hashService.value.subscribe((hash) => {
+      if (!hash) return;
       expect(menu.hashScroll).toHaveBeenCalled();
       let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
       (<jasmine.Spy>window.scrollTo).and.callThrough();
       done();
     });
-    hashService.changed.next(hash);
+    hashService.value.next(hash);
   });
 
   it('should scroll to method when location hash is present [operation]', (done) => {
     let hash = '#operation/getPetById';
     spyOn(menu, 'hashScroll').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
-    hashService.changed.subscribe(() => {
+    hashService.value.subscribe((hash) => {
+      if (!hash) return;
       expect(menu.hashScroll).toHaveBeenCalled();
       let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
       done();
     });
-    hashService.changed.next(hash);
+    hashService.value.next(hash);
   });
 
   it('should select next/prev menu item when scrolled down/up', () => {

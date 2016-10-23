@@ -1,6 +1,6 @@
 'use strict';
 import { SchemaHelper } from './schema-helper.service';
-import { SpecManager } from '../utils/SpecManager';
+import { SpecManager } from '../utils/spec-manager';
 
 describe('Spec Helper', () => {
   describe('buildMenuTree method', () => {

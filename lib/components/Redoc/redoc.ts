@@ -1,15 +1,23 @@
 'use strict';
 
-import { ElementRef, ComponentRef, ChangeDetectorRef, Input,
-  Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import { ElementRef,
+  ComponentRef,
+  ChangeDetectorRef,
+  Input,
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  HostBinding
+} from '@angular/core';
 
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { BaseComponent } from '../base';
 
 import * as detectScollParent from 'scrollparent';
 
-import { SpecManager } from '../../utils/SpecManager';
-import { OptionsService, RedocEventsService } from '../../services/index';
+import { SpecManager } from '../../utils/spec-manager';
+import { OptionsService, Hash, MenuService, AppStateService } from '../../services/index';
+import { CustomErrorHandler } from '../../utils/';
 
 @Component({
   selector: 'redoc',
@@ -18,45 +26,29 @@ import { OptionsService, RedocEventsService } from '../../services/index';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements OnInit {
-  static appRef: ComponentRef<any>;
   static _preOptions: any;
-  specLoaded: boolean;
-
-  public options: any;
 
   private element: any;
 
+  error: any;
+  specLoaded: boolean;
+  options: any;
+
   @Input() specUrl: string;
+  @HostBinding('class.loading') specLoading: boolean = false;
+  @HostBinding('class.loading-remove') specLoadingRemove: boolean = false;
 
-  // TODO: refactor in separate component/service
-  showLoadingAnimation() {
-    DOM.addClass(this.element, 'loading');
-  }
-
-  hideLoadingAnimation() {
-    DOM.addClass(this.element, 'loading-remove');
-    setTimeout(() => {
-      DOM.removeClass(this.element, 'loading-remove');
-      DOM.removeClass(this.element, 'loading');
-    }, 400);
-  }
-
-  static displayError(err, elem?) {
-    let redocEl = elem || DOM.query('redoc');
-    if (!redocEl) return;
-    let heading = 'Oops... ReDoc failed to render this spec';
-    let details = err.message;
-    let erroHtml = `<div class="redoc-error">
-      <h1>${heading}</h1>
-      <div class='redoc-error-details'>${details}</div>`;
-    redocEl.innerHTML = erroHtml;
-  }
-
-  constructor(specMgr: SpecManager, optionsMgr:OptionsService, elementRef:ElementRef,
-    public events:RedocEventsService, private changeDetector: ChangeDetectorRef) {
+  constructor(
+    specMgr: SpecManager,
+    optionsMgr: OptionsService,
+    elementRef: ElementRef,
+    private changeDetector: ChangeDetectorRef,
+    private appState: AppStateService
+  ) {
     super(specMgr);
     // merge options passed before init
     optionsMgr.options = Redoc._preOptions || {};
+
     this.element = elementRef.nativeElement;
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
@@ -66,22 +58,34 @@ export class Redoc extends BaseComponent implements OnInit {
     this.options = optionsMgr.options;
   }
 
+  hideLoadingAnimation() {
+    this.specLoadingRemove = true;
+    setTimeout(() => {
+      this.specLoadingRemove = true;
+      this.specLoading = false;
+    }, 400);
+  }
+
   load() {
-    this.showLoadingAnimation();
-    SpecManager.instance().load(this.options.specUrl).then(() => {
-      this.specLoaded = true;
-      this.changeDetector.markForCheck();
-      //this.changeDetector.detectChanges();
-      this.events.bootstrapped.next({});
-      this.hideLoadingAnimation();
-    }).catch((err) => {
-      this.hideLoadingAnimation();
-      Redoc.displayError(err, this.element);
-      throw err;
-    })
+    this.specMgr.load(this.options.specUrl);
+    this.specMgr.spec.subscribe((spec) => {
+      if (!spec) {
+        this.specLoading = true;
+        this.specLoaded = false;
+      } else {
+        this.specLoaded = true;
+        this.hideLoadingAnimation();
+        this.changeDetector.markForCheck();
+      }
+    });
   }
 
   ngOnInit() {
+    this.appState.error.subscribe(_err => {
+      this.error = _err;
+      this.changeDetector.detectChanges();
+    })
+
     if (this.specUrl) {
       this.options.specUrl = this.specUrl;
     }

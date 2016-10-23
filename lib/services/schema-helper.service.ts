@@ -1,6 +1,6 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
-import { SpecManager } from '../utils/SpecManager';
+import { SpecManager } from '../utils/spec-manager';
 import {methods as swaggerMethods, keywordTypes} from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';

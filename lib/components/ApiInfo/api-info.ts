@@ -12,7 +12,7 @@ import { OptionsService, MenuService } from '../../services/index';
 export class ApiInfo extends BaseComponent implements OnInit {
   info: any = {};
   specUrl: String;
-  constructor(specMgr:SpecManager, private optionsService:OptionsService, private menuServ: MenuService) {
+  constructor(specMgr:SpecManager, private optionsService: OptionsService) {
     super(specMgr);
   }
 

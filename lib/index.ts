@@ -3,7 +3,7 @@ import './components/Redoc/redoc-initial-styles.css';
 
 import { enableProdMode } from '@angular/core';
 import { Redoc } from './components/index';
-import { SpecManager } from './utils/SpecManager';
+import { SpecManager } from './utils/spec-manager';
 import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
 
@@ -34,7 +34,7 @@ export function init(specUrl:string, options:any = {}) {
     moduleRef = appRef;
     console.log('ReDoc initialized!');
   }).catch(err => {
-    Redoc.displayError(err);
+    //Redoc.displayError(err);
     throw err;
   });
 };
