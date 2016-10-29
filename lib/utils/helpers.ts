@@ -21,6 +21,22 @@ interface HeadersHandler {
   close: Function;
 }
 
+export function stringify(obj:any) {
+  return JSON.stringify(obj);
+}
+
+export function isString(str:any) {
+  return typeof str === 'string';
+}
+
+export function isFunction(func: any) {
+  return typeof func === 'function';
+}
+
+export function isBlank(obj: any): boolean {
+  return obj == null;
+}
+
 export function renderMd(rawText:string, headersHandler?:HeadersHandler) {
   let _origRule;
   if (headersHandler) {

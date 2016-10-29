@@ -2,7 +2,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
+import { isString, stringify, isBlank } from './helpers';
 import JsonPointer from './JsonPointer';
 import { renderMd } from './helpers';
 import { JsonFormatter } from './JsonFormatterPipe';
