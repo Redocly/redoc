@@ -2,10 +2,10 @@
 
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { JsonPointer } from './JsonPointer';
-import { renderMd, safePush } from './helpers';
-import * as slugify from 'slugify';
 import { parse as urlParse, resolve as urlResolve } from 'url';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { MdRenderer } from './';
 
 export class SpecManager {
   public _schema: any = {};
@@ -75,18 +75,10 @@ export class SpecManager {
   }
 
   preprocess() {
-    this._schema.info['x-redoc-html-description'] = renderMd( this._schema.info.description, {
-      open: (tokens, idx) => {
-        let content = tokens[idx + 1].content;
-        safePush(this._schema.info, 'x-redoc-markdown-headers', content);
-        content = slugify(content);
-        return `<h${tokens[idx].hLevel} section="section/${content}">` +
-          `<a class="share-link" href="#section/${content}"></a>`;
-      },
-      close: (tokens, idx) => {
-        return `</h${tokens[idx].hLevel}>`;
-      }
-      });
+    let mdRender = new MdRenderer();
+    if (!this._schema.info.description) this._schema.info.description = '';
+    this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
+    this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
   }
 
   get schema() {
