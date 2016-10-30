@@ -82,8 +82,14 @@ export class Redoc extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.appState.error.subscribe(_err => {
-      this.error = _err;
-      this.changeDetector.detectChanges();
+      // do not show errors that occuered after spec has been already loaded
+      // TODO: change this in future to show in e.g. popup
+      //if (this.specLoaded) return;
+
+      setTimeout(() => {
+        this.error = _err;
+        this.changeDetector.detectChanges()
+      });
     })
 
     if (this.specUrl) {
