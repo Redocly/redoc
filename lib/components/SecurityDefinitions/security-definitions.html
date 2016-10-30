@@ -1,2 +1,40 @@
-<h1> Hello world </h1>
-<h2> {{message}} {{pointer}} </h2>
+<div class="security-definition" *ngFor="let def of defs">
+  <h2 class="sharable-header" attr.section="section/Authentication/{{def.name}}">
+    <a class="share-link" href="#section/Authentication/{{def.name}}"></a>{{def.name}}</h2>
+  <div [innerHTML]="def.details.description"></div>
+  <div class="redoc-markdown-block"> <!-- apply md styles to table -->
+    <table class="details">
+      <tr>
+        <th> Security scheme type: </th>
+        <td> {{def.details._displayType}} </td>
+      </tr>
+      <tr *ngIf="def.details.type === 'apiKey'">
+        <th> {{def.details.in}} parameter name:</th>
+        <td> {{def.details.name}} </td>
+      </tr>
+      <template [ngIf]="def.details.type === 'oauth2'">
+        <tr>
+          <th> OAuth2 Flow</th>
+          <td> {{def.details.flow}} </td>
+        </tr>
+        <tr *ngIf="def.details.flow === 'implicit' || def.details.flow === 'accessCode'">
+          <th> Authorization URL </th>
+          <td> {{def.details.authorizationUrl}} </td>
+        </tr>
+        <tr *ngIf="def.details.flow !== 'implicit'">
+          <th> Token URL </th>
+          <td> {{def.details.tokenUrl}} </td>
+        </tr>
+      </template>
+    </table>
+    <template [ngIf]="def.details.type === 'oauth2'">
+      <h3> OAuth2 Scopes </h3>
+      <table class="scopes">
+        <tr *ngFor="let scopeName of def.details.scopes | keys">
+          <th> {{scopeName}} </th>
+          <td> {{def.details.scopes[scopeName]}} </td>
+        </tr>
+      </table>
+    </template>
+  </div>
+</div>

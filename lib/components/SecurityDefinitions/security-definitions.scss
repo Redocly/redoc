@@ -1,28 +1,36 @@
 @import '../../shared/styles/variables';
 
-.api-info-header {
-  font-weight: normal;
+.security-definition:not(:last-of-type) {
+  border-bottom: 1px solid rgba($text-color, .3);
+  padding-bottom: 20px;
 }
 
-:host > div {
-  width: 60%;
-  padding: 40px;
-  box-sizing: border-box;
-
-  @media (max-width: $right-panel-squash-breakpoint) {
-    width: 100%;
-  }
+h2, h3 {
+  color: $secondary-color;
 }
 
-a.openapi-button {
-  padding: 3px 8px 4px 8px;
-  color: $primary-color;
-  border: 1px solid $primary-color;
-  margin-left: 0.5em;
-  font-weight: normal;
+:host h2 {
+  margin-top: 40px;
 }
 
-:host /deep/ [section] {
-  padding-top: 60px;
+h3 {
+  margin: 1em 0;
+  font-size: 1em;
+}
+
+:host .redoc-markdown-block table {
   margin-top: 20px;
+}
+
+table.details th, table.details td {
+  font-weight: bold;
+  width: 200px;
+  max-width: 50%;
+}
+
+table.details th {
+  text-align: left;
+  padding: 6px;
+  text-transform: capitalize;
+  font-weight: normal;
 }
