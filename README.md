@@ -132,10 +132,6 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 `cd ReDoc`
 - Install dependencies
 `npm install`
-- *(Temporary step, will be obsolete after fixing #97)* Compile CSS
-```bash
-npm run build:sass
-```
 - _(optional)_ Replace `demo/swagger.yaml` with your own schema
 - Start the server
 `npm start`
