@@ -67,7 +67,10 @@ export class Redoc extends BaseComponent implements OnInit {
   }
 
   load() {
-    this.specMgr.load(this.options.specUrl);
+    this.specMgr.load(this.options.specUrl).catch(err => {
+      throw err;
+    });
+
     this.specMgr.spec.subscribe((spec) => {
       if (!spec) {
         this.specLoading = true;
@@ -82,12 +85,15 @@ export class Redoc extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.appState.error.subscribe(_err => {
-      // do not show errors that occuered after spec has been already loaded
-      // TODO: change this in future to show in e.g. popup
-      //if (this.specLoaded) return;
+      if (!_err) return;
 
+      if (this.specLoading) {
+        this.specLoaded = true;
+        this.hideLoadingAnimation();
+      }
+      this.error = _err;
+      this.changeDetector.markForCheck();
       setTimeout(() => {
-        this.error = _err;
         this.changeDetector.detectChanges()
       });
     })

@@ -7,7 +7,7 @@ export class CustomErrorHandler extends ErrorHandler {
     super(true);
   }
   handleError(error) {
-    this.appState.error.next(error);
+    this.appState.error.next(error && error.rejection || error);
     super.handleError(error);
   }
 }
