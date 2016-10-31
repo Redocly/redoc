@@ -1,7 +1,7 @@
 <div class="security-definition" *ngFor="let def of defs">
   <h2 class="sharable-header" attr.section="section/Authentication/{{def.name}}">
     <a class="share-link" href="#section/Authentication/{{def.name}}"></a>{{def.name}}</h2>
-  <div [innerHTML]="def.details.description"></div>
+  <div [innerHTML]="def.details.description | marked"></div>
   <div class="redoc-markdown-block"> <!-- apply md styles to table -->
     <table class="details">
       <tr>
