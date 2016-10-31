@@ -94,6 +94,9 @@ For npm:
 
 ## Configuration
 
+### Security Definition location
+You can inject Security Definitions widget into any place of your specification `description`. Check out details [here](docs/security-definitions-injection.md).
+
 ### Swagger vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
