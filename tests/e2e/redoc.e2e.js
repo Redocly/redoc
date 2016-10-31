@@ -16,17 +16,24 @@ function basicTests(swaggerUrl, title) {
     beforeEach((done) => {
       browser.get(specUrl);
       fixFFTest(done);
+      var EC = protractor.ExpectedConditions;
+      var $apiInfo = $('api-info');
+      var $errorMessage = $('.redoc-error')
+      browser.wait(EC.or(EC.visibilityOf($apiInfo), EC.visibilityOf($errorMessage)), 60000);
     });
 
     afterEach(() => {
       verifyNoBrowserErrors();
     });
 
-    it('should init redoc without errors', () => {
+    it('should init redoc without errors', (done) => {
       let $redoc = $('redoc');
       expect($redoc.isPresent()).toBe(true);
-      let $methods = $$('method');
-      expect($methods.count()).toBeGreaterThan(0);
+      setTimeout(() => {
+        let $methods = $$('method');
+        expect($methods.count()).toBeGreaterThan(0);
+        done();
+      });
     });
   });
 }

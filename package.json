@@ -84,7 +84,7 @@
     "karma-webpack": "^1.8.0",
     "node-sass": "^3.8.0",
     "phantomjs-prebuilt": "^2.1.7",
-    "protractor": "^4.0.4",
+    "protractor": "^4.0.10",
     "raw-loader": "^0.5.1",
     "rxjs": "5.0.0-beta.12",
     "shelljs": "^0.7.0",
