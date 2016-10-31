@@ -14,6 +14,7 @@ export interface MenuMethod {
   active: boolean;
   summary: string;
   tag: string;
+  pointer: string;
 }
 
 export interface MenuCategory {

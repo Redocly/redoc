@@ -41,9 +41,14 @@ export class MenuService {
       let $activeMethodHost = this.getCurrentMethodEl();
       if (!$activeMethodHost) return;
       var elementInViewPos = this.scrollService.getElementPos($activeMethodHost);
-      if(isScrolledDown && elementInViewPos === INVIEW_POSITION.BELLOW) {
-        stable = this.changeActive(CHANGE.NEXT);
-        continue;
+      if(isScrolledDown) {
+        //&& elementInViewPos === INVIEW_POSITION.BELLOW
+        let $nextEl = this.getRelativeCatOrItem(1);
+        let nextInViewPos = this.scrollService.getElementPos($nextEl, true);
+        if (elementInViewPos === INVIEW_POSITION.BELLOW && nextInViewPos === INVIEW_POSITION.ABOVE) {
+          stable = this.changeActive(CHANGE.NEXT);
+          continue;
+        }
       }
       if(!isScrolledDown && elementInViewPos === INVIEW_POSITION.ABOVE ) {
         stable = this.changeActive(CHANGE.BACK);
@@ -51,6 +56,25 @@ export class MenuService {
       }
       stable = true;
     }
+  }
+
+  getRelativeCatOrItem(offset: number = 0) {
+    let ptr, cat;
+    cat = this.categories[this.activeCatIdx];
+    if (cat.methods.length === 0) {
+      ptr = null;
+      cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
+    } else {
+      let cat = this.categories[this.activeCatIdx];
+      let idx = this.activeMethodIdx + offset;
+      if ((idx >= cat.methods.length - 1) || idx < 0) {
+        cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
+        idx = offset > 0 ? -1 : cat.methods.length - 1;
+      }
+      ptr = cat.methods[idx] && cat.methods[idx].pointer;
+    }
+
+    return this.getMethodElByPtr(ptr, cat.id);
   }
 
   getCurrentMethodEl() {
