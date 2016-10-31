@@ -22,11 +22,14 @@ var TestBed = require('@angular/core/testing').TestBed;
 var ErrorHandler = require('@angular/core').ErrorHandler;
 var BrowserDynamicTestingModule = require('@angular/platform-browser-dynamic/testing').BrowserDynamicTestingModule;
 var platformBrowserDynamicTesting = require('@angular/platform-browser-dynamic/testing').platformBrowserDynamicTesting;
-var services = require('../lib/services/index');
+
 var SpecManager = require('../lib/utils/spec-manager').SpecManager;
+var services = require('../lib/services/index');
 var REDOC_PIPES = require('../lib/utils/pipes').REDOC_PIPES;
-var REDOC_COMMON_DIRECTIVES = require('../lib/shared/components/index').REDOC_COMMON_DIRECTIVES;
-var REDOC_DIRECTIVES = require('../lib/components/index').REDOC_DIRECTIVES;
+var sharedComponents = require('../lib/shared/components/');
+var REDOC_COMMON_DIRECTIVES = sharedComponents.REDOC_COMMON_DIRECTIVES;
+var components = require('../lib/components/');
+var REDOC_DIRECTIVES = components.REDOC_DIRECTIVES;
 
 TestBed.initTestEnvironment(
   BrowserDynamicTestingModule,
@@ -43,9 +46,17 @@ beforeEach(function() {
       services.MenuService,
       services.WarningsService,
       services.OptionsService,
-      { provide: ErrorHandler, useClass: services.CustomErrorHandler }
+      services.ComponentParser,
+      services.ContentProjector,
+      { provide: ErrorHandler, useClass: services.CustomErrorHandler },
+      { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
     ],
     declarations: [REDOC_PIPES, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES]
+  });
+  TestBed.overrideModule(BrowserDynamicTestingModule, {
+    set: {
+      entryComponents: [ sharedComponents.DynamicNg2Wrapper, components.SecurityDefinitions ]
+    },
   });
 });
 

@@ -141,10 +141,11 @@ export class MenuService {
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'operation') {
       $el = this.getMethodElByOperId(ptr);
-    } else if (namespace === 'tag'){
+    } else if (namespace === 'tag') {
       let sectionId = ptr.split('/')[0];
       ptr = ptr.substr(sectionId.length) || null;
       sectionId = namespace + (sectionId ? '/' + sectionId : '');
+      $el = this.getMethodElByPtr(ptr, sectionId);
     } else {
       $el = this.getMethodElByPtr(null, namespace + '/' + ptr);
     }

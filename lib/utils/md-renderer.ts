@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
 import * as slugify from 'slugify';
 import * as Remarkable from 'remarkable';
 
-import { SecurityDefinitions } from '../components/';
-
 declare var Prism: any;
 const md = new Remarkable({
   html: true,
@@ -28,15 +26,12 @@ interface HeadersHandler {
 
 @Injectable()
 export class MdRenderer {
+  public firstLevelHeadings: string[] = [];
+
   private _origRules:any = {};
   private _preProcessors:Function[] = [];
 
-  public firstLevelHeadings: string[] = [];
   constructor(private raw: boolean = false) {
-    // TODO
-    if (!raw) {
-      this.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
-    }
   }
 
   addPreprocessor(p: Function) {

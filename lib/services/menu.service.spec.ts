@@ -98,6 +98,7 @@ describe('Menu service', () => {
   selector: 'test-app',
   template:
       `<div id='parent' style='height: 500px; overflow:auto'>
+        <api-info></api-info>
         <methods-list></methods-list>
       </div>`
 })

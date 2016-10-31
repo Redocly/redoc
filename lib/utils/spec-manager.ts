@@ -5,7 +5,7 @@ import { JsonPointer } from './JsonPointer';
 import { parse as urlParse, resolve as urlResolve } from 'url';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { MdRenderer } from './';
+import { MdRenderer } from './md-renderer';
 
 export class SpecManager {
   public _schema: any = {};
@@ -77,6 +77,10 @@ export class SpecManager {
   preprocess() {
     let mdRender = new MdRenderer();
     if (!this._schema.info.description) this._schema.info.description = '';
+    if (this._schema.securityDefinitions) {
+      let SecurityDefinitions =  require('../components/').SecurityDefinitions;
+      mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
+    }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
     this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
   }

@@ -2,7 +2,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, HostListener } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
 
-import { ComponentParser } from '../../services/';
+import { ComponentParser } from '../../services/component-parser.service';
 
 const AUTH_TYPES = {
   'oauth2': 'OAuth2',

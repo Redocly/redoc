@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { isString, stringify, isBlank } from './helpers';
 import JsonPointer from './JsonPointer';
-import { MdRenderer} from './';
+import { MdRenderer } from './';
 import { JsonFormatter } from './JsonFormatterPipe';
 
 declare var Prism: any;
