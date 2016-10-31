@@ -15,7 +15,7 @@
       "should",
       "requirejs"
     ],
-    "noEmitHelpers": false
+    "noEmitHelpers": true
   },
   "compileOnSave": false,
   "exclude": [

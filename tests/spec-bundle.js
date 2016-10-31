@@ -19,14 +19,17 @@ require('zone.js/dist/jasmine-patch');
 require('../lib/vendor');
 
 var TestBed = require('@angular/core/testing').TestBed;
+var ErrorHandler = require('@angular/core').ErrorHandler;
 var BrowserDynamicTestingModule = require('@angular/platform-browser-dynamic/testing').BrowserDynamicTestingModule;
 var platformBrowserDynamicTesting = require('@angular/platform-browser-dynamic/testing').platformBrowserDynamicTesting;
+
+var SpecManager = require('../lib/utils/spec-manager').SpecManager;
 var services = require('../lib/services/index');
-var SpecManager = require('../lib/utils/SpecManager').SpecManager;
-var BrowserDomAdapter = require('@angular/platform-browser/src/browser/browser_adapter').BrowserDomAdapter;
 var REDOC_PIPES = require('../lib/utils/pipes').REDOC_PIPES;
-var REDOC_COMMON_DIRECTIVES = require('../lib/shared/components/index').REDOC_COMMON_DIRECTIVES;
-var REDOC_DIRECTIVES = require('../lib/components/index').REDOC_DIRECTIVES;
+var sharedComponents = require('../lib/shared/components/');
+var REDOC_COMMON_DIRECTIVES = sharedComponents.REDOC_COMMON_DIRECTIVES;
+var components = require('../lib/components/');
+var REDOC_DIRECTIVES = components.REDOC_DIRECTIVES;
 
 TestBed.initTestEnvironment(
   BrowserDynamicTestingModule,
@@ -36,17 +39,24 @@ TestBed.initTestEnvironment(
 beforeEach(function() {
   TestBed.configureTestingModule({
     providers: [
-      BrowserDomAdapter,
       SpecManager,
-      BrowserDomAdapter,
-      services.RedocEventsService,
+      services.AppStateService,
       services.ScrollService,
       services.Hash,
       services.MenuService,
       services.WarningsService,
-      services.OptionsService
+      services.OptionsService,
+      services.ComponentParser,
+      services.ContentProjector,
+      { provide: ErrorHandler, useClass: services.CustomErrorHandler },
+      { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
     ],
     declarations: [REDOC_PIPES, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES]
+  });
+  TestBed.overrideModule(BrowserDynamicTestingModule, {
+    set: {
+      entryComponents: [ sharedComponents.DynamicNg2Wrapper, components.SecurityDefinitions ]
+    },
   });
 });
 

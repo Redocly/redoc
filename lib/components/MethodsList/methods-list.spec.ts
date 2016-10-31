@@ -11,7 +11,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 
 
 import { MethodsList } from './methods-list';
-import { SpecManager } from '../../utils/SpecManager';
+import { SpecManager } from '../../utils/spec-manager';
 
 describe('Redoc components', () => {
   beforeEach(() => {

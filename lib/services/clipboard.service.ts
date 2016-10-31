@@ -1,8 +1,9 @@
 'use strict';
 
+var isSupported = document.queryCommandSupported && document.queryCommandSupported('copy');
 export class Clipboard {
   static isSupported():boolean {
-    return document.queryCommandSupported && document.queryCommandSupported('copy');
+    return isSupported;
   }
 
   static selectElement(element:any):void {

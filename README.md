@@ -94,6 +94,9 @@ For npm:
 
 ## Configuration
 
+### Security Definition location
+You can inject Security Definitions widget into any place of your specification `description`. Check out details [here](docs/security-definitions-injection.md).
+
 ### Swagger vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
@@ -132,11 +135,7 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 `cd ReDoc`
 - Install dependencies
 `npm install`
-- *(Temporary step, will be obsolete after fixing #97)* Compile CSS
-```bash
-npm run build:sass
-```
-- _(optional)_ Replace `demo/swagger.json` with your own schema
+- _(optional)_ Replace `demo/swagger.yaml` with your own schema
 - Start the server
 `npm start`
 - Open `http://localhost:9000`

@@ -2,9 +2,9 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { isString, stringify, isBlank } from '@angular/core/src/facade/lang';
+import { isString, stringify, isBlank } from './helpers';
 import JsonPointer from './JsonPointer';
-import { renderMd } from './helpers';
+import { MdRenderer } from './';
 import { JsonFormatter } from './JsonFormatterPipe';
 
 declare var Prism: any;
@@ -28,20 +28,9 @@ export class KeysPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (typeof value !== 'object') {
-      throw new InvalidPipeArgumentException(ValuesPipe, value);
+      throw new InvalidPipeArgumentException(KeysPipe, value);
     }
     return Object.keys(value);
-  }
-}
-
-@Pipe({ name: 'values' })
-export class ValuesPipe implements PipeTransform {
-  transform(value) {
-    if (isBlank(value)) return value;
-    if (typeof value !== 'object') {
-      throw new InvalidPipeArgumentException(ValuesPipe, value);
-    }
-    return Object.keys(value).map(key => value[key]);
   }
 }
 
@@ -58,7 +47,10 @@ export class JsonPointerEscapePipe implements PipeTransform {
 
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
+  renderer: MdRenderer;
+  constructor(private sanitizer: DomSanitizer) {
+    this.renderer = new MdRenderer(true);
+  }
   transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
@@ -66,7 +58,7 @@ export class MarkedPipe implements PipeTransform {
     }
 
     return this.sanitizer.bypassSecurityTrustHtml(
-      `<span class="redoc-markdown-block">${renderMd(value)}</span>`
+      `<span class="redoc-markdown-block">${this.renderer.renderMd(value)}</span>`
     );
   }
 }
@@ -125,5 +117,5 @@ export class EncodeURIComponentPipe implements PipeTransform {
 }
 
 export const REDOC_PIPES = [
-  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter
+  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter, KeysPipe
 ];

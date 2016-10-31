@@ -103,7 +103,6 @@ export class SideMenu extends BaseComponent implements OnInit {
 
   destroy() {
     this.scrollService.unbind();
-    this.hash.unbind();
   }
 
   ngOnInit() {

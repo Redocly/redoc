@@ -18,7 +18,6 @@ export class ScrollService {
   private prevOffsetY: number;
   private _cancel:any;
   constructor(optionsService:OptionsService) {
-    //events.bootstrapped.subscribe(() => this.hashScroll());
     this.scrollYOffset = () => optionsService.options.scrollYOffset();
     this.$scrollParent = optionsService.options.$scrollParent;
     this.scroll = new EventEmitter();
@@ -30,12 +29,14 @@ export class ScrollService {
   }
 
   /* returns 1 if element if above the view, 0 if in view and -1 below the view */
-  getElementPos($el) {
-    if (Math.floor($el.getBoundingClientRect().top) > this.scrollYOffset()) {
+  getElementPos($el, inverted=false) {
+    let scrollYOffset = this.scrollYOffset();
+    let mul = inverted ? -1 : 1;
+    if (mul*Math.floor($el.getBoundingClientRect().top) > mul*scrollYOffset) {
       return INVIEW_POSITION.ABOVE;
     }
 
-    if ($el.getBoundingClientRect().bottom <= this.scrollYOffset()) {
+    if (mul*$el.getBoundingClientRect().bottom <= mul*scrollYOffset) {
       return INVIEW_POSITION.BELLOW;
     }
     return INVIEW_POSITION.INVIEW;

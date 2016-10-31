@@ -1,12 +1,14 @@
 'use strict';
 
-import { Component, ViewChildren, QueryList, EventEmitter, Input,
+import { Component, ViewChildren, QueryList, Input,
  ChangeDetectionStrategy, OnInit, HostBinding } from '@angular/core';
+
+import { Subject } from 'rxjs/Subject';
 
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
 import { Tabs } from '../../shared/components/index';
-import { RedocEventsService } from '../../services/index';
+import { AppStateService } from '../../services/index';
 
 @Component({
   selector: 'request-samples',
@@ -21,18 +23,17 @@ export class RequestSamples extends BaseComponent implements OnInit {
   @HostBinding('attr.hidden') hidden;
 
   childTabs: Tabs;
-  selectedLang: EventEmitter<any>;
+  selectedLang: Subject<any>;
   samples: Array<any>;
 
-  constructor(specMgr:SpecManager, public events:RedocEventsService) {
+  constructor(specMgr:SpecManager, public appState:AppStateService) {
     super(specMgr);
 
-    this.selectedLang = this.events.samplesLanguageChanged;
+    this.selectedLang = this.appState.samplesLanguage;
   }
 
-
   changeLangNotify(lang) {
-    this.events.samplesLanguageChanged.next(lang);
+    this.selectedLang.next(lang);
   }
 
   init() {

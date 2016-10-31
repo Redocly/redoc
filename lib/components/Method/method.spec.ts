@@ -10,7 +10,7 @@ import {
 import { getChildDebugElement } from '../../../tests/helpers';
 
 import { Method } from './method';
-import { SpecManager } from '../../utils/SpecManager';;
+import { SpecManager } from '../../utils/spec-manager';;
 
 describe('Redoc components', () => {
   beforeEach(() => {

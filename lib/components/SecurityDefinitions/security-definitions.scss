@@ -1,0 +1,36 @@
+@import '../../shared/styles/variables';
+
+.security-definition:not(:last-of-type) {
+  border-bottom: 1px solid rgba($text-color, .3);
+  padding-bottom: 20px;
+}
+
+h2, h3 {
+  color: $secondary-color;
+}
+
+:host h2 {
+  padding-top: 40px;
+}
+
+h3 {
+  margin: 1em 0;
+  font-size: 1em;
+}
+
+:host .redoc-markdown-block table {
+  margin-top: 20px;
+}
+
+table.details th, table.details td {
+  font-weight: bold;
+  width: 200px;
+  max-width: 50%;
+}
+
+table.details th {
+  text-align: left;
+  padding: 6px;
+  text-transform: capitalize;
+  font-weight: normal;
+}

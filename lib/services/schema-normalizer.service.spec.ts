@@ -1,6 +1,6 @@
 'use strict';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import { SpecManager } from '../utils/SpecManager';;
+import { SpecManager } from '../utils/spec-manager';;
 
 describe('Spec Helper', () => {
   let specMgr:SpecManager = new SpecManager();

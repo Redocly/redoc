@@ -1,26 +1,40 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { Redoc, REDOC_DIRECTIVES } from './components/index';
-import { REDOC_COMMON_DIRECTIVES } from './shared/components/index';
-import { REDOC_PIPES } from './utils/pipes';
+import { Redoc, SecurityDefinitions, REDOC_DIRECTIVES } from './components/index';
+import { REDOC_COMMON_DIRECTIVES, DynamicNg2Wrapper } from './shared/components/index';
+import { REDOC_PIPES, KeysPipe } from './utils/pipes';
+import { CustomErrorHandler } from './utils/'
 
-import { OptionsService, RedocEventsService, MenuService,
-  ScrollService, Hash, WarningsService } from './services/index';
-import { SpecManager } from './utils/SpecManager';
+import {
+  OptionsService,
+  MenuService,
+  ScrollService,
+  Hash,
+  WarningsService,
+  AppStateService,
+  ComponentParser,
+  ContentProjector,
+  COMPONENT_PARSER_ALLOWED } from './services/';
+import { SpecManager } from './utils/spec-manager';
 
 @NgModule({
-  imports: [ BrowserModule ],
-  declarations: [ REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES],
+  imports: [ CommonModule ],
+  declarations: [ REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES ],
   bootstrap: [ Redoc ],
+  entryComponents: [ SecurityDefinitions, DynamicNg2Wrapper ],
   providers: [
     SpecManager,
-    RedocEventsService,
     ScrollService,
     Hash,
     MenuService,
     WarningsService,
-    OptionsService
+    OptionsService,
+    AppStateService,
+    ComponentParser,
+    ContentProjector,
+    { provide: ErrorHandler, useClass: CustomErrorHandler },
+    { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions} }
   ],
   exports: [Redoc]
 })

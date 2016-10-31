@@ -5,7 +5,7 @@ import { Component, ElementRef, ViewContainerRef, OnDestroy, Input,
 
 import { JsonSchema } from './json-schema';
 import { OptionsService } from '../../services/options.service';
-import { SpecManager } from '../../utils/SpecManager';
+import { SpecManager } from '../../utils/spec-manager';
 
 var cache = {};
 
@@ -38,7 +38,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
     var componentFactory = this.resolver.resolveComponentFactory(JsonSchema);
     let contextInjector = this.location.parentInjector;
     let compRef = this.location.createComponent(componentFactory, null, contextInjector, null);
-    this.initComponent(compRef.instance);
+    this.projectComponentInputs(compRef.instance);
     this._renderer.setElementAttribute(compRef.location.nativeElement, 'class', this.location.element.nativeElement.className);
     compRef.changeDetectorRef.detectChanges();
     this.loaded = true;
@@ -58,24 +58,22 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
     this.pointer = this.normalizePointer();
     if (cache[this.pointer]) {
       let compRef = cache[this.pointer];
-      setTimeout( ()=> {
-        let $element = compRef.location.nativeElement;
+      let $element = compRef.location.nativeElement;
 
-        // skip caching view with descendant schemas
-        // as it needs attached controller
-        if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
-          this._loadAfterSelf();
-          return;
-        }
-        insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
-        this.loaded = true;
-      });
+      // skip caching view with descendant schemas
+      // as it needs attached controller
+      if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
+        this._loadAfterSelf();
+        return;
+      }
+      insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
+      this.loaded = true;
     } else {
       cache[this.pointer] = this._loadAfterSelf();
     }
   }
 
-  initComponent(instance:JsonSchema) {
+  projectComponentInputs(instance:JsonSchema) {
     Object.assign(instance, this);
   }
 

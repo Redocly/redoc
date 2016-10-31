@@ -1,6 +1,6 @@
 'use strict';
 import { Injectable } from '@angular/core';
-import { isFunction, isString } from '@angular/core/src/facade/lang';
+import { isFunction, isString } from '../utils/helpers';
 import { BrowserDomAdapter as DOM } from '../utils/browser-adapter';
 
 const defaults = {

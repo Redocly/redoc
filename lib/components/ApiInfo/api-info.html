@@ -17,5 +17,5 @@
       <span *ngIf="!info.license.url"> {{info.license.name}} </span>
     </span>
   </p>
-  <p *ngIf="info.description" class="redoc-markdown-block" [innerHtml]="info['x-redoc-html-description'] | safe"> </p>
+  <dynamic-ng2-viewer [html]="info['x-redoc-html-description']"></dynamic-ng2-viewer>
 </div>

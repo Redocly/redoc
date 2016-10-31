@@ -38,12 +38,21 @@
 
     "directive-selector-type": [true, "attribute"],
     "component-selector-type": [true, "element"],
+    "component-selector-name": [true, "kebab-case"],
+    "directive-selector-name": [true, "camelCase"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
+    "pipe-naming": [true, "camelCase"],
+    "import-destructuring-spacing": true,
     "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true
+    "use-pipe-transform-interface": true,
+    "templates-use-public": true,
+    "no-access-missing-member": true,
+    "invoke-injectable": true,
+    "no-forward-ref": true,
+    "no-attribute-parameter-decorator": true
   }
 }

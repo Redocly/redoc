@@ -1,6 +1,5 @@
 'use strict';
 import { Pipe, PipeTransform } from '@angular/core';
-//import { isBlank } from '@angular/core/src/facade/lang';
 import { DomSanitizer } from '@angular/platform-browser';
 
 function isBlank(obj) {

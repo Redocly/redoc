@@ -2,13 +2,16 @@
 
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { JsonPointer } from './JsonPointer';
-import { renderMd, safePush } from './helpers';
-import * as slugify from 'slugify';
 import { parse as urlParse, resolve as urlResolve } from 'url';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { MdRenderer } from './md-renderer';
 
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
+
+  public spec = new BehaviorSubject<any|null>(null);
   private _instance: any;
   private _url: string;
 
@@ -24,17 +27,19 @@ export class SpecManager {
     SpecManager.prototype._instance = this;
   }
 
-  load(url) {
+  load(urlOrObject: string|Object) {
+    this.schema = null;
     let promise = new Promise((resolve, reject) => {
-      this._schema = {};
-
-      JsonSchemaRefParser.bundle(url, {http: {withCredentials: false}})
+      JsonSchemaRefParser.bundle(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
+        if (typeof urlOrObject === 'string') {
+          this._url = urlOrObject;
+        }
+        this._schema = schema;
         try {
-          this._url = url;
-          this._schema = schema;
           this.init();
           resolve(this._schema);
+          this.spec.next(this._schema);
         } catch(err) {
           reject(err);
         }
@@ -70,22 +75,23 @@ export class SpecManager {
   }
 
   preprocess() {
-    this._schema.info['x-redoc-html-description'] = renderMd( this._schema.info.description, {
-      open: (tokens, idx) => {
-        let content = tokens[idx + 1].content;
-        safePush(this._schema.info, 'x-redoc-markdown-headers', content);
-        content = slugify(content);
-        return `<h${tokens[idx].hLevel} section="section/${content}">` +
-          `<a class="share-link" href="#section/${content}"></a>`;
-      },
-      close: (tokens, idx) => {
-        return `</h${tokens[idx].hLevel}>`;
-      }
-      });
+    let mdRender = new MdRenderer();
+    if (!this._schema.info.description) this._schema.info.description = '';
+    if (this._schema.securityDefinitions) {
+      let SecurityDefinitions =  require('../components/').SecurityDefinitions;
+      mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
+    }
+    this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
+    this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
   }
 
   get schema() {
     return this._schema;
+  }
+
+  set schema(val:any) {
+    this._schema = val;
+    this.spec.next(this._schema);
   }
 
   byPointer(pointer) {
@@ -148,6 +154,9 @@ export class SpecManager {
         description: tag.description,
         'x-traitTag': tag['x-traitTag'] || false
       };
+      if (tag['x-traitTag']) {
+        console.warn(`x-traitTag (${tag.name}) is deprecated since v1.5.0 and will be removed in the future`);
+      }
     }
 
     return tagsMap;

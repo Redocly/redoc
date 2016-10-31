@@ -1,25 +1,22 @@
 'use strict';
+import {
+  inject
+} from '@angular/core/testing';
 
-import { RedocEventsService } from './events.service';
 import { Hash } from './hash.service';
+import { SpecManager } from '../utils/spec-manager';
 
 describe('Hash Service', () => {
-  let events = new RedocEventsService();
+  let specMgr = new SpecManager();
   let hashService;
 
-  beforeEach(() => {
-    hashService = new Hash(events);
-  });
-
-  afterEach(() => {
-    hashService.unbind();
-  });
+  beforeEach(inject([Hash], (_hash) => hashService = _hash));
 
   it('should trigger changed event after ReDoc bootstrapped', (done) => {
-    spyOn(hashService.changed, 'next').and.callThrough();
-    events.bootstrapped.next({});
+    spyOn(hashService.value, 'next').and.callThrough();
+    specMgr.spec.next({});
     setTimeout(() => {
-      expect(hashService.changed.next).toHaveBeenCalled();
+      expect(hashService.value.next).toHaveBeenCalled();
       done();
     });
   });

@@ -1,32 +1,31 @@
 'use strict';
-import { Injectable, EventEmitter, Output } from '@angular/core';
-import { BrowserDomAdapter as DOM } from '../utils/browser-adapter';
-import { global } from '@angular/core/src/facade/lang';
+import { Injectable } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
 
-import { RedocEventsService } from './events.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SpecManager } from '../utils/spec-manager';
 
 @Injectable()
 export class Hash {
-  @Output() changed = new EventEmitter();
-  private _cancel: any;
-  constructor(private events:RedocEventsService) {
+  public value = new BehaviorSubject<string>('');
+  constructor(private specMgr: SpecManager, private location: PlatformLocation) {
     this.bind();
 
-    events.bootstrapped.subscribe(() => this.changed.next(this.hash));
-  }
-
-  get hash() {
-    return DOM.getLocation().hash;
-  }
-
-  bind() {
-    this._cancel = DOM.onAndCancel(global, 'hashchange', (evt) => {
-      this.changed.next(this.hash);
-      evt.preventDefault();
+    this.specMgr.spec.subscribe((spec) => {
+      if (!spec) return;
+      setTimeout(() => {
+        this.value.next(this.hash);
+      });
     });
   }
 
-  unbind() {
-    this._cancel();
+  get hash() {
+    return this.location.hash;
+  }
+
+  bind() {
+    this.location.onHashChange(() => {
+      this.value.next(this.hash);
+    });
   }
 }

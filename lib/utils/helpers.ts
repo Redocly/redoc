@@ -1,58 +1,19 @@
 'use strict';
-import * as Remarkable from 'remarkable';
-declare var Prism: any;
 
-const md = new Remarkable({
-  html: true,
-  linkify: true,
-  breaks: false,
-  typographer: false,
-  highlight: (str, lang) => {
-    if (lang === 'json') lang = 'js';
-    let grammar = Prism.languages[lang];
-    //fallback to clike
-    if (!grammar) return str;
-    return Prism.highlight(str, grammar);
-  }
-});
-
-interface HeadersHandler {
-  open: Function;
-  close: Function;
+export function stringify(obj:any) {
+  return JSON.stringify(obj);
 }
 
-export function renderMd(rawText:string, headersHandler?:HeadersHandler) {
-  let _origRule;
-  if (headersHandler) {
-    _origRule = {
-      open: md.renderer.rules.heading_open,
-      close: md.renderer.rules.heading_close
-    };
-    md.renderer.rules.heading_open = (tokens, idx) => {
-      if (tokens[idx].hLevel !== 1 ) {
-        return _origRule.open(tokens, idx);
-      } else {
-        return headersHandler.open(tokens, idx);
-      }
-    };
+export function isString(str:any) {
+  return typeof str === 'string';
+}
 
-    md.renderer.rules.heading_close = (tokens, idx) => {
-      if (tokens[idx].hLevel !== 1 ) {
-        return _origRule.close(tokens, idx);
-      } else {
-        return headersHandler.close(tokens, idx);
-      }
-    };
-  }
+export function isFunction(func: any) {
+  return typeof func === 'function';
+}
 
-  let res =  md.render(rawText);
-
-  if (headersHandler) {
-    md.renderer.rules.heading_open = _origRule.open;
-    md.renderer.rules.heading_close = _origRule.close;
-  }
-
-  return res;
+export function isBlank(obj: any): boolean {
+  return obj == undefined;
 }
 
 export function statusCodeType(statusCode) {
