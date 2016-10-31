@@ -1,7 +1,6 @@
 ---
   swagger: "2.0"
   info:
-    description: "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters."
     version: "1.0.0"
     title: "Swagger Petstore"
     termsOfService: "http://swagger.io/terms/"
@@ -12,56 +11,50 @@
     license:
       name: "Apache 2.0"
       url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    description: |-
+      # Pagination
+      Sometimes you just can't get enough. For this reason, we've provided a convenient way to access more data in
+      any request for sequential data. Simply call the url in the next_url parameter and we'll respond with the next
+      set of data.
+
+      ```json
+      {
+        ...
+        "pagination": {
+          "next_url": "https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296",
+          "next_max_id": "13872296"
+        }
+      }
+      ```
+
+      On views where pagination is present, we also support the `count` parameter.
+      Simply set this to the number of items you'd like to receive. Note that the default values
+      should be fine for most applications - but if you decide to increase this number there is a maximum value
+      defined on each endpoint.
+
+      # JSONP
+      This is a sample server Petstore server.
+      You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on
+      [irc.freenode.net, #swagger](http://swagger.io/irc/).
+      For this sample, you can use the api key `special-key` to test the authorization filters.
+      If you're writing an AJAX application, and you'd like to wrap our response with a callback,
+      all you have to do is specify a callback parameter with any API call:
+
+      ```
+      https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction
+      ```
+      Would respond with:
+
+      ```js
+      callbackFunction({
+        ...
+      });
+      ```
+
+      > Example of markdown blockquote
   host: "petstore.swagger.io"
   basePath: "/v2"
   tags:
-    -
-      name: "Pagination"
-      x-traitTag: true
-      description: |-
-        Sometimes you just can't get enough. For this reason, we've provided a convenient way to access more data in
-        any request for sequential data. Simply call the url in the next_url parameter and we'll respond with the next
-        set of data.
-
-        ```json
-        {
-          ...
-          "pagination": {
-            "next_url": "https://api.instagram.com/v1/tags/puppy/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&max_id=13872296",
-            "next_max_id": "13872296"
-          }
-        }
-        ```
-
-        On views where pagination is present, we also support the `count` parameter.
-        Simply set this to the number of items you'd like to receive. Note that the default values
-        should be fine for most applications - but if you decide to increase this number there is a maximum value
-        defined on each endpoint.
-      externalDocs:
-        description: "Find out more"
-        url: "http://swagger.io"
-    -
-      name: "JSONP"
-      x-traitTag: true
-      description: |-
-        If you're writing an AJAX application, and you'd like to wrap our response with a callback,
-        all you have to do is specify a callback parameter with any API call:
-
-        ```
-        https://api.instagram.com/v1/tags/coffee/media/recent?access_token=fb2e77d.47a0479900504cb3ab4a1f626d174d2d&callback=callbackFunction
-        ```
-        Would respond with:
-
-        ```js
-        callbackFunction({
-          ...
-        });
-        ```
-
-        > Example of markdown blockquote
-      externalDocs:
-        description: "Find out more"
-        url: "http://swagger.io"
     -
       name: "pet"
       description: "Everything about your Pets"

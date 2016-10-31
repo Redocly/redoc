@@ -75,9 +75,9 @@ describe('Utils', () => {
 
       describe('byPointer method', () => {
         it('should return correct schema part', ()=> {
-          let part = specMgr.byPointer('/tags/3');
-          part.should.be.deepEqual(specMgr.schema.tags[3]);
-          part.should.be.equal(specMgr.schema.tags[3]);
+          let part = specMgr.byPointer('/tags/0');
+          part.should.be.deepEqual(specMgr.schema.tags[0]);
+          part.should.be.equal(specMgr.schema.tags[0]);
         });
 
         it('should return null for incorrect pointer', ()=> {

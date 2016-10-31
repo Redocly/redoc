@@ -78,17 +78,17 @@ describe('Menu service', () => {
     scroll.$scrollParent = document.querySelector('#parent');
     menu.activeCatIdx.should.be.equal(0);
     menu.activeMethodIdx.should.be.equal(-1);
-    let elTop = menu.getCurrentMethodEl().getBoundingClientRect().bottom;
+    let nextElTop = menu.getRelativeCatOrItem(1).getBoundingClientRect().top;
 
-    scroll.$scrollParent.scrollTop = elTop + 1;
+    scroll.$scrollParent.scrollTop = nextElTop + 1;
 
     //simulate scroll down
-    spyOn(scroll, 'scrollY').and.returnValue(elTop + 2);
+    spyOn(scroll, 'scrollY').and.returnValue(nextElTop + 10);
     menu.scrollUpdate(true);
     menu.activeCatIdx.should.be.equal(1);
 
-    scroll.scrollY.and.returnValue(elTop - 2);
-    scroll.$scrollParent.scrollTop = elTop - 1;
+    scroll.scrollY.and.returnValue(nextElTop - 2);
+    scroll.$scrollParent.scrollTop = nextElTop - 1;
     menu.scrollUpdate(false);
     menu.activeCatIdx.should.be.equal(0);
   });

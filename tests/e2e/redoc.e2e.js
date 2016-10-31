@@ -6,6 +6,13 @@ const eachNth = require('./helpers').eachNth;
 
 const URL = 'index.html';
 
+function waitForInit() {
+  var EC = protractor.ExpectedConditions;
+  var $apiInfo = $('api-info');
+  var $errorMessage = $('.redoc-error')
+  browser.wait(EC.or(EC.visibilityOf($apiInfo), EC.visibilityOf($errorMessage)), 60000);
+}
+
 function basicTests(swaggerUrl, title) {
   describe(`Basic suite for ${title}`, () => {
     let specUrl = URL;
@@ -15,11 +22,8 @@ function basicTests(swaggerUrl, title) {
 
     beforeEach((done) => {
       browser.get(specUrl);
+      waitForInit();
       fixFFTest(done);
-      var EC = protractor.ExpectedConditions;
-      var $apiInfo = $('api-info');
-      var $errorMessage = $('.redoc-error')
-      browser.wait(EC.or(EC.visibilityOf($apiInfo), EC.visibilityOf($errorMessage)), 60000);
     });
 
     afterEach(() => {
@@ -46,6 +50,7 @@ describe('Scroll sync', () => {
 
   beforeEach((done) => {
     browser.get(specUrl);
+    waitForInit();
     fixFFTest(done);
   });
 
@@ -71,6 +76,7 @@ describe('Language tabs sync', () => {
 
   beforeEach((done) => {
     browser.get(specUrl);
+    waitForInit();
     fixFFTest(done);
   });
 
@@ -100,7 +106,6 @@ if (process.env.JOB === 'e2e-guru') {
     delete apisGuruList['clarify.io']; // non-string references
     //delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
     delete apisGuruList['bbci.co.uk']; // too big
-    delete apisGuruList['bbc.com']; // too big
 
     // run quick version of e2e test on all builds except releases
     if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
