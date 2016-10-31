@@ -12,18 +12,6 @@ const BANNER =
 
 const IS_MODULE = process.env.IS_MODULE != null;
 
-const TS_RULE = {
-  test: /\.ts$/,
-  loader: 'awesome-typescript-loader',
-  exclude: /(node_modules)/,
-};
-//
-// if (IS_MODULE) {
-//   TS_RULE.query = {
-//     noEmitHelpers: false
-//   }
-// }
-
 const config = {
   context: root(),
   devtool: 'source-map',
@@ -70,7 +58,14 @@ const config = {
       exclude: [
         /node_modules/
       ]
-    }, TS_RULE, {
+    }, {
+      test: /node_modules\/.*\.ngfactory\.ts$/,
+      loader: 'awesome-typescript-loader'
+    }, {
+      test: /\.ts$/,
+      loader: 'awesome-typescript-loader',
+      exclude: /(node_modules)/,
+    }, {
       test: /lib[\\\/].*\.css$/,
       loaders: ['raw-loader'],
       exclude: [/redoc-initial-styles\.css$/]

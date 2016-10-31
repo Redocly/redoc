@@ -28,20 +28,9 @@ export class KeysPipe implements PipeTransform {
   transform(value) {
     if (isBlank(value)) return value;
     if (typeof value !== 'object') {
-      throw new InvalidPipeArgumentException(ValuesPipe, value);
+      throw new InvalidPipeArgumentException(KeysPipe, value);
     }
     return Object.keys(value);
-  }
-}
-
-@Pipe({ name: 'values' })
-export class ValuesPipe implements PipeTransform {
-  transform(value) {
-    if (isBlank(value)) return value;
-    if (typeof value !== 'object') {
-      throw new InvalidPipeArgumentException(ValuesPipe, value);
-    }
-    return Object.keys(value).map(key => value[key]);
   }
 }
 

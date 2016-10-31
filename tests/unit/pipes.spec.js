@@ -1,11 +1,11 @@
 'use strict';
 
-import {KeysPipe, ValuesPipe, JsonPointerEscapePipe, MarkedPipe} from '../../lib/utils/pipes';
+import {KeysPipe, JsonPointerEscapePipe, MarkedPipe} from '../../lib/utils/pipes';
 
 describe('Pipes', () => {
-  describe('KeysPipe and ValuesPipe', () => {
+  describe('KeysPipe', () => {
     let obj;
-    var keysPipe, valuesPipe;
+    var keysPipe;
 
     beforeEach(() => {
       obj = {
@@ -14,7 +14,6 @@ describe('Pipes', () => {
         c: 3
       };
       keysPipe = new KeysPipe();
-      valuesPipe = new ValuesPipe();
     });
 
     describe('KeysPipe transform', () => {
@@ -26,22 +25,6 @@ describe('Pipes', () => {
       it('should not support other objects', () => {
         (() => keysPipe.transform(45)).should.throw();
         (() => keysPipe.transform('45')).should.throw();
-      });
-
-      it('should not throw on blank input', () => {
-        (() => valuesPipe.transform()).should.not.throw();
-      });
-    });
-
-    describe('KeysPipe transform', () => {
-      it('should return values', () => {
-        var val = valuesPipe.transform(obj);
-        val.should.be.deepEqual([1, 2, 3]);
-      });
-
-      it('should not support other objects', () => {
-        (() => valuesPipe.transform(45)).should.throw();
-        (() => valuesPipe.transform('45')).should.throw();
       });
 
       it('should not throw on blank input', () => {
