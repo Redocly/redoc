@@ -112,6 +112,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
   * **function**: A getter function. Must return a number representing the offset (in pixels);
 * `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
+* `hide-hostname` - if set, the protocol and hostname is not shown in the method definition.
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:

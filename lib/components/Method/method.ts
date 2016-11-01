@@ -3,6 +3,7 @@ import { Input, Component, OnInit, ChangeDetectionStrategy } from '@angular/core
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
+import { OptionsService } from '../../services/options.service';
 
 @Component({
   selector: 'method',
@@ -16,13 +17,17 @@ export class Method extends BaseComponent implements OnInit {
 
   method:any;
 
-  constructor(specMgr:SpecManager) {
+  constructor(specMgr:SpecManager, private optionsService: OptionsService) {
     super(specMgr);
   }
 
   init() {
     this.method = {};
-    this.method.apiUrl = this.specMgr.apiUrl;
+    if (this.optionsService.options.hideHostname) {
+      this.method.apiUrl = this.specMgr.basePath;
+    } else {
+      this.method.apiUrl = this.specMgr.apiUrl;
+    }
     this.method.httpMethod = JsonPointer.baseName(this.pointer);
     this.method.path = JsonPointer.baseName(this.pointer, 2);
     this.method.info = this.componentSchema;
