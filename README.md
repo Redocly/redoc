@@ -140,3 +140,5 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 - Start the server
 `npm start`
 - Open `http://localhost:9000`
+
+Alternatively, Docker can be used by just running `docker-compose up`.
