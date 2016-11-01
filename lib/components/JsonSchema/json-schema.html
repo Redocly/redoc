@@ -23,8 +23,9 @@
       </span>
       <span *ngIf="schema['x-nullable']" class="param-nullable">Nullable</span>
       <div *ngIf="schema.enum" class="param-enum">
-        <span *ngFor="let enumItem of schema.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+        <span *ngFor="let enumItem of schema.enum" class="param-enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
       </div>
+      <span *ngIf="schema.pattern" class="param-pattern">{{schema.pattern}}</span>
     </span>
   </template>
   <template ngSwitchCase="tuple">
@@ -78,6 +79,7 @@
               <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
                 <span *ngFor="let enumItem of prop.enum" class="param-enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
               </div>
+              <span *ngIf="prop.pattern" class="param-pattern">{{prop.pattern}}</span>
             </div>
             <div class="param-description" [innerHtml]="prop.description | marked"></div>
             <div class="discriminator-info" *ngIf="prop.isDiscriminator">

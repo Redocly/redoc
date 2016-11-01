@@ -193,6 +193,20 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   }
 }
 
+.param-pattern {
+  color: $nullable-color;
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    content: '/';
+    margin: 0 3px;
+    font-size: 1.2em;
+    font-weight: bold;
+    vertical-align: bottom;
+  }
+}
+
 .param-default {
   font-size: 0.95em;
 
