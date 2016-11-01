@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const VERSION = JSON.stringify(require('../package.json').version);
 
 const root = require('./helpers').root;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BANNER =
 `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
 -------------------------------------------------------------
