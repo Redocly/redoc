@@ -5,25 +5,15 @@ $cell-spacing: 25px;
 $cell-padding: 10px;
 $bullet-margin: 10px;
 $line-border: $lines-width solid $tree-lines-color;
-$line-border-erase: ($lines-width + 1px) solid #fff;
+$line-border-erase: ($lines-width + 1px) solid $background-color;
+
+$border-color: lighten($secondary-color, 50%);
+$nullable-color: #3195a6;
+$hint-border: 1px dotted rgba(38, 50, 56, 0.4);
 
 $param-name-height: 20px;
 
 $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
-
-.param-name {
-  position: relative;
-  border-left: $line-border;
-  padding: $cell-padding 0;
-  vertical-align: top;
-  line-height: $param-name-height;
-
-  white-space: nowrap;
-  font-size: 0.929em;
-  font-weight: $regular;
-
-  box-sizing: border-box;
-}
 
 .param-name-wrap {
   display: inline-block;
@@ -32,10 +22,9 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 }
 
 .param-info {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $border-color;
   padding: $cell-padding 0;
   width: 75%;
-  line-height: 1em;
 
   box-sizing: border-box;
 }
@@ -46,7 +35,7 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   margin-right: 6px;
   margin-left: 6px;
   border-radius: $border-radius;
-  background-color: rgba($primary-color, .1);
+  background-color: rgba($primary-color, 0.1);
   padding: 0 4px;
   color: rgba($primary-color, 0.7);
 }
@@ -58,7 +47,7 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 .param-required {
   vertical-align: middle;
   line-height: $param-name-height;
-  color: #f00;
+  color: $red;
   font-size: 12px;
   font-weight: bold;
 }
@@ -66,7 +55,7 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 .param-nullable {
   vertical-align: middle;
   line-height: $param-name-height;
-  color: #3195a6;
+  color: $nullable-color;
   font-size: 12px;
   font-weight: bold;
 }
@@ -77,82 +66,103 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   color: rgba($black, 0.4);
   font-size: 0.929em;
   font-weight: normal;
+
+  &.array::before {
+    content: $array-text;
+    color: $black;
+    font-weight: $base-font-weight;
+  }
+
+  &.tuple::before {
+    content: $tuple-text;
+    color: $black;
+    font-weight: $base-font-weight;
+  }
+
+  &.with-hint {
+    display: inline-block;
+    margin-bottom: 0.4em;
+    border-bottom: $hint-border;
+    padding: 0;
+    cursor: help;
+  }
+
+  &-trivial {
+    display: inline-block;
+  }
+
+  &-file {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
 }
 
-.param-type.array:before {
-  content: "Array of ";
-  color: $black;
-  font-weight: $base-font-weight;
-}
-
-.param-type.tuple:before {
-  content: "Tuple";
-  color: $black;
-  font-weight: $base-font-weight;
-}
-
-.param-type.with-hint {
-  display: inline-block;
-  margin-bottom: 0.4em;
-  border-bottom: 1px dotted rgba(38,50,56,0.4);
-  padding: 0;
-  cursor: help;
-}
-
-.param-type-trivial {
-  display: inline-block;
-}
-
-.param-type-file {
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-/* tree */
+// tree
 
 // Bullet
 
-.param-name > span:before {
-  content: "";
-  display: inline-block;
-  width: $bullet-size;
-  height: $bullet-size + 6;
-  background-color: $primary-color;
-  margin: 0 $bullet-margin;
-  vertical-align: middle;
-}
-
-.param-name > span:after {
-  content: "";
-  position: absolute;
-  border-top: $line-border;
-  width: $bullet-margin;
-  left: 0;
-  top: ($param-name-height/2) + $cell-padding + 1;
-}
-
- .param:first-of-type > .param-name:before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: -$lines-width;
-  top: 0;
-  border-left: $line-border-erase;
-  height: ($param-name-height/2) + $cell-padding + 1;
-}
-
-.param:last-of-type > .param-name, .param.last > .param-name {
+.param-name {
+  border-left: $line-border;
+  box-sizing: border-box;
   position: relative;
 
-  &:after {
-    content: "";
+  padding: $cell-padding 0;
+  vertical-align: top;
+  line-height: $param-name-height;
+
+  white-space: nowrap;
+  font-size: 0.929em;
+  font-weight: $regular;
+
+  > span::before {
+    content: '';
+    display: inline-block;
+    width: $bullet-size;
+    height: $bullet-size + 6;
+    background-color: $primary-color;
+    margin: 0 $bullet-margin;
+    vertical-align: middle;
+  }
+
+  > span::after {
+    content: '';
+    position: absolute;
+    border-top: $line-border;
+    width: $bullet-margin;
+    left: 0;
+    top: ($param-name-height / 2) + $cell-padding + 1;
+  }
+}
+
+.param:first-of-type {
+
+  > .param-name::before {
+    content: '';
     display: block;
     position: absolute;
-    left: -$lines-width - 1px;
+    left: -$lines-width;
+    top: 0;
     border-left: $line-border-erase;
-    top: ($param-name-height/2) + $cell-padding + $lines-width + 1;
-    background-color: white;
-    bottom: 0;
+    height: ($param-name-height / 2) + $cell-padding + 1;
+  }
+}
+
+.param:last-of-type,
+.param.last {
+
+  > .param-name {
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -$lines-width - 1px;
+      border-left: $line-border-erase;
+      top: ($param-name-height / 2) + $cell-padding + $lines-width + 1;
+      background-color: $background-color;
+      bottom: 0;
+    }
   }
 }
 
@@ -160,33 +170,46 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   border-left-color: transparent;
 }
 
-.param-schema .param-wrap:first-of-type .param-name:before {
-  display: none !important;
+.param-schema {
+  .param-wrap:first-of-type {
+    .param-name::before {
+      display: none;
+    }
+  }
 }
 
-.param-schema.last > td {
-  border-left: 0;
+.param-schema.last {
+  > td {
+    border-left: 0;
+  }
 }
 
 .param-enum {
   color: $text-color;
-  font-size: 13px;
+  font-size: 0.95em;
 
-  &:before {
-    content: 'Values: {';
+  &::before {
+    content: 'Valid values: ';
   }
+}
 
-  &:after {
-    content: '}';
+.param-default {
+  font-size: 0.95em;
+
+  &::before {
+    content: 'Default: ';
   }
+}
 
-  > .enum-value {
-    &:after {
-      content: ", ";
-    }
-
-    &:last-of-type:after {
-      content: none;
-    }
-  }
+.param-enum-value,
+.param-default-value {
+  background-color: $background-color;
+  border: 1px solid rgba($secondary-color, 0.2);
+  margin: 2px 3px;
+  padding: 0 5px;
+  border-radius: 2px;
+  color: $secondary-color;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
 }

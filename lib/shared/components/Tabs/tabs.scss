@@ -1,5 +1,9 @@
 @import '../../styles/variables';
 
+:host {
+  display: block;
+}
+
 ul {
   display: block;
   margin: 0;
@@ -10,9 +14,6 @@ li {
   list-style: none;
   display: inline-block;
   cursor: pointer;
-}
-
-li.active {
 }
 
 .tab-success, .tab-error, .tab-redirect, .tab-info {

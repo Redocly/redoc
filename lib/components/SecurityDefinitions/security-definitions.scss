@@ -1,16 +1,16 @@
 @import '../../shared/styles/variables';
 
+:host {
+  display: block;
+}
+
 .security-definition:not(:last-of-type) {
   border-bottom: 1px solid rgba($text-color, .3);
   padding-bottom: 20px;
 }
 
-h2, h3 {
-  color: $secondary-color;
-}
-
 :host h2 {
-  padding-top: 40px;
+  padding-top: $section-spacing;
 }
 
 h3 {
@@ -18,7 +18,7 @@ h3 {
   font-size: 1em;
 }
 
-:host .redoc-markdown-block table {
+:host .security-scopes-details, :host .security-details {
   margin-top: 20px;
 }
 

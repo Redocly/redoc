@@ -1,28 +1,24 @@
 @import '../../shared/styles/variables';
 
-.api-info-header {
-  font-weight: normal;
-}
-
-:host > div {
-  width: 60%;
-  padding: 40px;
+:host > .api-info-wrapper {
   box-sizing: border-box;
+  padding: $section-spacing;
+  width: 60%;
+
 
   @media (max-width: $right-panel-squash-breakpoint) {
     width: 100%;
   }
 }
 
-a.openapi-button {
-  padding: 3px 8px 4px 8px;
-  color: $primary-color;
+.openapi-button {
   border: 1px solid $primary-color;
-  margin-left: 0.5em;
+  color: $primary-color;
   font-weight: normal;
+  margin-left: 0.5em;
+  padding: 3px 8px 4px;
 }
 
 :host /deep/ [section] {
-  padding-top: 60px;
-  margin-top: 20px;
+  padding-top: 2 * $section-spacing;
 }

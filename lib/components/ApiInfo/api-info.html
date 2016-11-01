@@ -1,5 +1,5 @@
-<div>
-  <h1 class="api-info-header">{{info.title}} ({{info.version}})</h1>
+<div class="api-info-wrapper">
+  <h1>{{info.title}} ({{info.version}})</h1>
   <p>
     Download OpenAPI (fka Swagger) specification:
     <a class="openapi-button" target="_blank" attr.href='{{specUrl}}'> Download </a>
@@ -17,5 +17,7 @@
       <span *ngIf="!info.license.url"> {{info.license.name}} </span>
     </span>
   </p>
-  <dynamic-ng2-viewer [html]="info['x-redoc-html-description']"></dynamic-ng2-viewer>
+  <span class="redoc-markdown-block">
+    <dynamic-ng2-viewer  [html]="info['x-redoc-html-description']"></dynamic-ng2-viewer>
+  </span>
 </div>

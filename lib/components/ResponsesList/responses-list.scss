@@ -1,9 +1,13 @@
 @import '../../shared/styles/variables';
 
+:host {
+  display: block;
+}
+
 .responses-list-header {
   font-size: 18px;
   padding: 0.2em 0;
-  margin: 3em 0 1.1em 0;
+  margin: 3em 0 1.1em;
   color: #253137;
   font-weight: normal;
 }
@@ -45,13 +49,13 @@ header {
   margin-right: 6px;
   margin-left: 6px;
   border-radius: $border-radius;
-  background-color: rgba($primary-color, .1);
+  background-color: rgba($primary-color, 0.1);
   padding: 0 4px;
   color: rgba($primary-color, 0.7);
 }
 
-.header-type.array:before {
-  content: "Array of ";
+.header-type.array::before {
+  content: $array-text;
   color: $black;
   font-weight: $base-font-weight;
 }

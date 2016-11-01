@@ -2,46 +2,39 @@
 
 :host {
   overflow: hidden;
-}
-
-tab, tabs {
-    display: block;
-}
-
-schema-sample {
-    display: block;
+  display: block;
 }
 
 header {
-    font-family: $headers-font;
-    font-size: 0.929em;
-    text-transform: uppercase;
-    margin: 0;
-    color: $sample-panel-headers-color;
-    text-transform: uppercase;
-    font-weight: normal;
+  font-family: $headers-font;
+  font-size: 0.929em;
+  text-transform: uppercase;
+  margin: 0;
+  color: $sample-panel-headers-color;
+  text-transform: uppercase;
+  font-weight: normal;
 }
 
 :host /deep/ > tabs > ul li {
-    font-family: $headers-font;
-    font-size: 0.929em;
-    border-radius: $border-radius;
-    margin: 2px 0;
-    padding: 2px 8px 3px 8px;
-    color: $sample-panel-headers-color;
-    line-height: 1.25;
+  font-family: $headers-font;
+  font-size: 0.929em;
+  border-radius: $border-radius;
+  margin: 2px 0;
+  padding: 2px 8px 3px 8px;
+  color: $sample-panel-headers-color;
+  line-height: 1.25;
 
-    &:hover {
-        color: #ffffff;
-        background-color: rgba(white, .1);
-    }
+  &:hover {
+    color: #ffffff;
+    background-color: rgba(white, .1);
+  }
 
-    &.active {
-        background-color: white;
-        color: $black;
-    }
+  &.active {
+    background-color: white;
+    color: $black;
+  }
 }
 
 :host /deep/ tabs ul {
-    padding-top: 10px;
+  padding-top: 10px;
 }

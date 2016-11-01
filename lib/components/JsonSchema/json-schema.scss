@@ -1,8 +1,9 @@
 @import 'json-schema-common';
 
-/* styles for array-schema for array */
+// styles for array-schema for array
 $array-marker-font-sz: 13px;
 $array-marker-line-height: 1.5;
+
 :host {
   display: block;
 }
@@ -15,6 +16,7 @@ $array-marker-line-height: 1.5;
 .derived-schema {
   display: none;
 }
+
 .derived-schema.active {
   display: block;
 }
@@ -156,13 +158,7 @@ table {
 }
 
 .discriminator-info {
-  font-weight: $regular;
-  margin-bottom: 10px;
-
-  > span {
-    font-size: 0.9em;
-    font-weight: $light;
-  }
+  margin-top: 5px;
 }
 
 .discriminator-wrap:not(.empty) > td {
@@ -214,7 +210,7 @@ li:before {
   }
 }
 
-.param-enum-value {
+.param-name-enumvalue {
   padding: 2px;
   background-color: #e6ebf6;
 

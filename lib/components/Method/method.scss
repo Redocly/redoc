@@ -12,14 +12,6 @@
   border-bottom: 0;
 }
 
-h2 {
-  color: $secondary-color;
-}
-
-responses-list, params-list {
-  display: block;
-}
-
 .method-header {
   margin-bottom: .9em;
 }
@@ -35,7 +27,7 @@ responses-list, params-list {
   overflow-x: auto;
 }
 
-.method-endpoint > h5 {
+.method-endpoint > .method-params-subheader {
   padding-top: 1px;
   padding-bottom: 0;
   margin: 0;
@@ -46,43 +38,42 @@ responses-list, params-list {
   border-radius: $border-radius;
 }
 
-.api-url {
+.method-api-url {
   color: rgba(#ffffff, .6);
   margin-left: 10px;
   margin-top: 2px;
   position: relative;
   top: 1px;
   font-family: $headers-font, $headers-font-family;
-  font-size: 0.929em!important;
-}
+  font-size: 0.929em;
 
-.path {
-  font-family: $headers-font, $headers-font-family;
-  position: relative;
-  top: 1px;
-  color: #ffffff;
-  font-size: 0.929em!important;
+  &-path {
+    font-family: $headers-font, $headers-font-family;
+    position: relative;
+    top: 1px;
+    color: #ffffff;
+  }
 }
 
 .method-tags {
   margin-top: 20px;
-}
 
-.method-tags a {
-  font-size: 16px;
-  color: #999;
-  display: inline-block;
-  padding: 0 0.5em;
-  text-decoration: none;
-}
+  > a {
+    font-size: 16px;
+    color: #999;
+    display: inline-block;
+    padding: 0 0.5em;
+    text-decoration: none;
 
-.method-tags a:before {
-  content: '#';
-  margin-right: -0.4em;
-}
+    &:before {
+      content: '#';
+      margin-right: -0.4em;
+    }
 
-.method-tags a:first-of-type {
-  padding: 0;
+    &:first-of-type {
+      padding: 0;
+    }
+  }
 }
 
 .method-content, .method-samples {
@@ -93,18 +84,14 @@ responses-list, params-list {
 
 .method-content {
   width: 100% - $samples-panel-width;
-  padding: 40px;
+  padding: $section-spacing;
 }
 
 .method-samples {
   color: $sample-panel-color;
   width: 40%;
-  padding: 40px;
+  padding: $section-spacing;
   background: $samples-panel-bg-color;
-}
-
-responses-samples {
-  display: block;
 }
 
 .method-samples header,
@@ -137,6 +124,8 @@ responses-samples {
   background: #ffffff;
   padding: 3px 10px;
   text-transform: uppercase;
+  display: inline-block;
+  margin: 0;
 }
 
 [select-on-click] {

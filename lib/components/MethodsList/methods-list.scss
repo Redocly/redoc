@@ -1,7 +1,11 @@
 @import '../../shared/styles/variables';
 
+:host {
+  display: block;
+  overflow: hidden;
+}
 .tag-info {
-  padding: 40px;
+  padding: $section-spacing;
   box-sizing: border-box;
   background-color: white;
   width: 60%;

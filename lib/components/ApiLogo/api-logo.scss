@@ -1,5 +1,14 @@
 @import '../../shared/styles/variables';
 
+:host {
+  display: block;
+  text-align: center;
+
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    display: none;
+  }
+}
+
 img {
   max-height: 150px;
   width: auto;

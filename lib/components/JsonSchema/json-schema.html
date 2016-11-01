@@ -57,7 +57,7 @@
             <span class="param-name-wrap" (click)="subSchema.toggle()">
               <span class="param-name-content">
                 {{prop._name}}
-                <span class="param-enum-value" [hidden]="!prop._enumItem"> {{prop._enumItem?.val | json}} </span>
+                <span class="param-name-enumvalue" [hidden]="!prop._enumItem"> {{prop._enumItem?.val | json}} </span>
               </span>
               <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
                 <polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
@@ -72,14 +72,15 @@
               </span>
               <span *ngIf="prop._required" class="param-required">Required</span>
               <span *ngIf="prop['x-nullable']" class="param-nullable">Nullable</span>
-              <div *ngIf="prop.default != null">Default: {{prop.default | json}}</div>
+              <div class="param-default" *ngIf="prop.default != null">
+                <span class="param-default-value">{{prop.default | json}}</span>
+              </div>
               <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
-                <span *ngFor="let enumItem of prop.enum" class="enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+                <span *ngFor="let enumItem of prop.enum" class="param-enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
               </div>
             </div>
             <div class="param-description" [innerHtml]="prop.description | marked"></div>
             <div class="discriminator-info" *ngIf="prop.isDiscriminator">
-              <span>This field value determines the exact schema:</span>
               <drop-down (change)="selectDescendant($event)">
                 <option *ngFor="let descendant of descendants; let i=index"
                 [value]="i" [attr.selected]="descendant.active ? '' : null" >{{descendant.name}}</option>
