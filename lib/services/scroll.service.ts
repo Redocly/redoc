@@ -42,15 +42,20 @@ export class ScrollService {
     return INVIEW_POSITION.INVIEW;
   }
 
-  scrollTo($el) {
+  scrollTo($el, offset:number = 0) {
     // TODO: rewrite this to use offsetTop as more reliable solution
     let subjRect = $el.getBoundingClientRect();
-    let offset = this.scrollY() + subjRect.top - this.scrollYOffset() + 1;
+    let posY = this.scrollY() + subjRect.top - this.scrollYOffset() + offset + 1;
     if (this.$scrollParent.scrollTo) {
-      this.$scrollParent.scrollTo(0, offset);
+      this.$scrollParent.scrollTo(0, posY);
     } else {
-      this.$scrollParent.scrollTop = offset;
+      this.$scrollParent.scrollTop = posY;
     }
+  }
+
+  relativeScrollPos($el) {
+    let subjRect = $el.getBoundingClientRect();
+    return - subjRect.top + this.scrollYOffset() - 1;
   }
 
   scrollHandler(evt) {
