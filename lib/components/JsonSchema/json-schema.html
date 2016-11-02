@@ -17,7 +17,7 @@
   <template ngSwitchCase="trivial">
     <span class="param-wrap">
       <span class="param-type param-type-trivial {{schema.type}}"
-        [ngClass]="{'with-hint': schema._displayTypeHint}"
+        [ngClass]="{'with-hint': schema._displayTypeHint, 'array': schema._isArray}"
         title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
         <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
       </span>

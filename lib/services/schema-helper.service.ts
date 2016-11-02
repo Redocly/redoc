@@ -262,8 +262,9 @@ export class SchemaHelper {
   static unwrapArray(schema, pointer) {
     var res = schema;
     if (schema && schema.type === 'array' && !Array.isArray(schema.items)) {
-      let ptr = schema.items._pointer || JsonPointer.join(pointer, ['items']);
-      res = schema.items;
+      let items = schema.items = schema.items || {};
+      let ptr = items._pointer || JsonPointer.join(pointer, ['items']);
+      res = items;
       res._isArray = true;
       res._pointer = ptr;
       res = SchemaHelper.unwrapArray(res, ptr);
