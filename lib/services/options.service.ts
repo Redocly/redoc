@@ -71,5 +71,4 @@ export class OptionsService {
     if (isString(this._options.suppressWarnings)) this._options.suppressWarnings = true;
     if (isString(this._options.hideHostname)) this._options.hideHostname = true;
   }
-  }
 }
