@@ -106,6 +106,7 @@ if (process.env.JOB === 'e2e-guru') {
     delete apisGuruList['clarify.io']; // non-string references
     //delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
     delete apisGuruList['bbci.co.uk']; // too big
+    delete apisGuruList['bbc.com']; // too big
 
     // run quick version of e2e test on all builds except releases
     if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {

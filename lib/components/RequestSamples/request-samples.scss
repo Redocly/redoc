@@ -2,6 +2,7 @@
 
 :host {
   overflow: hidden;
+  display: block;
 }
 
 .action-buttons {
@@ -37,48 +38,48 @@
 }
 
 header {
-    font-family: $headers-font;
-    font-size: $h5;
-    text-transform: uppercase;
-    margin: 0;
-    color: $sample-panel-headers-color;
-    text-transform: uppercase;
-    font-weight: normal;
+  font-family: $headers-font;
+  font-size: $h5;
+  text-transform: uppercase;
+  margin: 0;
+  color: $sample-panel-headers-color;
+  text-transform: uppercase;
+  font-weight: normal;
 }
 
 :host /deep/ > tabs > ul li {
-    font-family: $headers-font;
-    font-size: .9em;
-    border-radius: $border-radius;
-    margin: 2px 0;
-    padding: 3px 10px 2px 10px;
-    line-height: 1.25;
-    color: $sample-panel-headers-color;
+  font-family: $headers-font;
+  font-size: .9em;
+  border-radius: $border-radius;
+  margin: 2px 0;
+  padding: 3px 10px 2px 10px;
+  line-height: 1.25;
+  color: $sample-panel-headers-color;
 
-    &:hover {
-        background-color: rgba(white, .1);
-        color: #ffffff;
-    }
+  &:hover {
+    background-color: rgba(white, .1);
+    color: #ffffff;
+  }
 
-    &.active {
-        background-color: #ffffff;
-        color: $text-color;
-    }
+  &.active {
+    background-color: #ffffff;
+    color: $text-color;
+  }
 }
 
 :host /deep/ tabs ul {
     padding-top: 10px;
 }
 
-pre {
-    overflow-x: auto;
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    margin-top: 0;
-    overflow-x: auto;
-    padding: 20px;
-    border-radius: 4px;
-    background-color: #222d32;
-    margin-bottom: 36px;
+.code-sample pre {
+  overflow-x: auto;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin-top: 0;
+  overflow-x: auto;
+  padding: 20px;
+  border-radius: 4px;
+  background-color: #222d32;
+  margin-bottom: 36px;
 }

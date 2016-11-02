@@ -1,5 +1,9 @@
 @import '../../shared/styles/variables';
 
+:host {
+  display: block;
+}
+
 pre {
   background-color: transparent;
   padding: 0;

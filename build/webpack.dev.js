@@ -8,8 +8,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 // TODO Refactor common parts of config
 
 module.exports = {
-  context: root(),
-  devtool: 'source-map',
+  devtool: '#inline-source-map',
 
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css'],
@@ -51,7 +50,9 @@ module.exports = {
     path: root('dist'),
     filename: '[name].js',
     sourceMapFilename: '[name].[id].map',
-    chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js',
+    // devtoolModuleFilenameTemplate: "[resource-path]",
+    // devtoolFallbackModuleFilenameTemplate: "[resource-path]?[hash]",
   },
 
   module: {

@@ -1,0 +1,8 @@
+dev:
+  image: node:7
+  command: sh -c "npm install; npm start -- --host=0.0.0.0"
+  ports:
+   - "9000:9000"
+  volumes:
+   - "./:/code"
+  working_dir: /code

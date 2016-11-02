@@ -1,72 +1,77 @@
 @import '../../shared/styles/variables';
 $mobile-menu-compact-breakpoint: 550px;
 
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
 .menu-header {
-    text-transform: uppercase;
-    color: $headers-color;
-    padding: 0 $side-menu-item-hpadding;
-    margin: 10px 0;
+  text-transform: uppercase;
+  color: $headers-color;
+  padding: 0 $side-menu-item-hpadding;
+  margin: 10px 0;
 }
 
 .menu-cat-header {
-    font-size: $h5;
-    font-family: $headers-font, $headers-font-family;
-    font-weight: $light;
-    cursor: pointer;
-    color: rgba($text-color, .6);
-    text-transform: uppercase;
-    background-color: $side-bar-bg-color;
+  font-size: $h5;
+  font-family: $headers-font, $headers-font-family;
+  font-weight: $light;
+  cursor: pointer;
+  color: rgba($text-color, .6);
+  text-transform: uppercase;
+  background-color: $side-bar-bg-color;
+  -webkit-transition: all .15s ease-in-out;
+  -moz-transition: all .15s ease-in-out;
+  -ms-transition: all .15s ease-in-out;
+  -o-transition: all .15s ease-in-out;
+  transition: all .15s ease-in-out;
+  display: block;
+  padding: $side-menu-item-vpadding*2.5 $side-menu-item-hpadding;
+
+  &:hover,
+  &.active {
+    color: $primary-color;
+    background-color: $side-menu-active-bg-color;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.menu-subitems {
+  margin: 0;
+  font-size: 0.929em;
+  line-height: 1.2em;
+  font-weight: $light;
+  color: rgba($text-color, .9);
+  padding: 0;
+  overflow: hidden;
+
+  &.active {
+    height: auto;
+  }
+
+  & li {
     -webkit-transition: all .15s ease-in-out;
     -moz-transition: all .15s ease-in-out;
     -ms-transition: all .15s ease-in-out;
     -o-transition: all .15s ease-in-out;
     transition: all .15s ease-in-out;
-    display: block;
-    padding: $side-menu-item-vpadding*2.5 $side-menu-item-hpadding;
-
-    &:hover,
-    &.active {
-        color: $primary-color;
-        background-color: $side-menu-active-bg-color;
-    }
-
-    &[hidden] {
-      display: none;
-    }
-}
-
-.menu-subitems {
-    margin: 0;
-    font-size: 0.929em;
-    line-height: 1.2em;
-    font-weight: $light;
-    color: rgba($text-color, .9);
-    padding: 0;
+    list-style: none inside none;
+    cursor: pointer;
+    background-color: $side-menu-active-bg-color;
+    padding: $side-menu-item-vpadding*2 $side-menu-item-hpadding*2;
+    padding-left: $side-menu-item-hpadding*2;
     overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    &.active {
-        height: auto;
-    }
-
-    & li {
-        -webkit-transition: all .15s ease-in-out;
-        -moz-transition: all .15s ease-in-out;
-        -ms-transition: all .15s ease-in-out;
-        -o-transition: all .15s ease-in-out;
-        transition: all .15s ease-in-out;
-        list-style: none inside none;
-        cursor: pointer;
-        background-color: $side-menu-active-bg-color;
-        padding: $side-menu-item-vpadding*2 $side-menu-item-hpadding*2;
-        padding-left: $side-menu-item-hpadding*2;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    & li:hover,
-    & li.active {
-        background: darken($side-menu-active-bg-color, 6%);
-    }
+  & li:hover,
+  & li.active {
+    background: darken($side-menu-active-bg-color, 6%);
+  }
 }
 
 
@@ -74,82 +79,82 @@ $mobile-menu-compact-breakpoint: 550px;
 }
 
 .mobile-nav {
-    display: none;
+  display: none;
+  height: 3em;
+  line-height: 3em;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 3em;
     height: 3em;
-    line-height: 3em;
-    box-sizing: border-box;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 100 100" version="1.1" viewBox="0 0 100 100" xml:space="preserve"><polygon fill="#010101" points="23.1 34.1 51.5 61.7 80 34.1 81.5 35 51.5 64.1 21.5 35 23.1 34.1 "/></svg>');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
 
-    &:after {
-        content: "";
-        display: inline-block;
-        width: 3em;
-        height: 3em;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 100 100" version="1.1" viewBox="0 0 100 100" xml:space="preserve"><polygon fill="#010101" points="23.1 34.1 51.5 61.7 80 34.1 81.5 35 51.5 64.1 21.5 35 23.1 34.1 "/></svg>');
-        background-size: 70%;
-        background-repeat: no-repeat;
-        background-position: center;
+    float: right;
+    vertical-align: middle;
+  }
 
-        float: right;
-        vertical-align: middle;
+  .menu-header {
+    padding: 0 10px 0 20px;
+    font-size: 0.95em;
+
+    @media (max-width: $mobile-menu-compact-breakpoint) {
+      display: none;
     }
-
-    .menu-header {
-        padding: 0 10px 0 20px;
-        font-size: 0.95em;
-
-        @media (max-width: $mobile-menu-compact-breakpoint) {
-            display: none;
-        }
-    }
+  }
 }
 
 @media (max-width: $side-menu-mobile-breakpoint) {
-    .mobile-nav {
-        display: block;
-    }
+  .mobile-nav {
+    display: block;
+  }
 
-    #resources-nav {
-        height: 0;
-        overflow-y: auto;
-        transition: all 0.3s ease;
-    }
+  #resources-nav {
+    height: 0;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+  }
 
-    #resources-nav .menu-header {
-        display: none;
-    }
+  #resources-nav .menu-header {
+    display: none;
+  }
 
-    .menu-subitems {
-        height: auto;
-    }
+  .menu-subitems {
+    height: auto;
+  }
 }
 
 .selected-tag {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .selected-endpoint:before {
-    content: "/";
-    padding: 0 2px;
-    color: #ccc;
+  content: "/";
+  padding: 0 2px;
+  color: #ccc;
 }
 
 .selected-endpoint:empty:before {
-    display: none;
+  display: none;
 }
 
 .selected-item-info {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    box-sizing: border-box;
-    max-width: 350px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-width: 350px;
 
-    @media (max-width: $mobile-menu-compact-breakpoint) {
-        display: inline-block;
-        padding: 0 20px;
-        max-width: 80%;
-        max-width: calc(100% - 4em);
-    }
+  @media (max-width: $mobile-menu-compact-breakpoint) {
+    display: inline-block;
+    padding: 0 20px;
+    max-width: 80%;
+    max-width: calc(100% - 4em);
+  }
 }

@@ -13,12 +13,12 @@
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
 </div>
 <div class="method-samples">
-    <h5>Definition</h5>
+    <h4 class="method-params-subheader">Definition</h4>
 
     <div class="method-endpoint">
       <h5 class="http-method" [ngClass]="method.httpMethod">{{method.httpMethod}}</h5>
       <span select-on-click><!--
-      --><span class="api-url">{{method.apiUrl}}</span><span class="path">{{method.path}}</span><!--
+      --><span class="method-api-url">{{method.apiUrl}}</span><span class="method-api-url-path">{{method.path}}</span><!--
   --></span>
     </div>
 

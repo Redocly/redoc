@@ -10,6 +10,7 @@ import { MdRenderer } from './md-renderer';
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
+  public basePath: string;
 
   public spec = new BehaviorSubject<any|null>(null);
   private _instance: any;
@@ -65,8 +66,8 @@ export class SpecManager {
     }
 
     let host = this._schema.host || urlParts.host;
-    let basePath = this._schema.basePath || '/';
-    this.apiUrl = protocol + '://' + host + basePath;
+    this.basePath = this._schema.basePath || '/';
+    this.apiUrl = protocol + '://' + host + this.basePath;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }

@@ -1,88 +1,64 @@
 @import '../../shared/styles/variables';
 
 :host {
-    display: block;
-    box-sizing: border-box;
+  display: block;
+  box-sizing: border-box;
 
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    -moz-tap-highlight-color: rgba(0,0,0,0);
-    -ms-tap-highlight-color: rgba(0,0,0,0);
-    -o-tap-highlight-color: rgba(0,0,0,0);
-    tap-highlight-color: rgba(0,0,0,0);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-smoothing: antialiased;
-    -webkit-osx-font-smoothing: grayscale;
-    -moz-osx-font-smoothing: grayscale;
-    osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    -webkit-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-    -ms-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-    text-rendering: optimizeSpeed!important;
-    font-smooth: always;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -moz-tap-highlight-color: rgba(0,0,0,0);
+  -ms-tap-highlight-color: rgba(0,0,0,0);
+  -o-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  -webkit-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;
+  osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  -ms-text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeSpeed!important;
+  font-smooth: always;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .redoc-wrap {
-    position: relative;
-    font-family: $base-font, $base-font-family;
-    font-size: $em-size;
-    line-height: $base-line-height;
-    color: $text-color;
-}
-
-side-menu {
-    display: block;
-    box-sizing: border-box;
-}
-
-methods-list {
-    display: block;
-    overflow: hidden;
-}
-
-api-info, .side-bar {
-    display: block;
-    padding: 10px 0;
-}
-
-api-logo {
-    display: block;
-    text-align: center;
-
-    @media (max-width: $side-menu-mobile-breakpoint) {
-        display: none;
-    }
+  position: relative;
+  font-family: $base-font, $base-font-family;
+  font-size: $em-size;
+  line-height: $base-line-height;
+  color: $text-color;
 }
 
 [sticky-sidebar] {
-    width: $side-bar-width;
-    background-color: $side-bar-bg-color;
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: $side-bar-width;
+  background-color: $side-bar-bg-color;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-    @media (max-width: $side-menu-mobile-breakpoint) {
-        z-index: 1;
-        width: 100%;
-        bottom: auto !important;
-    }
-}
-
-#api-content {
-  margin-left: $side-bar-width;
-  position: relative;
   @media (max-width: $side-menu-mobile-breakpoint) {
-      padding-top: 3em;
-      margin-left: 0;
+    z-index: 1;
+    width: 100%;
+    bottom: auto !important;
   }
 }
 
-#api-content:before {
+.api-content {
+  margin-left: $side-bar-width;
+  position: relative;
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    padding-top: 3em;
+    margin-left: 0;
+  }
+}
+
+.api-content:before {
   content: "";
   background: $samples-panel-bg-color;
   height: 100%;
@@ -91,178 +67,19 @@ api-logo {
   right: 0;
   position: absolute;
   z-index: -1;
-}
 
-
-@media (max-width: $right-panel-squash-breakpoint) {
-  #api-content:before {
+  @media (max-width: $right-panel-squash-breakpoint) {
     display: none;
   }
 }
 
-/* global redoc styles */
-
-@for $index from 1 through 5 {
-    :host /deep/ h#{$index}{
-        margin-top: 0;
-        font-family: $headers-font, $headers-font-family;
-        color: $headers-color;
-        font-weight: $headers-font-weight;
-    }
-}
-
-:host /deep/ {
-    h1 { font-size: $h1; }
-    h2 { font-size: $h2; }
-    h3 { font-size: $h3; }
-    h4 { font-size: $h4; }
-    h5 { font-size: $h5; }
-
-    p {
-        font-family: $base-font, $base-font-family;
-        font-weight: $base-font-weight;
-        margin: 0;
-        margin-bottom: 1em;
-        line-height: $base-line-height;
-    }
-
-    a {
-        text-decoration: none;
-        color: $primary-color;
-    }
-
-    p > code {
-        color: $red;
-        border: 1px solid rgba(38,50,56,0.1);
-    }
-
-    .hint--inversed {
-      &:before {
-        border-top-color: #fff;
-      }
-
-      &:after {
-        background: #fff;
-        color: #383838;
-      }
-    }
-
-    @import '../../shared/styles/share-link';
-}
-
-footer {
-    position: relative;
-    text-align: right;
-    padding: 10px 40px;
-    font-size: 15px;
-    margin-top: -35px;
-    color: white;
-    a {
-      color: white;
-    }
-    strong {
-      font-size: 18px;
-    }
-}
-
-
-/* markdown elements */
-
-:host /deep/ .redoc-markdown-block {
-    pre {
-        font-family: Courier, monospace;
-        white-space: pre-wrap;
-        background-color: #263238;
-        color: white;
-        padding: 12px 14px 15px 14px;
-        overflow-x: auto;
-        line-height: normal;
-        border-radius: $border-radius;
-        border: 1px solid rgba(38,50,56,0.1);
-
-        code {
-            background-color: transparent;
-
-            &:before, &:after {
-                content: none;
-            }
-        }
-    }
-
-    code {
-        font-family: Courier, monospace;
-        background-color: rgba(38,50,56,0.04);
-        padding: 0.1em 0 0.2em 0;
-        font-size: 1em;
-        border-radius: $border-radius;
-
-        &:before, &:after {
-            letter-spacing: -0.2em;
-            content: "\00a0";
-        }
-    }
-
-    p:last-of-type {
-        margin-bottom: 0;
-    }
-
-    blockquote {
-        margin: 0;
-        margin-bottom: 1em;
-        padding: 0 15px;
-        color: #777;
-        border-left: 4px solid #ddd;
-    }
-
-    img {
-        max-width: 100%;
-        box-sizing: content-box;
-    }
-
-    ul, ol {
-        padding-left: 2em;
-        margin: 0;
-        margin-bottom: 1em;
-    }
-
-    table {
-        display: block;
-        width: 100%;
-        overflow: auto;
-        word-break: normal;
-        word-break: keep-all;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-
-    table tr {
-        background-color: #fff;
-        border-top: 1px solid #ccc;
-
-        &:nth-child(2n) {
-            background-color: #f8f8f8;
-        }
-    }
-
-    table th, table td {
-        padding: 6px 13px;
-        border: 1px solid #ddd;
-    }
-
-    table th {
-        text-align: left;
-        font-weight: bold;
-    }
-}
 
 .redoc-error {
   padding: 20px;
   text-align: center;
-  color: #cc0000;
+  color: $red;
   > h2 {
-    color: #cc0000;
+    color: $red;
     font-size: 40px;
   }
 }
@@ -271,4 +88,162 @@ footer {
   max-width: 750px;
   margin: 0 auto;
   font-size: 18px;
+}
+
+/* global redoc styles */
+
+@for $index from 1 through 5 {
+  :host /deep/ h#{$index}{
+    margin-top: 0;
+    font-family: $headers-font, $headers-font-family;
+    color: $secondary-color;
+    font-weight: $headers-font-weight;
+    line-height: 1.4em;
+  }
+}
+
+:host /deep/ {
+  h1 { font-size: $h1; color: $headers-color; }
+  h2 { font-size: $h2; }
+  h3 { font-size: $h3; }
+  h4 { font-size: $h4; }
+  h5 { font-size: $h5; }
+
+  p {
+    font-family: $base-font, $base-font-family;
+    font-weight: $base-font-weight;
+    margin: 0;
+    margin-bottom: 1em;
+    line-height: $base-line-height;
+  }
+
+  a {
+    text-decoration: none;
+    color: $primary-color;
+  }
+
+  p > code {
+    color: $red;
+    border: 1px solid rgba(38,50,56,0.1);
+  }
+
+  .hint--inversed {
+    &:before {
+      border-top-color: #fff;
+    }
+
+    &:after {
+      background: #fff;
+      color: #383838;
+    }
+  }
+
+  @import '../../shared/styles/share-link';
+}
+
+footer {
+  position: relative;
+  text-align: right;
+  padding: 10px $section-spacing;
+  font-size: 15px;
+  margin-top: -35px;
+  color: white;
+  a {
+    color: white;
+  }
+  strong {
+    font-size: 18px;
+  }
+}
+
+
+/* markdown elements */
+
+:host /deep/ .redoc-markdown-block {
+  pre {
+    font-family: Courier, monospace;
+    white-space: pre-wrap;
+    background-color: #263238;
+    color: white;
+    padding: 12px 14px 15px 14px;
+    overflow-x: auto;
+    line-height: normal;
+    border-radius: $border-radius;
+    border: 1px solid rgba(38,50,56,0.1);
+
+    code {
+      background-color: transparent;
+
+      &:before, &:after {
+        content: none;
+      }
+    }
+  }
+
+  code {
+    font-family: Courier, monospace;
+    background-color: rgba(38,50,56,0.04);
+    padding: 0.1em 0 0.2em 0;
+    font-size: 1em;
+    border-radius: $border-radius;
+
+    &:before, &:after {
+      letter-spacing: -0.2em;
+      content: "\00a0";
+    }
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  blockquote {
+    margin: 0;
+    margin-bottom: 1em;
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
+  }
+
+  img {
+    max-width: 100%;
+    box-sizing: content-box;
+  }
+
+  ul, ol {
+    padding-left: 2em;
+    margin: 0;
+    margin-bottom: 1em;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  table tr {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+
+    &:nth-child(2n) {
+      background-color: #f8f8f8;
+    }
+  }
+
+  table th, table td {
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+  }
+
+  table th {
+    text-align: left;
+    font-weight: bold;
+  }
 }

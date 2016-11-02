@@ -50,6 +50,12 @@ $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
 .zippy-indicator svg {
   height: 1.2em;
   vertical-align: middle;
+  transition: all 0.3s ease;
+  transform: rotateZ(-180deg);
+}
+
+.zippy-hidden > .zippy-title svg {
+ transform: rotateZ(0);
 }
 
 
