@@ -35,10 +35,11 @@ export class SchemaSample extends BaseComponent implements OnInit {
     let base:any = {};
     let sample;
 
-    // got pointer not directly to the schema but e.g. to response obj
+    // got pointer not directly to the schema but e.g. to the response obj
     if (this.componentSchema.schema) {
       base = this.componentSchema;
       this.componentSchema = this.componentSchema.schema;
+      this.pointer += '/schema';
     }
 
     if (base.examples && base.examples['application/json']) {
@@ -48,7 +49,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
 
       this.componentSchema = this._normalizer.normalize(this.componentSchema, this.pointer);
 
-      let discriminator = this.componentSchema.discriminator || this.componentSchema['x-extendedDiscriminator'];
+      let discriminator = this.componentSchema.discriminator || this.componentSchema['x-discriminatorBasePointer'];
       if (discriminator) {
         let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer);
         if (descendants.length) {
