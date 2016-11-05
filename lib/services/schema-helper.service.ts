@@ -114,6 +114,7 @@ const injectors = {
       injectTo._displayTypeHint = 'This field may contain data of any type';
       injectTo.isTrivial = true;
       injectTo._widgetType = 'trivial';
+      injectTo._pointer = undefined;
     }
   },
   simpleType: {

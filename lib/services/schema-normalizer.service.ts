@@ -27,11 +27,8 @@ export class SchemaNormalizer {
     let hasPtr = !!schema.$ref;
     if (opts.resolved && !hasPtr) this._dereferencer.visit(ptr);
 
-    if (schema['x-redoc-normalized']) {
-      if (!schema['x-redoc-normalized']._pointer) schema['x-redoc-normalized']._pointer = ptr;
-      return schema['x-redoc-normalized'];
-    }
-    let res = SchemaWalker.walk(Object.assign({}, schema), ptr, (subSchema, ptr) => {
+    if (schema['x-redoc-normalized']) return schema;
+      let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
       if (resolved.allOf) {
         resolved._pointer = resolved._pointer || ptr;
@@ -41,7 +38,7 @@ export class SchemaNormalizer {
       return resolved;
     });
     if (opts.resolved && !hasPtr) this._dereferencer.exit(ptr);
-    schema['x-redoc-normalized'] = res;
+    res['x-redoc-normalized'] = true;
     return res;
   }
 
