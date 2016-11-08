@@ -15,6 +15,7 @@ export class SpecManager {
   public spec = new BehaviorSubject<any|null>(null);
   private _instance: any;
   private _url: string;
+  private parser: any;
 
   static instance() {
     return new SpecManager();
@@ -31,7 +32,8 @@ export class SpecManager {
   load(urlOrObject: string|Object) {
     this.schema = null;
     let promise = new Promise((resolve, reject) => {
-      JsonSchemaRefParser.bundle(urlOrObject, {http: {withCredentials: false}})
+      this.parser = new JsonSchemaRefParser();
+      this.parser.bundle(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
         if (typeof urlOrObject === 'string') {
           this._url = urlOrObject;
@@ -97,9 +99,16 @@ export class SpecManager {
 
   byPointer(pointer) {
     let res = null;
+    if (pointer == undefined) return null;
     try {
       res = JsonPointer.get(this._schema, decodeURIComponent(pointer));
-    } catch(e)  {/*skip*/ }
+    } catch(e)  {
+      // if resolved from outer files simple jsonpointer.get fails to get correct schema
+      if (pointer.charAt(0) !== '#') pointer = '#' + pointer;
+      try {
+        res = this.parser.$refs.get(decodeURIComponent(pointer));
+      } catch(e) { /* skip */ }
+    }
     return res;
   }
 
