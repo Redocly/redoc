@@ -3,6 +3,10 @@
   <div class='redoc-error-details'>{{error.message}}</div>
 </div>
 <div class="redoc-wrap" *ngIf="specLoaded && !error">
+  <loading-bar [progress]="loadingProgress"> </loading-bar>
+  <div class="background">
+    <div class="background-actual"> </div>
+  </div>
   <div class="menu-content" sticky-sidebar [scrollParent]="options.$scrollParent" [scrollYOffset]="options.scrollYOffset">
       <api-logo> </api-logo>
       <side-menu> </side-menu>

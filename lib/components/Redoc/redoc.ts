@@ -17,13 +17,14 @@ import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
 import { OptionsService, Hash, MenuService, AppStateService } from '../../services/index';
+import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 import { CustomErrorHandler } from '../../utils/';
 
 @Component({
   selector: 'redoc',
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements OnInit {
   static _preOptions: any;
@@ -34,6 +35,8 @@ export class Redoc extends BaseComponent implements OnInit {
   specLoaded: boolean;
   options: any;
 
+  loadingProgress: number;
+
   @Input() specUrl: string;
   @HostBinding('class.loading') specLoading: boolean = false;
   @HostBinding('class.loading-remove') specLoadingRemove: boolean = false;
@@ -43,7 +46,9 @@ export class Redoc extends BaseComponent implements OnInit {
     optionsMgr: OptionsService,
     elementRef: ElementRef,
     private changeDetector: ChangeDetectorRef,
-    private appState: AppStateService
+    private appState: AppStateService,
+    private lazyTasksService: LazyTasksService,
+    private hash: Hash
   ) {
     super(specMgr);
     // merge options passed before init
@@ -66,24 +71,37 @@ export class Redoc extends BaseComponent implements OnInit {
     }, 400);
   }
 
+  showLoadingAnimation() {
+    this.specLoading = true;
+    this.specLoadingRemove = false;
+  }
+
   load() {
     this.specMgr.load(this.options.specUrl).catch(err => {
       throw err;
     });
 
+    this.appState.loading.subscribe(loading => {
+      if (loading) {
+        this.showLoadingAnimation();
+      } else {
+        this.hideLoadingAnimation();
+      }
+    });
+
     this.specMgr.spec.subscribe((spec) => {
       if (!spec) {
-        this.specLoading = true;
-        this.specLoaded = false;
+        this.appState.startLoading();
       } else {
         this.specLoaded = true;
-        this.hideLoadingAnimation();
         this.changeDetector.markForCheck();
+        this.changeDetector.detectChanges();
       }
     });
   }
 
   ngOnInit() {
+    this.lazyTasksService.loadProgress.subscribe(progress => this.loadingProgress = progress)
     this.appState.error.subscribe(_err => {
       if (!_err) return;
 

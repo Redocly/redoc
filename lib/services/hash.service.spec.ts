@@ -13,10 +13,11 @@ describe('Hash Service', () => {
   beforeEach(inject([Hash], (_hash) => hashService = _hash));
 
   it('should trigger changed event after ReDoc bootstrapped', (done) => {
-    spyOn(hashService.value, 'next').and.callThrough();
+    spyOn(hashService.value, 'next').and.stub();
     specMgr.spec.next({});
     setTimeout(() => {
       expect(hashService.value.next).toHaveBeenCalled();
+      hashService.value.next.and.callThrough();
       done();
     });
   });

@@ -12,7 +12,8 @@ var cache = {};
 @Component({
   selector: 'json-schema-lazy',
   entryComponents: [ JsonSchema ],
-  template: ''
+  template: '',
+  styles: [':host { display:none }']
 })
 export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
   @Input() pointer: string;
@@ -66,7 +67,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
         this._loadAfterSelf();
         return;
       }
-      insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
+      //insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
       this.loaded = true;
     } else {
       cache[this.pointer] = this._loadAfterSelf();

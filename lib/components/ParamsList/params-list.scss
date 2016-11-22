@@ -2,10 +2,14 @@
 
 $hint-color: #999999;
 
+:host {
+  display: block;
+}
+
 .param-list-header {
   border-bottom: 1px solid rgba($text-color, .3);
-  padding: 0.2em 0;
-  margin: 3.5em 0 .8em 0;
+//  padding: 0.2em 0;
+  margin: 3em 0 1em 0;
   color: rgba($text-color, .5);
   font-weight: normal;
   text-transform: uppercase;

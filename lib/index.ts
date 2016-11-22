@@ -14,10 +14,10 @@ if (AOT) {
   bootstrapRedoc = require('./bootstrap.dev').bootstrapRedoc;
 }
 
-if (IS_PRODUCTION) {
+//if (IS_PRODUCTION) {
   disableDebugTools();
   enableProdMode();
-}
+//}
 
 export const version = LIB_VERSION;
 

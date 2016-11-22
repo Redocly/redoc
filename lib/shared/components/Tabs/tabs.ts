@@ -69,6 +69,9 @@ export class Tabs implements OnInit {
     </div>
   `,
   styles: [`
+    :host {
+      display: block;
+    }
     .tab-wrap {
       display: none;
     }

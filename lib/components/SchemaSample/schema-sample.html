@@ -2,9 +2,9 @@
   <!-- in case sample is not available for some reason -->
   <pre *ngIf="sample == undefined"> Sample unavailable </pre>
   <div class="action-buttons">
-    <span> <a *ngIf="enableButtons" (click)="collapseAll()">Collapse all</a> </span>
+    <span copy-button [copyText]="sample" class="hint--top-left hint--inversed"> <a>Copy</a> </span>
     <span> <a *ngIf="enableButtons" (click)="expandAll()">Expand all</a> </span>
-    <span copy-button [copyText]="sample | json" class="hint--top hint--inversed"> <a>Copy</a> </span>
+    <span> <a *ngIf="enableButtons" (click)="collapseAll()">Collapse all</a> </span>
   </div>
   <pre [innerHtml]="sample | jsonFormatter"></pre>
 </div>

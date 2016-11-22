@@ -23,7 +23,6 @@ describe('Redoc components', () => {
     let fixture;
 
     beforeEach(async(inject([SpecManager], ( specMgr) => {
-
       return specMgr.load('/tests/schemas/methods-list-component.json');
     })));
     beforeEach(() => {

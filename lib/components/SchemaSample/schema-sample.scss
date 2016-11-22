@@ -13,45 +13,24 @@ pre {
 }
 
 .action-buttons {
-  display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
   transform: translateY(100%);
-  z-index: 1;
+  z-index: 3;
   position: relative;
-
-  > span {
-    float: right;
-
-    &:last-child > a:before {
-      display: none;
-    }
-  }
+  height: 2em;
+  line-height: 2em;
+  padding-right: 10px;
+  text-align: right;
 
   > span > a {
     padding: 2px 10px;
     color: #ffffff;
     cursor: pointer;
 
-    &:before {
-      content: '|';
-      display: inline-block;
-      transform: translateX(-10px);
-    }
-
-    &:first-child {
-      margin-right: 0;
-    }
-
     &:hover {
-      background-color: $black;
+      background-color: lighten($black, 15%);
     }
-  }
-
-  &:after {
-    display: block;
-    content: '';
-    clear: both;
   }
 }
 
@@ -135,6 +114,7 @@ pre {
 
   li {
   	position: relative;
+    display: block;
   }
 
   .hoverable {

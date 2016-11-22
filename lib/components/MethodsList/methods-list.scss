@@ -4,6 +4,11 @@
   display: block;
   overflow: hidden;
 }
+
+:host [hidden] {
+  display: none;
+}
+
 .tag-info {
   padding: $section-spacing;
   box-sizing: border-box;

@@ -74,3 +74,7 @@ export function throttle(fn, threshhold, scope) {
     }
   };
 }
+
+export const isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0
+  || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari']
+  || safari.pushNotification);

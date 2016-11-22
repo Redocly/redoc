@@ -1,18 +1,18 @@
-<div class="method">
-    <div class="method-content">
-        <h2 class="method-header sharable-header">
-            <a class="share-link" href="#{{method.anchor}}"></a>{{method.summary}}
-        </h2>
-        <div class="method-tags" *ngIf="method.info.tags.length">
-            <a *ngFor="let tag of method.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
-        </div>
-        <p *ngIf="method.info.description" class="method-description"
-        [innerHtml]="method.info.description | marked">
+<div class="method" *ngIf="method">
+  <div class="method-content">
+    <h2 class="method-header sharable-header">
+        <a class="share-link" href="#{{method.anchor}}"></a>{{method.summary}}
+    </h2>
+    <div class="method-tags" *ngIf="method.info.tags.length">
+        <a *ngFor="let tag of method.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
+    </div>
+    <p *ngIf="method.info.description" class="method-description"
+    [innerHtml]="method.info.description | marked">
     </p>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
-</div>
-<div class="method-samples">
+  </div>
+  <div class="method-samples">
     <h4 class="method-params-subheader">Definition</h4>
 
     <div class="method-endpoint">
@@ -30,5 +30,5 @@
         <br>
         <responses-samples pointer="{{pointer}}/responses"> </responses-samples>
     </div>
+  </div>
 </div>
-<div>

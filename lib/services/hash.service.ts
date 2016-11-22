@@ -7,7 +7,7 @@ import { SpecManager } from '../utils/spec-manager';
 
 @Injectable()
 export class Hash {
-  public value = new BehaviorSubject<string>('');
+  public value = new BehaviorSubject<string | null>(null);
   constructor(private specMgr: SpecManager, private location: PlatformLocation) {
     this.bind();
 

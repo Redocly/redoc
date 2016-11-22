@@ -83,7 +83,7 @@ export class StickySidebar implements OnInit, OnDestroy {
     // FIXME use more reliable code
     this.$redocEl = this.$element.offsetParent.parentNode || DOM.defaultDoc().body;
     this.bind();
-    setTimeout(() => this.updatePosition());
+    requestAnimationFrame(() => this.updatePosition());
     //this.updatePosition()
   }
 

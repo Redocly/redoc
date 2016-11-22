@@ -15,6 +15,7 @@ export interface MenuMethod {
   summary: string;
   tag: string;
   pointer: string;
+  operationId: string;
 }
 
 export interface MenuCategory {
@@ -291,13 +292,15 @@ export class SchemaHelper {
   }
 
   static buildMenuTree(schema):Array<MenuCategory> {
+    var catIdx = 0;
     let tag2MethodMapping = {};
 
     for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
       let id = 'section/' + slugify(header);
       tag2MethodMapping[id] = {
-        name: header, id: id, virtual: true, methods: []
+        name: header, id: id, virtual: true, methods: [], idx: catIdx
       };
+      catIdx++;
     }
 
     for (let tag of schema.tags || []) {
@@ -309,7 +312,9 @@ export class SchemaHelper {
         headless: tag.name === '',
         empty: !!tag['x-traitTag'],
         methods: [],
+        idx: catIdx
       };
+      catIdx++;
     }
 
     let paths = schema.paths;
@@ -331,9 +336,11 @@ export class SchemaHelper {
             tagDetails = {
               name: tag,
               id: id,
-              headless: tag === ''
+              headless: tag === '',
+              idx: catIdx
             };
             tag2MethodMapping[id] = tagDetails;
+            catIdx++;
           }
           if (tagDetails.empty) continue;
           if (!tagDetails.methods) tagDetails.methods = [];
@@ -341,7 +348,9 @@ export class SchemaHelper {
             pointer: methodPointer,
             summary: methodSummary,
             operationId: methodInfo.operationId,
-            tag: tag
+            tag: tag,
+            idx: tagDetails.methods.length,
+            catIdx: tagDetails.idx
           });
         }
       }
