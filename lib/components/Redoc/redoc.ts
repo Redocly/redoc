@@ -16,7 +16,7 @@ import { BaseComponent } from '../base';
 import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
-import { OptionsService, Hash, MenuService, AppStateService } from '../../services/index';
+import { OptionsService, Hash, MenuService, AppStateService, SchemaHelper } from '../../services/index';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 import { CustomErrorHandler } from '../../utils/';
 
@@ -51,6 +51,7 @@ export class Redoc extends BaseComponent implements OnInit {
     private hash: Hash
   ) {
     super(specMgr);
+    SchemaHelper.setSpecManager(specMgr);
     // merge options passed before init
     optionsMgr.options = Redoc._preOptions || {};
 
@@ -64,11 +65,13 @@ export class Redoc extends BaseComponent implements OnInit {
   }
 
   hideLoadingAnimation() {
-    this.specLoadingRemove = true;
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.specLoadingRemove = true;
-      this.specLoading = false;
-    }, 400);
+      setTimeout(() => {
+        this.specLoadingRemove = false;
+        this.specLoading = false;
+      }, 400);
+    });
   }
 
   showLoadingAnimation() {
@@ -93,9 +96,12 @@ export class Redoc extends BaseComponent implements OnInit {
       if (!spec) {
         this.appState.startLoading();
       } else {
-        this.specLoaded = true;
         this.changeDetector.markForCheck();
         this.changeDetector.detectChanges();
+        this.specLoaded = true;
+        setTimeout(() => {
+          this.hash.start();
+        });
       }
     });
   }

@@ -1,6 +1,5 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
-import { SpecManager } from '../utils/spec-manager';
 import { methods as swaggerMethods, keywordTypes } from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';
@@ -28,6 +27,9 @@ export interface MenuCategory {
   empty?: string;
   virtual?: boolean;
 }
+
+// global var for this module
+var specMgrInstance;
 
 const injectors = {
   notype: {
@@ -187,8 +189,8 @@ const injectors = {
         parentPtr = JsonPointer.dirName(hostPointer, 3);
       }
 
-      let parentParam = SpecManager.instance().byPointer(parentPtr);
-      let root = SpecManager.instance().schema;
+      let parentParam = specMgrInstance.byPointer(parentPtr);
+      let root =specMgrInstance.schema;
       injectTo._produces = parentParam && parentParam.produces || root.produces;
       injectTo._consumes = parentParam && parentParam.consumes || root.consumes;
       injectTo._widgetType = 'file';
@@ -197,6 +199,10 @@ const injectors = {
 };
 
 export class SchemaHelper {
+  static setSpecManager(specMgr) {
+    specMgrInstance = specMgr;
+  }
+
   static preprocess(schema, pointer, hostPointer?) {
     //propertySchema = Object.assign({}, propertySchema);
     if (schema['x-redoc-schema-precompiled']) {

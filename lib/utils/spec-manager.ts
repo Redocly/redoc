@@ -13,24 +13,10 @@ export class SpecManager {
   public basePath: string;
 
   public spec = new BehaviorSubject<any|null>(null);
-  private _instance: any;
   private _url: string;
   private parser: any;
 
-  static instance() {
-    return new SpecManager();
-  }
-
-  constructor() {
-    if (SpecManager.prototype._instance) {
-      return SpecManager.prototype._instance;
-    }
-
-    SpecManager.prototype._instance = this;
-  }
-
   load(urlOrObject: string|Object) {
-    this.schema = null;
     let promise = new Promise((resolve, reject) => {
       this.parser = new JsonSchemaRefParser();
       this.parser.bundle(urlOrObject, {http: {withCredentials: false}})
@@ -41,8 +27,8 @@ export class SpecManager {
         this._schema = schema;
         try {
           this.init();
-          this.spec.next(this._schema);
           resolve(this._schema);
+          this.spec.next(this._schema);
         } catch(err) {
           reject(err);
         }

@@ -21,7 +21,7 @@ export class ScrollService {
   private _stickElement: HTMLElement;
   constructor(private optionsService:OptionsService) {
     this.scrollYOffset = () => optionsService.options.scrollYOffset();
-    this.$scrollParent = optionsService.options.$scrollParent;
+    this.$scrollParent = optionsService.options.$scrollParent || window;
     this.scroll = new EventEmitter();
     this.bind();
     if ('scrollRestoration' in history) {

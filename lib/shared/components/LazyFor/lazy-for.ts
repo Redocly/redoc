@@ -38,10 +38,15 @@ export class LazyTasksService {
   }
 
   get empty() {
-    return this._current === this._tasks.length - 1;
+    return this._current === this._tasks.length;
   }
+
   set syncCount(n: number) {
     this._syncCount = n;
+  }
+
+  set lazy(sync:boolean) {
+    this.allSync = sync;
   }
 
   addTasks(tasks:any[], callback:Function) {
@@ -52,13 +57,11 @@ export class LazyTasksService {
   }
 
   nextTaskSync() {
-    this.zone.runOutsideAngular(() => {
-      let task = this._tasks[this._current];
-      if (!task) return;
-      task._callback(task.idx, true);
-      this._current++;
-      this.loadProgress.next(this._current / this._tasks.length * 100);
-    });
+    let task = this._tasks[this._current];
+    if (!task) return;
+    task._callback(task.idx, true);
+    this._current++;
+    this.loadProgress.next(this._current / this._tasks.length * 100);
   }
 
   nextTask() {
@@ -70,7 +73,7 @@ export class LazyTasksService {
 
         setTimeout(()=> this.nextTask());
         this.loadProgress.next(this._current / this._tasks.length * 100);
-      });
+      }).catch(err => console.error(err));
     });
   }
 
@@ -101,10 +104,18 @@ export class LazyTasksService {
       this.sortTasks(catIdx, metIdx);
     }
     if (this.allSync) syncCount = this._tasks.length;
-    for (var i=0; i < syncCount; i++) {
+    for (var i = this._current; i < syncCount; i++) {
       this.nextTaskSync();
     }
     this.nextTask();
+  }
+}
+
+@Injectable()
+export class LazyTasksServiceSync extends LazyTasksService {
+  constructor(optionsService: OptionsService, zone: NgZone) {
+    super(optionsService, zone);
+    this.allSync = true;
   }
 }
 

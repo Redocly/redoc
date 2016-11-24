@@ -1,43 +1,41 @@
 'use strict';
-import { Component } from '@angular/core';
+import { Component  } from '@angular/core';
 import {
   inject,
-  async,
   TestBed
 } from '@angular/core/testing';
 
+import { MethodsList } from '../components/MethodsList/methods-list';
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
-import { ScrollService,  } from './scroll.service';
+import { ScrollService  } from './scroll.service';
+import { SchemaHelper } from './schema-helper.service';
 import { SpecManager } from '../utils/spec-manager';;
 
 describe('Menu service', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent, MethodsList ] });
   });
 
   let menu, hashService, scroll, tasks;
-  let specMgr, appStateMock;
+  let specMgr;
 
-  beforeEach(async(inject([SpecManager, Hash, ScrollService, LazyTasksService],
+  beforeEach(inject([SpecManager, Hash, ScrollService, LazyTasksService],
   ( _specMgr, _hash, _scroll, _tasks) => {
     hashService = _hash;
     scroll = _scroll;
     tasks = _tasks;
-
-    appStateMock = {
-      stopLoading: () => { /* */ },
-      startLoading: () => { /* */ }
-    };
-
     specMgr = _specMgr;
-    tasks.allSync = true;
-    return specMgr.load('/tests/schemas/extended-petstore.yml');
-  })));
+    SchemaHelper.setSpecManager(specMgr);
+  }));
+
+  beforeEach(done => {
+    specMgr.load('/tests/schemas/extended-petstore.yml').then(done, done.fail);
+  });
 
   beforeEach(() => {
-    menu = new MenuService(hashService, tasks, scroll, appStateMock, specMgr);
+    menu = TestBed.get(MenuService);
     let fixture = TestBed.createComponent(TestAppComponent);
     fixture.detectChanges();
   });
@@ -56,7 +54,7 @@ describe('Menu service', () => {
     });
     hashService.value.next(hash);
   });
-
+  //
   it('should scroll to method when location hash is present [operation]', (done) => {
     let hash = '#operation/getPetById';
     spyOn(menu, 'scrollToActive').and.callThrough();

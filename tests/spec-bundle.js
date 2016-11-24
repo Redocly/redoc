@@ -48,6 +48,7 @@ beforeEach(function() {
       services.OptionsService,
       services.ComponentParser,
       services.ContentProjector,
+      { provide: sharedComponents.LazyTasksService, useClass: sharedComponents.LazyTasksServiceSync },
       { provide: ErrorHandler, useClass: services.CustomErrorHandler },
       { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
     ],
@@ -59,6 +60,14 @@ beforeEach(function() {
     },
   });
 });
+
+// afterEach(function() {
+//     TestBed.resetTestingModule();
+// });
+
+// afterEach(function() {
+//   TestBed.resetTestEnvironment();
+// })
 
 
 var testContext = require.context('..', true, /\.spec\.ts/);

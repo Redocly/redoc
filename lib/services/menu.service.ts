@@ -39,19 +39,14 @@ export class MenuService {
 
     this.changeActive(CHANGE.INITIAL);
 
-    let initialScroll = true;
     this.hash.value.subscribe((hash) => {
       if (hash == undefined) return;
       this.setActiveByHash(hash);
-
       if (!this.tasks.empty) {
         this.tasks.start(this.activeCatIdx, this.activeMethodIdx);
         this.scrollService.setStickElement(this.getCurrentMethodEl());
         this.scrollToActive();
-        if (initialScroll) {
-          this.appState.stopLoading();
-          initialScroll = false;
-        }
+        this.appState.stopLoading();
       } else {
         this.scrollToActive();
       }
@@ -127,6 +122,8 @@ export class MenuService {
   }
 
   activate(catIdx, methodIdx) {
+    if (catIdx < 0) return;
+
     let menu = this.categories;
 
     menu[this.activeCatIdx].active = false;

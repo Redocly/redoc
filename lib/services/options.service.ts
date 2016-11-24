@@ -16,6 +16,7 @@ export class OptionsService {
 
   constructor() {
     this._options = defaults;
+    this._normalizeOptions();
   }
 
   get options() {

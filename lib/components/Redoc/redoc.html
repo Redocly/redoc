@@ -2,8 +2,8 @@
   <h1>Oops... ReDoc failed to render this spec</h1>
   <div class='redoc-error-details'>{{error.message}}</div>
 </div>
+<loading-bar [progress]="loadingProgress"> </loading-bar>
 <div class="redoc-wrap" *ngIf="specLoaded && !error">
-  <loading-bar [progress]="loadingProgress"> </loading-bar>
   <div class="background">
     <div class="background-actual"> </div>
   </div>

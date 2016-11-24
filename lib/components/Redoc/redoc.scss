@@ -29,6 +29,7 @@
 }
 
 .redoc-wrap {
+  z-index: 0;
   position: relative;
   font-family: $base-font, $base-font-family;
   font-size: $em-size;
