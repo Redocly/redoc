@@ -45,10 +45,10 @@ export class MenuService {
       if (!this.tasks.empty) {
         this.tasks.start(this.activeCatIdx, this.activeMethodIdx);
         this.scrollService.setStickElement(this.getCurrentMethodEl());
-        this.scrollToActive();
+        if (hash) this.scrollToActive();
         this.appState.stopLoading();
       } else {
-        this.scrollToActive();
+        if (hash) this.scrollToActive();
       }
     });
   }
