@@ -37,13 +37,13 @@ export class MenuService {
       this.scrollUpdate(evt.isScrolledDown);
     });
 
-    this.changeActive(CHANGE.INITIAL);
+    //this.changeActive(CHANGE.INITIAL);
 
     this.hash.value.subscribe((hash) => {
       if (hash == undefined) return;
       this.setActiveByHash(hash);
       if (!this.tasks.empty) {
-        this.tasks.start(this.activeCatIdx, this.activeMethodIdx);
+        this.tasks.start(this.activeCatIdx, this.activeMethodIdx, this);
         this.scrollService.setStickElement(this.getCurrentMethodEl());
         if (hash) this.scrollToActive();
         this.appState.stopLoading();
@@ -51,6 +51,14 @@ export class MenuService {
         if (hash) this.scrollToActive();
       }
     });
+  }
+
+  enableItem(catIdx, methodIdx) {
+    let cat = this.categories[catIdx];
+    cat.ready = true;
+    cat.methods[methodIdx].ready = true;
+
+    this.changed.next();
   }
 
   get activeMethodPtr() {

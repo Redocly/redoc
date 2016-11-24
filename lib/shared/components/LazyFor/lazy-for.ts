@@ -32,6 +32,8 @@ export class LazyTasksService {
   private _tasks = [];
   private _current: number = 0;
   private _syncCount: number = 0;
+  private menuService;
+
   public loadProgress = new BehaviorSubject<number>(0);
   public allSync = false;
   constructor(public optionsService: OptionsService, private zone: NgZone) {
@@ -61,6 +63,7 @@ export class LazyTasksService {
     if (!task) return;
     task._callback(task.idx, true);
     this._current++;
+    this.menuService.enableItem(task.catIdx, task.idx);
     this.loadProgress.next(this._current / this._tasks.length * 100);
   }
 
@@ -70,7 +73,7 @@ export class LazyTasksService {
       if (!task) return;
       task._callback(task.idx, false).then(() => {
         this._current++;
-
+        this.menuService.enableItem(task.catIdx, task.idx);
         setTimeout(()=> this.nextTask());
         this.loadProgress.next(this._current / this._tasks.length * 100);
       }).catch(err => console.error(err));
@@ -91,7 +94,8 @@ export class LazyTasksService {
     })
   }
 
-  start(catIdx, metIdx) {
+  start(catIdx, metIdx, menuService) {
+    this.menuService = menuService;
     let syncCount = 5;
     // I know this is bad practice to detect browsers but there is an issue on Safari only
     // http://stackoverflow.com/questions/40692365/maintaining-scroll-position-while-inserting-elements-above-glitching-only-in-sa

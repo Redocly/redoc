@@ -38,6 +38,11 @@ $mobile-menu-compact-breakpoint: 550px;
   &[hidden] {
     display: none;
   }
+
+  &.disabled, &.disabled:hover {
+    cursor: default;
+    color: lighten($text-color, 60%);
+  }
 }
 
 .menu-subitems {
@@ -71,6 +76,11 @@ $mobile-menu-compact-breakpoint: 550px;
   & li:hover,
   & li.active {
     background: darken($side-menu-active-bg-color, 6%);
+  }
+
+  &.disabled, &.disabled:hover {
+    cursor: default;
+    color: lighten($text-color, 60%);
   }
 }
 

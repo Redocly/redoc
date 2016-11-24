@@ -15,6 +15,7 @@ export interface MenuMethod {
   tag: string;
   pointer: string;
   operationId: string;
+  ready: boolean
 }
 
 export interface MenuCategory {
@@ -26,6 +27,7 @@ export interface MenuCategory {
   description?: string;
   empty?: string;
   virtual?: boolean;
+  ready: boolean;
 }
 
 // global var for this module
@@ -304,7 +306,7 @@ export class SchemaHelper {
     for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
       let id = 'section/' + slugify(header);
       tag2MethodMapping[id] = {
-        name: header, id: id, virtual: true, methods: [], idx: catIdx
+        name: header, id: id, virtual: true, ready: true, methods: [], idx: catIdx
       };
       catIdx++;
     }
@@ -317,6 +319,7 @@ export class SchemaHelper {
         description: tag.description,
         headless: tag.name === '',
         empty: !!tag['x-traitTag'],
+        ready: !!tag['x-traitTag'],
         methods: [],
         idx: catIdx
       };

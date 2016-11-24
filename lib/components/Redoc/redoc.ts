@@ -16,7 +16,7 @@ import { BaseComponent } from '../base';
 import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
-import { OptionsService, Hash, MenuService, AppStateService, SchemaHelper } from '../../services/index';
+import { OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/index';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 import { CustomErrorHandler } from '../../utils/';
 
