@@ -15,7 +15,7 @@ export interface MenuMethod {
   tag: string;
   pointer: string;
   operationId: string;
-  ready: boolean
+  ready: boolean;
 }
 
 export interface MenuCategory {

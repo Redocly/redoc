@@ -52,7 +52,7 @@ describe('Redoc components', () => {
       if (fixture) fixture.destroy();
     });
 
-    xit('should init component and component data', () => {
+    it('should init component and component data', () => {
       expect(component).not.toBeNull();
       expect(component.data).not.toBeNull();
     });
