@@ -6,30 +6,25 @@
 }
 
 .action-buttons {
-  display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
   transform: translateY(100%);
-
-  > span {
-    float: right;
-  }
+  z-index: 3;
+  position: relative;
+  height: 2em;
+  line-height: 2em;
+  padding-right: 10px;
+  text-align: right;
+  margin-top: -1em;
 
   > span > a {
     padding: 2px 10px;
     color: #ffffff;
     cursor: pointer;
-    background-color: darken($black, 4%);
 
     &:hover {
-      background-color: $black;
+      background-color: lighten($black, 15%);
     }
-  }
-
-  &:after {
-    display: block;
-    content: '';
-    clear: both;
   }
 }
 
@@ -45,6 +40,7 @@ header {
   color: $sample-panel-headers-color;
   text-transform: uppercase;
   font-weight: normal;
+  margin-top: 20px;
 }
 
 :host /deep/ > tabs > ul li {
