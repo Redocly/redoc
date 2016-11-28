@@ -17,7 +17,7 @@
   <template ngSwitchCase="trivial">
     <span class="param-wrap">
       <span class="param-type param-type-trivial {{schema.type}}"
-        [ngClass]="{'with-hint': schema._displayTypeHint, 'array': schema._isArray}"
+        [ngClass]="{'with-hint': schema._displayTypeHint, 'array': _isArray}"
         title="{{schema._displayTypeHint}}">{{schema._displayType}} {{schema._displayFormat}}
         <span class="param-range" *ngIf="schema._range"> {{schema._range}} </span>
       </span>
@@ -45,7 +45,7 @@
     [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>
   </template>
   <template ngSwitchCase="object">
-    <table class="params-wrap" [ngClass]="{'params-array': schema._isArray}">
+    <table class="params-wrap" [ngClass]="{'params-array': _isArray}">
       <!-- <caption> {{_displayType}} </caption> -->
       <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
         <tr class="param" [ngClass]="{'last': last,

@@ -84,6 +84,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
     this.schema = this.normalizer.normalize(this.schema, this.normPointer, {resolved: true});
     this.schema = SchemaHelper.unwrapArray(this.schema, this.normPointer);
+    this._isArray = this.schema._isArray;
     this.initDescendants();
     this.preprocessSchema();
   }

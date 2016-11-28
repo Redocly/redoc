@@ -265,7 +265,7 @@ export class SchemaHelper {
     if (schema && schema.type === 'array' && !Array.isArray(schema.items)) {
       let items = schema.items = schema.items || {};
       let ptr = items._pointer || JsonPointer.join(pointer, ['items']);
-      res = items;
+      res = Object.assign({}, items);
       res._isArray = true;
       res._pointer = ptr;
       res = SchemaHelper.unwrapArray(res, ptr);
