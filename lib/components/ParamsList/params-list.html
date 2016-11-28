@@ -12,6 +12,9 @@
         </div>
         <div class="param-info">
           <div>
+            <span *ngIf='param.type === "array"' class="param-array-format param-collection-format-{{param.collectionFormat}}">
+              {{param | collectionFormat}}
+            </span>
             <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
             title="{{param._displayTypeHint}}"> {{param._displayType}} {{param._displayFormat}}</span>
             <span class="param-range" *ngIf="param._range"> {{param._range}} </span>

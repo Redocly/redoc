@@ -116,6 +116,25 @@ export class EncodeURIComponentPipe implements PipeTransform {
   }
 }
 
+const COLLECTION_FORMATS = {
+  csv: 'Comma Separated',
+  ssv: 'Space Separated',
+  tsv: 'Tab Separated',
+  pipes: 'Pipe Separated'
+};
+
+@Pipe({ name: 'collectionFormat' })
+export class CollectionFormatPipe implements PipeTransform {
+  transform(param:any) {
+    let format = param.collectionFormat;
+    if (!format) format = 'csv';
+    if (format === 'multi') {
+      return 'Multiple ' + param.in + ' params of';
+    }
+    return COLLECTION_FORMATS[format];
+  }
+}
+
 export const REDOC_PIPES = [
-  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter, KeysPipe
+  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter, KeysPipe, CollectionFormatPipe
 ];
