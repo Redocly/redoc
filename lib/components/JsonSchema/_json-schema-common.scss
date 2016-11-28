@@ -60,23 +60,27 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   font-weight: bold;
 }
 
-.param-type {
+.param-type, .param-array-format  {
   vertical-align: middle;
   line-height: $param-name-height;
   color: rgba($black, 0.4);
   font-size: 0.929em;
+}
+.param-type {
   font-weight: normal;
+  &.array::before, &.tuple::before {
+    color: $black;
+    font-weight: $base-font-weight;
+    .param-collection-format-multi + & {
+      content: none;
+    }
+  }
 
   &.array::before {
     content: $array-text;
-    color: $black;
-    font-weight: $base-font-weight;
   }
-
   &.tuple::before {
     content: $tuple-text;
-    color: $black;
-    font-weight: $base-font-weight;
   }
 
   &.with-hint {
@@ -190,6 +194,19 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 
   &::before {
     content: 'Valid values: ';
+  }
+}
+
+.param-enum {
+  color: $text-color;
+  font-size: 0.95em;
+
+  &::before {
+    content: 'Valid values: ';
+  }
+
+  .param-type.array ~ &::before {
+    content: 'Valid items values: ';
   }
 }
 

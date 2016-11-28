@@ -114,6 +114,7 @@ const injectors = {
       injectTo._displayTypeHint = 'This field may contain data of any type';
       injectTo.isTrivial = true;
       injectTo._widgetType = 'trivial';
+      injectTo._pointer = undefined;
     }
   },
   simpleType: {
@@ -262,8 +263,9 @@ export class SchemaHelper {
   static unwrapArray(schema, pointer) {
     var res = schema;
     if (schema && schema.type === 'array' && !Array.isArray(schema.items)) {
-      let ptr = schema.items._pointer || JsonPointer.join(pointer, ['items']);
-      res = schema.items;
+      let items = schema.items = schema.items || {};
+      let ptr = items._pointer || JsonPointer.join(pointer, ['items']);
+      res = Object.assign({}, items);
       res._isArray = true;
       res._pointer = ptr;
       res = SchemaHelper.unwrapArray(res, ptr);

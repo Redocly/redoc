@@ -18,6 +18,11 @@ header.paramType {
   text-transform: capitalize;
 }
 
+.param-array-format {
+  color: black;
+  font-weight: 300;
+}
+
 // paramters can't be multilevel so table representation works for it without javascript
 .params-wrap {
   display: table;
