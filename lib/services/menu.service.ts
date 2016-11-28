@@ -53,11 +53,16 @@ export class MenuService {
     });
   }
 
-  enableItem(catIdx, methodIdx) {
+  enableItem(catIdx, methodIdx, skipUpdate = false) {
     let cat = this.categories[catIdx];
     cat.ready = true;
-    cat.methods[methodIdx].ready = true;
+    if (cat.methods.length) cat.methods[methodIdx].ready = true;
+    let prevCat = this.categories[catIdx - 1];
+    if (prevCat && !prevCat.ready && (prevCat.virtual || !prevCat.methods.length)) {
+      this.enableItem(catIdx - 1, -1, true);
+    }
 
+    if (skipUpdate) return;
     this.changed.next();
   }
 
