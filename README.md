@@ -13,6 +13,8 @@
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
+[<img src="http://i.imgur.com/XWLWJvl.png" width="250">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--)
+
 ## Features
 - Extremely easy deployment
 - It’s free and open-source project under MIT license
