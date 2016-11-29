@@ -98,7 +98,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
     if (this.skipReadOnly && this.componentSchema['x-redoc-ro-sample']) {
       this.sample = this.componentSchema['x-redoc-ro-sample'];
       return true;
-    } else if (this.componentSchema['x-redoc-rw-sample']) {
+    } else if (!this.skipReadOnly && this.componentSchema['x-redoc-rw-sample']) {
       this.sample = this.componentSchema['x-redoc-rw-sample'];
       return true;
     }
