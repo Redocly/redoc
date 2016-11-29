@@ -1,3 +1,44 @@
+# 1.5.2 (2016-11-28)
+### Bug fixes
+* Fix crashing on array without items ([#104](https://github.com/Rebilly/ReDoc/issues/104))
+* Fix `allOf` within array items ([#136](https://github.com/Rebilly/ReDoc/issues/136))
+* Fix reference resolution from external files ([#96](https://github.com/Rebilly/ReDoc/issues/96))
+* Fix object to become an array ([#146](https://github.com/Rebilly/ReDoc/issues/146))
+
+### Features/Improvements
+* Add support for Swagger `collectionFormat`
+* Wrap API version in span with class ([#145](https://github.com/Rebilly/ReDoc/issues/145))
+* Update openapi-sampler to 0.3.3
+
+# 1.5.1 (2016-10-31)
+### Bug fixes
+* Fix content scrolling on language switch ([#130](https://github.com/Rebilly/ReDoc/issues/130))
+
+### Features/Improvements
+* Support for Swagger `pattern` property ([#42](https://github.com/Rebilly/ReDoc/issues/42))
+* Add option to hide hostname in method definition (by @bfirsh)
+* Add Docker development environment (by @bfirsh)
+
+# 1.5.0 (2016-10-31)
+### Bug fixes
+* Fix side menu items wrong sync with description headers
+
+### Features/Improvements
+* Support for Security Definitions
+* Update angular2 to the 2.1.2
+
+### Deprecations
+* Deprecate `x-traitTag`
+
+### Code refactoring
+* Separate RedocModule from AppModule
+* Get rid of angular facade/lang dependencies
+* Error handler refactor
+
+# 1.4.1 (2016-10-18)
+### Bug fixes
+* Emit helpers for module build
+
 # 1.4.0 (2016-10-14)
 ### Bug fixes
 * Fix destroy/reinit
