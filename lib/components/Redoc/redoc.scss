@@ -50,7 +50,6 @@
   z-index: 75;
 
   @media (max-width: $side-menu-mobile-breakpoint) {
-    z-index: 1;
     width: 100%;
     bottom: auto !important;
   }
