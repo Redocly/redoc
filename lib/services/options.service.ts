@@ -8,25 +8,43 @@ const defaults = {
   disableLazySchemas: false
 };
 
-const OPTION_NAMES = new Set(['scrollYOffset', 'disableLazySchemas', 'specUrl', 'suppressWarnings', 'hideHostname']);
+const OPTION_NAMES = new Set([
+  'scrollYOffset',
+  'disableLazySchemas',
+  'specUrl',
+  'suppressWarnings',
+  'hideHostname',
+  'lazyRendering'
+]);
+
+interface Options {
+  scrollYOffset?: any;
+  disableLazySchemas?: boolean;
+  specUrl?: string;
+  suppressWarnings?: boolean;
+  hideHostname?: boolean;
+  lazyRendering?: boolean;
+  $scrollParent?: HTMLElement | Window;
+}
 
 @Injectable()
 export class OptionsService {
-  private _options: any;
+  private _options: Options;
 
   constructor() {
     this._options = defaults;
+    this._normalizeOptions();
   }
 
-  get options() {
+  get options():Options {
     return this._options;
   }
 
-  set options(opts) {
+  set options(opts:Options) {
     this._options = Object.assign(this._options, opts);
   }
 
-  parseOptions(el) {
+  parseOptions(el:HTMLElement):void {
     let parsedOpts;
     let attributesMap = DOM.attributeMap(el);
     parsedOpts = {};
@@ -46,7 +64,7 @@ export class OptionsService {
     this._normalizeOptions();
   }
 
-  _normalizeOptions() {
+  _normalizeOptions():void {
     // modify scrollYOffset to always be a function
     if (!isFunction(this._options.scrollYOffset)) {
       if (isFinite(this._options.scrollYOffset)) {
@@ -70,5 +88,6 @@ export class OptionsService {
     if (isString(this._options.disableLazySchemas)) this._options.disableLazySchemas = true;
     if (isString(this._options.suppressWarnings)) this._options.suppressWarnings = true;
     if (isString(this._options.hideHostname)) this._options.hideHostname = true;
+    if (isString(this._options.lazyRendering)) this._options.lazyRendering = true;
   }
 }

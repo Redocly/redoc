@@ -27,6 +27,10 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   width: 75%;
 
   box-sizing: border-box;
+
+  > div {
+    line-height: 1;
+  }
 }
 
 .param-range {
@@ -41,7 +45,7 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 }
 
 .param-description {
-  font-size: 13px;
+  //font-size: 14px;
 }
 
 .param-required {
@@ -220,7 +224,6 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
     margin: 0 3px;
     font-size: 1.2em;
     font-weight: bold;
-    vertical-align: bottom;
   }
 }
 

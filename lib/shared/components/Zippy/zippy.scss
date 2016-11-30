@@ -12,8 +12,8 @@ $zippy-redirect-bg-color: rgba($zippy-redirect-color, .08);
 
 :host {
   // performance optimization
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  // transform: translate3d(0, 0, 0);
+  // backface-visibility: hidden;
   overflow: hidden;
   display: block;
 }

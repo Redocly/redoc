@@ -61,7 +61,7 @@ module.exports = {
       exclude: [/redoc-initial-styles\.css$/]
     }, {
       test: /\.css$/,
-      loaders: ['style', 'css?-import'],
+      loaders: ['style-loader', 'css-loader?-import'],
       exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.css$/]
     }, {
       test: /\.html$/,

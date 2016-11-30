@@ -37,7 +37,9 @@ module.exports = {
   },
 
   devServer: {
-    outputPath: root('dist'),
+    contentBase: root('demo'),
+    watchContentBase: true,
+    compress: true,
     watchOptions: {
       poll: true
     },
@@ -95,15 +97,15 @@ module.exports = {
       exclude: [/\.(spec|e2e)\.ts$/]
     }, {
       test: /lib[\\\/].*\.scss$/,
-      loaders: ['raw-loader', "sass"],
+      loaders: ['raw-loader', "sass-loader"],
       exclude: [/redoc-initial-styles\.scss$/]
     }, {
       test: /\.scss$/,
-      loaders: ['style', 'css?-import', "sass"],
+      loaders: ['style-loader', 'css-loader?-import', "sass-loader"],
       exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.scss$/]
     }, {
       test: /\.css$/,
-      loaders: ['style', 'css?-import'],
+      loaders: ['style-loader', 'css-loader?-import'],
     }, {
       test: /\.html$/,
       loader: 'raw-loader'

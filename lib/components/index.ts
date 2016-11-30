@@ -14,13 +14,16 @@ import { MethodsList } from './MethodsList/methods-list';
 import { Method } from './Method/method';
 import { Warnings } from './Warnings/warnings';
 import { SecurityDefinitions } from './SecurityDefinitions/security-definitions';
+import { LoadingBar } from './LoadingBar/loading-bar';
 
 import { Redoc } from './Redoc/redoc';
 
 export const REDOC_DIRECTIVES = [
   ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
-  ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc, SecurityDefinitions
+  ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc, SecurityDefinitions,
+  LoadingBar
 ];
 
 export { ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
-ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc, SecurityDefinitions }
+ResponsesSamples, SchemaSample, SideMenu, MethodsList, Method, Warnings, Redoc, SecurityDefinitions,
+LoadingBar }

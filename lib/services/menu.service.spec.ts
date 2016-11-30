@@ -1,57 +1,52 @@
 'use strict';
-import { Component } from '@angular/core';
+import { Component  } from '@angular/core';
 import {
   inject,
-  async,
   TestBed
 } from '@angular/core/testing';
 
+import { MethodsList } from '../components/MethodsList/methods-list';
 import { MenuService } from './menu.service';
 import { Hash } from './hash.service';
-import { ScrollService } from './scroll.service';
+import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
+import { ScrollService  } from './scroll.service';
+import { SchemaHelper } from './schema-helper.service';
 import { SpecManager } from '../utils/spec-manager';;
 
 describe('Menu service', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent, MethodsList ] });
   });
 
-  let menu, hashService, scroll;
+  let menu, hashService, scroll, tasks;
   let specMgr;
 
-  beforeEach(async(inject([SpecManager, Hash, ScrollService],
-  ( _specMgr, _hash, _scroll, _menu) => {
+  beforeEach(inject([SpecManager, Hash, ScrollService, LazyTasksService],
+  ( _specMgr, _hash, _scroll, _tasks) => {
     hashService = _hash;
     scroll = _scroll;
-
+    tasks = _tasks;
     specMgr = _specMgr;
-    return specMgr.load('/tests/schemas/extended-petstore.yml');
-  })));
+    SchemaHelper.setSpecManager(specMgr);
+  }));
+
+  beforeEach(done => {
+    specMgr.load('/tests/schemas/extended-petstore.yml').then(done, done.fail);
+  });
 
   beforeEach(() => {
-    menu = new MenuService(hashService, scroll, specMgr);
+    menu = TestBed.get(MenuService);
     let fixture = TestBed.createComponent(TestAppComponent);
     fixture.detectChanges();
   });
 
-  it('should run hashScroll when hash changed', (done) => {
-    spyOn(menu, 'hashScroll').and.callThrough();
-    hashService.value.subscribe((hash) => {
-      if (!hash) return;
-      expect(menu.hashScroll).toHaveBeenCalled();
-      menu.hashScroll.and.callThrough();
-      done();
-    });
-    hashService.value.next('nonFalsy');
-  });
-
   it('should scroll to method when location hash is present [jp]', (done) => {
     let hash = '#tag/pet/paths/~1pet~1findByStatus/get';
-    spyOn(menu, 'hashScroll').and.callThrough();
+    spyOn(menu, 'scrollToActive').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
     hashService.value.subscribe((hash) => {
       if (!hash) return;
-      expect(menu.hashScroll).toHaveBeenCalled();
+      expect(menu.scrollToActive).toHaveBeenCalled();
       let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
       (<jasmine.Spy>window.scrollTo).and.callThrough();
@@ -59,14 +54,14 @@ describe('Menu service', () => {
     });
     hashService.value.next(hash);
   });
-
+  //
   it('should scroll to method when location hash is present [operation]', (done) => {
     let hash = '#operation/getPetById';
-    spyOn(menu, 'hashScroll').and.callThrough();
+    spyOn(menu, 'scrollToActive').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
     hashService.value.subscribe((hash) => {
       if (!hash) return;
-      expect(menu.hashScroll).toHaveBeenCalled();
+      expect(menu.scrollToActive).toHaveBeenCalled();
       let scrollY = (<jasmine.Spy>window.scrollTo).calls.argsFor(0)[1];
       expect(scrollY).toBeGreaterThan(0);
       done();

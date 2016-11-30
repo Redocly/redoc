@@ -27,7 +27,7 @@ export class CopyButton implements OnInit {
   onClick() {
     let copied;
     if (this.copyText) {
-      copied = Clipboard.copyCustom(this.copyText);
+      copied = Clipboard.copyCustom(JSON.stringify(this.copyText));
     } else {
       copied = Clipboard.copyElement(this.copyElement);
     }

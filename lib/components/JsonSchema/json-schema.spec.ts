@@ -62,7 +62,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Method. */
 @Component({
   selector: 'test-app',
-  providers: [SpecManager],
   template:
       `<json-schema></json-schema>`
 })

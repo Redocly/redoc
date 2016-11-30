@@ -3,20 +3,16 @@ import { Injectable } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SpecManager } from '../utils/spec-manager';
 
 @Injectable()
 export class Hash {
-  public value = new BehaviorSubject<string>('');
-  constructor(private specMgr: SpecManager, private location: PlatformLocation) {
+  public value = new BehaviorSubject<string | null>(null);
+  constructor(private location: PlatformLocation) {
     this.bind();
+  }
 
-    this.specMgr.spec.subscribe((spec) => {
-      if (!spec) return;
-      setTimeout(() => {
-        this.value.next(this.hash);
-      });
-    });
+  start() {
+    this.value.next(this.hash);
   }
 
   get hash() {
