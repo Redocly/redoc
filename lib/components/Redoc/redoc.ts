@@ -62,6 +62,7 @@ export class Redoc extends BaseComponent implements OnInit {
     if (scrollParent === DOM.defaultDoc().body) scrollParent = window;
     optionsMgr.options.$scrollParent = scrollParent;
     this.options = optionsMgr.options;
+    this.lazyTasksService.allSync = !this.options.lazyRendering;
   }
 
   hideLoadingAnimation() {
