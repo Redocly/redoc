@@ -13,7 +13,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 import { MethodsList } from './methods-list';
 import { SpecManager } from '../../utils/spec-manager';
 
-describe('Redoc components', () => {
+describe('Redoc components', () => { 
   beforeEach(() => {
     TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
   });
@@ -21,11 +21,16 @@ describe('Redoc components', () => {
     let builder;
     let component;
     let fixture;
+    let specMgr;
 
-    beforeEach(async(inject([SpecManager], ( specMgr) => {
-
-      return specMgr.load('/tests/schemas/methods-list-component.json');
+    beforeEach(async(inject([SpecManager], (_specMgr) => {
+      specMgr = _specMgr;
     })));
+
+    beforeEach(done => {
+      specMgr.load('/tests/schemas/methods-list-component.json').then(done, done.fail);
+    });
+
     beforeEach(() => {
       fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;

@@ -29,6 +29,7 @@
 }
 
 .redoc-wrap {
+  z-index: 0;
   position: relative;
   font-family: $base-font, $base-font-family;
   font-size: $em-size;
@@ -36,11 +37,17 @@
   color: $text-color;
 }
 
+.menu-content {
+  overflow: hidden;
+}
+
 [sticky-sidebar] {
   width: $side-bar-width;
   background-color: $side-bar-bg-color;
   overflow-y: auto;
   overflow-x: hidden;
+  transform: translateZ(0);
+  z-index: 75;
 
   @media (max-width: $side-menu-mobile-breakpoint) {
     z-index: 1;
@@ -51,22 +58,33 @@
 
 .api-content {
   margin-left: $side-bar-width;
+  z-index: 50;
   position: relative;
+  // height: 100vh;
+  // overflow: scroll;
+  top: 0;
   @media (max-width: $side-menu-mobile-breakpoint) {
     padding-top: 3em;
     margin-left: 0;
   }
 }
 
-.api-content:before {
-  content: "";
-  background: $samples-panel-bg-color;
-  height: 100%;
-  width: $samples-panel-width;
+.background {
+  position: fixed;
   top: 0;
+  bottom: 0;
   right: 0;
-  position: absolute;
-  z-index: -1;
+  left: $side-bar-width;
+  z-index: 1;
+
+  &-actual {
+    background: $samples-panel-bg-color;
+    left: 100% - $samples-panel-width;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+  }
 
   @media (max-width: $right-panel-squash-breakpoint) {
     display: none;
@@ -98,7 +116,8 @@
     font-family: $headers-font, $headers-font-family;
     color: $secondary-color;
     font-weight: $headers-font-weight;
-    line-height: 1.4em;
+    line-height: 1.5;
+    margin-bottom: 0.5em;
   }
 }
 
@@ -107,7 +126,7 @@
   h2 { font-size: $h2; }
   h3 { font-size: $h3; }
   h4 { font-size: $h4; }
-  h5 { font-size: $h5; }
+  h5 { font-size: $h5; line-height: 20px; }
 
   p {
     font-family: $base-font, $base-font-family;

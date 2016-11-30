@@ -1,6 +1,5 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
-import { SpecManager } from '../utils/spec-manager';
 import { methods as swaggerMethods, keywordTypes } from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';
@@ -15,6 +14,8 @@ export interface MenuMethod {
   summary: string;
   tag: string;
   pointer: string;
+  operationId: string;
+  ready: boolean;
 }
 
 export interface MenuCategory {
@@ -26,7 +27,11 @@ export interface MenuCategory {
   description?: string;
   empty?: string;
   virtual?: boolean;
+  ready: boolean;
 }
+
+// global var for this module
+var specMgrInstance;
 
 const injectors = {
   notype: {
@@ -186,8 +191,8 @@ const injectors = {
         parentPtr = JsonPointer.dirName(hostPointer, 3);
       }
 
-      let parentParam = SpecManager.instance().byPointer(parentPtr);
-      let root = SpecManager.instance().schema;
+      let parentParam = specMgrInstance.byPointer(parentPtr);
+      let root =specMgrInstance.schema;
       injectTo._produces = parentParam && parentParam.produces || root.produces;
       injectTo._consumes = parentParam && parentParam.consumes || root.consumes;
       injectTo._widgetType = 'file';
@@ -196,6 +201,10 @@ const injectors = {
 };
 
 export class SchemaHelper {
+  static setSpecManager(specMgr) {
+    specMgrInstance = specMgr;
+  }
+
   static preprocess(schema, pointer, hostPointer?) {
     //propertySchema = Object.assign({}, propertySchema);
     if (schema['x-redoc-schema-precompiled']) {
@@ -291,13 +300,15 @@ export class SchemaHelper {
   }
 
   static buildMenuTree(schema):Array<MenuCategory> {
+    var catIdx = 0;
     let tag2MethodMapping = {};
 
     for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
       let id = 'section/' + slugify(header);
       tag2MethodMapping[id] = {
-        name: header, id: id, virtual: true, methods: []
+        name: header, id: id, virtual: true, methods: [], idx: catIdx
       };
+      catIdx++;
     }
 
     for (let tag of schema.tags || []) {
@@ -309,7 +320,9 @@ export class SchemaHelper {
         headless: tag.name === '',
         empty: !!tag['x-traitTag'],
         methods: [],
+        idx: catIdx
       };
+      catIdx++;
     }
 
     let paths = schema.paths;
@@ -331,9 +344,11 @@ export class SchemaHelper {
             tagDetails = {
               name: tag,
               id: id,
-              headless: tag === ''
+              headless: tag === '',
+              idx: catIdx
             };
             tag2MethodMapping[id] = tagDetails;
+            catIdx++;
           }
           if (tagDetails.empty) continue;
           if (!tagDetails.methods) tagDetails.methods = [];
@@ -341,7 +356,9 @@ export class SchemaHelper {
             pointer: methodPointer,
             summary: methodSummary,
             operationId: methodInfo.operationId,
-            tag: tag
+            tag: tag,
+            idx: tagDetails.methods.length,
+            catIdx: tagDetails.idx
           });
         }
       }

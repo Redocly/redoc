@@ -6,18 +6,20 @@
   display: block;
   border-bottom: 1px solid rgba(127, 127, 127, 0.25);
   margin-top: 1em;
+  transform: translateZ(0);
+  z-index: 2;
 }
 
-:host:last-of-type {
-  border-bottom: 0;
-}
+// :host:last-of-type {
+//   border-bottom: 0;
+// }
 
 .method-header {
-  margin-bottom: .9em;
+  margin-bottom: calc(1em - 6px);
 }
 
 .method-endpoint {
-  margin: 0 0 2em 0;
+  //margin: 0 0 2px 0;
   padding: 10px 20px;
   border-radius: $border-radius*2;
   background-color: darken($black, 2%);
@@ -31,8 +33,8 @@
   padding-top: 1px;
   padding-bottom: 0;
   margin: 0;
-  font-size: .8em;
-    color: $black;
+  font-size: 12/14em;
+  color: $black;
   vertical-align: middle;
   display: inline-block;
   border-radius: $border-radius;

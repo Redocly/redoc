@@ -18,23 +18,28 @@ describe('Redoc components', () => {
     let component;
     let fixture;
     let opts;
+    let specMgr;
     beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
     });
-    beforeEach(async(inject([SpecManager, OptionsService], (specMgr, _opts) => {
+    beforeEach(async(inject([SpecManager, OptionsService], (_specMgr, _opts) => {
       opts = _opts;
       opts.options = {
         scrollYOffset: () => 0,
         $scrollParent: window
       };
-      return specMgr.load('/tests/schemas/api-info-test.json');
+      specMgr = _specMgr;
     })));
 
-    beforeEach(() => {
+    beforeEach(done => {
+      specMgr.load('/tests/schemas/api-info-test.json').then(done, done.fail);
+    });
+
+    beforeEach(async(() => {
       fixture = TestBed.createComponent(TestAppComponent);
       component = getChildDebugElement(fixture.debugElement, 'api-info').componentInstance;
       fixture.detectChanges();
-    });
+    }));
 
 
     it('should init component data', () => {

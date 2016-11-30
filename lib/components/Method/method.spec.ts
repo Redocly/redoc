@@ -11,6 +11,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 
 import { Method } from './method';
 import { SpecManager } from '../../utils/spec-manager';;
+import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';;
 
 describe('Redoc components', () => {
   beforeEach(() => {
@@ -19,11 +20,16 @@ describe('Redoc components', () => {
   describe('Method Component', () => {
     let builder;
     let component;
+    let specMgr;
 
-    beforeEach(async(inject([SpecManager], ( specMgr) => {
-
-      return specMgr.load('/tests/schemas/extended-petstore.yml');
+    beforeEach(async(inject([SpecManager, LazyTasksService], (_specMgr, lazyTasks) => {
+      lazyTasks.sync = true;
+      specMgr = _specMgr;
     })));
+
+    beforeEach(done => {
+      specMgr.load('/tests/schemas/extended-petstore.yml').then(done, done.fail);
+    });
 
     beforeEach(() => {
       let fixture = TestBed.createComponent(TestAppComponent);
@@ -53,7 +59,6 @@ describe('Redoc components', () => {
 /** Test component that contains a Method. */
 @Component({
   selector: 'test-app',
-  providers: [SpecManager],
   template:
       `<method pointer='#/paths/~1user~1{username}/put'></method>`
 })

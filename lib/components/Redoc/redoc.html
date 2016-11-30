@@ -2,7 +2,11 @@
   <h1>Oops... ReDoc failed to render this spec</h1>
   <div class='redoc-error-details'>{{error.message}}</div>
 </div>
+<loading-bar *ngIf="options.lazyRendering" [progress]="loadingProgress"> </loading-bar>
 <div class="redoc-wrap" *ngIf="specLoaded && !error">
+  <div class="background">
+    <div class="background-actual"> </div>
+  </div>
   <div class="menu-content" sticky-sidebar [scrollParent]="options.$scrollParent" [scrollYOffset]="options.scrollYOffset">
       <api-logo> </api-logo>
       <side-menu> </side-menu>

@@ -29,9 +29,11 @@ describe('Redoc components', () => {
       optsMgr = _optsMgr;
 
       specMgr = _specMgr;
-      return specMgr.load('/tests/schemas/extended-petstore.yml');
     })));
 
+    beforeEach(done => {
+      specMgr.load('/tests/schemas/extended-petstore.yml').then(done, done.fail);
+    })
 
     it('should init component', () => {
       let fixture = TestBed.createComponent(TestAppComponent);
