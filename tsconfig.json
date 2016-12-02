@@ -9,8 +9,6 @@
     "outDir": ".tmp",
     "pretty": true,
     "moduleResolution": "node",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "types": [
       "core-js",
       "jasmine",
