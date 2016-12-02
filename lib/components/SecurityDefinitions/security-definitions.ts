@@ -1,5 +1,5 @@
 'use strict';
-import { Component, ChangeDetectionStrategy, OnInit, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
 
 import { ComponentParser } from '../../services/component-parser.service';

@@ -5,7 +5,7 @@ import { Component, ElementRef, ChangeDetectorRef, OnInit } from '@angular/core'
 //import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { ScrollService, Hash, MenuService, OptionsService } from '../../services/index';
+import { ScrollService, MenuService, OptionsService } from '../../services/index';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { MenuCategory } from '../../services/schema-helper.service';
 
@@ -41,7 +41,7 @@ export class SideMenu extends BaseComponent implements OnInit {
   private firstChange = true;
 
   constructor(specMgr:SpecManager, elementRef:ElementRef,
-  private scrollService:ScrollService, private menuService:MenuService, private hash:Hash,
+  private scrollService:ScrollService, private menuService:MenuService,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
     super(specMgr);
     this.$element = elementRef.nativeElement;

@@ -1,9 +1,5 @@
 'use strict';
-import { Input, HostBinding, Component, OnInit, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef } from '@angular/core';
-import JsonPointer from '../../utils/JsonPointer';
-import { BaseComponent, SpecManager } from '../base';
-import { SchemaHelper } from '../../services/schema-helper.service';
-import { OptionsService, AppStateService } from '../../services/';
+import { Input, HostBinding, Component, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'loading-bar',
@@ -32,10 +28,9 @@ import { OptionsService, AppStateService } from '../../services/';
       background-color: #5f7fc3;
       transition: right 0.2s linear;
     }
-  `],
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  `]
 })
-export class LoadingBar {
+export class LoadingBar implements OnChanges {
   @Input() progress:number = 0;
   @HostBinding('style.display') display = 'block';
 

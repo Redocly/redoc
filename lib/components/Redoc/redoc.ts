@@ -1,12 +1,10 @@
 'use strict';
 
 import { ElementRef,
-  ComponentRef,
   ChangeDetectorRef,
   Input,
   Component,
   OnInit,
-  ChangeDetectionStrategy,
   HostBinding
 } from '@angular/core';
 
@@ -18,7 +16,6 @@ import * as detectScollParent from 'scrollparent';
 import { SpecManager } from '../../utils/spec-manager';
 import { OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/index';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
-import { CustomErrorHandler } from '../../utils/';
 
 @Component({
   selector: 'redoc',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { Redoc, SecurityDefinitions, Method, REDOC_DIRECTIVES } from './components/index';
 import { REDOC_COMMON_DIRECTIVES, DynamicNg2Wrapper } from './shared/components/index';
-import { REDOC_PIPES, KeysPipe } from './utils/pipes';
+import { REDOC_PIPES } from './utils/pipes';
 import { CustomErrorHandler } from './utils/'
 import { LazyTasksService } from './shared/components/LazyFor/lazy-for';
 

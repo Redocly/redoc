@@ -2,8 +2,6 @@
 
 import {
   Component,
-  EventEmitter,
-  Output,
   Input,
   OnInit,
   ViewContainerRef,

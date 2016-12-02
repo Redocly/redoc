@@ -64,7 +64,7 @@ const injectors = {
   },
   discriminator: {
     check: (propertySchema) => propertySchema.discriminator || propertySchema['x-extendedDiscriminator'],
-    inject: (injectTo, propertySchema = injectTo, pointer) => {
+    inject: (injectTo, propertySchema = injectTo) => {
       injectTo.discriminator = propertySchema.discriminator;
       injectTo['x-extendedDiscriminator'] = propertySchema['x-extendedDiscriminator'];
     }
@@ -182,7 +182,7 @@ const injectors = {
   },
   file: {
     check: propertySchema => (propertySchema.type === 'file'),
-    inject: (injectTo, propertySchema = injectTo, propPointer, hostPointer) => {
+    inject: (injectTo, propertySchema = injectTo, _, hostPointer) => {
       injectTo.isFile = true;
       let parentPtr;
       if (propertySchema.in === 'formData') {
@@ -230,7 +230,7 @@ export class SchemaHelper {
       schema.required.forEach(prop => requiredMap[prop] = true);
     }
 
-    let props = schema.properties && Object.keys(schema.properties).map((propName, idx) => {
+    let props = schema.properties && Object.keys(schema.properties).map(propName => {
       let propertySchema = Object.assign({}, schema.properties[propName]);
       let propPointer = propertySchema._pointer ||
         JsonPointer.join(pointer, ['properties', propName]);

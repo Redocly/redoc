@@ -1,9 +1,9 @@
 'use strict';
-import { Input, Component, OnInit, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Input, Component, OnInit, ChangeDetectionStrategy, ElementRef } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
-import { OptionsService, AppStateService } from '../../services/';
+import { OptionsService } from '../../services/';
 
 @Component({
   selector: 'method',
@@ -20,8 +20,7 @@ export class Method extends BaseComponent implements OnInit {
 
   method:any;
 
-  constructor(specMgr:SpecManager, private optionsService: OptionsService, private chDetector: ChangeDetectorRef,
-  private appState: AppStateService, private el: ElementRef) {
+  constructor(specMgr:SpecManager, private optionsService: OptionsService, private el: ElementRef) {
     super(specMgr);
   }
 

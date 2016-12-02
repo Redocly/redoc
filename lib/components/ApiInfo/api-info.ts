@@ -1,7 +1,7 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
-import { OptionsService, MenuService } from '../../services/index';
+import { OptionsService } from '../../services/index';
 
 @Component({
   selector: 'api-info',
