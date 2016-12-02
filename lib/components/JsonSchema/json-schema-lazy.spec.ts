@@ -20,9 +20,6 @@ describe('Redoc components', () => {
     let component;
     let fixture;
 
-    beforeEach(inject([TestBed], (tcb) => {
-
-    }));
     beforeEach(() => {
       fixture = TestBed.createComponent(TestAppComponent);
       let debugEl = getChildDebugElement(fixture.debugElement, 'json-schema-lazy');

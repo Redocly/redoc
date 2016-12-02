@@ -8,8 +8,6 @@ import {
 
 import { getChildDebugElement } from '../../../tests/helpers';
 
-
-import { JsonSchema } from './json-schema';
 import { SpecManager } from '../../utils/spec-manager';;
 
 describe('Redoc components', () => {

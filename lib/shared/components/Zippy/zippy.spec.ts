@@ -20,12 +20,12 @@ describe('Common components', () => {
     let nativeElement;
     let fixture;
 
-    beforeEach(inject([TestBed], (tcb) => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(TestApp);
       let debugEl = getChildDebugElement(fixture.debugElement, 'zippy');
       component = debugEl.componentInstance;
       nativeElement = debugEl.nativeElement;
-    }));
+    });
 
     it('should init component', () => {
       expect(component).not.toBeNull();
