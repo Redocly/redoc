@@ -18,19 +18,24 @@
 ## Features
 - Extremely easy deployment
 - It’s free and open-source project under MIT license
-- The widest OpenAPI features support (yes, it supports even discriminator)
-- Neat documentation for nested objects
+- The widest OpenAPI features support (yes, it supports even `discriminator`)
+- Neat **interactive** documentation for nested objects
+
+<img src="http://i.imgur.com/260gaV4.png" width="500">
+
 - Code samples support (via vendor extension)
 - Responsive three-panel design with menu/scrolling synchronization
 - Integrate API introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
 
 ## Roadmap
-  - [ ] docs pre-rendering (performance and SEO)
-  - [ ] ability to simple customization
+  - [x] performance optimizations
+  - [ ] better navigation (menu improvements + search)
+  - [ ] ability to simple branding/styling
   - [ ] built-in API Console
+  - [ ] docs pre-rendering (performance and SEO)
 
 ## Releases
-We host latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
+We host the latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js **[not for production]**
