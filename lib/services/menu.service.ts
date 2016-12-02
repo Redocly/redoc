@@ -200,6 +200,9 @@ export class MenuService {
 
   setActiveByHash(hash) {
     if (!hash) {
+      if (this.categories[0].headless) {
+        this.activate(0, 0);
+      }
       return;
     }
     let catIdx, methodIdx;

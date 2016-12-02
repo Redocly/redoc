@@ -31,6 +31,7 @@
 .redoc-wrap {
   z-index: 0;
   position: relative;
+  overflow: hidden;
   font-family: $base-font, $base-font-family;
   font-size: $em-size;
   line-height: $base-line-height;
