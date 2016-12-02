@@ -67,7 +67,7 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
         this._loadAfterSelf();
         return;
       }
-      //insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
+      insertAfter($element.cloneNode(true), this.elementRef.nativeElement);
       this.loaded = true;
     } else {
       cache[this.pointer] = this._loadAfterSelf();
