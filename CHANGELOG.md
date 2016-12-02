@@ -1,3 +1,14 @@
+# 1.6.1 (2016-12-02)
+### Bug fixes
+* Fix only the first instance of schema was rendered ([#150](https://github.com/Rebilly/ReDoc/issues/150))
+* Regression: fix side panel overlaps footer
+* Fix menu was not initialized for specs without tags
+
+### Features/Improvements
+* Don't show error screen for runtimes after render finished
+* Updated dependencies (angular to the latest version + dev deps)
+
+
 # 1.6.0 (2016-11-30)
 ### Bug fixes
 * Update webpack to the latest beta ([#143](https://github.com/Rebilly/ReDoc/issues/143))
