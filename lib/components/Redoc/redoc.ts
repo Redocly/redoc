@@ -1,12 +1,10 @@
 'use strict';
 
 import { ElementRef,
-  ComponentRef,
   ChangeDetectorRef,
   Input,
   Component,
   OnInit,
-  ChangeDetectionStrategy,
   HostBinding
 } from '@angular/core';
 
@@ -18,7 +16,6 @@ import * as detectScollParent from 'scrollparent';
 import { SpecManager } from '../../utils/spec-manager';
 import { OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/index';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
-import { CustomErrorHandler } from '../../utils/';
 
 @Component({
   selector: 'redoc',
@@ -112,16 +109,12 @@ export class Redoc extends BaseComponent implements OnInit {
     this.appState.error.subscribe(_err => {
       if (!_err) return;
 
-      if (this.specLoading) {
-        this.specLoaded = true;
-        this.hideLoadingAnimation();
-      }
+      this.appState.stopLoading();
+
+      if (this.loadingProgress === 100) return;
       this.error = _err;
       this.changeDetector.markForCheck();
-      setTimeout(() => {
-        this.changeDetector.detectChanges()
-      });
-    })
+    });
 
     if (this.specUrl) {
       this.options.specUrl = this.specUrl;

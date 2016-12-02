@@ -9,7 +9,6 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import { ApiLogo } from './api-logo';
 import { SpecManager } from '../../utils/spec-manager';
 
 

@@ -10,7 +10,6 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import { ApiInfo } from './api-info';
 import { SpecManager } from '../../utils/spec-manager';
 
 describe('Redoc components', () => {

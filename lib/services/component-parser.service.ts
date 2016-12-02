@@ -64,7 +64,7 @@ export class ComponentParser {
   }
 
   createComponentByHtml(htmlTag: string, injector:Injector):ComponentRef<any>| null {
-    let {componentType, options} = this._parseHtml(htmlTag);
+    let { componentType } = this._parseHtml(htmlTag);
     if (!componentType) return null;
 
     let factory = this.resolver.resolveComponentFactory(componentType);

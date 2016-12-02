@@ -1,3 +1,17 @@
+# 1.6.0 (2016-11-30)
+### Bug fixes
+* Update webpack to the latest beta ([#143](https://github.com/Rebilly/ReDoc/issues/143))
+* Fix read-only fields appear in request samples ([#142](https://github.com/Rebilly/ReDoc/issues/142))
+* A few more minor UI improvemnts
+
+### Features/Improvements
+* Major performance optimization with new option `lazy-rendering`
+
+To enable use `<redoc>` tag parameter: `<redoc spec-url="..." lazy-rendering></redoc>`.
+In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out [the demo](//rebilly.github.io/ReDoc) for the example.
+* Enable cors-proxy for demo
+* README: Add button link to yeoman-generator
+
 # 1.5.2 (2016-11-28)
 ### Bug fixes
 * Fix crashing on array without items ([#104](https://github.com/Rebilly/ReDoc/issues/104))

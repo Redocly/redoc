@@ -22,14 +22,14 @@ describe('Common components', () => {
     let fixture;
     let hostComponent;
 
-    beforeEach(inject([TestBed], (tcb) => {
+    beforeEach(() => {
 
       fixture = TestBed.createComponent(TestApp);
       hostComponent = fixture.debugElement.componentInstance;
       debugEl = getChildDebugElement(fixture.debugElement, 'tabs');
       childDebugEls = getChildDebugElementAll(debugEl, 'tab');
       component = debugEl.componentInstance;
-    }));
+    });
 
     it('should init component', () => {
       expect(component).not.toBeNull();

@@ -52,7 +52,7 @@ export class OptionsService {
       //camelCasify
       .map(k => ({
         attrName: k,
-        name: k.replace(/-(.)/g,  (m, $1) => $1.toUpperCase())
+        name: k.replace(/-(.)/g,  (_, $1) => $1.toUpperCase())
         })
       )
       .filter(option => OPTION_NAMES.has(option.name))

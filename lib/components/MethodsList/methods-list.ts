@@ -30,11 +30,7 @@ export class MethodsList extends BaseComponent implements OnInit {
     });
   }
 
-  trackByPointer(idx, el) {
-    return el.pointer;
-  }
-
-  trackByTagName(idx, el) {
+  trackByTagName(_, el) {
     return el.name;
   }
 

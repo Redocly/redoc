@@ -18,12 +18,12 @@ describe('Common components', () => {
     let component;
     let fixture;
 
-    beforeEach(inject([TestBed], (tcb) => {
+    beforeEach(() => {
 
       fixture = TestBed.createComponent(TestApp);
       let debugEl = getChildDebugElementByType(fixture.debugElement, StickySidebar);
       component = debugEl.injector.get(StickySidebar);
-    }));
+    });
 
 
     it('should init component', () => {

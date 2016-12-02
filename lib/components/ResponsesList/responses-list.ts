@@ -63,7 +63,7 @@ export class ResponsesList extends BaseComponent implements OnInit {
     this.responses = responses;
   }
 
-  trackByCode(idx, el) {
+  trackByCode(_, el) {
     return el.code;
   }
 

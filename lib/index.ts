@@ -3,7 +3,6 @@ import './components/Redoc/redoc-initial-styles.css';
 
 import { enableProdMode } from '@angular/core';
 import { Redoc } from './components/index';
-import { SpecManager } from './utils/spec-manager';
 import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
 

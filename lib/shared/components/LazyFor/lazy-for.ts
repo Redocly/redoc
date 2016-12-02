@@ -6,8 +6,7 @@ import {
   TemplateRef,
   ChangeDetectorRef,
   ViewContainerRef,
-  Injectable,
-  NgZone
+  Injectable
 } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -36,7 +35,7 @@ export class LazyTasksService {
 
   public loadProgress = new BehaviorSubject<number>(0);
   public allSync = false;
-  constructor(public optionsService: OptionsService, private zone: NgZone) {
+  constructor(public optionsService: OptionsService) {
   }
 
   get empty() {
@@ -117,8 +116,8 @@ export class LazyTasksService {
 
 @Injectable()
 export class LazyTasksServiceSync extends LazyTasksService {
-  constructor(optionsService: OptionsService, zone: NgZone) {
-    super(optionsService, zone);
+  constructor(optionsService: OptionsService) {
+    super(optionsService);
     this.allSync = true;
   }
 }
@@ -132,7 +131,6 @@ export class LazyFor {
 
   prevIdx = null;
 
-  private _viewRef;
   constructor(
     public _template: TemplateRef<LazyForRow>,
     public cdr: ChangeDetectorRef,
@@ -152,7 +150,7 @@ export class LazyFor {
     if (sync) {
       return Promise.resolve();
     }
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(resolve => {
       requestAnimationFrame(() => {
         this.scroll.saveScroll();
 

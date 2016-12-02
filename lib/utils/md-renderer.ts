@@ -19,11 +19,6 @@ const md = new Remarkable({
   }
 });
 
-interface HeadersHandler {
-  open: Function;
-  close: Function;
-}
-
 @Injectable()
 export class MdRenderer {
   public firstLevelHeadings: string[] = [];

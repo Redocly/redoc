@@ -20,7 +20,7 @@ interface Schema {
 @Injectable()
 export class SchemaNormalizer {
   _dereferencer:SchemaDereferencer;
-  constructor(private _schema:any) {
+  constructor(_schema:any) {
     this._dereferencer = new SchemaDereferencer(_schema, this);
   }
   normalize(schema, ptr, opts:any ={}) {

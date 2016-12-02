@@ -120,7 +120,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
     }
   }
 
-  trackByName(index: number, item: any): number {
+  trackByName(_: number, item: any): number {
     return item.name + (item._pointer || '');
   }
 

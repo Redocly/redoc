@@ -19,7 +19,7 @@ export class ScrollService {
   private _cancel:any;
   private _savedPosition:number;
   private _stickElement: HTMLElement;
-  constructor(private optionsService:OptionsService) {
+  constructor(optionsService:OptionsService) {
     this.scrollYOffset = () => optionsService.options.scrollYOffset();
     this.$scrollParent = optionsService.options.$scrollParent || window;
     this.scroll = new EventEmitter();
