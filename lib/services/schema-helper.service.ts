@@ -28,6 +28,7 @@ export interface MenuCategory {
   empty?: string;
   virtual?: boolean;
   ready: boolean;
+  headless: boolean;
 }
 
 // global var for this module
