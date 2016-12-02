@@ -13,14 +13,12 @@
     ],
     "no-arg": true,
     "no-construct": true,
-    "no-duplicate-key": true,
+
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
-    "no-unreachable": true,
     "no-use-before-declare": true,
     "one-line": [true,
       "check-open-brace",
@@ -36,10 +34,8 @@
     ],
     "variable-name": false,
 
-    "directive-selector-type": [true, "attribute"],
-    "component-selector-type": [true, "element"],
-    "component-selector-name": [true, "kebab-case"],
-    "directive-selector-name": [true, "camelCase"],
+    "directive-selector": [true, "attribute", "", "camelCase"],
+    "component-selector": [true, "element", "", "kebab-case"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -53,6 +49,10 @@
     "no-access-missing-member": true,
     "invoke-injectable": true,
     "no-forward-ref": true,
-    "no-attribute-parameter-decorator": true
+    "no-attribute-parameter-decorator": true,
+    "templates-use-public": true,
+    "no-access-missing-member": true,
+    "invoke-injectable": true,
+    "no-unused-css": true
   }
 }
