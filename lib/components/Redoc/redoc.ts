@@ -109,16 +109,12 @@ export class Redoc extends BaseComponent implements OnInit {
     this.appState.error.subscribe(_err => {
       if (!_err) return;
 
-      if (this.specLoading) {
-        this.specLoaded = true;
-        this.hideLoadingAnimation();
-      }
+      this.appState.stopLoading();
+
+      if (this.loadingProgress === 100) return;
       this.error = _err;
       this.changeDetector.markForCheck();
-      setTimeout(() => {
-        this.changeDetector.detectChanges()
-      });
-    })
+    });
 
     if (this.specUrl) {
       this.options.specUrl = this.specUrl;
