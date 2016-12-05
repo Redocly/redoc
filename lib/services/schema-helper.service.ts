@@ -315,7 +315,7 @@ export class SchemaHelper {
     for (let tag of schema.tags || []) {
       let id = 'tag/' + slugify(tag.name);
       tag2MethodMapping[id] = {
-        name: tag.name,
+        name: tag['x-displayName'] || tag.name,
         id: id,
         description: tag.description,
         headless: tag.name === '',

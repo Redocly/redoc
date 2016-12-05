@@ -7,7 +7,8 @@ describe('Spec Helper', () => {
     let suitSchema = {
       tags: [
         {name: 'tag1', description: 'info1', 'x-traitTag': true},
-        {name: 'tag2', description: 'info2'}
+        {name: 'tag2', description: 'info2'},
+        {name: 'tag4', description: 'info2', 'x-displayName': 'Tag Four'}
       ],
       paths: {
         test: {
@@ -18,6 +19,10 @@ describe('Spec Helper', () => {
           get: {
             tags: ['tag1', 'tag2'],
             summary: 'test get'
+          },
+          delete: {
+            tags: ['tag4'],
+            summary: 'test delete'
           },
           // no tags
           post: {
@@ -41,19 +46,19 @@ describe('Spec Helper', () => {
     });
 
     it('should return Array with correct number of items', () => {
-      //2 - defined tags, 1 - tag3 and 1 [other] tag for no-tags method
-      menuTree.length.should.be.equal(2 + 1 + 1);
+      //3 - defined tags, 1 - tag3 and 1 [other] tag for no-tags method
+      menuTree.length.should.be.equal(3 + 1 + 1);
     });
 
     it('should append not defined tags to the end of list', () => {
-      let info = menuTree[2];
+      let info = menuTree[3];
       info.name.should.be.equal('tag3');
       info.methods.length.should.be.equal(1);
       info.methods[0].summary.should.be.equal('test put');
     });
 
     it('should append methods without tags to [other] tag', () => {
-      let info = menuTree[3];
+      let info = menuTree[4];
       info.name.should.be.equal('');
       info.methods.length.should.be.equal(1);
       info.methods[0].summary.should.be.equal('test post');
@@ -83,6 +88,12 @@ describe('Spec Helper', () => {
           }
         }
       }
+    });
+
+    it('should use x-displayName to set custom names', () => {
+      let info = menuTree[2];
+      info.id.should.be.equal('tag/tag4');
+      info.name.should.be.equal('Tag Four');
     });
   });
 
