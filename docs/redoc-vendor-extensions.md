@@ -116,7 +116,7 @@ source: console.log('Hello World');
 
 ### Schema Object vendor extensions
 Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
-#### x-code-samples
+#### x-nullable
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-nullable | boolean | marks schema as a nullable |
