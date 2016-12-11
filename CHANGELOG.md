@@ -1,3 +1,10 @@
+# 1.6.2 (2016-12-11)
+### Bug fixes
+* Use markdown in responses description ([#158](https://github.com/Rebilly/ReDoc/issues/158))
+
+### Features/Improvements
+* [x-displayName](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md#x-displayname) for tags - by [@bfirsh](https://github.com/bfirsh) ([PR #152](https://github.com/Rebilly/ReDoc/pull/152))
+
 # 1.6.1 (2016-12-02)
 ### Bug fixes
 * Fix only the first instance of schema was rendered ([#150](https://github.com/Rebilly/ReDoc/issues/150))
