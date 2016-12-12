@@ -21,9 +21,10 @@ const global = window;
         style({ height: '0px' })),
       state('expanded',
         style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
+      // https://github.com/Rebilly/ReDoc/issues/162
+      // transition('collapsed <=> expanded', [
+      //   animate('200ms ease')
+      // ])
     ])
   ],
 })
