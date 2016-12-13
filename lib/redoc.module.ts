@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, APP_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Redoc, SecurityDefinitions, Method, REDOC_DIRECTIVES } from './components/index';
@@ -35,6 +35,7 @@ import { SpecManager } from './utils/spec-manager';
     ComponentParser,
     ContentProjector,
     LazyTasksService,
+    { provide: APP_ID, useValue: 'redoc' },
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions} }
   ],
