@@ -49,6 +49,13 @@ export class ResponsesList extends BaseComponent implements OnInit {
       resp.empty = !resp.schema;
       resp.code = respCode;
       resp.type = statusCodeType(resp.code);
+
+      if (this.options.expandResponses) {
+        if (this.options.expandResponses === 'all' || this.options.expandResponses.has(respCode.toString())) {
+          resp.expanded = true;
+        }
+      }
+
       if (resp.headers && !(resp.headers instanceof Array)) {
         resp.headers = Object.keys(resp.headers).map((k) => {
           let respInfo = resp.headers[k];
