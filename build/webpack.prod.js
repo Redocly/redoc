@@ -14,6 +14,7 @@ const IS_MODULE = process.env.IS_MODULE != null;
 const config = {
   context: root(),
   devtool: 'source-map',
+  performance: { hints: false },
 
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css'],

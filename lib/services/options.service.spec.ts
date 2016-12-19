@@ -14,7 +14,8 @@ describe('Options Service', () => {
   }
 
   afterEach(() => {
-    document.body.removeChild(tmpDiv);
+    if (tmpDiv) document.body.removeChild(tmpDiv);
+    tmpDiv = false;
   });
 
   beforeEach(() => {
@@ -46,5 +47,19 @@ describe('Options Service', () => {
     var elem = build(`<redoc></redoc>`);
     optionsService.parseOptions(elem);
     optionsService.options.scrollYOffset().should.be.equal(123);
+  });
+
+  it('should convert expandResponses options to Set', () => {
+    optionsService.options = { expandResponses: '200,300' };
+    optionsService._normalizeOptions();
+    optionsService.options.expandResponses.should.be.instanceof(Set);
+    Array.from(optionsService.options.expandResponses.values()).should.deepEqual(['200', '300']);
+  });
+
+  it('should preserve special value "all" as string', () => {
+    optionsService.options = { expandResponses: 'all' };
+    optionsService._normalizeOptions();
+    optionsService.options.expandResponses.should.be.of.type('string');
+    optionsService.options.expandResponses.should.be.equal('all');
   });
 });

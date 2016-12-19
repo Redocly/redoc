@@ -26,6 +26,8 @@ lib/**/*.css
 # files produced by ngc
 lib/**/*.ngfactory.ts
 lib/**/*.css.shim.ts
+lib/**/*.ngsummary.json
+lib/**/*.shim.ngstyle.ts
 
 # other
 /dist

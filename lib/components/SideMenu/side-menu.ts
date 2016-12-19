@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, ElementRef, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ElementRef, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 
 //import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
@@ -21,13 +21,14 @@ const global = window;
         style({ height: '0px' })),
       state('expanded',
         style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
+      // https://github.com/Rebilly/ReDoc/issues/162
+      // transition('collapsed <=> expanded', [
+      //   animate('200ms ease')
+      // ])
     ])
   ],
 })
-export class SideMenu extends BaseComponent implements OnInit {
+export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   activeCatCaption: string;
   activeItemCaption: string;
   categories: Array<MenuCategory>;
@@ -122,6 +123,11 @@ export class SideMenu extends BaseComponent implements OnInit {
 
   destroy() {
     this.scrollService.unbind();
+    this.menuService.destroy();
+  }
+
+  ngOnDestroy() {
+    this.destroy();
   }
 
   ngOnInit() {
