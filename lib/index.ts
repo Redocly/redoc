@@ -33,7 +33,6 @@ export function init(specUrl:string, options:any = {}) {
     moduleRef = appRef;
     console.log('ReDoc initialized!');
   }).catch(err => {
-    //Redoc.displayError(err);
     throw err;
   });
 };

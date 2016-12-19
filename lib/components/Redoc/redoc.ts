@@ -5,6 +5,7 @@ import { ElementRef,
   Input,
   Component,
   OnInit,
+  OnDestroy,
   HostBinding
 } from '@angular/core';
 
@@ -26,7 +27,9 @@ import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 export class Redoc extends BaseComponent implements OnInit {
   static _preOptions: any;
 
-  private element: any;
+  private element: HTMLElement;
+  private $parent: Element;
+  private $refElem: Element;
 
   error: any;
   specLoaded: boolean;
@@ -53,6 +56,9 @@ export class Redoc extends BaseComponent implements OnInit {
     optionsMgr.options = Redoc._preOptions || {};
 
     this.element = elementRef.nativeElement;
+    this.$parent = this.element.parentElement;
+    this.$refElem = this.element.nextElementSibling;
+
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
     let scrollParent = detectScollParent( this.element );
@@ -120,5 +126,10 @@ export class Redoc extends BaseComponent implements OnInit {
       this.options.specUrl = this.specUrl;
     }
     this.load();
+  }
+
+  ngOnDestroy() {
+    let $clone = this.element.cloneNode();
+    this.$parent.insertBefore($clone, this.$refElem);
   }
 }

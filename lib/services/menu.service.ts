@@ -1,5 +1,6 @@
 'use strict';
 import { Injectable, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
@@ -16,6 +17,8 @@ const CHANGE = {
 
 @Injectable()
 export class MenuService {
+  private _hashSubscription: Subscription;
+
   changed: EventEmitter<any> = new EventEmitter();
   ready: BehaviorSubject<boolean> = new BehaviorSubject(false);
   categories: Array<MenuCategory>;
@@ -39,7 +42,7 @@ export class MenuService {
 
     //this.changeActive(CHANGE.INITIAL);
 
-    this.hash.value.subscribe((hash) => {
+    this._hashSubscription =  this.hash.value.subscribe((hash) => {
       if (hash == undefined) return;
       this.setActiveByHash(hash);
       if (!this.tasks.empty) {
@@ -227,5 +230,9 @@ export class MenuService {
       });
     }
     this.activate(catIdx, methodIdx);
+  }
+
+  destroy() {
+    this._hashSubscription.unsubscribe();
   }
 }
