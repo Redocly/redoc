@@ -110,7 +110,7 @@
     "remarkable": "^1.6.2",
     "scrollparent": "^1.0.0",
     "slugify": "^1.0.2",
-    "stream-http": "^2.3.1"
+    "stream-http": "^2.5.0"
   },
   "peerDependencies": {
     "@angular/common": "^2.3.1",
