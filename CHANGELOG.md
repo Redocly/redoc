@@ -1,3 +1,13 @@
+# 1.6.2 (2016-12-19)
+### Bug fixes
+* Disable side-menu animation (workaround for [#162](https://github.com/Rebilly/ReDoc/issues/162))
+* Use markdown for response description (fixes [#158](https://github.com/Rebilly/ReDoc/issues/158))
+* Fix leaks (fixes [#167](https://github.com/Rebilly/ReDoc/issues/167))
+* Update webpack and stick to ts@2.0.9 (fixes [#169](https://github.com/Rebilly/ReDoc/issues/169), [#168](https://github.com/Rebilly/ReDoc/issues/168))
+
+### Features/Improvements
+* add `expand-responses` option - specify which responses are expand by default ([#165](https://github.com/Rebilly/ReDoc/issues/165)).
+
 # 1.6.2 (2016-12-11)
 ### Bug fixes
 * Use markdown in responses description ([#158](https://github.com/Rebilly/ReDoc/issues/158))
