@@ -27,15 +27,15 @@ import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 export class Redoc extends BaseComponent implements OnInit {
   static _preOptions: any;
 
-  private element: HTMLElement;
-  private $parent: Element;
-  private $refElem: Element;
-
   error: any;
   specLoaded: boolean;
   options: any;
 
   loadingProgress: number;
+
+  private element: HTMLElement;
+  private $parent: Element;
+  private $refElem: Element;
 
   @Input() specUrl: string;
   @HostBinding('class.loading') specLoading: boolean = false;

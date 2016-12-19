@@ -17,7 +17,6 @@ const CHANGE = {
 
 @Injectable()
 export class MenuService {
-  private _hashSubscription: Subscription;
 
   changed: EventEmitter<any> = new EventEmitter();
   ready: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -25,6 +24,8 @@ export class MenuService {
 
   activeCatIdx: number = 0;
   activeMethodIdx: number = -1;
+
+  private _hashSubscription: Subscription;
 
   constructor(
     private hash:Hash,
