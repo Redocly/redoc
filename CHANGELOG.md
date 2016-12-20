@@ -1,4 +1,4 @@
-# 1.6.2 (2016-12-19)
+# 1.6.3 (2016-12-19)
 ### Bug fixes
 * Disable side-menu animation (workaround for [#162](https://github.com/Rebilly/ReDoc/issues/162))
 * Use markdown for response description (fixes [#158](https://github.com/Rebilly/ReDoc/issues/158))
