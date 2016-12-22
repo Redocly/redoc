@@ -5,9 +5,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/spec-manager';
-import { SchemaHelper, MenuCategory } from './schema-helper.service';
+import { SchemaHelper, MenuItem } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
+import { JsonPointer } from '../utils/JsonPointer';
+import * as slugify from 'slugify';
+
 
 const CHANGE = {
   NEXT : 1,
@@ -20,10 +23,13 @@ export class MenuService {
 
   changed: EventEmitter<any> = new EventEmitter();
   ready: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  categories: Array<MenuCategory>;
+  items: Array<MenuItem>;
+  flatItems: Array<MenuItem>;
 
   activeCatIdx: number = 0;
   activeMethodIdx: number = -1;
+
+  activeIdx: number = -1;
 
   private _hashSubscription: Subscription;
 
@@ -35,20 +41,19 @@ export class MenuService {
     specMgr:SpecManager
   ) {
     this.hash = hash;
-    this.categories = SchemaHelper.buildMenuTree(specMgr.schema);
+    this.items = SchemaHelper.buildMenuTree(specMgr.schema);
+    this.flatItems = SchemaHelper.flatMenu(this.items);
 
     scrollService.scroll.subscribe((evt) => {
       this.scrollUpdate(evt.isScrolledDown);
     });
 
-    //this.changeActive(CHANGE.INITIAL);
-
     this._hashSubscription =  this.hash.value.subscribe((hash) => {
       if (hash == undefined) return;
       this.setActiveByHash(hash);
       if (!this.tasks.empty) {
-        this.tasks.start(this.activeCatIdx, this.activeMethodIdx, this);
-        this.scrollService.setStickElement(this.getCurrentMethodEl());
+        this.tasks.start(this.activeIdx, this);
+        this.scrollService.setStickElement(this.getCurrentEl());
         if (hash) this.scrollToActive();
         this.appState.stopLoading();
       } else {
@@ -57,45 +62,39 @@ export class MenuService {
     });
   }
 
-  enableItem(catIdx, methodIdx, skipUpdate = false) {
-    let cat = this.categories[catIdx];
-    cat.ready = true;
-    if (cat.methods.length) cat.methods[methodIdx].ready = true;
-    let prevCat = this.categories[catIdx - 1];
-    if (prevCat && !prevCat.ready && (prevCat.virtual || !prevCat.methods.length)) {
-      this.enableItem(catIdx - 1, -1, true);
+  enableItem(idx) {
+    let item = this.flatItems[idx];
+    item.ready = true;
+    if (item.parent) {
+      item.parent.ready = true;
+      idx = item.parent.flatIdx;
     }
 
-    if (skipUpdate) return;
+    let prevItem = this.flatItems[idx -= 1];
+    while(prevItem && (!prevItem.metadata || !prevItem.items)) {
+      prevItem.ready = true;
+      prevItem = this.flatItems[idx -= 1];
+    }
+
     this.changed.next();
-  }
-
-  get activeMethodPtr() {
-    let cat = this.categories[this.activeCatIdx];
-    let ptr = null;
-    if (cat && cat.methods.length) {
-      let mtd = cat.methods[this.activeMethodIdx];
-      ptr = mtd && mtd.pointer || null;
-    }
-    return ptr;
   }
 
   scrollUpdate(isScrolledDown) {
     let stable = false;
     while(!stable) {
-      let $activeMethodHost = this.getCurrentMethodEl();
-      if (!$activeMethodHost) return;
-      var elementInViewPos = this.scrollService.getElementPos($activeMethodHost);
       if(isScrolledDown) {
         //&& elementInViewPos === INVIEW_POSITION.BELLOW
-        let $nextEl = this.getRelativeCatOrItem(1);
+        let $nextEl = this.getEl(this.activeIdx + 1);
         if (!$nextEl) return;
         let nextInViewPos = this.scrollService.getElementPos($nextEl, true);
-        if (elementInViewPos === INVIEW_POSITION.BELLOW && nextInViewPos === INVIEW_POSITION.ABOVE) {
+        if (nextInViewPos === INVIEW_POSITION.ABOVE) {
           stable = this.changeActive(CHANGE.NEXT);
           continue;
         }
       }
+      let $currentEl = this.getCurrentEl();
+      if (!$currentEl) return;
+      var elementInViewPos = this.scrollService.getElementPos($currentEl);
       if(!isScrolledDown && elementInViewPos === INVIEW_POSITION.ABOVE ) {
         stable = this.changeActive(CHANGE.BACK);
         continue;
@@ -104,133 +103,74 @@ export class MenuService {
     }
   }
 
-  getRelativeCatOrItem(offset: number = 0) {
-    let ptr, cat;
-    cat = this.categories[this.activeCatIdx];
-    if (cat.methods.length === 0) {
-      ptr = null;
-      cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
-    } else {
-      let cat = this.categories[this.activeCatIdx];
-      let idx = this.activeMethodIdx + offset;
-      if ((idx >= cat.methods.length - 1) || idx < 0) {
-        cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
-        idx = offset > 0 ? -1 : cat.methods.length - 1;
-      }
-      ptr = cat.methods[idx] && cat.methods[idx].pointer;
+  getEl(flatIdx) {
+    if (flatIdx < 0) flatIdx = 0;
+    let currentItem = this.flatItems[flatIdx];
+    let selector = '';
+    while(currentItem) {
+      selector = `[section="${currentItem.id}"] ` + selector
+      currentItem = currentItem.parent;
     }
-
-    return this.getMethodElByPtr(ptr, cat.id);
+    selector = selector.trim();
+    return selector ? document.querySelector(selector) : null;
   }
 
-  getCurrentMethodEl() {
-    return this.getMethodElByPtr(this.activeMethodPtr,
-      this.categories[this.activeCatIdx].id);
+  getCurrentEl() {
+    return this.getEl(this.activeIdx);
   }
 
-  getMethodElByPtr(ptr, section) {
-    let selector = ptr ? `[pointer="${ptr}"][section="${section}"]` : `[section="${section}"]`;
-    return document.querySelector(selector);
+  deactivate(idx) {
+    if (idx < 0) return;
+
+    let prevItem = this.flatItems[idx];
+    prevItem.active = false;
+    if (prevItem.parent) {
+      prevItem.parent.active = false;
+    }
   }
 
-  getMethodElByOperId(operationId) {
-    let selector =`[operation-id="${operationId}"]`;
-    return document.querySelector(selector);
-  }
+  activate(idx) {
+    this.deactivate(this.activeIdx);
+    this.activeIdx = idx;
+    if (idx < 0) return;
 
-  activate(catIdx, methodIdx) {
-    if (catIdx < 0) return;
-
-    let menu = this.categories;
-
-    menu[this.activeCatIdx].active = false;
-    if (menu[this.activeCatIdx].methods.length) {
-      if (this.activeMethodIdx >= 0) {
-        menu[this.activeCatIdx].methods[this.activeMethodIdx].active = false;
-      }
-   }
-
-    this.activeCatIdx = catIdx;
-    this.activeMethodIdx = methodIdx;
-    menu[catIdx].active = true;
-    let currentItem;
-    if (menu[catIdx].methods.length && (methodIdx > -1)) {
-      currentItem = menu[catIdx].methods[methodIdx];
-      currentItem.active = true;
+    let currentItem = this.flatItems[this.activeIdx];
+    currentItem.active = true;
+    if (currentItem.parent) {
+      currentItem.parent.active = true;
     }
 
-    this.changed.next({cat: menu[catIdx], item: currentItem});
-  }
-
-  _calcActiveIndexes(offset) {
-    let menu = this.categories;
-    let catCount = menu.length;
-    if (!catCount) return [0, -1];
-    let catLength = menu[this.activeCatIdx].methods.length;
-
-    let resMethodIdx = this.activeMethodIdx + offset;
-    let resCatIdx = this.activeCatIdx;
-
-    if (resMethodIdx > catLength - 1) {
-      resCatIdx++;
-      resMethodIdx = -1;
-    }
-    if (resMethodIdx < -1) {
-      let prevCatIdx = --resCatIdx;
-      catLength = menu[Math.max(prevCatIdx, 0)].methods.length;
-      resMethodIdx = catLength - 1;
-    }
-    if (resCatIdx > catCount - 1) {
-      resCatIdx = catCount - 1;
-      resMethodIdx = catLength - 1;
-    }
-    if (resCatIdx < 0) {
-      resCatIdx = 0;
-      resMethodIdx = 0;
-    }
-
-    return [resCatIdx, resMethodIdx];
+    this.changed.next(currentItem);
   }
 
   changeActive(offset = 1) {
-    let [catIdx, methodIdx] = this._calcActiveIndexes(offset);
-    this.activate(catIdx, methodIdx);
-    return (methodIdx === 0 && catIdx === 0);
+    let noChange = (this.activeIdx <= 0 && offset === -1) ||
+      (this.activeIdx === this.flatItems.length - 1 && offset === 1);
+    this.activate(this.activeIdx + offset);
+    return noChange;
   }
 
   scrollToActive() {
-    this.scrollService.scrollTo(this.getCurrentMethodEl());
+    this.scrollService.scrollTo(this.getCurrentEl());
   }
 
   setActiveByHash(hash) {
-    if (!hash) {
-      if (this.categories[0].headless) {
-        this.activate(0, 0);
-      }
-      return;
-    }
-    let catIdx, methodIdx;
+    if (!hash) return;
+    let idx = 0;
     hash = hash.substr(1);
     let namespace = hash.split('/')[0];
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'section' || namespace === 'tag') {
       let sectionId = ptr.split('/')[0];
-      catIdx = this.categories.findIndex(cat => cat.id === namespace + '/' + sectionId);
-      let cat = this.categories[catIdx];
       ptr = ptr.substr(sectionId.length) || null;
-      methodIdx = cat.methods.findIndex(method => method.pointer === ptr);
-    } else {
-      catIdx = this.categories.findIndex(cat => {
-        if (!cat.methods.length) return false;
-        methodIdx = cat.methods.findIndex(method => method.operationId === ptr || method.pointer === ptr);
-        if (methodIdx >= 0) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+      let searchId = ptr || (namespace + '/' + sectionId);
+      idx = this.flatItems.findIndex(item => item.id === searchId);
+    } else if (namespace === 'operation') {
+      idx = this.flatItems.findIndex(item => {
+        return item.metadata && item.metadata.operationId === ptr
+      })
     }
-    this.activate(catIdx, methodIdx);
+    this.activate(idx);
   }
 
   destroy() {
