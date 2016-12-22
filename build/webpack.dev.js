@@ -75,13 +75,13 @@ module.exports = {
       loader: StringReplacePlugin.replace({
         replacements: [
           {
-            pattern: /styleUrls:\s*\[\s*'([\w\.\/-]*)\.css'\s*\][\s,]*$/m,
+            pattern: /styleUrls:\s*\[\s*'([\w\.\/-]*)\.css'\s*\][\s,]*$/gm,
             replacement: function (match, p1, offset, string) {
               return `styleUrls: ['${p1}.scss'],`;
             }
           },
           {
-            pattern: /(\.\/components\/Redoc\/redoc-initial-styles\.css)/m,
+            pattern: /(\.\/components\/Redoc\/redoc-initial-styles\.css)/gm,
             replacement: function (match, p1, offset, string) {
               return p1.replace('.css', '.scss');
             }
