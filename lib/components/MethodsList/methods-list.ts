@@ -19,15 +19,23 @@ export class MethodsList extends BaseComponent implements OnInit {
   }
 
   init() {
-    let tags = SchemaHelper.buildMenuTree(this.specMgr.schema);
-    this.tags = tags.filter(tagInfo => !tagInfo.virtual);
-    this.tags.forEach(tagInfo => {
-      // inject tag name into method info
-      tagInfo.methods = tagInfo.methods || [];
-      tagInfo.methods.forEach(method => {
-        method.tag = tagInfo.id;
-      });
+    let flatMenuItems = SchemaHelper.flatMenu(SchemaHelper.buildMenuTree(this.specMgr.schema));
+    this.tags = [];
+    let emptyTag = {
+      name: '',
+      items: []
+    }
+    flatMenuItems.forEach(menuItem => {
+      if (!menuItem.metadata) return;
+
+      if (menuItem.metadata.type === 'tag') {
+        this.tags.push(menuItem);
+      }
+      if (menuItem.metadata.type === 'method' && !menuItem.parent) {
+        emptyTag.items.push(menuItem);
+      }
     });
+    if (emptyTag.items.length) this.tags.push(emptyTag);
   }
 
   trackByTagName(_, el) {
