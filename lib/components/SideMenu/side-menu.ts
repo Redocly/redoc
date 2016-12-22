@@ -1,36 +1,50 @@
 'use strict';
 
-import { Component, ElementRef, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ElementRef, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 
 //import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { ScrollService, MenuService, OptionsService } from '../../services/index';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
-import { MenuCategory } from '../../services/schema-helper.service';
+import { MenuItem } from '../../services/schema-helper.service';
 
 const global = window;
+
+@Component({
+  selector: 'side-menu-items',
+  templateUrl: './side-menu-items.html',
+  styleUrls: ['./side-menu-items.css']
+})
+export class SideMenuItems {
+  @Input() items: MenuItem[];
+  @Output() activate = new EventEmitter<MenuItem>();
+
+  activateItem(item) {
+    this.activate.next(item);
+  }
+}
 
 @Component({
   selector: 'side-menu',
   templateUrl: './side-menu.html',
   styleUrls: ['./side-menu.css'],
   animations: [
-    trigger('itemAnimation', [
-      state('collapsed, void',
-        style({ height: '0px' })),
-      state('expanded',
-        style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
-    ])
+    // trigger('itemAnimation', [
+    //   state('collapsed, void',
+    //     style({ height: '0px' })),
+    //   state('expanded',
+    //     style({ height: '*' })),
+    //   transition('collapsed <=> expanded', [
+    //     animate('200ms ease')
+    //   ])
+    // ])
   ],
 })
 export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   activeCatCaption: string;
   activeItemCaption: string;
-  categories: Array<MenuCategory>;
+  menuItems: Array<MenuItem>;
 
   private options: any;
   private $element: any;
@@ -54,11 +68,10 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
     this.menuService.changed.subscribe((evt) => this.changed(evt));
   }
 
-  changed(newItem) {
-    if (newItem) {
-      let {cat, item} = newItem;
-      this.activeCatCaption = cat.name || '';
-      this.activeItemCaption = item && item.summary || '';
+  changed(item) {
+    if (item) {
+      this.activeCatCaption = item.name || '';
+      this.activeItemCaption = item.parent && item.parent.name || '';
     }
 
     //safari doesn't update bindings if not run changeDetector manually :(
@@ -74,22 +87,19 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
     if ($item) $item.scrollIntoView();
   }
 
-  activateAndScroll(catIdx, methodIdx) {
+  activateAndScroll(item) {
     if (this.mobileMode()) {
       this.toggleMobileNav();
     }
-    let menu = this.categories;
 
-    if (!menu[catIdx].ready) return;
-    if (menu[catIdx].methods && menu[catIdx].methods.length && (methodIdx >= 0) &&
-    !menu[catIdx].methods[methodIdx].ready) return;
+    //if (!this.flatItems[idx].ready) return; // TODO: move inside next statement
 
-    this.menuService.activate(catIdx, methodIdx);
+    this.menuService.activate(item.flatIdx);
     this.menuService.scrollToActive();
   }
 
   init() {
-    this.categories = this.menuService.categories;
+    this.menuItems = this.menuService.items;
 
     this.$mobileNav = DOM.querySelector(this.$element, '.mobile-nav');
     this.$resourcesNav = DOM.querySelector(this.$element, '#resources-nav');
