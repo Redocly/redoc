@@ -18,17 +18,22 @@ export interface MenuMethod {
   ready: boolean;
 }
 
-export interface MenuCategory {
-  name: string;
+export interface MenuItem {
   id: string;
 
-  active?: boolean;
-  methods?: Array<MenuMethod>;
+  name: string;
   description?: string;
-  empty?: string;
-  virtual?: boolean;
-  ready: boolean;
-  headless: boolean;
+
+  items?: Array<MenuItem>;
+  parent?: MenuItem;
+
+  active?: boolean;
+  ready?: boolean;
+
+  level?: number;
+  flatIdx?: number;
+
+  metadata?: any;
 }
 
 // global var for this module
@@ -300,30 +305,11 @@ export class SchemaHelper {
     }
   }
 
-  static buildMenuTree(schema):Array<MenuCategory> {
-    var catIdx = 0;
-    let tag2MethodMapping = {};
-
-    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
-      let id = 'section/' + slugify(header);
-      tag2MethodMapping[id] = {
-        name: header, id: id, virtual: true, methods: [], idx: catIdx
-      };
-      catIdx++;
-    }
-
+  static getTags(schema) {
+    let tags = {};
     for (let tag of schema.tags || []) {
-      let id = 'tag/' + slugify(tag.name);
-      tag2MethodMapping[id] = {
-        name: tag['x-displayName'] || tag.name,
-        id: id,
-        description: tag.description,
-        headless: tag.name === '',
-        empty: !!tag['x-traitTag'],
-        methods: [],
-        idx: catIdx
-      };
-      catIdx++;
+      tags[tag.name] = tag;
+      tag.methods = [];
     }
 
     let paths = schema.paths;
@@ -331,39 +317,108 @@ export class SchemaHelper {
       let methods = Object.keys(paths[path]).filter((k) => swaggerMethods.has(k));
       for (let method of methods) {
         let methodInfo = paths[path][method];
-        let tags = methodInfo.tags;
+        let methodTags = methodInfo.tags;
 
-        if (!tags || !tags.length) {
-          tags = [''];
+        if (!(methodTags && methodTags.length)) {
+          methodTags = [''];
         }
-        let methodPointer = JsonPointer.compile(['paths', path, method]);
-        let methodSummary = SchemaHelper.methodSummary(methodInfo);
-        for (let tag of tags) {
-          let id = 'tag/' + slugify(tag);
-          let tagDetails = tag2MethodMapping[id];
-          if (!tagDetails) {
-            tagDetails = {
-              name: tag,
-              id: id,
-              headless: tag === '',
-              idx: catIdx
+        let methodPointer = JsonPointer.compile([path, method]);
+        for (let tagName of methodTags) {
+          let tag = tags[tagName];
+          if (!tag) {
+            tag = {
+              name: tagName,
             };
-            tag2MethodMapping[id] = tagDetails;
-            catIdx++;
+            tags[tagName] = tag;
           }
-          if (tagDetails.empty) continue;
-          if (!tagDetails.methods) tagDetails.methods = [];
-          tagDetails.methods.push({
-            pointer: methodPointer,
-            summary: methodSummary,
-            operationId: methodInfo.operationId,
-            tag: tag,
-            idx: tagDetails.methods.length,
-            catIdx: tagDetails.idx
-          });
+          if (tag['x-traitTag']) continue;
+          if (!tag.methods) tag.methods = [];
+          tag.methods.push(methodInfo);
+          methodInfo._pointer = methodPointer;
         }
       }
     }
-    return Object.keys(tag2MethodMapping).map(tag => tag2MethodMapping[tag]);
+
+    return Object.keys(tags).map(k => tags[k]);
+  }
+
+  static buildMenuTree(schema):MenuItem[] {
+    let tags = SchemaHelper.getTags(schema);
+
+    let menu = [];
+
+    // markdown menu items
+
+    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
+      let id = 'section/' + slugify(header);
+      let item = {
+        name: header,
+        id: id
+      }
+      menu.push(item);
+    }
+
+    // tag menu items
+    for (let tag of tags || []) {
+      let id = 'tag/' + slugify(tag.name);
+      let item:MenuItem;
+      let items:MenuItem[];
+
+      // don't put empty tag into menu, instead put all methods
+      if (tag.name !== '') {
+        item = {
+          name: tag['x-displayName'] || tag.name,
+          id: id,
+          description: tag.description,
+          metadata: { type: 'tag' }
+        };
+        if (tag.methods && tag.methods.length) {
+          item.items = items = [];
+        }
+      } else {
+        item = null;
+        items = menu;
+      }
+
+      if (items) {
+        for (let method of tag.methods) {
+          let subItem = {
+            name: SchemaHelper.methodSummary(method),
+            id: method._pointer,
+            description: method.description,
+            metadata: {
+              type: 'method',
+              pointer: '/paths' + method._pointer,
+              operationId: method.operationId
+            },
+            parent: item
+          }
+          items.push(subItem);
+        }
+      }
+
+      if (item) menu.push(item);
+    }
+    return menu;
+  }
+
+  static flatMenu(menu: MenuItem[]):MenuItem[] {
+    let res = [];
+    let level = 0;
+
+    let recursive = function(items) {
+      for (let item of items) {
+        res.push(item);
+        item.level = item.level || level;
+        item.flatIdx = res.length - 1;
+        if (item.items) {
+          level++;
+          recursive(item.items);
+          level--;
+        }
+      }
+    }
+    recursive(menu);
+    return res;
   }
 }
