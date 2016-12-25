@@ -92,7 +92,7 @@ export class LazyTasksService {
     // I know this is a bad practice to detect browsers but there is an issue in Safari only
     // http://stackoverflow.com/questions/40692365/maintaining-scroll-position-while-inserting-elements-above-glitching-only-in-sa
     if (isSafari && this.optionsService.options.$scrollParent === window) {
-      syncCount = this._tasks.findIndex(task => task.idx === idx);
+      syncCount = this._tasks.findIndex(task => task.flatIdx === idx);
       syncCount += 1;
     } else {
       this.sortTasks(idx);
