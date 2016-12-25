@@ -7,6 +7,7 @@ const VERSION = JSON.stringify(require('../package.json').version);
 module.exports = {
 
   devtool: 'inline-source-map',
+  performance: { hints: false },
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css'],
     alias: {
