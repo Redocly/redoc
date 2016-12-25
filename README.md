@@ -113,6 +113,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
 * [`x-nullable`](docs/redoc-vendor-extensions.md#nullable) - mark schema param as a nullable
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
+* [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) - group tags by categories in the side menu
 
 ### `<redoc>` tag attributes
 * `spec-url` - relative or absolute url to your spec file;

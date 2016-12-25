@@ -1,6 +1,57 @@
 # ReDoc vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions)
 
+### Swagger Object vendor extensions
+Extend OpenAPI root [Swagger Object](http://swagger.io/specification/#swaggerObject)
+#### x-tagGroups
+
+| Field Name     |	Type	       | Description |
+| :------------- | :-----------: | :---------- |
+| x-tagGroups         | [ [Tag Group Object](#tagGroupObject) ] | A list of tag groups |
+
+###### Usage in Redoc
+`x-tagGroups` is used to group tags in the side menu
+
+#### <a name="tagGroupObject"></a>Tag Group Object
+Information about tags group
+###### Fixed fields
+| Field Name  |	Type	     | Description |
+| :---------- | :--------: | :---------- |
+| name        | string     | The group name |
+| tags        | [ string ] | List of tags to include in this group
+
+###### x-tagGroups example
+json
+```json
+{
+  "x-tagGroups": [
+    {
+      "name": "User Management",
+      "tags": ["Users", "API keys", "Admin"]
+    },
+    {
+      "name": "Statistics",
+      "tags": ["Main Stats", "Secondary Stats"]
+    }
+  ]
+}
+```
+yaml
+```yaml
+x-tagGroups:
+  - name: User Management
+    tags:
+      - Users
+      - API keys
+      - Admin
+  - name: Statistics
+    tags:
+      - Main Stats
+      - Secondary Stats
+```
+
+#### <a name="logoObject"></a>Logo Object
+
 ### Info Object vendor extensions
 Extends OpenAPI [Info Object](http://swagger.io/specification/#infoObject)
 #### x-logo
