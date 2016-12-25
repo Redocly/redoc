@@ -17,7 +17,7 @@ import { OptionsService } from '../../../services/options.service';
 import { isSafari } from '../../../utils/helpers';
 
 export class LazyForRow {
-  constructor(public $implicit: any, public index: number, public show: boolean) {}
+  constructor(public $implicit: any, public index: number, public ready: boolean) {}
 
   get first(): boolean { return this.index === 0; }
 
@@ -145,7 +145,7 @@ export class LazyFor {
       requestAnimationFrame(() => {
         this.scroll.saveScroll();
 
-        view.context.show = true;
+        view.context.ready = true;
         (<any>view as ChangeDetectorRef).markForCheck();
         (<any>view as ChangeDetectorRef).detectChanges();
 

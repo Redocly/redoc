@@ -4,8 +4,8 @@
       <h1 class="sharable-header"> <a class="share-link" href="#{{tag.id}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
     </div>
-    <method *lazyFor="let method of tag.items; let show = show;" [hidden]="!show"
-    [pointer]="method.metadata.pointer" [attr.section]="method.id"
-    [attr.operation-id]="method.metadata.operationId"></method>
+    <method *lazyFor="let methodItem of tag.items; let ready = ready;"
+    [hidden]="!ready" [pointer]="methodItem.metadata.pointer"
+    [parentTagId]="tag.id" [attr.section]="methodItem.id"></method>
   </div>
 </div>

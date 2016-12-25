@@ -1,9 +1,23 @@
 'use strict';
-import { Input, Component, OnInit, ChangeDetectionStrategy, ElementRef } from '@angular/core';
+import { Input, HostBinding, Component, OnInit, ChangeDetectionStrategy, ElementRef } from '@angular/core';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 import { OptionsService } from '../../services/';
+
+
+interface MethodInfo {
+  apiUrl: string;
+  httpMethod: string;
+  path: string;
+  info: {
+    tags: string[];
+    description: string;
+  };
+  bodyParam: any;
+  summary: any;
+  anchor: any;
+}
 
 @Component({
   selector: 'method',
@@ -12,35 +26,47 @@ import { OptionsService } from '../../services/';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Method extends BaseComponent implements OnInit {
-  @Input() pointer:string;
-  @Input() tag:string;
-  @Input() posInfo: any;
+  @Input() pointer :string;
+  @Input() parentTagId :string;
 
-  hidden = true;
+  @HostBinding('attr.operation-id') operationId;
 
-  method:any;
+  private method: MethodInfo;
 
-  constructor(specMgr:SpecManager, private optionsService: OptionsService, private el: ElementRef) {
+  constructor(specMgr:SpecManager, private optionsService: OptionsService) {
     super(specMgr);
   }
 
   init() {
-    this.method = {};
-    if (this.optionsService.options.hideHostname) {
-      this.method.apiUrl = this.specMgr.basePath;
+    this.operationId = this.componentSchema.operationId;
+
+    this.method = {
+      httpMethod: JsonPointer.baseName(this.pointer),
+      path: JsonPointer.baseName(this.pointer, 2),
+      info: {
+        description: this.componentSchema.description,
+        tags: this.filterMainTags(this.componentSchema.tags)
+      },
+      bodyParam: this.findBodyParam(),
+      summary: SchemaHelper.methodSummary(this.componentSchema),
+      apiUrl: this.getBaseUrl(),
+      anchor: this.buildAnchor()
+    };
+  }
+
+  buildAnchor() {
+    if (this.operationId) {
+      return 'operation/' + encodeURIComponent(this.componentSchema.operationId);
     } else {
-      this.method.apiUrl = this.specMgr.apiUrl;
+      return this.parentTagId + encodeURIComponent(this.pointer);
     }
-    this.method.httpMethod = JsonPointer.baseName(this.pointer);
-    this.method.path = JsonPointer.baseName(this.pointer, 2);
-    this.method.info = this.componentSchema;
-    this.method.info.tags = this.filterMainTags(this.method.info.tags);
-    this.method.bodyParam = this.findBodyParam();
-    this.method.summary = SchemaHelper.methodSummary(this.componentSchema);
-    if (this.componentSchema.operationId) {
-      this.method.anchor = 'operation/' + encodeURIComponent(this.componentSchema.operationId);
+  }
+
+  getBaseUrl():string {
+    if (this.optionsService.options.hideHostname) {
+      return this.specMgr.basePath;
     } else {
-      this.method.anchor = this.tag + encodeURIComponent(this.pointer);
+      return this.specMgr.apiUrl;
     }
   }
 
@@ -54,14 +80,6 @@ export class Method extends BaseComponent implements OnInit {
     let pathParams = this.specMgr.getMethodParams(this.pointer, true);
     let bodyParam = pathParams.find(param => param.in === 'body');
     return bodyParam;
-  }
-
-  show(res) {
-    if (res) {
-      this.el.nativeElement.firstElementChild.removeAttribute('hidden');
-    } else {
-      this.el.nativeElement.firstElementChild.setAttribute('hidden', 'hidden');
-    }
   }
 
   ngOnInit() {

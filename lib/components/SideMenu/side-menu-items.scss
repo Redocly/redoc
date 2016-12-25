@@ -53,7 +53,7 @@
   }
 }
 
-.menu-item-level-0 {
+.menu-item-level-1 {
   > .menu-item-header {
     font-family: $headers-font, $headers-font-family;
     font-weight: $light;
@@ -61,7 +61,7 @@
     text-transform: uppercase;
   }
 
-  > .menu-item-header:hover,
+  > .menu-item-header:not(.disabled):hover,
   &.active > .menu-item-header {
     color: $primary-color;
     background: $side-menu-active-bg-color;
@@ -71,7 +71,7 @@
   }
 }
 
-.menu-item-level-1 {
+.menu-item-level-2 {
   > .menu-item-header {
     padding-left: 2*$side-menu-item-hpadding;
   }

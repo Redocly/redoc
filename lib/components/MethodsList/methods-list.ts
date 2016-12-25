@@ -1,7 +1,7 @@
 'use strict';
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { SchemaHelper } from '../../services/index';
+import { MenuService } from '../../services/index';
 
 @Component({
   selector: 'methods-list',
@@ -14,18 +14,19 @@ export class MethodsList extends BaseComponent implements OnInit {
 
   tags:Array<any> = [];
 
-  constructor(specMgr:SpecManager) {
+  constructor(specMgr:SpecManager, private menu: MenuService) {
     super(specMgr);
   }
 
   init() {
-    let flatMenuItems = SchemaHelper.flatMenu(SchemaHelper.buildMenuTree(this.specMgr.schema));
+    let flatMenuItems = this.menu.flatItems;
     this.tags = [];
     let emptyTag = {
       name: '',
       items: []
     }
     flatMenuItems.forEach(menuItem => {
+      // skip items that are not bound to swagger tags/methods
       if (!menuItem.metadata) return;
 
       if (menuItem.metadata.type === 'tag') {

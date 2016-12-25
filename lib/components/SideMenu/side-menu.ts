@@ -69,9 +69,17 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   }
 
   changed(item) {
-    if (item) {
-      this.activeCatCaption = item.name || '';
-      this.activeItemCaption = item.parent && item.parent.name || '';
+    if (!item) {
+      this.activeCatCaption = '';
+      this.activeItemCaption = '';
+      return;
+    }
+    if (item.parent) {
+      this.activeItemCaption = item.name;
+      this.activeCatCaption =  item.parent.name;
+    } else {
+      this.activeCatCaption = item.name;
+      this.activeItemCaption = '';
     }
 
     //safari doesn't update bindings if not run changeDetector manually :(
@@ -88,11 +96,9 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   }
 
   activateAndScroll(item) {
-    if (this.mobileMode()) {
+    if (this.mobileMode) {
       this.toggleMobileNav();
     }
-
-    //if (!this.flatItems[idx].ready) return; // TODO: move inside next statement
 
     this.menuService.activate(item.flatIdx);
     this.menuService.scrollToActive();
@@ -111,7 +117,7 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
     };
   }
 
-  mobileMode() {
+  get mobileMode() {
     return this.$mobileNav.clientHeight > 0;
   }
 
