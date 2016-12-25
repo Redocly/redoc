@@ -5,9 +5,8 @@ import { Component, EventEmitter, Input, Output, ElementRef, ChangeDetectorRef, 
 //import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { ScrollService, MenuService, OptionsService } from '../../services/index';
+import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
-import { MenuItem } from '../../services/schema-helper.service';
 
 const global = window;
 

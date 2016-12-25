@@ -9,24 +9,6 @@ interface PropertyPreprocessOptions {
   skipReadOnly?: boolean;
 }
 
-export interface MenuItem {
-  id: string;
-
-  name: string;
-  description?: string;
-
-  items?: Array<MenuItem>;
-  parent?: MenuItem;
-
-  active?: boolean;
-  ready?: boolean;
-
-  level?: number;
-  flatIdx?: number;
-
-  metadata?: any;
-}
-
 // global var for this module
 var specMgrInstance;
 
@@ -331,6 +313,6 @@ export class SchemaHelper {
       }
     }
 
-    return Object.keys(tags).map(k => tags[k]);
+    return tags;
   }
 }

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/spec-manager';
-import { SchemaHelper, MenuItem } from './schema-helper.service';
+import { SchemaHelper } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
 import { JsonPointer } from '../utils/JsonPointer';
@@ -17,6 +17,30 @@ const CHANGE = {
   BACK : -1,
 };
 
+interface TagGroup {
+  name: string;
+  tags: string[];
+}
+
+export interface MenuItem {
+  id: string;
+
+  name: string;
+  description?: string;
+
+  items?: Array<MenuItem>;
+  parent?: MenuItem;
+
+  active?: boolean;
+  ready?: boolean;
+
+  level?: number;
+  flatIdx?: number;
+
+  metadata?: any;
+  isGroup?: boolean;
+}
+
 @Injectable()
 export class MenuService {
   changed: EventEmitter<any> = new EventEmitter();
@@ -27,6 +51,7 @@ export class MenuService {
   private _flatItems: MenuItem[];
   private _hashSubscription: Subscription;
   private _scrollSubscription: Subscription;
+  private _tagsWithMethods: any;
 
   constructor(
     private hash:Hash,
@@ -111,9 +136,14 @@ export class MenuService {
   getEl(flatIdx:number):Element {
     if (flatIdx < 0) return null;
     let currentItem = this.flatItems[flatIdx];
+
+    if (currentItem.isGroup) currentItem = this.flatItems[flatIdx + 1];
+
     let selector = '';
     while(currentItem) {
-      selector = `[section="${currentItem.id}"] ` + selector
+      if (currentItem.id) {
+        selector = `[section="${currentItem.id}"] ` + selector
+      }
       currentItem = currentItem.parent;
     }
     selector = selector.trim();
@@ -129,8 +159,9 @@ export class MenuService {
 
     let item = this.flatItems[idx];
     item.active = false;
-    if (item.parent) {
+    while (item.parent) {
       item.parent.active = false;
+      item = item.parent;
     }
   }
 
@@ -143,10 +174,12 @@ export class MenuService {
     if (idx < 0) return;
 
     item.active = true;
-    if (item.parent) {
-      item.parent.active = true;
-    }
 
+    let cItem = item;
+    while (cItem.parent) {
+      cItem.parent.active = true;
+      cItem = cItem.parent;
+    }
     this.changed.next(item);
   }
 
@@ -207,73 +240,108 @@ export class MenuService {
     }
   }
 
-  addTagsAndOperationItems() {
-    let schema = this.specMgr.schema;
-    let menu = this.items;
+  getMethodsItems(parent: MenuItem, tag:any):MenuItem[] {
+    if (!tag.methods || !tag.methods.length) return null;
 
-    let tags = SchemaHelper.getTagsWithMethods(schema);
+    let res = [];
+    for (let method of tag.methods) {
+      let subItem = {
+        name: SchemaHelper.methodSummary(method),
+        id: method._pointer,
+        description: method.description,
+        metadata: {
+          type: 'method',
+          pointer: method._pointer,
+          operationId: method.operationId
+        },
+        parent: parent
+      }
+      res.push(subItem);
+    }
+    return res;
+  }
+
+  getTagsItems(parent: MenuItem, tagsGroup:string[] = null):MenuItem[] {
+    let schema = this.specMgr.schema;
+
+    if (!tagsGroup) {
+      // all tags
+      tagsGroup = Object.keys(this._tagsWithMethods);
+    }
+
+    let tags = tagsGroup.map(k => this._tagsWithMethods[k]);
+
+    let res = [];
     for (let tag of tags || []) {
       let id = 'tag/' + slugify(tag.name);
       let item: MenuItem;
-      let items: MenuItem[];
 
       // don't put empty tag into menu, instead put their methods
-      if (tag.name !== '') {
-        item = {
-          name: tag['x-displayName'] || tag.name,
-          id: id,
-          description: tag.description,
-          metadata: { type: 'tag' }
-        };
-        if (tag.methods && tag.methods.length) {
-          item.items = items = [];
-        }
-      } else {
-        item = null;
-        items = menu;
+      if (tag.name === '') {
+        let items = this.getMethodsItems(null, tag);
+        res.push(...items);
+        continue;
       }
 
-      if (items) {
-        for (let method of tag.methods) {
-          let subItem = {
-            name: SchemaHelper.methodSummary(method),
-            id: method._pointer,
-            description: method.description,
-            metadata: {
-              type: 'method',
-              pointer: method._pointer,
-              operationId: method.operationId
-            },
-            parent: item
-          }
-          items.push(subItem);
-        }
-      }
+      item = {
+        name: tag['x-displayName'] || tag.name,
+        id: id,
+        description: tag.description,
+        metadata: { type: 'tag' },
+        parent: parent,
+        items: null
+      };
+      item.items = this.getMethodsItems(item, tag);
 
-      if (item) menu.push(item);
+      res.push(item);
     }
+    return res;
+  }
+
+  getTagGroupsItems(parent: MenuItem, groups: TagGroup[]):MenuItem[] {
+    let res = [];
+    for (let group of groups) {
+      let item;
+      item = {
+        name: group.name,
+        id: null,
+        description: '',
+        parent: parent,
+        isGroup: true,
+        items: null
+      };
+      item.items = this.getTagsItems(item, group.tags);
+      res.push(item);
+    }
+    return res;
   }
 
   buildMenu() {
+    this._tagsWithMethods = SchemaHelper.getTagsWithMethods(this.specMgr.schema);
+
     this.items = this.items || [];
     this.addMarkdownItems();
-    this.addTagsAndOperationItems();
+    if (this.specMgr.schema['x-tagGroups']) {
+      this.items.push(...this.getTagGroupsItems(null, this.specMgr.schema['x-tagGroups']));
+    } else {
+      this.items.push(...this.getTagsItems(null));
+    }
   }
 
   flatMenu():MenuItem[] {
     let menu = this.items;
     let res = [];
-    let level = 1;
+    let curDepth = 1;
 
-    let recursive = function(items) {
+    let recursive = (items) => {
       for (let item of items) {
         res.push(item);
-        item.level = item.level || level;
+        item.depth = item.isGroup ? 0 : curDepth;
         item.flatIdx = res.length - 1;
         if (item.items) {
-          level++;
+          if (!item.isGroup) curDepth++;
           recursive(item.items);
-          level--;
+          if (!item.isGroup) curDepth--;
         }
       }
     }

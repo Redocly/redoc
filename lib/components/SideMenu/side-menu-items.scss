@@ -2,7 +2,7 @@
 
 .menu-item-header {
   cursor: pointer;
-  color: rgba($text-color, .6);
+  color: rgba($text-color, .9);
   -webkit-transition: all .15s ease-in-out;
   -moz-transition: all .15s ease-in-out;
   -ms-transition: all .15s ease-in-out;
@@ -35,7 +35,7 @@
 
 .menu-item:hover,
 .menu-item.active {
-  background: darken($side-menu-active-bg-color, 6%);
+  //background: darken($side-menu-active-bg-color, 6%);
 }
 
 .menu-subitems {
@@ -53,7 +53,7 @@
   }
 }
 
-.menu-item-level-1 {
+.menu-item-depth-1 {
   > .menu-item-header {
     font-family: $headers-font, $headers-font-family;
     font-weight: $light;
@@ -67,11 +67,11 @@
     background: $side-menu-active-bg-color;
   }
   &.active {
-    background: $side-menu-active-bg-color;
+    //background: $side-menu-active-bg-color;
   }
 }
 
-.menu-item-level-2 {
+.menu-item-depth-2 {
   > .menu-item-header {
     padding-left: 2*$side-menu-item-hpadding;
   }
@@ -79,5 +79,27 @@
   > .menu-item-header:hover,
   &.active > .menu-item-header {
     background: darken($side-menu-active-bg-color, 6%);
+  }
+}
+
+// group items
+.menu-item-depth-0 {
+  margin-top: 15px;
+
+  > .menu-subitems {
+    height: auto;
+  }
+
+  > .menu-item-header {
+    font-family: $headers-font, $headers-font-family;
+    color: rgba($text-color, .4);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    padding-bottom: 0;
+    cursor: default;
+  }
+  &:hover,
+  &.active {
+    //background: none;
   }
 }
