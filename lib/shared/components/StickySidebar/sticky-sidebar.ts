@@ -84,7 +84,6 @@ export class StickySidebar implements OnInit, OnDestroy {
     this.$redocEl = this.$element.offsetParent.parentNode || DOM.defaultDoc().body;
     this.bind();
     requestAnimationFrame(() => this.updatePosition());
-    //this.updatePosition()
   }
 
   ngOnDestroy() {

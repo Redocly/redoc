@@ -1,7 +1,7 @@
 'use strict';
 
-import {By} from '@angular/platform-browser';
-import {getDOM} from '@angular/platform-browser/src/dom/dom_adapter';
+import { By } from '@angular/platform-browser';
+import { getDOM } from '@angular/platform-browser/src/dom/dom_adapter';
 
 /** Gets a child DebugElement by tag name. */
 export function getChildDebugElement(parent, tagName) {

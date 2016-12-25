@@ -24,7 +24,7 @@ export class MethodsList extends BaseComponent implements OnInit {
     let emptyTag = {
       name: '',
       items: []
-    }
+    };
     flatMenuItems.forEach(menuItem => {
       // skip items that are not bound to swagger tags/methods
       if (!menuItem.metadata) return;

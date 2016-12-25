@@ -31,7 +31,7 @@ export class Method extends BaseComponent implements OnInit {
 
   @HostBinding('attr.operation-id') operationId;
 
-  private method: MethodInfo;
+  method: MethodInfo;
 
   constructor(specMgr:SpecManager, private optionsService: OptionsService) {
     super(specMgr);

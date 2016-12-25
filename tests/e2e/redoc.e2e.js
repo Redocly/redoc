@@ -56,16 +56,16 @@ describe('Scroll sync', () => {
 
   it('should update active menu entries on page scroll forwards', () => {
     scrollToEl('[section="tag/store"]').then(() => {
-      expect($('.menu-cat-header.active').getInnerHtml()).toContain('store');
+      expect($('.menu-item.active > .menu-item-header').getInnerHtml()).toContain('store');
       expect($('.selected-tag').getInnerHtml()).toContain('store');
     });
   });
 
   it('should update active menu entries on page scroll backwards', () => {
     scrollToEl('[operation-id="getPetById"]').then(() => {
-      expect($('.menu-cat-header.active').getInnerHtml()).toContain('pet');
+      expect($('.menu-item.menu-item-depth-1.active .menu-item-header').getInnerHtml()).toContain('pet');
       expect($('.selected-tag').getInnerHtml()).toContain('pet');
-      expect($('.menu-cat li.active').getInnerHtml()).toContain('Find pet by ID');
+      expect($('.menu-item.menu-item-depth-2.active .menu-item-header').getInnerHtml()).toContain('Find pet by ID');
       expect($('.selected-endpoint').getInnerHtml()).toContain('Find pet by ID');
     });
   });
@@ -85,7 +85,7 @@ describe('Language tabs sync', () => {
     // check if correct item
     expect($item.getText()).toContain('PHP');
     var EC = protractor.ExpectedConditions;
-    browser.wait(EC.elementToBeClickable($item), 2000);
+    browser.wait(EC.elementToBeClickable($item), 5000);
     $item.click().then(() => {
       expect($('[operation-id="updatePet"] li.active').getText()).toContain('PHP');
     });
