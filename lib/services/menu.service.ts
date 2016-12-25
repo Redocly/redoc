@@ -142,7 +142,7 @@ export class MenuService {
     let selector = '';
     while(currentItem) {
       if (currentItem.id) {
-        selector = `[section="${currentItem.id}"] ` + selector
+        selector = `[section="${currentItem.id}"] ` + selector;
       }
       currentItem = currentItem.parent;
     }
@@ -216,8 +216,8 @@ export class MenuService {
       if (idx < 0) this.tryScrollToId(searchId);
     } else if (namespace === 'operation') {
       idx = this.flatItems.findIndex(item => {
-        return item.metadata && item.metadata.operationId === ptr
-      })
+        return item.metadata && item.metadata.operationId === ptr;
+      });
     }
     this.activate(idx, true);
     return idx >= 0;
@@ -235,7 +235,7 @@ export class MenuService {
       let item = {
         name: header,
         id: id
-      }
+      };
       this.items.push(item);
     }
   }
@@ -255,7 +255,7 @@ export class MenuService {
           operationId: method.operationId
         },
         parent: parent
-      }
+      };
       res.push(subItem);
     }
     return res;
@@ -344,7 +344,7 @@ export class MenuService {
           if (!item.isGroup) curDepth--;
         }
       }
-    }
+    };
     recursive(menu);
     return res;
   }
