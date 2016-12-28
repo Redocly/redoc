@@ -51,11 +51,11 @@ export class SchemaSample extends BaseComponent implements OnInit {
 
       let discriminator = this.componentSchema.discriminator || this.componentSchema['x-discriminatorBasePointer'];
       if (discriminator) {
-        let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer);
+        let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer, this.componentSchema);
         if (descendants.length) {
           // TODO: sync up with dropdown
           selectedDescendant = descendants[0];
-          let descSchema = this.specMgr.byPointer(selectedDescendant.$ref);
+          let descSchema = this.specMgr.getDescendant(selectedDescendant, this.componentSchema);
           this.componentSchema  = this._normalizer.normalize(Object.assign({}, descSchema), selectedDescendant.$ref,
             {omitParent: false});
         }

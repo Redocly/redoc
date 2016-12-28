@@ -7,6 +7,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { MdRenderer } from './md-renderer';
 
+function getDiscriminator(obj) {
+  return obj.discriminator || obj['x-extendedDiscriminator'];
+}
+
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
@@ -158,8 +162,8 @@ export class SpecManager {
     return tagsMap;
   }
 
-  findDerivedDefinitions(defPointer) {
-    let definition = this.byPointer(defPointer);
+  findDerivedDefinitions(defPointer, schema) {
+    let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
 
@@ -172,7 +176,20 @@ export class SpecManager {
         !def['x-derived-from']) continue;
       let subTypes = def['x-derived-from'] ||
         def.allOf.map(subType => subType._pointer || subType.$ref);
-      let idx = subTypes.findIndex(ref => ref === defPointer);
+
+      let pointers;
+      if (definition['x-derived-from']) {
+        pointers = [defPointer, ...definition['x-derived-from']];
+      } else {
+        pointers = [defPointer];
+      }
+      let idx = -1;
+
+      for (let ptr of pointers) {
+        idx = subTypes.findIndex(ref => ptr && ref === ptr);
+        if (idx >= 0) break;
+      }
+
       if (idx < 0) continue;
 
       let derivedName = defName;
@@ -184,6 +201,21 @@ export class SpecManager {
       }
 
       res.push({name: derivedName, $ref: `#/definitions/${defName}`});
+    }
+    return res;
+  }
+
+  getDescendant(descendant, componentSchema) {
+    let res;
+    if (!getDiscriminator(componentSchema) && componentSchema.allOf) {
+      // discriminator inherited from parents
+      // only one discriminator and only one level of inheritence is supported at the moment
+      res = Object.assign({}, componentSchema);
+      let idx = res.allOf.findIndex(subSpec => !!getDiscriminator(subSpec));
+      res.allOf[idx] = this.byPointer(descendant.$ref);
+    } else {
+      // this.pointer = activeDescendant.$ref;
+      res = this.byPointer(descendant.$ref);
     }
     return res;
   }
