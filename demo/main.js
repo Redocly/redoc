@@ -7,7 +7,8 @@
   var url = window.location.search.match(/url=([^&]+)/);
   if (url && url.length > 1) {
     url = decodeURIComponent(url[1]);
-    document.getElementsByTagName('redoc')[0].setAttribute('spec-url', '\\\\cors.apis.guru/' + url);
+    url = window.__REDOC_DEV__ ? url : '\\\\cors.apis.guru/' + url;
+    document.getElementsByTagName('redoc')[0].setAttribute('spec-url',  url);
   }
 
   function updateQueryStringParameter(uri, key, value) {

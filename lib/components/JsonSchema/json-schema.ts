@@ -45,8 +45,8 @@ export class JsonSchema extends BaseComponent implements OnInit {
     });
     activeDescendant.active = true;
 
-    this.pointer = activeDescendant.$ref;
-    this.schema = this.specMgr.byPointer(this.pointer);
+    this.schema = this.specMgr.getDescendant(activeDescendant, this.componentSchema);
+    this.pointer = this.schema._pointer || activeDescendant.$ref;
     this.normalizer.reset();
     this.schema = this.normalizer.normalize(this.schema, this.normPointer,
       {resolved: true});
@@ -54,19 +54,22 @@ export class JsonSchema extends BaseComponent implements OnInit {
   }
 
   initDescendants() {
-    this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer);
+    this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer, this.schema);
     if (!this.descendants.length) return;
     this.hasDescendants = true;
     let discriminator = this.schema.discriminator || this.schema['x-extendedDiscriminator'];
-    let discrProperty = this.schema._properties &&
-      this.schema._properties.filter((prop) => prop.name === discriminator)[0];
+    let discrProperty = this.schema.properties &&
+      this.schema.properties[discriminator];
     if (discrProperty && discrProperty.enum) {
       let enumOrder = {};
       discrProperty.enum.forEach((enumItem, idx) => {
-        enumOrder[enumItem.val] = idx;
+        enumOrder[enumItem] = idx;
       });
 
-      this.schema._descendants.sort((a, b) => {
+      this.descendants = this.descendants
+      .filter(a => {
+        return enumOrder[a.name] != undefined;
+      }).sort((a, b) => {
         return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
     }
