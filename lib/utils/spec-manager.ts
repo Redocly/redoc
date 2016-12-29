@@ -72,6 +72,7 @@ export class SpecManager {
     }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
     this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
+    this._schema.info['x-redoc-markdown-subheaders'] = mdRender.secondLevelHeadings;
   }
 
   get schema() {
