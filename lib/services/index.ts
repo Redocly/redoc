@@ -11,3 +11,4 @@ export * from './warnings.service';
 
 export * from './component-parser.service';
 export * from './content-projector.service';
+export * from './marker.service';

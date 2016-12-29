@@ -44,6 +44,7 @@ export interface MenuItem {
 @Injectable()
 export class MenuService {
   changed: EventEmitter<any> = new EventEmitter();
+  changedActiveItem: EventEmitter<any> = new EventEmitter();
 
   items: MenuItem[];
   activeIdx: number = -1;
@@ -135,6 +136,7 @@ export class MenuService {
 
   getEl(flatIdx:number):Element {
     if (flatIdx < 0) return null;
+    if (flatIdx > this.flatItems.length - 1) return null;
     let currentItem = this.flatItems[flatIdx];
     if (!currentItem) return;
     if (currentItem.isGroup) currentItem = this.flatItems[flatIdx + 1];
@@ -154,6 +156,18 @@ export class MenuService {
     }
     selector = selector.trim();
     return selector ? document.querySelector(selector) : null;
+  }
+
+  isTagItem(flatIdx: number):boolean {
+    let item = this.flatItems[flatIdx];
+    return item && item.metadata && item.metadata.type === 'tag';
+  }
+
+  getTagInfoEl(flatIdx: number):Element {
+    if (!this.isTagItem(flatIdx)) return null;
+
+    let el = this.getEl(flatIdx);
+    return el && el.querySelector('.tag-info');
   }
 
   getCurrentEl():Element {
@@ -186,7 +200,7 @@ export class MenuService {
       cItem.parent.active = true;
       cItem = cItem.parent;
     }
-    this.changed.next(item);
+    this.changedActiveItem.next(item);
   }
 
   changeActive(offset = 1):boolean {
