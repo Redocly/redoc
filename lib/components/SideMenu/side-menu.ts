@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output, ElementRef, ChangeDetectorRef, 
 //import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
+import { ScrollService, MenuService, OptionsService, MenuItem, Marker} from '../../services/';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 
 const global = window;
@@ -55,7 +55,7 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
 
   constructor(specMgr:SpecManager, elementRef:ElementRef,
   private scrollService:ScrollService, private menuService:MenuService,
-  optionsService:OptionsService, private detectorRef:ChangeDetectorRef) {
+  optionsService:OptionsService, private detectorRef:ChangeDetectorRef, private marker:Marker) {
     super(specMgr);
     this.$element = elementRef.nativeElement;
 
@@ -64,7 +64,8 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
 
     this.options = optionsService.options;
 
-    this.menuService.changed.subscribe((evt) => this.changed(evt));
+    this.menuService.changedActiveItem.subscribe((evt) => this.changed(evt));
+    this.menuService.changed.subscribe((evt) => this.detectorRef.detectChanges());
   }
 
   changed(item) {
@@ -146,5 +147,8 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.preinit();
+  }
+
+  ngAfterViewInit() {
   }
 }

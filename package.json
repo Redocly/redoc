@@ -111,6 +111,7 @@
     "hint.css": "^2.3.2",
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^3.1.2",
+    "mark.js": "github:julmot/mark.js",
     "openapi-sampler": "^0.3.3",
     "prismjs": "^1.5.1",
     "remarkable": "^1.6.2",

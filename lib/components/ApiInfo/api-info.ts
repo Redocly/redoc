@@ -1,7 +1,7 @@
 'use strict';
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ElementRef } from '@angular/core';
 import { SpecManager, BaseComponent } from '../base';
-import { OptionsService } from '../../services/index';
+import { OptionsService, Marker } from '../../services/index';
 
 @Component({
   selector: 'api-info',
@@ -12,8 +12,13 @@ import { OptionsService } from '../../services/index';
 export class ApiInfo extends BaseComponent implements OnInit {
   info: any = {};
   specUrl: String;
-  constructor(specMgr: SpecManager, private optionsService: OptionsService) {
+  constructor(specMgr: SpecManager,
+    private optionsService: OptionsService,
+    elRef: ElementRef,
+    marker: Marker
+  ) {
     super(specMgr);
+    marker.addElement(elRef.nativeElement);
   }
 
   init() {

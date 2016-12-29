@@ -16,6 +16,7 @@ import {
   AppStateService,
   ComponentParser,
   ContentProjector,
+  Marker,
   COMPONENT_PARSER_ALLOWED } from './services/';
 import { SpecManager } from './utils/spec-manager';
 
@@ -35,6 +36,7 @@ import { SpecManager } from './utils/spec-manager';
     ComponentParser,
     ContentProjector,
     LazyTasksService,
+    Marker,
     { provide: APP_ID, useValue: 'redoc' },
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions} }
