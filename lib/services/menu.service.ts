@@ -143,6 +143,12 @@ export class MenuService {
     while(currentItem) {
       if (currentItem.id) {
         selector = `[section="${currentItem.id}"] ` + selector;
+        // We only need to go up the chain for methods that
+        // might have multiple tags. For headers/subheaders
+        // we need to siply early terminate.
+        if (!currentItem.metadata) {
+          break;
+        }
       }
       currentItem = currentItem.parent;
     }
@@ -234,10 +240,38 @@ export class MenuService {
       let id = 'section/' + slugify(header);
       let item = {
         name: header,
-        id: id
+        id: id,
+        items: null
       };
+      item.items = this.getMarkdownSubheaders(item);
+
       this.items.push(item);
     }
+  }
+
+  getMarkdownSubheaders(parent: MenuItem):MenuItem[] {
+    let res = [];
+
+    let schema = this.specMgr.schema;
+    for (let subheader of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-subheaders'] || []))) {
+      let parts = subheader.split('/');
+      let header = parts[0];
+      if (parent.name !== header) {
+        continue;
+      }
+
+      let name = parts[1];
+      let id = parent.id + '/' + slugify(name);
+
+      let subItem = {
+        name: name,
+        id: id,
+        parent: parent
+      };
+      res.push(subItem);
+    }
+
+    return res;
   }
 
   getMethodsItems(parent: MenuItem, tag:any):MenuItem[] {
