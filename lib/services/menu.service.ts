@@ -136,7 +136,7 @@ export class MenuService {
   getEl(flatIdx:number):Element {
     if (flatIdx < 0) return null;
     let currentItem = this.flatItems[flatIdx];
-
+    if (!currentItem) return;
     if (currentItem.isGroup) currentItem = this.flatItems[flatIdx + 1];
 
     let selector = '';
