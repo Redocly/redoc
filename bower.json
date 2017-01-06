@@ -26,6 +26,7 @@
     "**/.*",
     "node_modules",
     "tests",
+    "compiled",
     "lib",
     "demo",
     "build",

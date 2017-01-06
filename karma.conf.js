@@ -9,13 +9,13 @@ module.exports = function (config) {
     },
 
     coverageReporter: {
-      dir: 'coverage/',
-      reporters: [
-        {type: 'html'},
-        {type: 'lcov'},
-        {type: 'json'},
-        {type: 'text-summary'}
-      ]
+      type: 'in-memory'
+    },
+
+    remapCoverageReporter: {
+      'text-summary': null,
+      'text-lcov': './coverage/lcov.info',
+      'html': './coverage/html'
     },
     webpack: testWebpackConfig,
     webpackMiddleware: {
@@ -42,7 +42,7 @@ module.exports = function (config) {
     },
     colors: true,
     singleRun: true,
-    reporters: travis ? ['mocha', 'coverage', 'coveralls'] : ['mocha', 'coverage'],
+    reporters: travis ? ['mocha', 'coverage',  'remap-coverage', 'coveralls'] : ['mocha', 'coverage', 'remap-coverage'],
 
     browsers: ['PhantomJS'],
 

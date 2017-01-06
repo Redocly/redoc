@@ -61,15 +61,6 @@ beforeEach(function() {
   });
 });
 
-// afterEach(function() {
-//     TestBed.resetTestingModule();
-// });
-
-// afterEach(function() {
-//   TestBed.resetTestEnvironment();
-// })
-
-
 var testContext = require.context('..', true, /\.spec\.ts/);
 
 /*

@@ -33,6 +33,7 @@ lib/**/*.shim.ngstyle.ts
 /dist
 /demo/build
 .tmp
+compiled
 /coverage
 .ghpages-tmp
 stats.json
