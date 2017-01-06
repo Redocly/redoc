@@ -1,5 +1,5 @@
 <li *ngFor="let item of items; let idx = index" class="menu-item"
-  ngClass="menu-item-depth-{{item.depth}} {{item.active ? 'active' : ''}}">
+  ngClass="menu-item-depth-{{item.depth}} {{item.active ? 'active' : ''}} menu-item-for-{{item.metadata?.type}}">
   <label class="menu-item-header" [ngClass]="{disabled: !item.ready}" (click)="activateItem(item)"> {{item.name}}</label>
   <ul *ngIf="item.items" class="menu-subitems">
     <side-menu-items [items]="item.items" (activate)="activateItem($event)"> </side-menu-items>

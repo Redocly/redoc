@@ -61,6 +61,11 @@
     text-transform: uppercase;
   }
 
+  // do not capitalize method summuary in level-1 menu
+  &.menu-item-for-method > .menu-item-header {
+    text-transform: none;
+  }
+
   > .menu-item-header:not(.disabled):hover,
   &.active > .menu-item-header {
     color: $primary-color;
