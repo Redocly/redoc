@@ -8,10 +8,6 @@
 * Fix response list for shared schemas (fixes [#177](https://github.com/Rebilly/ReDoc/issues/177))
 * Fix right panel overlaps site-footer
 
-### Bug fixes
-* Fix crash on MS Edge (fixes [#166](https://github.com/Rebilly/ReDoc/issues/166))
-* Uncomment animation after upgrade to the latest ng2 (resolves [#162](https://github.com/Rebilly/ReDoc/issues/162))
-
 # 1.6.4 (2016-12-28)
 ### Bug fixes
 * Fix crash on MS Edge (fixes [#166](https://github.com/Rebilly/ReDoc/issues/166))
