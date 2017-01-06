@@ -54,6 +54,14 @@ tags:
     description: Access to Petstore orders
   - name: user
     description: Operations about user
+x-tagGroups:
+  - name: General
+    tags:
+      - pet
+      - store
+  - name: User Management
+    tags:
+      - user
 securityDefinitions:
   petstore_auth:
     description: |

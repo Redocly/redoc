@@ -5,97 +5,113 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/spec-manager';
-import { SchemaHelper, MenuCategory } from './schema-helper.service';
+import { SchemaHelper } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
+import { JsonPointer } from '../utils/JsonPointer';
+import * as slugify from 'slugify';
+
 
 const CHANGE = {
   NEXT : 1,
   BACK : -1,
-  INITIAL : 0
 };
+
+interface TagGroup {
+  name: string;
+  tags: string[];
+}
+
+export interface MenuItem {
+  id: string;
+
+  name: string;
+  description?: string;
+
+  items?: Array<MenuItem>;
+  parent?: MenuItem;
+
+  active?: boolean;
+  ready?: boolean;
+
+  level?: number;
+  flatIdx?: number;
+
+  metadata?: any;
+  isGroup?: boolean;
+}
 
 @Injectable()
 export class MenuService {
-
   changed: EventEmitter<any> = new EventEmitter();
-  ready: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  categories: Array<MenuCategory>;
 
-  activeCatIdx: number = 0;
-  activeMethodIdx: number = -1;
+  items: MenuItem[];
+  activeIdx: number = -1;
 
+  private _flatItems: MenuItem[];
   private _hashSubscription: Subscription;
+  private _scrollSubscription: Subscription;
+  private _tagsWithMethods: any;
 
   constructor(
     private hash:Hash,
     private tasks: LazyTasksService,
     private scrollService: ScrollService,
     private appState: AppStateService,
-    specMgr:SpecManager
+    private specMgr:SpecManager
   ) {
     this.hash = hash;
-    this.categories = SchemaHelper.buildMenuTree(specMgr.schema);
+    this.buildMenu();
 
-    scrollService.scroll.subscribe((evt) => {
-      this.scrollUpdate(evt.isScrolledDown);
+    this._scrollSubscription = scrollService.scroll.subscribe((evt) => {
+      this.onScroll(evt.isScrolledDown);
     });
 
-    //this.changeActive(CHANGE.INITIAL);
-
     this._hashSubscription =  this.hash.value.subscribe((hash) => {
-      if (hash == undefined) return;
-      this.setActiveByHash(hash);
-      if (!this.tasks.empty) {
-        this.tasks.start(this.activeCatIdx, this.activeMethodIdx, this);
-        this.scrollService.setStickElement(this.getCurrentMethodEl());
-        if (hash) this.scrollToActive();
-        this.appState.stopLoading();
-      } else {
-        if (hash) this.scrollToActive();
-      }
+      this.onHashChange(hash);
     });
   }
 
-  enableItem(catIdx, methodIdx, skipUpdate = false) {
-    let cat = this.categories[catIdx];
-    cat.ready = true;
-    if (cat.methods.length) cat.methods[methodIdx].ready = true;
-    let prevCat = this.categories[catIdx - 1];
-    if (prevCat && !prevCat.ready && (prevCat.virtual || !prevCat.methods.length)) {
-      this.enableItem(catIdx - 1, -1, true);
+  get flatItems():MenuItem[] {
+    if (!this._flatItems) {
+      this._flatItems = this.flatMenu();
+    }
+    return this._flatItems;
+  }
+
+  enableItem(idx) {
+    let item = this.flatItems[idx];
+    item.ready = true;
+    if (item.parent) {
+      item.parent.ready = true;
+      idx = item.parent.flatIdx;
     }
 
-    if (skipUpdate) return;
+    // check if previous items can be enabled
+    let prevItem = this.flatItems[idx -= 1];
+    while(prevItem && (!prevItem.metadata || !prevItem.items)) {
+      prevItem.ready = true;
+      prevItem = this.flatItems[idx -= 1];
+    }
+
     this.changed.next();
   }
 
-  get activeMethodPtr() {
-    let cat = this.categories[this.activeCatIdx];
-    let ptr = null;
-    if (cat && cat.methods.length) {
-      let mtd = cat.methods[this.activeMethodIdx];
-      ptr = mtd && mtd.pointer || null;
-    }
-    return ptr;
-  }
-
-  scrollUpdate(isScrolledDown) {
+  onScroll(isScrolledDown) {
     let stable = false;
     while(!stable) {
-      let $activeMethodHost = this.getCurrentMethodEl();
-      if (!$activeMethodHost) return;
-      var elementInViewPos = this.scrollService.getElementPos($activeMethodHost);
       if(isScrolledDown) {
-        //&& elementInViewPos === INVIEW_POSITION.BELLOW
-        let $nextEl = this.getRelativeCatOrItem(1);
+        let $nextEl = this.getEl(this.activeIdx + 1);
         if (!$nextEl) return;
         let nextInViewPos = this.scrollService.getElementPos($nextEl, true);
-        if (elementInViewPos === INVIEW_POSITION.BELLOW && nextInViewPos === INVIEW_POSITION.ABOVE) {
+        if (nextInViewPos === INVIEW_POSITION.ABOVE) {
           stable = this.changeActive(CHANGE.NEXT);
           continue;
         }
       }
+      let $currentEl = this.getCurrentEl();
+      if (!$currentEl) return;
+      var elementInViewPos = this.scrollService.getElementPos($currentEl);
       if(!isScrolledDown && elementInViewPos === INVIEW_POSITION.ABOVE ) {
         stable = this.changeActive(CHANGE.BACK);
         continue;
@@ -104,136 +120,291 @@ export class MenuService {
     }
   }
 
-  getRelativeCatOrItem(offset: number = 0) {
-    let ptr, cat;
-    cat = this.categories[this.activeCatIdx];
-    if (cat.methods.length === 0) {
-      ptr = null;
-      cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
+  onHashChange(hash?: string) {
+    if (hash == undefined) return;
+    let activated = this.activateByHash(hash);
+    if (!this.tasks.empty) {
+      this.tasks.start(this.activeIdx, this);
+      this.scrollService.setStickElement(this.getCurrentEl());
+      if (activated) this.scrollToActive();
+      this.appState.stopLoading();
     } else {
-      let cat = this.categories[this.activeCatIdx];
-      let idx = this.activeMethodIdx + offset;
-      if ((idx >= cat.methods.length - 1) || idx < 0) {
-        cat = this.categories[this.activeCatIdx + Math.sign(offset)] || cat;
-        idx = offset > 0 ? -1 : cat.methods.length - 1;
+      if (activated) this.scrollToActive();
+    }
+  }
+
+  getEl(flatIdx:number):Element {
+    if (flatIdx < 0) return null;
+    let currentItem = this.flatItems[flatIdx];
+    if (!currentItem) return;
+    if (currentItem.isGroup) currentItem = this.flatItems[flatIdx + 1];
+
+    let selector = '';
+    while(currentItem) {
+      if (currentItem.id) {
+        selector = `[section="${currentItem.id}"] ` + selector;
+        // We only need to go up the chain for methods that
+        // might have multiple tags. For headers/subheaders
+        // we need to siply early terminate.
+        if (!currentItem.metadata) {
+          break;
+        }
       }
-      ptr = cat.methods[idx] && cat.methods[idx].pointer;
+      currentItem = currentItem.parent;
     }
-
-    return this.getMethodElByPtr(ptr, cat.id);
+    selector = selector.trim();
+    return selector ? document.querySelector(selector) : null;
   }
 
-  getCurrentMethodEl() {
-    return this.getMethodElByPtr(this.activeMethodPtr,
-      this.categories[this.activeCatIdx].id);
+  getCurrentEl():Element {
+    return this.getEl(this.activeIdx);
   }
 
-  getMethodElByPtr(ptr, section) {
-    let selector = ptr ? `[pointer="${ptr}"][section="${section}"]` : `[section="${section}"]`;
-    return document.querySelector(selector);
+  deactivate(idx) {
+    if (idx < 0) return;
+
+    let item = this.flatItems[idx];
+    item.active = false;
+    while (item.parent) {
+      item.parent.active = false;
+      item = item.parent;
+    }
   }
 
-  getMethodElByOperId(operationId) {
-    let selector =`[operation-id="${operationId}"]`;
-    return document.querySelector(selector);
+  activate(idx, force = false) {
+    let item = this.flatItems[idx];
+    if (!force && item && !item.ready) return;
+
+    this.deactivate(this.activeIdx);
+    this.activeIdx = idx;
+    if (idx < 0) return;
+
+    item.active = true;
+
+    let cItem = item;
+    while (cItem.parent) {
+      cItem.parent.active = true;
+      cItem = cItem.parent;
+    }
+    this.changed.next(item);
   }
 
-  activate(catIdx, methodIdx) {
-    if (catIdx < 0) return;
-
-    let menu = this.categories;
-
-    menu[this.activeCatIdx].active = false;
-    if (menu[this.activeCatIdx].methods.length) {
-      if (this.activeMethodIdx >= 0) {
-        menu[this.activeCatIdx].methods[this.activeMethodIdx].active = false;
-      }
-   }
-
-    this.activeCatIdx = catIdx;
-    this.activeMethodIdx = methodIdx;
-    menu[catIdx].active = true;
-    let currentItem;
-    if (menu[catIdx].methods.length && (methodIdx > -1)) {
-      currentItem = menu[catIdx].methods[methodIdx];
-      currentItem.active = true;
-    }
-
-    this.changed.next({cat: menu[catIdx], item: currentItem});
-  }
-
-  _calcActiveIndexes(offset) {
-    let menu = this.categories;
-    let catCount = menu.length;
-    if (!catCount) return [0, -1];
-    let catLength = menu[this.activeCatIdx].methods.length;
-
-    let resMethodIdx = this.activeMethodIdx + offset;
-    let resCatIdx = this.activeCatIdx;
-
-    if (resMethodIdx > catLength - 1) {
-      resCatIdx++;
-      resMethodIdx = -1;
-    }
-    if (resMethodIdx < -1) {
-      let prevCatIdx = --resCatIdx;
-      catLength = menu[Math.max(prevCatIdx, 0)].methods.length;
-      resMethodIdx = catLength - 1;
-    }
-    if (resCatIdx > catCount - 1) {
-      resCatIdx = catCount - 1;
-      resMethodIdx = catLength - 1;
-    }
-    if (resCatIdx < 0) {
-      resCatIdx = 0;
-      resMethodIdx = 0;
-    }
-
-    return [resCatIdx, resMethodIdx];
-  }
-
-  changeActive(offset = 1) {
-    let [catIdx, methodIdx] = this._calcActiveIndexes(offset);
-    this.activate(catIdx, methodIdx);
-    return (methodIdx === 0 && catIdx === 0);
+  changeActive(offset = 1):boolean {
+    let noChange = (this.activeIdx <= 0 && offset === -1) ||
+      (this.activeIdx === this.flatItems.length - 1 && offset === 1);
+    this.activate(this.activeIdx + offset);
+    return noChange;
   }
 
   scrollToActive() {
-    this.scrollService.scrollTo(this.getCurrentMethodEl());
+    let $el = this.getCurrentEl();
+    if ($el) this.scrollService.scrollTo($el);
   }
 
-  setActiveByHash(hash) {
-    if (!hash) {
-      if (this.categories[0].headless) {
-        this.activate(0, 0);
-      }
-      return;
-    }
-    let catIdx, methodIdx;
+  activateByHash(hash):boolean {
+    if (!hash) return;
+    let idx = 0;
     hash = hash.substr(1);
     let namespace = hash.split('/')[0];
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'section' || namespace === 'tag') {
       let sectionId = ptr.split('/')[0];
-      catIdx = this.categories.findIndex(cat => cat.id === namespace + '/' + sectionId);
-      let cat = this.categories[catIdx];
       ptr = ptr.substr(sectionId.length) || null;
-      methodIdx = cat.methods.findIndex(method => method.pointer === ptr);
-    } else {
-      catIdx = this.categories.findIndex(cat => {
-        if (!cat.methods.length) return false;
-        methodIdx = cat.methods.findIndex(method => method.operationId === ptr || method.pointer === ptr);
-        if (methodIdx >= 0) {
-          return true;
-        } else {
-          return false;
-        }
+
+      let searchId;
+      if (namespace === 'section') {
+        searchId = hash;
+      } else {
+        searchId = ptr || (namespace + '/' + sectionId);;
+      }
+
+      idx = this.flatItems.findIndex(item => item.id === searchId);
+      if (idx < 0) this.tryScrollToId(searchId);
+    } else if (namespace === 'operation') {
+      idx = this.flatItems.findIndex(item => {
+        return item.metadata && item.metadata.operationId === ptr;
       });
     }
-    this.activate(catIdx, methodIdx);
+    this.activate(idx, true);
+    return idx >= 0;
+  }
+
+  tryScrollToId(id) {
+    let $el = document.querySelector(`[section="${id}"]`);
+    if ($el) this.scrollService.scrollTo($el);
+  }
+
+  addMarkdownItems() {
+    let schema = this.specMgr.schema;
+    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
+      let id = 'section/' + slugify(header);
+      let item = {
+        name: header,
+        id: id,
+        items: null
+      };
+      item.items = this.getMarkdownSubheaders(item);
+
+      this.items.push(item);
+    }
+  }
+
+  getMarkdownSubheaders(parent: MenuItem):MenuItem[] {
+    let res = [];
+
+    let schema = this.specMgr.schema;
+    for (let subheader of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-subheaders'] || []))) {
+      let parts = subheader.split('/');
+      let header = parts[0];
+      if (parent.name !== header) {
+        continue;
+      }
+
+      let name = parts[1];
+      let id = parent.id + '/' + slugify(name);
+
+      let subItem = {
+        name: name,
+        id: id,
+        parent: parent
+      };
+      res.push(subItem);
+    }
+
+    return res;
+  }
+
+  getMethodsItems(parent: MenuItem, tag:any):MenuItem[] {
+    if (!tag.methods || !tag.methods.length) return null;
+
+    let res = [];
+    for (let method of tag.methods) {
+      let subItem = {
+        name: SchemaHelper.methodSummary(method),
+        id: method._pointer,
+        description: method.description,
+        metadata: {
+          type: 'method',
+          pointer: method._pointer,
+          operationId: method.operationId
+        },
+        parent: parent
+      };
+      res.push(subItem);
+    }
+    return res;
+  }
+
+  getTagsItems(parent: MenuItem, tagGroup:TagGroup = null):MenuItem[] {
+    let schema = this.specMgr.schema;
+
+    let tags;
+    if (!tagGroup) {
+      // all tags
+      tags = Object.keys(this._tagsWithMethods);
+    } else {
+      tags = tagGroup.tags;
+    }
+
+    tags = tags.map(k => {
+      if (!this._tagsWithMethods[k]) {
+        console.warn(`Non-existing tag "${k}" is specified in tag group "${tagGroup.name}"`);
+        return null;
+      }
+      this._tagsWithMethods[k].used = true;
+      return this._tagsWithMethods[k];
+    });
+
+    let res = [];
+    for (let tag of tags || []) {
+      if (!tag) continue;
+      let id = 'tag/' + slugify(tag.name);
+      let item: MenuItem;
+
+      // don't put empty tag into menu, instead put their methods
+      if (tag.name === '') {
+        let items = this.getMethodsItems(null, tag);
+        res.push(...items);
+        continue;
+      }
+
+      item = {
+        name: tag['x-displayName'] || tag.name,
+        id: id,
+        description: tag.description,
+        metadata: { type: 'tag' },
+        parent: parent,
+        items: null
+      };
+      item.items = this.getMethodsItems(item, tag);
+
+      res.push(item);
+    }
+    return res;
+  }
+
+  getTagGroupsItems(parent: MenuItem, groups: TagGroup[]):MenuItem[] {
+    let res = [];
+    for (let group of groups) {
+      let item;
+      item = {
+        name: group.name,
+        id: null,
+        description: '',
+        parent: parent,
+        isGroup: true,
+        items: null
+      };
+      item.items = this.getTagsItems(item, group);
+      res.push(item);
+    }
+    this.checkAllTagsUsedInGroups();
+    return res;
+  }
+
+  checkAllTagsUsedInGroups() {
+    for (let tag of Object.keys(this._tagsWithMethods)) {
+      if (!this._tagsWithMethods[tag].used) {
+        console.warn(`Tag "${tag}" is not added to any group`);
+      }
+    }
+  }
+
+  buildMenu() {
+    this._tagsWithMethods = SchemaHelper.getTagsWithMethods(this.specMgr.schema);
+
+    this.items = this.items || [];
+    this.addMarkdownItems();
+    if (this.specMgr.schema['x-tagGroups']) {
+      this.items.push(...this.getTagGroupsItems(null, this.specMgr.schema['x-tagGroups']));
+    } else {
+      this.items.push(...this.getTagsItems(null));
+    }
+  }
+
+  flatMenu():MenuItem[] {
+    let menu = this.items;
+    let res = [];
+    let curDepth = 1;
+
+    let recursive = (items) => {
+      for (let item of items) {
+        res.push(item);
+        item.depth = item.isGroup ? 0 : curDepth;
+        item.flatIdx = res.length - 1;
+        if (item.items) {
+          if (!item.isGroup) curDepth++;
+          recursive(item.items);
+          if (!item.isGroup) curDepth--;
+        }
+      }
+    };
+    recursive(menu);
+    return res;
   }
 
   destroy() {
     this._hashSubscription.unsubscribe();
+    this._scrollSubscription.unsubscribe();
   }
 }

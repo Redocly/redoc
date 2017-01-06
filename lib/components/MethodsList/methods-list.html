@@ -1,10 +1,11 @@
 <div class="methods">
-  <div class="tag" *ngFor="let tag of tags;let catIdx = index; trackBy:trackByTagName">
-    <div class="tag-info" [attr.section]="tag.id" *ngIf="!tag.headless">
+  <div class="tag" *ngFor="let tag of tags; trackBy:trackByTagName" [attr.section]="tag.id">
+    <div class="tag-info" *ngIf="tag.name">
       <h1 class="sharable-header"> <a class="share-link" href="#{{tag.id}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
     </div>
-    <method *lazyFor="let method of tag.methods;let show = show;" [hidden]="!show" [pointer]="method.pointer" [attr.pointer]="method.pointer"
-    [attr.section]="method.tag" [tag]="method.tag" [attr.operation-id]="method.operationId"></method>
+    <method *lazyFor="let methodItem of tag.items; let ready = ready;"
+    [hidden]="!ready" [pointer]="methodItem.metadata.pointer"
+    [parentTagId]="tag.id" [attr.section]="methodItem.id"></method>
   </div>
 </div>

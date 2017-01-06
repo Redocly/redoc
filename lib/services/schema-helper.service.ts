@@ -9,28 +9,6 @@ interface PropertyPreprocessOptions {
   skipReadOnly?: boolean;
 }
 
-export interface MenuMethod {
-  active: boolean;
-  summary: string;
-  tag: string;
-  pointer: string;
-  operationId: string;
-  ready: boolean;
-}
-
-export interface MenuCategory {
-  name: string;
-  id: string;
-
-  active?: boolean;
-  methods?: Array<MenuMethod>;
-  description?: string;
-  empty?: string;
-  virtual?: boolean;
-  ready: boolean;
-  headless: boolean;
-}
-
 // global var for this module
 var specMgrInstance;
 
@@ -300,30 +278,11 @@ export class SchemaHelper {
     }
   }
 
-  static buildMenuTree(schema):Array<MenuCategory> {
-    var catIdx = 0;
-    let tag2MethodMapping = {};
-
-    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
-      let id = 'section/' + slugify(header);
-      tag2MethodMapping[id] = {
-        name: header, id: id, virtual: true, methods: [], idx: catIdx
-      };
-      catIdx++;
-    }
-
+  static getTagsWithMethods(schema) {
+    let tags = {};
     for (let tag of schema.tags || []) {
-      let id = 'tag/' + slugify(tag.name);
-      tag2MethodMapping[id] = {
-        name: tag['x-displayName'] || tag.name,
-        id: id,
-        description: tag.description,
-        headless: tag.name === '',
-        empty: !!tag['x-traitTag'],
-        methods: [],
-        idx: catIdx
-      };
-      catIdx++;
+      tags[tag.name] = tag;
+      tag.methods = [];
     }
 
     let paths = schema.paths;
@@ -331,39 +290,29 @@ export class SchemaHelper {
       let methods = Object.keys(paths[path]).filter((k) => swaggerMethods.has(k));
       for (let method of methods) {
         let methodInfo = paths[path][method];
-        let tags = methodInfo.tags;
+        let methodTags = methodInfo.tags;
 
-        if (!tags || !tags.length) {
-          tags = [''];
+        // empty tag
+        if (!(methodTags && methodTags.length)) {
+          methodTags = [''];
         }
         let methodPointer = JsonPointer.compile(['paths', path, method]);
-        let methodSummary = SchemaHelper.methodSummary(methodInfo);
-        for (let tag of tags) {
-          let id = 'tag/' + slugify(tag);
-          let tagDetails = tag2MethodMapping[id];
-          if (!tagDetails) {
-            tagDetails = {
-              name: tag,
-              id: id,
-              headless: tag === '',
-              idx: catIdx
+        for (let tagName of methodTags) {
+          let tag = tags[tagName];
+          if (!tag) {
+            tag = {
+              name: tagName,
             };
-            tag2MethodMapping[id] = tagDetails;
-            catIdx++;
+            tags[tagName] = tag;
           }
-          if (tagDetails.empty) continue;
-          if (!tagDetails.methods) tagDetails.methods = [];
-          tagDetails.methods.push({
-            pointer: methodPointer,
-            summary: methodSummary,
-            operationId: methodInfo.operationId,
-            tag: tag,
-            idx: tagDetails.methods.length,
-            catIdx: tagDetails.idx
-          });
+          if (tag['x-traitTag']) continue;
+          if (!tag.methods) tag.methods = [];
+          tag.methods.push(methodInfo);
+          methodInfo._pointer = methodPointer;
         }
       }
     }
-    return Object.keys(tag2MethodMapping).map(tag => tag2MethodMapping[tag]);
+
+    return tags;
   }
 }

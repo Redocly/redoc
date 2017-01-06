@@ -22,6 +22,8 @@ const md = new Remarkable({
 @Injectable()
 export class MdRenderer {
   public firstLevelHeadings: string[] = [];
+  public secondLevelHeadings: string[] = [];
+  public currentHeading: string = null;
 
   private _origRules:any = {};
   private _preProcessors:Function[] = [];
@@ -44,19 +46,27 @@ export class MdRenderer {
   }
 
   headingOpenRule(tokens, idx) {
-    if (tokens[idx].hLevel !== 1 ) {
+    if (tokens[idx].hLevel > 2 ) {
       return this._origRules.open(tokens, idx);
     } else {
       let content = tokens[idx + 1].content;
-      this.firstLevelHeadings.push(content);
-      let contentSlug = slugify(content);
-      return `<h${tokens[idx].hLevel} section="section/${contentSlug}">` +
-        `<a class="share-link" href="#section/${contentSlug}"></a>`;
+      if (tokens[idx].hLevel === 1 ) {
+        this.firstLevelHeadings.push(content);
+        this.currentHeading = content;
+        let contentSlug = slugify(content);
+        return `<h${tokens[idx].hLevel} section="section/${contentSlug}">` +
+          `<a class="share-link" href="#section/${contentSlug}"></a>`;
+      } else if (tokens[idx].hLevel === 2 ) {
+        this.secondLevelHeadings.push(this.currentHeading + `/` + content);
+        let contentSlug = slugify(this.currentHeading) + `/` + slugify(content);
+        return `<h${tokens[idx].hLevel} section="section/${contentSlug}">` +
+          `<a class="share-link" href="#section/${contentSlug}"></a>`;
+      }
     }
   }
 
   headingCloseRule(tokens, idx) {
-    if (tokens[idx].hLevel !== 1 ) {
+    if (tokens[idx].hLevel > 2 ) {
       return this._origRules.close(tokens, idx);
     } else {
       return `</h${tokens[idx].hLevel}>\n`;

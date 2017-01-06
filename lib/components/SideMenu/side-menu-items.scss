@@ -1,0 +1,110 @@
+@import '../../shared/styles/variables';
+
+.menu-item-header {
+  cursor: pointer;
+  color: rgba($text-color, .9);
+  -webkit-transition: all .15s ease-in-out;
+  -moz-transition: all .15s ease-in-out;
+  -ms-transition: all .15s ease-in-out;
+  -o-transition: all .15s ease-in-out;
+  transition: all .15s ease-in-out;
+  display: block;
+  padding: $side-menu-item-vpadding*2.5 $side-menu-item-hpadding;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &.disabled, &.disabled:hover {
+    cursor: default;
+    color: lighten($text-color, 60%);
+  }
+}
+
+.menu-item {
+  -webkit-transition: all .15s ease-in-out;
+  -moz-transition: all .15s ease-in-out;
+  -ms-transition: all .15s ease-in-out;
+  -o-transition: all .15s ease-in-out;
+  transition: all .15s ease-in-out;
+  list-style: none inside none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  //background: darken($side-menu-active-bg-color, 6%);
+}
+
+.menu-subitems {
+  margin: 0;
+  font-size: 0.929em;
+  line-height: 1.2em;
+  font-weight: $light;
+  color: rgba($text-color, .9);
+  padding: 0;
+  overflow: hidden;
+  height: 0;
+
+  .active > & {
+    height: auto;
+  }
+}
+
+.menu-item-depth-1 {
+  > .menu-item-header {
+    font-family: $headers-font, $headers-font-family;
+    font-weight: $light;
+    font-size: $h5;
+    text-transform: uppercase;
+  }
+
+  // do not capitalize method summuary in level-1 menu
+  &.menu-item-for-method > .menu-item-header {
+    text-transform: none;
+  }
+
+  > .menu-item-header:not(.disabled):hover,
+  &.active > .menu-item-header {
+    color: $primary-color;
+    background: $side-menu-active-bg-color;
+  }
+  &.active {
+    //background: $side-menu-active-bg-color;
+  }
+}
+
+.menu-item-depth-2 {
+  > .menu-item-header {
+    padding-left: 2*$side-menu-item-hpadding;
+  }
+
+  > .menu-item-header:hover,
+  &.active > .menu-item-header {
+    background: darken($side-menu-active-bg-color, 6%);
+  }
+}
+
+// group items
+.menu-item-depth-0 {
+  margin-top: 15px;
+
+  > .menu-subitems {
+    height: auto;
+  }
+
+  > .menu-item-header {
+    font-family: $headers-font, $headers-font-family;
+    color: rgba($text-color, .4);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    padding-bottom: 0;
+    cursor: default;
+  }
+  &:hover,
+  &.active {
+    //background: none;
+  }
+}

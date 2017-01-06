@@ -7,17 +7,7 @@
 </div>
 <div #desktop id="resources-nav">
   <h5 class="menu-header"> API reference </h5>
-  <div *ngFor="let cat of categories; let idx = index" class="menu-cat">
-
-    <label class="menu-cat-header" (click)="activateAndScroll(idx, -1)" [hidden]="cat.headless"
-    [ngClass]="{active: cat.active, disabled: !cat.ready }"> {{cat.name}}</label>
-    <ul *ngIf="cat.methods.length" class="menu-subitems" [@itemAnimation]="cat.active ? 'expanded' : 'collapsed'">
-      <li *ngFor="let method of cat.methods; trackBy:summary; let methIdx = index"
-        [ngClass]="{active: method.active, disabled: !method.ready}"
-        (click)="activateAndScroll(idx, methIdx)">
-        {{method.summary}}
-      </li>
-    </ul>
-
-  </div>
+  <ul class="menu-root">
+    <side-menu-items [items]="menuItems" (activate)="activateAndScroll($event)"></side-menu-items>
+  </ul>
 </div>
