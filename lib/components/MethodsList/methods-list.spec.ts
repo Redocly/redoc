@@ -13,7 +13,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 import { MethodsList } from './methods-list';
 import { SpecManager } from '../../utils/spec-manager';
 
-describe('Redoc components', () => { 
+describe('Redoc components', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
   });
@@ -42,13 +42,13 @@ describe('Redoc components', () => {
       expect(component).not.toBeNull();
     });
 
-    it('should get correct tags list', () => {
+    it('should build correct tags list', () => {
       expect(component.tags).not.toBeNull();
       component.tags.should.have.lengthOf(2);
       component.tags[0].name.should.be.equal('traitTag');
-      component.tags[0].methods.should.be.empty();
+      should.not.exist(component.tags[0].items);
       component.tags[1].name.should.be.equal('tag1');
-      component.tags[1].methods.should.have.lengthOf(2);
+      component.tags[1].items.should.have.lengthOf(2);
     });
   });
 });

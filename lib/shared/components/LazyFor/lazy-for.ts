@@ -17,7 +17,7 @@ import { OptionsService } from '../../../services/options.service';
 import { isSafari } from '../../../utils/helpers';
 
 export class LazyForRow {
-  constructor(public $implicit: any, public index: number, public show: boolean) {}
+  constructor(public $implicit: any, public index: number, public ready: boolean) {}
 
   get first(): boolean { return this.index === 0; }
 
@@ -51,8 +51,8 @@ export class LazyTasksService {
   }
 
   addTasks(tasks:any[], callback:Function) {
-    tasks.forEach((task) => {
-      let taskCopy = Object.assign({_callback: callback}, task);
+    tasks.forEach((task, idx) => {
+      let taskCopy = Object.assign({_callback: callback, idx: idx}, task);
       this._tasks.push(taskCopy);
     });
   }
@@ -62,7 +62,7 @@ export class LazyTasksService {
     if (!task) return;
     task._callback(task.idx, true);
     this._current++;
-    this.menuService.enableItem(task.catIdx, task.idx);
+    this.menuService.enableItem(task.flatIdx);
     this.loadProgress.next(this._current / this._tasks.length * 100);
   }
 
@@ -72,39 +72,30 @@ export class LazyTasksService {
       if (!task) return;
       task._callback(task.idx, false).then(() => {
         this._current++;
-        this.menuService.enableItem(task.catIdx, task.idx);
+        this.menuService.enableItem(task.flatIdx);
         setTimeout(()=> this.nextTask());
         this.loadProgress.next(this._current / this._tasks.length * 100);
       }).catch(err => console.error(err));
     });
   }
 
-  sortTasks(catIdx, metIdx) {
+  sortTasks(center) {
     let idxMap = {};
-    this._tasks.forEach((task, idx) => {
-      idxMap[task.catIdx + '_' +  task.idx] = idx;
-    });
-    metIdx  = metIdx < 0 ? 0 : metIdx;
-    let destIdx = idxMap[catIdx + '_' + metIdx] || 0;
     this._tasks.sort((a, b) => {
-      let aIdx = idxMap[a.catIdx + '_' +  a.idx];
-      let bIdx = idxMap[b.catIdx + '_' +  b.idx];
-      return Math.abs(aIdx - destIdx) - Math.abs(bIdx - destIdx);
+      return Math.abs(a.flatIdx - center) - Math.abs(b.flatIdx - center);
     })
   }
 
-  start(catIdx, metIdx, menuService) {
+  start(idx, menuService) {
     this.menuService = menuService;
     let syncCount = 5;
-    // I know this is bad practice to detect browsers but there is an issue on Safari only
+    // I know this is a bad practice to detect browsers but there is an issue in Safari only
     // http://stackoverflow.com/questions/40692365/maintaining-scroll-position-while-inserting-elements-above-glitching-only-in-sa
     if (isSafari && this.optionsService.options.$scrollParent === window) {
-      syncCount = (metIdx >= 0) ?
-          this._tasks.findIndex(task => (task.catIdx === catIdx) && (task.idx === metIdx))
-        : this._tasks.findIndex(task => task.catIdx === catIdx);
+      syncCount = this._tasks.findIndex(task => task.flatIdx === idx);
       syncCount += 1;
     } else {
-      this.sortTasks(catIdx, metIdx);
+      this.sortTasks(idx);
     }
     if (this.allSync) syncCount = this._tasks.length;
     for (var i = this._current; i < syncCount; i++) {
@@ -141,8 +132,8 @@ export class LazyFor {
   }
 
   nextIteration(idx: number, sync: boolean):Promise<void> {
-    const view = this._viewContainer.createEmbeddedView(
-                this._template, new LazyForRow(this.lazyForOf[idx], idx, sync), idx < this.prevIdx ? 0 : undefined);
+    const view = this._viewContainer.createEmbeddedView(this._template,
+      new LazyForRow(this.lazyForOf[idx], idx, sync), idx < this.prevIdx ? 0 : undefined);
     this.prevIdx = idx;
     view.context.index = idx;
     (<any>view as ChangeDetectorRef).markForCheck();
@@ -154,7 +145,7 @@ export class LazyFor {
       requestAnimationFrame(() => {
         this.scroll.saveScroll();
 
-        view.context.show = true;
+        view.context.ready = true;
         (<any>view as ChangeDetectorRef).markForCheck();
         (<any>view as ChangeDetectorRef).detectChanges();
 
@@ -165,6 +156,7 @@ export class LazyFor {
   }
 
   ngOnInit() {
+    if (!this.lazyForOf) return;
     this.lazyTasks.addTasks(this.lazyForOf, this.nextIteration.bind(this))
   }
 }

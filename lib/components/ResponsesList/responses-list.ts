@@ -42,7 +42,7 @@ export class ResponsesList extends BaseComponent implements OnInit {
       resp.pointer = JsonPointer.join(this.pointer, respCode);
       if (resp.$ref) {
         let ref = resp.$ref;
-        resp = this.specMgr.byPointer(resp.$ref);
+        resp = Object.assign({}, this.specMgr.byPointer(resp.$ref));
         resp.pointer = ref;
       }
 
