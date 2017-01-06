@@ -1,3 +1,22 @@
+# 1.7.0 (2017-01-06)
+### Features/Improvements
+* Add support for grouping items in menu via [`x-tagGroups`](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md#x-taggroups)
+* Support inherited discriminator (only one at the moment)
+* Add support for second-level headings from Markdown docs (by [@jaingaurav](https://github.com/jaingaurav))
+
+### Bug fixes
+* Fix response list for shared schemas (fixes [#177](https://github.com/Rebilly/ReDoc/issues/177))
+* Fix right panel overlaps site-footer
+
+### Bug fixes
+* Fix crash on MS Edge (fixes [#166](https://github.com/Rebilly/ReDoc/issues/166))
+* Uncomment animation after upgrade to the latest ng2 (resolves [#162](https://github.com/Rebilly/ReDoc/issues/162))
+
+# 1.6.4 (2016-12-28)
+### Bug fixes
+* Fix crash on MS Edge (fixes [#166](https://github.com/Rebilly/ReDoc/issues/166))
+* Uncomment animation after upgrade to the latest ng2 (resolves [#162](https://github.com/Rebilly/ReDoc/issues/162))
+
 # 1.6.3 (2016-12-19)
 ### Bug fixes
 * Disable side-menu animation (workaround for [#162](https://github.com/Rebilly/ReDoc/issues/162))
