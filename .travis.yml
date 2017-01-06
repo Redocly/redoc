@@ -32,7 +32,7 @@ before_script:
 after_script:
   - kill %1 # kill e2e server
 before_deploy:
-- if [[ ! -z "$TRAVIS_TAG" ]]; then npm run build:prod-module; fi
+- if [[ ! -z "$TRAVIS_TAG" ]]; then npm run build:prod; fi
 deploy:
   - provider: npm
     skip_cleanup: true
