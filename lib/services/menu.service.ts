@@ -295,18 +295,29 @@ export class MenuService {
     return res;
   }
 
-  getTagsItems(parent: MenuItem, tagsGroup:string[] = null):MenuItem[] {
+  getTagsItems(parent: MenuItem, tagGroup:TagGroup = null):MenuItem[] {
     let schema = this.specMgr.schema;
 
-    if (!tagsGroup) {
+    let tags;
+    if (!tagGroup) {
       // all tags
-      tagsGroup = Object.keys(this._tagsWithMethods);
+      tags = Object.keys(this._tagsWithMethods);
+    } else {
+      tags = tagGroup.tags;
     }
 
-    let tags = tagsGroup.map(k => this._tagsWithMethods[k]);
+    tags = tags.map(k => {
+      if (!this._tagsWithMethods[k]) {
+        console.warn(`Non-existing tag "${k}" is specified in tag group "${tagGroup.name}"`);
+        return null;
+      }
+      this._tagsWithMethods[k].used = true;
+      return this._tagsWithMethods[k];
+    });
 
     let res = [];
     for (let tag of tags || []) {
+      if (!tag) continue;
       let id = 'tag/' + slugify(tag.name);
       let item: MenuItem;
 
@@ -344,10 +355,19 @@ export class MenuService {
         isGroup: true,
         items: null
       };
-      item.items = this.getTagsItems(item, group.tags);
+      item.items = this.getTagsItems(item, group);
       res.push(item);
     }
+    this.checkAllTagsUsedInGroups();
     return res;
+  }
+
+  checkAllTagsUsedInGroups() {
+    for (let tag of Object.keys(this._tagsWithMethods)) {
+      if (!this._tagsWithMethods[tag].used) {
+        console.warn(`Tag "${tag}" is not added to any group`);
+      }
+    }
   }
 
   buildMenu() {
