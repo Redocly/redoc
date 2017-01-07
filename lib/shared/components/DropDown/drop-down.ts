@@ -5,11 +5,7 @@ import * as DropKick from 'dropkickjs';
 
 @Component({
   selector: 'drop-down',
-  template: `
-    <select (change)=onChange($event.target.value)>
-      <ng-content></ng-content>
-    </select>
-  `,
+  templateUrl: 'drop-down.html',
   styleUrls: ['./drop-down.css']
 })
 export class DropDown implements AfterContentInit {

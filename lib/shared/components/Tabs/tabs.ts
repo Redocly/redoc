@@ -5,13 +5,7 @@ import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'tabs',
-  template: `
-    <ul>
-      <li *ngFor="let tab of tabs" [ngClass]="{active: tab.active}" (click)="selectTab(tab)"
-        class="tab-{{tab.tabStatus}}">{{tab.tabTitle}}</li>
-    </ul>
-    <ng-content></ng-content>
-  `,
+  templateUrl: 'tabs.html',
   styleUrls: ['tabs.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -63,23 +57,8 @@ export class Tabs implements OnInit {
 
 @Component({
   selector: 'tab',
-  template: `
-    <div class="tab-wrap" [ngClass]="{'active': active}">
-      <ng-content></ng-content>
-    </div>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
-    .tab-wrap {
-      display: none;
-    }
-
-    .tab-wrap.active {
-      display: block;
-    }`
-  ]
+  templateUrl: 'tab.html',
+  styleUrls: ['tab.css']
 })
 export class Tab {
   @Input() active: boolean = false;
