@@ -2,14 +2,14 @@
 
 import { getChildDebugElement } from '../../../tests/helpers';
 import { Component } from '@angular/core';
-import { OptionsService } from '../../services/index';
+import { OptionsService, MenuItem } from '../../services/index';
 
 import {
   inject,
   async
 } from '@angular/core/testing';
 
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { MethodsList, SideMenu } from '../index';
 
@@ -23,8 +23,8 @@ describe('Redoc components', () => {
   });
   describe('SideMenu Component', () => {
     let builder;
-    let component;
-    let fixture;
+    let component: SideMenu;
+    let fixture: ComponentFixture<TestAppComponent>;
     let specMgr;
 
     beforeEach(inject([SpecManager, OptionsService],
@@ -53,8 +53,34 @@ describe('Redoc components', () => {
     });
 
     it('should init component and component data', () => {
-      expect(component).not.toBeNull();
-      expect(component.data).not.toBeNull();
+      should.exist(component);
+    });
+
+    it('should clear active item and cat captions on change to null', () => {
+      component.activeCatCaption = 'test';
+      component.activeItemCaption = 'test';
+      component.changed(null);
+      component.activeCatCaption.should.be.equal('');
+      component.activeItemCaption.should.be.equal('');
+    });
+
+    it('should set active item and cat captions on change event', () => {
+      let parentItem: MenuItem = {
+        id: 'id',
+        name: 'Item'
+      };
+      component.changed(parentItem);
+      component.activeCatCaption.should.be.equal(parentItem.name);
+      component.activeItemCaption.should.be.equal('');
+
+      let childItem: MenuItem = {
+        id: 'id2',
+        name: 'Child',
+        parent: parentItem
+      };
+      component.changed(childItem);
+      component.activeCatCaption.should.be.equal(parentItem.name);
+      component.activeItemCaption.should.be.equal(childItem.name);
     });
   });
 });
