@@ -7,7 +7,7 @@
     "url": "git://github.com/Rebilly/ReDoc"
   },
   "engines": {
-    "node": ">=4.0.0",
+    "node": ">=4.7",
     "npm": ">=3.0.0"
   },
   "main": "dist/redoc.min.js",
