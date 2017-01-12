@@ -96,7 +96,7 @@
     "should": "^11.1.0",
     "sinon": "^1.17.2",
     "source-map-loader": "^0.1.5",
-    "string-replace-webpack-plugin": "0.0.4",
+    "string-replace-webpack-plugin": "0.0.5",
     "style-loader": "^0.13.1",
     "ts-helpers": "^1.1.1",
     "tslint": "^4.3.1",
