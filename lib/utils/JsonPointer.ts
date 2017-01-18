@@ -36,6 +36,20 @@ export class JsonPointer {
    }
 
    /**
+    * returns relative path tokens
+    * @example
+    * // returns ['subpath']
+    * JsonPointerHelper.relative('/path/0', '/path/0/subpath')
+    * // returns ['foo', 'subpath']
+    * JsonPointerHelper.relative('/path', '/path/foo/subpath')
+    */
+   static relative(from, to):string[] {
+     let fromTokens = JsonPointer.parse(from);
+     let toTokens = JsonPointer.parse(to);
+     return toTokens.slice(fromTokens.length);
+   }
+
+   /**
     * overridden JsonPointer original parse to take care of prefixing '#' symbol
     * that is not valid JsonPointer
     */

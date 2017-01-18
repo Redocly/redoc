@@ -1,9 +1,19 @@
 'use strict';
 
-import { Component, Input, Renderer, ElementRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component,
+  Input,
+  Renderer,
+  ElementRef,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 
-import { BaseComponent, SpecManager } from '../base';
-import { SchemaNormalizer, SchemaHelper } from '../../services/index';
+import { BaseSearchableComponent, SpecManager } from '../base';
+import { SchemaNormalizer, SchemaHelper, AppStateService } from '../../services/';
+import { JsonPointer } from '../../utils/';
+import { Zippy } from '../../shared/components';
+import { JsonSchemaLazy } from './json-schema-lazy';
 
 @Component({
   selector: 'json-schema',
@@ -11,8 +21,9 @@ import { SchemaNormalizer, SchemaHelper } from '../../services/index';
   styleUrls: ['./json-schema.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JsonSchema extends BaseComponent implements OnInit {
+export class JsonSchema extends BaseSearchableComponent implements OnInit {
   @Input() pointer: string;
+  @Input() absolutePointer: string;
   @Input() final: boolean = false;
   @Input() nestOdd: boolean;
   @Input() childFor: string;
@@ -25,11 +36,18 @@ export class JsonSchema extends BaseComponent implements OnInit {
   properties: any;
   _isArray: boolean;
   normalizer: SchemaNormalizer;
-  autoExpand = false;
   descendants: any;
 
-  constructor(specMgr:SpecManager, private _renderer: Renderer, private _elementRef: ElementRef) {
-    super(specMgr);
+  // @ViewChildren(Zippy) childZippies: QueryList<Zippy>;
+  // @ViewChildren(forwardRef(() => JsonSchemaLazy)) childSchemas: QueryList<JsonSchemaLazy>;
+
+  constructor(
+    specMgr:SpecManager,
+    app: AppStateService,
+    private _renderer: Renderer,
+    private cdr: ChangeDetectorRef,
+    private _elementRef: ElementRef) {
+    super(specMgr, app);
     this.normalizer = new SchemaNormalizer(specMgr);
   }
 
@@ -78,6 +96,8 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
   init() {
     if (!this.pointer) return;
+    if (!this.absolutePointer) this.absolutePointer = this.pointer;
+
     this.schema = this.componentSchema;
     if (!this.schema) {
       throw new Error(`Can't load component schema at ${this.pointer}`);
@@ -88,6 +108,7 @@ export class JsonSchema extends BaseComponent implements OnInit {
     this.schema = this.normalizer.normalize(this.schema, this.normPointer, {resolved: true});
     this.schema = SchemaHelper.unwrapArray(this.schema, this.normPointer);
     this._isArray = this.schema._isArray;
+    this.absolutePointer += (this._isArray ? '/items' : '');
     this.initDescendants();
     this.preprocessSchema();
   }
@@ -114,7 +135,9 @@ export class JsonSchema extends BaseComponent implements OnInit {
         return (propSchema && propSchema.type === 'object' && propSchema._pointer);
       });
 
-    this.autoExpand = this.properties && this.properties.length === 1;
+    if (this.properties.length === 1) {
+      this.properties[0].expanded = true;
+    }
   }
 
   applyStyling() {
@@ -125,6 +148,22 @@ export class JsonSchema extends BaseComponent implements OnInit {
 
   trackByName(_: number, item: any): number {
     return item.name + (item._pointer || '');
+  }
+
+  ensureSearchIsShown(ptr: string) {
+    if (ptr.startsWith(this.absolutePointer)) {
+      let props = this.properties;
+      let relative = JsonPointer.relative(this.absolutePointer, ptr);
+      let propName;
+      if (relative.length > 1 && relative[0] === 'properties') {
+        propName = relative[1];
+      }
+      let prop = props.find(p => p._name === propName);
+      if (!prop) return;
+      prop.expanded = true;
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
+    }
   }
 
   ngOnInit() {

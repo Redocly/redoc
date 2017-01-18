@@ -34,6 +34,7 @@
         <div class="tuple-item">
           <span class="tuple-item-index"> [{{idx}}]: </span>
           <json-schema class="nested-schema" [pointer]="item._pointer"
+          [absolutePointer]="item._pointer"
           [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
           </json-schema>
         </div>
@@ -92,9 +93,9 @@
         </tr>
         <tr class="param-schema" [ngClass]="{'last': last}" [hidden]="!prop._pointer">
           <td colspan="2">
-            <zippy #subSchema title="Expand" [headless]="true" (open)="lazySchema.load()" [visible]="autoExpand">
-              <json-schema-lazy #lazySchema [auto]="autoExpand" class="nested-schema" [pointer]="prop._pointer"
-              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+            <zippy [attr.disabled]="prop._name" #subSchema title="Expand" [headless]="true" (openChange)="lazySchema.load()" [(open)]="prop.expanded">
+              <json-schema-lazy #lazySchema [auto]="prop.expanded" class="nested-schema" [pointer]="prop._pointer"
+              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" absolutePointer="{{absolutePointer}}/properties/{{prop._name}}">
               </json-schema-lazy>
             </zippy>
           </td>
