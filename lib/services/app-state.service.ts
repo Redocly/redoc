@@ -11,6 +11,8 @@ export class AppStateService {
   loading = new Subject<boolean>();
   initialized = new BehaviorSubject<any>(false);
 
+  searchContainingPointers = new BehaviorSubject<string[]>([]);
+
   startLoading() {
     this.loading.next(true);
   }

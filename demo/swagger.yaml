@@ -676,6 +676,13 @@ definitions:
         description: Category name
         type: string
         minLength: 1
+      sub:
+        description: test sub Category
+        type: object
+        properties:
+          prop1:
+            type: string
+            description: The best prop1
     xml:
       name: Category
   Dog:

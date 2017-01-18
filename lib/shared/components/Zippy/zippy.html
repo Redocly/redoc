@@ -1,4 +1,4 @@
-<div class="zippy zippy-{{type}}" [ngClass]="{'zippy-empty': empty, 'zippy-hidden': !visible}">
+<div class="zippy zippy-{{type}}" [ngClass]="{'zippy-empty': empty, 'zippy-hidden': !open}">
   <div *ngIf='!headless' class="zippy-title" (click)="toggle()">
     <span class="zippy-indicator">
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">

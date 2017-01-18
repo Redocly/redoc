@@ -20,7 +20,7 @@
     "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo",
     "ngc": "ngc -p .",
     "clean:dist": "npm run rimraf -- dist/",
-    "clean:aot": "npm run rimraf -- .tmp lib/**/*.css",
+    "clean:aot": "npm run rimraf -- .tmp compiled lib/**/*.css",
     "rimraf": "rimraf",
     "webpack:prod": "webpack --config build/webpack.prod.js --profile --bail",
     "build:sass": "node-sass -q -o lib lib",
