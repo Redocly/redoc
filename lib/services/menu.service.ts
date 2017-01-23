@@ -158,13 +158,13 @@ export class MenuService {
     return selector ? document.querySelector(selector) : null;
   }
 
-  isTagItem(flatIdx: number):boolean {
+  isTagOrGroupItem(flatIdx: number):boolean {
     let item = this.flatItems[flatIdx];
-    return item && item.metadata && item.metadata.type === 'tag';
+    return item && (item.isGroup || (item.metadata && item.metadata.type === 'tag'));
   }
 
   getTagInfoEl(flatIdx: number):Element {
-    if (!this.isTagItem(flatIdx)) return null;
+    if (!this.isTagOrGroupItem(flatIdx)) return null;
 
     let el = this.getEl(flatIdx);
     return el && el.querySelector('.tag-info');

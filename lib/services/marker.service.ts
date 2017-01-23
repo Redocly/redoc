@@ -24,7 +24,7 @@ export class Marker {
   newMarkerAtMenuItem(idx:number) {
     let context = this.menu.getEl(idx);
 
-    if (this.menu.isTagItem(idx)) {
+    if (this.menu.isTagOrGroupItem(idx)) {
       context = this.menu.getTagInfoEl(idx);
     }
     let newInst = context && new Mark(context);
