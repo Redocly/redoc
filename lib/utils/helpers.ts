@@ -1,5 +1,9 @@
 'use strict';
 
+export interface StringMap<T> {
+  [key: string]: T;
+}
+
 export function stringify(obj:any) {
   return JSON.stringify(obj);
 }
@@ -14,6 +18,18 @@ export function isFunction(func: any) {
 
 export function isBlank(obj: any): boolean {
   return obj == undefined;
+}
+
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+export function groupBy<T>(array: T[], key:string):StringMap<T[]> {
+  return array.reduce<StringMap<T[]>>(function(res, value) {
+    if (hasOwnProperty.call(res, value[key])) {
+      res[value[key]].push(value);
+    } else {
+      res[value[key]] = [value];
+    }
+    return res;
+  }, {});
 }
 
 export function statusCodeType(statusCode) {
