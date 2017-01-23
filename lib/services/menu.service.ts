@@ -417,6 +417,10 @@ export class MenuService {
     return res;
   }
 
+  getItemById(id: string):MenuItem {
+    return this.flatItems.find(item => item.id === id);
+  }
+
   destroy() {
     this._hashSubscription.unsubscribe();
     this._scrollSubscription.unsubscribe();

@@ -1,6 +1,6 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, OnInit, HostBinding } from '@angular/core';
-import { Marker, SearchService } from '../../services/';
+import { Marker, SearchService, MenuService } from '../../services/';
 
 @Component({
   selector: 'redoc-search',
@@ -10,27 +10,34 @@ import { Marker, SearchService } from '../../services/';
 })
 export class RedocSearch implements OnInit {
   logo:any = {};
+  items: any[] = [];
 
-  constructor(private marker: Marker, public search: SearchService) {
+  constructor(private marker: Marker, public search: SearchService, public menu: MenuService) {
   }
 
   init() {
-
+    this.search.indexAll();
   }
 
   update(val) {
+    let searchRes = this.search.search(val);
+    this.items = Object.keys(searchRes).map(id => ({
+      menuItem: this.menu.getItemById(id),
+      pointers: searchRes[id].map(el => el.pointer)
+    }));
     this.marker.mark(val);
   }
 
-  tmpSearch() {
-    this.search.ensureSearchVisible([
-      '/paths/~1pet~1findByStatus/get/responses/200/schema/items/properties/category/properties/sub',
-      '/paths/~1pet~1findByStatus/get/responses/200/schema/items/properties/tags',
-      '/paths/~1pet/post/parameters/0/schema/properties/tags'
-    ]);
+  clickSearch(item) {
+    this.search.ensureSearchVisible(
+      item.pointers
+    );
+    this.marker.remark();
+    this.menu.activate(item.menuItem.flatIdx);
+    this.menu.scrollToActive();
   }
 
   ngOnInit() {
-
+    this.init();
   }
 }
