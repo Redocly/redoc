@@ -37,3 +37,5 @@ compiled
 /coverage
 .ghpages-tmp
 stats.json
+
+.idea
