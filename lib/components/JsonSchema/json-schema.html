@@ -84,7 +84,7 @@
             </div>
             <div class="param-description" [innerHtml]="prop.description | marked"></div>
             <div class="discriminator-info" *ngIf="prop.isDiscriminator">
-              <drop-down (change)="selectDescendant($event)">
+              <drop-down (change)="selectDescendantByIdx($event)" [active]="activeDescendant.idx">
                 <option *ngFor="let descendant of descendants; let i=index"
                 [value]="i" [attr.selected]="descendant.active ? '' : null" >{{descendant.name}}</option>
               </drop-down>
