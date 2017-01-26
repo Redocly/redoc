@@ -1,6 +1,6 @@
 <input #search (keyup)="update(search.value)" placeholder="Search">
 <ul class="search-results">
   <li class="result" *ngFor="let item of items" (click)="clickSearch(item)">
-    {{item.menuItem.name}}
+    {{item?.menuItem?.name}}
   <li>
 </ul>

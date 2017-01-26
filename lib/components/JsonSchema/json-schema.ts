@@ -150,9 +150,14 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     return item.name + (item._pointer || '');
   }
 
+  trackByIdx(idx: number, _: any): number {
+    return idx;
+  }
+
   ensureSearchIsShown(ptr: string) {
     if (ptr.startsWith(this.absolutePointer)) {
       let props = this.properties;
+      if (!props) return;
       let relative = JsonPointer.relative(this.absolutePointer, ptr);
       let propName;
       if (relative.length > 1 && relative[0] === 'properties') {
