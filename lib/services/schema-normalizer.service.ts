@@ -94,7 +94,7 @@ class SchemaWalker {
   }
 }
 
-class AllOfMerger {
+export class AllOfMerger {
   static merge(into, schemas) {
     into['x-derived-from'] = [];
     for (let i=0; i < schemas.length; i++) {

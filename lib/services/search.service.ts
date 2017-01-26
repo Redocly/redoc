@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from './app-state.service';
-import { JsonPointer, groupBy, SpecManager, StringMap} from '../utils/';
+import { SchemaNormalizer } from './schema-normalizer.service';
+import { JsonPointer, groupBy, SpecManager, StringMap } from '../utils/';
 
 import * as lunr from 'lunr';
 
 interface IndexElement {
-  menuPtr: string;
+  menuId: string;
   title: string;
   body: string;
   pointer: string;
 }
 
 const index = lunr(function () {
-  this.field('menuPtr', {boost: 0});
+  this.field('menuId', {boost: 0});
   this.field('title', {boost: 1.5});
   this.field('body');
   this.ref('pointer');
@@ -22,7 +23,9 @@ const store:StringMap<IndexElement> = {};
 
 @Injectable()
 export class SearchService {
+  normalizer: SchemaNormalizer;
   constructor(private app: AppStateService, private spec: SpecManager) {
+    this.normalizer = new SchemaNormalizer(spec);
   }
 
   ensureSearchVisible(containingPointers: string[]) {
@@ -39,7 +42,7 @@ export class SearchService {
     const res:IndexElement[] = index.search(q).map(res => {
       return store[res.ref];
     });
-    const grouped = groupBy(res, 'menuPtr');
+    const grouped = groupBy(res, 'menuId');
     return grouped;
   }
 
@@ -61,14 +64,33 @@ export class SearchService {
     });
   }
 
-  indexOperation(operation:any, opPtr:string) {
+  indexOperation(operation:any, operationPointer:string) {
     this.index({
-      pointer: opPtr,
-      menuPtr: opPtr,
+      pointer: operationPointer,
+      menuId: operationPointer,
       title: operation.summary,
       body: operation.description
     });
-    this.indexOperationResponses(operation, opPtr);
+    this.indexOperationResponses(operation, operationPointer);
+    this.indexOperationParameters(operation, operationPointer)
+  }
+
+  indexOperationParameters(operation: any, operationPointer: string) {
+    const parameters = operation.parameters;
+    for (let i=0; i<parameters.length; ++i) {
+      const param = parameters[i];
+      const paramPointer = JsonPointer.join(operationPointer, ['parameters', i]);
+      this.index({
+        pointer: paramPointer,
+        menuId: operationPointer,
+        title: param.in === 'body' ? '' : param.name,
+        body: param.description
+      });
+
+      if (param.in === 'body') {
+        this.indexSchema(param.schema, '', JsonPointer.join(paramPointer, ['schema']), operationPointer);
+      }
+    }
   }
 
   indexOperationResponses(operation:any, operationPtr:string) {
@@ -79,7 +101,7 @@ export class SearchService {
       const respPtr = JsonPointer.join(operationPtr, ['responses', code]);
       this.index({
         pointer: respPtr,
-        menuPtr: operationPtr,
+        menuId: operationPtr,
         title: code,
         body: resp.description
       });
@@ -94,10 +116,8 @@ export class SearchService {
     if (!_schema) return;
     let schema = _schema;
     let title = name;
-    if (schema.$ref) {
-      schema = this.spec.byPointer(_schema.$ref);
-      title = name + ' ' + JsonPointer.baseName(_schema.$ref);
-    }
+
+    schema = this.normalizer.normalize(schema, absolutePointer);
 
     let body = schema.description;  // TODO: defaults, examples, etc...
 
@@ -108,12 +128,11 @@ export class SearchService {
 
     this.index({
       pointer: absolutePointer,
-      menuPtr: menuPointer,
+      menuId: menuPointer,
       title,
       body
     })
 
-    // TODO: allof etc
     if (schema.properties) {
       Object.keys(schema.properties).forEach(propName => {
         let propPtr = JsonPointer.join(absolutePointer, ['properties', propName]);
