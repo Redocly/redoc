@@ -47,6 +47,8 @@ export class SearchService {
   }
 
   index(element: IndexElement) {
+     // don't reindex same pointers (for discriminator)
+    if (store[element.pointer]) return;
     index.add(element);
     store[element.pointer] = element;
   }
@@ -117,13 +119,22 @@ export class SearchService {
     let schema = _schema;
     let title = name;
 
-    schema = this.normalizer.normalize(schema, absolutePointer);
+    this.normalizer.reset();
+    schema = this.normalizer.normalize(schema, schema._pointer || absolutePointer);
 
     let body = schema.description;  // TODO: defaults, examples, etc...
 
     if (schema.type === 'array') {
       this.indexSchema(schema.items, title, JsonPointer.join(absolutePointer, ['items']), menuPointer);
       return;
+    }
+
+    if (schema.discriminator && !schema['x-derived-from']) {
+      let derived = this.spec.findDerivedDefinitions(schema._pointer, schema);
+      for (let defInfo of derived ) {
+        let subSpec = this.spec.getDescendant(defInfo, schema);
+        this.indexSchema(subSpec, '', absolutePointer, menuPointer);
+      }
     }
 
     this.index({

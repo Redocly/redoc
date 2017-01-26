@@ -11,7 +11,7 @@ import { Component,
 
 import { BaseSearchableComponent, SpecManager } from '../base';
 import { SchemaNormalizer, SchemaHelper, AppStateService } from '../../services/';
-import { JsonPointer } from '../../utils/';
+import { JsonPointer, DescendantInfo } from '../../utils/';
 import { Zippy } from '../../shared/components';
 import { JsonSchemaLazy } from './json-schema-lazy';
 
@@ -36,10 +36,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
   properties: any;
   _isArray: boolean;
   normalizer: SchemaNormalizer;
-  descendants: any;
-
-  // @ViewChildren(Zippy) childZippies: QueryList<Zippy>;
-  // @ViewChildren(forwardRef(() => JsonSchemaLazy)) childSchemas: QueryList<JsonSchemaLazy>;
+  descendants: DescendantInfo[];
 
   constructor(
     specMgr:SpecManager,
@@ -55,8 +52,11 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     return this.schema._pointer || this.pointer;
   }
 
-  selectDescendant(idx) {
-    let activeDescendant = this.descendants[idx];
+  selectDescendantByIdx(idx) {
+    this.selectDescendant(this.descendants[idx]);
+  }
+
+  selectDescendant(activeDescendant: DescendantInfo) {
     if (!activeDescendant || activeDescendant.active) return;
     this.descendants.forEach(d => {
       d.active = false;
@@ -69,6 +69,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     this.schema = this.normalizer.normalize(this.schema, this.normPointer,
       {resolved: true});
     this.preprocessSchema();
+    this.activeDescendant = activeDescendant;
   }
 
   initDescendants() {
@@ -91,7 +92,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
         return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
     }
-    this.selectDescendant(0);
+    this.selectDescendantByIdx(0);
   }
 
   init() {
@@ -154,6 +155,21 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     return idx;
   }
 
+  findDescendantWithField(fieldName: string): DescendantInfo {
+    let res: DescendantInfo;
+    for (let descendantInfo of this.descendants) {
+      let schema = this.specMgr.getDescendant(descendantInfo, this.schema);
+      this.normalizer.reset();
+      schema = this.normalizer.normalize(schema, this.normPointer,
+        {resolved: true});
+      if (schema.properties && schema.properties[fieldName]) {
+        res = descendantInfo;
+        break;
+      };
+    };
+    return res;
+  }
+
   ensureSearchIsShown(ptr: string) {
     if (ptr.startsWith(this.absolutePointer)) {
       let props = this.properties;
@@ -164,8 +180,12 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
         propName = relative[1];
       }
       let prop = props.find(p => p._name === propName);
-      if (!prop || prop.isTrivial) return;
-      prop.expanded = true;
+      if (!prop) {
+        let d = this.findDescendantWithField(propName);
+        this.selectDescendant(d);
+        prop = this.properties.find(p => p._name === propName);
+      }
+      if (prop && !prop.isTrivial) prop.expanded = true;
       this.cdr.markForCheck();
       this.cdr.detectChanges();
     }

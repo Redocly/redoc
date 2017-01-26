@@ -11,6 +11,13 @@ function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
 }
 
+export interface DescendantInfo {
+  $ref: string;
+  name: string;
+  active?: boolean;
+  idx: number;
+}
+
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
@@ -163,7 +170,7 @@ export class SpecManager {
     return tagsMap;
   }
 
-  findDerivedDefinitions(defPointer, schema) {
+  findDerivedDefinitions(defPointer: string, schema): DescendantInfo[] {
     let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
@@ -201,12 +208,12 @@ export class SpecManager {
         }
       }
 
-      res.push({name: derivedName, $ref: `#/definitions/${defName}`});
+      res.push({name: derivedName, $ref: `#/definitions/${defName}`, idx: res.length});
     }
     return res;
   }
 
-  getDescendant(descendant, componentSchema) {
+  getDescendant(descendant:DescendantInfo, componentSchema:any) {
     let res;
     if (!getDiscriminator(componentSchema) && componentSchema.allOf) {
       // discriminator inherited from parents
