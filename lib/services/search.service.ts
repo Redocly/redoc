@@ -17,7 +17,7 @@ const index = lunr(function () {
   this.field('title', {boost: 1.5});
   this.field('body');
   this.ref('pointer');
-})
+});
 
 const store:StringMap<IndexElement> = {};
 
@@ -54,7 +54,7 @@ export class SearchService {
   }
 
   indexPaths(swagger:any) {
-    const paths = swagger.paths
+    const paths = swagger.paths;
     const basePtr = '#/paths';
     Object.keys(paths).forEach(path => {
       let opearations = paths[path];
@@ -74,7 +74,7 @@ export class SearchService {
       body: operation.description
     });
     this.indexOperationResponses(operation, operationPointer);
-    this.indexOperationParameters(operation, operationPointer)
+    this.indexOperationParameters(operation, operationPointer);
   }
 
   indexOperationParameters(operation: any, operationPointer: string) {
@@ -143,13 +143,13 @@ export class SearchService {
       menuId: menuPointer,
       title,
       body
-    })
+    });
 
     if (schema.properties) {
       Object.keys(schema.properties).forEach(propName => {
         let propPtr = JsonPointer.join(absolutePointer, ['properties', propName]);
         this.indexSchema(schema.properties[propName], propName, propPtr, menuPointer);
-      })
+      });
     }
   }
 }
