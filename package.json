@@ -58,6 +58,7 @@
     "@types/jasmine": "^2.2.32",
     "@types/requirejs": "^2.1.26",
     "@types/should": "^8.1.28",
+    "@types/swagger-schema-official": "^2.0.0",
     "angular2-template-loader": "^0.6.0",
     "awesome-typescript-loader": "~3.0.0-beta.17",
     "branch-release": "^1.0.3",
