@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 
 const VERSION = JSON.stringify(require('../package.json').version);
 
@@ -62,8 +61,7 @@ const config = webpackMerge(commonConfig({
       },
       sourceMap: true
     }),
-    new webpack.BannerPlugin(BANNER),
-    new V8LazyParseWebpackPlugin()
+    new webpack.BannerPlugin(BANNER)
   ]
 })
 

@@ -101,7 +101,6 @@
     "ts-helpers": "^1.1.1",
     "tslint": "^4.3.1",
     "typescript": "^2.1.5",
-    "v8-lazy-parse-webpack-plugin": "^0.3.0",
     "webpack": "^2.2.0-rc.4",
     "webpack-dev-server": "^2.2.0-rc.0",
     "webpack-merge": "^2.3.1",
