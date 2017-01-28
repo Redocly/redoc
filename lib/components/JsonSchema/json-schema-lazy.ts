@@ -64,7 +64,8 @@ export class JsonSchemaLazy implements OnDestroy, OnInit, AfterViewInit {
 
       // skip caching view with descendant schemas
       // as it needs attached controller
-      if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
+      let hasDescendants = compRef.instance.descendants && compRef.instance.descendants.length;
+      if (!this.disableLazy && (hasDescendants || compRef.instance._hasSubSchemas)) {
         this._loadAfterSelf();
         return;
       }

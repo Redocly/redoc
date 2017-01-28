@@ -31,7 +31,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
 
   schema: any = {};
   activeDescendant:any = {};
-  hasDescendants: boolean = false;
+  discriminator: string = null;
   _hasSubSchemas: boolean = false;
   properties: any;
   _isArray: boolean;
@@ -75,8 +75,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
   initDescendants() {
     this.descendants = this.specMgr.findDerivedDefinitions(this.normPointer, this.schema);
     if (!this.descendants.length) return;
-    this.hasDescendants = true;
-    let discriminator = this.schema.discriminator || this.schema['x-extendedDiscriminator'];
+    let discriminator = this.discriminator = this.schema.discriminator || this.schema['x-extendedDiscriminator'];
     let discrProperty = this.schema.properties &&
       this.schema.properties[discriminator];
     if (discrProperty && discrProperty.enum) {
@@ -91,6 +90,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
       }).sort((a, b) => {
         return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
+      this.descendants.forEach((d, idx) => d.idx = idx);
     }
     this.selectDescendantByIdx(0);
   }
@@ -119,11 +119,12 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
 
     if (!this.schema.isTrivial) {
       SchemaHelper.preprocessProperties(this.schema, this.normPointer, {
-        childFor: this.childFor
+        childFor: this.childFor,
+        discriminator: this.discriminator
       });
     }
 
-    this.properties = this.schema._properties;
+    this.properties = this.schema._properties || [];
     if (this.isRequestSchema) {
       this.properties = this.properties && this.properties.filter(prop => !prop.readOnly);
     }
