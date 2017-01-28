@@ -30,10 +30,14 @@ lib/**/*.css.shim.ts
 lib/**/*.shim.ngstyle.ts
 
 # other
-/dist
+/dist/
 /demo/build
 .tmp
 compiled
-/coverage
+/coverage/
 .ghpages-tmp
 stats.json
+
+.idea/
+demo/dist/
+demo/releases/
