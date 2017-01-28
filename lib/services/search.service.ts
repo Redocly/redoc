@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { AppStateService } from './app-state.service';
 import { SchemaNormalizer } from './schema-normalizer.service';
 import { JsonPointer, groupBy, SpecManager, StringMap, snapshot } from '../utils/';
+import * as slugify from 'slugify';
+
+import {
+  Spec as SwaggerSpec,
+  Operation as SwaggerOperation,
+  Schema as SwaggerSchema,
+  BodyParameter
+} from '@types/swagger-schema-official';
 
 import * as lunr from 'lunr';
 
@@ -10,6 +18,10 @@ interface IndexElement {
   title: string;
   body: string;
   pointer: string;
+}
+
+interface SwaggerSchemaExt extends SwaggerSchema {
+  _pointer?: string;
 }
 
 const index = lunr(function () {
@@ -28,12 +40,13 @@ export class SearchService {
     this.normalizer = new SchemaNormalizer(spec);
   }
 
-  ensureSearchVisible(containingPointers: string[]) {
+  ensureSearchVisible(containingPointers: string|null[]) {
     this.app.searchContainingPointers.next(containingPointers);
   }
 
   indexAll() {
     this.indexPaths(this.spec.schema);
+    this.indexTags(this.spec.schema);
   }
 
   search(q):StringMap<IndexElement[]> {
@@ -53,7 +66,21 @@ export class SearchService {
     store[element.pointer] = element;
   }
 
-  indexPaths(swagger:any) {
+  indexTags(swagger:SwaggerSpec) {
+    let tags = swagger.tags;
+    for (let tag of tags) {
+      if (tag['x-traitTag']) continue;
+      let id = `tag/${slugify(tag.name)}`;
+      this.index({
+        menuId: id,
+        title: tag.name,
+        body: tag.description,
+        pointer: id
+      });
+    }
+  }
+
+  indexPaths(swagger:SwaggerSpec) {
     const paths = swagger.paths;
     const basePtr = '#/paths';
     Object.keys(paths).forEach(path => {
@@ -66,7 +93,7 @@ export class SearchService {
     });
   }
 
-  indexOperation(operation:any, operationPointer:string) {
+  indexOperation(operation:SwaggerOperation, operationPointer:string) {
     this.index({
       pointer: operationPointer,
       menuId: operationPointer,
@@ -77,7 +104,7 @@ export class SearchService {
     this.indexOperationParameters(operation, operationPointer);
   }
 
-  indexOperationParameters(operation: any, operationPointer: string) {
+  indexOperationParameters(operation: SwaggerOperation, operationPointer: string) {
     const parameters = operation.parameters;
     if (!parameters) return;
     for (let i=0; i<parameters.length; ++i) {
@@ -92,12 +119,13 @@ export class SearchService {
 
       if (param.in === 'body') {
         this.normalizer.reset();
-        this.indexSchema(param.schema, '', JsonPointer.join(paramPointer, ['schema']), operationPointer);
+        this.indexSchema((<BodyParameter>param).schema,
+          '', JsonPointer.join(paramPointer, ['schema']), operationPointer);
       }
     }
   }
 
-  indexOperationResponses(operation:any, operationPtr:string) {
+  indexOperationResponses(operation:SwaggerOperation, operationPtr:string) {
     const responses = operation.responses;
     if (!responses) return;
     Object.keys(responses).forEach(code => {
@@ -117,7 +145,8 @@ export class SearchService {
     });
   }
 
-  indexSchema(_schema:any, name: string, absolutePointer: string, menuPointer: string, parent?: string) {
+  indexSchema(_schema:SwaggerSchemaExt, name: string, absolutePointer: string,
+    menuPointer: string, parent?: string) {
     if (!_schema) return;
     let schema = _schema;
     let title = name;

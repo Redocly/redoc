@@ -1,6 +1,6 @@
 'use strict';
-import { Component, ChangeDetectionStrategy, OnInit, HostBinding } from '@angular/core';
-import { Marker, SearchService, MenuService } from '../../services/';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, HostBinding } from '@angular/core';
+import { Marker, SearchService, MenuService, MenuItem } from '../../services/';
 
 @Component({
   selector: 'redoc-search',
@@ -10,9 +10,16 @@ import { Marker, SearchService, MenuService } from '../../services/';
 })
 export class RedocSearch implements OnInit {
   logo:any = {};
-  items: any[] = [];
+  items: { menuItem: MenuItem, pointers: string[] }[] = [];
 
-  constructor(private marker: Marker, public search: SearchService, public menu: MenuService) {
+  _subscription;
+
+  constructor(
+    cdr: ChangeDetectorRef,
+    private marker: Marker,
+    public search: SearchService,
+    public menu: MenuService) {
+    this._subscription = menu.changed.subscribe(() => cdr.detectChanges());
   }
 
   init() {
@@ -25,6 +32,11 @@ export class RedocSearch implements OnInit {
       menuItem: this.menu.getItemById(id),
       pointers: searchRes[id].map(el => el.pointer)
     }));
+    this.items.sort((a, b) => {
+      if (a.menuItem.depth > b.menuItem.depth) return 1;
+      else if (a.menuItem.depth < b.menuItem.depth) return -1;
+      else return 0;
+    });
     this.marker.mark(val);
   }
 
@@ -39,5 +51,9 @@ export class RedocSearch implements OnInit {
 
   ngOnInit() {
     this.init();
+  }
+
+  destroy() {
+    this._subscription.unsubscribe();
   }
 }

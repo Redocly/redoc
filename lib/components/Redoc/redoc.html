@@ -8,8 +8,10 @@
     <div class="background-actual"> </div>
   </div>
   <div class="menu-content" sticky-sidebar [scrollParent]="options.$scrollParent" [scrollYOffset]="options.scrollYOffset">
-      <api-logo> </api-logo>
-      <redoc-search> </redoc-search>
+      <div class="menu-header">
+        <api-logo> </api-logo>
+        <redoc-search> </redoc-search>
+      </div>
       <side-menu> </side-menu>
   </div>
   <div class="api-content">
