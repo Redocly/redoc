@@ -176,7 +176,7 @@ export class SpecManager {
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
 
     let globalDefs = this._schema.definitions || {};
-    let res = [];
+    let res:DescendantInfo[] = [];
     let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
     for (let defName of Object.keys(globalDefs)) {
       let def = globalDefs[defName];
@@ -208,7 +208,7 @@ export class SpecManager {
         }
       }
 
-      res.push({name: derivedName, $ref: `#/definitions/${defName}`, idx: res.length});
+      res.push({name: derivedName, $ref: `#/definitions/${defName}`, idx: null});
     }
     return res;
   }

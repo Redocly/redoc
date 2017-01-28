@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from './app-state.service';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import { JsonPointer, groupBy, SpecManager, StringMap } from '../utils/';
+import { JsonPointer, groupBy, SpecManager, StringMap, snapshot } from '../utils/';
 
 import * as lunr from 'lunr';
 
@@ -13,7 +13,7 @@ interface IndexElement {
 }
 
 const index = lunr(function () {
-  this.field('menuId', {boost: 0});
+  //this.field('menuId', {boost: 0});
   this.field('title', {boost: 1.5});
   this.field('body');
   this.ref('pointer');
@@ -33,13 +33,13 @@ export class SearchService {
   }
 
   indexAll() {
-    const swagger = this.spec.schema;
-
-    this.indexPaths(swagger);
+    this.indexPaths(this.spec.schema);
   }
 
   search(q):StringMap<IndexElement[]> {
+    var items = {};
     const res:IndexElement[] = index.search(q).map(res => {
+      items[res.menuId] = res;
       return store[res.ref];
     });
     const grouped = groupBy(res, 'menuId');
@@ -79,6 +79,7 @@ export class SearchService {
 
   indexOperationParameters(operation: any, operationPointer: string) {
     const parameters = operation.parameters;
+    if (!parameters) return;
     for (let i=0; i<parameters.length; ++i) {
       const param = parameters[i];
       const paramPointer = JsonPointer.join(operationPointer, ['parameters', i]);
@@ -90,6 +91,7 @@ export class SearchService {
       });
 
       if (param.in === 'body') {
+        this.normalizer.reset();
         this.indexSchema(param.schema, '', JsonPointer.join(paramPointer, ['schema']), operationPointer);
       }
     }
@@ -109,18 +111,17 @@ export class SearchService {
       });
 
       if (resp.schema) {
+        this.normalizer.reset();
         this.indexSchema(resp.schema, '', JsonPointer.join(respPtr, 'schema'), operationPtr);
       }
     });
   }
 
-  indexSchema(_schema:any, name: string, absolutePointer: string, menuPointer: string) {
+  indexSchema(_schema:any, name: string, absolutePointer: string, menuPointer: string, parent?: string) {
     if (!_schema) return;
     let schema = _schema;
     let title = name;
-
-    this.normalizer.reset();
-    schema = this.normalizer.normalize(schema, schema._pointer || absolutePointer);
+    schema = this.normalizer.normalize(schema, schema._pointer || absolutePointer, { childFor: parent });
 
     let body = schema.description;  // TODO: defaults, examples, etc...
 
@@ -129,11 +130,11 @@ export class SearchService {
       return;
     }
 
-    if (schema.discriminator && !schema['x-derived-from']) {
+    if (schema.discriminator) {
       let derived = this.spec.findDerivedDefinitions(schema._pointer, schema);
       for (let defInfo of derived ) {
         let subSpec = this.spec.getDescendant(defInfo, schema);
-        this.indexSchema(subSpec, '', absolutePointer, menuPointer);
+        this.indexSchema(snapshot(subSpec), '', absolutePointer, menuPointer, schema._pointer);
       }
     }
 

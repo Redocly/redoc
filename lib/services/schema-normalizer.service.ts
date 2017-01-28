@@ -27,6 +27,7 @@ export class SchemaNormalizer {
     let hasPtr = !!schema.$ref;
     if (opts.resolved && !hasPtr) this._dereferencer.visit(ptr);
 
+    if (opts.childFor) this._dereferencer.visit(opts.childFor);
     if (schema['x-redoc-normalized']) return schema;
       let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
@@ -38,6 +39,7 @@ export class SchemaNormalizer {
       return resolved;
     });
     if (opts.resolved && !hasPtr) this._dereferencer.exit(ptr);
+    if (opts.childFor) this._dereferencer.exit(opts.childFor);
     res['x-redoc-normalized'] = true;
     return res;
   }
@@ -113,6 +115,7 @@ export class AllOfMerger {
       defaults(into, subSchema);
       subSchema._pointer = tmpPtr;
     }
+    into.discriminator = null;
     into.allOf = null;
   }
 

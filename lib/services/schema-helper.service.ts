@@ -7,6 +7,7 @@ import * as slugify from 'slugify';
 interface PropertyPreprocessOptions {
   childFor: string;
   skipReadOnly?: boolean;
+  discriminator?: string;
 }
 
 // global var for this module
@@ -220,8 +221,7 @@ export class SchemaHelper {
         propertySchema._pointer = null;
       }
       propertySchema._required = !!requiredMap[propName];
-      propertySchema.isDiscriminator = (schema.discriminator === propName
-        || schema['x-extendedDiscriminator'] === propName);
+      propertySchema.isDiscriminator = opts.discriminator === propName;
       return propertySchema;
     });
 

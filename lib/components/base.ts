@@ -6,22 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 export { SpecManager };
 
-function snapshot(obj) {
-  if(obj == undefined || typeof(obj) !== 'object') {
-    return obj;
-  }
-
-  var temp = new obj.constructor();
-
-  for(var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      temp[key] = snapshot(obj[key]);
-    }
-  }
-
-  return temp;
-}
-
 /**
  * Generic Component
  * @class

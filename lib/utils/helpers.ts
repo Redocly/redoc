@@ -94,3 +94,19 @@ export function throttle(fn, threshhold, scope) {
 export const isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0
   || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari']
   || safari.pushNotification);
+
+export function snapshot(obj) {
+  if(obj == undefined || typeof(obj) !== 'object') {
+    return obj;
+  }
+
+  var temp = new obj.constructor();
+
+  for(var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      temp[key] = snapshot(obj[key]);
+    }
+  }
+
+  return temp;
+}
