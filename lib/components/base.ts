@@ -60,7 +60,7 @@ export abstract class BaseSearchableComponent extends BaseComponent implements O
   subscribeForSearch() {
     this.searchSubscription = this.app.searchContainingPointers.subscribe(ptrs => {
       for (let i = 0; i < ptrs.length; ++i) {
-        this.ensureSearchIsShown(ptrs[i]);
+        if (ptrs[i]) this.ensureSearchIsShown(ptrs[i]);
       }
     });
   }

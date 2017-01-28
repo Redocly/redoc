@@ -34,7 +34,7 @@ export interface MenuItem {
   active?: boolean;
   ready?: boolean;
 
-  level?: number;
+  depth?: number;
   flatIdx?: number;
 
   metadata?: any;

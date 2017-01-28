@@ -1,12 +1,10 @@
 <div #mobile class="mobile-nav" (click)="toggleMobileNav()">
-  <span class="menu-header"> API Reference: </span>
   <span class="selected-item-info">
     <span class="selected-tag"> {{activeCatCaption}} </span>
     <span class="selected-endpoint">{{activeItemCaption}}</span>
   </span>
 </div>
 <div #desktop id="resources-nav">
-  <h5 class="menu-header"> API reference </h5>
   <ul class="menu-root">
     <side-menu-items [items]="menuItems" (activate)="activateAndScroll($event)"></side-menu-items>
   </ul>

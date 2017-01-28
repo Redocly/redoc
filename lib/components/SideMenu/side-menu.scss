@@ -11,13 +11,6 @@ ul.menu-root {
   padding: 0;
 }
 
-.menu-header {
-  text-transform: uppercase;
-  color: $headers-color;
-  padding: 0 $side-menu-item-hpadding;
-  margin: 10px 0;
-}
-
 .mobile-nav {
   display: none;
   height: 3em;
@@ -39,15 +32,6 @@ ul.menu-root {
     float: right;
     vertical-align: middle;
   }
-
-  .menu-header {
-    padding: 0 10px 0 20px;
-    font-size: 0.95em;
-
-    @media (max-width: $mobile-menu-compact-breakpoint) {
-      display: none;
-    }
-  }
 }
 
 @media (max-width: $side-menu-mobile-breakpoint) {
@@ -59,10 +43,6 @@ ul.menu-root {
     height: 0;
     overflow-y: auto;
     transition: all 0.3s ease;
-  }
-
-  #resources-nav .menu-header {
-    display: none;
   }
 
   .menu-subitems {

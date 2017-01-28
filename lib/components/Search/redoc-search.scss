@@ -1,22 +1,61 @@
+@import '../../shared/styles/variables';
+
 :host {
   display: block;
-  padding: 20px;
-  background: silver;
+  margin: 10px 0;
+}
+
+.search-input-wrap {
+  padding: 0 20px;
 }
 
 input {
   width: 100%;
   box-sizing: border-box;
   padding: 5px;
+
+  border: 0;
+  border-bottom: 1px solid darken($side-bar-bg-color, 10%);
+  font-weight: bold;
+
+  font-size: 13px;
+  color: $text-color;
+  background-color: transparent;
+  outline: none;
 }
 
 .search-results {
   margin: 10px 0 0;
-  padding: 0;
   list-style: none;
+  padding: 10px 0;
+  background-color: darken($side-bar-bg-color, 5%);
+  max-height: 100px;
+  overflow-y: auto;
+  border-bottom: 1px solid darken($side-bar-bg-color, 10%);
+  border-top: 1px solid darken($side-bar-bg-color, 10%);
+
+  min-height: 150px;
+  max-height: 250px;
 
   > li {
     display: block;
     cursor: pointer;
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    padding: 5px 20px;
+
+    &:hover {
+      background-color: darken($side-bar-bg-color, 10%);
+    }
+  }
+
+  li.menu-item-depth-1 {
+    color: #0033a0;
+    text-transform: uppercase;
+  }
+
+  > li.disabled {
+    cursor: default;
+    color: lighten($text-color, 60%);
   }
 }

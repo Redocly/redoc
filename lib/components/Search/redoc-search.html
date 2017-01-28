@@ -1,6 +1,10 @@
-<input #search (keyup)="update(search.value)" placeholder="Search">
-<ul class="search-results">
-  <li class="result" *ngFor="let item of items" (click)="clickSearch(item)">
-    {{item?.menuItem?.name}}
+<div class="search-input-wrap">
+  <input #search (keyup)="update(search.value)" placeholder="Search">
+</div>
+<ul class="search-results" [hidden]="!items.length">
+  <li class="result" *ngFor="let item of items"
+    ngClass="menu-item-depth-{{item.menuItem.depth}} {{item.menuItem.ready ? '' : 'disabled'}}"
+    (click)="clickSearch(item)">
+    {{item.menuItem.name}}
   <li>
 </ul>
