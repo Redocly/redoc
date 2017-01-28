@@ -3,7 +3,6 @@ const verifyNoBrowserErrors = require('./helpers').verifyNoBrowserErrors;
 const scrollToEl = require('./helpers').scrollToEl;
 const fixFFTest = require('./helpers').fixFFTest;
 const eachNth = require('./helpers').eachNth;
-const getInnerHtml = require('./helpers').getInnerHtml;
 
 const URL = 'index.html';
 
@@ -57,17 +56,17 @@ describe('Scroll sync', () => {
 
   it('should update active menu entries on page scroll forwards', () => {
     scrollToEl('[section="tag/store"]').then(() => {
-      expect(getInnerHtml('.menu-item.menu-item-depth-1.active > .menu-item-header')).toContain('store');
-      expect(getInnerHtml('.selected-tag')).toContain('store');
+      expect($('.menu-item.menu-item-depth-1.active > .menu-item-header').getInnerHtml()).toContain('store');
+      expect($('.selected-tag').getInnerHtml()).toContain('store');
     });
   });
 
   it('should update active menu entries on page scroll backwards', () => {
     scrollToEl('[operation-id="getPetById"]').then(() => {
-      expect(getInnerHtml('.menu-item.menu-item-depth-1.active .menu-item-header')).toContain('pet');
-      expect(getInnerHtml('.selected-tag')).toContain('pet');
-      expect(getInnerHtml('.menu-item.menu-item-depth-2.active .menu-item-header')).toContain('Find pet by ID');
-      expect(getInnerHtml('.selected-endpoint')).toContain('Find pet by ID');
+      expect($('.menu-item.menu-item-depth-1.active .menu-item-header').getInnerHtml()).toContain('pet');
+      expect($('.selected-tag').getInnerHtml()).toContain('pet');
+      expect($('.menu-item.menu-item-depth-2.active .menu-item-header').getInnerHtml()).toContain('Find pet by ID');
+      expect($('.selected-endpoint').getInnerHtml()).toContain('Find pet by ID');
     });
   });
 });
