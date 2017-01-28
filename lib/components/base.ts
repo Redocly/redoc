@@ -51,7 +51,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   }
 }
 
-export class BaseSearchableComponent extends BaseComponent {
+export abstract class BaseSearchableComponent extends BaseComponent implements OnDestroy  {
   searchSubscription: Subscription;
   constructor(public specMgr: SpecManager, public app: AppStateService) {
     super(specMgr);
@@ -71,14 +71,14 @@ export class BaseSearchableComponent extends BaseComponent {
   }
 
   ngOnDestroy() {
-    this.searchSubscription.unsubscribe();
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   /**
    + Used to destroy component
    * @abstract
    */
-  ensureSearchIsShown(ptr: string) {
-    // empy
-  }
+  abstract ensureSearchIsShown(ptr: string);
 }

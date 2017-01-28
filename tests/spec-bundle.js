@@ -48,6 +48,8 @@ beforeEach(function() {
       services.OptionsService,
       services.ComponentParser,
       services.ContentProjector,
+      services.Marker,
+      services.SearchService,
       { provide: sharedComponents.LazyTasksService, useClass: sharedComponents.LazyTasksServiceSync },
       { provide: ErrorHandler, useClass: services.CustomErrorHandler },
       { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}

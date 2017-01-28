@@ -15,7 +15,7 @@ export interface DescendantInfo {
   $ref: string;
   name: string;
   active?: boolean;
-  idx: number;
+  idx?: number;
 }
 
 export class SpecManager {
@@ -208,7 +208,7 @@ export class SpecManager {
         }
       }
 
-      res.push({name: derivedName, $ref: `#/definitions/${defName}`, idx: null});
+      res.push({name: derivedName, $ref: `#/definitions/${defName}`});
     }
     return res;
   }

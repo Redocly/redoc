@@ -51,7 +51,7 @@ export class Marker {
     } else {
       for (let i=0; i < Math.min(diff, ROLL_LEN); i++) {
         let oldInst = this.rolledInstances.shift();
-        oldInst && oldInst.unmark();
+        if (oldInst) oldInst.unmark();
 
         let idx = newIdx + Math.floor(ROLL_LEN/2) - i;
         let newMark = this.newMarkerAtMenuItem(idx);
@@ -83,8 +83,5 @@ export class Marker {
   unmark() {
     this.term = null;
     this.remark();
-  }
-
-  updateMark() {
   }
 }
