@@ -7,12 +7,23 @@
 
 .search-input-wrap {
   padding: 0 20px;
+
+  > svg {
+    width: 13px;
+    height: 27px;
+    display: inline-block;
+    position: absolute;
+
+    path {
+      fill: lighten($text-color, 20%);
+    }
+  }
 }
 
 input {
   width: 100%;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 5px 5px 5px 20px;
 
   border: 0;
   border-bottom: 1px solid darken($side-bar-bg-color, 10%);

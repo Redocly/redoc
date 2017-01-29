@@ -70,6 +70,10 @@
   version "8.1.30"
   resolved "https://registry.yarnpkg.com/@types/should/-/should-8.1.30.tgz#e6b4f3ca4fb0799f6ce3303f3a8c003df6585aa3"
 
+"@types/swagger-schema-official@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/swagger-schema-official/-/swagger-schema-official-2.0.0.tgz#cae62749be28b97c8f15ce338140fbea905acd58"
+
 abbrev@1, abbrev@1.0.x:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
