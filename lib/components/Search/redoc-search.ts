@@ -19,7 +19,10 @@ export class RedocSearch implements OnInit {
     private marker: Marker,
     public search: SearchService,
     public menu: MenuService) {
-    this._subscription = menu.changed.subscribe(() => cdr.detectChanges());
+    this._subscription = menu.changed.subscribe(() => {
+      cdr.markForCheck();
+      cdr.detectChanges();
+    });
   }
 
   init() {
