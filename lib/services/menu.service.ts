@@ -8,7 +8,7 @@ import { SpecManager } from '../utils/spec-manager';
 import { SchemaHelper } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
-import { JsonPointer } from '../utils/JsonPointer';
+import { JsonPointer, MarkdownHeading, StringMap } from '../utils/';
 import * as slugify from 'slugify';
 
 
@@ -250,40 +250,35 @@ export class MenuService {
 
   addMarkdownItems() {
     let schema = this.specMgr.schema;
-    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
-      let id = 'section/' + slugify(header);
+    let headings = schema.info['x-redoc-markdown-headers'] as StringMap<MarkdownHeading>;
+    Object.keys(headings).forEach(h => {
+      let heading = headings[h];
+      let id = 'section/' + heading.id;
       let item = {
-        name: header,
+        name: heading.title,
         id: id,
         items: null
       };
-      item.items = this.getMarkdownSubheaders(item);
+      item.items = this.getMarkdownSubheaders(item, heading);
 
       this.items.push(item);
-    }
+    });
   }
 
-  getMarkdownSubheaders(parent: MenuItem):MenuItem[] {
+  getMarkdownSubheaders(parent: MenuItem, parentHeading: MarkdownHeading):MenuItem[] {
     let res = [];
 
-    let schema = this.specMgr.schema;
-    for (let subheader of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-subheaders'] || []))) {
-      let parts = subheader.split('/');
-      let header = parts[0];
-      if (parent.name !== header) {
-        continue;
-      }
-
-      let name = parts[1];
-      let id = parent.id + '/' + slugify(name);
+    Object.keys(parentHeading.children || {}).forEach(h => {
+      let heading = parentHeading.children[h];
+      let id = 'section/' + heading.id;
 
       let subItem = {
-        name: name,
+        name: heading.title,
         id: id,
         parent: parent
       };
       res.push(subItem);
-    }
+    });
 
     return res;
   }

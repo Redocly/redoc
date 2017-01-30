@@ -84,8 +84,7 @@ export class SpecManager {
       mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
     }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
-    this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
-    this._schema.info['x-redoc-markdown-subheaders'] = mdRender.secondLevelHeadings;
+    this._schema.info['x-redoc-markdown-headers'] = mdRender.headings;
   }
 
   get schema() {
