@@ -77,7 +77,7 @@ export class Method extends BaseComponent implements OnInit {
   }
 
   findBodyParam() {
-    let pathParams = this.specMgr.getMethodParams(this.pointer, true);
+    let pathParams = this.specMgr.getMethodParams(this.pointer);
     let bodyParam = pathParams.find(param => param.in === 'body');
     return bodyParam;
   }

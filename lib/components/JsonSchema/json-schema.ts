@@ -180,11 +180,11 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
       if (relative.length > 1 && relative[0] === 'properties') {
         propName = relative[1];
       }
-      let prop = props.find(p => p._name === propName);
+      let prop = props.find(p => p.name === propName);
       if (!prop) {
         let d = this.findDescendantWithField(propName);
         this.selectDescendant(d);
-        prop = this.properties.find(p => p._name === propName);
+        prop = this.properties.find(p => p.name === propName);
       }
       if (prop && !prop.isTrivial) prop.expanded = true;
       this.cdr.markForCheck();

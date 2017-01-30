@@ -7,6 +7,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { MdRenderer } from './md-renderer';
 
+import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
+
 function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
 }
@@ -121,9 +123,9 @@ export class SpecManager {
     return obj;
   }
 
-  getMethodParams(methodPtr, resolveRefs) {
+  getMethodParams(methodPtr:string):SwaggerParameter[] {
     /* inject JsonPointer into array elements */
-    function injectPointers(array, root) {
+    function injectPointers(array:SwaggerParameter[], root) {
       if (!Array.isArray(array)) {
         throw new Error(`parameters must be an array. Got ${typeof array} at ${root}`);
       }
@@ -140,17 +142,16 @@ export class SpecManager {
 
     //get path params
     let pathParamsPtr = JsonPointer.join(JsonPointer.dirName(methodPtr), ['parameters']);
-    let pathParams = this.byPointer(pathParamsPtr) || [];
+    let pathParams:SwaggerParameter[] = this.byPointer(pathParamsPtr) || [];
 
     let methodParamsPtr = JsonPointer.join(methodPtr, ['parameters']);
-    let methodParams = this.byPointer(methodParamsPtr) || [];
+    let methodParams:SwaggerParameter[] = this.byPointer(methodParamsPtr) || [];
     pathParams = injectPointers(pathParams, pathParamsPtr);
     methodParams = injectPointers(methodParams, methodParamsPtr);
 
-    if (resolveRefs) {
-      methodParams = this.resolveRefs(methodParams);
-      pathParams = this.resolveRefs(pathParams);
-    }
+    // resolve references
+    methodParams = this.resolveRefs(methodParams);
+    pathParams = this.resolveRefs(pathParams);
     return methodParams.concat(pathParams);
   }
 

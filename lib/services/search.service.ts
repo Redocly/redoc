@@ -5,11 +5,12 @@ import { JsonPointer, groupBy, SpecManager, StringMap, snapshot } from '../utils
 import * as slugify from 'slugify';
 
 import {
-  Spec as SwaggerSpec,
-  Operation as SwaggerOperation,
-  Schema as SwaggerSchema,
-  BodyParameter
-} from '@types/swagger-schema-official';
+  SwaggerSpec,
+  SwaggerOperation,
+  SwaggerSchema,
+  SwaggerBodyParameter,
+  SwaggerResponse
+} from '../utils/swagger-typings';
 
 import * as lunr from 'lunr';
 
@@ -20,12 +21,7 @@ interface IndexElement {
   pointer: string;
 }
 
-interface SwaggerSchemaExt extends SwaggerSchema {
-  _pointer?: string;
-}
-
 const index = lunr(function () {
-  //this.field('menuId', {boost: 0});
   this.field('title', {boost: 1.5});
   this.field('body');
   this.ref('pointer');
@@ -45,8 +41,10 @@ export class SearchService {
   }
 
   indexAll() {
+    console.time('Indexing');
     this.indexPaths(this.spec.schema);
     this.indexTags(this.spec.schema);
+    console.time('Indexing end');
   }
 
   search(q):StringMap<IndexElement[]> {
@@ -105,7 +103,7 @@ export class SearchService {
   }
 
   indexOperationParameters(operation: SwaggerOperation, operationPointer: string) {
-    const parameters = operation.parameters;
+    const parameters = this.spec.getMethodParams(operationPointer);
     if (!parameters) return;
     for (let i=0; i<parameters.length; ++i) {
       const param = parameters[i];
@@ -119,7 +117,7 @@ export class SearchService {
 
       if (param.in === 'body') {
         this.normalizer.reset();
-        this.indexSchema((<BodyParameter>param).schema,
+        this.indexSchema((<SwaggerBodyParameter>param).schema,
           '', JsonPointer.join(paramPointer, ['schema']), operationPointer);
       }
     }
@@ -142,10 +140,26 @@ export class SearchService {
         this.normalizer.reset();
         this.indexSchema(resp.schema, '', JsonPointer.join(respPtr, 'schema'), operationPtr);
       }
+      if (resp.headers) {
+        this.indexOperationResponseHeaders(resp, respPtr, operationPtr);
+      }
     });
   }
 
-  indexSchema(_schema:SwaggerSchemaExt, name: string, absolutePointer: string,
+  indexOperationResponseHeaders(response: SwaggerResponse, responsePtr: string, operationPtr: string, ) {
+    let headers = response.headers || [];
+    Object.keys(headers).forEach(headerName => {
+      let header = headers[headerName];
+      this.index({
+        pointer: `${responsePtr}/${headerName}`,
+        menuId: operationPtr,
+        title: headerName,
+        body: header.description
+      });
+    });
+  }
+
+  indexSchema(_schema:SwaggerSchema, name: string, absolutePointer: string,
     menuPointer: string, parent?: string) {
     if (!_schema) return;
     let schema = _schema;
