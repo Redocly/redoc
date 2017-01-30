@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppStateService } from './app-state.service';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import { JsonPointer, groupBy, SpecManager, StringMap, snapshot } from '../utils/';
+import { JsonPointer, groupBy, SpecManager, StringMap, snapshot, MarkdownHeading } from '../utils/';
+import { methods as swaggerMethods } from '../utils/swagger-defs';
 import * as slugify from 'slugify';
 
 import {
@@ -44,6 +45,7 @@ export class SearchService {
     console.time('Indexing');
     this.indexPaths(this.spec.schema);
     this.indexTags(this.spec.schema);
+    this.indexDescriptionHeadings(this.spec.schema.info['x-redoc-markdown-headers']);
     console.time('Indexing end');
   }
 
@@ -62,6 +64,21 @@ export class SearchService {
     if (store[element.pointer]) return;
     index.add(element);
     store[element.pointer] = element;
+  }
+
+  indexDescriptionHeadings(headings:StringMap<MarkdownHeading>) {
+    if (!headings) return;
+    Object.keys(headings).forEach(k => {
+      let heading = headings[k];
+      this.index({
+        menuId: heading.id,
+        title: heading.title,
+        body: heading.content,
+        pointer: '/heading/' + heading.id
+      });
+
+      this.indexDescriptionHeadings(heading.children);
+    });
   }
 
   indexTags(swagger:SwaggerSpec) {
@@ -84,8 +101,10 @@ export class SearchService {
     Object.keys(paths).forEach(path => {
       let opearations = paths[path];
       Object.keys(opearations).forEach(verb => {
+        if (!swaggerMethods.has(verb)) return;
         const opearation = opearations[verb];
         const ptr = JsonPointer.join(basePtr, [path, verb]);
+
         this.indexOperation(opearation, ptr);
       });
     });

@@ -63,6 +63,45 @@ export class MdRenderer {
     return parent.children[id];
   }
 
+  flattenHeadings(container: StringMap<MarkdownHeading>): MarkdownHeading[] {
+    if (!container) return [];
+    let res = [];
+    Object.keys(container).forEach(k => {
+      let heading = container[k];
+      res.push(heading);
+      res.push(...this.flattenHeadings(heading.children));
+    });
+    return res;
+  }
+
+  attachHeadingsContent(rawText:string) {
+    const buildRegexp = heading => new RegExp(
+      `<h\\d section="section/${heading.id}">`
+    );
+
+    const tmpEl = document.createElement('DIV');
+
+    const html2Str = html => {
+      tmpEl.innerHTML = html;
+      return tmpEl.innerText;
+    };
+
+    let flatHeadings = this.flattenHeadings(this.headings);
+    if (flatHeadings.length < 1) return;
+    let prevHeading = flatHeadings[0];
+
+    let prevPos = rawText.search(buildRegexp(prevHeading));
+    for (let i=1; i < flatHeadings.length; i++) {
+      let heading = flatHeadings[i];
+      let currentPos = rawText.substr(prevPos + 1).search(buildRegexp(heading)) + prevPos + 1;
+      prevHeading.content = html2Str(rawText.substring(prevPos, currentPos));
+
+      prevHeading = heading;
+      prevPos = currentPos;
+    }
+    prevHeading.content = html2Str(rawText.substring(prevPos));
+  }
+
   headingOpenRule(tokens, idx) {
     if (tokens[idx].hLevel > 2 ) {
       return this._origRules.open(tokens, idx);
@@ -103,6 +142,8 @@ export class MdRenderer {
     }
 
     let res =  md.render(text);
+
+    this.attachHeadingsContent(res);
 
     if (!this.raw) {
       this.restoreOrigRules();

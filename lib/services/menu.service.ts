@@ -250,7 +250,7 @@ export class MenuService {
 
   addMarkdownItems() {
     let schema = this.specMgr.schema;
-    let headings = schema.info['x-redoc-markdown-headers'] as StringMap<MarkdownHeading>;
+    let headings:StringMap<MarkdownHeading> = schema.info && schema.info['x-redoc-markdown-headers'] || {};
     Object.keys(headings).forEach(h => {
       let heading = headings[h];
       let id = 'section/' + heading.id;
@@ -413,7 +413,7 @@ export class MenuService {
   }
 
   getItemById(id: string):MenuItem {
-    return this.flatItems.find(item => item.id === id);
+    return this.flatItems.find(item => item.id === id || item.id === `section/${id}`);
   }
 
   destroy() {
