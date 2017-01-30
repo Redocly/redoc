@@ -58,7 +58,7 @@
           <td class="param-name">
             <span class="param-name-wrap" (click)="subSchema.toggle()">
               <span class="param-name-content">
-                {{prop._name}}
+                {{prop.name}}
                 <span class="param-name-enumvalue" [hidden]="!prop._enumItem"> {{prop._enumItem?.val | json}} </span>
               </span>
               <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
@@ -93,9 +93,9 @@
         </tr>
         <tr class="param-schema" [ngClass]="{'last': last}" [hidden]="!prop._pointer">
           <td colspan="2">
-            <zippy [attr.disabled]="prop._name" #subSchema title="Expand" [headless]="true" (openChange)="lazySchema.load()" [(open)]="prop.expanded">
+            <zippy [attr.disabled]="prop.name" #subSchema title="Expand" [headless]="true" (openChange)="lazySchema.load()" [(open)]="prop.expanded">
               <json-schema-lazy #lazySchema [auto]="prop.expanded" class="nested-schema" [pointer]="prop._pointer"
-              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" absolutePointer="{{absolutePointer}}/properties/{{prop._name}}">
+              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" absolutePointer="{{absolutePointer}}/properties/{{prop.name}}">
               </json-schema-lazy>
             </zippy>
           </td>

@@ -215,7 +215,7 @@ export class SchemaHelper {
       let propPointer = propertySchema._pointer ||
         JsonPointer.join(pointer, ['properties', propName]);
       propertySchema = SchemaHelper.preprocess(propertySchema, propPointer);
-      propertySchema._name = propName;
+      propertySchema.name = propName;
       // stop endless discriminator recursion
       if (propertySchema._pointer === opts.childFor) {
         propertySchema._pointer = null;
@@ -244,7 +244,7 @@ export class SchemaHelper {
     var addProps = schema.additionalProperties;
     let ptr = addProps._pointer || JsonPointer.join(pointer, ['additionalProperties']);
     let res = SchemaHelper.preprocess(addProps, ptr);
-    res._name = '<Additional Properties> *';
+    res.name = '<Additional Properties> *';
     return res;
   }
 
