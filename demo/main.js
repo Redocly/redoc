@@ -51,10 +51,10 @@
 
     var $specInput = document.getElementById('spec-input');
 
-    // $specInput.addEventListener('value-changed', function(e) {
-    //   schemaUrlInput.value = e.detail.value;
-    //   location.search = updateQueryStringParameter(location.search, 'url', schemaUrlInput.value);
-    // });
+    $specInput.addEventListener('value-changed', function(e) {
+      schemaUrlInput.value = e.detail.value;
+      location.search = updateQueryStringParameter(location.search, 'url', schemaUrlInput.value);
+    });
 
     function selectItem() {
       let value = this.innerText.trim();
