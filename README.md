@@ -28,7 +28,7 @@
 - Responsive three-panel design with menu/scrolling synchronization
 - Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
 - High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
-- Multiple ReDoc instances on single page ([example](demo/examples/index.html))
+- Multiple ReDoc instances on single page ([example](demo/examples/multiple-apis/index.html))
 
 ## Roadmap
   - [x] performance optimizations
