@@ -747,9 +747,6 @@ definitions:
       - photoUrls
     discriminator: petType
     properties:
-      petType:
-        description: Type of a pet
-        type: string
       id:
         description: Pet ID
         allOf:
@@ -786,6 +783,9 @@ definitions:
           - available
           - pending
           - sold
+      petType:
+        description: Type of a pet
+        type: string
     xml:
       name: Pet
   Tag:

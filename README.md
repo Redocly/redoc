@@ -17,15 +17,18 @@
 
 ## Features
 - Extremely easy deployment
-- It’s free and open-source project under MIT license
-- The widest OpenAPI features support (yes, it supports even `discriminator`)
-- Neat **interactive** documentation for nested objects
-
-<img src="http://i.imgur.com/260gaV4.png" width="500">
-
-- Code samples support (via vendor extension)
+- The widest OpenAPI features support (yes, it supports even `discriminator`) <br>
+![](docs/images/discriminator-demo.gif)
+- Neat **interactive** documentation for nested objects <br>
+![](docs/images/nested-demo.gif)
+- Code samples support (via vendor extension) <br>
+![](docs/images/code-samples-demo.gif)
+- Progressive loading with `lazy-rendering` options <br>
+![](docs/images/progressive-loading-demo.gif)
 - Responsive three-panel design with menu/scrolling synchronization
-- Integrate API introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
+- Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
+- High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
+- Multiple ReDoc instances on single page ([example](demo/examples/index.html))
 
 ## Roadmap
   - [x] performance optimizations
@@ -38,7 +41,7 @@
 We host the latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js **[not for production]**
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js this file is updated with each release of ReDoc and may introduce breaking changes. **Not recommended to use in production.** Use particular release or `v1.x.x`.
 
 ## Deployment
 
