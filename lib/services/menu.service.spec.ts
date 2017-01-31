@@ -11,7 +11,7 @@ import { Hash } from './hash.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
 import { ScrollService  } from './scroll.service';
 import { SchemaHelper } from './schema-helper.service';
-import { SpecManager } from '../utils/spec-manager';;
+import { SpecManager } from '../utils/spec-manager';
 
 describe('Menu service', () => {
   beforeEach(() => {
