@@ -15,7 +15,7 @@ describe('Utils', () => {
 
     it('load should reject promise for invalid url', (done)=> {
       specMgr.load('/nonexisting/schema.json').then(() => {
-        throw new Error('Succees handler should not be called');
+        throw new Error('Success handler should not be called');
       }, () => {
         done();
       });
