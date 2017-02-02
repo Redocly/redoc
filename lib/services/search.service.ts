@@ -83,6 +83,7 @@ export class SearchService {
 
   indexTags(swagger:SwaggerSpec) {
     let tags = swagger.tags;
+    if (!tags) return;
     for (let tag of tags) {
       if (tag['x-traitTag']) continue;
       let id = `tag/${slugify(tag.name)}`;
