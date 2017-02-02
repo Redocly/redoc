@@ -107,10 +107,6 @@ export class MdRenderer {
       return this._origRules.open(tokens, idx);
     } else {
       let content = tokens[idx + 1].content;
-      // if no h1 1st, convert h2 to h1
-      if (this.firstLevelHeadings.length === 0 && tokens[idx].hLevel !== 1 ) {
-        tokens[idx].hLevel = 1;
-      }
       if (tokens[idx].hLevel === 1 ) {
         this.currentTopHeading = this.saveHeading(content);;
         let id = this.currentTopHeading.id;

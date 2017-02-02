@@ -4,20 +4,21 @@ import { MdRenderer } from '../../lib/utils/md-renderer';
 
 describe('Utils', () => {
   describe('Markdown renderer', () => {
-    let mdRender;
+    let mdRender: MdRenderer;
     beforeEach(() => {
       mdRender = new MdRenderer();
     });
-    it('should return a level-1 heading even though level-2 is passed', () => {
+    it('should return a level-1 heading even though only level-2 is present', () => {
       mdRender.renderMd('## Sub Intro');
-      expect(mdRender.firstLevelHeadings.length).toEqual(1);
-      expect(mdRender.firstLevelHeadings).toEqual(['Sub Intro']);
+      Object.keys(mdRender.headings).length.should.be.equal(1);
+      should.exist(mdRender.headings['sub-intro']);
     });
-    it('should return a level-1 heading and a level-2', () => {
+    it('should return a level-2 heading as a child of level-1', () => {
       mdRender.renderMd('# Introduction \n ## Sub Intro');
-      expect(mdRender.firstLevelHeadings.length).toEqual(1);
-      expect(mdRender.firstLevelHeadings).toEqual(['Introduction']);
-      expect(mdRender.secondLevelHeadings).toEqual(['Introduction/Sub Intro']);
+      Object.keys(mdRender.headings).length.should.be.equal(1);
+      should.exist(mdRender.headings['introduction']);
+      should.exist(mdRender.headings['introduction'].children);
+      Object.keys(mdRender.headings['introduction'].children).length.should.be.equal(1);
     });
   });
 });

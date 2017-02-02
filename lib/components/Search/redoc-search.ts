@@ -34,7 +34,8 @@ export class RedocSearch implements OnInit {
     this.items = Object.keys(searchRes).map(id => ({
       menuItem: this.menu.getItemById(id),
       pointers: searchRes[id].map(el => el.pointer)
-    }));
+    })).filter(res => !!res.menuItem);
+
     this.items.sort((a, b) => {
       if (a.menuItem.depth > b.menuItem.depth) return 1;
       else if (a.menuItem.depth < b.menuItem.depth) return -1;
