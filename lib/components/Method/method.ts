@@ -17,6 +17,10 @@ interface MethodInfo {
   bodyParam: any;
   summary: any;
   anchor: any;
+  externalDocs: {
+    url: string;
+    description?: string;
+  }
 }
 
 @Component({
@@ -50,7 +54,8 @@ export class Method extends BaseComponent implements OnInit {
       bodyParam: this.findBodyParam(),
       summary: SchemaHelper.methodSummary(this.componentSchema),
       apiUrl: this.getBaseUrl(),
-      anchor: this.buildAnchor()
+      anchor: this.buildAnchor(),
+      externalDocs: this.componentSchema.externalDocs
     };
   }
 

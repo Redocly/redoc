@@ -107,7 +107,7 @@ export class MenuService {
 
   makeSureLastItemsEnabled() {
     let lastIdx = this.flatItems.length - 1;
-    let item = this.flatItems[lastIdx]
+    let item = this.flatItems[lastIdx];
     while(item && (!item.metadata || !item.items)) {
       item.ready = true;
       item = this.flatItems[lastIdx -= 1];
@@ -357,7 +357,7 @@ export class MenuService {
         name: tag['x-displayName'] || tag.name,
         id: id,
         description: tag.description,
-        metadata: { type: 'tag' },
+        metadata: { type: 'tag', externalDocs: tag.externalDocs },
         parent: parent,
         items: null
       };
