@@ -72,6 +72,7 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 }
 .param-type {
   font-weight: normal;
+  word-break: break-all;
   &.array::before, &.tuple::before {
     color: $black;
     font-weight: $base-font-weight;

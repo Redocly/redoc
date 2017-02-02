@@ -34,6 +34,7 @@
         <div class="tuple-item">
           <span class="tuple-item-index"> [{{idx}}]: </span>
           <json-schema class="nested-schema" [pointer]="item._pointer"
+          [absolutePointer]="item._pointer"
           [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
           </json-schema>
         </div>
@@ -52,12 +53,12 @@
             'discriminator': prop.isDiscriminator,
             'complex': prop._pointer,
             'additional': prop._additional,
-            'expanded': subSchema.visible
+            'expanded': subSchema.open
           }">
           <td class="param-name">
             <span class="param-name-wrap" (click)="subSchema.toggle()">
               <span class="param-name-content">
-                {{prop._name}}
+                {{prop.name}}
                 <span class="param-name-enumvalue" [hidden]="!prop._enumItem"> {{prop._enumItem?.val | json}} </span>
               </span>
               <svg *ngIf="prop._pointer" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
@@ -83,7 +84,7 @@
             </div>
             <div class="param-description" [innerHtml]="prop.description | marked"></div>
             <div class="discriminator-info" *ngIf="prop.isDiscriminator">
-              <drop-down (change)="selectDescendant($event)">
+              <drop-down (change)="selectDescendantByIdx($event)" [active]="activeDescendant.idx">
                 <option *ngFor="let descendant of descendants; let i=index"
                 [value]="i" [attr.selected]="descendant.active ? '' : null" >{{descendant.name}}</option>
               </drop-down>
@@ -92,9 +93,9 @@
         </tr>
         <tr class="param-schema" [ngClass]="{'last': last}" [hidden]="!prop._pointer">
           <td colspan="2">
-            <zippy #subSchema title="Expand" [headless]="true" (open)="lazySchema.load()" [visible]="autoExpand">
-              <json-schema-lazy #lazySchema [auto]="autoExpand" class="nested-schema" [pointer]="prop._pointer"
-              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+            <zippy [attr.disabled]="prop.name" #subSchema title="Expand" [headless]="true" (openChange)="lazySchema.load()" [(open)]="prop.expanded">
+              <json-schema-lazy #lazySchema [auto]="prop.expanded" class="nested-schema" [pointer]="prop._pointer"
+              [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema" absolutePointer="{{absolutePointer}}/properties/{{prop.name}}">
               </json-schema-lazy>
             </zippy>
           </td>

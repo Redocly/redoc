@@ -1,73 +1,31 @@
 const webpack = require('webpack');
 
 const root = require('./helpers').root;
-const VERSION = JSON.stringify(require('../package.json').version);
 
+const webpackMerge = require('webpack-merge'); // used to merge webpack configs
+const commonConfig = require('./webpack.common.js');
 
-module.exports = {
-
+module.exports = webpackMerge(commonConfig({
+  IS_PRODUCTION: true,
+  AOT: false
+}), {
   devtool: 'inline-source-map',
-  performance: { hints: false },
-  resolve: {
-    extensions: ['.ts', '.js', '.json', '.css'],
-    alias: {
-      http: 'stream-http',
-      https: 'stream-http'
-    }
-  },
-  externals: {
-    'jquery': 'jquery',
-    'esprima': 'esprima' // optional dep of ys-yaml not needed for redoc
-  },
-  node: {
-    fs: "empty",
-    crypto: "empty",
-    global: true,
-    process: true,
-    module: false,
-    clearImmediate: false,
-    setImmediate: false
-  },
-
-  output: {
-    path: root('dist'),
-    filename: '[name].js',
-    sourceMapFilename: '[name].map',
-    chunkFilename: '[id].chunk.js'
-  },
 
   module: {
     exprContextCritical: false,
-    rules: [{
-      enforce: 'pre',
-      test: /\.js$/,
-      loader: 'source-map-loader',
-      exclude: [
-        /node_modules/
-      ]
-    },{
+    rules: [
+    {
       test: /\.ts$/,
-      loaders: [
-        'awesome-typescript-loader'
-      ]
-    }, {
+      use: 'awesome-typescript-loader'
+    },
+    {
       test: /\.ts$/,
-      loaders: [
-        'angular2-template-loader'
+      use: [
+        'angular2-template-loader',
       ],
       exclude: [/\.(spec|e2e)\.ts$/]
-    }, {
-      test: /lib[\\\/].*\.css$/,
-      loaders: ['raw-loader'],
-      exclude: [/redoc-initial-styles\.css$/]
-    }, {
-      test: /\.css$/,
-      loaders: ['style-loader', 'css-loader?-import'],
-      exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.css$/]
-    }, {
-      test: /\.html$/,
-      loader: 'raw-loader'
-    }, {
+    },
+    {
       /**
        * Instruments JS files with Istanbul for subsequent code coverage reporting.
        * Instrument only testing sources.
@@ -85,11 +43,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      'IS_PRODUCTION': false,
-      'LIB_VERSION': VERSION,
-      'AOT': 'false'
-    }),
     new webpack.LoaderOptionsPlugin({
 			test: /\.ts$/,
       sourceMap: false,
@@ -106,4 +59,4 @@ module.exports = {
       /(?:[^\\\/]*(?:[\\\/]|$))*[^\\\/]*\.css$/ // ignore css files
     ])
   ],
-}
+})

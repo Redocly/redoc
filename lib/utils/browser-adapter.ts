@@ -14,16 +14,6 @@ export class BrowserDomAdapter {
     return () => { el.removeEventListener(evt, listener, false); };
   }
 
-  static addClass(element: any /** TODO #9100 */, className: string) { element.classList.add(className); }
-
-  static removeClass(element: any /** TODO #9100 */, className: string) {
-    element.classList.remove(className);
-  }
-
-  static hasClass(element: any /** TODO #9100 */, className: string): boolean {
-    return element.classList.contains(className);
-  }
-
   static attributeMap(element: any /** TODO #9100 */): Map<string, string> {
     var res = new Map<string, string>();
     var elAttrs = element.attributes;
@@ -58,16 +48,6 @@ export class BrowserDomAdapter {
   static getAttribute(element: any /** TODO #9100 */, attribute: string): string {
     return element.getAttribute(attribute);
   }
-
-  static setAttribute(element: any /** TODO #9100 */, name: string, value: string) {
-    element.setAttribute(name, value);
-  }
-
-  static removeAttribute(element: any /** TODO #9100 */, attribute: string) {
-    element.removeAttribute(attribute);
-  }
-
-  static getLocation(): Location { return window.location; }
 
   static defaultDoc(): HTMLDocument { return document; }
 }

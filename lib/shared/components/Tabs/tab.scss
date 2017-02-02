@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+.tab-wrap {
+  display: none;
+}
+
+.tab-wrap.active {
+  display: block;
+}

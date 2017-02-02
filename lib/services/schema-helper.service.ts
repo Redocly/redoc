@@ -7,6 +7,7 @@ import * as slugify from 'slugify';
 interface PropertyPreprocessOptions {
   childFor: string;
   skipReadOnly?: boolean;
+  discriminator?: string;
 }
 
 // global var for this module
@@ -214,14 +215,13 @@ export class SchemaHelper {
       let propPointer = propertySchema._pointer ||
         JsonPointer.join(pointer, ['properties', propName]);
       propertySchema = SchemaHelper.preprocess(propertySchema, propPointer);
-      propertySchema._name = propName;
+      propertySchema.name = propName;
       // stop endless discriminator recursion
       if (propertySchema._pointer === opts.childFor) {
         propertySchema._pointer = null;
       }
       propertySchema._required = !!requiredMap[propName];
-      propertySchema.isDiscriminator = (schema.discriminator === propName
-        || schema['x-extendedDiscriminator'] === propName);
+      propertySchema.isDiscriminator = opts.discriminator === propName;
       return propertySchema;
     });
 
@@ -244,7 +244,7 @@ export class SchemaHelper {
     var addProps = schema.additionalProperties;
     let ptr = addProps._pointer || JsonPointer.join(pointer, ['additionalProperties']);
     let res = SchemaHelper.preprocess(addProps, ptr);
-    res._name = '<Additional Properties> *';
+    res.name = '<Additional Properties> *';
     return res;
   }
 

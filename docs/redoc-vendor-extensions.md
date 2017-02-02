@@ -100,7 +100,7 @@ info:
 
 ### Tag Object vendor extensions
 Extends OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
-#### x-traitTag [DEPRECATED]
+#### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-traitTag     | boolean  | In Swagger two operations can have multiply tags. This property distinguish between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |

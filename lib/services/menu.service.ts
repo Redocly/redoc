@@ -8,7 +8,7 @@ import { SpecManager } from '../utils/spec-manager';
 import { SchemaHelper } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
-import { JsonPointer } from '../utils/JsonPointer';
+import { JsonPointer, MarkdownHeading, StringMap } from '../utils/';
 import * as slugify from 'slugify';
 
 
@@ -34,7 +34,7 @@ export interface MenuItem {
   active?: boolean;
   ready?: boolean;
 
-  level?: number;
+  depth?: number;
   flatIdx?: number;
 
   metadata?: any;
@@ -44,6 +44,7 @@ export interface MenuItem {
 @Injectable()
 export class MenuService {
   changed: EventEmitter<any> = new EventEmitter();
+  changedActiveItem: EventEmitter<any> = new EventEmitter();
 
   items: MenuItem[];
   activeIdx: number = -1;
@@ -51,6 +52,7 @@ export class MenuService {
   private _flatItems: MenuItem[];
   private _hashSubscription: Subscription;
   private _scrollSubscription: Subscription;
+  private _progressSubscription: Subscription;
   private _tagsWithMethods: any;
 
   constructor(
@@ -70,6 +72,12 @@ export class MenuService {
     this._hashSubscription =  this.hash.value.subscribe((hash) => {
       this.onHashChange(hash);
     });
+
+    this._progressSubscription = this.tasks.loadProgress.subscribe(progress => {
+      if (progress === 100) {
+        this.makeSureLastItemsEnabled();
+      }
+    });
   }
 
   get flatItems():MenuItem[] {
@@ -87,7 +95,7 @@ export class MenuService {
       idx = item.parent.flatIdx;
     }
 
-    // check if previous items can be enabled
+    // check if previous items§ can be enabled
     let prevItem = this.flatItems[idx -= 1];
     while(prevItem && (!prevItem.metadata || !prevItem.items)) {
       prevItem.ready = true;
@@ -95,6 +103,15 @@ export class MenuService {
     }
 
     this.changed.next();
+  }
+
+  makeSureLastItemsEnabled() {
+    let lastIdx = this.flatItems.length - 1;
+    let item = this.flatItems[lastIdx];
+    while(item && (!item.metadata || !item.items)) {
+      item.ready = true;
+      item = this.flatItems[lastIdx -= 1];
+    }
   }
 
   onScroll(isScrolledDown) {
@@ -135,6 +152,7 @@ export class MenuService {
 
   getEl(flatIdx:number):Element {
     if (flatIdx < 0) return null;
+    if (flatIdx > this.flatItems.length - 1) return null;
     let currentItem = this.flatItems[flatIdx];
     if (!currentItem) return;
     if (currentItem.isGroup) currentItem = this.flatItems[flatIdx + 1];
@@ -154,6 +172,18 @@ export class MenuService {
     }
     selector = selector.trim();
     return selector ? document.querySelector(selector) : null;
+  }
+
+  isTagOrGroupItem(flatIdx: number):boolean {
+    let item = this.flatItems[flatIdx];
+    return item && (item.isGroup || (item.metadata && item.metadata.type === 'tag'));
+  }
+
+  getTagInfoEl(flatIdx: number):Element {
+    if (!this.isTagOrGroupItem(flatIdx)) return null;
+
+    let el = this.getEl(flatIdx);
+    return el && el.querySelector('.tag-info');
   }
 
   getCurrentEl():Element {
@@ -186,7 +216,7 @@ export class MenuService {
       cItem.parent.active = true;
       cItem = cItem.parent;
     }
-    this.changed.next(item);
+    this.changedActiveItem.next(item);
   }
 
   changeActive(offset = 1):boolean {
@@ -236,40 +266,35 @@ export class MenuService {
 
   addMarkdownItems() {
     let schema = this.specMgr.schema;
-    for (let header of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-headers'] || []))) {
-      let id = 'section/' + slugify(header);
+    let headings:StringMap<MarkdownHeading> = schema.info && schema.info['x-redoc-markdown-headers'] || {};
+    Object.keys(headings).forEach(h => {
+      let heading = headings[h];
+      let id = 'section/' + heading.id;
       let item = {
-        name: header,
+        name: heading.title,
         id: id,
         items: null
       };
-      item.items = this.getMarkdownSubheaders(item);
+      item.items = this.getMarkdownSubheaders(item, heading);
 
       this.items.push(item);
-    }
+    });
   }
 
-  getMarkdownSubheaders(parent: MenuItem):MenuItem[] {
+  getMarkdownSubheaders(parent: MenuItem, parentHeading: MarkdownHeading):MenuItem[] {
     let res = [];
 
-    let schema = this.specMgr.schema;
-    for (let subheader of (<Array<string>>(schema.info && schema.info['x-redoc-markdown-subheaders'] || []))) {
-      let parts = subheader.split('/');
-      let header = parts[0];
-      if (parent.name !== header) {
-        continue;
-      }
-
-      let name = parts[1];
-      let id = parent.id + '/' + slugify(name);
+    Object.keys(parentHeading.children || {}).forEach(h => {
+      let heading = parentHeading.children[h];
+      let id = 'section/' + heading.id;
 
       let subItem = {
-        name: name,
+        name: heading.title,
         id: id,
         parent: parent
       };
       res.push(subItem);
-    }
+    });
 
     return res;
   }
@@ -332,7 +357,7 @@ export class MenuService {
         name: tag['x-displayName'] || tag.name,
         id: id,
         description: tag.description,
-        metadata: { type: 'tag' },
+        metadata: { type: 'tag', externalDocs: tag.externalDocs },
         parent: parent,
         items: null
       };
@@ -401,6 +426,10 @@ export class MenuService {
     };
     recursive(menu);
     return res;
+  }
+
+  getItemById(id: string):MenuItem {
+    return this.flatItems.find(item => item.id === id || item.id === `section/${id}`);
   }
 
   destroy() {

@@ -16,7 +16,7 @@ describe('Common components', () => {
   });
   describe('Zippy Component', () => {
     let builder;
-    let component;
+    let component: Zippy;
     let nativeElement;
     let fixture;
 
@@ -33,13 +33,13 @@ describe('Common components', () => {
 
     it('should init component defaults', () => {
       component.empty.should.be.false();
-      component.visible.should.be.false();
+      component.open.should.be.false();
       component.type.should.be.equal('general');
     });
 
     it('should init properties from dom params', () => {
       fixture.detectChanges();
-      component.visible.should.be.true();
+      component.open.should.be.true();
       component.empty.should.be.true();
       component.title.should.be.equal('Zippy');
       component.type.should.be.equal('test');
@@ -54,7 +54,7 @@ describe('Common components', () => {
     it('should open and close zippy', (done) => {
       fixture.detectChanges();
       component.empty = false;
-      component.visible = true;
+      component.open = true;
       fixture.detectChanges();
 
       let testComponent = fixture.debugElement.componentInstance;
@@ -62,13 +62,13 @@ describe('Common components', () => {
       let titleEl = nativeElement.querySelector('.zippy-title');
       mouseclick(titleEl);
       fixture.detectChanges();
-      component.visible.should.be.false();
+      component.open.should.be.false();
       testComponent.opened.should.be.false();
 
       mouseclick(titleEl);
       fixture.detectChanges();
       setTimeout(() => {
-        component.visible.should.be.true();
+        component.open.should.be.true();
         testComponent.opened.should.be.true();
         testComponent.clickCount.should.be.equal(2);
         done();
@@ -95,21 +95,17 @@ describe('Common components', () => {
 @Component({
   selector: 'test-app',
   template:
-      `<zippy title="Zippy" type="test" [visible]="true" [empty]="true" (open)="open()" (close)="close()">test</zippy>`
+      `<zippy title="Zippy" type="test" [open]="true" [empty]="true" (openChange)="open($event)">test</zippy>`
 })
 class TestApp {
   opened: boolean;
   clickCount: number;
   constructor() {
     this.opened = false;
-    this.clickCount = 0;
+    this.clickCount = -1; // initial change detection
   }
-  open() {
-    this.opened = true;
-    this.clickCount++;
-  }
-  close() {
-    this.opened = false;
+  open(val) {
+    this.opened = val;
     this.clickCount++;
   }
 }

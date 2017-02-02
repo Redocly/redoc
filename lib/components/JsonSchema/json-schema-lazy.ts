@@ -1,6 +1,6 @@
 'use strict';
 
-import { Component, ElementRef, ViewContainerRef, OnDestroy, Input,
+import { Component, ElementRef, ViewContainerRef, OnDestroy, OnInit, Input,
   AfterViewInit, ComponentFactoryResolver, Renderer } from '@angular/core';
 
 import { JsonSchema } from './json-schema';
@@ -15,8 +15,9 @@ var cache = {};
   template: '',
   styles: [':host { display:none }']
 })
-export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
+export class JsonSchemaLazy implements OnDestroy, OnInit, AfterViewInit {
   @Input() pointer: string;
+  @Input() absolutePointer: string;
   @Input() auto: boolean;
   @Input() isRequestSchema: boolean;
   @Input() final: boolean = false;
@@ -63,7 +64,8 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
 
       // skip caching view with descendant schemas
       // as it needs attached controller
-      if (!this.disableLazy && (compRef.instance.hasDescendants || compRef.instance._hasSubSchemas)) {
+      let hasDescendants = compRef.instance.descendants && compRef.instance.descendants.length;
+      if (!this.disableLazy && (hasDescendants || compRef.instance._hasSubSchemas)) {
         this._loadAfterSelf();
         return;
       }
@@ -76,6 +78,10 @@ export class JsonSchemaLazy implements OnDestroy, AfterViewInit {
 
   projectComponentInputs(instance:JsonSchema) {
     Object.assign(instance, this);
+  }
+
+  ngOnInit() {
+    if (!this.absolutePointer) this.absolutePointer = this.pointer;
   }
 
   ngAfterViewInit() {

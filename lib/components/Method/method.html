@@ -9,6 +9,7 @@
     <p *ngIf="method.info.description" class="method-description"
     [innerHtml]="method.info.description | marked">
     </p>
+    <redoc-externalDocs [docs]="method.externalDocs"></redoc-externalDocs>
     <params-list pointer="{{pointer}}/parameters"> </params-list>
     <responses-list pointer="{{pointer}}/responses"> </responses-list>
   </div>

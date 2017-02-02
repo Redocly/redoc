@@ -15,7 +15,7 @@ import { BaseComponent } from '../base';
 import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
-import { OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/index';
+import { SearchService, OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 
 @Component({

@@ -6,6 +6,7 @@ declare module "scrollparent"
 declare module "slugify"
 declare module "url"
 declare module "json-pointer";
+declare module "mark.js";
 
 declare module "*.css" {
   const content: string;

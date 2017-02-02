@@ -40,12 +40,17 @@
 
 .menu-content {
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+side-menu {
+  overflow-y: auto;
 }
 
 [sticky-sidebar] {
   width: $side-bar-width;
   background-color: $side-bar-bg-color;
-  overflow-y: auto;
   overflow-x: hidden;
   transform: translateZ(0);
   z-index: 75;

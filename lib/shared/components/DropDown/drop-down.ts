@@ -1,19 +1,16 @@
 'use strict';
 
-import { Component, EventEmitter, ElementRef, Output, AfterContentInit } from '@angular/core';
+import { Component, EventEmitter, ElementRef, Output, Input, AfterContentInit, OnChanges } from '@angular/core';
 import * as DropKick from 'dropkickjs';
 
 @Component({
   selector: 'drop-down',
-  template: `
-    <select (change)=onChange($event.target.value)>
-      <ng-content></ng-content>
-    </select>
-  `,
+  templateUrl: 'drop-down.html',
   styleUrls: ['./drop-down.css']
 })
-export class DropDown implements AfterContentInit {
+export class DropDown implements AfterContentInit, OnChanges {
   @Output() change = new EventEmitter();
+  @Input() active: string;
   elem: any;
   inst: any;
   constructor(elem:ElementRef) {
@@ -26,6 +23,12 @@ export class DropDown implements AfterContentInit {
 
   onChange(value) {
     this.change.next(value);
+  }
+
+  ngOnChanges(ch) {
+    if (ch.active.currentValue) {
+      this.inst && this.inst.select(ch.active.currentValue);
+    }
   }
 
   destroy() {

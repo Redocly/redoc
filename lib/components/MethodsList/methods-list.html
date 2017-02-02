@@ -3,6 +3,7 @@
     <div class="tag-info" *ngIf="tag.name">
       <h1 class="sharable-header"> <a class="share-link" href="#{{tag.id}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
+      <redoc-externalDocs [docs]="tag.metadata.externalDocs"></redoc-externalDocs>
     </div>
     <method *lazyFor="let methodItem of tag.items; let ready = ready;"
     [hidden]="!ready" [pointer]="methodItem.metadata.pointer"

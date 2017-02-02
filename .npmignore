@@ -1,6 +1,6 @@
 .DS_Store
 **/.*
-.tmp
+compiled
 
 node_modules
 jspm_packages

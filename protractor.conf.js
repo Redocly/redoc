@@ -7,7 +7,7 @@ let config = {
   baseUrl: 'http://localhost:3000',
   framework: 'jasmine2',
   onPrepare: function() {
-    var SpecReporter = require('jasmine-spec-reporter');
+    var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
      // add jasmine spec reporter
     jasmine.getEnv().addReporter(new SpecReporter({displaySpecDuration: true}));
     // load APIs.guru list

@@ -1,25 +1,10 @@
 'use strict';
 import { OnInit, OnDestroy } from '@angular/core';
 import { SpecManager } from '../utils/spec-manager';
-
+import { AppStateService } from '../services/app-state.service';
+import { Subscription } from 'rxjs/Subscription';
 
 export { SpecManager };
-
-function snapshot(obj) {
-  if(obj == undefined || typeof(obj) !== 'object') {
-    return obj;
-  }
-
-  var temp = new obj.constructor();
-
-  for(var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      temp[key] = snapshot(obj[key]);
-    }
-  }
-
-  return temp;
-}
 
 /**
  * Generic Component
@@ -64,4 +49,36 @@ export class BaseComponent implements OnInit, OnDestroy {
   destroy() {
     // emtpy
   }
+}
+
+export abstract class BaseSearchableComponent extends BaseComponent implements OnDestroy  {
+  searchSubscription: Subscription;
+  constructor(public specMgr: SpecManager, public app: AppStateService) {
+    super(specMgr);
+  }
+
+  subscribeForSearch() {
+    this.searchSubscription = this.app.searchContainingPointers.subscribe(ptrs => {
+      for (let i = 0; i < ptrs.length; ++i) {
+        if (ptrs[i]) this.ensureSearchIsShown(ptrs[i]);
+      }
+    });
+  }
+
+  preinit() {
+    super.preinit();
+    this.subscribeForSearch();
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
+  /**
+   + Used to destroy component
+   * @abstract
+   */
+  abstract ensureSearchIsShown(ptr: string);
 }

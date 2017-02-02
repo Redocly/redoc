@@ -16,6 +16,7 @@
       <a *ngIf="info.license.url" href="{{info.license.url}}"> {{info.license.name}} </a>
       <span *ngIf="!info.license.url"> {{info.license.name}} </span>
     </span>
+    <redoc-externalDocs [docs]="componentSchema.externalDocs"></redoc-externalDocs>
   </p>
   <span class="redoc-markdown-block">
     <dynamic-ng2-viewer  [html]="info['x-redoc-html-description']"></dynamic-ng2-viewer>

@@ -676,6 +676,13 @@ definitions:
         description: Category name
         type: string
         minLength: 1
+      sub:
+        description: Test Sub Category
+        type: object
+        properties:
+          prop1:
+            type: string
+            description: Dumb Property
     xml:
       name: Category
   Dog:
@@ -747,9 +754,6 @@ definitions:
       - photoUrls
     discriminator: petType
     properties:
-      petType:
-        description: Type of a pet
-        type: string
       id:
         description: Pet ID
         allOf:
@@ -786,6 +790,9 @@ definitions:
           - available
           - pending
           - sold
+      petType:
+        description: Type of a pet
+        type: string
     xml:
       name: Pet
   Tag:

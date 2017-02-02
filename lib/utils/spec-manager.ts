@@ -7,8 +7,17 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { MdRenderer } from './md-renderer';
 
+import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
+
 function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
+}
+
+export interface DescendantInfo {
+  $ref: string;
+  name: string;
+  active?: boolean;
+  idx?: number;
 }
 
 export class SpecManager {
@@ -75,8 +84,7 @@ export class SpecManager {
       mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
     }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
-    this._schema.info['x-redoc-markdown-headers'] = mdRender.firstLevelHeadings;
-    this._schema.info['x-redoc-markdown-subheaders'] = mdRender.secondLevelHeadings;
+    this._schema.info['x-redoc-markdown-headers'] = mdRender.headings;
   }
 
   get schema() {
@@ -114,9 +122,9 @@ export class SpecManager {
     return obj;
   }
 
-  getMethodParams(methodPtr, resolveRefs) {
+  getMethodParams(methodPtr:string):SwaggerParameter[] {
     /* inject JsonPointer into array elements */
-    function injectPointers(array, root) {
+    function injectPointers(array:SwaggerParameter[], root) {
       if (!Array.isArray(array)) {
         throw new Error(`parameters must be an array. Got ${typeof array} at ${root}`);
       }
@@ -133,17 +141,16 @@ export class SpecManager {
 
     //get path params
     let pathParamsPtr = JsonPointer.join(JsonPointer.dirName(methodPtr), ['parameters']);
-    let pathParams = this.byPointer(pathParamsPtr) || [];
+    let pathParams:SwaggerParameter[] = this.byPointer(pathParamsPtr) || [];
 
     let methodParamsPtr = JsonPointer.join(methodPtr, ['parameters']);
-    let methodParams = this.byPointer(methodParamsPtr) || [];
+    let methodParams:SwaggerParameter[] = this.byPointer(methodParamsPtr) || [];
     pathParams = injectPointers(pathParams, pathParamsPtr);
     methodParams = injectPointers(methodParams, methodParamsPtr);
 
-    if (resolveRefs) {
-      methodParams = this.resolveRefs(methodParams);
-      pathParams = this.resolveRefs(pathParams);
-    }
+    // resolve references
+    methodParams = this.resolveRefs(methodParams);
+    pathParams = this.resolveRefs(pathParams);
     return methodParams.concat(pathParams);
   }
 
@@ -155,21 +162,18 @@ export class SpecManager {
         description: tag.description,
         'x-traitTag': tag['x-traitTag'] || false
       };
-      if (tag['x-traitTag']) {
-        console.warn(`x-traitTag (${tag.name}) is deprecated since v1.5.0 and will be removed in the future`);
-      }
     }
 
     return tagsMap;
   }
 
-  findDerivedDefinitions(defPointer, schema) {
+  findDerivedDefinitions(defPointer: string, schema): DescendantInfo[] {
     let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
 
     let globalDefs = this._schema.definitions || {};
-    let res = [];
+    let res:DescendantInfo[] = [];
     let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
     for (let defName of Object.keys(globalDefs)) {
       let def = globalDefs[defName];
@@ -206,7 +210,7 @@ export class SpecManager {
     return res;
   }
 
-  getDescendant(descendant, componentSchema) {
+  getDescendant(descendant:DescendantInfo, componentSchema:any) {
     let res;
     if (!getDiscriminator(componentSchema) && componentSchema.allOf) {
       // discriminator inherited from parents
