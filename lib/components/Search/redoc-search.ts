@@ -1,6 +1,7 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, HostBinding } from '@angular/core';
 import { Marker, SearchService, MenuService, MenuItem } from '../../services/';
+import { throttle } from '../../utils/';
 
 @Component({
   selector: 'redoc-search',
@@ -11,6 +12,8 @@ import { Marker, SearchService, MenuService, MenuItem } from '../../services/';
 export class RedocSearch implements OnInit {
   logo:any = {};
   items: { menuItem: MenuItem, pointers: string[] }[] = [];
+  searchTerm = '';
+  throttledSearch: Function;
 
   _subscription;
 
@@ -23,14 +26,36 @@ export class RedocSearch implements OnInit {
       cdr.markForCheck();
       cdr.detectChanges();
     });
+
+    this.throttledSearch = throttle(() => {
+      this.updateSearch();
+      cdr.markForCheck();
+      cdr.detectChanges();
+    }, 300, this);
   }
 
   init() {
     this.search.indexAll();
   }
 
-  update(val) {
-    let searchRes = this.search.search(val);
+  update(event:KeyboardEvent, val) {
+    if (event && event.keyCode === 27) { // escape
+      this.searchTerm = '';
+    } else {
+      this.searchTerm = val;
+    }
+
+    this.throttledSearch();
+  }
+
+  updateSearch() {
+    if (!this.searchTerm || this.searchTerm.length < 2) {
+      this.items = [];
+      this.marker.unmark();
+      return;
+    }
+
+    let searchRes = this.search.search(this.searchTerm);
     this.items = Object.keys(searchRes).map(id => ({
       menuItem: this.menu.getItemById(id),
       pointers: searchRes[id].map(el => el.pointer)
@@ -41,7 +66,7 @@ export class RedocSearch implements OnInit {
       else if (a.menuItem.depth < b.menuItem.depth) return -1;
       else return 0;
     });
-    this.marker.mark(val);
+    this.marker.mark(this.searchTerm);
   }
 
   clickSearch(item) {

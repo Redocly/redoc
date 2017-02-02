@@ -200,12 +200,19 @@ export class SearchService {
       }
     }
 
-    this.index({
-      pointer: absolutePointer,
-      menuId: menuPointer,
-      title,
-      body
-    });
+    if (schema.type === 'string' && schema.enum) {
+      body += ' ' + schema.enum.join(' ');
+    }
+
+    if (!parent) {
+      // redoc doesn't display top level descriptions and titles
+      this.index({
+        pointer: absolutePointer,
+        menuId: menuPointer,
+        title,
+        body
+      });
+    }
 
     if (schema.properties) {
       Object.keys(schema.properties).forEach(propName => {

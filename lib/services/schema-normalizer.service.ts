@@ -199,7 +199,6 @@ class SchemaDereferencer {
 
   dereference(schema: Reference, pointer:string):any {
     if (!schema || !schema.$ref) return schema;
-    window['derefCount'] = window['derefCount'] ? window['derefCount'] + 1 : 1;
     let $ref = schema.$ref;
     let resolved = this._spec.byPointer($ref);
     if (!this._refCouner.visited($ref)) {
