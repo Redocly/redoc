@@ -99,10 +99,15 @@ function eachNth(obj, n) {
   return res;
 }
 
+function getInnerHtml(locator) {
+  return browser.executeScript("return arguments[0].innerHTML;", $(locator));
+}
+
 module.exports = {
   loadJson: loadJson,
   verifyNoBrowserErrors: verifyNoBrowserErrors,
   scrollToEl: scrollToEl,
   fixFFTest: fixFFTest,
-  eachNth: eachNth
+  eachNth: eachNth,
+  getInnerHtml: getInnerHtml
 }
