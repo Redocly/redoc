@@ -52,6 +52,7 @@ export class MenuService {
   private _flatItems: MenuItem[];
   private _hashSubscription: Subscription;
   private _scrollSubscription: Subscription;
+  private _progressSubscription: Subscription;
   private _tagsWithMethods: any;
 
   constructor(
@@ -71,6 +72,12 @@ export class MenuService {
     this._hashSubscription =  this.hash.value.subscribe((hash) => {
       this.onHashChange(hash);
     });
+
+    this._progressSubscription = this.tasks.loadProgress.subscribe(progress => {
+      if (progress === 100) {
+        this.makeSureLastItemsEnabled();
+      }
+    });
   }
 
   get flatItems():MenuItem[] {
@@ -88,7 +95,7 @@ export class MenuService {
       idx = item.parent.flatIdx;
     }
 
-    // check if previous items can be enabled
+    // check if previous items§ can be enabled
     let prevItem = this.flatItems[idx -= 1];
     while(prevItem && (!prevItem.metadata || !prevItem.items)) {
       prevItem.ready = true;
@@ -96,6 +103,15 @@ export class MenuService {
     }
 
     this.changed.next();
+  }
+
+  makeSureLastItemsEnabled() {
+    let lastIdx = this.flatItems.length - 1;
+    let item = this.flatItems[lastIdx]
+    while(item && (!item.metadata || !item.items)) {
+      item.ready = true;
+      item = this.flatItems[lastIdx -= 1];
+    }
   }
 
   onScroll(isScrolledDown) {
