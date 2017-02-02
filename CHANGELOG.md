@@ -1,3 +1,16 @@
+# 1.8.0 (2017-02-03)
+### Features/Improvements
+* In-page search :tada: []#51](https://github.com/Rebilly/ReDoc/issues/51)
+* Render externalDocs [#103](https://github.com/Rebilly/ReDoc/issues/103)
+* Undeprecate x-traitTag
+
+### Bug fixes
+* Tags with x-traitTag: true are now greyed out in ReDoc output bug [#194](https://github.com/Rebilly/ReDoc/issues/194)
+* CSS: request body model-tree wrapping problem [#185](https://github.com/Rebilly/ReDoc/issues/185)
+* Strange request to `example.com` causing CSP error [#178](https://github.com/Rebilly/ReDoc/issues/178)
+* Fix latest empty menu-items not getting active [#194](https://github.com/Rebilly/ReDoc/issues/194)
+* Fixed crash when level-2 heading goes before level-1 in description [#179](https://github.com/Rebilly/ReDoc/issues/179) (by [@jsmartfo](https://github.com/jsmartfo))
+
 # 1.7.0 (2017-01-06)
 ### Features/Improvements
 * Add support for grouping items in menu via [`x-tagGroups`](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md#x-taggroups)
