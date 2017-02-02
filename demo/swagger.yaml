@@ -677,12 +677,12 @@ definitions:
         type: string
         minLength: 1
       sub:
-        description: test sub Category
+        description: Test Sub Category
         type: object
         properties:
           prop1:
             type: string
-            description: The best prop1
+            description: Dumb Property
     xml:
       name: Category
   Dog:
