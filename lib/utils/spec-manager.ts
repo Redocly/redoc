@@ -162,9 +162,6 @@ export class SpecManager {
         description: tag.description,
         'x-traitTag': tag['x-traitTag'] || false
       };
-      if (tag['x-traitTag']) {
-        console.warn(`x-traitTag (${tag.name}) is deprecated since v1.5.0 and will be removed in the future`);
-      }
     }
 
     return tagsMap;
