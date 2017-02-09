@@ -31,8 +31,8 @@
 - Multiple ReDoc instances on single page ([example](demo/examples/multiple-apis/index.html))
 
 ## Roadmap
-  - [x] performance optimizations
-  - [ ] better navigation (menu improvements + search)
+  - [x] ~~performance optimizations~~
+  - [x] ~~better navigation (menu improvements + search)~~
   - [ ] ability to simple branding/styling
   - [ ] built-in API Console
   - [ ] docs pre-rendering (performance and SEO)
