@@ -5,7 +5,7 @@ import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';
 
 interface PropertyPreprocessOptions {
-  childFor: string;
+  childFor?: string;
   skipReadOnly?: boolean;
   discriminator?: string;
 }
@@ -54,6 +54,7 @@ const injectors = {
       return propertySchema.type === 'array' && !Array.isArray(propertySchema.items);
     },
     inject: (injectTo, propertySchema = injectTo, propPointer) => {
+      if (!propertySchema.items) propertySchema.items = {};
       if (!(SchemaHelper.detectType(propertySchema.items) === 'object')) {
         injectTo._isArray = true;
         injectTo._pointer = propertySchema.items._pointer
@@ -207,7 +208,11 @@ export class SchemaHelper {
   static preprocessProperties(schema:any, pointer:string, opts: PropertyPreprocessOptions) {
     let requiredMap = {};
     if (schema.required) {
-      schema.required.forEach(prop => requiredMap[prop] = true);
+      if (Array.isArray(schema.required)) {
+        schema.required.forEach(prop => requiredMap[prop] = true);
+      } else {
+        WarningsService.warn(`required must be an array: "${typeof schema.required}" found at ${pointer}`);
+      }
     }
 
     let props = schema.properties && Object.keys(schema.properties).map(propName => {

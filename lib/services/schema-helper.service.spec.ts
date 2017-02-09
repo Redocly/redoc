@@ -17,4 +17,19 @@ describe('Spec Helper', () => {
       (<jasmine.Spy>console.warn).and.callThrough();
     });
   });
+
+  describe('preprocessProperties', () => {
+    it('should not throw when type array and items are not defined', () => {
+      let schema = {
+        type: 'object',
+        properties: {
+          prop1: {
+            type: 'array'
+          }
+        }
+      };
+
+      (() => SchemaHelper.preprocessProperties(schema, '#/', {})).should.not.throw();
+    });
+  });
 });
