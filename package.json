@@ -108,6 +108,7 @@
     "zone.js": "^0.7.2"
   },
   "dependencies": {
+    "@types/webpack": "^2.2.5",
     "dropkickjs": "^2.1.10",
     "hint.css": "^2.3.2",
     "json-pointer": "^0.6.0",
