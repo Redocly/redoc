@@ -67,7 +67,7 @@ export class SpecManager {
     }
 
     let host = this._schema.host || urlParts.host;
-    this.basePath = this._schema.basePath || '/';
+    this.basePath = this._schema.basePath || '';
     this.apiUrl = protocol + '://' + host + this.basePath;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);

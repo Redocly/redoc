@@ -63,6 +63,13 @@ describe('Utils', () => {
         specMgr.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
       });
 
+      it('should use empty basePath when basePath is not present', () => {
+        specMgr._schema.basePath = undefined;
+        specMgr._url = 'https://petstore.swagger.io';
+        specMgr.init();
+        specMgr.basePath.should.be.equal('');
+      });
+
       describe('byPointer method', () => {
         it('should return correct schema part', ()=> {
           let part = specMgr.byPointer('/tags/0');
