@@ -51,8 +51,6 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   private $resourcesNav: any;
   private $scrollParent: any;
 
-  private firstChange = true;
-
   constructor(specMgr:SpecManager, elementRef:ElementRef,
   private scrollService:ScrollService, private menuService:MenuService,
   optionsService:OptionsService, private detectorRef:ChangeDetectorRef, private marker:Marker) {
@@ -84,15 +82,12 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
 
     //safari doesn't update bindings if not run changeDetector manually :(
     this.detectorRef.detectChanges();
-    if (this.firstChange) {
-      this.scrollActiveIntoView();
-      this.firstChange = false;
-    }
+    this.scrollActiveIntoView();
   }
 
   scrollActiveIntoView() {
     let $item = this.$element.querySelector('li.active, label.active');
-    if ($item) $item.scrollIntoView();
+    if ($item) $item.scrollIntoViewIfNeeded();
   }
 
   activateAndScroll(item) {
