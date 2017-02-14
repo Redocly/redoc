@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MdRenderer } from './md-renderer';
 
 import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
+import { snapshot } from './helpers';
 
 function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
@@ -37,7 +38,7 @@ export class SpecManager {
         if (typeof urlOrObject === 'string') {
           this._url = urlOrObject;
         }
-        this._schema = schema;
+        this._schema = snapshot(schema);
         try {
           this.init();
           resolve(this._schema);
