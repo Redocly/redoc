@@ -11,6 +11,7 @@
     "noEmitHelpers": true,
     "strictNullChecks": false,
     "baseUrl": "./src",
+    "typeRoots": [ "./node_modules/@types" ],
     "paths": {
     },
     "lib": [
