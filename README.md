@@ -43,6 +43,14 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js this file is updated with each release of ReDoc and may introduce breaking changes. **Not recommended to use in production.** Use particular release or `v1.x.x`.
 
+## Some Real-life usages
+- [Rebilly](https://rebilly.github.io/RebillyAPI)
+- [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
+- [Zuora](https://www.zuora.com/developer/api-reference/)
+- [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
+- [Discourse](https://docs.discourse.org)
+- [APIs.guru](https://apis.guru/api-doc/)
+
 ## Deployment
 
 ### TL;DR
