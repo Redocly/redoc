@@ -64,6 +64,7 @@ const injectors = {
       } else {
         injectors.object.inject(injectTo, propertySchema.items);
       }
+      if (!injectTo.description) injectTo.description = propertySchema.items.description;
       injectTo._widgetType = 'array';
     }
   },
