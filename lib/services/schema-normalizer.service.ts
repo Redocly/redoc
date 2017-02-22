@@ -29,7 +29,7 @@ export class SchemaNormalizer {
 
     if (opts.childFor) this._dereferencer.visit(opts.childFor);
     if (schema['x-redoc-normalized']) return schema;
-      let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
+    let res = SchemaWalker.walk(schema, ptr, (subSchema, ptr) => {
       let resolved = this._dereferencer.dereference(subSchema, ptr);
       if (resolved.allOf) {
         resolved._pointer = resolved._pointer || ptr;

@@ -6,7 +6,7 @@ import { Input, HostBinding, Component, OnChanges } from '@angular/core';
   template: `
   <span [style.width]='progress + "%"'> </span>
   `,
-  styleUrls: ['loading-bar.scss']
+  styleUrls: ['loading-bar.css']
 })
 export class LoadingBar implements OnChanges {
   @Input() progress:number = 0;

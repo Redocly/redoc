@@ -68,7 +68,7 @@
           </td>
           <td class="param-info">
             <div>
-              <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint, 'tuple': prop._isTuple}"
+              <span class="param-type {{prop.type}}" [ngClass]="{'with-hint': prop._displayTypeHint, 'tuple': prop._isTuple, 'array': prop._isArray}"
               title="{{prop._displayTypeHint}}"> {{prop._displayType}} {{prop._displayFormat}}
               <span class="param-range" *ngIf="prop._range"> {{prop._range}} </span>
               </span>

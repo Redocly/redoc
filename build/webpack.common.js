@@ -87,7 +87,11 @@ module.exports = function (options) {
         },
         {
           test: /\.scss$/,
-          loaders: ['style-loader', 'css-loader?-import', "sass-loader"],
+          use: [
+            'style-loader',
+            'css-loader?-import',
+            'sass-loader'
+          ],
           exclude: [/lib[\\\/](?!.*redoc-initial-styles).*\.scss$/]
         },
         {

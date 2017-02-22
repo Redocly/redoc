@@ -16,6 +16,10 @@ li {
   cursor: pointer;
 }
 
+li /deep/ .redoc-markdown-block p {
+  display: inline;
+}
+
 .tab-success, .tab-error, .tab-redirect, .tab-info {
   &:before {
     content: "";
