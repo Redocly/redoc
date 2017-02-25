@@ -7,8 +7,7 @@ import { OptionsService } from '../../services/';
 
 
 interface MethodInfo {
-  apiUrl: string;
-  httpMethod: string;
+  verb: string;
   path: string;
   info: {
     tags: string[];
@@ -45,7 +44,7 @@ export class Method extends BaseComponent implements OnInit {
     this.operationId = this.componentSchema.operationId;
 
     this.method = {
-      httpMethod: JsonPointer.baseName(this.pointer),
+      verb: JsonPointer.baseName(this.pointer),
       path: JsonPointer.baseName(this.pointer, 2),
       info: {
         description: this.componentSchema.description,
@@ -53,7 +52,6 @@ export class Method extends BaseComponent implements OnInit {
       },
       bodyParam: this.findBodyParam(),
       summary: SchemaHelper.methodSummary(this.componentSchema),
-      apiUrl: this.getBaseUrl(),
       anchor: this.buildAnchor(),
       externalDocs: this.componentSchema.externalDocs
     };
@@ -64,14 +62,6 @@ export class Method extends BaseComponent implements OnInit {
       return 'operation/' + encodeURIComponent(this.componentSchema.operationId);
     } else {
       return this.parentTagId + encodeURIComponent(this.pointer);
-    }
-  }
-
-  getBaseUrl():string {
-    if (this.optionsService.options.hideHostname) {
-      return this.specMgr.basePath;
-    } else {
-      return this.specMgr.apiUrl;
     }
   }
 

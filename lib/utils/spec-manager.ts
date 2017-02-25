@@ -24,10 +24,12 @@ export interface DescendantInfo {
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
+  public apiProtocol: string;
+  public swagger: string;
   public basePath: string;
 
   public spec = new BehaviorSubject<any|null>(null);
-  private _url: string;
+  public _specUrl: string;
   private parser: any;
 
   load(urlOrObject: string|Object) {
@@ -36,7 +38,7 @@ export class SpecManager {
       this.parser.bundle(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
         if (typeof urlOrObject === 'string') {
-          this._url = urlOrObject;
+          this._specUrl = urlOrObject;
         }
         this._schema = snapshot(schema);
         try {
@@ -54,7 +56,7 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
-    let urlParts = this._url ? urlParse(urlResolve(window.location.href, this._url)) : {};
+    let urlParts = this._specUrl ? urlParse(urlResolve(window.location.href, this._specUrl)) : {};
     let schemes = this._schema.schemes;
     let protocol;
     if (!schemes || !schemes.length) {
@@ -70,6 +72,7 @@ export class SpecManager {
     let host = this._schema.host || urlParts.host;
     this.basePath = this._schema.basePath || '';
     this.apiUrl = protocol + '://' + host + this.basePath;
+    this.apiProtocol = protocol;
     if (this.apiUrl.endsWith('/')) {
       this.apiUrl = this.apiUrl.substr(0, this.apiUrl.length - 1);
     }
@@ -79,6 +82,9 @@ export class SpecManager {
 
   preprocess() {
     let mdRender = new MdRenderer();
+    if (!this._schema.info) {
+      throw 'Required field "info" is not specified at the spec top level';
+    }
     if (!this._schema.info.description) this._schema.info.description = '';
     if (this._schema.securityDefinitions) {
       let SecurityDefinitions =  require('../components/').SecurityDefinitions;
@@ -168,7 +174,7 @@ export class SpecManager {
     return tagsMap;
   }
 
-  findDerivedDefinitions(defPointer: string, schema): DescendantInfo[] {
+  findDerivedDefinitions(defPointer: string, schema?: any): DescendantInfo[] {
     let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];

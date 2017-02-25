@@ -1,0 +1,101 @@
+@import '../../shared/styles/variables';
+
+:host {
+  display: block;
+  position: relative;
+  cursor: pointer;
+}
+
+.method-endpoint {
+  padding: 10px 20px;
+  border-radius: $border-radius*2;
+  background-color: darken($black, 2%);
+  display: block;
+  font-weight: $light;
+  white-space: nowrap;
+  overflow-x: auto;
+  border: 1px solid transparent;
+}
+
+.method-endpoint > .method-params-subheader {
+  padding-top: 1px;
+  padding-bottom: 0;
+  margin: 0;
+  font-size: 12/14em;
+  color: $black;
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: $border-radius;
+}
+
+.method-api-url {
+  color: rgba($black, .8);
+  &-path {
+    font-family: $headers-font, $headers-font-family;
+    position: relative;
+    top: 1px;
+    color: #ffffff;
+    margin-left: 10px;
+  }
+}
+
+.http-verb {
+  color: $black;
+  background: #ffffff;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin: 0;
+}
+
+.servers-overlay {
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  background: $side-bar-bg-color;
+  color: $black;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.33);
+  overflow: hidden;
+  border-bottom-left-radius: $border-radius*2;
+  border-bottom-right-radius: $border-radius*2;
+}
+
+.server-item {
+  padding: 10px;
+  //margin-bottom: 10px;
+
+  & > .url {
+    padding: 5px;
+    border: 1px solid $border-color;
+    background: $background-color;
+    word-break: break-all;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.expand-icon {
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  float: right;
+  margin-top: 2px;
+  background: darken($black, 2%);
+  transform: rotateZ(0);
+  transition: all 0.2s ease;
+}
+
+:host.expanded {
+  > .method-endpoint {
+    border-color: $side-bar-bg-color;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .expand-icon {
+    transform: rotateZ(180deg);
+  }
+}

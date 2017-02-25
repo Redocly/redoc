@@ -79,6 +79,11 @@ securityDefinitions:
     type: apiKey
     name: api_key
     in: header
+x-servers:
+  - url: //petstore.swagger.io/v2
+    description: Default server
+  - url: //petstore.swagger.io/sandbox
+    description: Sandbox server
 paths:
   /pet:
     post:
