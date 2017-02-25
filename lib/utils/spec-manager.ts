@@ -83,7 +83,7 @@ export class SpecManager {
   preprocess() {
     let mdRender = new MdRenderer();
     if (!this._schema.info) {
-      throw 'Required field "info" is not specified at the spec top level';
+      throw Error('Specification Error: Required field "info" is not specified at the top level of the specification');
     }
     if (!this._schema.info.description) this._schema.info.description = '';
     if (this._schema.securityDefinitions) {
