@@ -13,7 +13,6 @@ const OPTION_NAMES = new Set([
   'disableLazySchemas',
   'specUrl',
   'suppressWarnings',
-  'hideHostname',
   'lazyRendering',
   'expandResponses'
 ]);
@@ -23,7 +22,6 @@ interface Options {
   disableLazySchemas?: boolean;
   specUrl?: string;
   suppressWarnings?: boolean;
-  hideHostname?: boolean;
   lazyRendering?: boolean;
   expandResponses?: Set<string> | 'all';
   $scrollParent?: HTMLElement | Window;
@@ -89,7 +87,6 @@ export class OptionsService {
 
     if (isString(this._options.disableLazySchemas)) this._options.disableLazySchemas = true;
     if (isString(this._options.suppressWarnings)) this._options.suppressWarnings = true;
-    if (isString(this._options.hideHostname)) this._options.hideHostname = true;
     if (isString(this._options.lazyRendering)) this._options.lazyRendering = true;
     if (isString(this._options.expandResponses)) {
       let str = this._options.expandResponses as string;
