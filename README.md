@@ -136,6 +136,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
   * **function**: A getter function. Must return a number representing the offset (in pixels);
 * `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
 * `lazy-rendering` - if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\rebilly.github.io/ReDoc) for the example.
+* `hide-hostname` - if set, the protocol and hostname is not shown in the method definition.
 * `expand-responses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expand-responses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 
 ## Advanced usage

@@ -2,6 +2,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, HostListener, HostBinding} from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { trigger, state, animate, transition, style } from '@angular/core';
+import { OptionsService } from '../../services/';
 
 export interface ServerInfo {
   description: string;
@@ -38,7 +39,7 @@ export class EndpointLink implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  constructor(public specMgr:SpecManager) {
+  constructor(public specMgr:SpecManager, public optionsService: OptionsService) {
     this.expanded = false;
   }
 
@@ -60,7 +61,11 @@ export class EndpointLink implements OnInit {
   }
 
   getBaseUrl():string {
-    return this.specMgr.apiUrl;
+    if (this.optionsService.options.hideHostname) {
+      return '';
+    } else {
+      return this.specMgr.apiUrl;
+    }
   }
 
   ngOnInit() {
