@@ -151,19 +151,21 @@ const injectors = {
       var range;
       if (propertySchema.minLength != undefined && propertySchema.maxLength != undefined) {
         if (propertySchema.minLength === propertySchema.maxLength) {
-          range = `${propertySchema.minLength}`;
+          range = `${propertySchema.minLength} characters`;
         } else {
-          range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
+          range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ] characters`;
         }
       } else if (propertySchema.maxLength != undefined) {
-        range = '<= ' + propertySchema.maxLength;
+        range = `<= ${propertySchema.maxLength} characters`;
       } else if (propertySchema.minLength != undefined) {
-        range = '>= ' + propertySchema.minLength;
+        if (propertySchema.minLength === 1) {
+          range = 'non-empty';
+        } else {
+          range = `>= ${propertySchema.minLength} characters`;
+        }
       }
 
-      if (range) {
-        injectTo._range = range + ' characters';
-      }
+      injectTo._range = range;
     }
   },
   file: {

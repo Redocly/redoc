@@ -59,6 +59,16 @@ describe('Spec Helper', () => {
         SchemaHelper.runInjectors(schema, schema, '#/');
         schema._range.should.be.equal('5 characters');
       });
+
+      it('should show range as non-empty for minLength == 1', () => {
+        let schema:any = {
+          type: 'string',
+          minLength: 1
+        };
+
+        SchemaHelper.runInjectors(schema, schema, '#/');
+        schema._range.should.be.equal('non-empty');
+      });
     });
   });
 
