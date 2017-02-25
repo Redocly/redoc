@@ -121,6 +121,5 @@
     "webpack-dev-server": "^2.4.1",
     "webpack-merge": "^3.0.0",
     "zone.js": "^0.7.7"
-  },
-  "dependencies": {}
+  }
 }
