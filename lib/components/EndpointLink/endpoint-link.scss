@@ -7,13 +7,14 @@
 }
 
 .method-endpoint {
-  padding: 10px 20px;
+  padding: 10px 30px 10px 20px;
   border-radius: $border-radius*2;
   background-color: darken($black, 2%);
   display: block;
   font-weight: $light;
   white-space: nowrap;
-  overflow-x: auto;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
   border: 1px solid transparent;
 }
 
@@ -82,10 +83,12 @@
   width: 20px;
   display: inline-block;
   float: right;
-  margin-top: 2px;
   background: darken($black, 2%);
   transform: rotateZ(0);
   transition: all 0.2s ease;
+  top: 15px;
+  right: 5px;
+  position: absolute;
 }
 
 :host.expanded {
