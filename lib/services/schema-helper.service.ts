@@ -150,7 +150,11 @@ const injectors = {
     inject: (injectTo, propertySchema = injectTo) => {
       var range;
       if (propertySchema.minLength != undefined && propertySchema.maxLength != undefined) {
-        range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
+        if (propertySchema.minLength === propertySchema.maxLength) {
+          range = `${propertySchema.minLength}`;
+        } else {
+          range = `[ ${propertySchema.minLength} .. ${propertySchema.maxLength} ]`;
+        }
       } else if (propertySchema.maxLength != undefined) {
         range = '<= ' + propertySchema.maxLength;
       } else if (propertySchema.minLength != undefined) {

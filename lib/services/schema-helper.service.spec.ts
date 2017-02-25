@@ -16,6 +16,50 @@ describe('Spec Helper', () => {
       expect(console.warn).toHaveBeenCalled();
       (<jasmine.Spy>console.warn).and.callThrough();
     });
+
+    describe('string', () => {
+      it('should calculate range for string with maxLength', () => {
+        let schema:any = {
+          type: 'string',
+          maxLength: 3
+        };
+
+        SchemaHelper.runInjectors(schema, schema, '#/');
+        schema._range.should.be.equal('<= 3 characters');
+      });
+
+      it('should calculate range for string with minLength', () => {
+        let schema:any = {
+          type: 'string',
+          minLength: 3,
+        };
+
+        SchemaHelper.runInjectors(schema, schema, '#/');
+        schema._range.should.be.equal('>= 3 characters');
+      });
+
+      it('should calculate range for string with both max and minLength', () => {
+        let schema:any = {
+          type: 'string',
+          minLength: 3,
+          maxLength: 5
+        };
+
+        SchemaHelper.runInjectors(schema, schema, '#/');
+        schema._range.should.be.equal('[ 3 .. 5 ] characters');
+      });
+
+      it('should calculate range for string with equal max and minLength', () => {
+        let schema:any = {
+          type: 'string',
+          minLength: 5,
+          maxLength: 5
+        };
+
+        SchemaHelper.runInjectors(schema, schema, '#/');
+        schema._range.should.be.equal('5 characters');
+      });
+    });
   });
 
   describe('preprocessProperties', () => {
