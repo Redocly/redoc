@@ -19,7 +19,7 @@ describe('Redoc components', () => {
   });
   describe('Method Component', () => {
     let builder;
-    let component;
+    let component: Method;
     let specMgr;
 
     beforeEach(async(inject([SpecManager, LazyTasksService], (_specMgr, lazyTasks) => {
@@ -43,8 +43,7 @@ describe('Redoc components', () => {
     });
 
     it('should init basic component data', () => {
-      component.method.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
-      component.method.httpMethod.should.be.equal('put');
+      component.method.verb.should.be.equal('put');
       component.method.path.should.be.equal('/user/{username}');
     });
 

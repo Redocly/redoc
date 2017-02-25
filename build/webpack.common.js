@@ -82,7 +82,7 @@ module.exports = function (options) {
         },
         {
           test: /lib[\\\/].*\.scss$/,
-          loaders: ['raw-loader', "sass-loader"],
+          loaders: ['raw-loader', 'sass-loader'],
           exclude: [/redoc-initial-styles\.scss$/]
         },
         {
@@ -110,7 +110,9 @@ module.exports = function (options) {
         'AOT': options.AOT
       }),
 
-      new StringReplacePlugin()
+      new StringReplacePlugin(),
+      new webpack.NormalModuleReplacementPlugin(/node_modules\/rxjs\/operator\/.*/, root('build/empty.js')),
+      new webpack.NormalModuleReplacementPlugin(/node_modules\/rxjs\/testing\//, root('build/empty.js'))
     ],
     node: {
       global: true,

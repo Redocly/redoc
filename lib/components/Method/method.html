@@ -16,12 +16,7 @@
   <div class="method-samples">
     <h4 class="method-params-subheader">Definition</h4>
 
-    <div class="method-endpoint">
-      <h5 class="http-method" [ngClass]="method.httpMethod">{{method.httpMethod}}</h5>
-      <span select-on-click><!--
-      --><span class="method-api-url">{{method.apiUrl}}</span><span class="method-api-url-path">{{method.path}}</span><!--
-  --></span>
-    </div>
+    <endpoint-link [verb]="method.verb" [path]="method.path"> </endpoint-link>
 
     <div>
         <request-samples [pointer]="pointer" [schemaPointer]="method.bodyParam?._pointer">

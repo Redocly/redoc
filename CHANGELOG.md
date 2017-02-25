@@ -1,3 +1,21 @@
+<a name="1.8.1"></a>
+## 1.8.1 (2017-02-23)
+
+
+### Bug Fixes
+* Fix toggle icon width on IE, closes [#198](https://github.com/Rebilly/ReDoc/issues/198)
+* Add safe guards array without items, closes [#199](https://github.com/Rebilly/ReDoc/issues/199)
+* Fix extra slash if basePath is not present ([a5c03ab](https://github.com/Rebilly/ReDoc/commit/a5c03ab)), closes [#201](https://github.com/Rebilly/ReDoc/issues/201)
+* response samples - render description as markdown ([4acfc11](https://github.com/Rebilly/ReDoc/commit/4acfc11)), closes [#190](https://github.com/Rebilly/ReDoc/issues/190)
+* take snapshot of schema to not overwrite inlined references ([77bc3c4](https://github.com/Rebilly/ReDoc/commit/77bc3c4)), closes [#203](https://github.com/Rebilly/ReDoc/issues/203)
+* use items description if not present on top level ([23e7847](https://github.com/Rebilly/ReDoc/commit/23e7847))
+
+
+### Features
+
+* autoscroll menu ([b43a87d](https://github.com/Rebilly/ReDoc/commit/b43a87d))
+
+
 # 1.8.0 (2017-02-03)
 ### Features/Improvements
 * In-page search :tada: []#51](https://github.com/Rebilly/ReDoc/issues/51)

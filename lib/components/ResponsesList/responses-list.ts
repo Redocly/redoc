@@ -44,10 +44,16 @@ export class ResponsesList extends BaseSearchableComponent implements OnInit {
     let responses = this.componentSchema;
     if (!responses) return;
 
-    responses = Object.keys(responses).filter(respCode => {
+    let hasSuccessResponses = false;
+    let respCodes = Object.keys(responses).filter(respCode => {
+      if ((parseInt(respCode) >= 100) && (parseInt(respCode) <=399)) {
+        hasSuccessResponses = true;
+      }
       // only response-codes and "default"
       return ( isNumeric(respCode) || (respCode === 'default'));
-    }).map(respCode => {
+    });
+
+    responses = respCodes.map(respCode => {
       let resp = responses[respCode];
       resp.pointer = JsonPointer.join(this.pointer, respCode);
       if (resp.$ref) {
@@ -58,7 +64,7 @@ export class ResponsesList extends BaseSearchableComponent implements OnInit {
 
       resp.empty = !resp.schema;
       resp.code = respCode;
-      resp.type = statusCodeType(resp.code);
+      resp.type = statusCodeType(resp.code, hasSuccessResponses);
 
       resp.expanded = false;
       if (this.options.expandResponses) {

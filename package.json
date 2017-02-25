@@ -1,7 +1,7 @@
 {
   "name": "redoc",
   "description": "Swagger-generated API Reference Documentation",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/Rebilly/ReDoc"
@@ -32,7 +32,8 @@
     "e2e-copy": "cp dist/redoc.min.js tests/e2e/",
     "webdriver": "webdriver-manager update",
     "serve:prod": "NODE_ENV=production npm start",
-    "protractor": "protractor"
+    "protractor": "protractor",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
   },
   "keywords": [
     "OpenAPI",
@@ -65,6 +66,7 @@
     "branch-release": "^1.0.3",
     "chalk": "^1.1.3",
     "codelyzer": "^2.0.1",
+    "conventional-changelog-cli": "^1.2.0",
     "core-js": "^2.4.1",
     "coveralls": "^2.11.16",
     "css-loader": "^0.26.0",
@@ -119,6 +121,5 @@
     "webpack-dev-server": "^2.4.1",
     "webpack-merge": "^3.0.0",
     "zone.js": "^0.7.7"
-  },
-  "dependencies": {}
+  }
 }

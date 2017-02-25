@@ -18,45 +18,6 @@
   margin-bottom: calc(1em - 6px);
 }
 
-.method-endpoint {
-  //margin: 0 0 2px 0;
-  padding: 10px 20px;
-  border-radius: $border-radius*2;
-  background-color: darken($black, 2%);
-  display: block;
-  font-weight: $light;
-  white-space: nowrap;
-  overflow-x: auto;
-}
-
-.method-endpoint > .method-params-subheader {
-  padding-top: 1px;
-  padding-bottom: 0;
-  margin: 0;
-  font-size: 12/14em;
-  color: $black;
-  vertical-align: middle;
-  display: inline-block;
-  border-radius: $border-radius;
-}
-
-.method-api-url {
-  color: rgba(#ffffff, .6);
-  margin-left: 10px;
-  margin-top: 2px;
-  position: relative;
-  top: 1px;
-  font-family: $headers-font, $headers-font-family;
-  font-size: 0.929em;
-
-  &-path {
-    font-family: $headers-font, $headers-font-family;
-    position: relative;
-    top: 1px;
-    color: #ffffff;
-  }
-}
-
 .method-tags {
   margin-top: 20px;
 
@@ -118,15 +79,6 @@
 
 .method-description {
   padding: 6px 0 10px 0;
-  margin: 0;
-}
-
-.http-method {
-  color: $black;
-  background: #ffffff;
-  padding: 3px 10px;
-  text-transform: uppercase;
-  display: inline-block;
   margin: 0;
 }
 
