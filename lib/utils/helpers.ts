@@ -32,7 +32,11 @@ export function groupBy<T>(array: T[], key:string):StringMap<T[]> {
   }, {});
 }
 
-export function statusCodeType(statusCode) {
+export function statusCodeType(statusCode, defaultAsError = false) {
+  if (statusCode === 'default') {
+    return defaultAsError ? 'error' : 'success';
+  }
+
   if (statusCode < 100 || statusCode > 599) {
     throw new Error('invalid HTTP code');
   }

@@ -53,5 +53,12 @@ describe('Redoc components', () => {
       let resp2 = component.responses[1];
       resp1.code.should.not.be.equal(resp2.code);
     });
+
+    it('should set type of default as error if other 200-399 response is defined', () => {
+      component.pointer = '#/paths/~1test2/get/responses';
+      fixture.detectChanges();
+      let resp1 = component.responses[1];
+      resp1.type.should.be.equal('error');
+    });
   });
 });

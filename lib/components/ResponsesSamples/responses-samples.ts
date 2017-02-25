@@ -37,7 +37,11 @@ export class ResponsesSamples extends BaseComponent implements OnInit {
     let responses = this.componentSchema;
     if (!responses) return;
 
+    let hasSuccessResponses = false;
     responses = Object.keys(responses).filter(respCode => {
+      if ((parseInt(respCode) >= 100) && (parseInt(respCode) <=399)) {
+        hasSuccessResponses = true;
+      }
       // only response-codes and "default"
       return ( isNumeric(respCode) || (respCode === 'default'));
     }).map(respCode => {
@@ -50,7 +54,7 @@ export class ResponsesSamples extends BaseComponent implements OnInit {
       }
 
       resp.code = respCode;
-      resp.type = statusCodeType(resp.code);
+      resp.type = statusCodeType(resp.code, hasSuccessResponses);
       return resp;
     })
     .filter(response => hasExample(response));
