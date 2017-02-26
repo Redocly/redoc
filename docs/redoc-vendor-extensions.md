@@ -177,3 +177,57 @@ Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
 
 ###### Usage in ReDoc
 Schemas marked as `x-nullable` are marked in ReDoc with the label Nullable
+
+#### x-extendedDiscriminator
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-extendedDiscriminator | string | specifies extended discriminator |
+
+###### Usage in ReDoc
+ReDoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
+Value of this field specifies the field which will be used as a extended discriminator.
+ReDoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
+ReDoc displays the definition which is derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
+
+###### x-extendedDiscriminator example
+
+```yaml
+
+Payment:
+  x-extendedDiscriminator: type
+  type: object
+  required:
+    - type
+  properties:
+    type:
+      type: string
+    name:
+      type: string
+
+CashPayment:
+  allOf:
+    - $ref: "#/definitions/Payment"
+    - properties:
+        type:
+          type: string
+          enum:
+            - cash
+        currency:
+          type: string
+
+PayPalPayment:
+  allOf:
+    - $ref: "#/definitions/Payment"
+    - properties:
+        type:
+          type: string
+          enum:
+            - paypal
+        userEmail:
+          type: string
+```
+
+In the example above the names of definitions (`PayPalPayment`) are named differently than
+names in the payload (`paypal`) which is not supported by default `discriminator`.
