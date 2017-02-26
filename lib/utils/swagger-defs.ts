@@ -1,6 +1,6 @@
 'use strict';
 
-export const methods = new Set(['get', 'put', 'post', 'delete', 'options', 'head', 'patch']);
+export const methods = new Set(['get', 'put', 'post', 'delete', 'options', 'head', 'patch','js']);
 
 export const keywordTypes = {
   multipleOf: 'number',
