@@ -216,7 +216,6 @@ export class MenuService {
       cItem.parent.active = true;
       cItem = cItem.parent;
     }
-    console.log(idx, '>>>>>>>>>>>>> woooohooooo');
     this.hash.update(this.hashFor(item.id, item.metadata, item.parent && item.parent.id));
     this.changedActiveItem.next(item);
   }
