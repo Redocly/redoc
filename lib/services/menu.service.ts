@@ -216,6 +216,8 @@ export class MenuService {
       cItem.parent.active = true;
       cItem = cItem.parent;
     }
+    console.log(idx, '>>>>>>>>>>>>> woooohooooo');
+    this.hash.update(this.hashFor(item.id, item.metadata, item.parent && item.parent.id));
     this.changedActiveItem.next(item);
   }
 
@@ -318,6 +320,23 @@ export class MenuService {
       res.push(subItem);
     }
     return res;
+  }
+
+  hashFor(
+    id: string|null, itemMeta:
+    {operationId: string, type: string, pointer: string},
+    parentId: string
+  ) {
+    if (!id) return null;
+    if (itemMeta && itemMeta.type === 'method') {
+      if (itemMeta.operationId) {
+        return 'operation/' + encodeURIComponent(itemMeta.operationId);
+      } else {
+        return parentId + encodeURIComponent(itemMeta.pointer);
+      }
+    } else {
+      return id;
+    }
   }
 
   getTagsItems(parent: MenuItem, tagGroup:TagGroup = null):MenuItem[] {

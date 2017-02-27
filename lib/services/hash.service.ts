@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class Hash {
   public value = new BehaviorSubject<string | null>(null);
+  private noEmit:boolean = false;
   constructor(private location: PlatformLocation) {
     this.bind();
   }
@@ -21,7 +22,17 @@ export class Hash {
 
   bind() {
     this.location.onHashChange(() => {
+      if (this.noEmit) return;
       this.value.next(this.hash);
+    });
+  }
+
+  update(hash: string|null) {
+    if (!hash) return;
+    this.noEmit = true;
+    window.location.hash = hash;
+    setTimeout(() => {
+      this.noEmit = false;
     });
   }
 }

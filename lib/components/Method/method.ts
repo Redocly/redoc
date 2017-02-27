@@ -3,7 +3,7 @@ import { Input, HostBinding, Component, OnInit, ChangeDetectionStrategy, Element
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
-import { OptionsService } from '../../services/';
+import { OptionsService, MenuService } from '../../services/';
 
 
 interface MethodInfo {
@@ -36,7 +36,10 @@ export class Method extends BaseComponent implements OnInit {
 
   method: MethodInfo;
 
-  constructor(specMgr:SpecManager, private optionsService: OptionsService) {
+  constructor(
+    specMgr:SpecManager,
+    private optionsService: OptionsService,
+    private menu: MenuService) {
     super(specMgr);
   }
 
@@ -58,11 +61,9 @@ export class Method extends BaseComponent implements OnInit {
   }
 
   buildAnchor() {
-    if (this.operationId) {
-      return 'operation/' + encodeURIComponent(this.componentSchema.operationId);
-    } else {
-      return this.parentTagId + encodeURIComponent(this.pointer);
-    }
+    this.menu.hashFor(this.pointer,
+      { type: 'method', operationId: this.operationId, pointer: this.pointer },
+      this.parentTagId );
   }
 
   filterMainTags(tags) {
