@@ -1,7 +1,7 @@
 'use strict';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { isString, stringify, isBlank } from './helpers';
 import JsonPointer from './JsonPointer';
 import { MdRenderer } from './';
@@ -66,13 +66,13 @@ export class MarkedPipe implements PipeTransform {
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
-  transform(value:string) {
+  transform(value:string|SafeHtml):SafeHtml {
     if (isBlank(value)) return value;
     if (!isString(value)) {
-      throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
+      return value;
     }
 
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return this.sanitizer.bypassSecurityTrustHtml(value as string);
   }
 }
 
