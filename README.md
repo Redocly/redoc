@@ -61,6 +61,7 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
   <head>
     <title>ReDoc</title>
     <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--
