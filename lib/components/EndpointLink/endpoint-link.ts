@@ -1,7 +1,6 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, Input, OnInit, HostListener, HostBinding} from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { trigger, state, animate, transition, style } from '@angular/core';
 import { OptionsService } from '../../services/';
 
 export interface ServerInfo {
@@ -13,18 +12,7 @@ export interface ServerInfo {
   selector: 'endpoint-link',
   styleUrls: ['./endpoint-link.css'],
   templateUrl: './endpoint-link.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('overlayExpand', [
-      state('collapsed, void',
-        style({ height: '0px' })),
-      state('expanded',
-        style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
-    ])
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EndpointLink implements OnInit {
   @Input() path:string;
