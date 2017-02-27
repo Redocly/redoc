@@ -1,10 +1,10 @@
 <header *ngIf="schemaPointer || samples.length"> Request samples </header>
 <schema-sample *ngIf="schemaPointer && !samples.length" [skipReadOnly]="true" [pointer]="schemaPointer"> </schema-sample>
 <tabs *ngIf="samples.length" [selected] = "selectedLang" (change)=changeLangNotify($event)>
-  <tab *ngIf="schemaPointer" tabTitle="JSON">
+  <tab *ngIf="schemaPointer" [tabTitle]="'JSON' | safe">
     <schema-sample [pointer]="schemaPointer" [skipReadOnly]="true"> </schema-sample>
   </tab>
-  <tab *ngFor="let sample of samples" [tabTitle]="sample.lang">
+  <tab *ngFor="let sample of samples" [tabTitle]="sample.lang | safe">
     <div class="code-sample">
       <div class="action-buttons">
         <span copy-button [copyText]="sample.source" class="hint--top-left hint--inversed"><a>Copy</a></span>
