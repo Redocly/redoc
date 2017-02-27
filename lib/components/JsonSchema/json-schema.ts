@@ -10,7 +10,7 @@ import { Component,
 } from '@angular/core';
 
 import { BaseSearchableComponent, SpecManager } from '../base';
-import { SchemaNormalizer, SchemaHelper, AppStateService } from '../../services/';
+import { SchemaNormalizer, SchemaHelper, AppStateService, OptionsService } from '../../services/';
 import { JsonPointer, DescendantInfo } from '../../utils/';
 import { Zippy } from '../../shared/components';
 import { JsonSchemaLazy } from './json-schema-lazy';
@@ -39,11 +39,12 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
   descendants: DescendantInfo[];
 
   constructor(
-    specMgr:SpecManager,
+    specMgr: SpecManager,
     app: AppStateService,
     private _renderer: Renderer,
     private cdr: ChangeDetectorRef,
-    private _elementRef: ElementRef) {
+    private _elementRef: ElementRef,
+    private optionsService: OptionsService) {
     super(specMgr, app);
     this.normalizer = new SchemaNormalizer(specMgr);
   }
@@ -126,7 +127,11 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
 
     this.properties = this.schema._properties || [];
     if (this.isRequestSchema) {
-      this.properties = this.properties && this.properties.filter(prop => !prop.readOnly);
+      this.properties = this.properties.filter(prop => !prop.readOnly);
+    }
+
+    if (this.optionsService.options.requiredPropsFirst) {
+      SchemaHelper.moveRequiredPropsFirst(this.properties, this.schema.required);
     }
 
     this._hasSubSchemas = this.properties && this.properties.some(

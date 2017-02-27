@@ -327,4 +327,19 @@ export class SchemaHelper {
 
     return tags;
   }
+
+  static moveRequiredPropsFirst(properties: any[], _required: string[]|null) {
+    let required = _required || [];
+    properties.sort((a, b) => {
+      if ((!a._required && b._required)) {
+        return 1;
+      } else if (a._required && !b._required) {
+        return -1;
+      } else if (a._required && b._required) {
+        return required.indexOf(a.name) > required.indexOf(b.name) ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
+  }
 }
