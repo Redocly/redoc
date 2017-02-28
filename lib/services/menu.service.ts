@@ -3,6 +3,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
+import { WarningsService } from './warnings.service';
 import { Hash } from './hash.service';
 import { SpecManager } from '../utils/spec-manager';
 import { SchemaHelper } from './schema-helper.service';
@@ -351,7 +352,7 @@ export class MenuService {
 
     tags = tags.map(k => {
       if (!this._tagsWithMethods[k]) {
-        console.warn(`Non-existing tag "${k}" is specified in tag group "${tagGroup.name}"`);
+        WarningsService.warn(`Non-existing tag "${k}" is added to the group "${tagGroup.name}"`);
         return null;
       }
       this._tagsWithMethods[k].used = true;
@@ -408,7 +409,7 @@ export class MenuService {
   checkAllTagsUsedInGroups() {
     for (let tag of Object.keys(this._tagsWithMethods)) {
       if (!this._tagsWithMethods[tag].used) {
-        console.warn(`Tag "${tag}" is not added to any group`);
+        WarningsService.warn(`Tag "${tag}" is not added to any group`)
       }
     }
   }
