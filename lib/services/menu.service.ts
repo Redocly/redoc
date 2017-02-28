@@ -208,7 +208,10 @@ export class MenuService {
 
     this.deactivate(this.activeIdx);
     this.activeIdx = idx;
-    if (idx < 0) return;
+    if (idx < 0) {
+      this.hash.update('');
+      return;
+    }
 
     item.active = true;
 
@@ -409,7 +412,7 @@ export class MenuService {
   checkAllTagsUsedInGroups() {
     for (let tag of Object.keys(this._tagsWithMethods)) {
       if (!this._tagsWithMethods[tag].used) {
-        WarningsService.warn(`Tag "${tag}" is not added to any group`)
+        WarningsService.warn(`Tag "${tag}" is not added to any group`);
       }
     }
   }
