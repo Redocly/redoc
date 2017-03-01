@@ -13,7 +13,8 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 | x-tagGroups         | [ [Tag Group Object](#tagGroupObject) ] | A list of tag groups |
 
 ###### Usage in Redoc
-`x-tagGroups` is used to group tags in the side menu
+`x-tagGroups` is used to group tags in the side menu.
+If you are going to use `x-tagGroups`, please make sure you **add all tags to a group**, since a tag that is not in a group, **will not be displayed** at all!
 
 #### <a name="tagGroupObject"></a>Tag Group Object
 Information about tags group

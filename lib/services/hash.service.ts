@@ -28,7 +28,7 @@ export class Hash {
   }
 
   update(hash: string|null) {
-    if (!hash) return;
+    if (hash == undefined) return;
     this.noEmit = true;
     window.location.hash = hash;
     setTimeout(() => {

@@ -1,11 +1,11 @@
 'use strict';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class WarningsService {
   private static _warnings: Array<string> = [];
-  private static _warningsObs = new Subject<Array<string>>();
+  private static _warningsObs = new BehaviorSubject<Array<string>>([]);
 
   static get warnings() {
     return WarningsService._warningsObs;

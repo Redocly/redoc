@@ -1,3 +1,27 @@
+<a name="1.10.1"></a>
+## 1.10.1 (2017-02-27)
+
+
+### Bug Fixes
+
+* improve x-servers dropdown animation performance ([69c7d98](https://github.com/Rebilly/ReDoc/commit/69c7d98))
+
+
+
+<a name="1.10.0"></a>
+# 1.10.0 (2017-02-27)
+
+
+### Bug Fixes
+* Revert: remove unused hide-hostname option ([7031176](https://github.com/Rebilly/ReDoc/commit/7031176))
+
+### Features
+
+* new option `required-props-first` ([c724df4](https://github.com/Rebilly/ReDoc/commit/c724df4)), closes [#191](https://github.com/Rebilly/ReDoc/issues/191)
+* update fragment while scrolling and on menu clicks ([66c06b3](https://github.com/Rebilly/ReDoc/commit/66c06b3)), closes [#138](https://github.com/Rebilly/ReDoc/issues/138) [#202](https://github.com/Rebilly/ReDoc/issues/202)
+
+
+
 <a name="1.9.0"></a>
 # 1.9.0 (2017-02-25)
 
