@@ -1,6 +1,7 @@
 'use strict';
 
-import {statusCodeType} from '../../lib/utils/helpers';
+import {statusCodeType, isJsonLike, getJsonLike } from '../../lib/utils/helpers';
+
 describe('Utils', () => {
   describe('statusCodeType', () => {
     it('Should return info for status codes within 100 and 200', ()=> {
@@ -30,4 +31,34 @@ describe('Utils', () => {
       (() => statusCodeType(600)).should.throw('invalid HTTP code');
     });
   });
+
+  describe('isJsonLike', () => {
+    it('Should return true for a string that contains `json`', () => {
+      isJsonLike('application/json').should.be.equal(true);
+    });
+    it('Should return false for a string that does not contain `json`', () => {
+      isJsonLike('application/xml').should.be.equal(false);
+    });
+  });
+
+  describe('getJsonLike', () => {
+    it('Should return a value when a JSON-like key exists', () => {
+      const examples = {
+        "application/vnd.api+json": {
+          "message": "Hello World"
+        },
+        "application/xml": "<message>Hello World</message>"
+      };
+
+      (getJsonLike(examples).message).should.be.equal("Hello World");
+    });
+
+    it('Should return undefined when no JSON-like key exists', () => {
+      const examples = {
+        "application/xml": "<message>Hello World</message>"
+      };
+
+      getJsonLike(examples).should.be.equal(false);
+    });
+  })
 });
