@@ -91,8 +91,8 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
       }).sort((a, b) => {
         return enumOrder[a.name] > enumOrder[b.name] ? 1 : -1;
       });
-      this.descendants.forEach((d, idx) => d.idx = idx);
     }
+    this.descendants.forEach((d, idx) => d.idx = idx);
     this.selectDescendantByIdx(0);
   }
 

@@ -1,6 +1,8 @@
 'use strict';
 
 import { SpecManager } from '../../lib/utils/spec-manager';
+import * as xExtendedDefs from './x-extended-defs.json';
+
 describe('Utils', () => {
   describe('Schema manager', () => {
     let specMgr: SpecManager;
@@ -174,6 +176,23 @@ describe('Utils', () => {
         let deriveDefs = specMgr.findDerivedDefinitions('#/definitions/Order');
         deriveDefs.should.be.instanceof(Array);
         deriveDefs.should.be.empty();
+      });
+
+      it('should correctly work with x-extendedDiscriminator', () => {
+        specMgr._schema = {
+          definitions: xExtendedDefs
+        };
+
+        let deriveDefs = specMgr.findDerivedDefinitions('#/definitions/Payment');
+        deriveDefs.should.be.instanceof(Array);
+        deriveDefs.should.be.deepEqual([
+          {
+            name: 'cash',
+            $ref: '#/definitions/CashPayment'
+          }, {
+            name: 'paypal',
+            $ref: '#/definitions/PayPalPayment'
+        }])
       });
     });
   });
