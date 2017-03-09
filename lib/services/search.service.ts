@@ -186,10 +186,12 @@ export class SearchService {
     let title = name;
     schema = this.normalizer.normalize(schema, schema._pointer || absolutePointer, { childFor: parent });
 
+    if (schema._pointer === parent) return;
+
     let body = schema.description;  // TODO: defaults, examples, etc...
 
     if (schema.type === 'array') {
-      this.indexSchema(schema.items, title, JsonPointer.join(absolutePointer, ['items']), menuPointer);
+      this.indexSchema(schema.items, title, JsonPointer.join(absolutePointer, ['items']), menuPointer, parent);
       return;
     }
 
@@ -218,7 +220,8 @@ export class SearchService {
     if (schema.properties) {
       Object.keys(schema.properties).forEach(propName => {
         let propPtr = JsonPointer.join(absolutePointer, ['properties', propName]);
-        this.indexSchema(schema.properties[propName], propName, propPtr, menuPointer);
+        let prop:SwaggerSchema = schema.properties[propName];
+        this.indexSchema(prop, propName, propPtr, menuPointer, parent);
       });
     }
   }
