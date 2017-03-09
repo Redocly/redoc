@@ -183,6 +183,21 @@ export class SpecManager {
     let globalDefs = this._schema.definitions || {};
     let res:DescendantInfo[] = [];
     let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
+
+    let pointers;
+    if (definition['x-derived-from']) {
+      // support inherited discriminator o_O
+      let derivedDiscriminator = definition['x-derived-from'].filter(ptr => {
+        if (!ptr) return false;
+        let def = this.byPointer(ptr);
+        return def && def.discriminator;
+      });
+      pointers = [defPointer, ...derivedDiscriminator];
+    } else {
+      pointers = [defPointer];
+    }
+
+
     for (let defName of Object.keys(globalDefs)) {
       let def = globalDefs[defName];
       if (!def.allOf &&
@@ -190,12 +205,6 @@ export class SpecManager {
       let subTypes = def['x-derived-from'] ||
         def.allOf.map(subType => subType._pointer || subType.$ref);
 
-      let pointers;
-      if (definition['x-derived-from']) {
-        pointers = [defPointer, ...definition['x-derived-from']];
-      } else {
-        pointers = [defPointer];
-      }
       let idx = -1;
 
       for (let ptr of pointers) {
