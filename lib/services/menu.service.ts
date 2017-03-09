@@ -141,7 +141,7 @@ export class MenuService {
   onHashChange(hash?: string) {
     if (hash == undefined) return;
     let activated = this.activateByHash(hash);
-    if (!this.tasks.empty) {
+    if (!this.tasks.processed) {
       this.tasks.start(this.activeIdx, this);
       this.scrollService.setStickElement(this.getCurrentEl());
       if (activated) this.scrollToActive();
