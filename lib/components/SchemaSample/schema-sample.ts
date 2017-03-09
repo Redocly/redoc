@@ -3,7 +3,7 @@
 import { Component, ElementRef, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
-
+import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
 
@@ -40,6 +40,13 @@ export class SchemaSample extends BaseComponent implements OnInit {
       base = this.componentSchema;
       this.componentSchema = this.componentSchema.schema;
       this.pointer += '/schema';
+    }
+
+    // Support x-examples, allowing requests to specify an example.
+    let examplePointer:string = JsonPointer.join(JsonPointer.dirName(this.pointer), 'x-examples');
+    let requestExamples:any = this.specMgr.byPointer(examplePointer);
+    if (requestExamples) {
+      base.examples = requestExamples;
     }
 
     if (base.examples && base.examples['application/json']) {
