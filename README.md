@@ -144,9 +144,9 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
 ```js
-Redoc.init(specUrl, options)
+Redoc.init(specOrSpecUrl, options)
 ```
-
+`specOrSpecUrl` is either JSON object with specification or an URL to the spec in `JSON` or `YAML` format.
 `options` is javascript object with camel-cased version of `<redoc>` tag attribute names as the keys, e.g.:
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {

@@ -19,7 +19,7 @@ const OPTION_NAMES = new Set([
   'requiredPropsFirst'
 ]);
 
-interface Options {
+export interface Options {
   scrollYOffset?: any;
   disableLazySchemas?: boolean;
   specUrl?: string;
@@ -29,6 +29,7 @@ interface Options {
   expandResponses?: Set<string> | 'all';
   $scrollParent?: HTMLElement | Window;
   requiredPropsFirst?: boolean;
+  spec?: any;
 }
 
 @Injectable()

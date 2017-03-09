@@ -15,7 +15,7 @@ import { BaseComponent } from '../base';
 import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
-import { SearchService, OptionsService, Hash, AppStateService, SchemaHelper } from '../../services/';
+import { SearchService, OptionsService, Options, Hash, AppStateService, SchemaHelper } from '../../services/';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 
 @Component({
@@ -29,7 +29,7 @@ export class Redoc extends BaseComponent implements OnInit {
 
   error: any;
   specLoaded: boolean;
-  options: any;
+  options: Options;
 
   loadingProgress: number;
 
@@ -84,7 +84,8 @@ export class Redoc extends BaseComponent implements OnInit {
   }
 
   load() {
-    this.specMgr.load(this.options.specUrl).catch(err => {
+    // bunlde spec directly if passsed or load by URL
+    this.specMgr.load(this.options.spec || this.options.specUrl).catch(err => {
       throw err;
     });
 

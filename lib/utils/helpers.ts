@@ -8,7 +8,7 @@ export function stringify(obj:any) {
   return JSON.stringify(obj);
 }
 
-export function isString(str:any) {
+export function isString(str:any):str is String {
   return typeof str === 'string';
 }
 
