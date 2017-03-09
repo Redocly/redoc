@@ -1,0 +1,57 @@
+{
+  "Payment": {
+    "x-extendedDiscriminator": "type",
+    "type": "object",
+    "required": [
+      "type"
+    ],
+    "properties": {
+      "type": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      }
+    }
+  },
+  "CashPayment": {
+    "allOf": [
+      {
+        "$ref": "#/definitions/Payment"
+      },
+      {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "cash"
+            ]
+          },
+          "currency": {
+            "type": "string"
+          }
+        }
+      }
+    ]
+  },
+  "PayPalPayment": {
+    "allOf": [
+      {
+        "$ref": "#/definitions/Payment"
+      },
+      {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "paypal"
+            ]
+          },
+          "userEmail": {
+            "type": "string"
+          }
+        }
+      }
+    ]
+  }
+}

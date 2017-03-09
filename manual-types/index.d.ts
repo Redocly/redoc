@@ -13,6 +13,11 @@ declare module "*.css" {
   export default content;
 }
 
+declare module "*.json" {
+  const content: string;
+  export default content;
+}
+
 declare var LIB_VERSION: any;
 declare var IS_PRODUCTION: any;
 declare var AOT: any;

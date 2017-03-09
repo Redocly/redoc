@@ -9,6 +9,7 @@ import { MdRenderer } from './md-renderer';
 
 import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
 import { snapshot } from './helpers';
+import { WarningsService } from '../services/warnings.service';
 
 function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
@@ -204,12 +205,23 @@ export class SpecManager {
 
       if (idx < 0) continue;
 
-      let derivedName = defName;
+      let derivedName;
       if (extendedDiscriminatorProp) {
-        let prop = def.properties && def.properties[extendedDiscriminatorProp];
-        if (prop && prop.enum && prop.enum.length === 1) {
-          derivedName = prop.enum[0];
+        let subDefs = def.allOf || [];
+        for (let def of subDefs) {
+          let prop = def.properties && def.properties[extendedDiscriminatorProp];
+          if (prop && prop.enum && prop.enum.length === 1) {
+            derivedName = prop.enum[0];
+            break;
+          }
         }
+        if (!derivedName) {
+          WarningsService.warn(`Incorrect usage of x-extendedDiscriminator at ${defPointer}: `
+            + `can't find corresponding enum with single value in definition "${defName}"`);
+          continue;
+        }
+      } else {
+        derivedName = defName;
       }
 
       res.push({name: derivedName, $ref: `#/definitions/${defName}`});
