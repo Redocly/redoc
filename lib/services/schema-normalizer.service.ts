@@ -99,6 +99,7 @@ class SchemaWalker {
 export class AllOfMerger {
   static merge(into, schemas) {
     into['x-derived-from'] = [];
+    let hadDiscriminator = !!into.discriminator;
     for (let i=0; i < schemas.length; i++) {
       let subSchema = schemas[i];
       into['x-derived-from'].push(subSchema._pointer);
@@ -115,7 +116,7 @@ export class AllOfMerger {
       defaults(into, subSchema);
       subSchema._pointer = tmpPtr;
     }
-    into.discriminator = null;
+    if (!hadDiscriminator) into.discriminator = null;
     into.allOf = null;
   }
 
@@ -214,7 +215,8 @@ class SchemaDereferencer {
     // if resolved schema doesn't have title use name from ref
     resolved.title = resolved.title || JsonPointer.baseName($ref);
 
-    let keysCount = Object.keys(schema).length;
+    let keysCount = Object.keys(schema).filter(key => !key.startsWith('x-redoc')).length;
+
     if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
         'They are IGNORED according to the JsonSchema spec');
