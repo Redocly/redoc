@@ -182,6 +182,21 @@ export class SpecManager {
 
     let globalDefs = this._schema.definitions || {};
     let res:DescendantInfo[] = [];
+
+
+    // from the spec: When used, the value MUST be the name of this schema or any schema that inherits it.
+    // but most of people use it as an abstract class so here is workaround to allow using it other way
+    // check if parent definition name is in the enum of possible values
+    if (definition.discriminator) {
+      let prop = definition.properties[definition.discriminator];
+      if (prop.enum && prop.enum.indexOf(JsonPointer.baseName(defPointer)) > -1) {
+        res.push({
+          name: JsonPointer.baseName(defPointer),
+          $ref: defPointer
+        });
+      }
+    }
+
     let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
 
     let pointers;
@@ -224,7 +239,7 @@ export class SpecManager {
             break;
           }
         }
-        if (!derivedName) {
+        if (derivedName == undefined) {
           WarningsService.warn(`Incorrect usage of x-extendedDiscriminator at ${defPointer}: `
             + `can't find corresponding enum with single value in definition "${defName}"`);
           continue;
