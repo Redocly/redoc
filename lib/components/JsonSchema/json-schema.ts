@@ -37,6 +37,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
   _isArray: boolean;
   normalizer: SchemaNormalizer;
   descendants: DescendantInfo[];
+  activeChoice: number;
 
   constructor(
     specMgr: SpecManager,
@@ -96,6 +97,11 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     this.selectDescendantByIdx(0);
   }
 
+  selectChoice(index) {
+    if (typeof index === "object") return;
+    this.activeChoice = index
+  }
+
   init() {
     if (!this.pointer) return;
     if (!this.absolutePointer) this.absolutePointer = this.pointer;
@@ -112,38 +118,51 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     this._isArray = this.schema._isArray;
     this.absolutePointer += (this._isArray ? '/items' : '');
     this.initDescendants();
+    this.selectChoice(0);
     this.preprocessSchema();
   }
 
   preprocessSchema() {
     SchemaHelper.preprocess(this.schema, this.normPointer, this.pointer);
 
-    if (!this.schema.isTrivial) {
+    if (!this.schema.isTrivial && !this.schema._wrapped) {
       SchemaHelper.preprocessProperties(this.schema, this.normPointer, {
         childFor: this.childFor,
         discriminator: this.discriminator
       });
     }
 
-    this.properties = this.schema._properties || [];
-    if (this.isRequestSchema) {
-      this.properties = this.properties.filter(prop => !prop.readOnly);
-    }
+    if (this.schema._wrapped) {
+      this.schema._wrapped.forEach((schema) => {
+        SchemaHelper.preprocessProperties(schema, this.normPointer, {
+          childFor: this.childFor,
+          discriminator: this.discriminator
+        });
 
-    if (this.optionsService.options.requiredPropsFirst) {
-      SchemaHelper.moveRequiredPropsFirst(this.properties, this.schema.required);
-    }
+        let properties = schema._properties || [];
 
-    this._hasSubSchemas = this.properties && this.properties.some(
-      propSchema => {
-        if (propSchema.type === 'array') {
-          propSchema = propSchema.items;
+        if (this.isRequestSchema) {
+          properties = properties.filter(prop => !prop.readOnly);
         }
-        return (propSchema && propSchema.type === 'object' && propSchema._pointer);
-      });
 
-    if (this.properties.length === 1) {
-      this.properties[0].expanded = true;
+        if (this.optionsService.options.requiredPropsFirst) {
+          SchemaHelper.moveRequiredPropsFirst(properties, schema.required);
+        }
+
+        this._hasSubSchemas = properties && properties.some(
+          propSchema => {
+            if (propSchema.type === 'array') {
+              propSchema = propSchema.items;
+            }
+            return (propSchema && propSchema.type === 'object' && propSchema._pointer);
+          });
+
+        if (properties.length === 1) {
+          properties[0].expanded = true;
+        }
+
+        schema.displayProperties = properties
+      })
     }
   }
 

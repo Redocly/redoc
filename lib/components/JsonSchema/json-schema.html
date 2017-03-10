@@ -46,9 +46,17 @@
     [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>
   </ng-template>
   <ng-template ngSwitchCase="object">
+      <div class="one-of-selector" *ngIf="schema._wrapped.length > 1">
+        {{schema._choiceTitle}}
+        <drop-down (change)="selectChoice($event)" [active]="activeChoice">
+          <option *ngFor="let item of schema._wrapped; let i=index"
+          [value]="i" [attr.selected]="activeChoice === i ? '' : null" >{{item.title}}</option>
+        </drop-down>
+    </div>
+
     <table class="params-wrap" [ngClass]="{'params-array': _isArray}">
       <!-- <caption> {{_displayType}} </caption> -->
-      <ng-template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
+      <ng-template ngFor [ngForOf]="schema._wrapped[activeChoice].displayProperties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
         <tr class="param" [ngClass]="{'last': last,
             'discriminator': prop.isDiscriminator,
             'complex': prop._pointer,
@@ -103,5 +111,4 @@
       </ng-template>
     </table>
   </ng-template>
-
 </ng-container>

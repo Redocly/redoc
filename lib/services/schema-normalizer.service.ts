@@ -13,6 +13,8 @@ interface Reference {
 interface Schema {
   properties: any;
   allOf: any;
+  oneOf: any;
+  anyOf: any;
   items: any;
   additionalProperties: any;
 }
@@ -71,6 +73,16 @@ class SchemaWalker {
     if (obj.allOf) {
       let ptr = JsonPointer.join(pointer, ['allOf']);
       SchemaWalker.walkEach(obj.allOf, ptr, visitor);
+    }
+
+    if (obj.oneOf) {
+      let ptr = JsonPointer.join(pointer, ['oneOf']);
+      SchemaWalker.walkEach(obj.oneOf, ptr, visitor);
+    }
+
+    if (obj.anyOf) {
+      let ptr = JsonPointer.join(pointer, ['anyOf']);
+      SchemaWalker.walkEach(obj.anyOf, ptr, visitor);
     }
 
     if (obj.items) {
