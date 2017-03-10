@@ -6,6 +6,7 @@ import * as OpenAPISampler from 'openapi-sampler';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
+import { getJsonLike } from '../../utils/helpers';
 
 @Component({
   selector: 'schema-sample',
@@ -49,8 +50,9 @@ export class SchemaSample extends BaseComponent implements OnInit {
       base.examples = requestExamples;
     }
 
-    if (base.examples && base.examples['application/json']) {
-      sample = base.examples['application/json'];
+    let jsonLikeSample = base.examples && getJsonLike(base.examples);
+    if (jsonLikeSample) {
+      sample = jsonLikeSample;
     } else {
       let selectedDescendant;
 
