@@ -3,9 +3,10 @@
 import { Component, ElementRef, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
-
+import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
+import { getJsonLike } from '../../utils/helpers';
 
 @Component({
   selector: 'schema-sample',
@@ -42,8 +43,16 @@ export class SchemaSample extends BaseComponent implements OnInit {
       this.pointer += '/schema';
     }
 
-    if (base.examples && base.examples['application/json']) {
-      sample = base.examples['application/json'];
+    // Support x-examples, allowing requests to specify an example.
+    let examplePointer:string = JsonPointer.join(JsonPointer.dirName(this.pointer), 'x-examples');
+    let requestExamples:any = this.specMgr.byPointer(examplePointer);
+    if (requestExamples) {
+      base.examples = requestExamples;
+    }
+
+    let jsonLikeSample = base.examples && getJsonLike(base.examples);
+    if (jsonLikeSample) {
+      sample = jsonLikeSample;
     } else {
       let selectedDescendant;
 
