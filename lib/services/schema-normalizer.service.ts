@@ -13,6 +13,7 @@ interface Reference {
 interface Schema {
   properties: any;
   allOf: any;
+  oneOf: any;
   items: any;
   additionalProperties: any;
 }
@@ -35,6 +36,9 @@ export class SchemaNormalizer {
         resolved._pointer = resolved._pointer || ptr;
         resolved = Object.assign({}, resolved);
         AllOfMerger.merge(resolved, resolved.allOf);
+      }
+      if (resolved.oneOf) {
+          resolved.type = 'oneOf';
       }
       return resolved;
     });
@@ -72,6 +76,11 @@ class SchemaWalker {
     if (obj.allOf) {
       let ptr = JsonPointer.join(pointer, ['allOf']);
       SchemaWalker.walkEach(obj.allOf, ptr, visitor);
+    }
+
+    if (obj.oneOf) {
+      let ptr = JsonPointer.join(pointer, ['oneOf']);
+      SchemaWalker.walkEach(obj.oneOf, ptr, visitor);
     }
 
     if (obj.items) {

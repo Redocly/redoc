@@ -94,6 +94,20 @@ const injectors = {
       injectTo._widgetType = 'object';
     }
   },
+  oneOf: {
+    check: (propertySchema) => propertySchema.oneOf,
+    inject: (injectTo, propertySchema = injectTo, propPointer) => {      
+
+      injectTo._isTuple = true;
+      injectTo._displayType = '';
+      let itemsPtr = JsonPointer.join(propertySchema._pointer || propPointer, ['oneOf']);
+      for (let i=0; i < propertySchema.oneOf.length; i++) {
+        let itemSchema = propertySchema.oneOf[i];
+        itemSchema._pointer = itemSchema._pointer || JsonPointer.join(itemsPtr, [i.toString()]);
+      }
+      injectTo._widgetType = 'oneOf';
+    }
+  },
   noType: {
     check: (propertySchema) => !propertySchema.type,
     inject: (injectTo) => {
@@ -110,7 +124,7 @@ const injectors = {
         return (!propertySchema.properties || !Object.keys(propertySchema.properties).length)
           && (typeof propertySchema.additionalProperties !== 'object');
       }
-      return (propertySchema.type !== 'array') && propertySchema.type;
+      return (propertySchema.type !== 'array') && (propertySchema.type !== 'oneOf') && propertySchema.type;
     },
     inject: (injectTo, propertySchema = injectTo) => {
       injectTo.isTrivial = true;
