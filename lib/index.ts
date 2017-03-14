@@ -5,6 +5,7 @@ import { enableProdMode } from '@angular/core';
 import { Redoc } from './components/index';
 import { BrowserDomAdapter as DOM } from './utils/browser-adapter';
 import { disableDebugTools } from '@angular/platform-browser';
+import { isString } from './utils/helpers';
 
 var bootstrapRedoc;
 if (AOT) {
@@ -21,13 +22,16 @@ if (IS_PRODUCTION) {
 export const version = LIB_VERSION;
 
 var moduleRef;
-export function init(specUrl:string, options:any = {}) {
+export function init(specUrlOrSpec:string|any, options:any = {}) {
   if (moduleRef) {
     destroy();
   }
 
   Redoc._preOptions = options;
-  options.specUrl = options.specUrl || specUrl;
+  options.specUrl = options.specUrl || (isString(specUrlOrSpec) ? specUrlOrSpec : '');
+  if (!isString(specUrlOrSpec)) {
+    options.spec = specUrlOrSpec;
+  }
   return bootstrapRedoc()
   .then(appRef => {
     moduleRef = appRef;

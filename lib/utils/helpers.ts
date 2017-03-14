@@ -8,7 +8,7 @@ export function stringify(obj:any) {
   return JSON.stringify(obj);
 }
 
-export function isString(str:any) {
+export function isString(str:any):str is String {
   return typeof str === 'string';
 }
 
@@ -113,4 +113,18 @@ export function snapshot(obj) {
   }
 
   return temp;
+}
+
+export function isJsonLike(contentType: string): boolean {
+  return contentType.search(/json/i) !== -1;
+}
+
+export function getJsonLike(object: object) {
+  const jsonLikeKeys = Object.keys(object).filter(isJsonLike);
+
+  if (!jsonLikeKeys.length) {
+    return false;
+  }
+
+  return object[jsonLikeKeys.shift()];
 }

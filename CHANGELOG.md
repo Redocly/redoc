@@ -1,3 +1,74 @@
+<a name="1.11.0"></a>
+# 1.11.0 (2017-03-09)
+
+
+### Bug Fixes
+
+* do not hang when swagger doesn't contain any paths ([e4f5388](https://github.com/Rebilly/ReDoc/commit/e4f5388)), closes [#216](https://github.com/Rebilly/ReDoc/issues/216)
+[#201](https://github.com/Rebilly/ReDoc/issues/201)
+* optimize and support inherited discriminator ([64e5741](https://github.com/Rebilly/ReDoc/commit/64e5741))
+* redoc hangs when indexing recursive discriminator-based definitions ([1e96f88](https://github.com/Rebilly/ReDoc/commit/1e96f88))
+* wrong warnings for $ref not single ([193f4bf](https://github.com/Rebilly/ReDoc/commit/193f4bf)), closes [#221](https://github.com/Rebilly/ReDoc/issues/221)
+* x-extendedDiscriminator not working ([4899f3e](https://github.com/Rebilly/ReDoc/commit/4899f3e)), closes [#217](https://github.com/Rebilly/ReDoc/issues/217)
+
+
+### Features
+
+* copy pretty-printed JSON ([e99d66d](https://github.com/Rebilly/ReDoc/commit/e99d66d)), closes [#219](https://github.com/Rebilly/ReDoc/issues/219)
+* support for OpenAPI object as a parameter for `init` ([d99f256](https://github.com/Rebilly/ReDoc/commit/d99f256)), closes [#224](https://github.com/Rebilly/ReDoc/issues/224)
+
+<a name="1.10.2"></a>
+## 1.10.2 (2017-03-01)
+
+### Bug Fixes
+* clear page fragment when scroll to the beginning
+* update docs for x-tagGroup, add warning [#215](https://github.com/Rebilly/ReDoc/issues/215)
+* show warning for non-used in tagGroup tags
+
+<a name="1.10.1"></a>
+## 1.10.1 (2017-02-27)
+
+
+### Bug Fixes
+
+* improve x-servers dropdown animation performance ([69c7d98](https://github.com/Rebilly/ReDoc/commit/69c7d98))
+
+
+
+<a name="1.10.0"></a>
+# 1.10.0 (2017-02-27)
+
+
+### Bug Fixes
+* Revert: remove unused hide-hostname option ([7031176](https://github.com/Rebilly/ReDoc/commit/7031176))
+
+### Features
+
+* new option `required-props-first` ([c724df4](https://github.com/Rebilly/ReDoc/commit/c724df4)), closes [#191](https://github.com/Rebilly/ReDoc/issues/191)
+* update fragment while scrolling and on menu clicks ([66c06b3](https://github.com/Rebilly/ReDoc/commit/66c06b3)), closes [#138](https://github.com/Rebilly/ReDoc/issues/138) [#202](https://github.com/Rebilly/ReDoc/issues/202)
+
+
+
+<a name="1.9.0"></a>
+# 1.9.0 (2017-02-25)
+
+
+### Bug Fixes
+
+* do not crash if version is not string ([accd016](https://github.com/Rebilly/ReDoc/commit/accd016)), closes [#208](https://github.com/Rebilly/ReDoc/issues/208)
+* long paths break EndpointLink ui ([8472045](https://github.com/Rebilly/ReDoc/commit/8472045))
+* remove unused hide-hostname option ([7031176](https://github.com/Rebilly/ReDoc/commit/7031176))
+
+
+### Features
+
+* Add support for `x-servers` ([fd49082](https://github.com/Rebilly/ReDoc/commit/fd49082))
+* Color of "default" Response depends on other successful responses are specified ([9d0dd25](https://github.com/Rebilly/ReDoc/commit/9d0dd25)), closes [#197](https://github.com/Rebilly/ReDoc/issues/197)
+* improved type string with minLength == maxLength ([e76bcc3](https://github.com/Rebilly/ReDoc/commit/e76bcc3)), closes [#212](https://github.com/Rebilly/ReDoc/issues/212)
+* show type string with minLength 1 as "non-empty" ([d175a4d](https://github.com/Rebilly/ReDoc/commit/d175a4d)), closes [#192](https://github.com/Rebilly/ReDoc/issues/192)
+
+
+
 <a name="1.8.1"></a>
 ## 1.8.1 (2017-02-23)
 

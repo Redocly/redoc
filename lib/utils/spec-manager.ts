@@ -9,6 +9,7 @@ import { MdRenderer } from './md-renderer';
 
 import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
 import { snapshot } from './helpers';
+import { WarningsService } from '../services/warnings.service';
 
 function getDiscriminator(obj) {
   return obj.discriminator || obj['x-extendedDiscriminator'];
@@ -181,7 +182,37 @@ export class SpecManager {
 
     let globalDefs = this._schema.definitions || {};
     let res:DescendantInfo[] = [];
+
+
+    // from the spec: When used, the value MUST be the name of this schema or any schema that inherits it.
+    // but most of people use it as an abstract class so here is workaround to allow using it other way
+    // check if parent definition name is in the enum of possible values
+    if (definition.discriminator) {
+      let prop = definition.properties[definition.discriminator];
+      if (prop.enum && prop.enum.indexOf(JsonPointer.baseName(defPointer)) > -1) {
+        res.push({
+          name: JsonPointer.baseName(defPointer),
+          $ref: defPointer
+        });
+      }
+    }
+
     let extendedDiscriminatorProp = definition['x-extendedDiscriminator'];
+
+    let pointers;
+    if (definition['x-derived-from']) {
+      // support inherited discriminator o_O
+      let derivedDiscriminator = definition['x-derived-from'].filter(ptr => {
+        if (!ptr) return false;
+        let def = this.byPointer(ptr);
+        return def && def.discriminator;
+      });
+      pointers = [defPointer, ...derivedDiscriminator];
+    } else {
+      pointers = [defPointer];
+    }
+
+
     for (let defName of Object.keys(globalDefs)) {
       let def = globalDefs[defName];
       if (!def.allOf &&
@@ -189,12 +220,6 @@ export class SpecManager {
       let subTypes = def['x-derived-from'] ||
         def.allOf.map(subType => subType._pointer || subType.$ref);
 
-      let pointers;
-      if (definition['x-derived-from']) {
-        pointers = [defPointer, ...definition['x-derived-from']];
-      } else {
-        pointers = [defPointer];
-      }
       let idx = -1;
 
       for (let ptr of pointers) {
@@ -204,12 +229,23 @@ export class SpecManager {
 
       if (idx < 0) continue;
 
-      let derivedName = defName;
+      let derivedName;
       if (extendedDiscriminatorProp) {
-        let prop = def.properties && def.properties[extendedDiscriminatorProp];
-        if (prop && prop.enum && prop.enum.length === 1) {
-          derivedName = prop.enum[0];
+        let subDefs = def.allOf || [];
+        for (let def of subDefs) {
+          let prop = def.properties && def.properties[extendedDiscriminatorProp];
+          if (prop && prop.enum && prop.enum.length === 1) {
+            derivedName = prop.enum[0];
+            break;
+          }
         }
+        if (derivedName == undefined) {
+          WarningsService.warn(`Incorrect usage of x-extendedDiscriminator at ${defPointer}: `
+            + `can't find corresponding enum with single value in definition "${defName}"`);
+          continue;
+        }
+      } else {
+        derivedName = defName;
       }
 
       res.push({name: derivedName, $ref: `#/definitions/${defName}`});

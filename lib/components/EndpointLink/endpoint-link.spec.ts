@@ -11,6 +11,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 
 import { EndpointLink } from './endpoint-link';
 import { SpecManager } from '../../utils/spec-manager';
+import { OptionsService } from '../../services/';
 
 describe('Redoc components', () => {
   beforeEach(() => {
@@ -20,9 +21,11 @@ describe('Redoc components', () => {
     let builder;
     let component: EndpointLink;
     let specMgr: SpecManager;
+    let opts: OptionsService;
 
-    beforeEach(async(inject([SpecManager], (_specMgr) => {
+    beforeEach(async(inject([SpecManager, OptionsService], (_specMgr, _opts) => {
       specMgr = _specMgr;
+      opts = _opts;
     })));
 
     beforeEach(() => {
@@ -44,7 +47,7 @@ describe('Redoc components', () => {
       };
       specMgr.init();
 
-      component = new EndpointLink(specMgr);
+      component = new EndpointLink(specMgr, opts);
     });
 
     it('should replace // with appropriate protocol', () => {

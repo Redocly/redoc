@@ -13,7 +13,8 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 | x-tagGroups         | [ [Tag Group Object](#tagGroupObject) ] | A list of tag groups |
 
 ###### Usage in Redoc
-`x-tagGroups` is used to group tags in the side menu
+`x-tagGroups` is used to group tags in the side menu.
+If you are going to use `x-tagGroups`, please make sure you **add all tags to a group**, since a tag that is not in a group, **will not be displayed** at all!
 
 #### <a name="tagGroupObject"></a>Tag Group Object
 Information about tags group
@@ -168,6 +169,17 @@ lang: JavaScript
 source: console.log('Hello World');
 ```
 
+### Parameter Object vendor extensions
+Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObject)
+#### x-examples
+| Field Name     |  Type    | Description |
+| :------------- | :------: | :---------- |
+| x-examples | [Example Object](http://swagger.io/specification/#exampleObject)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
+
+###### Usage in ReDoc
+`x-examples` are rendered in the JSON tab on the right panel of ReDoc.
+
+
 ### Schema Object vendor extensions
 Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
 #### x-nullable
@@ -177,3 +189,57 @@ Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
 
 ###### Usage in ReDoc
 Schemas marked as `x-nullable` are marked in ReDoc with the label Nullable
+
+#### x-extendedDiscriminator
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-extendedDiscriminator | string | specifies extended discriminator |
+
+###### Usage in ReDoc
+ReDoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
+Value of this field specifies the field which will be used as a extended discriminator.
+ReDoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
+ReDoc displays the definition which is derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
+
+###### x-extendedDiscriminator example
+
+```yaml
+
+Payment:
+  x-extendedDiscriminator: type
+  type: object
+  required:
+    - type
+  properties:
+    type:
+      type: string
+    name:
+      type: string
+
+CashPayment:
+  allOf:
+    - $ref: "#/definitions/Payment"
+    - properties:
+        type:
+          type: string
+          enum:
+            - cash
+        currency:
+          type: string
+
+PayPalPayment:
+  allOf:
+    - $ref: "#/definitions/Payment"
+    - properties:
+        type:
+          type: string
+          enum:
+            - paypal
+        userEmail:
+          type: string
+```
+
+In the example above the names of definitions (`PayPalPayment`) are named differently than
+names in the payload (`paypal`) which is not supported by default `discriminator`.

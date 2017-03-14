@@ -1,7 +1,7 @@
 'use strict';
 import { Component, ChangeDetectionStrategy, Input, OnInit, HostListener, HostBinding} from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
-import { trigger, state, animate, transition, style } from '@angular/core';
+import { OptionsService } from '../../services/';
 
 export interface ServerInfo {
   description: string;
@@ -12,18 +12,7 @@ export interface ServerInfo {
   selector: 'endpoint-link',
   styleUrls: ['./endpoint-link.css'],
   templateUrl: './endpoint-link.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('overlayExpand', [
-      state('collapsed, void',
-        style({ height: '0px' })),
-      state('expanded',
-        style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
-    ])
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EndpointLink implements OnInit {
   @Input() path:string;
@@ -38,7 +27,7 @@ export class EndpointLink implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  constructor(public specMgr:SpecManager) {
+  constructor(public specMgr:SpecManager, public optionsService: OptionsService) {
     this.expanded = false;
   }
 
@@ -60,7 +49,11 @@ export class EndpointLink implements OnInit {
   }
 
   getBaseUrl():string {
-    return this.specMgr.apiUrl;
+    if (this.optionsService.options.hideHostname) {
+      return '';
+    } else {
+      return this.specMgr.apiUrl;
+    }
   }
 
   ngOnInit() {

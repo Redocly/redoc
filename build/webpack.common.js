@@ -110,9 +110,7 @@ module.exports = function (options) {
         'AOT': options.AOT
       }),
 
-      new StringReplacePlugin(),
-      new webpack.NormalModuleReplacementPlugin(/node_modules\/rxjs\/operator\/.*/, root('build/empty.js')),
-      new webpack.NormalModuleReplacementPlugin(/node_modules\/rxjs\/testing\//, root('build/empty.js'))
+      new StringReplacePlugin()
     ],
     node: {
       global: true,

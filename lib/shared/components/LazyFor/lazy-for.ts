@@ -31,6 +31,7 @@ export class LazyTasksService {
   private _tasks = [];
   private _current: number = 0;
   private _syncCount: number = 0;
+  private _emptyProcessed = false;
   private menuService;
 
   public loadProgress = new BehaviorSubject<number>(0);
@@ -38,8 +39,10 @@ export class LazyTasksService {
   constructor(public optionsService: OptionsService) {
   }
 
-  get empty() {
-    return this._current === this._tasks.length;
+  get processed() {
+    let res = this._tasks.length && (this._current >= this._tasks.length) || this._emptyProcessed;
+    if (!this._tasks.length) this._emptyProcessed = true;
+    return res;
   }
 
   set syncCount(n: number) {
@@ -97,10 +100,17 @@ export class LazyTasksService {
     } else {
       this.sortTasks(idx);
     }
+    syncCount = Math.min(syncCount, this._tasks.length);
     if (this.allSync) syncCount = this._tasks.length;
     for (var i = this._current; i < syncCount; i++) {
       this.nextTaskSync();
     }
+
+    if (!this._tasks.length) {
+      this.loadProgress.next(100);
+      return;
+    }
+
     this.nextTask();
   }
 }

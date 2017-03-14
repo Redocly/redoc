@@ -24,6 +24,7 @@ describe('Menu service', () => {
   beforeEach(inject([SpecManager, Hash, ScrollService, LazyTasksService],
   ( _specMgr, _hash, _scroll, _tasks) => {
     hashService = _hash;
+    spyOn(hashService, 'update').and.stub();
     scroll = _scroll;
     tasks = _tasks;
     specMgr = _specMgr;
