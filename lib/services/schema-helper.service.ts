@@ -96,7 +96,7 @@ const injectors = {
   },
   oneOf: {
     check: (propertySchema) => propertySchema.oneOf,
-    inject: (injectTo, propertySchema = injectTo, propPointer) => {      
+    inject: (injectTo, propertySchema = injectTo, propPointer) => {
 
       injectTo._isTuple = true;
       injectTo._displayType = '';
