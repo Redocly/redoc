@@ -41,6 +41,19 @@
       </template>
     </div>
   </template>
+  <template ngSwitchCase="oneOf">
+    <div class="params-wrap params-oneOf array-tuple">
+      <template ngFor [ngForOf]="schema.oneOf" let-item="$implicit" let-idx="index" [ngForTrackBy]="trackByIdx">
+        <div class="tuple-item">
+          <span class="tuple-item-index"> [{{idx}}]: </span>
+          <json-schema class="nested-schema" [pointer]="item._pointer"
+          [absolutePointer]="item._pointer"
+          [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
+          </json-schema>
+        </div>
+      </template>
+    </div>
+  </template>
   <template ngSwitchCase="array">
     <json-schema class="nested-schema" [pointer]="schema._pointer"
     [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>

@@ -74,7 +74,12 @@ export class SchemaSample extends BaseComponent implements OnInit {
         return;
       }
       try {
-        sample = OpenAPISampler.sample(this.componentSchema, {
+        let schemaForSampler = this.componentSchema;
+        if (this.componentSchema.oneOf) {
+          schemaForSampler = this.componentSchema.oneOf[0];
+        }
+
+        sample = OpenAPISampler.sample(schemaForSampler, {
           skipReadOnly: this.skipReadOnly
         });
       } catch(e) {

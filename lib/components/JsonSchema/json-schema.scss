@@ -127,6 +127,12 @@ table {
   font-family: monospace;
 }
 
+.params-wrap.params-oneOf:before {
+  content: "oneOf [";
+  padding-top: 1em;
+  font-family: monospace;
+}
+
 .params-wrap.params-array:before {
   content: "Array [";
   padding-top: 1em;

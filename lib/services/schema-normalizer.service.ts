@@ -13,6 +13,7 @@ interface Reference {
 interface Schema {
   properties: any;
   allOf: any;
+  oneOf: any;
   items: any;
   additionalProperties: any;
 }
@@ -35,6 +36,9 @@ export class SchemaNormalizer {
         resolved._pointer = resolved._pointer || ptr;
         resolved = Object.assign({}, resolved);
         AllOfMerger.merge(resolved, resolved.allOf);
+      }
+      if (resolved.oneOf) {
+          resolved.type = 'oneOf';
       }
       return resolved;
     });
@@ -72,6 +76,11 @@ class SchemaWalker {
     if (obj.allOf) {
       let ptr = JsonPointer.join(pointer, ['allOf']);
       SchemaWalker.walkEach(obj.allOf, ptr, visitor);
+    }
+
+    if (obj.oneOf) {
+      let ptr = JsonPointer.join(pointer, ['oneOf']);
+      SchemaWalker.walkEach(obj.oneOf, ptr, visitor);
     }
 
     if (obj.items) {
@@ -215,9 +224,13 @@ class SchemaDereferencer {
     // if resolved schema doesn't have title use name from ref
     resolved.title = resolved.title || JsonPointer.baseName($ref);
 
-    let keysCount = Object.keys(schema).filter(key => !key.startsWith('x-redoc')).length;
+    let keysCount = Object.keys(schema)
+        .filter(key => !key.startsWith('x-redoc'))
+        .filter(key => key !== 'description')
+        .filter(key => key !== 'title')
+        .length;
 
-    if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
+            if ( keysCount > 1 ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
         'They are IGNORED according to the JsonSchema spec');
       resolved.description = resolved.description || schema.description;
