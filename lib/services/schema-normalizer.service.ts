@@ -224,9 +224,13 @@ class SchemaDereferencer {
     // if resolved schema doesn't have title use name from ref
     resolved.title = resolved.title || JsonPointer.baseName($ref);
 
-    let keysCount = Object.keys(schema).filter(key => !key.startsWith('x-redoc')).length;
+    let keysCount = Object.keys(schema)
+        .filter(key => !key.startsWith('x-redoc'))
+        .filter(key => key !== 'description')
+        .filter(key => key !== 'title')
+        .length;
 
-    if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
+            if ( keysCount > 1 ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
         'They are IGNORED according to the JsonSchema spec');
       resolved.description = resolved.description || schema.description;
