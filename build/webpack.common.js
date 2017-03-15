@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const StringReplacePlugin = require("string-replace-webpack-plugin");
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-const ngcWebpack = require('ngc-webpack');
 
 const VERSION = JSON.stringify(require('../package.json').version);
 
@@ -123,15 +122,15 @@ module.exports = function (options) {
     }
   };
 
-  if (options.AOT) {
-    conf.plugins.push(
-      new ngcWebpack.NgcWebpackPlugin({
-        disable: !options.AOT,
-        tsConfig: root('tsconfig.webpack.json'),
-        resourceOverride: root('build/resource-override.js')
-      })
-    );
-  }
+  // if (options.AOT) {
+  //   conf.plugins.push(
+  //     new ngcWebpack.NgcWebpackPlugin({
+  //       disable: !options.AOT,
+  //       tsConfig: root('tsconfig.webpack.json'),
+  //       resourceOverride: root('build/resource-override.js')
+  //     })
+  //   );
+  // }
 
   return conf;
 }
