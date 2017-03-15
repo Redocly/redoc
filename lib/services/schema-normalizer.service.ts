@@ -17,7 +17,6 @@ interface Schema {
   additionalProperties: any;
 }
 
-@Injectable()
 export class SchemaNormalizer {
   _dereferencer:SchemaDereferencer;
   constructor(_schema:any) {

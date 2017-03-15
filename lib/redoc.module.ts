@@ -19,6 +19,7 @@ import {
   Marker,
   SearchService,
   COMPONENT_PARSER_ALLOWED } from './services/';
+
 import { SpecManager } from './utils/spec-manager';
 
 @NgModule({

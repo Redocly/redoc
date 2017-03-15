@@ -27,7 +27,6 @@ export interface MarkdownHeading {
   children?: StringMap<MarkdownHeading>;
 }
 
-@Injectable()
 export class MdRenderer {
   public headings: StringMap<MarkdownHeading> = {};
   currentTopHeading: MarkdownHeading;

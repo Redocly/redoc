@@ -4,7 +4,7 @@ import {
   Injectable,
   ComponentFactory,
   ComponentRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class ContentProjector {
     for (let i=0; i < projectedNodesOrComponents.length; i++) {
       let nodeOrCompRef = projectedNodesOrComponents[i];
       if (nodeOrCompRef instanceof ComponentRef) {
+        //nodeOrCompRef.changeDetectorRef.detectChanges();
         projectedNodes.push(nodeOrCompRef.location.nativeElement);
         componentRefs.push(nodeOrCompRef);
       } else {
@@ -29,13 +30,14 @@ export class ContentProjector {
     let parentCompRef = parentView.createComponent(componentFactory, null, contextInjector, [projectedNodes]);
 
     // using private property to get AppElement instance
-    let viewContainer = (<any>parentView)._element;
-    viewContainer.nestedViews = viewContainer.nestedViews || [];
+    let viewContainer = (<any>parentView)._view;
+    let viewData = (<any>parentView)._data;
+    viewData.embeddedViews = viewData.embeddedViews || [];
     for (let i=0; i < componentRefs.length; i++) {
       let compRef = componentRefs[i];
       // attach view to viewContainer change detector
-      viewContainer.nestedViews.push((<any>compRef.hostView).internalView);
-      (<any>compRef.hostView).internalView.viewContainer = viewContainer;
+      viewData.embeddedViews.push((<any>compRef.hostView)._view);
+      (<any>compRef.hostView).attachToViewContainerRef(viewContainer);
     }
     return parentCompRef;
   }

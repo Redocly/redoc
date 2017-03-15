@@ -11,7 +11,7 @@
       <th> {{def.details.in}} parameter name:</th>
       <td> {{def.details.name}} </td>
     </tr>
-    <template [ngIf]="def.details.type === 'oauth2'">
+    <ng-template [ngIf]="def.details.type === 'oauth2'">
       <tr>
         <th> OAuth2 Flow</th>
         <td> {{def.details.flow}} </td>
@@ -24,9 +24,9 @@
         <th> Token URL </th>
         <td> {{def.details.tokenUrl}} </td>
       </tr>
-    </template>
+    </ng-template>
   </table>
-  <template [ngIf]="def.details.type === 'oauth2'">
+  <ng-template [ngIf]="def.details.type === 'oauth2'">
     <h3> OAuth2 Scopes </h3>
     <table class="security-scopes-details">
       <tr *ngFor="let scopeName of def.details.scopes | keys">
@@ -34,5 +34,5 @@
         <td> {{def.details.scopes[scopeName]}} </td>
       </tr>
     </table>
-  </template>
+  </ng-template>
 </div>
