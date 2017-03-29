@@ -189,7 +189,7 @@ export class SpecManager {
     // check if parent definition name is in the enum of possible values
     if (definition.discriminator) {
       let prop = definition.properties[definition.discriminator];
-      if (prop.enum && prop.enum.indexOf(JsonPointer.baseName(defPointer)) > -1) {
+      if (prop && prop.enum && prop.enum.indexOf(JsonPointer.baseName(defPointer)) > -1) {
         res.push({
           name: JsonPointer.baseName(defPointer),
           $ref: defPointer
