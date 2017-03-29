@@ -44,8 +44,8 @@ export class SpecManager {
         this._schema = snapshot(schema);
         try {
           this.init();
-          resolve(this._schema);
           this.spec.next(this._schema);
+          resolve(this._schema);
         } catch(err) {
           reject(err);
         }

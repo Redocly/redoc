@@ -101,9 +101,9 @@ export class Redoc extends BaseComponent implements OnInit {
       if (!spec) {
         this.appState.startLoading();
       } else {
+        this.specLoaded = true;
         this.changeDetector.markForCheck();
         this.changeDetector.detectChanges();
-        this.specLoaded = true;
         setTimeout(() => {
           this.hash.start();
         });
