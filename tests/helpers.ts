@@ -1,7 +1,6 @@
 'use strict';
 
 import { By } from '@angular/platform-browser';
-import { getDOM } from '@angular/platform-browser/src/dom/dom_adapter';
 
 /** Gets a child DebugElement by tag name. */
 export function getChildDebugElement(parent, tagName) {
@@ -20,7 +19,13 @@ export function getChildDebugElementAll(parent, tagName) {
 
 export function mouseclick( element ) {
     // create a mouse click event
-    var dispatchedEvent = getDOM().createMouseEvent('click');
+    var dispatchedEvent
+    try {
+      dispatchedEvent = new MouseEvent('click', true);
+    } catch (e) {
+      dispatchedEvent = document.createEvent('MouseEvent');
+      dispatchedEvent.initEvent('click', true, false);
+    }
     // send click to element
-    getDOM().dispatchEvent(element, dispatchedEvent);
+    element.dispatchEvent(dispatchedEvent);
 }

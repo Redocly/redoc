@@ -28,14 +28,15 @@ export class ContentProjector {
 
     let parentCompRef = parentView.createComponent(componentFactory, null, contextInjector, [projectedNodes]);
 
-    // using private property to get AppElement instance
-    let viewContainer = (<any>parentView)._element;
-    viewContainer.nestedViews = viewContainer.nestedViews || [];
+    // using private property to get view instance
+    let viewContainer = (<any>parentView)._view;
+    let viewData = (<any>parentView)._data;
+    viewData.viewContainer._embeddedViews = viewData.viewContainer.embeddedViews || [];
     for (let i=0; i < componentRefs.length; i++) {
       let compRef = componentRefs[i];
-      // attach view to viewContainer change detector
-      viewContainer.nestedViews.push((<any>compRef.hostView).internalView);
-      (<any>compRef.hostView).internalView.viewContainer = viewContainer;
+      // attach view to containter change detector
+      viewData.viewContainer._embeddedViews.push((<any>compRef.hostView)._view);
+      (<any>compRef.hostView).attachToViewContainerRef(viewContainer);
     }
     return parentCompRef;
   }

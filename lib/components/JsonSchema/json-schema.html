@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="schema._widgetType">
-  <template ngSwitchCase="file">
+  <ng-template ngSwitchCase="file">
     <span class="param-wrap">
       <span class="param-type-file">file</span>
       <div *ngIf="schema._produces && !isRequestSchema" class="file produces">
@@ -13,8 +13,8 @@
         </ul>
       </div>
     </span>
-  </template>
-  <template ngSwitchCase="trivial">
+  </ng-template>
+  <ng-template ngSwitchCase="trivial">
     <span class="param-wrap">
       <span class="param-type param-type-trivial {{schema.type}}"
         [ngClass]="{'with-hint': schema._displayTypeHint, 'array': _isArray}"
@@ -27,10 +27,10 @@
       </div>
       <span *ngIf="schema.pattern" class="param-pattern">{{schema.pattern}}</span>
     </span>
-  </template>
-  <template ngSwitchCase="tuple">
+  </ng-template>
+  <ng-template ngSwitchCase="tuple">
     <div class="params-wrap params-array array-tuple">
-      <template ngFor [ngForOf]="schema.items" let-item="$implicit" let-idx="index" [ngForTrackBy]="trackByIdx">
+      <ng-template ngFor [ngForOf]="schema.items" let-item="$implicit" let-idx="index" [ngForTrackBy]="trackByIdx">
         <div class="tuple-item">
           <span class="tuple-item-index"> [{{idx}}]: </span>
           <json-schema class="nested-schema" [pointer]="item._pointer"
@@ -38,17 +38,17 @@
           [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema">
           </json-schema>
         </div>
-      </template>
+      </ng-template>
     </div>
-  </template>
-  <template ngSwitchCase="array">
+  </ng-template>
+  <ng-template ngSwitchCase="array">
     <json-schema class="nested-schema" [pointer]="schema._pointer"
     [nestOdd]="!nestOdd" [isRequestSchema]="isRequestSchema"> </json-schema>
-  </template>
-  <template ngSwitchCase="object">
+  </ng-template>
+  <ng-template ngSwitchCase="object">
     <table class="params-wrap" [ngClass]="{'params-array': _isArray}">
       <!-- <caption> {{_displayType}} </caption> -->
-      <template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
+      <ng-template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
         <tr class="param" [ngClass]="{'last': last,
             'discriminator': prop.isDiscriminator,
             'complex': prop._pointer,
@@ -100,8 +100,8 @@
             </zippy>
           </td>
         </tr>
-      </template>
+      </ng-template>
     </table>
-  </template>
+  </ng-template>
 
 </ng-container>

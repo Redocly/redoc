@@ -169,6 +169,17 @@ lang: JavaScript
 source: console.log('Hello World');
 ```
 
+### Parameter Object vendor extensions
+Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObject)
+#### x-examples
+| Field Name     |  Type    | Description |
+| :------------- | :------: | :---------- |
+| x-examples | [Example Object](http://swagger.io/specification/#exampleObject)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
+
+###### Usage in ReDoc
+`x-examples` are rendered in the JSON tab on the right panel of ReDoc.
+
+
 ### Schema Object vendor extensions
 Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
 #### x-nullable

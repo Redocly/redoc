@@ -1,3 +1,30 @@
+<a name="1.11.0"></a>
+# 1.11.0 (2017-03-09)
+
+
+### Bug Fixes
+
+* do not hang when swagger doesn't contain any paths ([e4f5388](https://github.com/Rebilly/ReDoc/commit/e4f5388)), closes [#216](https://github.com/Rebilly/ReDoc/issues/216)
+[#201](https://github.com/Rebilly/ReDoc/issues/201)
+* optimize and support inherited discriminator ([64e5741](https://github.com/Rebilly/ReDoc/commit/64e5741))
+* redoc hangs when indexing recursive discriminator-based definitions ([1e96f88](https://github.com/Rebilly/ReDoc/commit/1e96f88))
+* wrong warnings for $ref not single ([193f4bf](https://github.com/Rebilly/ReDoc/commit/193f4bf)), closes [#221](https://github.com/Rebilly/ReDoc/issues/221)
+* x-extendedDiscriminator not working ([4899f3e](https://github.com/Rebilly/ReDoc/commit/4899f3e)), closes [#217](https://github.com/Rebilly/ReDoc/issues/217)
+
+
+### Features
+
+* copy pretty-printed JSON ([e99d66d](https://github.com/Rebilly/ReDoc/commit/e99d66d)), closes [#219](https://github.com/Rebilly/ReDoc/issues/219)
+* support for OpenAPI object as a parameter for `init` ([d99f256](https://github.com/Rebilly/ReDoc/commit/d99f256)), closes [#224](https://github.com/Rebilly/ReDoc/issues/224)
+
+<a name="1.10.2"></a>
+## 1.10.2 (2017-03-01)
+
+### Bug Fixes
+* clear page fragment when scroll to the beginning
+* update docs for x-tagGroup, add warning [#215](https://github.com/Rebilly/ReDoc/issues/215)
+* show warning for non-used in tagGroup tags
+
 <a name="1.10.1"></a>
 ## 1.10.1 (2017-02-27)
 

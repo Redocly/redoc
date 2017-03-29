@@ -210,6 +210,8 @@ footer {
     padding: 0.1em 0 0.2em 0;
     font-size: 1em;
     border-radius: $border-radius;
+    color: $red;
+    border: 1px solid rgba(38,50,56,0.1);
 
     &:before, &:after {
       letter-spacing: -0.2em;

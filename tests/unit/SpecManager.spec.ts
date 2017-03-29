@@ -15,14 +15,6 @@ describe('Utils', () => {
       specMgr.load('/tests/schemas/extended-petstore.yml').should.be.instanceof(Promise);
     });
 
-    it('load should reject promise for invalid url', (done)=> {
-      specMgr.load('/nonexisting/schema.json').then(() => {
-        throw new Error('Success handler should not be called');
-      }, () => {
-        done();
-      });
-    });
-
     it('load should resolve promise for valid url', (done)=> {
       specMgr.load('/tests/schemas/extended-petstore.yml').then(() => {
         done();

@@ -4,7 +4,7 @@ import { AppStateService } from '../services/app-state.service';
 @Injectable()
 export class CustomErrorHandler extends ErrorHandler {
   constructor(private appState: AppStateService) {
-    super(true);
+    super();
   }
   handleError(error) {
     this.appState.error.next(error && error.rejection || error);

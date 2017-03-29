@@ -15,7 +15,6 @@ if (AOT) {
 }
 
 if (IS_PRODUCTION) {
-  disableDebugTools();
   enableProdMode();
 }
 
@@ -35,6 +34,7 @@ export function init(specUrlOrSpec:string|any, options:any = {}) {
   return bootstrapRedoc()
   .then(appRef => {
     moduleRef = appRef;
+    if (IS_PRODUCTION) disableDebugTools();
     console.log('ReDoc initialized!');
   }).catch(err => {
     throw err;

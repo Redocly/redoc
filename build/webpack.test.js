@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 const root = require('./helpers').root;
+const path = require('path');
 
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js');
@@ -57,6 +58,10 @@ module.exports = webpackMerge(commonConfig({
       /\.tmp[\\\/].*$/,
       /dist[\\\/].*$/,
       /(?:[^\\\/]*(?:[\\\/]|$))*[^\\\/]*\.css$/ // ignore css files
-    ])
+    ]),
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      path.resolve(__dirname, '../src')
+    )
   ],
 })

@@ -9,10 +9,12 @@
     "pretty": true,
     "moduleResolution": "node",
     "types": [
-      "core-js",
       "jasmine",
       "should",
-      "requirejs"
+      "webpack"
+    ],
+    "lib": [
+      "DOM", "ES2016", "DOM.Iterable"
     ],
     "noEmitHelpers": true
   },

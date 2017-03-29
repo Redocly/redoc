@@ -20,9 +20,10 @@ require('../lib/vendor');
 
 var TestBed = require('@angular/core/testing').TestBed;
 var ErrorHandler = require('@angular/core').ErrorHandler;
+var forwardRef = require('@angular/core').forwardRef;
 var BrowserDynamicTestingModule = require('@angular/platform-browser-dynamic/testing').BrowserDynamicTestingModule;
 var platformBrowserDynamicTesting = require('@angular/platform-browser-dynamic/testing').platformBrowserDynamicTesting;
-
+var BrowserAnimationsModule = require('@angular/platform-browser/animations').BrowserAnimationsModule;
 var SpecManager = require('../lib/utils/spec-manager').SpecManager;
 var services = require('../lib/services/index');
 var REDOC_PIPES = require('../lib/utils/pipes').REDOC_PIPES;
@@ -38,6 +39,7 @@ TestBed.initTestEnvironment(
 
 beforeEach(function() {
   TestBed.configureTestingModule({
+    imports: [BrowserAnimationsModule],
     providers: [
       SpecManager,
       services.AppStateService,
@@ -51,7 +53,7 @@ beforeEach(function() {
       services.Marker,
       services.SearchService,
       { provide: sharedComponents.LazyTasksService, useClass: sharedComponents.LazyTasksServiceSync },
-      { provide: ErrorHandler, useClass: services.CustomErrorHandler },
+      //{ provide: ErrorHandler, useClass: forwardRef(function() {return services.CustomErrorHandler}) },
       { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
     ],
     declarations: [REDOC_PIPES, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES]

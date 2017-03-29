@@ -1,5 +1,5 @@
 <h5 class="param-list-header" *ngIf="params.length"> Parameters </h5>
-<template ngFor [ngForOf]="params" let-paramType="$implicit">
+<ng-template ngFor [ngForOf]="params" let-paramType="$implicit">
   <header class="paramType">
     {{paramType.place}} Parameters
     <span class="hint--top-right hint--large" [attr.data-hint]="paramType.placeHint">?</span>
@@ -30,7 +30,7 @@
         </div>
     </div>
   </div>
-</template>
+</ng-template>
 
 <div *ngIf="bodyParam">
   <h5 class="param-list-header" *ngIf="bodyParam"> Request Body </h5>

@@ -1,4 +1,7 @@
 {
+  "linterOptions": {
+    "typeCheck": true
+  },
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
     "class-name": true,
@@ -42,7 +45,6 @@
     "no-input-rename": true,
     "no-output-rename": true,
     "pipe-naming": [true, "camelCase"],
-    "import-destructuring-spacing": true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "templates-use-public": true,
