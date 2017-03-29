@@ -31,11 +31,11 @@ export class ContentProjector {
     // using private property to get view instance
     let viewContainer = (<any>parentView)._view;
     let viewData = (<any>parentView)._data;
-    viewData.embeddedViews = viewData.embeddedViews || [];
+    viewData.viewContainer._embeddedViews = viewData.viewContainer.embeddedViews || [];
     for (let i=0; i < componentRefs.length; i++) {
       let compRef = componentRefs[i];
       // attach view to containter change detector
-      viewData.embeddedViews.push((<any>compRef.hostView)._view);
+      viewData.viewContainer._embeddedViews.push((<any>compRef.hostView)._view);
       (<any>compRef.hostView).attachToViewContainerRef(viewContainer);
     }
     return parentCompRef;
