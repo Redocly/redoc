@@ -14,9 +14,9 @@ interface MethodInfo {
     description: string;
   };
   bodyParam: any;
-  summary: any;
-  anchor: any;
-  externalDocs: {
+  summary: string;
+  anchor: string;
+  externalDocs?: {
     url: string;
     description?: string;
   }
@@ -60,8 +60,8 @@ export class Method extends BaseComponent implements OnInit {
     };
   }
 
-  buildAnchor() {
-    this.menu.hashFor(this.pointer,
+  buildAnchor():string {
+    return this.menu.hashFor(this.pointer,
       { type: 'method', operationId: this.operationId, pointer: this.pointer },
       this.parentTagId );
   }
