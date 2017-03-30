@@ -4,12 +4,12 @@ import { BaseComponent, SpecManager } from '../base';
 import { MenuService } from '../../services/index';
 
 @Component({
-  selector: 'methods-list',
-  templateUrl: './methods-list.html',
-  styleUrls: ['./methods-list.css'],
+  selector: 'operations-list',
+  templateUrl: './operations-list.html',
+  styleUrls: ['./operations-list.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MethodsList extends BaseComponent implements OnInit {
+export class OperationsList extends BaseComponent implements OnInit {
   @Input() pointer:string;
 
   tags:Array<any> = [];
@@ -26,13 +26,13 @@ export class MethodsList extends BaseComponent implements OnInit {
       items: []
     };
     flatMenuItems.forEach(menuItem => {
-      // skip items that are not bound to swagger tags/methods
+      // skip items that are not bound to swagger tags/operations
       if (!menuItem.metadata) return;
 
       if (menuItem.metadata.type === 'tag') {
         this.tags.push(menuItem);
       }
-      if (menuItem.metadata.type === 'method' && !menuItem.parent) {
+      if (menuItem.metadata.type === 'operation' && !menuItem.parent) {
         emptyTag.items.push(menuItem);
       }
     });

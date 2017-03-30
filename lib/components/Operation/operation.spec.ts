@@ -9,7 +9,7 @@ import {
 
 import { getChildDebugElement } from '../../../tests/helpers';
 
-import { Method } from './method';
+import { Operation } from './operation';
 import { SpecManager } from '../../utils/spec-manager';;
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';;
 
@@ -17,9 +17,9 @@ describe('Redoc components', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
   });
-  describe('Method Component', () => {
+  describe('Operation Component', () => {
     let builder;
-    let component: Method;
+    let component: Operation;
     let specMgr;
 
     beforeEach(async(inject([SpecManager, LazyTasksService], (_specMgr, lazyTasks) => {
@@ -33,7 +33,7 @@ describe('Redoc components', () => {
 
     beforeEach(() => {
       let fixture = TestBed.createComponent(TestAppComponent);
-      component = getChildDebugElement(fixture.debugElement, 'method').componentInstance;
+      component = getChildDebugElement(fixture.debugElement, 'operation').componentInstance;
       fixture.detectChanges();
     });
 
@@ -43,23 +43,23 @@ describe('Redoc components', () => {
     });
 
     it('should init basic component data', () => {
-      component.method.verb.should.be.equal('put');
-      component.method.path.should.be.equal('/user/{username}');
+      component.operation.verb.should.be.equal('put');
+      component.operation.path.should.be.equal('/user/{username}');
     });
 
 
     it('should main tag', () => {
-      component.method.info.tags.should.be.empty();
+      component.operation.info.tags.should.be.empty();
     });
   });
 });
 
 
-/** Test component that contains a Method. */
+/** Test component that contains a Operation. */
 @Component({
   selector: 'test-app',
   template:
-      `<method pointer='#/paths/~1user~1{username}/put'></method>`
+      `<operation pointer='#/paths/~1user~1{username}/put'></operation>`
 })
 class TestAppComponent {
 }

@@ -35,8 +35,8 @@ function basicTests(swaggerUrl, title) {
       let $redoc = $('redoc');
       expect($redoc.isPresent()).toBe(true);
       setTimeout(() => {
-        let $methods = $$('method');
-        expect($methods.count()).toBeGreaterThan(0);
+        let $operations = $$('operation');
+        expect($operations.count()).toBeGreaterThan(0);
         done();
       });
     });

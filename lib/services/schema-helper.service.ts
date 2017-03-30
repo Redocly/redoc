@@ -1,6 +1,6 @@
 'use strict';
 import { JsonPointer } from '../utils/JsonPointer';
-import { methods as swaggerMethods, keywordTypes } from  '../utils/swagger-defs';
+import { operations as swaggerOperations, keywordTypes } from  '../utils/swagger-defs';
 import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';
 
@@ -273,9 +273,9 @@ export class SchemaHelper {
     return res;
   }
 
-  static methodSummary(method) {
-    return method.summary || method.operationId ||
-      (method.description && method.description.substring(0, 50)) || '<no description>';
+  static operationSummary(operation) {
+    return operation.summary || operation.operationId ||
+      (operation.description && operation.description.substring(0, 50)) || '<no description>';
   }
 
   static detectType(schema) {
@@ -290,26 +290,26 @@ export class SchemaHelper {
     }
   }
 
-  static getTagsWithMethods(schema) {
+  static getTagsWithOperations(schema) {
     let tags = {};
     for (let tag of schema.tags || []) {
       tags[tag.name] = tag;
-      tag.methods = [];
+      tag.operations = [];
     }
 
     let paths = schema.paths;
     for (let path of Object.keys(paths)) {
-      let methods = Object.keys(paths[path]).filter((k) => swaggerMethods.has(k));
-      for (let method of methods) {
-        let methodInfo = paths[path][method];
-        let methodTags = methodInfo.tags;
+      let operations = Object.keys(paths[path]).filter((k) => swaggerOperations.has(k));
+      for (let operation of operations) {
+        let operationInfo = paths[path][operation];
+        let operationTags = operationInfo.tags;
 
         // empty tag
-        if (!(methodTags && methodTags.length)) {
-          methodTags = [''];
+        if (!(operationTags && operationTags.length)) {
+          operationTags = [''];
         }
-        let methodPointer = JsonPointer.compile(['paths', path, method]);
-        for (let tagName of methodTags) {
+        let operationPointer = JsonPointer.compile(['paths', path, operation]);
+        for (let tagName of operationTags) {
           let tag = tags[tagName];
           if (!tag) {
             tag = {
@@ -318,9 +318,9 @@ export class SchemaHelper {
             tags[tagName] = tag;
           }
           if (tag['x-traitTag']) continue;
-          if (!tag.methods) tag.methods = [];
-          tag.methods.push(methodInfo);
-          methodInfo._pointer = methodPointer;
+          if (!tag.operations) tag.operations = [];
+          tag.operations.push(operationInfo);
+          operationInfo._pointer = operationPointer;
         }
       }
     }

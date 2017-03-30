@@ -6,7 +6,7 @@ import { SchemaHelper } from '../../services/schema-helper.service';
 import { OptionsService, MenuService } from '../../services/';
 
 
-interface MethodInfo {
+interface OperationInfo {
   verb: string;
   path: string;
   info: {
@@ -23,18 +23,18 @@ interface MethodInfo {
 }
 
 @Component({
-  selector: 'method',
-  templateUrl: './method.html',
-  styleUrls: ['./method.css'],
+  selector: 'operation',
+  templateUrl: './operation.html',
+  styleUrls: ['./operation.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Method extends BaseComponent implements OnInit {
+export class Operation extends BaseComponent implements OnInit {
   @Input() pointer :string;
   @Input() parentTagId :string;
 
   @HostBinding('attr.operation-id') operationId;
 
-  method: MethodInfo;
+  operation: OperationInfo;
 
   constructor(
     specMgr:SpecManager,
@@ -46,7 +46,7 @@ export class Method extends BaseComponent implements OnInit {
   init() {
     this.operationId = this.componentSchema.operationId;
 
-    this.method = {
+    this.operation = {
       verb: JsonPointer.baseName(this.pointer),
       path: JsonPointer.baseName(this.pointer, 2),
       info: {
@@ -54,7 +54,7 @@ export class Method extends BaseComponent implements OnInit {
         tags: this.filterMainTags(this.componentSchema.tags)
       },
       bodyParam: this.findBodyParam(),
-      summary: SchemaHelper.methodSummary(this.componentSchema),
+      summary: SchemaHelper.operationSummary(this.componentSchema),
       anchor: this.buildAnchor(),
       externalDocs: this.componentSchema.externalDocs
     };
@@ -62,7 +62,7 @@ export class Method extends BaseComponent implements OnInit {
 
   buildAnchor():string {
     return this.menu.hashFor(this.pointer,
-      { type: 'method', operationId: this.operationId, pointer: this.pointer },
+      { type: 'operation', operationId: this.operationId, pointer: this.pointer },
       this.parentTagId );
   }
 
@@ -73,8 +73,8 @@ export class Method extends BaseComponent implements OnInit {
   }
 
   findBodyParam() {
-    let pathParams = this.specMgr.getMethodParams(this.pointer);
-    let bodyParam = pathParams.find(param => param.in === 'body');
+    let params = this.specMgr.getOperationParams(this.pointer);
+    let bodyParam = params.find(param => param.in === 'body');
     return bodyParam;
   }
 

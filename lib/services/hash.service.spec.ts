@@ -12,7 +12,7 @@ describe('Hash Service', () => {
     hashService = _hash;
   }));
 
-  it('should trigger changed event when method start is called', () => {
+  it('should trigger changed event when method `start` is called', () => {
     spyOn(hashService.value, 'next').and.stub();
     hashService.start();
     expect(hashService.value.next).toHaveBeenCalled();

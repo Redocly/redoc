@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 
-.method-endpoint {
+.operation-endpoint {
   padding: 10px 30px 10px 20px;
   border-radius: $border-radius*2;
   background-color: darken($black, 2%);
@@ -18,7 +18,7 @@
   border: 1px solid transparent;
 }
 
-.method-endpoint > .method-params-subheader {
+.operation-endpoint > .operation-params-subheader {
   padding-top: 1px;
   padding-bottom: 0;
   margin: 0;
@@ -29,7 +29,7 @@
   border-radius: $border-radius;
 }
 
-.method-api-url {
+.operation-api-url {
   color: rgba($black, .8);
   &-path {
     font-family: $headers-font, $headers-font-family;
@@ -96,7 +96,7 @@
   transition: all 0.25s ease;
 }
 :host.expanded {
-  > .method-endpoint {
+  > .operation-endpoint {
     border-color: $side-bar-bg-color;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;

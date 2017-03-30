@@ -27,7 +27,7 @@ export class ParamsList extends BaseComponent implements OnInit {
 
   init() {
     this.params = [];
-    let paramsList = this.specMgr.getMethodParams(this.pointer);
+    let paramsList = this.specMgr.getOperationParams(this.pointer);
 
     paramsList = paramsList.map(paramSchema => {
       let propPointer = paramSchema._pointer;

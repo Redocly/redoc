@@ -14,11 +14,11 @@
 //   border-bottom: 0;
 // }
 
-.method-header {
+.operation-header {
   margin-bottom: calc(1em - 6px);
 }
 
-.method-tags {
+.operation-tags {
   margin-top: 20px;
 
   > a {
@@ -39,45 +39,45 @@
   }
 }
 
-.method-content, .method-samples {
+.operation-content, .operation-samples {
   display: block;
   box-sizing: border-box;
   float: left;
 }
 
-.method-content {
+.operation-content {
   width: 100% - $samples-panel-width;
   padding: $section-spacing;
 }
 
-.method-samples {
+.operation-samples {
   color: $sample-panel-color;
   width: 40%;
   padding: $section-spacing;
   background: $samples-panel-bg-color;
 }
 
-.method-samples header,
-.method-samples > h5 {
+.operation-samples header,
+.operation-samples > h5 {
   color: $sample-panel-headers-color;
   text-transform: uppercase;
 }
 
-.method-samples > h5 {
+.operation-samples > h5 {
     margin-bottom: 8px;
 }
 
-.method-samples schema-sample {
+.operation-samples schema-sample {
   display: block;
 }
 
-.method:after {
+.operation:after {
   content: "";
   display: table;
   clear:both;
 }
 
-.method-description {
+.operation-description {
   padding: 6px 0 10px 0;
   margin: 0;
 }
@@ -87,15 +87,15 @@
 }
 
 @media (max-width: $right-panel-squash-breakpoint) {
-  .methods:before {
+  .operations:before {
     display: none;
   }
 
-  .method-samples, .method-content  {
+  .operation-samples, .operation-content  {
     width: 100%;
   }
 
-  .method-samples {
+  .operation-samples {
     margin-top: 2em;
   }
 

@@ -54,7 +54,7 @@ export class MenuService {
   private _hashSubscription: Subscription;
   private _scrollSubscription: Subscription;
   private _progressSubscription: Subscription;
-  private _tagsWithMethods: any;
+  private _tagsWithOperations: any;
 
   constructor(
     private hash:Hash,
@@ -162,7 +162,7 @@ export class MenuService {
     while(currentItem) {
       if (currentItem.id) {
         selector = `[section="${currentItem.id}"] ` + selector;
-        // We only need to go up the chain for methods that
+        // We only need to go up the chain for operations that
         // might have multiple tags. For headers/subheaders
         // we need to siply early terminate.
         if (!currentItem.metadata) {
@@ -254,7 +254,10 @@ export class MenuService {
       }
 
       idx = this.flatItems.findIndex(item => item.id === searchId);
-      if (idx < 0) this.tryScrollToId(searchId);
+      if (idx < 0) {
+        this.tryScrollToId(searchId);
+        return false;
+      }
     } else if (namespace === 'operation') {
       idx = this.flatItems.findIndex(item => {
         return item.metadata && item.metadata.operationId === ptr;
@@ -304,19 +307,19 @@ export class MenuService {
     return res;
   }
 
-  getMethodsItems(parent: MenuItem, tag:any):MenuItem[] {
-    if (!tag.methods || !tag.methods.length) return null;
+  getOperationsItems(parent: MenuItem, tag:any):MenuItem[] {
+    if (!tag.operations || !tag.operations.length) return null;
 
     let res = [];
-    for (let method of tag.methods) {
+    for (let operation of tag.operations) {
       let subItem = {
-        name: SchemaHelper.methodSummary(method),
-        id: method._pointer,
-        description: method.description,
+        name: SchemaHelper.operationSummary(operation),
+        id: operation._pointer,
+        description: operation.description,
         metadata: {
-          type: 'method',
-          pointer: method._pointer,
-          operationId: method.operationId
+          type: 'operation',
+          pointer: operation._pointer,
+          operationId: operation.operationId
         },
         parent: parent
       };
@@ -331,7 +334,7 @@ export class MenuService {
     parentId: string
   ) {
     if (!id) return null;
-    if (itemMeta && itemMeta.type === 'method') {
+    if (itemMeta && itemMeta.type === 'operation') {
       if (itemMeta.operationId) {
         return 'operation/' + encodeURIComponent(itemMeta.operationId);
       } else {
@@ -348,18 +351,18 @@ export class MenuService {
     let tags;
     if (!tagGroup) {
       // all tags
-      tags = Object.keys(this._tagsWithMethods);
+      tags = Object.keys(this._tagsWithOperations);
     } else {
       tags = tagGroup.tags;
     }
 
     tags = tags.map(k => {
-      if (!this._tagsWithMethods[k]) {
+      if (!this._tagsWithOperations[k]) {
         WarningsService.warn(`Non-existing tag "${k}" is added to the group "${tagGroup.name}"`);
         return null;
       }
-      this._tagsWithMethods[k].used = true;
-      return this._tagsWithMethods[k];
+      this._tagsWithOperations[k].used = true;
+      return this._tagsWithOperations[k];
     });
 
     let res = [];
@@ -368,9 +371,9 @@ export class MenuService {
       let id = 'tag/' + slugify(tag.name);
       let item: MenuItem;
 
-      // don't put empty tag into menu, instead put their methods
+      // don't put empty tag into menu, instead put their operations
       if (tag.name === '') {
-        let items = this.getMethodsItems(null, tag);
+        let items = this.getOperationsItems(null, tag);
         res.push(...items);
         continue;
       }
@@ -383,7 +386,7 @@ export class MenuService {
         parent: parent,
         items: null
       };
-      item.items = this.getMethodsItems(item, tag);
+      item.items = this.getOperationsItems(item, tag);
 
       res.push(item);
     }
@@ -410,15 +413,15 @@ export class MenuService {
   }
 
   checkAllTagsUsedInGroups() {
-    for (let tag of Object.keys(this._tagsWithMethods)) {
-      if (!this._tagsWithMethods[tag].used) {
+    for (let tag of Object.keys(this._tagsWithOperations)) {
+      if (!this._tagsWithOperations[tag].used) {
         WarningsService.warn(`Tag "${tag}" is not added to any group`);
       }
     }
   }
 
   buildMenu() {
-    this._tagsWithMethods = SchemaHelper.getTagsWithMethods(this.specMgr.schema);
+    this._tagsWithOperations = SchemaHelper.getTagsWithOperations(this.specMgr.schema);
 
     this.items = this.items || [];
     this.addMarkdownItems();

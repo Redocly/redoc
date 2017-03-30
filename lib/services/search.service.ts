@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppStateService } from './app-state.service';
 import { SchemaNormalizer } from './schema-normalizer.service';
 import { JsonPointer, groupBy, SpecManager, StringMap, snapshot, MarkdownHeading } from '../utils/';
-import { methods as swaggerMethods } from '../utils/swagger-defs';
+import { operations as swaggerOperations } from '../utils/swagger-defs';
 import * as slugify from 'slugify';
 
 import {
@@ -102,7 +102,7 @@ export class SearchService {
     Object.keys(paths).forEach(path => {
       let opearations = paths[path];
       Object.keys(opearations).forEach(verb => {
-        if (!swaggerMethods.has(verb)) return;
+        if (!swaggerOperations.has(verb)) return;
         const opearation = opearations[verb];
         const ptr = JsonPointer.join(basePtr, [path, verb]);
 
@@ -123,7 +123,7 @@ export class SearchService {
   }
 
   indexOperationParameters(operation: SwaggerOperation, operationPointer: string) {
-    const parameters = this.spec.getMethodParams(operationPointer);
+    const parameters = this.spec.getOperationParams(operationPointer);
     if (!parameters) return;
     for (let i=0; i<parameters.length; ++i) {
       const param = parameters[i];

@@ -1,12 +1,12 @@
-<div class="methods">
+<div class="operations">
   <div class="tag" *ngFor="let tag of tags; trackBy:trackByTagName" [attr.section]="tag.id">
     <div class="tag-info" *ngIf="tag.name">
       <h1 class="sharable-header"> <a class="share-link" href="#{{tag.id}}"></a>{{tag.name}} </h1>
       <p *ngIf="tag.description" [innerHtml]="tag.description | marked"> </p>
       <redoc-externalDocs [docs]="tag.metadata.externalDocs"></redoc-externalDocs>
     </div>
-    <method *lazyFor="let methodItem of tag.items; let ready = ready;"
-    [hidden]="!ready" [pointer]="methodItem.metadata.pointer"
-    [parentTagId]="tag.id" [attr.section]="methodItem.id"></method>
+    <operation *lazyFor="let operation of tag.items; let ready = ready;"
+    [hidden]="!ready" [pointer]="operation.metadata.pointer"
+    [parentTagId]="tag.id" [attr.section]="operation.id"></operation>
   </div>
 </div>
