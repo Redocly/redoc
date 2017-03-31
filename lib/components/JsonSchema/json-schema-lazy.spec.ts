@@ -45,7 +45,7 @@ describe('Redoc components', () => {
 });
 
 
-/** Test component that contains a Method. */
+/** Test component that contains a lazy schema. */
 @Component({
   selector: 'test-app',
   template:

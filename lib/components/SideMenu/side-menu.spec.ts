@@ -11,7 +11,7 @@ import {
 
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import { MethodsList, SideMenu } from '../index';
+import { OperationsList, SideMenu } from '../index';
 
 import { SpecManager } from '../../utils/spec-manager';
 
@@ -19,7 +19,7 @@ let testOptions;
 
 describe('Redoc components', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ declarations: [ TestAppComponent, MethodsList ] });
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent, OperationsList ] });
   });
   describe('SideMenu Component', () => {
     let builder;
@@ -90,7 +90,7 @@ describe('Redoc components', () => {
   selector: 'test-app',
   template:
       `<side-menu></side-menu>
-      <methods-list></methods-list>`
+      <operations-list></operations-list>`
 })
 class TestAppComponent {
 }

@@ -10,14 +10,14 @@ import {
 import { getChildDebugElement } from '../../../tests/helpers';
 
 
-import { MethodsList } from './methods-list';
+import { OperationsList } from './operations-list';
 import { SpecManager } from '../../utils/spec-manager';
 
 describe('Redoc components', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ declarations: [ TestAppComponent ] });
   });
-  describe('MethodsList Component', () => {
+  describe('OperationsList Component', () => {
     let builder;
     let component;
     let fixture;
@@ -28,12 +28,12 @@ describe('Redoc components', () => {
     })));
 
     beforeEach(done => {
-      specMgr.load('/tests/schemas/methods-list-component.json').then(done, done.fail);
+      specMgr.load('/tests/schemas/operations-list-component.json').then(done, done.fail);
     });
 
     beforeEach(() => {
       fixture = TestBed.createComponent(TestAppComponent);
-      component = getChildDebugElement(fixture.debugElement, 'methods-list').componentInstance;
+      component = getChildDebugElement(fixture.debugElement, 'operations-list').componentInstance;
       fixture.detectChanges();
     });
 
@@ -56,7 +56,7 @@ describe('Redoc components', () => {
 @Component({
   selector: 'test-app',
   template:
-      `<methods-list></methods-list>`
+      `<operations-list></operations-list>`
 })
 class TestAppComponent {
 }

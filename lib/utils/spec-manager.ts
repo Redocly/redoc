@@ -130,7 +130,7 @@ export class SpecManager {
     return obj;
   }
 
-  getMethodParams(methodPtr:string):SwaggerParameter[] {
+  getOperationParams(operationPtr:string):SwaggerParameter[] {
     /* inject JsonPointer into array elements */
     function injectPointers(array:SwaggerParameter[], root) {
       if (!Array.isArray(array)) {
@@ -143,23 +143,23 @@ export class SpecManager {
     }
 
     // accept pointer directly to parameters as well
-    if (JsonPointer.baseName(methodPtr) === 'parameters') {
-      methodPtr = JsonPointer.dirName(methodPtr);
+    if (JsonPointer.baseName(operationPtr) === 'parameters') {
+      operationPtr = JsonPointer.dirName(operationPtr);
     }
 
     //get path params
-    let pathParamsPtr = JsonPointer.join(JsonPointer.dirName(methodPtr), ['parameters']);
+    let pathParamsPtr = JsonPointer.join(JsonPointer.dirName(operationPtr), ['parameters']);
     let pathParams:SwaggerParameter[] = this.byPointer(pathParamsPtr) || [];
 
-    let methodParamsPtr = JsonPointer.join(methodPtr, ['parameters']);
-    let methodParams:SwaggerParameter[] = this.byPointer(methodParamsPtr) || [];
+    let operationParamsPtr = JsonPointer.join(operationPtr, ['parameters']);
+    let operationParams:SwaggerParameter[] = this.byPointer(operationParamsPtr) || [];
     pathParams = injectPointers(pathParams, pathParamsPtr);
-    methodParams = injectPointers(methodParams, methodParamsPtr);
+    operationParams = injectPointers(operationParams, operationParamsPtr);
 
     // resolve references
-    methodParams = this.resolveRefs(methodParams);
+    operationParams = this.resolveRefs(operationParams);
     pathParams = this.resolveRefs(pathParams);
-    return methodParams.concat(pathParams);
+    return operationParams.concat(pathParams);
   }
 
   getTagsMap() {

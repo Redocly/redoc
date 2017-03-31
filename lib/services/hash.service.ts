@@ -27,8 +27,12 @@ export class Hash {
     });
   }
 
-  update(hash: string|null) {
+  update(hash: string|null, rewriteHistory:boolean = false) {
     if (hash == undefined) return;
+    if (rewriteHistory) {
+      window.history.replaceState(null, '', '#' + hash);
+      return;
+    }
     this.noEmit = true;
     window.location.hash = hash;
     setTimeout(() => {

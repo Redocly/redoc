@@ -72,11 +72,11 @@ describe('Redoc components', () => {
 });
 
 
-/** Test component that contains a Method. */
+/** Test component that contains an Operation. */
 @Component({
   selector: 'test-app',
   template:
-      `<method pointer='#/paths/~1user~1{username}/put'></method>`
+      `<operation pointer='#/paths/~1user~1{username}/put'></operation>`
 })
 class TestAppComponent {
 }

@@ -5,7 +5,7 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import { MethodsList } from '../components/MethodsList/methods-list';
+import { OperationsList } from '../components/OperationsList/operations-list';
 import { MenuService, MenuItem } from './menu.service';
 import { Hash } from './hash.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
@@ -15,7 +15,7 @@ import { SpecManager } from '../utils/spec-manager';
 
 describe('Menu service', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ declarations: [ TestAppComponent, MethodsList ] });
+    TestBed.configureTestingModule({ declarations: [ TestAppComponent, OperationsList ] });
   });
 
   let menu:MenuService, hashService, scroll, tasks;
@@ -41,7 +41,7 @@ describe('Menu service', () => {
     fixture.detectChanges();
   });
 
-  it('should scroll to method when location hash is present [jp]', (done) => {
+  it('should scroll to operation when location hash is present [jp]', (done) => {
     let hash = '#tag/pet/paths/~1pet~1findByStatus/get';
     spyOn(menu, 'scrollToActive').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
@@ -56,7 +56,7 @@ describe('Menu service', () => {
     hashService.value.next(hash);
   });
   //
-  it('should scroll to method when location hash is present [operation]', (done) => {
+  it('should scroll to operation when location hash is present [operation]', (done) => {
     let hash = '#operation/getPetById';
     spyOn(menu, 'scrollToActive').and.callThrough();
     spyOn(window, 'scrollTo').and.stub();
@@ -133,7 +133,7 @@ describe('Menu service', () => {
     });
 
     it('should return Array with correct number of items', () => {
-      // 3 - defined tags, 1 - tag3 and 1 method item for method without tag
+      // 3 - defined tags, 1 - tag3 and 1 operation item for operation without tag
       items.length.should.be.equal(3 + 1 + 1);
     });
 
@@ -144,19 +144,19 @@ describe('Menu service', () => {
       item.items[0].name.should.be.equal('test put');
     });
 
-    it('should append method items without tags to the end of list', () => {
-      let methodItem = items[4];
-      methodItem.name.should.be.equal('test post');
-      methodItem.metadata.type.should.be.equal('method');
-      should.not.exist(methodItem.items);
+    it('should append operation items without tags to the end of list', () => {
+      let operationItem = items[4];
+      operationItem.name.should.be.equal('test post');
+      operationItem.metadata.type.should.be.equal('operation');
+      should.not.exist(operationItem.items);
     });
 
-    it('should map x-traitTag to empty method list', () => {
+    it('should map x-traitTag to empty operation list', () => {
       let item = items[0];
       should.not.exist(item.items);
     });
 
-    it('methods for tag should contain valid pointer and name', () => {
+    it('operations for tag should contain valid pointer and name', () => {
       for (let item of items) {
         item.should.be.an.Object();
         if (item.items) {
@@ -186,7 +186,7 @@ describe('Menu service', () => {
   template:
       `<div id='parent' style='height: 500px; overflow:auto'>
         <api-info></api-info>
-        <methods-list></methods-list>
+        <operations-list></operations-list>
       </div>`
 })
 class TestAppComponent {

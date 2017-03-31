@@ -104,47 +104,47 @@ describe('Utils', () => {
       });
     });
 
-    describe('getMethodParams method', () => {
+    describe('getOperationParams method', () => {
       beforeEach((done:any) => {
-        specMgr.load('/tests/schemas/schema-mgr-methodparams.json').then(done, done.fail);
+        specMgr.load('/tests/schemas/schema-mgr-operationParams.json').then(done, done.fail);
       });
 
       it('should propagate path parameters', () => {
-        let params = specMgr.getMethodParams('/paths/test1/get');
+        let params = specMgr.getOperationParams('/paths/test1/get');
         params.length.should.be.equal(2);
-        params[0].name.should.be.equal('methodParam');
+        params[0].name.should.be.equal('operationParam');
         params[1].name.should.be.equal('pathParam');
       });
 
       it('should inject correct pointers', () => {
-        let params = specMgr.getMethodParams('/paths/test1/get');
+        let params = specMgr.getOperationParams('/paths/test1/get');
         params[0]._pointer.should.be.equal('/paths/test1/get/parameters/0');
         params[1]._pointer.should.be.equal('/paths/test1/parameters/0');
       });
 
       it('should accept pointer directly to parameters', () => {
-        let params = specMgr.getMethodParams('/paths/test1/get/parameters');
+        let params = specMgr.getOperationParams('/paths/test1/get/parameters');
         expect(params).not.toBeNull();
         params.length.should.be.equal(2);
       });
 
       it('should resolve path params from Parameters Definitions Object', () => {
-        let params = specMgr.getMethodParams('/paths/test2/get');
+        let params = specMgr.getOperationParams('/paths/test2/get');
         params.length.should.be.equal(2);
-        params[0].name.should.be.equal('methodParam');
+        params[0].name.should.be.equal('operationParam');
         params[1].name.should.be.equal('extParam');
         params[1]._pointer.should.be.equal('#/parameters/extparam');
       });
 
-      it('should resolve method params from Parameters Definitions Object', () => {
-        let params = specMgr.getMethodParams('/paths/test3/get');
+      it('should resolve operation params from Parameters Definitions Object', () => {
+        let params = specMgr.getOperationParams('/paths/test3/get');
         params.length.should.be.equal(1);
         params[0].name.should.be.equal('extParam');
         params[0]._pointer.should.be.equal('#/parameters/extparam');
       });
 
       it('should throw for parameters other than array', () => {
-        let func = () => specMgr.getMethodParams('/paths/test4/get');
+        let func = () => specMgr.getOperationParams('/paths/test4/get');
         expect(func).toThrow();
       });
     });

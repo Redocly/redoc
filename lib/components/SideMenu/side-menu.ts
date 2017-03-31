@@ -1,8 +1,15 @@
 'use strict';
 
-import { Component, EventEmitter, Input, Output, ElementRef, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component,
+  EventEmitter,
+  Input,
+  Output,
+  ElementRef,
+  ChangeDetectorRef,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 
-//import { global } from '@angular/core/src/facade/lang';
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { ScrollService, MenuService, OptionsService, MenuItem, Marker} from '../../services/';
@@ -51,9 +58,15 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   private $resourcesNav: any;
   private $scrollParent: any;
 
-  constructor(specMgr:SpecManager, elementRef:ElementRef,
-  private scrollService:ScrollService, private menuService:MenuService,
-  optionsService:OptionsService, private detectorRef:ChangeDetectorRef, private marker:Marker) {
+  constructor(
+    specMgr:SpecManager,
+    elementRef:ElementRef,
+    private scrollService:ScrollService,
+    private menuService:MenuService,
+    optionsService:OptionsService,
+    private detectorRef:ChangeDetectorRef,
+    private marker:Marker
+  ) {
     super(specMgr);
     this.$element = elementRef.nativeElement;
 

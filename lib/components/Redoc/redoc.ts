@@ -15,13 +15,29 @@ import { BaseComponent } from '../base';
 import * as detectScollParent from 'scrollparent';
 
 import { SpecManager } from '../../utils/spec-manager';
-import { SearchService, OptionsService, Options, Hash, AppStateService, SchemaHelper } from '../../services/';
+import {
+  SearchService,
+  OptionsService,
+  Options,
+  Hash,
+  AppStateService,
+  SchemaHelper,
+  MenuService,
+  Marker
+} from '../../services/';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 
 @Component({
   selector: 'redoc',
   templateUrl: './redoc.html',
   styleUrls: ['./redoc.css'],
+  providers: [
+    SpecManager,
+    MenuService,
+    SearchService,
+    LazyTasksService,
+    Marker
+  ]
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements OnInit {

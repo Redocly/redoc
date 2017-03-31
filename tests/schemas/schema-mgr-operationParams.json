@@ -26,7 +26,7 @@
         "summary": "test get",
         "parameters": [
           {
-            "name": "methodParam",
+            "name": "operationParam",
             "in": "path",
             "type": "string"
           }
@@ -41,7 +41,7 @@
         "summary": "test get",
         "parameters": [
           {
-            "name": "methodParam",
+            "name": "operationParam",
             "in": "path",
             "type": "string"
           }

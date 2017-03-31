@@ -16,7 +16,7 @@ import { SpecManager } from '../../utils/spec-manager';
 
 describe('Redoc components', () => {
 
-  describe('MethodsList Component', () => {
+  describe('ResponsesList Component', () => {
     let builder;
     let component: ResponsesList;
     let fixture: ComponentFixture<ResponsesList>
