@@ -202,14 +202,14 @@ export class MenuService {
     }
   }
 
-  activate(idx, force = false) {
+  activate(idx, force = false, replaceState = false) {
     let item = this.flatItems[idx];
     if (!force && item && !item.ready) return;
 
     this.deactivate(this.activeIdx);
     this.activeIdx = idx;
     if (idx < 0) {
-      this.hash.update('');
+      this.hash.update('', replaceState);
       return;
     }
 
@@ -220,14 +220,14 @@ export class MenuService {
       cItem.parent.active = true;
       cItem = cItem.parent;
     }
-    this.hash.update(this.hashFor(item.id, item.metadata, item.parent && item.parent.id));
+    this.hash.update(this.hashFor(item.id, item.metadata, item.parent && item.parent.id), replaceState);
     this.changedActiveItem.next(item);
   }
 
   changeActive(offset = 1):boolean {
     let noChange = (this.activeIdx <= 0 && offset === -1) ||
       (this.activeIdx === this.flatItems.length - 1 && offset === 1);
-    this.activate(this.activeIdx + offset);
+    this.activate(this.activeIdx + offset, false, true);
     return noChange;
   }
 
