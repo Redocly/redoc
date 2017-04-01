@@ -13,10 +13,11 @@
       "should",
       "webpack"
     ],
+    "outDir": "dist",
     "lib": [
       "DOM", "ES2016", "DOM.Iterable"
     ],
-    "noEmitHelpers": true
+    "noEmitHelpers": false
   },
   "compileOnSave": false,
   "exclude": [

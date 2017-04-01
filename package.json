@@ -10,7 +10,7 @@
     "node": ">=6.9",
     "npm": ">=3.0.0"
   },
-  "main": "dist/redoc.min.js",
+  "main": "dist/redoc-module.js",
   "scripts": {
     "test": "npm run lint && node ./build/run_tests.js",
     "branch-release": "git reset --hard && branch-release",
@@ -33,7 +33,9 @@
     "webdriver": "webdriver-manager update",
     "serve:prod": "NODE_ENV=production npm start",
     "protractor": "protractor",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
+    "build:prod-module": "npm run build:sass && npm run ngc && npm run webpack:prod && IS_MODULE=true npm run webpack:prod",
+    "build:module": "npm run build:sass && npm run ngc && IS_MODULE=true npm run webpack:prod"
   },
   "keywords": [
     "OpenAPI",
