@@ -74,6 +74,7 @@
     "dropkickjs": "^2.1.10",
     "hint.css": "^2.3.2",
     "http-server": "^0.9.0",
+    "https-browserify": "^1.0.0",
     "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^3.1.0",
