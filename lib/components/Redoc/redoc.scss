@@ -240,6 +240,9 @@ footer {
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
+    font-family: $base-font, $base-font-family;
+    font-weight: $base-font-weight;
+    line-height: $base-line-height;
   }
 
   table {
