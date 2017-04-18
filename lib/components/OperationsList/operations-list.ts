@@ -30,13 +30,21 @@ export class OperationsList extends BaseComponent implements OnInit {
       if (!menuItem.metadata) return;
 
       if (menuItem.metadata.type === 'tag') {
-        this.tags.push(menuItem);
+        this.tags.push({
+          ...menuItem,
+          anchor: this.buildAnchor(menuItem.id)
+        });
       }
       if (menuItem.metadata.type === 'operation' && !menuItem.parent) {
         emptyTag.items.push(menuItem);
       }
     });
     if (emptyTag.items.length) this.tags.push(emptyTag);
+  }
+
+  buildAnchor(tagId):string {
+    return this.menu.hashFor(tagId,
+      { type: 'tag'});
   }
 
   trackByTagName(_, el) {
