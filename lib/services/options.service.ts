@@ -16,7 +16,8 @@ const OPTION_NAMES = new Set([
   'hideHostname',
   'lazyRendering',
   'expandResponses',
-  'requiredPropsFirst'
+  'requiredPropsFirst',
+  'noAutoAuth'
 ]);
 
 export interface Options {
@@ -29,6 +30,7 @@ export interface Options {
   expandResponses?: Set<string> | 'all';
   $scrollParent?: HTMLElement | Window;
   requiredPropsFirst?: boolean;
+  noAutoAuth?: boolean;
   spec?: any;
 }
 
@@ -95,6 +97,7 @@ export class OptionsService {
     if (isString(this._options.hideHostname)) this._options.hideHostname = true;
     if (isString(this._options.lazyRendering)) this._options.lazyRendering = true;
     if (isString(this._options.requiredPropsFirst)) this._options.requiredPropsFirst = true;
+    if (isString(this._options.noAutoAuth)) this._options.noAutoAuth = true;
     if (isString(this._options.expandResponses)) {
       let str = this._options.expandResponses as string;
       if (str === 'all') return;
