@@ -11,8 +11,7 @@ import { Component,
 } from '@angular/core';
 
 import { trigger, state, animate, transition, style } from '@angular/core';
-import { BaseComponent, SpecManager } from '../base';
-import { ScrollService, MenuService, OptionsService, MenuItem, Marker} from '../../services/';
+import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 
 const global = window;
@@ -47,7 +46,7 @@ export class SideMenuItems {
   templateUrl: './side-menu.html',
   styleUrls: ['./side-menu.css']
 })
-export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
+export class SideMenu implements OnInit, OnDestroy {
   activeCatCaption: string;
   activeItemCaption: string;
   menuItems: Array<MenuItem>;
@@ -59,15 +58,13 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   private $scrollParent: any;
 
   constructor(
-    specMgr:SpecManager,
     elementRef:ElementRef,
     private scrollService:ScrollService,
     private menuService:MenuService,
     optionsService:OptionsService,
     private detectorRef:ChangeDetectorRef,
-    private marker:Marker
+    //private marker:Marker
   ) {
-    super(specMgr);
     this.$element = elementRef.nativeElement;
 
     this.activeCatCaption = '';
@@ -154,7 +151,7 @@ export class SideMenu extends BaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.preinit();
+    this.init();
   }
 
   ngAfterViewInit() {

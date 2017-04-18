@@ -110,3 +110,39 @@
     transform: translateY(0%) scaleY(1);
   }
 }
+
+.http-verb {
+  color: white;
+
+  &.get {
+    background-color: $get-color;
+  }
+
+  &.post {
+    background-color: $post-color;
+  }
+
+  &.put {
+    background-color: $put-color;
+  }
+
+  &.options {
+    background-color: $options-color;
+  }
+
+  &.patch {
+    background-color: $patch-color;
+  }
+
+  &.delete {
+    background-color: $delete-color;
+  }
+
+  &.basic {
+    background-color: $basic-color;
+  }
+
+  &.link {
+    background-color: $link-color;
+  }
+}
