@@ -1,5 +1,5 @@
 'use strict';
-
+import { Injectable } from '@angular/core';
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { JsonPointer } from './JsonPointer';
 import { parse as urlParse, resolve as urlResolve } from 'url';
@@ -9,6 +9,7 @@ import { MdRenderer } from './md-renderer';
 
 import { SwaggerOperation, SwaggerParameter } from './swagger-typings';
 import { snapshot } from './helpers';
+import { OptionsService, Options } from '../services/options.service';
 import { WarningsService } from '../services/warnings.service';
 
 function getDiscriminator(obj) {
@@ -22,6 +23,7 @@ export interface DescendantInfo {
   idx?: number;
 }
 
+@Injectable()
 export class SpecManager {
   public _schema: any = {};
   public apiUrl: string;
@@ -32,6 +34,11 @@ export class SpecManager {
   public spec = new BehaviorSubject<any|null>(null);
   public _specUrl: string;
   private parser: any;
+  private options: Options;
+
+  constructor(optionsService: OptionsService) {
+    this.options = optionsService.options;
+  }
 
   load(urlOrObject: string|Object) {
     let promise = new Promise((resolve, reject) => {
@@ -87,8 +94,8 @@ export class SpecManager {
       throw Error('Specification Error: Required field "info" is not specified at the top level of the specification');
     }
     if (!this._schema.info.description) this._schema.info.description = '';
-    if (this._schema.securityDefinitions) {
-      let SecurityDefinitions =  require('../components/').SecurityDefinitions;
+    if (this._schema.securityDefinitions && !this.options.noAutoAuth) {
+      let SecurityDefinitions = require('../components/').SecurityDefinitions;
       mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
     }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
