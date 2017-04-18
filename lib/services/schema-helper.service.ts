@@ -4,7 +4,7 @@ import { operations as swaggerOperations, keywordTypes } from  '../utils/swagger
 import { WarningsService } from './warnings.service';
 import * as slugify from 'slugify';
 
-interface PropertyPreprocessOptions {
+export interface PropertyPreprocessOptions {
   childFor?: string;
   skipReadOnly?: boolean;
   discriminator?: string;
@@ -321,6 +321,7 @@ export class SchemaHelper {
           if (!tag.operations) tag.operations = [];
           tag.operations.push(operationInfo);
           operationInfo._pointer = operationPointer;
+          operationInfo.operation = operation;
         }
       }
     }

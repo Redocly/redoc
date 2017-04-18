@@ -10,7 +10,7 @@ import {
   ComponentFactoryResolver
 } from '@angular/core';
 
-type NodesOrComponents = HTMLElement | ComponentRef<any>;
+export type NodesOrComponents = HTMLElement | ComponentRef<any>;
 export const COMPONENT_PARSER_ALLOWED = 'COMPONENT_PARSER_ALLOWED';
 
 const COMPONENT_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?{component}\\s+?-->\\s*$';

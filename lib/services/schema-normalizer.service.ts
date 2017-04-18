@@ -5,12 +5,12 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { defaults } from '../utils/helpers';
 import { WarningsService } from './warnings.service';
 
-interface Reference {
+export interface Reference {
   $ref: string;
   description: string;
 }
 
-interface Schema {
+export interface Schema {
   properties: any;
   allOf: any;
   items: any;
@@ -180,7 +180,7 @@ class RefCounter {
 }
 
 
-class SchemaDereferencer {
+export class SchemaDereferencer {
   private _refCouner = new RefCounter();
 
   constructor(private _spec: SpecManager, private normalizator: SchemaNormalizer) {

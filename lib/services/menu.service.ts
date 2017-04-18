@@ -18,7 +18,7 @@ const CHANGE = {
   BACK : -1,
 };
 
-interface TagGroup {
+export interface TagGroup {
   name: string;
   tags: string[];
 }
@@ -56,6 +56,8 @@ export class MenuService {
   private _progressSubscription: Subscription;
   private _tagsWithOperations: any;
 
+  public domRoot: Document | Element = document;
+
   constructor(
     private hash:Hash,
     private tasks: LazyTasksService,
@@ -64,7 +66,11 @@ export class MenuService {
     private specMgr:SpecManager
   ) {
     this.hash = hash;
-    this.buildMenu();
+
+    this.specMgr.spec.subscribe(spec => {
+      if (!spec) return;
+      this.buildMenu();
+    })
 
     this._scrollSubscription = scrollService.scroll.subscribe((evt) => {
       this.onScroll(evt.isScrolledDown);
@@ -172,7 +178,7 @@ export class MenuService {
       currentItem = currentItem.parent;
     }
     selector = selector.trim();
-    return selector ? document.querySelector(selector) : null;
+    return selector ? this.domRoot.querySelector(selector) : null;
   }
 
   isTagOrGroupItem(flatIdx: number):boolean {
@@ -202,13 +208,12 @@ export class MenuService {
     }
   }
 
-  activate(idx, force = false, replaceState = false) {
-    let item = this.flatItems[idx];
+  activate(item:MenuItem, force = false, replaceState = false) {
     if (!force && item && !item.ready) return;
 
     this.deactivate(this.activeIdx);
-    this.activeIdx = idx;
-    if (idx < 0) {
+    this.activeIdx = item ? item.flatIdx : -1;
+    if (this.activeIdx < 0) {
       this.hash.update('', replaceState);
       return;
     }
@@ -224,10 +229,15 @@ export class MenuService {
     this.changedActiveItem.next(item);
   }
 
+  activateByIdx(idx:number, force = false, replaceState = false) {
+    let item = this.flatItems[idx];
+    this.activate(item, force, replaceState);
+  }
+
   changeActive(offset = 1):boolean {
     let noChange = (this.activeIdx <= 0 && offset === -1) ||
       (this.activeIdx === this.flatItems.length - 1 && offset === 1);
-    this.activate(this.activeIdx + offset, false, true);
+    this.activateByIdx(this.activeIdx + offset, false, true);
     return noChange;
   }
 
@@ -263,12 +273,12 @@ export class MenuService {
         return item.metadata && item.metadata.operationId === ptr;
       });
     }
-    this.activate(idx, true);
+    this.activateByIdx(idx, true);
     return idx >= 0;
   }
 
   tryScrollToId(id) {
-    let $el = document.querySelector(`[section="${id}"]`);
+    let $el = this.domRoot.querySelector(`[section="${id}"]`);
     if ($el) this.scrollService.scrollTo($el);
   }
 
@@ -311,15 +321,16 @@ export class MenuService {
     if (!tag.operations || !tag.operations.length) return null;
 
     let res = [];
-    for (let operation of tag.operations) {
+    for (let operationInfo of tag.operations) {
       let subItem = {
-        name: SchemaHelper.operationSummary(operation),
-        id: operation._pointer,
-        description: operation.description,
+        name: SchemaHelper.operationSummary(operationInfo),
+        id: operationInfo._pointer,
+        description: operationInfo.description,
         metadata: {
           type: 'operation',
-          pointer: operation._pointer,
-          operationId: operation.operationId
+          pointer: operationInfo._pointer,
+          operationId: operationInfo.operationId,
+          operation: operationInfo.operation
         },
         parent: parent
       };
@@ -330,8 +341,8 @@ export class MenuService {
 
   hashFor(
     id: string|null, itemMeta:
-    {operationId: string, type: string, pointer: string},
-    parentId: string
+    {operationId?: string, type: string, pointer?: string},
+    parentId?: string
   ) {
     if (!id) return null;
     if (itemMeta && itemMeta.type === 'operation') {
@@ -434,6 +445,7 @@ export class MenuService {
 
   flatMenu():MenuItem[] {
     let menu = this.items;
+    if (!menu) return;
     let res = [];
     let curDepth = 1;
 

@@ -63,7 +63,6 @@ export class SideMenu implements OnInit, OnDestroy {
     private menuService:MenuService,
     optionsService:OptionsService,
     private detectorRef:ChangeDetectorRef,
-    //private marker:Marker
   ) {
     this.$element = elementRef.nativeElement;
 
@@ -105,7 +104,7 @@ export class SideMenu implements OnInit, OnDestroy {
       this.toggleMobileNav();
     }
 
-    this.menuService.activate(item.flatIdx);
+    this.menuService.activate(item);
     this.menuService.scrollToActive();
   }
 
