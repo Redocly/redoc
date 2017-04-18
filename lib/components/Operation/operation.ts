@@ -4,9 +4,9 @@ import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
 import { OptionsService, MenuService } from '../../services/';
+import { SwaggerBodyParameter } from '../../utils/swagger-typings';
 
-
-interface OperationInfo {
+export interface OperationInfo {
   verb: string;
   path: string;
   info: {
@@ -72,7 +72,7 @@ export class Operation extends BaseComponent implements OnInit {
     return tags.filter(tag => tagsMap[tag] && tagsMap[tag]['x-traitTag']);
   }
 
-  findBodyParam() {
+  findBodyParam():SwaggerBodyParameter {
     let params = this.specMgr.getOperationParams(this.pointer);
     let bodyParam = params.find(param => param.in === 'body');
     return bodyParam;

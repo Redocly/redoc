@@ -36,7 +36,7 @@ export class JsonSchemaLazy implements OnDestroy, OnInit, AfterViewInit {
     return schema && schema.$ref || this.pointer;
   }
 
-  _loadAfterSelf() {
+  private _loadAfterSelf() {
     var componentFactory = this.resolver.resolveComponentFactory(JsonSchema);
     let contextInjector = this.location.parentInjector;
     let compRef = this.location.createComponent(componentFactory, null, contextInjector, null);
