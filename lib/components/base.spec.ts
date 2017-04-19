@@ -2,6 +2,7 @@
 
 import { SpecManager } from '../utils/spec-manager';
 import { BaseComponent } from '../components/base';
+import { OptionsService } from '../services/options.service';
 
 describe('Redoc components', () => {
   describe('BaseComponent', () => {
@@ -9,7 +10,7 @@ describe('Redoc components', () => {
     let component;
 
     beforeAll(() => {
-      specMgr = new SpecManager();
+      specMgr = new SpecManager(new OptionsService());
       specMgr._schema = {tags: []};
     });
 
