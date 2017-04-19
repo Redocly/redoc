@@ -50,13 +50,13 @@ export class MenuService {
   items: MenuItem[];
   activeIdx: number = -1;
 
+  public domRoot: Document | Element = document;
+
   private _flatItems: MenuItem[];
   private _hashSubscription: Subscription;
   private _scrollSubscription: Subscription;
   private _progressSubscription: Subscription;
   private _tagsWithOperations: any;
-
-  public domRoot: Document | Element = document;
 
   constructor(
     private hash:Hash,
@@ -70,7 +70,7 @@ export class MenuService {
     this.specMgr.spec.subscribe(spec => {
       if (!spec) return;
       this.buildMenu();
-    })
+    });
 
     this._scrollSubscription = scrollService.scroll.subscribe((evt) => {
       this.onScroll(evt.isScrolledDown);
