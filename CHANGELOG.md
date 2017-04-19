@@ -1,3 +1,45 @@
+<a name="1.13.0"></a>
+# 1.13.0 (2017-04-19)
+
+
+### Bug Fixes
+
+* fix issue with loading https spec ([585b9cf](https://github.com/Rebilly/ReDoc/commit/585b9cf)), closes [#243](https://github.com/Rebilly/ReDoc/issues/243) (by Khoa Tran)
+* UL missing css ([303b49e](https://github.com/Rebilly/ReDoc/commit/303b49e)), closes [#248](https://github.com/Rebilly/ReDoc/issues/248)
+* don't show contact info if it is empty object ([6077cc6](https://github.com/Rebilly/ReDoc/commit/6077cc6))
+* code block formatting in markdown list ([a9cad19](https://github.com/Rebilly/ReDoc/commit/a9cad19)), closes [#242](https://github.com/Rebilly/ReDoc/issues/242)
+
+### Features
+
+* HTTP verbs badges in side menu ([92eec25](https://github.com/Rebilly/ReDoc/commit/92eec25)), closes [#61](https://github.com/Rebilly/ReDoc/issues/61)
+* HTTP verbs badges in search results ([61fd426](https://github.com/Rebilly/ReDoc/commit/61fd426))
+* new option [`no-auto-auth`](https://github.com/Rebilly/ReDoc#redoc-tag-attributes) to disable authentication section auto adding ([00b304a](https://github.com/Rebilly/ReDoc/commit/00b304a))
+
+<a name="1.12.1"></a>
+# 1.12.1 (2017-04-19)
+
+
+### Bug Fixes
+
+* fix: use replace state instead of pushState ([4f4e748](https://github.com/Rebilly/ReDoc/commit/4f4e748)), closes [#244](https://github.com/Rebilly/ReDoc/issues/244)
+
+<a name="1.12.0"></a>
+# 1.12.0 (2017-04-19)
+
+
+### Bug Fixes
+
+* add safeguard for undefined ([aaac434](https://github.com/Rebilly/ReDoc/commit/aaac434)), closes [#236](https://github.com/Rebilly/ReDoc/issues/236)
+* view errors were not reported ([6aa3a7d](https://github.com/Rebilly/ReDoc/commit/6aa3a7d))
+
+### Features
+
+* Support x-examples vendor extension for requests (by [@brendo](https://github.com/brendo))
+
+### Other
+
+* Updated to Angular 4, bundle is a bit smaller now
+
 <a name="1.11.0"></a>
 # 1.11.0 (2017-03-09)
 
