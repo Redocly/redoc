@@ -44,6 +44,7 @@ input {
   overflow-y: auto;
   border-bottom: 1px solid darken($side-bar-bg-color, 10%);
   border-top: 1px solid darken($side-bar-bg-color, 10%);
+  line-height: 1.2;
 
   min-height: 150px;
   max-height: 250px;
