@@ -15,7 +15,7 @@ import {
 
 import * as lunr from 'lunr';
 
-interface IndexElement {
+export interface IndexElement {
   menuId: string;
   title: string;
   body: string;

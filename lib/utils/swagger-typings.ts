@@ -10,7 +10,7 @@ import {
   Response
 } from '@types/swagger-schema-official';
 
-interface RedocInjectedPointer {
+export interface RedocInjectedPointer {
   _pointer?: string;
 }
 

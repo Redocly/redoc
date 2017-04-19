@@ -23,7 +23,7 @@ module.exports = function (options) {
       extensions: ['.ts', '.js', '.json', '.css'],
       alias: {
         http: 'stream-http',
-        https: 'stream-http'
+        https: 'https-browserify'
       }
     },
 

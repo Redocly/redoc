@@ -74,7 +74,7 @@ export class RedocSearch implements OnInit {
       item.pointers
     );
     this.marker.remark();
-    this.menu.activate(item.menuItem.flatIdx);
+    this.menu.activate(item.menuItem);
     this.menu.scrollToActive();
   }
 

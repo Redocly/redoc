@@ -17,6 +17,7 @@ import {
   ComponentParser,
   ContentProjector,
   Marker,
+  SchemaHelper,
   SearchService,
   COMPONENT_PARSER_ALLOWED } from './services/';
 
@@ -39,9 +40,20 @@ import { SpecManager } from './utils/spec-manager';
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions} }
   ],
-  exports: [Redoc]
+  exports: [Redoc, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES]
 })
 export class RedocModule {
 }
 
-export { Redoc, SpecManager };
+export { Redoc, SpecManager, ScrollService,
+Hash,
+WarningsService,
+OptionsService,
+AppStateService,
+ComponentParser,
+ContentProjector,
+MenuService,
+SearchService,
+SchemaHelper,
+LazyTasksService,
+Marker };

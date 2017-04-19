@@ -1,9 +1,11 @@
 'use strict';
 import { SchemaNormalizer } from './schema-normalizer.service';
 import { SpecManager } from '../utils/spec-manager';;
+import { OptionsService } from '../services/options.service';
+
 
 describe('Spec Helper', () => {
-  let specMgr:SpecManager = new SpecManager();
+  let specMgr:SpecManager = new SpecManager(new OptionsService());
   let normalizer = new SchemaNormalizer(specMgr);
 
   describe('Dereference', () => {

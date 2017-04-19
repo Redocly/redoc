@@ -78,7 +78,7 @@
 
 .menu-item-depth-2 {
   > .menu-item-header {
-    padding-left: 2*$side-menu-item-hpadding;
+    padding-left: $side-menu-item-hpadding;
   }
 
   > .menu-item-header:hover,

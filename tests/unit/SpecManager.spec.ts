@@ -1,6 +1,7 @@
 'use strict';
 
 import { SpecManager } from '../../lib/utils/spec-manager';
+import { OptionsService } from '../../lib/services/options.service';
 import * as xExtendedDefs from './x-extended-defs.json';
 
 describe('Utils', () => {
@@ -8,7 +9,7 @@ describe('Utils', () => {
     let specMgr: SpecManager;
 
     beforeEach(() => {
-      specMgr = new SpecManager();
+      specMgr = new SpecManager(new OptionsService());
     });
 
     it('load should return a promise', ()=> {
