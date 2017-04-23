@@ -15,7 +15,7 @@
     ],
     "outDir": "dist",
     "lib": [
-      "DOM", "ES2016", "DOM.Iterable"
+      "dom", "es2016", "dom.iterable"
     ],
     "noEmitHelpers": false
   },

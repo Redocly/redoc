@@ -35,12 +35,15 @@ export class Operation extends BaseComponent implements OnInit {
   @HostBinding('attr.operation-id') operationId;
 
   operation: OperationInfo;
+  pathInMiddlePanel: boolean;
 
   constructor(
     specMgr:SpecManager,
     private optionsService: OptionsService,
     private menu: MenuService) {
     super(specMgr);
+
+    this.pathInMiddlePanel = optionsService.options.pathInMiddlePanel;
   }
 
   init() {

@@ -2,8 +2,12 @@
 $mobile-menu-compact-breakpoint: 550px;
 
 :host {
-  display: block;
+  display: flex;
   box-sizing: border-box;
+}
+
+#resources-nav {
+  position: relative;
 }
 
 ul.menu-root {
@@ -35,6 +39,10 @@ ul.menu-root {
 }
 
 @media (max-width: $side-menu-mobile-breakpoint) {
+  :host {
+    display: block;
+  }
+
   .mobile-nav {
     display: block;
   }

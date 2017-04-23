@@ -1,14 +1,17 @@
 import { NgModule, ErrorHandler, APP_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { SpecManager } from './utils/spec-manager';
+
 import { Redoc, SecurityDefinitions, Operation, REDOC_DIRECTIVES } from './components/index';
-import { REDOC_COMMON_DIRECTIVES, DynamicNg2Wrapper } from './shared/components/index';
+import { REDOC_COMMON_DIRECTIVES, DynamicNg2Wrapper, DropDown } from './shared/components/index';
 import { REDOC_PIPES } from './utils/pipes';
 import { CustomErrorHandler } from './utils/'
 import { LazyTasksService } from './shared/components/LazyFor/lazy-for';
 
 import {
   OptionsService,
+  Options,
   MenuService,
   ScrollService,
   Hash,
@@ -19,9 +22,8 @@ import {
   Marker,
   SchemaHelper,
   SearchService,
+  MenuItem,
   COMPONENT_PARSER_ALLOWED } from './services/';
-
-import { SpecManager } from './utils/spec-manager';
 
 @NgModule({
   imports: [ CommonModule ],
@@ -49,6 +51,7 @@ export { Redoc, SpecManager, ScrollService,
 Hash,
 WarningsService,
 OptionsService,
+Options,
 AppStateService,
 ComponentParser,
 ContentProjector,
@@ -56,4 +59,5 @@ MenuService,
 SearchService,
 SchemaHelper,
 LazyTasksService,
-Marker };
+MenuItem,
+Marker, DropDown };

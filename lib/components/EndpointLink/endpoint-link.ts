@@ -2,6 +2,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, HostListener, HostBinding} from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import { OptionsService } from '../../services/';
+import { stripTrailingSlash } from '../../utils/';
 
 export interface ServerInfo {
   description: string;
@@ -36,7 +37,7 @@ export class EndpointLink implements OnInit {
     if (servers) {
       this.servers = servers.map(({url, description}) => ({
         description,
-        url: url.startsWith('//') ? `${this.specMgr.apiProtocol}:${url}` : url
+        url: stripTrailingSlash(url.startsWith('//') ? `${this.specMgr.apiProtocol}:${url}` : url)
       }));
     } else {
       this.servers = [

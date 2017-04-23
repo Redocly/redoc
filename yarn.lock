@@ -3782,6 +3782,10 @@ pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
 
+perfect-scrollbar@^0.6.16:
+  version "0.6.16"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-0.6.16.tgz#b1d61a5245cf3962bb9a8407a3fc669d923212fc"
+
 phantomjs-prebuilt@^2.1.7:
   version "2.1.14"
   resolved "https://registry.yarnpkg.com/phantomjs-prebuilt/-/phantomjs-prebuilt-2.1.14.tgz#d53d311fcfb7d1d08ddb24014558f1188c516da0"

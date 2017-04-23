@@ -57,6 +57,10 @@
   background: $samples-panel-bg-color;
 }
 
+.operation-samples pre {
+  color: $sample-panel-color;
+}
+
 .operation-samples header,
 .operation-samples > h5 {
   color: $sample-panel-headers-color;
@@ -101,5 +105,30 @@
 
   :host {
     padding-bottom: 0;
+  }
+}
+
+.operation-content /deep/ endpoint-link {
+  margin-bottom: 16px;
+
+  .operation-endpoint[class] {
+    padding: 5px 30px 5px 5px;
+    border: 0;
+    border-bottom: 1px solid $border-color;
+    border-radius: 0;
+    background-color: transparent;
+  }
+  .operation-api-url-path {
+    color: $black;
+  }
+
+  .expand-icon {
+    top: 8px;
+    background-color: $border-color;
+  }
+
+  .servers-overlay {
+    border: 1px solid $border-color;
+    border-top: 0;
   }
 }

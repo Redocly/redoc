@@ -3,10 +3,10 @@
   <span><!--
   --><span class="operation-api-url-path">{{path}}</span><!--
 --></span>
+  <svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
+    <polygon fill="white" points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
+  </svg>
 </div>
-<svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 24 24" xml:space="preserve">
-  <polygon fill="white" points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "/>
-</svg>
 <div class="servers-overlay">
   <div *ngFor="let server of servers" class="server-item">
     <div class="description" [innerHtml]="server.description | marked"></div>

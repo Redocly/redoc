@@ -1,6 +1,6 @@
 <div class="api-info-wrapper">
   <h1>{{info.title}} <span class="api-info-version">({{info.version}})</span></h1>
-  <p>
+  <p class="donwload-openapi" *ngIf="specUrl">
     Download OpenAPI (fka Swagger) specification:
     <a class="openapi-button" target="_blank" attr.href='{{specUrl}}'> Download </a>
   </p>

@@ -46,21 +46,21 @@ describe('Utils', () => {
 
       it('should substitute api scheme when spec schemes are undefined', () => {
         specMgr._schema.schemes = undefined;
-        specMgr._specUrl = 'https://petstore.swagger.io/v2';
+        specMgr.specUrl = 'https://petstore.swagger.io/v2';
         specMgr.init();
         specMgr.apiUrl.should.be.equal('https://petstore.swagger.io/v2');
       });
 
       it('should substitute api host when spec host is undefined', () => {
         specMgr._schema.host = undefined;
-        specMgr._specUrl = 'http://petstore.swagger.io/v2';
+        specMgr.specUrl = 'http://petstore.swagger.io/v2';
         specMgr.init();
         specMgr.apiUrl.should.be.equal('http://petstore.swagger.io/v2');
       });
 
       it('should use empty basePath when basePath is not present', () => {
         specMgr._schema.basePath = undefined;
-        specMgr._specUrl = 'https://petstore.swagger.io';
+        specMgr.specUrl = 'https://petstore.swagger.io';
         specMgr.init();
         specMgr.basePath.should.be.equal('');
       });

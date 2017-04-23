@@ -6,12 +6,14 @@ import { Component,
   Output,
   ElementRef,
   ChangeDetectorRef,
+  ViewChild,
   OnInit,
   OnDestroy
 } from '@angular/core';
 
 import { trigger, state, animate, transition, style } from '@angular/core';
 import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
+import { PerfectScrollbar } from '../../shared/components';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 
 const global = window;
@@ -50,12 +52,17 @@ export class SideMenu implements OnInit, OnDestroy {
   activeCatCaption: string;
   activeItemCaption: string;
   menuItems: Array<MenuItem>;
+  @Input() itemsTemplate;
+  @ViewChild(PerfectScrollbar) PS:PerfectScrollbar;
 
   private options: any;
   private $element: any;
   private $mobileNav: any;
   private $resourcesNav: any;
   private $scrollParent: any;
+
+  private changedActiveSubscription;
+  private changedSubscription;
 
   constructor(
     elementRef:ElementRef,
@@ -71,8 +78,10 @@ export class SideMenu implements OnInit, OnDestroy {
 
     this.options = optionsService.options;
 
-    this.menuService.changedActiveItem.subscribe((evt) => this.changed(evt));
-    this.menuService.changed.subscribe((evt) => this.detectorRef.detectChanges());
+    this.changedActiveSubscription = this.menuService.changedActiveItem.subscribe((evt) => this.changed(evt));
+    this.changedSubscription = this.menuService.changed.subscribe((evt) => {
+      this.update();
+    });
   }
 
   changed(item) {
@@ -89,9 +98,14 @@ export class SideMenu implements OnInit, OnDestroy {
       this.activeItemCaption = '';
     }
 
-    //safari doesn't update bindings if not run changeDetector manually :(
-    this.detectorRef.detectChanges();
+    // safari doesn't update bindings if not run changeDetector manually :(
+    this.update();
     this.scrollActiveIntoView();
+  }
+
+  update() {
+    this.detectorRef.detectChanges();
+    this.PS && this.PS.update();
   }
 
   scrollActiveIntoView() {
@@ -141,6 +155,8 @@ export class SideMenu implements OnInit, OnDestroy {
   }
 
   destroy() {
+    this.changedActiveSubscription.unsubscribe();
+    this.changedSubscription.unsubscribe();
     this.scrollService.unbind();
     this.menuService.destroy();
   }

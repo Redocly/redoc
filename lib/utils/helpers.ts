@@ -20,6 +20,10 @@ export function isBlank(obj: any): boolean {
   return obj == undefined;
 }
 
+export function stripTrailingSlash(path:string):string {
+  return path.endsWith('/') ? path.substring(0, path.length - 1) : path;
+}
+
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 export function groupBy<T>(array: T[], key:string):StringMap<T[]> {
   return array.reduce<StringMap<T[]>>(function(res, value) {
@@ -119,7 +123,7 @@ export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
 }
 
-export function getJsonLike(object: object) {
+export function getJsonLike(object: Object) {
   const jsonLikeKeys = Object.keys(object).filter(isJsonLike);
 
   if (!jsonLikeKeys.length) {

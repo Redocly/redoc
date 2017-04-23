@@ -32,7 +32,7 @@ export class SpecManager {
   public basePath: string;
 
   public spec = new BehaviorSubject<any|null>(null);
-  public _specUrl: string;
+  public specUrl: string;
   private parser: any;
   private options: Options;
 
@@ -46,7 +46,7 @@ export class SpecManager {
       this.parser.bundle(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
         if (typeof urlOrObject === 'string') {
-          this._specUrl = urlOrObject;
+          this.specUrl = urlOrObject;
         }
         this._schema = snapshot(schema);
         try {
@@ -64,7 +64,7 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
-    let urlParts = this._specUrl ? urlParse(urlResolve(window.location.href, this._specUrl)) : {};
+    let urlParts = this.specUrl ? urlParse(urlResolve(window.location.href, this.specUrl)) : {};
     let schemes = this._schema.schemes;
     let protocol;
     if (!schemes || !schemes.length) {
