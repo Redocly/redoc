@@ -9,6 +9,7 @@
   -o-transition: all .15s ease-in-out;
   transition: all .15s ease-in-out;
   display: block;
+  margin: 0;
   padding: $side-menu-item-vpadding*2.5 $side-menu-item-hpadding;
 
   &[hidden] {
@@ -31,11 +32,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0;
-}
-
-.menu-item:hover,
-.menu-item.active {
-  //background: darken($side-menu-active-bg-color, 6%);
 }
 
 .menu-subitems {
