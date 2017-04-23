@@ -23,6 +23,7 @@ const md = new Remarkable({
 export interface MarkdownHeading {
   title?: string;
   id: string;
+  slug?: string;
   content?: string;
   children?: StringMap<MarkdownHeading>;
 }
@@ -52,12 +53,14 @@ export class MdRenderer {
   }
 
   saveHeading(title: string, parent:MarkdownHeading = {id:null, children: this.headings}) :MarkdownHeading {
-    let id = slugify(title);
+    let slug = slugify(title);
+    let id = slug;
     if (parent && parent.id) id = `${parent.id}/${id}`;
     parent.children = parent.children || {};
     parent.children[id] = {
       title,
-      id
+      id,
+      slug
     };
     return parent.children[id];
   }
@@ -110,12 +113,14 @@ export class MdRenderer {
         this.currentTopHeading = this.saveHeading(content);;
         let id = this.currentTopHeading.id;
         return `<h${tokens[idx].hLevel} section="section/${id}">` +
-          `<a class="share-link" href="#section/${id}"></a>`;
+          `<a class="share-link" href="#section/${id}"></a>` +
+          `<a name="${id.toLowerCase()}"></a>`;
       } else if (tokens[idx].hLevel === 2 ) {
         let heading = this.saveHeading(content, this.currentTopHeading);
         let contentSlug = `${heading.id}`;
         return `<h${tokens[idx].hLevel} section="section/${heading.id}">` +
-          `<a class="share-link" href="#section/${contentSlug}"></a>`;
+          `<a class="share-link" href="#section/${contentSlug}"></a>` +
+          `<a name="${heading.slug.toLowerCase()}"></a>`;
       }
     }
   }
