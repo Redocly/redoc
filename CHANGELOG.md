@@ -1,3 +1,26 @@
+<a name="1.14.0"></a>
+# [1.14.0](https://github.com/Rebilly/ReDoc/compare/v1.13.0...v1.14.0) (2017-04-23)
+
+
+### Bug Fixes
+
+* don't show download button if initialized with an object ([476d6c4](https://github.com/Rebilly/ReDoc/commit/476d6c4))
+* endpoint link doesn't expand when click on arrow ([9248cc2](https://github.com/Rebilly/ReDoc/commit/9248cc2))
+* markdown block text color 💅 ([0f6f035](https://github.com/Rebilly/ReDoc/commit/0f6f035)), closes [#255](https://github.com/Rebilly/ReDoc/issues/255)
+* ReDoc removes path if site is using history API ([c77e1a2](https://github.com/Rebilly/ReDoc/commit/c77e1a2)), closes [#257](https://github.com/Rebilly/ReDoc/issues/257)
+* remove trailing slash from url when use `x-servers` ([2760a34](https://github.com/Rebilly/ReDoc/commit/2760a34))
+* subscription leak in side-menu ([838f233](https://github.com/Rebilly/ReDoc/commit/838f233))
+
+
+### Features
+
+* add GH-like anchors to h1 and h2 headings in md ([bb3667d](https://github.com/Rebilly/ReDoc/commit/bb3667d))
+* add perfect-scrollbar for side menu ([cdeee67](https://github.com/Rebilly/ReDoc/commit/cdeee67))
+* emphasize path with primary color in servers dropdown ([388b3d4](https://github.com/Rebilly/ReDoc/commit/388b3d4))
+* new option `path-in-middle-panel` ([74a3193](https://github.com/Rebilly/ReDoc/commit/74a3193))
+* SideMenu to support items template as a parameter ([8a49fb3](https://github.com/Rebilly/ReDoc/commit/8a49fb3))
+
+
 <a name="1.13.0"></a>
 # 1.13.0 (2017-04-19)
 
