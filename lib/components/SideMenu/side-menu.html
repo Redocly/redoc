@@ -4,8 +4,14 @@
     <span class="selected-endpoint">{{activeItemCaption}}</span>
   </span>
 </div>
+<ng-template #default>
+  <side-menu-items [items]="menuItems" (activate)="activateAndScroll($event)"></side-menu-items>
+</ng-template>
+
 <div #desktop id="resources-nav">
   <ul class="menu-root">
-    <side-menu-items [items]="menuItems" (activate)="activateAndScroll($event)"></side-menu-items>
+    <div *ngIf="itemsTemplate; else default">
+      <ng-container *ngTemplateOutlet="itemsTemplate; context: this"></ng-container>
+    </div>
   </ul>
 </div>

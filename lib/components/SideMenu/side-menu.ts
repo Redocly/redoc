@@ -50,6 +50,7 @@ export class SideMenu implements OnInit, OnDestroy {
   activeCatCaption: string;
   activeItemCaption: string;
   menuItems: Array<MenuItem>;
+  @Input() itemsTemplate;
 
   private options: any;
   private $element: any;
