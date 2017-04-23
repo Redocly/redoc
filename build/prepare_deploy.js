@@ -16,10 +16,10 @@ mkdir('-p', 'dist');
 cp('-R', '../dist/*', './dist/');
 cd('..');
 
-var version = 'v' + require(path.join(__dirname, '../package.json')).version + '/';
-var versionDir = path.join(paths.releases, version);
+var version = require(path.join(__dirname, '../package.json')).version;
+var versionDir = path.join(paths.releases, 'v' + version + '/');
 var latestDir = path.join(paths.releases, 'latest/');
-var v1Dir = path.join(paths.releases, 'v1.x.x/');
+var v1Dir = path.join(paths.releases, 'v' + version.split('.')[0] + '.x.x/');
 mkdir('-p', versionDir)
 mkdir('-p', latestDir);
 mkdir('-p', v1Dir);
