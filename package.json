@@ -124,5 +124,7 @@
     "webpack-merge": "^4.1.0",
     "zone.js": "^0.8.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "perfect-scrollbar": "^0.6.16"
+  }
 }
