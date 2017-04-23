@@ -142,6 +142,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * `expand-responses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expand-responses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `required-props-first` - show required properties first ordered in the same order as in `required` array.
 * `no-auto-auth` - do not inject Authentication section automatically
+* `path-in-middle-panel` - show path link and HTTP verb in the middle panel instead of the right one
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
