@@ -8,7 +8,7 @@
   <side-menu-items [items]="menuItems" (activate)="activateAndScroll($event)"></side-menu-items>
 </ng-template>
 
-<div #desktop id="resources-nav">
+<div #desktop id="resources-nav" perfect-scrollbar>
   <ul class="menu-root">
     <div *ngIf="itemsTemplate; else default">
       <ng-container *ngTemplateOutlet="itemsTemplate; context: this"></ng-container>
