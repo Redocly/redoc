@@ -3,6 +3,8 @@
     <h2 class="operation-header sharable-header">
         <a class="share-link" href="#{{operation.anchor}}"></a>{{operation.summary}}
     </h2>
+    <endpoint-link *ngIf="pathInMiddlePanel"
+      [verb]="operation.verb" [path]="operation.path"> </endpoint-link>
     <div class="operation-tags" *ngIf="operation.info.tags.length">
         <a *ngFor="let tag of operation.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
     </div>
@@ -16,7 +18,8 @@
   <div class="operation-samples">
     <h4 class="operation-params-subheader">Definition</h4>
 
-    <endpoint-link [verb]="operation.verb" [path]="operation.path"> </endpoint-link>
+    <endpoint-link *ngIf="!pathInMiddlePanel"
+      [verb]="operation.verb" [path]="operation.path"> </endpoint-link>
 
     <div>
         <request-samples [pointer]="pointer" [schemaPointer]="operation.bodyParam?._pointer">
