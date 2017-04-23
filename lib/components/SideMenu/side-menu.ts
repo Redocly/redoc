@@ -57,6 +57,9 @@ export class SideMenu implements OnInit, OnDestroy {
   private $resourcesNav: any;
   private $scrollParent: any;
 
+  private changedActiveSubscription;
+  private changedSubscription;
+
   constructor(
     elementRef:ElementRef,
     private scrollService:ScrollService,
@@ -71,8 +74,10 @@ export class SideMenu implements OnInit, OnDestroy {
 
     this.options = optionsService.options;
 
-    this.menuService.changedActiveItem.subscribe((evt) => this.changed(evt));
-    this.menuService.changed.subscribe((evt) => this.detectorRef.detectChanges());
+    this.changedActiveSubscription = this.menuService.changedActiveItem.subscribe((evt) => this.changed(evt));
+    this.changedSubscription = this.menuService.changed.subscribe((evt) => {
+      this.detectorRef.detectChanges()
+    });
   }
 
   changed(item) {
@@ -141,6 +146,8 @@ export class SideMenu implements OnInit, OnDestroy {
   }
 
   destroy() {
+    this.changedActiveSubscription.unsubscribe();
+    this.changedSubscription.unsubscribe();
     this.scrollService.unbind();
     this.menuService.destroy();
   }
