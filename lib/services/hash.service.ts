@@ -30,7 +30,7 @@ export class Hash {
   update(hash: string|null, rewriteHistory:boolean = false) {
     if (hash == undefined) return;
     if (rewriteHistory) {
-      window.history.replaceState(null, '', window.location.href.split("#")[0] + '#' + hash);
+      window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + hash);
       return;
     }
     this.noEmit = true;
