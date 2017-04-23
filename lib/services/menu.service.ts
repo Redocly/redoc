@@ -104,7 +104,7 @@ export class MenuService {
 
     // check if previous items§ can be enabled
     let prevItem = this.flatItems[idx -= 1];
-    while(prevItem && (!prevItem.metadata || !prevItem.items)) {
+    while(prevItem && (!prevItem.metadata || prevItem.metadata.type === 'heading' || !prevItem.items)) {
       prevItem.ready = true;
       prevItem = this.flatItems[idx -= 1];
     }
@@ -171,7 +171,7 @@ export class MenuService {
         // We only need to go up the chain for operations that
         // might have multiple tags. For headers/subheaders
         // we need to siply early terminate.
-        if (!currentItem.metadata) {
+        if (!currentItem.metadata || currentItem.metadata.type === 'heading') {
           break;
         }
       }
@@ -291,7 +291,10 @@ export class MenuService {
       let item = {
         name: heading.title,
         id: id,
-        items: null
+        items: null,
+        metadata: {
+          type: 'heading'
+        }
       };
       item.items = this.getMarkdownSubheaders(item, heading);
 
@@ -309,7 +312,10 @@ export class MenuService {
       let subItem = {
         name: heading.title,
         id: id,
-        parent: parent
+        parent: parent,
+        metadata: {
+          type: 'heading'
+        }
       };
       res.push(subItem);
     });
