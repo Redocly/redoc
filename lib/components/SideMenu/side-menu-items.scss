@@ -20,6 +20,25 @@
     cursor: default;
     color: lighten($text-color, 60%);
   }
+
+  display: flex;
+  justify-content: space-between;
+
+  > svg {
+    height: 18px;
+    vertical-align: middle;
+    float: right;
+    transform: rotateZ(-90deg);
+    //transition: transform 0.3s ease-out;
+
+    polygon {
+      fill: $border-color;
+    }
+
+    .active > & {
+      transform: rotateZ(0);
+    }
+  }
 }
 
 .menu-item {
@@ -98,6 +117,10 @@
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
+
+    > svg {
+      display: none;
+    }
   }
   &:hover,
   &.active {
