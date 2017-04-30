@@ -22,17 +22,6 @@ const global = window;
   selector: 'side-menu-items',
   templateUrl: './side-menu-items.html',
   styleUrls: ['./side-menu-items.css'],
-  animations: [
-    trigger('itemAnimation', [
-      state('collapsed, void',
-        style({ height: '0px' })),
-      state('expanded',
-        style({ height: '*' })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease')
-      ])
-    ])
-  ]
 })
 export class SideMenuItems {
   @Input() items: MenuItem[];
