@@ -35,7 +35,7 @@ export interface MenuItem {
   active?: boolean;
   ready?: boolean;
 
-  depth?: number;
+  depth?: string|number;
   flatIdx?: number;
 
   metadata?: any;
@@ -72,7 +72,11 @@ export class MenuService {
       this.buildMenu();
     });
 
-    this._scrollSubscription = scrollService.scroll.subscribe((evt) => {
+    this.subscribe();
+  }
+
+  subscribe() {
+    this._scrollSubscription = this.scrollService.scroll.subscribe((evt) => {
       this.onScroll(evt.isScrolledDown);
     });
 
@@ -478,5 +482,6 @@ export class MenuService {
   destroy() {
     this._hashSubscription.unsubscribe();
     this._scrollSubscription.unsubscribe();
+    this._progressSubscription.unsubscribe();
   }
 }
