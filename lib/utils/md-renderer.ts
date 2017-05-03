@@ -53,7 +53,7 @@ export class MdRenderer {
   }
 
   saveHeading(title: string, parent:MarkdownHeading = {id:null, children: this.headings}) :MarkdownHeading {
-    let slug = slugify(title);
+    let slug = slugify(title) || title;
     let id = slug;
     if (parent && parent.id) id = `${parent.id}/${id}`;
     parent.children = parent.children || {};
