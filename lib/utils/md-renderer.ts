@@ -53,6 +53,7 @@ export class MdRenderer {
   }
 
   saveHeading(title: string, parent:MarkdownHeading = {id:null, children: this.headings}) :MarkdownHeading {
+    // if title contains some non-ASCII characters (e.g. chinese) slugify returns empty string
     let slug = slugify(title) || title;
     let id = slug;
     if (parent && parent.id) id = `${parent.id}/${id}`;
