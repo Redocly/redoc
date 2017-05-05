@@ -53,7 +53,8 @@ export class MdRenderer {
   }
 
   saveHeading(title: string, parent:MarkdownHeading = {id:null, children: this.headings}) :MarkdownHeading {
-    let slug = slugify(title);
+    // if title contains some non-ASCII characters (e.g. chinese) slugify returns empty string
+    let slug = slugify(title) || title;
     let id = slug;
     if (parent && parent.id) id = `${parent.id}/${id}`;
     parent.children = parent.children || {};
@@ -110,7 +111,7 @@ export class MdRenderer {
     } else {
       let content = tokens[idx + 1].content;
       if (tokens[idx].hLevel === 1 ) {
-        this.currentTopHeading = this.saveHeading(content);;
+        this.currentTopHeading = this.saveHeading(content);
         let id = this.currentTopHeading.id;
         return `<h${tokens[idx].hLevel} section="section/${id}">` +
           `<a class="share-link" href="#section/${id}"></a>` +

@@ -29,4 +29,4 @@ export const REDOC_DIRECTIVES = [
 
 export { ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
 ResponsesSamples, SchemaSample, SideMenu, OperationsList, Operation, Warnings, Redoc, SecurityDefinitions,
-LoadingBar, SideMenuItems, ExternalDocs, EndpointLink }
+LoadingBar, SideMenuItems, ExternalDocs, EndpointLink };

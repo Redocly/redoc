@@ -33,7 +33,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
   init() {
     this.bindEvents();
 
-    let base:any = {};
+    let base:any = this.componentSchema;
     let sample;
 
     // got pointer not directly to the schema but e.g. to the response obj

@@ -1,3 +1,25 @@
+<a name="1.15.0"></a>
+# [1.15.0](https://github.com/Rebilly/ReDoc/compare/v1.14.0...v1.15.0) (2017-05-05)
+
+
+### Bug Fixes
+
+* menu items not full-width on short item names ([ef1b2bd](https://github.com/Rebilly/ReDoc/commit/ef1b2bd))
+* menu service subscription leak ([bb00dc3](https://github.com/Rebilly/ReDoc/commit/bb00dc3))
+* openapi button: add `download` attribute ([583c571](https://github.com/Rebilly/ReDoc/commit/583c571))
+* sample unavailable when no schema in response object ([1eedbfe](https://github.com/Rebilly/ReDoc/commit/1eedbfe))
+* Slugifying non-ascii headers make duplicate permalinks ([#264](https://github.com/Rebilly/ReDoc/issues/264)) ([6edbbe7](https://github.com/Rebilly/ReDoc/commit/6edbbe7))
+* typo in download button classname (thanks [@dwilding](https://github.com/dwilding)) ([6b363a5](https://github.com/Rebilly/ReDoc/commit/6b363a5))
+* firefox and IE scroll sync after deps update ([ad04636](https://github.com/Rebilly/ReDoc/commit/ad04636))
+
+
+
+### Features
+
+* add triangle icon for expandable menu items ([e7130d2](https://github.com/Rebilly/ReDoc/commit/e7130d2))
+* clear button (x) in search box ([0341db4](https://github.com/Rebilly/ReDoc/commit/0341db4))
+
+
 <a name="1.14.0"></a>
 # [1.14.0](https://github.com/Rebilly/ReDoc/compare/v1.13.0...v1.14.0) (2017-04-23)
 

@@ -38,6 +38,11 @@ export class RedocSearch implements OnInit {
     this.search.indexAll();
   }
 
+  clearSearch() {
+    this.searchTerm = '';
+    this.updateSearch();
+  }
+
   update(event:KeyboardEvent, val) {
     if (event && event.keyCode === 27) { // escape
       this.searchTerm = '';

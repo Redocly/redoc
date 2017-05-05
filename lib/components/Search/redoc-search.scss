@@ -18,12 +18,24 @@
       fill: lighten($text-color, 20%);
     }
   }
+
+  .clear-button {
+    position: absolute;
+    display: inline-block;
+    width: 13px;
+    text-align: center;
+    right: 20px;
+    height: 28px;
+    line-height: 28px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
 }
 
 input {
   width: 100%;
   box-sizing: border-box;
-  padding: 5px 5px 5px 20px;
+  padding: 5px 20px 5px 20px;
 
   border: 0;
   border-bottom: 1px solid darken($side-bar-bg-color, 10%);

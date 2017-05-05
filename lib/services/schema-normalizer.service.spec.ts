@@ -1,6 +1,6 @@
 'use strict';
 import { SchemaNormalizer } from './schema-normalizer.service';
-import { SpecManager } from '../utils/spec-manager';;
+import { SpecManager } from '../utils/spec-manager';
 import { OptionsService } from '../services/options.service';
 
 
