@@ -264,7 +264,7 @@ export class MenuService {
       if (namespace === 'section') {
         searchId = hash;
       } else {
-        searchId = ptr || (namespace + '/' + sectionId);;
+        searchId = ptr || (namespace + '/' + sectionId);
       }
 
       idx = this.flatItems.findIndex(item => item.id === searchId);

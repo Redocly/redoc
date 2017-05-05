@@ -111,7 +111,7 @@ export class MdRenderer {
     } else {
       let content = tokens[idx + 1].content;
       if (tokens[idx].hLevel === 1 ) {
-        this.currentTopHeading = this.saveHeading(content);;
+        this.currentTopHeading = this.saveHeading(content);
         let id = this.currentTopHeading.id;
         return `<h${tokens[idx].hLevel} section="section/${id}">` +
           `<a class="share-link" href="#section/${id}"></a>` +
