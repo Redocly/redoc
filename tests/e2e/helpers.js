@@ -55,7 +55,7 @@ function verifyNoBrowserErrors() {
       if (message.match(/This site makes use of a SHA-1 Certificate/)) return false;
 
 
-      if (logEntry.level.value >= LogLevel.INFO) {
+      if (logEntry.level.value > LogLevel.WARNING) {
         if (message.length > MAX_ERROR_MESSAGE_SYMBOLS) {
           message = message.substr(0, MAX_ERROR_MESSAGE_SYMBOLS) + '...';
         }
