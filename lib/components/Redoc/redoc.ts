@@ -78,7 +78,7 @@ export class Redoc extends BaseComponent implements OnInit {
     //parse options (top level component doesn't support inputs)
     optionsMgr.parseOptions( this.element );
     let scrollParent = detectScollParent( this.element );
-    if (scrollParent === (document.scrollingElement || document.body)) scrollParent = window;
+    if (scrollParent === (document.scrollingElement || document.documentElement)) scrollParent = window;
     optionsMgr.options.$scrollParent = scrollParent;
     this.options = optionsMgr.options;
     this.lazyTasksService.allSync = !this.options.lazyRendering;
