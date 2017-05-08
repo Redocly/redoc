@@ -10,10 +10,9 @@
     "noEmit": true,
     "noEmitHelpers": true,
     "strictNullChecks": false,
-    "baseUrl": "./src",
     "typeRoots": [ "./node_modules/@types" ],
-    "paths": {
-    },
+    "declaration": true,
+    "declarationDir": "dist",
     "lib": [
       "es2015",
       "dom"
@@ -23,21 +22,16 @@
       "swagger-schema-official"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.spec.ts",
-    "**/*.e2e.ts"
+  "files": [
+    "custom.d.ts",
+    ".tmp/lib/redoc.module.ts"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
+  "exclude": [
+    "node_modules"
+  ],
   "angularCompilerOptions": {
-   "genDir": "./compiled",
-   "skipMetadataEmit": true
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "atom": { "rewriteTsconfig": false }
+   "genDir": "./dist",
+   "skipTemplateCodegen": true,
+   "strictMetadataEmit": true
+  }
 }

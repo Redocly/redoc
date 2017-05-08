@@ -8,26 +8,37 @@
     "sourceMap": true,
     "pretty": true,
     "moduleResolution": "node",
-    "types": [
-      "jasmine",
-      "should",
-      "webpack",
-      "swagger-schema-official"
-    ],
-    "outDir": "dist",
+    "outDir": "./dist",
+    "noEmitHelpers": true,
+    "strictNullChecks": false,
+    "typeRoots": [ "./node_modules/@types" ],
+    "declaration": true,
+    "declarationDir": "dist",
     "lib": [
       "dom", "es2016", "dom.iterable"
     ],
-    "noEmitHelpers": false
+    "types": [
+      "webpack",
+      "jasmine",
+      "should"
+    ]
   },
   "compileOnSave": false,
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "**/*.e2e.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "resolveGlobs": true,
     "forkChecker": true,
     "useWebpackText": true
-  }
+  },
+  "angularCompilerOptions": {
+    "genDir": "./compiled",
+    "skipMetadataEmit": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "atom": { "rewriteTsconfig": false }
 }

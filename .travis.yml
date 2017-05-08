@@ -25,11 +25,6 @@ addons:
   sauce_connect: true
 cache: yarn
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-before_script:
-  - npm run e2e-server > /dev/null & # kill e2e server
-  - sleep 3 # give server time to start
-after_script:
-  - kill %1 # kill e2e server
 before_deploy:
 - if [[ ! -z "$TRAVIS_TAG" ]]; then npm run build:prod; fi
 deploy:

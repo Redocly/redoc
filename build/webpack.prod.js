@@ -37,7 +37,7 @@ const config = webpackMerge(commonConfig({
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
+          'awesome-typescript-loader',
           'angular2-template-loader',
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
@@ -60,7 +60,7 @@ const config = webpackMerge(commonConfig({
       },
       sourceMap: true
     }),
-    // new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.BannerPlugin(BANNER)
   ]
 })

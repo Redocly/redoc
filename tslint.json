@@ -1,7 +1,4 @@
 {
-  "linterOptions": {
-    "typeCheck": true
-  },
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
     "class-name": true,

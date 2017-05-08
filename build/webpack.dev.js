@@ -35,7 +35,7 @@ module.exports = webpackMerge(commonConfig({
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
+          'awesome-typescript-loader',
           'angular2-template-loader',
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
