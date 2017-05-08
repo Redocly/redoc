@@ -10,8 +10,8 @@ const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js');
 
 module.exports = webpackMerge(commonConfig({
-  IS_PRODUCTION: process.env.NODE_ENV === "production",
-  AOT: false
+  IS_PRODUCTION: IS_PRODUCTION,
+  AOT: IS_PRODUCTION
 }), {
   devtool: '#inline-source-map',
   entry: {
