@@ -1,3 +1,19 @@
+<a name="1.16.0"></a>
+# [1.16.0](https://github.com/Rebilly/ReDoc/compare/v1.15.0...v1.16.0) (2017-05-12)
+
+
+### Bug Fixes
+
+* do not show discriminator dropdown if it is empty ([7a5d315](https://github.com/Rebilly/ReDoc/commit/7a5d315))
+* prevent possible XSS using `untrusted-spec` option ([c0698bb](https://github.com/Rebilly/ReDoc/commit/c0698bb))
+* URL changes so fast ([131b437](https://github.com/Rebilly/ReDoc/commit/131b437)), closes [#252](https://github.com/Rebilly/ReDoc/issues/252)
+
+
+### Features
+
+* display xml examples if present in response examples ([cb106cc](https://github.com/Rebilly/ReDoc/commit/cb106cc))
+
+
 <a name="1.15.0"></a>
 # [1.15.0](https://github.com/Rebilly/ReDoc/compare/v1.14.0...v1.15.0) (2017-05-05)
 
