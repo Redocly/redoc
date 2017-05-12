@@ -82,6 +82,8 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 ```
 That's all folks!
 
+**IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
+
 ### 1. Install ReDoc (skip this step for CDN)
 Install using [bower](bower.io):
 
