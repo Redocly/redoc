@@ -100,7 +100,7 @@
     "prismjs": "^1.5.1",
     "protractor": "^5.1.1",
     "raw-loader": "^0.5.1",
-    "remarkable": "^1.6.2",
+    "remarkable": "1.7.1",
     "rimraf": "^2.6.1",
     "rxjs": "^5.3.1",
     "sass-loader": "^6.0.3",

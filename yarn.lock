@@ -4218,7 +4218,7 @@ remap-istanbul@0.8.4:
     source-map ">=0.5.6"
     through2 "2.0.1"
 
-remarkable@^1.6.2:
+remarkable@1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/remarkable/-/remarkable-1.7.1.tgz#aaca4972100b66a642a63a1021ca4bac1be3bff6"
   dependencies:
