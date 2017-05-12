@@ -99,6 +99,21 @@ export function throttle(fn, threshhold, scope) {
   };
 }
 
+export function debounce(func, wait, immediate = false) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
+
 export const isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0
   || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari']
   || safari.pushNotification);
@@ -123,12 +138,26 @@ export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
 }
 
-export function getJsonLike(object: Object) {
-  const jsonLikeKeys = Object.keys(object).filter(isJsonLike);
+export function isXmlLike(contentType: string): boolean {
+  return contentType.search(/xml/i) !== -1;
+}
+
+export function getJsonLikeSample(samples: Object) {
+  const jsonLikeKeys = Object.keys(samples).filter(isJsonLike);
 
   if (!jsonLikeKeys.length) {
     return false;
   }
 
-  return object[jsonLikeKeys.shift()];
+  return samples[jsonLikeKeys[0]];
+}
+
+export function getXmlLikeSample(samples: Object) {
+  const xmlLikeKeys = Object.keys(samples).filter(isXmlLike);
+
+  if (!xmlLikeKeys.length) {
+    return false;
+  }
+
+  return samples[xmlLikeKeys[0]];
 }

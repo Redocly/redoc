@@ -19,6 +19,7 @@ const OPTION_NAMES = new Set([
   'requiredPropsFirst',
   'noAutoAuth',
   'pathInMiddlePanel',
+  'untrustedSpec'
 ]);
 
 export interface Options {
@@ -33,6 +34,7 @@ export interface Options {
   requiredPropsFirst?: boolean;
   noAutoAuth?: boolean;
   pathInMiddlePanel?: boolean;
+  untrustedSpec?: boolean;
   spec?: any;
 }
 
@@ -101,6 +103,7 @@ export class OptionsService {
     if (isString(this._options.requiredPropsFirst)) this._options.requiredPropsFirst = true;
     if (isString(this._options.noAutoAuth)) this._options.noAutoAuth = true;
     if (isString(this._options.pathInMiddlePanel)) this._options.pathInMiddlePanel = true;
+    if (isString(this._options.untrustedSpec)) this._options.untrustedSpec = true;
     if (isString(this._options.expandResponses)) {
       let str = this._options.expandResponses as string;
       if (str === 'all') return;

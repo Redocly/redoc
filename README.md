@@ -82,6 +82,8 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 ```
 That's all folks!
 
+**IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
+
 ### 1. Install ReDoc (skip this step for CDN)
 Install using [bower](bower.io):
 
@@ -131,6 +133,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 
 ### `<redoc>` tag attributes
 * `spec-url` - relative or absolute url to your spec file;
+* `untrusted-spec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 * `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scroll-y-offset` can be specified in various ways:
   * **number**: A fixed number of pixels to be used as offset;

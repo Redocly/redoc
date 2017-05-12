@@ -18,6 +18,7 @@ import 'prismjs/components/prism-bash.js';
 import 'prismjs/components/prism-swift.js';
 import 'prismjs/components/prism-objectivec.js';
 import 'prismjs/components/prism-scala.js';
+import 'prismjs/components/prism-markup.js'; // xml
 
 import 'dropkickjs/build/css/dropkick.css';
 import 'prismjs/themes/prism-dark.css';

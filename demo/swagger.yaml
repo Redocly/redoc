@@ -617,6 +617,7 @@ paths:
             type: string
           examples:
             application/json: OK
+            application/xml: <message> OK </message>
           headers:
             X-Rate-Limit:
               type: integer

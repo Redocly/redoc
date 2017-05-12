@@ -6,7 +6,7 @@ import * as OpenAPISampler from 'openapi-sampler';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
-import { getJsonLike } from '../../utils/helpers';
+import { getJsonLikeSample, getXmlLikeSample} from '../../utils/helpers';
 
 @Component({
   selector: 'schema-sample',
@@ -20,6 +20,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
 
   element: any;
   sample: any;
+  xmlSample: string;
   enableButtons: boolean = false;
 
   private _normalizer:SchemaNormalizer;
@@ -34,7 +35,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
     this.bindEvents();
 
     let base:any = this.componentSchema;
-    let sample;
+    let sample, xmlSample;
 
     // got pointer not directly to the schema but e.g. to the response obj
     if (this.componentSchema.schema) {
@@ -50,7 +51,12 @@ export class SchemaSample extends BaseComponent implements OnInit {
       base.examples = requestExamples;
     }
 
-    let jsonLikeSample = base.examples && getJsonLike(base.examples);
+    let xmlLikeSample = base.examples && getXmlLikeSample(base.examples);
+    if (xmlLikeSample) {
+      this.xmlSample = xmlLikeSample;
+    }
+
+    let jsonLikeSample = base.examples && getJsonLikeSample(base.examples);
     if (jsonLikeSample) {
       sample = jsonLikeSample;
     } else {

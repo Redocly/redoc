@@ -4,6 +4,34 @@
   display: block;
 }
 
+
+/* tabs */
+
+:host /deep/ tabs {
+  margin-top: 1em;
+  > ul {
+    margin: 0;
+    padding: 0;
+
+    > li {
+      padding: 2px 10px;
+      display: inline-block;
+      background: #131a1d;
+      border-bottom: 1px solid trasparent;
+      color: $sample-panel-headers-color;
+
+      &.active {
+        color: white;
+        border-bottom: 1px solid $sample-panel-headers-color;
+      }
+    }
+  }
+
+  .action-buttons {
+    margin-top: -2em;
+  }
+}
+
 pre {
   background-color: transparent;
   padding: 0;
@@ -99,7 +127,7 @@ pre {
     padding-left: 6px;
   }
 
-  .redoc-json {
+  .redoc-json, .xml-sample {
       overflow-x: auto;
       padding: 20px;
       border-radius: $border-radius*2;
