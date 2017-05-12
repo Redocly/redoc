@@ -123,12 +123,26 @@ export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
 }
 
-export function getJsonLike(object: Object) {
-  const jsonLikeKeys = Object.keys(object).filter(isJsonLike);
+export function isXmlLike(contentType: string): boolean {
+  return contentType.search(/xml/i) !== -1;
+}
+
+export function getJsonLikeSample(samples: Object) {
+  const jsonLikeKeys = Object.keys(samples).filter(isJsonLike);
 
   if (!jsonLikeKeys.length) {
     return false;
   }
 
-  return object[jsonLikeKeys.shift()];
+  return samples[jsonLikeKeys[0]];
+}
+
+export function getXmlLikeSample(samples: Object) {
+  const xmlLikeKeys = Object.keys(samples).filter(isXmlLike);
+
+  if (!xmlLikeKeys.length) {
+    return false;
+  }
+
+  return samples[xmlLikeKeys[0]];
 }
