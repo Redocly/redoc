@@ -6,6 +6,7 @@ import { isString, stringify, isBlank } from './helpers';
 import JsonPointer from './JsonPointer';
 import { MdRenderer } from './';
 import { JsonFormatter } from './JsonFormatterPipe';
+import { OptionsService } from '../services/options.service';
 
 declare var Prism: any;
 
@@ -48,18 +49,19 @@ export class JsonPointerEscapePipe implements PipeTransform {
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
   renderer: MdRenderer;
-  constructor(private sanitizer: DomSanitizer) {
+  unstrustedSpec: boolean;
+
+  constructor(private sanitizer: DomSanitizer, optionsService: OptionsService) {
     this.renderer = new MdRenderer(true);
+    this.unstrustedSpec = !!optionsService.options.untrustedSpec;
   }
   transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
       throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
     }
-
-    return this.sanitizer.bypassSecurityTrustHtml(
-      `<span class="redoc-markdown-block">${this.renderer.renderMd(value)}</span>`
-    );
+    let res = `<span class="redoc-markdown-block">${this.renderer.renderMd(value)}</span>`;
+    return this.unstrustedSpec ? res : this.sanitizer.bypassSecurityTrustHtml(res);
   }
 }
 
