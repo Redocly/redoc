@@ -99,6 +99,21 @@ export function throttle(fn, threshhold, scope) {
   };
 }
 
+export function debounce(func, wait, immediate = false) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+}
+
 export const isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0
   || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari']
   || safari.pushNotification);
