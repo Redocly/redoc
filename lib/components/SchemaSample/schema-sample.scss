@@ -86,6 +86,10 @@ pre {
 
   .type-string {
     color: #66B16E;
+    & + a {
+      color: #66B16E;
+      text-decoration: underline;
+    }
   }
 
   .callback-function {
