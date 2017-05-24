@@ -42,7 +42,7 @@ function valueToHTML(value) {
   } else if (valueType === 'number') {
     output += decorateWithSpan(value, 'type-number');
   } else if (valueType === 'string') {
-    if (/^(http|https):\/\/[^\\s]+$/.test(value)) {
+    if (/^(http|https):\/\/[^\s]+$/.test(value)) {
       output += decorateWithSpan('"', 'type-string') + '<a href="' + value + '">' + htmlEncode(value) + '</a>' +
         decorateWithSpan('"', 'type-string');
     } else {
