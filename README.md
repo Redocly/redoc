@@ -48,7 +48,7 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
 - [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
-- [Discourse](https://docs.discourse.org)
+- [Discourse](http://docs.discourse.org)
 - [APIs.guru](https://apis.guru/api-doc/)
 
 ## Deployment
