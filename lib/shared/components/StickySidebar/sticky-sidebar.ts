@@ -40,7 +40,7 @@ export class StickySidebar implements OnInit, OnDestroy {
       this.unstick();
     }
 
-    if ( this.scrollY + window.innerHeight -  this.scrollYOffset() >= this.$redocEl.scrollHeight) {
+    if ( this.scrollY + window.innerHeight -  this.scrollYOffset() >= this.$redocEl.scrollHeight && this.$element.parentElement.parentElement.className != 'loading') {
       this.stickBottom();
       stuck = true;
     } else {
