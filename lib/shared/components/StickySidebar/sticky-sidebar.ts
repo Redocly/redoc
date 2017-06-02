@@ -12,6 +12,7 @@ export class StickySidebar implements OnInit, OnDestroy {
   $redocEl: any;
   @Input() scrollParent:any;
   @Input() scrollYOffset:any;
+  @Input() disable:any;
 
   constructor(elementRef:ElementRef) {
     this.$element = elementRef.nativeElement;
@@ -33,14 +34,16 @@ export class StickySidebar implements OnInit, OnDestroy {
 
   updatePosition() {
     var stuck = false;
-    if ( this.scrollY + this.scrollYOffset() >= this.$redocEl.offsetTop) {
+    if ( this.scrollY + this.scrollYOffset() >= this.$redocEl.offsetTop && !this.disable) {
       this.stick();
       stuck = true;
     } else {
       this.unstick();
     }
 
-    if ( this.scrollY + window.innerHeight -  this.scrollYOffset() >= this.$redocEl.scrollHeight && this.$element.parentElement.parentElement.className != 'loading') {
+
+    if ( this.scrollY + window.innerHeight -  this.scrollYOffset()
+    >= this.$redocEl.scrollHeight && !this.disable) {
       this.stickBottom();
       stuck = true;
     } else {
