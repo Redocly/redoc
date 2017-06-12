@@ -94,7 +94,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.3",
     "mark.js": "github:julmot/mark.js",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.5.3",
     "openapi-sampler": "^0.4.1",
     "phantomjs-prebuilt": "^2.1.14",
     "prismjs": "^1.5.1",
