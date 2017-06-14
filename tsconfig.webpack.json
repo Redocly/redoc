@@ -19,7 +19,8 @@
       "dom"
     ],
     "types": [
-      "webpack"
+      "webpack",
+      "swagger-schema-official"
     ]
   },
   "exclude": [

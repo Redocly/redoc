@@ -8,12 +8,11 @@ import {
   FormDataParameter,
   Spec,
   Response
-} from '@types/swagger-schema-official';
+} from 'swagger-schema-official';
 
 export interface RedocInjectedPointer {
   _pointer?: string;
 }
-
 
 export interface SwaggerOperation extends Operation, RedocInjectedPointer {}
 export interface SwaggerBodyParameter extends BodyParameter, RedocInjectedPointer {}
