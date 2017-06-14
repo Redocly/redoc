@@ -27,6 +27,10 @@ import {
 } from '../../services/';
 import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 
+function getPreOptions() {
+  return Redoc._preOptions || {};
+}
+
 @Component({
   selector: 'redoc',
   templateUrl: './redoc.html',
@@ -49,13 +53,13 @@ export class Redoc extends BaseComponent implements OnInit {
 
   loadingProgress: number;
 
-  private element: HTMLElement;
-  private $parent: Element;
-  private $refElem: Element;
-
   @Input() specUrl: string;
   @HostBinding('class.loading') specLoading: boolean = false;
   @HostBinding('class.loading-remove') specLoadingRemove: boolean = false;
+
+  private element: HTMLElement;
+  private $parent: Element;
+  private $refElem: Element;
 
   constructor(
     specMgr: SpecManager,
@@ -69,7 +73,7 @@ export class Redoc extends BaseComponent implements OnInit {
     super(specMgr);
     SchemaHelper.setSpecManager(specMgr);
     // merge options passed before init
-    optionsMgr.options = Redoc._preOptions || {};
+    optionsMgr.options = getPreOptions();
 
     this.element = elementRef.nativeElement;
     this.$parent = this.element.parentElement;

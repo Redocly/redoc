@@ -6,6 +6,7 @@ branches:
   - releases
 matrix:
   include:
+    - env: JOB=unit
     - env: JOB=e2e-guru
   fast_finish: true
   allow_failures:

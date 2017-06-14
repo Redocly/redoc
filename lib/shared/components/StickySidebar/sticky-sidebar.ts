@@ -1,17 +1,18 @@
 'use strict';
 
-import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy, OnChanges} from '@angular/core';
 import { BrowserDomAdapter as DOM } from '../../../utils/browser-adapter';
 
 @Directive({
   selector: '[sticky-sidebar]'
 })
-export class StickySidebar implements OnInit, OnDestroy {
+export class StickySidebar implements OnInit, OnDestroy, OnChanges {
   $element: any;
   cancelScrollBinding: any;
   $redocEl: any;
   @Input() scrollParent:any;
   @Input() scrollYOffset:any;
+  @Input() disable:any;
 
   constructor(elementRef:ElementRef) {
     this.$element = elementRef.nativeElement;
@@ -33,14 +34,16 @@ export class StickySidebar implements OnInit, OnDestroy {
 
   updatePosition() {
     var stuck = false;
-    if ( this.scrollY + this.scrollYOffset() >= this.$redocEl.offsetTop) {
+    if ( this.scrollY + this.scrollYOffset() >= this.$redocEl.offsetTop && !this.disable) {
       this.stick();
       stuck = true;
     } else {
       this.unstick();
     }
 
-    if ( this.scrollY + window.innerHeight -  this.scrollYOffset() >= this.$redocEl.scrollHeight) {
+
+    if ( this.scrollY + window.innerHeight -  this.scrollYOffset()
+    >= this.$redocEl.scrollHeight && !this.disable) {
       this.stickBottom();
       stuck = true;
     } else {
@@ -84,6 +87,11 @@ export class StickySidebar implements OnInit, OnDestroy {
     this.$redocEl = this.$element.offsetParent.parentNode || DOM.defaultDoc().body;
     this.bind();
     requestAnimationFrame(() => this.updatePosition());
+  }
+
+  ngOnChanges() {
+    if (!this.$redocEl || this.disable) return;
+    this.updatePosition();
   }
 
   ngOnDestroy() {

@@ -11,7 +11,8 @@
     "types": [
       "jasmine",
       "should",
-      "webpack"
+      "webpack",
+      "swagger-schema-official"
     ],
     "outDir": "dist",
     "lib": [
