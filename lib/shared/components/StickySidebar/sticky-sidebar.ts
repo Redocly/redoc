@@ -1,12 +1,12 @@
 'use strict';
 
-import { Directive, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy, OnChanges} from '@angular/core';
 import { BrowserDomAdapter as DOM } from '../../../utils/browser-adapter';
 
 @Directive({
   selector: '[sticky-sidebar]'
 })
-export class StickySidebar implements OnInit, OnDestroy {
+export class StickySidebar implements OnInit, OnDestroy, OnChanges {
   $element: any;
   cancelScrollBinding: any;
   $redocEl: any;
@@ -87,6 +87,11 @@ export class StickySidebar implements OnInit, OnDestroy {
     this.$redocEl = this.$element.offsetParent.parentNode || DOM.defaultDoc().body;
     this.bind();
     requestAnimationFrame(() => this.updatePosition());
+  }
+
+  ngOnChanges() {
+    if (this.disable) return;
+    this.updatePosition();
   }
 
   ngOnDestroy() {
