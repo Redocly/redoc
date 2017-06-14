@@ -90,7 +90,7 @@ export class StickySidebar implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.disable) return;
+    if (!this.$redocEl || this.disable) return;
     this.updatePosition();
   }
 

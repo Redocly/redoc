@@ -15,7 +15,7 @@ describe('Common components', () => {
   });
   describe('StickySidebar Component', () => {
     let builder;
-    let component;
+    let component: StickySidebar;
     let fixture;
 
     beforeEach(() => {
@@ -31,6 +31,7 @@ describe('Common components', () => {
     });
 
     it('should start unsticked', () => {
+      component.disable = true;
       spyOn(component, 'stick').and.callThrough();
       spyOn(component, 'stickBottom').and.callThrough();
       fixture.detectChanges();
@@ -41,7 +42,9 @@ describe('Common components', () => {
     it('should stick to the top on the next animation frame', (done) => {
       spyOn(component, 'stick').and.callThrough();
       spyOn(component, 'stickBottom').and.callThrough();
+      component.disable = true;
       fixture.detectChanges();
+      component.disable = false;
       requestAnimationFrame(() => {
         expect(component.stick).toHaveBeenCalled();
         expect(component.stickBottom).toHaveBeenCalled();
