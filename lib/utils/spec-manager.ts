@@ -141,8 +141,8 @@ export class SpecManager {
     let that = this;
     function getSecurityDefinition(name:string, scope:string) {
       let secDefs = that._schema.securityDefinitions;
-      if (secDefs[name] && secDefs[name].type === "oauth2") {
-        let availScopes = secDefs[name].scopes
+      if (secDefs[name] && secDefs[name].type === 'oauth2') {
+        let availScopes = secDefs[name].scopes;
         if (availScopes && availScopes[scope]) {
           return availScopes[scope];
         }
@@ -162,7 +162,7 @@ export class SpecManager {
          Object.keys(scopeObj).forEach(key => {
             let val = scopeObj[key];
             let desc = getSecurityDefinition(authName, val);
-            
+
             // don't add if the security obj doesn't exist in the security definitions
             if (desc) {
               scopes.push({name: val, description: desc});
