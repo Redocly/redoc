@@ -95,7 +95,8 @@ export class SpecManager {
     }
     if (!this._schema.info.description) this._schema.info.description = '';
     if (this._schema.securityDefinitions && !this.options.noAutoAuth) {
-      let SecurityDefinitions = require('../components/').SecurityDefinitions;
+      let SecurityDefinitions =
+        require('../components/SecurityDefinitions/security-definitions').SecurityDefinitions;
       mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
     }
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);

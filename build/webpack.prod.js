@@ -52,8 +52,7 @@ const config = webpackMerge(commonConfig({
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        screw_ie8: true,
-        negate_iife: false // for lazy v8
+        screw_ie8: true
       },
       mangle: { screw_ie8 : true },
       output: {
@@ -61,6 +60,7 @@ const config = webpackMerge(commonConfig({
       },
       sourceMap: true
     }),
+    // new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.BannerPlugin(BANNER)
   ]
 })
