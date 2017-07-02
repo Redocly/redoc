@@ -35,8 +35,8 @@ const injectors = {
         injectTo.enum = propertySchema.enum.map((value) => {
           return {val: value, type: typeof value};
         });
-        if (propertySchema.enum && propertySchema.enum.length === 1) {
-          injectTo._enumItem = propertySchema.enum[0];
+        if (injectTo.enum && injectTo.enum.length === 1) {
+          injectTo._enumItem = injectTo.enum[0];
           injectTo.enum = null;
         }
       }
