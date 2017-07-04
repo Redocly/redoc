@@ -20,12 +20,14 @@
   &.deprecated {
     &:after {
       content: 'Deprecated';
-      color: $black;
-      background: $yellow;
-      padding: 3px 10px;
-      text-transform: uppercase;
       display: inline-block;
+      padding: 0 5px;
       margin: 0;
+      background-color: $yellow;
+      color: white;
+      font-weight: bold;
+      font-size: 13px;
+      vertical-align: text-top;
     }
   }
 }
