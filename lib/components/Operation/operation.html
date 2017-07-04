@@ -1,13 +1,10 @@
 <div class="operation" *ngIf="operation">
   <div class="operation-content">
-    <h2 class="operation-header sharable-header">
+    <h2 class="operation-header sharable-header" [ngClass]="{deprecated: operation.deprecated}">
         <a class="share-link" href="#{{operation.anchor}}"></a>{{operation.summary}}
     </h2>
     <endpoint-link *ngIf="pathInMiddlePanel"
       [verb]="operation.verb" [path]="operation.path"> </endpoint-link>
-    <div class="operation-deprecated" *ngIf="operation.deprecated">
-        Warning: Deprecated
-    </div>
     <div class="operation-tags" *ngIf="operation.info.tags.length">
         <a *ngFor="let tag of operation.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
     </div>
