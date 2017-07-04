@@ -7,6 +7,7 @@ import { OptionsService, MenuService } from '../../services/';
 import { SwaggerBodyParameter } from '../../utils/swagger-typings';
 
 export interface OperationInfo {
+  deprecated: boolean;
   verb: string;
   path: string;
   info: {
@@ -50,6 +51,7 @@ export class Operation extends BaseComponent implements OnInit {
     this.operationId = this.componentSchema.operationId;
 
     this.operation = {
+      deprecated: this.componentSchema.deprecated,
       verb: JsonPointer.baseName(this.pointer),
       path: JsonPointer.baseName(this.pointer, 2),
       info: {

@@ -16,6 +16,18 @@
 
 .operation-header {
   margin-bottom: calc(1em - 6px);
+
+  &.deprecated {
+    &:after {
+      content: 'Deprecated';
+      color: $black;
+      background: $yellow;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin: 0;
+    }
+  }
 }
 
 .operation-tags {

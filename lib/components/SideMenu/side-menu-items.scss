@@ -21,6 +21,11 @@
     color: lighten($text-color, 60%);
   }
 
+  &.deprecated {
+    text-decoration: line-through;
+    color: lighten($text-color, 60%);
+  }
+
   display: flex;
   justify-content: space-between;
 

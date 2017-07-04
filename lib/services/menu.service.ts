@@ -340,7 +340,8 @@ export class MenuService {
           type: 'operation',
           pointer: operationInfo._pointer,
           operationId: operationInfo.operationId,
-          operation: operationInfo.operation
+          operation: operationInfo.operation,
+          deprecated: !!operationInfo.deprecated
         },
         parent: parent
       };

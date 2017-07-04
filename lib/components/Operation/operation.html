@@ -1,6 +1,6 @@
 <div class="operation" *ngIf="operation">
   <div class="operation-content">
-    <h2 class="operation-header sharable-header">
+    <h2 class="operation-header sharable-header" [ngClass]="{deprecated: operation.deprecated}">
         <a class="share-link" href="#{{operation.anchor}}"></a>{{operation.summary}}
     </h2>
     <endpoint-link *ngIf="pathInMiddlePanel"
