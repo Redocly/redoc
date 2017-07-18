@@ -170,6 +170,8 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 - Install dependencies
 `npm install`
 - _(optional)_ Replace `demo/swagger.yaml` with your own schema
+- Create the compiled javascript file
+`npm run build:prod`
 - Start the server
 `npm start`
 - Open `http://localhost:9000`

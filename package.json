@@ -116,11 +116,11 @@
     "swagger-schema-official": "^2.0.0-bab6bed",
     "ts-helpers": "^1.1.1",
     "tslint": "^5.2.0",
-    "typescript": "^2.3.2",
+    "typescript": "2.3.4",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0",
     "webpack-merge": "^4.1.0",
-    "zone.js": "^0.8.10"
+    "zone.js": "0.8.12"
   },
   "dependencies": {
     "lunr": "1.0.0",
