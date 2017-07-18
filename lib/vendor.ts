@@ -22,7 +22,7 @@ import 'prismjs/components/prism-markup.js'; // xml
 
 import 'dropkickjs/build/css/dropkick.css';
 import 'prismjs/themes/prism-dark.css';
-import 'html-hint/dist/html-hint.css';
+import 'hint.css/hint.base.css';
 
 if (!IS_PRODUCTION) {
   require('@angular/platform-browser');

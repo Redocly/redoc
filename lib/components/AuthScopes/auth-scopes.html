@@ -1,12 +1,13 @@
 <ng-template [ngIf]="scopes">
-    <span class="hint--html hint--bottom-left hint--large  oauth-scopes-hint">
-      !
       <div class="oauth-scopes hint__content">
         <span class="oauth-scopes-header">OAuth2 Scopes</span>
-        <div *ngFor="let scope of scopes.scopes" class="oauth-scope">
-          <p class="oauth-scope-name"> {{scope.name}} </p>
-          <p class="oauth-scope-description"> {{scope.description}} </p>
+        <div class="oauth-scope">
+				<span *ngFor="let scope of scopes.scopes" [attr.data-hint]="scope.name" class="hint--rounded hint--bounce hint--bottom">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				width="20px" height="20px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+				<path d="M384,224v-96C384,57.438,326.594,0,256,0c-70.578,0-128,57.438-128,128v96c-35.344,0-64,28.656-64,64v160c0,35.344,28.656,64,64,64h256c35.344,0,64-28.656,64-64V288C448,252.656,419.344,224,384,224z M272,379.094V432c0,8.844-7.156,16-16,16s-16-7.156-16-16v-52.906c-9.391-5.563-16-15.375-16-27.094c0-17.688,14.328-32,32-32s32,14.313,32,32C288,363.719,281.391,373.531,272,379.094z M320,224H192v-96c0-35.313,28.703-64,64-64c35.281,0,64,28.688,64,64V224z"/>
+			</svg>
+		 </span> 
         </div>
       </div>
-    </span>
  </ng-template>

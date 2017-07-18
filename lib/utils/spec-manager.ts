@@ -138,9 +138,8 @@ export class SpecManager {
   }
 
   getOperationScopes(operationPtr:string) {
-    let that = this;
-    function getSecurityDefinition(name:string, scope:string) {
-      let secDefs = that._schema.securityDefinitions;
+    const getSecurityDefinition = (name: string, scope: string) => {
+      let secDefs = this._schema.securityDefinitions;
       if (secDefs[name] && secDefs[name].type === 'oauth2') {
         let availScopes = secDefs[name].scopes;
         if (availScopes && availScopes[scope]) {
