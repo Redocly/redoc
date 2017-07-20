@@ -192,7 +192,13 @@ export class SearchService {
     let body = schema.description;  // TODO: defaults, examples, etc...
 
     if (schema.type === 'array') {
-      this.indexSchema(schema.items, title, JsonPointer.join(absolutePointer, ['items']), menuPointer, parent);
+      if (Array.isArray(schema.items)) {
+        schema.items.map((itemSchema, idx) => {
+          this.indexSchema(itemSchema, title, JsonPointer.join(absolutePointer, ['items', idx]), menuPointer, parent);
+        });
+      } else {
+        this.indexSchema(schema.items, title, JsonPointer.join(absolutePointer, ['items']), menuPointer, parent);
+      }
       return;
     }
 
