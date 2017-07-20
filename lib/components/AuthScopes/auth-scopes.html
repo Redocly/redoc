@@ -1,0 +1,12 @@
+<ng-template [ngIf]="scopes">
+    <span class="hint--html hint--bottom-left hint--large  oauth-scopes-hint">
+      !
+      <div class="oauth-scopes hint__content">
+        <span class="oauth-scopes-header">OAuth2 Scopes</span>
+        <div *ngFor="let scope of scopes.scopes" class="oauth-scope">
+          <p class="oauth-scope-name"> {{scope.name}} </p>
+          <p class="oauth-scope-description"> {{scope.description}} </p>
+        </div>
+      </div>
+    </span>
+ </ng-template>
