@@ -85,17 +85,33 @@ const injectors = {
   },
   object: {
     check: (propertySchema) => {
-      return propertySchema.type === 'object' && (propertySchema.properties ||
+      let isObject = propertySchema.type === 'object' && (propertySchema.properties ||
         typeof propertySchema.additionalProperties === 'object');
+
+      let isChoiceObject = propertySchema.oneOf && propertySchema.oneOf.length > 0 ||
+        propertySchema.anyOf && propertySchema.anyOf.length > 0
+
+      return isObject || isChoiceObject;
     },
     inject: (injectTo, propertySchema = injectTo) => {
-      let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
-      injectTo._displayType = propertySchema.title || baseName || 'object';
       injectTo._widgetType = 'object';
+      if (propertySchema.type === 'object') {
+        let baseName = propertySchema._pointer && JsonPointer.baseName(propertySchema._pointer);
+        injectTo._displayType = propertySchema.title || baseName || 'object';
+        injectTo._wrapped = [propertySchema];
+      } else if (propertySchema.oneOf) {
+        injectTo._displayType = 'oneOf';
+        injectTo._choiceTitle = 'One of';
+        injectTo._wrapped = propertySchema.oneOf
+      } else if (propertySchema.anyOf) {
+        injectTo._displayType = 'anyOf';
+        injectTo._choiceTitle = 'Any of';
+        injectTo._wrapped = propertySchema.anyOf
+      }
     }
   },
   noType: {
-    check: (propertySchema) => !propertySchema.type,
+    check: (propertySchema) => !propertySchema.type && !propertySchema.oneOf && !propertySchema.anyOf,
     inject: (injectTo) => {
       injectTo._displayType = '< anything >';
       injectTo._displayTypeHint = 'This field may contain data of any type';
@@ -110,7 +126,7 @@ const injectors = {
         return (!propertySchema.properties || !Object.keys(propertySchema.properties).length)
           && (typeof propertySchema.additionalProperties !== 'object');
       }
-      return (propertySchema.type !== 'array') && propertySchema.type;
+      return (propertySchema.type !== 'array' && !propertySchema.oneOf && !propertySchema.anyOf) && propertySchema.type;
     },
     inject: (injectTo, propertySchema = injectTo) => {
       injectTo.isTrivial = true;
