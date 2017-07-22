@@ -7,7 +7,6 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
     "outDir": "./dist",
     "strictNullChecks": false,
     "typeRoots": [ "./node_modules/@types" ],
@@ -24,7 +23,6 @@
   },
   "files": [
     "custom.d.ts",
-    ".tmp/lib/vendor.ts",
     ".tmp/lib/polyfills.ts",
     ".tmp/lib/redoc.module.ts"
   ],

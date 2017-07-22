@@ -31,12 +31,13 @@
     "clean": "rimraf dist .tmp compiled lib/**/*.css",
     "ngc": "ngc -p tsconfig.json",
     "inline": "ng2-inline -o .tmp -r --compress \"lib/**/*.ts\"",
-    "build:aot": "npm run build:sass && npm run inline && ngc -p tsconfig.aot.json",
+    "build:module": "npm run build:sass && npm run inline && ngc -p tsconfig.aot.json && npm run module:css",
+    "module:css": "node build/join-module-css.js",
     "webpack:prod": "webpack --config build/webpack.prod.js --profile --bail",
     "build:sass": "node-sass -q -o lib lib",
     "build:prod": "npm run build:sass && npm run ngc && npm run webpack:prod",
     "build-dist": "npm run build:prod",
-    "build:all": "npm run clean && npm run build:prod && npm run build:aot",
+    "build:all": "npm run clean && npm run build:prod && npm run build:module",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "stats": "webpack --config build/webpack.prod.js --json > stats.json"
   },
@@ -141,7 +142,6 @@
     "scrollparent": "^2.0.1",
     "slugify": "^1.0.2",
     "stream-http": "^2.6.1",
-    "ts-helpers": "^1.1.1",
     "zone.js": "^0.8.14"
   }
 }

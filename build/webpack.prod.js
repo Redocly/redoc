@@ -21,7 +21,7 @@ const config = webpackMerge(commonConfig({
   devtool: 'source-map',
 
   entry: {
-    'redoc': IS_MODULE ? ['./lib/vendor.ts', './lib/redoc.module.ts'] : ['./lib/polyfills.ts', './lib/vendor.ts', './lib/index.ts']
+    'redoc': IS_MODULE ? ['./lib/redoc.module.ts'] : ['./lib/polyfills.ts', './lib/index.ts']
   },
 
   output: {

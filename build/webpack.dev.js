@@ -16,7 +16,6 @@ module.exports = webpackMerge(commonConfig({
   devtool: '#inline-source-map',
   entry: {
     'polyfills': './lib/polyfills.ts',
-    'vendor': './lib/vendor.ts',
     'redoc': './lib/index.ts',
   },
   devServer: {
