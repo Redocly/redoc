@@ -26,7 +26,7 @@ addons:
 cache: yarn
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_deploy:
-- if [[ ! -z "$TRAVIS_TAG" ]]; then npm run build:prod; fi
+- if [[ ! -z "$TRAVIS_TAG" ]]; then npm run build:all; fi
 deploy:
   - provider: npm
     skip_cleanup: true

@@ -37,3 +37,4 @@ compiled
 /coverage
 .ghpages-tmp
 stats.json
+/package-lock.json

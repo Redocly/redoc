@@ -49,12 +49,12 @@
     <table class="params-wrap" [ngClass]="{'params-array': _isArray}">
       <!-- <caption> {{_displayType}} </caption> -->
       <ng-template ngFor [ngForOf]="properties" let-prop="$implicit" let-last="last" [ngForTrackBy]="trackByName">
-        <tr class="param" [ngClass]="{'last': last,
-            'discriminator': prop.isDiscriminator,
-            'complex': prop._pointer,
-            'additional': prop._additional,
-            'expanded': subSchema.open
-          }">
+        <tr class="param"
+            [class.last]="last"
+            [class.discriminator] = "prop.isDiscriminator"
+            [class.complex] = "prop._pointer"
+            [class.additional] = "prop._additional"
+            [class.expanded] = "subSchema.open">
           <td class="param-name">
             <span class="param-name-wrap" (click)="subSchema.toggle()">
               <span class="param-name-content">

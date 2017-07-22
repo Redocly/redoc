@@ -45,7 +45,7 @@ function getPreOptions() {
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements OnInit {
-  static _preOptions: any;
+  static _preOptions: any = {};
 
   error: any;
   specLoaded: boolean;
