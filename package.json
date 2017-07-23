@@ -142,6 +142,7 @@
     "scrollparent": "^2.0.1",
     "slugify": "^1.0.2",
     "stream-http": "^2.6.1",
+    "ts-helpers": "^1.1.2",
     "zone.js": "^0.8.14"
   }
 }
