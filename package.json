@@ -17,7 +17,7 @@
     "start": "webpack-dev-server --config build/webpack.dev.js --content-base demo",
     "start:prod": "NODE_ENV=production npm start",
     "test": "npm run lint && node ./build/run_tests.js",
-    "lint": "tslint --type-check --project tsconfig.json -e \"lib/**/*{ngfactory|css.shim}.ts\" lib/**/*.ts",
+    "lint": "tslint -e \"lib/**/*{ngfactory|css.shim}.ts\" lib/**/*.ts",
     "unit": "karma start",
     "pree2e": "npm run build:prod && npm run e2e-copy",
     "e2e": "run-p -r protractor e2e-server",
