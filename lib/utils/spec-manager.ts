@@ -147,7 +147,7 @@ export class SpecManager {
         }
       }
       return null;
-    }
+    };
 
     let securityParams = this.byPointer(operationPtr) || [];
     let scopes = [];
