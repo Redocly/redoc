@@ -22,3 +22,7 @@
 :host /deep/ [section] {
   padding-top: 2 * $section-spacing;
 }
+
+:host /deep/ h2[section] {
+  padding-top: $section-spacing;
+}
