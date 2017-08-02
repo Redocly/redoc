@@ -11,7 +11,8 @@
         </div>
         <div class="param-info">
           <div>
-            <span *ngIf='param.type === "array"' class="param-array-format param-collection-format-{{param.collectionFormat}}">
+            <span *ngIf='param.type === "array"'
+              class="param-array-format param-collection-format-{{param.collectionFormat}}">
               {{param | collectionFormat}}
             </span>
             <span class="param-type {{param.type}}" [ngClass]="{'with-hint': param._displayTypeHint}"
@@ -21,8 +22,13 @@
             <div class="param-default" *ngIf="param.default != null">
               <span class="param-default-value">{{param.default | json}}</span>
             </div>
-            <div *ngIf="param.enum" class="param-enum">
-              <span *ngFor="let enumItem of param.enum" class="param-enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
+            <div *ngIf="param.enum || param._enumItem" class="param-enum">
+              <span *ngFor="let enumItem of param.enum" class="param-enum-value {{enumItem.type}}">
+                {{enumItem.val | json}}
+              </span>
+              <span *ngIf="param._enumItem" class="param-enum-value {{param._enumItem.type}}">
+                {{param._enumItem.val | json}}
+              </span>
             </div>
             <span *ngIf="param.pattern" class="param-pattern">{{param.pattern}}</span>
           </div>

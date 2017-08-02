@@ -142,7 +142,7 @@ export function isXmlLike(contentType: string): boolean {
   return contentType.search(/xml/i) !== -1;
 }
 
-export function getJsonLikeSample(samples: Object) {
+export function getJsonLikeSample(samples: Object = {}) {
   const jsonLikeKeys = Object.keys(samples).filter(isJsonLike);
 
   if (!jsonLikeKeys.length) {
@@ -152,7 +152,7 @@ export function getJsonLikeSample(samples: Object) {
   return samples[jsonLikeKeys[0]];
 }
 
-export function getXmlLikeSample(samples: Object) {
+export function getXmlLikeSample(samples: Object = {}) {
   const xmlLikeKeys = Object.keys(samples).filter(isXmlLike);
 
   if (!xmlLikeKeys.length) {

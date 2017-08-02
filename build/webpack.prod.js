@@ -21,7 +21,7 @@ const config = webpackMerge(commonConfig({
   devtool: 'source-map',
 
   entry: {
-    'redoc': IS_MODULE ? ['./lib/vendor.ts', './lib/redoc.module.ts'] : ['./lib/polyfills.ts', './lib/vendor.ts', './lib/index.ts']
+    'redoc': IS_MODULE ? ['./lib/redoc.module.ts'] : ['./lib/polyfills.ts', './lib/index.ts']
   },
 
   output: {
@@ -37,7 +37,7 @@ const config = webpackMerge(commonConfig({
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
+          'awesome-typescript-loader',
           'angular2-template-loader',
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
@@ -52,8 +52,7 @@ const config = webpackMerge(commonConfig({
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        screw_ie8: true,
-        negate_iife: false // for lazy v8
+        screw_ie8: true
       },
       mangle: { screw_ie8 : true },
       output: {
@@ -61,6 +60,7 @@ const config = webpackMerge(commonConfig({
       },
       sourceMap: true
     }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.BannerPlugin(BANNER)
   ]
 })

@@ -21,7 +21,10 @@ export function mouseclick( element ) {
     // create a mouse click event
     var dispatchedEvent
     try {
-      dispatchedEvent = new MouseEvent('click', true);
+      dispatchedEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: false
+      });
     } catch (e) {
       dispatchedEvent = document.createEvent('MouseEvent');
       dispatchedEvent.initEvent('click', true, false);

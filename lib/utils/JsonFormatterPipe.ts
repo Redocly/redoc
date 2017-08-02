@@ -35,6 +35,8 @@ function valueToHTML(value) {
     level++;
     output += arrayToHTML(value);
     level--;
+  } else if (value && value.constructor === Date) {
+    output += decorateWithSpan('"' + value.toISOString() + '"', 'type-string');
   } else if (valueType === 'object') {
     level++;
     output += objectToHTML(value);

@@ -10,13 +10,12 @@ const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js');
 
 module.exports = webpackMerge(commonConfig({
-  IS_PRODUCTION: process.env.NODE_ENV === "production",
-  AOT: false
+  IS_PRODUCTION: IS_PRODUCTION,
+  AOT: IS_PRODUCTION
 }), {
   devtool: '#inline-source-map',
   entry: {
     'polyfills': './lib/polyfills.ts',
-    'vendor': './lib/vendor.ts',
     'redoc': './lib/index.ts',
   },
   devServer: {
@@ -35,7 +34,7 @@ module.exports = webpackMerge(commonConfig({
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
+          'awesome-typescript-loader',
           'angular2-template-loader',
         ],
         exclude: [/\.(spec|e2e)\.ts$/]

@@ -31,7 +31,7 @@ const MAX_ERROR_MESSAGE_SYMBOLS = 128;
 //copied from angular/modules/angular2/src/testing/e2e_util.ts
 function verifyNoBrowserErrors() {
   // IE doesn't support logs method
-  if (browser.isIE) {
+  if (browser.isIE || browser.isFF) {
     let err = browser.executeScript('return window.redocError');
     expect(err).toBeNull();
     return;

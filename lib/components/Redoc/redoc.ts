@@ -45,7 +45,7 @@ function getPreOptions() {
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Redoc extends BaseComponent implements OnInit {
-  static _preOptions: any;
+  static _preOptions: any = {};
 
   error: any;
   specLoaded: boolean;
@@ -89,6 +89,9 @@ export class Redoc extends BaseComponent implements OnInit {
   }
 
   hideLoadingAnimation() {
+    if (this.options.hideLoading) {
+      return
+    }
     requestAnimationFrame(() => {
       this.specLoadingRemove = true;
       setTimeout(() => {
@@ -99,6 +102,9 @@ export class Redoc extends BaseComponent implements OnInit {
   }
 
   showLoadingAnimation() {
+    if (this.options.hideLoading) {
+      return
+    }
     this.specLoading = true;
     this.specLoadingRemove = false;
   }

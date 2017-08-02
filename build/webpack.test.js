@@ -27,12 +27,6 @@ module.exports = webpackMerge(commonConfig({
       exclude: [/\.(spec|e2e)\.ts$/]
     },
     {
-      /**
-       * Instruments JS files with Istanbul for subsequent code coverage reporting.
-       * Instrument only testing sources.
-       *
-       * See: https://github.com/deepsweet/istanbul-instrumenter-loader
-       */
       enforce: 'post',
       test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
       include: root('lib'),

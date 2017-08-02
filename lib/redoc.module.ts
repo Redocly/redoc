@@ -1,3 +1,5 @@
+import './vendor';
+
 import { NgModule, ErrorHandler, APP_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
