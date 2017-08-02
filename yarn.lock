@@ -3308,14 +3308,7 @@ js-yaml@3.6.1:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
-js-yaml@3.x:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.0.tgz#4ffbbf25c2ac963b8299dc74da7e3740de1c18ce"
-  dependencies:
-    argparse "^1.0.7"
-    esprima "^4.0.0"
-
-js-yaml@^3.9.1:
+js-yaml@3.x, js-yaml@^3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.9.1.tgz#08775cebdfdd359209f0d2acd383c8f86a6904a0"
   dependencies:
@@ -4338,9 +4331,9 @@ ono@^4.0.2:
   dependencies:
     format-util "^1.0.3"
 
-openapi-sampler@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-0.4.1.tgz#33bfe9e50ff2d2e3ac093d475e542055f0a99a58"
+openapi-sampler@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-0.4.2.tgz#a687bc966c72ee8a98b51bc0c31d5e77a66c6ae1"
 
 opener@~1.4.0:
   version "1.4.3"
@@ -6349,7 +6342,7 @@ typescript@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
 
-uglify-js@2.6.x, uglify-js@^2.6:
+uglify-js@2.6.x:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.6.4.tgz#65ea2fb3059c9394692f15fed87c2b36c16b9adf"
   dependencies:
@@ -6358,7 +6351,7 @@ uglify-js@2.6.x, uglify-js@^2.6:
     uglify-to-browserify "~1.0.0"
     yargs "~3.10.0"
 
-uglify-js@^2.8.29:
+uglify-js@^2.6, uglify-js@^2.8.29:
   version "2.8.29"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.29.tgz#29c5733148057bb4e1f75df35b7a9cb72e6a59dd"
   dependencies:
