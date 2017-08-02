@@ -146,6 +146,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * `required-props-first` - show required properties first ordered in the same order as in `required` array.
 * `no-auto-auth` - do not inject Authentication section automatically
 * `path-in-middle-panel` - show path link and HTTP verb in the middle panel instead of the right one
+* `hide-loading` - do not show loading animation. Useful for small docs
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
