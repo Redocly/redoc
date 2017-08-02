@@ -3,7 +3,7 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';
-import { statusCodeType, getJsonLikeSample } from '../../utils/helpers';
+import { statusCodeType, getJsonLikeSample, getXmlLikeSample } from '../../utils/helpers';
 
 
 function isNumeric(n) {
@@ -11,8 +11,7 @@ function isNumeric(n) {
 }
 
 function hasExample(response) {
-  return ((response.examples && getJsonLikeSample(response.examples)) ||
-    response.schema);
+  return response.schema || getXmlLikeSample(response.examples) || getJsonLikeSample(response.examples)
 }
 
 @Component({
