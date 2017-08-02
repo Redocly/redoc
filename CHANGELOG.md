@@ -1,3 +1,26 @@
+<a name="1.17.0"></a>
+# [1.17.0](https://github.com/Rebilly/ReDoc/compare/v1.16.1...v1.17.0) (2017-08-02)
+
+
+### Bug Fixes
+
+* copy code-samples included \n\r characters ([cd962fa](https://github.com/Rebilly/ReDoc/commit/cd962fa)), closes [#296](https://github.com/Rebilly/ReDoc/issues/296)
+* enum with single value not shown in non-body params ([87d9abd](https://github.com/Rebilly/ReDoc/commit/87d9abd)), closes [#284](https://github.com/Rebilly/ReDoc/issues/284)
+* handle case where items is array in indexer ([5e5db72](https://github.com/Rebilly/ReDoc/commit/5e5db72)), closes [#304](https://github.com/Rebilly/ReDoc/issues/304)
+* output dates as ISO 8601 strings in JSON Formatter ([#313](https://github.com/Rebilly/ReDoc/issues/313)) ([86d8179](https://github.com/Rebilly/ReDoc/commit/86d8179))
+* make padding between h2 sections smaller ([2c89536](https://github.com/Rebilly/ReDoc/commit/2c89536)), closes [#291](https://github.com/Rebilly/ReDoc/issues/291)
+* ready-only for nested objects samples ([be41d6d](https://github.com/Rebilly/ReDoc/commit/be41d6d)), closes [#300](https://github.com/Rebilly/ReDoc/issues/300)
+
+
+### Features
+
+* add `hide-loading` option ([2ebca4b](https://github.com/Rebilly/ReDoc/commit/2ebca4b)), closes [#315](https://github.com/Rebilly/ReDoc/issues/315)
+* add special rendering for deprecated operations ([#290](https://github.com/Rebilly/ReDoc/issues/290)) ([2748aac](https://github.com/Rebilly/ReDoc/commit/2748aac))
+* export angular module *<not stable yet>* ([ef5101b](https://github.com/Rebilly/ReDoc/commit/ef5101b))
+* support for xml samples in response when there is no schema in response ([eb7089b](https://github.com/Rebilly/ReDoc/commit/eb7089b)), closes [#307](https://github.com/Rebilly/ReDoc/issues/307)
+
+
+
 <a name="1.16.0"></a>
 # [1.16.0](https://github.com/Rebilly/ReDoc/compare/v1.15.0...v1.16.0) (2017-05-12)
 
