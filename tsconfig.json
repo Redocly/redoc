@@ -8,12 +8,10 @@
     "sourceMap": true,
     "pretty": true,
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "noEmit": true,
     "noEmitHelpers": true,
     "strictNullChecks": false,
     "typeRoots": [ "./node_modules/@types" ],
-    "declaration": true,
-    "declarationDir": "dist",
     "lib": [
       "dom", "es2016", "dom.iterable"
     ],
