@@ -306,6 +306,9 @@ footer {
     font-family: $base-font, $base-font-family;
     font-weight: $base-font-weight;
     line-height: $base-line-height;
+    > li {
+      margin: 1em 0;
+    }
   }
 
   table {
