@@ -16,6 +16,7 @@ import { ScrollService, MenuService, OptionsService, MenuItem } from '../../serv
 import { PerfectScrollbar } from '../../shared/components';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
 import { compareEndpoints, menuItemsList } from './sort';
+
 const global = window;
 
 @Component({

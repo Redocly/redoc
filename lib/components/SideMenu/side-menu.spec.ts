@@ -4,6 +4,7 @@ import { getChildDebugElement } from '../../../tests/helpers';
 import { Component } from '@angular/core';
 import { OptionsService, MenuItem } from '../../services/index';
 import { compareEndpoints, menuItemsList } from './sort';
+
 import {
   inject,
   async
