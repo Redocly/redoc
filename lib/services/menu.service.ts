@@ -431,7 +431,6 @@ export class MenuService {
         items: null
       };
       item.items = this.getTagsItems(item, group);
-      
       res.push(item);
     }
     this.checkAllTagsUsedInGroups();
