@@ -3,7 +3,7 @@
 import { getChildDebugElement } from '../../../tests/helpers';
 import { Component } from '@angular/core';
 import { OptionsService, MenuItem } from '../../services/index';
-
+import { compareEndpoints, menuItemsList } from './sort';
 import {
   inject,
   async
@@ -62,6 +62,16 @@ describe('Redoc components', () => {
       component.changed(null);
       component.activeCatCaption.should.be.equal('');
       component.activeItemCaption.should.be.equal('');
+    });
+
+    it('should confirm that component is sorted', () => {
+      for(var i=0;i<menuItemsList.length;i++) {
+        if(menuItemsList[i].items !== null){
+          for(var j=0;j<menuItemsList[i].items.length;j++){
+            component.menuItems[i].items[j].name.should.be.equal(menuItemsList[i].items[j].name);
+            }
+          }
+      }
     });
 
     it('should set active item and cat captions on change event', () => {

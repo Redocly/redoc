@@ -332,6 +332,9 @@ export class MenuService {
 
     let res = [];
     for (let operationInfo of tag.operations) {
+      let xSortOrder;
+      let orderInfo = operationInfo['x-sort-order'];
+      if(orderInfo>=0 && orderInfo<tag.operations.length && Number.isInteger(orderInfo)) xSortOrder = operationInfo['x-sort-order'];
       let subItem = {
         name: SchemaHelper.operationSummary(operationInfo),
         id: operationInfo._pointer,
@@ -341,7 +344,8 @@ export class MenuService {
           pointer: operationInfo._pointer,
           operationId: operationInfo.operationId,
           operation: operationInfo.operation,
-          deprecated: !!operationInfo.deprecated
+          deprecated: !!operationInfo.deprecated,
+          sortOrder: xSortOrder+""
         },
         parent: parent
       };
@@ -409,7 +413,6 @@ export class MenuService {
         items: null
       };
       item.items = this.getOperationsItems(item, tag);
-
       res.push(item);
     }
     return res;

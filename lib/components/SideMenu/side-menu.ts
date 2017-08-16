@@ -15,7 +15,7 @@ import { trigger, state, animate, transition, style } from '@angular/core';
 import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
 import { PerfectScrollbar } from '../../shared/components';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';
-
+import { compareEndpoints, menuItemsList } from './sort';
 const global = window;
 
 @Component({
@@ -114,6 +114,16 @@ export class SideMenu implements OnInit, OnDestroy {
   init() {
     this.menuItems = this.menuService.items;
 
+    for(var i=0;i<this.menuItems.length;i++){
+        if(this.menuItems[i].items !== null){
+            for(var j=0;j<this.menuItems[i].items.length;j++){
+                if(this.menuItems[i].items[j].items == null)
+                    this.menuItems[i].items.sort(compareEndpoints);
+                else
+                    this.menuItems[i].items[j].items.sort(compareEndpoints);
+            }
+        }
+    }
     this.$mobileNav = DOM.querySelector(this.$element, '.mobile-nav');
     this.$resourcesNav = DOM.querySelector(this.$element, '#resources-nav');
 
