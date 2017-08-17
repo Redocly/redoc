@@ -3,7 +3,7 @@ charset=utf-8
 end_of_line=lf
 insert_final_newline=false
 indent_style=space
-indent_size=4
+indent_size=2
 
 [{.eslintrc,.babelrc,.stylelintrc,jest.config,*.json,*.jsb3,*.jsb2,*.bowerrc}]
 indent_style=space
@@ -28,4 +28,3 @@ indent_size=2
 [tslint.json]
 indent_style=space
 indent_size=2
-
