@@ -142,6 +142,10 @@ export function isXmlLike(contentType: string): boolean {
   return contentType.search(/xml/i) !== -1;
 }
 
+export function isTextLike(contentType: string): boolean {
+  return contentType.search(/text\/plain/i) !== -1;
+}
+
 export function getJsonLikeSample(samples: Object = {}) {
   const jsonLikeKeys = Object.keys(samples).filter(isJsonLike);
 
@@ -160,4 +164,15 @@ export function getXmlLikeSample(samples: Object = {}) {
   }
 
   return samples[xmlLikeKeys[0]];
+}
+
+
+export function getTextLikeSample(samples: Object = {}) {
+  const textLikeKeys = Object.keys(samples).filter(isTextLike);
+
+  if (!textLikeKeys.length) {
+    return false;
+  }
+
+  return samples[textLikeKeys[0]];
 }

@@ -619,6 +619,7 @@ paths:
           examples:
             application/json: OK
             application/xml: <message> OK </message>
+            text/plain: OK
           headers:
             X-Rate-Limit:
               type: integer

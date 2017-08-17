@@ -6,7 +6,7 @@ import * as OpenAPISampler from 'openapi-sampler';
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaNormalizer } from '../../services/schema-normalizer.service';
-import { getJsonLikeSample, getXmlLikeSample} from '../../utils/helpers';
+import { getJsonLikeSample, getXmlLikeSample, getTextLikeSample } from '../../utils/helpers';
 
 @Component({
   selector: 'schema-sample',
@@ -21,6 +21,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
   element: any;
   sample: any;
   xmlSample: string;
+  textSample: string;
   enableButtons: boolean = false;
 
   private _normalizer:SchemaNormalizer;
@@ -51,10 +52,8 @@ export class SchemaSample extends BaseComponent implements OnInit {
       base.examples = requestExamples;
     }
 
-    let xmlLikeSample = base.examples && getXmlLikeSample(base.examples);
-    if (xmlLikeSample) {
-      this.xmlSample = xmlLikeSample;
-    }
+    this.xmlSample = base.examples && getXmlLikeSample(base.examples);
+    this.textSample = base.examples && getTextLikeSample(base.examples);
 
     let jsonLikeSample = base.examples && getJsonLikeSample(base.examples);
     if (jsonLikeSample) {
