@@ -2,7 +2,7 @@
   <h1>{{info.title}} <span class="api-info-version">({{info.version}})</span></h1>
   <p class="download-openapi" *ngIf="specUrl">
     Download OpenAPI specification:
-    <a class="openapi-button" download target="_blank" attr.href='{{specUrl}}'> Download </a>
+    <a class="openapi-button" [attr.download]="downloadFilename" target="_blank" [attr.href]="specUrl"> Download </a>
   </p>
   <p>
     <!-- TODO: create separate components for contact and license ? -->

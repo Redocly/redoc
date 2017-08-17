@@ -26,6 +26,7 @@ export interface DescendantInfo {
 @Injectable()
 export class SpecManager {
   public _schema: any = {};
+  public rawSpec: any;
   public apiUrl: string;
   public apiProtocol: string;
   public swagger: string;
@@ -48,6 +49,7 @@ export class SpecManager {
         if (typeof urlOrObject === 'string') {
           this.specUrl = urlOrObject;
         }
+        this.rawSpec = schema;
         this._schema = snapshot(schema);
         try {
           this.init();
