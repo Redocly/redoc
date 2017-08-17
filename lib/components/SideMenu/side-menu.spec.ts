@@ -68,10 +68,10 @@ describe('Redoc components', () => {
 
     it('should confirm that component is sorted', () => {
       let firstMenuItemsListLength = fixedMenuItemsList.length;
-      for(var firstMenuItemIndex = 0; firstMenuItemIndex < firstMenuItemsListLength; firstMenuItemIndex++) {
-        if(fixedMenuItemsList[firstMenuItemIndex].items !== null) {
+      for (var firstMenuItemIndex = 0; firstMenuItemIndex < firstMenuItemsListLength; firstMenuItemIndex++) {
+        if (fixedMenuItemsList[firstMenuItemIndex].items !== null) {
           let secondMenuItemsListLength = fixedMenuItemsList[firstMenuItemIndex].items.length;
-          for(var secondMenuItemIndex = 0; secondMenuItemIndex < secondMenuItemsListLength; secondMenuItemIndex++) {
+          for (var secondMenuItemIndex = 0; secondMenuItemIndex < secondMenuItemsListLength; secondMenuItemIndex++) {
             component.menuItems[firstMenuItemIndex].items[secondMenuItemIndex].name.should.be.equal(fixedMenuItemsList[firstMenuItemIndex].items[secondMenuItemIndex].name);
           }
         }

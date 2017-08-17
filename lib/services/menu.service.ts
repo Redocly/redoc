@@ -335,8 +335,8 @@ export class MenuService {
       let xSortOrder;
       let orderInfo = operationInfo['x-sort-order'];
 
-      if(orderInfo != null) {
-        if(orderInfo >= 0 && orderInfo < tag.operations.length && Number.isInteger(orderInfo)) {
+      if (orderInfo != null) {
+        if (orderInfo >= 0 && orderInfo < tag.operations.length && Number.isInteger(orderInfo)) {
             xSortOrder = operationInfo['x-sort-order'];
         }
       }

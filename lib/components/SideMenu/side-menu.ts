@@ -116,14 +116,14 @@ export class SideMenu implements OnInit, OnDestroy {
     this.menuItems = this.menuService.items;
     let firstMenuItemsLength = this.menuItems.length;
 
-    for(var firstMenuItemIndex = 0; firstMenuItemIndex < firstMenuItemsLength; firstMenuItemIndex++) {
-        if(this.menuItems[firstMenuItemIndex].items !== null) {
+    for (var firstMenuItemIndex = 0; firstMenuItemIndex < firstMenuItemsLength; firstMenuItemIndex++) {
+        if (this.menuItems[firstMenuItemIndex].items !== null) {
             let secondMenuItemsLength = this.menuItems[firstMenuItemIndex].items.length;
-            for(var secondMenuItemIndex = 0; secondMenuItemIndex < secondMenuItemsLength; secondMenuItemIndex++) {
-                if(this.menuItems[firstMenuItemIndex].items[secondMenuItemIndex].items == null) {
+            for (var secondMenuItemIndex = 0; secondMenuItemIndex < secondMenuItemsLength; secondMenuItemIndex++) {
+                if (this.menuItems[firstMenuItemIndex].items[secondMenuItemIndex].items == null) {
                     this.menuItems[firstMenuItemIndex].items.sort(endpointComparator);
                 }
-                else{
+                else {
                     this.menuItems[firstMenuItemIndex].items[secondMenuItemIndex].items.sort(endpointComparator);
                 }
             }
