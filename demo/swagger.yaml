@@ -242,6 +242,7 @@ paths:
           in: header
           required: false
           type: string
+          x-example: Bearer <TOKEN>
         - name: petId
           in: path
           description: Pet id to delete

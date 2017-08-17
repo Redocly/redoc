@@ -119,6 +119,9 @@ const injectors = {
         injectTo._displayType = propertySchema.title ?
           `${propertySchema.title} (${propertySchema.type})` : propertySchema.type;
       }
+      if (injectTo['x-example'] && !propertySchema.example) {
+        injectTo.example = propertySchema['x-example'];
+      }
       injectTo._widgetType = 'trivial';
     }
   },

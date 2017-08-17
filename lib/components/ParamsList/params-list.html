@@ -22,6 +22,9 @@
             <div class="param-default" *ngIf="param.default != null">
               <span class="param-default-value">{{param.default | json}}</span>
             </div>
+            <div class="param-example" *ngIf="param.example != null">
+              <span class="param-example-value">{{param.example | json}}</span>
+            </div>
             <div *ngIf="param.enum || param._enumItem" class="param-enum">
               <span *ngFor="let enumItem of param.enum" class="param-enum-value {{enumItem.type}}">
                 {{enumItem.val | json}}
