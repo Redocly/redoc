@@ -334,7 +334,13 @@ export class MenuService {
     for (let operationInfo of tag.operations) {
       let xSortOrder;
       let orderInfo = operationInfo['x-sort-order'];
-      if(orderInfo>=0 && orderInfo<tag.operations.length && Number.isInteger(orderInfo)) xSortOrder = operationInfo['x-sort-order'];
+
+      if(orderInfo != null) {
+        if(orderInfo >= 0 && orderInfo < tag.operations.length && Number.isInteger(orderInfo)) {
+            xSortOrder = operationInfo['x-sort-order'];
+        }
+      }
+
       let subItem = {
         name: SchemaHelper.operationSummary(operationInfo),
         id: operationInfo._pointer,

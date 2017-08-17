@@ -243,3 +243,40 @@ PayPalPayment:
 
 In the example above the names of definitions (`PayPalPayment`) are named differently than
 names in the payload (`paypal`) which is not supported by default `discriminator`.
+
+### Sort endpoints vendor extensions
+#### x-sort-order
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-sort-order | int | specifies sorting order |
+
+###### Usage in ReDoc
+By using `x-sort-order` you can override default alphabetical sorting and arrange elements in any way you want.
+
+
+Add `x-sort-order` with number from 0 to number of elements in group - 1 (e.g. for 3 items, the scope is 0-2).
+Endpoints with lower `x-sort-order` number come first in a group.
+
+###### x-sort-order example
+
+```
+/store/inventory:
+  get:
+    tags:
+      - store
+    summary: Return pet inventories by status
+    x-sort-order: 1
+    description: Returns a map of status codes to quantities
+      
+/store/order:
+  post:
+    tags:
+      - store
+    summary: Place an order for a pet
+    x-sort-order: 0
+    description: Places an order for a pet
+
+```
+
+In this example "Place an order for a pet" endpoint will come before "Return pet inventories by status"
+(because of the `x-sort-order` property).

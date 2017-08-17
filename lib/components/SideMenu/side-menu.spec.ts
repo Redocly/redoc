@@ -3,7 +3,8 @@
 import { getChildDebugElement } from '../../../tests/helpers';
 import { Component } from '@angular/core';
 import { OptionsService, MenuItem } from '../../services/index';
-import { compareEndpoints, menuItemsList } from './sort';
+import { endpointComparator } from './sort';
+import { fixedMenuItemsList } from './fixed-array';
 
 import {
   inject,
@@ -66,12 +67,14 @@ describe('Redoc components', () => {
     });
 
     it('should confirm that component is sorted', () => {
-      for(var i=0;i<menuItemsList.length;i++) {
-        if(menuItemsList[i].items !== null){
-          for(var j=0;j<menuItemsList[i].items.length;j++){
-            component.menuItems[i].items[j].name.should.be.equal(menuItemsList[i].items[j].name);
-            }
+      let firstMenuItemsListLength = fixedMenuItemsList.length;
+      for(var firstMenuItemIndex = 0; firstMenuItemIndex < firstMenuItemsListLength; firstMenuItemIndex++) {
+        if(fixedMenuItemsList[firstMenuItemIndex].items !== null) {
+          let secondMenuItemsListLength = fixedMenuItemsList[firstMenuItemIndex].items.length;
+          for(var secondMenuItemIndex = 0; secondMenuItemIndex < secondMenuItemsListLength; secondMenuItemIndex++) {
+            component.menuItems[firstMenuItemIndex].items[secondMenuItemIndex].name.should.be.equal(fixedMenuItemsList[firstMenuItemIndex].items[secondMenuItemIndex].name);
           }
+        }
       }
     });
 
