@@ -1,6 +1,6 @@
 'use strict';
 
-import {KeysPipe, JsonPointerEscapePipe, MarkedPipe} from '../../lib/utils/pipes';
+import {KeysPipe, MarkedPipe} from '../../lib/utils/pipes';
 
 describe('Pipes', () => {
   describe('KeysPipe', () => {
@@ -29,34 +29,6 @@ describe('Pipes', () => {
 
       it('should not throw on blank input', () => {
         (() => keysPipe.transform()).should.not.throw();
-      });
-    });
-  });
-
-  describe('JsonPointerEscapePipe', () => {
-    let unescaped;
-    let escaped;
-    var pipe;
-
-    beforeEach(() => {
-      unescaped = 'test/path~1';
-      escaped = 'test~1path~01';
-      pipe = new JsonPointerEscapePipe();
-    });
-
-    describe('JsonPointerEscapePipe transform', () => {
-      it('should escpae pointer', () => {
-        var val = pipe.transform(unescaped);
-        val.should.be.equal(escaped);
-      });
-
-      it('should not support other objects', () => {
-        (() => pipe.transform(45)).should.throw();
-        (() => pipe.transform({})).should.throw();
-      });
-
-      it('should not throw on blank input', () => {
-        (() => pipe.transform()).should.not.throw();
       });
     });
   });
