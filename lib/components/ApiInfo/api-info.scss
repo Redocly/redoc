@@ -9,6 +9,10 @@
   @media (max-width: $right-panel-squash-breakpoint) {
     width: 100%;
   }
+
+  @media (max-width: $side-menu-mobile-breakpoint) {
+    padding-top: $section-spacing + 20px;
+  }
 }
 
 .openapi-button {
