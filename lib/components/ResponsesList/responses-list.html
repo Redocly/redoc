@@ -21,6 +21,6 @@
     Response Schema
   </header>
   <json-schema-lazy [auto]="response.expanded" #lazySchema
-  pointer="{{response.schema ? response.pointer + '/schema' : null}}">
+  pointer="{{response.schema ? response.pointer + '/schema' : null}}" [responseCode]="response.code">
   </json-schema-lazy>
 </zippy>

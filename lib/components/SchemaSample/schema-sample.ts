@@ -1,12 +1,15 @@
 'use strict';
 
-import { Component, ElementRef, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import {Component, ElementRef, Input, ChangeDetectionStrategy, OnInit, ChangeDetectorRef} from '@angular/core';
 
 import * as OpenAPISampler from 'openapi-sampler';
 import JsonPointer from '../../utils/JsonPointer';
-import { BaseComponent, SpecManager } from '../base';
-import { SchemaNormalizer } from '../../services/schema-normalizer.service';
-import { getJsonLikeSample, getXmlLikeSample, getTextLikeSample } from '../../utils/helpers';
+import {BaseComponent, SpecManager} from '../base';
+import {SchemaNormalizer} from '../../services/schema-normalizer.service';
+import {getJsonLikeSample, getXmlLikeSample, getTextLikeSample} from '../../utils/helpers';
+
+import {Subscription} from 'rxjs/Subscription';
+import {SchemaChangerService} from "../../services/schema-changer.service";
 
 @Component({
   selector: 'schema-sample',
@@ -15,8 +18,11 @@ import { getJsonLikeSample, getXmlLikeSample, getTextLikeSample } from '../../ut
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SchemaSample extends BaseComponent implements OnInit {
-  @Input() pointer:string;
-  @Input() skipReadOnly:boolean;
+  @Input() pointer: string;
+  @Input() skipReadOnly: boolean;
+  @Input() subscription: Subscription;
+  @Input() isRequestSample: boolean;
+  @Input() responseCode: string;
 
   element: any;
   sample: any;
@@ -24,18 +30,36 @@ export class SchemaSample extends BaseComponent implements OnInit {
   textSample: string;
   enableButtons: boolean = false;
 
-  private _normalizer:SchemaNormalizer;
+  private _normalizer: SchemaNormalizer;
 
-  constructor(specMgr:SpecManager, elementRef:ElementRef) {
+  constructor(specMgr: SpecManager,
+              elementRef: ElementRef,
+              private _schemaChanger: SchemaChangerService,
+              private _cdRef: ChangeDetectorRef) {
     super(specMgr);
     this.element = elementRef.nativeElement;
     this._normalizer = new SchemaNormalizer(specMgr);
+    this.subscription = this._schemaChanger.selectedDescendantChanged$.subscribe(
+      descendantInfo => {
+        this.selectDescendant(descendantInfo.idx, descendantInfo.name, descendantInfo.isRequestSchema, descendantInfo.responseCode);
+        _cdRef.detectChanges();
+      });
   }
 
   init() {
+    this.selectDescendant(0, null, this.isRequestSample, this.responseCode);
+  }
+
+  selectDescendant(descendantIdx, descendantName, isRequestSchema, responseCodeIn) {
+    this.componentSchema = this.specMgr.byPointer(this.pointer || '');
+    if ((!this.componentSchema) ||
+      (isRequestSchema !== this.isRequestSample) ||
+      (responseCodeIn !== this.responseCode)) {
+      return;
+    }
     this.bindEvents();
 
-    let base:any = this.componentSchema;
+    let base: any = this.componentSchema;
     let sample, xmlSample;
 
     // got pointer not directly to the schema but e.g. to the response obj
@@ -46,8 +70,8 @@ export class SchemaSample extends BaseComponent implements OnInit {
     }
 
     // Support x-examples, allowing requests to specify an example.
-    let examplePointer:string = JsonPointer.join(JsonPointer.dirName(this.pointer), 'x-examples');
-    let requestExamples:any = this.specMgr.byPointer(examplePointer);
+    let examplePointer: string = JsonPointer.join(JsonPointer.dirName(this.pointer), 'x-examples');
+    let requestExamples: any = this.specMgr.byPointer(examplePointer);
     if (requestExamples) {
       base.examples = requestExamples;
     }
@@ -55,6 +79,10 @@ export class SchemaSample extends BaseComponent implements OnInit {
     this.xmlSample = base.examples && getXmlLikeSample(base.examples);
     this.textSample = base.examples && getTextLikeSample(base.examples);
 
+    if (this.fromCache()) {
+      this.initButtons();
+      return;
+    }
     let jsonLikeSample = base.examples && getJsonLikeSample(base.examples);
     if (jsonLikeSample) {
       sample = jsonLikeSample;
@@ -67,22 +95,23 @@ export class SchemaSample extends BaseComponent implements OnInit {
       if (discriminator) {
         let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer, this.componentSchema);
         if (descendants.length) {
-          // TODO: sync up with dropdown
-          selectedDescendant = descendants[0];
-          let descSchema = this.specMgr.getDescendant(selectedDescendant, this.componentSchema);
-          this.componentSchema  = this._normalizer.normalize(Object.assign({}, descSchema), selectedDescendant.$ref,
-            {omitParent: false});
+          selectedDescendant = descendants[descendantIdx];
+          //use this block to ignore lazy loaded dropdowns for now
+          if (descendantName == null ||
+            (selectedDescendant && selectedDescendant.name === descendantName)) {
+            let descSchema = this.specMgr.getDescendant(selectedDescendant, this.componentSchema);
+            this.componentSchema = this._normalizer.normalize(Object.assign({}, descSchema), selectedDescendant.$ref,
+              {omitParent: false});
+          } else {
+            return;
+          }
         }
-      }
-      if (this.fromCache()) {
-        this.initButtons();
-        return;
       }
       try {
         sample = OpenAPISampler.sample(this.componentSchema, {
           skipReadOnly: this.skipReadOnly
         });
-      } catch(e) {
+      } catch (e) {
         // no sample available
       }
       if (selectedDescendant) {
@@ -152,5 +181,9 @@ export class SchemaSample extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.preinit();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

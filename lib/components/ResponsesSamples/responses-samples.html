@@ -2,6 +2,6 @@
 <tabs *ngIf="data.responses.length">
   <tab *ngFor="let response of data.responses" [tabTitle]="response.code + ' ' + response.description | marked"
     [tabStatus]="response.type">
-    <schema-sample [pointer]="response.pointer"></schema-sample>
+    <schema-sample [pointer]="response.pointer" [isRequestSample]="false" [responseCode]="response.code"></schema-sample>
   </tab>
 </tabs>

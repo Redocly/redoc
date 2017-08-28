@@ -24,6 +24,8 @@ export class JsonSchemaLazy implements OnDestroy, OnInit, AfterViewInit {
   @Input() nestOdd: boolean;
   @Input() childFor: string;
   @Input() isArray: boolean;
+  @Input() responseCode:string;
+
   disableLazy: boolean = false;
   loaded: boolean = false;
   constructor(private specMgr:SpecManager, private location:ViewContainerRef, private elementRef:ElementRef,

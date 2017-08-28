@@ -12,8 +12,7 @@ import { Component,
 import { BaseSearchableComponent, SpecManager } from '../base';
 import { SchemaNormalizer, SchemaHelper, AppStateService, OptionsService } from '../../services/';
 import { JsonPointer, DescendantInfo } from '../../utils/';
-import { Zippy } from '../../shared/components';
-import { JsonSchemaLazy } from './json-schema-lazy';
+import {SchemaChangerService} from "../../services/schema-changer.service";
 
 @Component({
   selector: 'json-schema',
@@ -28,6 +27,7 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
   @Input() nestOdd: boolean;
   @Input() childFor: string;
   @Input() isRequestSchema: boolean;
+  @Input() responseCode: string;
 
   schema: any = {};
   activeDescendant:any = {};
@@ -44,7 +44,8 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
     private _renderer: Renderer,
     private cdr: ChangeDetectorRef,
     private _elementRef: ElementRef,
-    private optionsService: OptionsService) {
+    private optionsService: OptionsService,
+    private _schemaChanger: SchemaChangerService) {
     super(specMgr, app);
     this.normalizer = new SchemaNormalizer(specMgr);
   }
@@ -55,6 +56,9 @@ export class JsonSchema extends BaseSearchableComponent implements OnInit {
 
   selectDescendantByIdx(idx) {
     this.selectDescendant(this.descendants[idx]);
+    if (this.descendants[idx]) {
+      this._schemaChanger.announceDescendantChange(idx, this.descendants[idx].name, this.isRequestSchema ? true : false, this.responseCode);
+    }
   }
 
   selectDescendant(activeDescendant: DescendantInfo) {

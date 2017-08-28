@@ -10,6 +10,7 @@ export * from './schema-helper.service';
 export * from './warnings.service';
 export * from './search.service';
 
+export * from './schema-changer.service';
 export * from './component-parser.service';
 export * from './content-projector.service';
 export * from './marker.service';

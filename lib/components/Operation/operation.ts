@@ -3,7 +3,7 @@ import { Input, HostBinding, Component, OnInit, ChangeDetectionStrategy, Element
 import JsonPointer from '../../utils/JsonPointer';
 import { BaseComponent, SpecManager } from '../base';
 import { SchemaHelper } from '../../services/schema-helper.service';
-import { OptionsService, MenuService } from '../../services/';
+import { OptionsService, MenuService, SchemaChangerService } from '../../services/';
 import { SwaggerBodyParameter } from '../../utils/swagger-typings';
 
 export interface OperationInfo {
@@ -27,7 +27,8 @@ export interface OperationInfo {
   selector: 'operation',
   templateUrl: './operation.html',
   styleUrls: ['./operation.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SchemaChangerService]
 })
 export class Operation extends BaseComponent implements OnInit {
   @Input() pointer :string;
