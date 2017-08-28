@@ -16,13 +16,12 @@ export class ApiLogo extends BaseComponent implements OnInit {
   }
 
   init() {
-    let logoInfo = this.componentSchema.info['x-logo'];
-    if ('url' in this.componentSchema.info['contact']) {
-      this.logo.url = this.componentSchema.info['contact']['url'];
-    }
+    const info = this.componentSchema.info;
+    const logoInfo = info['x-logo'];
     if (!logoInfo) return;
     this.logo.imgUrl = logoInfo.url;
     this.logo.bgColor = logoInfo.backgroundColor || 'transparent';
+    this.logo.url = info.contact && info.contact.url || null;
   }
 
   ngOnInit() {

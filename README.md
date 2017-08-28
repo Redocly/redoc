@@ -14,7 +14,7 @@
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
-[<img src="http://i.imgur.com/XWLWJvl.png" width="250">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--)
+[<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
 
 ## Features
 - Extremely easy deployment

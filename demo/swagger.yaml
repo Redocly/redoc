@@ -39,6 +39,7 @@ info:
   termsOfService: 'http://swagger.io/terms/'
   contact:
     email: apiteam@swagger.io
+    url: https://github.com/Rebilly/ReDoc
   x-logo:
     url: 'https://rebilly.github.io/ReDoc/petstore-logo.png'
   license:
