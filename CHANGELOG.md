@@ -1,3 +1,23 @@
+<a name="1.18.0"></a>
+# [1.18.0](https://github.com/Rebilly/ReDoc/compare/v1.16.1...v1.18.0) (2017-08-28)
+
+
+### Bug Fixes
+
+* increase padding top for `.api-info-wrapper` when left sidebar is hiding to avoid header overlaying by top menu ([514fc29](https://github.com/Rebilly/ReDoc/commit/514fc29))
+* add `display: inline-block` for `.openapi-button` ([86b4db4](https://github.com/Rebilly/ReDoc/commit/86b4db4)),
+closes [#321](https://github.com/Rebilly/ReDoc/issues/321)
+* add margins around list-items in markdown ([b165785](https://github.com/Rebilly/ReDoc/commit/b165785))
+
+### Features
+
+* generate download link for specs defined by an object ([60e8cb4](https://github.com/Rebilly/ReDoc/commit/60e8cb4)), closes [#289](https://github.com/Rebilly/ReDoc/issues/289)
+* support text-plain response sample ([b84177c](https://github.com/Rebilly/ReDoc/commit/b84177c)), closes [#270](https://github.com/Rebilly/ReDoc/issues/270)
+* clickable logo that points to specific url ([cb3d318](https://github.com/Rebilly/ReDoc/commit/cb3d318)), closes
+[#322](https://github.com/Rebilly/ReDoc/issues/322)
+* support x-example for parameters ([f792273](https://github.com/Rebilly/ReDoc/commit/f792273)), closes
+[#297](https://github.com/Rebilly/ReDoc/issues/297)
+
 <a name="1.17.0"></a>
 # [1.17.0](https://github.com/Rebilly/ReDoc/compare/v1.16.1...v1.17.0) (2017-08-02)
 

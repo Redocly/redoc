@@ -242,6 +242,7 @@ paths:
           in: header
           required: false
           type: string
+          x-example: Bearer <TOKEN>
         - name: petId
           in: path
           description: Pet id to delete
@@ -619,6 +620,7 @@ paths:
           examples:
             application/json: OK
             application/xml: <message> OK </message>
+            text/plain: OK
           headers:
             X-Rate-Limit:
               type: integer

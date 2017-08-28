@@ -64,7 +64,8 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   font-weight: bold;
 }
 
-.param-type, .param-array-format  {
+.param-type,
+.param-array-format {
   vertical-align: middle;
   line-height: $param-name-height;
   color: rgba($black, 0.4);
@@ -73,7 +74,8 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 .param-type {
   font-weight: normal;
   word-break: break-all;
-  &.array::before, &.tuple::before {
+  &.array::before,
+  &.tuple::before {
     color: $black;
     font-weight: $base-font-weight;
     .param-collection-format-multi + & {
@@ -144,7 +146,6 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 }
 
 .param:first-of-type {
-
   > .param-name::before {
     content: '';
     display: block;
@@ -158,7 +159,6 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
 
 .param:last-of-type,
 .param.last {
-
   > .param-name {
     position: relative;
 
@@ -236,14 +236,24 @@ $sub-schema-offset: ($bullet-size / 2) + $bullet-margin;
   }
 }
 
+.param-example {
+  font-size: 0.95em;
+
+  &::before {
+    content: 'Example: ';
+  }
+}
+
 .param-enum-value,
-.param-default-value {
-  background-color: $background-color;
-  border: 1px solid rgba($secondary-color, 0.2);
+.param-default-value,
+.param-example-value {
+  font-family: Courier, monospace;
+  background-color: rgba($secondary-color, 0.02);
+  border: 1px solid rgba($secondary-color, 0.1);
   margin: 2px 3px;
-  padding: 0 5px;
-  border-radius: 2px;
-  color: $secondary-color;
+  padding: 0.1em 0.2em 0.2em;
+  border-radius: $border-radius;
+  color: $text-color;
   display: inline-block;
   min-width: 20px;
   text-align: center;

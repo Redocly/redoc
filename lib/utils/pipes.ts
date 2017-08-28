@@ -35,17 +35,6 @@ export class KeysPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'jsonPointerEscape' })
-export class JsonPointerEscapePipe implements PipeTransform {
-  transform(value:string) {
-    if (isBlank(value)) return value;
-    if (!isString(value)) {
-      throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
-    }
-    return JsonPointer.escape(value);
-  }
-}
-
 @Pipe({ name: 'marked' })
 export class MarkedPipe implements PipeTransform {
   renderer: MdRenderer;
@@ -58,7 +47,7 @@ export class MarkedPipe implements PipeTransform {
   transform(value:string) {
     if (isBlank(value)) return value;
     if (!isString(value)) {
-      throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
+      throw new InvalidPipeArgumentException(MarkedPipe, value);
     }
     let res = `<span class="redoc-markdown-block">${this.renderer.renderMd(value)}</span>`;
     return this.unstrustedSpec ? res : this.sanitizer.bypassSecurityTrustHtml(res);
@@ -95,7 +84,7 @@ export class PrismPipe implements PipeTransform {
     }
     if (isBlank(value)) return value;
     if (!isString(value)) {
-      throw new InvalidPipeArgumentException(JsonPointerEscapePipe, value);
+      throw new InvalidPipeArgumentException(PrismPipe, value);
     }
     let lang = args[0].toString().trim().toLowerCase();
     if (langMap[lang]) lang = langMap[lang];
@@ -138,5 +127,5 @@ export class CollectionFormatPipe implements PipeTransform {
 }
 
 export const REDOC_PIPES = [
-  JsonPointerEscapePipe, MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter, KeysPipe, CollectionFormatPipe
+  MarkedPipe, SafePipe, PrismPipe, EncodeURIComponentPipe, JsonFormatter, KeysPipe, CollectionFormatPipe
 ];
