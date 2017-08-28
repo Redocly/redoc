@@ -1,3 +1,12 @@
+<a name="1.18.1"></a>
+## [1.18.1](https://github.com/Rebilly/ReDoc/compare/v1.17.0...v1.18.1) (2017-08-28)
+
+
+### Bug Fixes
+
+* crash if `contact` is not in the spec ([1b9ba0d](https://github.com/Rebilly/ReDoc/commit/1b9ba0d)), closes [#332](https://github.com/Rebilly/ReDoc/issues/332)
+
+
 <a name="1.18.0"></a>
 # [1.18.0](https://github.com/Rebilly/ReDoc/compare/v1.16.1...v1.18.0) (2017-08-28)
 
