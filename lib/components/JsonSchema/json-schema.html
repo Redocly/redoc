@@ -77,6 +77,9 @@
               <div class="param-default" *ngIf="prop.default != null">
                 <span class="param-default-value">{{prop.default | json}}</span>
               </div>
+              <div class="param-example" *ngIf="prop.example != null">
+                <span class="param-example-value">{{prop.example | json}}</span>
+              </div>
               <div *ngIf="prop.enum && !prop.isDiscriminator" class="param-enum">
                 <span *ngFor="let enumItem of prop.enum" class="param-enum-value {{enumItem.type}}"> {{enumItem.val | json}} </span>
               </div>
