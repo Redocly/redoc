@@ -39,7 +39,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
     super(specMgr);
     this.element = elementRef.nativeElement;
     this._normalizer = new SchemaNormalizer(specMgr);
-    this.subscription = this._schemaChanger.selectedDescendantChanged$.subscribe(
+    this.subscription = this._schemaChanger.selectedDescendantChanged().subscribe(
       descendantInfo => {
         this.selectDescendant(descendantInfo.idx, descendantInfo.name, descendantInfo.isRequestSchema, descendantInfo.responseCode);
         _cdRef.detectChanges();

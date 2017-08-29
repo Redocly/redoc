@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs/Subject';
-import {DescendantInfo} from "../utils/spec-manager";
-
 
 @Injectable()
 export class SchemaChangerService {
@@ -10,7 +8,11 @@ export class SchemaChangerService {
   private selectedDescendantSource = new Subject<any>();
 
   // Observable descendant streams
-  selectedDescendantChanged$ = this.selectedDescendantSource.asObservable();
+  private selectedDescendantChanged$ = this.selectedDescendantSource.asObservable();
+
+  selectedDescendantChanged() {
+    return this.selectedDescendantChanged$;
+  }
 
   // Service message commands
   announceDescendantChange(idx: string, descendantName: string, isRequestSchema: boolean, responseCode: string) {
