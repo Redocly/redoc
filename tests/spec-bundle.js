@@ -50,6 +50,7 @@ beforeEach(function() {
       services.ContentProjector,
       services.Marker,
       services.SearchService,
+      services.SchemaChangerService,
       { provide: sharedComponents.LazyTasksService, useClass: sharedComponents.LazyTasksServiceSync },
       //{ provide: ErrorHandler, useClass: forwardRef(function() {return services.CustomErrorHandler}) },
       { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
