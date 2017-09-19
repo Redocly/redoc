@@ -128,7 +128,7 @@
   },
   "dependencies": {
     "core-js": "^2.4.1",
-    "dropkickjs": "^2.1.10",
+    "dropkickjs": "~2.1.10",
     "hint.css": "^2.3.2",
     "https-browserify": "^1.0.0",
     "json-pointer": "^0.6.0",
