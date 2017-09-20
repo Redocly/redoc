@@ -54,7 +54,28 @@ x-tagGroups:
       - Secondary Stats
 ```
 
-#### <a name="logoObject"></a>Logo Object
+#### x-ignoredHeaderParameters
+
+
+| Field Name                  |	Type	        | Description |
+| :-------------------------- | :-----------: | :---------- |
+| x-ignoredHeaderParameters   | [ string ] | A list of ignored headers |
+
+
+###### Usage in Redoc
+`x-ignoredHeaderParameters` is used to specify header parameter names which are ignored by ReDoc
+
+###### x-ignoredHeaderParameters example
+```yaml
+swagger: '2.0'
+info:
+  ...
+tags: [...]
+x-ignoredHeaderParameters:
+  - Accept
+  - User-Agent
+  - X-Test-Header
+```
 
 ### Info Object vendor extensions
 Extends OpenAPI [Info Object](http://swagger.io/specification/#infoObject)

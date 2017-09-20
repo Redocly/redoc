@@ -20,7 +20,8 @@ const OPTION_NAMES = new Set([
   'noAutoAuth',
   'pathInMiddlePanel',
   'untrustedSpec',
-  'hideLoading'
+  'hideLoading',
+  'ignoredHeaderParameters',
 ]);
 
 export interface Options {
@@ -38,6 +39,7 @@ export interface Options {
   untrustedSpec?: boolean;
   hideLoading?: boolean;
   spec?: any;
+  ignoredHeaderParameters?: string[];
 }
 
 @Injectable()

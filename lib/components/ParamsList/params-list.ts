@@ -1,7 +1,8 @@
-'use strict';
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { BaseComponent, SpecManager } from '../base';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+
+import { OptionsService } from '../../services/options.service';
 import { SchemaHelper } from '../../services/schema-helper.service';
+import { BaseComponent, SpecManager } from '../base';
 
 function safePush(obj, prop, item) {
   if (!obj[prop]) obj[prop] = [];
@@ -12,16 +13,16 @@ function safePush(obj, prop, item) {
   selector: 'params-list',
   templateUrl: './params-list.html',
   styleUrls: ['./params-list.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ParamsList extends BaseComponent implements OnInit {
-  @Input() pointer:string;
+  @Input() pointer: string;
 
   params: Array<any>;
   empty: boolean;
   bodyParam: any;
 
-  constructor(specMgr:SpecManager) {
+  constructor(specMgr: SpecManager, private options: OptionsService) {
     super(specMgr);
   }
 
@@ -29,11 +30,20 @@ export class ParamsList extends BaseComponent implements OnInit {
     this.params = [];
     let paramsList = this.specMgr.getOperationParams(this.pointer);
 
-    paramsList = paramsList.map(paramSchema => {
-      let propPointer = paramSchema._pointer;
-      if (paramSchema.in === 'body') return paramSchema;
-      return SchemaHelper.preprocess(paramSchema, propPointer, this.pointer);
-    });
+    const igrnoredHeaders =
+      this.specMgr.schema['x-ignoredHeaderParameters'] ||
+      this.options.options.ignoredHeaderParameters ||
+      [];
+
+    paramsList = paramsList
+      .map(paramSchema => {
+        let propPointer = paramSchema._pointer;
+        if (paramSchema.in === 'body') return paramSchema;
+        return SchemaHelper.preprocess(paramSchema, propPointer, this.pointer);
+      })
+      .filter(param => {
+        return param.in !== 'header' || igrnoredHeaders.indexOf(param.name) < 0;
+      });
 
     let paramsMap = this.orderParams(paramsList);
 
