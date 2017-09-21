@@ -156,6 +156,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * `no-auto-auth` - do not inject Authentication section automatically
 * `path-in-middle-panel` - show path link and HTTP verb in the middle panel instead of the right one
 * `hide-loading` - do not show loading animation. Useful for small docs
+* `native-scrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
