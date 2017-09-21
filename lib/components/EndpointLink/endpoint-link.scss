@@ -30,7 +30,7 @@
 }
 
 .operation-api-url {
-  color: rgba($black, .8);
+  color: rgba($black, 0.8);
   &-path {
     font-family: $headers-font, $headers-font-family;
     position: relative;
@@ -145,5 +145,9 @@
 
   &.link {
     background-color: $link-color;
+  }
+
+  &.head {
+    background-color: $head-color;
   }
 }

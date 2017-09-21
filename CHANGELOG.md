@@ -1,3 +1,19 @@
+<a name="1.19.0"></a>
+# [1.19.0](https://github.com/Rebilly/ReDoc/compare/v1.18.1...v1.19.0) (2017-09-21)
+
+
+### Bug Fixes
+
+* Clearly label version compatibility ([8d849a6](https://github.com/Rebilly/ReDoc/commit/8d849a6)), closes [#338](https://github.com/Rebilly/ReDoc/issues/338)
+* HEAD http verb support ([d8b6e02](https://github.com/Rebilly/ReDoc/commit/d8b6e02)), closes [#342](https://github.com/Rebilly/ReDoc/issues/342)
+
+
+### Features
+
+* add ignoredHeaderParameters option ([56d62e5](https://github.com/Rebilly/ReDoc/commit/56d62e5))
+* add native-scrollbars option to workaround scrolling perf issues ([f2ed92c](https://github.com/Rebilly/ReDoc/commit/f2ed92c))
+
+
 <a name="1.18.1"></a>
 ## [1.18.1](https://github.com/Rebilly/ReDoc/compare/v1.17.0...v1.18.1) (2017-08-28)
 
