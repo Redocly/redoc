@@ -23,6 +23,7 @@ env:
   - secure: apiavCfCQngL9Een1m7MIXMf3bqO3rY4YY59TMBl/yFKi80CEsHPHhgVUkl6hC+aM5PeBt/vgjh37rHMX31j/pcSZ4Z8SO/4Bwr36iHfhSxSEuAQog8P07qWqH7wYYWGIVmF682stgl0fYF+GN92sx/6edFVzsWVECf2G7imtICKSTbhKGm3Dhn2JwGnhD7eyfgZ33omgiaswumdu0xABoXDfqSZR+16fC4Ap5rhv3fXO9ndvRNy1STn376nT+my6e86UrQL4aS/S+HNHgIe1BUs+5cOp6Jgw6t0ie7phY0EAiECsRxy9K4e3Dctv9m6+Wma4+vy65MS0zGyrqey6oyV4l827sCOjrD1qcqc9bX6FlMSouVoNfE4ZjINNAbgigTaiLSoDSPcf5I5smkkM2ezzFOMSZwZxNdaNL2LKb97vc8m/ZUkv0sKZyT7oqVL7aJweEivsSHj5l2KR8Z7XrVB1y2eI6GvyTSa/d+CL4dSRzjh8+IRN047YBrdTKD5IkdT0upfoBu14WPUfFmLKxX+iMCslXRWb6kwojhrWNYmZvL65KRAzJ6+eIPDG/W5QUOpYyYT77bLlBQjVo6NmVvl9v3HMECq9CHH0ivKFBGPiKMOx7cJkTax3FuyznOW2WCXB9kTb5Zk9toaiNlSp9L6ll/h2Eyxa6n6sWUgmmM=
 addons:
   sauce_connect: true
+  chrome: stable
 cache: yarn
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_deploy:
