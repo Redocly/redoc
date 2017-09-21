@@ -48,6 +48,7 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 ## Version Guidance
 | ReDoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
+| 1.19.x        | 2.0                   |
 | 1.18.x        | 2.0                   |
 | 1.17.x        | 2.0                   |
 
