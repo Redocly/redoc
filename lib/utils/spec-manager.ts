@@ -101,6 +101,13 @@ export class SpecManager {
         require('../components/SecurityDefinitions/security-definitions').SecurityDefinitions;
       mdRender.addPreprocessor(SecurityDefinitions.insertTagIntoDescription);
     }
+
+    if( this._schema['x-permissions']) {
+      let permissions =
+      require('../components/Permissions/x-permissions').XPermissions;
+      mdRender.addPreprocessor(permissions.insertTagIntoDescription);
+    }
+
     this._schema.info['x-redoc-html-description'] = mdRender.renderMd(this._schema.info.description);
     this._schema.info['x-redoc-markdown-headers'] = mdRender.headings;
   }
@@ -183,6 +190,23 @@ export class SpecManager {
     }
 
     return tagsMap;
+  }
+
+  getPermissionsMap() {
+    let permissions = this._schema['x-permissions'] || [];
+    var permissionsMap = {};
+    for (let key in permissions) {
+      if( !permissions.hasOwnProperty(key) ) {
+        continue;
+      }
+      permissionsMap[key] = {
+        name: key,
+        description: permissions[key].description,
+        title: permissions[key].title ? permissions[key].title : key
+      };
+    }
+
+    return permissionsMap;
   }
 
   findDerivedDefinitions(defPointer: string, schema?: any): DescendantInfo[] {

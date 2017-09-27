@@ -157,6 +157,51 @@ description: Pagination description (can use markdown syntax)
 x-traitTag: true
 ```
 
+### Permission Object vendor extensions
+
+#### x-permissions
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-permissions  | Object  | Define the several permissions available for the API and associated to the operations  |
+
+###### Usage in ReDoc
+`x-permissions` are rendered bellow the API description of ReDoc
+
+###### x-permissions example (main declaration)
+
+yaml
+```yaml
+swagger: '2.0'
+info:
+  ...
+tags: [...]
+x-permissions:
+ admin:
+      title: Pet store admin
+      description: 'Pet store Admin have special privileges on PetStore API allowing them to manage their store and users from their company '
+  user:
+      title: Pet Store user
+      description: 'Pet store user'
+```
+
+##### Usage in Redoc operations
+`x-permissions` are rendered above the Operation description of ReDoc
+###### x-permissions example (operation declaration)
+
+yaml
+```yaml
+/user/logout:
+      get:
+        tags:
+          - "user"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
+```
+
+
+
 ### Operation Object vendor extensions
 Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
 #### x-code-samples

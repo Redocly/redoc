@@ -12,6 +12,7 @@ export interface OperationInfo {
   path: string;
   info: {
     tags: string[];
+    permissions: string[];
     description: string;
   };
   bodyParam: any;
@@ -20,7 +21,7 @@ export interface OperationInfo {
   externalDocs?: {
     url: string;
     description?: string;
-  }
+  };
 }
 
 @Component({
@@ -56,7 +57,8 @@ export class Operation extends BaseComponent implements OnInit {
       path: JsonPointer.baseName(this.pointer, 2),
       info: {
         description: this.componentSchema.description,
-        tags: this.filterMainTags(this.componentSchema.tags)
+        tags: this.filterMainTags(this.componentSchema.tags),
+        permissions: this.reduceMainPermissions(this.componentSchema['x-permissions'])
       },
       bodyParam: this.findBodyParam(),
       summary: SchemaHelper.operationSummary(this.componentSchema),
@@ -75,6 +77,17 @@ export class Operation extends BaseComponent implements OnInit {
     var tagsMap = this.specMgr.getTagsMap();
     if (!tags) return [];
     return tags.filter(tag => tagsMap[tag] && tagsMap[tag]['x-traitTag']);
+  }
+
+  reduceMainPermissions(permissions) {
+    var permissionsMap = this.specMgr.getPermissionsMap();
+    if (!permissions) return [];
+    return permissions.reduce(( filtered, permission) => {
+      if( permissionsMap[permission.name] ) {
+        filtered.push(permissionsMap[permission.name]);
+      }
+      return filtered;
+    }, []);
   }
 
   findBodyParam():SwaggerBodyParameter {

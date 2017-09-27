@@ -14,6 +14,7 @@ import { OperationsList } from './OperationsList/operations-list';
 import { Operation } from './Operation/operation';
 import { Warnings } from './Warnings/warnings';
 import { SecurityDefinitions } from './SecurityDefinitions/security-definitions';
+import { XPermissions } from './Permissions/x-permissions';
 import { LoadingBar } from './LoadingBar/loading-bar';
 import { RedocSearch } from './Search/redoc-search';
 import { ExternalDocs } from './ExternalDocs/external-docs';
@@ -24,9 +25,9 @@ import { Redoc } from './Redoc/redoc';
 export const REDOC_DIRECTIVES = [
   ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
   ResponsesSamples, SchemaSample, SideMenu, OperationsList, Operation, Warnings, Redoc, SecurityDefinitions,
-  LoadingBar, SideMenuItems, RedocSearch, ExternalDocs, EndpointLink
+  XPermissions, LoadingBar, SideMenuItems, RedocSearch, ExternalDocs, EndpointLink
 ];
 
 export { ApiInfo, ApiLogo, JsonSchema, JsonSchemaLazy, ParamsList, RequestSamples, ResponsesList,
 ResponsesSamples, SchemaSample, SideMenu, OperationsList, Operation, Warnings, Redoc, SecurityDefinitions,
-LoadingBar, SideMenuItems, ExternalDocs, EndpointLink };
+XPermissions, LoadingBar, SideMenuItems, ExternalDocs, EndpointLink };

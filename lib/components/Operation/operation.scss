@@ -53,6 +53,30 @@
   }
 }
 
+.operation-permissions {
+  margin-top: 20px;
+
+  font-size: 14px;
+  padding: 0.2em 0;
+  margin: 3em 0 1.1em;
+  color: #253137;
+  font-weight: normal;
+
+  a {
+    font-size: 12px;
+    font-family: Courier, monospace;
+    background-color: rgba(38, 50, 56, 0.02);
+    border: 1px solid rgba(38, 50, 56, 0.1);
+    margin: 2px 3px;
+    padding: 0px 5px;
+    border-radius: 2px;
+    color: #263238;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+  }
+}
+
 .operation-content, .operation-samples {
   display: block;
   box-sizing: border-box;
