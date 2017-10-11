@@ -1,12 +1,3 @@
-<a name="1.19.1"></a>
-# [1.19.1](https://github.com/Rebilly/ReDoc/compare/v1.19.0...v1.19.1) (2017-10-02)
-
-
-### Bug Fixes
-
-* snapshot crashing on `constructor` prop ([04e8606](https://github.com/Rebilly/ReDoc/commit/04e8606)), closes [#341](https://github.com/Rebilly/ReDoc/issues/341)
-
-
 <a name="1.19.0"></a>
 # [1.19.0](https://github.com/Rebilly/ReDoc/compare/v1.18.1...v1.19.0) (2017-09-21)
 

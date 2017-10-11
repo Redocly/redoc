@@ -10,6 +10,15 @@
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/redoc.svg)](https://saucelabs.com/u/redoc)
 
+**REACT-REWRITE: WORK IN PROGRESS**
+
+To try locally run:
+
+```shell
+yarn install
+npm start
+```
+
 ![ReDoc demo](demo/redoc-demo.png)
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)

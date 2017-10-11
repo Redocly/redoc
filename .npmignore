@@ -1,12 +1,8 @@
 .DS_Store
 **/.*
-compiled
 
-node_modules
-jspm_packages
+node_modules/
 
-tests
-lib
-demo
-build
-coverage
+perf/
+demo/
+coverage/

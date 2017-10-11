@@ -1,35 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>ReDoc</title>
-    <link rel="stylesheet" href="main.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.vaadin.com/vaadin-core-elements/1.2.0/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link rel="import" href="https://cdn.vaadin.com/vaadin-core-elements/1.2.0/vaadin-combo-box/vaadin-combo-box-light.html">
-  </head>
-  <body>
-    <nav>
-      <header> <a href="/ReDoc"> ReDoc </a> </header>
-      <template is="dom-bind" id="specs">
-        <form id="schema-url-form" is="iron-form">
-          <vaadin-combo-box-light id="spec-input" items="[[specs]]" allow-custom-value>
-            <input placeholder="URL to a spec to try" id="schema-url-input" type="text" is="iron-input" value="https://rebilly.github.io/RebillyAPI/swagger.json">
-          </vaadin-combo-box-light>
-          <button type="submit"> Explore </button>
-        </form>
-      </template>
-      <iframe src="https://ghbtns.com/github-btn.html?user=Rebilly&repo=ReDoc&type=star&count=true&size=large"
-      frameborder="0" scrolling="0" width="150px" height="30px"></iframe>
-    </nav>
 
-    <redoc scroll-y-offset="body > nav" spec-url='swagger.yaml' lazy-rendering untrusted-spec></redoc>
+<head>
+  <meta charset="UTF-8" />
+  <title>ReDoc</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-    <script>
-      window.__REDOC_DEV__ = true;
-    </script>
-    <script src="main.js"> </script>
-    <script src="/webpack-dev-server.js"></script>
-    <script src="/polyfills.js"></script>
-    <script src="/redoc.js"></script>
-  </body>
+    redoc {
+      display: block;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+</head>
+
+<body>
+  <redoc id="example"></redoc>
+</body>
+
 </html>

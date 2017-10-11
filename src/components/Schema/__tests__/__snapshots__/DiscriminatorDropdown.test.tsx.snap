@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components SchemaView discriminator should correctly render SchemaView 1`] = `
+<ObjectSchemaView
+  discriminator={
+    Object {
+      "fieldName": "type",
+      "parentSchema": Schema {
+        "_pointer": "#/components/schemas/Pet",
+        "activeOneOf": 0,
+        "circular": undefined,
+        "description": "",
+        "discriminator": "type",
+        "displayType": "Pet (object)",
+        "fields": Array [
+          Parameter {
+            "description": "",
+            "expanded": false,
+            "in": undefined,
+            "name": "type",
+            "required": true,
+            "schema": Schema {
+              "_pointer": "#/components/schemas/Pet/schema",
+              "activeOneOf": 0,
+              "circular": undefined,
+              "description": "",
+              "displayType": "string",
+              "isPrimitive": true,
+              "title": "",
+              "type": "string",
+              "typePrefix": "",
+            },
+          },
+        ],
+        "isPrimitive": false,
+        "oneOf": Array [
+          Schema {
+            "_pointer": "#/components/schemas/Dog",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "Pet (object)",
+            "fields": Array [
+              Parameter {
+                "description": "",
+                "expanded": false,
+                "in": undefined,
+                "name": "packSize",
+                "required": false,
+                "schema": Schema {
+                  "_pointer": "#/components/schemas/Dog/schema",
+                  "activeOneOf": 0,
+                  "circular": undefined,
+                  "description": "",
+                  "displayType": "number",
+                  "isPrimitive": true,
+                  "title": "",
+                  "type": "number",
+                  "typePrefix": "",
+                },
+              },
+              Parameter {
+                "description": "",
+                "expanded": false,
+                "in": undefined,
+                "name": "type",
+                "required": true,
+                "schema": Schema {
+                  "_pointer": "#/components/schemas/Dog/schema",
+                  "activeOneOf": 0,
+                  "circular": undefined,
+                  "description": "",
+                  "displayType": "string",
+                  "isPrimitive": true,
+                  "title": "",
+                  "type": "string",
+                  "typePrefix": "",
+                },
+              },
+            ],
+            "isPrimitive": false,
+            "title": "Dog",
+            "type": "object",
+            "typePrefix": "",
+          },
+          Schema {
+            "_pointer": "#/components/schemas/Cat",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "Pet (object)",
+            "fields": Array [
+              Parameter {
+                "description": "",
+                "expanded": false,
+                "in": undefined,
+                "name": "type",
+                "required": true,
+                "schema": Schema {
+                  "_pointer": "#/components/schemas/Cat/schema",
+                  "activeOneOf": 0,
+                  "circular": undefined,
+                  "description": "",
+                  "displayType": "string",
+                  "isPrimitive": true,
+                  "title": "",
+                  "type": "string",
+                  "typePrefix": "",
+                },
+              },
+              Parameter {
+                "description": "",
+                "expanded": false,
+                "in": undefined,
+                "name": "packSize",
+                "required": false,
+                "schema": Schema {
+                  "_pointer": "#/components/schemas/Cat/schema",
+                  "activeOneOf": 0,
+                  "circular": undefined,
+                  "description": "",
+                  "displayType": "number",
+                  "isPrimitive": true,
+                  "title": "",
+                  "type": "number",
+                  "typePrefix": "",
+                },
+              },
+            ],
+            "isPrimitive": true,
+            "title": "Cat",
+            "type": "object",
+            "typePrefix": "",
+          },
+        ],
+        "title": "Pet",
+        "type": "object",
+        "typePrefix": "",
+      },
+    }
+  }
+  schema={
+    Schema {
+      "_pointer": "#/components/schemas/Dog",
+      "activeOneOf": 0,
+      "circular": undefined,
+      "description": "",
+      "displayType": "Pet (object)",
+      "fields": Array [
+        Parameter {
+          "description": "",
+          "expanded": false,
+          "in": undefined,
+          "name": "packSize",
+          "required": false,
+          "schema": Schema {
+            "_pointer": "#/components/schemas/Dog/schema",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "number",
+            "isPrimitive": true,
+            "title": "",
+            "type": "number",
+            "typePrefix": "",
+          },
+        },
+        Parameter {
+          "description": "",
+          "expanded": false,
+          "in": undefined,
+          "name": "type",
+          "required": true,
+          "schema": Schema {
+            "_pointer": "#/components/schemas/Dog/schema",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "string",
+            "isPrimitive": true,
+            "title": "",
+            "type": "string",
+            "typePrefix": "",
+          },
+        },
+      ],
+      "isPrimitive": false,
+      "title": "Dog",
+      "type": "object",
+      "typePrefix": "",
+    }
+  }
+/>
+`;
+
+exports[`Components SchemaView discriminator should correctly render discriminator dropdown 1`] = `
+<styled.table>
+  <styled.caption>
+    Dog
+  </styled.caption>
+  <tbody>
+    <FieldView
+      field={
+        Parameter {
+          "description": "",
+          "expanded": false,
+          "in": undefined,
+          "name": "packSize",
+          "required": false,
+          "schema": Schema {
+            "_pointer": "#/components/schemas/Dog/schema",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "number",
+            "isPrimitive": true,
+            "title": "",
+            "type": "number",
+            "typePrefix": "",
+          },
+        }
+      }
+      isLast={false}
+      key="packSize"
+    />
+    <FieldView
+      field={
+        Parameter {
+          "description": "",
+          "expanded": false,
+          "in": undefined,
+          "name": "type",
+          "required": true,
+          "schema": Schema {
+            "_pointer": "#/components/schemas/Dog/schema",
+            "activeOneOf": 0,
+            "circular": undefined,
+            "description": "",
+            "displayType": "string",
+            "isPrimitive": true,
+            "title": "",
+            "type": "string",
+            "typePrefix": "",
+          },
+        }
+      }
+      isLast={true}
+      key="type"
+      renderExternalWidget={[Function]}
+    />
+  </tbody>
+</styled.table>
+`;
