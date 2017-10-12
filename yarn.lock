@@ -5766,8 +5766,8 @@ react-dom@>=0.14.0, "react-dom@^15 || ^16", react-dom@^16.0.0:
     prop-types "^15.6.0"
 
 react-dropdown@^1.3.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-dropdown/-/react-dropdown-1.3.1.tgz#d12ab6060debc4d5211fefd9538df7d6f5e736a3"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/react-dropdown/-/react-dropdown-1.3.2.tgz#639b3e5b0a72a5abdc0fbae5c816abc68713293e"
   dependencies:
     classnames "^2.2.3"
 
@@ -7326,8 +7326,8 @@ webpack-sources@^1.0.1:
     source-map "~0.5.3"
 
 webpack@^3.4.1:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.6.0.tgz#a89a929fbee205d35a4fa2cc487be9cbec8898bc"
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.7.1.tgz#6046b5c415ff7df7a0dc54c5b6b86098e8b952da"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
