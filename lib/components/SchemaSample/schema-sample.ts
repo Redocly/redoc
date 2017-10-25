@@ -22,6 +22,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
   sample: any;
   xmlSample: string;
   textSample: string;
+  textSampleType: string;
   enableButtons: boolean = false;
 
   private _normalizer:SchemaNormalizer;
@@ -53,7 +54,11 @@ export class SchemaSample extends BaseComponent implements OnInit {
     }
 
     this.xmlSample = base.examples && getXmlLikeSample(base.examples);
-    this.textSample = base.examples && getTextLikeSample(base.examples);
+    let textResult = base.examples && getTextLikeSample(base.examples);
+    if( textResult ) {
+      this.textSample = textResult.sample;
+      this.textSampleType = textResult.type;
+    }
 
     let jsonLikeSample = base.examples && getJsonLikeSample(base.examples);
     if (jsonLikeSample) {
