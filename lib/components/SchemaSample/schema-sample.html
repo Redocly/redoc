@@ -11,7 +11,7 @@
   </div>
 </ng-template>
 
-<tabs *ngIf="xmlSample; else jsonSnippet">
+<tabs *ngIf="xmlSample || textSample; else jsonSnippet">
   <tab tabTitle="JSON" *ngIf="sample">
     <ng-container *ngTemplateOutlet="jsonSnippet"></ng-container>
   </tab>
