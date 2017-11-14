@@ -28,13 +28,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
 
   render() {
     const { operation } = this.props;
-    let hasSuccessResponses = false;
     const responses = operation.responses.filter(response => {
-      const code = response.code;
-      if (parseInt(code) >= 100 && parseInt(code) <= 399) {
-        hasSuccessResponses = true;
-      }
-      // filter only those with content
       return response.content && response.content.hasSample;
     });
 

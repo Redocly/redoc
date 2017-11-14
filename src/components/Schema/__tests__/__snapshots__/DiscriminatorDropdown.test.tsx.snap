@@ -1,138 +1,314 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components SchemaView discriminator should correctly render SchemaView 1`] = `
-<ObjectSchemaView
+<ObjectSchema
   discriminator={
     Object {
       "fieldName": "type",
-      "parentSchema": Schema {
-        "_pointer": "#/components/schemas/Pet",
+      "parentSchema": SchemaModel {
+        "_$ref": "#/components/schemas/Pet",
         "activeOneOf": 0,
-        "circular": undefined,
+        "constraints": Array [],
+        "default": undefined,
+        "deprecated": false,
         "description": "",
-        "discriminator": "type",
+        "discriminatorProp": "type",
         "displayType": "Pet (object)",
-        "fields": Array [
-          Parameter {
-            "description": "",
-            "expanded": false,
-            "in": undefined,
-            "name": "type",
-            "required": true,
-            "schema": Schema {
-              "_pointer": "#/components/schemas/Pet/schema",
-              "activeOneOf": 0,
-              "circular": undefined,
-              "description": "",
-              "displayType": "string",
-              "isPrimitive": true,
-              "title": "",
-              "type": "string",
-              "typePrefix": "",
-            },
-          },
-        ],
+        "enum": Array [],
+        "example": undefined,
+        "format": undefined,
+        "isCircular": undefined,
         "isPrimitive": false,
+        "nullable": false,
         "oneOf": Array [
-          Schema {
-            "_pointer": "#/components/schemas/Dog",
+          SchemaModel {
+            "_$ref": "#/components/schemas/Dog",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
-            "displayType": "Pet (object)",
+            "displayType": "Dog (object)",
+            "enum": Array [],
+            "example": undefined,
             "fields": Array [
-              Parameter {
+              FieldModel {
+                "deprecated": false,
                 "description": "",
+                "example": undefined,
                 "expanded": false,
                 "in": undefined,
                 "name": "packSize",
                 "required": false,
-                "schema": Schema {
-                  "_pointer": "#/components/schemas/Dog/schema",
+                "schema": SchemaModel {
+                  "_$ref": "#/components/schemas/Dog/properties/packSize/schema",
                   "activeOneOf": 0,
-                  "circular": undefined,
+                  "constraints": Array [],
+                  "default": undefined,
+                  "deprecated": false,
                   "description": "",
                   "displayType": "number",
+                  "enum": Array [],
+                  "example": undefined,
+                  "format": undefined,
+                  "isCircular": undefined,
                   "isPrimitive": true,
+                  "nullable": false,
+                  "pattern": undefined,
+                  "rawSchema": Object {
+                    "default": undefined,
+                    "type": "number",
+                  },
+                  "schema": Object {
+                    "default": undefined,
+                    "type": "number",
+                  },
                   "title": "",
                   "type": "number",
                   "typePrefix": "",
                 },
               },
-              Parameter {
+              FieldModel {
+                "deprecated": false,
                 "description": "",
+                "example": undefined,
                 "expanded": false,
                 "in": undefined,
                 "name": "type",
                 "required": true,
-                "schema": Schema {
-                  "_pointer": "#/components/schemas/Dog/schema",
+                "schema": SchemaModel {
+                  "_$ref": "#/components/schemas/Dog/properties/type/schema",
                   "activeOneOf": 0,
-                  "circular": undefined,
+                  "constraints": Array [],
+                  "default": undefined,
+                  "deprecated": false,
                   "description": "",
                   "displayType": "string",
+                  "enum": Array [],
+                  "example": undefined,
+                  "format": undefined,
+                  "isCircular": undefined,
                   "isPrimitive": true,
+                  "nullable": false,
+                  "pattern": undefined,
+                  "rawSchema": Object {
+                    "default": undefined,
+                    "type": "string",
+                  },
+                  "schema": Object {
+                    "default": undefined,
+                    "type": "string",
+                  },
                   "title": "",
                   "type": "string",
                   "typePrefix": "",
                 },
               },
             ],
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": false,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "allOf": Array [
+                Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+              ],
+              "properties": Object {
+                "packSize": Object {
+                  "type": "number",
+                },
+              },
+              "type": "object",
+            },
+            "schema": Object {
+              "allOf": undefined,
+              "discriminator": Object {
+                "propertyName": "type",
+              },
+              "namedParents": Array [
+                "#/components/schemas/Pet",
+              ],
+              "properties": Object {
+                "packSize": Object {
+                  "type": "number",
+                },
+                "type": Object {
+                  "type": "string",
+                },
+              },
+              "required": Array [
+                "type",
+              ],
+              "title": "Dog",
+              "type": "object",
+            },
             "title": "Dog",
             "type": "object",
             "typePrefix": "",
           },
-          Schema {
-            "_pointer": "#/components/schemas/Cat",
+          SchemaModel {
+            "_$ref": "#/components/schemas/Cat",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
-            "displayType": "Pet (object)",
+            "displayType": "Cat (object)",
+            "enum": Array [],
+            "example": undefined,
             "fields": Array [
-              Parameter {
+              FieldModel {
+                "deprecated": false,
                 "description": "",
+                "example": undefined,
                 "expanded": false,
                 "in": undefined,
                 "name": "type",
                 "required": true,
-                "schema": Schema {
-                  "_pointer": "#/components/schemas/Cat/schema",
+                "schema": SchemaModel {
+                  "_$ref": "#/components/schemas/Cat/properties/type/schema",
                   "activeOneOf": 0,
-                  "circular": undefined,
+                  "constraints": Array [],
+                  "default": undefined,
+                  "deprecated": false,
                   "description": "",
                   "displayType": "string",
+                  "enum": Array [],
+                  "example": undefined,
+                  "format": undefined,
+                  "isCircular": undefined,
                   "isPrimitive": true,
+                  "nullable": false,
+                  "pattern": undefined,
+                  "rawSchema": Object {
+                    "default": undefined,
+                    "type": "string",
+                  },
+                  "schema": Object {
+                    "default": undefined,
+                    "type": "string",
+                  },
                   "title": "",
                   "type": "string",
                   "typePrefix": "",
                 },
               },
-              Parameter {
+              FieldModel {
+                "deprecated": false,
                 "description": "",
+                "example": undefined,
                 "expanded": false,
                 "in": undefined,
                 "name": "packSize",
                 "required": false,
-                "schema": Schema {
-                  "_pointer": "#/components/schemas/Cat/schema",
+                "schema": SchemaModel {
+                  "_$ref": "#/components/schemas/Cat/properties/packSize/schema",
                   "activeOneOf": 0,
-                  "circular": undefined,
+                  "constraints": Array [],
+                  "default": undefined,
+                  "deprecated": false,
                   "description": "",
                   "displayType": "number",
+                  "enum": Array [],
+                  "example": undefined,
+                  "format": undefined,
+                  "isCircular": undefined,
                   "isPrimitive": true,
+                  "nullable": false,
+                  "pattern": undefined,
+                  "rawSchema": Object {
+                    "default": undefined,
+                    "type": "number",
+                  },
+                  "schema": Object {
+                    "default": undefined,
+                    "type": "number",
+                  },
                   "title": "",
                   "type": "number",
                   "typePrefix": "",
                 },
               },
             ],
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": true,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "allOf": Array [
+                Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+                Object {
+                  "properties": Object {
+                    "packSize": Object {
+                      "type": "number",
+                    },
+                  },
+                },
+              ],
+              "type": "object",
+            },
+            "schema": Object {
+              "allOf": undefined,
+              "discriminator": Object {
+                "propertyName": "type",
+              },
+              "namedParents": Array [
+                "#/components/schemas/Pet",
+              ],
+              "properties": Object {
+                "packSize": Object {
+                  "type": "number",
+                },
+                "type": Object {
+                  "type": "string",
+                },
+              },
+              "required": Array [
+                "type",
+              ],
+              "title": "Cat",
+              "type": undefined,
+            },
             "title": "Cat",
             "type": "object",
             "typePrefix": "",
           },
         ],
+        "pattern": undefined,
+        "rawSchema": Object {
+          "discriminator": Object {
+            "propertyName": "type",
+          },
+          "properties": Object {
+            "type": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "type",
+          ],
+          "type": "object",
+        },
+        "schema": Object {
+          "discriminator": Object {
+            "propertyName": "type",
+          },
+          "properties": Object {
+            "type": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "type",
+          ],
+          "type": "object",
+        },
         "title": "Pet",
         "type": "object",
         "typePrefix": "",
@@ -140,51 +316,130 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
     }
   }
   schema={
-    Schema {
-      "_pointer": "#/components/schemas/Dog",
+    SchemaModel {
+      "_$ref": "#/components/schemas/Dog",
       "activeOneOf": 0,
-      "circular": undefined,
+      "constraints": Array [],
+      "default": undefined,
+      "deprecated": false,
       "description": "",
-      "displayType": "Pet (object)",
+      "displayType": "Dog (object)",
+      "enum": Array [],
+      "example": undefined,
       "fields": Array [
-        Parameter {
+        FieldModel {
+          "deprecated": false,
           "description": "",
+          "example": undefined,
           "expanded": false,
           "in": undefined,
           "name": "packSize",
           "required": false,
-          "schema": Schema {
-            "_pointer": "#/components/schemas/Dog/schema",
+          "schema": SchemaModel {
+            "_$ref": "#/components/schemas/Dog/properties/packSize/schema",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
             "displayType": "number",
+            "enum": Array [],
+            "example": undefined,
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": true,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "default": undefined,
+              "type": "number",
+            },
+            "schema": Object {
+              "default": undefined,
+              "type": "number",
+            },
             "title": "",
             "type": "number",
             "typePrefix": "",
           },
         },
-        Parameter {
+        FieldModel {
+          "deprecated": false,
           "description": "",
+          "example": undefined,
           "expanded": false,
           "in": undefined,
           "name": "type",
           "required": true,
-          "schema": Schema {
-            "_pointer": "#/components/schemas/Dog/schema",
+          "schema": SchemaModel {
+            "_$ref": "#/components/schemas/Dog/properties/type/schema",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
             "displayType": "string",
+            "enum": Array [],
+            "example": undefined,
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": true,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "default": undefined,
+              "type": "string",
+            },
+            "schema": Object {
+              "default": undefined,
+              "type": "string",
+            },
             "title": "",
             "type": "string",
             "typePrefix": "",
           },
         },
       ],
+      "format": undefined,
+      "isCircular": undefined,
       "isPrimitive": false,
+      "nullable": false,
+      "pattern": undefined,
+      "rawSchema": Object {
+        "allOf": Array [
+          Object {
+            "$ref": "#/components/schemas/Pet",
+          },
+        ],
+        "properties": Object {
+          "packSize": Object {
+            "type": "number",
+          },
+        },
+        "type": "object",
+      },
+      "schema": Object {
+        "allOf": undefined,
+        "discriminator": Object {
+          "propertyName": "type",
+        },
+        "namedParents": Array [
+          "#/components/schemas/Pet",
+        ],
+        "properties": Object {
+          "packSize": Object {
+            "type": "number",
+          },
+          "type": Object {
+            "type": "string",
+          },
+        },
+        "required": Array [
+          "type",
+        ],
+        "title": "Dog",
+        "type": "object",
+      },
       "title": "Dog",
       "type": "object",
       "typePrefix": "",
@@ -195,25 +450,40 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
 
 exports[`Components SchemaView discriminator should correctly render discriminator dropdown 1`] = `
 <styled.table>
-  <styled.caption>
-    Dog
-  </styled.caption>
   <tbody>
-    <FieldView
+    <Field
       field={
-        Parameter {
+        FieldModel {
+          "deprecated": false,
           "description": "",
+          "example": undefined,
           "expanded": false,
           "in": undefined,
           "name": "packSize",
           "required": false,
-          "schema": Schema {
-            "_pointer": "#/components/schemas/Dog/schema",
+          "schema": SchemaModel {
+            "_$ref": "#/components/schemas/Dog/properties/packSize/schema",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
             "displayType": "number",
+            "enum": Array [],
+            "example": undefined,
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": true,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "default": undefined,
+              "type": "number",
+            },
+            "schema": Object {
+              "default": undefined,
+              "type": "number",
+            },
             "title": "",
             "type": "number",
             "typePrefix": "",
@@ -222,22 +492,41 @@ exports[`Components SchemaView discriminator should correctly render discriminat
       }
       isLast={false}
       key="packSize"
+      showExamples={false}
     />
-    <FieldView
+    <Field
       field={
-        Parameter {
+        FieldModel {
+          "deprecated": false,
           "description": "",
+          "example": undefined,
           "expanded": false,
           "in": undefined,
           "name": "type",
           "required": true,
-          "schema": Schema {
-            "_pointer": "#/components/schemas/Dog/schema",
+          "schema": SchemaModel {
+            "_$ref": "#/components/schemas/Dog/properties/type/schema",
             "activeOneOf": 0,
-            "circular": undefined,
+            "constraints": Array [],
+            "default": undefined,
+            "deprecated": false,
             "description": "",
             "displayType": "string",
+            "enum": Array [],
+            "example": undefined,
+            "format": undefined,
+            "isCircular": undefined,
             "isPrimitive": true,
+            "nullable": false,
+            "pattern": undefined,
+            "rawSchema": Object {
+              "default": undefined,
+              "type": "string",
+            },
+            "schema": Object {
+              "default": undefined,
+              "type": "string",
+            },
             "title": "",
             "type": "string",
             "typePrefix": "",
@@ -246,7 +535,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
       }
       isLast={true}
       key="type"
-      renderExternalWidget={[Function]}
+      showExamples={false}
     />
   </tbody>
 </styled.table>

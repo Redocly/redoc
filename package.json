@@ -31,8 +31,9 @@
     "@types/webpack": "^3.0.5",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.2.2",
-    "enzyme": "^2.9.1",
-    "enzyme-to-json": "^2.0.0",
+    "enzyme": "^3.1.1",
+    "enzyme-adapter-react-16": "^1.0.4",
+    "enzyme-to-json": "^3.2.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.1.0",
@@ -44,6 +45,7 @@
     "prettier": "^1.5.3",
     "prettier-eslint": "^7.1.0",
     "puppeteer": "^0.10.2",
+    "raf": "^3.4.0",
     "react-dev-utils": "^4.1.0",
     "react-hot-loader": "3.0.0-beta.6",
     "source-map-loader": "^0.2.1",
@@ -86,6 +88,7 @@
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts",
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",

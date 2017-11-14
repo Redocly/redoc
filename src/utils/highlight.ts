@@ -27,7 +27,7 @@ const DEFAULT_LANG = 'clike';
 /**
  * map language names to Prism.js names
  */
-function mapLang(lang: string): string {
+export function mapLang(lang: string): string {
   return (
     {
       json: 'js',

@@ -1,9 +1,11 @@
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import * as React from 'react';
 
-import { OpenAPIParser, Schema } from '../../../services';
-import { ObjectSchemaView, SchemaView } from '../Schema';
+
+import { OpenAPIParser, SchemaModel } from '../../../services';
+import { Schema } from '../Schema';
+import { ObjectSchema } from '../ObjectSchema';
 import * as simpleDiscriminatorFixture from './fixtures/simple-discriminator.json';
 
 describe('Components', () => {
@@ -13,12 +15,12 @@ describe('Components', () => {
         const parser = new OpenAPIParser();
         parser.spec = simpleDiscriminatorFixture;
 
-        const schema = new Schema(
+        const schema = new SchemaModel(
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
         );
-        const schemaView = shallow(<SchemaView schema={schema} />);
+        const schemaView = shallow(<Schema schema={schema} />);
         expect(toJson(schemaView)).toMatchSnapshot();
       });
 
@@ -26,13 +28,13 @@ describe('Components', () => {
         const parser = new OpenAPIParser();
         parser.spec = simpleDiscriminatorFixture;
 
-        const schema = new Schema(
+        const schema = new SchemaModel(
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
         );
         const schemaView = shallow(
-          <ObjectSchemaView
+          <ObjectSchema
             schema={schema.oneOf![0]}
             discriminator={{
               fieldName: schema.discriminator,
