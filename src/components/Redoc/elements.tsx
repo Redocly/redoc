@@ -49,21 +49,3 @@ export const ApiContent = styled.div`
   z-index: 10;
   position: relative;
 `;
-
-export const Background = styled.div`
-  position: absolute;
-  left: ${props => props.theme.menu.width};
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
-
-  .redoc-background {
-    background-color: ${props => props.theme.rightPanel.backgroundColor};
-    left: ${props => 100 - props.theme.rightPanel.width}%;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: absolute;
-  }
-`;

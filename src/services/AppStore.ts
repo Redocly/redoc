@@ -1,18 +1,27 @@
+import { OpenAPISpec } from '../types';
 import { SpecStore } from './models';
 import { MenuStore } from './MenuStore';
 import { ScrollService } from './ScrollService';
 
+type StoreData = {
+  menu: {
+    activeItemIdx: number;
+  };
+  spec: {
+    url: string;
+    data: any;
+  };
+};
+
 export class AppStore {
   menu: MenuStore;
-  scroll: ScrollService;
   spec: SpecStore;
-  static i = 25;
 
-  // TODO: store serialization ???
+  private scroll: ScrollService;
 
-  constructor() {
+  constructor(spec: OpenAPISpec, specUrl?: string) {
     this.scroll = new ScrollService();
-    this.spec = new SpecStore();
+    this.spec = new SpecStore(spec, specUrl);
     this.menu = new MenuStore(this.spec, this.scroll);
   }
 
@@ -26,16 +35,14 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  toJS() {
+  toJS(): StoreData {
     return {
       menu: {
-        activeMenuIdx: this.menu.activeItemIdx,
+        activeItemIdx: this.menu.activeItemIdx,
       },
       spec: {
-        parser: {
-          specUrl: this.spec.parser.specUrl,
-          spec: this.spec.parser.spec,
-        },
+        url: this.spec.parser.specUrl,
+        data: this.spec.parser.spec,
       },
     };
   }
@@ -44,10 +51,8 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  static fromJS(state): AppStore {
-    const inst = new AppStore();
-    inst.spec.parser.specUrl = state.spec.parser.specUrl;
-    inst.spec.parser.spec = state.spec.parser.spec;
+  static fromJS(state: StoreData): AppStore {
+    const inst = new AppStore(state.spec.data, state.spec.url);
     inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
     inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
     return inst;

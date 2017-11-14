@@ -1,3 +1,4 @@
+import { OpenAPISpec } from '../types';
 import { observable, computed } from 'mobx';
 
 // import { OpenAPIExternalDocumentation, OpenAPIInfo } from '../types';
@@ -12,34 +13,22 @@ import { ApiInfoModel } from './models/ApiInfo';
 export class SpecStore {
   @observable.ref parser: OpenAPIParser;
 
-  constructor() {
-    this.parser = new OpenAPIParser();
-  }
-
-  load(specOrUrl: string | object) {
-    return this.parser.load(specOrUrl);
+  constructor(spec: OpenAPISpec, specUrl?: string) {
+    this.parser = new OpenAPIParser(spec, specUrl);
   }
 
   @computed
-  get loaded() {
-    return this.parser.loaded;
-  }
-
-  @computed
-  get info() {
-    if (!this.parser.loaded) return;
+  get info(): ApiInfoModel {
     return new ApiInfoModel(this.parser);
   }
 
   @computed
   get externalDocs() {
-    if (this.parser.loaded) return;
-    return this.parser.spec!.externalDocs;
+    return this.parser.spec.externalDocs;
   }
 
   @computed
   get operationGroups() {
-    if (!this.parser.loaded) return [];
     return MenuBuilder.buildStructure(this.parser);
   }
 

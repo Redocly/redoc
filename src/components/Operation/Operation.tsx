@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 
 import { observer } from 'mobx-react';
 
-import { H2, MiddlePanel, RightPanel, Badge } from '../../common-elements';
+import { H2, MiddlePanel, DarkRightPanel, Badge, Row } from '../../common-elements';
 
 import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
@@ -15,14 +15,19 @@ import { Endpoint } from '../Endpoint/Endpoint';
 
 import { OperationModel as OperationType } from '../../services/models';
 
-const OperationRow = styled.div`
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin-bottom: 30px;
-  padding-bottom: 30px;
+const OperationRow = styled(Row)`
   transform: translateZ(0);
-  display: flex;
   overflow: hidden;
   positioin: relative;
+
+  &:after {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    content: '';
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  }
 `;
 
 interface OperationProps {
@@ -47,11 +52,11 @@ export class Operation extends React.Component<OperationProps> {
           <Parameters parameters={operation.parameters} body={operation.requestBody} />
           <ResponsesList responses={operation.responses} />
         </MiddlePanel>
-        <RightPanel>
+        <DarkRightPanel>
           <Endpoint operation={operation} />
           <RequestSamples operation={operation} />
           <ResponseSamples operation={operation} />
-        </RightPanel>
+        </DarkRightPanel>
       </OperationRow>
     );
   }

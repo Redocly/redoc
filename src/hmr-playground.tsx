@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 // import DevTools from 'mobx-react-devtools';
 
-import { AppContainer } from 'react-hot-loader';
-import { Redoc, RedocProps } from './components/Redoc';
+import { Redoc } from './components/Redoc/Redoc';
 import { AppStore } from './services/AppStore';
+import { loadSpec } from './utils/loadSpec';
 
-const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
+const renderRoot = (Component: typeof Redoc, props: { store: AppStore }) =>
   render(
     <div>
       <AppContainer>
@@ -17,26 +18,32 @@ const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
   );
 
 const big = window.location.search.indexOf('big') > -1;
-const props = {
-  specUrl: big ? 'big-swagger.json' : 'swagger.yaml',
-  store: new AppStore(),
-};
 
-renderRoot(Redoc, props);
+const specUrl = big ? 'big-swagger.json' : 'swagger.yaml';
+
+let store;
+
+async function init() {
+  const spec = await loadSpec(specUrl);
+  store = new AppStore(spec, specUrl);
+  renderRoot(Redoc, { store: store });
+}
+
+init();
 
 if (module.hot) {
   const reload = (reloadStore = false) => () => {
     if (reloadStore) {
       // create a new Store
-      props.store.dispose();
+      store.dispose();
 
-      const state = props.store.toJS();
-      props.store = AppStore.fromJS(state);
+      const state = store.toJS();
+      store = AppStore.fromJS(state);
     }
 
-    renderRoot(Redoc, props);
+    renderRoot(Redoc, { store: store });
   };
 
-  module.hot.accept(['./components/Redoc'], reload());
+  module.hot.accept(['./components/Redoc/Redoc'], reload());
   module.hot.accept(['./services/AppStore'], reload(true));
 }

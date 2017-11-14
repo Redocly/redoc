@@ -1,11 +1,7 @@
-import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { Children } from 'react';
-import { getContext } from 'recompose';
-import { observer } from 'mobx-react';
 import styled from '../../styled-components';
 
-import { AppStore } from '../../services';
 import { Spinner } from './Spinner.svg';
 
 const LoadingMessage = styled.div`
@@ -17,10 +13,9 @@ const LoadingMessage = styled.div`
   color: ${props => props.theme.colors.main};
 `;
 
-@observer
-class LoadingWrap extends React.Component<{ store: AppStore }> {
+export class LoadingWrap extends React.Component<{ loading: boolean }> {
   render() {
-    if (this.props.store.spec.loaded) {
+    if (this.props.loading) {
       return Children.only(this.props.children);
     }
     return (
@@ -31,7 +26,3 @@ class LoadingWrap extends React.Component<{ store: AppStore }> {
     );
   }
 }
-
-export default getContext<{ store: AppStore }>({
-  store: PropTypes.object,
-})(LoadingWrap);

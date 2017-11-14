@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import * as PropTypes from 'prop-types';
-import { getContext } from 'recompose';
 
-import { BaseContainerProps } from '../../types/components';
-import { IMenuItem } from '../../services/MenuStore';
-
-import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';
+import { MenuStore, IMenuItem } from '../../services/MenuStore';
 import { MenuItems } from './MenuItems';
 
+import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';
+
 @observer
-class SideMenu extends React.Component<BaseContainerProps> {
+export class SideMenu extends React.Component<{ menu: MenuStore }> {
   render() {
-    const store = this.props.store.menu;
+    const store = this.props.menu;
     return (
       <PerfectScrollbar>
         <MenuItems items={store.items} onActivate={this.activate} />
@@ -21,10 +18,6 @@ class SideMenu extends React.Component<BaseContainerProps> {
   }
 
   activate = (item: IMenuItem) => {
-    this.props.store.menu.activateAndScroll(item, true);
+    this.props.menu.activateAndScroll(item, true);
   };
 }
-
-export default getContext<BaseContainerProps>({
-  store: PropTypes.object,
-})(SideMenu);

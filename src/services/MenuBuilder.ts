@@ -30,7 +30,7 @@ export class MenuBuilder {
    * Builds page content structure based on tags
    */
   static buildStructure(parser: OpenAPIParser): ContentItemModel[] {
-    const spec = parser.spec!;
+    const spec = parser.spec;
 
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);

@@ -7,8 +7,9 @@ import { OpenAPIExternalDocumentation } from '../../types';
 import { ApiInfoModel } from '../../services/models';
 import { SecurityDefs } from '../SecurityDefs/SecurityDefs';
 
+import { MiddlePanel, DarkRightPanel, Row } from '../../common-elements/';
+
 import {
-  ApiInfoWrap,
   ApiHeader,
   DownloadButton,
   InfoSpan,
@@ -18,7 +19,7 @@ import {
 
 interface ApiInfoProps {
   info: ApiInfoModel;
-  externalDocs: OpenAPIExternalDocumentation;
+  externalDocs?: OpenAPIExternalDocumentation;
 }
 
 @observer
@@ -65,43 +66,46 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       null;
 
     return (
-      <ApiInfoWrap className="api-info">
-        <ApiHeader>
-          {info.title} <span>({info.version})</span>
-        </ApiHeader>
-        {downloadLink && (
-          <p>
-            Download OpenAPI specification:
-            <DownloadButton download={downloadFilename} target="_blank" href={downloadLink}>
-              Download
-            </DownloadButton>
-          </p>
-        )}
+      <Row>
+        <MiddlePanel className="api-info">
+          <ApiHeader>
+            {info.title} <span>({info.version})</span>
+          </ApiHeader>
+          {downloadLink && (
+            <p>
+              Download OpenAPI specification:
+              <DownloadButton download={downloadFilename} target="_blank" href={downloadLink}>
+                Download
+              </DownloadButton>
+            </p>
+          )}
 
-        {((info.license || info.contact || info.termsOfService) && (
-          <InfoSpanBoxWrap>
-            <InfoSpanBox>
-              {email} {website} {license} {terms}
-            </InfoSpanBox>
-          </InfoSpanBoxWrap>
-        )) ||
-          null}
+          {((info.license || info.contact || info.termsOfService) && (
+            <InfoSpanBoxWrap>
+              <InfoSpanBox>
+                {email} {website} {license} {terms}
+              </InfoSpanBox>
+            </InfoSpanBoxWrap>
+          )) ||
+            null}
 
-        {(externalDocs && (
-          <p>
-            <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
-          </p>
-        )) ||
-          null}
+          {(externalDocs && (
+            <p>
+              <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
+            </p>
+          )) ||
+            null}
 
-        <div>
-          <Markdown
-            source={info.description || ''}
-            raw={false}
-            components={{ 'security-definitions': SecurityDefs }}
-          />
-        </div>
-      </ApiInfoWrap>
+          <div>
+            <Markdown
+              source={info.description || ''}
+              raw={false}
+              components={{ 'security-definitions': SecurityDefs }}
+            />
+          </div>
+        </MiddlePanel>
+        <DarkRightPanel />
+      </Row>
     );
   }
 }

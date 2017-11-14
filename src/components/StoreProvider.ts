@@ -1,34 +1,51 @@
-import { Component, Children } from 'react';
-import * as PropTypes from 'prop-types';
-import { AppStore, HistoryService } from '../services/';
+import { Component } from 'react';
+import { AppStore } from '../services/';
+import { loadSpec } from '../utils';
 
 interface SpecProps {
   specUrl?: string;
   spec?: object;
   store?: AppStore;
+
+  children?: any;
 }
 
-export class StoreProvider extends Component<SpecProps, { error?: Error }> {
-  store: AppStore;
+interface SpecState {
+  error?: Error;
+  loading: boolean;
+  store?: AppStore;
+}
 
-  static childContextTypes = {
-    store: PropTypes.object.isRequired,
-  };
+export class StoreProvider extends Component<SpecProps, SpecState> {
+  store: AppStore;
 
   constructor(props: SpecProps) {
     super(props);
-    this.state = {};
 
-    this.store = props.store || new AppStore();
+    this.state = {
+      loading: false,
+    };
 
-    if (!this.store.spec.loaded) {
-      this.store.spec
-        .load(props.spec! || props.specUrl)
-        .then(() => {
-          HistoryService.emit();
-          this.setError();
-        })
-        .catch(e => this.setError(e));
+    this.load();
+  }
+
+  async load() {
+    let { specUrl, spec } = this.props;
+
+    this.setState({
+      loading: true,
+    });
+
+    try {
+      const resolvedSpec = await loadSpec(spec || specUrl!);
+      this.setState({
+        loading: false,
+        store: new AppStore(resolvedSpec, specUrl),
+      });
+    } catch (e) {
+      this.setState({
+        error: e,
+      });
     }
   }
 
@@ -38,12 +55,8 @@ export class StoreProvider extends Component<SpecProps, { error?: Error }> {
     });
   }
 
-  getChildContext() {
-    return { store: this.props.store || this.store };
-  }
-
   render() {
     if (this.state.error) throw this.state.error;
-    return Children.only(this.props.children);
+    return this.props.children(this.state);
   }
 }

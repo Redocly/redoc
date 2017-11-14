@@ -102,7 +102,7 @@ export class MenuStore {
    * @param hash current hash
    */
   @action.bound
-  updateOnHash(hash: string): boolean {
+  updateOnHash(hash: string = HistoryService.hash): boolean {
     if (!hash) return false;
     let item: IMenuItem | undefined;
     hash = hash.substr(1);
@@ -155,9 +155,8 @@ export class MenuStore {
   get flatItems(): IMenuItem[] {
     if (!this._flatItems) {
       this._flatItems = flattenByProp(this.items, 'items');
+      this._flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
     }
-
-    this._flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
 
     return this._flatItems;
   }

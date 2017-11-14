@@ -1,5 +1,4 @@
-import { action, computed, observable } from 'mobx';
-import * as JsonSchemaRefParser from 'json-schema-ref-parser';
+import { observable } from 'mobx';
 import { resolve as urlResolve } from 'url';
 
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
@@ -38,44 +37,21 @@ class RefCounter {
  */
 export class OpenAPIParser {
   @observable specUrl: string;
-  @observable.ref spec?: OpenAPISpec;
+  @observable.ref spec: OpenAPISpec;
 
-  private _parser: JsonSchemaRefParser;
-  private _refCounter: RefCounter = new RefCounter();
-
-  @computed
-  get loaded(): boolean {
-    return this.spec !== undefined;
-  }
-
-  /**
-   * loads and bundles the spec via url to spec or by providing spec itself.
-   * Async as bundling is async as spec may contain extrenal refs.
-   * @param urlOrObject url to the spec or the spec itself
-   */
-  @action
-  async load(urlOrObject: string | object): Promise<OpenAPISpec> {
-    if (this.loaded) {
-      return this.spec!;
-    }
-
-    this._parser = new JsonSchemaRefParser();
-    if (typeof urlOrObject === 'string') {
-      this.specUrl = urlResolve(window.location.href, urlOrObject);
-    } else {
-      this.specUrl = window.location.href;
-    }
-
-    const spec = await this._parser.bundle(urlOrObject, {
-      resolve: { http: { withCredentials: false } },
-    } as object);
-
+  constructor(spec: OpenAPISpec, specUrl?: string) {
     this.validate(spec);
 
     this.spec = spec;
 
-    return this.spec!;
+    if (typeof specUrl === 'string') {
+      this.specUrl = urlResolve(window.location.href, specUrl);
+    } else {
+      this.specUrl = window.location.href;
+    }
   }
+
+  private _refCounter: RefCounter = new RefCounter();
 
   validate(spec: any) {
     // TODO: validate
@@ -90,16 +66,11 @@ export class OpenAPIParser {
   byRef = <T extends any = any>(ref: string): T | undefined => {
     let res;
     if (this.spec === undefined) return;
+    if (ref.charAt(0) !== '#') ref = '#' + ref;
     try {
       res = JsonPointer.get(this.spec, decodeURIComponent(ref));
     } catch (e) {
-      // if resolved from outer files simple jsonpointer.get fails to get correct schema
-      if (ref.charAt(0) !== '#') ref = '#' + ref;
-      try {
-        res = this._parser.$refs.get(decodeURIComponent(ref));
-      } catch (e) {
-        // do nothing
-      }
+      // do nothing
     }
     return res;
   };
@@ -227,7 +198,7 @@ export class OpenAPIParser {
    */
   findDerived($refs: string[]): Dict<string> {
     const res: Dict<string> = {};
-    const schemas = (this.spec!.components && this.spec!.components!.schemas) || {};
+    const schemas = (this.spec.components && this.spec.components.schemas) || {};
     for (let defName in schemas) {
       const def = this.deref(schemas[defName]);
       if (

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { SECTION_ATTR } from '../../services/MenuStore';
 import { Markdown } from '../Markdown/Markdown';
 
-import { H1, MiddlePanel, ShareLink } from '../../common-elements';
+import { DarkRightPanel, H1, MiddlePanel, ShareLink, Row } from '../../common-elements';
 import { Operation } from '../Operation/Operation';
 import { ContentItemModel } from '../../services/MenuBuilder';
 import { OperationModel } from '../../services/models';
@@ -60,13 +60,16 @@ export class TagItem extends React.Component<ContentItemProps> {
   render() {
     const { name, description } = this.props.item;
     return (
-      <MiddlePanel>
-        <H1>
-          <ShareLink href={'#' + this.props.item.getHash()} />
-          {name}
-        </H1>
-        {description !== undefined && <Markdown source={description} />}
-      </MiddlePanel>
+      <Row>
+        <MiddlePanel key="middle">
+          <H1>
+            <ShareLink href={'#' + this.props.item.getHash()} />
+            {name}
+          </H1>
+          {description !== undefined && <Markdown source={description} />}
+        </MiddlePanel>
+        <DarkRightPanel key="right" />
+      </Row>
     );
   }
 }

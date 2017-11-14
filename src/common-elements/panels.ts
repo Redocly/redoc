@@ -11,3 +11,12 @@ export const RightPanel = styled.div`
   bckground-color: ${props => props.theme.rightPanel.backgroundColor};
   padding: ${props => props.theme.spacingUnit * 2}px;
 `;
+
+export const DarkRightPanel = styled(RightPanel)`
+  background-color: ${props => props.theme.rightPanel.backgroundColor};
+`;
+
+export const Row = styled.div`
+  display: flex;
+  width: 100%;
+`;

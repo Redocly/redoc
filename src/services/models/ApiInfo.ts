@@ -11,7 +11,7 @@ export class ApiInfoModel implements OpenAPIInfo {
   license?: OpenAPILicense;
 
   constructor(public parser: OpenAPIParser) {
-    Object.assign(this, parser.spec!.info);
+    Object.assign(this, parser.spec.info);
   }
 
   get downloadLink() {

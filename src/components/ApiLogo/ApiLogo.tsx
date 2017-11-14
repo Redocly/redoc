@@ -1,18 +1,14 @@
+import { OpenAPIInfo } from '../../types';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import * as PropTypes from 'prop-types';
-import { getContext } from 'recompose';
-
-import { BaseContainerProps } from '../../types/components';
 import { LogoImgEl } from './styled.elements';
 
 const LinkWrap = url => Component => <a href={url}>{Component}</a>;
 
 @observer
-class ApiLogo extends React.Component<BaseContainerProps> {
+export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
   render() {
-    const { spec } = this.props.store;
-    const info = spec.info!;
+    const { info } = this.props;
     const logoInfo = info['x-logo'];
     if (!logoInfo || !logoInfo.url) return null;
 
@@ -22,7 +18,3 @@ class ApiLogo extends React.Component<BaseContainerProps> {
     return info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo;
   }
 }
-
-export default getContext<BaseContainerProps>({
-  store: PropTypes.object,
-})(ApiLogo);

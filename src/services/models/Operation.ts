@@ -79,13 +79,15 @@ export class OperationModel implements IMenuItem {
         if (parseInt(code) >= 100 && parseInt(code) <= 399) {
           hasSuccessResponses = true;
         }
-        return isNumeric(code) || code === 'default'
+        return isNumeric(code) || code === 'default';
       }) // filter out other props (e.g. x-props)
-      .map(code => new ResponseModel(parser, code, hasSuccessResponses, operationSpec.responses[code]));
+      .map(
+        code => new ResponseModel(parser, code, hasSuccessResponses, operationSpec.responses[code]),
+      );
 
     this.servers = normalizeServers(
       parser.specUrl,
-      operationSpec.servers || parser.spec!.servers || [],
+      operationSpec.servers || parser.spec.servers || [],
     );
   }
 
