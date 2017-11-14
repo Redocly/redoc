@@ -36,6 +36,8 @@ export class Endpoint extends React.PureComponent<EndpointProps, EndpointState> 
   render() {
     const { operation } = this.props;
     const { expanded } = this.state;
+
+    // TODO: highlight server variables, e.g. https://{user}.test.com
     return (
       <OperationEndpointWrap>
         <EndpointInfo onClick={this.toggle} expanded={expanded}>
