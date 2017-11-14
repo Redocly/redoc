@@ -81,11 +81,12 @@ module.exports = env => {
         template: './demo/index.html',
       }),
       new webpack.NamedModulesPlugin(),
-      new DashboardPlugin(),
     ],
   };
   if (env.prod) {
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+  } else {
+    config.plugins.push(new DashboardPlugin());
   }
   return config;
 };

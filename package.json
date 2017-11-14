@@ -11,7 +11,7 @@
     "dev": "webpack-dashboard -- webpack-dev-server --hot",
     "test": "jest",
     "bundle": "webpack",
-    "bundle:prod": "webpack -p -env.prod",
+    "bundle:prod": "webpack -p --env.prod",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "author": "",
