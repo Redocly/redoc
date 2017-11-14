@@ -178,8 +178,8 @@ export type OpenAPIResponses = {
 export type OpenAPIResponse = {
   description?: string;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  content: { [mime: string]: OpenAPIMediaType };
-  links: { [name: string]: Referenced<OpenAPILink> };
+  content?: { [mime: string]: OpenAPIMediaType };
+  links?: { [name: string]: Referenced<OpenAPILink> };
 };
 
 export type OpenAPILink = {};

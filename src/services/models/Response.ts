@@ -16,7 +16,7 @@ export class ResponseModel {
   public type: string;
   public headers: FieldModel[] = [];
 
-  constructor(parser: OpenAPIParser, code: string, infoOrRef: Referenced<OpenAPIResponse>) {
+  constructor(parser: OpenAPIParser, code: string, defaultAsError: boolean, infoOrRef: Referenced<OpenAPIResponse>) {
     const info = parser.deref(infoOrRef);
     parser.exitRef(infoOrRef);
     this.code = code;
@@ -24,7 +24,7 @@ export class ResponseModel {
       this.content = new MediaContentModel(parser, info.content, false);
     }
     this.description = info.description || '';
-    this.type = getStatusCodeType(code);
+    this.type = getStatusCodeType(code, defaultAsError);
 
     const headers = info.headers;
     if (headers !== undefined) {
