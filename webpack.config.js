@@ -40,8 +40,14 @@ module.exports = env => {
       },
     },
 
+    node: {
+      fs: 'empty',
+      crypto: 'empty',
+    },
+
     externals: {
       esprima: 'esprima',
+      'node-fetch': 'fetch',
     },
 
     module: {
@@ -49,6 +55,18 @@ module.exports = env => {
         {
           test: /\.tsx?$/,
           loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+          exclude: ['node_modules'],
+        },
+        {
+          test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
+          use: {
+            loader: 'awesome-typescript-loader',
+            options: {
+              transpileOnly: true,
+              allowJs: true,
+              instance: 'ts2js-transpiler-only',
+            },
+          },
         },
         {
           test: /\.css$/,

@@ -18,8 +18,9 @@ const renderRoot = (Component: typeof Redoc, props: { store: AppStore }) =>
   );
 
 const big = window.location.search.indexOf('big') > -1;
+const swagger = window.location.search.indexOf('swagger') > -1; //compatibility mode ?
 
-const specUrl = big ? 'big-swagger.json' : 'swagger.yaml';
+const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'swagger.yaml';
 
 let store;
 
