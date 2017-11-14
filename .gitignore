@@ -21,6 +21,7 @@ npm-debug.log*
 node_modules
 
 lib/
+stats.json
 
 /coverage
 .ghpages-tmp
