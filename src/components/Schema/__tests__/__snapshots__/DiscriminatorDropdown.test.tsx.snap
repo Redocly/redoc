@@ -535,6 +535,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
       }
       isLast={true}
       key="type"
+      renderDiscriminatorSwitch={[Function]}
       showExamples={false}
     />
   </tbody>

@@ -31,13 +31,6 @@ module.exports = env => {
 
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json'],
-      alias: {
-        // react: 'preact-compat',
-        // 'react-dom': 'preact-compat',
-        // 'create-react-class': 'preact-compat/lib/create-react-class',
-        // 'preact-compat': 'preact-compat/dist/preact-compat',
-        // 'react-deep-force-update': 'preact-deep-force-update',
-      },
     },
 
     node: {
@@ -82,7 +75,7 @@ module.exports = env => {
             ],
           }),
         },
-        // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+        { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       ],
     },
     plugins: [

@@ -54,7 +54,6 @@ export class OpenAPIParser {
   private _refCounter: RefCounter = new RefCounter();
 
   validate(spec: any) {
-    // TODO: validate
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
     }

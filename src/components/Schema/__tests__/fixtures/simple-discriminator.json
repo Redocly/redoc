@@ -1,9 +1,12 @@
 {
+  "openapi": "2.0.0",
   "components": {
     "schemas": {
       "Pet": {
         "type": "object",
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "discriminator": {
           "propertyName": "type"
         },

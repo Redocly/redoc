@@ -1,15 +1,13 @@
 import { ResponseModel } from '../../models/Response';
 import { OpenAPIParser } from '../../OpenAPIParser';
 
-
 describe('Models', () => {
   describe('ResponseModel', () => {
     let parser;
 
     beforeEach(() => {
-      parser = new OpenAPIParser();
-      parser.spec = <any>{};
-    })
+      parser = new OpenAPIParser({ openapi: '3.0.0' } as any);
+    });
 
     test('should calculate response type based on code', () => {
       let resp = new ResponseModel(parser, '200', false, {});

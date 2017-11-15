@@ -2,7 +2,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-
 import { OpenAPIParser, SchemaModel } from '../../../services';
 import { Schema } from '../Schema';
 import { ObjectSchema } from '../ObjectSchema';
@@ -12,8 +11,7 @@ describe('Components', () => {
   describe('SchemaView', () => {
     describe('discriminator', () => {
       it('should correctly render SchemaView', () => {
-        const parser = new OpenAPIParser();
-        parser.spec = simpleDiscriminatorFixture;
+        const parser = new OpenAPIParser(simpleDiscriminatorFixture);
 
         const schema = new SchemaModel(
           parser,
@@ -25,8 +23,7 @@ describe('Components', () => {
       });
 
       it('should correctly render discriminator dropdown', () => {
-        const parser = new OpenAPIParser();
-        parser.spec = simpleDiscriminatorFixture;
+        const parser = new OpenAPIParser(simpleDiscriminatorFixture);
 
         const schema = new SchemaModel(
           parser,
@@ -37,7 +34,7 @@ describe('Components', () => {
           <ObjectSchema
             schema={schema.oneOf![0]}
             discriminator={{
-              fieldName: schema.discriminator,
+              fieldName: schema.discriminatorProp,
               parentSchema: schema,
             }}
           />,
