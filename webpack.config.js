@@ -42,7 +42,6 @@ module.exports = env => {
 
     node: {
       fs: 'empty',
-      crypto: 'empty',
     },
 
     externals: {
