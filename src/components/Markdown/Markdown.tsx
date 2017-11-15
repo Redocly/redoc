@@ -11,7 +11,7 @@ interface MarkdownProps {
   inline?: boolean;
   className?: string;
   raw?: boolean;
-  components?: { [name: string]: new () => React.Component };
+  components?: { [name: string]: React.ComponentClass };
 }
 
 class InternalMarkdown extends React.PureComponent<MarkdownProps> {

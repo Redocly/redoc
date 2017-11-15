@@ -142,9 +142,9 @@ export class MarkdownRenderer {
 
   renderMdWithComponents(
     rawText: string,
-    components: { [name: string]: new () => React.Component },
+    components: { [name: string]: React.ComponentClass },
     raw: boolean = true,
-  ): (string | { component: new () => React.Component; attrs: any })[] {
+  ): (string | { component: React.ComponentClass; attrs: any })[] {
     let componentDefs: string[] = [];
     let match;
     let anyCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '(.*?)'), 'gmi');

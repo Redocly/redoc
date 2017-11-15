@@ -1,9 +1,10 @@
 import { observable, action } from 'mobx';
-import * as slugify from 'slugify';
 
 import { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
 import { ContentItemModel } from '../MenuBuilder';
 import { IMenuItem, MenuItemGroupType } from '../MenuStore';
+
+const slugify = require('slugify');
 
 /**
  * Operations Group model ready to be used by components
