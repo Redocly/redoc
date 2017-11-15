@@ -12,7 +12,7 @@
     "test": "jest",
     "bundle": "webpack",
     "bundle:prod": "webpack -p --env.prod",
-    "stats": "webpack -p --env.prod --json > stats.json",
+    "stats": "webpack -p --env.prod --json --profile > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "author": "",
