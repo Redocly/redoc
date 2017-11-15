@@ -5,6 +5,13 @@ import * as slugify from 'slugify';
 import * as Remarkable from 'remarkable';
 import { StringMap } from './';
 
+function HTMLescape(html: string): string {
+  return document.createElement('div')
+    .appendChild(document.createTextNode(html))
+    .parentElement
+    .innerHTML;
+}
+
 declare var Prism: any;
 const md = new Remarkable({
   html: true,
@@ -15,7 +22,7 @@ const md = new Remarkable({
     if (lang === 'json') lang = 'js';
     let grammar = Prism.languages[lang];
     // fallback to click
-    if (!grammar) return str;
+    if (!grammar) return HTMLescape(str);
     return Prism.highlight(str, grammar);
   }
 });
