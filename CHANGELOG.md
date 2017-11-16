@@ -1,3 +1,21 @@
+<a name="1.19.3"></a>
+## [1.19.3](https://github.com/Rebilly/ReDoc/compare/v1.19.2...v1.19.3) (2017-11-16)
+
+
+### Bug Fixes
+
+* html characters not escaped in code blocks (fixes [#378](https://github.com/Rebilly/ReDoc/issues/378)) ([fef9ec4](https://github.com/Rebilly/ReDoc/commit/fef9ec4))
+
+
+<a name="1.19.2"></a>
+## [1.19.2](https://github.com/Rebilly/ReDoc/compare/v1.19.1...v1.19.2) (2017-11-10)
+
+
+### Bug Fixes
+
+* response samples doesn't show only text/plain (fixes [#371](https://github.com/Rebilly/ReDoc/issues/371)) ([00aea06](https://github.com/Rebilly/ReDoc/commit/00aea06))
+
+
 <a name="1.19.1"></a>
 # [1.19.1](https://github.com/Rebilly/ReDoc/compare/v1.19.0...v1.19.1) (2017-10-02)
 
