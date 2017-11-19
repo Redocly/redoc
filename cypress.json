@@ -1,0 +1,8 @@
+{
+  "integrationFolder": "e2e/.build",
+  "fixturesFolder": false,
+  "supportFile": false,
+  "fileServerFolder": ".",
+  "videoRecording": false,
+  "screenshotOnHeadlessFailure": false
+}

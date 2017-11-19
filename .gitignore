@@ -22,6 +22,8 @@ node_modules
 
 lib/
 stats.json
+e2e/build/
+cypress/
 
 /coverage
 .ghpages-tmp

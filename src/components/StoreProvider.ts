@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { AppStore } from '../services/';
-import { loadSpec } from '../utils';
+import { loadAndBundleSpec } from '../utils';
 
 interface SpecProps {
   specUrl?: string;
@@ -23,7 +23,7 @@ export class StoreProvider extends Component<SpecProps, SpecState> {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
     };
 
     this.load();
@@ -37,7 +37,7 @@ export class StoreProvider extends Component<SpecProps, SpecState> {
     });
 
     try {
-      const resolvedSpec = await loadSpec(spec || specUrl!);
+      const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
       this.setState({
         loading: false,
         store: new AppStore(resolvedSpec, specUrl),

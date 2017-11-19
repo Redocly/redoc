@@ -31,6 +31,6 @@ export const Spinner = styled(_Spinner)`
   margin-left: -25px;
 
   path {
-    fill: ${props => props.theme.colors.main};
+    fill: black;
   }
 `;

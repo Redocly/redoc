@@ -9,7 +9,7 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
-    "outDir": "lib",
+    "outDir": "e2e/.build",
     "pretty": true,
     "lib": [
       "es2015",
@@ -19,25 +19,13 @@
     ],
     "jsx": "react",
     "types": [
-      "webpack",
-      "webpack-env",
-      "jest"
+      "mocha",
+      "cypress",
+      "chai"
     ]
   },
   "compileOnSave": false,
-  "exclude": [
-    "node_modules",
-    ".tmp",
-    "lib",
-    "e2e"
-  ],
   "include": [
-    "./custom.d.ts",
-    "./src/hmr-playground.tsx",
-    "demo/*.tsx"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "resolveGlobs": true,
-    "useWebpackText": true
-  }
+    "e2e"
+  ]
 }

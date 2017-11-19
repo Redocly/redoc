@@ -22,7 +22,8 @@ export class MediaContentModel {
     info: { [mime: string]: OpenAPIMediaType },
     public isRequestType: boolean = false,
   ) {
-    this.mediaTypes = Object.entries(info).map(([name, mime]) => {
+    this.mediaTypes = Object.keys(info).map(name => {
+      const mime = info[name];
       // reset deref cache just in case something is left there
       parser.resetVisited();
       return new MediaTypeModel(parser, name, isRequestType, mime);

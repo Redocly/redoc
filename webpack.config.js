@@ -6,18 +6,25 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 module.exports = env => {
   env = env || {};
 
-  const config = {
-    entry: env.prod
+  let entry;
+  if (env.standalone) {
+    entry = ['./src/polyfills.ts', './src/standalone.tsx'];
+  } else {
+    entry = env.prod
       ? env.perf ? ['./perf/index.tsx'] : ['./src/hmr-playground.tsx']
       : [
           'react-dev-utils/webpackHotDevClient',
           'react-hot-loader/patch',
           './src/hmr-playground.tsx',
-        ],
+        ];
+  }
+
+  const config = {
+    entry: entry,
 
     output: {
-      filename: 'redoc.bundle.js',
-      path: __dirname + '/lib',
+      filename: env.standalone ? 'redoc.standalone.js' : 'redoc.bundle.js',
+      path: __dirname + '/bundles',
     },
 
     devServer: {

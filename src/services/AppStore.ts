@@ -2,6 +2,7 @@ import { OpenAPISpec } from '../types';
 import { SpecStore } from './models';
 import { MenuStore } from './MenuStore';
 import { ScrollService } from './ScrollService';
+import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
 
 type StoreData = {
   menu: {
@@ -12,6 +13,11 @@ type StoreData = {
     data: any;
   };
 };
+
+export async function createStore(spec: object, specUrl: string) {
+  const resolvedSpec = await loadAndBundleSpec(spec || specUrl);
+  return new AppStore(resolvedSpec, specUrl);
+}
 
 export class AppStore {
   menu: MenuStore;

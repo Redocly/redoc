@@ -5,7 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import { Redoc } from './components/Redoc/Redoc';
 import { AppStore } from './services/AppStore';
-import { loadSpec } from './utils/loadSpec';
+import { loadAndBundleSpec } from './utils/loadAndBundleSpec';
 
 const renderRoot = (Component: typeof Redoc, props: { store: AppStore }) =>
   render(
@@ -25,7 +25,7 @@ const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'swagger.y
 let store;
 
 async function init() {
-  const spec = await loadSpec(specUrl);
+  const spec = await loadAndBundleSpec(specUrl);
   store = new AppStore(spec, specUrl);
   renderRoot(Redoc, { store: store });
 }
