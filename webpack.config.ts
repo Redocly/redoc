@@ -1,9 +1,8 @@
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
+import webpack from 'webpack';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as nodeExternals from 'webpack-node-externals';
 
-module.exports = env => {
+export default env => {
   env = env || {};
 
   let entry;
@@ -22,7 +21,7 @@ module.exports = env => {
         ];
   }
 
-  const config = {
+  const config: webpack.Configuration = {
     entry: entry,
     output: {
       filename: env.standalone ? 'redoc.standalone.js' : 'redoc.lib.js',
@@ -108,5 +107,6 @@ module.exports = env => {
       }),
     );
   }
+
   return config;
 };
