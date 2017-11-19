@@ -3,7 +3,7 @@
   "name": "redoc",
   "version": "2.0.0",
   "description": "ReDoc",
-  "main": "lib/index.js",
+  "main": "bundles/redoc.lib.js",
   "scripts": {
     "start": "webpack-dev-server --hot",
     "start:perf": "webpack-dev-server --env.prod --env.perf",
@@ -16,7 +16,9 @@
     "e2e:clean": "rimraf e2e/.build",
     "cy:open": "cypress open",
     "bundle:clean": "rimraf bundles",
-    "bundle": "npm run bundle:clean && webpack -p --env.prod --env.standalone",
+    "bundle:standalone": "webpack -p --env.prod --env.standalone",
+    "bundle:lib": "webpack -p --env.prod",
+    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
     "stats": "webpack -p --env.prod --json --profile > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
@@ -38,6 +40,7 @@
     "@types/webpack": "^3.0.5",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.2.2",
+    "core-js": "^2.5.1",
     "css-loader": "^0.28.7",
     "cypress": "^1.0.3",
     "enzyme": "^3.1.1",
@@ -45,6 +48,7 @@
     "enzyme-to-json": "^3.2.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.30.1",
+    "http-server": "^0.10.0",
     "jest": "^21.1.0",
     "mobx-react-devtools": "^4.2.15",
     "prettier": "^1.5.3",
@@ -53,6 +57,7 @@
     "raf": "^3.4.0",
     "react-dev-utils": "^4.1.0",
     "react-hot-loader": "3.0.0-beta.6",
+    "rimraf": "^2.6.2",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-jest": "^21.0.1",
@@ -61,9 +66,7 @@
     "webpack": "^3.4.1",
     "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.6.1",
-    "http-server": "^0.10.0",
-    "core-js": "^2.5.1",
-    "rimraf": "^2.6.2"
+    "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
     "decko": "^1.2.0",

@@ -7,14 +7,14 @@ import { StoreProvider } from './StoreProvider';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Redoc } from './Redoc/Redoc';
 
-export interface RedocProps {
+export interface RedocStandaloneProps {
   specOrSpecUrl: string | object;
   options?: {
     theme?: ThemeInterface;
   };
 }
 
-export class RedocStandalone extends React.Component<RedocProps> {
+export class RedocStandalone extends React.Component<RedocStandaloneProps> {
   render() {
     const { specOrSpecUrl, options } = this.props;
     let specUrl;

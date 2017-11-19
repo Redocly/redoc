@@ -9,6 +9,7 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
+    // "declaration": true,
     "outDir": "lib",
     "pretty": true,
     "lib": [

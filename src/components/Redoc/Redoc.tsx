@@ -11,7 +11,7 @@ import { AppStore } from '../../services';
 
 import defaultTheme from '../../theme';
 
-interface RedocProps {
+export interface RedocProps {
   store: AppStore;
   options?: {
     theme?: ThemeInterface;

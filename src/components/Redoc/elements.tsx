@@ -1,5 +1,6 @@
 import { hoverColor } from '../../common-elements/mixins';
 import styled from '../../styled-components';
+export { ClassAttributes } from 'react';
 
 export const RedocWrap = styled.div`
   overflow: hidden;

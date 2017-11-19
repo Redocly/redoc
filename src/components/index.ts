@@ -1,6 +1,6 @@
 export * from './RedocStandalone';
 export * from './Redoc/Redoc';
-export * from './Redoc/elements';
+// export * from './Redoc/elements';
 export * from './Schema/';
 export * from './Operation/Operation';
 export * from './RedocStandalone';

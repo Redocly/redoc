@@ -3,7 +3,7 @@ import { ThemedStyledComponentsModule } from 'styled-components';
 
 import { ThemeInterface } from './theme';
 
-type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ThemeInterface>;
+export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ThemeInterface>;
 
 function withProps<T, U extends HTMLElement = HTMLElement>(
   styledFunction: StyledFunction<React.HTMLProps<U>>,

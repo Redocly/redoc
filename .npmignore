@@ -1,8 +1,2 @@
-.DS_Store
-**/.*
-
-node_modules/
-
-perf/
-demo/
-coverage/
+!bundles/
+!package.json
