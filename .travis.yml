@@ -12,7 +12,6 @@ env:
 addons:
   chrome: stable
 cache: yarn
-before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script: npm run bundle
 deploy:
   - provider: npm

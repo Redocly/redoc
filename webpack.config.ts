@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as nodeExternals from 'webpack-node-externals';
 
@@ -54,7 +54,15 @@ export default env => {
       rules: [
         {
           test: /\.tsx?$/,
-          loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+          use: [
+            'react-hot-loader/webpack',
+            {
+              loader: 'awesome-typescript-loader',
+              options: {
+                module: 'es2015',
+              },
+            },
+          ],
           exclude: ['node_modules'],
         },
         {
@@ -89,7 +97,7 @@ export default env => {
   };
 
   if (env.prod) {
-    config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+    config.plugins!.push(new webpack.optimize.ModuleConcatenationPlugin());
   }
 
   if (env.lib) {
@@ -98,10 +106,10 @@ export default env => {
       whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
     });
 
-    config.output.library = 'Redoc';
-    config.output.libraryTarget = 'umd';
+    config.output!.library = 'Redoc';
+    config.output!.libraryTarget = 'umd';
   } else {
-    config.plugins.push(
+    config.plugins!.push(
       new HtmlWebpackPlugin({
         template: './demo/playground/index.html',
       }),
