@@ -11,7 +11,7 @@
     "dev": "webpack-dashboard -- webpack-dev-server --hot",
     "test": "npm run unit && npm run e2e",
     "unit": "jest",
-    "e2e": "npm run e2e:tsc && cypress run",
+    "e2e": "npm run e2e:clean && npm run e2e:tsc && cypress run",
     "e2e:tsc": "tsc -p tsconfig.e2e.json",
     "e2e:clean": "rimraf e2e/.build",
     "cy:open": "cypress open",
@@ -19,7 +19,7 @@
     "bundle:standalone": "webpack -p --env.lib --env.standalone --env.prod",
     "bundle:lib": "webpack -p --env.lib --env.prod",
     "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
-    "stats": "webpack -p --env.prod --json --profile > stats.json",
+    "stats": "webpack -p --env.lib --env.standalone --env.prod --json --profile > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "author": "",

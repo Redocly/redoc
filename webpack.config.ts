@@ -7,7 +7,7 @@ export default env => {
 
   let entry;
 
-  if (env.bundle) {
+  if (env.lib) {
     entry = env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts';
   } else {
     // playground or performance test
@@ -25,7 +25,7 @@ export default env => {
     entry: entry,
     output: {
       filename: env.standalone ? 'redoc.standalone.js' : 'redoc.lib.js',
-      path: __dirname + (env.bundle ? '/bundles' : 'lib'),
+      path: __dirname + (env.lib ? '/bundles' : 'lib'),
     },
 
     devServer: {
@@ -101,13 +101,15 @@ export default env => {
   }
 
   if (env.lib) {
-    config.externals = nodeExternals({
-      // bundle in moudules that need transpiling + non-js (e.g. css)
-      whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
-    });
-
     config.output!.library = 'Redoc';
     config.output!.libraryTarget = 'umd';
+
+    if (!env.standalone) {
+      config.externals = nodeExternals({
+        // bundle in moudules that need transpiling + non-js (e.g. css)
+        whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
+      });
+    }
   } else {
     config.plugins!.push(
       new HtmlWebpackPlugin({
