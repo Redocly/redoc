@@ -25,7 +25,9 @@ export class StoreProvider extends Component<SpecProps, SpecState> {
     this.state = {
       loading: true,
     };
+  }
 
+  componentDidMount() {
     this.load();
   }
 
