@@ -1,6 +1,10 @@
 import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as nodeExternals from 'webpack-node-externals';
+
+const nodeExternals = require('webpack-node-externals')({
+  // bundle in moudules that need transpiling + non-js (e.g. css)
+  whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
+});
 
 export default env => {
   env = env || {};
@@ -105,10 +109,11 @@ export default env => {
     config.output!.libraryTarget = 'umd';
 
     if (!env.standalone) {
-      config.externals = nodeExternals({
-        // bundle in moudules that need transpiling + non-js (e.g. css)
-        whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
-      });
+      config.externals = (context, request, callback) => {
+        // ignore node-fetch dep of swagger2openapi as it is not used
+        if (/node-fetch$/i.test(request)) return callback(null, 'var fetch');
+        return nodeExternals(context, request, callback);
+      };
     }
   } else {
     config.plugins!.push(
