@@ -3,9 +3,9 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 // import DevTools from 'mobx-react-devtools';
 
-import { Redoc } from './components/Redoc/Redoc';
-import { AppStore } from './services/AppStore';
-import { loadAndBundleSpec } from './utils/loadAndBundleSpec';
+import { Redoc } from '../../src/components/Redoc/Redoc';
+import { AppStore } from '../../src/services/AppStore';
+import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 
 const renderRoot = (Component: typeof Redoc, props: { store: AppStore }) =>
   render(
@@ -45,6 +45,6 @@ if (module.hot) {
     renderRoot(Redoc, { store: store });
   };
 
-  module.hot.accept(['./components/Redoc/Redoc'], reload());
-  module.hot.accept(['./services/AppStore'], reload(true));
+  module.hot.accept(['../../src/components/Redoc/Redoc'], reload());
+  module.hot.accept(['../../src/services/AppStore'], reload(true));
 }

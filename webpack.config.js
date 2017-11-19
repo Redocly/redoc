@@ -1,33 +1,32 @@
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = env => {
   env = env || {};
 
   let entry;
-  if (env.standalone) {
-    entry = ['./src/polyfills.ts', './src/standalone.tsx'];
+
+  if (env.bundle) {
+    entry = env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts';
   } else {
-    entry = env.prod
-      ? './src/index.ts'
-      : env.perf
-        ? ['./perf/index.tsx']
-        : [
-            'react-dev-utils/webpackHotDevClient',
-            'react-hot-loader/patch',
-            './src/hmr-playground.tsx',
-          ];
+    // playground or performance test
+    entry = env.perf
+      ? ['./perf/index.tsx'] // perf test
+      : [
+          // playground
+          'react-dev-utils/webpackHotDevClient',
+          'react-hot-loader/patch',
+          './demo/playground/hmr-playground.tsx',
+        ];
   }
 
   const config = {
     entry: entry,
-
     output: {
       filename: env.standalone ? 'redoc.standalone.js' : 'redoc.lib.js',
-      path: __dirname + '/bundles',
+      path: __dirname + (env.bundle ? '/bundles' : 'lib'),
     },
 
     devServer: {
@@ -86,20 +85,15 @@ module.exports = env => {
         'process.env.NODE_ENV': env.prod ? '"production"' : '"development"',
         __DEV__: env.prod ? 'false' : 'true',
       }),
-      new HtmlWebpackPlugin({
-        template: './demo/index.html',
-      }),
       new webpack.NamedModulesPlugin(),
     ],
   };
 
   if (env.prod) {
     config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-  } else {
-    config.plugins.push(new DashboardPlugin());
   }
 
-  if (env.prod && !env.standalone) {
+  if (env.lib) {
     config.externals = nodeExternals({
       // bundle in moudules that need transpiling + non-js (e.g. css)
       whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
@@ -107,6 +101,12 @@ module.exports = env => {
 
     config.output.library = 'Redoc';
     config.output.libraryTarget = 'umd';
+  } else {
+    config.plugins.push(
+      new HtmlWebpackPlugin({
+        template: './demo/playground/index.html',
+      }),
+    );
   }
   return config;
 };

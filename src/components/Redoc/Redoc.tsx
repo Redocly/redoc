@@ -25,8 +25,6 @@ export class Redoc extends React.Component<RedocProps> {
 
   render() {
     const { store: { spec, menu }, options = {} } = this.props;
-
-    console.log(options.theme, defaultTheme, { ...options.theme, ...defaultTheme });
     return (
       <ThemeProvider theme={{ ...options.theme, ...defaultTheme }}>
         <RedocWrap className="redoc-wrap">

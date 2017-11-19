@@ -16,8 +16,8 @@
     "e2e:clean": "rimraf e2e/.build",
     "cy:open": "cypress open",
     "bundle:clean": "rimraf bundles",
-    "bundle:standalone": "webpack -p --env.prod --env.standalone",
-    "bundle:lib": "webpack -p --env.prod",
+    "bundle:standalone": "webpack -p --env.lib --env.standalone --env.prod ",
+    "bundle:lib": "webpack -p --env.lib  --env.prod ",
     "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
     "stats": "webpack -p --env.prod --json --profile > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
@@ -64,7 +64,6 @@
     "tslint": "^5.7.0",
     "typescript": "^2.4.2",
     "webpack": "^3.4.1",
-    "webpack-dashboard": "^0.4.0",
     "webpack-dev-server": "^2.6.1",
     "webpack-node-externals": "^1.6.0"
   },

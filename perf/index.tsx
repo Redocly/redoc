@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 
-import { AppContainer } from 'react-hot-loader';
 import { Redoc, RedocProps } from '../src/components';
 import { AppStore } from '../src/services/AppStore';
+import { loadAndBundleSpec } from '../src/utils';
 
 const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
-  render(
-    <AppContainer>
-      <Component {...props} />
-    </AppContainer>,
-    document.getElementById('example'),
-  );
+  render(<Component {...props} />, document.getElementById('example'));
 
-const props = { store: new AppStore() };
-
-props.store.spec.parser.load('big-swagger.json').then(() => {
+async function start() {
+  const resolvedSpec = await loadAndBundleSpec('big-openapi.json');
   const t0 = performance.now();
-  renderRoot(Redoc, props);
+  const store = new AppStore(resolvedSpec, 'big-openapi.json');
   var t1 = performance.now();
-  console.log({ time: t1 - t0 });
-});
+  renderRoot(Redoc, { store });
+  var t2 = performance.now();
+
+  console.log({
+    timings: true,
+    'Total Time': t2 - t0,
+    'Store Init Time': t1 - t0,
+    'Render Time': t2 - t1,
+  });
+}
+
+start();
