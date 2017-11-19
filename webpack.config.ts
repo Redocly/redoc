@@ -82,11 +82,16 @@ export default env => {
         },
         {
           test: /\.css$/,
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
-            minimize: true,
-          },
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                minimize: true,
+              },
+            },
+          ],
         },
         { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       ],
