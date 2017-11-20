@@ -59,6 +59,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "default": undefined,
                     "type": "number",
                   },
+                  "readOnly": false,
                   "schema": Object {
                     "default": undefined,
                     "type": "number",
@@ -66,6 +67,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "title": "",
                   "type": "number",
                   "typePrefix": "",
+                  "writeOnly": false,
                 },
               },
               FieldModel {
@@ -95,6 +97,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "default": undefined,
                     "type": "string",
                   },
+                  "readOnly": false,
                   "schema": Object {
                     "default": undefined,
                     "type": "string",
@@ -102,6 +105,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "title": "",
                   "type": "string",
                   "typePrefix": "",
+                  "writeOnly": false,
                 },
               },
             ],
@@ -123,6 +127,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
               "type": "object",
             },
+            "readOnly": false,
             "schema": Object {
               "allOf": undefined,
               "discriminator": Object {
@@ -148,6 +153,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "title": "Dog",
             "type": "object",
             "typePrefix": "",
+            "writeOnly": false,
           },
           SchemaModel {
             "_$ref": "#/components/schemas/Cat",
@@ -187,6 +193,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "default": undefined,
                     "type": "string",
                   },
+                  "readOnly": false,
                   "schema": Object {
                     "default": undefined,
                     "type": "string",
@@ -194,6 +201,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "title": "",
                   "type": "string",
                   "typePrefix": "",
+                  "writeOnly": false,
                 },
               },
               FieldModel {
@@ -223,6 +231,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "default": undefined,
                     "type": "number",
                   },
+                  "readOnly": false,
                   "schema": Object {
                     "default": undefined,
                     "type": "number",
@@ -230,6 +239,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "title": "",
                   "type": "number",
                   "typePrefix": "",
+                  "writeOnly": false,
                 },
               },
             ],
@@ -253,6 +263,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               ],
               "type": "object",
             },
+            "readOnly": false,
             "schema": Object {
               "allOf": undefined,
               "discriminator": Object {
@@ -278,6 +289,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "title": "Cat",
             "type": "object",
             "typePrefix": "",
+            "writeOnly": false,
           },
         ],
         "pattern": undefined,
@@ -295,6 +307,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           ],
           "type": "object",
         },
+        "readOnly": false,
         "schema": Object {
           "discriminator": Object {
             "propertyName": "type",
@@ -312,6 +325,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "title": "Pet",
         "type": "object",
         "typePrefix": "",
+        "writeOnly": false,
       },
     }
   }
@@ -354,6 +368,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "default": undefined,
               "type": "number",
             },
+            "readOnly": false,
             "schema": Object {
               "default": undefined,
               "type": "number",
@@ -361,6 +376,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "title": "",
             "type": "number",
             "typePrefix": "",
+            "writeOnly": false,
           },
         },
         FieldModel {
@@ -390,6 +406,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "default": undefined,
               "type": "string",
             },
+            "readOnly": false,
             "schema": Object {
               "default": undefined,
               "type": "string",
@@ -397,6 +414,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "title": "",
             "type": "string",
             "typePrefix": "",
+            "writeOnly": false,
           },
         },
       ],
@@ -418,6 +436,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         },
         "type": "object",
       },
+      "readOnly": false,
       "schema": Object {
         "allOf": undefined,
         "discriminator": Object {
@@ -443,6 +462,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "title": "Dog",
       "type": "object",
       "typePrefix": "",
+      "writeOnly": false,
     }
   }
 />
@@ -480,6 +500,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "default": undefined,
               "type": "number",
             },
+            "readOnly": false,
             "schema": Object {
               "default": undefined,
               "type": "number",
@@ -487,6 +508,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "title": "",
             "type": "number",
             "typePrefix": "",
+            "writeOnly": false,
           },
         }
       }
@@ -523,6 +545,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "default": undefined,
               "type": "string",
             },
+            "readOnly": false,
             "schema": Object {
               "default": undefined,
               "type": "string",
@@ -530,6 +553,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "title": "",
             "type": "string",
             "typePrefix": "",
+            "writeOnly": false,
           },
         }
       }

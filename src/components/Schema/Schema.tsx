@@ -13,6 +13,8 @@ import { ArraySchema } from './ArraySchema';
 export interface SchemaProps {
   schema: SchemaModel;
   showTitle?: boolean;
+  skipReadOnly?: boolean;
+  skipWriteOnly?: boolean;
 }
 
 @observer

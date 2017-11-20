@@ -62,11 +62,22 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
   render() {
     const { schema: { fields = [] }, showTitle, discriminator } = this.props;
 
+    const needFilter = this.props.skipReadOnly || this.props.skipWriteOnly;
+
+    const filteredFields = needFilter
+      ? fields.filter(item => {
+          return (
+            (this.props.skipReadOnly && !item.schema.readOnly) ||
+            (this.props.skipWriteOnly && !item.schema.writeOnly)
+          );
+        })
+      : fields;
+
     return (
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{this.props.schema.title}</PropertiesTableCaption>}
         <tbody>
-          {mapWithLast(fields, (field, isLast) =>
+          {mapWithLast(filteredFields, (field, isLast) =>
             this.renderField(
               field,
               isLast,

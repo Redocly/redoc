@@ -33,6 +33,8 @@ export class SchemaModel {
   example?: any;
   enum: any[];
   default?: any;
+  readOnly: boolean;
+  writeOnly: boolean;
 
   constraints: string[];
 
@@ -101,6 +103,8 @@ export class SchemaModel {
     this.displayType = this.title === '' ? this.type : `${this.title} (${this.type})`;
     this.isPrimitive = isPrimitiveType(schema);
     this.default = schema.default;
+    this.readOnly = !!schema.readOnly;
+    this.writeOnly = !!schema.writeOnly;
 
     if (this.isCircular) {
       return;

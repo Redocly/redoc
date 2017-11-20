@@ -66,7 +66,7 @@ function BodyContent(props: { content: MediaContentModel }): JSX.Element {
       )}
     >
       {({ schema }) => {
-        return <Schema key="schema" schema={schema} />;
+        return <Schema skipReadOnly={true} key="schema" schema={schema} />;
       }}
     </MediaTypesSwitch>
   );

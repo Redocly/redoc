@@ -46,7 +46,7 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
               )}
             >
               {({ schema }) => {
-                return <Schema key="schema" schema={schema} />;
+                return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
               }}
             </MediaTypesSwitch>
           </ResponseDetailsWrap>

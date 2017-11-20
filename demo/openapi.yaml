@@ -748,6 +748,7 @@ components:
     Id:
       type: integer
       format: int64
+      readOnly: true
     Order:
       type: object
       properties:
