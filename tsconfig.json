@@ -33,7 +33,8 @@
   ],
   "include": [
     "./custom.d.ts",
-    "./src/hmr-playground.tsx",
+    "./demo/playground/hmr-playground.tsx",
+    "./src/index.ts",
     "demo/*.tsx"
   ],
   "awesomeTypescriptLoaderOptions": {
