@@ -11,7 +11,7 @@ describe('Standalone bundle test', function() {
       cy
         .visit('e2e/standalone.html')
         .get('.menu-content li')
-        .click({ multiple: true });
+        .click({ multiple: true, force: true });
     });
   });
 
@@ -27,7 +27,7 @@ describe('Standalone bundle test', function() {
       cy
         .visit('e2e/standalone.html')
         .get('.menu-content li')
-        .click({ multiple: true });
+        .click({ multiple: true, force: true });
     });
   });
 });

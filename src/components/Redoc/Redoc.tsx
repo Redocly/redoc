@@ -19,17 +19,17 @@ export interface RedocProps {
   };
 }
 
+const stickyfill = Stickyfill();
 export class Redoc extends React.Component<RedocProps> {
-  stickyfill = Stickyfill();
   stickyElement: Element;
 
   componentDidMount() {
     this.props.store.menu.updateOnHash();
-    this.stickyfill.add(this.stickyElement);
+    stickyfill.add(this.stickyElement);
   }
 
   componentWillUnmount() {
-    this.stickyfill.remove(this.stickyElement);
+    stickyfill.remove(this.stickyElement);
   }
 
   render() {
@@ -39,7 +39,7 @@ export class Redoc extends React.Component<RedocProps> {
         <RedocWrap className="redoc-wrap">
           <StickySidebar
             className="menu-content"
-            ref={el => {
+            innerRef={el => {
               this.stickyElement = el;
             }}
           >
