@@ -3,7 +3,6 @@ import styled from '../../styled-components';
 export { ClassAttributes } from 'react';
 
 export const RedocWrap = styled.div`
-  overflow: hidden;
   font-family: ${props => props.theme.baseFont.family};
   font-size: ${props => props.theme.baseFont.size};
   line-height: ${props => props.theme.baseFont.lineHeight};
@@ -34,19 +33,22 @@ export const RedocWrap = styled.div`
   }
 `;
 
-export const MenuContent = styled.div`
-  width: ${props => props.theme.menu.width};
+export const StickySidebar = styled.div`
+  min-width: ${props => props.theme.menu.width};
   background-color: ${props => props.theme.menu.backgroundColor};
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transform: translateZ(0px);
-  height: 100vh;
-  position: fixed;
+
+  transform: translateZ(0);
+
+  max-height: 100vh;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
 `;
 
 export const ApiContent = styled.div`
-  margin-left: ${props => props.theme.menu.width};
   z-index: 10;
   position: relative;
 `;

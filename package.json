@@ -84,6 +84,7 @@
     "react-tabs": "^2.0.0",
     "remarkable": "^1.7.1",
     "slugify": "^1.2.1",
+    "stickyfill": "^1.1.1",
     "styled-components": "^2.2.1",
     "swagger2openapi": "^2.11.0"
   },
