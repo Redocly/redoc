@@ -67,6 +67,10 @@
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/@types/prismjs/-/prismjs-1.6.5.tgz#e222615538ea2df248c72512e1faf346af2640d6"
 
+"@types/prop-types@^15.5.2":
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.2.tgz#3c6b8dceb2906cc87fe4358e809f9d20c8d59be1"
+
 "@types/react-dom@^16.0.0":
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.3.tgz#8accad7eabdab4cca3e1a56f5ccb57de2da0ff64"

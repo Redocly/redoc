@@ -1,4 +1,5 @@
 import { Component } from 'react';
+
 import { AppStore } from '../services/';
 import { loadAndBundleSpec } from '../utils';
 

@@ -33,21 +33,6 @@ export const RedocWrap = styled.div`
   }
 `;
 
-export const StickySidebar = styled.div`
-  width: ${props => props.theme.menu.width};
-  background-color: ${props => props.theme.menu.backgroundColor};
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
-  transform: translateZ(0);
-
-  height: 100vh;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-`;
-
 export const ApiContent = styled.div`
   z-index: 10;
   position: relative;
