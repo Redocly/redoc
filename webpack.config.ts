@@ -19,6 +19,7 @@ export default env => {
       ? ['./perf/index.tsx'] // perf test
       : [
           // playground
+          './src/polyfills.ts',
           'react-dev-utils/webpackHotDevClient',
           'react-hot-loader/patch',
           './demo/playground/hmr-playground.tsx',
@@ -34,6 +35,7 @@ export default env => {
 
     devServer: {
       contentBase: __dirname + '/demo',
+      host: '0.0.0.0',
       watchContentBase: true,
       port: 9090,
       stats: 'errors-only',
@@ -51,7 +53,7 @@ export default env => {
 
     externals: {
       esprima: 'esprima',
-      'node-fetch': 'fetch',
+      'node-fetch': 'null',
     },
 
     module: {
