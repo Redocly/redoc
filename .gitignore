@@ -22,7 +22,7 @@ node_modules
 
 lib/
 stats.json
-e2e/build/
+e2e/.build/
 cypress/
 bundles
 
