@@ -33,11 +33,19 @@ export function init(
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
   }
 
+  let specUrl, spec;
+  if (typeof specOrSpecUrl === 'string') {
+    specUrl = specOrSpecUrl;
+  } else if (typeof specOrSpecUrl === 'object') {
+    spec = specOrSpecUrl;
+  }
+
   render(
     React.createElement(
       RedocStandalone,
       {
-        specOrSpecUrl,
+        spec,
+        specUrl,
         options: { ...options, ...parseOptionsFromElement(element) },
       },
       ['Loading...'],

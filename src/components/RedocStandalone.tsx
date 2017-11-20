@@ -8,7 +8,8 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Redoc } from './Redoc/Redoc';
 
 export interface RedocStandaloneProps {
-  specOrSpecUrl: string | object;
+  spec?: object;
+  specUrl?: string;
   options?: {
     theme?: ThemeInterface;
   };
@@ -16,15 +17,7 @@ export interface RedocStandaloneProps {
 
 export class RedocStandalone extends React.Component<RedocStandaloneProps> {
   render() {
-    const { specOrSpecUrl, options } = this.props;
-    let specUrl;
-    let spec;
-
-    if (typeof specOrSpecUrl === 'string') {
-      specUrl = specOrSpecUrl;
-    } else if (typeof specOrSpecUrl === 'object') {
-      spec = specOrSpecUrl;
-    }
+    const { spec, specUrl, options } = this.props;
 
     return (
       <ErrorBoundary>
