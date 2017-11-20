@@ -31,11 +31,11 @@ export class StickySidebar extends ComponentWithOptions<StickySidebarProps> {
   stickyElement: Element;
 
   componentDidMount() {
-    stickyfill.add(this.refs['sticky-children']);
+    stickyfill.add(this.stickyElement);
   }
 
   componentWillUnmount() {
-    stickyfill.remove(this.refs['sticky-children']);
+    stickyfill.remove(this.stickyElement);
   }
 
   get scrollYOffset() {
