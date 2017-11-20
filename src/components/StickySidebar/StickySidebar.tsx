@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Stickyfill from 'stickyfill';
 
-import { ComponentWithOptions, RedocRawOptions } from '../OptionsProvider';
-import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
+import { ComponentWithOptions } from '../OptionsProvider';
+import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
 import styled from '../../styled-components';
 
 export interface StickySidebarProps {

@@ -1,3 +1,4 @@
+import { ComponentWithOptions } from '../OptionsProvider';
 import * as React from 'react';
 import { OperationModel } from '../../services';
 import { ShelfIcon } from '../../common-elements';
@@ -15,13 +16,15 @@ import {
 
 export interface EndpointProps {
   operation: OperationModel;
+
+  hideHostname?: boolean;
 }
 
 export interface EndpointState {
   expanded: boolean;
 }
 
-export class Endpoint extends React.PureComponent<EndpointProps, EndpointState> {
+export class Endpoint extends ComponentWithOptions<EndpointProps, EndpointState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +39,8 @@ export class Endpoint extends React.PureComponent<EndpointProps, EndpointState> 
   render() {
     const { operation } = this.props;
     const { expanded } = this.state;
+
+    const hideHostname = this.props.hideHostname || this.options.hideHostname;
 
     // TODO: highlight server variables, e.g. https://{user}.test.com
     return (
@@ -57,7 +62,7 @@ export class Endpoint extends React.PureComponent<EndpointProps, EndpointState> 
               <div>{server.description}</div>
               <SelectOnClick>
                 <ServerUrl>
-                  <span>{server.url}</span>
+                  {!hideHostname && <span>{server.url}</span>}
                   {operation.path}
                 </ServerUrl>
               </SelectOnClick>

@@ -1,13 +1,24 @@
-import { RedocRawOptions } from '../components/OptionsProvider';
 import { ThemeInterface } from '../theme';
 import { isNumeric } from '../utils/helpers';
+
+export interface RedocRawOptions {
+  theme?: ThemeInterface;
+  scrollYOffset?: number | string | Function;
+  hideHostname?: boolean | string;
+}
 
 export class RedocNormalizedOptions {
   theme: ThemeInterface;
   scrollYOffset: () => number;
+  hideHostname: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
+    this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
+  }
+
+  static normalizeHideHostname(value: RedocRawOptions['hideHostname']): boolean {
+    return !!value;
   }
 
   static normalizeScrollYOffset(value: RedocRawOptions['scrollYOffset']): () => number {

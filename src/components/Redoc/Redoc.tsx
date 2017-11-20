@@ -9,8 +9,9 @@ import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { SideMenu } from '../SideMenu/SideMenu';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { AppStore } from '../../services';
-import { OptionsProvider, RedocRawOptions } from '../OptionsProvider';
+import { OptionsProvider } from '../OptionsProvider';
 import { StickySidebar } from '../StickySidebar/StickySidebar';
+import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
 
 import defaultTheme from '../../theme';
 

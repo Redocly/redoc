@@ -1,13 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';
-import { ThemeInterface } from '../theme';
-
-export interface RedocRawOptions {
-  theme?: ThemeInterface;
-  scrollYOffset?: number | string | Function;
-}
+import { RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormalizedOptions';
 
 export interface OptionsProviderProps {
   options: RedocRawOptions;
