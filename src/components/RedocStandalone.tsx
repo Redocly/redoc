@@ -16,6 +16,26 @@ export interface RedocStandaloneProps {
 }
 
 export class RedocStandalone extends React.Component<RedocStandaloneProps> {
+  static propTypes = {
+    spec: (props, _, componentName) => {
+      if (!props.spec && !props.specUrl) {
+        return new Error(
+          `One of props 'spec' or 'specUrlurl' was not specified in '${componentName}'.`,
+        );
+      }
+      return null;
+    },
+
+    specUrl: (props, _, componentName) => {
+      if (!props.spec && !props.specUrl) {
+        return new Error(
+          `One of props 'spec' or 'specUrl' was not specified in '${componentName}'.`,
+        );
+      }
+      return null;
+    },
+  };
+
   render() {
     const { spec, specUrl, options } = this.props;
 

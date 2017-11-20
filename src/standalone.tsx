@@ -33,7 +33,9 @@ export function init(
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
   }
 
-  let specUrl, spec;
+  let specUrl: string | undefined;
+  let spec: object | undefined;
+
   if (typeof specOrSpecUrl === 'string') {
     specUrl = specOrSpecUrl;
   } else if (typeof specOrSpecUrl === 'object') {
