@@ -10,6 +10,7 @@ interface MenuItemsProps {
   items: IMenuItem[];
   active?: boolean;
   onActivate?: (item: IMenuItem) => void;
+  style?: React.CSSProperties;
 }
 
 @observer
@@ -18,7 +19,7 @@ export class MenuItems extends React.Component<MenuItemsProps> {
     const { items } = this.props;
     const active = this.props.active == null ? true : this.props.active;
     return (
-      <MenuItemUl active={active}>
+      <MenuItemUl style={this.props.style} active={active}>
         {items.map((item, idx) => (
           <MenuItem key={idx} item={item} onActivate={this.props.onActivate} />
         ))}
