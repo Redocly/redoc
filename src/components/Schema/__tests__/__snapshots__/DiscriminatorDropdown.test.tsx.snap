@@ -57,6 +57,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "noAutoAuth": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -157,6 +158,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "noAutoAuth": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -240,6 +242,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -377,6 +380,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "noAutoAuth": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -477,6 +481,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "noAutoAuth": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -560,6 +565,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -667,6 +673,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "options": RedocNormalizedOptions {
           "expandResponses": Object {},
           "hideHostname": false,
+          "noAutoAuth": false,
           "requiredPropsFirst": false,
           "scrollYOffset": [Function],
           "theme": Object {
@@ -800,6 +807,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -900,6 +908,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -983,6 +992,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "options": RedocNormalizedOptions {
         "expandResponses": Object {},
         "hideHostname": false,
+        "noAutoAuth": false,
         "requiredPropsFirst": false,
         "scrollYOffset": [Function],
         "theme": Object {
@@ -1118,6 +1128,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -1225,6 +1236,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "noAutoAuth": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {

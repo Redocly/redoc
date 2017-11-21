@@ -67,3 +67,16 @@ export function isAbsolutePath(path: string): boolean {
 export function isNumeric(n: any): n is Number {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+export function appendToMdHeading(md: string, heading: string, content: string) {
+  // if  heading is already in md and append to the end of it
+  const testRegex = new RegExp(`(^|\\n)#\\s?${heading}\\s*\\n`, 'i');
+  const replaceRegex = new RegExp(`((\\n|^)#\\s*${heading}\\s*(\\n|$)(?:.|\\n)*?)(\\n#|$)`, 'i');
+  if (testRegex.test(md)) {
+    return md.replace(replaceRegex, `$1\n\n${content}\n$4`);
+  } else {
+    // else append heading itself
+    const br = md === '' || md.endsWith('\n\n') ? '' : md.endsWith('\n') ? '\n' : '\n\n';
+    return `${md}${br}# ${heading}\n\n${content}`;
+  }
+}

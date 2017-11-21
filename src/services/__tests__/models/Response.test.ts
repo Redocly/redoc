@@ -8,7 +8,7 @@ describe('Models', () => {
     let parser;
 
     beforeEach(() => {
-      parser = new OpenAPIParser({ openapi: '3.0.0' } as any);
+      parser = new OpenAPIParser({ openapi: '3.0.0' } as any, undefined, opts);
     });
 
     test('should calculate response type based on code', () => {

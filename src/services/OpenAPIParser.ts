@@ -5,6 +5,9 @@ import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
 import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
+import { COMPONENT_REGEXP, buildComponentComment } from './MarkdownRenderer';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import { appendToMdHeading } from '../utils/index';
 
 export type MergedOpenAPISchema = OpenAPISchema & { namedParents?: string[] };
 
@@ -39,8 +42,13 @@ export class OpenAPIParser {
   @observable specUrl: string;
   @observable.ref spec: OpenAPISpec;
 
-  constructor(spec: OpenAPISpec, specUrl?: string) {
+  constructor(
+    spec: OpenAPISpec,
+    specUrl: string | undefined,
+    private options: RedocNormalizedOptions,
+  ) {
     this.validate(spec);
+    this.preprocess(spec);
 
     this.spec = spec;
 
@@ -56,6 +64,22 @@ export class OpenAPIParser {
   validate(spec: any) {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
+    }
+  }
+
+  preprocess(spec: OpenAPISpec) {
+    if (!this.options.noAutoAuth && spec.info) {
+      // Automatically inject Authentication section with SecurityDefinitions component
+      const description = spec.info.description || '';
+      const securityRegexp = new RegExp(
+        COMPONENT_REGEXP.replace('{component}', '<security-definitions>'),
+        'gmi',
+      );
+      debugger;
+      if (!securityRegexp.test(description)) {
+        const comment = buildComponentComment('security-definitions');
+        spec.info.description = appendToMdHeading(description, 'Authentication', comment);
+      }
     }
   }
 

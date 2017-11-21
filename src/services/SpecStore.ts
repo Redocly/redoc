@@ -19,7 +19,7 @@ export class SpecStore {
     specUrl: string | undefined,
     private options: RedocNormalizedOptions,
   ) {
-    this.parser = new OpenAPIParser(spec, specUrl);
+    this.parser = new OpenAPIParser(spec, specUrl, options);
   }
 
   @computed

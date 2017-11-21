@@ -8,6 +8,7 @@ export interface RedocRawOptions {
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
+  noAutoAuth?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -22,6 +23,7 @@ export class RedocNormalizedOptions {
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
   requiredPropsFirst: boolean;
+  noAutoAuth: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
@@ -29,6 +31,7 @@ export class RedocNormalizedOptions {
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
     this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
+    this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
   }
 
   static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {

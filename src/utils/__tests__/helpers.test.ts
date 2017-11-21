@@ -1,4 +1,4 @@
-import { mapWithLast } from '../helpers';
+import { mapWithLast, appendToMdHeading } from '../helpers';
 
 describe('Utils', () => {
   describe('helpers', () => {
@@ -18,6 +18,25 @@ describe('Utils', () => {
       const actual = mapWithLast(arr, fn);
       const expected = [];
       expect(actual).toEqual(expected);
+    });
+
+    test('appendToMdHeading heading exists not last', () => {
+      const val = appendToMdHeading(
+        '# Authentication\n Hello\n# Next heading',
+        'Authentication',
+        '<test>',
+      );
+      expect(val).toEqual('# Authentication\n Hello\n\n<test>\n\n# Next heading');
+    });
+
+    test('appendToMdHeading heading exists last', () => {
+      const val = appendToMdHeading('# Authentication\n Hello', 'Authentication', '<test>');
+      expect(val).toEqual('# Authentication\n Hello\n\n<test>\n');
+    });
+
+    test('appendToMdHeading empty string', () => {
+      const val = appendToMdHeading('', 'Authentication', '<test>');
+      expect(val).toEqual('# Authentication\n\n<test>');
     });
   });
 });

@@ -8,30 +8,31 @@ import { Schema } from '../Schema';
 import { ObjectSchema } from '../ObjectSchema';
 import * as simpleDiscriminatorFixture from './fixtures/simple-discriminator.json';
 
+const options = new RedocNormalizedOptions({});
 describe('Components', () => {
   describe('SchemaView', () => {
     describe('discriminator', () => {
       it('should correctly render SchemaView', () => {
-        const parser = new OpenAPIParser(simpleDiscriminatorFixture);
+        const parser = new OpenAPIParser(simpleDiscriminatorFixture, undefined, options);
 
         const schema = new SchemaModel(
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
-          new RedocNormalizedOptions({}),
+          options,
         );
         const schemaView = shallow(<Schema schema={schema} />);
         expect(toJson(schemaView)).toMatchSnapshot();
       });
 
       it('should correctly render discriminator dropdown', () => {
-        const parser = new OpenAPIParser(simpleDiscriminatorFixture);
+        const parser = new OpenAPIParser(simpleDiscriminatorFixture, undefined, options);
 
         const schema = new SchemaModel(
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
-          new RedocNormalizedOptions({}),
+          options,
         );
         const schemaView = shallow(
           <ObjectSchema

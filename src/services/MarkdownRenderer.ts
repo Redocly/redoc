@@ -13,7 +13,10 @@ const md = new Remarkable('default', {
   },
 });
 
-const COMPONENT_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?{component}\\s+?-->\\s*$';
+export const COMPONENT_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?{component}\\s+?-->\\s*$';
+export function buildComponentComment(name: string) {
+  return `<!-- ReDoc-Inject: <${name}> -->`;
+}
 
 type MarkdownHeading = {
   name: string;
