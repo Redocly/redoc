@@ -39,7 +39,7 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
             <ResponseDetailsWrap>
               <ResponseHeaders headers={headers} />
               <MediaTypesSwitch
-                content={content!}
+                content={content}
                 renderDropdown={props => (
                   <UnderlinedHeader key="header">
                     Response Schema: <DropdownOrLabel {...props} />
