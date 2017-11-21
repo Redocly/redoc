@@ -6,6 +6,7 @@ import { observable, computed } from 'mobx';
 import { MenuBuilder } from './MenuBuilder';
 import { OpenAPIParser } from './OpenAPIParser';
 import { ApiInfoModel } from './models/ApiInfo';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 /**
  * Store that containts all the specification related information in the form of tree
@@ -13,7 +14,11 @@ import { ApiInfoModel } from './models/ApiInfo';
 export class SpecStore {
   @observable.ref parser: OpenAPIParser;
 
-  constructor(spec: OpenAPISpec, specUrl?: string) {
+  constructor(
+    spec: OpenAPISpec,
+    specUrl: string | undefined,
+    private options: RedocNormalizedOptions,
+  ) {
     this.parser = new OpenAPIParser(spec, specUrl);
   }
 
@@ -29,7 +34,7 @@ export class SpecStore {
 
   @computed
   get operationGroups() {
-    return MenuBuilder.buildStructure(this.parser);
+    return MenuBuilder.buildStructure(this.parser, this.options);
   }
 
   @computed

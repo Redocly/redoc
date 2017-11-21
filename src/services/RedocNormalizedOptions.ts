@@ -1,20 +1,43 @@
 import { ThemeInterface } from '../theme';
 import { isNumeric } from '../utils/helpers';
+import defaultTheme from '../theme';
 
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | Function;
   hideHostname?: boolean | string;
+  expandResponses?: string | 'all';
 }
 
 export class RedocNormalizedOptions {
   theme: ThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
+  expandResponses: { [code: string]: boolean } | 'all';
 
   constructor(raw: RedocRawOptions) {
+    this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
+    this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
+  }
+
+  static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {
+    if (value === 'all') {
+      return 'all';
+    }
+    if (typeof value === 'string') {
+      const res = {};
+      value.split(',').forEach(code => {
+        res[code.trim()] = true;
+      });
+      return res;
+    } else {
+      console.warn(
+        `expandResponses must be a string but received value "${value}" of type ${typeof value}`,
+      );
+      return {};
+    }
   }
 
   static normalizeHideHostname(value: RedocRawOptions['hideHostname']): boolean {

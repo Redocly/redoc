@@ -11,9 +11,11 @@ const ResponsesHeader = styled.h3`
   font-weight: normal;
 `;
 
-export class ResponsesList extends React.PureComponent<{
+export interface ResponseListProps {
   responses: ResponseModel[];
-}> {
+}
+
+export class ResponsesList extends React.PureComponent<ResponseListProps> {
   render() {
     const { responses } = this.props;
 

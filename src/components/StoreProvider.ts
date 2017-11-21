@@ -2,11 +2,14 @@ import { Component } from 'react';
 
 import { AppStore } from '../services/';
 import { loadAndBundleSpec } from '../utils';
+import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 
 interface SpecProps {
   specUrl?: string;
   spec?: object;
   store?: AppStore;
+
+  options?: RedocRawOptions;
 
   children?: any;
 }
@@ -33,7 +36,7 @@ export class StoreProvider extends Component<SpecProps, SpecState> {
   }
 
   async load() {
-    let { specUrl, spec } = this.props;
+    let { specUrl, spec, options } = this.props;
 
     this.setState({
       loading: true,
@@ -43,7 +46,7 @@ export class StoreProvider extends Component<SpecProps, SpecState> {
       const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
       this.setState({
         loading: false,
-        store: new AppStore(resolvedSpec, specUrl),
+        store: new AppStore(resolvedSpec, specUrl, options),
       });
     } catch (e) {
       this.setState({

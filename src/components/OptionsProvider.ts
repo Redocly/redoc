@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import { RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormalizedOptions';
+import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';
 
 export interface OptionsProviderProps {
-  options: RedocRawOptions;
+  options: RedocNormalizedOptions;
 }
 
 export class OptionsProvider extends React.Component<OptionsProviderProps> {
@@ -14,7 +14,7 @@ export class OptionsProvider extends React.Component<OptionsProviderProps> {
 
   getChildContext() {
     return {
-      redocOptions: new RedocNormalizedOptions(this.props.options),
+      redocOptions: this.props.options,
     };
   }
 

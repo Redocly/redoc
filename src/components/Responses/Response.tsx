@@ -34,23 +34,24 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
           code={code}
           opened={expanded}
         />
-        {expanded && (
-          <ResponseDetailsWrap>
-            <ResponseHeaders headers={headers} />
-            <MediaTypesSwitch
-              content={content!}
-              renderDropdown={props => (
-                <UnderlinedHeader key="header">
-                  Response Schema: <DropdownOrLabel {...props} />
-                </UnderlinedHeader>
-              )}
-            >
-              {({ schema }) => {
-                return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
-              }}
-            </MediaTypesSwitch>
-          </ResponseDetailsWrap>
-        )}
+        {expanded &&
+          !empty && (
+            <ResponseDetailsWrap>
+              <ResponseHeaders headers={headers} />
+              <MediaTypesSwitch
+                content={content!}
+                renderDropdown={props => (
+                  <UnderlinedHeader key="header">
+                    Response Schema: <DropdownOrLabel {...props} />
+                  </UnderlinedHeader>
+                )}
+              >
+                {({ schema }) => {
+                  return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
+                }}
+              </MediaTypesSwitch>
+            </ResponseDetailsWrap>
+          )}
       </div>
     );
   }

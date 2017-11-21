@@ -1,18 +1,15 @@
 import * as React from 'react';
 
-import { ThemeInterface } from '../theme';
-
 import { LoadingWrap } from './LoadingWrap/LoadingWrap';
 import { StoreProvider } from './StoreProvider';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Redoc } from './Redoc/Redoc';
+import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 
 export interface RedocStandaloneProps {
   spec?: object;
   specUrl?: string;
-  options?: {
-    theme?: ThemeInterface;
-  };
+  options?: RedocRawOptions;
 }
 
 export class RedocStandalone extends React.Component<RedocStandaloneProps> {
@@ -41,10 +38,10 @@ export class RedocStandalone extends React.Component<RedocStandaloneProps> {
 
     return (
       <ErrorBoundary>
-        <StoreProvider spec={spec} specUrl={specUrl}>
+        <StoreProvider spec={spec} specUrl={specUrl} options={options}>
           {({ loading, store }) => (
             <LoadingWrap loading={loading}>
-              <Redoc store={store} options={options} />
+              <Redoc store={store} />
             </LoadingWrap>
           )}
         </StoreProvider>

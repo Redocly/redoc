@@ -14,6 +14,7 @@ import { CodeSample } from './types';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { JsonPointer, getOperationSummary, isAbsolutePath, stripTrailingSlash } from '../../utils';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -51,7 +52,12 @@ export class OperationModel implements IMenuItem {
   servers: OpenAPIServer[];
   codeSamples: CodeSample[];
 
-  constructor(parser: OpenAPIParser, operationSpec: ExtendedOpenAPIOperation, parent?: GroupModel) {
+  constructor(
+    parser: OpenAPIParser,
+    operationSpec: ExtendedOpenAPIOperation,
+    parent: GroupModel | undefined,
+    options: RedocNormalizedOptions,
+  ) {
     this.id = operationSpec._$ref;
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
@@ -81,9 +87,15 @@ export class OperationModel implements IMenuItem {
         }
         return isNumeric(code) || code === 'default';
       }) // filter out other props (e.g. x-props)
-      .map(
-        code => new ResponseModel(parser, code, hasSuccessResponses, operationSpec.responses[code]),
-      );
+      .map(code => {
+        return new ResponseModel(
+          parser,
+          code,
+          hasSuccessResponses,
+          operationSpec.responses[code],
+          options,
+        );
+      });
 
     this.servers = normalizeServers(
       parser.specUrl,

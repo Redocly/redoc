@@ -6,9 +6,10 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { getStatusCodeType } from '../../utils';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ResponseModel {
-  @observable public expanded: boolean = false;
+  @observable public expanded: boolean;
 
   public content?: MediaContentModel;
   public code: string;
@@ -16,7 +17,15 @@ export class ResponseModel {
   public type: string;
   public headers: FieldModel[] = [];
 
-  constructor(parser: OpenAPIParser, code: string, defaultAsError: boolean, infoOrRef: Referenced<OpenAPIResponse>) {
+  constructor(
+    parser: OpenAPIParser,
+    code: string,
+    defaultAsError: boolean,
+    infoOrRef: Referenced<OpenAPIResponse>,
+    options: RedocNormalizedOptions,
+  ) {
+    this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
+
     const info = parser.deref(infoOrRef);
     parser.exitRef(infoOrRef);
     this.code = code;

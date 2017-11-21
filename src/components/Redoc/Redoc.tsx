@@ -11,19 +11,14 @@ import { ContentItems } from '../ContentItems/ContentItems';
 import { AppStore } from '../../services';
 import { OptionsProvider } from '../OptionsProvider';
 import { StickySidebar } from '../StickySidebar/StickySidebar';
-import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
-
-import defaultTheme from '../../theme';
 
 export interface RedocProps {
   store: AppStore;
-  options?: RedocRawOptions;
 }
 
 export class Redoc extends React.Component<RedocProps> {
   static propTypes = {
     store: PropTypes.instanceOf(AppStore).isRequired,
-    options: PropTypes.object,
   };
 
   componentDidMount() {
@@ -31,9 +26,9 @@ export class Redoc extends React.Component<RedocProps> {
   }
 
   render() {
-    const { store: { spec, menu }, options = {} } = this.props;
+    const { store: { spec, menu, options } } = this.props;
     return (
-      <ThemeProvider theme={{ ...options.theme, ...defaultTheme }}>
+      <ThemeProvider theme={options.theme}>
         <OptionsProvider options={options}>
           <RedocWrap className="redoc-wrap">
             <StickySidebar className="menu-content">

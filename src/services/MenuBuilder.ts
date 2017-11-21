@@ -3,6 +3,7 @@ import { GroupModel, OperationModel } from './models';
 import { JsonPointer, isOperationName } from '../utils';
 import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type TagInfo = OpenAPITag & {
   operations: ExtendedOpenAPIOperation[];
@@ -29,16 +30,21 @@ export class MenuBuilder {
   /**
    * Builds page content structure based on tags
    */
-  static buildStructure(parser: OpenAPIParser): ContentItemModel[] {
+  static buildStructure(
+    parser: OpenAPIParser,
+    options: RedocNormalizedOptions,
+  ): ContentItemModel[] {
     const spec = parser.spec;
 
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || ''));
     if (spec['x-tagGroups']) {
-      items.push(...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap));
+      items.push(
+        ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
+      );
     } else {
-      items.push(...MenuBuilder.getTagsItems(parser, tagsMap));
+      items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
     return items;
   }
@@ -62,12 +68,13 @@ export class MenuBuilder {
     parent: GroupModel | undefined,
     groups: TagGroup[],
     tags: TagsInfoMap,
+    options: RedocNormalizedOptions,
   ): GroupModel[] {
     let res: GroupModel[] = [];
     for (let group of groups) {
       let item = new GroupModel('group', group, parent);
       item.depth = GROUP_DEPTH;
-      item.items = MenuBuilder.getTagsItems(parser, tags, item, group);
+      item.items = MenuBuilder.getTagsItems(parser, tags, item, group, options);
       res.push(item);
     }
     // TODO checkAllTagsUsedInGroups
@@ -83,8 +90,9 @@ export class MenuBuilder {
   static getTagsItems(
     parser: OpenAPIParser,
     tagsMap: TagsInfoMap,
-    parent?: GroupModel,
-    group?: TagGroup,
+    parent: GroupModel | undefined,
+    group: TagGroup | undefined,
+    options: RedocNormalizedOptions,
   ): ContentItemModel[] {
     let tagNames;
 
@@ -108,11 +116,11 @@ export class MenuBuilder {
       if (!tag) continue;
       let item = new GroupModel('tag', tag, parent);
       item.depth = GROUP_DEPTH + 1;
-      item.items = this.getOperationsItems(parser, item, tag, item.depth + 1);
+      item.items = this.getOperationsItems(parser, item, tag, item.depth + 1, options);
 
       // don't put empty tag into content, instead put its operations
       if (tag.name === '') {
-        let items = this.getOperationsItems(parser, undefined, tag, item.depth);
+        let items = this.getOperationsItems(parser, undefined, tag, item.depth, options);
         res.push(...items);
         continue;
       }
@@ -133,6 +141,7 @@ export class MenuBuilder {
     parent: GroupModel | undefined,
     tag: TagInfo,
     depth: number,
+    options: RedocNormalizedOptions,
   ): OperationModel[] {
     if (tag.operations.length === 0) {
       return [];
@@ -140,7 +149,7 @@ export class MenuBuilder {
 
     let res: OperationModel[] = [];
     for (let operationInfo of tag.operations) {
-      let operation = new OperationModel(parser, operationInfo, parent);
+      let operation = new OperationModel(parser, operationInfo, parent, options);
       operation.depth = depth;
       res.push(operation);
     }
