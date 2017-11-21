@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 
 import { OpenAPIParameter, Referenced } from '../../types';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 import { SchemaModel } from './Schema';
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -19,13 +20,18 @@ export class FieldModel {
   public deprecated: boolean;
   public in?: string;
 
-  constructor(parser: OpenAPIParser, infoOrRef: Referenced<OpenAPIParameter>, pointer: string) {
+  constructor(
+    parser: OpenAPIParser,
+    infoOrRef: Referenced<OpenAPIParameter>,
+    pointer: string,
+    options: RedocNormalizedOptions,
+  ) {
     const info = parser.deref(infoOrRef);
 
     this.name = info.name;
     this.in = info.in;
     this.required = !!info.required;
-    this.schema = new SchemaModel(parser, info.schema, pointer + '/schema');
+    this.schema = new SchemaModel(parser, info.schema || {}, pointer + '/schema', options);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     const example = info.example || this.schema.example;

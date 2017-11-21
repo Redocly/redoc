@@ -1,10 +1,11 @@
-import { MergedOpenAPISchema } from '../';
 import { observable, action } from 'mobx';
 
 import { OpenAPISchema, Referenced } from '../../types';
 
 import { FieldModel } from './Field';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+
 import {
   detectType,
   humanizeConstraints,
@@ -12,6 +13,7 @@ import {
   isPrimitiveType,
   JsonPointer,
 } from '../../utils/';
+import { MergedOpenAPISchema } from '../';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -55,14 +57,11 @@ export class SchemaModel {
    */
   constructor(
     parser: OpenAPIParser,
-    schemaOrRef?: Referenced<OpenAPISchema>,
-    $ref?: string,
+    schemaOrRef: Referenced<OpenAPISchema>,
+    $ref: string,
+    private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
-    if (schemaOrRef === undefined) {
-      return;
-    }
-
     this._$ref = schemaOrRef.$ref || $ref || '';
     this.rawSchema = parser.deref(schemaOrRef);
     this.schema = parser.mergeAllOf(this.rawSchema, this._$ref, isChild);
@@ -133,9 +132,9 @@ export class SchemaModel {
     }
 
     if (this.type === 'object') {
-      this.fields = buildFields(parser, schema, this._$ref);
+      this.fields = buildFields(parser, schema, this._$ref, this.options);
     } else if (this.type === 'array' && schema.items) {
-      this.items = new SchemaModel(parser, schema.items, this._$ref + '/items');
+      this.items = new SchemaModel(parser, schema.items, this._$ref + '/items', this.options);
       this.displayType = this.items.displayType;
       this.typePrefix = this.items.typePrefix + 'Array of ';
       this.isPrimitive = this.items.isPrimitive;
@@ -149,7 +148,7 @@ export class SchemaModel {
     this.oneOf = oneOf!.map(
       (variant, idx) =>
         // TODO: merge base schema into each oneOf
-        new SchemaModel(parser, variant, this._$ref + '/oneOf/' + idx),
+        new SchemaModel(parser, variant, this._$ref + '/oneOf/' + idx, this.options),
     );
     this.displayType = this.oneOf.map(schema => schema.displayType).join(' or ');
   }
@@ -178,15 +177,20 @@ export class SchemaModel {
 
     const refs = Object.keys(derived);
     this.oneOf = refs.map(ref => {
-      const schema = new SchemaModel(parser, parser.byRef(ref)!, ref, true);
+      const schema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
       schema.title = derived[ref];
       return schema;
     });
   }
 }
 
-function buildFields(parser: OpenAPIParser, schema: OpenAPISchema, $ref: string): FieldModel[] {
-  const props = schema.properties || [];
+function buildFields(
+  parser: OpenAPIParser,
+  schema: OpenAPISchema,
+  $ref: string,
+  options: RedocNormalizedOptions,
+): FieldModel[] {
+  const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
   const defaults = schema.default || {};
   const fields = Object.keys(props || []).map(fieldName => {
@@ -204,8 +208,13 @@ function buildFields(parser: OpenAPIParser, schema: OpenAPISchema, $ref: string)
         },
       },
       $ref + '/properties/' + fieldName,
+      options,
     );
   });
+
+  if (options.requiredPropsFirst) {
+    sortFields(fields, schema.required);
+  }
 
   if (typeof additionalProps === 'object') {
     fields.push(
@@ -217,9 +226,24 @@ function buildFields(parser: OpenAPIParser, schema: OpenAPISchema, $ref: string)
           schema: additionalProps,
         },
         $ref + '/additionalProperties',
+        options,
       ),
     );
   }
 
   return fields;
+}
+
+function sortFields(fields: FieldModel[], order: string[] = []) {
+  fields.sort((a, b) => {
+    if (!a.required && b.required) {
+      return 1;
+    } else if (a.required && !b.required) {
+      return -1;
+    } else if (a.required && b.required) {
+      return order.indexOf(a.name) > order.indexOf(b.name) ? 1 : -1;
+    } else {
+      return 0;
+    }
+  });
 }

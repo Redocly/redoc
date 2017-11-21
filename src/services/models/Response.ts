@@ -30,7 +30,7 @@ export class ResponseModel {
     parser.exitRef(infoOrRef);
     this.code = code;
     if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, false);
+      this.content = new MediaContentModel(parser, info.content, false, options);
     }
     this.description = info.description || '';
     this.type = getStatusCodeType(code, defaultAsError);
@@ -39,7 +39,7 @@ export class ResponseModel {
     if (headers !== undefined) {
       this.headers = Object.keys(headers).map(name => {
         const header = headers[name];
-        return new FieldModel(parser, { ...header, name }, '');
+        return new FieldModel(parser, { ...header, name }, '', options);
       });
     }
   }

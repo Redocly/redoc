@@ -7,6 +7,13 @@ export interface RedocRawOptions {
   scrollYOffset?: number | string | Function;
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
+  requiredPropsFirst?: boolean | string;
+}
+
+function argValueToBoolean(val?: string | boolean): boolean {
+  if (val === undefined) return false;
+  if (typeof val === 'string') return true;
+  return val;
 }
 
 export class RedocNormalizedOptions {
@@ -14,12 +21,14 @@ export class RedocNormalizedOptions {
   scrollYOffset: () => number;
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
+  requiredPropsFirst: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
+    this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
   }
 
   static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {
@@ -32,12 +41,12 @@ export class RedocNormalizedOptions {
         res[code.trim()] = true;
       });
       return res;
-    } else {
+    } else if (value !== undefined) {
       console.warn(
         `expandResponses must be a string but received value "${value}" of type ${typeof value}`,
       );
-      return {};
     }
+    return {};
   }
 
   static normalizeHideHostname(value: RedocRawOptions['hideHostname']): boolean {

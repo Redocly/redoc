@@ -1,3 +1,4 @@
+import { RedocNormalizedOptions } from '../../../services/RedocNormalizedOptions';
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -17,6 +18,7 @@ describe('Components', () => {
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
+          new RedocNormalizedOptions({}),
         );
         const schemaView = shallow(<Schema schema={schema} />);
         expect(toJson(schemaView)).toMatchSnapshot();
@@ -29,6 +31,7 @@ describe('Components', () => {
           parser,
           { $ref: '#/components/schemas/Pet' },
           '#/components/schemas/Pet',
+          new RedocNormalizedOptions({}),
         );
         const schemaView = shallow(
           <ObjectSchema

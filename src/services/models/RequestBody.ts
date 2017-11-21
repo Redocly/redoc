@@ -2,19 +2,24 @@ import { OpenAPIRequestBody, Referenced } from '../../types';
 
 import { MediaContentModel } from './MediaContent';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class RequestBodyModel {
   description: string;
   required: boolean;
   content?: MediaContentModel;
 
-  constructor(parser: OpenAPIParser, infoOrRef: Referenced<OpenAPIRequestBody>) {
+  constructor(
+    parser: OpenAPIParser,
+    infoOrRef: Referenced<OpenAPIRequestBody>,
+    options: RedocNormalizedOptions,
+  ) {
     const info = parser.deref(infoOrRef);
     this.description = info.description || '';
     this.required = !!info.required;
     parser.exitRef(infoOrRef);
     if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, true);
+      this.content = new MediaContentModel(parser, info.content, true, options);
     }
   }
 }

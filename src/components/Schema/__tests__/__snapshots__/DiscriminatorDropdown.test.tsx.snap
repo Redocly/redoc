@@ -54,6 +54,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "isCircular": undefined,
                   "isPrimitive": true,
                   "nullable": false,
+                  "options": RedocNormalizedOptions {
+                    "expandResponses": Object {},
+                    "hideHostname": false,
+                    "requiredPropsFirst": false,
+                    "scrollYOffset": [Function],
+                    "theme": Object {
+                      "baseFont": Object {
+                        "family": "Roboto, sans-serif",
+                        "lineHeight": "1.5",
+                        "optimizeSpeed": true,
+                        "size": "14px",
+                        "smoothing": "antialiased",
+                        "weight": "300",
+                      },
+                      "code": Object {
+                        "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                        "fontSize": "13px",
+                      },
+                      "colors": Object {
+                        "error": "#e53935",
+                        "http": Object {
+                          "basic": "#999",
+                          "delete": "#e27a7a",
+                          "get": "#6bbd5b",
+                          "link": "#31bbb6",
+                          "options": "#d3ca12",
+                          "patch": "#e09d43",
+                          "post": "#248fb2",
+                          "put": "#9b708b",
+                        },
+                        "info": "skyblue",
+                        "main": "#32329f",
+                        "redirect": "orange",
+                        "success": "#00aa13",
+                        "text": "#263238",
+                        "warning": "#f1c400",
+                      },
+                      "headingsFont": Object {
+                        "family": "Montserrat, sans-serif",
+                      },
+                      "links": Object {
+                        "color": undefined,
+                        "hover": undefined,
+                        "visited": undefined,
+                      },
+                      "logo": Object {
+                        "maxHeight": "120px",
+                      },
+                      "menu": Object {
+                        "backgroundColor": "#fafafa",
+                        "width": "260px",
+                      },
+                      "rightPanel": Object {
+                        "backgroundColor": "#263238",
+                        "width": 40,
+                      },
+                      "schemaView": Object {
+                        "linesColor": "#7f99cf",
+                      },
+                      "spacingUnit": 20,
+                    },
+                  },
                   "pattern": undefined,
                   "rawSchema": Object {
                     "default": undefined,
@@ -92,6 +154,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "isCircular": undefined,
                   "isPrimitive": true,
                   "nullable": false,
+                  "options": RedocNormalizedOptions {
+                    "expandResponses": Object {},
+                    "hideHostname": false,
+                    "requiredPropsFirst": false,
+                    "scrollYOffset": [Function],
+                    "theme": Object {
+                      "baseFont": Object {
+                        "family": "Roboto, sans-serif",
+                        "lineHeight": "1.5",
+                        "optimizeSpeed": true,
+                        "size": "14px",
+                        "smoothing": "antialiased",
+                        "weight": "300",
+                      },
+                      "code": Object {
+                        "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                        "fontSize": "13px",
+                      },
+                      "colors": Object {
+                        "error": "#e53935",
+                        "http": Object {
+                          "basic": "#999",
+                          "delete": "#e27a7a",
+                          "get": "#6bbd5b",
+                          "link": "#31bbb6",
+                          "options": "#d3ca12",
+                          "patch": "#e09d43",
+                          "post": "#248fb2",
+                          "put": "#9b708b",
+                        },
+                        "info": "skyblue",
+                        "main": "#32329f",
+                        "redirect": "orange",
+                        "success": "#00aa13",
+                        "text": "#263238",
+                        "warning": "#f1c400",
+                      },
+                      "headingsFont": Object {
+                        "family": "Montserrat, sans-serif",
+                      },
+                      "links": Object {
+                        "color": undefined,
+                        "hover": undefined,
+                        "visited": undefined,
+                      },
+                      "logo": Object {
+                        "maxHeight": "120px",
+                      },
+                      "menu": Object {
+                        "backgroundColor": "#fafafa",
+                        "width": "260px",
+                      },
+                      "rightPanel": Object {
+                        "backgroundColor": "#263238",
+                        "width": 40,
+                      },
+                      "schemaView": Object {
+                        "linesColor": "#7f99cf",
+                      },
+                      "spacingUnit": 20,
+                    },
+                  },
                   "pattern": undefined,
                   "rawSchema": Object {
                     "default": undefined,
@@ -113,6 +237,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "isCircular": undefined,
             "isPrimitive": false,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "allOf": Array [
@@ -188,6 +374,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "isCircular": undefined,
                   "isPrimitive": true,
                   "nullable": false,
+                  "options": RedocNormalizedOptions {
+                    "expandResponses": Object {},
+                    "hideHostname": false,
+                    "requiredPropsFirst": false,
+                    "scrollYOffset": [Function],
+                    "theme": Object {
+                      "baseFont": Object {
+                        "family": "Roboto, sans-serif",
+                        "lineHeight": "1.5",
+                        "optimizeSpeed": true,
+                        "size": "14px",
+                        "smoothing": "antialiased",
+                        "weight": "300",
+                      },
+                      "code": Object {
+                        "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                        "fontSize": "13px",
+                      },
+                      "colors": Object {
+                        "error": "#e53935",
+                        "http": Object {
+                          "basic": "#999",
+                          "delete": "#e27a7a",
+                          "get": "#6bbd5b",
+                          "link": "#31bbb6",
+                          "options": "#d3ca12",
+                          "patch": "#e09d43",
+                          "post": "#248fb2",
+                          "put": "#9b708b",
+                        },
+                        "info": "skyblue",
+                        "main": "#32329f",
+                        "redirect": "orange",
+                        "success": "#00aa13",
+                        "text": "#263238",
+                        "warning": "#f1c400",
+                      },
+                      "headingsFont": Object {
+                        "family": "Montserrat, sans-serif",
+                      },
+                      "links": Object {
+                        "color": undefined,
+                        "hover": undefined,
+                        "visited": undefined,
+                      },
+                      "logo": Object {
+                        "maxHeight": "120px",
+                      },
+                      "menu": Object {
+                        "backgroundColor": "#fafafa",
+                        "width": "260px",
+                      },
+                      "rightPanel": Object {
+                        "backgroundColor": "#263238",
+                        "width": 40,
+                      },
+                      "schemaView": Object {
+                        "linesColor": "#7f99cf",
+                      },
+                      "spacingUnit": 20,
+                    },
+                  },
                   "pattern": undefined,
                   "rawSchema": Object {
                     "default": undefined,
@@ -226,6 +474,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "isCircular": undefined,
                   "isPrimitive": true,
                   "nullable": false,
+                  "options": RedocNormalizedOptions {
+                    "expandResponses": Object {},
+                    "hideHostname": false,
+                    "requiredPropsFirst": false,
+                    "scrollYOffset": [Function],
+                    "theme": Object {
+                      "baseFont": Object {
+                        "family": "Roboto, sans-serif",
+                        "lineHeight": "1.5",
+                        "optimizeSpeed": true,
+                        "size": "14px",
+                        "smoothing": "antialiased",
+                        "weight": "300",
+                      },
+                      "code": Object {
+                        "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                        "fontSize": "13px",
+                      },
+                      "colors": Object {
+                        "error": "#e53935",
+                        "http": Object {
+                          "basic": "#999",
+                          "delete": "#e27a7a",
+                          "get": "#6bbd5b",
+                          "link": "#31bbb6",
+                          "options": "#d3ca12",
+                          "patch": "#e09d43",
+                          "post": "#248fb2",
+                          "put": "#9b708b",
+                        },
+                        "info": "skyblue",
+                        "main": "#32329f",
+                        "redirect": "orange",
+                        "success": "#00aa13",
+                        "text": "#263238",
+                        "warning": "#f1c400",
+                      },
+                      "headingsFont": Object {
+                        "family": "Montserrat, sans-serif",
+                      },
+                      "links": Object {
+                        "color": undefined,
+                        "hover": undefined,
+                        "visited": undefined,
+                      },
+                      "logo": Object {
+                        "maxHeight": "120px",
+                      },
+                      "menu": Object {
+                        "backgroundColor": "#fafafa",
+                        "width": "260px",
+                      },
+                      "rightPanel": Object {
+                        "backgroundColor": "#263238",
+                        "width": 40,
+                      },
+                      "schemaView": Object {
+                        "linesColor": "#7f99cf",
+                      },
+                      "spacingUnit": 20,
+                    },
+                  },
                   "pattern": undefined,
                   "rawSchema": Object {
                     "default": undefined,
@@ -247,6 +557,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "isCircular": undefined,
             "isPrimitive": true,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "allOf": Array [
@@ -292,6 +664,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "writeOnly": false,
           },
         ],
+        "options": RedocNormalizedOptions {
+          "expandResponses": Object {},
+          "hideHostname": false,
+          "requiredPropsFirst": false,
+          "scrollYOffset": [Function],
+          "theme": Object {
+            "baseFont": Object {
+              "family": "Roboto, sans-serif",
+              "lineHeight": "1.5",
+              "optimizeSpeed": true,
+              "size": "14px",
+              "smoothing": "antialiased",
+              "weight": "300",
+            },
+            "code": Object {
+              "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+              "fontSize": "13px",
+            },
+            "colors": Object {
+              "error": "#e53935",
+              "http": Object {
+                "basic": "#999",
+                "delete": "#e27a7a",
+                "get": "#6bbd5b",
+                "link": "#31bbb6",
+                "options": "#d3ca12",
+                "patch": "#e09d43",
+                "post": "#248fb2",
+                "put": "#9b708b",
+              },
+              "info": "skyblue",
+              "main": "#32329f",
+              "redirect": "orange",
+              "success": "#00aa13",
+              "text": "#263238",
+              "warning": "#f1c400",
+            },
+            "headingsFont": Object {
+              "family": "Montserrat, sans-serif",
+            },
+            "links": Object {
+              "color": undefined,
+              "hover": undefined,
+              "visited": undefined,
+            },
+            "logo": Object {
+              "maxHeight": "120px",
+            },
+            "menu": Object {
+              "backgroundColor": "#fafafa",
+              "width": "260px",
+            },
+            "rightPanel": Object {
+              "backgroundColor": "#263238",
+              "width": 40,
+            },
+            "schemaView": Object {
+              "linesColor": "#7f99cf",
+            },
+            "spacingUnit": 20,
+          },
+        },
         "pattern": undefined,
         "rawSchema": Object {
           "discriminator": Object {
@@ -363,6 +797,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "isCircular": undefined,
             "isPrimitive": true,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "default": undefined,
@@ -401,6 +897,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "isCircular": undefined,
             "isPrimitive": true,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "default": undefined,
@@ -422,6 +980,68 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "isCircular": undefined,
       "isPrimitive": false,
       "nullable": false,
+      "options": RedocNormalizedOptions {
+        "expandResponses": Object {},
+        "hideHostname": false,
+        "requiredPropsFirst": false,
+        "scrollYOffset": [Function],
+        "theme": Object {
+          "baseFont": Object {
+            "family": "Roboto, sans-serif",
+            "lineHeight": "1.5",
+            "optimizeSpeed": true,
+            "size": "14px",
+            "smoothing": "antialiased",
+            "weight": "300",
+          },
+          "code": Object {
+            "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+            "fontSize": "13px",
+          },
+          "colors": Object {
+            "error": "#e53935",
+            "http": Object {
+              "basic": "#999",
+              "delete": "#e27a7a",
+              "get": "#6bbd5b",
+              "link": "#31bbb6",
+              "options": "#d3ca12",
+              "patch": "#e09d43",
+              "post": "#248fb2",
+              "put": "#9b708b",
+            },
+            "info": "skyblue",
+            "main": "#32329f",
+            "redirect": "orange",
+            "success": "#00aa13",
+            "text": "#263238",
+            "warning": "#f1c400",
+          },
+          "headingsFont": Object {
+            "family": "Montserrat, sans-serif",
+          },
+          "links": Object {
+            "color": undefined,
+            "hover": undefined,
+            "visited": undefined,
+          },
+          "logo": Object {
+            "maxHeight": "120px",
+          },
+          "menu": Object {
+            "backgroundColor": "#fafafa",
+            "width": "260px",
+          },
+          "rightPanel": Object {
+            "backgroundColor": "#263238",
+            "width": 40,
+          },
+          "schemaView": Object {
+            "linesColor": "#7f99cf",
+          },
+          "spacingUnit": 20,
+        },
+      },
       "pattern": undefined,
       "rawSchema": Object {
         "allOf": Array [
@@ -495,6 +1115,68 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "isCircular": undefined,
             "isPrimitive": true,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "default": undefined,
@@ -540,6 +1222,68 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "isCircular": undefined,
             "isPrimitive": true,
             "nullable": false,
+            "options": RedocNormalizedOptions {
+              "expandResponses": Object {},
+              "hideHostname": false,
+              "requiredPropsFirst": false,
+              "scrollYOffset": [Function],
+              "theme": Object {
+                "baseFont": Object {
+                  "family": "Roboto, sans-serif",
+                  "lineHeight": "1.5",
+                  "optimizeSpeed": true,
+                  "size": "14px",
+                  "smoothing": "antialiased",
+                  "weight": "300",
+                },
+                "code": Object {
+                  "fontFamily": "\\"Lucida Console\\", Monaco, monospace",
+                  "fontSize": "13px",
+                },
+                "colors": Object {
+                  "error": "#e53935",
+                  "http": Object {
+                    "basic": "#999",
+                    "delete": "#e27a7a",
+                    "get": "#6bbd5b",
+                    "link": "#31bbb6",
+                    "options": "#d3ca12",
+                    "patch": "#e09d43",
+                    "post": "#248fb2",
+                    "put": "#9b708b",
+                  },
+                  "info": "skyblue",
+                  "main": "#32329f",
+                  "redirect": "orange",
+                  "success": "#00aa13",
+                  "text": "#263238",
+                  "warning": "#f1c400",
+                },
+                "headingsFont": Object {
+                  "family": "Montserrat, sans-serif",
+                },
+                "links": Object {
+                  "color": undefined,
+                  "hover": undefined,
+                  "visited": undefined,
+                },
+                "logo": Object {
+                  "maxHeight": "120px",
+                },
+                "menu": Object {
+                  "backgroundColor": "#fafafa",
+                  "width": "260px",
+                },
+                "rightPanel": Object {
+                  "backgroundColor": "#263238",
+                  "width": 40,
+                },
+                "schemaView": Object {
+                  "linesColor": "#7f99cf",
+                },
+                "spacingUnit": 20,
+              },
+            },
             "pattern": undefined,
             "rawSchema": Object {
               "default": undefined,

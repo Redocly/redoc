@@ -3,6 +3,7 @@ import { observable, action, computed } from 'mobx';
 import { OpenAPIMediaType } from '../../types';
 import { MediaTypeModel } from './MediaType';
 
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 /**
@@ -20,13 +21,14 @@ export class MediaContentModel {
   constructor(
     public parser: OpenAPIParser,
     info: { [mime: string]: OpenAPIMediaType },
-    public isRequestType: boolean = false,
+    public isRequestType: boolean,
+    options: RedocNormalizedOptions,
   ) {
     this.mediaTypes = Object.keys(info).map(name => {
       const mime = info[name];
       // reset deref cache just in case something is left there
       parser.resetVisited();
-      return new MediaTypeModel(parser, name, isRequestType, mime);
+      return new MediaTypeModel(parser, name, isRequestType, mime, options);
     });
   }
 

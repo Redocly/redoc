@@ -71,12 +71,12 @@ export class OperationModel implements IMenuItem {
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
     this.requestBody =
-      operationSpec.requestBody && new RequestBodyModel(parser, operationSpec.requestBody);
+      operationSpec.requestBody && new RequestBodyModel(parser, operationSpec.requestBody, options);
     this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = JsonPointer.baseName(this._$ref, 2);
 
     this.parameters = (operationSpec.parameters || []).map(
-      paramOrRef => new FieldModel(parser, paramOrRef, this._$ref),
+      paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options),
     );
 
     let hasSuccessResponses = false;

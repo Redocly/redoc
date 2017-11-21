@@ -2,6 +2,7 @@ import * as Sampler from 'openapi-sampler';
 
 import { OpenAPIExample, OpenAPIMediaType } from '../../types';
 import { SchemaModel } from './Schema';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 import { mapValues, isJsonLike } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -16,10 +17,16 @@ export class MediaTypeModel {
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
    */
-  constructor(parser: OpenAPIParser, name: string, isRequestType: boolean, info: OpenAPIMediaType) {
+  constructor(
+    parser: OpenAPIParser,
+    name: string,
+    isRequestType: boolean,
+    info: OpenAPIMediaType,
+    options: RedocNormalizedOptions,
+  ) {
     this.name = name;
     this.isRequestType = isRequestType;
-    this.schema = info.schema && new SchemaModel(parser, info.schema, '');
+    this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     if (info.examples !== undefined) {
       this.examples = mapValues(info.examples, example => new ExampleModel(parser, example));
     } else if (info.example !== undefined) {
