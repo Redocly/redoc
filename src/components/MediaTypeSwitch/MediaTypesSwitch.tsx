@@ -23,7 +23,7 @@ export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
 
   render() {
     const { content } = this.props;
-    if (!content || !content.mediaTypes) return null;
+    if (!content || !content.mediaTypes || !content.mediaTypes.length) return null;
     const activeMimeIdx = content.activeMimeIdx;
 
     let options = content.mediaTypes.map((mime, idx) => {
