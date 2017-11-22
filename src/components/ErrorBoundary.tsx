@@ -22,8 +22,16 @@ export class ErrorBoundary extends React.Component<{}, { error?: Error }> {
     if (this.state.error) {
       return (
         <ErrorWrapper>
-          <h1>Something went wrong.</h1>
+          <h1>Something went wrong...</h1>
           <small> {this.state.error.message} </small>
+          <p>
+            <details>
+              <summary>Stack trace</summary>
+              <pre>{this.state.error.stack}</pre>
+            </details>
+          </p>
+          <small> ReDoc Version: {__REDOC_VERSION__}</small> <br />
+          <small> Commit: {__REDOC_REVISION__}</small>
         </ErrorWrapper>
       );
     }
