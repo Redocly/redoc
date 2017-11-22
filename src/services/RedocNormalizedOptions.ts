@@ -1,5 +1,5 @@
 import { ThemeInterface } from '../theme';
-import { isNumeric } from '../utils/helpers';
+import { isNumeric, mergeObjects } from '../utils/helpers';
 import defaultTheme from '../theme';
 
 export interface RedocRawOptions {
@@ -33,7 +33,7 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
 
   constructor(raw: RedocRawOptions) {
-    this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
+    this.theme = mergeObjects({} as any, raw.theme || {}, defaultTheme);
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
