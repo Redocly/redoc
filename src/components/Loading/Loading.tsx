@@ -18,7 +18,6 @@ export interface LoadingProps {
 
 export class Loading extends React.PureComponent<LoadingProps> {
   render() {
-    console.log('loading');
     return (
       <div style={{ textAlign: 'center' }}>
         <LoadingMessage color={this.props.color}>Loading ...</LoadingMessage>

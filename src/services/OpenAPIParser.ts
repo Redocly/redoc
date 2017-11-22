@@ -110,7 +110,6 @@ export class OpenAPIParser {
   resetVisited() {
     for (let k in this._refCounter._counter) {
       if (this._refCounter._counter[k] > 0) {
-        console.log('>>>', k, this._refCounter._counter[k]);
       }
     }
     this._refCounter = new RefCounter();
