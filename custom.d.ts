@@ -14,6 +14,8 @@ declare module '*.css' {
 }
 
 declare var __DEV__: boolean;
+declare var __REDOC_VERSION__: string;
+declare var __REDOC_REVISION__: string;
 
 declare type Dict<T> = {
   [key: string]: T;

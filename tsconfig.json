@@ -35,6 +35,7 @@
     "./custom.d.ts",
     "./demo/playground/hmr-playground.tsx",
     "./src/index.ts",
+    "./src/standalone.tsx",
     "demo/*.tsx"
   ],
   "awesomeTypescriptLoaderOptions": {

@@ -3,6 +3,9 @@ import * as React from 'react';
 
 import { RedocStandalone } from './components/RedocStandalone';
 
+export const version = __REDOC_VERSION__;
+export const revision = __REDOC_REVISION__;
+
 function attributesMap(element: Element) {
   var res = {};
   var elAttrs = element.attributes;

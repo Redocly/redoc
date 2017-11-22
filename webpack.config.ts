@@ -6,6 +6,14 @@ const nodeExternals = require('webpack-node-externals')({
   whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
 });
 
+const VERSION = JSON.stringify(require('./package.json').version);
+const REVISION = JSON.stringify(
+  require('child_process')
+    .execSync('git rev-parse --short HEAD')
+    .toString()
+    .trim(),
+);
+
 export default env => {
   env = env || {};
 
@@ -101,6 +109,8 @@ export default env => {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': env.prod ? '"production"' : '"development"',
+        __REDOC_VERSION__: VERSION,
+        __REDOC_REVISION__: REVISION,
         __DEV__: env.prod ? 'false' : 'true',
       }),
       new webpack.NamedModulesPlugin(),
