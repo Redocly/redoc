@@ -75,7 +75,6 @@ export class OpenAPIParser {
         COMPONENT_REGEXP.replace('{component}', '<security-definitions>'),
         'gmi',
       );
-      debugger;
       if (!securityRegexp.test(description)) {
         const comment = buildComponentComment('security-definitions');
         spec.info.description = appendToMdHeading(description, 'Authentication', comment);

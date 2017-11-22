@@ -5,20 +5,29 @@ export const OperationEndpointWrap = styled.div`
   position: relative;
 `;
 
-export const EndpointInfo = withProps<{ expanded?: boolean }>(styled.div)`
-  padding: 10px 30px 10px 20px;
-  border-radius: 4px 4px 0 0;
-  background-color: #222d32;
+export const ServerRelativeURL = styled.span`
+  font-family: ${props => props.theme.headingsFont.family};
+  margin-left: 10px;
+`;
+
+export const EndpointInfo = withProps<{ expanded?: boolean; inverted?: boolean }>(styled.div)`
+  padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
+  border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
+  background-color: ${props => (props.inverted ? 'transparent' : '#222d32')};
   display: block;
   font-weight: 300;
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
-  border: 1px solid transparent;
-  border-bottom-width: 0;
+  border: ${props => (props.inverted ? '0' : '1px solid transparent')};
+  border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   transition: border-color 0.25s ease;
 
-  ${props => (props.expanded && 'border-color: #3c4448;') || ''}
+  ${props => (props.expanded && !props.inverted && 'border-color: #3c4448;') || ''}
+
+  .${ServerRelativeURL} {
+    color: ${props => (props.inverted ? props.theme.colors.text : '#ffffff')}
+  }
 `;
 
 export const HttpVerb = withProps<{ type: string }>(styled.span).attrs({
@@ -34,11 +43,11 @@ export const HttpVerb = withProps<{ type: string }>(styled.span).attrs({
   margin: 0;
 `;
 
-export const ServerRelativeURL = styled.span`
-  font-family: ${props => props.theme.headingsFont.family};
-  color: #ffffff;
-  margin-left: 10px;
-`;
+// background: transparent;
+// border-bottom: 1px solid #cccccc;
+// border-color: transparent;
+// border-bottom: 1px solid rgba(0,0,0,0.33);
+// padding-left: 10px;
 
 export const ServersOverlay = withProps<{ expanded: boolean }>(styled.div)`
   position: absolute;
@@ -47,7 +56,7 @@ export const ServersOverlay = withProps<{ expanded: boolean }>(styled.div)`
   background: #fafafa;
   color: #263238;
   box-sizing: border-box;
-  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.33);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.33);
   overflow: hidden;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;

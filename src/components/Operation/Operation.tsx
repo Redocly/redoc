@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 
 import { H2, MiddlePanel, DarkRightPanel, Badge, Row } from '../../common-elements';
 
+import { ComponentWithOptions } from '../OptionsProvider';
+
 import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
 import { ResponsesList } from '../Responses/ResponsesList';
@@ -35,11 +37,12 @@ interface OperationProps {
 }
 
 @observer
-export class Operation extends React.Component<OperationProps> {
+export class Operation extends ComponentWithOptions<OperationProps> {
   render() {
     const { operation } = this.props;
 
     const { name: summary, description, deprecated } = operation;
+    const pathInMiddle = this.options.pathInMiddlePanel;
 
     return (
       <OperationRow>
@@ -48,12 +51,13 @@ export class Operation extends React.Component<OperationProps> {
             <ShareLink href={'#' + operation.getHash()} />
             {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
           </H2>
+          {pathInMiddle && <Endpoint operation={operation} inverted={true} />}
           {description !== undefined && <Markdown source={description} />}
           <Parameters parameters={operation.parameters} body={operation.requestBody} />
           <ResponsesList responses={operation.responses} />
         </MiddlePanel>
         <DarkRightPanel>
-          <Endpoint operation={operation} />
+          {!pathInMiddle && <Endpoint operation={operation} />}
           <RequestSamples operation={operation} />
           <ResponseSamples operation={operation} />
         </DarkRightPanel>

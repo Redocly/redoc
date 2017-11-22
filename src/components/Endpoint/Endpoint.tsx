@@ -18,6 +18,7 @@ export interface EndpointProps {
   operation: OperationModel;
 
   hideHostname?: boolean;
+  inverted?: boolean;
 }
 
 export interface EndpointState {
@@ -37,7 +38,7 @@ export class Endpoint extends ComponentWithOptions<EndpointProps, EndpointState>
   };
 
   render() {
-    const { operation } = this.props;
+    const { operation, inverted } = this.props;
     const { expanded } = this.state;
 
     const hideHostname = this.props.hideHostname || this.options.hideHostname;
@@ -45,12 +46,12 @@ export class Endpoint extends ComponentWithOptions<EndpointProps, EndpointState>
     // TODO: highlight server variables, e.g. https://{user}.test.com
     return (
       <OperationEndpointWrap>
-        <EndpointInfo onClick={this.toggle} expanded={expanded}>
+        <EndpointInfo onClick={this.toggle} expanded={expanded} inverted={inverted}>
           <HttpVerb type={operation.httpVerb}> {operation.httpVerb}</HttpVerb>{' '}
           <ServerRelativeURL>{operation.path}</ServerRelativeURL>
           <ShelfIcon
             float={'right'}
-            color={'white'}
+            color={inverted ? 'black' : 'white'}
             size={'20px'}
             direction={expanded ? 'up' : 'down'}
             style={{ marginRight: '-25px' }}

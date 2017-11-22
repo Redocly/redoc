@@ -10,6 +10,7 @@ export interface RedocRawOptions {
   requiredPropsFirst?: boolean | string;
   noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
+  pathInMiddlePanel?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -26,6 +27,7 @@ export class RedocNormalizedOptions {
   requiredPropsFirst: boolean;
   noAutoAuth: boolean;
   nativeScrollbars: boolean;
+  pathInMiddlePanel: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
@@ -35,6 +37,7 @@ export class RedocNormalizedOptions {
     this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
+    this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
   }
 
   static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {
