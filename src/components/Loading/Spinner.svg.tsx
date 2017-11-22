@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { keyframes } from '../../styled-components';
 
-const _Spinner = (props: { className?: string }) => (
+const _Spinner = (props: { className?: string; color: string }) => (
   <svg className={props.className} version="1.1" width="512" height="512" viewBox="0 0 512 512">
     <path d="M275.682 147.999c0 10.864-8.837 19.661-19.682 19.661v0c-10.875 0-19.681-8.796-19.681-19.661v-96.635c0-10.885 8.806-19.661 19.681-19.661v0c10.844 0 19.682 8.776 19.682 19.661v96.635z" />
     <path d="M275.682 460.615c0 10.865-8.837 19.682-19.682 19.682v0c-10.875 0-19.681-8.817-19.681-19.682v-96.604c0-10.885 8.806-19.681 19.681-19.681v0c10.844 0 19.682 8.796 19.682 19.682v96.604z" />
@@ -31,6 +31,6 @@ export const Spinner = styled(_Spinner)`
   margin-left: -25px;
 
   path {
-    fill: black;
+    fill: ${props => props.color};
   }
 `;

@@ -4,26 +4,26 @@ import { AppStore } from '../services/';
 import { loadAndBundleSpec } from '../utils';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 
-interface SpecProps {
+interface StoreProviderProps {
   specUrl?: string;
   spec?: object;
   store?: AppStore;
 
   options?: RedocRawOptions;
 
-  children?: any;
+  children: (props: { loading: boolean; store?: AppStore }) => any;
 }
 
-interface SpecState {
+interface StoreProviderState {
   error?: Error;
   loading: boolean;
   store?: AppStore;
 }
 
-export class StoreProvider extends Component<SpecProps, SpecState> {
+export class StoreProvider extends Component<StoreProviderProps, StoreProviderState> {
   store: AppStore;
 
-  constructor(props: SpecProps) {
+  constructor(props: StoreProviderProps) {
     super(props);
 
     this.state = {

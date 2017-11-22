@@ -11,6 +11,7 @@ export interface RedocRawOptions {
   noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
+  hideLoading?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
