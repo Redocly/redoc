@@ -57,7 +57,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "nativeScrollbars": false,
                     "noAutoAuth": false,
+                    "pathInMiddlePanel": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -116,6 +118,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "spacingUnit": 20,
                     },
+                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "rawSchema": Object {
@@ -158,7 +161,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "nativeScrollbars": false,
                     "noAutoAuth": false,
+                    "pathInMiddlePanel": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -217,6 +222,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "spacingUnit": 20,
                     },
+                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "rawSchema": Object {
@@ -242,7 +248,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -301,6 +309,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
@@ -380,7 +389,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "nativeScrollbars": false,
                     "noAutoAuth": false,
+                    "pathInMiddlePanel": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -439,6 +450,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "spacingUnit": 20,
                     },
+                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "rawSchema": Object {
@@ -481,7 +493,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "expandResponses": Object {},
                     "hideHostname": false,
+                    "nativeScrollbars": false,
                     "noAutoAuth": false,
+                    "pathInMiddlePanel": false,
                     "requiredPropsFirst": false,
                     "scrollYOffset": [Function],
                     "theme": Object {
@@ -540,6 +554,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "spacingUnit": 20,
                     },
+                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "rawSchema": Object {
@@ -565,7 +580,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -624,6 +641,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
@@ -673,7 +691,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "options": RedocNormalizedOptions {
           "expandResponses": Object {},
           "hideHostname": false,
+          "nativeScrollbars": false,
           "noAutoAuth": false,
+          "pathInMiddlePanel": false,
           "requiredPropsFirst": false,
           "scrollYOffset": [Function],
           "theme": Object {
@@ -732,6 +752,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
             "spacingUnit": 20,
           },
+          "untrustedSpec": false,
         },
         "pattern": undefined,
         "rawSchema": Object {
@@ -807,7 +828,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -866,6 +889,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
@@ -908,7 +932,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -967,6 +993,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
@@ -992,7 +1019,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "options": RedocNormalizedOptions {
         "expandResponses": Object {},
         "hideHostname": false,
+        "nativeScrollbars": false,
         "noAutoAuth": false,
+        "pathInMiddlePanel": false,
         "requiredPropsFirst": false,
         "scrollYOffset": [Function],
         "theme": Object {
@@ -1051,6 +1080,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           },
           "spacingUnit": 20,
         },
+        "untrustedSpec": false,
       },
       "pattern": undefined,
       "rawSchema": Object {
@@ -1128,7 +1158,9 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -1187,6 +1219,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
@@ -1236,7 +1269,9 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
               "hideHostname": false,
+              "nativeScrollbars": false,
               "noAutoAuth": false,
+              "pathInMiddlePanel": false,
               "requiredPropsFirst": false,
               "scrollYOffset": [Function],
               "theme": Object {
@@ -1295,6 +1330,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
                 },
                 "spacingUnit": 20,
               },
+              "untrustedSpec": false,
             },
             "pattern": undefined,
             "rawSchema": Object {
