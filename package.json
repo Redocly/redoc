@@ -20,7 +20,8 @@
     "bundle:lib": "webpack --env.lib",
     "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
     "stats": "webpack -p --env.lib --env.standalone --env.prod --json --profile > stats.json",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "http-server": "http-server ."
   },
   "author": "",
   "license": "MIT",
