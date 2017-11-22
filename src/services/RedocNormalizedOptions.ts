@@ -11,6 +11,7 @@ export interface RedocRawOptions {
   noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
+  untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
 }
 
@@ -29,6 +30,7 @@ export class RedocNormalizedOptions {
   noAutoAuth: boolean;
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
+  untrustedSpec: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.theme = { ...(raw.theme || {}), ...defaultTheme }; // todo: merge deep
@@ -39,6 +41,7 @@ export class RedocNormalizedOptions {
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
+    this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
   }
 
   static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {

@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/chai": "^4.0.5",
     "@types/cypress": "^0.1.2",
+    "@types/dompurify": "^0.0.31",
     "@types/enzyme": "^2.8.10",
     "@types/enzyme-to-json": "^1.5.0",
     "@types/jest": "^20.0.8",
@@ -72,6 +73,7 @@
   "dependencies": {
     "@types/prop-types": "^15.5.2",
     "decko": "^1.2.0",
+    "dompurify": "^1.0.2",
     "eventemitter3": "^2.0.3",
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^3.3.1",

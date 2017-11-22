@@ -27,6 +27,10 @@
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@types/cypress/-/cypress-0.1.3.tgz#1783db79f0d1a44b85aae6a473104e2d7987e022"
 
+"@types/dompurify@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-0.0.31.tgz#f152d5a81f2b5625e29f11eb016cd9b301d0d4b4"
+
 "@types/enzyme-to-json@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@types/enzyme-to-json/-/enzyme-to-json-1.5.0.tgz#0b53c4c8479050e76a38ad298fb2672a7241fad3"
@@ -1773,6 +1777,10 @@ domhandler@^2.3.0:
   resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
   dependencies:
     domelementtype "1"
+
+dompurify@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-1.0.2.tgz#7cf47d57614324a9723a1ba69143eeb7d3c617ac"
 
 domutils@1.1:
   version "1.1.6"

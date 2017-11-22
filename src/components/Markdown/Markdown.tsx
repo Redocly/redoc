@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from '../../styled-components';
 
 import { MarkdownRenderer } from '../../services';
+import { ComponentWithOptions } from '../OptionsProvider';
+import * as DOMPurify from 'dompurify';
 
 import { markdownCss } from './styles';
 
@@ -12,9 +14,10 @@ interface MarkdownProps {
   className?: string;
   raw?: boolean;
   components?: { [name: string]: React.ComponentClass };
+  sanitize?: boolean;
 }
 
-class InternalMarkdown extends React.PureComponent<MarkdownProps> {
+class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
   constructor(props: MarkdownProps) {
     super(props);
 
@@ -24,6 +27,14 @@ class InternalMarkdown extends React.PureComponent<MarkdownProps> {
   }
 
   render() {
+    let sanitize: (string) => string;
+
+    if (this.props.sanitize || this.options.untrustedSpec) {
+      sanitize = html => DOMPurify.sanitize(html);
+    } else {
+      sanitize = html => html;
+    }
+
     const renderer = new MarkdownRenderer();
     const { source, raw, className, components, inline, dense } = this.props;
     const parts = components
@@ -40,7 +51,7 @@ class InternalMarkdown extends React.PureComponent<MarkdownProps> {
       return (
         <span
           className={className + appendClass}
-          dangerouslySetInnerHTML={{ __html: parts[0] as string }}
+          dangerouslySetInnerHTML={{ __html: sanitize(parts[0] as string) }}
         />
       );
     }
@@ -50,7 +61,7 @@ class InternalMarkdown extends React.PureComponent<MarkdownProps> {
         {parts.map(
           (part, idx) =>
             typeof part === 'string' ? (
-              <div key={idx} dangerouslySetInnerHTML={{ __html: part }} />
+              <div key={idx} dangerouslySetInnerHTML={{ __html: sanitize(part) }} />
             ) : (
               <part.component key={idx} {...part.attrs} />
             ),
