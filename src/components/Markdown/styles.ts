@@ -88,8 +88,8 @@ export const markdownCss = css`
     word-break: keep-all;
     border-collapse: collapse;
     border-spacing: 0;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
   }
 
   table tr {

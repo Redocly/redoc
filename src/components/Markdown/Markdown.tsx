@@ -1,20 +1,27 @@
 import * as React from 'react';
 import styled from '../../styled-components';
 
-import { MarkdownRenderer } from '../../services';
+import { AppStore, MarkdownRenderer } from '../../services';
 import { ComponentWithOptions } from '../OptionsProvider';
 import * as DOMPurify from 'dompurify';
 
 import { markdownCss } from './styles';
 
-interface MarkdownProps {
+export type MDComponent = {
+  component: React.ComponentClass;
+  propsSelector: (store?: AppStore) => any;
+  attrs?: object;
+};
+
+export interface MarkdownProps {
   source: string;
   dense?: boolean;
   inline?: boolean;
   className?: string;
   raw?: boolean;
-  components?: { [name: string]: React.ComponentClass };
+  components?: Dict<MDComponent>;
   sanitize?: boolean;
+  store?: AppStore;
 }
 
 class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
@@ -27,6 +34,12 @@ class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
   }
 
   render() {
+    const { source, raw, className, components, inline, dense, store } = this.props;
+
+    if (components && !store) {
+      throw new Error('When using components with Markdwon in ReDoc, store prop must be provided');
+    }
+
     let sanitize: (string) => string;
 
     if (this.props.sanitize || this.options.untrustedSpec) {
@@ -36,7 +49,6 @@ class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
     }
 
     const renderer = new MarkdownRenderer();
-    const { source, raw, className, components, inline, dense } = this.props;
     const parts = components
       ? renderer.renderMdWithComponents(source, components, raw)
       : [renderer.renderMd(source, raw)];
@@ -63,7 +75,7 @@ class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
             typeof part === 'string' ? (
               <div key={idx} dangerouslySetInnerHTML={{ __html: sanitize(part) }} />
             ) : (
-              <part.component key={idx} {...part.attrs} />
+              <part.component key={idx} {...{ ...part.attrs, ...part.propsSelector(store) }} />
             ),
         )}
       </div>

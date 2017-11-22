@@ -3,6 +3,7 @@ import styled, { css } from '../styled-components';
 const headerFontSize = {
   '1': '1.85714em',
   '2': '1.57143em',
+  '3': '1.27em',
 };
 
 export const headerCommonMixin = level => css`
@@ -19,6 +20,11 @@ export const H1 = styled.h1`
 
 export const H2 = styled.h2`
   ${headerCommonMixin(2)};
+  color: black;
+`;
+
+export const H3 = styled.h2`
+  ${headerCommonMixin(3)};
   color: black;
 `;
 

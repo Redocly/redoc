@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { Markdown } from '../Markdown/Markdown';
-import { OpenAPIExternalDocumentation } from '../../types';
+import { AppStore } from '../../services/AppStore';
 
-import { ApiInfoModel } from '../../services/models';
 import { SecurityDefs } from '../SecurityDefs/SecurityDefs';
-
+import { Markdown } from '../Markdown/Markdown';
 import { MiddlePanel, DarkRightPanel, Row } from '../../common-elements/';
 
 import {
@@ -18,14 +16,14 @@ import {
 } from './styled.elements';
 
 interface ApiInfoProps {
-  info: ApiInfoModel;
-  externalDocs?: OpenAPIExternalDocumentation;
+  store: AppStore;
 }
 
 @observer
 export class ApiInfo extends React.Component<ApiInfoProps> {
   render() {
-    const { info, externalDocs } = this.props;
+    const { store } = this.props;
+    const { info, externalDocs } = store.spec;
 
     const downloadFilename = info.downloadFileName;
     const downloadLink = info.downloadLink;
@@ -100,7 +98,15 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             <Markdown
               source={info.description || ''}
               raw={false}
-              components={{ 'security-definitions': SecurityDefs }}
+              components={{
+                'security-definitions': {
+                  component: SecurityDefs,
+                  propsSelector: store => ({
+                    securitySchemes: store!.spec.security,
+                  }),
+                },
+              }}
+              store={store}
             />
           </div>
         </MiddlePanel>

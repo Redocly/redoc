@@ -27,6 +27,7 @@ export class Redoc extends React.Component<RedocProps> {
 
   render() {
     const { store: { spec, menu, options } } = this.props;
+    const store = this.props.store;
     return (
       <ThemeProvider theme={options.theme}>
         <OptionsProvider options={options}>
@@ -36,7 +37,7 @@ export class Redoc extends React.Component<RedocProps> {
               <SideMenu menu={menu} />
             </StickySidebar>
             <ApiContent className="api-content">
-              <ApiInfo info={spec.info} externalDocs={spec.externalDocs} />
+              <ApiInfo store={store} />
               <ContentItems items={menu.items as any} />
             </ApiContent>
           </RedocWrap>

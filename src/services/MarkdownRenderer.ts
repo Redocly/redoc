@@ -1,4 +1,6 @@
 import * as Remarkable from 'remarkable';
+
+import { MDComponent } from '../components/Markdown/Markdown';
 import { IMenuItem, SECTION_ATTR } from './MenuStore';
 import { GroupModel } from './models';
 import { highlight } from '../utils';
@@ -145,9 +147,9 @@ export class MarkdownRenderer {
 
   renderMdWithComponents(
     rawText: string,
-    components: { [name: string]: React.ComponentClass },
+    components: Dict<MDComponent>,
     raw: boolean = true,
-  ): (string | { component: React.ComponentClass; attrs: any })[] {
+  ): (string | MDComponent)[] {
     let componentDefs: string[] = [];
     let match;
     let anyCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '(.*?)'), 'gmi');
@@ -165,8 +167,9 @@ export class MarkdownRenderer {
       }
       if (componentDefs[i]) {
         const { componentName, attrs } = parseComponent(componentDefs[i]);
+        if (!componentName) continue;
         res.push({
-          component: componentName && components[componentName],
+          ...components[componentName],
           attrs: attrs,
         });
       }

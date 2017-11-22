@@ -201,7 +201,38 @@ export type OpenAPIComponents = {
 };
 
 export type OpenAPISecurityRequirement = {};
-export type OpenAPISecurityScheme = {};
+
+export type OpenAPISecurityScheme = {
+  type: 'apiKey' | 'http' | 'oauth2' | 'openIdConnect';
+  description?: string;
+  name?: string;
+  in?: 'query' | 'header' | 'cookie';
+  scheme?: string;
+  bearerFormat: string;
+  flows: {
+    implicit?: {
+      refreshUrl?: string;
+      scopes: Dict<string>;
+      authorizationUrl: string;
+    };
+    password?: {
+      refreshUrl?: string;
+      scopes: Dict<string>;
+      tokenUrl: string;
+    };
+    clientCredentials?: {
+      refreshUrl?: string;
+      scopes: Dict<string>;
+      tokenUrl: string;
+    };
+    authorizationCode?: {
+      refreshUrl?: string;
+      scopes: Dict<string>;
+      tokenUrl: string;
+    };
+  };
+  openIdConnectUrl?: string;
+};
 
 export type OpenAPITag = {
   name: string;
