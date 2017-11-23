@@ -44,7 +44,7 @@
     "awesome-typescript-loader": "^3.2.2",
     "core-js": "^2.5.1",
     "css-loader": "^0.28.7",
-    "cypress": "^1.0.3",
+    "cypress": "~1.0.3",
     "enzyme": "^3.1.1",
     "enzyme-adapter-react-16": "^1.0.4",
     "enzyme-to-json": "^3.2.2",
