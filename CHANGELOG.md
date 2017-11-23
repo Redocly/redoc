@@ -1,3 +1,14 @@
+<a name="2.0.0-alpha.3"></a>
+# [2.0.0-alpha.3](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2017-11-23)
+
+
+### Bug Fixes
+
+* crash when $ref is url encoded ([bdf6079](https://github.com/Rebilly/Redoc/commit/bdf6079))
+* make oneOf not skip fields defined alongside ([8680775](https://github.com/Rebilly/Redoc/commit/8680775))
+
+
+
 <a name="2.0.0-alpha.2"></a>
 # 2.0.0-alpha.2 (2017-11-23)
 
