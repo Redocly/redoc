@@ -147,8 +147,15 @@ export class SchemaModel {
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
     this.oneOf = oneOf!.map(
       (variant, idx) =>
-        // TODO: merge base schema into each oneOf
-        new SchemaModel(parser, variant, this._$ref + '/oneOf/' + idx, this.options),
+        new SchemaModel(
+          parser,
+          {
+            // merge base schema into each of oneOf's subschemas
+            allOf: [variant, { ...this.schema, oneOf: undefined, anyOf: undefined }],
+          } as OpenAPISchema,
+          this._$ref + '/oneOf/' + idx,
+          this.options,
+        ),
     );
     this.displayType = this.oneOf.map(schema => schema.displayType).join(' or ');
   }
