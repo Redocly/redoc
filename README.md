@@ -37,22 +37,28 @@ npm start
 - Multiple ReDoc instances on single page ([example](demo/examples/multiple-apis/index.html))
 
 ## Roadmap
-  - [ ] [OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)
+  - [x] ~~[OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)~~
   - [x] ~~performance optimizations~~
   - [x] ~~better navigation (menu improvements + search)~~
+  - [x] ~~React rewrite~~
   - [ ] ability to simple branding/styling
-  - [ ] built-in API Console
   - [ ] docs pre-rendering (performance and SEO)
+  - [ ] built-in API Console
 
 ## Releases
-We host the latest and all the previous ReDoc releases on GitHub Pages-based **CDN**:
+**Important:** all the 2.x releases are deployed to npm and can be used via unpkg:
+- particular release, e.g. `v2.0.0-alpha.0`: https://unpkg.com/redoc@2.0.0-alpha.0/bundles/redoc.standalone.js
+- `latest` release: https://unpkg.com/redoc/bundles/redoc.standalone.js
+
+Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js this file is updated with each release of ReDoc and may introduce breaking changes. **Not recommended to use in production.** Use particular release or `v1.x.x`.
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
 
 ## Version Guidance
 | ReDoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
+| 2.0.0-alpha.x | 3.0, 2.0              |
 | 1.19.x        | 2.0                   |
 | 1.18.x        | 2.0                   |
 | 1.17.x        | 2.0                   |
@@ -77,6 +83,7 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
     <!-- needed for adaptive design -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
 
     <!--
     ReDoc doesn't change outer page styles
@@ -90,7 +97,7 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
   </head>
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
+    <script src="https://unpkg.com/redoc@2.0.0-alpha.1/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
 ```
@@ -99,27 +106,19 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [bower](bower.io):
-
-    bower install redoc
-
-or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
+Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 
     npm install redoc --save
 
 ### 2. Reference redoc script in HTML
 For **CDN**:
 ```html
-<script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
+<script src="https://unpkg.com/redoc@2.0.0-alpha.1/bundles/redoc.standalone.js"> </script>
 ```
 
-For bower:
-```html
-<script src="bower_components/redoc/dist/redoc.min.js"> </script>
-```
 For npm:
 ```html
-<script src="node_modules/redoc/dist/redoc.min.js"> </script>
+<script src="node_modules/redoc/bundles/redoc.standalone.js"> </script>
 ```
 
 ### 3. Add `<redoc>` element to your page
@@ -128,6 +127,41 @@ For npm:
 ```
 
 ### 4. Enjoy :smile:
+
+
+## Usage as a React component
+
+Import `RedocStandalone` component from 'redoc' module:
+
+```js
+import { RedocStandalone } from 'redoc';
+```
+
+and use it somewhere in your component:
+
+```js
+<RedocStandalone specUrl="url/to/your/spec"/>
+```
+
+or
+
+```js
+<RedocStandalone spec={/* spec as an object */}/>
+```
+
+Also you can pass options:
+
+```js
+<RedocStandalone
+  specUrl="http://rebilly.github.io/RebillyAPI/swagger.json"
+  options={{
+    nativeScrollbars: true,
+    theme: { colors: { main: '#dd5522' } },
+  }}
+/>
+```
+
+Here are detailed [options docs](#redoc-options-object).
 
 ## Configuration
 
@@ -146,35 +180,40 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
 * [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 
-### `<redoc>` tag attributes
-* `spec-url` - relative or absolute url to your spec file;
-* `untrusted-spec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
-* `scroll-y-offset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
-`scroll-y-offset` can be specified in various ways:
+### `<redoc>` options object
+You can use all of the following optins with standalone version on <redoc> tag by kebab-casing them, e.g. `scrollYOffset` becomes `scroll-y-offset` and `expandResponses` becomes `expand-responses`.
+
+* `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
+* `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
+`scrollYOffset` can be specified in various ways:
   * **number**: A fixed number of pixels to be used as offset;
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
   * **function**: A getter function. Must return a number representing the offset (in pixels);
-* `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
-* `lazy-rendering` - if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\rebilly.github.io/ReDoc) for the example.
-* `hide-hostname` - if set, the protocol and hostname is not shown in the operation definition.
-* `expand-responses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expand-responses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
-* `required-props-first` - show required properties first ordered in the same order as in `required` array.
-* `no-auto-auth` - do not inject Authentication section automatically
-* `path-in-middle-panel` - show path link and HTTP verb in the middle panel instead of the right one
-* `hide-loading` - do not show loading animation. Useful for small docs
-* `native-scrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
+* `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
+* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\rebilly.github.io/ReDoc) for the example.~~
+* `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
+* `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
+* `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
+* `noAutoAuth` - do not inject Authentication section automatically
+* `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one
+* `hideLoading` - do not show loading animation. Useful for small docs
+* `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
+* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Rebilly/ReDoc/blob/react-rewrite/src/theme.ts)
 
-## Advanced usage
+## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
 ```js
-Redoc.init(specOrSpecUrl, options)
+Redoc.init(specOrSpecUrl, options, element)
 ```
-`specOrSpecUrl` is either JSON object with specification or an URL to the spec in `JSON` or `YAML` format.
-`options` is javascript object with camel-cased version of `<redoc>` tag attribute names as the keys, e.g.:
+
+- `specOrSpecUrl` is either JSON object with specification or an URL to the spec in `JSON` or `YAML` format
+- `options` [options object](#redoc-options-object)
+- `element` DOM element to put ReDoc into
+
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
   scrollYOffset: 50
-})
+}, document.getElementById('redoc-container'))
 ```
 
 -----------
@@ -185,10 +224,10 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 - Go to the project folder
 `cd ReDoc`
 - Install dependencies
-`npm install`
+`yarn`
 - _(optional)_ Replace `demo/swagger.yaml` with your own schema
 - Start the server
 `npm start`
-- Open `http://localhost:9000`
+- Open `http://localhost:9090`
 
 Alternatively, Docker can be used by just running `docker-compose up`.
