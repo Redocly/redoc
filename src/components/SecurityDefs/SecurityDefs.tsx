@@ -10,7 +10,7 @@ import { OpenAPISecurityScheme } from '../../types';
 const AUTH_TYPES = {
   oauth2: 'OAuth2',
   apiKey: 'API Key',
-  basic: 'Basic Authorization',
+  http: 'HTTP',
   openIdConnect: 'Open ID Connect',
 };
 
@@ -22,6 +22,10 @@ export interface OAuthFlowProps {
 const AuthTable = styled.table`
   ul > li {
     margin: 0.5em 0 !important;
+  }
+
+  th {
+    text-transform: capitalize;
   }
 `;
 
@@ -84,7 +88,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
               <tbody>
                 <tr>
                   <th> Security scheme type: </th>
-                  <td> {AUTH_TYPES[scheme.type]} </td>
+                  <td> {AUTH_TYPES[scheme.type] || scheme.type} </td>
                 </tr>
                 {scheme.apiKey ? (
                   <tr>
@@ -93,14 +97,17 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                   </tr>
                 ) : scheme.http ? (
                   [
-                    <tr>
+                    <tr key="scheme">
                       <th> HTTP Authorization Scheme </th>
-                      <th> {scheme.http.scheme} </th>
+                      <td> {scheme.http.scheme} </td>
                     </tr>,
-                    <tr>
-                      <th> Bearer format </th>
-                      <th> "{scheme.http.bearerFormat}" </th>
-                    </tr>,
+                    scheme.http.scheme === 'bearer' &&
+                      scheme.http.bearerFormat && (
+                        <tr key="bearer">
+                          <th> Bearer format </th>
+                          <td> "{scheme.http.bearerFormat}" </td>
+                        </tr>
+                      ),
                   ]
                 ) : scheme.openId ? (
                   <tr>
