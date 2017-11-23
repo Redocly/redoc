@@ -4670,9 +4670,9 @@ ono@^4.0.2:
   dependencies:
     format-util "^1.0.3"
 
-openapi-sampler@^1.0.0-beta.1:
-  version "1.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-1.0.0-beta.7.tgz#4932a3994067af86f95cb912ee56d01123e27d88"
+openapi-sampler@1.0.0-beta.8:
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-1.0.0-beta.8.tgz#bf43ff47737fc4e1f988d0e2082d49788f41dead"
   dependencies:
     json-pointer "^0.6.0"
 

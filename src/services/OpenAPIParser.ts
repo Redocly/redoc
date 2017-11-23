@@ -89,6 +89,7 @@ export class OpenAPIParser {
     let res;
     if (this.spec === undefined) return;
     if (ref.charAt(0) !== '#') ref = '#' + ref;
+    ref = decodeURI(ref);
     try {
       res = JsonPointer.get(this.spec, decodeURIComponent(ref));
     } catch (e) {
