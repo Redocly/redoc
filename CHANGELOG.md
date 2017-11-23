@@ -1,3 +1,30 @@
+<a name="2.0.0-alpha.1"></a>
+# 2.0.0-alpha.1
+
+Complete rewrite of ReDoc using React so here only major changes are listed.
+Complete rewrite also means that this rewrite may introduce issues, but they should be resolved before `2.0.0`.
+
+### Features
+
+- Basic Support for OpenAPI 3
+- Usage as a React component
+
+### Deprecations
+
+- Fonts are not loaded by ReDoc so you should load them. Default fonts can be loaded as bellow:
+
+```html
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+```
+- no more bower releases
+- no more GitHub pages-based CDN. Use [unpkg.com](https://unpkg.com/) to access ReDoc releases
+
+
+### Known Regression (will be resolved before leaving alpha stage)
+- `lazyLoading` option not implemented yet
+- Copying to clipboard of samples not implemented yet
+- Search not implemented yet
+
 <a name="1.19.0"></a>
 # [1.19.0](https://github.com/Rebilly/ReDoc/compare/v1.18.1...v1.19.0) (2017-09-21)
 
