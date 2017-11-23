@@ -1,5 +1,11 @@
+<a name="2.0.0-alpha.2"></a>
+# 2.0.0-alpha.2 (2017-11-23)
+
+### Bug Fixes
+* Fix crash when using type `file` in OpenAPI 2.0 in some places
+
 <a name="2.0.0-alpha.1"></a>
-# 2.0.0-alpha.1
+# 2.0.0-alpha.1 (2017-11-23)
 
 Complete rewrite of ReDoc using React so here only major changes are listed.
 Complete rewrite also means that this rewrite may introduce issues, but they should be resolved before `2.0.0`.
