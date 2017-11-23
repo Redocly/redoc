@@ -166,9 +166,11 @@ export class OpenAPIParser {
     };
 
     const allOfSchemas = schema.allOf.map((subSchema, idx) => {
+      const resolved = this.deref(subSchema, forceCircular);
+      const subRef = subSchema.$ref || $ref + '/allOf/' + idx;
       return {
-        $ref: subSchema.$ref || $ref + '/allOf/' + idx,
-        schema: this.deref(subSchema, forceCircular),
+        $ref: subRef,
+        schema: this.mergeAllOf(resolved, subRef, forceCircular),
       };
     });
 
