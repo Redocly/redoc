@@ -33,7 +33,7 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
 
   constructor(raw: RedocRawOptions) {
-    this.theme = mergeObjects({} as any, raw.theme || {}, defaultTheme);
+    this.theme = mergeObjects({} as any, defaultTheme, raw.theme || {});
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
 import { Loading } from './Loading/Loading';
 import { StoreProvider } from './StoreProvider';
@@ -31,6 +32,7 @@ export class RedocStandalone extends React.Component<RedocStandaloneProps> {
       }
       return null;
     },
+    options: PropTypes.object,
   };
 
   render() {
