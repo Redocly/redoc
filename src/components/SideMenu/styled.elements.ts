@@ -89,17 +89,22 @@ export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
 
 export const menuItemDepth = {
   '0': css`
-    color: rgba(38, 50, 56, 0.4);
+    opacity: 0.7;
     text-transform: uppercase;
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
+    color: ${props => props.theme.colors.text};
   `,
   '1': css`
-    font-weight: 300;
     font-size: 0.929em;
     text-transform: uppercase;
-    color: ${props => props.theme.colors.main};
+    &:hover {
+      color: ${props => props.theme.colors.main};
+    }
+  `,
+  '2': css`
+    color: ${props => props.theme.colors.text};
   `,
 };
 
@@ -109,7 +114,7 @@ export const MenuItemLabel = withProps<{
   deprecated?: boolean;
 }>(styled.label)`
   cursor: pointer;
-  color: ${props => props.theme.colors.text};
+  color: ${props => (props.active ? props.theme.colors.main : props.theme.colors.text)};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacingUnit}px;
   display: flex;
@@ -119,6 +124,10 @@ export const MenuItemLabel = withProps<{
   background-color: ${props => (props.active ? menuItemActiveBg(props.depth) : '')};
 
   ${props => (props.deprecated && deprecatedCss) || ''};
+
+  &:hover {
+    background-color: ${props => menuItemActiveBg(props.depth)};
+  }
 `;
 
 export const MenuItemTitle = withProps<{ width?: string }>(styled.span).attrs({
