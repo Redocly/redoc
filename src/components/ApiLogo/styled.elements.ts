@@ -6,3 +6,7 @@ export const LogoImgEl = styled.img`
   display: inline-block;
   max-width: 100%;
 `;
+
+export const LogoWrap = styled.div`
+  text-align: center;
+`;

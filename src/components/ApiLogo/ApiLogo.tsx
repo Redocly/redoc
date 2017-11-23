@@ -1,7 +1,7 @@
 import { OpenAPIInfo } from '../../types';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { LogoImgEl } from './styled.elements';
+import { LogoImgEl, LogoWrap } from './styled.elements';
 
 const LinkWrap = url => Component => <a href={url}>{Component}</a>;
 
@@ -15,6 +15,10 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
     const logo = (
       <LogoImgEl src={logoInfo.url} style={{ backgroundColor: logoInfo.backgroundColor }} />
     );
-    return info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo;
+    return (
+      <LogoWrap>
+        {info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo}{' '}
+      </LogoWrap>
+    );
   }
 }
