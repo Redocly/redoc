@@ -1,3 +1,16 @@
+<a name="2.0.0-alpha.4"></a>
+# [2.0.0-alpha.4](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2017-11-24)
+
+
+### Bug Fixes
+
+* add ellipsis for menu items with long words ([3421be2](https://github.com/Rebilly/Redoc/commit/3421be2))
+* crashes on some dereferencing/allOf merging cases ([335deb9](https://github.com/Rebilly/Redoc/commit/335deb9))
+* do not auto-append security-definitions if they are not in the spec ([426e5b6](https://github.com/Rebilly/Redoc/commit/426e5b6))
+* don't display operations without tags as tag items in menu ([ca81b6d](https://github.com/Rebilly/Redoc/commit/ca81b6d))
+
+
+
 <a name="2.0.0-alpha.3"></a>
 # [2.0.0-alpha.3](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2017-11-23)
 
