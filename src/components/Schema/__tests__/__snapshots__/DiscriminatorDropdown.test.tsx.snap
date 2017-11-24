@@ -575,7 +575,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             ],
             "format": undefined,
             "isCircular": undefined,
-            "isPrimitive": true,
+            "isPrimitive": false,
             "nullable": false,
             "options": RedocNormalizedOptions {
               "expandResponses": Object {},
@@ -680,7 +680,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "type",
               ],
               "title": "Cat",
-              "type": undefined,
+              "type": "object",
             },
             "title": "Cat",
             "type": "object",
