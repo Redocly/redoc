@@ -109,8 +109,12 @@ export class OpenAPIParser {
    * resets visited enpoints. should be run after
    */
   resetVisited() {
-    for (let k in this._refCounter._counter) {
-      if (this._refCounter._counter[k] > 0) {
+    if (__DEV__) {
+      // check in dev mode
+      for (let k in this._refCounter._counter) {
+        if (this._refCounter._counter[k] > 0) {
+          console.warn('Not exited reference: ' + k);
+        }
       }
     }
     this._refCounter = new RefCounter();
@@ -129,11 +133,12 @@ export class OpenAPIParser {
   deref<T extends object>(obj: OpenAPIRef | T, forceCircular: boolean = false): T {
     if (this.isRef(obj)) {
       const resolved = this.byRef<T>(obj.$ref)!;
-      if (this._refCounter.visited(obj.$ref) && !forceCircular) {
+      const visited = this._refCounter.visited(obj.$ref);
+      this._refCounter.visit(obj.$ref);
+      if (visited && !forceCircular) {
         // circular reference detected
         return Object.assign({}, resolved, { 'x-circular-ref': true });
       }
-      this._refCounter.visit(obj.$ref);
       // deref again in case one more $ref is here
       if (this.isRef(resolved)) {
         const res = this.deref(resolved);
@@ -169,9 +174,11 @@ export class OpenAPIParser {
     const allOfSchemas = schema.allOf.map((subSchema, idx) => {
       const resolved = this.deref(subSchema, forceCircular);
       const subRef = subSchema.$ref || $ref + '/allOf/' + idx;
+      const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
+      receiver.namedParents!.push(...(subMerged.namedParents || []));
       return {
         $ref: subRef,
-        schema: this.mergeAllOf(resolved, subRef, forceCircular),
+        schema: subMerged,
       };
     });
 
@@ -188,7 +195,10 @@ export class OpenAPIParser {
         throw new Error(`Uncopatible types in allOf at "${$ref}"`);
       }
 
-      receiver.type = subSchema.type;
+      if (subSchema.type !== undefined) {
+        receiver.type = subSchema.type;
+      }
+
       if (subSchema.properties !== undefined) {
         // TODO: merge properties contents
         receiver.properties = {
