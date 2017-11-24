@@ -38,7 +38,7 @@ export class SpecStore {
   }
 
   @computed
-  get security() {
+  get securitySchemes() {
     const schemes = this.parser.spec.components && this.parser.spec.components.securitySchemes;
     return schemes && new SecuritySchemesModel(this.parser);
   }

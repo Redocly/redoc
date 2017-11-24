@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { SecuritySchemesModel } from '../../services/models/';
+import { SecuritySchemesModel } from '../../services/models';
 
 import styled from '../../styled-components';
 import { H2 } from '../../common-elements';
@@ -14,11 +14,6 @@ const AUTH_TYPES = {
   openIdConnect: 'Open ID Connect',
 };
 
-export interface OAuthFlowProps {
-  type: string;
-  flow: OpenAPISecurityScheme['flows'][keyof OpenAPISecurityScheme['flows']];
-}
-
 const AuthTable = styled.table`
   ul > li {
     margin: 0.5em 0 !important;
@@ -28,6 +23,11 @@ const AuthTable = styled.table`
     text-transform: capitalize;
   }
 `;
+
+export interface OAuthFlowProps {
+  type: string;
+  flow: OpenAPISecurityScheme['flows'][keyof OpenAPISecurityScheme['flows']];
+}
 
 export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
   render() {

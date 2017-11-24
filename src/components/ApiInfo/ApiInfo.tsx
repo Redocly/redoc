@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 
 import { AppStore } from '../../services/AppStore';
 
-import { SecurityDefs } from '../SecurityDefs/SecurityDefs';
+import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 import { Markdown } from '../Markdown/Markdown';
 import { MiddlePanel, DarkRightPanel, Row } from '../../common-elements/';
 
@@ -102,7 +102,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                 'security-definitions': {
                   component: SecurityDefs,
                   propsSelector: store => ({
-                    securitySchemes: store!.spec.security,
+                    securitySchemes: store!.spec.securitySchemes,
                   }),
                 },
               }}
