@@ -120,7 +120,7 @@ export class MenuBuilder {
 
       // don't put empty tag into content, instead put its operations
       if (tag.name === '') {
-        let items = this.getOperationsItems(parser, undefined, tag, item.depth, options);
+        let items = this.getOperationsItems(parser, undefined, tag, item.depth + 1, options);
         res.push(...items);
         continue;
       }
