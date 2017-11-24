@@ -68,7 +68,12 @@ export class OpenAPIParser {
   }
 
   preprocess(spec: OpenAPISpec) {
-    if (!this.options.noAutoAuth && spec.info) {
+    if (
+      !this.options.noAutoAuth &&
+      spec.info &&
+      spec.components &&
+      spec.components.securitySchemes
+    ) {
       // Automatically inject Authentication section with SecurityDefinitions component
       const description = spec.info.description || '';
       const securityRegexp = new RegExp(
