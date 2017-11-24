@@ -26,7 +26,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
           <OperationMenuItemContent item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active}>
-            <MenuItemTitle>{item.name}</MenuItemTitle>
+            <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
             {(item.depth > 0 &&
               item.items.length > 0 && (
                 <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />

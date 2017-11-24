@@ -136,4 +136,6 @@ export const MenuItemTitle = withProps<{ width?: string }>(styled.span).attrs({
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
