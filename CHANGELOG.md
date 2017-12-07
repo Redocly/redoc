@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.5"></a>
+# [2.0.0-alpha.5](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2017-12-07)
+
+
+### Bug Fixes
+
+* correct pointer for the schema ([4ae1574](https://github.com/Rebilly/Redoc/commit/4ae1574))
+* bundle in reftools in lib build (do not crash on prod builds in create-react-app) ([57129d3](https://github.com/Rebilly/Redoc/commit/57129d3))
+
+
 <a name="2.0.0-alpha.4"></a>
 # [2.0.0-alpha.4](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2017-11-24)
 
