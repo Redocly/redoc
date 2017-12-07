@@ -9,7 +9,7 @@ import { COMPONENT_REGEXP, buildComponentComment } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 import { appendToMdHeading } from '../utils/index';
 
-export type MergedOpenAPISchema = OpenAPISchema & { namedParents?: string[] };
+export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
 
 /**
  * Helper class to keep track of visited references to avoid
@@ -166,7 +166,7 @@ export class OpenAPIParser {
    */
   mergeAllOf(
     schema: OpenAPISchema,
-    $ref: string,
+    $ref?: string,
     forceCircular: boolean = false,
   ): MergedOpenAPISchema {
     if (schema.allOf === undefined) {
@@ -176,14 +176,14 @@ export class OpenAPIParser {
     let receiver: MergedOpenAPISchema = {
       ...schema,
       allOf: undefined,
-      namedParents: [],
+      parentRefs: [],
     };
 
-    const allOfSchemas = schema.allOf.map((subSchema, idx) => {
+    const allOfSchemas = schema.allOf.map(subSchema => {
       const resolved = this.deref(subSchema, forceCircular);
-      const subRef = subSchema.$ref || $ref + '/allOf/' + idx;
+      const subRef = subSchema.$ref || undefined;
       const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
-      receiver.namedParents!.push(...(subMerged.namedParents || []));
+      receiver.parentRefs!.push(...(subMerged.parentRefs || []));
       return {
         $ref: subRef,
         schema: subMerged,
@@ -219,9 +219,9 @@ export class OpenAPIParser {
         receiver.required = (receiver.required || []).concat(subSchema.required);
       }
 
-      if (isNamedDefinition(subSchemaRef)) {
-        receiver.namedParents!.push(subSchemaRef);
-        if (receiver.title === undefined) {
+      if (subSchemaRef) {
+        receiver.parentRefs!.push(subSchemaRef);
+        if (receiver.title === undefined && isNamedDefinition(subSchemaRef)) {
           receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }

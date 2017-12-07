@@ -113,8 +113,8 @@ export function langFromMime(contentType: string): string {
   return 'clike';
 }
 
-export function isNamedDefinition(pointer: string): boolean {
-  return /^#\/components\/schemas\/[^\/]+$/.test(pointer);
+export function isNamedDefinition(pointer?: string): boolean {
+  return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
 export function humanizeConstraints(schema: OpenAPISchema): string[] {

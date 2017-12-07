@@ -69,7 +69,7 @@ export class SchemaModel {
 
     parser.exitRef(schemaOrRef);
 
-    for (let $ref of this.schema.namedParents || []) {
+    for (let $ref of this.schema.parentRefs || []) {
       // exit all the refs visited during allOf traverse
       parser.exitRef({ $ref });
     }
