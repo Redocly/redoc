@@ -75,9 +75,9 @@ export class OperationModel implements IMenuItem {
     this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = JsonPointer.baseName(this._$ref, 2);
 
-    this.parameters = (operationSpec.parameters || []).map(
-      paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options),
-    );
+    this.parameters = operationSpec.pathParameters
+      .concat(operationSpec.parameters || [])
+      .map(paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options));
 
     let hasSuccessResponses = false;
     this.responses = Object.keys(operationSpec.responses || [])

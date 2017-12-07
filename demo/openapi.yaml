@@ -102,7 +102,7 @@ x-tagGroups:
 paths:
   /pet:
     parameters:
-      - name: pathParam
+      - name: cookieParam
         in: cookie
         description: Some cookie
         required: true

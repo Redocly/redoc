@@ -13,7 +13,7 @@ export type TagInfo = OpenAPITag & {
 export type ExtendedOpenAPIOperation = {
   _$ref: string;
   httpVerb: string;
-  pathParams: Referenced<OpenAPIParameter>[];
+  pathParameters: Referenced<OpenAPIParameter>[];
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Dict<TagInfo>;
@@ -193,7 +193,7 @@ export class MenuBuilder {
             ...operationInfo,
             _$ref: operationPointer,
             httpVerb: operationName,
-            pathParams: path.parameters || [],
+            pathParameters: path.parameters || [],
           });
         }
       }
