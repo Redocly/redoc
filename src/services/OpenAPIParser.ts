@@ -94,9 +94,9 @@ export class OpenAPIParser {
     let res;
     if (this.spec === undefined) return;
     if (ref.charAt(0) !== '#') ref = '#' + ref;
-    ref = decodeURI(ref);
+    ref = decodeURIComponent(ref);
     try {
-      res = JsonPointer.get(this.spec, decodeURIComponent(ref));
+      res = JsonPointer.get(this.spec, ref);
     } catch (e) {
       // do nothing
     }
@@ -107,6 +107,9 @@ export class OpenAPIParser {
    * checks if the objectt is OpenAPI reference (containts $ref property)
    */
   isRef(obj: any): obj is OpenAPIRef {
+    if (!obj) {
+      return false;
+    }
     return obj.$ref !== undefined && obj.$ref !== null;
   }
 
