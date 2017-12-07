@@ -13,7 +13,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "deprecated": false,
         "description": "",
         "discriminatorProp": "type",
-        "displayType": "Pet (object)",
+        "displayType": "object",
         "enum": Array [],
         "example": undefined,
         "format": undefined,
@@ -28,7 +28,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "default": undefined,
             "deprecated": false,
             "description": "",
-            "displayType": "Dog (object)",
+            "displayType": "object",
             "enum": Array [],
             "example": undefined,
             "fields": Array [
@@ -331,7 +331,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "discriminator": Object {
                 "propertyName": "type",
               },
-              "namedParents": Array [
+              "parentRefs": Array [
                 "#/components/schemas/Pet",
               ],
               "properties": Object {
@@ -360,7 +360,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "default": undefined,
             "deprecated": false,
             "description": "",
-            "displayType": "Cat (object)",
+            "displayType": "object",
             "enum": Array [],
             "example": undefined,
             "fields": Array [
@@ -665,7 +665,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "discriminator": Object {
                 "propertyName": "type",
               },
-              "namedParents": Array [
+              "parentRefs": Array [
                 "#/components/schemas/Pet",
               ],
               "properties": Object {
@@ -799,7 +799,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "default": undefined,
       "deprecated": false,
       "description": "",
-      "displayType": "Dog (object)",
+      "displayType": "object",
       "enum": Array [],
       "example": undefined,
       "fields": Array [
@@ -1102,7 +1102,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "discriminator": Object {
           "propertyName": "type",
         },
-        "namedParents": Array [
+        "parentRefs": Array [
           "#/components/schemas/Pet",
         ],
         "properties": Object {
