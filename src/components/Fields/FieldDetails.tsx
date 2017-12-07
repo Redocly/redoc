@@ -6,12 +6,13 @@ import { EnumValues } from './EnumValues';
 import { FieldDetail } from './FieldDetail';
 import { ConstraintsView } from './FieldContstraints';
 import {
-  CircularLabel,
+  RecursiveLabel,
   NullableLabel,
   PatternLabel,
   RequiredLabel,
   TypeFormat,
   TypeName,
+  TypeTitle,
   TypePrefix,
 } from '../../common-elements/fields';
 
@@ -34,11 +35,12 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
               {schema.format}>
             </TypeFormat>
           )}
+          {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> Nullable </NullableLabel>}
           {schema.pattern && <PatternLabel>{schema.pattern}</PatternLabel>}
           {required && <RequiredLabel> Required </RequiredLabel>}
-          {schema.isCircular && <CircularLabel> Circular </CircularLabel>}
+          {schema.isCircular && <RecursiveLabel> Recursive </RecursiveLabel>}
         </div>
         {deprecated && (
           <div>

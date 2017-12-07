@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { FieldDetails } from '../Fields/FieldDetails';
-import { TypeName, CircularLabel } from '../../common-elements/fields';
+import { RecursiveLabel, TypeName, TypeTitle } from '../../common-elements/fields';
 
 import { SchemaModel } from '../../services/models';
 
@@ -28,7 +28,8 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       return (
         <div>
           <TypeName>{schema.displayType}</TypeName>
-          <CircularLabel> Circular </CircularLabel>
+          {schema.title && <TypeTitle> {schema.title} </TypeTitle>}
+          <RecursiveLabel> Recursive </RecursiveLabel>
         </div>
       );
     }

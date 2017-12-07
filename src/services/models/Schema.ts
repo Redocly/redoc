@@ -100,7 +100,7 @@ export class SchemaModel {
     this.pattern = schema.pattern;
 
     this.constraints = humanizeConstraints(schema);
-    this.displayType = this.title === '' ? this.type : `${this.title} (${this.type})`;
+    this.displayType = this.type;
     this.isPrimitive = isPrimitiveType(schema);
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;

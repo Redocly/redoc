@@ -18,7 +18,10 @@ export const TypePrefix = styled(FieldLabel)`
 `;
 
 export const TypeName = styled(FieldLabel)`
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.4)};
+  color: ${props => transparentizeHex(props.theme.colors.text, 0.8)};
+`;
+export const TypeTitle = styled(FieldLabel)`
+  color: ${props => transparentizeHex(props.theme.colors.text, 0.5)};
 `;
 
 export const TypeFormat = TypeName;
@@ -29,7 +32,7 @@ export const RequiredLabel = styled(FieldLabel)`
   font-weight: bold;
 `;
 
-export const CircularLabel = styled(FieldLabel)`
+export const RecursiveLabel = styled(FieldLabel)`
   color: #dd9900;
   font-size: 13px;
 `;
