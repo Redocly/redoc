@@ -3,7 +3,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in moudules that need transpiling + non-js (e.g. css)
-  whitelist: ['swagger2openapi', 'reftools', /\.(?!(?:jsx?|json)$).{1,5}$/i],
+  whitelist: ['swagger2openapi', /reftools/, /\.(?!(?:jsx?|json)$).{1,5}$/i],
 });
 
 const VERSION = JSON.stringify(require('./package.json').version);
