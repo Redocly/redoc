@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs/Subject';
+import { Observable } from '@angular/core';
 
 @Injectable()
 export class SchemaChangerService {
