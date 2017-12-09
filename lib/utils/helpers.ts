@@ -118,12 +118,17 @@ export const isSafari = Object.prototype.toString.call(window.HTMLElement).index
   || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window['safari']
   || safari.pushNotification);
 
+// works only for plain objects (JSON)
 export function snapshot(obj) {
   if(obj == undefined || typeof(obj) !== 'object') {
     return obj;
   }
 
-  var temp = new obj.constructor();
+  if(obj instanceof Date) {
+    return new Date(obj.getTime());
+  }
+
+  var temp = Array.isArray(obj) ? [] : {};
 
   for(var key in obj) {
     if (obj.hasOwnProperty(key)) {

@@ -9,6 +9,7 @@ $mobile-menu-compact-breakpoint: 550px;
 #resources-nav {
   position: relative;
   width: 100%;
+  overflow: scroll;
 }
 
 ul.menu-root {

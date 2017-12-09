@@ -18,7 +18,7 @@
 
 ## Features
 - Extremely easy deployment
-- The widest OpenAPI features support (yes, it supports even `discriminator`) <br>
+- The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
 - Neat **interactive** documentation for nested objects <br>
 ![](docs/images/nested-demo.gif)
@@ -32,6 +32,7 @@
 - Multiple ReDoc instances on single page ([example](demo/examples/multiple-apis/index.html))
 
 ## Roadmap
+  - [ ] [OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)
   - [x] ~~performance optimizations~~
   - [x] ~~better navigation (menu improvements + search)~~
   - [ ] ability to simple branding/styling
@@ -43,6 +44,13 @@ We host the latest and all the previous ReDoc releases on GitHub Pages-based **C
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js this file is updated with each release of ReDoc and may introduce breaking changes. **Not recommended to use in production.** Use particular release or `v1.x.x`.
+
+## Version Guidance
+| ReDoc Release | OpenAPI Specification |
+|:--------------|:----------------------|
+| 1.19.x        | 2.0                   |
+| 1.18.x        | 2.0                   |
+| 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
 - [Rebilly](https://rebilly.github.io/RebillyAPI)
@@ -131,6 +139,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
 * [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) - group tags by categories in the side menu
 * [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
+* [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 
 ### `<redoc>` tag attributes
 * `spec-url` - relative or absolute url to your spec file;
@@ -148,6 +157,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * `no-auto-auth` - do not inject Authentication section automatically
 * `path-in-middle-panel` - show path link and HTTP verb in the middle panel instead of the right one
 * `hide-loading` - do not show loading animation. Useful for small docs
+* `native-scrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
 
 ## Advanced usage
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:

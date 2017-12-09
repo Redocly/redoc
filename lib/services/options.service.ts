@@ -20,7 +20,9 @@ const OPTION_NAMES = new Set([
   'noAutoAuth',
   'pathInMiddlePanel',
   'untrustedSpec',
-  'hideLoading'
+  'hideLoading',
+  'ignoredHeaderParameters',
+  'nativeScrollbars',
 ]);
 
 export interface Options {
@@ -38,6 +40,8 @@ export interface Options {
   untrustedSpec?: boolean;
   hideLoading?: boolean;
   spec?: any;
+  ignoredHeaderParameters?: string[];
+  nativeScrollbars?: boolean;
 }
 
 @Injectable()
@@ -77,7 +81,7 @@ export class OptionsService {
     this._normalizeOptions();
   }
 
-  _normalizeOptions():void {
+  _normalizeOptions(): void {
     // modify scrollYOffset to always be a function
     if (!isFunction(this._options.scrollYOffset)) {
       if (isFinite(this._options.scrollYOffset)) {
@@ -107,6 +111,8 @@ export class OptionsService {
     if (isString(this._options.pathInMiddlePanel)) this._options.pathInMiddlePanel = true;
     if (isString(this._options.untrustedSpec)) this._options.untrustedSpec = true;
     if (isString(this._options.hideLoading)) this._options.hideLoading = true;
+    if (isString(this._options.nativeScrollbars))
+      this._options.nativeScrollbars = true;
     if (isString(this._options.expandResponses)) {
       let str = this._options.expandResponses as string;
       if (str === 'all') return;
