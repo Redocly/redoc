@@ -54,7 +54,6 @@
   "author": "Roman Hotsiy",
   "license": "MIT",
   "devDependencies": {
-    "@angular/cli": "^1.6.0",
     "@angular/common": "^4.3.2",
     "@angular/compiler": "^4.3.2",
     "@angular/compiler-cli": "^4.3.2",
@@ -110,7 +109,7 @@
     "style-loader": "^0.18.2",
     "swagger-schema-official": "^2.0.0-bab6bed",
     "tslint": "^5.5.0",
-    "typescript": "^2.3.4",
+    "typescript": "^2.4.2",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.6.1",
     "webpack-merge": "^4.1.0"
