@@ -91,7 +91,7 @@ export class SchemaSample extends BaseComponent implements OnInit {
 
       this.componentSchema = this._normalizer.normalize(this.componentSchema, this.pointer);
 
-      let discriminator = this.componentSchema.discriminator || this.componentSchema['x-discriminatorBasePointer'];
+      let discriminator = this.componentSchema.discriminator || this.componentSchema['x-discriminatorBasePointer'] || this.componentSchema['x-extendedDiscriminator'];
       if (discriminator) {
         let descendants = this.specMgr.findDerivedDefinitions(this.componentSchema._pointer || this.pointer, this.componentSchema);
         if (descendants.length) {
