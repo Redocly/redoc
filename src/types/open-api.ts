@@ -200,7 +200,9 @@ export type OpenAPIComponents = {
   callbacks?: { [name: string]: Referenced<OpenAPICallback> };
 };
 
-export type OpenAPISecurityRequirement = {};
+export type OpenAPISecurityRequirement = {
+  [name: string]: string[];
+};
 
 export type OpenAPISecurityScheme = {
   type: 'apiKey' | 'http' | 'oauth2' | 'openIdConnect';

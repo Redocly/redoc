@@ -1,9 +1,10 @@
 import * as React from 'react';
 import styled from '../../styled-components';
+import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequirement';
 
 import { observer } from 'mobx-react';
 
-import { H2, MiddlePanel, DarkRightPanel, Badge, Row } from '../../common-elements';
+import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 
 import { ComponentWithOptions } from '../OptionsProvider';
 
@@ -53,6 +54,7 @@ export class Operation extends ComponentWithOptions<OperationProps> {
           </H2>
           {pathInMiddle && <Endpoint operation={operation} inverted={true} />}
           {description !== undefined && <Markdown source={description} />}
+          <SecurityRequirements securities={operation.security} />
           <Parameters parameters={operation.parameters} body={operation.requestBody} />
           <ResponsesList responses={operation.responses} />
         </MiddlePanel>

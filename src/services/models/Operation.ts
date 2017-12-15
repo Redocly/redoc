@@ -3,6 +3,7 @@ import { join as joinPaths } from 'path';
 import { parse as urlParse } from 'url';
 
 import { IMenuItem } from '../MenuStore';
+import { SecurityRequirementModel } from './SecurityRequirement';
 import { GroupModel } from './Group.model';
 
 import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
@@ -15,10 +16,6 @@ import { OpenAPIParser } from '../OpenAPIParser';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { JsonPointer, getOperationSummary, isAbsolutePath, stripTrailingSlash } from '../../utils';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
 
 /**
  * Operation model ready to be used by components
@@ -50,6 +47,7 @@ export class OperationModel implements IMenuItem {
   responses: ResponseModel[];
   path: string;
   servers: OpenAPIServer[];
+  security: SecurityRequirementModel[];
   codeSamples: CodeSample[];
 
   constructor(
@@ -101,6 +99,10 @@ export class OperationModel implements IMenuItem {
       parser.specUrl,
       operationSpec.servers || parser.spec.servers || [],
     );
+
+    this.security = (operationSpec.security || parser.spec.security || []).map(
+      security => new SecurityRequirementModel(security, parser),
+    );
   }
 
   /**
@@ -124,6 +126,10 @@ export class OperationModel implements IMenuItem {
       ? 'operation/' + this.operationId
       : this.parent !== undefined ? this.parent.id + this.id : this.id;
   }
+}
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 function normalizeServers(specUrl: string, servers: OpenAPIServer[]): OpenAPIServer[] {

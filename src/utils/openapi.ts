@@ -161,3 +161,5 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
 
   return res;
 }
+
+export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';

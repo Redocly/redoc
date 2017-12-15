@@ -3,7 +3,7 @@ import * as React from 'react';
 import { SecuritySchemesModel } from '../../services/models';
 
 import styled from '../../styled-components';
-import { H2 } from '../../common-elements';
+import { H2, ShareLink } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 import { OpenAPISecurityScheme } from '../../types';
 
@@ -81,8 +81,11 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
     return (
       <div>
         {this.props.securitySchemes.schemes.map(scheme => (
-          <div key={scheme.id}>
-            <H2>{scheme.id}</H2>
+          <div data-section-id={scheme.sectionId} key={scheme.id}>
+            <H2>
+              <ShareLink href={'#' + scheme.sectionId} />
+              {scheme.id}
+            </H2>
             <Markdown source={scheme.description || ''} />
             <AuthTable className="security-details">
               <tbody>

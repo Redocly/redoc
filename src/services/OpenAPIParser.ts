@@ -7,7 +7,7 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
 import { COMPONENT_REGEXP, buildComponentComment } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-import { appendToMdHeading } from '../utils/index';
+import { appendToMdHeading } from '../utils/';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
 

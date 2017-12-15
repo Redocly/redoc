@@ -21,6 +21,7 @@ const theme = {
   },
   schemaView: {
     linesColor: '#7f99cf',
+    defaultDetailsWidth: '75%',
   },
   baseFont: {
     size: '14px',
@@ -35,7 +36,7 @@ const theme = {
   },
   code: {
     fontSize: '13px',
-    fontFamily: '"Lucida Console", Monaco, monospace',
+    fontFamily: 'Courirer, monospace',
   },
   links: {
     color: undefined, // by default main color

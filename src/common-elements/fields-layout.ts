@@ -73,7 +73,7 @@ export const PropertyNameCell = PropertyCell.extend`
 export const PropertyDetailsCell = styled.td`
   border-bottom: 1px solid #9fb4be;
   padding: 10px 0;
-  width: 75%;
+  width: ${props => props.theme.schemaView.defaultDetailsWidth};
   box-sizing: border-box;
 
   tr.expanded & {
