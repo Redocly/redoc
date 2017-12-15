@@ -36,7 +36,7 @@
     "@types/mocha": "^2.2.44",
     "@types/prismjs": "^1.6.4",
     "@types/prop-types": "^15.5.2",
-    "@types/react": "^16.0.9",
+    "@types/react": "^16.0.30",
     "@types/react-dom": "^16.0.0",
     "@types/react-hot-loader": "^3.0.3",
     "@types/react-tabs": "^1.0.2",
