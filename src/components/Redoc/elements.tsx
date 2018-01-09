@@ -9,6 +9,7 @@ export const RedocWrap = styled.div`
   color: ${props => props.theme.colors.text};
   display: flex;
   position: relative;
+  text-align: left;
 
   -webkit-font-smoothing: ${props => props.theme.baseFont.smoothing};
   font-smoothing: ${props => props.theme.baseFont.smoothing};
