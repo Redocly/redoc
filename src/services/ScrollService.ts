@@ -1,33 +1,35 @@
 import { debounce, bind } from 'decko';
 import { EventEmitter } from 'eventemitter3';
 
+import { querySelector, isBrowser } from '../utils';
+
 const EVENT = 'scroll';
 
 export class ScrollService {
-  private _scrollParent: Window | HTMLElement;
+  private _scrollParent: Window | HTMLElement | undefined;
   private _emiter: EventEmitter;
   private _prevOffsetY: number = 0;
   constructor() {
-    this._scrollParent = window;
+    this._scrollParent = isBrowser ? window : undefined;
     this._emiter = new EventEmitter();
     this.bind();
   }
 
   bind() {
     this._prevOffsetY = this.scrollY();
-    this._scrollParent.addEventListener('scroll', this.handleScroll);
+    this._scrollParent && this._scrollParent.addEventListener('scroll', this.handleScroll);
   }
 
   dispose() {
-    this._scrollParent.removeEventListener('scroll', this.handleScroll);
+    this._scrollParent && this._scrollParent.removeEventListener('scroll', this.handleScroll);
     this._emiter.removeAllListeners(EVENT);
   }
 
   scrollY(): number {
-    if (this._scrollParent === window) {
-      return window.pageYOffset;
-    } else if (this._scrollParent instanceof HTMLElement) {
+    if (typeof HTMLElement !== 'undefined' && this._scrollParent instanceof HTMLElement) {
       return this._scrollParent.scrollTop;
+    } else if (this._scrollParent !== undefined) {
+      return (this._scrollParent as Window).pageYOffset;
     } else {
       return 0;
     }
@@ -56,7 +58,7 @@ export class ScrollService {
   }
 
   scrollIntoViewBySelector(selector: string) {
-    const element = document.querySelector(selector);
+    const element = querySelector(selector);
     this.scrollIntoView(element);
   }
 

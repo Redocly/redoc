@@ -92,16 +92,13 @@ export default env => {
         },
         {
           test: /\.css$/,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-                minimize: true,
-              },
+          use: {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              minimize: true,
             },
-          ],
+          },
         },
         { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       ],
@@ -128,7 +125,7 @@ export default env => {
     if (!env.standalone) {
       config.externals = (context, request, callback) => {
         // ignore node-fetch dep of swagger2openapi as it is not used
-        if (/node-fetch$/i.test(request)) return callback(null, 'var fetch');
+        if (/node-fetch$/i.test(request)) return callback(null, 'var undefined');
         return nodeExternals(context, request, callback);
       };
     }

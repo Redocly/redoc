@@ -1,5 +1,6 @@
 import { ThemeInterface } from '../theme';
 import { isNumeric, mergeObjects } from '../utils/helpers';
+import { querySelector } from '../utils/dom';
 import defaultTheme from '../theme';
 
 export interface RedocRawOptions {
@@ -69,7 +70,7 @@ export class RedocNormalizedOptions {
   static normalizeScrollYOffset(value: RedocRawOptions['scrollYOffset']): () => number {
     // just number is not valid selector and leads to crash so checking if isNumeric here
     if (typeof value === 'string' && !isNumeric(value)) {
-      const el = document.querySelector(value);
+      const el = querySelector(value);
       if (!el) {
         console.warn(
           'scrollYOffset value is a selector to non-existing element. Using offset 0 by default',

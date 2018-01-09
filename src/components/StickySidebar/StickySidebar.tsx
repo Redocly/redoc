@@ -1,16 +1,19 @@
 import * as React from 'react';
-import Stickyfill from 'stickyfill';
-
 import { ComponentWithOptions } from '../OptionsProvider';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
 import styled from '../../styled-components';
+
+let Stickyfill;
+if (typeof window !== 'undefined') {
+  Stickyfill = require('stickyfill').default;
+}
 
 export interface StickySidebarProps {
   className?: string;
   scrollYOffset?: RedocRawOptions['scrollYOffset']; // passed directly or via context
 }
 
-const stickyfill = Stickyfill();
+const stickyfill = Stickyfill && Stickyfill();
 
 const StyledStickySidebar = styled.div`
   width: ${props => props.theme.menu.width};
@@ -31,11 +34,11 @@ export class StickySidebar extends ComponentWithOptions<StickySidebarProps> {
   stickyElement: Element;
 
   componentDidMount() {
-    stickyfill.add(this.stickyElement);
+    stickyfill && stickyfill.add(this.stickyElement);
   }
 
   componentWillUnmount() {
-    stickyfill.remove(this.stickyElement);
+    stickyfill && stickyfill.remove(this.stickyElement);
   }
 
   get scrollYOffset() {

@@ -7,7 +7,7 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
 import { COMPONENT_REGEXP, buildComponentComment } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-import { appendToMdHeading } from '../utils/';
+import { appendToMdHeading, isBrowser } from '../utils/';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
 
@@ -52,10 +52,11 @@ export class OpenAPIParser {
 
     this.spec = spec;
 
+    const href = isBrowser ? window.location.href : '';
     if (typeof specUrl === 'string') {
-      this.specUrl = urlResolve(window.location.href, specUrl);
+      this.specUrl = urlResolve(href, specUrl);
     } else {
-      this.specUrl = window.location.href;
+      this.specUrl = href;
     }
   }
 

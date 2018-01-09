@@ -1,6 +1,7 @@
 import { render } from 'react-dom';
 import * as React from 'react';
 
+import { querySelector } from './utils/dom';
 import { RedocStandalone } from './components/RedocStandalone';
 
 export const version = __REDOC_VERSION__;
@@ -30,7 +31,7 @@ function parseOptionsFromElement(element: Element) {
 export function init(
   specOrSpecUrl: string | any,
   options: any = {},
-  element: Element | null = document.querySelector('redoc'),
+  element: Element | null = querySelector('redoc'),
 ) {
   if (element === null) {
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
@@ -63,7 +64,7 @@ export function init(
  * autoinit ReDoc if <redoc> tag is found on the page with "spec-url" attr
  */
 function autoInit() {
-  const element = document.querySelector('redoc');
+  const element = querySelector('redoc');
   if (!element) {
     return;
   }

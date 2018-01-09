@@ -20,7 +20,10 @@ import 'prismjs/components/prism-objectivec.js';
 import 'prismjs/components/prism-scala.js';
 import 'prismjs/components/prism-markup.js'; // xml
 
-import 'prismjs/themes/prism-dark.css'; // dark theme
+import { injectGlobal } from '../styled-components';
+
+import prismStyles from 'prismjs/themes/prism-dark.css'; // dark theme
+injectGlobal`${prismStyles}`;
 
 const DEFAULT_LANG = 'clike';
 

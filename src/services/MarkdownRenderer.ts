@@ -3,7 +3,7 @@ import * as Remarkable from 'remarkable';
 import { MDComponent } from '../components/Markdown/Markdown';
 import { IMenuItem, SECTION_ATTR } from './MenuStore';
 import { GroupModel } from './models';
-import { highlight } from '../utils';
+import { highlight, html2Str } from '../utils';
 
 const md = new Remarkable('default', {
   html: true,
@@ -63,13 +63,6 @@ export class MarkdownRenderer {
 
   attachHeadingsContent(rawText: string) {
     const buildRegexp = heading => new RegExp(`<h\\d ${SECTION_ATTR}="section/${heading.id}">`);
-
-    const tmpEl = document.createElement('DIV');
-
-    const html2Str = html => {
-      tmpEl.innerHTML = html;
-      return tmpEl.innerText;
-    };
 
     let flatHeadings = this.flattenHeadings(this.headings);
     if (flatHeadings.length < 1) return;

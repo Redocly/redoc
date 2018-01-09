@@ -1,5 +1,6 @@
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { isBrowser } from '../../utils/';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;
@@ -15,7 +16,7 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   get downloadLink() {
-    if (!this.parser.specUrl && window.Blob && window.URL) {
+    if (!this.parser.specUrl && isBrowser && window.Blob && window.URL) {
       const blob = new Blob([JSON.stringify(this.parser.spec, null, 2)], {
         type: 'application/json',
       });
@@ -25,7 +26,7 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   get downloadFileName(): string | undefined {
-    if (!this.parser.specUrl && window.Blob && window.URL) {
+    if (!this.parser.specUrl && isBrowser && window.Blob && window.URL) {
       return 'swagger.json';
     }
     return undefined;

@@ -1,4 +1,7 @@
-const isSupported = document.queryCommandSupported && document.queryCommandSupported('copy');
+const isSupported =
+  typeof document !== 'undefined' &&
+  document.queryCommandSupported &&
+  document.queryCommandSupported('copy');
 
 export class ClipboardService {
   static isSupported(): boolean {

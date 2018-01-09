@@ -1,4 +1,5 @@
-import { OperationModel, SpecStore } from './models';
+import { querySelector } from '../utils/dom';
+import { OperationModel, GroupModel, SpecStore } from './models';
 import { computed, action } from 'mobx';
 
 import { ScrollService } from './ScrollService';
@@ -36,9 +37,9 @@ export class MenuStore {
   /**
    * cached flattened menu items to support absolute indexing
    */
-  private _flatItems: IMenuItem[];
   private _unsubscribe: Function;
   private _hashUnsubscribe: Function;
+  private _items?: (GroupModel | OperationModel)[];
 
   /**
    * active item absolute index (when flattened). -1 means nothing is selected
@@ -60,7 +61,10 @@ export class MenuStore {
    */
   @computed
   get items(): IMenuItem[] {
-    return this.spec.operationGroups;
+    if (!this._items) {
+      this._items = this.spec.operationGroups;
+    }
+    return this._items;
   }
 
   /**
@@ -139,7 +143,7 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
-    return (item && document.querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
   }
 
   /**
@@ -152,13 +156,11 @@ export class MenuStore {
   /**
    * flattened items as they appear in the tree depth-first (top to bottom in the view)
    */
+  @computed
   get flatItems(): IMenuItem[] {
-    if (!this._flatItems) {
-      this._flatItems = flattenByProp(this.items, 'items');
-      this._flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
-    }
-
-    return this._flatItems;
+    const flatItems = flattenByProp(this._items || [], 'items');
+    flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
+    return flatItems;
   }
 
   /**
@@ -188,7 +190,7 @@ export class MenuStore {
       return;
     }
 
-    this.activeItemIdx = item.absoluteIdx!;
+    this.activeItemIdx = item.absoluteIdx || -1;
     if (updateHash) {
       HistoryService.update(item.getHash(), rewriteHistory);
     }
