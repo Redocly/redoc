@@ -1,0 +1,108 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Test schema"
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2/",
+  "parameters": {
+    "extparam": {
+      "name": "extParam",
+      "in": "query",
+      "type": "integer"
+    }
+  },
+  "securityDefinitions": {
+      "petstore_auth": {
+          "type": "oauth2",
+          "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
+          "flow": "implicit",
+          "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+          }
+      },
+      "github_auth": {
+          "type": "oauth2",
+          "authorizationUrl": "https://api.github.com/authorize",
+          "flow": "implicit",
+          "scopes": {
+              "write:account": "modify your account",
+              "read:account": "read your account"
+          }
+      },
+      "api_key": {
+          "type": "apiKey",
+          "name": "api_key",
+          "in": "header"
+      }
+  },
+  "paths": {
+    "test1": {
+      "parameters": [
+        {
+          "name": "pathParam",
+          "in": "path",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "name": "operationParam",
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "test2": {
+      "parameters": [
+        { "$ref": "#/parameters/extparam" }
+      ],
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          {
+            "name": "operationParam",
+            "in": "path",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "test3": {
+      "get": {
+        "summary": "test get",
+        "parameters": [
+          { "$ref": "#/parameters/extparam" }
+        ],
+        "security": [
+          {
+            "github_auth": [
+                "write:account"
+            ]
+          }
+        ]
+      }
+    },
+    "test4": {
+      "parameters": {
+        "$ref": "#/parameters/extparam"
+      },
+      "get": {
+        "summary": "test get"
+      }
+    }
+  }
+}

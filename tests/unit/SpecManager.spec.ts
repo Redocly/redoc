@@ -105,6 +105,33 @@ describe('Utils', () => {
       });
     });
 
+    describe('getOperationScopes method', () => {
+      beforeEach(function (done) {
+        specMgr.load('/tests/schemas/schema-mgr-operation-security.json').then(done, done.fail);
+      });
+
+      it('should handle operation oauth2 scopes', () => {
+        let scopes = specMgr.getOperationScopes('/paths/test1/get/security');
+        scopes.length.should.be.equal(2);
+        scopes[0].name.should.be.equal('write:pets');
+        scopes[0].description.should.be.equal('modify pets in your account');
+        scopes[1].name.should.be.equal('read:pets');
+        scopes[1].description.should.be.equal('read your pets');
+      });
+
+      it('should handle operation scopes when multiple definitions are used', () => {
+        let scopes = specMgr.getOperationScopes('/paths/test3/get/security');
+        scopes.length.should.be.equal(1);
+        scopes[0].name.should.be.equal('write:account');
+        scopes[0].description.should.be.equal('modify your account');\
+      });
+
+      it('should handle the case when no security is present', () => {
+        let scopes = specMgr.getOperationScopes('/paths/test2/get/security');
+        scopes.length.should.be.equal(0);
+      });
+    });
+
     describe('getOperationParams method', () => {
       beforeEach((done:any) => {
         specMgr.load('/tests/schemas/schema-mgr-operationParams.json').then(done, done.fail);

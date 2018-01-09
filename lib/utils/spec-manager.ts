@@ -140,6 +140,41 @@ export class SpecManager {
     return obj;
   }
 
+  getOperationScopes(operationPtr:string) {
+    const getSecurityDefinition = (name: string, scope: string) => {
+      let secDefs = this._schema.securityDefinitions;
+      if (secDefs[name] && secDefs[name].type === 'oauth2') {
+        let availScopes = secDefs[name].scopes;
+        if (availScopes && availScopes[scope]) {
+          return availScopes[scope];
+        }
+      }
+      return null;
+    };
+
+    let securityParams = this.byPointer(operationPtr) || [];
+    let scopes = [];
+
+    // only support one security item per operation for now
+    let base = securityParams[0];
+
+    if (base && base[Object.keys(base)[0]]) {
+        let scopeObj = base[Object.keys(base)[0]];
+        let authName = Object.keys(base)[0];
+         Object.keys(scopeObj).forEach(key => {
+            let val = scopeObj[key];
+            let desc = getSecurityDefinition(authName, val);
+
+            // don't add if the security obj doesn't exist in the security definitions
+            if (desc) {
+              scopes.push({name: val, description: desc});
+            }
+        });
+    }
+
+    return scopes;
+  }
+
   getOperationParams(operationPtr:string):SwaggerParameter[] {
     /* inject JsonPointer into array elements */
     function injectPointers(array:SwaggerParameter[], root) {
