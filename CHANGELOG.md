@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.8"></a>
+# [2.0.0-alpha.8](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.7...v2.0.0-alpha.8) (2018-01-10)
+
+
+### Bug Fixes
+
+* undo section id + some minor fixes ([0253c5d](https://github.com/Rebilly/Redoc/commit/0253c5d))
+
+
+
 <a name="2.0.0-alpha.7"></a>
 # [2.0.0-alpha.7](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2018-01-10)
 
