@@ -1,3 +1,15 @@
+<a name="2.0.0-alpha.7"></a>
+# [2.0.0-alpha.7](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.6...v2.0.0-alpha.7) (2018-01-10)
+
+
+### Bug Fixes
+
+* add id attr to headers to work before react is loaded if ssr ([1743453](https://github.com/Rebilly/Redoc/commit/1743453))
+* crate spec as data/base64 link when ssr ([33678e6](https://github.com/Rebilly/Redoc/commit/33678e6))
+* example value is not showed if it is false ([9756364](https://github.com/Rebilly/Redoc/commit/9756364))
+
+
+
 <a name="2.0.0-alpha.6"></a>
 # [2.0.0-alpha.6](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2018-01-10)
 
