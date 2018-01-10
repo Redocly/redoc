@@ -35,8 +35,7 @@ export class FieldModel {
     this.schema = new SchemaModel(parser, info.schema || {}, schemaPointer, options);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
-    const example = info.example || this.schema.example;
-    this.example = example && JSON.stringify(example);
+    this.example = info.example || this.schema.example;
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
     parser.exitRef(infoOrRef);
