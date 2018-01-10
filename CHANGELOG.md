@@ -1,3 +1,22 @@
+<a name="2.0.0-alpha.6"></a>
+# [2.0.0-alpha.6](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.5...v2.0.0-alpha.6) (2018-01-10)
+
+
+### Bug Fixes
+
+* allOf and deref exit not only named refs ([435cccd](https://github.com/Rebilly/Redoc/commit/435cccd))
+* do not ignore path level parameters ([14f8408](https://github.com/Rebilly/Redoc/commit/14f8408))
+* improve rendering of types ([17da7b7](https://github.com/Rebilly/Redoc/commit/17da7b7))
+* move title propagation to the correct place ([0b0bc99](https://github.com/Rebilly/Redoc/commit/0b0bc99))
+* owerwrite text-align to left ([bfee3ed](https://github.com/Rebilly/Redoc/commit/bfee3ed))
+
+
+### Features
+
+* initial display security requirements ([50e2a58](https://github.com/Rebilly/Redoc/commit/50e2a58))
+
+
+
 <a name="2.0.0-alpha.5"></a>
 # [2.0.0-alpha.5](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.4...v2.0.0-alpha.5) (2017-12-07)
 
