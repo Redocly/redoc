@@ -59,11 +59,12 @@ export class ContentItem extends React.Component<ContentItemProps> {
 export class TagItem extends React.Component<ContentItemProps> {
   render() {
     const { name, description } = this.props.item;
+    const hash = this.props.item.getHash();
     return (
       <Row>
         <MiddlePanel key="middle">
-          <H1>
-            <ShareLink href={'#' + this.props.item.getHash()} />
+          <H1 id={hash}>
+            <ShareLink href={'#' + hash} />
             {name}
           </H1>
           {description !== undefined && <Markdown source={description} />}
