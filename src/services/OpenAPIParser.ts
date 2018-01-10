@@ -191,10 +191,6 @@ export class OpenAPIParser {
       };
     });
 
-    if (receiver.title === undefined && isNamedDefinition($ref)) {
-      receiver.title = JsonPointer.baseName($ref);
-    }
-
     for (let { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       if (
         receiver.type !== subSchema.type &&
@@ -220,17 +216,22 @@ export class OpenAPIParser {
         receiver.required = (receiver.required || []).concat(subSchema.required);
       }
 
+      // merge rest of constraints
+      // TODO: do more intelegent merge
+      receiver = { ...subSchema, ...receiver };
+
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);
         if (receiver.title === undefined && isNamedDefinition(subSchemaRef)) {
           receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
-
-      // merge rest of constraints
-      // TODO: do more intelegent merge
-      receiver = { ...subSchema, ...receiver };
     }
+
+    if (receiver.title === undefined && isNamedDefinition($ref)) {
+      receiver.title = JsonPointer.baseName($ref);
+    }
+
     return receiver;
   }
 
