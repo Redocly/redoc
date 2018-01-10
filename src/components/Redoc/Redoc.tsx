@@ -25,6 +25,10 @@ export class Redoc extends React.Component<RedocProps> {
     this.props.store.menu.updateOnHash();
   }
 
+  componentWillUnmount() {
+    this.props.store.dispose();
+  }
+
   render() {
     const { store: { spec, menu, options } } = this.props;
     const store = this.props.store;

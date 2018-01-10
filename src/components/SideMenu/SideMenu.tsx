@@ -16,7 +16,7 @@ export class SideMenu extends ComponentWithOptions<{ menu: MenuStore }> {
       <MenuItems
         style={{
           overflow: 'auto',
-          '-ms-overflow-style': '-ms-autohiding-scrollbar',
+          msOverflowStyle: '-ms-autohiding-scrollbar',
         }}
         items={store.items}
         onActivate={this.activate}

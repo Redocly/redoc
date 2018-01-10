@@ -44,12 +44,11 @@ export class Operation extends ComponentWithOptions<OperationProps> {
 
     const { name: summary, description, deprecated } = operation;
     const pathInMiddle = this.options.pathInMiddlePanel;
-    const hash = operation.getHash();
     return (
       <OperationRow>
         <MiddlePanel>
-          <H2 id={hash}>
-            <ShareLink href={'#' + hash} />
+          <H2>
+            <ShareLink href={'#' + operation.getHash()} />
             {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
           </H2>
           {pathInMiddle && <Endpoint operation={operation} inverted={true} />}

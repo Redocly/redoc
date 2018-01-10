@@ -133,7 +133,9 @@ export class MenuStore {
         return (item as OperationModel).operationId === ptr;
       });
     }
-    this.activateAndScroll(item, false);
+    if (item) {
+      this.activateAndScroll(item, false);
+    }
     return item !== undefined;
   }
 
