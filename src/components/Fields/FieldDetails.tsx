@@ -9,7 +9,6 @@ import {
   RecursiveLabel,
   NullableLabel,
   PatternLabel,
-  RequiredLabel,
   TypeFormat,
   TypeName,
   TypeTitle,
@@ -22,7 +21,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
 
-    const { schema, description, required, example, deprecated } = field;
+    const { schema, description, example, deprecated } = field;
 
     return (
       <div>
@@ -39,7 +38,6 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> Nullable </NullableLabel>}
           {schema.pattern && <PatternLabel>{schema.pattern}</PatternLabel>}
-          {required && <RequiredLabel> Required </RequiredLabel>}
           {schema.isCircular && <RecursiveLabel> Recursive </RecursiveLabel>}
         </div>
         {deprecated && (

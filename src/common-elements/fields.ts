@@ -4,7 +4,6 @@ import { transparentizeHex } from '../utils/styled';
 
 export const ClickablePropertyNameCell = PropertyNameCell.extend`
   cursor: pointer;
-  font-weight: bold;
 `;
 
 export const FieldLabel = styled.span`
@@ -26,10 +25,13 @@ export const TypeTitle = styled(FieldLabel)`
 
 export const TypeFormat = TypeName;
 
-export const RequiredLabel = styled(FieldLabel)`
+export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
   color: #e53935;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: normal;
+  margin-left: 20px;
+  line-height: 1;
+  font-weight: normal;
 `;
 
 export const RecursiveLabel = styled(FieldLabel)`

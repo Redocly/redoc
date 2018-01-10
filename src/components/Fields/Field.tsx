@@ -1,7 +1,7 @@
 import { FieldDetails } from './FieldDetails';
 import * as React from 'react';
 
-import { ClickablePropertyNameCell } from '../../common-elements/fields';
+import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
 
 import {
   PropertyBullet,
@@ -27,7 +27,7 @@ export interface FieldProps {
 export class Field extends React.PureComponent<FieldProps> {
   render() {
     const { className, field, isLast } = this.props;
-    const { name, expanded, deprecated } = field;
+    const { name, expanded, deprecated, required } = field;
 
     const paramName = this.props.onClick ? (
       <ClickablePropertyNameCell
@@ -37,11 +37,13 @@ export class Field extends React.PureComponent<FieldProps> {
         <PropertyBullet />
         {name}
         <ShelfIcon size={'1.2em'} direction={expanded ? 'down' : 'right'} />
+        {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined}>
         <PropertyBullet />
         {name}
+        {required && <RequiredLabel> required </RequiredLabel>}
       </PropertyNameCell>
     );
     return (
