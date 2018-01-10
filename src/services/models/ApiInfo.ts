@@ -21,12 +21,17 @@ export class ApiInfoModel implements OpenAPIInfo {
         type: 'application/json',
       });
       return window.URL.createObjectURL(blob);
+    } else if (!isBrowser) {
+      return (
+        'data:application/octet-stream;base64,' +
+        new Buffer(JSON.stringify(this.parser.spec, null, 2)).toString('base64')
+      );
     }
     return this.parser.specUrl;
   }
 
   get downloadFileName(): string | undefined {
-    if (!this.parser.specUrl && isBrowser && window.Blob && window.URL) {
+    if (!this.parser.specUrl) {
       return 'swagger.json';
     }
     return undefined;
