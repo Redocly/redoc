@@ -348,7 +348,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "required": Array [
                 "type",
               ],
-              "title": "Dog",
+              "title": "Pet",
               "type": "object",
             },
             "title": "Dog",
@@ -685,7 +685,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "required": Array [
                 "type",
               ],
-              "title": "Cat",
+              "title": "Pet",
               "type": "object",
             },
             "title": "Cat",
@@ -1126,7 +1126,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "required": Array [
           "type",
         ],
-        "title": "Dog",
+        "title": "Pet",
         "type": "object",
       },
       "title": "Dog",
