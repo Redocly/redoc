@@ -182,6 +182,8 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 - Install dependencies
 `npm install`
 - _(optional)_ Replace `demo/swagger.yaml` with your own schema
+- Build
+`npm run build:module`
 - Start the server
 `npm start`
 - Open `http://localhost:9000`
