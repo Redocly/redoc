@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.9"></a>
+# [2.0.0-alpha.9](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.8...v2.0.0-alpha.9) (2018-01-11)
+
+
+### Bug Fixes
+
+* handle scrollYOffset in ScrollService ([dcab770](https://github.com/Rebilly/Redoc/commit/dcab770))
+
+
+
 <a name="2.0.0-alpha.8"></a>
 # [2.0.0-alpha.8](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.7...v2.0.0-alpha.8) (2018-01-10)
 
