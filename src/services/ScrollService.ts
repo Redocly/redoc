@@ -2,6 +2,7 @@ import { debounce, bind } from 'decko';
 import { EventEmitter } from 'eventemitter3';
 
 import { querySelector, isBrowser } from '../utils';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 const EVENT = 'scroll';
 
@@ -9,7 +10,7 @@ export class ScrollService {
   private _scrollParent: Window | HTMLElement | undefined;
   private _emiter: EventEmitter;
   private _prevOffsetY: number = 0;
-  constructor() {
+  constructor(private options: RedocNormalizedOptions) {
     this._scrollParent = isBrowser ? window : undefined;
     this._emiter = new EventEmitter();
     this.bind();
@@ -37,12 +38,12 @@ export class ScrollService {
 
   isElementBellow(el: Element | null) {
     if (el === null) return;
-    return el.getBoundingClientRect().top > 0;
+    return el.getBoundingClientRect().top > this.options.scrollYOffset();
   }
 
   isElementAbove(el: Element | null) {
     if (el === null) return;
-    return Math.trunc(el.getBoundingClientRect().top) <= 0;
+    return Math.trunc(el.getBoundingClientRect().top) <= this.options.scrollYOffset();
   }
 
   subscribe(cb): () => void {
@@ -55,6 +56,9 @@ export class ScrollService {
       return;
     }
     element.scrollIntoView();
+    this._scrollParent &&
+      this._scrollParent.scrollBy &&
+      (this._scrollParent.scrollBy as any)(0, -this.options.scrollYOffset());
   }
 
   scrollIntoViewBySelector(selector: string) {

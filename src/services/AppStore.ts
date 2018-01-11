@@ -36,7 +36,7 @@ export class AppStore {
   constructor(spec: OpenAPISpec, specUrl?: string, options: RedocRawOptions = {}) {
     this.rawOptions = options;
     this.options = new RedocNormalizedOptions(options);
-    this.scroll = new ScrollService();
+    this.scroll = new ScrollService(this.options);
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll);
   }
