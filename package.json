@@ -134,7 +134,7 @@
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^3.3.1",
     "lunr": "^1.0.0",
-    "mark.js": "github:julmot/mark.js",
+    "mark.js": "^8.11.1",
     "openapi-sampler": "^0.4.3",
     "perfect-scrollbar": "^0.8.1",
     "prismjs": "^1.8.1",
