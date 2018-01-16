@@ -228,7 +228,8 @@ export class OpenAPIParser {
       }
     }
 
-    if (receiver.title === undefined && isNamedDefinition($ref)) {
+    // name of definition or title on top level
+    if (schema.title === undefined && isNamedDefinition($ref)) {
       receiver.title = JsonPointer.baseName($ref);
     }
 
