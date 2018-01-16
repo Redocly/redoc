@@ -1,0 +1,5 @@
+<div class="x-permissions" *ngFor="let def of defs">
+   <h2 class="sharable-header" attr.section="section/Permissions/{{def.name}}">
+    <a class="share-link" href="#section/Permissions/{{def.name}}"></a>{{def.title}}</h2>
+  <div [innerHTML]="def.details.description | marked"></div>
+</div>

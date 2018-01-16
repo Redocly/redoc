@@ -8,6 +8,10 @@
     <div class="operation-tags" *ngIf="operation.info.tags.length">
         <a *ngFor="let tag of operation.info.tags" attr.href="#tag/{{tag}}"> {{tag}} </a>
     </div>
+    <div class="operation-permissions" *ngIf="operation.info.permissions.length">
+      <span><em>Permissions:</em><a *ngFor="let permission of operation.info.permissions" attr.href="#section/Permissions/{{permission.name}}"> {{permission.title}} </a>
+        </span>
+    </div>
     <p *ngIf="operation.info.description" class="operation-description"
     [innerHtml]="operation.info.description | marked">
     </p>

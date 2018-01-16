@@ -77,6 +77,8 @@
       post:
         tags:
           - "pet"
+        x-permissions:
+          - name: "admin"
         summary: "Add a new pet to the store"
         description: ""
         operationId: "addPet"
@@ -138,6 +140,8 @@
       put:
         tags:
           - "pet"
+        x-permissions:
+          - name: "admin"
         summary: "Update an existing pet"
         description: ""
         operationId: "updatePet"
@@ -173,6 +177,9 @@
           - "pet"
           - "Pagination"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Finds Pets by status"
         description: "Multiple status values can be provided with comma seperated strings"
         operationId: "findPetsByStatus"
@@ -214,6 +221,9 @@
           - "pet"
           - "Pagination"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Finds Pets by tags"
         description: "Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing."
         operationId: "findPetsByTags"
@@ -249,6 +259,9 @@
         tags:
           - "pet"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Find pet by ID"
         description: "Returns a single pet"
         operationId: "getPetById"
@@ -278,6 +291,8 @@
       post:
         tags:
           - "pet"
+        x-permissions:
+          - name: "admin"
         summary: "Updates a pet in the store with form data"
         description: ""
         operationId: "updatePetWithForm"
@@ -317,6 +332,8 @@
       delete:
         tags:
           - "pet"
+        x-permissions:
+          - name: "admin"
         summary: "Deletes a pet"
         description: ""
         operationId: "deletePet"
@@ -348,6 +365,8 @@
       post:
         tags:
           - "pet"
+        x-permissions:
+          - name: "admin"
         summary: "uploads an image"
         description: ""
         operationId: "uploadFile"
@@ -390,6 +409,8 @@
         tags:
           - "store"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
         summary: "Returns pet inventories by status"
         description: "Returns a map of status codes to quantities"
         operationId: "getInventory"
@@ -411,6 +432,8 @@
       post:
         tags:
           - "store"
+        x-permissions:
+          - name: "admin"
         summary: "Place an order for a pet"
         description: ""
         operationId: "placeOrder"
@@ -437,6 +460,8 @@
         tags:
           - "store"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
         summary: "Find purchase order by ID"
         description: "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions"
         operationId: "getOrderById"
@@ -465,6 +490,8 @@
       delete:
         tags:
           - "store"
+        x-permissions:
+          - name: "admin"
         summary: "Delete purchase order by ID"
         description: "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors"
         operationId: "deleteOrder"
@@ -488,6 +515,8 @@
       post:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
         summary: "Create user"
         description: "This can only be done by the logged in user."
         operationId: "createUser"
@@ -509,6 +538,8 @@
       post:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
         summary: "Creates list of users with given input array"
         description: ""
         operationId: "createUsersWithArrayInput"
@@ -532,6 +563,8 @@
       post:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
         summary: "Creates list of users with given input array"
         description: ""
         operationId: "createUsersWithListInput"
@@ -555,6 +588,9 @@
       get:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Logs user into the system"
         description: ""
         operationId: "loginUser"
@@ -594,6 +630,9 @@
       get:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Logs out current logged in user session"
         description: ""
         operationId: "logoutUser"
@@ -609,6 +648,9 @@
         tags:
           - "user"
           - "JSONP"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Get user by user name"
         description: ""
         operationId: "getUserByName"
@@ -634,6 +676,9 @@
       put:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
+          - name: "user"
         summary: "Updated user"
         description: "This can only be done by the logged in user."
         operationId: "updateUser"
@@ -662,6 +707,8 @@
       delete:
         tags:
           - "user"
+        x-permissions:
+          - name: "admin"
         summary: "Delete user"
         description: "This can only be done by the logged in user."
         operationId: "deleteUser"
@@ -853,3 +900,11 @@
   externalDocs:
     description: "Find out more about Swagger"
     url: "http://swagger.io"
+  x-permissions:
+    admin:
+      title: Pet store admin
+      description: 'Pet store Admin have special privileges on PetStore API allowing them to manage their store and users from their company '
+    user:
+      title: Pet Store user
+      description: 'Pet store user'
+

@@ -52,13 +52,13 @@ beforeEach(function() {
       services.SearchService,
       { provide: sharedComponents.LazyTasksService, useClass: sharedComponents.LazyTasksServiceSync },
       //{ provide: ErrorHandler, useClass: forwardRef(function() {return services.CustomErrorHandler}) },
-      { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions }}
+      { provide: services.COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': components.SecurityDefinitions, 'x-permissions': components.XPermissions }},
     ],
     declarations: [REDOC_PIPES, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES]
   });
   TestBed.overrideModule(BrowserDynamicTestingModule, {
     set: {
-      entryComponents: [ sharedComponents.DynamicNg2Wrapper, components.SecurityDefinitions ]
+      entryComponents: [ sharedComponents.DynamicNg2Wrapper, components.SecurityDefinitions, components.XPermissions ]
     },
   });
 });

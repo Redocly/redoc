@@ -10,8 +10,8 @@ import {
 import { getChildDebugElement } from '../../../tests/helpers';
 
 import { Operation } from './operation';
-import { SpecManager } from '../../utils/spec-manager';;
-import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';;
+import { SpecManager } from '../../utils/spec-manager';
+import { LazyTasksService } from '../../shared/components/LazyFor/lazy-for';
 
 describe('Redoc components', () => {
   beforeEach(() => {

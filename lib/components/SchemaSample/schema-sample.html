@@ -23,7 +23,7 @@
       <pre class="response-sample" [innerHtml]="xmlSample | prism:'xml'"></pre>
     </div>
   </tab>
-  <tab tabTitle="text/plain" *ngIf="textSample">
+  <tab tabTitle="{{textSampleType}}" *ngIf="textSample">
     <div class="snippet">
       <div class="action-buttons">
         <span copy-button [copyText]="xmlSample" class="hint--top-left hint--inversed"> <a>Copy</a> </span>

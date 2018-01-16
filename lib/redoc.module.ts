@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
 
 import { SpecManager } from './utils/spec-manager';
 
-import { Redoc, SecurityDefinitions, Operation, REDOC_DIRECTIVES } from './components/index';
+import { Redoc, SecurityDefinitions, XPermissions, Operation, REDOC_DIRECTIVES } from './components/index';
 import { REDOC_COMMON_DIRECTIVES, DynamicNg2Wrapper, DropDown } from './shared/components/index';
 import { REDOC_PIPES } from './utils/pipes';
-import { CustomErrorHandler } from './utils/'
+import { CustomErrorHandler } from './utils/';
 import { LazyTasksService } from './shared/components/LazyFor/lazy-for';
 
 import {
@@ -31,7 +31,7 @@ import {
   imports: [ CommonModule ],
   declarations: [ REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES ],
   bootstrap: [ Redoc ],
-  entryComponents: [ SecurityDefinitions, DynamicNg2Wrapper, Operation ],
+  entryComponents: [ SecurityDefinitions, XPermissions, DynamicNg2Wrapper, Operation ],
   providers: [
     ScrollService,
     Hash,
@@ -42,7 +42,7 @@ import {
     ContentProjector,
     { provide: APP_ID, useValue: 'redoc' },
     { provide: ErrorHandler, useClass: CustomErrorHandler },
-    { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions} }
+    { provide: COMPONENT_PARSER_ALLOWED, useValue: { 'security-definitions': SecurityDefinitions, 'x-permissions': XPermissions} },
   ],
   exports: [Redoc, REDOC_DIRECTIVES, REDOC_COMMON_DIRECTIVES, REDOC_PIPES]
 })
