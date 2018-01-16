@@ -192,7 +192,7 @@ export class MenuStore {
       return;
     }
 
-    this.activeItemIdx = item.absoluteIdx || -1;
+    this.activeItemIdx = item.absoluteIdx!;
     if (updateHash) {
       HistoryService.update(item.getHash(), rewriteHistory);
     }
