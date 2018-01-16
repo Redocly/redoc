@@ -51,7 +51,12 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
           <tr key={field.name + 'inner'}>
             <PropertyCellWithInner colSpan={2}>
               <InnerPropertiesWrap>
-                <Schema schema={field.schema} />
+                <Schema
+                  schema={field.schema}
+                  skipReadOnly={this.props.skipReadOnly}
+                  skipWriteOnly={this.props.skipWriteOnly}
+                  showTitle={this.props.showTitle}
+                />
               </InnerPropertiesWrap>
             </PropertyCellWithInner>
           </tr>
