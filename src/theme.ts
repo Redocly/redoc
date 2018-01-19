@@ -36,7 +36,7 @@ const theme = {
   },
   code: {
     fontSize: '13px',
-    fontFamily: 'Courirer, monospace',
+    fontFamily: 'Courier, monospace',
   },
   links: {
     color: undefined, // by default main color
