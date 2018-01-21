@@ -139,6 +139,9 @@ export class SchemaModel {
       this.displayType = this.items.displayType;
       this.typePrefix = this.items.typePrefix + 'Array of ';
       this.isPrimitive = this.items.isPrimitive;
+      if (this.example === undefined && this.items.example !== undefined) {
+        this.example = [this.items.example];
+      }
       if (this.items.isPrimitive) {
         this.enum = this.items.enum;
       }
