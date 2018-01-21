@@ -1,3 +1,20 @@
+<a name="1.20.0"></a>
+## [1.19.4](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
+
+
+### Bug Fixes
+
+* Path parameters are not correctly overriden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
+* Use parentNode instead of parentElement to fix IE11 crash ([e8adb60](https://github.com/Rebilly/ReDoc/commit/e8adb60)), closes [#406](https://github.com/Rebilly/ReDoc/issues/406)
+
+
+### Features
+
+* align parameters to match up ([#375](https://github.com/Rebilly/ReDoc/issues/375)) ([d083c16](https://github.com/Rebilly/ReDoc/commit/d083c16))
+
+### Deprecations
+* Dropped bower support. No more dist files on the `releases` branch.
+
 <a name="1.19.3"></a>
 ## [1.19.3](https://github.com/Rebilly/ReDoc/compare/v1.19.2...v1.19.3) (2017-11-16)
 
