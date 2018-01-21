@@ -1,7 +1,7 @@
 'use strict';
 
 import { Injectable } from '@angular/core';
-import * as slugify from 'slugify';
+import slugify from 'slugify';
 import * as Remarkable from 'remarkable';
 import { StringMap } from './';
 

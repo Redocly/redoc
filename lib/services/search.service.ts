@@ -3,7 +3,7 @@ import { AppStateService } from './app-state.service';
 import { SchemaNormalizer } from './schema-normalizer.service';
 import { JsonPointer, groupBy, SpecManager, StringMap, snapshot, MarkdownHeading } from '../utils/';
 import { operations as swaggerOperations } from '../utils/swagger-defs';
-import * as slugify from 'slugify';
+import slugify from 'slugify';
 
 import {
   SwaggerSpec,
