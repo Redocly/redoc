@@ -14,8 +14,7 @@
   "module": "dist/redoc.module.js",
   "types": "dist/redoc.module.d.ts",
   "scripts": {
-    "start":
-      "webpack-dev-server --config build/webpack.dev.js --content-base demo",
+    "start": "webpack-dev-server --config build/webpack.dev.js --content-base demo",
     "start:prod": "NODE_ENV=production npm start",
     "test": "npm run lint && node ./build/run_tests.js",
     "lint": "tslint -e \"lib/**/*{ngfactory|css.shim}.ts\" lib/**/*.ts",
@@ -27,14 +26,12 @@
     "e2e-server": "http-server -p 3000 tests/e2e",
     "e2e-copy": "cp dist/redoc.min.js tests/e2e/",
     "webdriver": "webdriver-manager update",
-    "deploy":
-      "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo",
+    "deploy": "node ./build/prepare_deploy.js && deploy-to-gh-pages --update demo",
     "branch-release": "git reset --hard && branch-release",
     "clean": "rimraf dist .tmp compiled lib/**/*.css",
     "ngc": "ngc -p tsconfig.json",
     "inline": "ng2-inline -o .tmp -r --compress \"lib/**/*.ts\"",
-    "build:module":
-      "npm run build:sass && npm run inline && ngc -p tsconfig.aot.json && npm run module:css",
+    "build:module": "npm run build:sass && npm run inline && ngc -p tsconfig.aot.json && npm run module:css",
     "module:css": "node build/join-module-css.js",
     "webpack:prod": "webpack --config build/webpack.prod.js --profile --bail",
     "build:sass": "node-sass -q -o lib lib",
