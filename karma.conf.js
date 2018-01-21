@@ -32,7 +32,6 @@ module.exports = function(config) {
       { pattern: 'tests/schemas/**/*.json', included: false },
       { pattern: 'tests/schemas/**/*.yml', included: false },
       { pattern: 'lib/**/*.html', included: false },
-      { pattern: 'lib/**/*.css', included: false },
     ],
 
     proxies: {
@@ -46,7 +45,13 @@ module.exports = function(config) {
       ? ['mocha', 'coverage', 'remap-coverage', 'coveralls']
       : ['mocha', 'coverage', 'remap-coverage'],
 
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
 
     browserNoActivityTimeout: 60000,
   });
