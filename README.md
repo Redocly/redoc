@@ -6,7 +6,7 @@
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/Rebilly/redoc.svg)](http://isitmaintained.com/project/Rebilly/redoc "Average time to resolve an issue") [![Percentage of issues still open](http://isitmaintained.com/badge/open/REBILLY/REDOC.svg)](http://isitmaintained.com/project/REBILLY/REDOC "Percentage of issues still open")
 
-[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![Bower](http://img.shields.io/bower/v/redoc.svg)](http://bower.io/) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/redoc.svg)](https://saucelabs.com/u/redoc)
 
@@ -94,9 +94,9 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [bower](bower.io):
+Install using [yarn](https://yarnpkg.com):
 
-    bower install redoc
+    yarn add redoc
 
 or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 
@@ -108,10 +108,6 @@ For **CDN**:
 <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
 ```
 
-For bower:
-```html
-<script src="bower_components/redoc/dist/redoc.min.js"> </script>
-```
 For npm:
 ```html
 <script src="node_modules/redoc/dist/redoc.min.js"> </script>

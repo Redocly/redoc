@@ -69,7 +69,6 @@
     "angular2-inline-template-style": "^1.1.0",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.2.3",
-    "branch-release": "^1.0.3",
     "chalk": "^2.1.0",
     "codelyzer": "^3.2.0",
     "conventional-changelog-cli": "^1.3.3",
