@@ -72,7 +72,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "weight": "300",
                       },
                       "code": Object {
-                        "fontFamily": "Courirer, monospace",
+                        "fontFamily": "Courier, monospace",
                         "fontSize": "13px",
                       },
                       "colors": Object {
@@ -177,7 +177,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "weight": "300",
                       },
                       "code": Object {
-                        "fontFamily": "Courirer, monospace",
+                        "fontFamily": "Courier, monospace",
                         "fontSize": "13px",
                       },
                       "colors": Object {
@@ -265,7 +265,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
@@ -407,7 +407,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "weight": "300",
                       },
                       "code": Object {
-                        "fontFamily": "Courirer, monospace",
+                        "fontFamily": "Courier, monospace",
                         "fontSize": "13px",
                       },
                       "colors": Object {
@@ -512,7 +512,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "weight": "300",
                       },
                       "code": Object {
-                        "fontFamily": "Courirer, monospace",
+                        "fontFamily": "Courier, monospace",
                         "fontSize": "13px",
                       },
                       "colors": Object {
@@ -600,7 +600,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
@@ -712,7 +712,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "weight": "300",
             },
             "code": Object {
-              "fontFamily": "Courirer, monospace",
+              "fontFamily": "Courier, monospace",
               "fontSize": "13px",
             },
             "colors": Object {
@@ -850,7 +850,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
@@ -955,7 +955,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
@@ -1043,7 +1043,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "weight": "300",
           },
           "code": Object {
-            "fontFamily": "Courirer, monospace",
+            "fontFamily": "Courier, monospace",
             "fontSize": "13px",
           },
           "colors": Object {
@@ -1183,7 +1183,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
@@ -1295,7 +1295,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
                   "weight": "300",
                 },
                 "code": Object {
-                  "fontFamily": "Courirer, monospace",
+                  "fontFamily": "Courier, monospace",
                   "fontSize": "13px",
                 },
                 "colors": Object {
