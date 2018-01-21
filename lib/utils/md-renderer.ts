@@ -6,9 +6,9 @@ import * as Remarkable from 'remarkable';
 import { StringMap } from './';
 
 function HTMLescape(html: string): string {
-  return document.createElement('div')
+  return (document.createElement('div')
     .appendChild(document.createTextNode(html))
-    .parentElement
+    .parentNode as Element)
     .innerHTML;
 }
 
