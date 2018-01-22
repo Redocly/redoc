@@ -1,6 +1,6 @@
-<div style="text-align: center">
+<p align="center">
     <img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="300px" />
-</div>
+</p>
 
 **OpenAPI/Swagger-generated API Reference Documentation**
 
