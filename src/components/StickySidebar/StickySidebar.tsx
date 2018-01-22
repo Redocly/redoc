@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ComponentWithOptions } from '../OptionsProvider';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
 import styled from '../../styled-components';
+import { ComponentWithOptions } from '../OptionsProvider';
 
 let Stickyfill;
 if (typeof window !== 'undefined') {
@@ -34,11 +34,15 @@ export class StickySidebar extends ComponentWithOptions<StickySidebarProps> {
   stickyElement: Element;
 
   componentDidMount() {
-    stickyfill && stickyfill.add(this.stickyElement);
+    if (stickyfill) {
+      stickyfill.add(this.stickyElement);
+    }
   }
 
   componentWillUnmount() {
-    stickyfill && stickyfill.remove(this.stickyElement);
+    if (stickyfill) {
+      stickyfill.remove(this.stickyElement);
+    }
   }
 
   get scrollYOffset() {
@@ -52,7 +56,7 @@ export class StickySidebar extends ComponentWithOptions<StickySidebarProps> {
   }
 
   render() {
-    let top = this.scrollYOffset;
+    const top = this.scrollYOffset;
 
     const height = `calc(100vh - ${top})`;
 
@@ -60,6 +64,7 @@ export class StickySidebar extends ComponentWithOptions<StickySidebarProps> {
       <StyledStickySidebar
         className={this.props.className}
         style={{ top, height }}
+        // tslint:disable-next-line
         innerRef={el => {
           this.stickyElement = el;
         }}

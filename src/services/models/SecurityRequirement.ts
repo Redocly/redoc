@@ -1,14 +1,14 @@
 import { OpenAPISecurityRequirement } from '../../types';
-import { OpenAPIParser } from '../OpenAPIParser';
 import { SECURITY_SCHEMES_SECTION } from '../../utils/openapi';
+import { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecurityRequirementModel {
-  schemes: {
+  schemes: Array<{
     id: string;
     sectionId: string;
     type: string;
     scopes: string[];
-  }[];
+  }>;
 
   constructor(requirement: OpenAPISecurityRequirement, parser: OpenAPIParser) {
     const schemes = (parser.spec.components && parser.spec.components.securitySchemes) || {};

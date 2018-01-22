@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { IMenuItem, OperationModel } from '../../services';
-import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 import { ShelfIcon } from '../../common-elements/shelfs';
+import { IMenuItem, OperationModel } from '../../services';
 import { MenuItems } from './MenuItems';
+import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 
 interface MenuItemProps {
   item: IMenuItem;
@@ -42,9 +42,9 @@ export class MenuItem extends React.Component<MenuItemProps> {
   }
 }
 
-export type OperationMenuItemContentProps = {
+export interface OperationMenuItemContentProps {
   item: OperationModel;
-};
+}
 
 @observer
 class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {

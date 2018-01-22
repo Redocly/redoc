@@ -1,13 +1,13 @@
+import { computed, observable } from 'mobx';
 import { OpenAPISpec } from '../types';
-import { observable, computed } from 'mobx';
 
 // import { OpenAPIExternalDocumentation, OpenAPIInfo } from '../types';
 
 import { MenuBuilder } from './MenuBuilder';
-import { OpenAPIParser } from './OpenAPIParser';
 import { ApiInfoModel } from './models/ApiInfo';
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 import { SecuritySchemesModel } from './models/SecuritySchemes';
+import { OpenAPIParser } from './OpenAPIParser';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 /**
  * Store that containts all the specification related information in the form of tree
  */

@@ -1,24 +1,24 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 
 import { OpenAPIParameter, Referenced } from '../../types';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
-import { SchemaModel } from './Schema';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { SchemaModel } from './Schema';
 
 /**
  * Field or Parameter model ready to be used by components
  */
 export class FieldModel {
-  @observable public expanded: boolean = false;
+  @observable expanded: boolean = false;
 
-  public schema: SchemaModel;
-  public name: string;
-  public required: boolean;
-  public description: string;
-  public example?: string;
-  public deprecated: boolean;
-  public in?: string;
+  schema: SchemaModel;
+  name: string;
+  required: boolean;
+  description: string;
+  example?: string;
+  deprecated: boolean;
+  in?: string;
 
   constructor(
     parser: OpenAPIParser,

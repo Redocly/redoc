@@ -1,21 +1,21 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 import { join as joinPaths } from 'path';
 import { parse as urlParse } from 'url';
 
 import { IMenuItem } from '../MenuStore';
-import { SecurityRequirementModel } from './SecurityRequirement';
 import { GroupModel } from './Group.model';
+import { SecurityRequirementModel } from './SecurityRequirement';
 
 import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
 
-import { FieldModel } from './Field';
-import { ResponseModel } from './Response';
-import { RequestBodyModel } from './RequestBody';
-import { CodeSample } from './types';
-import { OpenAPIParser } from '../OpenAPIParser';
+import { getOperationSummary, isAbsolutePath, JsonPointer, stripTrailingSlash } from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
-import { JsonPointer, getOperationSummary, isAbsolutePath, stripTrailingSlash } from '../../utils';
+import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { FieldModel } from './Field';
+import { RequestBodyModel } from './RequestBody';
+import { ResponseModel } from './Response';
+import { CodeSample } from './types';
 
 /**
  * Operation model ready to be used by components
@@ -30,7 +30,7 @@ export class OperationModel implements IMenuItem {
 
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
-  items: Array<ContentItemModel> = [];
+  items: ContentItemModel[] = [];
 
   depth: number;
 
@@ -80,7 +80,7 @@ export class OperationModel implements IMenuItem {
     let hasSuccessResponses = false;
     this.responses = Object.keys(operationSpec.responses || [])
       .filter(code => {
-        if (parseInt(code) >= 100 && parseInt(code) <= 399) {
+        if (parseInt(code, 10) >= 100 && parseInt(code, 10) <= 399) {
           hasSuccessResponses = true;
         }
         return isNumeric(code) || code === 'default';

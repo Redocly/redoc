@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { SECTION_ATTR } from '../../services/MenuStore';
 import { Markdown } from '../Markdown/Markdown';
 
-import { DarkRightPanel, H1, MiddlePanel, ShareLink, Row } from '../../common-elements';
-import { Operation } from '../Operation/Operation';
+import { DarkRightPanel, H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
 import { ContentItemModel } from '../../services/MenuBuilder';
 import { OperationModel } from '../../services/models';
+import { Operation } from '../Operation/Operation';
 
 @observer
 export class ContentItems extends React.Component<{
@@ -15,14 +15,16 @@ export class ContentItems extends React.Component<{
 }> {
   render() {
     const items = this.props.items;
-    if (items.length === 0) return null;
+    if (items.length === 0) {
+      return null;
+    }
     return items.map(item => <ContentItem item={item} key={item.id} />);
   }
 }
 
-type ContentItemProps = {
+interface ContentItemProps {
   item: ContentItemModel;
-};
+}
 
 @observer
 export class ContentItem extends React.Component<ContentItemProps> {

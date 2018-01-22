@@ -1,17 +1,17 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { SchemaModel, FieldModel } from '../../services/models';
+import { FieldModel, SchemaModel } from '../../services/models';
 
-import { Field } from '../Fields/Field';
-import { DiscriminatorDropdown } from './DiscriminatorDropdown';
-import { Schema, SchemaProps } from './Schema';
 import {
   InnerPropertiesWrap,
   PropertiesTable,
   PropertiesTableCaption,
   PropertyCellWithInner,
 } from '../../common-elements/fields-layout';
+import { Field } from '../Fields/Field';
+import { DiscriminatorDropdown } from './DiscriminatorDropdown';
+import { Schema, SchemaProps } from './Schema';
 
 import { mapWithLast } from '../../utils';
 

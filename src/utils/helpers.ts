@@ -25,7 +25,7 @@ export function mapValues<T, P>(
   iteratee: (val: T, key: string, obj: Dict<T>) => P,
 ): Dict<P> {
   const res: { [key: string]: P } = {};
-  for (let key in object) {
+  for (const key in object) {
     if (object.hasOwnProperty(key)) {
       res[key] = iteratee(object[key], key, object);
     }
@@ -35,21 +35,23 @@ export function mapValues<T, P>(
 
 /**
  * flattens collection using `prop` field as a children
- * @param items collection items
+ * @param collectionItems collection items
  * @param prop item property with child elements
  */
-export function flattenByProp<T extends object, P extends keyof T>(items: T[], prop: P): T[] {
+export function flattenByProp<T extends object, P extends keyof T>(
+  collectionItems: T[],
+  prop: P,
+): T[] {
   const res: T[] = [];
   const iterate = (items: T[]) => {
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    for (const item of items) {
       res.push(item);
       if (item[prop]) {
         iterate(item[prop]);
       }
     }
   };
-  iterate(items);
+  iterate(collectionItems);
   return res;
 }
 
@@ -64,7 +66,7 @@ export function isAbsolutePath(path: string): boolean {
   return /^(?:[a-z]+:)?/i.test(path);
 }
 
-export function isNumeric(n: any): n is Number {
+export function isNumeric(n: any): n is number {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
@@ -92,7 +94,7 @@ export const mergeObjects = <T extends object = object>(target: T, ...sources: T
   }
 
   if (isMergebleObject(target) && isMergebleObject(source)) {
-    Object.keys(source).forEach(function(key: string) {
+    Object.keys(source).forEach((key: string) => {
       if (isMergebleObject(source[key])) {
         if (!target[key]) {
           target[key] = {};

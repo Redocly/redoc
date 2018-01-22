@@ -1,8 +1,33 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { OneOfButton, OneOfLabel, OneOfList } from '../../common-elements/schema';
-import { SchemaProps, Schema } from './Schema';
+import {
+  OneOfButton as StyledOneOfButton,
+  OneOfLabel,
+  OneOfList,
+} from '../../common-elements/schema';
+import { SchemaModel } from '../../services/models';
+import { Schema, SchemaProps } from './Schema';
+
+export interface OneOfButtonProps {
+  subSchema: SchemaModel;
+  idx: number;
+  schema: SchemaModel;
+}
+export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
+  render() {
+    const { idx, schema, subSchema } = this.props;
+    return (
+      <StyledOneOfButton active={idx === schema.activeOneOf} onClick={this.activateOneOf}>
+        {subSchema.title || subSchema.displayType}
+      </StyledOneOfButton>
+    );
+  }
+
+  activateOneOf() {
+    this.props.schema.activateOneOf(this.props.idx);
+  }
+}
 
 @observer
 export class OneOfSchema extends React.Component<SchemaProps> {
@@ -17,13 +42,7 @@ export class OneOfSchema extends React.Component<SchemaProps> {
         <OneOfLabel> {schema.oneOfType} </OneOfLabel>
         <OneOfList>
           {oneOf.map((subSchema, idx) => (
-            <OneOfButton
-              key={subSchema._$ref}
-              active={idx === schema.activeOneOf}
-              onClick={() => schema.activateOneOf(idx)}
-            >
-              {subSchema.title || subSchema.displayType}
-            </OneOfButton>
+            <OneOfButton key={subSchema._$ref} schema={schema} subSchema={subSchema} idx={idx} />
           ))}
         </OneOfList>
         <Schema schema={oneOf[schema.activeOneOf]} />

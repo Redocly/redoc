@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { StyledDropdown, DropdownOption } from '../../common-elements/dropdown';
+import { DropdownOption, StyledDropdown } from '../../common-elements/dropdown';
 import { SchemaModel } from '../../services/models';
 
 @observer
@@ -10,7 +10,9 @@ export class DiscriminatorDropdown extends React.Component<{
   enumValues: string[];
 }> {
   sortOptions(options: DropdownOption[], enumValues: string[]): void {
-    if (enumValues.length === 0) return;
+    if (enumValues.length === 0) {
+      return;
+    }
 
     const enumOrder = {};
 
@@ -48,7 +50,7 @@ export class DiscriminatorDropdown extends React.Component<{
   }
 
   changeActiveChild = ({ value }) => {
-    const idx = parseInt(value);
+    const idx = parseInt(value, 10);
     this.props.parent.activateOneOf(idx);
   };
 }

@@ -70,9 +70,8 @@ export function detectType(schema: OpenAPISchema): string {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
-  for (var i = 0; i < keywords.length; i++) {
-    let keyword = keywords[i];
-    let type = schemaKeywordTypes[keyword];
+  for (const keyword of keywords) {
+    const type = schemaKeywordTypes[keyword];
     if (schema[keyword] !== undefined) {
       return type;
     }
@@ -127,9 +126,9 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     } else {
       stringRange = `[ ${schema.minLength} .. ${schema.maxLength} ] characters`;
     }
-  } else if (schema.maxLength != undefined) {
+  } else if (schema.maxLength !== undefined) {
     stringRange = `<= ${schema.maxLength} characters`;
-  } else if (schema.minLength != undefined) {
+  } else if (schema.minLength !== undefined) {
     if (schema.minLength === 1) {
       stringRange = 'non-empty';
     } else {
@@ -147,10 +146,10 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     numberRange += ' .. ';
     numberRange += schema.maximum;
     numberRange += schema.exclusiveMaximum ? ' )' : ' ]';
-  } else if (schema.maximum != undefined) {
+  } else if (schema.maximum !== undefined) {
     numberRange = schema.exclusiveMaximum ? '< ' : '<= ';
     numberRange += schema.maximum;
-  } else if (schema.minimum != undefined) {
+  } else if (schema.minimum !== undefined) {
     numberRange = schema.exclusiveMinimum ? '> ' : '>= ';
     numberRange += schema.minimum;
   }

@@ -1,14 +1,14 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { FieldDetails } from '../Fields/FieldDetails';
 import { RecursiveLabel, TypeName, TypeTitle } from '../../common-elements/fields';
+import { FieldDetails } from '../Fields/FieldDetails';
 
 import { SchemaModel } from '../../services/models';
 
+import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
-import { ArraySchema } from './ArraySchema';
 
 export interface SchemaProps {
   schema: SchemaModel;
@@ -21,7 +21,9 @@ export interface SchemaProps {
 export class Schema extends React.Component<Partial<SchemaProps>> {
   render() {
     const { schema } = this.props;
-    if (!schema) return <em> Schema not provided </em>;
+    if (!schema) {
+      return <em> Schema not provided </em>;
+    }
     const { type, oneOf, discriminatorProp, isCircular } = schema;
 
     if (isCircular) {

@@ -1,5 +1,4 @@
-import styled from '../styled-components';
-import { withProps } from '../styled-components';
+import styled, { withProps } from '../styled-components';
 
 export const OneOfList = styled.ul`
   margin: 0;

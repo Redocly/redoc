@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { highlight } from '../../utils';
 import styled from '../../styled-components';
+import { highlight } from '../../utils';
 
 const StyledPre = styled.pre`
   font-family: ${props => props.theme.code.fontFamily};

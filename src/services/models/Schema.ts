@@ -1,11 +1,12 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 
 import { OpenAPISchema, Referenced } from '../../types';
 
-import { FieldModel } from './Field';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { FieldModel } from './Field';
 
+import { MergedOpenAPISchema } from '../';
 import {
   detectType,
   humanizeConstraints,
@@ -13,7 +14,6 @@ import {
   isPrimitiveType,
   JsonPointer,
 } from '../../utils/';
-import { MergedOpenAPISchema } from '../';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -69,9 +69,9 @@ export class SchemaModel {
 
     parser.exitRef(schemaOrRef);
 
-    for (let $ref of this.schema.parentRefs || []) {
+    for (const parent$ref of this.schema.parentRefs || []) {
       // exit all the refs visited during allOf traverse
-      parser.exitRef({ $ref });
+      parser.exitRef({ $ref: parent$ref });
     }
   }
 
@@ -174,23 +174,25 @@ export class SchemaModel {
     const derived = parser.findDerived([...(schema.namedParents || []), this._$ref]);
 
     if (schema.oneOf) {
-      for (let variant of schema.oneOf) {
-        if (variant.$ref === undefined) continue;
+      for (const variant of schema.oneOf) {
+        if (variant.$ref === undefined) {
+          continue;
+        }
         const name = JsonPointer.dirName(variant.$ref);
         derived[variant.$ref] = name;
       }
     }
 
     const mapping = schema.discriminator!.mapping || {};
-    for (let name in mapping) {
+    for (const name in mapping) {
       derived[mapping[name]] = name;
     }
 
     const refs = Object.keys(derived);
     this.oneOf = refs.map(ref => {
-      const schema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
-      schema.title = derived[ref];
-      return schema;
+      const innerSchema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
+      innerSchema.title = derived[ref];
+      return innerSchema;
     });
   }
 }

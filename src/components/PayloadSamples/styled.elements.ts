@@ -27,7 +27,6 @@ export const InvertedSimpleDropdown = styled(SimpleDropdown)`
   }
 `;
 
-
 export const NoSampleLabel = styled.div`
   font-family: ${props => props.theme.code.fontFamily};
   font-size: 12px;

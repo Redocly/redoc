@@ -1,19 +1,19 @@
 import * as React from 'react';
 
-import { FieldProps } from './Field';
-import { Markdown } from '../Markdown/Markdown';
-import { EnumValues } from './EnumValues';
-import { FieldDetail } from './FieldDetail';
-import { ConstraintsView } from './FieldContstraints';
 import {
-  RecursiveLabel,
   NullableLabel,
   PatternLabel,
+  RecursiveLabel,
   TypeFormat,
   TypeName,
-  TypeTitle,
   TypePrefix,
+  TypeTitle,
 } from '../../common-elements/fields';
+import { Markdown } from '../Markdown/Markdown';
+import { EnumValues } from './EnumValues';
+import { FieldProps } from './Field';
+import { ConstraintsView } from './FieldContstraints';
+import { FieldDetail } from './FieldDetail';
 
 import { Badge } from '../../common-elements/';
 

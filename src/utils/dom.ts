@@ -15,10 +15,10 @@ export function querySelector(selector: string): Element | null {
 export function html2Str(html: string): string {
   return html
     .split(/<[^>]+>/)
-    .map(function(chunk) {
+    .map(chunk => {
       return chunk.trim();
     })
-    .filter(function(trimmedChunk) {
+    .filter(trimmedChunk => {
       return trimmedChunk.length > 0;
     })
     .join(' ');

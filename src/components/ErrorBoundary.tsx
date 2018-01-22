@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Children } from 'react';
 import styled from '../styled-components';
 
 const ErrorWrapper = styled.div`
@@ -14,7 +13,7 @@ export class ErrorBoundary extends React.Component<{}, { error?: Error }> {
   }
 
   componentDidCatch(error) {
-    this.setState({ error: error });
+    this.setState({ error });
     return false;
   }
 
@@ -35,6 +34,6 @@ export class ErrorBoundary extends React.Component<{}, { error?: Error }> {
         </ErrorWrapper>
       );
     }
-    return Children.only(this.props.children);
+    return React.Children.only(this.props.children);
   }
 }

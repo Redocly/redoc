@@ -1,8 +1,8 @@
-import { ComponentWithOptions } from '../OptionsProvider';
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
+import { ComponentWithOptions } from '../OptionsProvider';
 
-import { MenuStore, IMenuItem } from '../../services/MenuStore';
+import { IMenuItem, MenuStore } from '../../services/MenuStore';
 import { MenuItems } from './MenuItems';
 
 import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';

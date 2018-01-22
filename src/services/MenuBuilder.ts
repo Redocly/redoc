@@ -1,8 +1,8 @@
-import { OpenAPIParser } from './OpenAPIParser';
-import { GroupModel, OperationModel } from './models';
-import { JsonPointer, isOperationName } from '../utils';
 import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
+import { isOperationName, JsonPointer } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { GroupModel, OperationModel } from './models';
+import { OpenAPIParser } from './OpenAPIParser';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type TagInfo = OpenAPITag & {
@@ -13,7 +13,7 @@ export type TagInfo = OpenAPITag & {
 export type ExtendedOpenAPIOperation = {
   _$ref: string;
   httpVerb: string;
-  pathParameters: Referenced<OpenAPIParameter>[];
+  pathParameters: Array<Referenced<OpenAPIParameter>>;
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Dict<TagInfo>;
@@ -70,9 +70,9 @@ export class MenuBuilder {
     tags: TagsInfoMap,
     options: RedocNormalizedOptions,
   ): GroupModel[] {
-    let res: GroupModel[] = [];
-    for (let group of groups) {
-      let item = new GroupModel('group', group, parent);
+    const res: GroupModel[] = [];
+    for (const group of groups) {
+      const item = new GroupModel('group', group, parent);
       item.depth = GROUP_DEPTH;
       item.items = MenuBuilder.getTagsItems(parser, tags, item, group, options);
       res.push(item);
@@ -111,16 +111,18 @@ export class MenuBuilder {
       return tagsMap[tagName];
     });
 
-    let res: (GroupModel | OperationModel)[] = [];
-    for (let tag of tags) {
-      if (!tag) continue;
-      let item = new GroupModel('tag', tag, parent);
+    const res: Array<GroupModel | OperationModel> = [];
+    for (const tag of tags) {
+      if (!tag) {
+        continue;
+      }
+      const item = new GroupModel('tag', tag, parent);
       item.depth = GROUP_DEPTH + 1;
       item.items = this.getOperationsItems(parser, item, tag, item.depth + 1, options);
 
       // don't put empty tag into content, instead put its operations
       if (tag.name === '') {
-        let items = this.getOperationsItems(parser, undefined, tag, item.depth + 1, options);
+        const items = this.getOperationsItems(parser, undefined, tag, item.depth + 1, options);
         res.push(...items);
         continue;
       }
@@ -147,9 +149,9 @@ export class MenuBuilder {
       return [];
     }
 
-    let res: OperationModel[] = [];
-    for (let operationInfo of tag.operations) {
-      let operation = new OperationModel(parser, operationInfo, parent, options);
+    const res: OperationModel[] = [];
+    for (const operationInfo of tag.operations) {
+      const operation = new OperationModel(parser, operationInfo, parent, options);
       operation.depth = depth;
       res.push(operation);
     }
@@ -161,16 +163,15 @@ export class MenuBuilder {
    */
   static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
-    for (let tag of spec.tags || []) {
-      tags[tag.name] = Object.assign(tag);
-      tags[tag.name].operations = [];
+    for (const tag of spec.tags || []) {
+      tags[tag.name] = { ...tag, operations: [] };
     }
 
     const paths = spec.paths;
-    for (let pathName of Object.keys(paths)) {
+    for (const pathName of Object.keys(paths)) {
       const path = paths[pathName];
       const operations = Object.keys(path).filter(isOperationName);
-      for (let operationName of operations) {
+      for (const operationName of operations) {
         const operationInfo = path[operationName];
         let operationTags = operationInfo.tags;
 
@@ -179,7 +180,7 @@ export class MenuBuilder {
           operationTags = [''];
         }
         const operationPointer = JsonPointer.compile(['paths', pathName, operationName]);
-        for (let tagName of operationTags) {
+        for (const tagName of operationTags) {
           let tag = tags[tagName];
           if (tag === undefined) {
             tag = {
@@ -188,7 +189,9 @@ export class MenuBuilder {
             };
             tags[tagName] = tag;
           }
-          if (tag['x-traitTag']) continue;
+          if (tag['x-traitTag']) {
+            continue;
+          }
           tag.operations.push({
             ...operationInfo,
             _$ref: operationPointer,

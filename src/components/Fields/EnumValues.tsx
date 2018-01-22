@@ -9,7 +9,9 @@ export interface EnumValuesProps {
 export class EnumValues extends React.PureComponent<EnumValuesProps> {
   render() {
     const { values, type } = this.props;
-    if (!values.length) return null;
+    if (!values.length) {
+      return null;
+    }
 
     return (
       <div>

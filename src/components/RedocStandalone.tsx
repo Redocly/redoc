@@ -1,11 +1,11 @@
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
 
-import { Loading } from './Loading/Loading';
-import { StoreProvider } from './StoreProvider';
-import { ErrorBoundary } from './ErrorBoundary';
-import { Redoc } from './Redoc/Redoc';
 import { RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormalizedOptions';
+import { ErrorBoundary } from './ErrorBoundary';
+import { Loading } from './Loading/Loading';
+import { Redoc } from './Redoc/Redoc';
+import { StoreProvider } from './StoreProvider';
 
 export interface RedocStandaloneProps {
   spec?: object;

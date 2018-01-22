@@ -1,5 +1,5 @@
+import psStyles from 'perfect-scrollbar/css/perfect-scrollbar.css';
 import styled, { injectGlobal } from '../styled-components';
-import psStyles from 'perfect-scrollbar/dist/css/perfect-scrollbar.css';
 
 import PerfectScrollbarOriginal from 'react-perfect-scrollbar';
 

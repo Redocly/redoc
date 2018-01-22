@@ -1,15 +1,17 @@
 import Dropdown from 'react-dropdown';
 
-import styled from '../styled-components';
-import { withProps } from '../styled-components';
+import styled, { withProps } from '../styled-components';
 
-export type DropdownOption = { label: string; value: string };
+export interface DropdownOption {
+  label: string;
+  value: string;
+}
 
-export type DropdownProps = {
+export interface DropdownProps {
   options: DropdownOption[];
   value: DropdownOption;
   onChange: (val: DropdownOption) => void;
-};
+}
 
 export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
   min-width: 100px;

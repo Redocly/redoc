@@ -1,5 +1,5 @@
 import { deprecatedCss } from '../../common-elements';
-import styled, { withProps, css } from '../../styled-components';
+import styled, { css, withProps } from '../../styled-components';
 
 export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   className: props => `operation-type ${props.type}`,
@@ -88,7 +88,7 @@ export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
 `;
 
 export const menuItemDepth = {
-  '0': css`
+  0: css`
     opacity: 0.7;
     text-transform: uppercase;
     font-size: 0.8em;
@@ -96,14 +96,14 @@ export const menuItemDepth = {
     cursor: default;
     color: ${props => props.theme.colors.text};
   `,
-  '1': css`
+  1: css`
     font-size: 0.929em;
     text-transform: uppercase;
     &:hover {
       color: ${props => props.theme.colors.main};
     }
   `,
-  '2': css`
+  2: css`
     color: ${props => props.theme.colors.text};
   `,
 };

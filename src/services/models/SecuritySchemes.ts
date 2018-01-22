@@ -1,6 +1,6 @@
 import { OpenAPISecurityScheme, Referenced } from '../../types';
-import { OpenAPIParser } from '../OpenAPIParser';
 import { SECURITY_SCHEMES_SECTION } from '../../utils/openapi';
+import { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecuritySchemeModel {
   id: string;

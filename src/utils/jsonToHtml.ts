@@ -3,7 +3,7 @@ const COLLAPSE_LEVEL = 2;
 
 export function jsonToHTML(json) {
   level = 1;
-  var output = '';
+  let output = '';
   output += '<div class="redoc-json">';
   output += valueToHTML(json);
   output += '</div>';
@@ -11,7 +11,7 @@ export function jsonToHTML(json) {
 }
 
 function htmlEncode(t) {
-  return t != undefined
+  return t !== undefined
     ? t
         .toString()
         .replace(/&/g, '&amp;')
@@ -26,9 +26,9 @@ function decorateWithSpan(value, className) {
 }
 
 function valueToHTML(value) {
-  var valueType = typeof value,
-    output = '';
-  if (value == undefined) {
+  const valueType = typeof value;
+  let output = '';
+  if (value === undefined || value === null) {
     output += decorateWithSpan('null', 'type-null');
   } else if (value && value.constructor === Array) {
     level++;
@@ -63,12 +63,12 @@ function valueToHTML(value) {
 }
 
 function arrayToHTML(json) {
-  var collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
-  var i, length;
-  var output =
+  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+  let output =
     '<div class="collapser"></div>[<span class="ellipsis"></span><ul class="array collapsible">';
-  var hasContents = false;
-  for (i = 0, length = json.length; i < length; i++) {
+  let hasContents = false;
+  const length = json.length;
+  for (let i = 0; i < length; i++) {
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
     output += valueToHTML(json[i]);
@@ -85,16 +85,14 @@ function arrayToHTML(json) {
 }
 
 function objectToHTML(json) {
-  var collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
-  var i,
-    key,
-    length,
-    keys = Object.keys(json);
-  var output =
+  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+  const keys = Object.keys(json);
+  const length = keys.length;
+  let output =
     '<div class="collapser"></div>{<span class="ellipsis"></span><ul class="obj collapsible">';
-  var hasContents = false;
-  for (i = 0, length = keys.length; i < length; i++) {
-    key = keys[i];
+  let hasContents = false;
+  for (let i = 0; i < length; i++) {
+    const key = keys[i];
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
     output += '<span class="property">"' + htmlEncode(key) + '"</span>: ';

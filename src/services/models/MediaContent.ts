@@ -1,10 +1,10 @@
-import { observable, action, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 
 import { OpenAPIMediaType } from '../../types';
 import { MediaTypeModel } from './MediaType';
 
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 /**
  * MediaContent model ready to be sued by React components

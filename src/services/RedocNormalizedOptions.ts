@@ -1,11 +1,10 @@
-import { ThemeInterface } from '../theme';
-import { isNumeric, mergeObjects } from '../utils/helpers';
+import defaultTheme, { ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
-import defaultTheme from '../theme';
+import { isNumeric, mergeObjects } from '../utils/helpers';
 
 export interface RedocRawOptions {
   theme?: ThemeInterface;
-  scrollYOffset?: number | string | Function;
+  scrollYOffset?: number | string | (() => number);
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
@@ -17,34 +16,16 @@ export interface RedocRawOptions {
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
-  if (val === undefined) return false;
-  if (typeof val === 'string') return true;
+  if (val === undefined) {
+    return false;
+  }
+  if (typeof val === 'string') {
+    return true;
+  }
   return val;
 }
 
 export class RedocNormalizedOptions {
-  theme: ThemeInterface;
-  scrollYOffset: () => number;
-  hideHostname: boolean;
-  expandResponses: { [code: string]: boolean } | 'all';
-  requiredPropsFirst: boolean;
-  noAutoAuth: boolean;
-  nativeScrollbars: boolean;
-  pathInMiddlePanel: boolean;
-  untrustedSpec: boolean;
-
-  constructor(raw: RedocRawOptions) {
-    this.theme = mergeObjects({} as any, defaultTheme, raw.theme || {});
-    this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
-    this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
-    this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
-    this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
-    this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
-    this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
-    this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
-    this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
-  }
-
   static normalizeExpandResponses(value: RedocRawOptions['expandResponses']) {
     if (value === 'all') {
       return 'all';
@@ -97,5 +78,27 @@ export class RedocNormalizedOptions {
     }
 
     return () => 0;
+  }
+
+  theme: ThemeInterface;
+  scrollYOffset: () => number;
+  hideHostname: boolean;
+  expandResponses: { [code: string]: boolean } | 'all';
+  requiredPropsFirst: boolean;
+  noAutoAuth: boolean;
+  nativeScrollbars: boolean;
+  pathInMiddlePanel: boolean;
+  untrustedSpec: boolean;
+
+  constructor(raw: RedocRawOptions) {
+    this.theme = mergeObjects({} as any, defaultTheme, raw.theme || {});
+    this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
+    this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
+    this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
+    this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
+    this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
+    this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
+    this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
+    this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
   }
 }

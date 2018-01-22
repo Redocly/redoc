@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { SecuritySchemesModel } from '../../services/models';
 
-import styled from '../../styled-components';
 import { H2, ShareLink } from '../../common-elements';
-import { Markdown } from '../Markdown/Markdown';
+import styled from '../../styled-components';
 import { OpenAPISecurityScheme } from '../../types';
+import { Markdown } from '../Markdown/Markdown';
 
 const AUTH_TYPES = {
   oauth2: 'OAuth2',
@@ -76,7 +76,9 @@ export interface SecurityDefsProps {
 
 export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
   render() {
-    if (!this.props.securitySchemes) return null;
+    if (!this.props.securitySchemes) {
+      return null;
+    }
 
     return (
       <div>

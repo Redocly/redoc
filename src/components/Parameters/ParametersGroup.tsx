@@ -16,7 +16,9 @@ export interface ParametersGroupProps {
 export class ParametersGroup extends React.PureComponent<ParametersGroupProps, any> {
   render() {
     const { place, parameters } = this.props;
-    if (!parameters || !parameters.length) return null;
+    if (!parameters || !parameters.length) {
+      return null;
+    }
 
     return (
       <div key={place}>

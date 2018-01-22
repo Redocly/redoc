@@ -8,13 +8,13 @@ import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elemen
 
 import { ComponentWithOptions } from '../OptionsProvider';
 
-import { Markdown } from '../Markdown/Markdown';
-import { Parameters } from '../Parameters/Parameters';
-import { ResponsesList } from '../Responses/ResponsesList';
-import { RequestSamples } from '../RequestSamples/RequestSamples';
-import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { ShareLink } from '../../common-elements/linkify';
 import { Endpoint } from '../Endpoint/Endpoint';
+import { Markdown } from '../Markdown/Markdown';
+import { Parameters } from '../Parameters/Parameters';
+import { RequestSamples } from '../RequestSamples/RequestSamples';
+import { ResponsesList } from '../Responses/ResponsesList';
+import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 

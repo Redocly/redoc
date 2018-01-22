@@ -1,16 +1,16 @@
-import { ComponentWithOptions } from '../OptionsProvider';
 import * as React from 'react';
-import { OperationModel } from '../../services';
 import { ShelfIcon } from '../../common-elements';
+import { OperationModel } from '../../services';
+import { ComponentWithOptions } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
 import {
-  OperationEndpointWrap,
   EndpointInfo,
   HttpVerb,
+  OperationEndpointWrap,
+  ServerItem,
   ServerRelativeURL,
   ServersOverlay,
-  ServerItem,
   ServerUrl,
 } from './styled.elements';
 

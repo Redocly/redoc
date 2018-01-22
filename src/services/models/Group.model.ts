@@ -1,10 +1,9 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
+import slugify from 'slugify';
 
 import { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
 import { ContentItemModel } from '../MenuBuilder';
 import { IMenuItem, MenuItemGroupType } from '../MenuStore';
-
-const slugify = require('slugify');
 
 /**
  * Operations Group model ready to be used by components
@@ -17,7 +16,7 @@ export class GroupModel implements IMenuItem {
   description?: string;
   type: MenuItemGroupType;
 
-  items: Array<ContentItemModel> = [];
+  items: ContentItemModel[] = [];
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
 
@@ -48,7 +47,9 @@ export class GroupModel implements IMenuItem {
   @action
   deactivate() {
     // disallow deactivating groups
-    if (this.type === 'group') return;
+    if (this.type === 'group') {
+      return;
+    }
     this.active = false;
   }
 

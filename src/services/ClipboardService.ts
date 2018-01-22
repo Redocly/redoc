@@ -11,8 +11,8 @@ export class ClipboardService {
   static selectElement(element: any): void {
     let range;
     let selection;
-    if ((<any>document.body).createTextRange) {
-      range = (<any>document.body).createTextRange();
+    if ((document.body as any).createTextRange) {
+      range = (document.body as any).createTextRange();
       range.moveToElementText(element);
       range.select();
     } else if (document.createRange && window.getSelection) {
@@ -25,8 +25,8 @@ export class ClipboardService {
   }
 
   static deselect(): void {
-    if ((<any>document).selection) {
-      (<any>document).selection.empty();
+    if ((document as any).selection) {
+      (document as any).selection.empty();
     } else if (window.getSelection) {
       window.getSelection().removeAllRanges();
     }
@@ -44,13 +44,15 @@ export class ClipboardService {
 
   static copyElement(element: any): boolean {
     ClipboardService.selectElement(element);
-    let res = ClipboardService.copySelected();
-    if (res) ClipboardService.deselect();
+    const res = ClipboardService.copySelected();
+    if (res) {
+      ClipboardService.deselect();
+    }
     return res;
   }
 
   static copyCustom(text: string): boolean {
-    let textArea = document.createElement('textarea');
+    const textArea = document.createElement('textarea');
     textArea.style.position = 'fixed';
     textArea.style.top = '0';
     textArea.style.left = '0';
@@ -77,7 +79,7 @@ export class ClipboardService {
 
     textArea.select();
 
-    let res = ClipboardService.copySelected();
+    const res = ClipboardService.copySelected();
 
     document.body.removeChild(textArea);
     return res;

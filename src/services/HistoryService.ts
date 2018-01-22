@@ -8,7 +8,7 @@ function isSameHash(a: string, b: string): boolean {
   return a === b || '#' + a === b || a === '#' + b;
 }
 
-class _HistoryService {
+class IntHistoryService {
   private causedHashChange: boolean = false;
   private _emiter;
 
@@ -50,7 +50,9 @@ class _HistoryService {
   @bind
   @debounce
   update(hash: string | null, rewriteHistory: boolean = false) {
-    if (hash == null || isSameHash(hash, this.hash)) return;
+    if (hash == null || isSameHash(hash, this.hash)) {
+      return;
+    }
     if (rewriteHistory) {
       if (isBrowser) {
         window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + hash);
@@ -64,7 +66,7 @@ class _HistoryService {
   }
 }
 
-export const HistoryService = new _HistoryService();
+export const HistoryService = new IntHistoryService();
 
 if (module.hot) {
   module.hot.dispose(() => {

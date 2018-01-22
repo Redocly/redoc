@@ -3,11 +3,11 @@ import { resolve as urlResolve } from 'url';
 
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
+import { appendToMdHeading, isBrowser } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
-import { COMPONENT_REGEXP, buildComponentComment } from './MarkdownRenderer';
+import { buildComponentComment, COMPONENT_REGEXP } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-import { appendToMdHeading, isBrowser } from '../utils/';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
 
@@ -16,7 +16,7 @@ export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
  * endless recursion because of circular refs
  */
 class RefCounter {
-  public _counter = {};
+  _counter = {};
 
   reset(): void {
     this._counter = {};
@@ -42,6 +42,8 @@ export class OpenAPIParser {
   @observable specUrl: string;
   @observable.ref spec: OpenAPISpec;
 
+  private _refCounter: RefCounter = new RefCounter();
+
   constructor(
     spec: OpenAPISpec,
     specUrl: string | undefined,
@@ -59,8 +61,6 @@ export class OpenAPIParser {
       this.specUrl = href;
     }
   }
-
-  private _refCounter: RefCounter = new RefCounter();
 
   validate(spec: any) {
     if (spec.openapi === undefined) {
@@ -93,8 +93,12 @@ export class OpenAPIParser {
    */
   byRef = <T extends any = any>(ref: string): T | undefined => {
     let res;
-    if (this.spec === undefined) return;
-    if (ref.charAt(0) !== '#') ref = '#' + ref;
+    if (!this.spec) {
+      return;
+    }
+    if (ref.charAt(0) !== '#') {
+      ref = '#' + ref;
+    }
     ref = decodeURIComponent(ref);
     try {
       res = JsonPointer.get(this.spec, ref);
@@ -120,7 +124,7 @@ export class OpenAPIParser {
   resetVisited() {
     if (__DEV__) {
       // check in dev mode
-      for (let k in this._refCounter._counter) {
+      for (const k in this._refCounter._counter) {
         if (this._refCounter._counter[k] > 0) {
           console.warn('Not exited reference: ' + k);
         }
@@ -130,7 +134,9 @@ export class OpenAPIParser {
   }
 
   exitRef<T>(ref: Referenced<T>) {
-    if (!this.isRef(ref)) return;
+    if (!this.isRef(ref)) {
+      return;
+    }
     this._refCounter.exit(ref.$ref);
   }
 
@@ -146,6 +152,7 @@ export class OpenAPIParser {
       this._refCounter.visit(obj.$ref);
       if (visited && !forceCircular) {
         // circular reference detected
+        // tslint:disable-next-line
         return Object.assign({}, resolved, { 'x-circular-ref': true });
       }
       // deref again in case one more $ref is here
@@ -191,7 +198,7 @@ export class OpenAPIParser {
       };
     });
 
-    for (let { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
+    for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       if (
         receiver.type !== subSchema.type &&
         receiver.type !== undefined &&
@@ -244,7 +251,7 @@ export class OpenAPIParser {
   findDerived($refs: string[]): Dict<string> {
     const res: Dict<string> = {};
     const schemas = (this.spec.components && this.spec.components.schemas) || {};
-    for (let defName in schemas) {
+    for (const defName in schemas) {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&

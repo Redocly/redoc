@@ -7,7 +7,9 @@ export interface ConstraintsViewProps {
 
 export class ConstraintsView extends React.PureComponent<ConstraintsViewProps> {
   render() {
-    if (this.props.constraints.length === 0) return null;
+    if (this.props.constraints.length === 0) {
+      return null;
+    }
     return (
       <span>
         {' '}

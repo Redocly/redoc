@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Markdown } from '../Markdown/Markdown';
 import { ShelfIcon } from '../../common-elements';
+import { Markdown } from '../Markdown/Markdown';
 
 export interface ResponseTitleProps {
   code: string;

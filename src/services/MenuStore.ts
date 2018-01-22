@@ -1,12 +1,12 @@
+import { action, computed } from 'mobx';
 import { querySelector } from '../utils/dom';
-import { OperationModel, GroupModel, SpecStore } from './models';
-import { computed, action } from 'mobx';
+import { GroupModel, OperationModel, SpecStore } from './models';
 
-import { ScrollService } from './ScrollService';
 import { HistoryService } from './HistoryService';
+import { ScrollService } from './ScrollService';
 
-import { GROUP_DEPTH } from './MenuBuilder';
 import { flattenByProp } from '../utils';
+import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
 export type MenuItemType = MenuItemGroupType | 'operation';
@@ -18,7 +18,7 @@ export interface IMenuItem {
   name: string;
   depth: number;
   active: boolean;
-  items: Array<IMenuItem>;
+  items: IMenuItem[];
   parent?: IMenuItem;
   deprecated?: boolean;
   type: MenuItemType;
@@ -35,16 +35,16 @@ export const SECTION_ATTR = 'data-section-id';
  */
 export class MenuStore {
   /**
-   * cached flattened menu items to support absolute indexing
-   */
-  private _unsubscribe: Function;
-  private _hashUnsubscribe: Function;
-  private _items?: (GroupModel | OperationModel)[];
-
-  /**
    * active item absolute index (when flattened). -1 means nothing is selected
    */
   activeItemIdx: number = -1;
+
+  /**
+   * cached flattened menu items to support absolute indexing
+   */
+  private _unsubscribe: () => void;
+  private _hashUnsubscribe: () => void;
+  private _items?: Array<GroupModel | OperationModel>;
 
   /**
    *
@@ -107,13 +107,15 @@ export class MenuStore {
    */
   @action.bound
   updateOnHash(hash: string = HistoryService.hash): boolean {
-    if (!hash) return false;
+    if (!hash) {
+      return false;
+    }
     let item: IMenuItem | undefined;
     hash = hash.substr(1);
-    let namespace = hash.split('/')[0];
+    const namespace = hash.split('/')[0];
     let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
     if (namespace === 'section' || namespace === 'tag') {
-      let sectionId = ptr.split('/')[0];
+      const sectionId = ptr.split('/')[0];
       ptr = ptr.substr(sectionId.length);
 
       let searchId;
@@ -123,14 +125,14 @@ export class MenuStore {
         searchId = ptr || namespace + '/' + sectionId;
       }
 
-      item = this.flatItems.find(item => item.id === searchId);
+      item = this.flatItems.find(i => i.id === searchId);
       if (item === undefined) {
         this._scrollService.scrollIntoViewBySelector(`[${SECTION_ATTR}="${searchId}"]`);
         return false;
       }
     } else if (namespace === 'operation') {
-      item = this.flatItems.find(item => {
-        return (item as OperationModel).operationId === ptr;
+      item = this.flatItems.find(i => {
+        return (i as OperationModel).operationId === ptr;
       });
     }
     if (item) {
@@ -219,7 +221,11 @@ export class MenuStore {
    * @see MenuStore.activate
    */
   @action
-  activateAndScroll(item: IMenuItem | undefined, updateHash: boolean, rewriteHistory?: boolean) {
+  activateAndScroll(
+    item: IMenuItem | undefined,
+    updateHash: boolean,
+    rewriteHistory?: boolean,
+  ) {
     this.activate(item, updateHash, rewriteHistory);
     this.scrollToActive();
   }

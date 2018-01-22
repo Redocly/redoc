@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { MediaContentModel, SchemaModel, MediaTypeModel } from '../../services/models';
 import { DropdownProps } from '../../common-elements/dropdown';
+import { MediaContentModel, MediaTypeModel, SchemaModel } from '../../services/models';
 
 export interface MediaTypeChildProps {
   schema: SchemaModel;
@@ -18,15 +18,19 @@ export interface MediaTypesSwitchProps {
 @observer
 export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
   switchMedia = ({ value }) => {
-    this.props.content && this.props.content.activate(parseInt(value));
+    if (this.props.content) {
+      this.props.content.activate(parseInt(value, 10));
+    }
   };
 
   render() {
     const { content } = this.props;
-    if (!content || !content.mediaTypes || !content.mediaTypes.length) return null;
+    if (!content || !content.mediaTypes || !content.mediaTypes.length) {
+      return null;
+    }
     const activeMimeIdx = content.activeMimeIdx;
 
-    let options = content.mediaTypes.map((mime, idx) => {
+    const options = content.mediaTypes.map((mime, idx) => {
       return {
         label: mime.name,
         value: idx.toString(),

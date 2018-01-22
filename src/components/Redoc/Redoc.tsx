@@ -1,16 +1,16 @@
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
 
 import { ThemeProvider } from '../../styled-components';
 
-import { ApiInfo } from '../ApiInfo/ApiInfo';
-import { RedocWrap, ApiContent } from './elements';
-import { ApiLogo } from '../ApiLogo/ApiLogo';
-import { SideMenu } from '../SideMenu/SideMenu';
-import { ContentItems } from '../ContentItems/ContentItems';
 import { AppStore } from '../../services';
+import { ApiInfo } from '../ApiInfo/ApiInfo';
+import { ApiLogo } from '../ApiLogo/ApiLogo';
+import { ContentItems } from '../ContentItems/ContentItems';
 import { OptionsProvider } from '../OptionsProvider';
+import { SideMenu } from '../SideMenu/SideMenu';
 import { StickySidebar } from '../StickySidebar/StickySidebar';
+import { ApiContent, RedocWrap } from './elements';
 
 export interface RedocProps {
   store: AppStore;

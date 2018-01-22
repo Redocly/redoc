@@ -1,4 +1,4 @@
-export type CodeSample = {
+export interface CodeSample {
   lang: string;
   source: string;
-};
+}

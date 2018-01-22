@@ -1,6 +1,6 @@
 import styled from '../styled-components';
-import { deprecatedCss } from './mixins';
 import { transparentizeHex } from '../utils/styled';
+import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
   text-align: right;

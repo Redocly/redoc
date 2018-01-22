@@ -1,4 +1,4 @@
-import { Referenced, OpenAPIExample } from '../../types';
+import { OpenAPIExample, Referenced } from '../../types';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 export class ExampleModel {

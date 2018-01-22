@@ -1,17 +1,18 @@
-import { render } from 'react-dom';
 import * as React from 'react';
+import { render } from 'react-dom';
 
-import { querySelector } from './utils/dom';
 import { RedocStandalone } from './components/RedocStandalone';
+import { querySelector } from './utils/dom';
 
 export const version = __REDOC_VERSION__;
 export const revision = __REDOC_REVISION__;
 
 function attributesMap(element: Element) {
-  var res = {};
-  var elAttrs = element.attributes;
+  const res = {};
+  const elAttrs = element.attributes;
+  // tslint:disable-next-line
   for (let i = 0; i < elAttrs.length; i++) {
-    var attrib = elAttrs[i];
+    const attrib = elAttrs[i];
     res[attrib.name] = attrib.value;
   }
   return res;
@@ -20,7 +21,7 @@ function attributesMap(element: Element) {
 function parseOptionsFromElement(element: Element) {
   const attrMap = attributesMap(element);
   const res = {};
-  for (let attrName in attrMap) {
+  for (const attrName in attrMap) {
     const optionName = attrName.replace(/-(.)/g, (_, $1) => $1.toUpperCase());
     res[optionName] = attrMap[attrName];
     // TODO: normalize options

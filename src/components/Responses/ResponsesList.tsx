@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { ResponseView } from './Response';
 import { ResponseModel } from '../../services/models';
+import { ResponseView } from './Response';
 
 const ResponsesHeader = styled.h3`
   font-size: 18px;
@@ -19,7 +19,9 @@ export class ResponsesList extends React.PureComponent<ResponseListProps> {
   render() {
     const { responses } = this.props;
 
-    if (!responses || responses.length === 0) return null;
+    if (!responses || responses.length === 0) {
+      return null;
+    }
 
     return (
       <div>

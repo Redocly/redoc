@@ -1,9 +1,9 @@
 import * as Remarkable from 'remarkable';
 
 import { MDComponent } from '../components/Markdown/Markdown';
+import { highlight, html2Str } from '../utils';
 import { IMenuItem, SECTION_ATTR } from './MenuStore';
 import { GroupModel } from './models';
-import { highlight, html2Str } from '../utils';
 
 const md = new Remarkable('default', {
   html: true,
@@ -20,14 +20,14 @@ export function buildComponentComment(name: string) {
   return `<!-- ReDoc-Inject: <${name}> -->`;
 }
 
-type MarkdownHeading = {
+interface MarkdownHeading {
   name: string;
   children?: MarkdownHeading[];
   content?: string;
-};
+}
 
 export class MarkdownRenderer {
-  public headings: GroupModel[] = [];
+  headings: GroupModel[] = [];
   currentTopHeading: GroupModel;
 
   private _origRules: any = {};
@@ -52,9 +52,11 @@ export class MarkdownRenderer {
   }
 
   flattenHeadings(container?: MarkdownHeading[]): MarkdownHeading[] {
-    if (container === undefined) return [];
-    let res: MarkdownHeading[] = [];
-    for (let heading of container) {
+    if (container === undefined) {
+      return [];
+    }
+    const res: MarkdownHeading[] = [];
+    for (const heading of container) {
       res.push(heading);
       res.push(...this.flattenHeadings(heading.children));
     }
@@ -64,14 +66,16 @@ export class MarkdownRenderer {
   attachHeadingsContent(rawText: string) {
     const buildRegexp = heading => new RegExp(`<h\\d ${SECTION_ATTR}="section/${heading.id}">`);
 
-    let flatHeadings = this.flattenHeadings(this.headings);
-    if (flatHeadings.length < 1) return;
+    const flatHeadings = this.flattenHeadings(this.headings);
+    if (flatHeadings.length < 1) {
+      return;
+    }
     let prevHeading = flatHeadings[0];
 
     let prevPos = rawText.search(buildRegexp(prevHeading));
     for (let i = 1; i < flatHeadings.length; i++) {
-      let heading = flatHeadings[i];
-      let currentPos = rawText.substr(prevPos + 1).search(buildRegexp(heading)) + prevPos + 1;
+      const heading = flatHeadings[i];
+      const currentPos = rawText.substr(prevPos + 1).search(buildRegexp(heading)) + prevPos + 1;
       prevHeading.content = html2Str(rawText.substring(prevPos, currentPos));
 
       prevHeading = heading;
@@ -84,17 +88,17 @@ export class MarkdownRenderer {
     if (tokens[idx].hLevel > 2) {
       return this._origRules.open(tokens, idx);
     } else {
-      let content = tokens[idx + 1].content;
+      const content = tokens[idx + 1].content;
       if (tokens[idx].hLevel === 1) {
         this.currentTopHeading = this.saveHeading(content);
-        let id = this.currentTopHeading.id;
+        const id = this.currentTopHeading.id;
         return (
           `<a name="${id}"></a>` +
           `<h${tokens[idx].hLevel} ${SECTION_ATTR}="${id}" id="${id}">` +
           `<a class="share-link" href="#${id}"></a>`
         );
       } else if (tokens[idx].hLevel === 2) {
-        let { id } = this.saveHeading(content, this.currentTopHeading.items);
+        const { id } = this.saveHeading(content, this.currentTopHeading.items);
         return (
           `<a name="${id}"></a>` +
           `<h${tokens[idx].hLevel} ${SECTION_ATTR}="${id}" id="${id}">` +
@@ -119,9 +123,9 @@ export class MarkdownRenderer {
       md.renderer.rules.heading_close = this.headingCloseRule;
     }
 
-    let text = rawText;
+    const text = rawText;
 
-    let res = md.render(text);
+    const res = md.render(text);
 
     this.attachHeadingsContent(res);
 
@@ -142,17 +146,18 @@ export class MarkdownRenderer {
     rawText: string,
     components: Dict<MDComponent>,
     raw: boolean = true,
-  ): (string | MDComponent)[] {
-    let componentDefs: string[] = [];
-    let match;
-    let anyCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '(.*?)'), 'gmi');
-    while ((match = anyCompRegexp.exec(rawText))) {
+  ): Array<string | MDComponent> {
+    const componentDefs: string[] = [];
+    const anyCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '(.*?)'), 'gmi');
+    let match = anyCompRegexp.exec(rawText);
+    while (match) {
       componentDefs.push(match[1]);
+      match = anyCompRegexp.exec(rawText);
     }
 
-    let splitCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '.*?'), 'mi');
-    let htmlParts = rawText.split(splitCompRegexp);
-    let res: any[] = [];
+    const splitCompRegexp = new RegExp(COMPONENT_REGEXP.replace('{component}', '.*?'), 'mi');
+    const htmlParts = rawText.split(splitCompRegexp);
+    const res: any[] = [];
     for (let i = 0; i < htmlParts.length; i++) {
       const htmlPart = htmlParts[i];
       if (htmlPart) {
@@ -160,10 +165,12 @@ export class MarkdownRenderer {
       }
       if (componentDefs[i]) {
         const { componentName, attrs } = parseComponent(componentDefs[i]);
-        if (!componentName) continue;
+        if (!componentName) {
+          continue;
+        }
         res.push({
           ...components[componentName],
-          attrs: attrs,
+          attrs,
         });
       }
     }
@@ -178,7 +185,9 @@ function parseComponent(
   attrs: any;
 } {
   const match = /<([\w_-]+).*?>/.exec(htmlTag);
-  if (match === null || match.length <= 1) return { componentName: undefined, attrs: {} };
+  if (match === null || match.length <= 1) {
+    return { componentName: undefined, attrs: {} };
+  }
   const componentName = match[1];
   return {
     componentName,

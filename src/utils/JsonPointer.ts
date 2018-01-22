@@ -17,42 +17,42 @@ export class JsonPointer {
    * JsonPointerHelper.baseName('/path/foo/subpath', 2)
    */
   static baseName(pointer, level = 1) {
-    let tokens = JsonPointer.parse(pointer);
+    const tokens = JsonPointer.parse(pointer);
     return tokens[tokens.length - level];
   }
 
   /**
-    * returns dirname of pointer
-    * if level > 1 returns corresponding dirname in the hierarchy
-    * @example
-    * // returns /path/0
-    * JsonPointerHelper.dirName('/path/0/subpath')
-    * // returns /path
-    * JsonPointerHelper.dirName('/path/foo/subpath', 2)
-    */
+   * returns dirname of pointer
+   * if level > 1 returns corresponding dirname in the hierarchy
+   * @example
+   * // returns /path/0
+   * JsonPointerHelper.dirName('/path/0/subpath')
+   * // returns /path
+   * JsonPointerHelper.dirName('/path/foo/subpath', 2)
+   */
   static dirName(pointer, level = 1) {
-    let tokens = JsonPointer.parse(pointer);
+    const tokens = JsonPointer.parse(pointer);
     return JsonPointerLib.compile(tokens.slice(0, tokens.length - level));
   }
 
   /**
-    * returns relative path tokens
-    * @example
-    * // returns ['subpath']
-    * JsonPointerHelper.relative('/path/0', '/path/0/subpath')
-    * // returns ['foo', 'subpath']
-    * JsonPointerHelper.relative('/path', '/path/foo/subpath')
-    */
+   * returns relative path tokens
+   * @example
+   * // returns ['subpath']
+   * JsonPointerHelper.relative('/path/0', '/path/0/subpath')
+   * // returns ['foo', 'subpath']
+   * JsonPointerHelper.relative('/path', '/path/foo/subpath')
+   */
   static relative(from, to): string[] {
-    let fromTokens = JsonPointer.parse(from);
-    let toTokens = JsonPointer.parse(to);
+    const fromTokens = JsonPointer.parse(from);
+    const toTokens = JsonPointer.parse(to);
     return toTokens.slice(fromTokens.length);
   }
 
   /**
-    * overridden JsonPointer original parse to take care of prefixing '#' symbol
-    * that is not valid JsonPointer
-    */
+   * overridden JsonPointer original parse to take care of prefixing '#' symbol
+   * that is not valid JsonPointer
+   */
   static parse(pointer) {
     let ptr = pointer;
     if (ptr.charAt(0) === '#') {
@@ -70,12 +70,12 @@ export class JsonPointer {
    */
   static join(base, tokens) {
     // TODO: optimize
-    let baseTokens = JsonPointer.parse(base);
-    let resTokens = baseTokens.concat(tokens);
+    const baseTokens = JsonPointer.parse(base);
+    const resTokens = baseTokens.concat(tokens);
     return JsonPointerLib.compile(resTokens);
   }
 
-  static get(object: Object, pointer: string) {
+  static get(object: object, pointer: string) {
     return JsonPointerLib.get(object, pointer);
   }
 

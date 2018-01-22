@@ -5,8 +5,8 @@ import { AppContainer } from 'react-hot-loader';
 
 import { Redoc, RedocProps } from '../../src/components/Redoc/Redoc';
 import { AppStore } from '../../src/services/AppStore';
-import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 import { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
+import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 
 const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
   render(
@@ -19,7 +19,7 @@ const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
   );
 
 const big = window.location.search.indexOf('big') > -1;
-const swagger = window.location.search.indexOf('swagger') > -1; //compatibility mode ?
+const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
 
 const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
 
@@ -29,7 +29,7 @@ const options: RedocRawOptions = {};
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
   store = new AppStore(spec, specUrl, options);
-  renderRoot(Redoc, { store: store });
+  renderRoot(Redoc, { store });
 }
 
 init();
@@ -44,7 +44,7 @@ if (module.hot) {
       store = AppStore.fromJS(state);
     }
 
-    renderRoot(Redoc, { store: store });
+    renderRoot(Redoc, { store });
   };
 
   module.hot.accept(['../../src/components/Redoc/Redoc'], reload());

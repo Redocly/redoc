@@ -1,9 +1,9 @@
 import styled, { css } from '../styled-components';
 
 const headerFontSize = {
-  '1': '1.85714em',
-  '2': '1.57143em',
-  '3': '1.27em',
+  1: '1.85714em',
+  2: '1.57143em',
+  3: '1.27em',
 };
 
 export const headerCommonMixin = level => css`

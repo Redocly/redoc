@@ -1,7 +1,7 @@
-import { debounce, bind } from 'decko';
+import { bind, debounce } from 'decko';
 import { EventEmitter } from 'eventemitter3';
 
-import { querySelector, isBrowser } from '../utils';
+import { isBrowser, querySelector } from '../utils';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 const EVENT = 'scroll';
@@ -18,11 +18,15 @@ export class ScrollService {
 
   bind() {
     this._prevOffsetY = this.scrollY();
-    this._scrollParent && this._scrollParent.addEventListener('scroll', this.handleScroll);
+    if (this._scrollParent) {
+      this._scrollParent.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   dispose() {
-    this._scrollParent && this._scrollParent.removeEventListener('scroll', this.handleScroll);
+    if (this._scrollParent) {
+      this._scrollParent.removeEventListener('scroll', this.handleScroll);
+    }
     this._emiter.removeAllListeners(EVENT);
   }
 
@@ -37,12 +41,16 @@ export class ScrollService {
   }
 
   isElementBellow(el: Element | null) {
-    if (el === null) return;
+    if (el === null) {
+      return;
+    }
     return el.getBoundingClientRect().top > this.options.scrollYOffset();
   }
 
   isElementAbove(el: Element | null) {
-    if (el === null) return;
+    if (el === null) {
+      return;
+    }
     return Math.trunc(el.getBoundingClientRect().top) <= this.options.scrollYOffset();
   }
 
@@ -56,9 +64,9 @@ export class ScrollService {
       return;
     }
     element.scrollIntoView();
-    this._scrollParent &&
-      this._scrollParent.scrollBy &&
+    if (this._scrollParent && this._scrollParent.scrollBy) {
       (this._scrollParent.scrollBy as any)(0, -this.options.scrollYOffset());
+    }
   }
 
   scrollIntoViewBySelector(selector: string) {

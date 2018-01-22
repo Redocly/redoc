@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { PropertyNameCell } from './fields-layout';
 import { transparentizeHex } from '../utils/styled';
+import { PropertyNameCell } from './fields-layout';
 
 export const ClickablePropertyNameCell = PropertyNameCell.extend`
   cursor: pointer;

@@ -1,21 +1,21 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 
 import { OpenAPIResponse, Referenced } from '../../types';
 
+import { getStatusCodeType } from '../../utils';
+import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
-import { OpenAPIParser } from '../OpenAPIParser';
-import { getStatusCodeType } from '../../utils';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ResponseModel {
-  @observable public expanded: boolean;
+  @observable expanded: boolean;
 
-  public content?: MediaContentModel;
-  public code: string;
-  public description: string;
-  public type: string;
-  public headers: FieldModel[] = [];
+  content?: MediaContentModel;
+  code: string;
+  description: string;
+  type: string;
+  headers: FieldModel[] = [];
 
   constructor(
     parser: OpenAPIParser,

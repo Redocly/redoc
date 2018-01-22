@@ -1,17 +1,19 @@
+import * as React from 'react';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { ParametersGroup } from './ParametersGroup';
-import * as React from 'react';
 
 import { UnderlinedHeader } from '../../common-elements';
 
-import { Schema } from '../Schema';
-import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { FieldModel, RequestBodyModel } from '../../services/models';
+import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
+import { Schema } from '../Schema';
 
 import { MediaContentModel } from '../../services';
 
 function safePush(obj, prop, item) {
-  if (!obj[prop]) obj[prop] = [];
+  if (!obj[prop]) {
+    obj[prop] = [];
+  }
   obj[prop].push(item);
 }
 
@@ -24,7 +26,7 @@ const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
 
 export class Parameters extends React.PureComponent<ParametersProps> {
   orderParams(params: FieldModel[]): Dict<FieldModel[]> {
-    let res = {};
+    const res = {};
     params.forEach(param => {
       safePush(res, param.in, param);
     });
@@ -37,7 +39,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
       return null;
     }
 
-    let paramsMap = this.orderParams(parameters);
+    const paramsMap = this.orderParams(parameters);
 
     const paramsPlaces = parameters.length > 0 ? PARAM_PLACES : [];
 
@@ -54,17 +56,18 @@ export class Parameters extends React.PureComponent<ParametersProps> {
   }
 }
 
+function DropdownWithinHeader(props) {
+  return (
+    <UnderlinedHeader key="header">
+      Request Body schema: <DropdownOrLabel {...props} />
+    </UnderlinedHeader>
+  );
+}
+
 function BodyContent(props: { content: MediaContentModel }): JSX.Element {
   const { content } = props;
   return (
-    <MediaTypesSwitch
-      content={content}
-      renderDropdown={props => (
-        <UnderlinedHeader key="header">
-          Request Body schema: <DropdownOrLabel {...props} />
-        </UnderlinedHeader>
-      )}
-    >
+    <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>
       {({ schema }) => {
         return <Schema skipReadOnly={true} key="schema" schema={schema} />;
       }}

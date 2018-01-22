@@ -1,5 +1,5 @@
-import { FieldDetails } from './FieldDetails';
 import * as React from 'react';
+import { FieldDetails } from './FieldDetails';
 
 import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
 

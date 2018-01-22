@@ -1,8 +1,8 @@
 import styled from '../../styled-components';
 
-import { ResponseTitle } from './ResponseTitle';
 import { UnderlinedHeader } from '../../common-elements';
 import { transparentizeHex } from '../../utils';
+import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
   padding: 10px;

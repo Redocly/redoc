@@ -1,6 +1,6 @@
 import { Omit } from './';
 
-export type OpenAPISpec = {
+export interface OpenAPISpec {
   openapi: string;
   info: OpenAPIInfo;
   servers?: OpenAPIServer[];
@@ -9,7 +9,7 @@ export type OpenAPISpec = {
   security?: OpenAPISecurityRequirement[];
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
-};
+}
 
 export interface OpenAPIInfo {
   title: string;
@@ -21,59 +21,58 @@ export interface OpenAPIInfo {
   license?: OpenAPILicense;
 }
 
-export type OpenAPIServer = {
+export interface OpenAPIServer {
   url: string;
   description?: string;
   variables?: { [name: string]: OpenAPIServerVariable };
-};
+}
 
-export type OpenAPIServerVariable = {
+export interface OpenAPIServerVariable {
   enum?: string[];
   default: string;
   description?: string;
-};
+}
 
-export type OpenAPIPaths = { [path: string]: OpenAPIPath };
-export type OpenAPIRef = {
+export interface OpenAPIPaths {
+  [path: string]: OpenAPIPath;
+}
+export interface OpenAPIRef {
   $ref: string;
-};
+}
 
 export type Referenced<T> = OpenAPIRef | T;
 
-export type OpenAPIPath =
-  // | OpenAPIRef // paths can't be external in redoc because they are prebundled
-  // | {
-  {
-    summary?: string;
-    description?: string;
-    get?: OpenAPIOperation;
-    put?: OpenAPIOperation;
-    post?: OpenAPIOperation;
-    delete?: OpenAPIOperation;
-    options?: OpenAPIOperation;
-    head?: OpenAPIOperation;
-    patch?: OpenAPIOperation;
-    trace?: OpenAPIOperation;
-    servers?: OpenAPIServer[];
-    parameters?: Referenced<OpenAPIParameter>[];
-  };
+export interface OpenAPIPath {
+  summary?: string;
+  description?: string;
+  get?: OpenAPIOperation;
+  put?: OpenAPIOperation;
+  post?: OpenAPIOperation;
+  delete?: OpenAPIOperation;
+  options?: OpenAPIOperation;
+  head?: OpenAPIOperation;
+  patch?: OpenAPIOperation;
+  trace?: OpenAPIOperation;
+  servers?: OpenAPIServer[];
+  parameters?: Array<Referenced<OpenAPIParameter>>;
+}
 
-export type OpenAPIOperation = {
+export interface OpenAPIOperation {
   tags?: string[];
   summary?: string;
   description?: string;
   externalDocs?: OpenAPIExternalDocumentation;
   operationId?: string;
-  parameters?: Referenced<OpenAPIParameter>[];
+  parameters?: Array<Referenced<OpenAPIParameter>>;
   requestBody?: Referenced<OpenAPIRequestBody>;
   responses: OpenAPIResponses;
   callbacks?: { [name: string]: Referenced<OpenAPICallback> };
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
-};
+}
 
-export type OpenAPIParameter = {
+export interface OpenAPIParameter {
   name: string;
   in?: OpenAPIParameterLocation;
   description?: string;
@@ -87,16 +86,16 @@ export type OpenAPIParameter = {
   example?: any;
   examples?: { [media: string]: Referenced<OpenAPIExample> };
   content?: { [media: string]: OpenAPIMediaType };
-};
+}
 
-export type OpenAPIExample = {
+export interface OpenAPIExample {
   value: any;
   summary?: string;
   description?: string;
   externalValue?: string;
-};
+}
 
-export type OpenAPISchema = {
+export interface OpenAPISchema {
   $ref?: string;
   type?: string;
   properties?: { [name: string]: OpenAPISchema };
@@ -133,27 +132,27 @@ export type OpenAPISchema = {
   minProperties?: number;
   enum?: any[];
   example?: any;
-};
+}
 
-export type OpenAPIDiscriminator = {
+export interface OpenAPIDiscriminator {
   propertyName: string;
   mapping?: { [name: string]: string };
-};
+}
 
-export type OpenAPIMediaType = {
+export interface OpenAPIMediaType {
   schema?: Referenced<OpenAPISchema>;
   example?: any;
   examples?: { [name: string]: Referenced<OpenAPIExample> };
   encoding?: { [field: string]: OpenAPIEncoding };
-};
+}
 
-export type OpenAPIEncoding = {
+export interface OpenAPIEncoding {
   contentType: string;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
   style: OpenAPIParameterStyle;
   explode: boolean;
   allowReserved: boolean;
-};
+}
 
 export type OpenAPIParameterLocation = 'query' | 'header' | 'path' | 'cookie';
 export type OpenAPIParameterStyle =
@@ -165,30 +164,34 @@ export type OpenAPIParameterStyle =
   | 'pipeDelimited'
   | 'deepObject';
 
-export type OpenAPIRequestBody = {
+export interface OpenAPIRequestBody {
   description?: string;
   required?: boolean;
   content: { [mime: string]: OpenAPIMediaType };
-};
+}
 
-export type OpenAPIResponses = {
+export interface OpenAPIResponses {
   [code: string]: OpenAPIResponse;
-};
+}
 
-export type OpenAPIResponse = {
+export interface OpenAPIResponse {
   description?: string;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
   content?: { [mime: string]: OpenAPIMediaType };
   links?: { [name: string]: Referenced<OpenAPILink> };
-};
+}
 
-export type OpenAPILink = {};
+export interface OpenAPILink {
+  $ref?: string;
+}
 
 export type OpenAPIHeader = Omit<OpenAPIParameter, 'in' | 'name'>;
 
-export type OpenAPICallback = {};
+export interface OpenAPICallback {
+  $ref?: string;
+}
 
-export type OpenAPIComponents = {
+export interface OpenAPIComponents {
   schemas?: { [name: string]: Referenced<OpenAPISchema> };
   responses?: { [name: string]: Referenced<OpenAPIResponse> };
   parameters?: { [name: string]: Referenced<OpenAPIParameter> };
@@ -198,13 +201,13 @@ export type OpenAPIComponents = {
   securitySchemes?: { [name: string]: Referenced<OpenAPISecurityScheme> };
   links?: { [name: string]: Referenced<OpenAPILink> };
   callbacks?: { [name: string]: Referenced<OpenAPICallback> };
-};
+}
 
-export type OpenAPISecurityRequirement = {
+export interface OpenAPISecurityRequirement {
   [name: string]: string[];
-};
+}
 
-export type OpenAPISecurityScheme = {
+export interface OpenAPISecurityScheme {
   type: 'apiKey' | 'http' | 'oauth2' | 'openIdConnect';
   description?: string;
   name?: string;
@@ -234,27 +237,27 @@ export type OpenAPISecurityScheme = {
     };
   };
   openIdConnectUrl?: string;
-};
+}
 
-export type OpenAPITag = {
+export interface OpenAPITag {
   name: string;
   description?: string;
   externalDocs?: OpenAPIExternalDocumentation;
   'x-displayName'?: string;
-};
+}
 
-export type OpenAPIExternalDocumentation = {
+export interface OpenAPIExternalDocumentation {
   description?: string;
   url?: string;
-};
+}
 
-export type OpenAPIContact = {
+export interface OpenAPIContact {
   name?: string;
   url?: string;
   email?: string;
-};
+}
 
-export type OpenAPILicense = {
+export interface OpenAPILicense {
   name: string;
   url?: string;
-};
+}

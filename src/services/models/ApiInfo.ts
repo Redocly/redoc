@@ -1,6 +1,6 @@
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
-import { OpenAPIParser } from '../OpenAPIParser';
 import { isBrowser } from '../../utils/';
+import { OpenAPIParser } from '../OpenAPIParser';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;

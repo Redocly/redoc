@@ -3,8 +3,8 @@ import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const _parser = new JsonSchemaRefParser();
-  const spec = await _parser.bundle(specUrlOrObject, {
+  const parser = new JsonSchemaRefParser();
+  const spec = await parser.bundle(specUrlOrObject, {
     resolve: { http: { withCredentials: false } },
   } as object);
 

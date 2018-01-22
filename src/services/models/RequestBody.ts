@@ -1,8 +1,8 @@
 import { OpenAPIRequestBody, Referenced } from '../../types';
 
-import { MediaContentModel } from './MediaContent';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { MediaContentModel } from './MediaContent';
 
 export class RequestBodyModel {
   description: string;

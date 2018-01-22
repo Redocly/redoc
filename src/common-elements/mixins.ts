@@ -6,7 +6,9 @@ export const deprecatedCss = css`
 `;
 
 export const hoverColor = color => {
-  if (!color) return '';
+  if (!color) {
+    return '';
+  }
   return css`
     &:hover {
       color: ${color};

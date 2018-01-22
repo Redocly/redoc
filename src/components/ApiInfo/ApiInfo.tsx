@@ -1,18 +1,18 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { AppStore } from '../../services/AppStore';
 
-import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
+import { DarkRightPanel, MiddlePanel, Row } from '../../common-elements/';
 import { Markdown } from '../Markdown/Markdown';
-import { MiddlePanel, DarkRightPanel, Row } from '../../common-elements/';
+import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 
 import {
   ApiHeader,
   DownloadButton,
   InfoSpan,
-  InfoSpanBoxWrap,
   InfoSpanBox,
+  InfoSpanBoxWrap,
 } from './styled.elements';
 
 interface ApiInfoProps {
@@ -101,8 +101,8 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               components={{
                 'security-definitions': {
                   component: SecurityDefs,
-                  propsSelector: store => ({
-                    securitySchemes: store!.spec.securitySchemes,
+                  propsSelector: _store => ({
+                    securitySchemes: _store!.spec.securitySchemes,
                   }),
                 },
               }}

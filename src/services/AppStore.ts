@@ -1,11 +1,11 @@
 import { OpenAPISpec } from '../types';
-import { SpecStore } from './models';
-import { MenuStore } from './MenuStore';
-import { ScrollService } from './ScrollService';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
+import { MenuStore } from './MenuStore';
+import { SpecStore } from './models';
 import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
+import { ScrollService } from './ScrollService';
 
-type StoreData = {
+interface StoreData {
   menu: {
     activeItemIdx: number;
   };
@@ -14,7 +14,7 @@ type StoreData = {
     data: any;
   };
   options: RedocRawOptions;
-};
+}
 
 export async function createStore(
   spec: object,
@@ -26,6 +26,18 @@ export async function createStore(
 }
 
 export class AppStore {
+  /**
+   * deserialize store
+   * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
+   */
+  // TODO:
+  static fromJS(state: StoreData): AppStore {
+    const inst = new AppStore(state.spec.data, state.spec.url, state.options);
+    inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
+    inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
+    return inst;
+  }
+
   menu: MenuStore;
   spec: SpecStore;
   rawOptions: RedocRawOptions;
@@ -62,16 +74,5 @@ export class AppStore {
       },
       options: this.rawOptions,
     };
-  }
-  /**
-   * deserialize store
-   * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
-   */
-  // TODO:
-  static fromJS(state: StoreData): AppStore {
-    const inst = new AppStore(state.spec.data, state.spec.url, state.options);
-    inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
-    inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
-    return inst;
   }
 }

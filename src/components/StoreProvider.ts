@@ -1,8 +1,8 @@
 import { Component } from 'react';
 
 import { AppStore } from '../services/';
-import { loadAndBundleSpec } from '../utils';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
+import { loadAndBundleSpec } from '../utils';
 
 interface StoreProviderProps {
   specUrl?: string;
@@ -36,7 +36,7 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
   }
 
   async load() {
-    let { specUrl, spec, options } = this.props;
+    const { specUrl, spec, options } = this.props;
 
     this.setState({
       loading: true,
@@ -62,7 +62,9 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
   }
 
   render() {
-    if (this.state.error) throw this.state.error;
+    if (this.state.error) {
+      throw this.state.error;
+    }
     return this.props.children(this.state);
   }
 }

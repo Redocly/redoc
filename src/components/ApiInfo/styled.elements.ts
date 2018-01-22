@@ -1,6 +1,6 @@
 import styled from '../../styled-components';
 
-import { MiddlePanel, H1 } from '../../common-elements';
+import { H1, MiddlePanel } from '../../common-elements';
 
 const delimiterWidth = 15;
 

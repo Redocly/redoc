@@ -1,10 +1,10 @@
-import { PropertiesTable } from '../../common-elements/fields-layout';
 import * as React from 'react';
+import { PropertiesTable } from '../../common-elements/fields-layout';
 
-import { HeadersCaption } from './styled.elements';
-import { mapWithLast } from '../../utils';
 import { FieldModel } from '../../services/models';
+import { mapWithLast } from '../../utils';
 import { Field } from '../Fields/Field';
+import { HeadersCaption } from './styled.elements';
 
 export interface ResponseHeadersProps {
   headers?: FieldModel[];

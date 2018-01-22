@@ -1,12 +1,12 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { ResponseModel } from '../../services/models';
 
 import { UnderlinedHeader } from '../../common-elements';
-import { Schema } from '../Schema';
-import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
+import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
+import { Schema } from '../Schema';
 
 import { ResponseHeaders } from './ResponseHeaders';
 import { ResponseDetailsWrap, StyledResponseTitle } from './styled.elements';
@@ -38,14 +38,7 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
           !empty && (
             <ResponseDetailsWrap>
               <ResponseHeaders headers={headers} />
-              <MediaTypesSwitch
-                content={content}
-                renderDropdown={props => (
-                  <UnderlinedHeader key="header">
-                    Response Schema: <DropdownOrLabel {...props} />
-                  </UnderlinedHeader>
-                )}
-              >
+              <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>
                 {({ schema }) => {
                   return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
                 }}
@@ -55,4 +48,12 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
       </div>
     );
   }
+
+  private renderDropdown = props => {
+    return (
+      <UnderlinedHeader key="header">
+        Response Schema: <DropdownOrLabel {...props} />
+      </UnderlinedHeader>
+    );
+  };
 }

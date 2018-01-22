@@ -2,8 +2,8 @@ import * as React from 'react';
 import styled from '../../styled-components';
 import { transparentizeHex } from '../../utils/styled';
 
-import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
 import { UnderlinedHeader } from '../../common-elements/headers';
+import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
 
 const ScopeName = styled.code`
   font-size: ${props => props.theme.code.fontSize};
@@ -57,7 +57,9 @@ export interface SecurityRequirementsProps {
 export class SecurityRequirements extends React.PureComponent<SecurityRequirementsProps> {
   render() {
     const securities = this.props.securities;
-    if (!securities.length) return null;
+    if (!securities.length) {
+      return null;
+    }
     return (
       <div>
         <AuthHeaderColumn>

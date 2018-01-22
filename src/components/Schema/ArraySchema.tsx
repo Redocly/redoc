@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { SchemaProps, Schema } from './Schema';
+import { Schema, SchemaProps } from './Schema';
 
-import { ArrayOpenningLabel, ArrayClosingLabel } from '../../common-elements';
+import { ArrayClosingLabel, ArrayOpenningLabel } from '../../common-elements';
 
 export class ArraySchema extends React.PureComponent<SchemaProps> {
   render() {

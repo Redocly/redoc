@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { MediaContentModel, OperationModel } from '../../services/models';
 
-import { Tab, Tabs, TabList, TabPanel } from '../../common-elements';
+import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 
 export interface ResponseSampleProps {

@@ -23,8 +23,8 @@ class Json extends React.PureComponent<JsonProps> {
   }
 
   clickListener = (event: MouseEvent) => {
-    var collapsed,
-      target = event.target as HTMLElement;
+    let collapsed;
+    const target = event.target as HTMLElement;
     if (target.className === 'collapser') {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
       if (collapsed.parentElement.classList.contains('collapsed')) {

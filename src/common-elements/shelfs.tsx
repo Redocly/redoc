@@ -8,7 +8,7 @@ const directionMap = {
   down: '0',
 };
 
-class _ShelfIcon extends React.PureComponent<{
+class IntShelfIcon extends React.PureComponent<{
   className?: string;
   float?: 'left' | 'right';
   size?: string;
@@ -33,7 +33,7 @@ class _ShelfIcon extends React.PureComponent<{
   }
 }
 
-export const ShelfIcon = styled(_ShelfIcon)`
+export const ShelfIcon = styled(IntShelfIcon)`
   height: ${props => props.size || '18px'};
   width: ${props => props.size || '18px'};
   vertical-align: middle;

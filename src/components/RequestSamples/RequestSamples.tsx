@@ -1,10 +1,10 @@
-import { SourceCode } from '../SourceCode/SourceCode';
-import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
-import * as React from 'react';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 import { OperationModel } from '../../services/models';
+import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
+import { SourceCode } from '../SourceCode/SourceCode';
 
-import { Tab, Tabs, TabList, TabPanel } from '../../common-elements';
+import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 
 export interface RequestSamplesProps {
   operation: OperationModel;
