@@ -1,4 +1,6 @@
-<img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="400px" />
+<div style="text-align: center">
+    <img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="300px" />
+</div>
 
 **OpenAPI/Swagger-generated API Reference Documentation**
 
