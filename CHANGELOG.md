@@ -1,5 +1,5 @@
 <a name="1.20.0"></a>
-## [1.19.4](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
+## [1.20.0](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
 
 
 ### Bug Fixes
