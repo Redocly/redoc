@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { OperationModel } from '../../services/models';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
-import { SourceCode } from '../SourceCode/SourceCode';
+import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
 import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 
@@ -40,7 +40,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             )}
             {samples.map(sample => (
               <TabPanel key={sample.lang}>
-                <SourceCode lang={sample.lang} source={sample.source} />
+                <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
               </TabPanel>
             ))}
           </Tabs>

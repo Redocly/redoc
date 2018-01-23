@@ -7,3 +7,4 @@ export * from './schema';
 export * from './dropdown';
 export * from './mixins';
 export * from './tabs';
+export * from './samples';

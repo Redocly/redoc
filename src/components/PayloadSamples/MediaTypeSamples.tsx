@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { SmallTabs, Tab, TabList, TabPanel } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
-import { StyledJson } from '../JsonViewer/JsonViewer';
-import { SourceCode } from '../SourceCode/SourceCode';
+import { JsonViewer } from '../JsonViewer/JsonViewer';
+import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { NoSampleLabel } from './styled.elements';
 
 import { isJsonLike, langFromMime } from '../../utils';
@@ -19,9 +19,11 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
 
     const noSample = <NoSampleLabel>No sample</NoSampleLabel>;
     const sampleView = isJsonLike(mimeType)
-      ? sample => <StyledJson data={sample} />
+      ? sample => <JsonViewer data={sample} />
       : sample =>
-          (sample && <SourceCode lang={langFromMime(mimeType)} source={sample} />) || { noSample };
+          (sample && <SourceCodeWithCopy lang={langFromMime(mimeType)} source={sample} />) || {
+            noSample,
+          };
 
     const examplesNames = Object.keys(examples);
     if (examplesNames.length === 0) {
