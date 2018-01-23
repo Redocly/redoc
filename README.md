@@ -1,6 +1,9 @@
-<img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="400px" />
-
-**OpenAPI/Swagger-generated API Reference Documentation**
+<p align="center">
+    <img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="300px" />
+</p>
+<p align="center">
+    <b>OpenAPI/Swagger-generated API Reference Documentation</b>
+</p>
 
 [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru) [![dependencies Status](https://david-dm.org/Rebilly/ReDoc/status.svg)](https://david-dm.org/Rebilly/ReDoc) [![devDependencies Status](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![Stories in Ready](https://badge.waffle.io/Rebilly/ReDoc.png?label=ready&title=Ready)](https://waffle.io/Rebilly/ReDoc)
 
