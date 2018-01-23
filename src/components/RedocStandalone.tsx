@@ -18,7 +18,7 @@ export class RedocStandalone extends React.Component<RedocStandaloneProps> {
     spec: (props, _, componentName) => {
       if (!props.spec && !props.specUrl) {
         return new Error(
-          `One of props 'spec' or 'specUrlurl' was not specified in '${componentName}'.`,
+          `One of props 'spec' or 'specUrl' was not specified in '${componentName}'.`,
         );
       }
       return null;

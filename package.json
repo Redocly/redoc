@@ -70,7 +70,8 @@
     "typescript": "^2.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "yaml-js": "^0.2.3"
   },
   "peerDependencies": {
     "react": "^16.0.0",

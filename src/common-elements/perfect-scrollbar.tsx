@@ -4,7 +4,7 @@ import { default as PerfectScrollbarConstructor } from 'perfect-scrollbar';
 import psStyles from 'perfect-scrollbar/css/perfect-scrollbar.css';
 import styled, { injectGlobal } from '../styled-components';
 
-injectGlobal`${psStyles.toString()}`;
+injectGlobal`${psStyles && psStyles.toString()}`;
 
 const StyledScrollWrapper = styled.div`
   position: relative;
