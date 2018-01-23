@@ -221,11 +221,7 @@ export class MenuStore {
    * @see MenuStore.activate
    */
   @action
-  activateAndScroll(
-    item: IMenuItem | undefined,
-    updateHash: boolean,
-    rewriteHistory?: boolean,
-  ) {
+  activateAndScroll(item: IMenuItem | undefined, updateHash: boolean, rewriteHistory?: boolean) {
     this.activate(item, updateHash, rewriteHistory);
     this.scrollToActive();
   }

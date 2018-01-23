@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '../styled-components';
 
 export const MiddlePanel = styled.div`
   width: ${props => 100 - props.theme.rightPanel.width}%;
