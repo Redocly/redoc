@@ -9,8 +9,11 @@ const StyledPre = styled.pre`
   font-family: ${props => props.theme.code.fontFamily};
   font-size: ${props => props.theme.code.fontSize};
   overflow-x: auto;
-  font-size: 0.9em;
   margin: 0;
+
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 export interface SourceCodeProps {
