@@ -5,7 +5,7 @@
   "main": "bundles/redoc.lib.js",
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "start:perf": "webpack-dev-server --env.prod --env.perf",
+    "start:benchmark": "webpack-dev-server --env.prod --env.perf",
     "start:prod": "webpack-dev-server --env.prod",
     "test": "npm run lint && npm run unit && npm run e2e",
     "unit": "jest",
@@ -20,7 +20,8 @@
     "stats": "webpack -p --env.lib --env.standalone --env.prod --json --profile > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
-    "lint": "tslint --project tsconfig.json"
+    "lint": "tslint --project tsconfig.json",
+    "benchmark": "node ./benchmark/benchmark.js"
   },
   "author": "",
   "license": "MIT",
@@ -43,6 +44,7 @@
     "@types/webpack": "^3.0.5",
     "@types/webpack-env": "^1.13.0",
     "awesome-typescript-loader": "^3.2.2",
+    "beautify-benchmark": "^0.2.4",
     "conventional-changelog-cli": "^1.3.5",
     "core-js": "^2.5.1",
     "css-loader": "^0.28.7",
@@ -61,6 +63,7 @@
     "react-dev-utils": "^4.1.0",
     "react-dom": "^16.2.0",
     "rimraf": "^2.6.2",
+    "shelljs": "^0.8.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-jest": "^21.0.1",
@@ -105,6 +108,10 @@
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.ts",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/benchmark/"
+    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",

@@ -24,7 +24,7 @@ export default env => {
   } else {
     // playground or performance test
     entry = env.perf
-      ? ['./perf/index.tsx'] // perf test
+      ? ['./benchmark/index.tsx'] // perf test
       : [
           // playground
           './src/polyfills.ts',
@@ -73,7 +73,7 @@ export default env => {
             {
               loader: 'awesome-typescript-loader',
               options: {
-                module: 'es2015',
+                module: env.perf ? 'esnext' : 'es2015',
               },
             },
           ],
@@ -132,7 +132,7 @@ export default env => {
   } else {
     config.plugins!.push(
       new HtmlWebpackPlugin({
-        template: './demo/playground/index.html',
+        template: env.perf ? './benchmark/index.html' : './demo/playground/index.html',
       }),
     );
   }

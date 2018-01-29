@@ -26,6 +26,8 @@ e2e/.build/
 cypress/
 bundles
 
+/benchmark/revisions
+
 /coverage
 .ghpages-tmp
 stats.json

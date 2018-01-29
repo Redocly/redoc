@@ -71,6 +71,8 @@ There are some other scripts available in the `scripts` section of the `package.
 
 ## Project Structure
 
+- **`benchmark`**: contains basic perf benchmark. Not fully ready yet
+
 - **`demo`**: contains project demo with demo specs and HMR playground used in development
 
   - `demo/playground`: HMR Playground used in development
@@ -79,7 +81,6 @@ There are some other scripts available in the `scripts` section of the `package.
 
 - **`e2e`**: contains e2e tests. The e2e tests are written and run with [Cypress](https://www.cypress.io/).
 
-- **`perf`**: contains basic perf benchmark. Not ready yet
 
 - **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [MobX](https://github.com/mobxjs/mobx)
 
