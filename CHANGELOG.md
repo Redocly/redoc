@@ -1,3 +1,23 @@
+<a name="2.0.0-alpha.11"></a>
+# [2.0.0-alpha.11](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.10...v2.0.0-alpha.11) (2018-01-29)
+
+
+### Bug Fixes
+
+* courier misspelling ([#409](https://github.com/Rebilly/Redoc/issues/409)) ([96fb7ce](https://github.com/Rebilly/Redoc/commit/96fb7ce))
+* crash on 2-level md heading at the beginning ([e9f23f7](https://github.com/Rebilly/Redoc/commit/e9f23f7))
+* make active tab more clear ([4b5df22](https://github.com/Rebilly/Redoc/commit/4b5df22))
+* perfect scroll not working ([199f240](https://github.com/Rebilly/Redoc/commit/199f240))
+* use array items example ([12f79f0](https://github.com/Rebilly/Redoc/commit/12f79f0)), closes [#408](https://github.com/Rebilly/Redoc/issues/408)
+* wrap text in code samples ([6c71a66](https://github.com/Rebilly/Redoc/commit/6c71a66))
+
+
+### Features
+
+* port "copy to clipboard" / "expand/collapse all" functionality ([5bb0bdf](https://github.com/Rebilly/Redoc/commit/5bb0bdf)), closes [#410](https://github.com/Rebilly/Redoc/issues/410)
+
+
+
 <a name="2.0.0-alpha.9"></a>
 # [2.0.0-alpha.9](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.8...v2.0.0-alpha.9) (2018-01-11)
 
