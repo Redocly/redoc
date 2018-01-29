@@ -9,6 +9,8 @@ const args = process.argv.slice(2);
 args[0] = args[0] || 'HEAD';
 args[1] = args[1] || 'local';
 
+let started = false;
+
 console.log('Benchmarking revisions: ' + args.join(', '));
 
 const localDistDir = './benchmark/revisions/local/bundles';
@@ -34,7 +36,7 @@ console.log('Starging benchmark server');
 const proc = spawn('npm', ['run', 'start:benchmark']);
 
 proc.stdout.on('data', data => {
-  if (data.toString().indexOf('Project is running at') > -1) {
+  if (data.toString().indexOf('webpack: Compiled successfully') > -1) {
     console.log('Server started');
     startBenchmark();
   }
@@ -57,7 +59,9 @@ async function runPuppeteer() {
       const prom = new Promise(_resolve => {
         resolve = _resolve;
       });
-      page.on('console', obj => {
+      page.on('console', async msg => {
+        const args = msg.args();
+        const obj = args.length > 0 && (await args[0].jsonValue());
         if (!obj) return;
 
         if (obj.done) {
@@ -71,9 +75,7 @@ async function runPuppeteer() {
           console.log(obj);
         }
       });
-      await page.goto('http://localhost:9090', {
-        waitUntil: 'networkidle',
-      });
+      await page.goto('http://127.0.0.1:9090', { timeout: 0 });
       const res = await prom;
       await browser.close();
       return res;
@@ -81,6 +83,8 @@ async function runPuppeteer() {
 }
 
 async function startBenchmark() {
+  if (started) return;
+  started = true;
   console.log('Starting benchmarks');
   await runPuppeteer();
 
