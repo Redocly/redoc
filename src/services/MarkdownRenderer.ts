@@ -98,7 +98,10 @@ export class MarkdownRenderer {
           `<a class="share-link" href="#${id}"></a>`
         );
       } else if (tokens[idx].hLevel === 2) {
-        const { id } = this.saveHeading(content, this.currentTopHeading.items);
+        const { id } = this.saveHeading(
+          content,
+          this.currentTopHeading && this.currentTopHeading.items,
+        );
         return (
           `<a name="${id}"></a>` +
           `<h${tokens[idx].hLevel} ${SECTION_ATTR}="${id}" id="${id}">` +
