@@ -1,4 +1,5 @@
 {
+  "ignoreTestFiles": "*.js.map",
   "integrationFolder": "e2e/.build",
   "fixturesFolder": false,
   "supportFile": false,

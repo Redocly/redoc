@@ -18,14 +18,11 @@
       "dom"
     ],
     "jsx": "react",
-    "types": [
-      "mocha",
-      "cypress",
-      "chai"
-    ]
+    "types": ["cypress"]
   },
   "compileOnSave": false,
   "include": [
+    "./node_modules/cypress",
     "e2e"
   ]
 }
