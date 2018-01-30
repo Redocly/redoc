@@ -40,6 +40,11 @@ export class MenuStore {
   activeItemIdx: number = -1;
 
   /**
+   * whether sidebar with menu is opened or not
+   */
+  @observable sideBarOpened: boolean = false;
+
+  /**
    * cached flattened menu items to support absolute indexing
    */
   private _unsubscribe: () => void;
@@ -54,6 +59,16 @@ export class MenuStore {
   constructor(private spec: SpecStore, private _scrollService: ScrollService) {
     this._unsubscribe = _scrollService.subscribe(this.updateOnScroll);
     this._hashUnsubscribe = HistoryService.subscribe(this.updateOnHash);
+  }
+
+  @action
+  toggleSidebar() {
+    this.sideBarOpened = this.sideBarOpened ? false : true;
+  }
+
+  @action
+  closeSidebar() {
+    this.sideBarOpened = false;
   }
 
   /**
@@ -224,6 +239,9 @@ export class MenuStore {
   activateAndScroll(item: IMenuItem | undefined, updateHash: boolean, rewriteHistory?: boolean) {
     this.activate(item, updateHash, rewriteHistory);
     this.scrollToActive();
+    if (!item || !item.items.length) {
+      this.closeSidebar();
+    }
   }
 
   /**

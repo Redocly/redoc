@@ -9,7 +9,7 @@ import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { OptionsProvider } from '../OptionsProvider';
 import { SideMenu } from '../SideMenu/SideMenu';
-import { StickySidebar } from '../StickySidebar/StickySidebar';
+import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
 import { ApiContent, RedocWrap } from './elements';
 
 export interface RedocProps {
@@ -36,10 +36,10 @@ export class Redoc extends React.Component<RedocProps> {
       <ThemeProvider theme={options.theme}>
         <OptionsProvider options={options}>
           <RedocWrap className="redoc-wrap">
-            <StickySidebar className="menu-content">
+            <StickyResponsiveSidebar menu={menu} className="menu-content">
               <ApiLogo info={spec.info} />
               <SideMenu menu={menu} />
-            </StickySidebar>
+            </StickyResponsiveSidebar>
             <ApiContent className="api-content">
               <ApiInfo store={store} />
               <ContentItems items={menu.items as any} />
