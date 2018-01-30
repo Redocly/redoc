@@ -40,7 +40,7 @@
     "@types/chai" "*"
     "@types/jquery" "*"
 
-"@types/chai@4.0.8", "@types/chai@*":
+"@types/chai@*", "@types/chai@4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.0.8.tgz#d27600e9ba2f371e08695d90a0fe0408d89c7be7"
 
@@ -90,6 +90,10 @@
 "@types/lodash@4.14.87":
   version "4.14.87"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.87.tgz#55f92183b048c2c64402afe472f8333f4e319a6b"
+
+"@types/lodash@^4.14.98":
+  version "4.14.98"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.98.tgz#aaf012ae443e657e7885e605a4c1b340db160609"
 
 "@types/minimatch@3.0.1":
   version "3.0.1"
