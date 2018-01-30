@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { AppStore } from '../../services/AppStore';
 
-import { DarkRightPanel, MiddlePanel, Row } from '../../common-elements/';
+import { MiddlePanel, Row, EmptyDarkRightPanel } from '../../common-elements/';
 import { Markdown } from '../Markdown/Markdown';
 import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 
@@ -110,7 +110,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             />
           </div>
         </MiddlePanel>
-        <DarkRightPanel />
+        <EmptyDarkRightPanel />
       </Row>
     );
   }

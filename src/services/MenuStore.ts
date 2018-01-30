@@ -1,4 +1,4 @@
-import { action, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { querySelector } from '../utils/dom';
 import { GroupModel, OperationModel, SpecStore } from './models';
 

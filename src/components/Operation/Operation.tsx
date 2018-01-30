@@ -21,7 +21,7 @@ import { OperationModel as OperationType } from '../../services/models';
 const OperationRow = styled(Row)`
   transform: translateZ(0);
   overflow: hidden;
-  positioin: relative;
+  position: relative;
 
   &:after {
     position: absolute;

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { SECTION_ATTR } from '../../services/MenuStore';
 import { Markdown } from '../Markdown/Markdown';
 
-import { DarkRightPanel, H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
+import { EmptyDarkRightPanel, H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
 import { ContentItemModel } from '../../services/MenuBuilder';
 import { OperationModel } from '../../services/models';
 import { Operation } from '../Operation/Operation';
@@ -70,7 +70,7 @@ export class TagItem extends React.Component<ContentItemProps> {
           </H1>
           {description !== undefined && <Markdown source={description} />}
         </MiddlePanel>
-        <DarkRightPanel key="right" />
+        <EmptyDarkRightPanel key="right" />
       </Row>
     );
   }

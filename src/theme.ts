@@ -1,5 +1,10 @@
 const theme = {
   spacingUnit: 20,
+  breakpoints: {
+    small: '50rem',
+    medium: '85rem',
+    large: '105rem',
+  },
   colors: {
     main: '#32329f',
     success: '#00aa13',

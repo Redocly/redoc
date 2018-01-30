@@ -1,5 +1,5 @@
 import { hoverColor } from '../../common-elements/mixins';
-import styled from '../../styled-components';
+import styled, { media } from '../../styled-components';
 export { ClassAttributes } from 'react';
 
 export const RedocWrap = styled.div`
@@ -38,4 +38,7 @@ export const ApiContent = styled.div`
   z-index: 10;
   position: relative;
   width: calc(100% - ${props => props.theme.menu.width});
+  ${media.lessThan('small')`
+    width: 100%;
+  `};
 `;
