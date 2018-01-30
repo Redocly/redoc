@@ -23,8 +23,11 @@ describe('Components', () => {
           '#/components/schemas/Pet',
           options,
         );
-        const schemaView = shallow(<Schema schema={schema} />);
-        expect(toJson(schemaView)).toMatchSnapshot();
+        const schemaViewElement = shallow(<Schema schema={schema} />).getElement();
+        expect(schemaViewElement.type).toEqual(ObjectSchema);
+        expect(schemaViewElement.props.discriminator).toBeDefined();
+        expect(schemaViewElement.props.discriminator.parentSchema).toBeDefined();
+        expect(schemaViewElement.props.discriminator.fieldName).toEqual('type');
       });
 
       it('should correctly render discriminator dropdown', () => {
