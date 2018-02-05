@@ -46,6 +46,10 @@ const AuthHeader = styled(UnderlinedHeader)`
   display: inline-block;
 `;
 
+const Table = styled.table`
+  width: 100%;
+`;
+
 export interface SecurityRequirementsProps {
   securities: SecurityRequirementModel[];
 }
@@ -57,18 +61,20 @@ export class SecurityRequirements extends React.PureComponent<SecurityRequiremen
       return null;
     }
     return (
-      <table>
-        <tr>
-          <AuthHeaderColumn>
-            <AuthHeader>Authorizations: </AuthHeader>
-          </AuthHeaderColumn>
-          <SecuritiesColumn>
-            {securities.map((security, idx) => (
-              <SecurityRequirement key={idx} security={security} />
-            ))}
-          </SecuritiesColumn>
-        </tr>
-      </table>
+      <Table>
+        <tbody>
+          <tr>
+            <AuthHeaderColumn>
+              <AuthHeader>Authorizations: </AuthHeader>
+            </AuthHeaderColumn>
+            <SecuritiesColumn>
+              {securities.map((security, idx) => (
+                <SecurityRequirement key={idx} security={security} />
+              ))}
+            </SecuritiesColumn>
+          </tr>
+        </tbody>
+      </Table>
     );
   }
 }
