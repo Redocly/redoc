@@ -166,12 +166,12 @@ export class SchemaModel {
 
   private initDiscriminator(
     schema: OpenAPISchema & {
-      namedParents?: string[];
+      parentRefs?: string[];
     },
     parser: OpenAPIParser,
   ) {
     this.discriminatorProp = schema.discriminator!.propertyName;
-    const derived = parser.findDerived([...(schema.namedParents || []), this._$ref]);
+    const derived = parser.findDerived([...(schema.parentRefs || []), this._$ref]);
 
     if (schema.oneOf) {
       for (const variant of schema.oneOf) {
