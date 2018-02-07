@@ -1,5 +1,10 @@
 import * as React from 'react';
-import * as ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tippy';
+import { injectGlobal } from '../styled-components';
+
+import styles from 'react-tippy/dist/tippy.css';
+
+injectGlobal`${styles}`;
 
 import { ClipboardService } from '../services/ClipboardService';
 
@@ -12,7 +17,17 @@ export interface CopyButtonWrapperProps {
   ) => React.ReactNode;
 }
 
-export class CopyButtonWrapper extends React.PureComponent<CopyButtonWrapperProps> {
+export class CopyButtonWrapper extends React.PureComponent<
+  CopyButtonWrapperProps,
+  { tooltipShown: boolean }
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltipShown: false,
+    };
+  }
+
   render() {
     return this.props.children({ renderCopyButton: this.renderCopyButton });
   }
@@ -23,33 +38,37 @@ export class CopyButtonWrapper extends React.PureComponent<CopyButtonWrapperProp
         ? this.props.data
         : JSON.stringify(this.props.data, null, 2);
     ClipboardService.copyCustom(content);
+    this.showTooltip();
   };
 
   renderCopyButton = () => {
     return (
-      <>
-        <span
-          onClick={this.copy}
-          data-tip={true}
-          data-for="copy_tooltip"
-          data-event="click"
-          data-event-off="mouseleave"
+      <span onClick={this.copy}>
+        <Tooltip
+          // options
+          title={ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser'}
+          position="top"
+          open={this.state.tooltipShown}
+          arrow="true"
+          duration={150}
+          trigger="manual"
+          theme="light"
         >
           Copy
-        </span>
-        <ReactTooltip
-          isCapture={true}
-          id="copy_tooltip"
-          place="top"
-          getContent={this.getTooltipContent}
-          type="light"
-          effect="solid"
-        />
-      </>
+        </Tooltip>
+      </span>
     );
   };
 
-  getTooltipContent() {
-    return ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser';
+  showTooltip() {
+    this.setState({
+      tooltipShown: true,
+    });
+
+    setTimeout(() => {
+      this.setState({
+        tooltipShown: false,
+      });
+    }, 1500);
   }
 }

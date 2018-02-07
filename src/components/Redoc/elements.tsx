@@ -37,6 +37,7 @@ export const RedocWrap = styled.div`
 export const ApiContent = styled.div`
   z-index: 10;
   position: relative;
+  overflow: hidden;
   width: calc(100% - ${props => props.theme.menu.width});
   ${media.lessThan('small')`
     width: 100%;
