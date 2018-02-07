@@ -2,8 +2,8 @@ import * as Remarkable from 'remarkable';
 
 import { MDComponent } from '../components/Markdown/Markdown';
 import { highlight, html2Str } from '../utils';
-import { IMenuItem, SECTION_ATTR } from './MenuStore';
-import { GroupModel } from './models';
+import { SECTION_ATTR } from './MenuStore';
+import slugify from 'slugify';
 
 const md = new Remarkable('default', {
   html: true,
@@ -21,14 +21,15 @@ export function buildComponentComment(name: string) {
 }
 
 interface MarkdownHeading {
+  id: string;
   name: string;
-  children?: MarkdownHeading[];
-  content?: string;
+  items?: MarkdownHeading[];
+  description?: string;
 }
 
 export class MarkdownRenderer {
-  headings: GroupModel[] = [];
-  currentTopHeading: GroupModel;
+  headings: MarkdownHeading[] = [];
+  currentTopHeading: MarkdownHeading;
 
   private _origRules: any = {};
 
@@ -42,11 +43,11 @@ export class MarkdownRenderer {
     md.renderer.rules.heading_close = this._origRules.close;
   }
 
-  saveHeading(name: string, container: IMenuItem[] = this.headings): GroupModel {
-    const item = new GroupModel('section', {
+  saveHeading(name: string, container: MarkdownHeading[] = this.headings): MarkdownHeading {
+    const item = {
+      id: 'section' + '/' + slugify(name),
       name,
-    });
-    item.depth = 1;
+    };
     container.push(item);
     return item;
   }
@@ -58,13 +59,14 @@ export class MarkdownRenderer {
     const res: MarkdownHeading[] = [];
     for (const heading of container) {
       res.push(heading);
-      res.push(...this.flattenHeadings(heading.children));
+      res.push(...this.flattenHeadings(heading.items));
     }
     return res;
   }
 
-  attachHeadingsContent(rawText: string) {
-    const buildRegexp = heading => new RegExp(`<h\\d ${SECTION_ATTR}="section/${heading.id}">`);
+  attachHeadingsDescriptions(rawText: string) {
+    const buildRegexp = heading =>
+      new RegExp(`<h\\d ${SECTION_ATTR}="${heading.id}" id="${heading.id}">`);
 
     const flatHeadings = this.flattenHeadings(this.headings);
     if (flatHeadings.length < 1) {
@@ -76,12 +78,12 @@ export class MarkdownRenderer {
     for (let i = 1; i < flatHeadings.length; i++) {
       const heading = flatHeadings[i];
       const currentPos = rawText.substr(prevPos + 1).search(buildRegexp(heading)) + prevPos + 1;
-      prevHeading.content = html2Str(rawText.substring(prevPos, currentPos));
+      prevHeading.description = html2Str(rawText.substring(prevPos, currentPos));
 
       prevHeading = heading;
       prevPos = currentPos;
     }
-    prevHeading.content = html2Str(rawText.substring(prevPos));
+    prevHeading.description = html2Str(rawText.substring(prevPos));
   }
 
   headingOpenRule = (tokens, idx) => {
@@ -130,16 +132,15 @@ export class MarkdownRenderer {
 
     const res = md.render(text);
 
-    this.attachHeadingsContent(res);
-
     if (!raw) {
       this.restoreOrigRules();
     }
     return res;
   }
 
-  extractHeadings(rawText: string): GroupModel[] {
-    this.renderMd(rawText, false);
+  extractHeadings(rawText: string): MarkdownHeading[] {
+    const md = this.renderMd(rawText, false);
+    this.attachHeadingsDescriptions(md);
     const res = this.headings;
     this.headings = [];
     return res;
