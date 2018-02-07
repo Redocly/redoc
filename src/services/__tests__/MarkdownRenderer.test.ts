@@ -12,10 +12,10 @@ describe('Markdown renderer', () => {
     expect(renderer.headings[0].name).toEqual('Sub Intro');
   });
   test('should return a level-2 heading as a child of level-1', () => {
-    renderer.renderMd('# Introduction \n ## Sub Intro', false);
-    expect(renderer.headings).toHaveLength(1);
-    expect(renderer.headings[0].name).toEqual('Introduction');
-    expect(renderer.headings[0].items).toBeDefined();
-    expect(renderer.headings[0].items).toHaveLength(1);
+    const headings = renderer.extractHeadings('# Introduction \n ## Sub Intro', false);
+    expect(headings).toHaveLength(1);
+    expect(headings[0].name).toEqual('Introduction');
+    expect(headings[0].items).toBeDefined();
+    expect(headings[0].items).toHaveLength(1);
   });
 });

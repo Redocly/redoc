@@ -1,9 +1,9 @@
 import * as Remarkable from 'remarkable';
 
+import slugify from 'slugify';
 import { MDComponent } from '../components/Markdown/Markdown';
 import { highlight, html2Str } from '../utils';
 import { SECTION_ATTR } from './MenuStore';
-import slugify from 'slugify';
 
 const md = new Remarkable('default', {
   html: true,
@@ -47,6 +47,7 @@ export class MarkdownRenderer {
     const item = {
       id: 'section' + '/' + slugify(name),
       name,
+      items: [],
     };
     container.push(item);
     return item;
@@ -139,8 +140,8 @@ export class MarkdownRenderer {
   }
 
   extractHeadings(rawText: string): MarkdownHeading[] {
-    const md = this.renderMd(rawText, false);
-    this.attachHeadingsDescriptions(md);
+    const text = this.renderMd(rawText, false);
+    this.attachHeadingsDescriptions(text);
     const res = this.headings;
     this.headings = [];
     return res;
