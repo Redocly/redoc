@@ -26,10 +26,10 @@ export const AnimatedChevronButton = ({ open }: { open: boolean }) => {
 };
 
 // adapted from reactjs.org
-const ChevronSvg = ({ size = 10, className = '', style = {} }) => (
+const ChevronSvg = ({ size = 10, className = '', style }) => (
   <svg
     className={className}
-    style={style}
+    style={style || {}}
     viewBox="0 0 926.23699 573.74994"
     version="1.1"
     x="0px"

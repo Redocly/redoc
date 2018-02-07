@@ -1,5 +1,5 @@
 import { bind } from 'decko';
-import { EventEmitter } from 'eventemitter3';
+import * as EventEmitter from 'eventemitter3';
 
 import { isBrowser, querySelector, Throttle } from '../utils';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
