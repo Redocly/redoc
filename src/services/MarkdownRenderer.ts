@@ -129,9 +129,7 @@ export class MarkdownRenderer {
       md.renderer.rules.heading_close = this.headingCloseRule;
     }
 
-    const text = rawText;
-
-    const res = md.render(text);
+    const res = md.render(rawText.toString());
 
     if (!raw) {
       this.restoreOrigRules();
