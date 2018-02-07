@@ -19,14 +19,14 @@ export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
     const { idx, schema, subSchema } = this.props;
     return (
       <StyledOneOfButton active={idx === schema.activeOneOf} onClick={this.activateOneOf}>
-        {subSchema.title || subSchema.displayType}
+        {subSchema.title || subSchema.typePrefix + subSchema.displayType}
       </StyledOneOfButton>
     );
   }
 
-  activateOneOf() {
+  activateOneOf = () => {
     this.props.schema.activateOneOf(this.props.idx);
-  }
+  };
 }
 
 @observer
