@@ -1,3 +1,25 @@
+<a name="2.0.0-alpha.12"></a>
+# [2.0.0-alpha.12](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.11...v2.0.0-alpha.12) (2018-02-07)
+
+
+### Bug Fixes
+
+* basic responsiveness ([a29c3cc](https://github.com/Rebilly/Redoc/commit/a29c3cc))
+* crash in MarkdownRenderer on non-string ([dead161](https://github.com/Rebilly/Redoc/commit/dead161))
+* discriminator fix ([ff3bb24](https://github.com/Rebilly/Redoc/commit/ff3bb24))
+* filter out non-existing security schemas + warn ([ee822f6](https://github.com/Rebilly/Redoc/commit/ee822f6))
+* fix oneOf title for array ([1f3701d](https://github.com/Rebilly/Redoc/commit/1f3701d))
+* fix tbody > tr nesting warning ([a3cbb14](https://github.com/Rebilly/Redoc/commit/a3cbb14))
+* improve copy tooltip perf ([29207cf](https://github.com/Rebilly/Redoc/commit/29207cf))
+* resolve menu synchronization issue (use proper throttle) ([84d1c7b](https://github.com/Rebilly/Redoc/commit/84d1c7b))
+
+
+### Features
+
+* responsive side menu ([3aab2d9](https://github.com/Rebilly/Redoc/commit/3aab2d9))
+
+
+
 <a name="2.0.0-alpha.11"></a>
 # [2.0.0-alpha.11](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.10...v2.0.0-alpha.11) (2018-01-29)
 
