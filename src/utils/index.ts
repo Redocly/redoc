@@ -6,3 +6,4 @@ export * from './helpers';
 export * from './highlight';
 export * from './loadAndBundleSpec';
 export * from './dom';
+export * from './decorators';

@@ -1,7 +1,7 @@
-import { bind, debounce } from 'decko';
+import { bind } from 'decko';
 import { EventEmitter } from 'eventemitter3';
 
-import { isBrowser, querySelector } from '../utils';
+import { isBrowser, querySelector, Throttle } from '../utils';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 const EVENT = 'scroll';
@@ -75,7 +75,7 @@ export class ScrollService {
   }
 
   @bind
-  @debounce(100)
+  @Throttle(100)
   handleScroll() {
     const scrollY = this.scrollY();
     const isScrolledDown = scrollY - this._prevOffsetY > 0;
