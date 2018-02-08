@@ -22,7 +22,7 @@ export class SecurityRequirementModel {
 
         if (!scheme) {
           console.warn(`Non existing security scheme referenced: ${id}. Skipping`);
-          return null;
+          return undefined;
         }
 
         return {
