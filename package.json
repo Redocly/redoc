@@ -33,6 +33,7 @@
     "@types/jest": "^22.1.0",
     "@types/json-pointer": "^1.0.30",
     "@types/lodash": "^4.14.98",
+    "@types/lunr": "^2.1.5",
     "@types/prismjs": "^1.6.4",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.0.30",
@@ -73,6 +74,7 @@
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5",
     "webpack-node-externals": "^1.6.0",
+    "workerize-loader": "^1.0.1",
     "yaml-js": "^0.2.3"
   },
   "peerDependencies": {
@@ -85,6 +87,7 @@
     "eventemitter3": "^3.0.0",
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^4.0.4",
+    "lunr": "^2.1.5",
     "mobx": "^3.3.0",
     "mobx-react": "^4.3.3",
     "openapi-sampler": "1.0.0-beta.8",

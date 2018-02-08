@@ -172,6 +172,10 @@ export class MenuStore {
     return this.flatItems[this.activeItemIdx] || undefined;
   }
 
+  getItemById = (id: string) => {
+    return this.flatItems.find(item => item.id === id);
+  };
+
   /**
    * flattened items as they appear in the tree depth-first (top to bottom in the view)
    */
@@ -235,8 +239,8 @@ export class MenuStore {
    * activate menu item and scroll to it
    * @see MenuStore.activate
    */
-  @action
-  activateAndScroll(item: IMenuItem | undefined, updateHash: boolean, rewriteHistory?: boolean) {
+  @action.bound
+  activateAndScroll(item: IMenuItem | undefined, updateHash?: boolean, rewriteHistory?: boolean) {
     this.activate(item, updateHash, rewriteHistory);
     this.scrollToActive();
     if (!item || !item.items.length) {

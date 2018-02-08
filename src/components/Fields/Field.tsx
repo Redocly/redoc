@@ -4,11 +4,11 @@ import { FieldDetails } from './FieldDetails';
 import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
 
 import {
+  InnerPropertiesWrap,
   PropertyBullet,
+  PropertyCellWithInner,
   PropertyDetailsCell,
   PropertyNameCell,
-  InnerPropertiesWrap,
-  PropertyCellWithInner,
 } from '../../common-elements/fields-layout';
 
 import { ShelfIcon } from '../../common-elements/';

@@ -99,6 +99,10 @@
   version "4.14.101"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.101.tgz#512f6c9e1749890f4d024e98cb995a63f562d458"
 
+"@types/lunr@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@types/lunr/-/lunr-2.1.5.tgz#afb90226a6d2eb472eb1732cef7493a02b0177fd"
+
 "@types/minimatch@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.1.tgz#b683eb60be358304ef146f5775db4c0e3696a550"
@@ -4598,6 +4602,10 @@ lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+lunr@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/lunr/-/lunr-2.1.5.tgz#826601ccaeac29148e224154b34760faf4d81b70"
+
 macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
@@ -7756,6 +7764,12 @@ wordwrap@~0.0.2:
 wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
+
+workerize-loader@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/workerize-loader/-/workerize-loader-1.0.1.tgz#703c7203d616693064309dc1a276bd105e6a1bca"
+  dependencies:
+    loader-utils "^1.1.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

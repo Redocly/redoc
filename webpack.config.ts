@@ -67,6 +67,18 @@ export default env => {
     module: {
       rules: [
         {
+          test: /\.worker\.ts$/,
+          use: [
+            {
+              loader: 'workerize-loader',
+              options: {
+                inline: true,
+                fallback: false,
+              },
+            },
+          ],
+        },
+        {
           test: /\.tsx?$/,
           use: [
             'react-hot-loader/webpack',

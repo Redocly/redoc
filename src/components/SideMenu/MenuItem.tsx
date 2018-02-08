@@ -9,6 +9,7 @@ import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styl
 interface MenuItemProps {
   item: IMenuItem;
   onActivate?: (item: IMenuItem) => void;
+  withoutChildren?: boolean;
 }
 
 @observer
@@ -19,7 +20,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, withoutChildren } = this.props;
     return (
       <MenuItemLi onClick={this.activate} depth={item.depth}>
         {item.type === 'operation' ? (
@@ -34,9 +35,11 @@ export class MenuItem extends React.Component<MenuItemProps> {
               null}
           </MenuItemLabel>
         )}
-        {item.items.length > 0 && (
-          <MenuItems active={item.active} items={item.items} onActivate={this.props.onActivate} />
-        )}
+        {!withoutChildren &&
+          item.items &&
+          item.items.length > 0 && (
+            <MenuItems active={item.active} items={item.items} onActivate={this.props.onActivate} />
+          )}
       </MenuItemLi>
     );
   }

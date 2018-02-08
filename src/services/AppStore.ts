@@ -4,6 +4,7 @@ import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
 import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
 import { ScrollService } from './ScrollService';
+import { SearchStore } from './SearchStore';
 
 interface StoreData {
   menu: {
@@ -42,6 +43,7 @@ export class AppStore {
   spec: SpecStore;
   rawOptions: RedocRawOptions;
   options: RedocNormalizedOptions;
+  search: SearchStore;
 
   private scroll: ScrollService;
 
@@ -51,6 +53,8 @@ export class AppStore {
     this.scroll = new ScrollService(this.options);
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll);
+
+    this.search = new SearchStore(this.spec);
   }
 
   dispose() {
