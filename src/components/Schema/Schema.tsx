@@ -10,11 +10,14 @@ import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
-export interface SchemaProps {
-  schema: SchemaModel;
+export interface SchemaOptions {
   showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
+}
+
+export interface SchemaProps extends SchemaOptions {
+  schema: SchemaModel;
 }
 
 @observer

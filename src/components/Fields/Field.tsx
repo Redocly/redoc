@@ -7,15 +7,17 @@ import {
   PropertyBullet,
   PropertyDetailsCell,
   PropertyNameCell,
+  InnerPropertiesWrap,
+  PropertyCellWithInner,
 } from '../../common-elements/fields-layout';
 
 import { ShelfIcon } from '../../common-elements/';
 
 import { FieldModel } from '../../services/models';
+import { Schema, SchemaOptions } from '../Schema/Schema';
 
-export interface FieldProps {
+export interface FieldProps extends SchemaOptions {
   className?: string;
-  onClick?: () => void;
   isLast?: boolean;
   showExamples?: boolean;
 
@@ -25,15 +27,16 @@ export interface FieldProps {
 }
 
 export class Field extends React.PureComponent<FieldProps> {
+  toggle = () => {
+    this.props.field.toggle();
+  };
   render() {
     const { className, field, isLast } = this.props;
     const { name, expanded, deprecated, required } = field;
+    const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
-    const paramName = this.props.onClick ? (
-      <ClickablePropertyNameCell
-        onClick={this.props.onClick}
-        className={deprecated ? 'deprecated' : ''}
-      >
+    const paramName = withSubSchema ? (
+      <ClickablePropertyNameCell onClick={this.toggle} className={deprecated ? 'deprecated' : ''}>
         <PropertyBullet />
         {name}
         <ShelfIcon size={'1.2em'} direction={expanded ? 'down' : 'right'} />
@@ -47,12 +50,29 @@ export class Field extends React.PureComponent<FieldProps> {
       </PropertyNameCell>
     );
     return (
-      <tr className={isLast ? 'last ' + className : className}>
-        {paramName}
-        <PropertyDetailsCell>
-          <FieldDetails {...this.props} />
-        </PropertyDetailsCell>
-      </tr>
+      <>
+        <tr className={isLast ? 'last ' + className : className}>
+          {paramName}
+          <PropertyDetailsCell>
+            <FieldDetails {...this.props} />
+          </PropertyDetailsCell>
+        </tr>
+        {field.expanded &&
+          withSubSchema && (
+            <tr key={field.name + 'inner'}>
+              <PropertyCellWithInner colSpan={2}>
+                <InnerPropertiesWrap>
+                  <Schema
+                    schema={field.schema}
+                    skipReadOnly={this.props.skipReadOnly}
+                    skipWriteOnly={this.props.skipWriteOnly}
+                    showTitle={this.props.showTitle}
+                  />
+                </InnerPropertiesWrap>
+              </PropertyCellWithInner>
+            </tr>
+          )}
+      </>
     );
   }
 }

@@ -1,17 +1,12 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { FieldModel, SchemaModel } from '../../services/models';
+import { SchemaModel } from '../../services/models';
 
-import {
-  InnerPropertiesWrap,
-  PropertiesTable,
-  PropertiesTableCaption,
-  PropertyCellWithInner,
-} from '../../common-elements/fields-layout';
+import { PropertiesTable, PropertiesTableCaption } from '../../common-elements/fields-layout';
 import { Field } from '../Fields/Field';
 import { DiscriminatorDropdown } from './DiscriminatorDropdown';
-import { Schema, SchemaProps } from './Schema';
+import { SchemaProps } from './Schema';
 
 import { mapWithLast } from '../../utils';
 
@@ -26,42 +21,6 @@ export interface ObjectSchemaProps extends SchemaProps {
 export class ObjectSchema extends React.Component<ObjectSchemaProps> {
   get parentSchema() {
     return this.props.discriminator!.parentSchema;
-  }
-
-  renderField(field: FieldModel, isLast: boolean, isDiscriminator: boolean = false) {
-    const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
-    return [
-      <Field
-        key={field.name}
-        isLast={isLast}
-        field={field}
-        onClick={(withSubSchema && (() => field.toggle())) || undefined}
-        renderDiscriminatorSwitch={
-          (isDiscriminator &&
-            (() => (
-              <DiscriminatorDropdown parent={this.parentSchema} enumValues={field.schema.enum} />
-            ))) ||
-          undefined
-        }
-        className={field.expanded ? 'expanded' : undefined}
-        showExamples={false}
-      />,
-      field.expanded &&
-        withSubSchema && (
-          <tr key={field.name + 'inner'}>
-            <PropertyCellWithInner colSpan={2}>
-              <InnerPropertiesWrap>
-                <Schema
-                  schema={field.schema}
-                  skipReadOnly={this.props.skipReadOnly}
-                  skipWriteOnly={this.props.skipWriteOnly}
-                  showTitle={this.props.showTitle}
-                />
-              </InnerPropertiesWrap>
-            </PropertyCellWithInner>
-          </tr>
-        ),
-    ];
   }
 
   render() {
@@ -82,13 +41,31 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{this.props.schema.title}</PropertiesTableCaption>}
         <tbody>
-          {mapWithLast(filteredFields, (field, isLast) =>
-            this.renderField(
-              field,
-              isLast,
-              discriminator && discriminator.fieldName === field.name,
-            ),
-          )}
+          {mapWithLast(filteredFields, (field, isLast) => {
+            return (
+              <Field
+                key={field.name}
+                isLast={isLast}
+                field={field}
+                renderDiscriminatorSwitch={
+                  (discriminator &&
+                    discriminator.fieldName === field.name &&
+                    (() => (
+                      <DiscriminatorDropdown
+                        parent={this.parentSchema}
+                        enumValues={field.schema.enum}
+                      />
+                    ))) ||
+                  undefined
+                }
+                className={field.expanded ? 'expanded' : undefined}
+                showExamples={false}
+                skipReadOnly={this.props.skipReadOnly}
+                skipWriteOnly={this.props.skipWriteOnly}
+                showTitle={this.props.showTitle}
+              />
+            );
+          })}
         </tbody>
       </PropertiesTable>
     );
