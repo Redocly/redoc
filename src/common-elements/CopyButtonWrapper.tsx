@@ -1,10 +1,5 @@
 import * as React from 'react';
-import { Tooltip } from 'react-tippy';
-import { injectGlobal } from '../styled-components';
-
-import styles from 'react-tippy/dist/tippy.css';
-
-injectGlobal`${styles}`;
+import { Tooltip } from '../common-elements/Tooltip';
 
 import { ClipboardService } from '../services/ClipboardService';
 
@@ -45,14 +40,8 @@ export class CopyButtonWrapper extends React.PureComponent<
     return (
       <span onClick={this.copy}>
         <Tooltip
-          // options
           title={ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser'}
-          position="top"
           open={this.state.tooltipShown}
-          arrow="true"
-          duration={150}
-          trigger="manual"
-          theme="light"
         >
           Copy
         </Tooltip>
