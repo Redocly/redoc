@@ -1,15 +1,14 @@
-import * as Remarkable from 'remarkable';
+import * as marked from 'marked';
 
 import slugify from 'slugify';
 import { MDComponent } from '../components/Markdown/Markdown';
 import { highlight, html2Str } from '../utils';
 import { SECTION_ATTR } from './MenuStore';
 
-const md = new Remarkable('default', {
-  html: true,
-  linkify: true,
-  breaks: false,
-  typographer: false,
+const renderer = new marked.Renderer();
+
+marked.setOptions({
+  renderer,
   highlight: (str, lang) => {
     return highlight(str, lang);
   },
@@ -31,16 +30,13 @@ export class MarkdownRenderer {
   headings: MarkdownHeading[] = [];
   currentTopHeading: MarkdownHeading;
 
-  private _origRules: any = {};
+  private headingEnhanceRenderer: marked.Renderer;
+  private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
-  saveOrigRules() {
-    this._origRules.open = md.renderer.rules.heading_open;
-    this._origRules.close = md.renderer.rules.heading_close;
-  }
-
-  restoreOrigRules() {
-    md.renderer.rules.heading_open = this._origRules.open;
-    md.renderer.rules.heading_close = this._origRules.close;
+  constructor() {
+    this.headingEnhanceRenderer = new marked.Renderer();
+    this.originalHeadingRule = this.headingEnhanceRenderer.heading;
+    this.headingEnhanceRenderer.heading = this.headingRule;
   }
 
   saveHeading(name: string, container: MarkdownHeading[] = this.headings): MarkdownHeading {
@@ -87,53 +83,32 @@ export class MarkdownRenderer {
     prevHeading.description = html2Str(rawText.substring(prevPos));
   }
 
-  headingOpenRule = (tokens, idx) => {
-    if (tokens[idx].hLevel > 2) {
-      return this._origRules.open(tokens, idx);
+  headingRule = (text: string, level: number, raw: string) => {
+    if (level === 1) {
+      this.currentTopHeading = this.saveHeading(text);
+      const id = this.currentTopHeading.id;
+      return (
+        `<a name="${id}"></a>` +
+        `<h${level} ${SECTION_ATTR}="${id}" id="${id}">` +
+        `<a class="share-link" href="#${id}"></a>${text}</h${level}>`
+      );
+    } else if (level === 2) {
+      const { id } = this.saveHeading(text, this.currentTopHeading && this.currentTopHeading.items);
+      return (
+        `<a name="${id}"></a>` +
+        `<h${level} ${SECTION_ATTR}="${id}" id="${id}">` +
+        `<a class="share-link" href="#${id}"></a>${text}</h${level}>`
+      );
     } else {
-      const content = tokens[idx + 1].content;
-      if (tokens[idx].hLevel === 1) {
-        this.currentTopHeading = this.saveHeading(content);
-        const id = this.currentTopHeading.id;
-        return (
-          `<a name="${id}"></a>` +
-          `<h${tokens[idx].hLevel} ${SECTION_ATTR}="${id}" id="${id}">` +
-          `<a class="share-link" href="#${id}"></a>`
-        );
-      } else if (tokens[idx].hLevel === 2) {
-        const { id } = this.saveHeading(
-          content,
-          this.currentTopHeading && this.currentTopHeading.items,
-        );
-        return (
-          `<a name="${id}"></a>` +
-          `<h${tokens[idx].hLevel} ${SECTION_ATTR}="${id}" id="${id}">` +
-          `<a class="share-link" href="#${id}"></a>`
-        );
-      }
-    }
-  };
-
-  headingCloseRule = (tokens, idx) => {
-    if (tokens[idx].hLevel > 2) {
-      return this._origRules.close(tokens, idx);
-    } else {
-      return `</h${tokens[idx].hLevel}>\n`;
+      return this.originalHeadingRule(text, level, raw);
     }
   };
 
   renderMd(rawText: string, raw: boolean = true): string {
-    if (!raw) {
-      this.saveOrigRules();
-      md.renderer.rules.heading_open = this.headingOpenRule;
-      md.renderer.rules.heading_close = this.headingCloseRule;
-    }
+    const opts = raw ? undefined : { renderer: this.headingEnhanceRenderer };
 
-    const res = md.render(rawText.toString());
+    const res = marked(rawText.toString(), opts);
 
-    if (!raw) {
-      this.restoreOrigRules();
-    }
     return res;
   }
 
