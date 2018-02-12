@@ -22,13 +22,12 @@ export class FieldModel {
 
   constructor(
     parser: OpenAPIParser,
-    infoOrRef: Referenced<OpenAPIParameter>,
+    infoOrRef: Referenced<OpenAPIParameter> & { name?: string },
     pointer: string,
     options: RedocNormalizedOptions,
   ) {
-    const info = parser.deref(infoOrRef);
-
-    this.name = info.name;
+    const info = parser.deref<OpenAPIParameter>(infoOrRef);
+    this.name = infoOrRef.name || info.name;
     this.in = info.in;
     this.required = !!info.required;
     const schemaPointer = (parser.isRef(infoOrRef) ? infoOrRef.$ref : pointer) + '/schema';

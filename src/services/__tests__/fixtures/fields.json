@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "parameters": {
+      "testParam": {
+        "in": "path",
+        "name": "test_name",
+        "schema": { "type": "string" }
+      }
+    },
+    "headers": {
+      "testHeader": {
+        "description": "The response content language",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
