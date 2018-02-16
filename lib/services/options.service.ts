@@ -21,6 +21,7 @@ const OPTION_NAMES = new Set([
   'pathInMiddlePanel',
   'untrustedSpec',
   'hideLoading',
+  'hideDownloadButton',
   'ignoredHeaderParameters',
   'nativeScrollbars',
 ]);
@@ -31,6 +32,7 @@ export interface Options {
   specUrl?: string;
   suppressWarnings?: boolean;
   hideHostname?: boolean;
+  hideDownloadButton?: boolean;
   lazyRendering?: boolean;
   expandResponses?: Set<string> | 'all';
   $scrollParent?: HTMLElement | Window;
@@ -105,6 +107,7 @@ export class OptionsService {
     if (isString(this._options.disableLazySchemas)) this._options.disableLazySchemas = true;
     if (isString(this._options.suppressWarnings)) this._options.suppressWarnings = true;
     if (isString(this._options.hideHostname)) this._options.hideHostname = true;
+    if (isString(this._options.hideDownloadButton)) this._options.hideDownloadButton = true;
     if (isString(this._options.lazyRendering)) this._options.lazyRendering = true;
     if (isString(this._options.requiredPropsFirst)) this._options.requiredPropsFirst = true;
     if (isString(this._options.noAutoAuth)) this._options.noAutoAuth = true;

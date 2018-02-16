@@ -151,6 +151,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
 * `lazy-rendering` - if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](https://rebilly.github.io/ReDoc) for the example.
 * `hide-hostname` - if set, the protocol and hostname is not shown in the operation definition.
+* `hide-download-button` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `expand-responses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expand-responses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `required-props-first` - show required properties first ordered in the same order as in `required` array.
 * `no-auto-auth` - do not inject Authentication section automatically
