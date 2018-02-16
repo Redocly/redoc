@@ -116,7 +116,7 @@ export class AllOfMerger {
       subSchema._pointer = tmpPtr;
     }
     if (!hadDiscriminator) into.discriminator = null;
-    into.allOf = null;
+    delete into.allOf;
   }
 
   private static mergeObject(into, subSchema, allOfNumber) {

@@ -152,7 +152,7 @@ describe('Spec Helper', () => {
       });
 
       it('should remove $allOf field', () => {
-        expect(joined.allOf).toBeNull();
+        expect(joined.allOf).toBeUndefined();
       });
 
       it('should set type object', () => {
@@ -178,7 +178,7 @@ describe('Spec Helper', () => {
       });
 
       it('should remove $allOf field', () => {
-        expect(joined.allOf).toBeNull();
+        expect(joined.allOf).toBeUndefined();
       });
 
       it('should set type object', () => {
@@ -204,7 +204,7 @@ describe('Spec Helper', () => {
       });
 
       it('should remove $allOf field', () => {
-        expect(joined.allOf).toBeNull();
+        expect(joined.allOf).toBeUndefined();
       });
 
       it('should set type object', () => {
