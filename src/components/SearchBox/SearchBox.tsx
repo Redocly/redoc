@@ -7,7 +7,9 @@ import { SearchStore } from '../../services/SearchStore';
 import { MenuItem } from '../SideMenu/MenuItem';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
-const SearchInput = styled.input`
+const SearchInput = styled.input.attrs({
+  className: 'search-input',
+})`
   width: calc(100% - ${props => props.theme.spacingUnit * 2}px);
   box-sizing: border-box;
   margin: 0 ${props => props.theme.spacingUnit}px;
@@ -32,7 +34,9 @@ const SearchIcon = styled((props: any) => (
   >
     <path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z" />
   </svg>
-))`
+)).attrs({
+  className: 'search-icon',
+})`
   position: absolute;
   left: ${props => props.theme.spacingUnit}px;
   height: 1.8em;
@@ -43,7 +47,9 @@ const SearchIcon = styled((props: any) => (
   }
 `;
 
-const SearchResultsBox = styled.div`
+const SearchResultsBox = styled.div.attrs({
+  className: 'search-results',
+})`
   padding: ${props => props.theme.spacingUnit / 4}px 0;
   background-color: #ededed;
   min-height: 150px;

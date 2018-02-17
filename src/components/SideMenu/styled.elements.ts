@@ -1,5 +1,6 @@
 import { deprecatedCss } from '../../common-elements';
 import styled, { css, withProps } from '../../styled-components';
+import * as classnames from 'classnames';
 
 export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   className: props => `operation-type ${props.type}`,
@@ -112,7 +113,12 @@ export const MenuItemLabel = withProps<{
   depth: number;
   active: boolean;
   deprecated?: boolean;
-}>(styled.label)`
+}>(styled.label).attrs({
+  className: props =>
+    classnames('menu-item', '-depth' + props.depth, {
+      active: props.active,
+    }),
+})`
   cursor: pointer;
   color: ${props => (props.active ? props.theme.colors.main : props.theme.colors.text)};
   margin: 0;

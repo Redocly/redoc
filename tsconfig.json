@@ -29,7 +29,7 @@
     "node_modules",
     ".tmp",
     "lib",
-    "e2e"
+    "e2e/**"
   ],
   "include": [
     "./custom.d.ts",

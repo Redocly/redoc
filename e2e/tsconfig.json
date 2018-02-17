@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es2015",
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
-    "outDir": "e2e/.build",
     "pretty": true,
     "lib": [
       "es2015",
@@ -22,7 +21,7 @@
   },
   "compileOnSave": false,
   "include": [
-    "./node_modules/cypress",
-    "e2e"
+    "integration/*.ts",
+    "../node_modules/cypress"
   ]
 }
