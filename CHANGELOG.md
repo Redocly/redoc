@@ -1,3 +1,18 @@
+<a name="1.21.0"></a>
+# [1.21.0](https://github.com/Rebilly/ReDoc/compare/v1.20.0...v1.21.0) (2018-02-18)
+
+
+### Bug Fixes
+
+* null example not used in schema samples ([420c51a](https://github.com/Rebilly/ReDoc/commit/420c51a)), closes [#415](https://github.com/Rebilly/ReDoc/issues/415)
+
+
+### Features
+
+* new option hide-download-button ([454e5bd](https://github.com/Rebilly/ReDoc/commit/454e5bd)), closes [#394](https://github.com/Rebilly/ReDoc/issues/394)
+
+
+
 <a name="1.20.0"></a>
 ## [1.20.0](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
 
