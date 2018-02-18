@@ -44,7 +44,7 @@ export class SpecManager {
   load(urlOrObject: string|Object) {
     let promise = new Promise((resolve, reject) => {
       this.parser = new JsonSchemaRefParser();
-      this.parser.bundle(urlOrObject, {http: {withCredentials: false}})
+      this.parser.dereference(urlOrObject, {http: {withCredentials: false}})
       .then(schema => {
         if (typeof urlOrObject === 'string') {
           this.specUrl = urlOrObject;
