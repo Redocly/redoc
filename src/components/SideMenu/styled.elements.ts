@@ -1,6 +1,7 @@
+import * as classnames from 'classnames';
+
 import { deprecatedCss } from '../../common-elements';
 import styled, { css, withProps } from '../../styled-components';
-import * as classnames from 'classnames';
 
 export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   className: props => `operation-type ${props.type}`,
