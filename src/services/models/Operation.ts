@@ -8,7 +8,13 @@ import { SecurityRequirementModel } from './SecurityRequirement';
 
 import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
 
-import { getOperationSummary, isAbsolutePath, JsonPointer, stripTrailingSlash } from '../../utils';
+import {
+  getOperationSummary,
+  isAbsolutePath,
+  JsonPointer,
+  stripTrailingSlash,
+  sortByRequired,
+} from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
@@ -76,6 +82,10 @@ export class OperationModel implements IMenuItem {
     this.parameters = operationSpec.pathParameters
       .concat(operationSpec.parameters || [])
       .map(paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options));
+
+    if (options.requiredPropsFirst) {
+      sortByRequired(this.parameters);
+    }
 
     let hasSuccessResponses = false;
     this.responses = Object.keys(operationSpec.responses || [])

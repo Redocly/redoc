@@ -47,14 +47,20 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
 export interface OperationMenuItemContentProps {
   item: OperationModel;
+  className?: string;
 }
 
 @observer
 class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
   render() {
-    const { item } = this.props;
+    const { item, className } = this.props;
     return (
-      <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated}>
+      <MenuItemLabel
+        className={className}
+        depth={item.depth}
+        active={item.active}
+        deprecated={item.deprecated}
+      >
         <OperationBadge type={item.httpVerb} />
         <MenuItemTitle width="calc(100% - 32px)">{item.name}</MenuItemTitle>
       </MenuItemLabel>

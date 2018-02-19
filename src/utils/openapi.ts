@@ -161,4 +161,21 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   return res;
 }
 
+export function sortByRequired(
+  fields: { required: boolean; name: string }[],
+  order: string[] = [],
+) {
+  fields.sort((a, b) => {
+    if (!a.required && b.required) {
+      return 1;
+    } else if (a.required && !b.required) {
+      return -1;
+    } else if (a.required && b.required) {
+      return order.indexOf(a.name) > order.indexOf(b.name) ? 1 : -1;
+    } else {
+      return 0;
+    }
+  });
+}
+
 export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';

@@ -13,6 +13,7 @@ import {
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  sortByRequired,
 } from '../../utils/';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
@@ -226,7 +227,7 @@ function buildFields(
   });
 
   if (options.requiredPropsFirst) {
-    sortFields(fields, schema.required);
+    sortByRequired(fields, schema.required);
   }
 
   if (typeof additionalProps === 'object') {
@@ -245,18 +246,4 @@ function buildFields(
   }
 
   return fields;
-}
-
-function sortFields(fields: FieldModel[], order: string[] = []) {
-  fields.sort((a, b) => {
-    if (!a.required && b.required) {
-      return 1;
-    } else if (a.required && !b.required) {
-      return -1;
-    } else if (a.required && b.required) {
-      return order.indexOf(a.name) > order.indexOf(b.name) ? 1 : -1;
-    } else {
-      return 0;
-    }
-  });
 }
