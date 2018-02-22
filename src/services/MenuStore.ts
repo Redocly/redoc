@@ -37,7 +37,7 @@ export class MenuStore {
   /**
    * active item absolute index (when flattened). -1 means nothing is selected
    */
-  activeItemIdx: number = -1;
+  @observable activeItemIdx: number = -1;
 
   /**
    * whether sidebar with menu is opened or not

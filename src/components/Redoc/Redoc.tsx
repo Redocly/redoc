@@ -32,7 +32,7 @@ export class Redoc extends React.Component<RedocProps> {
   }
 
   render() {
-    const { store: { spec, menu, options, search } } = this.props;
+    const { store: { spec, menu, options, search, marker } } = this.props;
     const store = this.props.store;
     return (
       <ThemeProvider theme={options.theme}>
@@ -42,6 +42,7 @@ export class Redoc extends React.Component<RedocProps> {
               <ApiLogo info={spec.info} />
               <SearchBox
                 search={search}
+                marker={marker}
                 getItemById={menu.getItemById}
                 onActivate={menu.activateAndScroll}
               />

@@ -112,6 +112,12 @@
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@types/lunr/-/lunr-2.1.5.tgz#afb90226a6d2eb472eb1732cef7493a02b0177fd"
 
+"@types/mark.js@^8.11.0":
+  version "8.11.0"
+  resolved "https://registry.yarnpkg.com/@types/mark.js/-/mark.js-8.11.0.tgz#1d507352c30f020a35213f80b5131d8ffba194d7"
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/marked@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.3.0.tgz#583c223dd33385a1dda01aaf77b0cd0411c4b524"
@@ -5097,6 +5103,10 @@ map-visit@^1.0.0:
   resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
   dependencies:
     object-visit "^1.0.0"
+
+mark.js@^8.11.1:
+  version "8.11.1"
+  resolved "https://registry.yarnpkg.com/mark.js/-/mark.js-8.11.1.tgz#180f1f9ebef8b0e638e4166ad52db879beb2ffc5"
 
 marked@^0.3.12:
   version "0.3.17"

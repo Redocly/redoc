@@ -1,3 +1,5 @@
+import { observe } from 'mobx';
+
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
 import { MenuStore } from './MenuStore';
@@ -5,6 +7,7 @@ import { SpecStore } from './models';
 import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
+import { MarkerService } from './MarkerService';
 
 interface StoreData {
   menu: {
@@ -44,8 +47,10 @@ export class AppStore {
   rawOptions: RedocRawOptions;
   options: RedocNormalizedOptions;
   search: SearchStore;
+  marker = new MarkerService();
 
   private scroll: ScrollService;
+  private disposer;
 
   constructor(spec: OpenAPISpec, specUrl?: string, options: RedocRawOptions = {}) {
     this.rawOptions = options;
@@ -55,11 +60,35 @@ export class AppStore {
     this.menu = new MenuStore(this.spec, this.scroll);
 
     this.search = new SearchStore(this.spec);
+
+    this.disposer = observe(this.menu, 'activeItemIdx', change => {
+      this.updateMarkOnMenu(change.newValue as number);
+    });
+  }
+
+  updateMarkOnMenu(idx: number) {
+    console.log('update marker');
+    const start = Math.max(0, idx);
+    const end = Math.min(this.menu.flatItems.length, start + 5);
+
+    const elements: Element[] = [];
+    for (let i = start; i < end; i++) {
+      let elem = this.menu.getElementAt(i);
+      if (!elem) continue;
+      if (this.menu.flatItems[i].type === 'section') {
+        elem = elem.parentElement!.parentElement;
+      }
+      if (elem) elements.push(elem);
+    }
+
+    this.marker.addOnly(elements);
+    this.marker.mark();
   }
 
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
+    this.disposer();
   }
 
   /**

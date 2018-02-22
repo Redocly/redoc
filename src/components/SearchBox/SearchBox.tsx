@@ -6,6 +6,8 @@ import { IMenuItem } from '../../services/MenuStore';
 import { SearchStore } from '../../services/SearchStore';
 import { MenuItem } from '../SideMenu/MenuItem';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
+import { MarkerService } from '../../services/MarkerService';
+import { SearchDocument } from '../../services/SearchWorker.worker';
 
 const SearchInput = styled.input.attrs({
   className: 'search-input',
@@ -77,6 +79,7 @@ const SearchResultsBox = styled.div.attrs({
 
 export interface SearchBoxProps {
   search: SearchStore;
+  marker: MarkerService;
   getItemById: (id: string) => IMenuItem | undefined;
   onActivate: (item: IMenuItem) => void;
 }
@@ -95,31 +98,50 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     };
   }
 
+  clearResults(term: string) {
+    this.setState({
+      results: [],
+      term,
+    });
+    this.props.marker.unmark();
+  }
+
+  clear() {
+    this.setState({
+      results: [],
+      term: '',
+    });
+    this.props.marker.unmark();
+  }
+
+  clearIfEsq = event => {
+    if (event && event.keyCode === 27) {
+      this.clear();
+    }
+  };
+
+  setResults(results: SearchDocument[], term: string) {
+    this.setState({
+      results,
+      term,
+    });
+    this.props.marker.mark(term);
+  }
+
   search = (event: React.ChangeEvent<HTMLInputElement>) => {
     const q = event.target.value;
     if (q.length < 3) {
-      this.setState({
-        term: q,
-        results: [],
-      });
+      this.clearResults(q);
       return;
     }
+
     this.setState({
       term: q,
     });
 
     this.props.search.search(event.target.value).then(res => {
-      this.setState({
-        results: res,
-      });
+      this.setResults(res, q);
     });
-  };
-
-  clearIfEsq = event => {
-    if (event && event.keyCode === 27) {
-      // escape
-      this.setState({ term: '', results: [] });
-    }
   };
 
   render() {

@@ -80,6 +80,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
+    "@types/mark.js": "^8.11.0",
     "@types/marked": "^0.3.0",
     "classnames": "^2.2.5",
     "decko": "^1.2.0",
@@ -88,6 +89,7 @@
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^4.0.4",
     "lunr": "^2.1.5",
+    "mark.js": "^8.11.1",
     "marked": "^0.3.12",
     "mobx": "^3.3.0",
     "mobx-react": "^4.3.3",
