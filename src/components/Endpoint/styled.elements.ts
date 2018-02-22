@@ -3,6 +3,7 @@ import styled, { withProps } from '../../styled-components';
 export const OperationEndpointWrap = styled.div`
   cursor: pointer;
   position: relative;
+  margin-bottom: 5px;
 `;
 
 export const ServerRelativeURL = styled.span`

@@ -59,15 +59,21 @@ export class AppStore {
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll);
 
-    this.search = new SearchStore(this.spec);
+    this.search = new SearchStore();
+    this.search.indexItems(this.menu.items);
+    this.search.done();
 
     this.disposer = observe(this.menu, 'activeItemIdx', change => {
       this.updateMarkOnMenu(change.newValue as number);
     });
   }
 
+  onDidMount() {
+    this.menu.updateOnHash();
+    this.updateMarkOnMenu(this.menu.activeItemIdx);
+  }
+
   updateMarkOnMenu(idx: number) {
-    console.log('update marker');
     const start = Math.max(0, idx);
     const end = Math.min(this.menu.flatItems.length, start + 5);
 

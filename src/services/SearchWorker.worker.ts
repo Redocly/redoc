@@ -13,6 +13,10 @@ export interface SearchDocument {
   id: string;
 }
 
+export interface SearchResult extends SearchDocument {
+  score: number;
+}
+
 const store: { [id: string]: SearchDocument } = {};
 
 let resolveIndex: (v: lunr.Index) => void;
@@ -39,7 +43,7 @@ export async function done() {
   resolveIndex(builder.build());
 }
 
-export async function search(q: string): Promise<SearchDocument[]> {
+export async function search(q: string): Promise<SearchResult[]> {
   if (q.trim().length === 0) {
     return [];
   }
@@ -54,5 +58,5 @@ export async function search(q: string): Promise<SearchDocument[]> {
           t.term(exp, {});
         });
     })
-    .map(res => store[res.ref]);
+    .map(res => ({ ...store[res.ref], score: res.score }));
 }

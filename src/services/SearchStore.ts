@@ -1,21 +1,18 @@
-import { SpecStore } from '../index';
-import { GroupModel, OperationModel } from './models';
+import { OperationModel } from './models';
 import worker from './SearchWorker.worker';
+import { IMenuItem } from './MenuStore';
 
 export class SearchStore {
   searchWorker = new worker();
 
-  constructor(private spec: SpecStore) {
-    this.indexGroups(this.spec.operationGroups);
-    this.done();
-  }
+  constructor() {}
 
-  indexGroups(groups: Array<GroupModel | OperationModel>) {
+  indexItems(groups: Array<IMenuItem | OperationModel>) {
     groups.forEach(group => {
       if (group.type !== 'group') {
         this.add(group.name, group.description || '', group.id);
       }
-      this.indexGroups(group.items);
+      this.indexItems(group.items);
     });
   }
 

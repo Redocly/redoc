@@ -82,11 +82,18 @@ export interface SearchBoxProps {
   marker: MarkerService;
   getItemById: (id: string) => IMenuItem | undefined;
   onActivate: (item: IMenuItem) => void;
+
+  className?: string;
 }
 
 export interface SearchBoxState {
   results: any;
   term: string;
+}
+
+interface SearchResult {
+  item: IMenuItem;
+  score: number;
 }
 
 export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxState> {
@@ -145,8 +152,14 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   };
 
   render() {
-    const items: IMenuItem[] = this.state.results.map(res => this.props.getItemById(res.id));
-    items.sort((a, b) => (a.depth > b.depth ? 1 : a.depth < b.depth ? -1 : 0));
+    const results: SearchResult[] = this.state.results.map(res => ({
+      item: this.props.getItemById(res.id),
+      score: res.score,
+    }));
+    results.sort(
+      (a, b) =>
+        a.item.depth > b.item.depth ? 1 : a.item.depth < b.item.depth ? -1 : b.score - a.score,
+    );
 
     return (
       <div>
@@ -158,14 +171,14 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
           type="text"
           onChange={this.search}
         />
-        {items.length > 0 && (
+        {results.length > 0 && (
           <SearchResultsBox>
-            {items.map(item => (
+            {results.map(res => (
               <MenuItem
-                item={item}
+                item={res.item}
                 onActivate={this.props.onActivate}
                 withoutChildren={true}
-                key={item.id}
+                key={res.item.id}
               />
             ))}
           </SearchResultsBox>

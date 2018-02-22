@@ -34,7 +34,6 @@ export class MarkerService {
   }
 
   mark(term?: string) {
-    console.log('mark', term);
     if (!term && !this.prevTerm) return;
     this.map.forEach(val => {
       val.unmark();

@@ -24,7 +24,7 @@ export class Redoc extends React.Component<RedocProps> {
   };
 
   componentDidMount() {
-    this.props.store.menu.updateOnHash();
+    this.props.store.onDidMount();
   }
 
   componentWillUnmount() {

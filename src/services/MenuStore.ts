@@ -16,6 +16,7 @@ export interface IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  description?: string;
   depth: number;
   active: boolean;
   items: IMenuItem[];
