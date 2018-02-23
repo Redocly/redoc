@@ -198,6 +198,7 @@ export class SpecManager {
     let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
+    if (defPointer === undefined) return [];
 
     let globalDefs = this._schema.definitions || {};
     let res:DescendantInfo[] = [];
