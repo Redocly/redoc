@@ -58,9 +58,9 @@ class SchemaWalker {
       const res = visitor(obj, pointer);
       obj['x-redoc-visited'] = false;
       // circular, return only title and description
-      return { title: res.title, description: res.description }
+      return { title: res.title, description: res.description };
     }
-  
+
     obj['x-redoc-visited'] = true;
     if (obj.properties) {
       let ptr = JsonPointer.join(pointer, ['properties']);
