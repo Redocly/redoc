@@ -53,6 +53,15 @@ class SchemaWalker {
     if (obj == undefined || typeof(obj) !== 'object') {
       return;
     }
+
+    if (obj['x-redoc-visited']) {
+      const res = visitor(obj, pointer);
+      obj['x-redoc-visited'] = false;
+      // circular, return only title and description
+      return { title: res.title, description: res.description }
+    }
+  
+    obj['x-redoc-visited'] = true;
     if (obj.properties) {
       let ptr = JsonPointer.join(pointer, ['properties']);
       SchemaWalker.walkEach(obj.properties, ptr, visitor);
@@ -83,7 +92,9 @@ class SchemaWalker {
       }
     }
 
-    return visitor(obj, pointer);
+    const res = visitor(obj, pointer);
+    obj['x-redoc-visited'] = false;
+    return res;
   }
 
   private static walkEach(obj:Object, pointer:string, visitor:Function) {
