@@ -1,6 +1,6 @@
 import * as styledComponents from 'styled-components';
 
-import theme, { ThemeInterface } from './theme';
+import { ThemeInterface } from './theme';
 
 export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ThemeInterface>;
 
@@ -24,7 +24,7 @@ const {
 export const media = {
   lessThan(breakpoint) {
     return (...args) => css`
-      @media (max-width: ${theme.breakpoints[breakpoint]}) {
+      @media (max-width: ${props => props.theme.breakpoints[breakpoint]}) {
         ${(css as any)(...args)};
       }
     `;
@@ -32,7 +32,7 @@ export const media = {
 
   greaterThan(breakpoint) {
     return (...args) => css`
-      @media (min-width: ${theme.breakpoints[breakpoint]}) {
+      @media (min-width: ${props => props.theme.breakpoints[breakpoint]}) {
         ${(css as any)(...args)};
       }
     `;
@@ -40,7 +40,7 @@ export const media = {
 
   between(firstBreakpoint, secondBreakpoint) {
     return (...args) => css`
-      @media (min-width: ${theme.breakpoints[firstBreakpoint]}) and (max-width: ${theme.breakpoints[
+      @media (min-width: ${props => props.theme.breakpoints[firstBreakpoint]}) and (max-width: ${props => props.theme.breakpoints[
           secondBreakpoint
         ]}) {
         ${(css as any)(...args)};
