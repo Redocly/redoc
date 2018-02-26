@@ -1,3 +1,13 @@
+<a name="1.21.2"></a>
+## [1.21.2](https://github.com/Rebilly/ReDoc/compare/v1.21.1...v1.21.2) (2018-02-26)
+
+
+### Bug Fixes
+
+* missing properties when using complex allOf (regression) ([6ce9245](https://github.com/Rebilly/ReDoc/commit/6ce9245)), closes [#422](https://github.com/Rebilly/ReDoc/issues/422)
+
+
+
 <a name="1.21.1"></a>
 ## [1.21.1](https://github.com/Rebilly/ReDoc/compare/v1.21.0...v1.21.1) (2018-02-23)
 
