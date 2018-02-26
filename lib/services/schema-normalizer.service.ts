@@ -55,8 +55,8 @@ class SchemaWalker {
     }
 
     if (obj['x-redoc-visited']) {
-      const res = visitor(obj, pointer);
       obj['x-redoc-visited'] = false;
+      const res = visitor(obj, pointer);
       // circular, return only title and description
       return { title: res.title, description: res.description };
     }
@@ -92,9 +92,8 @@ class SchemaWalker {
       }
     }
 
-    const res = visitor(obj, pointer);
     obj['x-redoc-visited'] = false;
-    return res;
+    return visitor(obj, pointer);
   }
 
   private static walkEach(obj:Object, pointer:string, visitor:Function) {

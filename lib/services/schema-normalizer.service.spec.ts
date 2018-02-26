@@ -248,6 +248,15 @@ describe('Spec Helper', () => {
         Object.keys(joined.properties).should.be.deepEqual(['prop1', 'prop2', 'prop3', 'prop4']);
         joined.required.should.be.deepEqual(['prop1', 'prop3']);
       });
+
+      it('should handle nested allOf if already cached', () => {
+        let pointer = '/definitions/NestedAllOf';
+        let joined;
+        (() => joined = normalizer.normalize(specMgr.byPointer(pointer), pointer)).should.not.throw();
+        Object.keys(joined.properties).length.should.be.equal(4);
+        Object.keys(joined.properties).should.be.deepEqual(['prop1', 'prop2', 'prop3', 'prop4']);
+        joined.required.should.be.deepEqual(['prop1', 'prop3']);
+      });
     });
 
     xdescribe('Merge array allOf', () => {
