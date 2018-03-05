@@ -162,7 +162,7 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
 }
 
 export function sortByRequired(
-  fields: { required: boolean; name: string }[],
+  fields: Array<{ required: boolean; name: string }>,
   order: string[] = [],
 ) {
   fields.sort((a, b) => {

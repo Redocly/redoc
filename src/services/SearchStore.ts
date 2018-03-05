@@ -1,11 +1,9 @@
+import { IMenuItem } from './MenuStore';
 import { OperationModel } from './models';
 import worker from './SearchWorker.worker';
-import { IMenuItem } from './MenuStore';
 
 export class SearchStore {
   searchWorker = new worker();
-
-  constructor() {}
 
   indexItems(groups: Array<IMenuItem | OperationModel>) {
     groups.forEach(group => {

@@ -21,7 +21,7 @@ export class MarkerService {
       }
     });
 
-    for (let el of elements) {
+    for (const el of elements) {
       if (!this.map.has(el)) {
         this.map.set(el, new Mark(el as HTMLElement));
       }
@@ -34,7 +34,9 @@ export class MarkerService {
   }
 
   mark(term?: string) {
-    if (!term && !this.prevTerm) return;
+    if (!term && !this.prevTerm) {
+      return;
+    }
     this.map.forEach(val => {
       val.unmark();
       val.mark(term || this.prevTerm);

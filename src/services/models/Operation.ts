@@ -12,8 +12,8 @@ import {
   getOperationSummary,
   isAbsolutePath,
   JsonPointer,
-  stripTrailingSlash,
   sortByRequired,
+  stripTrailingSlash,
 } from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';

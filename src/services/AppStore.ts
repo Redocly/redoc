@@ -2,12 +2,12 @@ import { observe } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
+import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
 import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
-import { MarkerService } from './MarkerService';
 
 interface StoreData {
   menu: {
@@ -80,11 +80,15 @@ export class AppStore {
     const elements: Element[] = [];
     for (let i = start; i < end; i++) {
       let elem = this.menu.getElementAt(i);
-      if (!elem) continue;
+      if (!elem) {
+        continue;
+      }
       if (this.menu.flatItems[i].type === 'section') {
         elem = elem.parentElement!.parentElement;
       }
-      if (elem) elements.push(elem);
+      if (elem) {
+        elements.push(elem);
+      }
     }
 
     this.marker.addOnly(elements);
