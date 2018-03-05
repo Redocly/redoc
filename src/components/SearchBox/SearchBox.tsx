@@ -88,10 +88,8 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
       item: this.props.getItemById(res.id),
       score: res.score,
     }));
-    results.sort(
-      (a, b) =>
-        a.item.depth > b.item.depth ? 1 : a.item.depth < b.item.depth ? -1 : b.score - a.score,
-    );
+
+    results.sort((a, b) => b.score - a.score);
 
     return (
       <div>
