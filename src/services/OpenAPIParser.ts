@@ -212,11 +212,18 @@ export class OpenAPIParser {
       }
 
       if (subSchema.properties !== undefined) {
-        // TODO: merge properties contents
-        receiver.properties = {
-          ...(receiver.properties || {}),
-          ...subSchema.properties,
-        };
+        receiver.properties = receiver.properties || {};
+        for (let prop in subSchema.properties) {
+          if (!receiver.properties[prop]) {
+            receiver.properties[prop] = subSchema.properties[prop];
+          } else {
+            // merge inner properties
+            receiver.properties[prop] = this.mergeAllOf(
+              { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
+              $ref + '/properties/' + prop,
+            );
+          }
+        }
       }
 
       if (subSchema.required !== undefined) {
