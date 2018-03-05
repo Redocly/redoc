@@ -52,7 +52,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     }
 
     if (oneOf !== undefined) {
-      return <OneOfSchema schema={schema} />;
+      return <OneOfSchema schema={schema} {...this.props} />;
     }
 
     switch (type) {
