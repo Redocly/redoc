@@ -14,6 +14,8 @@ export interface OneOfButtonProps {
   idx: number;
   schema: SchemaModel;
 }
+
+@observer
 export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
   render() {
     const { idx, schema, subSchema } = this.props;
