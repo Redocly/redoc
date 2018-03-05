@@ -38,14 +38,11 @@ export class DiscriminatorDropdown extends React.Component<{
       };
     });
 
+    const activeItem = options[parent.activeOneOf];
     this.sortOptions(options, enumValues);
 
     return (
-      <StyledDropdown
-        value={options[parent.activeOneOf]}
-        options={options}
-        onChange={this.changeActiveChild}
-      />
+      <StyledDropdown value={activeItem} options={options} onChange={this.changeActiveChild} />
     );
   }
 
