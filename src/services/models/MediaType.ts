@@ -45,7 +45,7 @@ export class MediaTypeModel {
         this.examples[subSchema.title] = {
           value: Sampler.sample(
             subSchema.rawSchema,
-            { skipReadOnly: this.isRequestType, skipReadWrite: !this.isRequestType },
+            { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
             parser.spec,
           ),
         };
@@ -55,7 +55,7 @@ export class MediaTypeModel {
         default: new ExampleModel(parser, {
           value: Sampler.sample(
             info.schema,
-            { skipReadOnly: this.isRequestType, skipReadWrite: !this.isRequestType },
+            { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
             parser.spec,
           ),
         }),
