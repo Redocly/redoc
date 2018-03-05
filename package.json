@@ -91,7 +91,7 @@
     "marked": "^0.3.12",
     "mobx": "^3.3.0",
     "mobx-react": "^4.3.3",
-    "openapi-sampler": "1.0.0-beta.8",
+    "openapi-sampler": "1.0.0-beta.9",
     "perfect-scrollbar": "^1.3.0",
     "prismjs": "^1.8.1",
     "prop-types": "^15.6.0",
@@ -107,7 +107,6 @@
     "@types/chai": "4.0.8"
   },
   "jest": {
-    "mapCoverage": true,
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },

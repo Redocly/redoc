@@ -213,7 +213,7 @@ export class OpenAPIParser {
 
       if (subSchema.properties !== undefined) {
         receiver.properties = receiver.properties || {};
-        for (let prop in subSchema.properties) {
+        for (const prop in subSchema.properties) {
           if (!receiver.properties[prop]) {
             receiver.properties[prop] = subSchema.properties[prop];
           } else {
