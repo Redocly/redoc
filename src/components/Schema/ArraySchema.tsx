@@ -10,7 +10,7 @@ export class ArraySchema extends React.PureComponent<SchemaProps> {
     return (
       <div>
         <ArrayOpenningLabel> Array </ArrayOpenningLabel>
-        <Schema schema={itemsSchema} />
+        <Schema {...this.props} schema={itemsSchema} />
         <ArrayClosingLabel />
       </div>
     );
