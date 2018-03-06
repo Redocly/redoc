@@ -6,7 +6,7 @@ let worker;
 if (typeof URL !== 'undefined') {
   try {
     // tslint:disable-next-line
-    worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker').default;
+    worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker');
   } catch (e) {
     worker = require('./SearchWorker.worker').default;
   }
