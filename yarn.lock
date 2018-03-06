@@ -112,9 +112,9 @@
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@types/lunr/-/lunr-2.1.5.tgz#afb90226a6d2eb472eb1732cef7493a02b0177fd"
 
-"@types/mark.js@^8.11.0":
-  version "8.11.0"
-  resolved "https://registry.yarnpkg.com/@types/mark.js/-/mark.js-8.11.0.tgz#1d507352c30f020a35213f80b5131d8ffba194d7"
+"@types/mark.js@^8.11.1":
+  version "8.11.1"
+  resolved "https://registry.yarnpkg.com/@types/mark.js/-/mark.js-8.11.1.tgz#a93de600b10bf0d77b74cd0ba77045f528465f8a"
   dependencies:
     "@types/jquery" "*"
 

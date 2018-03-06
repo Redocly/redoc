@@ -80,7 +80,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
-    "@types/mark.js": "^8.11.0",
+    "@types/mark.js": "^8.11.1",
     "@types/marked": "^0.3.0",
     "classnames": "^2.2.5",
     "decko": "^1.2.0",
