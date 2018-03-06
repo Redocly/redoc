@@ -1,6 +1,17 @@
 import { IMenuItem } from './MenuStore';
 import { OperationModel } from './models';
-import worker from './SearchWorker.worker';
+
+let worker;
+
+if (typeof URL !== 'undefined') {
+  try {
+    worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker').default;
+  } catch (e) {
+    worker = require('./SearchWorker.worker').default;
+  }
+} else {
+  worker = require('./SearchWorker.worker').default;
+}
 
 export class SearchStore {
   searchWorker = new worker();

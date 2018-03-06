@@ -8357,7 +8357,7 @@ wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
 
-workerize-loader@^1.0.1:
+workerize-loader@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/workerize-loader/-/workerize-loader-1.0.2.tgz#ec87bfd2f97a589907172c5ebbcc5c9abbeb7686"
   dependencies:
