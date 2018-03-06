@@ -35,12 +35,12 @@ async function init() {
 init();
 
 if (module.hot) {
-  const reload = (reloadStore = false) => () => {
+  const reload = (reloadStore = false) => async () => {
     if (reloadStore) {
       // create a new Store
       store.dispose();
 
-      const state = store.toJS();
+      const state = await store.toJS();
       store = AppStore.fromJS(state);
     }
 

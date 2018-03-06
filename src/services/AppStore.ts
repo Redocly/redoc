@@ -17,6 +17,7 @@ interface StoreData {
     url: string;
     data: any;
   };
+  searchIndex: any;
   options: RedocRawOptions;
 }
 
@@ -36,9 +37,10 @@ export class AppStore {
    */
   // TODO:
   static fromJS(state: StoreData): AppStore {
-    const inst = new AppStore(state.spec.data, state.spec.url, state.options);
+    const inst = new AppStore(state.spec.data, state.spec.url, state.options, false);
     inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
     inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
+    inst.search.load(state.searchIndex);
     return inst;
   }
 
@@ -52,7 +54,12 @@ export class AppStore {
   private scroll: ScrollService;
   private disposer;
 
-  constructor(spec: OpenAPISpec, specUrl?: string, options: RedocRawOptions = {}) {
+  constructor(
+    spec: OpenAPISpec,
+    specUrl?: string,
+    options: RedocRawOptions = {},
+    createSearchIndex: boolean = true,
+  ) {
     this.rawOptions = options;
     this.options = new RedocNormalizedOptions(options);
     this.scroll = new ScrollService(this.options);
@@ -60,8 +67,9 @@ export class AppStore {
     this.menu = new MenuStore(this.spec, this.scroll);
 
     this.search = new SearchStore();
-    this.search.indexItems(this.menu.items);
-    this.search.done();
+    if (createSearchIndex) {
+      this.search.indexItems(this.menu.items);
+    }
 
     this.disposer = observe(this.menu, 'activeItemIdx', change => {
       this.updateMarkOnMenu(change.newValue as number);
@@ -106,7 +114,7 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  toJS(): StoreData {
+  async toJS(): Promise<StoreData> {
     return {
       menu: {
         activeItemIdx: this.menu.activeItemIdx,
@@ -115,6 +123,7 @@ export class AppStore {
         url: this.spec.parser.specUrl,
         data: this.spec.parser.spec,
       },
+      searchIndex: await this.search.toJS(),
       options: this.rawOptions,
     };
   }

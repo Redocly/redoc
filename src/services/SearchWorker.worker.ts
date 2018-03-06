@@ -5,6 +5,8 @@ export default class Worker {
   add = add;
   done = done;
   search = search;
+  toJS = toJS;
+  load = load;
 }
 
 export interface SearchDocument {
@@ -17,7 +19,7 @@ export interface SearchResult extends SearchDocument {
   score: number;
 }
 
-const store: { [id: string]: SearchDocument } = {};
+let store: { [id: string]: SearchDocument } = {};
 
 let resolveIndex: (v: lunr.Index) => void;
 const index: Promise<lunr.Index> = new Promise(resolve => {
@@ -41,6 +43,18 @@ export function add(title: string, description: string, id: string) {
 
 export async function done() {
   resolveIndex(builder.build());
+}
+
+export async function toJS() {
+  return {
+    store: store,
+    index: (await index).toJSON(),
+  };
+}
+
+export async function load(state: any) {
+  store = state.store;
+  resolveIndex(lunr.Index.load(state.index));
 }
 
 export async function search(q: string): Promise<SearchResult[]> {

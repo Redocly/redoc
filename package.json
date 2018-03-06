@@ -72,7 +72,7 @@
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.5",
     "webpack-node-externals": "^1.6.0",
-    "workerize-loader": "^1.0.1",
+    "workerize-loader": "^1.0.2",
     "yaml-js": "^0.2.3"
   },
   "peerDependencies": {
