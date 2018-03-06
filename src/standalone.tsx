@@ -4,6 +4,8 @@ import { render } from 'react-dom';
 import { RedocStandalone } from './components/RedocStandalone';
 import { querySelector } from './utils/dom';
 
+export { Redoc, AppStore } from './index';
+
 export const version = __REDOC_VERSION__;
 export const revision = __REDOC_REVISION__;
 

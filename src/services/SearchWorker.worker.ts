@@ -47,7 +47,7 @@ export async function done() {
 
 export async function toJS() {
   return {
-    store: store,
+    store,
     index: (await index).toJSON(),
   };
 }

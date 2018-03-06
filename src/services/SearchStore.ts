@@ -5,6 +5,7 @@ let worker;
 
 if (typeof URL !== 'undefined') {
   try {
+    // tslint:disable-next-line
     worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker').default;
   } catch (e) {
     worker = require('./SearchWorker.worker').default;
@@ -17,8 +18,8 @@ export class SearchStore {
   searchWorker = new worker();
 
   indexItems(groups: Array<IMenuItem | OperationModel>) {
-    const recurse = groups => {
-      groups.forEach(group => {
+    const recurse = items => {
+      items.forEach(group => {
         if (group.type !== 'group') {
           this.add(group.name, group.description || '', group.id);
         }
