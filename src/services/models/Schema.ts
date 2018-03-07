@@ -208,6 +208,15 @@ function buildFields(
   const additionalProps = schema.additionalProperties;
   const defaults = schema.default || {};
   const fields = Object.keys(props || []).map(fieldName => {
+    let field = props[fieldName];
+
+    if (!field) {
+      console.warn(
+        `Field "${fieldName}" is invalid, skipping.\n Field must be an object but got ${typeof field} at "${$ref}"`,
+      );
+      field = {};
+    }
+
     const required =
       schema.required === undefined ? false : schema.required.indexOf(fieldName) > -1;
 
@@ -217,8 +226,8 @@ function buildFields(
         name: fieldName,
         required,
         schema: {
-          ...props[fieldName],
-          default: props[fieldName].default || defaults[fieldName],
+          ...field,
+          default: field.default || defaults[fieldName],
         },
       },
       $ref + '/properties/' + fieldName,
