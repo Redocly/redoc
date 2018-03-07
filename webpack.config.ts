@@ -108,7 +108,7 @@ export default env => {
         'process.env.NODE_ENV': env.prod ? '"production"' : '"development"',
         __REDOC_VERSION__: VERSION,
         __REDOC_REVISION__: REVISION,
-        __DEV__: env.prod ? 'false' : 'true',
+        __REDOC_DEV__: env.prod ? 'false' : 'true',
       }),
       new webpack.NamedModulesPlugin(),
     ],

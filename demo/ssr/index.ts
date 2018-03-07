@@ -18,7 +18,7 @@ const server = http.createServer(async (request, response) => {
     fs.createReadStream('bundles/redoc.standalone.js', 'utf8').pipe(response);
   } else if (request.url === '/') {
     const spec = yaml.load(readFileSync(resolve(__dirname, '../openapi.yaml')));
-    let store = await createStore(spec, '', { nativeScrollbars: true });
+    let store = await createStore(spec, 'path/to/spec.yaml');
 
     const sheet = new ServerStyleSheet();
 
@@ -37,26 +37,21 @@ const server = http.createServer(async (request, response) => {
           margin: 0;
         }
       </style>
-      <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-      <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
       <script src="redoc.standalone.js"></script>
       <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
       ${css}
     </head>
     <body>
-      <div id="redoc">${html}</div>
-      <script>
-        const state = ${JSON.stringify(await store.toJS())};
-        const store = Redoc.AppStore.fromJS(state);
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-          console.time('ReDoc hydrate');
-          ReactDOM.hydrate(React.createElement(Redoc.Redoc, {store: store}), document.getElementById('redoc'));
-          console.timeEnd('ReDoc hydrate');
+          const state = ${JSON.stringify(await store.toJS())};
+          Redoc.hydrate(state, document.getElementById('redoc'));
         });
-      </script>
+        </script>
+      <div id="redoc">${html}</div>
     </body>
     </html>`;
-    response.writeHead(200);
+    response.writeHead(200, { 'Content-Length': res.length });
     response.write(res);
     response.end();
   } else {

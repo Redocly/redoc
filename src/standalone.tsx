@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { render, hydrate as hydrateComponent } from 'react-dom';
 
-import { RedocStandalone } from './components/RedocStandalone';
+import { RedocStandalone, Redoc } from './components/';
+import { AppStore, StoreState } from './services/AppStore';
 import { querySelector } from './utils/dom';
+import { debugTime, debugTimeEnd } from './utils/debug';
 
-export { Redoc, AppStore } from './index';
+export { Redoc, AppStore } from '.';
 
 export const version = __REDOC_VERSION__;
 export const revision = __REDOC_REVISION__;
@@ -35,6 +37,7 @@ export function init(
   specOrSpecUrl: string | any,
   options: any = {},
   element: Element | null = querySelector('redoc'),
+  callback?: () => void,
 ) {
   if (element === null) {
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
@@ -60,7 +63,22 @@ export function init(
       ['Loading...'],
     ),
     element,
+    callback,
   );
+}
+
+export function hydrate(
+  state: StoreState,
+  element: Element | null = querySelector('redoc'),
+  callback?: () => void,
+) {
+  debugTime('Redoc create store');
+  const store = AppStore.fromJS(state);
+  debugTimeEnd('Redoc create store');
+
+  debugTime('Redoc hydrate');
+  hydrateComponent(<Redoc store={store} />, element, callback);
+  debugTimeEnd('Redoc hydrate');
 }
 
 /**

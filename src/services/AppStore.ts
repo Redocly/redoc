@@ -9,7 +9,7 @@ import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOption
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
 
-interface StoreData {
+export interface StoreState {
   menu: {
     activeItemIdx: number;
   };
@@ -36,7 +36,7 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  static fromJS(state: StoreData): AppStore {
+  static fromJS(state: StoreState): AppStore {
     const inst = new AppStore(state.spec.data, state.spec.url, state.options, false);
     inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
     inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
@@ -114,7 +114,7 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  async toJS(): Promise<StoreData> {
+  async toJS(): Promise<StoreState> {
     return {
       menu: {
         activeItemIdx: this.menu.activeItemIdx,
