@@ -24,7 +24,7 @@ export class SpecStore {
 
   @computed
   get info(): ApiInfoModel {
-    return new ApiInfoModel(this.parser);
+    return new ApiInfoModel(this.parser, this.options);
   }
 
   @computed

@@ -53,7 +53,7 @@ const theme = {
     backgroundColor: '#fafafa',
   },
   logo: {
-    maxHeight: '120px',
+    maxHeight: '150px',
   },
   rightPanel: {
     backgroundColor: '#263238',

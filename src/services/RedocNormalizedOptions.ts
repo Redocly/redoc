@@ -13,6 +13,7 @@ export interface RedocRawOptions {
   pathInMiddlePanel?: boolean | string;
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
+  hideDownloadButton?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -89,6 +90,7 @@ export class RedocNormalizedOptions {
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
+  hideDownloadButton: boolean;
 
   constructor(raw: RedocRawOptions) {
     this.theme = mergeObjects({} as any, defaultTheme, raw.theme || {});
@@ -100,5 +102,6 @@ export class RedocNormalizedOptions {
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
+    this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
   }
 }
