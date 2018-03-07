@@ -19,7 +19,9 @@ import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { OperationModel as OperationType } from '../../services/models';
 
 const OperationRow = styled(Row)`
-  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: content;
+
   overflow: hidden;
   position: relative;
 

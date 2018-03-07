@@ -2,6 +2,10 @@ import * as React from 'react';
 import styled from '../../styled-components';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
+export const SearchWrap = styled.div`
+  padding: 5px 0;
+`;
+
 export const SearchInput = styled.input.attrs({
   className: 'search-input',
 })`

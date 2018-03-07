@@ -35,11 +35,24 @@ export const RedocWrap = styled.div`
 `;
 
 export const ApiContent = styled.div`
-  z-index: 10;
+  z-index: 1;
   position: relative;
   overflow: hidden;
   width: calc(100% - ${props => props.theme.menu.width});
   ${media.lessThan('small')`
     width: 100%;
+  `};
+  contain: layout;
+`;
+
+export const BackgroundStub = styled.div`
+  background: ${props => props.theme.rightPanel.backgroundColor};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: calc((100% - ${props => props.theme.menu.width}) * 0.4);
+  ${media.lessThan('medium')`
+    display: none;
   `};
 `;

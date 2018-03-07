@@ -10,7 +10,7 @@ import { ContentItems } from '../ContentItems/ContentItems';
 import { OptionsProvider } from '../OptionsProvider';
 import { SideMenu } from '../SideMenu/SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
-import { ApiContent, RedocWrap } from './elements';
+import { ApiContent, RedocWrap, BackgroundStub } from './elements';
 
 import { SearchBox } from '../SearchBox/SearchBox';
 
@@ -52,6 +52,7 @@ export class Redoc extends React.Component<RedocProps> {
               <ApiInfo store={store} />
               <ContentItems items={menu.items as any} />
             </ApiContent>
+            <BackgroundStub />
           </RedocWrap>
         </OptionsProvider>
       </ThemeProvider>

@@ -27,7 +27,8 @@ const StyledStickySidebar = withProps<{ open?: boolean }>(styled.div)`
   display: flex;
   flex-direction: column;
 
-  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: strict;
 
   height: 100vh;
   position: sticky;

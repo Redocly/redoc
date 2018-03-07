@@ -7,7 +7,7 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchDocument } from '../../services/SearchWorker.worker';
 
-import { ClearIcon, SearchIcon, SearchInput, SearchResultsBox } from './elements';
+import { ClearIcon, SearchIcon, SearchInput, SearchResultsBox, SearchWrap } from './elements';
 
 export interface SearchBoxProps {
   search: SearchStore;
@@ -92,7 +92,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     results.sort((a, b) => b.score - a.score);
 
     return (
-      <div>
+      <SearchWrap>
         {this.state.term && <ClearIcon onClick={this.clear}>×</ClearIcon>}
         <SearchIcon />
         <SearchInput
@@ -114,7 +114,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
             ))}
           </SearchResultsBox>
         )}
-      </div>
+      </SearchWrap>
     );
   }
 }
