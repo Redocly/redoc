@@ -17,7 +17,9 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   get downloadLink() {
-    if (this.options.hideDownloadButton) return undefined;
+    if (this.options.hideDownloadButton) {
+      return undefined;
+    }
 
     if (this.parser.specUrl) {
       return this.parser.specUrl;

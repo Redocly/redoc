@@ -10,7 +10,7 @@ import { ContentItems } from '../ContentItems/ContentItems';
 import { OptionsProvider } from '../OptionsProvider';
 import { SideMenu } from '../SideMenu/SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
-import { ApiContent, RedocWrap, BackgroundStub } from './elements';
+import { ApiContent, BackgroundStub, RedocWrap } from './elements';
 
 import { SearchBox } from '../SearchBox/SearchBox';
 

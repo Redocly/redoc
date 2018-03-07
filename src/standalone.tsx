@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { render, hydrate as hydrateComponent } from 'react-dom';
+import { hydrate as hydrateComponent, render } from 'react-dom';
 
-import { RedocStandalone, Redoc } from './components/';
+import { Redoc, RedocStandalone } from './components/';
 import { AppStore, StoreState } from './services/AppStore';
-import { querySelector } from './utils/dom';
 import { debugTime, debugTimeEnd } from './utils/debug';
+import { querySelector } from './utils/dom';
 
 export { Redoc, AppStore } from '.';
 

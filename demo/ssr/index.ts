@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import * as React from 'react';
 import { ServerStyleSheet } from 'styled-components';
+// @ts-ignore
 import { Redoc, createStore } from '../../';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
