@@ -1,3 +1,4 @@
+import * as React from 'react';
 import styled from '../../styled-components';
 
 export const LogoImgEl = styled.img`
@@ -10,3 +11,9 @@ export const LogoImgEl = styled.img`
 export const LogoWrap = styled.div`
   text-align: center;
 `;
+
+const Link = styled.a`
+  display: inline-block;
+`;
+
+export const LinkWrap = url => Component => <Link href={url}>{Component}</Link>;

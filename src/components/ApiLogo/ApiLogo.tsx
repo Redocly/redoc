@@ -1,9 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { OpenAPIInfo } from '../../types';
-import { LogoImgEl, LogoWrap } from './styled.elements';
-
-const LinkWrap = url => Component => <a href={url}>{Component}</a>;
+import { LogoImgEl, LogoWrap, LinkWrap } from './styled.elements';
 
 @observer
 export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
