@@ -3,9 +3,8 @@ import styled from '../../styled-components';
 
 export const LogoImgEl = styled.img`
   max-height: ${props => props.theme.logo.maxHeight};
-  width: auto;
+  width: ${props => props.theme.logo.width};
   display: block;
-  max-width: 100%;
 `;
 
 export const LogoWrap = styled.div`
