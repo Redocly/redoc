@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../utils';
+import { OpenAPISpec } from '../types';
 
 interface StoreProviderProps {
   specUrl?: string;
@@ -22,6 +23,8 @@ interface StoreProviderState {
 
 export class StoreProvider extends Component<StoreProviderProps, StoreProviderState> {
   store: AppStore;
+
+  private _resolvedSpec: OpenAPISpec;
 
   constructor(props: StoreProviderProps) {
     super(props);
@@ -43,15 +46,36 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
     });
 
     try {
-      const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
+      this._resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
+      this.updateStore(this._resolvedSpec, specUrl, options);
+    } catch (e) {
+      this.setState({
+        error: e,
+      });
+    }
+  }
+
+  updateStore(resolvedSpec, specUrl, options) {
+    try {
       this.setState({
         loading: false,
         store: new AppStore(resolvedSpec, specUrl, options),
+        error: undefined,
       });
     } catch (e) {
       this.setState({
         error: e,
       });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.specUrl !== nextProps.specUrl || this.props.spec !== nextProps.spec) {
+      setTimeout(() => this.load(), 0);
+      return;
+    }
+    if (this.props.options !== nextProps.options && this._resolvedSpec) {
+      this.updateStore(this._resolvedSpec, nextProps.specUrl, nextProps.options);
     }
   }
 
