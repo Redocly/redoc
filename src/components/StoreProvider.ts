@@ -2,8 +2,8 @@ import { Component } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
-import { loadAndBundleSpec } from '../utils';
 import { OpenAPISpec } from '../types';
+import { loadAndBundleSpec } from '../utils';
 
 interface StoreProviderProps {
   specUrl?: string;

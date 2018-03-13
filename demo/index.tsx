@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
+import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../';
 import ComboBox from './ComboBox';
-import * as url from 'url';
 
 const demos = [
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
@@ -61,7 +61,7 @@ class DemoApp extends React.Component<
   toggleCors = (e: React.ChangeEvent<HTMLInputElement>) => {
     const cors = e.currentTarget.checked;
     this.setState({
-      cors: cors,
+      cors,
     });
     window.history.pushState(
       undefined,
@@ -75,7 +75,7 @@ class DemoApp extends React.Component<
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
-        ? '\\\\cors.apis.guru/' + url.resolve(window.location.href, specUrl)
+        ? '\\\\cors.apis.guru/' + urlResolve(window.location.href, specUrl)
         : specUrl;
     }
     return (
@@ -155,7 +155,7 @@ render(<DemoApp />, document.getElementById('container'));
 /* ====== Helpers ====== */
 function updateQueryStringParameter(uri, key, value) {
   const keyValue = value === '' ? key : key + '=' + value;
-  var re = new RegExp('([?|&])' + key + '=?.*?(&|#|$)', 'i');
+  const re = new RegExp('([?|&])' + key + '=?.*?(&|#|$)', 'i');
   if (uri.match(re)) {
     if (value !== undefined) {
       return uri.replace(re, '$1' + keyValue + '$2');
@@ -171,12 +171,12 @@ function updateQueryStringParameter(uri, key, value) {
     if (value === undefined) {
       return uri;
     }
-    var hash = '';
+    let hash = '';
     if (uri.indexOf('#') !== -1) {
       hash = uri.replace(/.*#/, '#');
       uri = uri.replace(/#.*/, '');
     }
-    var separator = uri.indexOf('?') !== -1 ? '&' : '?';
+    const separator = uri.indexOf('?') !== -1 ? '&' : '?';
     return uri + separator + keyValue + hash;
   }
 }

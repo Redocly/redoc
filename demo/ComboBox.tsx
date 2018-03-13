@@ -19,7 +19,7 @@ const DropDownItem = withProps<{ active: boolean }>(styled.li)`
     background-color: #eee;
   }
   cursor: pointer;
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
   overflow: hidden;
 `;
 
@@ -93,7 +93,7 @@ const Button = styled.button`
 
 export interface ComboBoxProps {
   onChange?: (val: string) => void;
-  options: { value: string; label: string }[];
+  options: Array<{ value: string; label: string }>;
   placeholder?: string;
   value?: string;
 }
@@ -142,6 +142,10 @@ export default class ComboBox extends React.Component<ComboBoxProps, ComboBoxSta
     this.close();
   }
 
+  handleTryItClick = () => {
+    this.handleSelect(this.state.value);
+  };
+
   handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       this.handleSelect(e.currentTarget.value);
@@ -176,8 +180,27 @@ export default class ComboBox extends React.Component<ComboBoxProps, ComboBoxSta
     });
   };
 
+  renderOption = (option: { value: string; label: string }, idx: number) => {
+    return (
+      <DropDownItem
+        active={idx === this.state.activeItemIdx}
+        key={option.value}
+        // tslint:disable-next-line
+        onMouseDown={() => {
+          this.handleItemClick(option.value, idx);
+        }}
+      >
+        <small>
+          <strong>{option.label}</strong>
+        </small>
+        <br />
+        {option.value}
+      </DropDownItem>
+    );
+  };
+
   render() {
-    const { open, value, activeItemIdx } = this.state;
+    const { open, value } = this.state;
     const { options, placeholder } = this.props;
     return (
       <ComboBoxWrap>
@@ -189,26 +212,8 @@ export default class ComboBox extends React.Component<ComboBoxProps, ComboBoxSta
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyPress}
         />
-        <Button onClick={() => this.handleSelect(this.state.value)}> TRY IT </Button>
-        {open && (
-          <DropDownList>
-            {options.map((option, idx) => (
-              <DropDownItem
-                active={idx == activeItemIdx}
-                key={option.value}
-                onMouseDown={() => {
-                  this.handleItemClick(option.value, idx);
-                }}
-              >
-                <small>
-                  <strong>{option.label}</strong>
-                </small>
-                <br />
-                {option.value}
-              </DropDownItem>
-            ))}
-          </DropDownList>
-        )}
+        <Button onClick={this.handleTryItClick}> TRY IT </Button>
+        {open && <DropDownList>{options.map(this.renderOption)}</DropDownList>}
       </ComboBoxWrap>
     );
   }
