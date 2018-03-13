@@ -19,7 +19,8 @@
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "lint": "tslint --project tsconfig.json",
-    "benchmark": "node ./benchmark/benchmark.js"
+    "benchmark": "node ./benchmark/benchmark.js",
+    "start:demo": "webpack-dev-server --config demo/webpack.config.ts"
   },
   "author": "",
   "license": "MIT",
