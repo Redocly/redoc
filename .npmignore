@@ -1,2 +1,4 @@
 !bundles/
 !package.json
+!README.md
+!bin/

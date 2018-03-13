@@ -3,6 +3,7 @@
   "version": "2.0.0-alpha.12",
   "description": "ReDoc",
   "main": "bundles/redoc.lib.js",
+  "bin": "bin/cli",
   "scripts": {
     "start": "webpack-dev-server --hot",
     "start:benchmark": "webpack-dev-server --env.prod --env.perf",
@@ -104,7 +105,8 @@
     "slugify": "^1.2.1",
     "stickyfill": "^1.1.1",
     "styled-components": "^3.1.0",
-    "swagger2openapi": "^2.11.0"
+    "swagger2openapi": "^2.11.0",
+    "yargs": "^11.0.0"
   },
   "resolutions": {
     "@types/chai": "4.0.8"
