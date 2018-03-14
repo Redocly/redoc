@@ -105,7 +105,7 @@ export class OpenAPIParser {
     } catch (e) {
       // do nothing
     }
-    return res;
+    return res || {};
   };
 
   /**
