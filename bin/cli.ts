@@ -45,6 +45,9 @@ yargs
         alias: 'watch',
         type: 'boolean',
       });
+
+      yargs.demandOption('spec');
+      return yargs;
     },
     async argv => {
       try {
@@ -74,6 +77,9 @@ yargs
         type: 'boolean',
         default: false,
       });
+
+      yargs.demandOption('spec');
+      return yargs;
     },
     async argv => {
       try {
@@ -82,7 +88,8 @@ yargs
         console.log(e.message);
       }
     },
-  ).argv;
+  )
+  .demandCommand().argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
   let spec = await loadAndBundleSpec(pathToSpec);
