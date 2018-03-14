@@ -19,7 +19,7 @@ RUN apt-get install nginx -y
 WORKDIR /build
 RUN npm install -g yarn --loglevel=warn
 COPY . /build
-RUN yarn install
+RUN yarn install --frozen-lockfile --ignore-optional --ignore-scripts
 RUN npm run bundle
 
 # copy files to the nginx folder
