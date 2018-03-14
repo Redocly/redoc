@@ -21,6 +21,7 @@ export interface SearchBoxProps {
 export interface SearchBoxState {
   results: any;
   term: string;
+  activeItemIdx: number;
 }
 
 interface SearchResult {
@@ -29,11 +30,14 @@ interface SearchResult {
 }
 
 export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxState> {
+  activeItemRef: MenuItem | null = null;
+
   constructor(props) {
     super(props);
     this.state = {
       results: [],
       term: '',
+      activeItemIdx: -1,
     };
   }
 
@@ -49,13 +53,39 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     this.setState({
       results: [],
       term: '',
+      activeItemIdx: -1,
     });
     this.props.marker.unmark();
   };
 
-  clearIfEsq = event => {
-    if (event && event.keyCode === 27) {
+  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 27) {
+      // ESQ
       this.clear();
+    }
+    if (event.keyCode === 40) {
+      // Arrow down
+      this.setState({
+        activeItemIdx: Math.min(this.state.activeItemIdx + 1, this.state.results.length - 1),
+      });
+      event.preventDefault();
+    }
+    if (event.keyCode === 38) {
+      // Arrow up
+      this.setState({
+        activeItemIdx: Math.max(0, this.state.activeItemIdx - 1),
+      });
+      event.preventDefault();
+    }
+    if (event.keyCode === 13) {
+      // enter
+      const activeResult = this.state.results[this.state.activeItemIdx];
+      if (activeResult) {
+        const item = this.props.getItemById(activeResult.id);
+        if (item) {
+          this.props.onActivate(item);
+        }
+      }
     }
   };
 
@@ -84,6 +114,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   };
 
   render() {
+    const { activeItemIdx } = this.state;
     const results: SearchResult[] = this.state.results.map(res => ({
       item: this.props.getItemById(res.id),
       score: res.score,
@@ -97,16 +128,20 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
         <SearchIcon />
         <SearchInput
           value={this.state.term}
-          onKeyDown={this.clearIfEsq}
+          onKeyDown={this.handleKeyDown}
           placeholder="Search..."
           type="text"
           onChange={this.search}
         />
         {results.length > 0 && (
           <SearchResultsBox>
-            {results.map(res => (
+            {results.map((res, idx) => (
               <MenuItem
-                item={res.item}
+                item={Object.create(res.item, {
+                  active: {
+                    value: idx === activeItemIdx,
+                  },
+                })}
                 onActivate={this.props.onActivate}
                 withoutChildren={true}
                 key={res.item.id}

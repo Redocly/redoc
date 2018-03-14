@@ -71,6 +71,10 @@ export const SearchResultsBox = styled.div.attrs({
     > svg {
       display: none;
     }
+
+    &.active {
+      background-color: #e1e1e1;
+    }
   }
 `;
 

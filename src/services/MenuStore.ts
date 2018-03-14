@@ -242,9 +242,11 @@ export class MenuStore {
    */
   @action.bound
   activateAndScroll(item: IMenuItem | undefined, updateHash?: boolean, rewriteHistory?: boolean) {
-    this.activate(item, updateHash, rewriteHistory);
+    // item here can be a copy from search results so find corresponding item from menu
+    const menuItem = (item && this.getItemById(item.id)) || item;
+    this.activate(menuItem, updateHash, rewriteHistory);
     this.scrollToActive();
-    if (!item || !item.items.length) {
+    if (!menuItem || !menuItem.items.length) {
       this.closeSidebar();
     }
   }

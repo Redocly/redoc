@@ -20,3 +20,7 @@ declare var __REDOC_REVISION__: string;
 declare type Dict<T> = {
   [key: string]: T;
 };
+
+interface Element {
+  scrollIntoViewIfNeeded(centerIfNeeded?: boolean): void;
+}

@@ -14,15 +14,33 @@ interface MenuItemProps {
 
 @observer
 export class MenuItem extends React.Component<MenuItemProps> {
+  ref: Element | null;
+
   activate = (evt: React.MouseEvent<HTMLElement>) => {
     this.props.onActivate!(this.props.item);
     evt.stopPropagation();
   };
 
+  componentDidUpdate() {
+    if (this.props.item.active) {
+      this.scrollIntoView();
+    }
+  }
+
+  scrollIntoView() {
+    if (this.ref) {
+      this.ref.scrollIntoViewIfNeeded();
+    }
+  }
+
+  saveRef = ref => {
+    this.ref = ref;
+  };
+
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi onClick={this.activate} depth={item.depth}>
+      <MenuItemLi onClick={this.activate} depth={item.depth} innerRef={this.saveRef}>
         {item.type === 'operation' ? (
           <OperationMenuItemContent item={item as OperationModel} />
         ) : (
