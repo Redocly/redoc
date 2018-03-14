@@ -5,7 +5,7 @@ import { ClipboardService } from '../../services';
 export class SelectOnClick extends React.PureComponent {
   private child: HTMLDivElement | null;
   handleClick = () => {
-    ClipboardService.selectElement(this.refs.child);
+    ClipboardService.selectElement(this.child);
   };
 
   render() {
