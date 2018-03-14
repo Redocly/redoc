@@ -28,6 +28,10 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
+  
+  node: {
+    fs: 'empty',
+  },
 
   module: {
     rules: [
@@ -53,6 +57,17 @@ export default {
           options: {
             sourceMap: true,
             minimize: true,
+          },
+        },
+      },
+      {
+        test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
+        use: {
+          loader: 'awesome-typescript-loader',
+          options: {
+            transpileOnly: true,
+            allowJs: true,
+            instance: 'ts2js-transpiler-only',
           },
         },
       },

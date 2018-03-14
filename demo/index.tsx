@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
 import { resolve as urlResolve } from 'url';
-import { RedocStandalone } from '../';
+import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 
 const demos = [
