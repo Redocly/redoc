@@ -1,7 +1,7 @@
 # To run:
 # docker build -t redoc .
 # docker run -it --rm -p 8080:8080 -e API_URL='http://localhost:8000/swagger.yaml' redoc
-# Ensure http://localhost:8000/swagger.yaml is served with cors. A good solutino is:
+# Ensure http://localhost:8000/swagger.yaml is served with cors. A good solution is:
 # npm i -g http-server
 # http-server -p 8000 --cors
 
