@@ -163,6 +163,17 @@ Also you can pass options:
 
 Here are detailed [options docs](#redoc-options-object).
 
+## ReDoc CLI
+
+You can use redoc cli by installing `redoc` globally or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
+
+Twe following commans are available:
+
+- `redoc serve [spec]` - starts the server with `spec` rendered with ReDoc. Supports SSR mode (`--ssr`) and can watch the spec (`--watch`)
+- `redoc bundle [spec]` - bundles spec and ReDoc into **zero-dependency** HTML file.
+
+For more details run `redoc --help`.
+
 ## Configuration
 
 ### Security Definition location
