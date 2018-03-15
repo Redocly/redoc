@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.14"></a>
+# [2.0.0-alpha.14](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.13...v2.0.0-alpha.14) (2018-03-15)
+
+
+### Bug Fixes
+
+* fix CLI crash + build it on travis ([7769ba8](https://github.com/Rebilly/Redoc/commit/7769ba8))
+
+
+
 <a name="2.0.0-alpha.13"></a>
 # [2.0.0-alpha.13](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.12...v2.0.0-alpha.13) (2018-03-15)
 
