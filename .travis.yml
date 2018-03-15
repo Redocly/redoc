@@ -12,7 +12,7 @@ env:
 addons:
   chrome: stable
 cache: yarn
-before_script: npm run bundle
+before_script: npm run bundle && npm run compile:cli
 deploy:
   - provider: npm
     skip_cleanup: true

@@ -26,7 +26,7 @@ export function html2Str(html: string): string {
 
 // scrollIntoViewIfNeeded polyfill
 
-if (!(Element as any).prototype.scrollIntoViewIfNeeded) {
+if (typeof Element !== 'undefined' && !(Element as any).prototype.scrollIntoViewIfNeeded) {
   (Element as any).prototype.scrollIntoViewIfNeeded = function(centerIfNeeded) {
     centerIfNeeded = arguments.length === 0 ? true : !!centerIfNeeded;
 
