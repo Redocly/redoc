@@ -1,3 +1,43 @@
+<a name="2.0.0-alpha.13"></a>
+# [2.0.0-alpha.13](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.12...v2.0.0-alpha.13) (2018-03-15)
+
+
+### Bug Fixes
+
+* A couple minor bug fixes ([#436](https://github.com/Rebilly/Redoc/issues/436)) ([5dc21af](https://github.com/Rebilly/Redoc/commit/5dc21af))
+* add extra null-check + warning ([8757fa5](https://github.com/Rebilly/Redoc/commit/8757fa5))
+* add logo width to the theme ([28f2391](https://github.com/Rebilly/Redoc/commit/28f2391))
+* align logo by center ([18ec3ac](https://github.com/Rebilly/Redoc/commit/18ec3ac))
+* discriminator dropdown showing incorrect field if sorted ([bcf39dc](https://github.com/Rebilly/Redoc/commit/bcf39dc))
+* fix crash when referencing non-existing security scheme ([1f7fc44](https://github.com/Rebilly/Redoc/commit/1f7fc44))
+* fix overflowing content in JSON samples ([02c2413](https://github.com/Rebilly/Redoc/commit/02c2413))
+* fix right-panel blinking when scrolling + css improvements ([a78f9ab](https://github.com/Rebilly/Redoc/commit/a78f9ab))
+* fix search-indexing for SSR ([1428fb5](https://github.com/Rebilly/Redoc/commit/1428fb5))
+* fix the media queries utils so it gets the values from the current theme ([#420](https://github.com/Rebilly/Redoc/issues/420)) ([3924d3c](https://github.com/Rebilly/Redoc/commit/3924d3c))
+* fix worker import ([4896346](https://github.com/Rebilly/Redoc/commit/4896346))
+* make ReactStandalone react on props changes ([0cb0af2](https://github.com/Rebilly/Redoc/commit/0cb0af2))
+* merge inner properties of allOf ([8926dd4](https://github.com/Rebilly/Redoc/commit/8926dd4))
+* one-of dropdown not switching ([0f1b6a6](https://github.com/Rebilly/Redoc/commit/0f1b6a6))
+* referenced header name is empty ([13165fb](https://github.com/Rebilly/Redoc/commit/13165fb))
+* skipReadOnly/skipWritOnly not passing down to nested array ([6df8127](https://github.com/Rebilly/Redoc/commit/6df8127))
+* skipReadOnly/skipWritOnly not passing down to nested OneOf ([2462639](https://github.com/Rebilly/Redoc/commit/2462639))
+* various search fixes ([b797c96](https://github.com/Rebilly/Redoc/commit/b797c96))
+* writeOnly not respected in response samples ([87abdf7](https://github.com/Rebilly/Redoc/commit/87abdf7))
+
+
+### Features
+
+* add clear icon to searchbox ([825162e](https://github.com/Rebilly/Redoc/commit/825162e))
+* add hideDownloadButton option ([8dbe938](https://github.com/Rebilly/Redoc/commit/8dbe938))
+* add marker ([1ff2bd8](https://github.com/Rebilly/Redoc/commit/1ff2bd8))
+* arrow navigation in search results ([fe3245a](https://github.com/Rebilly/Redoc/commit/fe3245a))
+* basis search ([6990cd2](https://github.com/Rebilly/Redoc/commit/6990cd2))
+* ReDoc CLI ✨ ([390f6c1](https://github.com/Rebilly/Redoc/commit/390f6c1))
+* reqired-first sort order for params ([ecf33d2](https://github.com/Rebilly/Redoc/commit/ecf33d2))
+* serialize search-index ([e94f842](https://github.com/Rebilly/Redoc/commit/e94f842))
+
+
+
 <a name="2.0.0-alpha.12"></a>
 # [2.0.0-alpha.12](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.11...v2.0.0-alpha.12) (2018-02-07)
 
