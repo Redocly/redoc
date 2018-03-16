@@ -13,7 +13,7 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   cursor: pointer;
 
   color: ${props => props.theme.colors[props.type]};
-  background-color: ${props => transparentize(0.08, props.theme.colors[props.type])};
+  background-color: ${props => transparentize(0.92, props.theme.colors[props.type])};
 
   ${props =>
     (props.empty &&

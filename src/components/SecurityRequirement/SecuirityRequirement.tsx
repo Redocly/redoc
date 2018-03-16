@@ -8,7 +8,7 @@ import { SecurityRequirementModel } from '../../services/models/SecurityRequirem
 const ScopeName = styled.code`
   font-size: ${props => props.theme.code.fontSize};
   font-family: ${props => props.theme.code.fontFamily};
-  border: 1px solid ${props => transparentize(0.15, props.theme.colors.text)};
+  border: 1px solid ${props => transparentize(0.85, props.theme.colors.text)};
   margin: 0 3px;
   padding: 0.2em;
   display: inline-block;

@@ -6,7 +6,7 @@ export const PropertiesTableCaption = styled.caption`
   text-align: right;
   font-size: 0.9em;
   font-weight: normal;
-  color: ${props => transparentize(0.4, props.theme.colors.text)};
+  color: ${props => transparentize(0.6, props.theme.colors.text)};
 `;
 
 export const PropertyCell = styled.td`

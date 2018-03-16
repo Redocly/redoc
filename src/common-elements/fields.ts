@@ -55,13 +55,13 @@ export const PatternLabel = styled(FieldLabel)`
 
 export const ExampleValue = styled.span`
   font-family: ${props => props.theme.code.fontFamily};
-  background-color: ${props => transparentize(0.02, props.theme.colors.text)};
-  border: 1px solid ${props => transparentize(0.15, props.theme.colors.text)};
+  background-color: ${props => transparentize(0.98, props.theme.colors.text)};
+  border: 1px solid ${props => transparentize(0.85, props.theme.colors.text)};
   margin: 0 3px;
   padding: 0.4em 0.2em 0.2em;
   font-size: 0.8em;
   border-radius: 2px;
-  color: ${props => transparentize(0.9, props.theme.colors.text)};
+  color: ${props => transparentize(0.1, props.theme.colors.text)};
   display: inline-block;
   min-width: 20px;
   text-align: center;
@@ -70,8 +70,8 @@ export const ExampleValue = styled.span`
 `;
 
 export const ConstraintItem = styled(FieldLabel)`
-  background-color: ${props => transparentize(0.15, props.theme.colors.main)};
-  color: ${props => transparentize(0.6, props.theme.colors.main)};
+  background-color: ${props => transparentize(0.85, props.theme.colors.main)};
+  color: ${props => transparentize(0.4, props.theme.colors.main)};
   margin-right: 6px;
   margin-left: 6px;
   border-radius: 2px;
