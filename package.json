@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-alpha.14",
+  "version": "2.0.0-alpha.15",
   "description": "ReDoc",
   "main": "bundles/redoc.lib.js",
   "bin": "bin/cli.js",

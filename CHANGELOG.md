@@ -1,3 +1,18 @@
+<a name="2.0.0-alpha.15"></a>
+# [2.0.0-alpha.15](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.14...v2.0.0-alpha.15) (2018-03-16)
+
+
+### Bug Fixes
+
+* fix broken css after installing polished ([6018042](https://github.com/Rebilly/Redoc/commit/6018042))
+
+
+### Features
+
+* more advanced theme engine ([1df690a](https://github.com/Rebilly/Redoc/commit/1df690a))
+
+
+
 <a name="2.0.0-alpha.14"></a>
 # [2.0.0-alpha.14](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.13...v2.0.0-alpha.14) (2018-03-15)
 
