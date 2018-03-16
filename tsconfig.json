@@ -4,7 +4,6 @@
     "moduleResolution": "node",
     "target": "es5",
     "noImplicitAny": false,
-    "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
