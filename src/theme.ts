@@ -1,4 +1,6 @@
-const theme = {
+import { lighten } from 'polished';
+
+const theme: ThemeInterface = {
   spacingUnit: 20,
   breakpoints: {
     small: '50rem',
@@ -8,9 +10,9 @@ const theme = {
   colors: {
     main: '#32329f',
     success: '#00aa13',
-    redirect: 'orange',
+    redirect: '#ffa500',
     error: '#e53935',
-    info: 'skyblue',
+    info: '#87ceeb',
     text: '#263238',
     warning: '#f1c400',
     http: {
@@ -44,9 +46,9 @@ const theme = {
     fontFamily: 'Courier, monospace',
   },
   links: {
-    color: undefined, // by default main color
-    visited: undefined, // by default main color
-    hover: undefined, // by default main color
+    color: ({ colors }) => colors.main,
+    visited: ({ colors }) => colors.main,
+    hover: ({ colors }) => lighten(0.2, colors.main),
   },
   menu: {
     width: '260px',
@@ -58,10 +60,113 @@ const theme = {
   },
   rightPanel: {
     backgroundColor: '#263238',
-    width: 40,
+    width: '40%',
   },
 };
 
 export default theme;
 
-export type ThemeInterface = typeof theme;
+export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
+  const resolvedValues = {};
+  let counter = 0;
+  const setProxy = (obj, path: string) => {
+    Object.keys(obj).forEach(k => {
+      const currentPath = (path ? path + '.' : '') + k;
+      const val = obj[k];
+      if (typeof val === 'function') {
+        Object.defineProperty(obj, k, {
+          get() {
+            if (!resolvedValues[currentPath]) {
+              counter++;
+              if (counter > 1000) {
+                throw new Error(
+                  `Theme probably contains cirucal dependency at ${currentPath}: ${val.toString()}`,
+                );
+              }
+
+              resolvedValues[currentPath] = val(theme);
+            }
+            return resolvedValues[currentPath];
+          },
+          enumerable: true,
+        });
+      } else if (typeof val === 'object') {
+        setProxy(val, currentPath);
+      }
+    });
+  };
+
+  setProxy(theme, '');
+  return JSON.parse(JSON.stringify(theme));
+}
+
+export interface ResolvedThemeInterface {
+  spacingUnit: number;
+  breakpoints: {
+    small: string;
+    medium: string;
+    large: string;
+  };
+  colors: {
+    main: string;
+    success: string;
+    redirect: string;
+    error: string;
+    info: string;
+    text: string;
+    warning: string;
+    http: {
+      get: string;
+      post: string;
+      put: string;
+      options: string;
+      patch: string;
+      delete: string;
+      basic: string;
+      link: string;
+    };
+  };
+  schemaView: {
+    linesColor: string;
+    defaultDetailsWidth: string;
+  };
+  baseFont: {
+    size: string;
+    lineHeight: string;
+    weight: string;
+    family: string;
+    smoothing: string;
+    optimizeSpeed: boolean;
+  };
+  headingsFont: {
+    family: string;
+  };
+  code: {
+    fontSize: string;
+    fontFamily: string;
+  };
+  links: {
+    color: string;
+    visited: string;
+    hover: string;
+  };
+  menu: {
+    width: string;
+    backgroundColor: string;
+  };
+  logo: {
+    maxHeight: string;
+    width: string;
+  };
+  rightPanel: {
+    backgroundColor: string;
+    width: string;
+  };
+}
+
+export type primitive = string | number | boolean | undefined | null;
+export type AdvancedThemeDeep<T> = T extends primitive
+  ? T | ((theme: ResolvedThemeInterface) => T)
+  : AdvancedThemeObject<T>;
+export type AdvancedThemeObject<T> = { [P in keyof T]: AdvancedThemeDeep<T[P]> };
+export type ThemeInterface = AdvancedThemeObject<ResolvedThemeInterface>;

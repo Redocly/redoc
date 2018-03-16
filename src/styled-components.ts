@@ -1,8 +1,8 @@
 import * as styledComponents from 'styled-components';
 
-import { ThemeInterface } from './theme';
+import { ResolvedThemeInterface } from './theme';
 
-export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ThemeInterface>;
+export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ResolvedThemeInterface>;
 
 function withProps<T, U extends HTMLElement = HTMLElement>(
   styledFunction: StyledFunction<React.HTMLProps<U>>,
@@ -19,7 +19,7 @@ const {
   withTheme,
 } = (styledComponents as styledComponents.ThemedStyledComponentsModule<
   any
->) as styledComponents.ThemedStyledComponentsModule<ThemeInterface>;
+>) as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
 
 export const media = {
   lessThan(breakpoint) {
@@ -40,9 +40,9 @@ export const media = {
 
   between(firstBreakpoint, secondBreakpoint) {
     return (...args) => css`
-      @media (min-width: ${props => props.theme.breakpoints[firstBreakpoint]}) and (max-width: ${props => props.theme.breakpoints[
-          secondBreakpoint
-        ]}) {
+      @media (min-width: ${props =>
+          props.theme.breakpoints[firstBreakpoint]}) and (max-width: ${props =>
+          props.theme.breakpoints[secondBreakpoint]}) {
         ${(css as any)(...args)};
       }
     `;

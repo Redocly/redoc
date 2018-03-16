@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { transparentizeHex } from '../utils/styled';
 import { PropertyNameCell } from './fields-layout';
+import { transparentize } from 'polished';
 
 export const ClickablePropertyNameCell = PropertyNameCell.extend`
   cursor: pointer;
@@ -13,14 +13,14 @@ export const FieldLabel = styled.span`
 `;
 
 export const TypePrefix = styled(FieldLabel)`
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.4)};
+  color: ${props => transparentize(0.4, props.theme.colors.text)};
 `;
 
 export const TypeName = styled(FieldLabel)`
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.8)};
+  color: ${props => transparentize(0.8, props.theme.colors.text)};
 `;
 export const TypeTitle = styled(FieldLabel)`
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.5)};
+  color: ${props => transparentize(0.5, props.theme.colors.text)};
 `;
 
 export const TypeFormat = TypeName;
@@ -55,13 +55,13 @@ export const PatternLabel = styled(FieldLabel)`
 
 export const ExampleValue = styled.span`
   font-family: ${props => props.theme.code.fontFamily};
-  background-color: ${props => transparentizeHex(props.theme.colors.text, 0.02)};
-  border: 1px solid ${props => transparentizeHex(props.theme.colors.text, 0.15)};
+  background-color: ${props => transparentize(0.02, props.theme.colors.text)};
+  border: 1px solid ${props => transparentize(0.15, props.theme.colors.text)};
   margin: 0 3px;
   padding: 0.4em 0.2em 0.2em;
   font-size: 0.8em;
   border-radius: 2px;
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.9)};
+  color: ${props => transparentize(0.9, props.theme.colors.text)};
   display: inline-block;
   min-width: 20px;
   text-align: center;
@@ -70,8 +70,8 @@ export const ExampleValue = styled.span`
 `;
 
 export const ConstraintItem = styled(FieldLabel)`
-  background-color: ${props => transparentizeHex(props.theme.colors.main, 0.15)};
-  color: ${props => transparentizeHex(props.theme.colors.main, 0.6)};
+  background-color: ${props => transparentize(0.15, props.theme.colors.main)};
+  color: ${props => transparentize(0.6, props.theme.colors.main)};
   margin-right: 6px;
   margin-left: 6px;
   border-radius: 2px;

@@ -99,6 +99,7 @@
     "mobx-react": "^4.3.3",
     "openapi-sampler": "1.0.0-beta.9",
     "perfect-scrollbar": "^1.3.0",
+    "polished": "^1.9.2",
     "prismjs": "^1.8.1",
     "prop-types": "^15.6.0",
     "react-dropdown": "^1.3.0",

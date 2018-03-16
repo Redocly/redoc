@@ -1,12 +1,12 @@
 import styled from '../styled-components';
-import { transparentizeHex } from '../utils/styled';
+import { transparentize } from 'polished';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
   text-align: right;
   font-size: 0.9em;
   font-weight: normal;
-  color: ${props => transparentizeHex(props.theme.colors.text, 0.4)};
+  color: ${props => transparentize(0.4, props.theme.colors.text)};
 `;
 
 export const PropertyCell = styled.td`

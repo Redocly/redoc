@@ -1,7 +1,7 @@
 import styled from '../../styled-components';
 
 import { UnderlinedHeader } from '../../common-elements';
-import { transparentizeHex } from '../../utils';
+import { transparentize } from 'polished';
 import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
@@ -13,7 +13,7 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   cursor: pointer;
 
   color: ${props => props.theme.colors[props.type]};
-  background-color: ${props => transparentizeHex(props.theme.colors[props.type], 0.08)};
+  background-color: ${props => transparentize(0.08, props.theme.colors[props.type])};
 
   ${props =>
     (props.empty &&

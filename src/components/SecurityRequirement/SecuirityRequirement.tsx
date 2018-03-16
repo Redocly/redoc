@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from '../../styled-components';
-import { transparentizeHex } from '../../utils/styled';
+import { transparentize } from 'polished';
 
 import { UnderlinedHeader } from '../../common-elements/headers';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
@@ -8,7 +8,7 @@ import { SecurityRequirementModel } from '../../services/models/SecurityRequirem
 const ScopeName = styled.code`
   font-size: ${props => props.theme.code.fontSize};
   font-family: ${props => props.theme.code.fontFamily};
-  border: 1px solid ${props => transparentizeHex(props.theme.colors.text, 0.15)};
+  border: 1px solid ${props => transparentize(0.15, props.theme.colors.text)};
   margin: 0 3px;
   padding: 0.2em;
   display: inline-block;

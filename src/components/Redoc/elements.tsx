@@ -1,4 +1,3 @@
-import { hoverColor } from '../../common-elements/mixins';
 import styled, { media } from '../../styled-components';
 export { ClassAttributes } from 'react';
 
@@ -29,8 +28,15 @@ export const RedocWrap = styled.div`
 
   a {
     text-decoration: none;
-    color: ${props => props.theme.links.color || props.theme.colors.main};
-    ${props => hoverColor(props.theme.links.hover)};
+    color: ${props => props.theme.links.color};
+
+    &:visited {
+      color: ${props => props.theme.links.visited};
+    }
+
+    &:hover {
+      color: ${props => props.theme.links.hover};
+    }
   }
 `;
 

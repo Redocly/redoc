@@ -1,4 +1,4 @@
-import defaultTheme, { ThemeInterface } from '../theme';
+import defaultTheme, { ResolvedThemeInterface, ThemeInterface, resolveTheme } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
@@ -81,7 +81,7 @@ export class RedocNormalizedOptions {
     return () => 0;
   }
 
-  theme: ThemeInterface;
+  theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
@@ -93,7 +93,7 @@ export class RedocNormalizedOptions {
   hideDownloadButton: boolean;
 
   constructor(raw: RedocRawOptions) {
-    this.theme = mergeObjects({} as any, defaultTheme, raw.theme || {});
+    this.theme = resolveTheme(mergeObjects({} as any, defaultTheme, raw.theme || {}));
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
