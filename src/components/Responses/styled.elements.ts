@@ -1,7 +1,7 @@
 import styled from '../../styled-components';
 
-import { UnderlinedHeader } from '../../common-elements';
 import { transparentize } from 'polished';
+import { UnderlinedHeader } from '../../common-elements';
 import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`

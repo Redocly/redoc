@@ -1,5 +1,5 @@
-import styled from '../styled-components';
 import { transparentize } from 'polished';
+import styled from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`

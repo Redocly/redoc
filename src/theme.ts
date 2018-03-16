@@ -1,6 +1,6 @@
 import { lighten } from 'polished';
 
-const theme: ThemeInterface = {
+const defaultTheme: ThemeInterface = {
   spacingUnit: 20,
   breakpoints: {
     small: '50rem',
@@ -64,7 +64,7 @@ const theme: ThemeInterface = {
   },
 };
 
-export default theme;
+export default defaultTheme;
 
 export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
   const resolvedValues = {};

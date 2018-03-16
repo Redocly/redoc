@@ -1,6 +1,6 @@
+import { transparentize } from 'polished';
 import * as React from 'react';
 import styled from '../../styled-components';
-import { transparentize } from 'polished';
 
 import { UnderlinedHeader } from '../../common-elements/headers';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';

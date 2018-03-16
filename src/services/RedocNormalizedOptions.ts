@@ -1,4 +1,4 @@
-import defaultTheme, { ResolvedThemeInterface, ThemeInterface, resolveTheme } from '../theme';
+import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
