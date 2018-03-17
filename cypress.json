@@ -6,5 +6,6 @@
   "supportFile": false,
   "fileServerFolder": ".",
   "videoRecording": false,
-  "screenshotOnHeadlessFailure": false
+  "screenshotOnHeadlessFailure": false,
+  "projectId": "z6eb6h"
 }
