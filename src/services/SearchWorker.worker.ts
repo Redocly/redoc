@@ -21,7 +21,10 @@ export interface SearchResult extends SearchDocument {
 
 let store: { [id: string]: SearchDocument } = {};
 
-let resolveIndex: (v: lunr.Index) => void;
+let resolveIndex: (v: lunr.Index) => void = () => {
+  throw new Error('Should not be called');
+};
+
 const index: Promise<lunr.Index> = new Promise(resolve => {
   resolveIndex = resolve;
 });

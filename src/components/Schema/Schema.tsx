@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RecursiveLabel, TypeName, TypeTitle } from '../../common-elements/fields';
 import { FieldDetails } from '../Fields/FieldDetails';
 
-import { SchemaModel } from '../../services/models';
+import { SchemaModel, FieldModel } from '../../services/models';
 
 import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
@@ -63,19 +63,19 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
+    const field = ({
+      schema,
+      name: '',
+      required: false,
+      description: schema.description,
+      deprecated: false,
+      toggle: () => null,
+      expanded: false,
+    } as any) as FieldModel; // cast needed for hot-loader to not fail
+
     return (
       <div>
-        <FieldDetails
-          field={{
-            schema,
-            name: '',
-            required: false,
-            description: schema.description,
-            deprecated: false,
-            toggle: () => null,
-            expanded: false,
-          }}
-        />
+        <FieldDetails field={field} />
       </div>
     );
   }

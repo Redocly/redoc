@@ -27,6 +27,9 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/plugin-syntax-decorators": "^7.0.0-beta.42",
+    "@babel/plugin-syntax-typescript": "^7.0.0-beta.42",
     "@cypress/webpack-preprocessor": "^1.1.3",
     "@types/dompurify": "^0.0.31",
     "@types/enzyme": "^3.1.8",
@@ -45,6 +48,7 @@
     "@types/webpack-env": "^1.13.0",
     "@types/yargs": "^11.0.0",
     "awesome-typescript-loader": "^3.2.2",
+    "babel-loader": "8.0.0-beta.2",
     "beautify-benchmark": "^0.2.4",
     "conventional-changelog-cli": "^1.3.5",
     "core-js": "^2.5.1",
@@ -84,6 +88,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
+    "@babel/plugin-syntax-jsx": "^7.0.0-beta.42",
     "@types/mark.js": "^8.11.1",
     "@types/marked": "^0.3.0",
     "classnames": "^2.2.5",
@@ -103,7 +108,7 @@
     "prismjs": "^1.8.1",
     "prop-types": "^15.6.0",
     "react-dropdown": "^1.3.0",
-    "react-hot-loader": "3.1.3",
+    "react-hot-loader": "^4.0.0",
     "react-tabs": "^2.0.0",
     "slugify": "^1.2.1",
     "stickyfill": "^1.1.1",

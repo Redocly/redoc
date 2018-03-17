@@ -69,11 +69,21 @@ export default env => {
         {
           test: /\.tsx?$/,
           use: [
-            'react-hot-loader/webpack',
             {
               loader: 'awesome-typescript-loader',
               options: {
                 module: env.perf ? 'esnext' : 'es2015',
+              },
+            },
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: [
+                  '@babel/plugin-syntax-typescript',
+                  '@babel/plugin-syntax-decorators',
+                  '@babel/plugin-syntax-jsx',
+                  'react-hot-loader/babel',
+                ],
               },
             },
           ],

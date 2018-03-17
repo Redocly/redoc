@@ -8,13 +8,11 @@ import { AppStore } from '../../src/services/AppStore';
 import { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 
-const renderRoot = (Component: typeof Redoc, props: RedocProps) =>
+const renderRoot = (props: RedocProps) =>
   render(
-    <div>
-      <AppContainer>
-        <Component {...props} />
-      </AppContainer>
-    </div>,
+    <AppContainer>
+      <Redoc {...props} />
+    </AppContainer>,
     document.getElementById('example'),
   );
 
@@ -29,7 +27,7 @@ const options: RedocRawOptions = { nativeScrollbars: false };
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
   store = new AppStore(spec, specUrl, options);
-  renderRoot(Redoc, { store });
+  renderRoot({ store });
 }
 
 init();
@@ -44,7 +42,7 @@ if (module.hot) {
       store = AppStore.fromJS(state);
     }
 
-    renderRoot(Redoc, { store });
+    renderRoot({ store });
   };
 
   module.hot.accept(['../../src/components/Redoc/Redoc'], reload());
