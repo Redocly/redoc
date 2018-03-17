@@ -41,7 +41,7 @@ export class MarkerService {
       val.unmark();
       val.mark(term || this.prevTerm);
     });
-    this.prevTerm = term || this.prevTerm || '';
+    this.prevTerm = term || this.prevTerm;
   }
 
   unmark() {
