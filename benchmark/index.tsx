@@ -6,11 +6,13 @@ import { Redoc, RedocProps } from '../src/components';
 import { loadAndBundleSpec } from '../src/utils';
 
 import { revisions } from './revisions/config';
-import { extras } from 'mobx';
+import { configure } from 'mobx';
 
 declare var Benchmark;
 
-extras.isolateGlobalState();
+configure({
+  isolateGlobalState: true,
+});
 
 const node = document.getElementById('example');
 

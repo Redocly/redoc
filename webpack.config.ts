@@ -97,6 +97,6 @@ export default (env: { standalone?: boolean } = {}) => ({
       __REDOC_VERSION__: VERSION,
       __REDOC_REVISION__: REVISION,
     }),
-    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({ silent: true }),
   ],
 });
