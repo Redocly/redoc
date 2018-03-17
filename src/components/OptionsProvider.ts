@@ -3,32 +3,19 @@ import * as React from 'react';
 
 import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';
 
-export interface OptionsProviderProps {
-  options: RedocNormalizedOptions;
+// TODO: contribute declarations to @types/react once 16.3 is released
+type ReactProviderComponent<T> = React.ComponentType<{ value: T }>;
+type ReactConsumerComponent<T> = React.ComponentType<{ children: ((value: T) => React.ReactNode) }>;
+
+interface ReactContext<T> {
+  Provider: ReactProviderComponent<T>;
+  Consumer: ReactConsumerComponent<T>;
 }
 
-export class OptionsProvider extends React.Component<OptionsProviderProps> {
-  static childContextTypes = {
-    redocOptions: PropTypes.object.isRequired,
-  };
-
-  getChildContext() {
-    return {
-      redocOptions: this.props.options,
-    };
-  }
-
-  render() {
-    return React.Children.only(this.props.children);
-  }
+declare module 'react' {
+  function createContext<T>(defatulValue: T): ReactContext<T>;
 }
 
-export class ComponentWithOptions<P = {}, S = {}> extends React.Component<P, S> {
-  static contextTypes = {
-    redocOptions: PropTypes.object,
-  };
-
-  get options(): RedocNormalizedOptions {
-    return this.context.redocOptions || {};
-  }
-}
+export const OptionsContext = React.createContext(new RedocNormalizedOptions({}));
+export const OptionsProvider = OptionsContext.Provider;
+export const OptionsConsumer = OptionsContext.Consumer;

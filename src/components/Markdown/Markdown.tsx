@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 
 import * as DOMPurify from 'dompurify';
 import { AppStore, MarkdownRenderer } from '../../services';
-import { ComponentWithOptions } from '../OptionsProvider';
+import { OptionsContext } from '../OptionsProvider';
 
 import { markdownCss } from './styles';
 
@@ -24,7 +24,7 @@ export interface MarkdownProps {
   store?: AppStore;
 }
 
-class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
+class InternalMarkdown extends React.Component<MarkdownProps> {
   constructor(props: MarkdownProps) {
     super(props);
 
@@ -40,10 +40,7 @@ class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
       throw new Error('When using components with Markdwon in ReDoc, store prop must be provided');
     }
 
-    const sanitize =
-      this.props.sanitize || this.options.untrustedSpec
-        ? (html: string) => DOMPurify.sanitize(html)
-        : (html: string) => html;
+    const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
 
     const renderer = new MarkdownRenderer();
     const parts = components
@@ -62,26 +59,36 @@ class InternalMarkdown extends ComponentWithOptions<MarkdownProps> {
       appendClass += ' -inline';
     }
 
-    if (inline) {
-      return (
-        <span
-          className={className + appendClass}
-          dangerouslySetInnerHTML={{ __html: sanitize(parts[0] as string) }}
-        />
-      );
-    }
-
     return (
-      <div className={className + appendClass}>
-        {parts.map(
-          (part, idx) =>
-            typeof part === 'string' ? (
-              <div key={idx} dangerouslySetInnerHTML={{ __html: sanitize(part) }} />
-            ) : (
-              <part.component key={idx} {...{ ...part.attrs, ...part.propsSelector(store) }} />
-            ),
-        )}
-      </div>
+      <OptionsContext.Consumer>
+        {options =>
+          inline ? (
+            <span
+              className={className + appendClass}
+              dangerouslySetInnerHTML={{
+                __html: sanitize(options.untrustedSpec, parts[0] as string),
+              }}
+            />
+          ) : (
+            <div className={className + appendClass}>
+              {parts.map(
+                (part, idx) =>
+                  typeof part === 'string' ? (
+                    <div
+                      key={idx}
+                      dangerouslySetInnerHTML={{ __html: sanitize(options.untrustedSpec, part) }}
+                    />
+                  ) : (
+                    <part.component
+                      key={idx}
+                      {...{ ...part.attrs, ...part.propsSelector(store) }}
+                    />
+                  ),
+              )}
+            </div>
+          )
+        }
+      </OptionsContext.Consumer>
     );
   }
 }

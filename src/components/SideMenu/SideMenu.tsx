@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { ComponentWithOptions } from '../OptionsProvider';
+import { OptionsContext } from '../OptionsProvider';
 
 import { IMenuItem, MenuStore } from '../../services/MenuStore';
 import { MenuItems } from './MenuItems';
@@ -8,25 +8,30 @@ import { MenuItems } from './MenuItems';
 import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';
 
 @observer
-export class SideMenu extends ComponentWithOptions<{ menu: MenuStore }> {
+export class SideMenu extends React.Component<{ menu: MenuStore }> {
   private _updateScroll?: () => void;
 
   render() {
     const store = this.props.menu;
-    const nativeScrollbars = this.options.nativeScrollbars;
-    return nativeScrollbars ? (
-      <MenuItems
-        style={{
-          overflow: 'auto',
-          msOverflowStyle: '-ms-autohiding-scrollbar',
-        }}
-        items={store.items}
-        onActivate={this.activate}
-      />
-    ) : (
-      <PerfectScrollbar updateFn={this.saveScrollUpdate}>
-        <MenuItems items={store.items} onActivate={this.activate} />
-      </PerfectScrollbar>
+    return (
+      <OptionsContext.Consumer>
+        {options =>
+          options.nativeScrollbars ? (
+            <MenuItems
+              style={{
+                overflow: 'auto',
+                msOverflowStyle: '-ms-autohiding-scrollbar',
+              }}
+              items={store.items}
+              onActivate={this.activate}
+            />
+          ) : (
+            <PerfectScrollbar updateFn={this.saveScrollUpdate}>
+              <MenuItems items={store.items} onActivate={this.activate} />
+            </PerfectScrollbar>
+          )
+        }
+      </OptionsContext.Consumer>
     );
   }
 

@@ -67,8 +67,8 @@
     "prettier-eslint": "^8.8.1",
     "puppeteer": "^1.2.0",
     "raf": "^3.4.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.0-alpha.2",
+    "react-dom": "^16.3.0-alpha.2",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.1",
     "source-map-loader": "^0.2.1",
@@ -158,8 +158,14 @@
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"
     ],
-    "coverageReporters": ["json", "lcov", "text-summary"],
-    "coveragePathIgnorePatterns": ["\\.d\\.ts$"]
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text-summary"
+    ],
+    "coveragePathIgnorePatterns": [
+      "\\.d\\.ts$"
+    ]
   },
   "prettier": {
     "singleQuote": true,

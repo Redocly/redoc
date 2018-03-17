@@ -4,7 +4,7 @@ import * as React from 'react';
 import { MenuStore } from '../../services/MenuStore';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
 import styled, { media, withProps } from '../../styled-components';
-import { ComponentWithOptions } from '../OptionsProvider';
+import { OptionsContext } from '../OptionsProvider';
 import { AnimatedChevronButton } from './ChevronSvg';
 
 let Stickyfill;
@@ -67,7 +67,7 @@ const FloatingButton = styled.div`
 `;
 
 @observer
-export class StickyResponsiveSidebar extends ComponentWithOptions<StickySidebarProps> {
+export class StickyResponsiveSidebar extends React.Component<StickySidebarProps> {
   stickyElement: Element;
 
   componentDidMount() {
@@ -82,39 +82,42 @@ export class StickyResponsiveSidebar extends ComponentWithOptions<StickySidebarP
     }
   }
 
-  get scrollYOffset() {
+  getScrollYOffset(options) {
     let top;
     if (this.props.scrollYOffset !== undefined) {
       top = RedocNormalizedOptions.normalizeScrollYOffset(this.props.scrollYOffset)();
     } else {
-      top = this.options.scrollYOffset();
+      top = options.scrollYOffset();
     }
     return top + 'px';
   }
 
   render() {
-    const top = this.scrollYOffset;
     const open = this.props.menu.sideBarOpened;
 
     const height = `calc(100vh - ${top})`;
 
     return (
-      <>
-        <StyledStickySidebar
-          open={open}
-          className={this.props.className}
-          style={{ top, height }}
-          // tslint:disable-next-line
-          innerRef={el => {
-            this.stickyElement = el;
-          }}
-        >
-          {this.props.children}
-        </StyledStickySidebar>
-        <FloatingButton onClick={this.toggleNavMenu}>
-          <AnimatedChevronButton open={open} />
-        </FloatingButton>
-      </>
+      <OptionsContext.Consumer>
+        {options => (
+          <>
+            <StyledStickySidebar
+              open={open}
+              className={this.props.className}
+              style={{ top: this.getScrollYOffset(options), height }}
+              // tslint:disable-next-line
+              innerRef={el => {
+                this.stickyElement = el;
+              }}
+            >
+              {this.props.children}
+            </StyledStickySidebar>
+            <FloatingButton onClick={this.toggleNavMenu}>
+              <AnimatedChevronButton open={open} />
+            </FloatingButton>
+          </>
+        )}
+      </OptionsContext.Consumer>
     );
   }
 

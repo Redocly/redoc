@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 
-import { ComponentWithOptions } from '../OptionsProvider';
+import { OptionsContext } from '../OptionsProvider';
 
 import { ShareLink } from '../../common-elements/linkify';
 import { Endpoint } from '../Endpoint/Endpoint';
@@ -40,31 +40,34 @@ interface OperationProps {
 }
 
 @observer
-export class Operation extends ComponentWithOptions<OperationProps> {
+export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
 
     const { name: summary, description, deprecated } = operation;
-    const pathInMiddle = this.options.pathInMiddlePanel;
     return (
-      <OperationRow>
-        <MiddlePanel>
-          <H2>
-            <ShareLink href={'#' + operation.getHash()} />
-            {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-          </H2>
-          {pathInMiddle && <Endpoint operation={operation} inverted={true} />}
-          {description !== undefined && <Markdown source={description} />}
-          <SecurityRequirements securities={operation.security} />
-          <Parameters parameters={operation.parameters} body={operation.requestBody} />
-          <ResponsesList responses={operation.responses} />
-        </MiddlePanel>
-        <DarkRightPanel>
-          {!pathInMiddle && <Endpoint operation={operation} />}
-          <RequestSamples operation={operation} />
-          <ResponseSamples operation={operation} />
-        </DarkRightPanel>
-      </OperationRow>
+      <OptionsContext.Consumer>
+        {options => (
+          <OperationRow>
+            <MiddlePanel>
+              <H2>
+                <ShareLink href={'#' + operation.getHash()} />
+                {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+              </H2>
+              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {description !== undefined && <Markdown source={description} />}
+              <SecurityRequirements securities={operation.security} />
+              <Parameters parameters={operation.parameters} body={operation.requestBody} />
+              <ResponsesList responses={operation.responses} />
+            </MiddlePanel>
+            <DarkRightPanel>
+              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              <RequestSamples operation={operation} />
+              <ResponseSamples operation={operation} />
+            </DarkRightPanel>
+          </OperationRow>
+        )}
+      </OptionsContext.Consumer>
     );
   }
 }
