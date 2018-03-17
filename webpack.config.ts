@@ -28,11 +28,24 @@ export default env => {
       : [
           // playground
           './src/polyfills.ts',
-          'react-dev-utils/webpackHotDevClient',
-          'react-hot-loader/patch',
           './demo/playground/hmr-playground.tsx',
         ];
   }
+
+  const HotReloaderRule = {
+    test: /\.tsx?$/,
+    use: {
+      loader: 'babel-loader',
+      options: {
+        plugins: [
+          '@babel/plugin-syntax-typescript',
+          '@babel/plugin-syntax-decorators',
+          '@babel/plugin-syntax-jsx',
+          'react-hot-loader/babel',
+        ],
+      },
+    },
+  };
 
   const config: webpack.Configuration = {
     entry: entry,
@@ -68,25 +81,12 @@ export default env => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: [
-            {
-              loader: 'awesome-typescript-loader',
-              options: {
-                module: env.perf ? 'esnext' : 'es2015',
-              },
+          use: {
+            loader: 'awesome-typescript-loader',
+            options: {
+              module: env.perf ? 'esnext' : 'es2015',
             },
-            {
-              loader: 'babel-loader',
-              options: {
-                plugins: [
-                  '@babel/plugin-syntax-typescript',
-                  '@babel/plugin-syntax-decorators',
-                  '@babel/plugin-syntax-jsx',
-                  'react-hot-loader/babel',
-                ],
-              },
-            },
-          ],
+          },
           exclude: ['node_modules'],
         },
         {
@@ -126,6 +126,8 @@ export default env => {
 
   if (env.prod) {
     config.plugins!.push(new webpack.optimize.ModuleConcatenationPlugin());
+  } else {
+    (config.module as webpack.NewModule).rules.push(HotReloaderRule);
   }
 
   if (env.lib) {
