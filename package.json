@@ -52,6 +52,7 @@
     "beautify-benchmark": "^0.2.4",
     "conventional-changelog-cli": "^1.3.5",
     "core-js": "^2.5.1",
+    "coveralls": "^3.0.0",
     "css-loader": "^0.28.11",
     "cypress": "~2.1.0",
     "enzyme": "^3.1.1",
@@ -146,13 +147,18 @@
       "json"
     ],
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/empty.js"
+      "\\.(css|less)$": "<rootDir>/src/empty.js"
     },
     "globals": {
       "ts-jest": {
         "skipBabel": true
       }
-    }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "coverageReporters": ["json", "lcov", "text-summary"],
+    "coveragePathIgnorePatterns": ["\\.d\\.ts$"]
   },
   "prettier": {
     "singleQuote": true,
