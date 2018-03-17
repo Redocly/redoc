@@ -8,9 +8,10 @@
     "start": "webpack-dev-server --mode=development --env.playground --hot --config demo/webpack.config.ts ",
     "start:prod": "webpack-dev-server --env.playground --mode=production --config demo/webpack.config.ts",
     "start:benchmark": "webpack-dev-server --mode=production --env.bench --config demo/webpack.config.ts",
-    "test": "npm run lint && npm run unit && npm run e2e",
+    "test": "npm run lint && npm run unit && npm run e2e && npm run bundlesize",
     "unit": "jest",
     "e2e": "cypress run",
+    "bundlesize": "bundlesize",
     "cy:open": "cypress open",
     "bundle:clean": "rimraf bundles",
     "bundle:standalone": "webpack --env.standalone --mode=production",
@@ -91,6 +92,7 @@
     "@babel/plugin-syntax-jsx": "^7.0.0-beta.42",
     "@types/mark.js": "^8.11.1",
     "@types/marked": "^0.3.0",
+    "bundlesize": "^0.16.0",
     "classnames": "^2.2.5",
     "decko": "^1.2.0",
     "dompurify": "^1.0.2",
@@ -120,6 +122,12 @@
     "@types/chai": "4.0.8",
     "@types/tapable": "1.0.0"
   },
+  "bundlesize": [
+    {
+      "path": "./bundles/redoc.standalone.js",
+      "maxSize": "300 kB"
+    }
+  ],
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"

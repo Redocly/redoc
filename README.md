@@ -1,10 +1,12 @@
-<img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="400px" />
+<div align="center">
+  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Rebilly/ReDoc/master/docs/images/redoc-logo.png" width="400px" />
 
-**OpenAPI/Swagger-generated API Reference Documentation**
+  **OpenAPI/Swagger-generated API Reference Documentation**
 
-[![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru) [![dependencies Status](https://david-dm.org/Rebilly/ReDoc/status.svg)](https://david-dm.org/Rebilly/ReDoc) [![devDependencies Status](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies)
+  [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru) [![dependencies Status](https://david-dm.org/Rebilly/ReDoc/status.svg)](https://david-dm.org/Rebilly/ReDoc) [![devDependencies Status](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![bundle size](http://img.badgesize.io/http://unpkg.com/redoc@next/bundles/redoc.standalone.js?compression=gzip&max=300000)](http://unpkg.com/redoc@next/bundles/redoc.standalone.js) 
 
-[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+  [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+</div>
 
 **REACT-REWRITE: WORK IN PROGRESS**
 
@@ -15,7 +17,7 @@ yarn install
 npm start
 ```
 
-![ReDoc demo](demo/redoc-demo.png)
+![ReDoc demo](https://raw.githubusercontent.com/Rebilly/ReDoc/master/demo/redoc-demo.png)
 
 ## [Live demo](http://rebilly.github.io/ReDoc/)
 
@@ -41,14 +43,14 @@ npm start
   - [x] ~~performance optimizations~~
   - [x] ~~better navigation (menu improvements + search)~~
   - [x] ~~React rewrite~~
+  - [x] ~~docs pre-rendering (performance and SEO)~~
   - [ ] ability to simple branding/styling
-  - [ ] docs pre-rendering (performance and SEO)
   - [ ] built-in API Console
 
 ## Releases
 **Important:** all the 2.x releases are deployed to npm and can be used via unpkg:
-- particular release, e.g. `v2.0.0-alpha.0`: https://unpkg.com/redoc@2.0.0-alpha.0/bundles/redoc.standalone.js
-- `latest` release: https://unpkg.com/redoc/bundles/redoc.standalone.js
+- particular release, e.g. `v2.0.0-alpha.15`: https://unpkg.com/redoc@2.0.0-alpha.15/bundles/redoc.standalone.js
+- `next` release: https://unpkg.com/redoc@next/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
