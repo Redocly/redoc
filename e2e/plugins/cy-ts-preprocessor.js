@@ -11,9 +11,9 @@ const webpackOptions = {
         exclude: [/node_modules/],
         use: [
           {
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
-              configFileName: 'e2e/tsconfig.json',
+              configFile: 'e2e/tsconfig.json',
             },
           },
         ],

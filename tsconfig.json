@@ -36,9 +36,5 @@
     "./src/index.ts",
     "./src/standalone.tsx",
     "demo/*.tsx"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "resolveGlobs": true,
-    "useWebpackText": true
-  }
+  ]
 }

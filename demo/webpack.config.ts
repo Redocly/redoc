@@ -28,7 +28,7 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
-  
+
   node: {
     fs: 'empty',
   },
@@ -42,7 +42,7 @@ export default {
         use: [
           'react-hot-loader/webpack',
           {
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
               module: 'es2015',
             },
@@ -63,11 +63,11 @@ export default {
       {
         test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
         use: {
-          loader: 'awesome-typescript-loader',
+          loader: 'ts-loader',
+          transpileOnly: true,
+          instance: 'ts2js-transpiler-only',
           options: {
-            transpileOnly: true,
             allowJs: true,
-            instance: 'ts2js-transpiler-only',
           },
         },
       },

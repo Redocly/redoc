@@ -1,5 +1,7 @@
 import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as path from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in moudules that need transpiling + non-js (e.g. css)
@@ -82,9 +84,11 @@ export default env => {
         {
           test: /\.tsx?$/,
           use: {
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
-              module: env.perf ? 'esnext' : 'es2015',
+              compilerOptions: {
+                module: env.perf ? 'esnext' : 'es2015',
+              },
             },
           },
           exclude: ['node_modules'],
@@ -92,11 +96,13 @@ export default env => {
         {
           test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
           use: {
-            loader: 'awesome-typescript-loader',
+            loader: 'ts-loader',
             options: {
-              transpileOnly: true,
-              allowJs: true,
               instance: 'ts2js-transpiler-only',
+              transpileOnly: true,
+              compilerOptions: {
+                allowJs: true,
+              },
             },
           },
         },
@@ -121,6 +127,7 @@ export default env => {
         __REDOC_DEV__: env.prod ? 'false' : 'true',
       }),
       new webpack.NamedModulesPlugin(),
+      new ForkTsCheckerWebpackPlugin(),
     ],
   };
 

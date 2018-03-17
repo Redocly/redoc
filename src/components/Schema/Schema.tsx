@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RecursiveLabel, TypeName, TypeTitle } from '../../common-elements/fields';
 import { FieldDetails } from '../Fields/FieldDetails';
 
-import { SchemaModel, FieldModel } from '../../services/models';
+import { FieldModel, SchemaModel } from '../../services/models';
 
 import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
