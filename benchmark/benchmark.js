@@ -36,7 +36,7 @@ console.log('Starging benchmark server');
 const proc = spawn('npm', ['run', 'start:benchmark']);
 
 proc.stdout.on('data', data => {
-  if (data.toString().indexOf('webpack: Compiled successfully') > -1) {
+  if (data.toString().indexOf('Compiled successfully') > -1) {
     console.log('Server started');
     startBenchmark();
   }

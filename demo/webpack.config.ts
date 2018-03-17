@@ -1,5 +1,7 @@
 import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { resolve } from 'path';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
@@ -9,21 +11,53 @@ const REVISION = JSON.stringify(
     .trim(),
 );
 
-export default {
-  entry: __dirname + '/index.tsx',
+function root(filename) {
+  return resolve(__dirname + '/' + filename);
+}
+
+const tsLoader = env => ({
+  loader: 'ts-loader',
+  options: {
+    compilerOptions: {
+      module: env.bench ? 'esnext' : 'es2015',
+    },
+  },
+});
+
+const babelHotLoader = {
+  loader: 'babel-loader',
+  options: {
+    plugins: [
+      '@babel/plugin-syntax-typescript',
+      '@babel/plugin-syntax-decorators',
+      '@babel/plugin-syntax-jsx',
+      'react-hot-loader/babel',
+    ],
+  },
+};
+
+export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) => ({
+  entry: [
+    root('../src/polyfills.ts'),
+    root(
+      env.playground
+        ? 'playground/hmr-playground.tsx'
+        : env.bench ? '../benchmark/index.tsx' : 'index.tsx',
+    ),
+  ],
   output: {
     filename: 'redoc-demo.bundle.js',
-    path: __dirname + '/dist',
+    path: root('dist'),
+    globalObject: 'this',
   },
 
   devServer: {
     contentBase: __dirname,
     watchContentBase: true,
-    port: 8081,
-    stats: 'errors-only',
+    port: 9090,
+    disableHostCheck: true,
+    stats: 'minimal',
   },
-
-  devtool: 'eval',
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
@@ -33,21 +67,15 @@ export default {
     fs: 'empty',
   },
 
+  performance: false,
+
   module: {
     rules: [
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.tsx?$/,
-        use: [
-          'react-hot-loader/webpack',
-          {
-            loader: 'ts-loader',
-            options: {
-              module: 'es2015',
-            },
-          },
-        ],
+        use: mode === 'production' ? [tsLoader(env)] : [tsLoader(env), babelHotLoader],
         exclude: ['node_modules'],
       },
       {
@@ -64,10 +92,12 @@ export default {
         test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
         use: {
           loader: 'ts-loader',
-          transpileOnly: true,
-          instance: 'ts2js-transpiler-only',
           options: {
-            allowJs: true,
+            transpileOnly: true,
+            instance: 'ts2js-transpiler-only',
+            compilerOptions: {
+              allowJs: true,
+            },
           },
         },
       },
@@ -77,12 +107,12 @@ export default {
     new webpack.DefinePlugin({
       __REDOC_VERSION__: VERSION,
       __REDOC_REVISION__: REVISION,
-      __REDOC_DEV__: false,
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
-      template: 'demo/index.html',
+      template: env.playground ? 'demo/playground/index.html' : 'demo/index.html',
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
-};
+});

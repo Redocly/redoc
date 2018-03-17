@@ -1,11 +1,11 @@
 export function debugTime(label: string) {
-  if (__REDOC_DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     console.time(label);
   }
 }
 
 export function debugTimeEnd(label: string) {
-  if (__REDOC_DEV__) {
+  if (process.env.NODE_ENV !== 'production') {
     console.timeEnd(label);
   }
 }

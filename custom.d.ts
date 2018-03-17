@@ -13,7 +13,6 @@ declare module '*.css' {
   export default content;
 }
 
-declare var __REDOC_DEV__: boolean;
 declare var __REDOC_VERSION__: string;
 declare var __REDOC_REVISION__: string;
 

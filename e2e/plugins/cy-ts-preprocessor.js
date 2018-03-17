@@ -4,6 +4,7 @@ const webpackOptions = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
+  performance: false,
   module: {
     rules: [
       {

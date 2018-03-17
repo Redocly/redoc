@@ -122,7 +122,7 @@ export class OpenAPIParser {
    * resets visited enpoints. should be run after
    */
   resetVisited() {
-    if (__REDOC_DEV__) {
+    if (process.env.NODE_ENV !== 'production') {
       // check in dev mode
       for (const k in this._refCounter._counter) {
         if (this._refCounter._counter[k] > 0) {
