@@ -50,4 +50,5 @@ export const media = {
 };
 
 export { css, injectGlobal, keyframes, ThemeProvider, withTheme, withProps };
+export { StyledComponentClass } from 'styled-components';
 export default styled;

@@ -18,7 +18,7 @@ import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 
-const OperationRow = styled(Row)`
+const OperationRow = Row.extend`
   backface-visibility: hidden;
   contain: content;
 

@@ -12,20 +12,20 @@ export const FieldLabel = styled.span`
   line-height: 20px;
 `;
 
-export const TypePrefix = styled(FieldLabel)`
+export const TypePrefix = FieldLabel.extend`
   color: ${props => transparentize(0.4, props.theme.colors.text)};
 `;
 
-export const TypeName = styled(FieldLabel)`
+export const TypeName = FieldLabel.extend`
   color: ${props => transparentize(0.8, props.theme.colors.text)};
 `;
-export const TypeTitle = styled(FieldLabel)`
+export const TypeTitle = FieldLabel.extend`
   color: ${props => transparentize(0.5, props.theme.colors.text)};
 `;
 
 export const TypeFormat = TypeName;
 
-export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
+export const RequiredLabel = FieldLabel.withComponent('div').extend`
   color: #e53935;
   font-size: 11px;
   font-weight: normal;
@@ -34,17 +34,17 @@ export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
   font-weight: normal;
 `;
 
-export const RecursiveLabel = styled(FieldLabel)`
+export const RecursiveLabel = FieldLabel.extend`
   color: #dd9900;
   font-size: 13px;
 `;
 
-export const NullableLabel = styled(FieldLabel)`
+export const NullableLabel = FieldLabel.extend`
   color: #3195a6;
   font-size: 13px;
 `;
 
-export const PatternLabel = styled(FieldLabel)`
+export const PatternLabel = FieldLabel.extend`
   color: #3195a6;
   &::before,
   &::after {
@@ -69,7 +69,7 @@ export const ExampleValue = styled.span`
   vertical-align: middle;
 `;
 
-export const ConstraintItem = styled(FieldLabel)`
+export const ConstraintItem = FieldLabel.extend`
   background-color: ${props => transparentize(0.85, props.theme.colors.main)};
   color: ${props => transparentize(0.4, props.theme.colors.main)};
   margin-right: 6px;

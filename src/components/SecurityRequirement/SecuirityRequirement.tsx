@@ -42,7 +42,7 @@ const SecuritiesColumn = styled.td`
   width: ${props => props.theme.schemaView.defaultDetailsWidth};
 `;
 
-const AuthHeader = styled(UnderlinedHeader)`
+const AuthHeader = UnderlinedHeader.extend`
   display: inline-block;
 `;
 

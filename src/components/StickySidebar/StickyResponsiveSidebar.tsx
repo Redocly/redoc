@@ -95,7 +95,13 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
   render() {
     const open = this.props.menu.sideBarOpened;
 
-    const height = `calc(100vh - ${top})`;
+    const style = options => {
+      const top = this.getScrollYOffset(options);
+      return {
+        top,
+        height: `calc(100vh - ${top})`,
+      };
+    };
 
     return (
       <OptionsContext.Consumer>
@@ -104,7 +110,7 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
             <StyledStickySidebar
               open={open}
               className={this.props.className}
-              style={{ top: this.getScrollYOffset(options), height }}
+              style={style(options)}
               // tslint:disable-next-line
               innerRef={el => {
                 this.stickyElement = el;

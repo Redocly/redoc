@@ -60,7 +60,7 @@ export const Tabs = styled(ReactTabs)`
   }
 `;
 
-export const SmallTabs = styled(Tabs)`
+export const SmallTabs = Tabs.extend`
   > ul {
     display: block;
     > li {

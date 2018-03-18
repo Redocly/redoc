@@ -1,6 +1,6 @@
 import Dropdown from 'react-dropdown';
 
-import styled, { withProps } from '../styled-components';
+import styled, { withProps, StyledComponentClass } from '../styled-components';
 
 export interface DropdownOption {
   label: string;
@@ -87,9 +87,9 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
       background-color: rgba(38, 50, 56, 0.12)
     }
   }
-` as React.ComponentClass<DropdownProps>;
+` as StyledComponentClass<any, DropdownProps>;
 
-export const SimpleDropdown = styled(StyledDropdown)`
+export const SimpleDropdown = StyledDropdown.extend`
   margin-left: 10px;
   text-transform: none;
   font-size: 0.929em;

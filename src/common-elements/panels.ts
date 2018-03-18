@@ -20,11 +20,11 @@ export const RightPanel = styled.div`
   `};
 `;
 
-export const DarkRightPanel = styled(RightPanel)`
+export const DarkRightPanel = RightPanel.extend`
   background-color: ${props => props.theme.rightPanel.backgroundColor};
 `;
 
-export const EmptyDarkRightPanel = styled(DarkRightPanel)`
+export const EmptyDarkRightPanel = DarkRightPanel.extend`
   ${media.lessThan('medium')`
     padding: 0
   `};
