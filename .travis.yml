@@ -29,6 +29,6 @@ deploy:
     tags: true
 - provider: script
   skip_cleanup: true
-  script: cd cli && yarn install && npm run ci-publish
+  script: cd cli && yarn install && npm run ci-publish || true
   on:
     branch: react-rewrite
