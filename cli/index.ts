@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import { createServer, ServerResponse, ServerRequest } from 'http';
 import * as zlib from 'zlib';
-import { resolve } from 'path';
+import { join, dirname } from 'path';
 
 // @ts-ignore
 import { Redoc, loadAndBundleSpec, createStore } from 'redoc';
@@ -19,6 +19,8 @@ type Options = {
   cdn?: boolean;
   output?: string;
 };
+
+const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
 yargs
   .command(
@@ -98,9 +100,14 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   const server = createServer((request, response) => {
     console.time('GET ' + request.url);
     if (request.url === '/redoc.standalone.js') {
-      respondWithGzip(createReadStream('bundles/redoc.standalone.js', 'utf8'), request, response, {
-        'Content-Type': 'application/javascript',
-      });
+      respondWithGzip(
+        createReadStream(join(BUNDLES_DIR, 'redoc.standalone.js'), 'utf8'),
+        request,
+        response,
+        {
+          'Content-Type': 'application/javascript',
+        },
+      );
     } else if (request.url === '/') {
       respondWithGzip(pageHTML, request, response);
     } else if (request.url === '/spec.json') {
@@ -166,7 +173,7 @@ async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options)
     state = await store.toJS();
 
     if (!cdn) {
-      redocStandaloneSrc = readFileSync(resolve(__dirname, '../bundles/redoc.standalone.js'));
+      redocStandaloneSrc = readFileSync(join(BUNDLES_DIR, 'redoc.standalone.js'));
     }
   }
 
