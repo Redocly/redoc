@@ -7,7 +7,7 @@ import * as zlib from 'zlib';
 import { resolve } from 'path';
 
 // @ts-ignore
-import { Redoc, loadAndBundleSpec, createStore } from '../';
+import { Redoc, loadAndBundleSpec, createStore } from 'redoc';
 
 import { createReadStream, writeFileSync, ReadStream, readFileSync, watch, existsSync } from 'fs';
 
@@ -53,7 +53,7 @@ yargs
       try {
         await serve(argv.port, argv.spec, { ssr: argv.ssr, watch: argv.watch });
       } catch (e) {
-        console.log(e.message);
+        console.log(e.stack);
       }
     },
   )
@@ -142,11 +142,16 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
 }
 
 async function bundle(pathToSpec, options: Options = {}) {
+  const start = Date.now();
   const spec = await loadAndBundleSpec(pathToSpec);
   const pageHTML = await getPageHTML(spec, pathToSpec, { ...options, ssr: true });
+
   writeFileSync(options.output!, pageHTML);
-  const sizeInKb = Math.ceil(Buffer.byteLength(pageHTML) / 1024);
-  console.log(`\n🎉 bundled successfully in: ${options.output!} (${sizeInKb} kB)`);
+  const sizeInKiB = Math.ceil(Buffer.byteLength(pageHTML) / 1024);
+  const time = Date.now() - start;
+  console.log(
+    `\n🎉 bundled successfully in: ${options.output!} (${sizeInKiB} KiB) [⏱ ${time / 1000}s]`,
+  );
 }
 
 async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options) {
@@ -154,7 +159,7 @@ async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options)
   let redocStandaloneSrc;
   if (ssr) {
     console.log('Prerendering docs');
-    let store = await createStore(spec, pathToSpec);
+    const store = await createStore(spec, pathToSpec);
     const sheet = new ServerStyleSheet();
     html = renderToString(sheet.collectStyles(React.createElement(Redoc, { store })));
     css = sheet.getStyleTags();
@@ -165,7 +170,8 @@ async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options)
     }
   }
 
-  return `<html>
+  return `<!DOCTYPE html>
+  <html>
   <head>
     <meta charset="utf8" />
     <title>ReDoc</title>

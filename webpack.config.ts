@@ -23,6 +23,7 @@ export default (env: { standalone?: boolean } = {}) => ({
     path: path.join(__dirname, '/bundles'),
     library: 'Redoc',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
 
   devtool: 'source-map',

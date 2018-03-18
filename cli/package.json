@@ -1,0 +1,20 @@
+{
+  "name": "@redoc/cli",
+  "version": "0.0.1",
+  "description": "ReDoc's Command Line Interface",
+  "main": "index.js",
+  "bin": {
+    "redoc": "index.js"
+  },
+  "repository": "https://github.com/Rebilly/ReDoc",
+  "author": "Roman Hotsiy <gotsijroman@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.3.0-alpha.2",
+    "react-dom": "^16.3.0-alpha.2",
+    "redoc": "^2.0.0-alpha.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

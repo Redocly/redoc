@@ -3,7 +3,6 @@
   "version": "2.0.0-alpha.15",
   "description": "ReDoc",
   "main": "bundles/redoc.lib.js",
-  "bin": "bin/cli.js",
   "scripts": {
     "start": "webpack-dev-server --mode=development --env.playground --hot --config demo/webpack.config.ts ",
     "start:prod": "webpack-dev-server --env.playground --mode=production --config demo/webpack.config.ts",
@@ -24,7 +23,7 @@
     "lint": "tslint --project tsconfig.json",
     "benchmark": "node ./benchmark/benchmark.js",
     "start:demo": "webpack-dev-server --hot --config demo/webpack.config.ts",
-    "compile:cli": "tsc bin/cli.ts --target es6 --module commonjs --types yargs"
+    "compile:cli": "tsc cli/index.ts --target es6 --module commonjs --types yargs"
   },
   "author": "",
   "license": "MIT",
