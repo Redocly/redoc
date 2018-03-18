@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": {
@@ -10,6 +10,7 @@
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "isarray": "^2.0.4",
     "react": "^16.3.0-alpha.2",
     "react-dom": "^16.3.0-alpha.2",
     "redoc": "^2.0.0-alpha.15"
