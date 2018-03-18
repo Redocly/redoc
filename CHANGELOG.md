@@ -1,3 +1,19 @@
+<a name="2.0.0-alpha.16"></a>
+# [2.0.0-alpha.16](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.15...v2.0.0-alpha.16) (2018-03-18)
+
+
+### Bug Fixes
+
+* move cli to a separate npm package ([95c7585](https://github.com/Rebilly/Redoc/commit/95c7585))
+* prefer `.extend` over `styled()` to make styles more predictable ([ed20ac1](https://github.com/Rebilly/Redoc/commit/ed20ac1))
+
+
+### Features
+
+* use new Context API for options ([e022349](https://github.com/Rebilly/Redoc/commit/e022349))
+
+
+
 <a name="2.0.0-alpha.15"></a>
 # [2.0.0-alpha.15](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.14...v2.0.0-alpha.15) (2018-03-16)
 
