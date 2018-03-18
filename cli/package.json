@@ -19,5 +19,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "ci-publish": "^1.3.1"
   }
 }
