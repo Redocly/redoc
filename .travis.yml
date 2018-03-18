@@ -29,6 +29,6 @@ deploy:
     tags: true
 - provider: script
   skip_cleanup: true
-  script: cd cli && echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc && npm publish
+  script: cd cli && npm publish --registry "https://registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
   on:
     branch: react-rewrite
