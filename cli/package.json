@@ -14,6 +14,9 @@
     "react-dom": "^16.3.0-alpha.2",
     "redoc": "^2.0.0-alpha.15"
   },
+  "scripts": {
+    "ci-publish": "ci-publish"
+  },
   "publishConfig": {
     "access": "public"
   }
