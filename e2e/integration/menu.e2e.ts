@@ -27,8 +27,7 @@ describe('Menu', () => {
       .should('be.visible');
   });
 
-  // for some reason fails in cypress headless. Works fine in all browsers and cypress interactive
-  xit('should update URL hash on clicking on menu items', function() {
+  it('should update URL hash when clicking on menu items', function() {
     cy.contains('[role=menuitem].-depth1', 'pet').click({ force: true });
     cy.location('hash').should('equal', '#tag/pet');
 
