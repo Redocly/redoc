@@ -5,7 +5,7 @@
   "fixturesFolder": false,
   "supportFile": false,
   "fileServerFolder": ".",
-  "videoRecording": false,
-  "screenshotOnHeadlessFailure": false,
+  "videoRecording": true,
+  "screenshotOnHeadlessFailure": true,
   "projectId": "z6eb6h"
 }
