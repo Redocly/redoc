@@ -24,10 +24,11 @@ export class SideMenu extends React.Component<{ menu: MenuStore }> {
               }}
               items={store.items}
               onActivate={this.activate}
+              root={true}
             />
           ) : (
             <PerfectScrollbar updateFn={this.saveScrollUpdate}>
-              <MenuItems items={store.items} onActivate={this.activate} />
+              <MenuItems items={store.items} onActivate={this.activate} root={true} />
             </PerfectScrollbar>
           )
         }

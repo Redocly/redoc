@@ -123,7 +123,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     results.sort((a, b) => b.score - a.score);
 
     return (
-      <SearchWrap>
+      <SearchWrap role="search">
         {this.state.term && <ClearIcon onClick={this.clear}>×</ClearIcon>}
         <SearchIcon />
         <SearchInput
@@ -134,7 +134,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
           onChange={this.search}
         />
         {results.length > 0 && (
-          <SearchResultsBox>
+          <SearchResultsBox data-role="search:results">
             {results.map((res, idx) => (
               <MenuItem
                 item={Object.create(res.item, {
@@ -145,6 +145,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
                 onActivate={this.props.onActivate}
                 withoutChildren={true}
                 key={res.item.id}
+                data-role="search:result"
               />
             ))}
           </SearchResultsBox>

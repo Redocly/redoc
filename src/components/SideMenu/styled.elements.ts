@@ -115,8 +115,9 @@ export const MenuItemLabel = withProps<{
   active: boolean;
   deprecated?: boolean;
 }>(styled.label).attrs({
+  role: 'menuitem',
   className: props =>
-    classnames('menu-item', '-depth' + props.depth, {
+    classnames('-depth' + props.depth, {
       active: props.active,
     }),
 })`
@@ -137,9 +138,7 @@ export const MenuItemLabel = withProps<{
   }
 `;
 
-export const MenuItemTitle = withProps<{ width?: string }>(styled.span).attrs({
-  className: 'menu-item-title',
-})`
+export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};

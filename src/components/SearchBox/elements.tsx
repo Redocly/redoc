@@ -46,9 +46,7 @@ export const SearchIcon = styled((props: any) => (
   }
 `;
 
-export const SearchResultsBox = styled.div.attrs({
-  className: 'search-results',
-})`
+export const SearchResultsBox = styled.div`
   padding: ${props => props.theme.spacingUnit / 4}px 0;
   background-color: #ededed;
   min-height: 150px;
