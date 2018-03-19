@@ -1,38 +1,55 @@
 describe('Search', () => {
-  before(() => {
+  const getSearchInput = () => cy.get('[role="search"] input');
+  const getSearchResults = () => cy.get('[data-role="search:results"]');
+  const getResult = i => cy.get('[role=search] [role=menuitem]').eq(i);
+
+  beforeEach(() => {
     cy.visit('e2e/standalone.html');
   });
 
-  it('should be closed by default', function() {
-    cy
-      .get('.menu-content div')
-      .filter('.search-box')
-      .should('have.length', 0);
-  });
+  it('should correctly show and hide search results box', function() {
+    getSearchResults().should('not.exist');
 
-  it('should not open for less than 3 symbols', function() {
-    cy.get('.search-input').type('in', { force: true });
-    cy
-      .get('.menu-content div')
-      .filter('.search-box')
-      .should('have.length', 0);
-  });
+    // should not open for less than 3 symbols
+    getSearchInput().type('in', { force: true });
+    getSearchResults().should('not.exist');
 
-  it('should find 3 results when typed int', function() {
-    cy.get('.search-input').type('t', { force: true });
+    getSearchInput().type('t', { force: true });
     cy
-      .get('.search-results')
-      .find('li')
+      .get('[role=search] [role=menuitem]')
       .should('have.length', 3)
       .first()
       .should('contain', 'Introduction');
+
+    getSearchInput().type('{esc}', { force: true });
+    getSearchResults().should('not.exist');
   });
 
-  it('should clear when ESQ is pressed', function() {
-    cy.get('.search-input').type('{esc}', { force: true });
-    cy
-      .get('.menu-content div')
-      .filter('.search-box')
-      .should('have.length', 0);
+  it('should support arrow navigation', function() {
+    getSearchInput().type('int', { force: true });
+
+    getSearchInput().type('{downarrow}', { force: true });
+    getResult(0).should('have.class', 'active');
+
+    getSearchInput().type('{downarrow}', { force: true });
+    getResult(1).should('have.class', 'active');
+    getResult(0).should('not.have.class', 'active');
+
+    getSearchInput().type('{uparrow}', { force: true });
+    getResult(1).should('not.have.class', 'active');
+    getResult(0).should('have.class', 'active');
+
+    getSearchInput().type('{uparrow}', { force: true });
+    getResult(0).should('have.class', 'active');
+
+    getSearchInput().type('{enter}', { force: true });
+
+    cy.contains('[role=navigation] [role=menuitem]', 'Introduction').should('have.class', 'active');
+  });
+
+  it('should mark search results', function() {
+    cy.get('[data-markjs]').should('not.exist');
+    getSearchInput().type('int', { force: true });
+    cy.get('[data-markjs]').should('exist');
   });
 });
