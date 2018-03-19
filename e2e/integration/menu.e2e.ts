@@ -33,9 +33,6 @@ describe('Menu', () => {
 
     cy.contains('[role=menuitem]', 'Find pet by ID').click({ force: true });
     cy.location('hash').should('equal', '#operation/getPetById');
-
-    cy.contains('[role=menuitem]', 'OpenAPI Specification').click({ force: true });
-    cy.location('hash').should('equal', '#section/OpenAPI-Specification');
   });
 
   it('should deactivate tag when other is activated', function() {
