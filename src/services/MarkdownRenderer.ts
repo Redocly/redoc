@@ -35,7 +35,7 @@ export class MarkdownRenderer {
 
   constructor() {
     this.headingEnhanceRenderer = new marked.Renderer();
-    this.originalHeadingRule = this.headingEnhanceRenderer.heading;
+    this.originalHeadingRule = this.headingEnhanceRenderer.heading.bind(this.headingEnhanceRenderer);
     this.headingEnhanceRenderer.heading = this.headingRule;
   }
 
