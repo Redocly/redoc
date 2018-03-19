@@ -151,9 +151,9 @@
     date-fns "^1.27.2"
     figures "^1.7.0"
 
-"@cypress/webpack-preprocessor@RomanGotsiy/cypress-webpack-preprocessor":
-  version "0.0.0-development"
-  resolved "https://codeload.github.com/RomanGotsiy/cypress-webpack-preprocessor/tar.gz/e7a135ffeacc0773e90bde4cd3f545813aaa4565"
+"@cypress/webpack-preprocessor@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-preprocessor/-/webpack-preprocessor-2.0.0.tgz#4fe265b149f6af2258aeb95f85ef5ea419cdae11"
   dependencies:
     babel-core "6.26.0"
     babel-loader "7.1.2"

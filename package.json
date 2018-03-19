@@ -31,7 +31,7 @@
     "@babel/core": "^7.0.0-beta.40",
     "@babel/plugin-syntax-decorators": "^7.0.0-beta.42",
     "@babel/plugin-syntax-typescript": "^7.0.0-beta.42",
-    "@cypress/webpack-preprocessor": "RomanGotsiy/cypress-webpack-preprocessor",
+    "@cypress/webpack-preprocessor": "2.0.0",
     "@types/dompurify": "^0.0.31",
     "@types/enzyme": "^3.1.8",
     "@types/enzyme-to-json": "^1.5.0",
