@@ -10,6 +10,7 @@
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "handlebars": "^4.0.11",
     "isarray": "^2.0.4",
     "react": "^16.3.0-alpha.2",
     "react-dom": "^16.3.0-alpha.2",

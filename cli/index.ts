@@ -5,6 +5,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { createServer, ServerResponse, ServerRequest } from 'http';
 import * as zlib from 'zlib';
 import { join, dirname } from 'path';
+import { compile } from 'handlebars';
 
 // @ts-ignore
 import { Redoc, loadAndBundleSpec, createStore } from 'redoc';
@@ -19,6 +20,7 @@ type Options = {
   cdn?: boolean;
   output?: string;
   title?: string;
+  templateFileName?: string;
 };
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
@@ -54,7 +56,11 @@ yargs
     },
     async argv => {
       try {
-        await serve(argv.port, argv.spec, { ssr: argv.ssr, watch: argv.watch });
+        await serve(argv.port, argv.spec, {
+          ssr: argv.ssr,
+          watch: argv.watch,
+          templateFileName: argv.template,
+        });
       } catch (e) {
         console.log(e.stack);
       }
@@ -92,12 +98,23 @@ yargs
     },
     async argv => {
       try {
-        await bundle(argv.spec, { ssr: true, output: argv.o, cdn: argv.cdn, title: argv.title });
+        await bundle(argv.spec, {
+          ssr: true,
+          output: argv.o,
+          cdn: argv.cdn,
+          title: argv.title,
+          templateFileName: argv.template,
+        });
       } catch (e) {
         console.log(e.message);
       }
     },
   )
+  .options('t', {
+    alias: 'template',
+    describe: 'Path to handlebars page template, see https://git.io/vxZ3V for the example ',
+    type: 'string',
+  })
   .demandCommand().argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
@@ -168,7 +185,11 @@ async function bundle(pathToSpec, options: Options = {}) {
   );
 }
 
-async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn, title }: Options) {
+async function getPageHTML(
+  spec: any,
+  pathToSpec: string,
+  { ssr, cdn, title, templateFileName }: Options,
+) {
   let html, css, state;
   let redocStandaloneSrc;
   if (ssr) {
@@ -184,40 +205,27 @@ async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn, title }: O
     }
   }
 
-  return `<!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="utf8" />
-    <title>${title}</title>
-    <!-- needed for adaptive design -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      body {
-        padding: 0;
-        margin: 0;
-      }
-    </style>
-    ${
-      ssr
-        ? cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`
-        : `<script src="redoc.standalone.js"></script>`
-    }
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
-    ${(ssr && css) || ''}
-  </head>
-  <body>
-  <script>
+  templateFileName = templateFileName ? templateFileName : join(__dirname, './template.hbs');
+  const template = compile(readFileSync(templateFileName).toString());
+  console.log(readFileSync(templateFileName).toString());
+  debugger;
+  return template({
+    redocHTML: `
+    <script>
+      ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
       document.addEventListener('DOMContentLoaded', function() {
-        ${(ssr && `const state = ${JSON.stringify(state)};`) || ''}
         var container = document.getElementById('redoc');
-        Redoc.${ssr ? 'hydrate(state, container);' : 'init("spec.json", {}, container)'};
+        Redoc.${ssr ? 'hydrate(__redoc_state, container);' : 'init("spec.json", {}, container)'};
       });
-      </script>
-    <div id="redoc">${(ssr && html) || ''}</div>
-  </body>
-  </html>`;
+    </script>
+    <div id="redoc">${(ssr && html) || ''}</div>`,
+    redocHead: ssr
+      ? (cdn
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
+      : '<script src="redoc.standalone.js"></script>',
+    title: title,
+  });
 }
 
 // credits: https://stackoverflow.com/a/9238214/1749888
