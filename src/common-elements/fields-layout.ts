@@ -27,8 +27,8 @@ export const PropertyCell = styled.td`
     background-image: linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 21px,
-      ${props => props.theme.schemaView.linesColor} 21px,
+      transparent 22px,
+      ${props => props.theme.schemaView.linesColor} 22px,
       ${props => props.theme.schemaView.linesColor} 100%
     );
   }
@@ -37,8 +37,8 @@ export const PropertyCell = styled.td`
     background-image: linear-gradient(
       to bottom,
       ${props => props.theme.schemaView.linesColor} 0%,
-      ${props => props.theme.schemaView.linesColor} 21px,
-      transparent 21px,
+      ${props => props.theme.schemaView.linesColor} 22px,
+      transparent 22px,
       transparent 100%
     );
   }

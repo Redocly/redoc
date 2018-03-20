@@ -1,4 +1,4 @@
-import { lighten } from 'polished';
+import { lighten, adjustHue, desaturate } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacingUnit: 20,
@@ -27,7 +27,7 @@ const defaultTheme: ThemeInterface = {
     },
   },
   schemaView: {
-    linesColor: '#7f99cf',
+    linesColor: theme => lighten(0.25, desaturate(0.35, theme.colors.main)),
     defaultDetailsWidth: '75%',
   },
   baseFont: {
