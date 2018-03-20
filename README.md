@@ -167,14 +167,7 @@ Here are detailed [options docs](#redoc-options-object).
 
 ## ReDoc CLI
 
-You can use redoc cli by installing `redoc-cli` globally or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
-
-Twe following commans are available:
-
-- `redoc-cli serve [spec]` - starts the server with `spec` rendered with ReDoc. Supports SSR mode (`--ssr`) and can watch the spec (`--watch`)
-- `redoc-cli bundle [spec]` - bundles spec and ReDoc into **zero-dependency** HTML file.
-
-For more details run `redoc-cli --help`.
+[See here](https://github.com/Rebilly/ReDoc/blob/react-rewrite/cli/README.md)
 
 ## Configuration
 
