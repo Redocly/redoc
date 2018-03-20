@@ -29,7 +29,7 @@ const defaultTheme: ThemeInterface = {
   schemaView: {
     linesColor: theme => lighten(0.25, desaturate(0.35, theme.colors.main)),
     defaultDetailsWidth: '75%',
-    typeNameColor: theme => transparentize(0.8, theme.colors.text),
+    typeNameColor: theme => transparentize(0.2, theme.colors.text),
     typeTitleColor: theme => theme.schemaView.typeNameColor,
     requireLabelColor: theme => theme.colors.error,
   },
