@@ -21,6 +21,7 @@ type Options = {
   output?: string;
   title?: string;
   templateFileName?: string;
+  redocOptions?: object;
 };
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
@@ -60,6 +61,7 @@ yargs
           ssr: argv.ssr,
           watch: argv.watch,
           templateFileName: argv.template,
+          redocOptions: argv.options || {},
         });
       } catch (e) {
         console.log(e.stack);
@@ -104,6 +106,7 @@ yargs
           cdn: argv.cdn,
           title: argv.title,
           templateFileName: argv.template,
+          redocOptions: argv.options || {},
         });
       } catch (e) {
         console.log(e.message);
@@ -114,6 +117,9 @@ yargs
     alias: 'template',
     describe: 'Path to handlebars page template, see https://git.io/vxZ3V for the example ',
     type: 'string',
+  })
+  .options('options', {
+    describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
   })
   .demandCommand().argv;
 
@@ -188,13 +194,13 @@ async function bundle(pathToSpec, options: Options = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName }: Options,
+  { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
 ) {
   let html, css, state;
   let redocStandaloneSrc;
   if (ssr) {
     console.log('Prerendering docs');
-    const store = await createStore(spec, pathToSpec);
+    const store = await createStore(spec, pathToSpec, redocOptions);
     const sheet = new ServerStyleSheet();
     html = renderToString(sheet.collectStyles(React.createElement(Redoc, { store })));
     css = sheet.getStyleTags();
@@ -207,15 +213,17 @@ async function getPageHTML(
 
   templateFileName = templateFileName ? templateFileName : join(__dirname, './template.hbs');
   const template = compile(readFileSync(templateFileName).toString());
-  console.log(readFileSync(templateFileName).toString());
-  debugger;
   return template({
     redocHTML: `
     <script>
       ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
       document.addEventListener('DOMContentLoaded', function() {
         var container = document.getElementById('redoc');
-        Redoc.${ssr ? 'hydrate(__redoc_state, container);' : 'init("spec.json", {}, container)'};
+        Redoc.${
+          ssr
+            ? 'hydrate(__redoc_state, container);'
+            : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
+        };
       });
     </script>
     <div id="redoc">${(ssr && html) || ''}</div>`,
