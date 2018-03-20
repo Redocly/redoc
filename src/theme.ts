@@ -1,4 +1,4 @@
-import { adjustHue, desaturate, lighten } from 'polished';
+import { adjustHue, desaturate, lighten, transparentize } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacingUnit: 20,
@@ -29,6 +29,9 @@ const defaultTheme: ThemeInterface = {
   schemaView: {
     linesColor: theme => lighten(0.25, desaturate(0.35, theme.colors.main)),
     defaultDetailsWidth: '75%',
+    typeNameColor: theme => transparentize(0.8, theme.colors.text),
+    typeTitleColor: theme => theme.schemaView.typeNameColor,
+    requireLabelColor: theme => theme.colors.error,
   },
   baseFont: {
     size: '14px',
@@ -129,6 +132,9 @@ export interface ResolvedThemeInterface {
   schemaView: {
     linesColor: string;
     defaultDetailsWidth: string;
+    typeNameColor: string;
+    typeTitleColor: string;
+    requireLabelColor: string;
   };
   baseFont: {
     size: string;

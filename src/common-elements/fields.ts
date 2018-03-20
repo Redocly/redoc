@@ -13,20 +13,21 @@ export const FieldLabel = styled.span`
 `;
 
 export const TypePrefix = FieldLabel.extend`
-  color: ${props => transparentize(0.4, props.theme.colors.text)};
+  color: ${props => transparentize(0.2, props.theme.schemaView.typeNameColor)};
 `;
 
 export const TypeName = FieldLabel.extend`
-  color: ${props => transparentize(0.8, props.theme.colors.text)};
+  color: ${props => props.theme.schemaView.typeNameColor};
 `;
+
 export const TypeTitle = FieldLabel.extend`
-  color: ${props => transparentize(0.5, props.theme.colors.text)};
+  color: ${props => props.theme.schemaView.typeTitleColor};
 `;
 
 export const TypeFormat = TypeName;
 
 export const RequiredLabel = FieldLabel.withComponent('div').extend`
-  color: #e53935;
+  color: ${props => props.theme.schemaView.requireLabelColor};
   font-size: 11px;
   font-weight: normal;
   margin-left: 20px;
