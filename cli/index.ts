@@ -79,7 +79,7 @@ yargs
       yargs.option('o', {
         describe: 'Output file',
         alias: 'output',
-        type: 'number',
+        type: 'string',
         default: 'redoc-static.html',
       });
 
