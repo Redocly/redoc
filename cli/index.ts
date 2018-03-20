@@ -113,6 +113,7 @@ yargs
       }
     },
   )
+  .demandCommand()
   .options('t', {
     alias: 'template',
     describe: 'Path to handlebars page template, see https://git.io/vxZ3V for the example ',
@@ -120,8 +121,7 @@ yargs
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
-  })
-  .demandCommand().argv;
+  }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
   let spec = await loadAndBundleSpec(pathToSpec);
