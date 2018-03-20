@@ -21,7 +21,7 @@ type Options = {
   output?: string;
   title?: string;
   templateFileName?: string;
-  redocOptions?: object;
+  redocOptions?: any;
 };
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
@@ -200,7 +200,9 @@ async function getPageHTML(
   let redocStandaloneSrc;
   if (ssr) {
     console.log('Prerendering docs');
-    const store = await createStore(spec, pathToSpec, redocOptions);
+
+    const specUrl = redocOptions.specUrl || (isURL(pathToSpec) ? pathToSpec : undefined);
+    const store = await createStore(spec, specUrl, redocOptions);
     const sheet = new ServerStyleSheet();
     html = renderToString(sheet.collectStyles(React.createElement(Redoc, { store })));
     css = sheet.getStyleTags();
@@ -281,4 +283,8 @@ function debounce(callback: Function, time: number) {
       callback(...args);
     }, time);
   };
+}
+
+function isURL(str: string): boolean {
+  return /^(https?:)\/\//m.test(str);
 }
