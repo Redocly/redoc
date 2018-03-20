@@ -1,4 +1,4 @@
-import { lighten, adjustHue, desaturate } from 'polished';
+import { adjustHue, desaturate, lighten } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacingUnit: 20,

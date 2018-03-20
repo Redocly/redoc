@@ -14,14 +14,8 @@ Twe following commans are available:
 
 Some examples:
 
-- Bundle with main color changed to `orange`:
-
-  `$ redoc-cli bundle [spec] --options.theme.colors.main=orange`
-- Serve with `nativeScrollbars` option set to true:
-
-  `$ redoc-cli serve [spec] --options.nativeScrollbars`
-- Bundle using custom template (check [default template](https://github.com/Rebilly/ReDoc/blob/react-rewrite/cli/template.hbs) for reference):
-
-  `$ redoc-cli bundle [spec] -t custom.hbs`
+- Bundle with main color changed to `orange`: <br> `$ redoc-cli bundle [spec] --options.theme.colors.main=orange`
+- Serve with `nativeScrollbars` option set to true: <br> `$ redoc-cli serve [spec] --options.nativeScrollbars`
+- Bundle using custom template (check [default template](https://github.com/Rebilly/ReDoc/blob/react-rewrite/cli/template.hbs) for reference): <br> `$ redoc-cli bundle [spec] -t custom.hbs`
 
 For more details run `redoc-cli --help`.
