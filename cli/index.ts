@@ -18,6 +18,7 @@ type Options = {
   watch?: boolean;
   cdn?: boolean;
   output?: string;
+  title?: string;
 };
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
@@ -74,6 +75,12 @@ yargs
         default: 'redoc-static.html',
       });
 
+      yargs.options('title', {
+        describe: 'Page Title',
+        type: 'string',
+        default: 'ReDoc documentation',
+      });
+
       yargs.option('cdn', {
         describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
         type: 'boolean',
@@ -85,7 +92,7 @@ yargs
     },
     async argv => {
       try {
-        await bundle(argv.spec, { ssr: true, output: argv.o, cdn: argv.cdn });
+        await bundle(argv.spec, { ssr: true, output: argv.o, cdn: argv.cdn, title: argv.title });
       } catch (e) {
         console.log(e.message);
       }
@@ -161,7 +168,7 @@ async function bundle(pathToSpec, options: Options = {}) {
   );
 }
 
-async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options) {
+async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn, title }: Options) {
   let html, css, state;
   let redocStandaloneSrc;
   if (ssr) {
@@ -181,7 +188,7 @@ async function getPageHTML(spec: any, pathToSpec: string, { ssr, cdn }: Options)
   <html>
   <head>
     <meta charset="utf8" />
-    <title>ReDoc</title>
+    <title>${title}</title>
     <!-- needed for adaptive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
