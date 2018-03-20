@@ -1,11 +1,9 @@
 {
   "name": "redoc-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
-  "bin": {
-    "redoc": "index.js"
-  },
+  "bin": "index.js",
   "repository": "https://github.com/Rebilly/ReDoc",
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
