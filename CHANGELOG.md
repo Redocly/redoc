@@ -1,3 +1,82 @@
+<a name="2.0.0-alpha.17"></a>
+# [2.0.0-alpha.17](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.16...v2.0.0-alpha.17) (2018-03-21)
+
+
+### Bug Fixes
+
+* css fix + update theme ([05403a7](https://github.com/Rebilly/ReDoc/commit/05403a7))
+* **cli:** allow to set url to the spec in SSR mode ([c9c6bc5](https://github.com/Rebilly/ReDoc/commit/c9c6bc5))
+* **cli:** fix crash ([8891f5c](https://github.com/Rebilly/ReDoc/commit/8891f5c))
+* **cli:** fix output option type ([c729c6c](https://github.com/Rebilly/ReDoc/commit/c729c6c))
+* **cli:** rename redoc-cli bin ([06b5a00](https://github.com/Rebilly/ReDoc/commit/06b5a00))
+* fix second-level heading in description ([a084532](https://github.com/Rebilly/ReDoc/commit/a084532))
+* make field type color more dark (closes [#439](https://github.com/Rebilly/ReDoc/issues/439)) ([d27e61a](https://github.com/Rebilly/ReDoc/commit/d27e61a))
+
+
+### Features
+
+* **cli:** add --template option ([b7afce9](https://github.com/Rebilly/ReDoc/commit/b7afce9))
+* **cli:** add options to specify redoc options ([2732c89](https://github.com/Rebilly/ReDoc/commit/2732c89))
+* **cli:** add title option to bundle ([bb8a678](https://github.com/Rebilly/ReDoc/commit/bb8a678))
+* add more options to theme ([cbce28a](https://github.com/Rebilly/ReDoc/commit/cbce28a))
+
+
+
+<a name="1.21.2"></a>
+## [1.21.2](https://github.com/Rebilly/ReDoc/compare/v1.21.1...v1.21.2) (2018-02-26)
+
+
+### Bug Fixes
+
+* missing properties when using complex allOf (regression) ([6ce9245](https://github.com/Rebilly/ReDoc/commit/6ce9245)), closes [#422](https://github.com/Rebilly/ReDoc/issues/422)
+
+
+
+<a name="1.21.1"></a>
+## [1.21.1](https://github.com/Rebilly/ReDoc/compare/v1.21.0...v1.21.1) (2018-02-23)
+
+
+### Bug Fixes
+
+* avoid endless recursion in schema-walker in some cases ([309cc23](https://github.com/Rebilly/ReDoc/commit/309cc23)), closes [#418](https://github.com/Rebilly/ReDoc/issues/418) [#395](https://github.com/Rebilly/ReDoc/issues/395)
+* fix crash when discriminator is used incorrectly ([b1d928d](https://github.com/Rebilly/ReDoc/commit/b1d928d))
+
+
+
+<a name="1.21.0"></a>
+# [1.21.0](https://github.com/Rebilly/ReDoc/compare/v1.20.0...v1.21.0) (2018-02-18)
+
+
+### Bug Fixes
+
+* null example not used in schema samples ([420c51a](https://github.com/Rebilly/ReDoc/commit/420c51a)), closes [#415](https://github.com/Rebilly/ReDoc/issues/415)
+
+
+### Features
+
+* new option hide-download-button ([454e5bd](https://github.com/Rebilly/ReDoc/commit/454e5bd)), closes [#394](https://github.com/Rebilly/ReDoc/issues/394)
+
+
+
+<a name="1.20.0"></a>
+## [1.20.0](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
+
+
+### Bug Fixes
+
+* Path parameters are not correctly overriden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
+* Use parentNode instead of parentElement to fix IE11 crash ([e8adb60](https://github.com/Rebilly/ReDoc/commit/e8adb60)), closes [#406](https://github.com/Rebilly/ReDoc/issues/406)
+
+
+### Features
+
+* align parameters to match up ([#375](https://github.com/Rebilly/ReDoc/issues/375)) ([d083c16](https://github.com/Rebilly/ReDoc/commit/d083c16))
+
+### Deprecations
+* Dropped bower support. No more dist files on the `releases` branch.
+
+
+
 <a name="2.0.0-alpha.15"></a>
 # [2.0.0-alpha.15](https://github.com/Rebilly/Redoc/compare/v2.0.0-alpha.14...v2.0.0-alpha.15) (2018-03-16)
 
@@ -222,60 +301,6 @@ Complete rewrite also means that this rewrite may introduce issues, but they sho
 - `lazyLoading` option not implemented yet
 - Copying to clipboard of samples not implemented yet
 - Search not implemented yet
-
-<a name="1.21.2"></a>
-## [1.21.2](https://github.com/Rebilly/ReDoc/compare/v1.21.1...v1.21.2) (2018-02-26)
-
-
-### Bug Fixes
-
-* missing properties when using complex allOf (regression) ([6ce9245](https://github.com/Rebilly/ReDoc/commit/6ce9245)), closes [#422](https://github.com/Rebilly/ReDoc/issues/422)
-
-
-
-<a name="1.21.1"></a>
-## [1.21.1](https://github.com/Rebilly/ReDoc/compare/v1.21.0...v1.21.1) (2018-02-23)
-
-
-### Bug Fixes
-
-* avoid endless recursion in schema-walker in some cases ([309cc23](https://github.com/Rebilly/ReDoc/commit/309cc23)), closes [#418](https://github.com/Rebilly/ReDoc/issues/418) [#395](https://github.com/Rebilly/ReDoc/issues/395)
-* fix crash when discriminator is used incorrectly ([b1d928d](https://github.com/Rebilly/ReDoc/commit/b1d928d))
-
-
-
-<a name="1.21.0"></a>
-# [1.21.0](https://github.com/Rebilly/ReDoc/compare/v1.20.0...v1.21.0) (2018-02-18)
-
-
-### Bug Fixes
-
-* null example not used in schema samples ([420c51a](https://github.com/Rebilly/ReDoc/commit/420c51a)), closes [#415](https://github.com/Rebilly/ReDoc/issues/415)
-
-
-### Features
-
-* new option hide-download-button ([454e5bd](https://github.com/Rebilly/ReDoc/commit/454e5bd)), closes [#394](https://github.com/Rebilly/ReDoc/issues/394)
-
-
-
-<a name="1.20.0"></a>
-## [1.20.0](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
-
-
-### Bug Fixes
-
-* Path parameters are not correctly overriden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
-* Use parentNode instead of parentElement to fix IE11 crash ([e8adb60](https://github.com/Rebilly/ReDoc/commit/e8adb60)), closes [#406](https://github.com/Rebilly/ReDoc/issues/406)
-
-
-### Features
-
-* align parameters to match up ([#375](https://github.com/Rebilly/ReDoc/issues/375)) ([d083c16](https://github.com/Rebilly/ReDoc/commit/d083c16))
-
-### Deprecations
-* Dropped bower support. No more dist files on the `releases` branch.
-
 
 <a name="1.19.3"></a>
 ## [1.19.3](https://github.com/Rebilly/ReDoc/compare/v1.19.2...v1.19.3) (2017-11-16)
