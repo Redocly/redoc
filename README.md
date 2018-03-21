@@ -46,9 +46,9 @@
   - [ ] built-in API Console
 
 ## Releases
-**Important:** all the 2.x releases are deployed to npm and can be used via unpkg:
-- particular release, e.g. `v2.0.0-alpha.15`: https://unpkg.com/redoc@2.0.0-alpha.15/bundles/redoc.standalone.js
-- `next` release: https://unpkg.com/redoc@next/bundles/redoc.standalone.js
+**Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
+- particular release, e.g. `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
+- `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
@@ -97,7 +97,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
   </head>
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
 ```
