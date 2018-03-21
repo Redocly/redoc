@@ -28,7 +28,9 @@ deploy:
     tags: true
 - provider: script
   skip_cleanup: true
-  script: cd cli && yarn install && npm run ci-publish || true
+  script: cd cli && yarn install && yarn ci-publish || true
   on:
     tags: true
-  # TODO demo deployment to GH pages
+- provider: script
+  skip_cleanup: true
+  script: yarn deploy:demo
