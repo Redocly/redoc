@@ -167,7 +167,7 @@ Here are detailed [options docs](#redoc-options-object).
 
 ## ReDoc CLI
 
-[See here](https://github.com/Rebilly/ReDoc/blob/react-rewrite/cli/README.md)
+[See here](https://github.com/Rebilly/ReDoc/blob/master/cli/README.md)
 
 ## Configuration
 
@@ -205,7 +205,7 @@ You can use all of the following optins with standalone version on <redoc> tag b
 * `hideLoading` - do not show loading animation. Useful for small docs
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
-* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Rebilly/ReDoc/blob/react-rewrite/src/theme.ts)
+* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Rebilly/ReDoc/blob/master/src/theme.ts)
 
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
