@@ -1,25 +1,25 @@
-declare module "*.css" {
+declare module '*.json' {
+  const content: any;
+  export = content;
+}
+
+declare module '*.svg' {
   const content: string;
   export default content;
 }
 
-declare module "*.json" {
+declare module '*.css' {
   const content: string;
   export default content;
 }
 
-declare var LIB_VERSION: any;
-declare var IS_PRODUCTION: any;
-declare var AOT: any;
+declare var __REDOC_VERSION__: string;
+declare var __REDOC_REVISION__: string;
 
-interface ErrorStackTraceLimit {
-  stackTraceLimit: number;
+declare type Dict<T> = {
+  [key: string]: T;
+};
+
+interface Element {
+  scrollIntoViewIfNeeded(centerIfNeeded?: boolean): void;
 }
-interface History {
-  scrollRestoration: "auto"|"manual";
-}
-interface Window {
-  HTMLElement: any
-}
-declare var safari: any;
-interface ErrorConstructor extends ErrorStackTraceLimit {}

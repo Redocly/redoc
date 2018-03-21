@@ -1,12 +1,3 @@
-.DS_Store
-**/.*
-compiled
-
-node_modules
-jspm_packages
-
-tests
-lib
-demo
-build
-coverage
+!bundles/
+!package.json
+!README.md

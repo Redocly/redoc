@@ -20,20 +20,15 @@ npm-debug.log*
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 
-# compiled css
-lib/**/*.css
+lib/
+stats.json
+e2e/.build/
+cypress/
+bundles
+cli/index.js
 
-# files produced by ngc
-lib/**/*.ngfactory.ts
-lib/**/*.css.shim.ts
-**/*.ngsummary.json
-lib/**/*.shim.ngstyle.ts
+/benchmark/revisions
 
-# other
-/dist
-/demo/build
-.tmp
-compiled
 /coverage
 .ghpages-tmp
 stats.json
