@@ -16,6 +16,13 @@ const REVISION = JSON.stringify(
     .trim(),
 );
 
+const BANNER =
+  `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
+-------------------------------------------------------------
+  Version: ${VERSION}
+  Repo: https://github.com/Rebilly/ReDoc`;
+
+
 export default (env: { standalone?: boolean } = {}) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',
   output: {
@@ -44,14 +51,14 @@ export default (env: { standalone?: boolean } = {}) => ({
 
   externals: env.standalone
     ? {
-        esprima: 'esprima',
-        'node-fetch': 'null',
-      }
+      esprima: 'esprima',
+      'node-fetch': 'null',
+    }
     : (context, request, callback) => {
-        // ignore node-fetch dep of swagger2openapi as it is not used
-        if (/node-fetch$/i.test(request)) return callback(null, 'var undefined');
-        return nodeExternals(context, request, callback);
-      },
+      // ignore node-fetch dep of swagger2openapi as it is not used
+      if (/node-fetch$/i.test(request)) return callback(null, 'var undefined');
+      return nodeExternals(context, request, callback);
+    },
 
   module: {
     rules: [
@@ -99,5 +106,6 @@ export default (env: { standalone?: boolean } = {}) => ({
       __REDOC_REVISION__: REVISION,
     }),
     new ForkTsCheckerWebpackPlugin({ silent: true }),
+    new webpack.BannerPlugin(BANNER)
   ],
 });
