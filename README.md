@@ -21,18 +21,20 @@
 
 ## Features
 - Extremely easy deployment
+- [redoc-cli](https://github.com/Rebilly/ReDoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
+- Server Side Rendering ready
 - The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
+- OpenAPI 3.0 support
 - Neat **interactive** documentation for nested objects <br>
 ![](docs/images/nested-demo.gif)
 - Code samples support (via vendor extension) <br>
 ![](docs/images/code-samples-demo.gif)
-- Progressive loading with `lazy-rendering` options <br>
-![](docs/images/progressive-loading-demo.gif)
 - Responsive three-panel design with menu/scrolling synchronization
 - Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
 - High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
-- Multiple ReDoc instances on single page ([example](demo/examples/multiple-apis/index.html))
+- Simple integration with `create-react-app` ([sample](https://github.com/APIs-guru/create-react-app-redoc))
+- Branding/cusomizations via [`theme` option](#redoc-options-object)
 
 ## Roadmap
   - [x] ~~[OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)~~
