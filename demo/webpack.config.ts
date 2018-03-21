@@ -1,6 +1,7 @@
 import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as  CopyWebpackPlugin from 'copy-webpack-plugin';
 import { resolve } from 'path';
 
 const VERSION = JSON.stringify(require('../package.json').version);
@@ -114,5 +115,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       template: env.playground ? 'demo/playground/index.html' : 'demo/index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new CopyWebpackPlugin([
+      'demo/openapi.yaml'
+    ])
   ],
 });
