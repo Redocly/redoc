@@ -62,7 +62,7 @@ export class MenuBuilder {
         const group = new GroupModel('section', heading, parent);
         group.depth = depth;
         if (heading.items) {
-          group.items = mapHeadingsDeep(group, group.items, depth + 1);
+          group.items = mapHeadingsDeep(group, heading.items, depth + 1);
         }
         return group;
       });

@@ -22,6 +22,11 @@ export const markdownCss = css`
     margin-top: 0;
   }
 
+  h2 {
+    ${headerCommonMixin(2)};
+    color: ${props => props.theme.colors.text};
+  }
+
   code {
     color: #e53935;
     background-color: rgba(38, 50, 56, 0.04);

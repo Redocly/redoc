@@ -44,15 +44,15 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {item.type === 'operation' ? (
           <OperationMenuItemContent item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active}>
-            <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
-            {(item.depth > 0 &&
-              item.items.length > 0 && (
-                <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
-              )) ||
-              null}
-          </MenuItemLabel>
-        )}
+            <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
+              <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
+              {(item.depth > 0 &&
+                item.items.length > 0 && (
+                  <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
+                )) ||
+                null}
+            </MenuItemLabel>
+          )}
         {!withoutChildren &&
           item.items &&
           item.items.length > 0 && (

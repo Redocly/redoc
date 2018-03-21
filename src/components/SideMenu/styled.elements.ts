@@ -5,7 +5,7 @@ import styled, { css, withProps } from '../../styled-components';
 
 export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   className: props => `operation-type ${props.type}`,
-})`
+}) `
   width: 26px;
   display: inline-block;
   height: ${props => props.theme.code.fontSize};;
@@ -70,7 +70,7 @@ function menuItemActiveBg(depth): string {
   }
 }
 
-export const MenuItemUl = withProps<{ active: boolean }>(styled.ul)`
+export const MenuItemUl = withProps<{ active: boolean }>(styled.ul) `
   margin: 0;
   padding: 0;
 
@@ -81,7 +81,7 @@ export const MenuItemUl = withProps<{ active: boolean }>(styled.ul)`
   ${props => (props.active ? '' : 'display: none;')};
 `;
 
-export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
+export const MenuItemLi = withProps<{ depth: number }>(styled.li) `
   list-style: none inside none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -114,17 +114,19 @@ export const MenuItemLabel = withProps<{
   depth: number;
   active: boolean;
   deprecated?: boolean;
+  type?: string;
 }>(styled.label).attrs({
   role: 'menuitem',
   className: props =>
     classnames('-depth' + props.depth, {
       active: props.active,
     }),
-})`
+}) `
   cursor: pointer;
   color: ${props => (props.active ? props.theme.colors.main : props.theme.colors.text)};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacingUnit}px;
+  ${({ depth, type, theme }) => type === 'section' && depth > 1 && 'padding-left: ' + theme.spacingUnit * 2 + 'px;' || ''}
   display: flex;
   justify-content: space-between;
   font-family: ${props => props.theme.headingsFont.family};
@@ -138,7 +140,7 @@ export const MenuItemLabel = withProps<{
   }
 `;
 
-export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
+export const MenuItemTitle = withProps<{ width?: string }>(styled.span) `
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};

@@ -11,8 +11,9 @@ describe('Markdown renderer', () => {
     expect(Object.keys(renderer.headings)).toHaveLength(1);
     expect(renderer.headings[0].name).toEqual('Sub Intro');
   });
+
   test('should return a level-2 heading as a child of level-1', () => {
-    const headings = renderer.extractHeadings('# Introduction \n ## Sub Intro', false);
+    const headings = renderer.extractHeadings('# Introduction \n ## Sub Intro');
     expect(headings).toHaveLength(1);
     expect(headings[0].name).toEqual('Introduction');
     expect(headings[0].items).toBeDefined();
