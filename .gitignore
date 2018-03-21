@@ -9,6 +9,7 @@
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+demo/dist/
 
 ### Node ###
 # Logs
@@ -22,7 +23,6 @@ node_modules
 
 lib/
 stats.json
-e2e/.build/
 cypress/
 bundles
 cli/index.js
