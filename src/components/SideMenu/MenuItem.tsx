@@ -40,19 +40,24 @@ export class MenuItem extends React.Component<MenuItemProps> {
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi onClick={this.activate} depth={item.depth} innerRef={this.saveRef} data-item-id={item.id}>
+      <MenuItemLi
+        onClick={this.activate}
+        depth={item.depth}
+        innerRef={this.saveRef}
+        data-item-id={item.id}
+      >
         {item.type === 'operation' ? (
           <OperationMenuItemContent item={item as OperationModel} />
         ) : (
-            <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
-              <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
-              {(item.depth > 0 &&
-                item.items.length > 0 && (
-                  <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
-                )) ||
-                null}
-            </MenuItemLabel>
-          )}
+          <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
+            <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
+            {(item.depth > 0 &&
+              item.items.length > 0 && (
+                <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
+              )) ||
+              null}
+          </MenuItemLabel>
+        )}
         {!withoutChildren &&
           item.items &&
           item.items.length > 0 && (
