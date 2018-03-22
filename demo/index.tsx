@@ -24,7 +24,7 @@ const DEFAULT_SPEC = 'openapi.yaml';
 class DemoApp extends React.Component<
   {},
   { specUrl: string; dropdownOpen: boolean; cors: boolean }
-  > {
+> {
   constructor(props) {
     super(props);
 
@@ -122,15 +122,21 @@ const ControlsContainer = styled.div`
 
 const CorsCheckbox = styled.div`
   margin-left: 10px;
+  white-space: nowrap;
 
   label {
     font-size: 13px;
+  }
+
+  @media screen and (max-width: 550px) {
+    display: none;
   }
 `;
 
 const Heading = styled.nav`
   position: sticky;
   top: 0;
+  width: 100%;
   height: 50px;
   box-sizing: border-box;
   background: white;
@@ -148,6 +154,10 @@ const Logo = styled.img`
   width: 124px;
   display: inline-block;
   margin-right: 15px;
+
+  @media screen and (max-width: 950px) {
+    display: none;
+  }
 `;
 
 render(<DemoApp />, document.getElementById('container'));

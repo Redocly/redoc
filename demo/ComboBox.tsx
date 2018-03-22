@@ -89,6 +89,12 @@ const Button = styled.button`
   line-height: 1;
   outline: none;
   width: 80px;
+
+  white-space: nowrap;
+
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 `;
 
 export interface ComboBoxProps {

@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 
 export const LogoImgEl = styled.img`
   max-height: ${props => props.theme.logo.maxHeight};
-  width: ${props => props.theme.logo.width};
+  max-width: ${props => props.theme.logo.maxWidth};
   display: block;
 `;
 

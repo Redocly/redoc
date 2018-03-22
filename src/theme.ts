@@ -58,8 +58,8 @@ const defaultTheme: ThemeInterface = {
     backgroundColor: '#fafafa',
   },
   logo: {
-    maxHeight: 'none',
-    width: '100%',
+    maxHeight: ({ menu }) => menu.width,
+    maxWidth: ({ menu }) => menu.width,
   },
   rightPanel: {
     backgroundColor: '#263238',
@@ -162,7 +162,7 @@ export interface ResolvedThemeInterface {
   };
   logo: {
     maxHeight: string;
-    width: string;
+    maxWidth: string;
   };
   rightPanel: {
     backgroundColor: string;

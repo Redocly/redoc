@@ -42,7 +42,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "lint": "tslint --project tsconfig.json",
     "benchmark": "node ./benchmark/benchmark.js",
-    "start:demo": "webpack-dev-server --hot --config demo/webpack.config.ts",
+    "start:demo": "webpack-dev-server --hot --config demo/webpack.config.ts --mode=development",
     "compile:cli": "tsc cli/index.ts --target es6 --module commonjs --types yargs",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "npm run build:demo && deploy-to-gh-pages --update demo/dist"
