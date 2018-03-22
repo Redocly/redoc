@@ -76,9 +76,11 @@ export function hydrate(
   const store = AppStore.fromJS(state);
   debugTimeEnd('Redoc create store');
 
-  debugTime('Redoc hydrate');
-  hydrateComponent(<Redoc store={store} />, element, callback);
-  debugTimeEnd('Redoc hydrate');
+  setTimeout(() => {
+    debugTime('Redoc hydrate');
+    hydrateComponent(<Redoc store={store} />, element, callback);
+    debugTimeEnd('Redoc hydrate');
+  }, 0);
 }
 
 /**

@@ -40,7 +40,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi onClick={this.activate} depth={item.depth} innerRef={this.saveRef}>
+      <MenuItemLi onClick={this.activate} depth={item.depth} innerRef={this.saveRef} data-item-id={item.id}>
         {item.type === 'operation' ? (
           <OperationMenuItemContent item={item as OperationModel} />
         ) : (

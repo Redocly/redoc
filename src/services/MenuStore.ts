@@ -5,7 +5,7 @@ import { GroupModel, OperationModel, SpecStore } from './models';
 import { HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
-import { flattenByProp } from '../utils';
+import { flattenByProp, normalizeHash } from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
@@ -24,7 +24,6 @@ export interface IMenuItem {
   deprecated?: boolean;
   type: MenuItemType;
 
-  getHash(): string;
   deactivate(): void;
   activate(): void;
 }
@@ -35,6 +34,17 @@ export const SECTION_ATTR = 'data-section-id';
  * Stores all side-menu related information
  */
 export class MenuStore {
+  /**
+   * Statically try update scroll position
+   * Used before hydrating from server-side rendered html to scroll page faster
+   */
+  static updateOnHash(hash: string = HistoryService.hash, scroll: ScrollService) {
+    if (!hash) {
+      return;
+    }
+    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${normalizeHash(hash)}"]`);
+  }
+
   /**
    * active item absolute index (when flattened). -1 means nothing is selected
    */
@@ -127,32 +137,13 @@ export class MenuStore {
       return false;
     }
     let item: IMenuItem | undefined;
-    hash = hash.substr(1);
-    const namespace = hash.split('/')[0];
-    let ptr = decodeURIComponent(hash.substr(namespace.length + 1));
-    if (namespace === 'section' || namespace === 'tag') {
-      const sectionId = ptr.split('/')[0];
-      ptr = ptr.substr(sectionId.length);
+    hash = normalizeHash(hash);
 
-      let searchId;
-      if (namespace === 'section') {
-        searchId = hash;
-      } else {
-        searchId = ptr || namespace + '/' + sectionId;
-      }
-
-      item = this.flatItems.find(i => i.id === searchId);
-      if (item === undefined) {
-        this._scrollService.scrollIntoViewBySelector(`[${SECTION_ATTR}="${searchId}"]`);
-        return false;
-      }
-    } else if (namespace === 'operation') {
-      item = this.flatItems.find(i => {
-        return (i as OperationModel).operationId === ptr;
-      });
-    }
+    item = this.flatItems.find(i => i.id === hash);
     if (item) {
       this.activateAndScroll(item, false);
+    } else {
+      this._scrollService.scrollIntoViewBySelector(`[${SECTION_ATTR}="${hash}"]`);
     }
     return item !== undefined;
   }
@@ -216,7 +207,7 @@ export class MenuStore {
 
     this.activeItemIdx = item.absoluteIdx!;
     if (updateHash) {
-      HistoryService.update(item.getHash(), rewriteHistory);
+      HistoryService.update(item.id, rewriteHistory);
     }
 
     while (item !== undefined) {

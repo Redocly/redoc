@@ -51,7 +51,7 @@ export class Operation extends React.Component<OperationProps> {
           <OperationRow>
             <MiddlePanel>
               <H2>
-                <ShareLink href={'#' + operation.getHash()} />
+                <ShareLink href={'#' + operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}

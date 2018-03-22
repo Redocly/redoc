@@ -52,8 +52,4 @@ export class GroupModel implements IMenuItem {
     }
     this.active = false;
   }
-
-  getHash() {
-    return this.id;
-  }
 }

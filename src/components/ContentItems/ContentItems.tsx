@@ -65,7 +65,7 @@ export class TagItem extends React.Component<ContentItemProps> {
       <Row>
         <MiddlePanel key="middle">
           <H1>
-            <ShareLink href={'#' + this.props.item.getHash()} />
+            <ShareLink href={'#' + this.props.item.id} />
             {name}
           </H1>
           {description !== undefined && <Markdown source={description} />}

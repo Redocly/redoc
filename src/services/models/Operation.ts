@@ -62,7 +62,11 @@ export class OperationModel implements IMenuItem {
     parent: GroupModel | undefined,
     options: RedocNormalizedOptions,
   ) {
-    this.id = operationSpec._$ref;
+    this.id =
+      operationSpec.operationId !== undefined
+        ? 'operation/' + operationSpec.operationId
+        : this.parent !== undefined ? this.parent.id + operationSpec._$ref : operationSpec._$ref;
+
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
 
@@ -129,12 +133,6 @@ export class OperationModel implements IMenuItem {
   @action
   deactivate() {
     this.active = false;
-  }
-
-  getHash() {
-    return this.operationId !== undefined
-      ? 'operation/' + this.operationId
-      : this.parent !== undefined ? this.parent.id + this.id : this.id;
   }
 }
 

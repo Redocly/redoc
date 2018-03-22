@@ -2,6 +2,7 @@ import { observe } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
+import { HistoryService } from './HistoryService';
 import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
@@ -63,6 +64,10 @@ export class AppStore {
     this.rawOptions = options;
     this.options = new RedocNormalizedOptions(options);
     this.scroll = new ScrollService(this.options);
+
+    // update position statically based on hash (in case of SSR)
+    MenuStore.updateOnHash(HistoryService.hash, this.scroll);
+
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll);
 
