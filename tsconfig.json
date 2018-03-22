@@ -8,6 +8,8 @@
     "strictNullChecks": true,
     "sourceMap": true,
     // "declaration": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
     "outDir": "lib",
     "pretty": true,
     "lib": [
