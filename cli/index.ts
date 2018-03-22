@@ -67,7 +67,7 @@ yargs
         console.log(e.stack);
       }
     },
-  )
+)
   .command(
     'bundle [spec]',
     'bundle spec into zero-dependency HTML-file',
@@ -112,7 +112,7 @@ yargs
         console.log(e.message);
       }
     },
-  )
+)
   .demandCommand()
   .options('t', {
     alias: 'template',
@@ -217,22 +217,22 @@ async function getPageHTML(
   const template = compile(readFileSync(templateFileName).toString());
   return template({
     redocHTML: `
+    <div id="redoc">${(ssr && html) || ''}</div>
     <script>
-      ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
-      document.addEventListener('DOMContentLoaded', function() {
-        var container = document.getElementById('redoc');
-        Redoc.${
-          ssr
-            ? 'hydrate(__redoc_state, container);'
-            : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-        };
-      });
-    </script>
-    <div id="redoc">${(ssr && html) || ''}</div>`,
+    ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
+    
+    var container = document.getElementById('redoc');
+    Redoc.${
+      ssr
+        ? 'hydrate(__redoc_state, container);'
+        : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
+      };
+
+    </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+        : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title: title,
   });
