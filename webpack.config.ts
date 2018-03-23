@@ -21,7 +21,7 @@ const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
   Version: ${VERSION}
   Repo: https://github.com/Rebilly/ReDoc`;
 
-export default (env: { standalone?: boolean } = {}) => ({
+export default (env: { standalone?: boolean } = {}, { mode }) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',
   output: {
     filename: env.standalone ? 'redoc.standalone.js' : 'redoc.lib.js',
@@ -62,14 +62,33 @@ export default (env: { standalone?: boolean } = {}) => ({
     rules: [
       {
         test: /\.tsx?$/,
-        use: {
-          loader: 'ts-loader',
-          options: {
-            compilerOptions: {
-              module: 'es2015',
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              compilerOptions: {
+                module: 'es2015',
+              },
             },
           },
-        },
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [
+                '@babel/plugin-syntax-typescript',
+                '@babel/plugin-syntax-decorators',
+                '@babel/plugin-syntax-jsx',
+                [
+                  'babel-plugin-styled-components',
+                  {
+                    minify: true,
+                    displayName: mode !== 'production',
+                  },
+                ],
+              ],
+            },
+          },
+        ],
         exclude: ['node_modules'],
       },
       {

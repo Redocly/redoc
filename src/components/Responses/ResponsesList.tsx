@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../../styled-components';
 import { ResponseModel } from '../../services/models';
 import { ResponseView } from './Response';
 

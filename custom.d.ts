@@ -1,3 +1,5 @@
+/// <reference path="src/styled.d.ts" />
+
 declare module '*.json' {
   const content: any;
   export = content;

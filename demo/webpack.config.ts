@@ -1,8 +1,9 @@
 import * as webpack from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import * as  CopyWebpackPlugin from 'copy-webpack-plugin';
+import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import { resolve } from 'path';
+import { compact } from 'lodash';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
@@ -25,17 +26,24 @@ const tsLoader = env => ({
   },
 });
 
-const babelHotLoader = {
+const babelLoader = mode => ({
   loader: 'babel-loader',
   options: {
-    plugins: [
+    plugins: compact([
       '@babel/plugin-syntax-typescript',
       '@babel/plugin-syntax-decorators',
       '@babel/plugin-syntax-jsx',
-      'react-hot-loader/babel',
-    ],
+      mode === 'production' ? 'react-hot-loader/babel' : undefined,
+      [
+        'babel-plugin-styled-components',
+        {
+          minify: true,
+          displayName: mode !== 'production',
+        },
+      ],
+    ]),
   },
-};
+});
 
 export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) => ({
   entry: [
@@ -76,7 +84,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.tsx?$/,
-        use: mode === 'production' ? [tsLoader(env)] : [tsLoader(env), babelHotLoader],
+        use: [tsLoader(env), babelLoader(mode)],
         exclude: ['node_modules'],
       },
       {
@@ -115,8 +123,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       template: env.playground ? 'demo/playground/index.html' : 'demo/index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
-    new CopyWebpackPlugin([
-      'demo/openapi.yaml'
-    ])
+    new CopyWebpackPlugin(['demo/openapi.yaml']),
   ],
 });
