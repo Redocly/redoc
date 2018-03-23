@@ -20,6 +20,7 @@ export const RedocWrap = styled.div`
 
   * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
 
   .redoc-markdown h1 {
