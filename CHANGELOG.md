@@ -1,3 +1,14 @@
+<a name="2.0.0-alpha.18"></a>
+# [2.0.0-alpha.18](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.17...v2.0.0-alpha.18) (2018-03-23)
+
+
+### Bug Fixes
+
+* fix logo width ([384c883](https://github.com/Rebilly/ReDoc/commit/384c883))
+* modify the peerDependencies to reflect the need for react 16.3 ([b29c329](https://github.com/Rebilly/ReDoc/commit/b29c329))
+* scroll to section sooner when SSR + simplify item ids ([d1d8042](https://github.com/Rebilly/ReDoc/commit/d1d8042))
+* **cli:** don't wait for content loaded in bundled HTML ([d9ee2d0](https://github.com/Rebilly/ReDoc/commit/d9ee2d0))
+
 <a name="2.0.0-alpha.17"></a>
 # [2.0.0-alpha.17](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.16...v2.0.0-alpha.17) (2018-03-21)
 

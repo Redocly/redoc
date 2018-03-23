@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
@@ -12,7 +12,7 @@
     "isarray": "^2.0.4",
     "react": "^16.3.0-alpha.2",
     "react-dom": "^16.3.0-alpha.2",
-    "redoc": "^2.0.0-alpha.15",
+    "redoc": "^2.0.0-alpha.18",
     "yargs": "^11.0.0"
   },
   "scripts": {
