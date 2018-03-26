@@ -55,6 +55,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
     : (context, request, callback) => {
         // ignore node-fetch dep of swagger2openapi as it is not used
         if (/node-fetch$/i.test(request)) return callback(null, 'var undefined');
+        if (/esprima$/i.test(request)) return callback(null, 'var undefined');
         return nodeExternals(context, request, callback);
       },
 
@@ -124,5 +125,11 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
     }),
     new ForkTsCheckerWebpackPlugin({ silent: true }),
     new webpack.BannerPlugin(BANNER),
+    ignore(/js-yaml\/dumper\.js$/),
+    ignore(/json-schema-ref-parser\/lib\/dereference\.js/),
   ],
 });
+
+function ignore(regexp) {
+  return new webpack.NormalModuleReplacementPlugin(regexp, require.resolve('lodash/noop.js'));
+}

@@ -78,6 +78,11 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   performance: false,
 
+  externals: {
+    esprima: 'esprima',
+    'node-fetch': 'null',
+  },
+
   module: {
     rules: [
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
@@ -123,6 +128,12 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       template: env.playground ? 'demo/playground/index.html' : 'demo/index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
+    ignore(/js-yaml\/dumper\.js$/),
+    ignore(/json-schema-ref-parser\/lib\/dereference\.js/),
     new CopyWebpackPlugin(['demo/openapi.yaml']),
   ],
 });
+
+function ignore(regexp) {
+  return new webpack.NormalModuleReplacementPlugin(regexp, require.resolve('lodash/noop.js'));
+}
