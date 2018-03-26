@@ -2,12 +2,11 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import { filterPropsDeep } from '../../../utils/test-utils';
+import { filterPropsDeep } from '../../utils/test-utils';
 
-import { RedocNormalizedOptions } from '../../../services/RedocNormalizedOptions';
-import { OpenAPIParser, SchemaModel } from '../../../services';
-import { Schema } from '../Schema';
-import { OneOfSchema } from '../OneOfSchema';
+import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
+import { OpenAPIParser, SchemaModel } from '../../services';
+import { Schema, OneOfSchema } from '../';
 
 const options = new RedocNormalizedOptions({});
 describe('Components', () => {
