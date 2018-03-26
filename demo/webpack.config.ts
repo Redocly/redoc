@@ -33,7 +33,7 @@ const babelLoader = mode => ({
       '@babel/plugin-syntax-typescript',
       '@babel/plugin-syntax-decorators',
       '@babel/plugin-syntax-jsx',
-      mode === 'production' ? 'react-hot-loader/babel' : undefined,
+      mode !== 'production' ? 'react-hot-loader/babel' : undefined,
       [
         'babel-plugin-styled-components',
         {
