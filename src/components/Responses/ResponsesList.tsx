@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '../../styled-components';
 import { ResponseModel } from '../../services/models';
+import styled from '../../styled-components';
 import { ResponseView } from './Response';
 
 const ResponsesHeader = styled.h3`
