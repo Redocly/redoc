@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Redoc, createStore } from '../';
-var yaml = require('yaml-js');
+import * as yaml from 'yaml-js';
 
 import { readFileSync } from 'fs';
 import { resolve } from 'path';

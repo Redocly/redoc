@@ -1,12 +1,10 @@
-const markSpy = jest.fn();
-const unmarkSpy = jest.fn();
+const mockMark = jest.fn();
+const mockUnmark = jest.fn();
 
-class FakeMark {
-  mark = markSpy;
-  unmark = unmarkSpy;
-}
-
-jest.mock('mark.js', () => FakeMark);
+jest.mock('mark.js', () => () => ({
+  mark: mockMark,
+  unmark: mockUnmark,
+}));
 
 import { MarkerService } from '../MarkerService';
 
@@ -16,8 +14,8 @@ describe('Marker service', () => {
 
   beforeEach(() => {
     marker = new MarkerService();
-    markSpy.mockClear();
-    unmarkSpy.mockClear();
+    mockMark.mockClear();
+    mockUnmark.mockClear();
   });
 
   test('add element to Map', () => {
@@ -42,7 +40,7 @@ describe('Marker service', () => {
 
     marker.addOnly([element, e2, e3]);
 
-    expect(unmarkSpy).toHaveBeenCalledTimes(1);
+    expect(mockUnmark).toHaveBeenCalledTimes(1);
     expect(marker.map.size).toEqual(3);
   });
 
@@ -55,8 +53,8 @@ describe('Marker service', () => {
 
     marker.unmark();
 
-    expect(unmarkSpy).toHaveBeenCalledTimes(3);
-    expect(markSpy).not.toHaveBeenCalled();
+    expect(mockUnmark).toHaveBeenCalledTimes(3);
+    expect(mockMark).not.toHaveBeenCalled();
   });
   test('clearAll: should unmark and remove all elements', () => {
     const e1 = document.createElement('span');
@@ -67,8 +65,8 @@ describe('Marker service', () => {
 
     marker.clearAll();
 
-    expect(unmarkSpy).toHaveBeenCalledTimes(3);
-    expect(markSpy).not.toHaveBeenCalled();
+    expect(mockUnmark).toHaveBeenCalledTimes(3);
+    expect(mockMark).not.toHaveBeenCalled();
     expect(marker.map.size).toEqual(0);
   });
 
@@ -81,9 +79,9 @@ describe('Marker service', () => {
 
     marker.mark('test');
 
-    expect(unmarkSpy).toHaveBeenCalledTimes(3);
-    expect(markSpy).toHaveBeenCalledTimes(3);
-    expect(markSpy).toHaveBeenCalledWith('test');
+    expect(mockUnmark).toHaveBeenCalledTimes(3);
+    expect(mockMark).toHaveBeenCalledTimes(3);
+    expect(mockMark).toHaveBeenCalledWith('test');
     expect(marker.map.size).toEqual(3);
   });
 
@@ -91,13 +89,13 @@ describe('Marker service', () => {
     marker.add(element);
     marker.mark();
 
-    expect(markSpy).not.toHaveBeenCalled();
+    expect(mockMark).not.toHaveBeenCalled();
   });
   test('mark: should save previous marked term and use it if no term is provided', () => {
     marker.add(element);
     marker.mark('test');
     marker.mark();
 
-    expect(markSpy).toHaveBeenLastCalledWith('test');
+    expect(mockMark).toHaveBeenLastCalledWith('test');
   });
 });

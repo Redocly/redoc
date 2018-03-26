@@ -4,6 +4,7 @@ export * from './Redoc/Redoc';
 export * from './Schema/';
 export * from './SearchBox/SearchBox';
 export * from './Operation/Operation';
+export * from './Loading/Loading';
 export * from './RedocStandalone';
 
 export * from './ErrorBoundary';
