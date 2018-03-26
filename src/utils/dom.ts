@@ -1,4 +1,4 @@
-export const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+export const IS_BROWSER = typeof window !== 'undefined' && 'HTMLElement' in window;
 
 export function querySelector(selector: string): Element | null {
   if (typeof document !== 'undefined') {

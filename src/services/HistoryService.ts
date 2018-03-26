@@ -1,6 +1,6 @@
 import { bind, debounce } from 'decko';
 import { EventEmitter } from 'eventemitter3';
-import { isBrowser } from '../utils/';
+import { IS_BROWSER } from '../utils/';
 
 const EVENT = 'hashchange';
 
@@ -18,7 +18,7 @@ class IntHistoryService {
   }
 
   get hash(): string {
-    return isBrowser ? window.location.hash : '';
+    return IS_BROWSER ? window.location.hash : '';
   }
 
   subscribe(cb): () => void {
@@ -35,13 +35,13 @@ class IntHistoryService {
   };
 
   bind() {
-    if (isBrowser) {
+    if (IS_BROWSER) {
       window.addEventListener('hashchange', this.emit, false);
     }
   }
 
   dispose() {
-    if (isBrowser) {
+    if (IS_BROWSER) {
       window.removeEventListener('hashchange', this.emit);
     }
     this.causedHashChange = false;
@@ -54,13 +54,13 @@ class IntHistoryService {
       return;
     }
     if (rewriteHistory) {
-      if (isBrowser) {
+      if (IS_BROWSER) {
         window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + hash);
       }
       return;
     }
     this.causedHashChange = true;
-    if (isBrowser) {
+    if (IS_BROWSER) {
       window.location.hash = hash;
     }
   }

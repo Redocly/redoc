@@ -6,9 +6,10 @@ import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNor
 import styled, { media, withProps } from '../../styled-components';
 import { OptionsContext } from '../OptionsProvider';
 import { AnimatedChevronButton } from './ChevronSvg';
+import { IS_BROWSER } from '../../utils/index';
 
 let Stickyfill;
-if (typeof window !== 'undefined') {
+if (IS_BROWSER) {
   Stickyfill = require('stickyfill').default;
 }
 

@@ -3,7 +3,7 @@ import { resolve as urlResolve } from 'url';
 
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, isBrowser } from '../utils/';
+import { appendToMdHeading, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
 import { buildComponentComment, COMPONENT_REGEXP } from './MarkdownRenderer';
@@ -54,7 +54,7 @@ export class OpenAPIParser {
 
     this.spec = spec;
 
-    const href = isBrowser ? window.location.href : '';
+    const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
       this.specUrl = urlResolve(href, specUrl);
     } else {

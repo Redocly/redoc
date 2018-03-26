@@ -1,5 +1,5 @@
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
-import { isBrowser } from '../../utils/';
+import { IS_BROWSER } from '../../utils/';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
@@ -25,12 +25,12 @@ export class ApiInfoModel implements OpenAPIInfo {
       return this.parser.specUrl;
     }
 
-    if (isBrowser && window.Blob && window.URL) {
+    if (IS_BROWSER && window.Blob && window.URL) {
       const blob = new Blob([JSON.stringify(this.parser.spec, null, 2)], {
         type: 'application/json',
       });
       return window.URL.createObjectURL(blob);
-    } else if (!isBrowser) {
+    } else if (!IS_BROWSER) {
       return (
         'data:application/octet-stream;base64,' +
         new Buffer(JSON.stringify(this.parser.spec, null, 2)).toString('base64')
