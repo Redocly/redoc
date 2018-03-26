@@ -127,6 +127,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
     new webpack.BannerPlugin(BANNER),
     ignore(/js-yaml\/dumper\.js$/),
     ignore(/json-schema-ref-parser\/lib\/dereference\.js/),
+    ignore(/^\.\/SearchWorker\.worker$/),
   ],
 });
 

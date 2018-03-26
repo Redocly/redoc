@@ -1,11 +1,12 @@
+import { IS_BROWSER } from '../utils/';
 import { IMenuItem } from './MenuStore';
 import { OperationModel } from './models';
-import { IS_BROWSER } from '../utils/';
 
 let worker;
 
 if (IS_BROWSER) {
   try {
+    // tslint:disable-next-line
     worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker');
   } catch (e) {
     worker = require('./SearchWorker.worker').default;

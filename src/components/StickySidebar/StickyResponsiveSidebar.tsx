@@ -4,9 +4,9 @@ import * as React from 'react';
 import { MenuStore } from '../../services/MenuStore';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
 import styled, { media, withProps } from '../../styled-components';
+import { IS_BROWSER } from '../../utils/index';
 import { OptionsContext } from '../OptionsProvider';
 import { AnimatedChevronButton } from './ChevronSvg';
-import { IS_BROWSER } from '../../utils/index';
 
 let Stickyfill;
 if (IS_BROWSER) {
