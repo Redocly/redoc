@@ -6,6 +6,7 @@ export * from './SearchBox/SearchBox';
 export * from './Operation/Operation';
 export * from './Loading/Loading';
 export * from './RedocStandalone';
+export * from './JsonViewer';
 
 export * from './ErrorBoundary';
 export * from './StoreProvider';
