@@ -1,8 +1,16 @@
 import * as React from 'react';
 
-import { default as PerfectScrollbarConstructor } from 'perfect-scrollbar';
+import PerfectScrollbarType, * as PerfectScrollbarNamespace from 'perfect-scrollbar';
 import psStyles from 'perfect-scrollbar/css/perfect-scrollbar.css';
 import styled, { injectGlobal } from '../styled-components';
+
+/*
+ * perfect scrollbar umd bundle uses exports assignment while module uses default export
+ * so when bundled with webpack default export works but with jest it crashes
+ * That's why the following ugly fix is required
+ */
+const PerfectScrollbarConstructor =
+  PerfectScrollbarNamespace.default || ((PerfectScrollbarNamespace as any) as PerfectScrollbarType);
 
 injectGlobal`${psStyles && psStyles.toString()}`;
 
@@ -11,12 +19,12 @@ const StyledScrollWrapper = styled.div`
 `;
 
 export class PerfectScrollbar extends React.Component<{
-  options?: PerfectScrollbarConstructor.Options;
+  options?: PerfectScrollbarType.Options;
   className?: string;
   updateFn: (fn) => void;
 }> {
   private _container: HTMLElement;
-  private inst: PerfectScrollbarConstructor;
+  private inst: PerfectScrollbarType;
 
   componentDidMount() {
     this.inst = new PerfectScrollbarConstructor(this._container, this.props.options || {});
