@@ -10,6 +10,7 @@ import 'prismjs/components/prism-haskell.js';
 import 'prismjs/components/prism-java.js';
 import 'prismjs/components/prism-lua.js';
 import 'prismjs/components/prism-matlab.js';
+import 'prismjs/components/prism-markup-templating.js';
 import 'prismjs/components/prism-perl.js';
 import 'prismjs/components/prism-python.js';
 import 'prismjs/components/prism-r.js';
