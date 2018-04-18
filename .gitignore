@@ -33,3 +33,6 @@ cli/index.js
 .ghpages-tmp
 stats.json
 /package-lock.json
+
+//npmrc for local npm
+.npmrc

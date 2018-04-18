@@ -68,6 +68,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     stats: 'minimal',
   },
 
+  devtool: 'source-map',
+
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },

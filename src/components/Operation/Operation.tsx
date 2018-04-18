@@ -4,7 +4,7 @@ import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequiremen
 
 import { observer } from 'mobx-react';
 
-import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
+import { Badge, DarkRightPanel, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
 
 import { OptionsContext } from '../OptionsProvider';
 
@@ -39,12 +39,43 @@ interface OperationProps {
   operation: OperationType;
 }
 
+export interface OperationState {
+  executeMode: boolean;
+}
+
 @observer
-export class Operation extends React.Component<OperationProps> {
+export class Operation extends React.Component<OperationProps, OperationState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      executeMode: false,
+    };
+  }
+
+  onTry(e) {
+    this.setState({
+      executeMode: e.target.checked
+    });
+    console.log(e.target.checked + ' ' + this.props.operation);
+  }
+
+  /*
+  activate = (item: IMenuItem) => {
+    this.props.menu.activateAndScroll(item, true);
+    setTimeout(() => {
+      if (this._updateScroll) {
+        this._updateScroll();
+      }
+    });
+  };
+  */
+
   render() {
     const { operation } = this.props;
 
     const { name: summary, description, deprecated } = operation;
+    const { executeMode } = this.state;
     return (
       <OptionsContext.Consumer>
         {options => (
@@ -54,6 +85,8 @@ export class Operation extends React.Component<OperationProps> {
                 <ShareLink href={'#' + operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
+              <Toggle type="checkbox" onChange={this.onTry.bind(this)} />
+              <span>Try it out!</span>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
               {description !== undefined && <Markdown source={description} />}
               <SecurityRequirements securities={operation.security} />
@@ -62,8 +95,15 @@ export class Operation extends React.Component<OperationProps> {
             </MiddlePanel>
             <DarkRightPanel>
               {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
-              <RequestSamples operation={operation} />
-              <ResponseSamples operation={operation} />
+              {executeMode &&
+                <div>Execute Mode</div>
+              }
+              {!executeMode &&
+                <RequestSamples operation={operation} />
+              }
+              {!executeMode &&
+                <ResponseSamples operation={operation} />
+              }
             </DarkRightPanel>
           </OperationRow>
         )}

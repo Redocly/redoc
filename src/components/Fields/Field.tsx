@@ -11,7 +11,7 @@ import {
   PropertyNameCell,
 } from '../../common-elements/fields-layout';
 
-import { ShelfIcon } from '../../common-elements/';
+import { ShelfIcon, TextField } from '../../common-elements/';
 
 import { FieldModel } from '../../services/models';
 import { Schema, SchemaOptions } from '../Schema/Schema';
@@ -43,12 +43,12 @@ export class Field extends React.PureComponent<FieldProps> {
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined}>
-        <PropertyBullet />
-        {name}
-        {required && <RequiredLabel> required </RequiredLabel>}
-      </PropertyNameCell>
-    );
+        <PropertyNameCell className={deprecated ? 'deprecated' : undefined}>
+          <PropertyBullet />
+          {name}
+          {required && <RequiredLabel> required </RequiredLabel>}
+        </PropertyNameCell>
+      );
     return (
       <>
         <tr className={isLast ? 'last ' + className : className}>
@@ -56,6 +56,9 @@ export class Field extends React.PureComponent<FieldProps> {
           <PropertyDetailsCell>
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
+          {field && field.in === 'path' &&
+            <td><TextField placeholder="foo" /></td>
+          }
         </tr>
         {field.expanded &&
           withSubSchema && (
