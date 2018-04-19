@@ -15,6 +15,7 @@ import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
+import { ConsoleViewer } from '../Console/ConsoleViewer';
 
 import { OperationModel as OperationType } from '../../services/models';
 
@@ -96,7 +97,9 @@ export class Operation extends React.Component<OperationProps, OperationState> {
             <DarkRightPanel>
               {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
               {executeMode &&
-                <div>Execute Mode</div>
+                <div>
+                  <ConsoleViewer operation={operation} />
+                </div>
               }
               {!executeMode &&
                 <RequestSamples operation={operation} />

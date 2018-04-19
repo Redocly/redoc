@@ -19,7 +19,9 @@ const renderRoot = (props: RedocProps) =>
 const big = window.location.search.indexOf('big') > -1;
 const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
 
-const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
+let specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
+specUrl = 'intent.json';
+//specUrl = 'swagger.yaml';
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };
