@@ -3,6 +3,8 @@ import * as React from 'react';
 import { OperationModel } from '../../services/models';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
+import { SendButton } from '../../common-elements/buttons';
+import { FlexLayout } from '../../common-elements/panels';
 import { ConsoleEditor } from './ConsoleEditor';
 
 export interface ConsoleViewerProps {
@@ -30,6 +32,9 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps> {
         {samples.map(sample => (
           <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
         ))}
+        <FlexLayout>
+          <SendButton>Send Request</SendButton>
+        </FlexLayout>
       </div>
     );
   }

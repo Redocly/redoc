@@ -33,7 +33,7 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     for (let mediaType of mediaTypes) {
       if (mediaType.name.indexOf('json') > -1) {
         if (mediaType.examples) {
-          sample = mediaType.examples && mediaType.examples.default;
+          sample = mediaType.examples && mediaType.examples.default && mediaType.examples.default.value;
         }
         break;
       }
@@ -51,12 +51,11 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     */
     return (
       <div>
-        <h3>ConsoleEditor</h3>
         <AceEditor
           tabSize={1}
           fontSize={10}
           mode="json"
-          theme="monokai"
+          theme="github"
           name="request-builder-editor"
           editorProps={{ $blockScrolling: true }}
           value={JSON.stringify(sample, null, 2)}

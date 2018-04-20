@@ -4,7 +4,7 @@ export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});
   padding: ${props => props.theme.spacingUnit * 2}px;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium') `
     width: 100%;
   `};
 `;
@@ -15,7 +15,7 @@ export const RightPanel = styled.div`
   background-color: ${props => props.theme.rightPanel.backgroundColor};
   padding: ${props => props.theme.spacingUnit * 2}px;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium') `
     width: 100%;
   `};
 `;
@@ -25,7 +25,7 @@ export const DarkRightPanel = RightPanel.extend`
 `;
 
 export const EmptyDarkRightPanel = DarkRightPanel.extend`
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium') `
     padding: 0
   `};
 `;
@@ -34,7 +34,13 @@ export const Row = styled.div`
   display: flex;
   width: 100%;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium') `
     flex-direction: column;
   `};
+`;
+
+export const FlexLayout = styled.div`
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
 `;
