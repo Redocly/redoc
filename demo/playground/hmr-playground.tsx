@@ -8,6 +8,8 @@ import { AppStore } from '../../src/services/AppStore';
 import { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 
+const Ajv = require('ajv');
+
 const renderRoot = (props: RedocProps) =>
   render(
     <AppContainer>
@@ -22,6 +24,7 @@ const swagger = window.location.search.indexOf('swagger') > -1; // compatibility
 let specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
 specUrl = 'intent.json';
 //specUrl = 'swagger.yaml';
+//specUrl = 'petstore.json';
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };
@@ -29,6 +32,15 @@ const options: RedocRawOptions = { nativeScrollbars: false };
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
   store = new AppStore(spec, specUrl, options);
+
+  const ajv = new Ajv({ allErrors: true, unknownFormats: ['int32', 'UUID', 'int64'] });
+  ajv.addSchema(spec, 'specs.json')
+
+  const ajvError = require('ajv-errors')(ajv);
+
+  window.ajv = ajv;
+  window.ajvError = ajvError;
+
   renderRoot({ store });
 }
 

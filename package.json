@@ -71,6 +71,8 @@
     "@types/webpack": "^4.1.2",
     "@types/webpack-env": "^1.13.0",
     "@types/yargs": "^11.0.0",
+    "ajv": "^6.4.0",
+    "ajv-errors": "^1.0.0",
     "babel-loader": "8.0.0-beta.2",
     "babel-plugin-styled-components": "^1.5.1",
     "beautify-benchmark": "^0.2.4",

@@ -54,12 +54,12 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     };
   }
 
-  onTry(e) {
+  onTry = (e) => {
     this.setState({
       executeMode: e.target.checked
     });
     console.log(e.target.checked + ' ' + this.props.operation);
-  }
+  };
 
   /*
   activate = (item: IMenuItem) => {
@@ -86,7 +86,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                 <ShareLink href={'#' + operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
-              <Toggle type="checkbox" onChange={this.onTry.bind(this)} />
+              <Toggle type="checkbox" onChange={this.onTry} />
               <span>Try it out!</span>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
               {description !== undefined && <Markdown source={description} />}

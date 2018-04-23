@@ -23,6 +23,24 @@ export interface ConsoleEditorProps {
 
 @observer
 export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
+
+  public editor: any;
+
+  /*
+  get aceEditor(): AceEditor {
+    return this._aceEditor;
+  }
+  
+  set aceEditor(aceEditor: AceEditor) {
+    if (aceEditor) {
+      this.aceEditor = this.aceEditor
+    }
+    else {
+      console.log("Error: Undefined ace editor!");
+    }
+  }
+  */
+
   render() {
     const { mediaTypes } = this.props;
 
@@ -59,6 +77,7 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
           name="request-builder-editor"
           editorProps={{ $blockScrolling: true }}
           value={JSON.stringify(sample, null, 2)}
+          ref={(ace: AceEditor) => (this.editor = ace)}
           width="100%"
           height="400px"
         />

@@ -44,3 +44,8 @@ export const FlexLayout = styled.div`
   display: flex;
   width: 100%;
 `;
+
+export const ConsoleActionsRow = FlexLayout.extend`
+  padding: 5px 0px;
+`;
+

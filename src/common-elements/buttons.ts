@@ -7,6 +7,7 @@ export const Button = styled.button`
   border: none;
   color: white;
   font-size: 0.929em;
+  padding: 5px;
 `;
 
 export const SendButton = Button.extend`

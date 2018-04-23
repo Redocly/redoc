@@ -16,11 +16,11 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
 
   // we can derefrence the schema here for future use.
   // const derefrencedSpec = await parser.dereference(cloneDeep(spec));
-  const derefed = await parser.dereference(v2Specs, {
-    resolve: { http: { withCredentials: false } },
-  } as object);
+  //const derefed = await parser.dereference(v2Specs, {
+  //  resolve: { http: { withCredentials: false } },
+  //} as object);
 
-  return derefed;
+  return v2Specs;
 
 }
 
