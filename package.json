@@ -64,6 +64,7 @@
     "@types/marked": "^0.3.0",
     "@types/prismjs": "^1.6.4",
     "@types/prop-types": "^15.5.2",
+    "@types/qs": "^6.5.1",
     "@types/react": "^16.0.41",
     "@types/react-dom": "^16.0.0",
     "@types/react-hot-loader": "^3.0.3",
@@ -143,7 +144,8 @@
     "slugify": "^1.2.1",
     "stickyfill": "^1.1.1",
     "styled-components": "^3.2.3",
-    "swagger2openapi": "^2.11.0"
+    "swagger2openapi": "^2.11.0",
+    "whatwg-fetch": "^2.0.4"
   },
   "resolutions": {
     "@types/chai": "4.0.8",
