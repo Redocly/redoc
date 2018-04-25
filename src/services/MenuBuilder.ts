@@ -53,11 +53,15 @@ export class MenuBuilder {
    * extracts items from markdown description
    * @param description - markdown source
    */
-  static addMarkdownItems(description: string): ContentItemModel[] {
+  static addMarkdownItems(
+    description: string,
+    parent: GroupModel | undefined = undefined,
+    depth: number = 1,
+  ): ContentItemModel[] {
     const renderer = new MarkdownRenderer();
     const headings = renderer.extractHeadings(description || '');
 
-    const mapHeadingsDeep = (parent, items, depth = 1) =>
+    const mapHeadingsDeep = (parent, items, depth) =>
       items.map(heading => {
         const group = new GroupModel('section', heading, parent);
         group.depth = depth;
@@ -67,7 +71,7 @@ export class MenuBuilder {
         return group;
       });
 
-    return mapHeadingsDeep(undefined, headings);
+    return mapHeadingsDeep(parent, headings, depth);
   }
 
   /**
@@ -127,9 +131,15 @@ export class MenuBuilder {
       if (!tag) {
         continue;
       }
+
       const item = new GroupModel('tag', tag, parent);
       item.depth = GROUP_DEPTH + 1;
-      item.items = this.getOperationsItems(parser, item, tag, item.depth + 1, options);
+
+      if (tag.description) {
+        item.items.push(...MenuBuilder.addMarkdownItems(tag.description || '', item, item.depth));
+      }
+
+      item.items.push(...this.getOperationsItems(parser, item, tag, item.depth + 1, options));
 
       // don't put empty tag into content, instead put its operations
       if (tag.name === '') {

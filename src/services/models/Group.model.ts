@@ -38,6 +38,7 @@ export class GroupModel implements IMenuItem {
     this.description = tagOrGroup.description || '';
     this.parent = parent;
     this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;
+    this.items = [];
 
     // groups are active (expanded) by default
     if (this.type === 'group') {
