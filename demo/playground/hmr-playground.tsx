@@ -32,7 +32,7 @@ const options: RedocRawOptions = { nativeScrollbars: false };
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
   store = new AppStore(spec, specUrl, options);
-
+  /*
   const ajv = new Ajv({ allErrors: true, unknownFormats: ['int32', 'UUID', 'int64'] });
   ajv.addSchema(spec, 'specs.json')
 
@@ -40,7 +40,7 @@ async function init() {
 
   window.ajv = ajv;
   window.ajvError = ajvError;
-
+  */
   renderRoot({ store });
 }
 
