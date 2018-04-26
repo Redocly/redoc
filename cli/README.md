@@ -7,7 +7,7 @@ You can use redoc cli by installing `redoc-cli` globally or using [npx](https://
 
 ## Usage
 
-Twe following commans are available:
+Two following commands are available:
 
 - `redoc-cli serve [spec]` - starts the server with `spec` rendered with ReDoc. Supports SSR mode (`--ssr`) and can watch the spec (`--watch`)
 - `redoc-cli bundle [spec]` - bundles spec and ReDoc into **zero-dependency** HTML file.
