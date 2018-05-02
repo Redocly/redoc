@@ -1,3 +1,10 @@
+<a name="1.22.0"></a>
+# [1.22.0](https://github.com/Rebilly/ReDoc/compare/v1.21.2...v1.22.0) (2018-05-02)
+
+### Bug Fixes
+
+* pinpoint version of hint.css to 2.3.2 to prevent licensing issue [#478](https://github.com/Rebilly/ReDoc/issues/478), reported by [@rickity-cricket](https://github.com/rickity-cricket)
+
 <a name="1.21.2"></a>
 ## [1.21.2](https://github.com/Rebilly/ReDoc/compare/v1.21.1...v1.21.2) (2018-02-26)
 
