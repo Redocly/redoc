@@ -34,7 +34,7 @@
 - Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
 - High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
 - Simple integration with `create-react-app` ([sample](https://github.com/APIs-guru/create-react-app-redoc))
-- Branding/cusomizations via [`theme` option](#redoc-options-object)
+- Branding/customizations via [`theme` option](#redoc-options-object)
 
 ## Roadmap
   - [x] ~~[OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)~~
@@ -103,7 +103,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
 ```
 That's all folks!
 
-**IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
+**IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-options-object) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
 Install using [yarn](https://yarnpkg.com):
@@ -189,7 +189,7 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
 * [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 
 ### `<redoc>` options object
-You can use all of the following optins with standalone version on <redoc> tag by kebab-casing them, e.g. `scrollYOffset` becomes `scroll-y-offset` and `expandResponses` becomes `expand-responses`.
+You can use all of the following options with standalone version on <redoc> tag by kebab-casing them, e.g. `scrollYOffset` becomes `scroll-y-offset` and `expandResponses` becomes `expand-responses`.
 
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 * `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
