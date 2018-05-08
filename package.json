@@ -63,6 +63,7 @@
     "@types/mark.js": "^8.11.1",
     "@types/marked": "^0.3.0",
     "@types/prismjs": "^1.6.4",
+    "@types/promise": "^7.1.30",
     "@types/prop-types": "^15.5.2",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.0.41",
@@ -71,6 +72,7 @@
     "@types/react-tabs": "^1.0.2",
     "@types/webpack": "^4.1.2",
     "@types/webpack-env": "^1.13.0",
+    "@types/whatwg-fetch": "^0.0.33",
     "@types/yargs": "^11.0.0",
     "ajv": "^6.4.0",
     "ajv-errors": "^1.0.0",
@@ -151,12 +153,10 @@
     "@types/chai": "4.0.8",
     "@types/tapable": "1.0.0"
   },
-  "bundlesize": [
-    {
-      "path": "./bundles/redoc.standalone.js",
-      "maxSize": "300 kB"
-    }
-  ],
+  "bundlesize": [{
+    "path": "./bundles/redoc.standalone.js",
+    "maxSize": "300 kB"
+  }],
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"

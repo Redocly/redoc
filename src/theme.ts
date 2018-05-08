@@ -65,6 +65,9 @@ const defaultTheme: ThemeInterface = {
     backgroundColor: '#263238',
     width: '40%',
   },
+  styledPre: {
+    maxHeight: '500px'
+  },
 };
 
 export default defaultTheme;
@@ -168,6 +171,9 @@ export interface ResolvedThemeInterface {
     backgroundColor: string;
     width: string;
   };
+  styledPre: {
+    maxHeight: string;
+  }
 }
 
 export type primitive = string | number | boolean | undefined | null;

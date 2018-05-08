@@ -55,7 +55,8 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     if (value) {
       value = JSON.parse(value);
     }
-    const result = await this.invoke(endpoint, { 'Content-Type': 'application/*' }, value);
+
+    const result = await this.invoke(endpoint, value);
     console.log('Result: ' + JSON.stringify(result));
     this.setState({
       result
@@ -63,8 +64,8 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
 
   };
 
-  async invoke(endpoint, headers, body) {
-
+  async invoke(endpoint, body) {
+    const headers = { 'Content-Type': 'application/json' };
     try {
       let url = endpoint.path;
       if (endpoint.method.toLocaleLowerCase() === 'get') {
@@ -72,7 +73,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
       }
 
       var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/*');
+      myHeaders.append('Content-Type', 'application/json');
 
       const request = new Request(url, {
         method: endpoint.method,
