@@ -32,23 +32,29 @@ export class Field extends React.PureComponent<FieldProps> {
   };
   render() {
     const { className, field, isLast } = this.props;
-    const { name, expanded, deprecated, required } = field;
+    const { name, expanded, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
     const paramName = withSubSchema ? (
-      <ClickablePropertyNameCell onClick={this.toggle} className={deprecated ? 'deprecated' : ''}>
+      <ClickablePropertyNameCell
+        onClick={this.toggle}
+        className={deprecated ? 'deprecated' : ''}
+        kind={kind}
+        title="Test"
+      >
         <PropertyBullet />
         {name}
         <ShelfIcon size={'1.2em'} direction={expanded ? 'down' : 'right'} />
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined}>
+      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title="oops">
         <PropertyBullet />
         {name}
         {required && <RequiredLabel> required </RequiredLabel>}
       </PropertyNameCell>
     );
+
     return (
       <>
         <tr className={isLast ? 'last ' + className : className}>

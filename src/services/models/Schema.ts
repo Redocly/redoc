@@ -244,9 +244,10 @@ function buildFields(
       new FieldModel(
         parser,
         {
-          name: '[property name] *',
+          name: 'property name *',
           required: false,
           schema: additionalProps,
+          kind: 'additionalProperties',
         },
         $ref + '/additionalProperties',
         options,

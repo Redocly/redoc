@@ -1,5 +1,5 @@
 import { transparentize } from 'polished';
-import styled from '../styled-components';
+import styled, { withProps } from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
@@ -57,7 +57,7 @@ export const PropertyCellWithInner = PropertyCell.extend`
   padding: 0;
 `;
 
-export const PropertyNameCell = PropertyCell.extend`
+export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend)`
   vertical-align: top;
   line-height: 20px;
   white-space: nowrap;
@@ -68,6 +68,8 @@ export const PropertyNameCell = PropertyCell.extend`
   &.deprecated {
     ${deprecatedCss};
   }
+
+  ${({ kind }) => (kind !== 'field' ? 'font-style: italic' : '')};
 `;
 
 export const PropertyDetailsCell = styled.td`
