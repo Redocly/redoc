@@ -1941,9 +1941,9 @@ readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-redoc@^2.0.0-alpha.18:
-  version "2.0.0-alpha.19"
-  resolved "https://registry.yarnpkg.com/redoc/-/redoc-2.0.0-alpha.19.tgz#6aa002f27ec954038d1ec352839b09ecae405305"
+redoc@^2.0.0-alpha.20:
+  version "2.0.0-alpha.20"
+  resolved "https://registry.yarnpkg.com/redoc/-/redoc-2.0.0-alpha.20.tgz#ae2a9ab0410b8ed9f40d1c7e8fa79d6a9b6dcf27"
   dependencies:
     classnames "^2.2.5"
     decko "^1.2.0"

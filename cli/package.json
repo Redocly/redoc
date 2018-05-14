@@ -12,7 +12,7 @@
     "isarray": "^2.0.4",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "redoc": "^2.0.0-alpha.19",
+    "redoc": "^2.0.0-alpha.20",
     "yargs": "^11.0.0"
   },
   "scripts": {
