@@ -34,3 +34,5 @@ deploy:
 - provider: script
   skip_cleanup: true
   script: yarn deploy:demo
+  on:
+    tags: true
