@@ -71,6 +71,9 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
     background: white;
     border: 1px solid rgba(38, 50, 56, 0.2);
     box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+
+    max-height: 220px;
+    overflow: auto;
   }
 
   .Dropdown-option {
