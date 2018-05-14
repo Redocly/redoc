@@ -1,3 +1,25 @@
+<a name="2.0.0-alpha.19"></a>
+# [2.0.0-alpha.19](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.18...v2.0.0-alpha.19) (2018-05-14)
+
+
+### Bug Fixes
+
+* change look of additionalProperties ([126c6a6](https://github.com/Rebilly/ReDoc/commit/126c6a6))
+* disable chrome tap-highlight on mobile ([09cbe88](https://github.com/Rebilly/ReDoc/commit/09cbe88))
+* fix [@observer](https://github.com/observer) on PureComponent warning ([afb11d6](https://github.com/Rebilly/ReDoc/commit/afb11d6))
+* fix build caused by new babel decorators syntax, fixes [#487](https://github.com/Rebilly/ReDoc/issues/487) ([01f575c](https://github.com/Rebilly/ReDoc/commit/01f575c))
+* fix prism lang dependencies, fixes [#467](https://github.com/Rebilly/ReDoc/issues/467) ([42cf18e](https://github.com/Rebilly/ReDoc/commit/42cf18e))
+* fix spelling in error message ([#455](https://github.com/Rebilly/ReDoc/issues/455)) ([64119c4](https://github.com/Rebilly/ReDoc/commit/64119c4))
+* limit height of discriminator dropdown, fixes [#484](https://github.com/Rebilly/ReDoc/issues/484) ([6d1a9e5](https://github.com/Rebilly/ReDoc/commit/6d1a9e5))
+* path parameters are not correctly override, fixes [#481](https://github.com/Rebilly/ReDoc/issues/481) ([2cf4c3c](https://github.com/Rebilly/ReDoc/commit/2cf4c3c))
+
+
+### Features
+
+* display scope description as markdown, fixes [#466](https://github.com/Rebilly/ReDoc/issues/466) ([0d6deff](https://github.com/Rebilly/ReDoc/commit/0d6deff))
+
+
+
 <a name="2.0.0-alpha.18"></a>
 # [2.0.0-alpha.18](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.17...v2.0.0-alpha.18) (2018-03-23)
 
