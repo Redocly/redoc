@@ -77,7 +77,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
             options: {
               plugins: [
                 '@babel/plugin-syntax-typescript',
-                '@babel/plugin-syntax-decorators',
+                ['@babel/plugin-syntax-decorators', { legacy: true }],
                 '@babel/plugin-syntax-jsx',
                 [
                   'babel-plugin-styled-components',

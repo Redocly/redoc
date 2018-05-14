@@ -31,7 +31,7 @@ const babelLoader = mode => ({
   options: {
     plugins: compact([
       '@babel/plugin-syntax-typescript',
-      '@babel/plugin-syntax-decorators',
+      ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-jsx',
       mode !== 'production' ? 'react-hot-loader/babel' : undefined,
       [
