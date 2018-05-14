@@ -60,7 +60,7 @@ export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
           <ul>
             {Object.keys(flow!.scopes).map(scope => (
               <li key={scope}>
-                <code>{scope}</code> - {flow!.scopes[scope]}
+                <code>{scope}</code> - <Markdown inline={true} source={flow!.scopes[scope] || ''} />
               </li>
             ))}
           </ul>
