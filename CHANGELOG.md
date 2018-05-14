@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.20"></a>
+# [2.0.0-alpha.20](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.19...v2.0.0-alpha.20) (2018-05-14)
+
+
+### Bug Fixes
+
+* fix worker is not defined in lib bundle ([6a5513e](https://github.com/Rebilly/ReDoc/commit/6a5513e))
+
+
+
 <a name="2.0.0-alpha.19"></a>
 # [2.0.0-alpha.19](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.18...v2.0.0-alpha.19) (2018-05-14)
 
