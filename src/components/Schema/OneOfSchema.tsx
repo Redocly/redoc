@@ -16,7 +16,7 @@ export interface OneOfButtonProps {
 }
 
 @observer
-export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
+export class OneOfButton extends React.Component<OneOfButtonProps> {
   render() {
     const { idx, schema, subSchema } = this.props;
     return (
