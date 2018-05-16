@@ -36,8 +36,7 @@
   "include": [
     "./custom.d.ts",
     "./demo/playground/hmr-playground.tsx",
-    "./src/index.ts",
-    "./src/standalone.tsx",
+    "./src/**/*.ts?",
     "demo/*.tsx"
   ]
 }
