@@ -14,10 +14,10 @@ env:
   - secure: YWBKHe3EdY3DcASsMaW3/scxba11eMRjJ8HebyKyampU9JTkyj3rFY9sfYQshusYCVa3/pt2LyYITNLDI2vYGGFYVIu9ia9kMBjt4kZ99QQxvXTftmBruF2Gcw6aqja9e5SnQrDUY+Wnc3k33SqQhhNGiyF6M1HpV0S8JJZNc3oQjZHKkZ93IwA1mU/UWL/K3wE/y5xiKz8d+DjsLrhU94G6NE2mhs0eaJW/fMLLYxn+UfDuidGaRQ4v4a2aRPecalzyLqdRFgFH2YJpBPFF3XEC23J/hm1QChI75iINChWbTrNTJqWYKKljjB7WLNtqVrm3S5qpZwl322nwBhwhPVtT4PqattMribCA8XMSL9Lk/g1hRaxH7gXgGHAfpPaMhyPcKBzQ5HJxYI+UXoKPZqfyxkZbnVY/3s7P0pZ8Nql+UouvFURZkbWK3WLWCISCVVVdyhnB3wn+jKLWdsYCtu9ibvYDDCDT64T08b4Gf30j3BfaAlgO4uU30Bg/IulrFnOC99qhslQRODxY6HGizr6ggtS1C8TFZ2/+3CXuHZJ3LDdj9WoHyBgYtMtnQf+qBVy6z6nvyx/QsdnQ/8A1twObuZoFCLPpOPoKmAbjApC8XS0TgIyqf5KGcq33Jxg+bIakNAGJW33n4jtZW7+Z+p8SVGLQmRC/558Tn402a58=
 addons:
   chrome: stable
-before_script: npm run bundle && npm run compile:cli
+before_script: npm run bundle
 script: npm test && npm run e2e-ci
 after_script: cat ./coverage/lcov.info | coveralls
-before_deploy: npm run compile:cli
+before_deploy: npm run compile:cli && npm run declarations
 deploy:
 - provider: npm
   skip_cleanup: true
