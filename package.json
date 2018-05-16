@@ -145,7 +145,8 @@
     "slugify": "^1.2.1",
     "stickyfill": "^1.1.1",
     "styled-components": "^3.2.3",
-    "swagger2openapi": "^2.11.0"
+    "swagger2openapi": "^2.11.0",
+    "tslib": "^1.9.1"
   },
   "resolutions": {
     "@types/chai": "4.0.8",
