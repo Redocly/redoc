@@ -19,7 +19,7 @@ export function buildComponentComment(name: string) {
   return `<!-- ReDoc-Inject: <${name}> -->`;
 }
 
-interface MarkdownHeading {
+export interface MarkdownHeading {
   id: string;
   name: string;
   items?: MarkdownHeading[];

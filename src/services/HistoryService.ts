@@ -8,7 +8,7 @@ function isSameHash(a: string, b: string): boolean {
   return a === b || '#' + a === b || a === '#' + b;
 }
 
-class IntHistoryService {
+export class IntHistoryService {
   private causedHashChange: boolean = false;
   private _emiter;
 

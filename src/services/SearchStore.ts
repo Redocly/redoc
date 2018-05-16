@@ -2,7 +2,9 @@ import { IS_BROWSER } from '../utils/';
 import { IMenuItem } from './MenuStore';
 import { OperationModel } from './models';
 
-let worker;
+import Worker, { SearchDocument, SearchResult } from './SearchWorker.worker';
+
+let worker: new () => Worker;
 
 if (IS_BROWSER) {
   try {

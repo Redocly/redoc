@@ -1,6 +1,11 @@
+import { ComponentClass, StatelessComponent } from 'react';
 import * as styledComponents from 'styled-components';
 
 import { ResolvedThemeInterface } from './theme';
+
+export { ResolvedThemeInterface };
+
+export type InterpolationFunction<P> = styledComponents.InterpolationFunction<P>;
 
 export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ResolvedThemeInterface>;
 

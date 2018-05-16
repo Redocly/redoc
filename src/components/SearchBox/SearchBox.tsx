@@ -7,7 +7,13 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchDocument } from '../../services/SearchWorker.worker';
 
-import { ClearIcon, SearchIcon, SearchInput, SearchResultsBox, SearchWrap } from './elements';
+import {
+  ClearIcon,
+  SearchIcon,
+  SearchInput,
+  SearchResultsBox,
+  SearchWrap,
+} from './styled.elements';
 
 export interface SearchBoxProps {
   search: SearchStore;

@@ -6,7 +6,7 @@ import { IMenuItem, OperationModel } from '../../services';
 import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 
-interface MenuItemProps {
+export interface MenuItemProps {
   item: IMenuItem;
   onActivate?: (item: IMenuItem) => void;
   withoutChildren?: boolean;

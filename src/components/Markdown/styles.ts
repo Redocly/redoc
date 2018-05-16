@@ -1,5 +1,7 @@
+import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
+
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
-import { css } from '../../styled-components';
+import { css, ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 export const markdownCss = css`
   p {

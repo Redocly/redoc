@@ -1,6 +1,7 @@
-import styled from '../../styled-components';
+import { AnchorHTMLAttributes, ClassAttributes, HTMLAttributes } from 'react';
 
 import { H1, MiddlePanel } from '../../common-elements';
+import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 const delimiterWidth = 15;
 

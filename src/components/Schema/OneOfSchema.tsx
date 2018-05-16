@@ -34,7 +34,10 @@ export class OneOfButton extends React.Component<OneOfButtonProps> {
 @observer
 export class OneOfSchema extends React.Component<SchemaProps> {
   render() {
-    const { schema: { oneOf }, schema } = this.props;
+    const {
+      schema: { oneOf },
+      schema,
+    } = this.props;
 
     if (oneOf === undefined) {
       return null;

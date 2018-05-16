@@ -1,5 +1,10 @@
-import styled, { media } from '../../styled-components';
-export { ClassAttributes } from 'react';
+import { ClassAttributes, HTMLAttributes } from 'react';
+
+import styled, {
+  media,
+  ResolvedThemeInterface,
+  StyledComponentClass,
+} from '../../styled-components';
 
 export const RedocWrap = styled.div`
   font-family: ${props => props.theme.baseFont.family};

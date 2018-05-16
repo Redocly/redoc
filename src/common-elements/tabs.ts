@@ -1,5 +1,5 @@
-import { Tabs as ReactTabs } from 'react-tabs';
-import styled from '../styled-components';
+import { Tabs as ReactTabs, TabsProps } from 'react-tabs';
+import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 
 export { Tab, TabList, TabPanel } from 'react-tabs';
 

@@ -22,7 +22,7 @@ export class ContentItems extends React.Component<{
   }
 }
 
-interface ContentItemProps {
+export interface ContentItemProps {
   item: ContentItemModel;
 }
 

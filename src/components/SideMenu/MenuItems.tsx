@@ -6,7 +6,7 @@ import { IMenuItem } from '../../services';
 import { MenuItem } from './MenuItem';
 import { MenuItemUl } from './styled.elements';
 
-interface MenuItemsProps {
+export interface MenuItemsProps {
   items: IMenuItem[];
   active?: boolean;
   onActivate?: (item: IMenuItem) => void;

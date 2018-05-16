@@ -60,7 +60,7 @@ export async function load(state: any) {
   resolveIndex(lunr.Index.load(state.index));
 }
 
-export async function search(q: string): Promise<SearchResult[]> {
+export async function search(q: string): Promise<Array<SearchDocument & SearchResult>> {
   if (q.trim().length === 0) {
     return [];
   }

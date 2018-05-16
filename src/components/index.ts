@@ -10,4 +10,6 @@ export * from './JsonViewer';
 
 export * from './ErrorBoundary';
 export * from './StoreProvider';
-// re-export the rest of components
+export * from './SideMenu/';
+export * from './StickySidebar/StickyResponsiveSidebar';
+export * from './SearchBox/SearchBox';

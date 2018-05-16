@@ -23,6 +23,7 @@
     "React.js"
   ],
   "main": "bundles/redoc.lib.js",
+  "types": "typings/index.d.ts",
   "scripts": {
     "start": "webpack-dev-server --mode=development --env.playground --hot --config demo/webpack.config.ts",
     "start:prod": "webpack-dev-server --env.playground --mode=production --config demo/webpack.config.ts",
@@ -37,6 +38,7 @@
     "bundle:standalone": "webpack --env.standalone --mode=production",
     "bundle:lib": "webpack --mode=production",
     "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
+    "declarations": "rimraf typings && tsc --emitDeclarationOnly -p tsconfig.lib.json",
     "stats": "webpack --env.standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",

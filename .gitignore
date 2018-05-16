@@ -24,7 +24,8 @@ node_modules
 lib/
 stats.json
 cypress/
-bundles
+bundles/
+typings/
 cli/index.js
 
 /benchmark/revisions

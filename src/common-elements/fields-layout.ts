@@ -1,5 +1,11 @@
 import { transparentize } from 'polished';
-import styled, { withProps } from '../styled-components';
+import * as React from 'react';
+
+import styled, {
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`

@@ -1,4 +1,10 @@
-import styled, { withProps } from '../../styled-components';
+import { ClassAttributes, HTMLAttributes, HTMLProps } from 'react';
+
+import styled, {
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../../styled-components';
 
 export const OperationEndpointWrap = styled.div`
   cursor: pointer;
