@@ -1,6 +1,8 @@
-import * as webpack from 'webpack';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+/* tslint:disable:no-implicit-dependencies */
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as webpack from 'webpack';
+
 import * as path from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
@@ -54,8 +56,12 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
       }
     : (context, request, callback) => {
         // ignore node-fetch dep of swagger2openapi as it is not used
-        if (/node-fetch$/i.test(request)) return callback(null, 'var undefined');
-        if (/esprima$/i.test(request)) return callback(null, 'var undefined');
+        if (/node-fetch$/i.test(request)) {
+          return callback(null, 'var undefined');
+        }
+        if (/esprima$/i.test(request)) {
+          return callback(null, 'var undefined');
+        }
         return nodeExternals(context, request, callback);
       },
 
@@ -69,6 +75,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
             options: {
               compilerOptions: {
                 module: 'es2015',
+                declaration: false,
               },
             },
           },

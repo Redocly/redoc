@@ -1,5 +1,8 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declarationDir": "typings"
+  },
   "include": [
     "./custom.d.ts",
     "src/index.ts"

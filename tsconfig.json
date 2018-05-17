@@ -8,7 +8,6 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "typings",
     "noEmitHelpers": true,
     "importHelpers": true,
     "outDir": "lib",
