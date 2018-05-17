@@ -67,7 +67,7 @@ yargs
         console.log(e.stack);
       }
     },
-)
+  )
   .command(
     'bundle [spec]',
     'bundle spec into zero-dependency HTML-file',
@@ -112,7 +112,7 @@ yargs
         console.log(e.message);
       }
     },
-)
+  )
   .demandCommand()
   .options('t', {
     alias: 'template',
@@ -219,20 +219,20 @@ async function getPageHTML(
     redocHTML: `
     <div id="redoc">${(ssr && html) || ''}</div>
     <script>
-    ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
-    
+    ${(ssr && `const __redoc_state = ${escapeUnicode(JSON.stringify(state))};`) || ''}
+
     var container = document.getElementById('redoc');
     Redoc.${
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-      };
+    };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-        : `<script>${redocStandaloneSrc}</script>`) + css
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title: title,
   });
@@ -287,4 +287,9 @@ function debounce(callback: Function, time: number) {
 
 function isURL(str: string): boolean {
   return /^(https?:)\/\//m.test(str);
+}
+
+// see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
+function escapeUnicode(str) {
+  return str.replace(/\u2028|\u2029/g, m => '\\u202' + (m === '\u2028' ? '8' : '9'));
 }
