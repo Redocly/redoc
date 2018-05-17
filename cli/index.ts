@@ -1,20 +1,23 @@
 #!/usr/bin/env node
+/* tslint:disable:no-implicit-dependencies */
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-import { createServer, ServerResponse, ServerRequest } from 'http';
-import * as zlib from 'zlib';
-import { join, dirname } from 'path';
+
 import { compile } from 'handlebars';
+import { createServer, ServerRequest, ServerResponse } from 'http';
+import { dirname, join } from 'path';
+
+import * as zlib from 'zlib';
 
 // @ts-ignore
-import { Redoc, loadAndBundleSpec, createStore } from 'redoc';
+import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
-import { createReadStream, writeFileSync, ReadStream, readFileSync, watch, existsSync } from 'fs';
+import { createReadStream, existsSync, readFileSync, ReadStream, watch, writeFileSync } from 'fs';
 
-import * as yargs from 'yargs';
+import * as YargsParser from 'yargs';
 
-type Options = {
+interface Options {
   ssr?: boolean;
   watch?: boolean;
   cdn?: boolean;
@@ -22,52 +25,52 @@ type Options = {
   title?: string;
   templateFileName?: string;
   redocOptions?: any;
-};
+}
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
-yargs
-  .command(
-    'serve [spec]',
-    'start the server',
-    yargs => {
-      yargs.positional('spec', {
-        describe: 'path or URL to your spec',
-      });
+/* tslint:disable-next-line */
+YargsParser.command(
+  'serve [spec]',
+  'start the server',
+  yargs => {
+    yargs.positional('spec', {
+      describe: 'path or URL to your spec',
+    });
 
-      yargs.option('s', {
-        alias: 'ssr',
-        describe: 'Enable server-side rendering',
-        type: 'boolean',
-      });
+    yargs.option('s', {
+      alias: 'ssr',
+      describe: 'Enable server-side rendering',
+      type: 'boolean',
+    });
 
-      yargs.option('p', {
-        alias: 'port',
-        type: 'number',
-        default: 8080,
-      });
+    yargs.option('p', {
+      alias: 'port',
+      type: 'number',
+      default: 8080,
+    });
 
-      yargs.option('w', {
-        alias: 'watch',
-        type: 'boolean',
-      });
+    yargs.option('w', {
+      alias: 'watch',
+      type: 'boolean',
+    });
 
-      yargs.demandOption('spec');
-      return yargs;
-    },
-    async argv => {
-      try {
-        await serve(argv.port, argv.spec, {
-          ssr: argv.ssr,
-          watch: argv.watch,
-          templateFileName: argv.template,
-          redocOptions: argv.options || {},
-        });
-      } catch (e) {
-        console.log(e.stack);
-      }
-    },
-  )
+    yargs.demandOption('spec');
+    return yargs;
+  },
+  async argv => {
+    try {
+      await serve(argv.port, argv.spec, {
+        ssr: argv.ssr,
+        watch: argv.watch,
+        templateFileName: argv.template,
+        redocOptions: argv.options || {},
+      });
+    } catch (e) {
+      console.log(e.stack);
+    }
+  },
+)
   .command(
     'bundle [spec]',
     'bundle spec into zero-dependency HTML-file',
@@ -196,7 +199,9 @@ async function getPageHTML(
   pathToSpec: string,
   { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
 ) {
-  let html, css, state;
+  let html;
+  let css;
+  let state;
   let redocStandaloneSrc;
   if (ssr) {
     console.log('Prerendering docs');
@@ -234,7 +239,7 @@ async function getPageHTML(
           ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
-    title: title,
+    title,
   });
 }
 
@@ -274,7 +279,7 @@ function respondWithGzip(
   }
 }
 
-function debounce(callback: Function, time: number) {
+function debounce(callback: (...args) => void, time: number) {
   let interval;
   return (...args) => {
     clearTimeout(interval);
