@@ -46,7 +46,7 @@ export const RedocWrap = styled.div`
   }
 `;
 
-export const ApiContent = styled.div`
+export const ApiContentWrap = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
