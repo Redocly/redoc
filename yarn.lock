@@ -356,9 +356,9 @@
   version "1.13.6"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.13.6.tgz#128d1685a7c34d31ed17010fc87d6a12c1de6976"
 
-"@types/webpack@^4.1.2":
-  version "4.1.7"
-  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.1.7.tgz#02cf3bf96dd690c5d2bd9e9bee548c1aaf48d6f8"
+"@types/webpack@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack/-/webpack-4.4.0.tgz#c0551b772be241d786c0548812dd75a932f8efb4"
   dependencies:
     "@types/node" "*"
     "@types/tapable" "*"
@@ -3417,9 +3417,9 @@ enzyme-adapter-utils@^1.3.0:
     object.assign "^4.0.4"
     prop-types "^15.6.0"
 
-enzyme-to-json@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.3.3.tgz#ede45938fb309cd87ebd4386f60c754525515a07"
+enzyme-to-json@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.3.4.tgz#67c6040e931182f183418af2eb9f4323258aa77f"
   dependencies:
     lodash "^4.17.4"
 
@@ -5902,9 +5902,9 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-license-checker@^19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/license-checker/-/license-checker-19.0.0.tgz#fbf52a0878924cffea8bf4608aed61482ebe2d35"
+license-checker@^20.0.0:
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/license-checker/-/license-checker-20.0.0.tgz#29b338ba7f4e841b850cc59ddd393dbc8927f375"
   dependencies:
     chalk "^2.4.1"
     debug "^3.1.0"
@@ -6209,7 +6209,7 @@ lru-cache@^4.0.1, lru-cache@^4.1.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
-lunr@^2.1.5:
+lunr@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/lunr/-/lunr-2.2.0.tgz#ab66b8853e8f420cd018d9b474a650537d78a86f"
 
