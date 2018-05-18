@@ -40,7 +40,7 @@ export class Field extends React.PureComponent<FieldProps> {
         onClick={this.toggle}
         className={deprecated ? 'deprecated' : ''}
         kind={kind}
-        title="Test"
+        title={name}
       >
         <PropertyBullet />
         {name}
@@ -48,7 +48,7 @@ export class Field extends React.PureComponent<FieldProps> {
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title="oops">
+      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
         {name}
         {required && <RequiredLabel> required </RequiredLabel>}
