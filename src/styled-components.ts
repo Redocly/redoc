@@ -21,10 +21,9 @@ const {
   injectGlobal,
   keyframes,
   ThemeProvider,
-  withTheme,
-} = (styledComponents as styledComponents.ThemedStyledComponentsModule<
-  any
->) as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
+} = (styledComponents as any) as styledComponents.ThemedStyledComponentsModule<
+  ResolvedThemeInterface
+>;
 
 export const media = {
   lessThan(breakpoint) {
@@ -54,6 +53,6 @@ export const media = {
   },
 };
 
-export { css, injectGlobal, keyframes, ThemeProvider, withTheme, withProps };
+export { css, injectGlobal, keyframes, ThemeProvider, withProps };
 export { StyledComponentClass } from 'styled-components';
 export default styled;
