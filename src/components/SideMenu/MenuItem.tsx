@@ -47,10 +47,13 @@ export class MenuItem extends React.Component<MenuItemProps> {
         data-item-id={item.id}
       >
         {item.type === 'operation' ? (
-          <OperationMenuItemContent item={item as OperationModel} />
+          <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
-            <MenuItemTitle title={item.name}>{item.name}</MenuItemTitle>
+            <MenuItemTitle title={item.name}>
+              {item.name}
+              {this.props.children}
+            </MenuItemTitle>
             {(item.depth > 0 &&
               item.items.length > 0 && (
                 <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
@@ -85,7 +88,10 @@ class OperationMenuItemContent extends React.Component<OperationMenuItemContentP
         deprecated={item.deprecated}
       >
         <OperationBadge type={item.httpVerb} />
-        <MenuItemTitle width="calc(100% - 32px)">{item.name}</MenuItemTitle>
+        <MenuItemTitle width="calc(100% - 32px)">
+          {item.name}
+          {this.props.children}
+        </MenuItemTitle>
       </MenuItemLabel>
     );
   }
