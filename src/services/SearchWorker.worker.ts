@@ -2,9 +2,9 @@ import * as lunr from 'lunr';
 
 /* just for better typings */
 export default class Worker {
-  add = add;
+  add: typeof add = add;
   done = done;
-  search = search;
+  search: typeof search = search;
   toJS = toJS;
   load = load;
 }
@@ -15,11 +15,12 @@ export interface SearchDocument {
   id: string;
 }
 
-export interface SearchResult extends SearchDocument {
+export interface SearchResult<T = string> {
+  meta: T;
   score: number;
 }
 
-let store: { [id: string]: SearchDocument } = {};
+let store: any[] = [];
 
 let resolveIndex: (v: lunr.Index) => void = () => {
   throw new Error('Should not be called');
@@ -29,19 +30,21 @@ const index: Promise<lunr.Index> = new Promise(resolve => {
   resolveIndex = resolve;
 });
 
+lunr.tokenizer.separator = /\s+/;
+
 const builder = new lunr.Builder();
 builder.field('title');
 builder.field('description');
-builder.ref('id');
+builder.ref('ref');
 
 builder.pipeline.add(lunr.trimmer, lunr.stopWordFilter, lunr.stemmer);
 
 const expandTerm = term => '*' + lunr.stemmer(new lunr.Token(term, {})) + '*';
 
-export function add(title: string, description: string, id: string) {
-  const item = { title, description, id };
+export function add<T>(title: string, description: string, meta?: T) {
+  const ref = store.push(meta) - 1;
+  const item = { title: title.toLowerCase(), description: description.toLowerCase(), ref };
   builder.add(item);
-  store[id] = item;
 }
 
 export async function done() {
@@ -60,20 +63,28 @@ export async function load(state: any) {
   resolveIndex(lunr.Index.load(state.index));
 }
 
-export async function search(q: string): Promise<Array<SearchDocument & SearchResult>> {
+export async function search<Meta = string>(
+  q: string,
+  limit = 0,
+): Promise<Array<SearchResult<Meta>>> {
   if (q.trim().length === 0) {
     return [];
   }
 
-  return (await index)
-    .query(t => {
-      q
-        .trim()
-        .split(/\s+/)
-        .forEach(term => {
-          const exp = expandTerm(term);
-          t.term(exp, {});
-        });
-    })
-    .map(res => ({ ...store[res.ref], score: res.score }));
+  let searchResults = (await index).query(t => {
+    q
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .forEach(term => {
+        const exp = expandTerm(term);
+        t.term(exp, {});
+      });
+  });
+
+  if (limit > 0) {
+    searchResults = searchResults.slice(0, limit);
+  }
+
+  return searchResults.map(res => ({ meta: store[res.ref], score: res.score }));
 }
