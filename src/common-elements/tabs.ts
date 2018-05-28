@@ -8,24 +8,28 @@ export const Tabs = styled(ReactTabs)`
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-wrap: wrap;
+    margin: 0 -5px;
 
     > li {
       padding: 5px 10px;
       display: inline-block;
-      flex: 1;
+
       background-color: rgba(0, 0, 0, 0.2);
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
       outline: none;
       color: #ccc;
+      margin: 5px;
+      border: 1px solid #181f22;
+      border-radius: 5px;
+      min-width: 60px;
+      font-size: 0.9em;
+      font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: #fff;
-        background: rgba(0, 0, 0, 0.5);
-        border-bottom: 1px solid ${props => props.theme.schemaView.linesColor};
+        color: ${props => props.theme.colors.text};
+        background: #e2e2e2;
       }
 
       &:only-child {
@@ -64,21 +68,23 @@ export const SmallTabs = Tabs.extend`
   > ul {
     display: block;
     > li {
-      padding: 0;
-      margin-right: 20px;
-      font-size: 12px;
-      padding: 2px 0;
+      padding: 2px 5px;
+      min-width: auto;
+      margin: 0 15px 0 0;
+      font-size: 13px;
+      font-weight: normal;
       border-bottom: 1px dashed;
       color: #787b7d;
-      backgrond: none;
+      border-radius: 0;
+      background: none;
 
       &:last-child {
         margin-right: 0;
       }
 
       &.react-tabs__tab--selected {
-        backgrond: none;
         color: #babcbf;
+        background: none;
       }
     }
   }
