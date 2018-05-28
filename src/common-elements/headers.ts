@@ -18,7 +18,6 @@ export const headerCommonMixin = level => css`
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
   color: ${props => props.theme.colors.main};
-  text-transform: capitalize;
 `;
 
 export const H2 = styled.h2`

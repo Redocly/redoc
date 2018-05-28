@@ -30,8 +30,8 @@ export const markdownCss = css`
   }
 
   code {
-    color: #e53935;
-    background-color: rgba(38, 50, 56, 0.04);
+    color: ${({ theme }) => theme.colors.code};
+    background-color: ${({ theme }) => theme.colors.codeBg};
     font-family: ${props => props.theme.code.fontFamily};
     border-radius: 2px;
     border: 1px solid rgba(38, 50, 56, 0.1);

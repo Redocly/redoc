@@ -14,6 +14,8 @@ const defaultTheme: ThemeInterface = {
     error: '#e53935',
     info: '#87ceeb',
     text: '#263238',
+    code: '#e53935',
+    codeBg: 'rgba(38, 50, 56, 0.04)',
     warning: '#f1c400',
     http: {
       get: '#6bbd5b',
@@ -118,6 +120,8 @@ export interface ResolvedThemeInterface {
     error: string;
     info: string;
     text: string;
+    code: string;
+    codeBg: string;
     warning: string;
     http: {
       get: string;
