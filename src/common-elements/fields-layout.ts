@@ -114,12 +114,13 @@ export const PropertyBullet = styled.span`
 `;
 
 export const InnerPropertiesWrap = styled.div`
-  padding: 1em;
+  padding: ${({ theme }) => theme.schemaView.nestingSpacing};
 `;
 
 export const PropertiesTable = styled.table`
   border-collapse: collapse;
   border-radius: 3px;
+  font-size: ${props => props.theme.baseFont.size};
 
   border-spacing: 0;
   width: 100%;
@@ -140,7 +141,8 @@ export const PropertiesTable = styled.table`
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap} {
-    margin: 1em 0 1em 1em;
+    margin: ${({ theme }) => theme.schemaView.nestingSpacing};
+    margin-right: 0;
     background: #f0f0f0;
   }
 

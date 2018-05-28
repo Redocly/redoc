@@ -32,6 +32,7 @@ const defaultTheme: ThemeInterface = {
     typeNameColor: theme => transparentize(0.2, theme.colors.text),
     typeTitleColor: theme => theme.schemaView.typeNameColor,
     requireLabelColor: theme => theme.colors.error,
+    nestingSpacing: '1em',
   },
   baseFont: {
     size: '14px',
@@ -135,6 +136,7 @@ export interface ResolvedThemeInterface {
     typeNameColor: string;
     typeTitleColor: string;
     requireLabelColor: string;
+    nestingSpacing: string;
   };
   baseFont: {
     size: string;
@@ -174,5 +176,5 @@ export type primitive = string | number | boolean | undefined | null;
 export type AdvancedThemeDeep<T> = T extends primitive
   ? T | ((theme: ResolvedThemeInterface) => T)
   : AdvancedThemeObject<T>;
-export type AdvancedThemeObject<T> = { [P in keyof T]: AdvancedThemeDeep<T[P]> };
+export type AdvancedThemeObject<T> = { [P in keyof T]?: AdvancedThemeDeep<T[P]> };
 export type ThemeInterface = AdvancedThemeObject<ResolvedThemeInterface>;
