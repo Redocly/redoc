@@ -1,3 +1,24 @@
+<a name="2.0.0-alpha.21"></a>
+# [2.0.0-alpha.21](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.20...v2.0.0-alpha.21) (2018-05-28)
+
+
+### Bug Fixes
+
+* add tslib dependency ([8e1a5cb](https://github.com/Rebilly/ReDoc/commit/8e1a5cb))
+* **cli:** escape \u2029 \u2028 characters ([5018473](https://github.com/Rebilly/ReDoc/commit/5018473)), closes [#475](https://github.com/Rebilly/ReDoc/issues/475)
+* reduce search index size ([a1fa4b4](https://github.com/Rebilly/ReDoc/commit/a1fa4b4))
+* replace "oops" with field name 🙈 ([6b1e8e7](https://github.com/Rebilly/ReDoc/commit/6b1e8e7))
+* specify caption-side ([64801b0](https://github.com/Rebilly/ReDoc/commit/64801b0)), closes [#509](https://github.com/Rebilly/ReDoc/issues/509)
+
+
+### Features
+
+* export TypeScript typings ([9115be8](https://github.com/Rebilly/ReDoc/commit/9115be8))
+* new theme colors: code and codeBg ([f8b793d](https://github.com/Rebilly/ReDoc/commit/f8b793d))
+* new theme option: nestingSpacing ([782ef77](https://github.com/Rebilly/ReDoc/commit/782ef77))
+
+
+
 <a name="2.0.0-alpha.20"></a>
 # [2.0.0-alpha.20](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.19...v2.0.0-alpha.20) (2018-05-14)
 
