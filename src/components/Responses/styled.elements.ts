@@ -38,4 +38,5 @@ export const ResponseDetailsWrap = styled.div`
 export const HeadersCaption = UnderlinedHeader.withComponent('caption').extend`
   text-align: left;
   margin-top: 1em;
+  caption-side: top;
 `;
