@@ -111,7 +111,7 @@ export class SchemaModel {
       return;
     }
 
-    if (!isChild && schema.discriminator !== undefined) {
+    if (!isChild && getDiscriminator(schema) !== undefined) {
       this.initDiscriminator(schema, parser);
       return;
     }
@@ -171,7 +171,8 @@ export class SchemaModel {
     },
     parser: OpenAPIParser,
   ) {
-    this.discriminatorProp = schema.discriminator!.propertyName;
+    const discriminator = getDiscriminator(schema)!;
+    this.discriminatorProp = discriminator.propertyName;
     const derived = parser.findDerived([...(schema.parentRefs || []), this._$ref]);
 
     if (schema.oneOf) {
@@ -184,7 +185,7 @@ export class SchemaModel {
       }
     }
 
-    const mapping = schema.discriminator!.mapping || {};
+    const mapping = discriminator.mapping || {};
     for (const name in mapping) {
       derived[mapping[name]] = name;
     }
@@ -256,4 +257,8 @@ function buildFields(
   }
 
   return fields;
+}
+
+function getDiscriminator(schema: OpenAPISchema): OpenAPISchema['discriminator'] {
+  return schema.discriminator || schema['x-discriminator'];
 }
