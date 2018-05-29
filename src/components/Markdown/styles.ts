@@ -4,6 +4,11 @@ import { headerCommonMixin, linkifyMixin } from '../../common-elements';
 import { css, ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 export const markdownCss = css`
+
+  font-family: ${props => props.theme.baseFont.family};
+  font-weight: ${props => props.theme.baseFont.weight};
+  line-height: ${props => props.theme.baseFont.lineHeight};
+
   p {
     &:last-of-type {
       margin-bottom: 0;
@@ -79,9 +84,6 @@ export const markdownCss = css`
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
-    font-family: ${props => props.theme.baseFont.family};
-    font-weight: ${props => props.theme.baseFont.weight};
-    line-height: ${props => props.theme.baseFont.lineHeight};
     > li {
       margin: 1em 0;
     }

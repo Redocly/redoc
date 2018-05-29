@@ -22,7 +22,6 @@ export const EndpointInfo = withProps<{ expanded?: boolean; inverted?: boolean }
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
   background-color: ${props => (props.inverted ? 'transparent' : '#222d32')};
   display: block;
-  font-weight: 300;
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -49,12 +48,6 @@ export const HttpVerb = withProps<{ type: string }>(styled.span).attrs({
   font-family: ${props => props.theme.headingsFont.family};
   margin: 0;
 `;
-
-// background: transparent;
-// border-bottom: 1px solid #cccccc;
-// border-color: transparent;
-// border-bottom: 1px solid rgba(0,0,0,0.33);
-// padding-left: 10px;
 
 export const ServersOverlay = withProps<{ expanded: boolean }>(styled.div)`
   position: absolute;

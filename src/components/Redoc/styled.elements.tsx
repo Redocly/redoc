@@ -9,6 +9,7 @@ import styled, {
 export const RedocWrap = styled.div`
   font-family: ${props => props.theme.baseFont.family};
   font-size: ${props => props.theme.baseFont.size};
+  font-weight: ${props => props.theme.baseFont.weight};
   line-height: ${props => props.theme.baseFont.lineHeight};
   color: ${props => props.theme.colors.text};
   display: flex;

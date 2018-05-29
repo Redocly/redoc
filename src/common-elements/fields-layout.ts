@@ -68,7 +68,6 @@ export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend
   line-height: 20px;
   white-space: nowrap;
   font-size: 0.929em;
-  font-weight: 300;
   font-family: ${props => props.theme.headingsFont.family};
 
   &.deprecated {
