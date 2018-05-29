@@ -60,16 +60,12 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
-    try {
-      await serve(argv.port, argv.spec, {
-        ssr: argv.ssr,
-        watch: argv.watch,
-        templateFileName: argv.template,
-        redocOptions: argv.options || {},
-      });
-    } catch (e) {
-      console.log(e.stack);
-    }
+    await serve(argv.port, argv.spec, {
+      ssr: argv.ssr,
+      watch: argv.watch,
+      templateFileName: argv.template,
+      redocOptions: argv.options || {},
+    });
   },
 )
   .command(
@@ -103,18 +99,14 @@ YargsParser.command(
       return yargs;
     },
     async argv => {
-      try {
-        await bundle(argv.spec, {
-          ssr: true,
-          output: argv.o,
-          cdn: argv.cdn,
-          title: argv.title,
-          templateFileName: argv.template,
-          redocOptions: argv.options || {},
-        });
-      } catch (e) {
-        console.log(e.message);
-      }
+      await bundle(argv.spec, {
+        ssr: true,
+        output: argv.o,
+        cdn: argv.cdn,
+        title: argv.title,
+        templateFileName: argv.template,
+        redocOptions: argv.options || {},
+      });
     },
   )
   .demandCommand()
@@ -125,6 +117,10 @@ YargsParser.command(
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
+  })
+  .fail((message, error) => {
+    console.log(error.stack);
+    process.exit(1);
   }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
