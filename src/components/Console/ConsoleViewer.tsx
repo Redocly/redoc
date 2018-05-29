@@ -80,7 +80,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         credentials: 'include',
         redirect: 'manual',
         headers: myHeaders,
-        body: (body) ? JSON.stringify(body) : null
+        body: (body) ? JSON.stringify(body) : undefined
       });
 
       const result = await fetch(request);
