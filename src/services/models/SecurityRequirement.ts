@@ -2,7 +2,7 @@ import { OpenAPISecurityRequirement } from '../../types';
 import { SECURITY_SCHEMES_SECTION } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 
-interface SecurityScheme {
+export interface SecurityScheme {
   id: string;
   sectionId: string;
   type: string;

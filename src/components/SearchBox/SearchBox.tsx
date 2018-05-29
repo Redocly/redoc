@@ -5,12 +5,18 @@ import { SearchStore } from '../../services/SearchStore';
 import { MenuItem } from '../SideMenu/MenuItem';
 
 import { MarkerService } from '../../services/MarkerService';
-import { SearchDocument } from '../../services/SearchWorker.worker';
+import { SearchResult } from '../../services/SearchWorker.worker';
 
-import { ClearIcon, SearchIcon, SearchInput, SearchResultsBox, SearchWrap } from './elements';
+import {
+  ClearIcon,
+  SearchIcon,
+  SearchInput,
+  SearchResultsBox,
+  SearchWrap,
+} from './styled.elements';
 
 export interface SearchBoxProps {
-  search: SearchStore;
+  search: SearchStore<string>;
   marker: MarkerService;
   getItemById: (id: string) => IMenuItem | undefined;
   onActivate: (item: IMenuItem) => void;
@@ -19,14 +25,9 @@ export interface SearchBoxProps {
 }
 
 export interface SearchBoxState {
-  results: any;
+  results: SearchResult[];
   term: string;
   activeItemIdx: number;
-}
-
-interface SearchResult {
-  item: IMenuItem;
-  score: number;
 }
 
 export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxState> {
@@ -81,7 +82,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
       // enter
       const activeResult = this.state.results[this.state.activeItemIdx];
       if (activeResult) {
-        const item = this.props.getItemById(activeResult.id);
+        const item = this.props.getItemById(activeResult.meta);
         if (item) {
           this.props.onActivate(item);
         }
@@ -89,7 +90,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     }
   };
 
-  setResults(results: SearchDocument[], term: string) {
+  setResults(results: SearchResult[], term: string) {
     this.setState({
       results,
       term,
@@ -115,8 +116,8 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
   render() {
     const { activeItemIdx } = this.state;
-    const results: SearchResult[] = this.state.results.map(res => ({
-      item: this.props.getItemById(res.id),
+    const results = this.state.results.map(res => ({
+      item: this.props.getItemById(res.meta)!,
       score: res.score,
     }));
 

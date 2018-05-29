@@ -1,5 +1,11 @@
 import { transparentize } from 'polished';
-import styled from '../styled-components';
+import * as React from 'react';
+
+import styled, {
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
@@ -57,17 +63,18 @@ export const PropertyCellWithInner = PropertyCell.extend`
   padding: 0;
 `;
 
-export const PropertyNameCell = PropertyCell.extend`
+export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend)`
   vertical-align: top;
   line-height: 20px;
   white-space: nowrap;
   font-size: 0.929em;
-  font-weight: 300;
   font-family: ${props => props.theme.headingsFont.family};
 
   &.deprecated {
     ${deprecatedCss};
   }
+
+  ${({ kind }) => (kind !== 'field' ? 'font-style: italic' : '')};
 `;
 
 export const PropertyDetailsCell = styled.td`
@@ -106,12 +113,13 @@ export const PropertyBullet = styled.span`
 `;
 
 export const InnerPropertiesWrap = styled.div`
-  padding: 1em;
+  padding: ${({ theme }) => theme.schemaView.nestingSpacing};
 `;
 
 export const PropertiesTable = styled.table`
   border-collapse: collapse;
   border-radius: 3px;
+  font-size: ${props => props.theme.baseFont.size};
 
   border-spacing: 0;
   width: 100%;
@@ -132,7 +140,8 @@ export const PropertiesTable = styled.table`
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap} {
-    margin: 1em 0 1em 1em;
+    margin: ${({ theme }) => theme.schemaView.nestingSpacing};
+    margin-right: 0;
     background: #f0f0f0;
   }
 

@@ -1,20 +1,24 @@
 #!/usr/bin/env node
+/* tslint:disable:no-implicit-dependencies */
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-import { createServer, ServerResponse, ServerRequest } from 'http';
-import * as zlib from 'zlib';
-import { join, dirname } from 'path';
+
 import { compile } from 'handlebars';
+import { createServer, ServerRequest, ServerResponse } from 'http';
+import { dirname, join } from 'path';
+
+import * as zlib from 'zlib';
 
 // @ts-ignore
-import { Redoc, loadAndBundleSpec, createStore } from 'redoc';
+import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
-import { createReadStream, writeFileSync, ReadStream, readFileSync, watch, existsSync } from 'fs';
+import { createReadStream, existsSync, readFileSync, ReadStream, watch, writeFileSync } from 'fs';
+import * as mkdirp from 'mkdirp';
 
-import * as yargs from 'yargs';
+import * as YargsParser from 'yargs';
 
-type Options = {
+interface Options {
   ssr?: boolean;
   watch?: boolean;
   cdn?: boolean;
@@ -22,51 +26,47 @@ type Options = {
   title?: string;
   templateFileName?: string;
   redocOptions?: any;
-};
+}
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
-yargs
-  .command(
-    'serve [spec]',
-    'start the server',
-    yargs => {
-      yargs.positional('spec', {
-        describe: 'path or URL to your spec',
-      });
+/* tslint:disable-next-line */
+YargsParser.command(
+  'serve [spec]',
+  'start the server',
+  yargs => {
+    yargs.positional('spec', {
+      describe: 'path or URL to your spec',
+    });
 
-      yargs.option('s', {
-        alias: 'ssr',
-        describe: 'Enable server-side rendering',
-        type: 'boolean',
-      });
+    yargs.option('s', {
+      alias: 'ssr',
+      describe: 'Enable server-side rendering',
+      type: 'boolean',
+    });
 
-      yargs.option('p', {
-        alias: 'port',
-        type: 'number',
-        default: 8080,
-      });
+    yargs.option('p', {
+      alias: 'port',
+      type: 'number',
+      default: 8080,
+    });
 
-      yargs.option('w', {
-        alias: 'watch',
-        type: 'boolean',
-      });
+    yargs.option('w', {
+      alias: 'watch',
+      type: 'boolean',
+    });
 
-      yargs.demandOption('spec');
-      return yargs;
-    },
-    async argv => {
-      try {
-        await serve(argv.port, argv.spec, {
-          ssr: argv.ssr,
-          watch: argv.watch,
-          templateFileName: argv.template,
-          redocOptions: argv.options || {},
-        });
-      } catch (e) {
-        console.log(e.stack);
-      }
-    },
+    yargs.demandOption('spec');
+    return yargs;
+  },
+  async argv => {
+    await serve(argv.port, argv.spec, {
+      ssr: argv.ssr,
+      watch: argv.watch,
+      templateFileName: argv.template,
+      redocOptions: argv.options || {},
+    });
+  },
 )
   .command(
     'bundle [spec]',
@@ -99,20 +99,16 @@ yargs
       return yargs;
     },
     async argv => {
-      try {
-        await bundle(argv.spec, {
-          ssr: true,
-          output: argv.o,
-          cdn: argv.cdn,
-          title: argv.title,
-          templateFileName: argv.template,
-          redocOptions: argv.options || {},
-        });
-      } catch (e) {
-        console.log(e.message);
-      }
+      await bundle(argv.spec, {
+        ssr: true,
+        output: argv.o,
+        cdn: argv.cdn,
+        title: argv.title,
+        templateFileName: argv.template,
+        redocOptions: argv.options || {},
+      });
     },
-)
+  )
   .demandCommand()
   .options('t', {
     alias: 'template',
@@ -121,6 +117,10 @@ yargs
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
+  })
+  .fail((message, error) => {
+    console.log(error.stack);
+    process.exit(1);
   }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
@@ -183,6 +183,7 @@ async function bundle(pathToSpec, options: Options = {}) {
   const spec = await loadAndBundleSpec(pathToSpec);
   const pageHTML = await getPageHTML(spec, pathToSpec, { ...options, ssr: true });
 
+  mkdirp.sync(dirname(options.output!));
   writeFileSync(options.output!, pageHTML);
   const sizeInKiB = Math.ceil(Buffer.byteLength(pageHTML) / 1024);
   const time = Date.now() - start;
@@ -196,7 +197,9 @@ async function getPageHTML(
   pathToSpec: string,
   { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
 ) {
-  let html, css, state;
+  let html;
+  let css;
+  let state;
   let redocStandaloneSrc;
   if (ssr) {
     console.log('Prerendering docs');
@@ -219,22 +222,22 @@ async function getPageHTML(
     redocHTML: `
     <div id="redoc">${(ssr && html) || ''}</div>
     <script>
-    ${(ssr && `const __redoc_state = ${JSON.stringify(state)};`) || ''}
-    
+    ${(ssr && `const __redoc_state = ${escapeUnicode(JSON.stringify(state))};`) || ''}
+
     var container = document.getElementById('redoc');
     Redoc.${
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-      };
+    };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-        : `<script>${redocStandaloneSrc}</script>`) + css
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
-    title: title,
+    title,
   });
 }
 
@@ -274,7 +277,7 @@ function respondWithGzip(
   }
 }
 
-function debounce(callback: Function, time: number) {
+function debounce(callback: (...args) => void, time: number) {
   let interval;
   return (...args) => {
     clearTimeout(interval);
@@ -287,4 +290,9 @@ function debounce(callback: Function, time: number) {
 
 function isURL(str: string): boolean {
   return /^(https?:)\/\//m.test(str);
+}
+
+// see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
+function escapeUnicode(str) {
+  return str.replace(/\u2028|\u2029/g, m => '\\u202' + (m === '\u2028' ? '8' : '9'));
 }

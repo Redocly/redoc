@@ -14,6 +14,8 @@ const defaultTheme: ThemeInterface = {
     error: '#e53935',
     info: '#87ceeb',
     text: '#263238',
+    code: '#e53935',
+    codeBg: 'rgba(38, 50, 56, 0.04)',
     warning: '#f1c400',
     http: {
       get: '#6bbd5b',
@@ -24,6 +26,7 @@ const defaultTheme: ThemeInterface = {
       delete: '#e27a7a',
       basic: '#999',
       link: '#31bbb6',
+      head: '#c167e4',
     },
   },
   schemaView: {
@@ -32,6 +35,7 @@ const defaultTheme: ThemeInterface = {
     typeNameColor: theme => transparentize(0.2, theme.colors.text),
     typeTitleColor: theme => theme.schemaView.typeNameColor,
     requireLabelColor: theme => theme.colors.error,
+    nestingSpacing: '1em',
   },
   baseFont: {
     size: '14px',
@@ -120,6 +124,8 @@ export interface ResolvedThemeInterface {
     error: string;
     info: string;
     text: string;
+    code: string;
+    codeBg: string;
     warning: string;
     http: {
       get: string;
@@ -130,6 +136,7 @@ export interface ResolvedThemeInterface {
       delete: string;
       basic: string;
       link: string;
+      head: string;
     };
   };
   schemaView: {
@@ -138,6 +145,7 @@ export interface ResolvedThemeInterface {
     typeNameColor: string;
     typeTitleColor: string;
     requireLabelColor: string;
+    nestingSpacing: string;
   };
   baseFont: {
     size: string;
@@ -180,5 +188,5 @@ export type primitive = string | number | boolean | undefined | null;
 export type AdvancedThemeDeep<T> = T extends primitive
   ? T | ((theme: ResolvedThemeInterface) => T)
   : AdvancedThemeObject<T>;
-export type AdvancedThemeObject<T> = { [P in keyof T]: AdvancedThemeDeep<T[P]> };
+export type AdvancedThemeObject<T> = { [P in keyof T]?: AdvancedThemeDeep<T[P]> };
 export type ThemeInterface = AdvancedThemeObject<ResolvedThemeInterface>;

@@ -36,7 +36,7 @@ const OperationRow = Row.extend`
   }
 `;
 
-interface OperationProps {
+export interface OperationProps {
   operation: OperationType;
 }
 

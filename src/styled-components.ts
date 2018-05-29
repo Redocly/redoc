@@ -1,6 +1,11 @@
+import { ComponentClass, StatelessComponent } from 'react';
 import * as styledComponents from 'styled-components';
 
 import { ResolvedThemeInterface } from './theme';
+
+export { ResolvedThemeInterface };
+
+export type InterpolationFunction<P> = styledComponents.InterpolationFunction<P>;
 
 export type StyledFunction<T> = styledComponents.ThemedStyledFunction<T, ResolvedThemeInterface>;
 
@@ -16,10 +21,9 @@ const {
   injectGlobal,
   keyframes,
   ThemeProvider,
-  withTheme,
-} = (styledComponents as styledComponents.ThemedStyledComponentsModule<
-  any
->) as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
+} = (styledComponents as any) as styledComponents.ThemedStyledComponentsModule<
+  ResolvedThemeInterface
+>;
 
 export const media = {
   lessThan(breakpoint) {
@@ -49,6 +53,6 @@ export const media = {
   },
 };
 
-export { css, injectGlobal, keyframes, ThemeProvider, withTheme, withProps };
+export { css, injectGlobal, keyframes, ThemeProvider, withProps };
 export { StyledComponentClass } from 'styled-components';
 export default styled;

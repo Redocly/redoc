@@ -1,6 +1,7 @@
-import styled from '../../styled-components';
+import { ClassAttributes, HTMLAttributes } from 'react';
+import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
-import { StyledDropdown } from '../../common-elements';
+import { DropdownProps, StyledDropdown } from '../../common-elements';
 
 export const MimeLabel = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.9);

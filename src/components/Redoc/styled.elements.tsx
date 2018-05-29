@@ -1,9 +1,15 @@
-import styled, { media } from '../../styled-components';
-export { ClassAttributes } from 'react';
+import { ClassAttributes, HTMLAttributes } from 'react';
+
+import styled, {
+  media,
+  ResolvedThemeInterface,
+  StyledComponentClass,
+} from '../../styled-components';
 
 export const RedocWrap = styled.div`
   font-family: ${props => props.theme.baseFont.family};
   font-size: ${props => props.theme.baseFont.size};
+  font-weight: ${props => props.theme.baseFont.weight};
   line-height: ${props => props.theme.baseFont.lineHeight};
   color: ${props => props.theme.colors.text};
   display: flex;
@@ -41,7 +47,7 @@ export const RedocWrap = styled.div`
   }
 `;
 
-export const ApiContent = styled.div`
+export const ApiContentWrap = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;

@@ -1,3 +1,76 @@
+<a name="2.0.0-alpha.22"></a>
+# [2.0.0-alpha.22](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.21...v2.0.0-alpha.22) (2018-05-29)
+
+
+### Bug Fixes
+
+* **cli:** create directories when a path is specified in the --output option ([#513](https://github.com/Rebilly/ReDoc/issues/513)) ([ac7372b](https://github.com/Rebilly/ReDoc/commit/ac7372b)), closes [#512](https://github.com/Rebilly/ReDoc/issues/512)
+* **cli:** return 1 as exit code if an error happens in the cli ([#516](https://github.com/Rebilly/ReDoc/issues/516)) ([720c304](https://github.com/Rebilly/ReDoc/commit/720c304))
+* fix font-weight inconsistency ([6ea2b7b](https://github.com/Rebilly/ReDoc/commit/6ea2b7b)), closes [#506](https://github.com/Rebilly/ReDoc/issues/506)
+* HEAD http verb support in menu badges ([2eb1952](https://github.com/Rebilly/ReDoc/commit/2eb1952)), closes [#493](https://github.com/Rebilly/ReDoc/issues/493)
+* more descriptive message for wrong discriminator use ([3c6de2c](https://github.com/Rebilly/ReDoc/commit/3c6de2c)), closes [#505](https://github.com/Rebilly/ReDoc/issues/505)
+
+
+### Features
+
+* add new experimental option unstable_ignoreMimeParameters ([d162bab](https://github.com/Rebilly/ReDoc/commit/d162bab))
+* support x-discriminator for OpenAPI 2 ([aaff311](https://github.com/Rebilly/ReDoc/commit/aaff311)), closes [#496](https://github.com/Rebilly/ReDoc/issues/496)
+
+
+
+<a name="2.0.0-alpha.21"></a>
+# [2.0.0-alpha.21](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.20...v2.0.0-alpha.21) (2018-05-28)
+
+
+### Bug Fixes
+
+* add tslib dependency ([8e1a5cb](https://github.com/Rebilly/ReDoc/commit/8e1a5cb))
+* **cli:** escape \u2029 \u2028 characters ([5018473](https://github.com/Rebilly/ReDoc/commit/5018473)), closes [#475](https://github.com/Rebilly/ReDoc/issues/475)
+* reduce search index size ([a1fa4b4](https://github.com/Rebilly/ReDoc/commit/a1fa4b4))
+* replace "oops" with field name 🙈 ([6b1e8e7](https://github.com/Rebilly/ReDoc/commit/6b1e8e7))
+* specify caption-side ([64801b0](https://github.com/Rebilly/ReDoc/commit/64801b0)), closes [#509](https://github.com/Rebilly/ReDoc/issues/509)
+
+
+### Features
+
+* export TypeScript typings ([9115be8](https://github.com/Rebilly/ReDoc/commit/9115be8))
+* new theme colors: code and codeBg ([f8b793d](https://github.com/Rebilly/ReDoc/commit/f8b793d))
+* new theme option: nestingSpacing ([782ef77](https://github.com/Rebilly/ReDoc/commit/782ef77))
+
+
+
+<a name="2.0.0-alpha.20"></a>
+# [2.0.0-alpha.20](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.19...v2.0.0-alpha.20) (2018-05-14)
+
+
+### Bug Fixes
+
+* fix worker is not defined in lib bundle ([6a5513e](https://github.com/Rebilly/ReDoc/commit/6a5513e))
+
+
+
+<a name="2.0.0-alpha.19"></a>
+# [2.0.0-alpha.19](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.18...v2.0.0-alpha.19) (2018-05-14)
+
+
+### Bug Fixes
+
+* change look of additionalProperties ([126c6a6](https://github.com/Rebilly/ReDoc/commit/126c6a6))
+* disable chrome tap-highlight on mobile ([09cbe88](https://github.com/Rebilly/ReDoc/commit/09cbe88))
+* fix [@observer](https://github.com/observer) on PureComponent warning ([afb11d6](https://github.com/Rebilly/ReDoc/commit/afb11d6))
+* fix build caused by new babel decorators syntax, fixes [#487](https://github.com/Rebilly/ReDoc/issues/487) ([01f575c](https://github.com/Rebilly/ReDoc/commit/01f575c))
+* fix prism lang dependencies, fixes [#467](https://github.com/Rebilly/ReDoc/issues/467) ([42cf18e](https://github.com/Rebilly/ReDoc/commit/42cf18e))
+* fix spelling in error message ([#455](https://github.com/Rebilly/ReDoc/issues/455)) ([64119c4](https://github.com/Rebilly/ReDoc/commit/64119c4))
+* limit height of discriminator dropdown, fixes [#484](https://github.com/Rebilly/ReDoc/issues/484) ([6d1a9e5](https://github.com/Rebilly/ReDoc/commit/6d1a9e5))
+* path parameters are not correctly override, fixes [#481](https://github.com/Rebilly/ReDoc/issues/481) ([2cf4c3c](https://github.com/Rebilly/ReDoc/commit/2cf4c3c))
+
+
+### Features
+
+* display scope description as markdown, fixes [#466](https://github.com/Rebilly/ReDoc/issues/466) ([0d6deff](https://github.com/Rebilly/ReDoc/commit/0d6deff))
+
+
+
 <a name="2.0.0-alpha.18"></a>
 # [2.0.0-alpha.18](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.17...v2.0.0-alpha.18) (2018-03-23)
 

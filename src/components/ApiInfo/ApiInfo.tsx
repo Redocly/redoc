@@ -15,7 +15,7 @@ import {
   InfoSpanBoxWrap,
 } from './styled.elements';
 
-interface ApiInfoProps {
+export interface ApiInfoProps {
   store: AppStore;
 }
 

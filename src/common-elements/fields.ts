@@ -1,5 +1,7 @@
 import { transparentize } from 'polished';
-import styled from '../styled-components';
+import * as React from 'react';
+
+import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 import { PropertyNameCell } from './fields-layout';
 
 export const ClickablePropertyNameCell = PropertyNameCell.extend`

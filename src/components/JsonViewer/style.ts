@@ -1,4 +1,5 @@
-import { css } from '../../styled-components';
+import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
+import { css, ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 export const jsonStyles = css`
   .redoc-json > .collapser {

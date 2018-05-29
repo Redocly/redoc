@@ -1,5 +1,9 @@
 import * as React from 'react';
-import styled, { withProps } from '../styled-components';
+import styled, {
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../styled-components';
 
 const directionMap = {
   left: '90deg',

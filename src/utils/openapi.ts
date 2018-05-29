@@ -1,4 +1,11 @@
-import { OpenAPIOperation, OpenAPISchema } from '../types';
+import { OpenAPIParser } from '../services/OpenAPIParser';
+import {
+  OpenAPIMediaType,
+  OpenAPIOperation,
+  OpenAPIParameter,
+  OpenAPISchema,
+  Referenced,
+} from '../types';
 
 export function getStatusCodeType(statusCode: string | number, defaultAsError = false): string {
   if (statusCode === 'default') {
@@ -176,6 +183,42 @@ export function sortByRequired(
       return 0;
     }
   });
+}
+
+export function mergeParams(
+  parser: OpenAPIParser,
+  pathParams: Array<Referenced<OpenAPIParameter>> = [],
+  operationParams: Array<Referenced<OpenAPIParameter>> = [],
+): Array<Referenced<OpenAPIParameter>> {
+  const operationParamNames = {};
+  operationParams.forEach(param => {
+    param = parser.shalowDeref(param);
+    operationParamNames[param.name + '_' + param.in] = true;
+  });
+
+  // filter out path params overriden by operation ones with the same name
+  pathParams = pathParams.filter(param => {
+    param = parser.shalowDeref(param);
+    return !operationParamNames[param.name + '_' + param.in];
+  });
+
+  return pathParams.concat(operationParams);
+}
+
+export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<OpenAPIMediaType> {
+  const mergedTypes = {};
+  Object.keys(types).forEach(name => {
+    const mime = types[name];
+    // ignore content type parameters (e.g. charset) and merge
+    const normalizedMimeName = name.split(';')[0].trim();
+    if (!mergedTypes[normalizedMimeName]) {
+      mergedTypes[normalizedMimeName] = mime;
+      return;
+    }
+    mergedTypes[normalizedMimeName] = { ...mergedTypes[normalizedMimeName], ...mime };
+  });
+
+  return mergedTypes;
 }
 
 export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';

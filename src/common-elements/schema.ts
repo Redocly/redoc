@@ -1,4 +1,9 @@
-import styled, { withProps } from '../styled-components';
+import * as React from 'react';
+import styled, {
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../styled-components';
 
 export const OneOfList = styled.ul`
   margin: 0;

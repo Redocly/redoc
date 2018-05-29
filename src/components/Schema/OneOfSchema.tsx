@@ -16,7 +16,7 @@ export interface OneOfButtonProps {
 }
 
 @observer
-export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
+export class OneOfButton extends React.Component<OneOfButtonProps> {
   render() {
     const { idx, schema, subSchema } = this.props;
     return (
@@ -34,7 +34,10 @@ export class OneOfButton extends React.PureComponent<OneOfButtonProps> {
 @observer
 export class OneOfSchema extends React.Component<SchemaProps> {
   render() {
-    const { schema: { oneOf }, schema } = this.props;
+    const {
+      schema: { oneOf },
+      schema,
+    } = this.props;
 
     if (oneOf === undefined) {
       return null;

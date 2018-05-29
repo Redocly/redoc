@@ -1,4 +1,7 @@
-import styled, { css } from '../styled-components';
+import * as React from 'react';
+import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
+
+import styled, { css, ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 
 const headerFontSize = {
   1: '1.85714em',
@@ -15,7 +18,6 @@ export const headerCommonMixin = level => css`
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
   color: ${props => props.theme.colors.main};
-  text-transform: capitalize;
 `;
 
 export const H2 = styled.h2`

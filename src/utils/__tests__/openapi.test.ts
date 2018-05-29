@@ -4,7 +4,11 @@ import {
   getStatusCodeType,
   isOperationName,
   isPrimitiveType,
+  mergeParams,
 } from '../';
+
+import { OpenAPIParser } from '../../services';
+import { OpenAPIParameter } from '../../types';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -181,6 +185,41 @@ describe('Utils', () => {
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
+    });
+  });
+
+  describe('openapi mergeParams', () => {
+    it('Should deduplicate params with same "name" and "in"', () => {
+      const pathParams: OpenAPIParameter[] = [
+        {
+          name: 'param1',
+          in: 'path',
+          description: 'path',
+        },
+        {
+          name: 'param2',
+          in: 'path',
+        },
+      ];
+      const operationParams: OpenAPIParameter[] = [
+        {
+          name: 'param1',
+          in: 'path',
+          description: 'oper',
+        },
+        {
+          name: 'param2',
+          in: 'query',
+        },
+      ];
+
+      const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+
+      const res = mergeParams(parser, pathParams, operationParams) as OpenAPIParameter[];
+      expect(res).toHaveLength(3);
+      expect(res[0]).toEqual(pathParams[1]);
+      expect(res[1]).toEqual(operationParams[0]);
+      expect(res[2]).toEqual(operationParams[1]);
     });
   });
 });

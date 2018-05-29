@@ -24,7 +24,11 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
   }
 
   render() {
-    const { schema: { fields = [] }, showTitle, discriminator } = this.props;
+    const {
+      schema: { fields = [] },
+      showTitle,
+      discriminator,
+    } = this.props;
 
     const needFilter = this.props.skipReadOnly || this.props.skipWriteOnly;
 

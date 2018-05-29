@@ -2,7 +2,9 @@ import { IS_BROWSER } from '../utils/';
 import { IMenuItem } from './MenuStore';
 import { OperationModel } from './models';
 
-let worker;
+import Worker, { SearchDocument, SearchResult } from './SearchWorker.worker';
+
+let worker: new () => Worker;
 
 if (IS_BROWSER) {
   try {
@@ -15,7 +17,7 @@ if (IS_BROWSER) {
   worker = require('./SearchWorker.worker').default;
 }
 
-export class SearchStore {
+export class SearchStore<T> {
   searchWorker = new worker();
 
   indexItems(groups: Array<IMenuItem | OperationModel>) {
@@ -32,12 +34,12 @@ export class SearchStore {
     this.searchWorker.done();
   }
 
-  add(title: string, body: string, ref: string) {
-    this.searchWorker.add(title, body, ref);
+  add(title: string, body: string, meta?: T) {
+    this.searchWorker.add(title, body, meta);
   }
 
   search(q: string) {
-    return this.searchWorker.search(q);
+    return this.searchWorker.search<T>(q);
   }
 
   async toJS() {

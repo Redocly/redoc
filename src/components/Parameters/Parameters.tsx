@@ -17,7 +17,7 @@ function safePush(obj, prop, item) {
   obj[prop].push(item);
 }
 
-interface ParametersProps {
+export interface ParametersProps {
   parameters?: FieldModel[];
   body?: RequestBodyModel;
 }

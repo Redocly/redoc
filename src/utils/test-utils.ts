@@ -1,20 +1,24 @@
+/* tslint:disable:no-implicit-dependencies */
+
+import { has, set } from 'lodash';
 import { instanceOf } from 'prop-types';
 import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';
-import { set, has } from 'lodash';
 
 function traverseComponent(root, fn) {
-  if (!root) return;
+  if (!root) {
+    return;
+  }
 
   fn(root);
 
   if (root.children) {
-    for (let child of root.children) {
+    for (const child of root.children) {
       traverseComponent(child, fn);
     }
   }
 }
 
-export function filterPropsDeep<T extends Object>(component: T, paths: string[]): T {
+export function filterPropsDeep<T extends object>(component: T, paths: string[]): T {
   traverseComponent(component, comp => {
     if (comp.props) {
       for (const path of paths) {

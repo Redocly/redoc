@@ -1,4 +1,4 @@
-/// <reference path="src/styled.d.ts" />
+/// <reference path="typings/styled-patch.d.ts" />
 
 declare module '*.json' {
   const content: any;

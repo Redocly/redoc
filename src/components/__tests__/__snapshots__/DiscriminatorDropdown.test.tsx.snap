@@ -11,6 +11,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "example": undefined,
           "expanded": false,
           "in": undefined,
+          "kind": "field",
           "name": "packSize",
           "required": false,
           "schema": SchemaModel {
@@ -57,6 +58,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "example": undefined,
           "expanded": false,
           "in": undefined,
+          "kind": "field",
           "name": "type",
           "required": true,
           "schema": SchemaModel {

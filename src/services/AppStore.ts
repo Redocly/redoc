@@ -49,7 +49,7 @@ export class AppStore {
   spec: SpecStore;
   rawOptions: RedocRawOptions;
   options: RedocNormalizedOptions;
-  search: SearchStore;
+  search: SearchStore<string>;
   marker = new MarkerService();
 
   private scroll: ScrollService;

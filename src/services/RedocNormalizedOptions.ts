@@ -14,6 +14,8 @@ export interface RedocRawOptions {
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
+
+  unstable_ignoreMimeParameters?: boolean;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -92,6 +94,9 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
 
+  /* tslint:disable-next-line */
+  unstable_ignoreMimeParameters: boolean;
+
   constructor(raw: RedocRawOptions) {
     this.theme = resolveTheme(mergeObjects({} as any, defaultTheme, raw.theme || {}));
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
@@ -103,5 +108,7 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+
+    this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
   }
 }

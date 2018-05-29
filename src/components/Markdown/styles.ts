@@ -1,7 +1,14 @@
+import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
+
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
-import { css } from '../../styled-components';
+import { css, ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 export const markdownCss = css`
+
+  font-family: ${props => props.theme.baseFont.family};
+  font-weight: ${props => props.theme.baseFont.weight};
+  line-height: ${props => props.theme.baseFont.lineHeight};
+
   p {
     &:last-of-type {
       margin-bottom: 0;
@@ -28,8 +35,8 @@ export const markdownCss = css`
   }
 
   code {
-    color: #e53935;
-    background-color: rgba(38, 50, 56, 0.04);
+    color: ${({ theme }) => theme.colors.code};
+    background-color: ${({ theme }) => theme.colors.codeBg};
     font-family: ${props => props.theme.code.fontFamily};
     border-radius: 2px;
     border: 1px solid rgba(38, 50, 56, 0.1);
@@ -77,9 +84,6 @@ export const markdownCss = css`
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
-    font-family: ${props => props.theme.baseFont.family};
-    font-weight: ${props => props.theme.baseFont.weight};
-    line-height: ${props => props.theme.baseFont.lineHeight};
     > li {
       margin: 1em 0;
     }

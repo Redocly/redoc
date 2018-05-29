@@ -12,6 +12,7 @@ import {
   getOperationSummary,
   isAbsolutePath,
   JsonPointer,
+  mergeParams,
   sortByRequired,
   stripTrailingSlash,
 } from '../../utils';
@@ -65,7 +66,9 @@ export class OperationModel implements IMenuItem {
     this.id =
       operationSpec.operationId !== undefined
         ? 'operation/' + operationSpec.operationId
-        : this.parent !== undefined ? this.parent.id + operationSpec._$ref : operationSpec._$ref;
+        : this.parent !== undefined
+          ? this.parent.id + operationSpec._$ref
+          : operationSpec._$ref;
 
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
@@ -83,9 +86,11 @@ export class OperationModel implements IMenuItem {
     this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = JsonPointer.baseName(this._$ref, 2);
 
-    this.parameters = operationSpec.pathParameters
-      .concat(operationSpec.parameters || [])
-      .map(paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options));
+    this.parameters = mergeParams(
+      parser,
+      operationSpec.pathParameters,
+      operationSpec.parameters,
+    ).map(paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options));
 
     if (options.requiredPropsFirst) {
       sortByRequired(this.parameters);

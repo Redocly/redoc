@@ -19,14 +19,16 @@ export class FieldModel {
   example?: string;
   deprecated: boolean;
   in?: string;
+  kind: string;
 
   constructor(
     parser: OpenAPIParser,
-    infoOrRef: Referenced<OpenAPIParameter> & { name?: string },
+    infoOrRef: Referenced<OpenAPIParameter> & { name?: string; kind?: string },
     pointer: string,
     options: RedocNormalizedOptions,
   ) {
     const info = parser.deref<OpenAPIParameter>(infoOrRef);
+    this.kind = infoOrRef.kind || 'field';
     this.name = infoOrRef.name || info.name;
     this.in = info.in;
     this.required = !!info.required;

@@ -1,5 +1,7 @@
-import * as React from 'react';
+/* tslint:disable:no-implicit-dependencies */
+
 import { mount, ReactWrapper } from 'enzyme';
+import * as React from 'react';
 
 import { JsonViewer } from '../';
 import { withTheme } from '../testProviders';

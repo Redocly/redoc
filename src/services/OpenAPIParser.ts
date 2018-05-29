@@ -46,8 +46,8 @@ export class OpenAPIParser {
 
   constructor(
     spec: OpenAPISpec,
-    specUrl: string | undefined,
-    private options: RedocNormalizedOptions,
+    specUrl?: string,
+    private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
     this.preprocess(spec);
@@ -162,6 +162,13 @@ export class OpenAPIParser {
         return res;
       }
       return resolved;
+    }
+    return obj;
+  }
+
+  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
+    if (this.isRef(obj)) {
+      return this.byRef<T>(obj.$ref)!;
     }
     return obj;
   }

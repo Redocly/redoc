@@ -5,7 +5,7 @@ import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils';
 
-interface StoreProviderProps {
+export interface StoreProviderProps {
   specUrl?: string;
   spec?: object;
   store?: AppStore;
@@ -15,7 +15,7 @@ interface StoreProviderProps {
   children: (props: { loading: boolean; store?: AppStore }) => any;
 }
 
-interface StoreProviderState {
+export interface StoreProviderState {
   error?: Error;
   loading: boolean;
   store?: AppStore;
