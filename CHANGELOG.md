@@ -1,3 +1,23 @@
+<a name="2.0.0-alpha.22"></a>
+# [2.0.0-alpha.22](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.21...v2.0.0-alpha.22) (2018-05-29)
+
+
+### Bug Fixes
+
+* **cli:** create directories when a path is specified in the --output option ([#513](https://github.com/Rebilly/ReDoc/issues/513)) ([ac7372b](https://github.com/Rebilly/ReDoc/commit/ac7372b)), closes [#512](https://github.com/Rebilly/ReDoc/issues/512)
+* **cli:** return 1 as exit code if an error happens in the cli ([#516](https://github.com/Rebilly/ReDoc/issues/516)) ([720c304](https://github.com/Rebilly/ReDoc/commit/720c304))
+* fix font-weight inconsistency ([6ea2b7b](https://github.com/Rebilly/ReDoc/commit/6ea2b7b)), closes [#506](https://github.com/Rebilly/ReDoc/issues/506)
+* HEAD http verb support in menu badges ([2eb1952](https://github.com/Rebilly/ReDoc/commit/2eb1952)), closes [#493](https://github.com/Rebilly/ReDoc/issues/493)
+* more descriptive message for wrong discriminator use ([3c6de2c](https://github.com/Rebilly/ReDoc/commit/3c6de2c)), closes [#505](https://github.com/Rebilly/ReDoc/issues/505)
+
+
+### Features
+
+* add new experimental option unstable_ignoreMimeParameters ([d162bab](https://github.com/Rebilly/ReDoc/commit/d162bab))
+* support x-discriminator for OpenAPI 2 ([aaff311](https://github.com/Rebilly/ReDoc/commit/aaff311)), closes [#496](https://github.com/Rebilly/ReDoc/issues/496)
+
+
+
 <a name="2.0.0-alpha.21"></a>
 # [2.0.0-alpha.21](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.20...v2.0.0-alpha.21) (2018-05-28)
 
