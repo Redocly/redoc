@@ -14,6 +14,7 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { createReadStream, existsSync, readFileSync, ReadStream, watch, writeFileSync } from 'fs';
+import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
 
@@ -186,6 +187,7 @@ async function bundle(pathToSpec, options: Options = {}) {
   const spec = await loadAndBundleSpec(pathToSpec);
   const pageHTML = await getPageHTML(spec, pathToSpec, { ...options, ssr: true });
 
+  mkdirp.sync(dirname(options.output!));
   writeFileSync(options.output!, pageHTML);
   const sizeInKiB = Math.ceil(Buffer.byteLength(pageHTML) / 1024);
   const time = Date.now() - start;
