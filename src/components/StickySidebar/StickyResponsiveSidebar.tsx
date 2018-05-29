@@ -114,7 +114,7 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
               style={style(options)}
               // tslint:disable-next-line
               innerRef={el => {
-                this.stickyElement = el;
+                this.stickyElement = el as any;
               }}
             >
               {this.props.children}
