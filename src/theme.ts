@@ -26,6 +26,7 @@ const defaultTheme: ThemeInterface = {
       delete: '#e27a7a',
       basic: '#999',
       link: '#31bbb6',
+      head: '#c167e4',
     },
   },
   schemaView: {
@@ -132,6 +133,7 @@ export interface ResolvedThemeInterface {
       delete: string;
       basic: string;
       link: string;
+      head: string;
     };
   };
   schemaView: {

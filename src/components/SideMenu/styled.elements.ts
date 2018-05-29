@@ -19,7 +19,7 @@ export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   background-color: #333;
   border-radius: 3px;
   vertical-align: top;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAACgCAYAAADuDlcXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFNjQ5N0JDQUE3OTYxMUU0ODNGMUE0RUM3NjRDRTQyNyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFNjQ5N0JDQkE3OTYxMUU0ODNGMUE0RUM3NjRDRTQyNyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU2NDk3QkM4QTc5NjExRTQ4M0YxQTRFQzc2NENFNDI3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU2NDk3QkM5QTc5NjExRTQ4M0YxQTRFQzc2NENFNDI3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+mIrGwQAAAZ9JREFUeNrsmtuOwyAMRBmU//9lbx9208ayjQ1EarSDVFW56ARIGGZIIK/S3gWvX3X7LN3a6WxDHdPnnDBpcZHEOe3wrmLUMg2zatKykPOq1/5fK71tLIQR9jjYsaJfWdWAAcRsM2W1z9LNGcFkRlmtPhvpf7qmHAGEESZqLFr/qbHaCy4Is6oxLdvT+nWr0lLPCCPsFn+mA5e2UjLycL1o6qLMiapqRGoifVCDinrgU2mRyJthzZg3CSPs+2HhIM4YGq0a4oDgiGjYTKw20/OwUzAEuXz73YSqtdsV+F1a3eZpweFEGGG7Y3ULbJRk4nYPlEHbUi86wpNtbz4oB37PICOrLEdC9DKzFv7EkQ8tYY8Nr8tuyJrRsdpMrIJ0n4GPBmGEEUbYzRMKnFwug1B7rppmbCiyBjBrQ1vC8KW/CxrF7osNrRbxMjofWsIIuwU2vapnZfTRq4/wFXl3hG9bMzP6ZWV47LoB+Gym1/EyUleKI2GEPW8pQpu80bHLvsifSWFVAVEzo2VDTxxb9T16eO7sF0vmxPNPxPFHgAEA/rGUMXq/uWcAAAAASUVORK5CYII=");
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAACgCAMAAADZ0KclAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////////VXz1bAAAAAJ0Uk5T/wDltzBKAAAA80lEQVR42uSWSwLCIAxEX+5/aa2QZBJw5UIt9QMdRqSPEAAw/TyvqzZf150NzdXL49qreXwXjeqz9bqN1tgJl/KLyaVrrL7K7gx+1vlNMqy+helOO4rfBGYZiEkq1ubQ3DeKvc97Et+d+e01vIZlLZZqb1WNJFd8ZKYsmv4Hh3H2fDgjMUI5WSExjiEZs7rEZ5T+/jQn9lhgsw53j/e9MQtxqPsbZY54M5fNl/MY/f1s7NbRSkYlYjc0KPsWMrmhIU9933ywxDiSE+upYNH8TdusUotllNvcAUzfnE/NC4OSYyklQhpdl9E4Tw0Cm4/G9xBgAO7VCkjWLOMfAAAAAElFTkSuQmCC");
   background-repeat: no-repeat;
   background-position: 6px 4px;
   text-indent: -9000px;
@@ -64,6 +64,11 @@ export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   &.link {
     background-position: 4px -131px;
     background-color: ${props => props.theme.colors.http.link};
+  }
+
+  &.head {
+    background-position: 6px -102px;
+    background-color:  ${props => props.theme.colors.http.head};
   }
 `;
 
