@@ -3,12 +3,13 @@ import { action, computed, observable } from 'mobx';
 import { OpenAPIMediaType } from '../../types';
 import { MediaTypeModel } from './MediaType';
 
+import { mergeSimilarMediaTypes } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 /**
  * MediaContent model ready to be sued by React components
- * Contains multiple MediaTypes and keeps track of the currently active on
+ * Contains multiple MediaTypes and keeps track of the currently active one
  */
 export class MediaContentModel {
   mediaTypes: MediaTypeModel[];
@@ -20,10 +21,13 @@ export class MediaContentModel {
    */
   constructor(
     public parser: OpenAPIParser,
-    info: { [mime: string]: OpenAPIMediaType },
+    info: Dict<OpenAPIMediaType>,
     public isRequestType: boolean,
     options: RedocNormalizedOptions,
   ) {
+    if (options.unstable_ignoreMimeParameters) {
+      info = mergeSimilarMediaTypes(info);
+    }
     this.mediaTypes = Object.keys(info).map(name => {
       const mime = info[name];
       // reset deref cache just in case something is left there

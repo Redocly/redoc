@@ -1,5 +1,11 @@
 import { OpenAPIParser } from '../services/OpenAPIParser';
-import { OpenAPIOperation, OpenAPIParameter, OpenAPISchema, Referenced } from '../types';
+import {
+  OpenAPIMediaType,
+  OpenAPIOperation,
+  OpenAPIParameter,
+  OpenAPISchema,
+  Referenced,
+} from '../types';
 
 export function getStatusCodeType(statusCode: string | number, defaultAsError = false): string {
   if (statusCode === 'default') {
@@ -197,6 +203,22 @@ export function mergeParams(
   });
 
   return pathParams.concat(operationParams);
+}
+
+export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<OpenAPIMediaType> {
+  const mergedTypes = {};
+  Object.keys(types).forEach(name => {
+    const mime = types[name];
+    // ignore content type parameters (e.g. charset) and merge
+    const normalizedMimeName = name.split(';')[0].trim();
+    if (!mergedTypes[normalizedMimeName]) {
+      mergedTypes[normalizedMimeName] = mime;
+      return;
+    }
+    mergedTypes[normalizedMimeName] = { ...mergedTypes[normalizedMimeName], ...mime };
+  });
+
+  return mergedTypes;
 }
 
 export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';
