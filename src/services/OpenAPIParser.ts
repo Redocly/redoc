@@ -9,7 +9,7 @@ import { isNamedDefinition } from '../utils/openapi';
 import { buildComponentComment, COMPONENT_REGEXP } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
-export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
+export type DereferedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
 
 /**
  * Helper class to keep track of visited references to avoid
@@ -105,7 +105,7 @@ export class OpenAPIParser {
     } catch (e) {
       // do nothing
     }
-    return res || {};
+    return JSON.parse(JSON.stringify(res)) || {};
   };
 
   /**
@@ -166,6 +166,59 @@ export class OpenAPIParser {
     return obj;
   }
 
+  /**
+   * Resolve given reference object or return as is if it is not a reference
+   * @param obj object to dereference
+   * @param forceCircular whether to dereference even if it is cirular ref
+   */
+  derefSchema(schema: OpenAPISchema): DereferedOpenAPISchema {
+    if (schema['x-derefered']) {
+      return schema;
+    }
+
+    const receiver: DereferedOpenAPISchema = {
+      ...JSON.parse(JSON.stringify(this.deref<OpenAPISchema>(schema)!)),
+      parentRefs: [],
+    };
+
+    if (this.isRef(schema)) {
+      receiver.parentRefs!.push(schema.$ref);
+    }
+
+    if (this.isRef(schema) && receiver.title === undefined && isNamedDefinition(schema.$ref)) {
+      receiver.title = JsonPointer.baseName(schema.$ref);
+    }
+
+    if (receiver['x-circular-ref']) {
+      this.exitRef(schema);
+      return receiver;
+    }
+
+    for (const property of ['properties', 'anyOf', 'allOf', 'oneOf']) {
+      if (receiver[property] !== undefined) {
+        for (const prop in receiver[property]) {
+          const subSchema = this.derefSchema(receiver[property][prop]);
+          receiver.parentRefs!.push(...(subSchema.parentRefs || []));
+
+          receiver[property][prop] = subSchema;
+        }
+      }
+    }
+    for (const property of ['items']) {
+      if (receiver[property] !== undefined) {
+        const subSchema = this.derefSchema(receiver[property]);
+        receiver.parentRefs!.push(...(subSchema.parentRefs || []));
+
+        receiver[property] = subSchema;
+      }
+    }
+
+    this.exitRef(schema);
+
+    // tslint:disable-next-line
+    return Object.assign({}, receiver, { 'x-derefered': true });
+  }
+
   shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
     if (this.isRef(obj)) {
       return this.byRef<T>(obj.$ref)!;
@@ -181,53 +234,50 @@ export class OpenAPIParser {
    */
   mergeAllOf(
     schema: OpenAPISchema,
-    $ref?: string,
-    forceCircular: boolean = false,
-  ): MergedOpenAPISchema {
-    if (schema.allOf === undefined) {
+  ): OpenAPISchema {
+    if (schema.allOf === undefined || schema['x-circular-ref']) {
       return schema;
     }
 
-    let receiver: MergedOpenAPISchema = {
+    let receiver: OpenAPISchema = {
       ...schema,
       allOf: undefined,
-      parentRefs: [],
     };
 
-    const allOfSchemas = schema.allOf.map(subSchema => {
-      const resolved = this.deref(subSchema, forceCircular);
-      const subRef = subSchema.$ref || undefined;
-      const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
-      receiver.parentRefs!.push(...(subMerged.parentRefs || []));
-      return {
-        $ref: subRef,
-        schema: subMerged,
-      };
-    });
-
-    for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
+    for (const subSchemaRaw of schema.allOf) {
+      const subSchema = this.mergeAllOf(subSchemaRaw);
       if (
         receiver.type !== subSchema.type &&
         receiver.type !== undefined &&
         subSchema.type !== undefined
       ) {
-        throw new Error(`Incompatible types in allOf at "${$ref}"`);
+        throw new Error(`Incompatible types in allOf at "${schema.title}"`);
       }
 
       if (subSchema.type !== undefined) {
         receiver.type = subSchema.type;
       }
 
+      if (receiver.title === undefined) {
+        receiver.title = subSchema.title;
+      }
+
+      if (!!subSchema['x-circular-ref']) {
+        receiver = { ...subSchema, ...receiver };
+        continue;
+      }
+
+      receiver.required = [...(receiver.required || []), ...(subSchema.required || [])];
       if (subSchema.properties !== undefined) {
         receiver.properties = receiver.properties || {};
         for (const prop in subSchema.properties) {
+          const mergedProp = this.mergeAllOf(subSchema.properties[prop]);
           if (!receiver.properties[prop]) {
-            receiver.properties[prop] = subSchema.properties[prop];
+            receiver.properties[prop] = mergedProp;
           } else {
             // merge inner properties
             receiver.properties[prop] = this.mergeAllOf(
-              { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
-              $ref + '/properties/' + prop,
+              { allOf: [receiver.properties[prop], mergedProp] },
             );
           }
         }
@@ -235,32 +285,20 @@ export class OpenAPIParser {
 
       if (subSchema.items !== undefined) {
         receiver.items = receiver.items || {};
-        // merge inner properties
-        receiver.items = this.mergeAllOf(
-          { allOf: [receiver.items, subSchema.items] },
-          $ref + '/items',
-        );
-      }
-
-      if (subSchema.required !== undefined) {
-        receiver.required = (receiver.required || []).concat(subSchema.required);
+        const mergedItems = this.mergeAllOf(subSchema.items);
+        if (!receiver.items) {
+          receiver.items = mergedItems;
+        } else {
+          // merge inner items
+          receiver.items = this.mergeAllOf(
+            { allOf: [receiver.items, mergedItems] },
+          );
+        }
       }
 
       // merge rest of constraints
       // TODO: do more intelegent merge
       receiver = { ...subSchema, ...receiver };
-
-      if (subSchemaRef) {
-        receiver.parentRefs!.push(subSchemaRef);
-        if (receiver.title === undefined && isNamedDefinition(subSchemaRef)) {
-          receiver.title = JsonPointer.baseName(subSchemaRef);
-        }
-      }
-    }
-
-    // name of definition or title on top level
-    if (schema.title === undefined && isNamedDefinition($ref)) {
-      receiver.title = JsonPointer.baseName($ref);
     }
 
     return receiver;
@@ -278,10 +316,11 @@ export class OpenAPIParser {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&
-        def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
+        def.allOf.find(obj => obj.$ref !== undefined && $refs.includes(obj.$ref))
       ) {
         res['#/components/schemas/' + defName] = defName;
       }
+      this.exitRef(schemas[defName]);
     }
     return res;
   }
