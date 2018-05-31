@@ -1,3 +1,16 @@
+<a name="2.0.0-alpha.23"></a>
+# [2.0.0-alpha.23](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.22...v2.0.0-alpha.23) (2018-05-31)
+
+
+### Bug Fixes
+
+* **cli:** make positional arguments required and handle errors in serve and bundle manually ([#518](https://github.com/Rebilly/ReDoc/issues/518)) ([370d08a](https://github.com/Rebilly/ReDoc/commit/370d08a))
+* fix typings on npm ([d957ad7](https://github.com/Rebilly/ReDoc/commit/d957ad7))
+* fix vertical line misaligned in firefox ([bde08f1](https://github.com/Rebilly/ReDoc/commit/bde08f1)), closes [#503](https://github.com/Rebilly/ReDoc/issues/503)
+* mergeAllOf takes items into account ([#511](https://github.com/Rebilly/ReDoc/issues/511)) ([47b2177](https://github.com/Rebilly/ReDoc/commit/47b2177))
+
+
+
 <a name="2.0.0-alpha.22"></a>
 # [2.0.0-alpha.22](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.21...v2.0.0-alpha.22) (2018-05-29)
 
