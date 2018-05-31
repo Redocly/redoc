@@ -1,6 +1,6 @@
 *
 !bundles/*
-!typings/*
+!typings/**/*
 !package.json
 !README.md
 !LICENSE
