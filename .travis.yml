@@ -15,7 +15,7 @@ env:
 addons:
   chrome: stable
 before_script: npm run bundle
-script: npm test && npm run e2e-ci
+script: npm test && [ "${TRAVIS_PULL_REQUEST}" = "false" ] && npm run e2e-ci || npm run e2e 
 after_script: cat ./coverage/lcov.info | coveralls
 before_deploy: npm run compile:cli && npm run declarations
 deploy:
