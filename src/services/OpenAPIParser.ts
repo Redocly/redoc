@@ -233,6 +233,15 @@ export class OpenAPIParser {
         }
       }
 
+      if (subSchema.items !== undefined) {
+        receiver.items = receiver.items || {};
+        // merge inner properties
+        receiver.items = this.mergeAllOf(
+          { allOf: [receiver.items, subSchema.items] },
+          $ref + '/items',
+        );
+      }
+
       if (subSchema.required !== undefined) {
         receiver.required = (receiver.required || []).concat(subSchema.required);
       }
