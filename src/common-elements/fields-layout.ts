@@ -117,7 +117,7 @@ export const InnerPropertiesWrap = styled.div`
 `;
 
 export const PropertiesTable = styled.table`
-  border-collapse: collapse;
+  border-collapse: separate;
   border-radius: 3px;
   font-size: ${props => props.theme.baseFont.size};
 
