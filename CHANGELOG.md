@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.24"></a>
+# [2.0.0-alpha.24](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.23...v2.0.0-alpha.24) (2018-06-01)
+
+
+### Bug Fixes
+
+* temporary downgrade marked as it introduced breaking changes and a few bugs ([902f97a](https://github.com/Rebilly/ReDoc/commit/902f97a))
+
+
+
 <a name="2.0.0-alpha.23"></a>
 # [2.0.0-alpha.23](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.22...v2.0.0-alpha.23) (2018-05-31)
 
