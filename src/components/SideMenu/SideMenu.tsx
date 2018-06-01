@@ -6,6 +6,7 @@ import { IMenuItem, MenuStore } from '../../services/MenuStore';
 import { MenuItems } from './MenuItems';
 
 import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';
+import { RedocAttribution } from './styled.elements';
 
 @observer
 export class SideMenu extends React.Component<{ menu: MenuStore }> {
@@ -29,6 +30,11 @@ export class SideMenu extends React.Component<{ menu: MenuStore }> {
           ) : (
             <PerfectScrollbar updateFn={this.saveScrollUpdate}>
               <MenuItems items={store.items} onActivate={this.activate} root={true} />
+              <RedocAttribution>
+                <a target="_blank" href="https://github.com/Rebilly/ReDoc">
+                  Documentation Powered by ReDoc
+                </a>
+              </RedocAttribution>
             </PerfectScrollbar>
           )
         }

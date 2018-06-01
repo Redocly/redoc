@@ -160,3 +160,21 @@ export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+
+export const RedocAttribution = styled.div`
+  font-size: 0.8em;
+  margin-top: ${({ theme }) => `${theme.spacingUnit / 2}px`};
+  padding: ${({ theme }) => `0 ${theme.spacingUnit}px`};
+  text-align: left;
+
+  opacity: 0.7;
+
+  a,
+  a:visited,
+  a:hover {
+    color: ${({ theme }) => theme.colors.text} !important;
+    border-top: 1px solid #e1e1e1;
+    padding-top: 10px;
+    display: block;
+  }
+`;
