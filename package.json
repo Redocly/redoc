@@ -131,7 +131,7 @@
     "json-schema-ref-parser": "^5.0.0",
     "lunr": "^2.2.1",
     "mark.js": "^8.11.1",
-    "marked": "^0.4.0",
+    "marked": "0.3.18",
     "mobx": "^4.3.0",
     "mobx-react": "^5.0.0",
     "openapi-sampler": "1.0.0-beta.12",
