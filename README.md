@@ -212,12 +212,13 @@ You can use all of the following options with standalone version on <redoc> tag 
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
 ```js
-Redoc.init(specOrSpecUrl, options, element)
+Redoc.init(specOrSpecUrl, options, element, callback?)
 ```
 
 - `specOrSpecUrl` is either JSON object with specification or an URL to the spec in `JSON` or `YAML` format
 - `options` [options object](#redoc-options-object)
 - `element` DOM element to put ReDoc into
+- `callback` (optional) - callback to be called after Redoc has been fully rendered
 
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
