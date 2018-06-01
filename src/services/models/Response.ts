@@ -13,6 +13,7 @@ export class ResponseModel {
 
   content?: MediaContentModel;
   code: string;
+  summary: string;
   description: string;
   type: string;
   headers: FieldModel[] = [];
@@ -32,7 +33,15 @@ export class ResponseModel {
     if (info.content !== undefined) {
       this.content = new MediaContentModel(parser, info.content, false, options);
     }
-    this.description = info.description || '';
+
+    if (info['x-summary'] !== undefined) {
+      this.summary = info['x-summary'];
+      this.description = info.description || '';
+    } else {
+      this.summary = info.description || '';
+      this.description = '';
+    }
+
     this.type = getStatusCodeType(code, defaultAsError);
 
     const headers = info.headers;
