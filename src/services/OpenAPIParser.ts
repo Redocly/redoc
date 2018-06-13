@@ -280,7 +280,7 @@ export class OpenAPIParser {
         def.allOf !== undefined &&
         def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
       ) {
-        res['#/components/schemas/' + defName] = defName;
+        res['#/components/schemas/' + defName] = def['x-discriminator-value'] || defName;
       }
     }
     return res;
