@@ -10,7 +10,9 @@ import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
 
 import {
   getOperationSummary,
+  getStatusCodeType,
   isAbsolutePath,
+  isStatusCode,
   JsonPointer,
   mergeParams,
   sortByRequired,
@@ -99,10 +101,15 @@ export class OperationModel implements IMenuItem {
     let hasSuccessResponses = false;
     this.responses = Object.keys(operationSpec.responses || [])
       .filter(code => {
-        if (parseInt(code, 10) >= 100 && parseInt(code, 10) <= 399) {
+        if (code === 'default') {
+          return true;
+        }
+
+        if (getStatusCodeType(code) === 'success') {
           hasSuccessResponses = true;
         }
-        return isNumeric(code) || code === 'default';
+
+        return isStatusCode(code);
       }) // filter out other props (e.g. x-props)
       .map(code => {
         return new ResponseModel(

@@ -6,21 +6,35 @@ import {
   OpenAPISchema,
   Referenced,
 } from '../types';
+import { isNumeric } from './helpers';
 
-export function getStatusCodeType(statusCode: string | number, defaultAsError = false): string {
+function isWildcardStatusCode(statusCode: string | number): statusCode is string {
+  return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
+}
+
+export function isStatusCode(statusCode: string) {
+  return statusCode === 'default' || isNumeric(statusCode) || isWildcardStatusCode(statusCode);
+}
+
+export function getStatusCodeType(statusCode: string, defaultAsError = false): string {
   if (statusCode === 'default') {
     return defaultAsError ? 'error' : 'success';
   }
 
-  if (statusCode < 100 || statusCode > 599) {
+  let code = parseInt(statusCode, 10);
+  if (isWildcardStatusCode(statusCode)) {
+    code *= 100; // parseInt('2xx') parses to 2
+  }
+
+  if (code < 100 || code > 599) {
     throw new Error('invalid HTTP code');
   }
   let res = 'success';
-  if (statusCode >= 300 && statusCode < 400) {
+  if (code >= 300 && code < 400) {
     res = 'redirect';
-  } else if (statusCode >= 400) {
+  } else if (code >= 400) {
     res = 'error';
-  } else if (statusCode < 200) {
+  } else if (code < 200) {
     res = 'info';
   }
   return res;
