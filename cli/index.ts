@@ -32,7 +32,7 @@ const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
 /* tslint:disable-next-line */
 YargsParser.command(
-  'serve [spec]',
+  'serve <spec>',
   'start the server',
   yargs => {
     yargs.positional('spec', {
@@ -60,16 +60,22 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
-    await serve(argv.port, argv.spec, {
+    const config = {
       ssr: argv.ssr,
       watch: argv.watch,
       templateFileName: argv.template,
       redocOptions: argv.options || {},
-    });
+    };
+
+    try {
+      await serve(argv.port, argv.spec, config);
+    } catch (e) {
+      handleError(e);
+    }
   },
 )
   .command(
-    'bundle [spec]',
+    'bundle <spec>',
     'bundle spec into zero-dependency HTML-file',
     yargs => {
       yargs.positional('spec', {
@@ -99,16 +105,22 @@ YargsParser.command(
       return yargs;
     },
     async argv => {
-      await bundle(argv.spec, {
+      const config = {
         ssr: true,
         output: argv.o,
         cdn: argv.cdn,
         title: argv.title,
         templateFileName: argv.template,
         redocOptions: argv.options || {},
-      });
+      };
+
+      try {
+        await bundle(argv.spec, config);
+      } catch (e) {
+        handleError(e);
+      }
     },
-  )
+)
   .demandCommand()
   .options('t', {
     alias: 'template',
@@ -117,10 +129,6 @@ YargsParser.command(
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
-  })
-  .fail((message, error) => {
-    console.log(error.stack);
-    process.exit(1);
   }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
@@ -229,13 +237,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-    };
+      };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+        : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
   });
@@ -295,4 +303,9 @@ function isURL(str: string): boolean {
 // see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
 function escapeUnicode(str) {
   return str.replace(/\u2028|\u2029/g, m => '\\u202' + (m === '\u2028' ? '8' : '9'));
+}
+
+function handleError(error: Error) {
+  console.error(error.stack);
+  process.exit(1);
 }

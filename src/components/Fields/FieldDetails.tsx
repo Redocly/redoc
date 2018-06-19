@@ -28,12 +28,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         <div>
           <TypePrefix>{schema.typePrefix}</TypePrefix>
           <TypeName>{schema.displayType}</TypeName>
-          {schema.format && (
-            <TypeFormat>
-              {' <'}
-              {schema.format}>
-            </TypeFormat>
-          )}
+          {schema.format && <TypeFormat> &lt;{schema.format}&gt; </TypeFormat>}
           {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> Nullable </NullableLabel>}

@@ -200,6 +200,16 @@ Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObj
 ###### Usage in ReDoc
 `x-examples` are rendered in the JSON tab on the right panel of ReDoc.
 
+### Response Object vendor extensions
+Extneds OpeanAPI [Response Object](https://swagger.io/specification/#responseObject)
+
+#### x-summary
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-summary      | string   | a short summary of the response |
+
+###### Usage in ReDoc
+If specified, `x-summary` is used as the response button text. Description is rendered under the button.
 
 ### Schema Object vendor extensions
 Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)

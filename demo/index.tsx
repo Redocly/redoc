@@ -11,7 +11,7 @@ const demos = [
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml',
     label: 'Google Calendar',
   },
-  { value: 'https://api.apis.guru/v2/specs/slack.com/1.0.3/swagger.yaml', label: 'Slack' },
+  { value: 'https://api.apis.guru/v2/specs/slack.com/1.0.6/swagger.yaml', label: 'Slack' },
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
   {
     value: 'https://api.apis.guru/v2/specs/graphhopper.com/1.0/swagger.yaml',

@@ -21,9 +21,10 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
     const sampleView = isJsonLike(mimeType)
       ? sample => <JsonViewer data={sample} />
       : sample =>
-          (sample && <SourceCodeWithCopy lang={langFromMime(mimeType)} source={sample} />) || {
-            noSample,
-          };
+          (sample !== undefined && (
+            <SourceCodeWithCopy lang={langFromMime(mimeType)} source={sample} />
+          )) ||
+          noSample;
 
     const examplesNames = Object.keys(examples);
     if (examplesNames.length === 0) {

@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-alpha.22",
+  "version": "2.0.0-alpha.24",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -51,10 +51,10 @@
     "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause' --summary"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.40",
-    "@babel/plugin-syntax-decorators": "^7.0.0-beta.42",
-    "@babel/plugin-syntax-jsx": "^7.0.0-beta.42",
-    "@babel/plugin-syntax-typescript": "^7.0.0-beta.42",
+    "@babel/core": "7.0.0-beta.47",
+    "@babel/plugin-syntax-decorators": "7.0.0-beta.47",
+    "@babel/plugin-syntax-jsx": "7.0.0-beta.47",
+    "@babel/plugin-syntax-typescript": "7.0.0-beta.47",
     "@cypress/webpack-preprocessor": "2.0.1",
     "@types/dompurify": "^0.0.31",
     "@types/enzyme": "^3.1.8",
@@ -138,7 +138,7 @@
     "json-schema-ref-parser": "^5.0.0",
     "lunr": "^2.2.1",
     "mark.js": "^8.11.1",
-    "marked": "^0.4.0",
+    "marked": "0.3.18",
     "mobx": "^4.3.0",
     "mobx-react": "^5.0.0",
     "openapi-sampler": "1.0.0-beta.12",

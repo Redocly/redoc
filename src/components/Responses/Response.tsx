@@ -8,6 +8,7 @@ import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
 
+import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
 import { ResponseDetailsWrap, StyledResponseTitle } from './styled.elements';
 
@@ -18,11 +19,11 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
   };
 
   render() {
-    const { headers, type, description, code, expanded, content } = this.props.response;
+    const { headers, type, summary, description, code, expanded, content } = this.props.response;
     const mimes =
       content === undefined ? [] : content.mediaTypes.filter(mime => mime.schema !== undefined);
 
-    const empty = headers.length === 0 && mimes.length === 0;
+    const empty = headers.length === 0 && mimes.length === 0 && !description;
 
     return (
       <div>
@@ -30,13 +31,14 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
           onClick={this.toggle}
           type={type}
           empty={empty}
-          title={description || ''}
+          title={summary || ''}
           code={code}
           opened={expanded}
         />
         {expanded &&
           !empty && (
             <ResponseDetailsWrap>
+              {description && <Markdown source={description} />}
               <ResponseHeaders headers={headers} />
               <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>
                 {({ schema }) => {
