@@ -22,9 +22,9 @@ const big = window.location.search.indexOf('big') > -1;
 const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
 
 let specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
-specUrl = 'intent.json';
+//specUrl = 'intent.json';
 //specUrl = 'swagger.yaml';
-//specUrl = 'petstore.json';
+specUrl = 'petstore.json';
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };

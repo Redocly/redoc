@@ -1,4 +1,5 @@
-import styled, { css } from '../styled-components';
+import * as React from 'react';
+import styled, { css, ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 
 export const Toggle = styled.input`
   padding: 0.5em;

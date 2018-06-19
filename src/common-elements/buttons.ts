@@ -1,4 +1,5 @@
-import styled, { StyledComponentClass, withProps } from '../styled-components';
+import * as React from 'react';
+import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 
 
 export const Button = styled.button`
