@@ -134,7 +134,7 @@
     "marked": "0.3.18",
     "mobx": "^4.3.0",
     "mobx-react": "^5.0.0",
-    "openapi-sampler": "1.0.0-beta.12",
+    "openapi-sampler": "1.0.0-beta.13",
     "perfect-scrollbar": "^1.3.0",
     "polished": "^1.9.2",
     "prismjs": "^1.12.2",

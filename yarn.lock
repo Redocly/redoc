@@ -7263,9 +7263,9 @@ ono@^4.0.3:
   dependencies:
     format-util "^1.0.3"
 
-openapi-sampler@1.0.0-beta.12:
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-1.0.0-beta.12.tgz#c84fd387db4d9856ce74f714025d355e96f69736"
+openapi-sampler@1.0.0-beta.13:
+  version "1.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-1.0.0-beta.13.tgz#bb8ea6f38471d6f0140c716e5f89242d1d277093"
   dependencies:
     json-pointer "^0.6.0"
 
