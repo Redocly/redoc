@@ -57,6 +57,11 @@ export interface OpenAPIPath {
   parameters?: Array<Referenced<OpenAPIParameter>>;
 }
 
+export interface OpenAPIXCodeSample {
+  lang: string;
+  source: string;
+}
+
 export interface OpenAPIOperation {
   tags?: string[];
   summary?: string;
@@ -70,6 +75,7 @@ export interface OpenAPIOperation {
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
+  'x-code-samples'?: OpenAPIXCodeSample[];
 }
 
 export interface OpenAPIParameter {
