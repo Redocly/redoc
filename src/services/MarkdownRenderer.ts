@@ -41,9 +41,13 @@ export class MarkdownRenderer {
     this.headingEnhanceRenderer.heading = this.headingRule;
   }
 
-  saveHeading(name: string, container: MarkdownHeading[] = this.headings): MarkdownHeading {
+  saveHeading(
+    name: string,
+    container: MarkdownHeading[] = this.headings,
+    parentId?: string,
+  ): MarkdownHeading {
     const item = {
-      id: 'section' + '/' + slugify(name),
+      id: parentId ? `${parentId}/${slugify(name)}` : `section/${slugify(name)}`,
       name,
       items: [],
     };
@@ -95,7 +99,11 @@ export class MarkdownRenderer {
         `<a class="share-link" href="#${id}"></a>${text}</h${level}>`
       );
     } else if (level === 2) {
-      const { id } = this.saveHeading(text, this.currentTopHeading && this.currentTopHeading.items);
+      const { id } = this.saveHeading(
+        text,
+        this.currentTopHeading && this.currentTopHeading.items,
+        this.currentTopHeading && this.currentTopHeading.id,
+      );
       return (
         `<a name="${id}"></a>` +
         `<h${level} ${SECTION_ATTR}="${id}" id="${id}">` +

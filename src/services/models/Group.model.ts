@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import slugify from 'slugify';
 
 import { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
+import { MarkdownHeading } from '../MarkdownRenderer';
 import { ContentItemModel } from '../MenuBuilder';
 import { IMenuItem, MenuItemGroupType } from '../MenuStore';
 
@@ -25,13 +26,18 @@ export class GroupModel implements IMenuItem {
   depth: number;
   //#endregion
 
-  constructor(type: MenuItemGroupType, tagOrGroup: OpenAPITag, parent?: GroupModel) {
-    this.id = type + '/' + slugify(tagOrGroup.name);
+  constructor(
+    type: MenuItemGroupType,
+    tagOrGroup: OpenAPITag | MarkdownHeading,
+    parent?: GroupModel,
+  ) {
+    // markdown headings already have ids calculated as they are needed for heading anchors
+    this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + slugify(tagOrGroup.name);
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.description = tagOrGroup.description || '';
     this.parent = parent;
-    this.externalDocs = tagOrGroup.externalDocs;
+    this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;
 
     // groups are active (expanded) by default
     if (this.type === 'group') {
