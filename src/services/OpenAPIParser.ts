@@ -225,6 +225,10 @@ export class OpenAPIParser {
             receiver.properties[prop] = subSchema.properties[prop];
           } else {
             // merge inner properties
+            // let readOnly/writeOnly be overridden if property is redefined
+            // i.e. fallback on default value of readOnly/writeOnly when merging
+            delete receiver.properties[prop].readOnly;
+            delete receiver.properties[prop].writeOnly;
             receiver.properties[prop] = this.mergeAllOf(
               { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
               $ref + '/properties/' + prop,
