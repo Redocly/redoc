@@ -42,12 +42,18 @@ export class MediaTypeModel {
     if (this.schema && this.schema.oneOf) {
       this.examples = {};
       for (const subSchema of this.schema.oneOf) {
+        const sample = Sampler.sample(
+          subSchema.rawSchema,
+          { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
+          parser.spec,
+        );
+
+        if (this.schema.discriminatorProp && typeof sample === 'object' && sample) {
+          sample[this.schema.discriminatorProp] = subSchema.title;
+        }
+
         this.examples[subSchema.title] = {
-          value: Sampler.sample(
-            subSchema.rawSchema,
-            { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
-            parser.spec,
-          ),
+          value: sample,
         };
       }
     } else {
