@@ -44,7 +44,7 @@ export class MediaTypeModel {
       for (const subSchema of this.schema.oneOf) {
         this.examples[subSchema.title] = {
           value: Sampler.sample(
-            subSchema.rawSchema,
+            parser.mergeAllOf(parser.derefSchema(subSchema.rawSchema || {$ref: ''})),
             { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
             parser.spec,
           ),
@@ -54,7 +54,7 @@ export class MediaTypeModel {
       this.examples = {
         default: new ExampleModel(parser, {
           value: Sampler.sample(
-            info.schema,
+            parser.mergeAllOf(parser.derefSchema(info.schema || {$ref: ''})),
             { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
             parser.spec,
           ),

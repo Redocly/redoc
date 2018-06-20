@@ -24,6 +24,7 @@ export class SecuritySchemeModel {
 
   constructor(parser: OpenAPIParser, id: string, scheme: Referenced<OpenAPISecurityScheme>) {
     const info = parser.deref(scheme);
+    parser.exitRef(scheme);
     this.id = id;
     this.sectionId = SECURITY_SCHEMES_SECTION + id;
     this.type = info.type;

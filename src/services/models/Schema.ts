@@ -6,7 +6,7 @@ import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 
-import { MergedOpenAPISchema } from '../';
+import { DereferedOpenAPISchema } from '../';
 import {
   detectType,
   humanizeConstraints,
@@ -49,8 +49,9 @@ export class SchemaModel {
   discriminatorProp: string;
   @observable activeOneOf: number = 0;
 
-  rawSchema: OpenAPISchema;
-  schema: MergedOpenAPISchema;
+  rawSchema: DereferedOpenAPISchema;
+  parentRefs: string[];
+  schema: OpenAPISchema;
 
   /**
    * @param isChild if schema discriminator Child
@@ -64,16 +65,10 @@ export class SchemaModel {
     isChild: boolean = false,
   ) {
     this._$ref = schemaOrRef.$ref || $ref || '';
-    this.rawSchema = parser.deref(schemaOrRef);
-    this.schema = parser.mergeAllOf(this.rawSchema, this._$ref, isChild);
+    this.rawSchema = parser.derefSchema(schemaOrRef);
+    this.parentRefs = this.rawSchema.parentRefs || [];
+    this.schema = parser.mergeAllOf(this.rawSchema);
     this.init(parser, isChild);
-
-    parser.exitRef(schemaOrRef);
-
-    for (const parent$ref of this.schema.parentRefs || []) {
-      // exit all the refs visited during allOf traverse
-      parser.exitRef({ $ref: parent$ref });
-    }
   }
 
   /**
@@ -166,14 +161,12 @@ export class SchemaModel {
   }
 
   private initDiscriminator(
-    schema: OpenAPISchema & {
-      parentRefs?: string[];
-    },
+    schema: DereferedOpenAPISchema,
     parser: OpenAPIParser,
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
-    const derived = parser.findDerived([...(schema.parentRefs || []), this._$ref]);
+    const derived = parser.findDerived([...(this.parentRefs || []), this._$ref]);
 
     if (schema.oneOf) {
       for (const variant of schema.oneOf) {
