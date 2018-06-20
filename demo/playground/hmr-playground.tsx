@@ -8,7 +8,7 @@ import { AppStore } from '../../src/services/AppStore';
 import { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
 
-const Ajv = require('ajv');
+// const Ajv = require('ajv');
 
 const renderRoot = (props: RedocProps) =>
   render(
@@ -22,9 +22,10 @@ const big = window.location.search.indexOf('big') > -1;
 const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
 
 let specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
-//specUrl = 'intent.json';
-//specUrl = 'swagger.yaml';
-specUrl = 'petstore.json';
+specUrl = 'intent.json';
+
+// specUrl = 'swagger.yaml';
+// specUrl = 'petstore.json';
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };

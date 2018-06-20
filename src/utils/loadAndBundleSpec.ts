@@ -1,11 +1,10 @@
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
-import { cloneDeep } from 'lodash';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
   const parser = new JsonSchemaRefParser();
-  let spec = await parser.bundle(specUrlOrObject, {
+  const spec = await parser.bundle(specUrlOrObject, {
     resolve: { http: { withCredentials: false } },
   } as object);
 
@@ -15,10 +14,11 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
   }
 
   // we can derefrence the schema here for future use.
+  // import { cloneDeep } from 'lodash';
   // const derefrencedSpec = await parser.dereference(cloneDeep(spec));
-  //const derefed = await parser.dereference(v2Specs, {
+  // const derefed = await parser.dereference(v2Specs, {
   //  resolve: { http: { withCredentials: false } },
-  //} as object);
+  // } as object);
 
   return v2Specs;
 

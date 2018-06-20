@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
 
-
 export const Button = styled.button`
   background: #248fb2;
   border-radius: 0px;

@@ -3,11 +3,10 @@ import * as React from 'react';
 
 import AceEditor from 'react-ace';
 
-import 'brace/mode/json';
 import 'brace/mode/curly';
+import 'brace/mode/json';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
-
 
 import { MediaTypeModel } from '../../services/models';
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
@@ -18,19 +17,19 @@ import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
 
 export interface ConsoleEditorProps {
-  mediaTypes: MediaTypeModel[]
+  mediaTypes: MediaTypeModel[];
 }
 
 @observer
 export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
 
-  public editor: any;
+  editor: any;
 
   /*
   get aceEditor(): AceEditor {
     return this._aceEditor;
   }
-  
+
   set aceEditor(aceEditor: AceEditor) {
     if (aceEditor) {
       this.aceEditor = this.aceEditor
@@ -48,7 +47,7 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
       return null;
     }
     let sample = {};
-    for (let mediaType of mediaTypes) {
+    for (const mediaType of mediaTypes) {
       if (mediaType.name.indexOf('json') > -1) {
         if (mediaType.examples) {
           sample = mediaType.examples && mediaType.examples.default && mediaType.examples.default.value;
@@ -56,7 +55,6 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
         break;
       }
     }
-
 
     /*
     let body = {};

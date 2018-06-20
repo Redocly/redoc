@@ -9,13 +9,13 @@ import { Badge, DarkRightPanel, H2, MiddlePanel, Row, Toggle } from '../../commo
 import { OptionsContext } from '../OptionsProvider';
 
 import { ShareLink } from '../../common-elements/linkify';
+import { ConsoleViewer } from '../Console/ConsoleViewer';
 import { Endpoint } from '../Endpoint/Endpoint';
 import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
-import { ConsoleViewer } from '../Console/ConsoleViewer';
 
 import { OperationModel as OperationType } from '../../services/models';
 
@@ -54,9 +54,9 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     };
   }
 
-  onTry = (e) => {
+  onTry = e => {
     this.setState({
-      executeMode: e.target.checked
+      executeMode: e.target.checked,
     });
     console.log(e.target.checked + ' ' + this.props.operation);
   };

@@ -70,7 +70,7 @@ const defaultTheme: ThemeInterface = {
     width: '40%',
   },
   styledPre: {
-    maxHeight: '500px'
+    maxHeight: '500px',
   },
 };
 
@@ -181,7 +181,7 @@ export interface ResolvedThemeInterface {
   };
   styledPre: {
     maxHeight: string;
-  }
+  };
 }
 
 export type primitive = string | number | boolean | undefined | null;
