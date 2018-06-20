@@ -14,8 +14,6 @@ export interface RequestSamplesProps {
 export class RequestSamples extends React.Component<RequestSamplesProps> {
   operation: OperationModel;
 
-  visited = new Set();
-
   render() {
     const { operation } = this.props;
     const requestBodyContent = operation.requestBody && operation.requestBody.content;

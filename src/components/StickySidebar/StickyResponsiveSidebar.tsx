@@ -10,7 +10,7 @@ import { AnimatedChevronButton } from './ChevronSvg';
 
 let Stickyfill;
 if (IS_BROWSER) {
-  Stickyfill = require('stickyfill').default;
+  Stickyfill = require('stickyfill');
 }
 
 export interface StickySidebarProps {

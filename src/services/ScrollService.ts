@@ -51,7 +51,8 @@ export class ScrollService {
     if (el === null) {
       return;
     }
-    return Math.trunc(el.getBoundingClientRect().top) <= this.options.scrollYOffset();
+    const top = el.getBoundingClientRect().top;
+    return (top > 0 ? Math.floor(top) : Math.ceil(top)) <= this.options.scrollYOffset();
   }
 
   subscribe(cb): () => void {

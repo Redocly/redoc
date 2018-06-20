@@ -1,5 +1,11 @@
 import * as lunr from 'lunr';
 
+try {
+  require('core-js/es6/promise'); // bundle into worker
+} catch (_) {
+  // nope
+}
+
 /* just for better typings */
 export default class Worker {
   add: typeof add = add;
@@ -72,8 +78,7 @@ export async function search<Meta = string>(
   }
 
   let searchResults = (await index).query(t => {
-    q
-      .trim()
+    q.trim()
       .toLowerCase()
       .split(/\s+/)
       .forEach(term => {

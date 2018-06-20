@@ -24,8 +24,6 @@ export interface ResponseSamplesProps {
 export class ResponseSamples extends React.Component<ResponseSamplesProps> {
   operation: OperationModel;
 
-  visited = new Set();
-
   render() {
     const { operation } = this.props;
     const responses = operation.responses.filter(response => {
