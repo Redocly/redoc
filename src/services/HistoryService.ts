@@ -27,10 +27,6 @@ export class IntHistoryService {
   }
 
   emit = () => {
-    if (this.causedHashChange) {
-      this.causedHashChange = false;
-      return;
-    }
     this._emiter.emit(EVENT, this.hash);
   };
 
@@ -59,9 +55,8 @@ export class IntHistoryService {
       }
       return;
     }
-    this.causedHashChange = true;
     if (IS_BROWSER) {
-      window.location.hash = hash;
+      window.history.pushState(null, '', window.location.href.split('#')[0] + '#' + hash);
     }
   }
 }
