@@ -7,7 +7,7 @@
 
 FROM node:alpine
 
-RUN apk update && apk add git
+RUN apk update && apk add --no-cache git 
 
 # generate bundle
 WORKDIR /build
@@ -28,8 +28,8 @@ COPY --from=0 build/bundles /usr/share/nginx/html
 COPY config/docker/index.tpl.html /usr/share/nginx/html/index.html
 COPY demo/favicon.png /usr/share/nginx/html/
 COPY config/docker/nginx.conf /etc/nginx/
-COPY config/docker/docker-run.sh /usr/share/nginx/
+COPY config/docker/docker-run.sh /usr/local/bin
 
 EXPOSE 80
 
-CMD ["sh", "/usr/share/nginx/docker-run.sh"]
+CMD ["sh", "/usr/local/bin/docker-run.sh"]
