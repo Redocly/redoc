@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>%API_TITLE%</title>
-  %API_FAVICON%
+  <title>%PAGE_TITLE%</title>
+  <link rel="icon" href="%PAGE_FAVICON%">
   <style>
     body {
       margin: 0;
@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <redoc spec-url="%API_URL%"></redoc>
+  <redoc spec-url="%SPEC_URL%" %REDOC_OPTIONS%></redoc>
   <script src="/redoc.standalone.js"></script>
 </body>
 
