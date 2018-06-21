@@ -30,6 +30,7 @@ export class SchemaModel {
   isCircular: boolean = false;
 
   format?: string;
+  displayFormat?: string;
   nullable: boolean;
   deprecated: boolean;
   pattern?: string;
@@ -102,6 +103,7 @@ export class SchemaModel {
 
     this.constraints = humanizeConstraints(schema);
     this.displayType = this.type;
+    this.displayFormat = this.format;
     this.isPrimitive = isPrimitiveType(schema);
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;
@@ -138,7 +140,9 @@ export class SchemaModel {
     } else if (this.type === 'array' && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this._$ref + '/items', this.options);
       this.displayType = this.items.displayType;
+      this.displayFormat = this.items.format;
       this.typePrefix = this.items.typePrefix + 'Array of ';
+      this.title = this.title || this.items.title;
       this.isPrimitive = this.items.isPrimitive;
       if (this.example === undefined && this.items.example !== undefined) {
         this.example = [this.items.example];
