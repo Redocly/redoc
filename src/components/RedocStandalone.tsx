@@ -11,9 +11,10 @@ export interface RedocStandaloneProps {
   spec?: object;
   specUrl?: string;
   options?: RedocRawOptions;
+  onLoaded?: (e?: Error) => any;
 }
 
-export class RedocStandalone extends React.Component<RedocStandaloneProps> {
+export class RedocStandalone extends React.PureComponent<RedocStandaloneProps> {
   static propTypes = {
     spec: (props, _, componentName) => {
       if (!props.spec && !props.specUrl) {
@@ -36,14 +37,14 @@ export class RedocStandalone extends React.Component<RedocStandaloneProps> {
   };
 
   render() {
-    const { spec, specUrl, options = {} } = this.props;
+    const { spec, specUrl, options = {}, onLoaded } = this.props;
     const hideLoading = options.hideLoading !== undefined;
 
     const normalizedOpts = new RedocNormalizedOptions(options);
 
     return (
       <ErrorBoundary>
-        <StoreProvider spec={spec} specUrl={specUrl} options={options}>
+        <StoreProvider spec={spec} specUrl={specUrl} options={options} onLoaded={onLoaded}>
           {({ loading, store }) =>
             !loading ? (
               <Redoc store={store!} />

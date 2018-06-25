@@ -37,7 +37,7 @@ export function init(
   specOrSpecUrl: string | any,
   options: any = {},
   element: Element | null = querySelector('redoc'),
-  callback?: () => void,
+  callback?: (e?: Error) => void,
 ) {
   if (element === null) {
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
@@ -57,13 +57,13 @@ export function init(
       RedocStandalone,
       {
         spec,
+        onLoaded: callback,
         specUrl,
         options: { ...options, ...parseOptionsFromElement(element) },
       },
       ['Loading...'],
     ),
     element,
-    callback,
   );
 }
 

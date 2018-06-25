@@ -13,22 +13,27 @@ export interface StoreProviderProps {
 
   options?: RedocRawOptions;
 
+  onLoaded?: (e?: Error) => void;
+
   children: (props: { loading: boolean; store?: AppStore }) => any;
 }
 
 export interface StoreProviderState {
   error?: Error;
   loading: boolean;
-  spec?: any;
+  resolvedSpec?: any;
+  prevSpec?: any;
   prevSpecUrl?: string;
 }
 
 export class StoreProvider extends Component<StoreProviderProps, StoreProviderState> {
-  static getDerivedStateFromProps(props, state: StoreProviderState) {
-    if (props.specUrl !== state.prevSpecUrl) {
+  static getDerivedStateFromProps(nextProps: StoreProviderProps, prevState: StoreProviderState) {
+    if (nextProps.specUrl !== prevState.prevSpecUrl || nextProps.spec !== prevState.prevSpec) {
       return {
-        spec: null,
-        prevSpecUrl: props.specUrl,
+        loading: true,
+        resolvedSpec: null,
+        prevSpec: nextProps.spec,
+        prevSpecUrl: nextProps.specUrl,
       };
     }
 
@@ -37,7 +42,7 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
 
   state: StoreProviderState = {
     loading: true,
-    spec: null,
+    resolvedSpec: null,
   };
 
   @memoize
@@ -53,8 +58,11 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
   }
 
   componentDidUpdate() {
-    if (this.props.spec === null) {
+    if (this.state.resolvedSpec === null) {
       this.load();
+    } else if (!this.state.loading && this.props.onLoaded) {
+      // may run multiple time
+      this.props.onLoaded();
     }
   }
 
@@ -62,8 +70,11 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
     const { specUrl, spec, options } = this.props;
     try {
       const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
-      this.setState({ spec: resolvedSpec, loading: false });
+      this.setState({ resolvedSpec, loading: false });
     } catch (e) {
+      if (this.props.onLoaded) {
+        this.props.onLoaded(e);
+      }
       this.setState({ error: e });
     }
   }
@@ -74,10 +85,10 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
     }
 
     const { specUrl, options } = this.props;
-    const { loading, spec } = this.state;
+    const { loading, resolvedSpec } = this.state;
     return this.props.children({
       loading,
-      store: this.makeStore(spec, specUrl, options),
+      store: this.makeStore(resolvedSpec, specUrl, options),
     });
   }
 }
