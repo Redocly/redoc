@@ -167,11 +167,17 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   server.listen(port, () => console.log(`Server started: http://127.0.0.1:${port}`));
 
   if (options.watch && existsSync(pathToSpec)) {
+    const pathToSpecDirectory = dirname(pathToSpec);
+    const watchOptions = {
+      recursive: true
+    };
+
     watch(
-      pathToSpec,
+      pathToSpecDirectory,
+      watchOptions,
       debounce(async (event, filename) => {
-        if (event === 'change' || (event === 'rename' && existsSync(filename))) {
-          console.log(`${pathToSpec} changed, updating docs`);
+        if (event === 'change' || event === 'rename') {
+          console.log(`${join(pathToSpecDirectory, filename)} changed, updating docs`);
           try {
             spec = await loadAndBundleSpec(pathToSpec);
             pageHTML = await getPageHTML(spec, pathToSpec, options);
@@ -182,7 +188,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
         }
       }, 2200),
     );
-    console.log(`👀  Watching ${pathToSpec} for changes...`);
+    console.log(`👀  Watching ${pathToSpecDirectory} for changes...`);
   }
 }
 
