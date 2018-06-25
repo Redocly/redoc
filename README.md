@@ -167,6 +167,19 @@ Also you can pass options:
 
 Here are detailed [options docs](#redoc-options-object).
 
+You can also specify `onLoaded` callback which will be called each time Redoc has been fully rendered or when error occurs (with an error as the first argument). *NOTE*: It may be called multiply times if you change component properties
+
+```js
+<RedocStandalone
+  specUrl="http://rebilly.github.io/RebillyAPI/swagger.json"
+  onLoaded={error => {
+    if (!error) {
+      console.log('Yay!');
+    }
+  }}
+/>
+```
+
 ## ReDoc CLI
 
 [See here](https://github.com/Rebilly/ReDoc/blob/master/cli/README.md)
@@ -218,7 +231,7 @@ Redoc.init(specOrSpecUrl, options, element, callback?)
 - `specOrSpecUrl` is either JSON object with specification or an URL to the spec in `JSON` or `YAML` format
 - `options` [options object](#redoc-options-object)
 - `element` DOM element to put ReDoc into
-- `callback` (optional) - callback to be called after Redoc has been fully rendered
+- `callback` (optional) - callback to be called after Redoc has been fully rendered. It is also called also on errors with error as the first argument
 
 ```js
 Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
