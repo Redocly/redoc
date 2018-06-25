@@ -1,3 +1,4 @@
+import memoize from 'memoize-one';
 import { Component } from 'react';
 
 import { AppStore } from '../services/';
@@ -18,77 +19,65 @@ export interface StoreProviderProps {
 export interface StoreProviderState {
   error?: Error;
   loading: boolean;
-  store?: AppStore;
+  spec?: any;
+  prevSpecUrl?: string;
 }
 
 export class StoreProvider extends Component<StoreProviderProps, StoreProviderState> {
-  store: AppStore;
+  static getDerivedStateFromProps(props, state: StoreProviderState) {
+    if (props.specUrl !== state.prevSpecUrl) {
+      return {
+        spec: null,
+        prevSpecUrl: props.specUrl,
+      };
+    }
 
-  private _resolvedSpec: OpenAPISpec;
+    return null;
+  }
 
-  constructor(props: StoreProviderProps) {
-    super(props);
+  state: StoreProviderState = {
+    loading: true,
+    spec: null,
+  };
 
-    this.state = {
-      loading: true,
-    };
+  @memoize
+  makeStore(spec, specUrl, options) {
+    if (!spec) {
+      return undefined;
+    }
+    return new AppStore(spec, specUrl, options);
   }
 
   componentDidMount() {
     this.load();
   }
 
+  componentDidUpdate() {
+    if (this.props.spec === null) {
+      this.load();
+    }
+  }
+
   async load() {
     const { specUrl, spec, options } = this.props;
-
-    this.setState({
-      loading: true,
-    });
-
     try {
-      this._resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
-      this.updateStore(this._resolvedSpec, specUrl, options);
+      const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
+      this.setState({ spec: resolvedSpec, loading: false });
     } catch (e) {
-      this.setState({
-        error: e,
-      });
+      this.setState({ error: e });
     }
-  }
-
-  updateStore(resolvedSpec, specUrl, options) {
-    try {
-      this.setState({
-        loading: false,
-        store: new AppStore(resolvedSpec, specUrl, options),
-        error: undefined,
-      });
-    } catch (e) {
-      this.setState({
-        error: e,
-      });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.specUrl !== nextProps.specUrl || this.props.spec !== nextProps.spec) {
-      setTimeout(() => this.load(), 0);
-      return;
-    }
-    if (this.props.options !== nextProps.options && this._resolvedSpec) {
-      this.updateStore(this._resolvedSpec, nextProps.specUrl, nextProps.options);
-    }
-  }
-
-  setError(e?: Error) {
-    this.setState({
-      error: e,
-    });
   }
 
   render() {
     if (this.state.error) {
       throw this.state.error;
     }
-    return this.props.children(this.state);
+
+    const { specUrl, options } = this.props;
+    const { loading, spec } = this.state;
+    return this.props.children({
+      loading,
+      store: this.makeStore(spec, specUrl, options),
+    });
   }
 }
