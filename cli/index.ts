@@ -120,7 +120,7 @@ YargsParser.command(
         handleError(e);
       }
     },
-)
+  )
   .demandCommand()
   .options('t', {
     alias: 'template',
@@ -169,7 +169,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   if (options.watch && existsSync(pathToSpec)) {
     const pathToSpecDirectory = dirname(pathToSpec);
     const watchOptions = {
-      recursive: true
+      recursive: true,
     };
 
     watch(
@@ -243,13 +243,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-      };
+    };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-        : `<script>${redocStandaloneSrc}</script>`) + css
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
   });
