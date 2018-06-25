@@ -142,7 +142,7 @@ export class SchemaModel {
       this.displayType = this.items.displayType;
       this.displayFormat = this.items.format;
       this.typePrefix = this.items.typePrefix + 'Array of ';
-      this.title = this.title || this.items.title;
+      this.title = this.title || this.items.title;
       this.isPrimitive = this.items.isPrimitive;
       if (this.example === undefined && this.items.example !== undefined) {
         this.example = [this.items.example];
@@ -232,7 +232,7 @@ function buildFields(
         required,
         schema: {
           ...field,
-          default: field.default || defaults[fieldName],
+          default: field.default === undefined ? defaults[fieldName] : field.default,
         },
       },
       $ref + '/properties/' + fieldName,
