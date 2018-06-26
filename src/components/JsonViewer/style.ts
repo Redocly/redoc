@@ -27,7 +27,8 @@ export const jsonStyles = css`
 
   .type-string {
     color: #66b16e;
-    & + a {
+    & + a,
+    & + a:visited {
       color: #66b16e;
       text-decoration: underline;
     }
