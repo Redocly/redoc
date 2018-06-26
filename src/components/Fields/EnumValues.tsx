@@ -15,7 +15,9 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
 
     return (
       <div>
-        <FieldLabel>{type === 'array' ? 'Items' : ''} Enum:</FieldLabel>
+        <FieldLabel>
+          {type === 'array' ? 'Items' : ''} {values.length === 1 ? 'Value' : 'Enum'}:
+        </FieldLabel>
         {values.map((value, idx) => (
           <ExampleValue key={idx}>{JSON.stringify(value)} </ExampleValue>
         ))}
