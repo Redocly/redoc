@@ -40,7 +40,7 @@ const defaultTheme: ThemeInterface = {
   baseFont: {
     size: '14px',
     lineHeight: '1.5',
-    weight: '300',
+    weight: '400',
     family: 'Roboto, sans-serif',
     smoothing: 'antialiased',
     optimizeSpeed: true,
