@@ -104,7 +104,7 @@ export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
 export const menuItemDepth = {
   0: css`
     opacity: 0.7;
-    text-transform: uppercase;
+    text-transform: ${({ theme }) => theme.menu.groupItems.textTransform};
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
@@ -112,7 +112,7 @@ export const menuItemDepth = {
   `,
   1: css`
     font-size: 0.929em;
-    text-transform: uppercase;
+    text-transform: ${({ theme }) => theme.menu.level1Items.textTransform};
     &:hover {
       color: ${props => props.theme.colors.main};
     }

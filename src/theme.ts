@@ -60,6 +60,12 @@ const defaultTheme: ThemeInterface = {
   menu: {
     width: '260px',
     backgroundColor: '#fafafa',
+    groupItems: {
+      textTransform: 'uppercase',
+    },
+    level1Items: {
+      textTransform: 'none',
+    },
   },
   logo: {
     maxHeight: ({ menu }) => menu.width,
@@ -167,6 +173,12 @@ export interface ResolvedThemeInterface {
   menu: {
     width: string;
     backgroundColor: string;
+    groupItems: {
+      textTransform: string;
+    };
+    level1Items: {
+      textTransform: string;
+    };
   };
   logo: {
     maxHeight: string;
