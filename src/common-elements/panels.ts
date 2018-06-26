@@ -25,12 +25,6 @@ export const DarkRightPanel = RightPanel.extend`
   background-color: ${props => props.theme.rightPanel.backgroundColor};
 `;
 
-export const EmptyDarkRightPanel = DarkRightPanel.extend`
-  ${media.lessThan('medium')`
-    padding: 0
-  `};
-`;
-
 export const Row = styled.div`
   display: flex;
   width: 100%;
