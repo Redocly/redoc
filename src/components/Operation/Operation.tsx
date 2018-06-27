@@ -4,7 +4,7 @@ import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequiremen
 
 import { observer } from 'mobx-react';
 
-import { ConsoleButton, Badge, FlexLayoutReverse, DarkRightPanel, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
+import { Badge, ConsoleButton, DarkRightPanel, FlexLayoutReverse, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
 
 import { OptionsContext } from '../OptionsProvider';
 
@@ -56,7 +56,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
 
   onConsoleClick = () => {
     this.setState({
-      executeMode: !this.state.executeMode
+      executeMode: !this.state.executeMode,
     });
   }
   /*
