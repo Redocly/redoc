@@ -13,3 +13,9 @@ export const Button = styled.button`
 export const SendButton = Button.extend`
   background: #B0045E;
 `;
+
+export const ConsoleButton = Button.extend`
+  background: #e2e2e2;
+  color: black;
+  float: right;
+`;

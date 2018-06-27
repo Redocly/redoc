@@ -6,6 +6,7 @@ export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
   hideHostname?: boolean | string;
+  enableConsole?: boolean;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
   noAutoAuth?: boolean | string;
@@ -14,6 +15,9 @@ export interface RedocRawOptions {
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
+
+  providedByName?: string;
+  providedByUri?: string;
 
   unstable_ignoreMimeParameters?: boolean;
 }
@@ -93,6 +97,9 @@ export class RedocNormalizedOptions {
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
+  enableConsole: boolean;
+  providedByName: string;
+  providedByUri: string;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -108,6 +115,9 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+    this.enableConsole = argValueToBoolean(raw.enableConsole);
+    this.providedByName = raw.providedByName || 'Documentation Powered by ReDoc';
+    this.providedByUri = raw.providedByUri || 'https://github.com/Rebilly/ReDoc';
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
   }

@@ -25,21 +25,6 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
 
   editor: any;
 
-  /*
-  get aceEditor(): AceEditor {
-    return this._aceEditor;
-  }
-
-  set aceEditor(aceEditor: AceEditor) {
-    if (aceEditor) {
-      this.aceEditor = this.aceEditor
-    }
-    else {
-      console.log("Error: Undefined ace editor!");
-    }
-  }
-  */
-
   render() {
     const { mediaTypes } = this.props;
 
@@ -56,15 +41,6 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
       }
     }
 
-    /*
-    let body = {};
-    if(mimeContent.mediaTypes && mimeContent.mediaTypes.length>0){
-      body = mimeContent.mediaTypes[0];
-      if(body.examples && body.examples.default) {
-
-      }
-    }
-    */
     return (
       <div>
         <AceEditor

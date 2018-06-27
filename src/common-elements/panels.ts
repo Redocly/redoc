@@ -49,3 +49,7 @@ export const FlexLayout = styled.div`
 export const ConsoleActionsRow = FlexLayout.extend`
   padding: 5px 0px;
 `;
+
+export const FlexLayoutReverse = FlexLayout.extend`
+  flex-direction: row-reverse;
+`;

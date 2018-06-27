@@ -4,7 +4,7 @@ import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequiremen
 
 import { observer } from 'mobx-react';
 
-import { Badge, DarkRightPanel, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
+import { ConsoleButton, Badge, FlexLayoutReverse, DarkRightPanel, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
 
 import { OptionsContext } from '../OptionsProvider';
 
@@ -54,13 +54,11 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     };
   }
 
-  onTry = e => {
+  onConsoleClick = () => {
     this.setState({
-      executeMode: e.target.checked,
+      executeMode: !this.state.executeMode
     });
-    console.log(e.target.checked + ' ' + this.props.operation);
-  };
-
+  }
   /*
   activate = (item: IMenuItem) => {
     this.props.menu.activateAndScroll(item, true);
@@ -77,6 +75,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
 
     const { name: summary, description, deprecated } = operation;
     const { executeMode } = this.state;
+    const consoleButtonLabel = (executeMode) ? 'Hide Console' : 'Show Console';
     return (
       <OptionsContext.Consumer>
         {options => (
@@ -86,8 +85,11 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                 <ShareLink href={'#' + operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
-              <Toggle type="checkbox" onChange={this.onTry} />
-              <span>Try it out!</span>
+              {options.enableConsole &&
+                <FlexLayoutReverse>
+                  <ConsoleButton onClick={this.onConsoleClick}>{consoleButtonLabel}</ConsoleButton>
+                </FlexLayoutReverse>
+              }
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
               {description !== undefined && <Markdown source={description} />}
               <SecurityRequirements securities={operation.security} />

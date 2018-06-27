@@ -28,15 +28,15 @@ export class SideMenu extends React.Component<{ menu: MenuStore }> {
               root={true}
             />
           ) : (
-            <PerfectScrollbar updateFn={this.saveScrollUpdate}>
-              <MenuItems items={store.items} onActivate={this.activate} root={true} />
-              <RedocAttribution>
-                <a target="_blank" href="https://github.com/Rebilly/ReDoc">
-                  Documentation Powered by ReDoc
-                </a>
-              </RedocAttribution>
-            </PerfectScrollbar>
-          )
+              <PerfectScrollbar updateFn={this.saveScrollUpdate}>
+                <MenuItems items={store.items} onActivate={this.activate} root={true} />
+                <RedocAttribution>
+                  <a target="_blank" href={options.providedByUri}>
+                    {options.providedByName}
+                  </a>
+                </RedocAttribution>
+              </PerfectScrollbar>
+            )
         }
       </OptionsContext.Consumer>
     );
