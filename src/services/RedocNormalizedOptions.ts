@@ -17,6 +17,7 @@ export interface RedocRawOptions {
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
   disableSearch?: boolean | string;
+  showExtensions?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -99,6 +100,7 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
   disableSearch: boolean;
+  showExtensions: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -124,6 +126,7 @@ export class RedocNormalizedOptions {
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
     this.disableSearch = argValueToBoolean(raw.disableSearch);
+    this.showExtensions = argValueToBoolean(raw.showExtensions);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
