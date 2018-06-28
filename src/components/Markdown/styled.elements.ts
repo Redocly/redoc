@@ -1,9 +1,15 @@
+import * as React from 'react';
 import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
-import { css, ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
+import styled, {
+  css,
+  ResolvedThemeInterface,
+  StyledComponentClass,
+  withProps,
+} from '../../styled-components';
 
-export const markdownCss = css`
+export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(styled.div)`
 
   font-family: ${props => props.theme.baseFont.family};
   font-weight: ${props => props.theme.baseFont.weight};
@@ -15,13 +21,17 @@ export const markdownCss = css`
     }
   }
 
-  &.-dense p {
+  ${({ dense }) =>
+    dense &&
+    ` p {
     margin: 0;
-  }
+  }`}
 
-  &.-inline p {
+  ${({ inline }) =>
+    inline &&
+    ` p {
     display: inline-block;
-  }
+  }`}
 
   h1 {
     ${headerCommonMixin(1)};

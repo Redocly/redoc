@@ -8,7 +8,7 @@
   dependencies:
     "@babel/highlight" "7.0.0-beta.47"
 
-"@babel/code-frame@^7.0.0-beta.35":
+"@babel/code-frame@^7.0.0-beta.35", "@babel/code-frame@^7.0.0-beta.39":
   version "7.0.0-beta.51"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.51.tgz#bd71d9b192af978df915829d39d4094456439a0c"
   dependencies:
@@ -568,7 +568,7 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.0.1, ajv@^5.1.0, ajv@^5.2.3, ajv@^5.3.0:
+ajv@^5.1.0, ajv@^5.2.3, ajv@^5.3.0, ajv@^5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
@@ -1512,6 +1512,16 @@ beautify-benchmark@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/beautify-benchmark/-/beautify-benchmark-0.2.4.tgz#3151def14c1a2e0d07ff2e476861c7ed0e1ae39b"
 
+better-ajv-errors@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/better-ajv-errors/-/better-ajv-errors-0.5.1.tgz#59dcd5e84b582ba2b5ddbb960bcfcbf439b369af"
+  dependencies:
+    "@babel/code-frame" "^7.0.0-beta.39"
+    chalk "^2.3.1"
+    json-to-ast "^2.0.2"
+    jsonpointer "^4.0.1"
+    leven "^2.1.0"
+
 big.js@^3.1.3:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
@@ -1913,7 +1923,7 @@ chalk@2.1.0:
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
 
-chalk@2.4.1, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.4.1:
+chalk@2.4.1, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0, chalk@^2.3.1, chalk@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.1.tgz#18c49ab16a037b6eb0152cc83e3471338215b66e"
   dependencies:
@@ -5473,6 +5483,10 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
+json-to-ast@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/json-to-ast/-/json-to-ast-2.0.3.tgz#ef76a29207e7ab93cc058d862e6511a0e8e4792d"
+
 json3@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
@@ -5500,6 +5514,10 @@ jsonify@~0.0.0:
 jsonparse@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
+
+jsonpointer@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.1.tgz#4fd92cb34e0e9db3c89c8622ecf51f9b978c6cb9"
 
 jsprim@^1.2.2:
   version "1.4.1"
@@ -6253,7 +6271,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.0.0:
+node-fetch@^2.0.0, node-fetch@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
 
@@ -6435,6 +6453,45 @@ number-is-nan@^1.0.0:
 nwsapi@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.0.4.tgz#dc79040a5f77b97716dc79565fc7fc3ef7d50570"
+
+oas-kit-common@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/oas-kit-common/-/oas-kit-common-1.0.3.tgz#f9957227bd001d346b42f4907a3df917c535f77c"
+
+oas-linter@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/oas-linter/-/oas-linter-1.0.3.tgz#a8bce67fe6b29c87a87b5cb39919cd660f4dbe77"
+  dependencies:
+    js-yaml "^3.11.0"
+    should "^13.2.1"
+
+oas-resolver@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/oas-resolver/-/oas-resolver-1.0.6.tgz#359e86ee8312effc1211f805891a9d8cc8c92f03"
+  dependencies:
+    js-yaml "^3.11.0"
+    node-fetch "^2.1.1"
+    oas-kit-common "^1.0.3"
+    reftools "^1.0.0"
+    yargs "^11.0.0"
+
+oas-schema-walker@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/oas-schema-walker/-/oas-schema-walker-1.0.3.tgz#f1ae73a671bef5fdcc71335d65e623fa4abb46ff"
+
+oas-validator@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/oas-validator/-/oas-validator-1.1.3.tgz#49820f4aafd2bbea5d02f28bcea785de369af3b8"
+  dependencies:
+    ajv "^5.5.2"
+    better-ajv-errors "^0.5.1"
+    js-yaml "^3.11.0"
+    oas-kit-common "^1.0.3"
+    oas-linter "^1.0.3"
+    oas-resolver "^1.0.6"
+    oas-schema-walker "^1.0.3"
+    reftools "^1.0.0"
+    should "^13.2.1"
 
 oauth-sign@~0.8.1, oauth-sign@~0.8.2:
   version "0.8.2"
@@ -7610,9 +7667,9 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-reftools@0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/reftools/-/reftools-0.0.20.tgz#011e00736e51c631149a3a22b4c05b7383bdee8c"
+reftools@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/reftools/-/reftools-1.0.0.tgz#3a5f979205c21ed702eae9f6ddcb4d88b4379a4a"
 
 regenerate@^1.2.1:
   version "1.4.0"
@@ -8127,7 +8184,7 @@ should-util@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/should-util/-/should-util-1.0.0.tgz#c98cda374aa6b190df8ba87c9889c2b4db620063"
 
-should@^13.0.1:
+should@^13.2.1:
   version "13.2.1"
   resolved "https://registry.yarnpkg.com/should/-/should-13.2.1.tgz#84e6ebfbb145c79e0ae42307b25b3f62dcaf574e"
   dependencies:
@@ -8623,18 +8680,19 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
-swagger2openapi@^2.11.0:
-  version "2.11.16"
-  resolved "https://registry.yarnpkg.com/swagger2openapi/-/swagger2openapi-2.11.16.tgz#7614ed2ebe0617656f8777bf67a33e8b0fba4e9b"
+swagger2openapi@^3.1.2:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/swagger2openapi/-/swagger2openapi-3.2.3.tgz#89976ad3d3fda6a00b45cc9f7e3917b597eaa736"
   dependencies:
-    ajv "^5.0.1"
     call-me-maybe "^1.0.1"
-    co "^4.6.0"
     js-yaml "^3.6.1"
     node-fetch "^2.0.0"
     node-readfiles "^0.2.0"
-    reftools "0.0.20"
-    should "^13.0.1"
+    oas-kit-common "^1.0.3"
+    oas-resolver "^1.0.6"
+    oas-schema-walker "^1.0.3"
+    oas-validator "^1.1.3"
+    reftools "^1.0.0"
     yargs "^11.0.0"
 
 symbol-observable@1.0.1:

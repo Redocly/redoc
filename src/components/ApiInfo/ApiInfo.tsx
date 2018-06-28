@@ -93,22 +93,6 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             </p>
           )) ||
             null}
-
-          <div>
-            <Markdown
-              source={info.description || ''}
-              raw={false}
-              components={{
-                'security-definitions': {
-                  component: SecurityDefs,
-                  propsSelector: _store => ({
-                    securitySchemes: _store!.spec.securitySchemes,
-                  }),
-                },
-              }}
-              store={store}
-            />
-          </div>
         </MiddlePanel>
       </Row>
     );

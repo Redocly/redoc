@@ -6,6 +6,7 @@ import { H2, ShareLink } from '../../common-elements';
 import styled from '../../styled-components';
 import { OpenAPISecurityScheme } from '../../types';
 import { Markdown } from '../Markdown/Markdown';
+import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 
 const AUTH_TYPES = {
   oauth2: 'OAuth2',
@@ -89,47 +90,49 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
               {scheme.id}
             </H2>
             <Markdown source={scheme.description || ''} />
-            <AuthTable className="security-details">
-              <tbody>
-                <tr>
-                  <th> Security scheme type: </th>
-                  <td> {AUTH_TYPES[scheme.type] || scheme.type} </td>
-                </tr>
-                {scheme.apiKey ? (
+            <StyledMarkdownBlock>
+              <table className="security-details">
+                <tbody>
                   <tr>
-                    <th> {scheme.apiKey.in} parameter name:</th>
-                    <td> {scheme.apiKey.name} </td>
+                    <th> Security scheme type: </th>
+                    <td> {AUTH_TYPES[scheme.type] || scheme.type} </td>
                   </tr>
-                ) : scheme.http ? (
-                  [
-                    <tr key="scheme">
-                      <th> HTTP Authorization Scheme </th>
-                      <td> {scheme.http.scheme} </td>
-                    </tr>,
-                    scheme.http.scheme === 'bearer' &&
-                      scheme.http.bearerFormat && (
-                        <tr key="bearer">
-                          <th> Bearer format </th>
-                          <td> "{scheme.http.bearerFormat}" </td>
-                        </tr>
-                      ),
-                  ]
-                ) : scheme.openId ? (
-                  <tr>
-                    <th> Connect URL </th>
-                    <td>
-                      <a target="_blank" href={scheme.openId.connectUrl}>
-                        {scheme.openId.connectUrl}
-                      </a>
-                    </td>
-                  </tr>
-                ) : scheme.flows ? (
-                  Object.keys(scheme.flows).map(type => (
-                    <OAuthFlow key={type} type={type} flow={scheme.flows[type]} />
-                  ))
-                ) : null}
-              </tbody>
-            </AuthTable>
+                  {scheme.apiKey ? (
+                    <tr>
+                      <th> {scheme.apiKey.in} parameter name:</th>
+                      <td> {scheme.apiKey.name} </td>
+                    </tr>
+                  ) : scheme.http ? (
+                    [
+                      <tr key="scheme">
+                        <th> HTTP Authorization Scheme </th>
+                        <td> {scheme.http.scheme} </td>
+                      </tr>,
+                      scheme.http.scheme === 'bearer' &&
+                        scheme.http.bearerFormat && (
+                          <tr key="bearer">
+                            <th> Bearer format </th>
+                            <td> "{scheme.http.bearerFormat}" </td>
+                          </tr>
+                        ),
+                    ]
+                  ) : scheme.openId ? (
+                    <tr>
+                      <th> Connect URL </th>
+                      <td>
+                        <a target="_blank" href={scheme.openId.connectUrl}>
+                          {scheme.openId.connectUrl}
+                        </a>
+                      </td>
+                    </tr>
+                  ) : scheme.flows ? (
+                    Object.keys(scheme.flows).map(type => (
+                      <OAuthFlow key={type} type={type} flow={scheme.flows[type]} />
+                    ))
+                  ) : null}
+                </tbody>
+              </table>
+            </StyledMarkdownBlock>
           </div>
         ))}
       </div>

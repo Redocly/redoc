@@ -1,6 +1,7 @@
 export * from './RedocStandalone';
 export * from './Redoc/Redoc';
 export * from './ApiInfo/ApiInfo';
+export * from './ApiInfo/ApiDescription';
 export * from './ApiLogo/ApiLogo';
 export * from './ContentItems/ContentItems';
 export { ApiContentWrap, BackgroundStub, RedocWrap } from './Redoc/styled.elements';
@@ -10,6 +11,18 @@ export * from './Operation/Operation';
 export * from './Loading/Loading';
 export * from './RedocStandalone';
 export * from './JsonViewer';
+export * from './Markdown/Markdown';
+export { StyledMarkdownBlock } from './Markdown/styled.elements';
+export * from './SecuritySchemes/SecuritySchemes';
+
+export * from './Responses/Response';
+export * from './Responses/ResponseDetails';
+export * from './Responses/ResponseHeaders';
+export * from './Responses/ResponsesList';
+export * from './Responses/ResponseTitle';
+export * from './ResponseSamples/ResponseSamples';
+export * from './PayloadSamples/PayloadSamples';
+export * from './MediaTypeSwitch/MediaTypesSwitch';
 
 export * from './ErrorBoundary';
 export * from './StoreProvider';

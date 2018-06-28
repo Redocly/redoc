@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ThemeProvider } from '../../styled-components';
 
 import { AppStore } from '../../services';
-import { ApiInfo } from '../ApiInfo/ApiInfo';
+import { ApiDescription, ApiInfo } from '../ApiInfo/';
 import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { OptionsProvider } from '../OptionsProvider';
@@ -52,6 +52,7 @@ export class Redoc extends React.Component<RedocProps> {
             </StickyResponsiveSidebar>
             <ApiContentWrap className="api-content">
               <ApiInfo store={store} />
+              <ApiDescription store={store} />
               <ContentItems items={menu.items as any} />
             </ApiContentWrap>
             <BackgroundStub />

@@ -6,16 +6,6 @@ import { MediaContentModel, OperationModel } from '../../services/models';
 import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 
-export interface ResponseSampleProps {
-  content: MediaContentModel;
-}
-
-class ResponseSample extends React.Component<ResponseSampleProps, any> {
-  render() {
-    return <PayloadSamples content={this.props.content} />;
-  }
-}
-
 export interface ResponseSamplesProps {
   operation: OperationModel;
 }
@@ -45,7 +35,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
             </TabList>
             {responses.map(response => (
               <TabPanel key={response.code}>
-                <ResponseSample content={response.content!} />
+                <PayloadSamples content={response.content!} />;
               </TabPanel>
             ))}
           </Tabs>

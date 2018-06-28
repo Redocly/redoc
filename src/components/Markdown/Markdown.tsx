@@ -2,97 +2,107 @@ import * as React from 'react';
 import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 import * as DOMPurify from 'dompurify';
-import { AppStore, MarkdownRenderer } from '../../services';
+import { AppStore, MarkdownRenderer, MDXComponentMeta } from '../../services';
 import { OptionsContext } from '../OptionsProvider';
 
-import { markdownCss } from './styles';
+import { StyledMarkdownBlock } from './styled.elements';
 
-export interface MDComponent {
-  component: React.ComponentClass;
-  propsSelector: (store?: AppStore) => any;
-  attrs?: object;
-}
+const StyledMarkdownSpan = StyledMarkdownBlock.withComponent('span');
 
-export interface MarkdownProps {
-  source: string;
+export interface StylingMarkdownProps {
   dense?: boolean;
   inline?: boolean;
-  className?: string;
+}
+
+export interface BaseMarkdownProps extends StylingMarkdownProps {
   raw?: boolean;
-  components?: Dict<MDComponent>;
   sanitize?: boolean;
   store?: AppStore;
 }
 
-class InternalMarkdown extends React.Component<MarkdownProps> {
+const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
+
+function SanitizedMarkdownHTML(props: StylingMarkdownProps & { html: string }) {
+  const Wrap = props.inline ? StyledMarkdownSpan : StyledMarkdownBlock;
+
+  return (
+    <OptionsContext.Consumer>
+      {options => (
+        <Wrap
+          className={'redoc-markdown'}
+          dangerouslySetInnerHTML={{
+            __html: sanitize(options.untrustedSpec, props.html),
+          }}
+        />
+      )}
+    </OptionsContext.Consumer>
+  );
+}
+
+export interface MarkdownProps extends BaseMarkdownProps {
+  allowedComponents?: Dict<MDXComponentMeta>;
+  source: string;
+}
+
+export class Markdown extends React.Component<MarkdownProps> {
   constructor(props: MarkdownProps) {
     super(props);
 
-    if (props.components && props.inline) {
+    if (props.allowedComponents && props.inline) {
       throw new Error('Markdown Component: "inline" mode doesn\'t support "components"');
     }
   }
 
   render() {
-    const { source, raw, className, components, inline, dense, store } = this.props;
+    const { source, raw, allowedComponents, store, inline, dense } = this.props;
 
-    if (components && !store) {
-      throw new Error('When using components with Markdwon in ReDoc, store prop must be provided');
+    if (allowedComponents && !store) {
+      throw new Error('When using componentes in markdown, store prop must be provided');
     }
 
-    const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
-
     const renderer = new MarkdownRenderer();
-    const parts = components
-      ? renderer.renderMdWithComponents(source, components, raw)
-      : [renderer.renderMd(source, raw)];
+    if (allowedComponents) {
+      return (
+        <AdvancedMarkdown
+          parts={renderer.renderMdWithComponents(source, allowedComponents, raw)}
+          {...this.props}
+        />
+      );
+    } else {
+      return (
+        <SanitizedMarkdownHTML
+          html={renderer.renderMd(source, raw)}
+          inline={inline}
+          dense={dense}
+        />
+      );
+    }
+  }
+}
+
+export interface AdvancedMarkdownProps extends BaseMarkdownProps {
+  parts: Array<string | MDXComponentMeta>;
+}
+
+export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
+  render() {
+    const { raw, inline, dense, store, parts } = this.props;
 
     if (!parts.length) {
       return null;
     }
 
-    let appendClass = ' redoc-markdown';
-    if (dense) {
-      appendClass += ' -dense';
-    }
-    if (inline) {
-      appendClass += ' -inline';
-    }
-
     return (
-      <OptionsContext.Consumer>
-        {options =>
-          inline ? (
-            <span
-              className={className + appendClass}
-              dangerouslySetInnerHTML={{
-                __html: sanitize(options.untrustedSpec, parts[0] as string),
-              }}
-            />
-          ) : (
-            <div className={className + appendClass}>
-              {parts.map(
-                (part, idx) =>
-                  typeof part === 'string' ? (
-                    <div
-                      key={idx}
-                      dangerouslySetInnerHTML={{ __html: sanitize(options.untrustedSpec, part) }}
-                    />
-                  ) : (
-                    <part.component
-                      key={idx}
-                      {...{ ...part.attrs, ...part.propsSelector(store) }}
-                    />
-                  ),
-              )}
-            </div>
-          )
-        }
-      </OptionsContext.Consumer>
+      <>
+        {parts.map(
+          (part, idx) =>
+            typeof part === 'string' ? (
+              <SanitizedMarkdownHTML html={part} inline={inline} dense={dense} key={idx} />
+            ) : (
+              <part.component key={idx} {...{ ...part.attrs, ...part.propsSelector(store) }} />
+            ),
+        )}
+      </>
     );
   }
 }
-
-export const Markdown = styled(InternalMarkdown)`
-  ${markdownCss};
-`;
