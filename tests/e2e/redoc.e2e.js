@@ -110,11 +110,13 @@ if (process.env.JOB === 'e2e-guru') {
     //delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
     delete apisGuruList['bbci.co.uk']; // too big
     delete apisGuruList['bbc.com']; // too big
+    delete apisGuruList['osisoft.com']; // too big
+    delete apisGuruList['magento.com']; // too big
 
     // run quick version of e2e test on all builds except releases
     if (process.env.TRAVIS && !process.env.TRAVIS_TAG) {
-      console.log('Running on short APIs guru list');
-      apisGuruList = eachNth(apisGuruList, 10);
+      console.log('Running on a short APIs guru list');
+      apisGuruList = eachNth(apisGuruList, 20);
     } else {
       console.log('Running on full APIs guru list')
     }

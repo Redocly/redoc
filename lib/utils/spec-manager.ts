@@ -66,7 +66,10 @@ export class SpecManager {
 
   /* calculate common used values */
   init() {
-    let urlParts = this.specUrl ? urlParse(urlResolve(window.location.href, this.specUrl)) : { "protocol" : null, "host": null };
+    let urlParts = this.specUrl ? urlParse(urlResolve(window.location.href, this.specUrl)) : {
+      protocol: undefined,
+      host: undefined
+    };
     let schemes = this._schema.schemes;
     let protocol;
     if (!schemes || !schemes.length) {
@@ -170,6 +173,12 @@ export class SpecManager {
 
     let operationParamsPtr = JsonPointer.join(operationPtr, ['parameters']);
     let operationParams:SwaggerParameter[] = this.byPointer(operationParamsPtr) || [];
+
+    const operationParamNames = {};
+    operationParams.forEach(param => operationParamNames[param.name] = true);
+
+    // filter out path params overriden by operation ones with the same name
+    pathParams = pathParams.filter(pathParam => !operationParamNames[pathParam.name]);
     pathParams = injectPointers(pathParams, pathParamsPtr);
     operationParams = injectPointers(operationParams, operationParamsPtr);
 
@@ -213,6 +222,7 @@ export class SpecManager {
     let definition = schema || this.byPointer(defPointer);
     if (!definition) throw new Error(`Can't load schema at ${defPointer}`);
     if (!definition.discriminator && !definition['x-extendedDiscriminator']) return [];
+    if (defPointer === undefined) return [];
 
     let globalDefs = this._schema.definitions || {};
     let res:DescendantInfo[] = [];
