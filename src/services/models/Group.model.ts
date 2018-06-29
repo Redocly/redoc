@@ -32,7 +32,7 @@ export class GroupModel implements IMenuItem {
     parent?: GroupModel,
   ) {
     // markdown headings already have ids calculated as they are needed for heading anchors
-    this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + slugify(tagOrGroup.name);
+    this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + (slugify(tagOrGroup.name) || tagOrGroup.name);
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.description = tagOrGroup.description || '';
