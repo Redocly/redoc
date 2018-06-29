@@ -4,6 +4,7 @@ import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
 import styled, {
   css,
+  extensionsHook,
   ResolvedThemeInterface,
   StyledComponentClass,
   withProps,
@@ -132,4 +133,19 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
   }
 
   ${linkifyMixin('.share-link')};
+
+  ${extensionsHook('Markdown')};
+
+  a {
+    text-decoration: none;
+    color: ${props => props.theme.links.color};
+
+    &:visited {
+      color: ${props => props.theme.links.visited};
+    }
+
+    &:hover {
+      color: ${props => props.theme.links.hover};
+    }
+  }
 `;

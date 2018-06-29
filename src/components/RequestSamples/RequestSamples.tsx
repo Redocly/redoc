@@ -4,7 +4,7 @@ import { OperationModel } from '../../services/models';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
-import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
+import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 
 export interface RequestSamplesProps {
   operation: OperationModel;
@@ -24,7 +24,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     return (
       (hasSamples && (
         <div>
-          <h3> Request samples </h3>
+          <RightPanelHeader> Request samples </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
             <TabList>

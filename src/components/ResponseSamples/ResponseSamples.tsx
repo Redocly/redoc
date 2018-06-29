@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { MediaContentModel, OperationModel } from '../../services/models';
 
-import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
+import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 
 export interface ResponseSamplesProps {
@@ -23,7 +23,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
     return (
       (responses.length > 0 && (
         <div>
-          <h3> Response samples </h3>
+          <RightPanelHeader> Response samples </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
             <TabList>

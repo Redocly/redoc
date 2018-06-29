@@ -2,6 +2,7 @@ import { adjustHue, desaturate, lighten, transparentize } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacingUnit: 20,
+
   breakpoints: {
     small: '50rem',
     medium: '85rem',
@@ -74,6 +75,7 @@ const defaultTheme: ThemeInterface = {
   rightPanel: {
     backgroundColor: '#263238',
     width: '40%',
+    textColor: '#ffffff',
   },
 };
 
@@ -187,7 +189,10 @@ export interface ResolvedThemeInterface {
   rightPanel: {
     backgroundColor: string;
     width: string;
+    textColor: string;
   };
+
+  extensionsHook?: (name: string, props: any) => string;
 }
 
 export type primitive = string | number | boolean | undefined | null;

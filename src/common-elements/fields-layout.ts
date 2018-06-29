@@ -2,6 +2,7 @@ import { transparentize } from 'polished';
 import * as React from 'react';
 
 import styled, {
+  extensionsHook,
   ResolvedThemeInterface,
   StyledComponentClass,
   withProps,
@@ -75,6 +76,8 @@ export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend
   }
 
   ${({ kind }) => (kind !== 'field' ? 'font-style: italic' : '')};
+
+  ${extensionsHook('PropertyNameCell')};
 `;
 
 export const PropertyDetailsCell = styled.td`

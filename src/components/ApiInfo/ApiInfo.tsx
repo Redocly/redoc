@@ -7,6 +7,7 @@ import { MiddlePanel, Row } from '../../common-elements/';
 import { Markdown } from '../Markdown/Markdown';
 import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 
+import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {
   ApiHeader,
   DownloadButton,
@@ -77,22 +78,23 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               </DownloadButton>
             </p>
           )}
+          <StyledMarkdownBlock>
+            {((info.license || info.contact || info.termsOfService) && (
+              <InfoSpanBoxWrap>
+                <InfoSpanBox>
+                  {email} {website} {license} {terms}
+                </InfoSpanBox>
+              </InfoSpanBoxWrap>
+            )) ||
+              null}
 
-          {((info.license || info.contact || info.termsOfService) && (
-            <InfoSpanBoxWrap>
-              <InfoSpanBox>
-                {email} {website} {license} {terms}
-              </InfoSpanBox>
-            </InfoSpanBoxWrap>
-          )) ||
-            null}
-
-          {(externalDocs && (
-            <p>
-              <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
-            </p>
-          )) ||
-            null}
+            {(externalDocs && (
+              <p>
+                <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
+              </p>
+            )) ||
+              null}
+          </StyledMarkdownBlock>
         </MiddlePanel>
       </Row>
     );

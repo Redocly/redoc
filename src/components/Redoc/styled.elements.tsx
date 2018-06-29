@@ -32,19 +32,6 @@ export const RedocWrap = styled.div`
   .redoc-markdown h1 {
     padding-top: ${props => props.theme.spacingUnit * 4}px;
   }
-
-  a {
-    text-decoration: none;
-    color: ${props => props.theme.links.color};
-
-    &:visited {
-      color: ${props => props.theme.links.visited};
-    }
-
-    &:hover {
-      color: ${props => props.theme.links.hover};
-    }
-  }
 `;
 
 export const ApiContentWrap = styled.div`

@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
-import styled, { css, ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
+import styled, {
+  css,
+  extensionsHook,
+  ResolvedThemeInterface,
+  StyledComponentClass,
+} from '../styled-components';
 
 const headerFontSize = {
   1: '1.85714em',
@@ -18,16 +23,28 @@ export const headerCommonMixin = level => css`
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
   color: ${props => props.theme.colors.main};
+
+  ${extensionsHook('H1')};
 `;
 
 export const H2 = styled.h2`
   ${headerCommonMixin(2)};
   color: black;
+
+  ${extensionsHook('H2')};
 `;
 
 export const H3 = styled.h2`
   ${headerCommonMixin(3)};
   color: black;
+
+  ${extensionsHook('H3')};
+`;
+
+export const RightPanelHeader = styled.h3`
+  color: ${({ theme }) => theme.rightPanel.textColor};
+
+  ${extensionsHook('RightPanelHeader')};
 `;
 
 export const UnderlinedHeader = styled.h5`
@@ -38,4 +55,6 @@ export const UnderlinedHeader = styled.h5`
   text-transform: uppercase;
   font-size: 0.929em;
   line-height: 20px;
+
+  ${extensionsHook('UnderlinedHeader')};
 `;

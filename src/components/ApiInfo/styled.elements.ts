@@ -1,7 +1,11 @@
 import { AnchorHTMLAttributes, ClassAttributes, HTMLAttributes } from 'react';
 
 import { H1, MiddlePanel } from '../../common-elements';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
+import styled, {
+  extensionsHook,
+  ResolvedThemeInterface,
+  StyledComponentClass,
+} from '../../styled-components';
 
 const delimiterWidth = 15;
 
@@ -10,6 +14,8 @@ export const ApiInfoWrap = MiddlePanel;
 export const ApiHeader = H1.extend`
   margin-top: 0;
   margin-bottom: 0.5em;
+
+  ${extensionsHook('ApiHeader')};
 `;
 
 export const DownloadButton = styled.a`
@@ -20,6 +26,8 @@ export const DownloadButton = styled.a`
   padding: 4px 8px 4px;
   display: inline-block;
   text-decoration: none;
+
+  ${extensionsHook('DownloadButton')};
 `;
 
 export const InfoSpan = styled.span`

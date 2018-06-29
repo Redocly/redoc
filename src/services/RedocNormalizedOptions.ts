@@ -98,7 +98,14 @@ export class RedocNormalizedOptions {
   unstable_ignoreMimeParameters: boolean;
 
   constructor(raw: RedocRawOptions) {
+    let hook;
+    if (raw.theme && raw.theme.extensionsHook) {
+      hook = raw.theme.extensionsHook;
+      raw.theme.extensionsHook = undefined;
+    }
     this.theme = resolveTheme(mergeObjects({} as any, defaultTheme, raw.theme || {}));
+    this.theme.extensionsHook = hook;
+
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
