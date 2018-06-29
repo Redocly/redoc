@@ -1,3 +1,22 @@
+<a name="2.0.0-alpha.27"></a>
+# [2.0.0-alpha.27](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.25...v2.0.0-alpha.27) (2018-06-29)
+
+
+### Bug Fixes
+
+* change default font weight to 400 ([11947ed](https://github.com/Rebilly/ReDoc/commit/11947ed))
+* do not uppercase menu items by default ([0d45cc2](https://github.com/Rebilly/ReDoc/commit/0d45cc2))
+* fix link colors in json samples ([aaaa899](https://github.com/Rebilly/ReDoc/commit/aaaa899))
+
+
+### Features
+
+* display Value instead of Enum for one-item enum ([78fa312](https://github.com/Rebilly/ReDoc/commit/78fa312))
+* experimental temporary support for tags in md ([06ef51c](https://github.com/Rebilly/ReDoc/commit/06ef51c))
+* theme hooks experimental hooks ([55bd853](https://github.com/Rebilly/ReDoc/commit/55bd853))
+
+
+
 <a name="2.0.0-alpha.26"></a>
 # [2.0.0-alpha.26](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.25...v2.0.0-alpha.26) (2018-06-28)
 
