@@ -14,6 +14,9 @@ export class ApiInfo extends BaseComponent implements OnInit {
   info: any = {};
   specUrl: String | SafeResourceUrl;
   downloadFilename = '';
+
+  hideDownloadButton = this.optionsService.options.hideDownloadButton;
+
   constructor(specMgr: SpecManager,
     private optionsService: OptionsService,
     elRef: ElementRef,

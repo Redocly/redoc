@@ -76,7 +76,7 @@ export class Redoc extends BaseComponent implements OnInit {
     optionsMgr.options = getPreOptions();
 
     this.element = elementRef.nativeElement;
-    this.$parent = this.element.parentElement;
+    this.$parent = this.element.parentNode as Element;
     this.$refElem = this.element.nextElementSibling;
 
     //parse options (top level component doesn't support inputs)

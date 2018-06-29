@@ -1,12 +1,18 @@
-<img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="400px" />
-
-**OpenAPI/Swagger-generated API Reference Documentation**
+<p align="center">
+    <img alt="ReDoc logo" src="/docs/images/redoc-logo.png" width="300px" />
+</p>
+<p align="center">
+    <b>OpenAPI/Swagger-generated API Reference Documentation</b>
+</p>
+<p align="center">
+  <b> This is README for `1.x` version of ReDoc. `2.x` README is on <a href="https://github.com/Rebilly/ReDoc">the master branch</a></b>
+</p>
 
 [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![Tested on APIs.guru](http://api.apis.guru/badges/tested_on.svg)](https://APIs.guru) [![dependencies Status](https://david-dm.org/Rebilly/ReDoc/status.svg)](https://david-dm.org/Rebilly/ReDoc) [![devDependencies Status](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![Stories in Ready](https://badge.waffle.io/Rebilly/ReDoc.png?label=ready&title=Ready)](https://waffle.io/Rebilly/ReDoc)
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/Rebilly/redoc.svg)](http://isitmaintained.com/project/Rebilly/redoc "Average time to resolve an issue") [![Percentage of issues still open](http://isitmaintained.com/badge/open/REBILLY/REDOC.svg)](http://isitmaintained.com/project/REBILLY/REDOC "Percentage of issues still open")
 
-[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![Bower](http://img.shields.io/bower/v/redoc.svg)](http://bower.io/) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+[![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/redoc.svg)](https://saucelabs.com/u/redoc)
 
@@ -94,9 +100,9 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-tag-attributes) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [bower](bower.io):
+Install using [yarn](https://yarnpkg.com):
 
-    bower install redoc
+    yarn add redoc
 
 or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
 
@@ -108,10 +114,6 @@ For **CDN**:
 <script src="https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js"> </script>
 ```
 
-For bower:
-```html
-<script src="bower_components/redoc/dist/redoc.min.js"> </script>
-```
 For npm:
 ```html
 <script src="node_modules/redoc/dist/redoc.min.js"> </script>
@@ -150,8 +152,9 @@ ReDoc makes use of the following [vendor extensions](http://swagger.io/specifica
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
   * **function**: A getter function. Must return a number representing the offset (in pixels);
 * `suppress-warnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
-* `lazy-rendering` - if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\rebilly.github.io/ReDoc) for the example.
+* `lazy-rendering` - if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](https://rebilly.github.io/ReDoc) for the example.
 * `hide-hostname` - if set, the protocol and hostname is not shown in the operation definition.
+* `hide-download-button` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `expand-responses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expand-responses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `required-props-first` - show required properties first ordered in the same order as in `required` array.
 * `no-auto-auth` - do not inject Authentication section automatically

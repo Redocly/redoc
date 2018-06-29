@@ -1,3 +1,81 @@
+<a name="1.22.0"></a>
+# [1.22.0](https://github.com/Rebilly/ReDoc/compare/v1.21.2...v1.22.0) (2018-05-02)
+
+### Bug Fixes
+
+* pinpoint version of hint.css to 2.3.2 to prevent licensing issue [#478](https://github.com/Rebilly/ReDoc/issues/478), reported by [@rickity-cricket](https://github.com/rickity-cricket)
+
+<a name="1.21.2"></a>
+## [1.21.2](https://github.com/Rebilly/ReDoc/compare/v1.21.1...v1.21.2) (2018-02-26)
+
+
+### Bug Fixes
+
+* missing properties when using complex allOf (regression) ([6ce9245](https://github.com/Rebilly/ReDoc/commit/6ce9245)), closes [#422](https://github.com/Rebilly/ReDoc/issues/422)
+
+
+
+<a name="1.21.1"></a>
+## [1.21.1](https://github.com/Rebilly/ReDoc/compare/v1.21.0...v1.21.1) (2018-02-23)
+
+
+### Bug Fixes
+
+* avoid endless recursion in schema-walker in some cases ([309cc23](https://github.com/Rebilly/ReDoc/commit/309cc23)), closes [#418](https://github.com/Rebilly/ReDoc/issues/418) [#395](https://github.com/Rebilly/ReDoc/issues/395)
+* fix crash when discriminator is used incorrectly ([b1d928d](https://github.com/Rebilly/ReDoc/commit/b1d928d))
+
+
+
+<a name="1.21.0"></a>
+# [1.21.0](https://github.com/Rebilly/ReDoc/compare/v1.20.0...v1.21.0) (2018-02-18)
+
+
+### Bug Fixes
+
+* null example not used in schema samples ([420c51a](https://github.com/Rebilly/ReDoc/commit/420c51a)), closes [#415](https://github.com/Rebilly/ReDoc/issues/415)
+
+
+### Features
+
+* new option hide-download-button ([454e5bd](https://github.com/Rebilly/ReDoc/commit/454e5bd)), closes [#394](https://github.com/Rebilly/ReDoc/issues/394)
+
+
+
+<a name="1.20.0"></a>
+## [1.20.0](https://github.com/Rebilly/ReDoc/compare/v1.19.3...v1.20.0) (2018-01-21)
+
+
+### Bug Fixes
+
+* Path parameters are not correctly overriden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
+* Use parentNode instead of parentElement to fix IE11 crash ([e8adb60](https://github.com/Rebilly/ReDoc/commit/e8adb60)), closes [#406](https://github.com/Rebilly/ReDoc/issues/406)
+
+
+### Features
+
+* align parameters to match up ([#375](https://github.com/Rebilly/ReDoc/issues/375)) ([d083c16](https://github.com/Rebilly/ReDoc/commit/d083c16))
+
+### Deprecations
+* Dropped bower support. No more dist files on the `releases` branch.
+
+<a name="1.19.3"></a>
+## [1.19.3](https://github.com/Rebilly/ReDoc/compare/v1.19.2...v1.19.3) (2017-11-16)
+
+
+### Bug Fixes
+
+* html characters not escaped in code blocks (fixes [#378](https://github.com/Rebilly/ReDoc/issues/378)) ([fef9ec4](https://github.com/Rebilly/ReDoc/commit/fef9ec4))
+
+
+<a name="1.19.2"></a>
+## [1.19.2](https://github.com/Rebilly/ReDoc/compare/v1.19.1...v1.19.2) (2017-11-10)
+
+
+### Bug Fixes
+
+* response samples doesn't show only text/plain (fixes [#371](https://github.com/Rebilly/ReDoc/issues/371)) ([00aea06](https://github.com/Rebilly/ReDoc/commit/00aea06))
+
+
 <a name="1.19.1"></a>
 # [1.19.1](https://github.com/Rebilly/ReDoc/compare/v1.19.0...v1.19.1) (2017-10-02)
 

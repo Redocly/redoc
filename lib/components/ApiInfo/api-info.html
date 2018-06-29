@@ -1,6 +1,6 @@
 <div class="api-info-wrapper">
   <h1>{{info.title}} <span class="api-info-version">({{info.version}})</span></h1>
-  <p class="download-openapi" *ngIf="specUrl">
+  <p class="download-openapi" *ngIf="specUrl && !hideDownloadButton">
     Download OpenAPI specification:
     <a class="openapi-button" [attr.download]="downloadFilename" [attr.href]="specUrl"> Download </a>
   </p>

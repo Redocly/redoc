@@ -53,6 +53,15 @@ class SchemaWalker {
     if (obj == undefined || typeof(obj) !== 'object') {
       return;
     }
+
+    if (obj['x-redoc-visited']) {
+      obj['x-redoc-visited'] = false;
+      const res = visitor(obj, pointer);
+      // circular, return only title and description
+      return { title: res.title, description: res.description };
+    }
+
+    obj['x-redoc-visited'] = true;
     if (obj.properties) {
       let ptr = JsonPointer.join(pointer, ['properties']);
       SchemaWalker.walkEach(obj.properties, ptr, visitor);
@@ -83,6 +92,7 @@ class SchemaWalker {
       }
     }
 
+    obj['x-redoc-visited'] = false;
     return visitor(obj, pointer);
   }
 
@@ -116,7 +126,7 @@ export class AllOfMerger {
       subSchema._pointer = tmpPtr;
     }
     if (!hadDiscriminator) into.discriminator = null;
-    into.allOf = null;
+    delete into.allOf;
   }
 
   private static mergeObject(into, subSchema, allOfNumber) {

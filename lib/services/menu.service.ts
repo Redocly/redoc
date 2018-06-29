@@ -10,7 +10,7 @@ import { SchemaHelper } from './schema-helper.service';
 import { AppStateService } from './app-state.service';
 import { LazyTasksService } from '../shared/components/LazyFor/lazy-for';
 import { JsonPointer, MarkdownHeading, StringMap } from '../utils/';
-import * as slugify from 'slugify';
+import slugify from 'slugify';
 
 
 const CHANGE = {
