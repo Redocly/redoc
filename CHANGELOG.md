@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.28"></a>
+# [2.0.0-alpha.28](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.27...v2.0.0-alpha.28) (2018-06-29)
+
+
+### Bug Fixes
+
+* inline markdown regression ([e1c9e19](https://github.com/Rebilly/ReDoc/commit/e1c9e19))
+
+
+
 <a name="2.0.0-alpha.27"></a>
 # [2.0.0-alpha.27](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.25...v2.0.0-alpha.27) (2018-06-29)
 
