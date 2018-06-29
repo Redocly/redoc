@@ -127,6 +127,7 @@
     "dropkickjs": "~2.1.10",
     "hint.css": "2.3.2",
     "https-browserify": "^1.0.0",
+    "json-parse-helpfulerror": "^1.0.3",
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^3.3.1",
     "lunr": "^1.0.0",
@@ -136,7 +137,7 @@
     "prismjs": "^1.14.0",
     "remarkable": "1.7.1",
     "scrollparent": "^2.0.1",
-    "slugify": "1.2.1",
+    "slugify": "1.2.8",
     "stream-http": "^2.8.1",
     "ts-helpers": "^1.1.2",
     "zone.js": "^0.8.26"
