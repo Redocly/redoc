@@ -33,6 +33,7 @@ function SanitizedMarkdownHTML(props: StylingMarkdownProps & { html: string }) {
           dangerouslySetInnerHTML={{
             __html: sanitize(options.untrustedSpec, props.html),
           }}
+          {...props}
         />
       )}
     </OptionsContext.Consumer>

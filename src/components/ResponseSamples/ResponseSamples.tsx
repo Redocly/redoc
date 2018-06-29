@@ -35,7 +35,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
             </TabList>
             {responses.map(response => (
               <TabPanel key={response.code}>
-                <PayloadSamples content={response.content!} />;
+                <PayloadSamples content={response.content!} />
               </TabPanel>
             ))}
           </Tabs>
