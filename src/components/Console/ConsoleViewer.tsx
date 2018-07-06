@@ -82,7 +82,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
   /*
   * If we have a url like foo/bar/{uuid} uuid will be replaced with what user has typed in.
   */
-  addParamsToUrl(url: string, params: Array<FieldModel>) {
+  addParamsToUrl(url: string, params: FieldModel[]) {
     const queryParamPrefix = '{';
     const queryParamSuffix = '}';
 
@@ -101,7 +101,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
 
     return url;
 
-  };
+  }
 
   async invoke(endpoint, body, headers = {}) {
     try {

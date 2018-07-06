@@ -31,7 +31,7 @@ export class Field extends React.PureComponent<FieldProps> {
     this.props.field.toggle();
   };
 
-  onFieldChange = (e) => {
+  onFieldChange = e => {
     console.log('Textfield value is ' + e.target.placeholder + ' - ' + e.target.value);
     this.props.field.setValue(e.target.value);
   };
