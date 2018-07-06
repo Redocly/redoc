@@ -100,7 +100,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
               {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
               {executeMode &&
                 <div>
-                  <ConsoleViewer operation={operation} />
+                  <ConsoleViewer operation={operation} additionalHeaders={options.additionalHeaders} queryParamPrefix={options.queryParamPrefix} queryParamSuffix={options.queryParamSuffix} />
                 </div>
               }
               {!executeMode &&

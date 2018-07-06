@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { SendButton } from '../../common-elements/buttons';
 import { ConsoleActionsRow } from '../../common-elements/panels';
-import { OperationModel } from '../../services/models';
+import { FieldModel, OperationModel } from '../../services/models';
 import { OpenAPISchema } from '../../types';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
@@ -12,6 +12,9 @@ const qs = require('qs');
 
 export interface ConsoleViewerProps {
   operation: OperationModel;
+  additionalHeaders?: object;
+  queryParamPrefix?: string;
+  queryParamSuffix?: string;
 }
 
 export interface ConsoleViewerState {
@@ -26,6 +29,7 @@ export interface Schema {
 @observer
 export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleViewerState> {
   operation: OperationModel;
+  additionalHeaders: object;
   visited = new Set();
   private consoleEditor: ConsoleEditor;
 
@@ -39,46 +43,77 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const ace = this.consoleEditor && this.consoleEditor.editor;
     // const value = ace && ace.editor &&
     const schema = this.getSchema();
-    const { operation } = this.props;
-
+    const { operation, additionalHeaders = {} } = this.props;
     // console.log('Schema: ' + JSON.stringify(schema, null, 2));
     let value = ace && ace.editor.getValue();
 
     const ref = schema && schema._$ref;
-
     // var valid = window && window.ajv.validate({ $ref: `specs.json${ref}` }, value);
     // console.log(JSON.stringify(window.ajv.errors));
     // if (!valid) {
     //  console.warn('INVALID REQUEST!');
     // }
-
+    const content = operation.requestBody && operation.requestBody.content;
+    const mediaType = content && content.mediaTypes[content.activeMimeIdx];
     const endpoint = {
       method: operation.httpVerb,
       path: operation.servers[0].url + operation.path,
     };
-    console.log('Value: ' + value);
+    // console.log('Value: ' + value);
     if (value) {
       value = JSON.parse(value);
     }
+    const contentType = mediaType && mediaType.name || 'application/json';
+    const contentTypeHeader = { 'Content-Type': contentType };
+    const headers = { ...additionalHeaders, ...contentTypeHeader };
+    let result;
+    try {
+      result = await this.invoke(endpoint, value, headers);
+      this.setState({
+        result,
+      });
+    } catch (error) {
+      this.setState({
+        result: error,
+      });
+    }
+  };
 
-    const result = await this.invoke(endpoint, value);
-    console.log('Result: ' + JSON.stringify(result));
-    this.setState({
-      result,
-    });
+  /*
+  * If we have a url like foo/bar/{uuid} uuid will be replaced with what user has typed in.
+  */
+  addParamsToUrl(url: string, params: Array<FieldModel>) {
+    const queryParamPrefix = '{';
+    const queryParamSuffix = '}';
+
+    for (const fieldModel of params) {
+      console.log(fieldModel.name + ' ' + url);
+      console.log(fieldModel.$value);
+      if (url.indexOf(`${queryParamPrefix}${fieldModel.name}${queryParamSuffix}`) > -1 && fieldModel.$value.length > 0) {
+        url = url.replace(`${queryParamPrefix}${fieldModel.name}${queryParamSuffix}`, fieldModel.$value);
+      }
+    }
+
+    if (url.split(queryParamPrefix).length > 1) {
+      console.error('** we have missing query params ** ', url);
+      throw Error(`** we have missing query params ** ${url}`);
+    }
+
+    return url;
 
   };
 
-  async invoke(endpoint, body) {
-    const headers = { 'Content-Type': 'application/json' };
+  async invoke(endpoint, body, headers = {}) {
     try {
-      let url = endpoint.path;
+      const { operation } = this.props;
+      let url = this.addParamsToUrl(endpoint.path, operation.parameters || []);
       if (endpoint.method.toLocaleLowerCase() === 'get') {
         url = url + '?' + qs.stringify(body || '');
       }
-
       const myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
+      for (const [key, value] of Object.entries(headers)) {
+        myHeaders.append(key, `${value}`);
+      }
 
       const request = new Request(url, {
         method: endpoint.method,

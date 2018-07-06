@@ -7,6 +7,7 @@ export interface RedocRawOptions {
   scrollYOffset?: number | string | (() => number);
   hideHostname?: boolean | string;
   enableConsole?: boolean;
+  additionalHeaders?: object;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
   noAutoAuth?: boolean | string;
@@ -18,6 +19,8 @@ export interface RedocRawOptions {
 
   providedByName?: string;
   providedByUri?: string;
+  queryParamPrefix?: string;
+  queryParamSuffix?: string;
 
   unstable_ignoreMimeParameters?: boolean;
 }
@@ -98,8 +101,11 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
   enableConsole: boolean;
+  additionalHeaders: object;
   providedByName: string;
   providedByUri: string;
+  queryParamPrefix: string;
+  queryParamSuffix: string;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -116,8 +122,11 @@ export class RedocNormalizedOptions {
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
     this.enableConsole = argValueToBoolean(raw.enableConsole);
+    this.additionalHeaders = raw.additionalHeaders || {};
     this.providedByName = raw.providedByName || 'Documentation Powered by ReDoc';
     this.providedByUri = raw.providedByUri || 'https://github.com/Rebilly/ReDoc';
+    this.queryParamPrefix = raw.queryParamPrefix || '{';
+    this.queryParamSuffix = raw.queryParamSuffix || '}';
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
   }

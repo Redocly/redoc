@@ -41,6 +41,9 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
     const { operation, inverted, hideHostname } = this.props;
     const { expanded } = this.state;
 
+    if (operation && operation.parameters && operation.parameters.length > 0) {
+      console.log('USER INPUT VALUE:: ' + operation.parameters[0]['$value']);
+    }
     // TODO: highlight server variables, e.g. https://{user}.test.com
     return (
       <OptionsContext.Consumer>

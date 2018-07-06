@@ -22,13 +22,16 @@ const big = window.location.search.indexOf('big') > -1;
 const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
 
 let specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
-// specUrl = 'intent.json';
+specUrl = 'intent.json';
 
 // specUrl = 'swagger.yaml';
-specUrl = 'petstore.json';
+// specUrl = 'petstore.json';
 
 let store;
-const options: RedocRawOptions = { nativeScrollbars: false, enableConsole: true, providedByName: 'Intent ApiDocs by Nutanix', providedByUri: 'http://www.nutanix.com' };
+const headers = {
+  'x-nutanix-client': 'ui',
+};
+const options: RedocRawOptions = { nativeScrollbars: false, enableConsole: true, providedByName: 'Intent ApiDocs by Nutanix', providedByUri: 'http://www.nutanix.com', additionalHeaders: headers };
 
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);

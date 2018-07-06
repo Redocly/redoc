@@ -11,7 +11,7 @@ import { SchemaModel } from './Schema';
  */
 export class FieldModel {
   @observable expanded: boolean = false;
-
+  @observable $value: string = '';
   schema: SchemaModel;
   name: string;
   required: boolean;
@@ -45,5 +45,10 @@ export class FieldModel {
   @action
   toggle() {
     this.expanded = !this.expanded;
+  }
+
+  @action
+  setValue(value: string) {
+    this.$value = value;
   }
 }

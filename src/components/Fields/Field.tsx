@@ -30,6 +30,12 @@ export class Field extends React.PureComponent<FieldProps> {
   toggle = () => {
     this.props.field.toggle();
   };
+
+  onFieldChange = (e) => {
+    console.log('Textfield value is ' + e.target.placeholder + ' - ' + e.target.value);
+    this.props.field.setValue(e.target.value);
+  };
+
   render() {
     const { className, field, isLast } = this.props;
     const { name, expanded, deprecated, required, kind } = field;
@@ -63,7 +69,7 @@ export class Field extends React.PureComponent<FieldProps> {
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
           {field && field.in === 'path' &&
-            <td><TextField placeholder="foo" /></td>
+            <td><TextField placeholder={field.name} onChange={this.onFieldChange} /></td>
           }
         </tr>
         {field.expanded &&
