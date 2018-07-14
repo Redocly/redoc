@@ -5,6 +5,7 @@ import styled from '../../styled-components';
 
 import { UnderlinedHeader } from '../../common-elements/headers';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
+import { linksCss } from '../Markdown/styled.elements';
 
 const ScopeName = styled.code`
   font-size: ${props => props.theme.code.fontSize};
@@ -14,6 +15,25 @@ const ScopeName = styled.code`
   padding: 0.2em;
   display: inline-block;
   line-height: 1;
+
+  &:after {
+    content: ',';
+  }
+  &:last-child:after {
+    content: none;
+  }
+`;
+
+const SecurityRequirementWrap = styled.span`
+  &:after {
+    content: ' OR ';
+    font-weight: bold;
+  }
+  &:last-child:after {
+    content: none;
+  }
+
+  ${linksCss};
 `;
 
 export interface SecurityRequirementProps {
@@ -25,13 +45,13 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
     const security = this.props.security;
     return security.schemes.map((scheme, idx) => {
       return (
-        <div key={scheme.id}>
+        <SecurityRequirementWrap key={scheme.id}>
           <a href={'#' + scheme.sectionId}>{scheme.id}</a>
           {scheme.scopes.length > 0 && ' ('}
           {scheme.scopes.map(scope => <ScopeName key={scope}>{scope}</ScopeName>)}
           {scheme.scopes.length > 0 && ') '}
-          {idx < security.schemes.length - 1 && ' and '}
-        </div>
+          {idx < security.schemes.length - 1 && ' & '}
+        </SecurityRequirementWrap>
       );
     });
   }

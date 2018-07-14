@@ -10,6 +10,21 @@ import styled, {
   withProps,
 } from '../../styled-components';
 
+export const linksCss = css`
+  a {
+    text-decoration: none;
+    color: ${props => props.theme.links.color};
+
+    &:visited {
+      color: ${props => props.theme.links.visited};
+    }
+
+    &:hover {
+      color: ${props => props.theme.links.hover};
+    }
+  }
+`;
+
 export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(styled.div)`
 
   font-family: ${props => props.theme.baseFont.family};
@@ -136,16 +151,5 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
 
   ${extensionsHook('Markdown')};
 
-  a {
-    text-decoration: none;
-    color: ${props => props.theme.links.color};
-
-    &:visited {
-      color: ${props => props.theme.links.visited};
-    }
-
-    &:hover {
-      color: ${props => props.theme.links.hover};
-    }
-  }
+  ${linksCss}
 `;

@@ -1,11 +1,10 @@
-import { OpenAPISecurityRequirement } from '../../types';
+import { OpenAPISecurityRequirement, OpenAPISecurityScheme } from '../../types';
 import { SECURITY_SCHEMES_SECTION } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 
-export interface SecurityScheme {
+export interface SecurityScheme extends OpenAPISecurityScheme {
   id: string;
   sectionId: string;
-  type: string;
   scopes: string[];
 }
 
@@ -26,9 +25,9 @@ export class SecurityRequirementModel {
         }
 
         return {
+          ...scheme,
           id,
           sectionId: SECURITY_SCHEMES_SECTION + id,
-          type: scheme.type,
           scopes,
         };
       })
