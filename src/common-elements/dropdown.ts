@@ -102,7 +102,7 @@ export const SimpleDropdown = StyledDropdown.extend`
   text-transform: none;
   font-size: 0.929em;
 
-  .Dropdown-control  {
+  .Dropdown-control {
     font-size: 1em;
     border: none;
     padding: 0 1.2em 0 0;
@@ -112,6 +112,7 @@ export const SimpleDropdown = StyledDropdown.extend`
       color: ${props => props.theme.colors.main};
       box-shadow: none;
     }
+  }
 `;
 
 export const MimeLabel = styled.span`

@@ -38,14 +38,14 @@ export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
     });
 
     return (
-      <div>
+      <>
         {this.props.renderDropdown({
           value: options[activeMimeIdx],
           options,
           onChange: this.switchMedia,
         })}
         {this.props.children(content.active)}
-      </div>
+      </>
     );
   }
 }
