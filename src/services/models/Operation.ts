@@ -68,8 +68,8 @@ export class OperationModel implements IMenuItem {
     this.id =
       operationSpec.operationId !== undefined
         ? 'operation/' + operationSpec.operationId
-        : this.parent !== undefined
-          ? this.parent.id + operationSpec._$ref
+        : parent !== undefined
+          ? parent.id + operationSpec._$ref
           : operationSpec._$ref;
 
     this.name = getOperationSummary(operationSpec);
