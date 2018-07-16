@@ -236,7 +236,7 @@ async function getPageHTML(
     redocHTML: `
     <div id="redoc">${(ssr && html) || ''}</div>
     <script>
-    ${(ssr && `const __redoc_state = ${escapeUnicode(JSON.stringify(state))};`) || ''}
+    ${(ssr && `/*<!--*/const __redoc_state = ${escapeUnicode(JSON.stringify(state))};/*-->*/`) || ''}
 
     var container = document.getElementById('redoc');
     Redoc.${
