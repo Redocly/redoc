@@ -1,15 +1,15 @@
-describe('Standalone bundle test', function() {
+describe('Standalone bundle test', () => {
   function baseCheck(name: string, url: string) {
     describe(name, () => {
       before(() => {
         cy.visit(url);
       });
 
-      it('Render and check no errors', function() {
+      it('Render and check no errors', () => {
         cy.get('.api-info').should('exist');
       });
 
-      it('Render and click all the menu items', function() {
+      it('Render and click all the menu items', () => {
         cy.get('.menu-content li').click({ multiple: true, force: true });
       });
     });
