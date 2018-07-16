@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { media, ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
+import styled, { media } from '../styled-components';
 
 export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});

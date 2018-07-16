@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
 
 import * as DOMPurify from 'dompurify';
 import { AppStore, MarkdownRenderer, MDXComponentMeta } from '../../services';

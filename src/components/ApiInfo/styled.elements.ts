@@ -1,11 +1,7 @@
-import { AnchorHTMLAttributes, ClassAttributes, HTMLAttributes } from 'react';
+import * as React from 'react';
 
 import { H1, MiddlePanel } from '../../common-elements';
-import styled, {
-  extensionsHook,
-  ResolvedThemeInterface,
-  StyledComponentClass,
-} from '../../styled-components';
+import styled, { extensionsHook } from '../../styled-components';
 
 const delimiterWidth = 15;
 

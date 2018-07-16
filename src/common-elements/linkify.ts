@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
-import styled, { css, ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
+import styled, { css } from '../styled-components';
 
 // tslint:disable-next-line
 export const linkifyMixin = className => css`

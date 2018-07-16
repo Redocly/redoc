@@ -3,7 +3,6 @@ import { Component } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
-import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils';
 
 export interface StoreProviderProps {

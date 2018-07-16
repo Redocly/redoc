@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
+import styled from '../../styled-components';
 
 export const LogoImgEl = styled.img`
   max-height: ${props => props.theme.logo.maxHeight};

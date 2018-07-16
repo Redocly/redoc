@@ -1,4 +1,3 @@
-import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';

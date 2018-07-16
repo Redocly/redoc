@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Dropdown from 'react-dropdown';
 
-import styled, {
-  ResolvedThemeInterface,
-  StyledComponentClass,
-  withProps,
-} from '../styled-components';
+import { StyledComponentClass } from 'styled-components';
+import styled, { withProps } from '../styled-components';
 
 export interface DropdownOption {
   label: string;

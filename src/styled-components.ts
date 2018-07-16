@@ -1,7 +1,7 @@
-import { ComponentClass, StatelessComponent } from 'react';
+import * as React from 'react';
 import * as styledComponents from 'styled-components';
 
-import { ResolvedThemeInterface, ThemeInterface } from './theme';
+import { ResolvedThemeInterface } from './theme';
 
 export { ResolvedThemeInterface };
 
@@ -54,7 +54,6 @@ export const media = {
 };
 
 export { css, injectGlobal, keyframes, ThemeProvider, withProps };
-export { StyledComponentClass } from 'styled-components';
 export default styled;
 
 export function extensionsHook(styledName: string) {

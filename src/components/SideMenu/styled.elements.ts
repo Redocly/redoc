@@ -1,14 +1,8 @@
 import * as classnames from 'classnames';
 import * as React from 'react';
-import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
 import { deprecatedCss } from '../../common-elements';
-import styled, {
-  css,
-  ResolvedThemeInterface,
-  StyledComponentClass,
-  withProps,
-} from '../../styled-components';
+import styled, { css, withProps } from '../../styled-components';
 
 export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   className: props => `operation-type ${props.type}`,

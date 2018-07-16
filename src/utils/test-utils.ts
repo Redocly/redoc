@@ -1,8 +1,6 @@
 /* tslint:disable:no-implicit-dependencies */
 
 import { has, set } from 'lodash';
-import { instanceOf } from 'prop-types';
-import { RedocNormalizedOptions } from '../services/RedocNormalizedOptions';
 
 function traverseComponent(root, fn) {
   if (!root) {

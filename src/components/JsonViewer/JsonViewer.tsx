@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
+import styled from '../../styled-components';
 
 import { SampleControls } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';

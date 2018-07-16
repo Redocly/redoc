@@ -1,14 +1,7 @@
 import * as React from 'react';
-import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
-import styled, {
-  css,
-  extensionsHook,
-  ResolvedThemeInterface,
-  StyledComponentClass,
-  withProps,
-} from '../../styled-components';
+import styled, { css, extensionsHook, withProps } from '../../styled-components';
 
 export const linksCss = css`
   a {

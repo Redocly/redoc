@@ -1,8 +1,7 @@
 import { computed, observable } from 'mobx';
-import { OpenAPIExternalDocumentation, OpenAPISpec } from '../types';
+import { OpenAPISpec } from '../types';
 
 import { MenuBuilder } from './MenuBuilder';
-import { GroupModel, OperationModel } from './models/';
 import { ApiInfoModel } from './models/ApiInfo';
 import { SecuritySchemesModel } from './models/SecuritySchemes';
 import { OpenAPIParser } from './OpenAPIParser';

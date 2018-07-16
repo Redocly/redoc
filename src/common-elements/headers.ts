@@ -1,12 +1,6 @@
 import * as React from 'react';
-import { InterpolationFunction, Styles, ThemeProps } from 'styled-components';
 
-import styled, {
-  css,
-  extensionsHook,
-  ResolvedThemeInterface,
-  StyledComponentClass,
-} from '../styled-components';
+import styled, { css, extensionsHook } from '../styled-components';
 
 const headerFontSize = {
   1: '1.85714em',

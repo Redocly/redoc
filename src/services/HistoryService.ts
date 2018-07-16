@@ -9,7 +9,6 @@ function isSameHash(a: string, b: string): boolean {
 }
 
 export class IntHistoryService {
-  private causedHashChange: boolean = false;
   private _emiter;
 
   constructor() {
@@ -40,7 +39,6 @@ export class IntHistoryService {
     if (IS_BROWSER) {
       window.removeEventListener('hashchange', this.emit);
     }
-    this.causedHashChange = false;
   }
 
   @bind

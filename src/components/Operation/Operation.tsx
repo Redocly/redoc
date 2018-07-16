@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from '../../styled-components';
 import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequirement';
 
 import { observer } from 'mobx-react';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
+import styled from '../styled-components';
 
 export const SampleControls = styled.div`
   opacity: 0.4;

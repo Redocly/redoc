@@ -1,9 +1,9 @@
 import { transparentize } from 'polished';
-import { ClassAttributes, HTMLAttributes } from 'react';
+import * as React from 'react';
 
 import { UnderlinedHeader } from '../../common-elements';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../../styled-components';
-import { ResponseTitle, ResponseTitleProps } from './ResponseTitle';
+import styled from '../../styled-components';
+import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
   padding: 10px;

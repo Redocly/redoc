@@ -4,8 +4,6 @@ import * as React from 'react';
 import { AppStore } from '../../services/AppStore';
 
 import { MiddlePanel, Row } from '../../common-elements/';
-import { Markdown } from '../Markdown/Markdown';
-import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {

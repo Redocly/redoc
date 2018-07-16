@@ -1,9 +1,5 @@
 import * as React from 'react';
-import styled, {
-  keyframes,
-  ResolvedThemeInterface,
-  StyledComponentClass,
-} from '../../styled-components';
+import styled, { keyframes } from '../../styled-components';
 
 const _Spinner = (props: { className?: string; color: string }) => (
   <svg className={props.className} version="1.1" width="512" height="512" viewBox="0 0 512 512">
