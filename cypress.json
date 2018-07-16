@@ -6,5 +6,7 @@
   "supportFile": false,
   "fileServerFolder": ".",
   "video": true,
-  "projectId": "z6eb6h"
+  "projectId": "z6eb6h",
+  "viewportWidth": 1440,
+  "viewportHeight": 720
 }
