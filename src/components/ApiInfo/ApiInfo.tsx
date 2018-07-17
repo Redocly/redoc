@@ -20,9 +20,16 @@ export interface ApiInfoProps {
 
 @observer
 export class ApiInfo extends React.Component<ApiInfoProps> {
+  handleDownloadClick = e => {
+    if (!e.target.href) {
+      e.target.href = this.props.store.spec.info.downloadLink;
+    }
+  };
+
   render() {
     const { store } = this.props;
     const { info, externalDocs } = store.spec;
+    const hideDownloadButton = store.options.hideDownloadButton;
 
     const downloadFilename = info.downloadFileName;
     const downloadLink = info.downloadLink;
@@ -68,10 +75,15 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
           <ApiHeader>
             {info.title} <span>({info.version})</span>
           </ApiHeader>
-          {downloadLink && (
+          {!hideDownloadButton && (
             <p>
               Download OpenAPI specification:
-              <DownloadButton download={downloadFilename} target="_blank" href={downloadLink}>
+              <DownloadButton
+                download={downloadFilename}
+                target="_blank"
+                href={downloadLink || '#'}
+                onClick={this.handleDownloadClick}
+              >
                 Download
               </DownloadButton>
             </p>

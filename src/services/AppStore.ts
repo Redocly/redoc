@@ -15,7 +15,7 @@ export interface StoreState {
     activeItemIdx: number;
   };
   spec: {
-    url: string;
+    url?: string;
     data: any;
   };
   searchIndex: any;

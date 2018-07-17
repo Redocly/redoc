@@ -11,29 +11,20 @@ export class ApiInfoModel implements OpenAPIInfo {
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
-  constructor(private parser: OpenAPIParser, private options: RedocNormalizedOptions) {
+  constructor(private parser: OpenAPIParser) {
     Object.assign(this, parser.spec.info);
   }
 
-  get downloadLink() {
-    if (this.options.hideDownloadButton) {
-      return undefined;
-    }
-
+  get downloadLink(): string | undefined {
     if (this.parser.specUrl) {
       return this.parser.specUrl;
     }
 
-    if (IS_BROWSER && window.Blob && window.URL) {
+    if (IS_BROWSER && window.Blob && window.URL && window.URL.createObjectURL) {
       const blob = new Blob([JSON.stringify(this.parser.spec, null, 2)], {
         type: 'application/json',
       });
       return window.URL.createObjectURL(blob);
-    } else if (!IS_BROWSER) {
-      return (
-        'data:application/octet-stream;base64,' +
-        new Buffer(JSON.stringify(this.parser.spec, null, 2)).toString('base64')
-      );
     }
   }
 

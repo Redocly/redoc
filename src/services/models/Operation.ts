@@ -11,6 +11,7 @@ import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
 import {
   getOperationSummary,
   getStatusCodeType,
+  IS_BROWSER,
   isAbsolutePath,
   isStatusCode,
   JsonPointer,
@@ -148,25 +149,23 @@ export class OperationModel implements IMenuItem {
   }
 }
 
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
+function normalizeServers(specUrl: string | undefined, servers: OpenAPIServer[]): OpenAPIServer[] {
+  const baseUrl = specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : specUrl;
 
-function normalizeServers(specUrl: string, servers: OpenAPIServer[]): OpenAPIServer[] {
   if (servers.length === 0) {
     return [
       {
-        url: specUrl,
+        url: baseUrl,
       },
     ];
   }
 
   function normalizeUrl(url: string): string {
-    url = isAbsolutePath(url) ? url : joinPaths(specUrl, url);
+    url = isAbsolutePath(url) ? url : joinPaths(baseUrl, url);
     return stripTrailingSlash(url.startsWith('//') ? `${specProtocol}${url}` : url);
   }
 
-  const { protocol: specProtocol } = urlParse(specUrl);
+  const { protocol: specProtocol } = urlParse(baseUrl);
 
   return servers.map(server => {
     return {

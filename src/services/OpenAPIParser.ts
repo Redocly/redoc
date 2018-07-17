@@ -39,7 +39,7 @@ class RefCounter {
  * Loads and keeps spec. Provides raw spec operations
  */
 export class OpenAPIParser {
-  @observable specUrl: string;
+  @observable specUrl?: string;
   @observable.ref spec: OpenAPISpec;
 
   private _refCounter: RefCounter = new RefCounter();
@@ -57,8 +57,6 @@ export class OpenAPIParser {
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
       this.specUrl = urlResolve(href, specUrl);
-    } else {
-      this.specUrl = href;
     }
   }
 
