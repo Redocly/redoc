@@ -48,7 +48,7 @@ export const PropertyCell = styled.td`
     border-left-color: transparent;
   }
 
-  tr:only-child > & {
+  tr.last:first-child > & {
     background: none;
     border-left-color: transparent;
   }

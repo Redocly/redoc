@@ -1,7 +1,8 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import { FieldDetails } from './FieldDetails';
 
 import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
+import { FieldDetails } from './FieldDetails';
 
 import {
   InnerPropertiesWrap,
@@ -26,7 +27,8 @@ export interface FieldProps extends SchemaOptions {
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
 }
 
-export class Field extends React.PureComponent<FieldProps> {
+@observer
+export class Field extends React.Component<FieldProps> {
   toggle = () => {
     this.props.field.toggle();
   };
