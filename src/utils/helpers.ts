@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 /**
  * Maps over array passing `isLast` bool to iterator as the second arguemnt
  */
@@ -116,3 +118,18 @@ const isObject = (item: any): boolean => {
 const isMergebleObject = (item): boolean => {
   return isObject(item) && !Array.isArray(item);
 };
+
+/**
+ * slugify() returns empty string when failed to slugify.
+ * so try to return minimun slugified-string with failed one which keeps original value
+ * the regex codes are referenced with https://gist.github.com/mathewbyrne/1280286
+ */
+export function safeSlugify(value: string): string {
+  return slugify(value) ||
+    value.toString().toLowerCase()
+      .replace(/\s+/g, '-')         // Replace spaces with -
+      .replace(/&/g, '-and-')       // Replace & with 'and'
+      .replace(/\--+/g, '-')        // Replace multiple - with single -
+      .replace(/^-+/, '')           // Trim - from start of text
+      .replace(/-+$/, '');          // Trim - from end of text
+}

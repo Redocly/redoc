@@ -1,7 +1,6 @@
 import * as marked from 'marked';
-import slugify from 'slugify';
 
-import { highlight, html2Str } from '../utils';
+import { highlight, html2Str, safeSlugify } from '../utils';
 import { AppStore } from './AppStore';
 import { SECTION_ATTR } from './MenuStore';
 
@@ -56,7 +55,7 @@ export class MarkdownRenderer {
     parentId?: string,
   ): MarkdownHeading {
     const item = {
-      id: parentId ? `${parentId}/${slugify(name)}` : `section/${slugify(name)}`,
+      id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
       items: [],
     };
