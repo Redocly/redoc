@@ -41,7 +41,9 @@ export class AppStore {
     const inst = new AppStore(state.spec.data, state.spec.url, state.options, false);
     inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
     inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
-    inst.search.load(state.searchIndex);
+    if (!inst.options.disableSearch) {
+      inst.search!.load(state.searchIndex);
+    }
     return inst;
   }
 
@@ -49,7 +51,7 @@ export class AppStore {
   spec: SpecStore;
   rawOptions: RedocRawOptions;
   options: RedocNormalizedOptions;
-  search: SearchStore<string>;
+  search?: SearchStore<string>;
   marker = new MarkerService();
 
   private scroll: ScrollService;
@@ -71,14 +73,16 @@ export class AppStore {
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll);
 
-    this.search = new SearchStore();
-    if (createSearchIndex) {
-      this.search.indexItems(this.menu.items);
-    }
+    if (!this.options.disableSearch) {
+      this.search = new SearchStore();
+      if (createSearchIndex) {
+        this.search.indexItems(this.menu.items);
+      }
 
-    this.disposer = observe(this.menu, 'activeItemIdx', change => {
-      this.updateMarkOnMenu(change.newValue as number);
-    });
+      this.disposer = observe(this.menu, 'activeItemIdx', change => {
+        this.updateMarkOnMenu(change.newValue as number);
+      });
+    }
   }
 
   onDidMount() {
@@ -128,7 +132,7 @@ export class AppStore {
         url: this.spec.parser.specUrl,
         data: this.spec.parser.spec,
       },
-      searchIndex: await this.search.toJS(),
+      searchIndex: this.search ? await this.search.toJS() : undefined,
       options: this.rawOptions,
     };
   }
