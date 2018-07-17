@@ -124,7 +124,7 @@ YargsParser.command(
   .demandCommand()
   .options('t', {
     alias: 'template',
-    describe: 'Path to handlebars page template, see https://git.io/vxZ3V for the example ',
+    describe: 'Path to handlebars page template, see https://git.io/vh8fP for the example ',
     type: 'string',
   })
   .options('options', {
