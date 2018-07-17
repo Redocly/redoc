@@ -236,7 +236,7 @@ async function getPageHTML(
     redocHTML: `
     <div id="redoc">${(ssr && html) || ''}</div>
     <script>
-    ${(ssr && `const __redoc_state = ${escapeUnicode(JSON.stringify(state))};`) || ''}
+    ${(ssr && `const __redoc_state = ${sanitizeJSONString(JSON.stringify(state))};`) || ''}
 
     var container = document.getElementById('redoc');
     Redoc.${
@@ -304,6 +304,15 @@ function debounce(callback: (...args) => void, time: number) {
 
 function isURL(str: string): boolean {
   return /^(https?:)\/\//m.test(str);
+}
+
+function sanitizeJSONString(str: string) {
+  return escapeClosingScriptTag(escapeUnicode(str));
+}
+
+// see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
+function escapeClosingScriptTag(str) {
+  return str.replace(/<\/script>/g, '<\\/script>');
 }
 
 // see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
