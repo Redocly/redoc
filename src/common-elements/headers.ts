@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled, { css, extensionsHook } from '../styled-components';
 
 const headerFontSize = {

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Dropdown from 'react-dropdown';
 
 import { StyledComponentClass } from 'styled-components';

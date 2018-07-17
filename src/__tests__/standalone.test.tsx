@@ -6,9 +6,7 @@ import * as yaml from 'yaml-js';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-// import { filterPropsDeep } from '../../../utils/test-utils';
-
-import { ErrorBoundary, Loading, RedocStandalone, StoreProvider } from '../components/';
+import { Loading, RedocStandalone } from '../components/';
 
 describe('Components', () => {
   describe('RedocStandalone', () => {

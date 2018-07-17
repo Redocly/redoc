@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled, { media } from '../../styled-components';
 
 export const RedocWrap = styled.div`

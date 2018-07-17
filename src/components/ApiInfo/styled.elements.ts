@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { H1, MiddlePanel } from '../../common-elements';
 import styled, { extensionsHook } from '../../styled-components';
 

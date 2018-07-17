@@ -1,6 +1,5 @@
 /* tslint:disable:no-implicit-dependencies */
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as webpack from 'webpack';
 
 import * as path from 'path';

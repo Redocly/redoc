@@ -3,7 +3,6 @@ import * as React from 'react';
 import { SecuritySchemesModel } from '../../services/models';
 
 import { H2, ShareLink } from '../../common-elements';
-import styled from '../../styled-components';
 import { OpenAPISecurityScheme } from '../../types';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
@@ -14,16 +13,6 @@ const AUTH_TYPES = {
   http: 'HTTP',
   openIdConnect: 'Open ID Connect',
 };
-
-const AuthTable = styled.table`
-  ul > li {
-    margin: 0.5em 0 !important;
-  }
-
-  th {
-    text-transform: capitalize;
-  }
-`;
 
 export interface OAuthFlowProps {
   type: string;

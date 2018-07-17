@@ -1,9 +1,9 @@
-import * as webpack from 'webpack';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
-import { resolve } from 'path';
+import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { compact } from 'lodash';
+import { resolve } from 'path';
+import * as webpack from 'webpack';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
@@ -51,7 +51,9 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     root(
       env.playground
         ? 'playground/hmr-playground.tsx'
-        : env.bench ? '../benchmark/index.tsx' : 'index.tsx',
+        : env.bench
+          ? '../benchmark/index.tsx'
+          : 'index.tsx',
     ),
   ],
   output: {

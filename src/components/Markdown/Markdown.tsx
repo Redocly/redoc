@@ -86,7 +86,7 @@ export interface AdvancedMarkdownProps extends BaseMarkdownProps {
 
 export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
   render() {
-    const { raw, inline, dense, store, parts } = this.props;
+    const { inline, dense, store, parts } = this.props;
 
     if (!parts.length) {
       return null;

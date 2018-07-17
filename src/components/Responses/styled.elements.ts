@@ -1,5 +1,4 @@
 import { transparentize } from 'polished';
-import * as React from 'react';
 
 import { UnderlinedHeader } from '../../common-elements';
 import styled from '../../styled-components';

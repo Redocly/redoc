@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
 import styled, { css, extensionsHook, withProps } from '../../styled-components';
 

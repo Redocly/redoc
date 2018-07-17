@@ -66,7 +66,7 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
   }
 
   async load() {
-    const { specUrl, spec, options } = this.props;
+    const { specUrl, spec } = this.props;
     try {
       const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
       this.setState({ resolvedSpec, loading: false });

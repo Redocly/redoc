@@ -1,5 +1,4 @@
 import * as classnames from 'classnames';
-import * as React from 'react';
 
 import { deprecatedCss } from '../../common-elements';
 import styled, { css, withProps } from '../../styled-components';

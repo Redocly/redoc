@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import styled, { withProps } from '../../styled-components';
 
 export const OperationEndpointWrap = styled.div`

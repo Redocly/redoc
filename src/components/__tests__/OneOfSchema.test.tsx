@@ -1,10 +1,7 @@
 /* tslint:disable:no-implicit-dependencies */
 
 import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import * as React from 'react';
-
-import { filterPropsDeep } from '../../utils/test-utils';
 
 import { OneOfSchema, Schema } from '../';
 import { OpenAPIParser, SchemaModel } from '../../services';
