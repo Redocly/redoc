@@ -95,6 +95,7 @@
     "jest": "^23.4.1",
     "license-checker": "^20.1.0",
     "lodash": "^4.17.10",
+    "mobx": "^4.3.1",
     "prettier": "^1.13.7",
     "prettier-eslint": "^8.8.2",
     "puppeteer": "^1.6.0",
@@ -119,8 +120,9 @@
     "yaml-js": "^0.2.3"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "mobx": "^4.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -133,7 +135,6 @@
     "mark.js": "^8.11.1",
     "marked": "0.3.18",
     "memoize-one": "^4.0.0",
-    "mobx": "^4.3.0",
     "mobx-react": "^5.2.3",
     "openapi-sampler": "1.0.0-beta.13",
     "perfect-scrollbar": "^1.4.0",

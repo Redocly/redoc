@@ -5876,7 +5876,7 @@ mobx-react@^5.2.3:
     hoist-non-react-statics "^2.5.0"
     react-lifecycles-compat "^3.0.2"
 
-mobx@^4.3.0:
+mobx@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-4.3.1.tgz#334e5aab4916b1d43f0faf3605a64b1b4b3ccb8d"
 
