@@ -30,8 +30,6 @@ deploy:
 - provider: script
   skip_cleanup: true
   script: cd cli && yarn install && yarn ci-publish || true
-  on:
-    tags: true
 - provider: script
   skip_cleanup: true
   script: yarn deploy:demo
