@@ -1,3 +1,25 @@
+<a name="2.0.0-alpha.29"></a>
+# [2.0.0-alpha.29](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.28...v2.0.0-alpha.29) (2018-07-18)
+
+
+### Bug Fixes
+
+* **cli:** cli output crashes if script closing tag is in the spec ([76906eb](https://github.com/Rebilly/ReDoc/commit/76906eb)), closes [#563](https://github.com/Rebilly/ReDoc/issues/563)
+* different output of cli bundle and redoc ([89aa754](https://github.com/Rebilly/ReDoc/commit/89aa754)), closes [#547](https://github.com/Rebilly/ReDoc/issues/547)
+* fix broken link in CLI help ([bab3e7d](https://github.com/Rebilly/ReDoc/commit/bab3e7d)), closes [#559](https://github.com/Rebilly/ReDoc/issues/559)
+* fix Download button url when spec as object was provided ([c35925a](https://github.com/Rebilly/ReDoc/commit/c35925a)), closes [#462](https://github.com/Rebilly/ReDoc/issues/462) [#540](https://github.com/Rebilly/ReDoc/issues/540)
+* fix non-scalar query/path/header params are not expandable ([dcca44a](https://github.com/Rebilly/ReDoc/commit/dcca44a)), closes [#561](https://github.com/Rebilly/ReDoc/issues/561)
+* properly host oneOf inside allOf ([7e5b6d9](https://github.com/Rebilly/ReDoc/commit/7e5b6d9)), closes [#507](https://github.com/Rebilly/ReDoc/issues/507) [#528](https://github.com/Rebilly/ReDoc/issues/528)
+* regression - broken urls for operations without operationId ([c0c44bc](https://github.com/Rebilly/ReDoc/commit/c0c44bc))
+* use original tag name when slugified one is not valid ([#553](https://github.com/Rebilly/ReDoc/issues/553)) ([8817d9c](https://github.com/Rebilly/ReDoc/commit/8817d9c))
+
+
+### Features
+
+* new option disableSearch ([d4ab5ad](https://github.com/Rebilly/ReDoc/commit/d4ab5ad))
+
+
+
 <a name="2.0.0-alpha.28"></a>
 # [2.0.0-alpha.28](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.27...v2.0.0-alpha.28) (2018-06-29)
 
