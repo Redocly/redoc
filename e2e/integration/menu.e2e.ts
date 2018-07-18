@@ -28,7 +28,7 @@ describe('Menu', () => {
     cy.contains('[role=menuitem].-depth1', 'pet').click({ force: true });
     cy.location('hash').should('equal', '#tag/pet');
 
-    cy.contains('[role=menuitem]', 'Find pet by ID').click();
+    cy.contains('[role=menuitem]', 'Find pet by ID').click({ force: true });
     cy.location('hash').should('equal', '#operation/getPetById');
   });
 
@@ -38,7 +38,7 @@ describe('Menu', () => {
     petItem()
       .click({ force: true })
       .should('have.class', 'active');
-    cy.contains('[role=menuitem].-depth1', 'store').click();
+    cy.contains('[role=menuitem].-depth1', 'store').click({ force: true });
     petItem().should('not.have.class', 'active');
   });
 });
