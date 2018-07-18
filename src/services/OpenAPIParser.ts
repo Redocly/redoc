@@ -182,6 +182,8 @@ export class OpenAPIParser {
     $ref?: string,
     forceCircular: boolean = false,
   ): MergedOpenAPISchema {
+    schema = this.hoistOneOfs(schema);
+
     if (schema.allOf === undefined) {
       return schema;
     }
@@ -290,5 +292,29 @@ export class OpenAPIParser {
       }
     }
     return res;
+  }
+
+  private hoistOneOfs(schema: OpenAPISchema) {
+    if (schema.allOf === undefined) {
+      return schema;
+    }
+
+    const allOf = schema.allOf;
+    for (let i = 0; i < allOf.length; i++) {
+      const sub = allOf[i];
+      if (Array.isArray(sub.oneOf)) {
+        const beforeAllOf = allOf.slice(0, i);
+        const afterAllOf = allOf.slice(i + 1);
+        return {
+          oneOf: sub.oneOf.map(part => {
+            return this.mergeAllOf({
+              allOf: [...beforeAllOf, part, ...afterAllOf],
+            });
+          }),
+        };
+      }
+    }
+
+    return schema;
   }
 }

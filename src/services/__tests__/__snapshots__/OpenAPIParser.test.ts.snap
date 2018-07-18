@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
+Object {
+  "oneOf": Array [
+    Object {
+      "oneOf": Array [
+        Object {
+          "allOf": undefined,
+          "parentRefs": Array [],
+          "properties": Object {
+            "extra": Object {
+              "type": "string",
+            },
+            "password": Object {
+              "description": "The user's password",
+              "type": "string",
+            },
+            "username": Object {
+              "description": "The user's name",
+              "type": "string",
+            },
+          },
+        },
+        Object {
+          "allOf": undefined,
+          "parentRefs": Array [],
+          "properties": Object {
+            "extra": Object {
+              "type": "string",
+            },
+            "mobile": Object {
+              "description": "The user's mobile",
+              "type": "string",
+            },
+            "username": Object {
+              "description": "The user's name",
+              "type": "string",
+            },
+          },
+        },
+      ],
+    },
+    Object {
+      "oneOf": Array [
+        Object {
+          "allOf": undefined,
+          "parentRefs": Array [],
+          "properties": Object {
+            "email": Object {
+              "description": "The user's email",
+              "type": "string",
+            },
+            "extra": Object {
+              "type": "string",
+            },
+            "password": Object {
+              "description": "The user's password",
+              "type": "string",
+            },
+          },
+        },
+        Object {
+          "allOf": undefined,
+          "parentRefs": Array [],
+          "properties": Object {
+            "email": Object {
+              "description": "The user's email",
+              "type": "string",
+            },
+            "extra": Object {
+              "type": "string",
+            },
+            "mobile": Object {
+              "description": "The user's mobile",
+              "type": "string",
+            },
+          },
+        },
+      ],
+    },
+  ],
+}
+`;

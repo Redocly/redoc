@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "schemas": {
+      "test": {
+        "allOf": [
+          {
+            "oneOf": [
+              {
+                "properties": {
+                  "username": {
+                    "description": "The user's name",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "email": {
+                    "description": "The user's email",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "properties": {
+              "extra": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "properties": {
+                  "password": {
+                    "description": "The user's password",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "mobile": {
+                    "description": "The user's mobile",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
