@@ -80,16 +80,12 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": "<<<filtered>>>",
             "pattern": undefined,
             "rawSchema": Object {
-              "allOf": undefined,
               "default": undefined,
-              "parentRefs": Array [],
               "type": "string",
             },
             "readOnly": false,
             "schema": Object {
-              "allOf": undefined,
               "default": undefined,
-              "parentRefs": Array [],
               "type": "string",
             },
             "title": "",

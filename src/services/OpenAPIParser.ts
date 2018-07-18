@@ -192,6 +192,14 @@ export class OpenAPIParser {
       parentRefs: [],
     };
 
+    // avoid mutating inner objects
+    if (receiver.properties !== undefined && typeof receiver.properties === 'object') {
+      receiver.properties = { ...receiver.properties };
+    }
+    if (receiver.items !== undefined && typeof receiver.items === 'object') {
+      receiver.items = { ...receiver.items };
+    }
+
     const allOfSchemas = schema.allOf.map(subSchema => {
       const resolved = this.deref(subSchema, forceCircular);
       const subRef = subSchema.$ref || undefined;
