@@ -3,6 +3,7 @@ import styled from '../../styled-components';
 
 import { SampleControls } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
+import { PrismDiv } from '../../common-elements/PrismDiv';
 import { jsonToHTML } from '../../utils/jsonToHtml';
 import { jsonStyles } from './style';
 
@@ -31,9 +32,10 @@ class Json extends React.PureComponent<JsonProps> {
         <span onClick={this.expandAll}> Expand all </span>
         <span onClick={this.collapseAll}> Collapse all </span>
       </SampleControls>
-      <div
+      <PrismDiv
         className={this.props.className}
-        ref={node => (this.node = node!)}
+        // tslint:disable-next-line
+        innerRef={node => (this.node = node!)}
         dangerouslySetInnerHTML={{ __html: jsonToHTML(this.props.data) }}
       />
     </JsonViewerWrap>

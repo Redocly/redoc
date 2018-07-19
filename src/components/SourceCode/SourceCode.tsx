@@ -1,11 +1,11 @@
 import * as React from 'react';
-import styled from '../../styled-components';
 import { highlight } from '../../utils';
 
 import { SampleControls, SampleControlsWrap } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
+import { PrismDiv } from '../../common-elements/PrismDiv';
 
-const StyledPre = styled.pre`
+const StyledPre = PrismDiv.withComponent('pre').extend`
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: ${props => props.theme.typography.code.fontSize};
   overflow-x: auto;

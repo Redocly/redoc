@@ -12,27 +12,6 @@ export const jsonStyles = css`
   word-wrap: break-word;
   white-space: pre-wrap;
 
-  .type-null {
-    color: gray;
-  }
-
-  .type-boolean {
-    color: firebrick;
-  }
-
-  .type-number {
-    color: #4a8bb3;
-  }
-
-  .type-string {
-    color: #66b16e;
-    & + a,
-    & + a:visited {
-      color: #66b16e;
-      text-decoration: underline;
-    }
-  }
-
   .callback-function {
     color: gray;
   }

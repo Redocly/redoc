@@ -25,38 +25,42 @@ function decorateWithSpan(value, className) {
   return '<span class="' + className + '">' + htmlEncode(value) + '</span>';
 }
 
+function punctuation(val) {
+  return '<span class="token punctuation">' + val + '</span>';
+}
+
 function valueToHTML(value) {
   const valueType = typeof value;
   let output = '';
   if (value === undefined || value === null) {
-    output += decorateWithSpan('null', 'type-null');
+    output += decorateWithSpan('null', 'token keyword');
   } else if (value && value.constructor === Array) {
     level++;
     output += arrayToHTML(value);
     level--;
   } else if (value && value.constructor === Date) {
-    output += decorateWithSpan('"' + value.toISOString() + '"', 'type-string');
+    output += decorateWithSpan('"' + value.toISOString() + '"', 'token string');
   } else if (valueType === 'object') {
     level++;
     output += objectToHTML(value);
     level--;
   } else if (valueType === 'number') {
-    output += decorateWithSpan(value, 'type-number');
+    output += decorateWithSpan(value, 'token number');
   } else if (valueType === 'string') {
     if (/^(http|https):\/\/[^\s]+$/.test(value)) {
       output +=
-        decorateWithSpan('"', 'type-string') +
+        decorateWithSpan('"', 'token string') +
         '<a href="' +
         value +
         '">' +
         htmlEncode(value) +
         '</a>' +
-        decorateWithSpan('"', 'type-string');
+        decorateWithSpan('"', 'token string');
     } else {
-      output += decorateWithSpan('"' + value + '"', 'type-string');
+      output += decorateWithSpan('"' + value + '"', 'token string');
     }
   } else if (valueType === 'boolean') {
-    output += decorateWithSpan(value, 'type-boolean');
+    output += decorateWithSpan(value, 'token boolean');
   }
 
   return output;
@@ -64,8 +68,9 @@ function valueToHTML(value) {
 
 function arrayToHTML(json) {
   const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
-  let output =
-    '<div class="collapser"></div>[<span class="ellipsis"></span><ul class="array collapsible">';
+  let output = `<div class="collapser"></div>${punctuation(
+    '[',
+  )}<span class="ellipsis"></span><ul class="array collapsible">`;
   let hasContents = false;
   const length = json.length;
   for (let i = 0; i < length; i++) {
@@ -77,9 +82,9 @@ function arrayToHTML(json) {
     }
     output += '</div></li>';
   }
-  output += '</ul>]';
+  output += `</ul>${punctuation(']')}`;
   if (!hasContents) {
-    output = '[ ]';
+    output = punctuation('[ ]');
   }
   return output;
 }
@@ -88,23 +93,24 @@ function objectToHTML(json) {
   const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
   const keys = Object.keys(json);
   const length = keys.length;
-  let output =
-    '<div class="collapser"></div>{<span class="ellipsis"></span><ul class="obj collapsible">';
+  let output = `<div class="collapser"></div>${punctuation(
+    '{',
+  )}<span class="ellipsis"></span><ul class="obj collapsible">`;
   let hasContents = false;
   for (let i = 0; i < length; i++) {
     const key = keys[i];
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += '<span class="property">"' + htmlEncode(key) + '"</span>: ';
+    output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
     output += valueToHTML(json[key]);
     if (i < length - 1) {
-      output += ',';
+      output += punctuation(',');
     }
     output += '</div></li>';
   }
-  output += '</ul>}';
+  output += `</ul>${punctuation('}')}`;
   if (!hasContents) {
-    output = '{ }';
+    output = punctuation('{ }');
   }
   return output;
 }

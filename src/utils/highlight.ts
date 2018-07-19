@@ -18,11 +18,6 @@ import 'prismjs/components/prism-ruby.js';
 import 'prismjs/components/prism-scala.js';
 import 'prismjs/components/prism-swift.js';
 
-import { injectGlobal } from '../styled-components';
-
-import prismStyles from 'prismjs/themes/prism-dark.css'; // dark theme
-injectGlobal`${prismStyles}`;
-
 const DEFAULT_LANG = 'clike';
 
 /**

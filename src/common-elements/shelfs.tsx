@@ -53,7 +53,7 @@ export const Badge = withProps<{ type: string }>(styled.span)`
   padding: 0 5px;
   margin: 0;
   background-color: ${props => props.theme.colors[props.type].main};
-  color: ${props => props.theme.colors[props.type].dark};
+  color: ${props => props.theme.colors[props.type].contrastText};
   font-size: ${props => props.theme.typography.code.fontSize};
   vertical-align: text-top;
 `;

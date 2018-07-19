@@ -1,5 +1,6 @@
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
-import styled, { css, extensionsHook, withProps } from '../../styled-components';
+import { PrismDiv } from '../../common-elements/PrismDiv';
+import { css, extensionsHook, withProps } from '../../styled-components';
 
 export const linksCss = css`
   a {
@@ -16,7 +17,9 @@ export const linksCss = css`
   }
 `;
 
-export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(styled.div)`
+export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(
+  PrismDiv.extend,
+)`
 
   font-family: ${props => props.theme.typography.fontFamily};
   font-weight: ${props => props.theme.typography.fontWeightRegular};
