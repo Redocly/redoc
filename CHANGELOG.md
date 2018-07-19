@@ -1,3 +1,18 @@
+<a name="2.0.0-alpha.30"></a>
+# [2.0.0-alpha.30](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.29...v2.0.0-alpha.30) (2018-07-19)
+
+
+### Bug Fixes
+
+* fix usage with CRA by transpiling swagger2openapi deps ([6473e62](https://github.com/Rebilly/ReDoc/commit/6473e62)), closes [#566](https://github.com/Rebilly/ReDoc/issues/566)
+
+
+### Features
+
+* theme reshape and new options ([58bddc8](https://github.com/Rebilly/ReDoc/commit/58bddc8))
+
+
+
 <a name="2.0.0-alpha.29"></a>
 # [2.0.0-alpha.29](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.28...v2.0.0-alpha.29) (2018-07-18)
 
