@@ -28,7 +28,7 @@ export const Tabs = styled(ReactTabs)`
       font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: ${props => props.theme.colors.text};
+        color: ${props => props.theme.colors.text.primary};
         background: #e2e2e2;
       }
 
@@ -38,19 +38,19 @@ export const Tabs = styled(ReactTabs)`
       }
 
       &.tab-success {
-        color: ${props => props.theme.colors.success};
+        color: ${props => props.theme.colors.responses.success.color};
       }
 
       &.tab-redirect {
-        color: ${props => props.theme.colors.redirect};
+        color: ${props => props.theme.colors.responses.redirect.color};
       }
 
       &.tab-info {
-        color: ${props => props.theme.colors.info};
+        color: ${props => props.theme.colors.responses.info.color};
       }
 
       &.tab-error {
-        color: ${props => props.theme.colors.error};
+        color: ${props => props.theme.colors.responses.error.color};
       }
     }
   }

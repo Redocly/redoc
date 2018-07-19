@@ -4,23 +4,23 @@ import styled, { css, extensionsHook, withProps } from '../../styled-components'
 export const linksCss = css`
   a {
     text-decoration: none;
-    color: ${props => props.theme.links.color};
+    color: ${props => props.theme.typography.links.color};
 
     &:visited {
-      color: ${props => props.theme.links.visited};
+      color: ${props => props.theme.typography.links.visited};
     }
 
     &:hover {
-      color: ${props => props.theme.links.hover};
+      color: ${props => props.theme.typography.links.hover};
     }
   }
 `;
 
 export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(styled.div)`
 
-  font-family: ${props => props.theme.baseFont.family};
-  font-weight: ${props => props.theme.baseFont.weight};
-  line-height: ${props => props.theme.baseFont.lineHeight};
+  font-family: ${props => props.theme.typography.fontFamily};
+  font-weight: ${props => props.theme.typography.fontWeightRegular};
+  line-height: ${props => props.theme.typography.lineHeight};
 
   p {
     &:last-of-type {
@@ -42,27 +42,28 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
 
   h1 {
     ${headerCommonMixin(1)};
-    color: ${props => props.theme.colors.main};
+    color: ${props => props.theme.colors.primary.main};
     margin-top: 0;
   }
 
   h2 {
     ${headerCommonMixin(2)};
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.text.primary};
   }
 
   code {
-    color: ${({ theme }) => theme.colors.code};
-    background-color: ${({ theme }) => theme.colors.codeBg};
-    font-family: ${props => props.theme.code.fontFamily};
+    color: ${({ theme }) => theme.typography.code.color};
+    background-color: ${({ theme }) => theme.typography.code.backgroundColor};
+
+    font-family: ${props => props.theme.typography.code.fontFamily};
     border-radius: 2px;
     border: 1px solid rgba(38, 50, 56, 0.1);
     padding: 0.1em 0.25em 0.2em;
-    font-size: ${props => props.theme.code.fontSize};
+    font-size: ${props => props.theme.typography.code.fontSize};
   }
 
   pre {
-    font-family: ${props => props.theme.code.fontFamily};
+    font-family: ${props => props.theme.typography.code.fontFamily};
     white-space: pre-wrap;
     background-color: #263238;
     color: white;
@@ -75,6 +76,7 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
     code {
       background-color: transparent;
       color: white;
+      padding: 0;
 
       &:before,
       &:after {
@@ -140,7 +142,7 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
 
   ${linkifyMixin('.share-link')};
 
-  ${extensionsHook('Markdown')};
-
   ${linksCss}
+
+  ${extensionsHook('Markdown')};
 `;

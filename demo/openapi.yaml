@@ -5,7 +5,7 @@ servers:
   - url: //petstore.swagger.io/sandbox
     description: Sandbox server
 info:
-  description: >
+  description: |
     This is a sample server Petstore server.
 
     You can find out more about Swagger at
@@ -57,6 +57,14 @@ info:
 
     All responses have a wildcard same-origin which makes them completely public
     and accessible to everyone, including any code on any site.
+
+
+    ```json
+    {
+      "test": "value",
+      "test2": "value2"
+    }
+    ```
 
     # Authentication
 

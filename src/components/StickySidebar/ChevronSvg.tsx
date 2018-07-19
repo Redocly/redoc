@@ -62,5 +62,5 @@ const ChevronContainer = styled.div`
   align-self: center;
   display: flex;
   flex-direction: column;
-  color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.primary.main};
 `;

@@ -7,7 +7,7 @@ export const OperationEndpointWrap = styled.div`
 `;
 
 export const ServerRelativeURL = styled.span`
-  font-family: ${props => props.theme.headingsFont.family};
+  font-family: ${props => props.theme.typography.headings.fontFamily};
   margin-left: 10px;
 `;
 
@@ -23,10 +23,11 @@ export const EndpointInfo = withProps<{ expanded?: boolean; inverted?: boolean }
   border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   transition: border-color 0.25s ease;
 
-  ${props => (props.expanded && !props.inverted && 'border-color: #3c4448;') || ''}
+  ${props =>
+    (props.expanded && !props.inverted && `border-color: ${props.theme.colors.border.dark};`) || ''}
 
   .${ServerRelativeURL} {
-    color: ${props => (props.inverted ? props.theme.colors.text : '#ffffff')}
+    color: ${props => (props.inverted ? props.theme.colors.text.primary : '#ffffff')}
   }
 `;
 
@@ -39,7 +40,7 @@ export const HttpVerb = withProps<{ type: string }>(styled.span).attrs({
   color: #ffffff;
   padding: 3px 10px;
   text-transform: uppercase;
-  font-family: ${props => props.theme.headingsFont.family};
+  font-family: ${props => props.theme.typography.headings.fontFamily};
   margin: 0;
 `;
 
@@ -68,8 +69,8 @@ export const ServerUrl = styled.div`
   border: 1px solid #ccc;
   background: #fff;
   word-break: break-all;
-  color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.primary.main};
   > span {
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.text.primary};
   }
 `;

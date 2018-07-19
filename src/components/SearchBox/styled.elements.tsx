@@ -10,10 +10,11 @@ export const SearchWrap = styled.div`
 export const SearchInput = styled.input.attrs({
   className: 'search-input',
 })`
-  width: calc(100% - ${props => props.theme.spacingUnit * 2}px);
+  width: calc(100% - ${props => props.theme.spacing.unit * 8}px);
   box-sizing: border-box;
-  margin: 0 ${props => props.theme.spacingUnit}px;
-  padding: 5px ${props => props.theme.spacingUnit / 2}px 5px ${props => props.theme.spacingUnit}px;
+  margin: 0 ${props => props.theme.spacing.unit * 4}px;
+  padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
+    ${props => props.theme.spacing.unit * 4}px;
   border: 0;
   border-bottom: 1px solid #e1e1e1;
   font-weight: bold;
@@ -38,7 +39,7 @@ export const SearchIcon = styled((props: any) => (
   className: 'search-icon',
 })`
   position: absolute;
-  left: ${props => props.theme.spacingUnit}px;
+  left: ${props => props.theme.spacing.unit * 4}px;
   height: 1.8em;
   width: 0.9em;
 
@@ -48,7 +49,7 @@ export const SearchIcon = styled((props: any) => (
 `;
 
 export const SearchResultsBox = styled.div`
-  padding: ${props => props.theme.spacingUnit / 4}px 0;
+  padding: ${props => props.theme.spacing.unit}px 0;
   background-color: #ededed;
   min-height: 150px;
   max-height: 250px;
@@ -80,9 +81,9 @@ export const SearchResultsBox = styled.div`
 export const ClearIcon = styled.i`
   position: absolute;
   display: inline-block;
-  width: ${props => props.theme.spacingUnit / 2}px;
+  width: ${props => props.theme.spacing.unit * 2}px;
   text-align: center;
-  right: ${props => props.theme.spacingUnit}px;
+  right: ${props => props.theme.spacing.unit * 4}px;
   line-height: 2em;
   vertical-align: middle;
   margin-right: 2px;

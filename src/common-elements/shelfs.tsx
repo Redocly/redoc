@@ -42,7 +42,9 @@ export const ShelfIcon = styled(IntShelfIcon)`
   transform: rotateZ(${props => directionMap[props.direction || 'down']});
 
   polygon {
-    fill: ${props => (props.color && props.theme.colors[props.color]) || props.color};
+    fill: ${props =>
+      (props.color && props.theme.colors[props.color] && props.theme.colors[props.color].main) ||
+      props.color};
   }
 `;
 
@@ -50,8 +52,8 @@ export const Badge = withProps<{ type: string }>(styled.span)`
   display: inline-block;
   padding: 0 5px;
   margin: 0;
-  background-color: ${props => props.theme.colors[props.type]};
-  color: white;
-  font-size: ${props => props.theme.code.fontSize};;
+  background-color: ${props => props.theme.colors[props.type].main};
+  color: ${props => props.theme.colors[props.type].dark};
+  font-size: ${props => props.theme.typography.code.fontSize};
   vertical-align: text-top;
 `;

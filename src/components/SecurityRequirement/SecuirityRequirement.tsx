@@ -1,4 +1,4 @@
-import { transparentize } from 'polished';
+// import { transparentize } from 'polished';
 import * as React from 'react';
 
 import styled from '../../styled-components';
@@ -8,9 +8,9 @@ import { SecurityRequirementModel } from '../../services/models/SecurityRequirem
 import { linksCss } from '../Markdown/styled.elements';
 
 const ScopeName = styled.code`
-  font-size: ${props => props.theme.code.fontSize};
-  font-family: ${props => props.theme.code.fontFamily};
-  border: 1px solid ${props => transparentize(0.85, props.theme.colors.text)};
+  font-size: ${props => props.theme.typography.code.fontSize};
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  border: 1px solid ${({ theme }) => theme.colors.border.dark};
   margin: 0 3px;
   padding: 0.2em;
   display: inline-block;
@@ -60,7 +60,7 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
 const AuthHeaderColumn = styled.td``;
 
 const SecuritiesColumn = styled.td`
-  width: ${props => props.theme.schemaView.defaultDetailsWidth};
+  width: ${props => props.theme.schema.defaultDetailsWidth};
 `;
 
 const AuthHeader = UnderlinedHeader.extend`

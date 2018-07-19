@@ -36,7 +36,7 @@ export const InvertedSimpleDropdown = StyledDropdown.extend`
 `;
 
 export const NoSampleLabel = styled.div`
-  font-family: ${props => props.theme.code.fontFamily};
+  font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: 12px;
   color: #ee807f;
 `;

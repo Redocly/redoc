@@ -1,4 +1,4 @@
-import { transparentize } from 'polished';
+// import { transparentize } from 'polished';
 
 import styled, { extensionsHook, withProps } from '../styled-components';
 import { deprecatedCss } from './mixins';
@@ -7,11 +7,11 @@ export const PropertiesTableCaption = styled.caption`
   text-align: right;
   font-size: 0.9em;
   font-weight: normal;
-  color: ${props => transparentize(0.6, props.theme.colors.text)};
+  color: ${props => props.theme.colors.text.secondary};
 `;
 
 export const PropertyCell = styled.td`
-  border-left: 1px solid ${props => props.theme.schemaView.linesColor};
+  border-left: 1px solid ${props => props.theme.schema.linesColor};
   box-sizing: border-box;
   position: relative;
   padding: 10px 10px 10px 0;
@@ -29,16 +29,16 @@ export const PropertyCell = styled.td`
       to bottom,
       transparent 0%,
       transparent 22px,
-      ${props => props.theme.schemaView.linesColor} 22px,
-      ${props => props.theme.schemaView.linesColor} 100%
+      ${props => props.theme.schema.linesColor} 22px,
+      ${props => props.theme.schema.linesColor} 100%
     );
   }
 
   tr.last > & {
     background-image: linear-gradient(
       to bottom,
-      ${props => props.theme.schemaView.linesColor} 0%,
-      ${props => props.theme.schemaView.linesColor} 22px,
+      ${props => props.theme.schema.linesColor} 0%,
+      ${props => props.theme.schema.linesColor} 22px,
       transparent 22px,
       transparent 100%
     );
@@ -63,7 +63,7 @@ export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend
   line-height: 20px;
   white-space: nowrap;
   font-size: 0.929em;
-  font-family: ${props => props.theme.headingsFont.family};
+  font-family: ${props => props.theme.typography.headings.fontFamily};
 
   &.deprecated {
     ${deprecatedCss};
@@ -77,7 +77,7 @@ export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend
 export const PropertyDetailsCell = styled.td`
   border-bottom: 1px solid #9fb4be;
   padding: 10px 0;
-  width: ${props => props.theme.schemaView.defaultDetailsWidth};
+  width: ${props => props.theme.schema.defaultDetailsWidth};
   box-sizing: border-box;
 
   tr.expanded & {
@@ -86,8 +86,8 @@ export const PropertyDetailsCell = styled.td`
 `;
 
 export const PropertyBullet = styled.span`
-  color: ${props => props.theme.schemaView.linesColor};
-  font-family: ${props => props.theme.code.fontFamily};
+  color: ${props => props.theme.schema.linesColor};
+  font-family: ${props => props.theme.typography.code.fontFamily};
   margin-right: 10px;
 
   &::before {
@@ -96,7 +96,7 @@ export const PropertyBullet = styled.span`
     vertical-align: middle;
     width: 10px;
     height: 1px;
-    background: ${props => props.theme.schemaView.linesColor};
+    background: ${props => props.theme.schema.linesColor};
   }
 
   &::after {
@@ -104,19 +104,19 @@ export const PropertyBullet = styled.span`
     display: inline-block;
     vertical-align: middle;
     width: 1px;
-    background: ${props => props.theme.schemaView.linesColor};
+    background: ${props => props.theme.schema.linesColor};
     height: 7px;
   }
 `;
 
 export const InnerPropertiesWrap = styled.div`
-  padding: ${({ theme }) => theme.schemaView.nestingSpacing};
+  padding: ${({ theme }) => theme.schema.nestingSpacing};
 `;
 
 export const PropertiesTable = styled.table`
   border-collapse: separate;
   border-radius: 3px;
-  font-size: ${props => props.theme.baseFont.size};
+  font-size: ${props => props.theme.typography.fontSize};
 
   border-spacing: 0;
   width: 100%;
@@ -137,9 +137,9 @@ export const PropertiesTable = styled.table`
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap} {
-    margin: ${({ theme }) => theme.schemaView.nestingSpacing};
+    margin: ${({ theme }) => theme.schema.nestingSpacing};
     margin-right: 0;
-    background: #f0f0f0;
+    background: ${({ theme }) => theme.schema.nestedBackground};
   }
 
   &

@@ -49,7 +49,7 @@ const FloatingButton = styled.div`
   outline: none;
   user-select: none;
   background-color: #f2f2f2;
-  color: ${props => props.theme.colors.main};
+  color: ${props => props.theme.colors.primary.main};
   display: none;
   cursor: pointer;
   position: fixed;

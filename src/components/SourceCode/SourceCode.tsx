@@ -6,8 +6,8 @@ import { SampleControls, SampleControlsWrap } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
 
 const StyledPre = styled.pre`
-  font-family: ${props => props.theme.code.fontFamily};
-  font-size: ${props => props.theme.code.fontSize};
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: ${props => props.theme.typography.code.fontSize};
   overflow-x: auto;
   margin: 0;
 

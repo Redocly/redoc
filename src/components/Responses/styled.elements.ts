@@ -1,4 +1,4 @@
-import { transparentize } from 'polished';
+// import { transparentize } from 'polished';
 
 import { UnderlinedHeader } from '../../common-elements';
 import styled from '../../styled-components';
@@ -12,8 +12,8 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   background-color: #f2f2f2;
   cursor: pointer;
 
-  color: ${props => props.theme.colors[props.type]};
-  background-color: ${props => transparentize(0.92, props.theme.colors[props.type])};
+  color: ${props => props.theme.colors.responses[props.type].color};
+  background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
 
   ${props =>
     (props.empty &&

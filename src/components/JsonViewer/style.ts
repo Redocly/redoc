@@ -5,8 +5,8 @@ export const jsonStyles = css`
     display: none;
   }
 
-  font-family: ${props => props.theme.code.fontFamily};
-  font-size: ${props => props.theme.code.fontSize};
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: ${props => props.theme.typography.code.fontSize};
 
   word-break: break-all;
   word-wrap: break-word;

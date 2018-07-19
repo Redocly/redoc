@@ -19,10 +19,10 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
   display: inline-block;
   position: relative;
   width: auto;
-  font-family: ${props => props.theme.headingsFont.family};
+  font-family: ${props => props.theme.typography.headings.fontFamily};
 
   .Dropdown-control  {
-    font-family: ${props => props.theme.headingsFont.family};
+    font-family: ${props => props.theme.typography.headings.fontFamily};
     position: relative;
     font-size: .929em;
     width: 100%;
@@ -40,14 +40,14 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
     background: white;
 
     &:hover {
-      border-color: ${props => props.theme.colors.main};
-      color: ${props => props.theme.colors.main};
+      border-color: ${props => props.theme.colors.primary.main};
+      color: ${props => props.theme.colors.primary.main};
       box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12);
     }
   }
 
   .Dropdown-arrow {
-    border-color: ${props => props.theme.colors.main} transparent transparent;
+    border-color: ${props => props.theme.colors.primary.main} transparent transparent;
     border-style: solid;
     border-width: 0.35em 0.35em 0;
     content: ' ';
