@@ -159,19 +159,44 @@ function normalizeServers(specUrl: string | undefined, servers: OpenAPIServer[])
       },
     ];
   }
+  const { protocol: specProtocol } = urlParse(baseUrl);
+
+  return servers.map(server => {
+
+    return {
+      ...server,
+      url: normalizeUrl(expandVariables(server.url, server.variables)),
+      description: server.description || '',
+    };
+  });
 
   function normalizeUrl(url: string): string {
     url = isAbsolutePath(url) ? url : joinPaths(baseUrl, url);
     return stripTrailingSlash(url.startsWith('//') ? `${specProtocol}${url}` : url);
   }
 
-  const { protocol: specProtocol } = urlParse(baseUrl);
+  // url variable substitution support
+  function expandVariables(url: string, variables: object | undefined) {
+    const variablePlaceholders = /(?:{)(\w+)(?:})/g;
+    let matches: string[] | null = [];
+    let expandedUrl: string = url;
 
-  return servers.map(server => {
-    return {
-      ...server,
-      url: normalizeUrl(server.url),
-      description: server.description || '',
-    };
-  });
+    if (variables === undefined) {
+      return url;
+    }
+
+    matches = variablePlaceholders.exec(url);
+
+    while (matches) {
+      if (variables.hasOwnProperty(matches[1])
+          && variables[matches[1]].hasOwnProperty('default')
+      ) {
+        expandedUrl = expandedUrl.replace(`\{${matches[1]}\}`, variables[matches[1]].default);
+      }
+
+      matches = variablePlaceholders.exec(url);
+    }
+
+    return expandedUrl;
+  }
 }
