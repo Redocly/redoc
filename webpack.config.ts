@@ -6,7 +6,14 @@ import * as path from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in moudules that need transpiling + non-js (e.g. css)
-  whitelist: ['swagger2openapi', /reftools/, /\.(?!(?:jsx?|json)$).{1,5}$/i],
+  whitelist: [
+    'swagger2openapi',
+    /reftools/,
+    'oas-resolver',
+    'oas-kit-common',
+    'oas-schema-walker',
+    /\.(?!(?:jsx?|json)$).{1,5}$/i,
+  ],
 });
 
 const VERSION = JSON.stringify(require('./package.json').version);
@@ -99,7 +106,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
         exclude: ['node_modules'],
       },
       {
-        test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
+        test: /node_modules\/(swagger2openapi|reftools|oas-resolver|oas-kit-common|oas-schema-walker)\/.*\.js$/,
         use: {
           loader: 'ts-loader',
           options: {

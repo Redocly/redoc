@@ -106,6 +106,7 @@
     "shelljs": "^0.8.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.21.0",
+    "swagger2openapi": "^3.2.8",
     "ts-jest": "^23.0.0",
     "ts-loader": "4.4.2",
     "ts-node": "^7.0.0",
@@ -147,7 +148,6 @@
     "slugify": "^1.2.1",
     "stickyfill": "^1.1.1",
     "styled-components": "^3.3.3",
-    "swagger2openapi": "^3.2.8",
     "tslib": "^1.9.3"
   },
   "resolutions": {
