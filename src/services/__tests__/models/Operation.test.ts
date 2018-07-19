@@ -20,7 +20,7 @@ describe('Models', () => {
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = new OperationModel(parser, operation, '', opts);
       expect(schema.servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
-      expect(schema.servers[1].url).toEqual('http://127.0.0.2');
+      expect(schema.servers[1].url).toEqual('http://127.0.0.2:{port}');
       expect(schema.servers[2].url).toEqual('http://127.0.0.3');
     });
   });
