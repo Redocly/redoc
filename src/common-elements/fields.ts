@@ -66,25 +66,31 @@ export const PatternLabel = FieldLabel.extend`
 export const ExampleValue = FieldLabel.extend`
   border-radius: 2px;
   ${({ theme }) => `
-    background-color: ${transparentize(0.85, theme.colors.text.primary)};
+    background-color: ${transparentize(0.95, theme.colors.text.primary)};
     color: ${transparentize(0.1, theme.colors.text.primary)};
 
-    margin-left: ${theme.spacing.unit}px;
+    margin: ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
 }`};
+  & + & {
+    margin-left: 0;
+  }
   ${extensionsHook('ExampleValue')};
 `;
 
 export const ConstraintItem = FieldLabel.extend`
   border-radius: 2px;
   ${({ theme }) => `
-    background-color: ${transparentize(0.85, theme.colors.primary.light)};
-    color: ${transparentize(0.1, theme.colors.primary.light)};
+    background-color: ${transparentize(0.95, theme.colors.primary.light)};
+    color: ${transparentize(0.1, theme.colors.primary.main)};
 
-    margin-left: 0 ${theme.spacing.unit}px;
+    margin: 0 ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
-    border: 1px solid ${transparentize(0.9, theme.colors.primary.light)};
+    border: 1px solid ${transparentize(0.9, theme.colors.primary.main)};
 }`};
+  & + & {
+    margin-left: 0;
+  }
   ${extensionsHook('ConstraintItem')};
 `;
