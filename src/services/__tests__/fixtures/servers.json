@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "servers": [
+      {
+          "url": "{protocol}{host}{basePath}",
+          "variables": {
+              "protocol": {
+                  "default": "http://"
+              },
+              "host": {
+                  "default": "127.0.0.1"
+              },
+              "basePath": {
+                  "default": "/path/to/endpoint"
+              }
+          }
+      },
+      {
+          "url": "http://127.0.0.2:{port}",
+          "variables": {}
+      },
+      {
+          "url": "http://127.0.0.3"
+      }
+  ]
+}
