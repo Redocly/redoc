@@ -33,7 +33,10 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             </TabList>
             {hasBodySample && (
               <TabPanel key="payload">
-                <div> <PayloadSamples content={requestBodyContent!} /> </div>
+                <div>
+                  {' '}
+                  <PayloadSamples content={requestBodyContent!} />{' '}
+                </div>
               </TabPanel>
             )}
             {samples.map(sample => (
