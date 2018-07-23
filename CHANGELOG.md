@@ -1,3 +1,18 @@
+<a name="2.0.0-alpha.31"></a>
+# [2.0.0-alpha.31](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.30...v2.0.0-alpha.31) (2018-07-23)
+
+
+### Bug Fixes
+
+* server url contains spec name if not specified in the spec ([b41b181](https://github.com/Rebilly/ReDoc/commit/b41b181))
+
+
+### Features
+
+* simple variable substitution support ([9d6b30c](https://github.com/Rebilly/ReDoc/commit/9d6b30c)), closes [#565](https://github.com/Rebilly/ReDoc/issues/565)
+
+
+
 <a name="2.0.0-alpha.30"></a>
 # [2.0.0-alpha.30](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.29...v2.0.0-alpha.30) (2018-07-19)
 
