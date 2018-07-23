@@ -1,12 +1,17 @@
+import { dirname } from 'path';
+import { parse as urlParse, resolve as resolveUrl } from 'url';
+
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIMediaType,
   OpenAPIOperation,
   OpenAPIParameter,
   OpenAPISchema,
+  OpenAPIServer,
   Referenced,
 } from '../types';
-import { isNumeric } from './helpers';
+import { IS_BROWSER } from './dom';
+import { isNumeric, stripTrailingSlash } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -233,6 +238,36 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
   });
 
   return mergedTypes;
+}
+
+export function normalizeServers(
+  specUrl: string | undefined,
+  servers: OpenAPIServer[],
+): OpenAPIServer[] {
+  const baseUrl =
+    specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : dirname(specUrl);
+
+  if (servers.length === 0) {
+    return [
+      {
+        url: baseUrl,
+      },
+    ];
+  }
+  const { protocol: specProtocol } = urlParse(baseUrl);
+
+  function normalizeUrl(url: string): string {
+    url = resolveUrl(baseUrl, url);
+    return stripTrailingSlash(url.startsWith('//') ? `${specProtocol}${url}` : url);
+  }
+
+  return servers.map(server => {
+    return {
+      ...server,
+      url: normalizeUrl(server.url),
+      description: server.description || '',
+    };
+  });
 }
 
 export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';

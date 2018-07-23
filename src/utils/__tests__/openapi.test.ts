@@ -5,6 +5,7 @@ import {
   isOperationName,
   isPrimitiveType,
   mergeParams,
+  normalizeServers,
 } from '../';
 
 import { OpenAPIParser } from '../../services';
@@ -220,6 +221,45 @@ describe('Utils', () => {
       expect(res[0]).toEqual(pathParams[1]);
       expect(res[1]).toEqual(operationParams[0]);
       expect(res[2]).toEqual(operationParams[1]);
+    });
+  });
+
+  describe('normalize servers', () => {
+    it('should make url absolute and strip spec name', () => {
+      const res = normalizeServers('http://base.com/spec.yaml', [
+        {
+          url: '/sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
+    });
+
+    it('should prefer server host over spec`s one', () => {
+      const res = normalizeServers('http://base.com/spec.yaml', [
+        {
+          url: 'https://otherbase.com/sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://otherbase.com/sandbox/test', description: '' }]);
+    });
+
+    it('should strip trailing slash', () => {
+      const res = normalizeServers('', [
+        {
+          url: 'https://otherbase.com/sandbox/test/',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://otherbase.com/sandbox/test', description: '' }]);
+    });
+
+    it('should set correct protocol', () => {
+      const res = normalizeServers('https://base.com', [
+        {
+          url: '//base.com/sandbox/test',
+          description: 'test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
     });
   });
 });

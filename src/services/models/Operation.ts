@@ -1,6 +1,4 @@
 import { action, observable } from 'mobx';
-import { join as joinPaths } from 'path';
-import { parse as urlParse } from 'url';
 
 import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
@@ -11,13 +9,11 @@ import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
 import {
   getOperationSummary,
   getStatusCodeType,
-  IS_BROWSER,
-  isAbsolutePath,
   isStatusCode,
   JsonPointer,
   mergeParams,
+  normalizeServers,
   sortByRequired,
-  stripTrailingSlash,
 } from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -147,31 +143,4 @@ export class OperationModel implements IMenuItem {
   deactivate() {
     this.active = false;
   }
-}
-
-function normalizeServers(specUrl: string | undefined, servers: OpenAPIServer[]): OpenAPIServer[] {
-  const baseUrl = specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : specUrl;
-
-  if (servers.length === 0) {
-    return [
-      {
-        url: baseUrl,
-      },
-    ];
-  }
-
-  function normalizeUrl(url: string): string {
-    url = isAbsolutePath(url) ? url : joinPaths(baseUrl, url);
-    return stripTrailingSlash(url.startsWith('//') ? `${specProtocol}${url}` : url);
-  }
-
-  const { protocol: specProtocol } = urlParse(baseUrl);
-
-  return servers.map(server => {
-    return {
-      ...server,
-      url: normalizeUrl(server.url),
-      description: server.description || '',
-    };
-  });
 }

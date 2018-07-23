@@ -64,10 +64,6 @@ export function stripTrailingSlash(path: string): string {
   return path;
 }
 
-export function isAbsolutePath(path: string): boolean {
-  return /^(?:[a-z]+:)?/i.test(path);
-}
-
 export function isNumeric(n: any): n is number {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
