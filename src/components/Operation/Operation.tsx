@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SecurityRequirements } from '../SecurityRequirement/SecuirityRequirement';
+import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 import { observer } from 'mobx-react';
 
