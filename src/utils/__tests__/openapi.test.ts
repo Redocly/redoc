@@ -234,6 +234,24 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
     });
 
+    it('should correcly resolve url with server relative path', () => {
+      const res = normalizeServers('http://base.com/subpath/spec.yaml', [
+        {
+          url: '/sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
+    });
+
+    it('should correcly resolve url with relative path', () => {
+      const res = normalizeServers('http://base.com/subpath/spec.yaml', [
+        {
+          url: 'sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'http://base.com/subpath/sandbox/test', description: '' }]);
+    });
+
     it('should prefer server host over spec`s one', () => {
       const res = normalizeServers('http://base.com/spec.yaml', [
         {
@@ -260,6 +278,36 @@ describe('Utils', () => {
         },
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
+    });
+
+    it('should expand variables', () => {
+      const servers = normalizeServers('', [
+        {
+          url: '{protocol}{host}{basePath}',
+          variables: {
+            protocol: {
+              default: 'http://',
+            },
+            host: {
+              default: '127.0.0.1',
+            },
+            basePath: {
+              default: '/path/to/endpoint',
+            },
+          },
+        },
+        {
+          url: 'http://127.0.0.2:{port}',
+          variables: {},
+        },
+        {
+          url: 'http://127.0.0.3',
+        },
+      ]);
+
+      expect(servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
+      expect(servers[1].url).toEqual('http://127.0.0.2:{port}');
+      expect(servers[2].url).toEqual('http://127.0.0.3');
     });
   });
 });

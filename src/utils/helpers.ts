@@ -1,4 +1,5 @@
 import slugify from 'slugify';
+import { format, parse } from 'url';
 
 /**
  * Maps over array passing `isLast` bool to iterator as the second arguemnt
@@ -132,4 +133,31 @@ export function safeSlugify(value: string): string {
       .replace(/^-+/, '') // Trim - from start of text
       .replace(/-+$/, '')
   ); // Trim - from end of text
+}
+
+export function isAbsoluteUrl(url: string) {
+  return /(?:^[a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
+}
+
+/**
+ * simple resolve URL which doesn't break on strings with url fragments
+ * e.g. resolveUrl('http://test.com:{port}', 'path') results in http://test.com:{port}/path
+ */
+export function resolveUrl(url: string, to: string) {
+  let res;
+  if (to.startsWith('//')) {
+    const { protocol: specProtocol } = parse(url);
+    res = `${specProtocol}${to}`;
+  } else if (isAbsoluteUrl(to)) {
+    res = to;
+  } else if (!to.startsWith('/')) {
+    res = stripTrailingSlash(url) + '/' + to;
+  } else {
+    const urlObj = parse(url);
+    res = format({
+      ...urlObj,
+      pathname: to,
+    });
+  }
+  return stripTrailingSlash(res);
 }
