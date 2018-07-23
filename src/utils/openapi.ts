@@ -21,12 +21,12 @@ export function isStatusCode(statusCode: string) {
   return statusCode === 'default' || isNumeric(statusCode) || isWildcardStatusCode(statusCode);
 }
 
-export function getStatusCodeType(statusCode: string, defaultAsError = false): string {
+export function getStatusCodeType(statusCode: string | number, defaultAsError = false): string {
   if (statusCode === 'default') {
     return defaultAsError ? 'error' : 'success';
   }
 
-  let code = parseInt(statusCode, 10);
+  let code = typeof statusCode === 'string' ? parseInt(statusCode, 10) : statusCode;
   if (isWildcardStatusCode(statusCode)) {
     code *= 100; // parseInt('2xx') parses to 2
   }
