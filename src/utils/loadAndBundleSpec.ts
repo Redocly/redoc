@@ -1,4 +1,5 @@
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
+/* tslint:disable-next-line:no-implicit-dependencies */
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
 
