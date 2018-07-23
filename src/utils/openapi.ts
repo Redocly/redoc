@@ -286,3 +286,20 @@ export const shortenHTTPVerb = verb =>
     delete: 'del',
     options: 'opts',
   }[verb] || verb);
+
+export function isRedocExtension(key: string): boolean {
+  const redocExtensions = {
+    'x-circular-ref': true,
+    'x-code-samples': true,
+    'x-displayName': true,
+    'x-examples': true,
+    'x-ignoredHeaderParameters': true,
+    'x-logo': true,
+    'x-nullable': true,
+    'x-servers': true,
+    'x-tagGroups': true,
+    'x-traitTag': true,
+  };
+
+  return key in redocExtensions;
+}

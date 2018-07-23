@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { isRedocExtension } from '../../utils/openapi';
 import { OptionsContext } from '../OptionsProvider';
 
 import { SchemaModel } from '../../services/models';
@@ -10,33 +11,25 @@ export interface ExtensionsProps {
 }
 
 export class Extensions extends React.PureComponent<ExtensionsProps> {
-  redocExtensions = [
-    'x-circular-ref',
-    'x-code-samples',
-    'x-displayName',
-    'x-examples',
-    'x-ignoredHeaderParameters',
-    'x-logo',
-    'x-nullable',
-    'x-servers',
-    'x-tagGroups',
-    'x-traitTag',
-  ];
+  constructor(props) {
+    super(props);
+    this.getExtensions = this.getExtensions.bind(this);
+  }
 
-  render() {
+  getExtensions() {
     const { schema } = this.props;
     const fullSchema = schema.schema;
-    const extensionList = Object.keys(fullSchema).filter(
-      key => key.startsWith('x-') && !this.redocExtensions.includes(key),
-    );
+    return Object.keys(fullSchema).filter(key => key.startsWith('x-') && !isRedocExtension(key));
+  }
 
+  render() {
     return (
       <OptionsContext.Consumer>
         {options => (
           <>
             {options.showExtensions &&
-              extensionList.map(key => (
-                <FieldDetail key={key} label={key} value={fullSchema[key]} />
+              this.getExtensions().map(key => (
+                <FieldDetail key={key} label={key} value={this.props.schema.schema[key]} />
               ))}
           </>
         )}
