@@ -11,6 +11,7 @@
     "handlebars": "^4.0.11",
     "isarray": "^2.0.4",
     "mkdirp": "^0.5.1",
+    "mobx": "^4.2.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "redoc": "^2.0.0-alpha.29",
