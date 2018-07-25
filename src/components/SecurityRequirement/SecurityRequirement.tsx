@@ -24,12 +24,34 @@ const ScopeName = styled.code`
   }
 `;
 
-const SecurityRequirementWrap = styled.span`
+const SecurityRequirementAndWrap = styled.span`
   &:after {
-    content: ' OR ';
+    content: ' AND ';
+    font-weight: bold;
+  }
+
+  &:last-child:after {
+    content: none;
+  }
+
+  ${linksCss};
+`;
+
+const SecurityRequirementOrWrap = styled.span`
+  &:before {
+    content: '( ';
+    font-weight: bold;
+  }
+  &:after {
+    content: ' ) OR ';
     font-weight: bold;
   }
   &:last-child:after {
+    content: ' )';
+  }
+
+  &:only-child:before,
+  &:only-child:after {
     content: none;
   }
 
@@ -43,17 +65,20 @@ export interface SecurityRequirementProps {
 export class SecurityRequirement extends React.PureComponent<SecurityRequirementProps> {
   render() {
     const security = this.props.security;
-    return security.schemes.map((scheme, idx) => {
-      return (
-        <SecurityRequirementWrap key={scheme.id}>
-          <a href={'#' + scheme.sectionId}>{scheme.id}</a>
-          {scheme.scopes.length > 0 && ' ('}
-          {scheme.scopes.map(scope => <ScopeName key={scope}>{scope}</ScopeName>)}
-          {scheme.scopes.length > 0 && ') '}
-          {idx < security.schemes.length - 1 && ' & '}
-        </SecurityRequirementWrap>
-      );
-    });
+    return (
+      <SecurityRequirementOrWrap>
+        {security.schemes.map(scheme => {
+          return (
+            <SecurityRequirementAndWrap key={scheme.id}>
+              <a href={'#' + scheme.sectionId}>{scheme.id}</a>
+              {scheme.scopes.length > 0 && ' ('}
+              {scheme.scopes.map(scope => <ScopeName key={scope}>{scope}</ScopeName>)}
+              {scheme.scopes.length > 0 && ') '}
+            </SecurityRequirementAndWrap>
+          );
+        })}
+      </SecurityRequirementOrWrap>
+    );
   }
 }
 
