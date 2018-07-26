@@ -9,7 +9,7 @@ import { PerfectScrollbar } from '../../common-elements/perfect-scrollbar';
 import { RedocAttribution } from './styled.elements';
 
 @observer
-export class SideMenu extends React.Component<{ menu: MenuStore }> {
+export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
   private _updateScroll?: () => void;
 
   render() {
@@ -19,6 +19,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore }> {
         {options =>
           options.nativeScrollbars ? (
             <MenuItems
+              className={this.props.className}
               style={{
                 overflow: 'auto',
                 msOverflowStyle: '-ms-autohiding-scrollbar',
@@ -28,7 +29,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore }> {
               root={true}
             />
           ) : (
-            <PerfectScrollbar updateFn={this.saveScrollUpdate}>
+            <PerfectScrollbar updateFn={this.saveScrollUpdate} className={this.props.className}>
               <MenuItems items={store.items} onActivate={this.activate} root={true} />
               <RedocAttribution>
                 <a target="_blank" href="https://github.com/Rebilly/ReDoc">

@@ -12,15 +12,18 @@ export interface MenuItemsProps {
   onActivate?: (item: IMenuItem) => void;
   style?: React.CSSProperties;
   root?: boolean;
+
+  className?: string;
 }
 
 @observer
 export class MenuItems extends React.Component<MenuItemsProps> {
   render() {
-    const { items, root } = this.props;
+    const { items, root, className } = this.props;
     const active = this.props.active == null ? true : this.props.active;
     return (
       <MenuItemUl
+        className={className}
         style={this.props.style}
         active={active}
         {...(root ? { role: 'navigation' } : {})}
