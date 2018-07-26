@@ -11,6 +11,7 @@ import {
   getStatusCodeType,
   isStatusCode,
   JsonPointer,
+  memoize,
   mergeParams,
   normalizeServers,
   sortByRequired,
@@ -22,7 +23,6 @@ import { FieldModel } from './Field';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
 import { CodeSample } from './types';
-
 /**
  * Operation model ready to be used by components
  */
@@ -44,80 +44,41 @@ export class OperationModel implements IMenuItem {
   @observable active: boolean = false;
   //#endregion
 
-  _$ref: string;
+  pointer: string;
   operationId?: string;
   httpVerb: string;
   deprecated: boolean;
-  requestBody?: RequestBodyModel;
-  parameters: FieldModel[];
-  responses: ResponseModel[];
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
   codeSamples: CodeSample[];
 
   constructor(
-    parser: OpenAPIParser,
-    operationSpec: ExtendedOpenAPIOperation,
+    private parser: OpenAPIParser,
+    private operationSpec: ExtendedOpenAPIOperation,
     parent: GroupModel | undefined,
-    options: RedocNormalizedOptions,
+    private options: RedocNormalizedOptions,
   ) {
+    this.pointer = JsonPointer.compile(['paths', operationSpec.pathName, operationSpec.httpVerb]);
+
     this.id =
       operationSpec.operationId !== undefined
         ? 'operation/' + operationSpec.operationId
         : parent !== undefined
-          ? parent.id + operationSpec._$ref
-          : operationSpec._$ref;
+          ? parent.id + this.pointer
+          : this.pointer;
 
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
-
     this.parent = parent;
     this.externalDocs = operationSpec.externalDocs;
 
-    this._$ref = operationSpec._$ref;
     this.deprecated = !!operationSpec.deprecated;
     this.httpVerb = operationSpec.httpVerb;
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
-    this.requestBody =
-      operationSpec.requestBody && new RequestBodyModel(parser, operationSpec.requestBody, options);
     this.codeSamples = operationSpec['x-code-samples'] || [];
-    this.path = JsonPointer.baseName(this._$ref, 2);
-
-    this.parameters = mergeParams(
-      parser,
-      operationSpec.pathParameters,
-      operationSpec.parameters,
-    ).map(paramOrRef => new FieldModel(parser, paramOrRef, this._$ref, options));
-
-    if (options.requiredPropsFirst) {
-      sortByRequired(this.parameters);
-    }
-
-    let hasSuccessResponses = false;
-    this.responses = Object.keys(operationSpec.responses || [])
-      .filter(code => {
-        if (code === 'default') {
-          return true;
-        }
-
-        if (getStatusCodeType(code) === 'success') {
-          hasSuccessResponses = true;
-        }
-
-        return isStatusCode(code);
-      }) // filter out other props (e.g. x-props)
-      .map(code => {
-        return new ResponseModel(
-          parser,
-          code,
-          hasSuccessResponses,
-          operationSpec.responses[code],
-          options,
-        );
-      });
-
+    this.path = operationSpec.pathName;
     this.servers = normalizeServers(
       parser.specUrl,
       operationSpec.servers || parser.spec.servers || [],
@@ -142,5 +103,54 @@ export class OperationModel implements IMenuItem {
   @action
   deactivate() {
     this.active = false;
+  }
+
+  @memoize
+  get requestBody() {
+    return (
+      this.operationSpec.requestBody &&
+      new RequestBodyModel(this.parser, this.operationSpec.requestBody, this.options)
+    );
+  }
+
+  @memoize
+  get parameters() {
+    const _parameters = mergeParams(
+      this.parser,
+      this.operationSpec.pathParameters,
+      this.operationSpec.parameters,
+      // TODO: fix pointer
+    ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
+
+    if (this.options.requiredPropsFirst) {
+      sortByRequired(_parameters);
+    }
+    return _parameters;
+  }
+
+  @memoize
+  get responses() {
+    let hasSuccessResponses = false;
+    return Object.keys(this.operationSpec.responses || [])
+      .filter(code => {
+        if (code === 'default') {
+          return true;
+        }
+
+        if (getStatusCodeType(code) === 'success') {
+          hasSuccessResponses = true;
+        }
+
+        return isStatusCode(code);
+      }) // filter out other props (e.g. x-props)
+      .map(code => {
+        return new ResponseModel(
+          this.parser,
+          code,
+          hasSuccessResponses,
+          this.operationSpec.responses[code],
+          this.options,
+        );
+      });
   }
 }

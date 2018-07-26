@@ -1,6 +1,6 @@
-import { action, computed, observable } from 'mobx';
+import { action, observable } from 'mobx';
 import { querySelector } from '../utils/dom';
-import { GroupModel, OperationModel, SpecStore } from './models';
+import { SpecStore } from './models';
 
 import { HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
@@ -55,20 +55,31 @@ export class MenuStore {
    */
   @observable sideBarOpened: boolean = false;
 
+  items: IMenuItem[];
+  flatItems: IMenuItem[];
+
   /**
    * cached flattened menu items to support absolute indexing
    */
   private _unsubscribe: () => void;
   private _hashUnsubscribe: () => void;
-  private _items?: Array<GroupModel | OperationModel>;
 
   /**
    *
    * @param spec [SpecStore](#SpecStore) which contains page content structure
-   * @param _scrollService scroll service instance used by this menu
+   * @param scroll scroll service instance used by this menu
    */
-  constructor(private spec: SpecStore, private _scrollService: ScrollService) {
-    this._unsubscribe = _scrollService.subscribe(this.updateOnScroll);
+  constructor(spec: SpecStore, public scroll: ScrollService) {
+    this.items = spec.operationGroups;
+
+    this.flatItems = flattenByProp(this.items || [], 'items');
+    this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
+
+    this.subscribe();
+  }
+
+  subscribe() {
+    this._unsubscribe = this.scroll.subscribe(this.updateOnScroll);
     this._hashUnsubscribe = HistoryService.subscribe(this.updateOnHash);
   }
 
@@ -83,22 +94,10 @@ export class MenuStore {
   }
 
   /**
-   * top level menu items (not flattened)
-   */
-  @computed
-  get items(): IMenuItem[] {
-    if (!this._items) {
-      this._items = this.spec.operationGroups;
-    }
-    return this._items;
-  }
-
-  /**
    * update active items on scroll
    * @param isScrolledDown whether last scroll was downside
    */
-  @action.bound
-  updateOnScroll(isScrolledDown: boolean): void {
+  updateOnScroll = (isScrolledDown: boolean): void => {
     const step = isScrolledDown ? 1 : -1;
     let itemIdx = this.activeItemIdx;
     while (true) {
@@ -112,12 +111,12 @@ export class MenuStore {
 
       if (isScrolledDown) {
         const el = this.getElementAt(itemIdx + 1);
-        if (this._scrollService.isElementBellow(el)) {
+        if (this.scroll.isElementBellow(el)) {
           break;
         }
       } else {
         const el = this.getElementAt(itemIdx);
-        if (this._scrollService.isElementAbove(el)) {
+        if (this.scroll.isElementAbove(el)) {
           break;
         }
       }
@@ -125,14 +124,13 @@ export class MenuStore {
     }
 
     this.activate(this.flatItems[itemIdx], true, true);
-  }
+  };
 
   /**
    * update active items on hash change
    * @param hash current hash
    */
-  @action.bound
-  updateOnHash(hash: string = HistoryService.hash): boolean {
+  updateOnHash = (hash: string = HistoryService.hash): boolean => {
     if (!hash) {
       return false;
     }
@@ -143,10 +141,10 @@ export class MenuStore {
     if (item) {
       this.activateAndScroll(item, false);
     } else {
-      this._scrollService.scrollIntoViewBySelector(`[${SECTION_ATTR}="${hash}"]`);
+      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${hash}"]`);
     }
     return item !== undefined;
-  }
+  };
 
   /**
    * get section/operation DOM Node related to the item or null if it doesn't exist
@@ -167,16 +165,6 @@ export class MenuStore {
   getItemById = (id: string) => {
     return this.flatItems.find(item => item.id === id);
   };
-
-  /**
-   * flattened items as they appear in the tree depth-first (top to bottom in the view)
-   */
-  @computed
-  get flatItems(): IMenuItem[] {
-    const flatItems = flattenByProp(this._items || [], 'items');
-    flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
-    return flatItems;
-  }
 
   /**
    * activate menu item
@@ -246,7 +234,7 @@ export class MenuStore {
    * scrolls to active section
    */
   scrollToActive(): void {
-    this._scrollService.scrollIntoView(this.getElementAt(this.activeItemIdx));
+    this.scroll.scrollIntoView(this.getElementAt(this.activeItemIdx));
   }
 
   dispose() {

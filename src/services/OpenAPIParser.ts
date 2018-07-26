@@ -1,4 +1,3 @@
-import { observable } from 'mobx';
 import { resolve as urlResolve } from 'url';
 
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
@@ -39,8 +38,8 @@ class RefCounter {
  * Loads and keeps spec. Provides raw spec operations
  */
 export class OpenAPIParser {
-  @observable specUrl?: string;
-  @observable.ref spec: OpenAPISpec;
+  specUrl?: string;
+  spec: OpenAPISpec;
 
   private _refCounter: RefCounter = new RefCounter();
 

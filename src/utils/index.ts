@@ -7,3 +7,4 @@ export * from './loadAndBundleSpec';
 export * from './dom';
 export * from './decorators';
 export * from './debug';
+export * from './memoize';

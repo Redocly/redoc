@@ -1,5 +1,5 @@
 import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
-import { isOperationName, JsonPointer } from '../utils';
+import { isOperationName } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
 import { OpenAPIParser } from './OpenAPIParser';
@@ -11,7 +11,7 @@ export type TagInfo = OpenAPITag & {
 };
 
 export type ExtendedOpenAPIOperation = {
-  _$ref: string;
+  pathName: string;
   httpVerb: string;
   pathParameters: Array<Referenced<OpenAPIParameter>>;
 } & OpenAPIOperation;
@@ -190,7 +190,7 @@ export class MenuBuilder {
           // empty tag
           operationTags = [''];
         }
-        const operationPointer = JsonPointer.compile(['paths', pathName, operationName]);
+
         for (const tagName of operationTags) {
           let tag = tags[tagName];
           if (tag === undefined) {
@@ -205,7 +205,7 @@ export class MenuBuilder {
           }
           tag.operations.push({
             ...operationInfo,
-            _$ref: operationPointer,
+            pathName,
             httpVerb: operationName,
             pathParameters: path.parameters || [],
           });

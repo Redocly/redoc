@@ -61,15 +61,11 @@ export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
 }
 
 export interface SecurityDefsProps {
-  securitySchemes?: SecuritySchemesModel;
+  securitySchemes: SecuritySchemesModel;
 }
 
 export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
   render() {
-    if (!this.props.securitySchemes) {
-      return null;
-    }
-
     return (
       <div>
         {this.props.securitySchemes.schemes.map(scheme => (

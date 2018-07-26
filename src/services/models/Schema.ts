@@ -18,7 +18,7 @@ import {
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
-  _$ref: string;
+  pointer: string;
 
   type: string;
   displayType: string;
@@ -60,13 +60,13 @@ export class SchemaModel {
   constructor(
     parser: OpenAPIParser,
     schemaOrRef: Referenced<OpenAPISchema>,
-    $ref: string,
+    pointer: string,
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
-    this._$ref = schemaOrRef.$ref || $ref || '';
+    this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef);
-    this.schema = parser.mergeAllOf(this.rawSchema, this._$ref, isChild);
+    this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
     this.init(parser, isChild);
 
     parser.exitRef(schemaOrRef);
@@ -91,7 +91,7 @@ export class SchemaModel {
     this.isCircular = schema['x-circular-ref'];
 
     this.title =
-      schema.title || (isNamedDefinition(this._$ref) && JsonPointer.baseName(this._$ref)) || '';
+      schema.title || (isNamedDefinition(this.pointer) && JsonPointer.baseName(this.pointer)) || '';
     this.description = schema.description || '';
     this.type = schema.type || detectType(schema);
     this.format = schema.format;
@@ -123,7 +123,7 @@ export class SchemaModel {
       this.oneOfType = 'One of';
       if (schema.anyOf !== undefined) {
         console.warn(
-          `oneOf and anyOf are not supported on the same level. Skipping anyOf at ${this._$ref}`,
+          `oneOf and anyOf are not supported on the same level. Skipping anyOf at ${this.pointer}`,
         );
       }
       return;
@@ -136,9 +136,9 @@ export class SchemaModel {
     }
 
     if (this.type === 'object') {
-      this.fields = buildFields(parser, schema, this._$ref, this.options);
+      this.fields = buildFields(parser, schema, this.pointer, this.options);
     } else if (this.type === 'array' && schema.items) {
-      this.items = new SchemaModel(parser, schema.items, this._$ref + '/items', this.options);
+      this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
       this.displayType = this.items.displayType;
       this.displayFormat = this.items.format;
       this.typePrefix = this.items.typePrefix + 'Array of ';
@@ -162,7 +162,7 @@ export class SchemaModel {
             // merge base schema into each of oneOf's subschemas
             allOf: [variant, { ...this.schema, oneOf: undefined, anyOf: undefined }],
           } as OpenAPISchema,
-          this._$ref + '/oneOf/' + idx,
+          this.pointer + '/oneOf/' + idx,
           this.options,
         ),
     );
@@ -177,7 +177,7 @@ export class SchemaModel {
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
-    const derived = parser.findDerived([...(schema.parentRefs || []), this._$ref]);
+    const derived = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
 
     if (schema.oneOf) {
       for (const variant of schema.oneOf) {

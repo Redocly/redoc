@@ -90,7 +90,32 @@ export class AppStore {
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
 
-  updateMarkOnMenu(idx: number) {
+  dispose() {
+    this.scroll.dispose();
+    this.menu.dispose();
+    this.disposer();
+  }
+
+  /**
+   * serializes store
+   * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
+   */
+  // TODO: improve
+  async toJS(): Promise<StoreState> {
+    return {
+      menu: {
+        activeItemIdx: this.menu.activeItemIdx,
+      },
+      spec: {
+        url: this.spec.parser.specUrl,
+        data: this.spec.parser.spec,
+      },
+      searchIndex: this.search ? await this.search.toJS() : undefined,
+      options: this.rawOptions,
+    };
+  }
+
+  private updateMarkOnMenu(idx: number) {
     const start = Math.max(0, idx);
     const end = Math.min(this.menu.flatItems.length, start + 5);
 
@@ -110,30 +135,5 @@ export class AppStore {
 
     this.marker.addOnly(elements);
     this.marker.mark();
-  }
-
-  dispose() {
-    this.scroll.dispose();
-    this.menu.dispose();
-    this.disposer();
-  }
-
-  /**
-   * serializes store
-   * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
-   */
-  // TODO:
-  async toJS(): Promise<StoreState> {
-    return {
-      menu: {
-        activeItemIdx: this.menu.activeItemIdx,
-      },
-      spec: {
-        url: this.spec.parser.specUrl,
-        data: this.spec.parser.spec,
-      },
-      searchIndex: this.search ? await this.search.toJS() : undefined,
-      options: this.rawOptions,
-    };
   }
 }

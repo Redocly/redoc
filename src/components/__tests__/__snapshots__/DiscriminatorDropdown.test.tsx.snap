@@ -15,7 +15,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "name": "packSize",
           "required": false,
           "schema": SchemaModel {
-            "_$ref": "#/components/schemas/Dog/properties/packSize/schema",
             "activeOneOf": 0,
             "constraints": Array [],
             "default": undefined,
@@ -31,6 +30,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "nullable": false,
             "options": "<<<filtered>>>",
             "pattern": undefined,
+            "pointer": "#/components/schemas/Dog/properties/packSize",
             "rawSchema": Object {
               "default": undefined,
               "type": "number",
@@ -63,7 +63,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "name": "type",
           "required": true,
           "schema": SchemaModel {
-            "_$ref": "#/components/schemas/Dog/properties/type/schema",
             "activeOneOf": 0,
             "constraints": Array [],
             "default": undefined,
@@ -79,6 +78,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "nullable": false,
             "options": "<<<filtered>>>",
             "pattern": undefined,
+            "pointer": "#/components/schemas/Dog/properties/type",
             "rawSchema": Object {
               "default": undefined,
               "type": "string",

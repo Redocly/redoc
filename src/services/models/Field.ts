@@ -32,8 +32,7 @@ export class FieldModel {
     this.name = infoOrRef.name || info.name;
     this.in = info.in;
     this.required = !!info.required;
-    const schemaPointer = (parser.isRef(infoOrRef) ? infoOrRef.$ref : pointer) + '/schema';
-    this.schema = new SchemaModel(parser, info.schema || {}, schemaPointer, options);
+    this.schema = new SchemaModel(parser, info.schema || {}, pointer, options);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;
