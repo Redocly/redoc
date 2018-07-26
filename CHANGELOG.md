@@ -1,3 +1,16 @@
+<a name="2.0.0-alpha.32"></a>
+# [2.0.0-alpha.32](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.31...v2.0.0-alpha.32) (2018-07-26)
+
+
+### Bug Fixes
+
+* **cli:** add mobx to dependencies ([75ced44](https://github.com/Rebilly/ReDoc/commit/75ced44))
+* fix  resolving issue by upgrading to json-schema-ref-parser@5.1.1 ([0045958](https://github.com/Rebilly/ReDoc/commit/0045958)), closes [#541](https://github.com/Rebilly/ReDoc/issues/541)
+* remove break-all from code samples ([d74578d](https://github.com/Rebilly/ReDoc/commit/d74578d))
+* wrong display when combining multiple auth requirements ([f96c481](https://github.com/Rebilly/ReDoc/commit/f96c481)), closes [#577](https://github.com/Rebilly/ReDoc/issues/577)
+
+
+
 <a name="2.0.0-alpha.31"></a>
 # [2.0.0-alpha.31](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.30...v2.0.0-alpha.31) (2018-07-23)
 
