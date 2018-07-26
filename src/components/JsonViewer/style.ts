@@ -8,9 +8,8 @@ export const jsonStyles = css`
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: ${props => props.theme.typography.code.fontSize};
 
-  word-break: break-all;
-  word-wrap: break-word;
   white-space: pre-wrap;
+  overflow-x: auto;
 
   .callback-function {
     color: gray;

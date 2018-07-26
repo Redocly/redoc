@@ -11,8 +11,6 @@ const StyledPre = PrismDiv.withComponent('pre').extend`
   overflow-x: auto;
   margin: 0;
 
-  word-break: break-all;
-  word-wrap: break-word;
   white-space: pre-wrap;
 `;
 
