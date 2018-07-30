@@ -5,25 +5,43 @@ import { SECTION_ATTR } from '../../services/MenuStore';
 import { Markdown } from '../Markdown/Markdown';
 
 import { H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
+import { MDXComponentMeta } from '../../services/MarkdownRenderer';
 import { ContentItemModel } from '../../services/MenuBuilder';
 import { OperationModel } from '../../services/models';
 import { Operation } from '../Operation/Operation';
+import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
+import { StoreConsumer } from '../StoreBuilder';
 
 @observer
 export class ContentItems extends React.Component<{
   items: ContentItemModel[];
+  allowedMdComponents?: Dict<MDXComponentMeta>;
 }> {
+  static defaultProps = {
+    allowedMdComponents: {
+      'security-definitions': {
+        component: SecurityDefs,
+        propsSelector: _store => ({
+          securitySchemes: _store!.spec.securitySchemes,
+        }),
+      },
+    },
+  };
+
   render() {
     const items = this.props.items;
     if (items.length === 0) {
       return null;
     }
-    return items.map(item => <ContentItem item={item} key={item.id} />);
+    return items.map(item => (
+      <ContentItem item={item} key={item.id} allowedMdComponents={this.props.allowedMdComponents} />
+    ));
   }
 }
 
 export interface ContentItemProps {
   item: ContentItemModel;
+  allowedMdComponents?: Dict<MDXComponentMeta>;
 }
 
 @observer
@@ -37,10 +55,11 @@ export class ContentItem extends React.Component<ContentItemProps> {
         content = null;
         break;
       case 'tag':
-        content = <TagItem item={item} />;
+        content = <SectionItem {...this.props} />;
         break;
       case 'section':
-        return null;
+        content = <SectionItem {...this.props} />;
+        break;
       case 'operation':
         content = <OperationItem item={item as any} />;
         break;
@@ -58,9 +77,10 @@ export class ContentItem extends React.Component<ContentItemProps> {
 }
 
 @observer
-export class TagItem extends React.Component<ContentItemProps> {
+export class SectionItem extends React.Component<ContentItemProps> {
   render() {
     const { name, description } = this.props.item;
+    const components = this.props.allowedMdComponents;
     return (
       <Row>
         <MiddlePanel>
@@ -68,7 +88,15 @@ export class TagItem extends React.Component<ContentItemProps> {
             <ShareLink href={'#' + this.props.item.id} />
             {name}
           </H1>
-          {description !== undefined && <Markdown source={description} />}
+          {components ? (
+            <Markdown source={description || ''} />
+          ) : (
+            <StoreConsumer>
+              {store => (
+                <Markdown source={description || ''} allowedComponents={components} store={store} />
+              )}
+            </StoreConsumer>
+          )}
         </MiddlePanel>
       </Row>
     );

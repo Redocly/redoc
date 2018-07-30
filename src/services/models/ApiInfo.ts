@@ -6,13 +6,15 @@ export class ApiInfoModel implements OpenAPIInfo {
   title: string;
   version: string;
 
-  description?: string;
+  description: string;
   termsOfService?: string;
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
   constructor(private parser: OpenAPIParser) {
     Object.assign(this, parser.spec.info);
+    this.description = parser.spec.info.description || '';
+    this.description = this.description.substring(0, this.description.search(/^##?\s+/m));
   }
 
   get downloadLink(): string | undefined {

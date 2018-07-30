@@ -14,7 +14,6 @@ export interface StylingMarkdownProps {
 }
 
 export interface BaseMarkdownProps extends StylingMarkdownProps {
-  raw?: boolean;
   sanitize?: boolean;
   store?: AppStore;
 }
@@ -54,7 +53,7 @@ export class Markdown extends React.Component<MarkdownProps> {
   }
 
   render() {
-    const { source, raw, allowedComponents, store, inline, dense } = this.props;
+    const { source, allowedComponents, store, inline, dense } = this.props;
 
     if (allowedComponents && !store) {
       throw new Error('When using componentes in markdown, store prop must be provided');
@@ -64,17 +63,13 @@ export class Markdown extends React.Component<MarkdownProps> {
     if (allowedComponents) {
       return (
         <AdvancedMarkdown
-          parts={renderer.renderMdWithComponents(source, allowedComponents, raw)}
+          parts={renderer.renderMdWithComponents(source, allowedComponents)}
           {...this.props}
         />
       );
     } else {
       return (
-        <SanitizedMarkdownHTML
-          html={renderer.renderMd(source, raw)}
-          inline={inline}
-          dense={dense}
-        />
+        <SanitizedMarkdownHTML html={renderer.renderMd(source)} inline={inline} dense={dense} />
       );
     }
   }

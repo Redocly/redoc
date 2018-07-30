@@ -1,8 +1,7 @@
 import * as marked from 'marked';
 
-import { highlight, html2Str, safeSlugify } from '../utils';
+import { highlight, safeSlugify } from '../utils';
 import { AppStore } from './AppStore';
-import { SECTION_ATTR } from './MenuStore';
 
 const renderer = new marked.Renderer();
 
@@ -76,54 +75,49 @@ export class MarkdownRenderer {
   }
 
   attachHeadingsDescriptions(rawText: string) {
-    const buildRegexp = heading =>
-      new RegExp(`<h\\d ${SECTION_ATTR}="${heading.id}" id="${heading.id}">`);
+    const buildRegexp = heading => new RegExp(`##?\\s+${heading.name}`);
 
     const flatHeadings = this.flattenHeadings(this.headings);
     if (flatHeadings.length < 1) {
       return;
     }
     let prevHeading = flatHeadings[0];
-
-    let prevPos = rawText.search(buildRegexp(prevHeading));
+    let prevRegexp = buildRegexp(prevHeading);
+    let prevPos = rawText.search(prevRegexp);
     for (let i = 1; i < flatHeadings.length; i++) {
       const heading = flatHeadings[i];
-      const currentPos = rawText.substr(prevPos + 1).search(buildRegexp(heading)) + prevPos + 1;
-      prevHeading.description = html2Str(rawText.substring(prevPos, currentPos));
+      const regexp = buildRegexp(heading);
+      const currentPos = rawText.substr(prevPos + 1).search(regexp) + prevPos + 1;
+      prevHeading.description = rawText
+        .substring(prevPos, currentPos)
+        .replace(prevRegexp, '')
+        .trim();
 
       prevHeading = heading;
+      prevRegexp = regexp;
       prevPos = currentPos;
     }
-    prevHeading.description = html2Str(rawText.substring(prevPos));
+    prevHeading.description = rawText
+      .substring(prevPos)
+      .replace(prevRegexp, '')
+      .trim();
   }
 
   headingRule = (text: string, level: number, raw: string) => {
     if (level === 1) {
       this.currentTopHeading = this.saveHeading(text);
-      const id = this.currentTopHeading.id;
-      return (
-        `<a name="${id}"></a>` +
-        `<h${level} ${SECTION_ATTR}="${id}" id="${id}">` +
-        `<a class="share-link" href="#${id}"></a>${text}</h${level}>`
-      );
     } else if (level === 2) {
-      const { id } = this.saveHeading(
+      this.saveHeading(
         text,
         this.currentTopHeading && this.currentTopHeading.items,
         this.currentTopHeading && this.currentTopHeading.id,
       );
-      return (
-        `<a name="${id}"></a>` +
-        `<h${level} ${SECTION_ATTR}="${id}" id="${id}">` +
-        `<a class="share-link" href="#${id}"></a>${text}</h${level}>`
-      );
-    } else {
-      return this.originalHeadingRule(text, level, raw);
     }
+    return this.originalHeadingRule(text, level, raw);
   };
 
-  renderMd(rawText: string, raw: boolean = true): string {
-    const opts = raw ? undefined : { renderer: this.headingEnhanceRenderer };
+  renderMd(rawText: string, extractHeadings: boolean = false): string {
+    const opts = extractHeadings ? { renderer: this.headingEnhanceRenderer } : undefined;
 
     const res = marked(rawText.toString(), opts);
 
@@ -131,8 +125,8 @@ export class MarkdownRenderer {
   }
 
   extractHeadings(rawText: string): MarkdownHeading[] {
-    const text = this.renderMd(rawText, false);
-    this.attachHeadingsDescriptions(text);
+    this.renderMd(rawText, true);
+    this.attachHeadingsDescriptions(rawText);
     const res = this.headings;
     this.headings = [];
     return res;
@@ -143,7 +137,6 @@ export class MarkdownRenderer {
   renderMdWithComponents(
     rawText: string,
     components: Dict<MDXComponentMeta>,
-    raw: boolean = true,
   ): Array<string | MDXComponentMeta> {
     const componentDefs: string[] = [];
     const names = '(?:' + Object.keys(components).join('|') + ')';
@@ -167,7 +160,7 @@ export class MarkdownRenderer {
     for (let i = 0; i < htmlParts.length; i++) {
       const htmlPart = htmlParts[i];
       if (htmlPart) {
-        res.push(this.renderMd(htmlPart, raw));
+        res.push(this.renderMd(htmlPart));
       }
       if (componentDefs[i]) {
         const { componentName, attrs } = parseComponent(componentDefs[i]);

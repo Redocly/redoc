@@ -7,7 +7,7 @@ describe('Markdown renderer', () => {
   });
 
   test('should return a level-1 heading even though only level-2 is present', () => {
-    renderer.renderMd('## Sub Intro', false);
+    renderer.renderMd('## Sub Intro', true);
     expect(Object.keys(renderer.headings)).toHaveLength(1);
     expect(renderer.headings[0].name).toEqual('Sub Intro');
   });
