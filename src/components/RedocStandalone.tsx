@@ -5,7 +5,7 @@ import { RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormal
 import { ErrorBoundary } from './ErrorBoundary';
 import { Loading } from './Loading/Loading';
 import { Redoc } from './Redoc/Redoc';
-import { StoreProvider } from './StoreProvider';
+import { StoreBuilder } from './StoreBuilder';
 
 export interface RedocStandaloneProps {
   spec?: object;
@@ -44,7 +44,7 @@ export class RedocStandalone extends React.PureComponent<RedocStandaloneProps> {
 
     return (
       <ErrorBoundary>
-        <StoreProvider spec={spec} specUrl={specUrl} options={options} onLoaded={onLoaded}>
+        <StoreBuilder spec={spec} specUrl={specUrl} options={options} onLoaded={onLoaded}>
           {({ loading, store }) =>
             !loading ? (
               <Redoc store={store!} />
@@ -52,7 +52,7 @@ export class RedocStandalone extends React.PureComponent<RedocStandaloneProps> {
               <Loading color={normalizedOpts.theme.colors.primary.main} />
             )
           }
-        </StoreProvider>
+        </StoreBuilder>
       </ErrorBoundary>
     );
   }

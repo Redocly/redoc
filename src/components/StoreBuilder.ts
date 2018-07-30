@@ -1,11 +1,11 @@
 import memoize from 'memoize-one';
-import { Component } from 'react';
+import { Component, createContext } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../utils';
 
-export interface StoreProviderProps {
+export interface StoreBuilderProps {
   specUrl?: string;
   spec?: object;
   store?: AppStore;
@@ -17,7 +17,7 @@ export interface StoreProviderProps {
   children: (props: { loading: boolean; store?: AppStore }) => any;
 }
 
-export interface StoreProviderState {
+export interface StoreBuilderState {
   error?: Error;
   loading: boolean;
   resolvedSpec?: any;
@@ -25,8 +25,11 @@ export interface StoreProviderState {
   prevSpecUrl?: string;
 }
 
-export class StoreProvider extends Component<StoreProviderProps, StoreProviderState> {
-  static getDerivedStateFromProps(nextProps: StoreProviderProps, prevState: StoreProviderState) {
+const { Provider, Consumer } = createContext<AppStore | undefined>(undefined);
+export { Provider as StoreProvider, Consumer as StoreConsumer };
+
+export class StoreBuilder extends Component<StoreBuilderProps, StoreBuilderState> {
+  static getDerivedStateFromProps(nextProps: StoreBuilderProps, prevState: StoreBuilderState) {
     if (nextProps.specUrl !== prevState.prevSpecUrl || nextProps.spec !== prevState.prevSpec) {
       return {
         loading: true,
@@ -39,7 +42,7 @@ export class StoreProvider extends Component<StoreProviderProps, StoreProviderSt
     return null;
   }
 
-  state: StoreProviderState = {
+  state: StoreBuilderState = {
     loading: true,
     resolvedSpec: null,
   };
