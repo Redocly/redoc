@@ -21,6 +21,13 @@ export class MenuItem extends React.Component<MenuItemProps> {
     evt.stopPropagation();
   };
 
+  componentDidMount() {
+    const item = this.props.item;
+    if (item.type !== 'group' && item.active) {
+      this.scrollIntoView();
+    }
+  }
+
   componentDidUpdate() {
     if (this.props.item.active) {
       this.scrollIntoView();

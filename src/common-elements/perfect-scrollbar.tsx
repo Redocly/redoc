@@ -27,7 +27,9 @@ export class PerfectScrollbar extends React.Component<{
   private inst: PerfectScrollbarType;
 
   componentDidMount() {
+    const offset = (this._container.parentElement && this._container.parentElement.scrollTop) || 0;
     this.inst = new PerfectScrollbarConstructor(this._container, this.props.options || {});
+    this._container.scrollTo(0, offset);
   }
 
   componentDidUpdate() {
