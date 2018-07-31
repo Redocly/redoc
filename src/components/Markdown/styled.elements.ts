@@ -63,6 +63,8 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
     border: 1px solid rgba(38, 50, 56, 0.1);
     padding: 0.1em 0.25em 0.2em;
     font-size: ${props => props.theme.typography.code.fontSize};
+
+    word-break: break-word;
   }
 
   pre {
