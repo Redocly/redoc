@@ -9,16 +9,18 @@ export const OperationEndpointWrap = styled.div`
 export const ServerRelativeURL = styled.span`
   font-family: ${props => props.theme.typography.headings.fontFamily};
   margin-left: 10px;
+  flex: 1;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const EndpointInfo = withProps<{ expanded?: boolean; inverted?: boolean }>(styled.div)`
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
   background-color: ${props => (props.inverted ? 'transparent' : '#222d32')};
-  display: block;
+  display: flex;
   white-space: nowrap;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+  align-items: center;
   border: ${props => (props.inverted ? '0' : '1px solid transparent')};
   border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   transition: border-color 0.25s ease;
