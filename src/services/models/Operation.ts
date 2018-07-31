@@ -42,6 +42,7 @@ export class OperationModel implements IMenuItem {
 
   @observable ready?: boolean = true;
   @observable active: boolean = false;
+  @observable expanded: boolean = false;
   //#endregion
 
   pointer: string;
@@ -103,6 +104,16 @@ export class OperationModel implements IMenuItem {
   @action
   deactivate() {
     this.active = false;
+  }
+
+  expand() {
+    if (this.parent) {
+      this.parent.expand();
+    }
+  }
+
+  collapse() {
+    /* do nothing */
   }
 
   @memoize

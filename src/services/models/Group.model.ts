@@ -22,6 +22,7 @@ export class GroupModel implements IMenuItem {
   externalDocs?: OpenAPIExternalDocumentation;
 
   @observable active: boolean = false;
+  @observable expanded: boolean = false;
 
   depth: number;
   //#endregion
@@ -41,7 +42,7 @@ export class GroupModel implements IMenuItem {
 
     // groups are active (expanded) by default
     if (this.type === 'group') {
-      this.active = true;
+      this.expanded = true;
     }
   }
 
@@ -51,11 +52,24 @@ export class GroupModel implements IMenuItem {
   }
 
   @action
-  deactivate() {
-    // disallow deactivating groups
+  expand() {
+    if (this.parent) {
+      this.parent.expand();
+    }
+    this.expanded = true;
+  }
+
+  @action
+  collapse() {
+    // disallow collapsing groups
     if (this.type === 'group') {
       return;
     }
+    this.expanded = false;
+  }
+
+  @action
+  deactivate() {
     this.active = false;
   }
 }

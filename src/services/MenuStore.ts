@@ -19,6 +19,7 @@ export interface IMenuItem {
   description?: string;
   depth: number;
   active: boolean;
+  expanded: boolean;
   items: IMenuItem[];
   parent?: IMenuItem;
   deprecated?: boolean;
@@ -26,6 +27,9 @@ export interface IMenuItem {
 
   deactivate(): void;
   activate(): void;
+
+  collapse(): void;
+  expand(): void;
 }
 
 export const SECTION_ATTR = 'data-section-id';
@@ -198,10 +202,8 @@ export class MenuStore {
       HistoryService.update(item.id, rewriteHistory);
     }
 
-    while (item !== undefined) {
-      item.activate();
-      item = item.parent;
-    }
+    item.activate();
+    item.expand();
   }
 
   /**
@@ -209,8 +211,12 @@ export class MenuStore {
    * @param item item to deactivate
    */
   deactivate(item: IMenuItem | undefined) {
+    if (item === undefined) {
+      return;
+    }
+    item.deactivate();
     while (item !== undefined) {
-      item.deactivate();
+      item.collapse();
       item = item.parent;
     }
   }

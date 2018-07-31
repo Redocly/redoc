@@ -75,7 +75,7 @@ function menuItemActiveBg(depth): string {
   }
 }
 
-export const MenuItemUl = withProps<{ active: boolean }>(styled.ul)`
+export const MenuItemUl = withProps<{ expanded: boolean }>(styled.ul)`
   margin: 0;
   padding: 0;
 
@@ -83,7 +83,7 @@ export const MenuItemUl = withProps<{ active: boolean }>(styled.ul)`
     font-size: 0.929em;
   }
 
-  ${props => (props.active ? '' : 'display: none;')};
+  ${props => (props.expanded ? '' : 'display: none;')};
 `;
 
 export const MenuItemLi = withProps<{ depth: number }>(styled.li)`

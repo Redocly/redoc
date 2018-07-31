@@ -22,20 +22,15 @@ export class MenuItem extends React.Component<MenuItemProps> {
   };
 
   componentDidMount() {
-    const item = this.props.item;
-    if (item.type !== 'group' && item.active) {
-      this.scrollIntoView();
-    }
+    this.scrollIntoViewIfActive();
   }
 
   componentDidUpdate() {
-    if (this.props.item.active) {
-      this.scrollIntoView();
-    }
+    this.scrollIntoViewIfActive();
   }
 
-  scrollIntoView() {
-    if (this.ref) {
+  scrollIntoViewIfActive() {
+    if (this.props.item.active && this.ref) {
       this.ref.scrollIntoViewIfNeeded();
     }
   }
@@ -56,14 +51,14 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
+          <MenuItemLabel depth={item.depth} active={item.active || item.expanded} type={item.type}>
             <MenuItemTitle title={item.name}>
               {item.name}
               {this.props.children}
             </MenuItemTitle>
             {(item.depth > 0 &&
               item.items.length > 0 && (
-                <ShelfIcon float={'right'} direction={item.active ? 'down' : 'right'} />
+                <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
               )) ||
               null}
           </MenuItemLabel>
@@ -71,7 +66,11 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {!withoutChildren &&
           item.items &&
           item.items.length > 0 && (
-            <MenuItems active={item.active} items={item.items} onActivate={this.props.onActivate} />
+            <MenuItems
+              expanded={item.expanded}
+              items={item.items}
+              onActivate={this.props.onActivate}
+            />
           )}
       </MenuItemLi>
     );
