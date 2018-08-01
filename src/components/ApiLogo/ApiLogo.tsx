@@ -13,7 +13,7 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
     }
 
     // Use the english word logo if no alt text is provided
-    const altText = logoInfo['alt-text'] ? logoInfo['alt-text'] : 'logo';
+    const altText = logoInfo.altText ? logoInfo.altText : 'logo';
 
     const logo = (
       <LogoImgEl

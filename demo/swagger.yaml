@@ -42,7 +42,7 @@ info:
     url: https://github.com/Rebilly/ReDoc
   x-logo:
     url: 'https://rebilly.github.io/ReDoc/petstore-logo.png'
-    alt-text: Petstore logo
+    altText: Petstore logo
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
