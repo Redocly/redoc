@@ -59,6 +59,7 @@ export interface OpenAPIPath {
 
 export interface OpenAPIXCodeSample {
   lang: string;
+  label?: string;
   source: string;
 }
 

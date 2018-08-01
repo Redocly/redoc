@@ -43,6 +43,7 @@ export function mapLang(lang: string): string {
  * @return highlighted souce code as **html string**
  */
 export function highlight(source: string, lang: string): string {
+  lang = lang.toLowerCase();
   let grammar = Prism.languages[lang];
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];

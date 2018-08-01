@@ -173,6 +173,7 @@ Operation code sample
 | Field Name  |	Type	   | Description  |
 | :---------- | :------: | :----------- |
 | lang        | string   | Code sample language. Value should be one of the following [list](https://github.com/github/linguist/blob/master/lib/linguist/popular.yml) |
+| label       | string?   | Code sample label e.g. `Node` or `Python2.7`, _optional_, `lang` will be used by default |
 | source      | string   | Code sample source code |
 
 

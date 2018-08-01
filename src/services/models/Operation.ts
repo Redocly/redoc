@@ -4,7 +4,7 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import { OpenAPIExternalDocumentation, OpenAPIServer } from '../../types';
+import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
 
 import {
   getOperationSummary,
@@ -22,7 +22,7 @@ import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
-import { CodeSample } from './types';
+
 /**
  * Operation model ready to be used by components
  */
@@ -52,7 +52,7 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  codeSamples: CodeSample[];
+  codeSamples: OpenAPIXCodeSample[];
 
   constructor(
     private parser: OpenAPIParser,

@@ -9,5 +9,4 @@ export * from './Response';
 export * from './Schema';
 export * from './Field';
 export * from './ApiInfo';
-export * from './types';
 export * from './SecuritySchemes';

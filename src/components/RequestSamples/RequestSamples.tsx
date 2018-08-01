@@ -29,13 +29,16 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
           <Tabs defaultIndex={0}>
             <TabList>
               {hasBodySample && <Tab key="payload"> Payload </Tab>}
-              {samples.map(sample => <Tab key={sample.lang}>{sample.lang}</Tab>)}
+              {samples.map(sample => (
+                <Tab key={sample.lang}>
+                  {sample.label !== undefined ? sample.label : sample.lang}
+                </Tab>
+              ))}
             </TabList>
             {hasBodySample && (
               <TabPanel key="payload">
                 <div>
-                  {' '}
-                  <PayloadSamples content={requestBodyContent!} />{' '}
+                  <PayloadSamples content={requestBodyContent!} />
                 </div>
               </TabPanel>
             )}
