@@ -5,6 +5,7 @@ import { AppStore } from '../../services/AppStore';
 
 import { MiddlePanel, Row } from '../../common-elements/';
 
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {
   ApiHeader,
@@ -97,14 +98,12 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               </InfoSpanBoxWrap>
             )) ||
               null}
-
-            {(externalDocs && (
-              <p>
-                <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
-              </p>
-            )) ||
-              null}
           </StyledMarkdownBlock>
+          {externalDocs && (
+            <p>
+              <ExternalDocumentation externalDocs={externalDocs} />
+            </p>
+          )}
         </MiddlePanel>
       </Row>
     );

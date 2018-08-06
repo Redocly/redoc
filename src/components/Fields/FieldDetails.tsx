@@ -9,6 +9,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
 import { FieldProps } from './Field';
@@ -46,6 +47,11 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         <div>
           <Markdown dense={true} source={description} />
         </div>
+        {schema.externalDocs && (
+          <div>
+            <ExternalDocumentation externalDocs={schema.externalDocs} />
+          </div>
+        )}
         {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
       </div>
     );

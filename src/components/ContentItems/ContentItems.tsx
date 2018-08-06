@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 
 import { SECTION_ATTR } from '../../services/MenuStore';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 
 import { H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
@@ -79,7 +80,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {
   render() {
-    const { name, description } = this.props.item;
+    const { name, description, externalDocs } = this.props.item;
     const components = this.props.allowedMdComponents;
     return (
       <Row>
@@ -96,6 +97,11 @@ export class SectionItem extends React.Component<ContentItemProps> {
                 <Markdown source={description || ''} allowedComponents={components} store={store} />
               )}
             </StoreConsumer>
+          )}
+          {externalDocs && (
+            <p>
+              <ExternalDocumentation externalDocs={externalDocs} />
+            </p>
           )}
         </MiddlePanel>
       </Row>
