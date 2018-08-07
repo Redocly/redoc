@@ -244,7 +244,7 @@ function buildFields(
     sortByRequired(fields, schema.required);
   }
 
-  if (typeof additionalProps === 'object') {
+  if (typeof additionalProps === 'object' || typeof additionalProps === 'boolean') {
     fields.push(
       new FieldModel(
         parser,
