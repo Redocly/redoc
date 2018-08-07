@@ -14,7 +14,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   constructor(private parser: OpenAPIParser) {
     Object.assign(this, parser.spec.info);
     this.description = parser.spec.info.description || '';
-    this.description = this.description.substring(0, this.description.search(/^##?\s+/m));
+    const firstHeadingLinePos = this.description.search(/^##?\s+/m);
+    if (firstHeadingLinePos > -1) {
+      this.description = this.description.substring(0, firstHeadingLinePos);
+    }
   }
 
   get downloadLink(): string | undefined {
