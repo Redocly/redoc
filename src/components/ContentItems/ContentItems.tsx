@@ -89,13 +89,13 @@ export class SectionItem extends React.Component<ContentItemProps> {
             {name}
           </H1>
           {components ? (
-            <Markdown source={description || ''} />
-          ) : (
             <StoreConsumer>
               {store => (
                 <Markdown source={description || ''} allowedComponents={components} store={store} />
               )}
             </StoreConsumer>
+          ) : (
+            <Markdown source={description || ''} />
           )}
         </MiddlePanel>
       </Row>
