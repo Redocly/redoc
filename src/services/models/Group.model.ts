@@ -25,6 +25,7 @@ export class GroupModel implements IMenuItem {
   @observable expanded: boolean = false;
 
   depth: number;
+  level: number;
   //#endregion
 
   constructor(
@@ -36,6 +37,7 @@ export class GroupModel implements IMenuItem {
     this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + safeSlugify(tagOrGroup.name);
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
+    this.level = (tagOrGroup as MarkdownHeading).level || 1;
     this.description = tagOrGroup.description || '';
     this.parent = parent;
     this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;

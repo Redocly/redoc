@@ -25,6 +25,7 @@ export interface MDXComponentMeta {
 export interface MarkdownHeading {
   id: string;
   name: string;
+  level: number;
   items?: MarkdownHeading[];
   description?: string;
 }
@@ -50,12 +51,14 @@ export class MarkdownRenderer {
 
   saveHeading(
     name: string,
+    level: number,
     container: MarkdownHeading[] = this.headings,
     parentId?: string,
   ): MarkdownHeading {
     const item = {
       id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
+      level,
       items: [],
     };
     container.push(item);
@@ -105,10 +108,11 @@ export class MarkdownRenderer {
 
   headingRule = (text: string, level: number, raw: string) => {
     if (level === 1) {
-      this.currentTopHeading = this.saveHeading(text);
+      this.currentTopHeading = this.saveHeading(text, level);
     } else if (level === 2) {
       this.saveHeading(
         text,
+        level,
         this.currentTopHeading && this.currentTopHeading.items,
         this.currentTopHeading && this.currentTopHeading.id,
       );
