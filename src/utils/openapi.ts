@@ -105,18 +105,18 @@ export function detectType(schema: OpenAPISchema): string {
   return 'any';
 }
 
-export function isPrimitiveType(schema: OpenAPISchema) {
+export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined = schema.type) {
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
 
-  if (schema.type === 'object') {
+  if (type === 'object') {
     return schema.properties !== undefined
       ? Object.keys(schema.properties).length === 0
       : schema.additionalProperties === undefined;
   }
 
-  if (schema.type === 'array') {
+  if (type === 'array') {
     if (schema.items === undefined) {
       return true;
     }

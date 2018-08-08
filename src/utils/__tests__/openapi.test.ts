@@ -187,6 +187,17 @@ describe('Utils', () => {
       };
       expect(isPrimitiveType(schema)).toEqual(false);
     });
+
+    it('should work with externally provided type', () => {
+      const schema = {
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema, 'object')).toEqual(false);
+    });
   });
 
   describe('openapi mergeParams', () => {

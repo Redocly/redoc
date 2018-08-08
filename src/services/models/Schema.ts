@@ -104,7 +104,7 @@ export class SchemaModel {
     this.constraints = humanizeConstraints(schema);
     this.displayType = this.type;
     this.displayFormat = this.format;
-    this.isPrimitive = isPrimitiveType(schema);
+    this.isPrimitive = isPrimitiveType(schema, this.type);
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
