@@ -23,12 +23,12 @@ describe('Models', () => {
     });
 
     test('default should be sucessful by default', () => {
-      let resp = new ResponseModel(parser, 'default', false, {}, opts);
+      const resp = new ResponseModel(parser, 'default', false, {}, opts);
       expect(resp.type).toEqual('success');
     });
 
     test('default should be error if defaultAsError is true', () => {
-      let resp = new ResponseModel(parser, 'default', true, {}, opts);
+      const resp = new ResponseModel(parser, 'default', true, {}, opts);
       expect(resp.type).toEqual('error');
     });
   });

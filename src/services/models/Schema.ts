@@ -106,7 +106,7 @@ export class SchemaModel {
     this.constraints = humanizeConstraints(schema);
     this.displayType = this.type;
     this.displayFormat = this.format;
-    this.isPrimitive = isPrimitiveType(schema);
+    this.isPrimitive = isPrimitiveType(schema, this.type);
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
@@ -246,14 +246,14 @@ function buildFields(
     sortByRequired(fields, schema.required);
   }
 
-  if (typeof additionalProps === 'object') {
+  if (typeof additionalProps === 'object' || additionalProps === true) {
     fields.push(
       new FieldModel(
         parser,
         {
           name: 'property name *',
           required: false,
-          schema: additionalProps,
+          schema: additionalProps === true ? {} : additionalProps,
           kind: 'additionalProperties',
         },
         $ref + '/additionalProperties',

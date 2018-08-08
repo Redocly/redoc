@@ -26,16 +26,21 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
   line-height: ${props => props.theme.typography.lineHeight};
 
   p {
-    &:last-of-type {
+    &:last-child {
       margin-bottom: 0;
     }
   }
 
   ${({ dense }) =>
     dense &&
-    ` p {
-    margin: 0;
-  }`}
+    `
+    p:first-child {
+      margin-top: 0;
+    }
+    p:last-child {
+      margin-bottom: 0;
+    }
+  `}
 
   ${({ inline }) =>
     inline &&
@@ -108,9 +113,9 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
-    > li {
-      margin: 1em 0;
-    }
+    // > li {
+    //   margin: 0.5em 0;
+    // }
   }
 
   table {

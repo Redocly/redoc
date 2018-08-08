@@ -17,6 +17,7 @@ import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
+import styled from '../../styled-components';
 
 const OperationRow = Row.extend`
   backface-visibility: hidden;
@@ -33,6 +34,10 @@ const OperationRow = Row.extend`
     content: '';
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   }
+`;
+
+const Description = styled(Markdown)`
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 8};
 `;
 
 export interface OperationProps {
@@ -55,7 +60,7 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
-              {description !== undefined && <Markdown source={description} />}
+              {description !== undefined && <Description source={description} />}
               {externalDocs && (
                 <p>
                   <ExternalDocumentation externalDocs={externalDocs} />

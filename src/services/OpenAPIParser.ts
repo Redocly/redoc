@@ -76,11 +76,11 @@ export class OpenAPIParser {
       const description = spec.info.description || '';
       const legacySecurityRegexp = new RegExp(
         COMPONENT_REGEXP.replace('{component}', '<security-definitions>'),
-        'gmi',
+        'mi',
       );
       const securityRegexp = new RegExp(
         MDX_COMPONENT_REGEXP.replace('{component}', 'security-definitions'),
-        'gmi',
+        'mi',
       );
       if (!legacySecurityRegexp.test(description) && !securityRegexp.test(description)) {
         const comment = buildComponentComment('security-definitions');

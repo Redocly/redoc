@@ -1,3 +1,36 @@
+<a name="2.0.0-alpha.34"></a>
+# [2.0.0-alpha.34](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.33...v2.0.0-alpha.34) (2018-08-08)
+
+
+### Bug Fixes
+
+* add some spacing between operation description and parameters ([597688e](https://github.com/Rebilly/ReDoc/commit/597688e))
+* description is not rendered if doesn't containt markdown headings ([90ed717](https://github.com/Rebilly/ReDoc/commit/90ed717)), closes [#591](https://github.com/Rebilly/ReDoc/issues/591)
+* download button downloads index.html instead of spec with CLI ([334f904](https://github.com/Rebilly/ReDoc/commit/334f904)), closes [#594](https://github.com/Rebilly/ReDoc/issues/594)
+* fix Authentication section is not rendered ([2ecc8bc](https://github.com/Rebilly/ReDoc/commit/2ecc8bc)), closes [#590](https://github.com/Rebilly/ReDoc/issues/590)
+* fix linebreaks in multiparagraph field descriptions ([8fb9cd6](https://github.com/Rebilly/ReDoc/commit/8fb9cd6))
+* preserve md heading level in description ([23559fb](https://github.com/Rebilly/ReDoc/commit/23559fb))
+* render additionalProperties set to true ([#597](https://github.com/Rebilly/ReDoc/issues/597)) ([f70ac08](https://github.com/Rebilly/ReDoc/commit/f70ac08)), closes [#596](https://github.com/Rebilly/ReDoc/issues/596)
+* schemes without type: object are not expandable ([97e1620](https://github.com/Rebilly/ReDoc/commit/97e1620)), closes [#599](https://github.com/Rebilly/ReDoc/issues/599)
+
+
+### Features
+
+* Add x-logo alt text support ([#584](https://github.com/Rebilly/ReDoc/issues/584)) ([568ce74](https://github.com/Rebilly/ReDoc/commit/568ce74)), closes [#546](https://github.com/Rebilly/ReDoc/issues/546)
+* support label for x-code-samples ([00bd966](https://github.com/Rebilly/ReDoc/commit/00bd966)), closes [#586](https://github.com/Rebilly/ReDoc/issues/586)
+
+
+
+<a name="2.0.0-alpha.33"></a>
+# [2.0.0-alpha.33](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.32...v2.0.0-alpha.33) (2018-07-31)
+
+
+### Bug Fixes
+
+* long endpoint url overflow ([d99e918](https://github.com/Rebilly/ReDoc/commit/d99e918))
+* allow word-break in code strings in md ([15dfe44](https://github.com/Rebilly/ReDoc/commit/15dfe44))
+* show examples for response headers ([ba22b1e](https://github.com/Rebilly/ReDoc/commit/ba22b1e))
+
 <a name="2.0.0-alpha.32"></a>
 # [2.0.0-alpha.32](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.31...v2.0.0-alpha.32) (2018-07-26)
 

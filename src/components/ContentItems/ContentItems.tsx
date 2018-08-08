@@ -5,10 +5,10 @@ import { SECTION_ATTR } from '../../services/MenuStore';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 
-import { H1, MiddlePanel, Row, ShareLink } from '../../common-elements';
+import { H1, H2, MiddlePanel, Row, ShareLink } from '../../common-elements';
 import { MDXComponentMeta } from '../../services/MarkdownRenderer';
 import { ContentItemModel } from '../../services/MenuBuilder';
-import { OperationModel } from '../../services/models';
+import { GroupModel, OperationModel } from '../../services/models';
 import { Operation } from '../Operation/Operation';
 import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
 import { StoreConsumer } from '../StoreBuilder';
@@ -80,23 +80,24 @@ export class ContentItem extends React.Component<ContentItemProps> {
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {
   render() {
-    const { name, description, externalDocs } = this.props.item;
+    const { name, description, externalDocs, level } = this.props.item as GroupModel;
     const components = this.props.allowedMdComponents;
+    const Header = level === 2 ? H2 : H1;
     return (
       <Row>
         <MiddlePanel>
-          <H1>
+          <Header>
             <ShareLink href={'#' + this.props.item.id} />
             {name}
-          </H1>
+          </Header>
           {components ? (
-            <Markdown source={description || ''} />
-          ) : (
             <StoreConsumer>
               {store => (
                 <Markdown source={description || ''} allowedComponents={components} store={store} />
               )}
             </StoreConsumer>
+          ) : (
+            <Markdown source={description || ''} />
           )}
           {externalDocs && (
             <p>

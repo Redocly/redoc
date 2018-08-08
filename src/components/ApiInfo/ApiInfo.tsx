@@ -82,7 +82,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               <DownloadButton
                 download={downloadFilename}
                 target="_blank"
-                href={downloadLink || '#'}
+                href={downloadLink}
                 onClick={this.handleDownloadClick}
               >
                 Download
