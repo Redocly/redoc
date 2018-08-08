@@ -20,6 +20,7 @@ export const DownloadButton = styled.a`
   padding: 4px 8px 4px;
   display: inline-block;
   text-decoration: none;
+  cursor: pointer;
 
   ${extensionsHook('DownloadButton')};
 `;
