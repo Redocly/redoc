@@ -94,6 +94,8 @@ const AuthHeader = UnderlinedHeader.extend`
 
 const Table = styled.table`
   width: 100%;
+  border-collapse: collapse;
+  font-size: inherit;
 `;
 
 export interface SecurityRequirementsProps {
