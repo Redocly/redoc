@@ -1,3 +1,13 @@
+<a name="2.0.0-alpha.35"></a>
+# [2.0.0-alpha.35](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.34...v2.0.0-alpha.35) (2018-08-09)
+
+
+### Bug Fixes
+
+* crash on any backticks code block without lang specified ([58ae668](https://github.com/Rebilly/ReDoc/commit/58ae668))
+* fix auth requirements font size ([d13fe13](https://github.com/Rebilly/ReDoc/commit/d13fe13))
+
+
 <a name="2.0.0-alpha.34"></a>
 # [2.0.0-alpha.34](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.33...v2.0.0-alpha.34) (2018-08-08)
 
