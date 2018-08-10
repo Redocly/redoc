@@ -3,13 +3,6 @@
 import styled, { extensionsHook, withProps } from '../styled-components';
 import { deprecatedCss } from './mixins';
 
-export const PropertiesTableCaption = styled.caption`
-  text-align: right;
-  font-size: 0.9em;
-  font-weight: normal;
-  color: ${props => props.theme.colors.text.secondary};
-`;
-
 export const PropertyCell = styled.td`
   border-left: 1px solid ${props => props.theme.schema.linesColor};
   box-sizing: border-box;

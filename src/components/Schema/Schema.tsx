@@ -11,7 +11,6 @@ import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
 export interface SchemaOptions {
-  showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
 }
