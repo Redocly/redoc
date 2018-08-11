@@ -1,3 +1,14 @@
+<a name="2.0.0-alpha.36"></a>
+# [2.0.0-alpha.36](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.35...v2.0.0-alpha.36) (2018-08-11)
+
+
+### Bug Fixes
+
+* broken rendering of code blocks with language in markdown ([8218a26](https://github.com/Rebilly/ReDoc/commit/8218a26))
+* broken rendering of headings with regexp characters ([e660517](https://github.com/Rebilly/ReDoc/commit/e660517))
+
+
+
 <a name="2.0.0-alpha.35"></a>
 # [2.0.0-alpha.35](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.34...v2.0.0-alpha.35) (2018-08-09)
 
