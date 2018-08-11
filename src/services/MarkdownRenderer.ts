@@ -78,7 +78,9 @@ export class MarkdownRenderer {
   }
 
   attachHeadingsDescriptions(rawText: string) {
-    const buildRegexp = heading => new RegExp(`##?\\s+${heading.name}`);
+    const buildRegexp = heading => {
+      return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
+    };
 
     const flatHeadings = this.flattenHeadings(this.headings);
     if (flatHeadings.length < 1) {
