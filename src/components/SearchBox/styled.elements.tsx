@@ -58,7 +58,6 @@ export const SearchResultsBox = styled.div`
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
-  overflow: auto;
 
   ${MenuItemLabel} {
     padding-top: 6px;

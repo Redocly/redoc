@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { SecuritySchemesModel } from '../../services/models';
 
-import { H2, ShareLink } from '../../common-elements';
+import { H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 import { OpenAPISecurityScheme } from '../../types';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
@@ -66,10 +66,10 @@ export interface SecurityDefsProps {
 
 export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
   render() {
-    return (
-      <div>
-        {this.props.securitySchemes.schemes.map(scheme => (
-          <div data-section-id={scheme.sectionId} key={scheme.id}>
+    return this.props.securitySchemes.schemes.map(scheme => (
+      <Section id={scheme.sectionId} key={scheme.id}>
+        <Row>
+          <MiddlePanel>
             <H2>
               <ShareLink href={'#' + scheme.sectionId} />
               {scheme.id}
@@ -118,9 +118,9 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                 </tbody>
               </table>
             </StyledMarkdownBlock>
-          </div>
-        ))}
-      </div>
-    );
+          </MiddlePanel>
+        </Row>
+      </Section>
+    ));
   }
 }

@@ -7,6 +7,7 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchResult } from '../../services/SearchWorker.worker';
 
+import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import {
   ClearIcon,
   SearchIcon,
@@ -135,21 +136,27 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
           onChange={this.search}
         />
         {results.length > 0 && (
-          <SearchResultsBox data-role="search:results">
-            {results.map((res, idx) => (
-              <MenuItem
-                item={Object.create(res.item, {
-                  active: {
-                    value: idx === activeItemIdx,
-                  },
-                })}
-                onActivate={this.props.onActivate}
-                withoutChildren={true}
-                key={res.item.id}
-                data-role="search:result"
-              />
-            ))}
-          </SearchResultsBox>
+          <PerfectScrollbarWrap
+            options={{
+              wheelPropagation: false,
+            }}
+          >
+            <SearchResultsBox data-role="search:results">
+              {results.map((res, idx) => (
+                <MenuItem
+                  item={Object.create(res.item, {
+                    active: {
+                      value: idx === activeItemIdx,
+                    },
+                  })}
+                  onActivate={this.props.onActivate}
+                  withoutChildren={true}
+                  key={res.item.id}
+                  data-role="search:result"
+                />
+              ))}
+            </SearchResultsBox>
+          </PerfectScrollbarWrap>
         )}
       </SearchWrap>
     );

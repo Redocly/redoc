@@ -164,9 +164,10 @@ export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
 `;
 
 export const RedocAttribution = styled.div`
+  ${({ theme }) => `
   font-size: 0.8em;
-  margin-top: ${({ theme }) => `${theme.spacing.unit * 2}px`};
-  padding: ${({ theme }) => `0 ${theme.spacing.unit * 4}px`};
+  margin-top: ${theme.spacing.unit * 2}px;
+  padding: 0 ${theme.spacing.unit * 4}px;
   text-align: left;
 
   opacity: 0.7;
@@ -174,9 +175,10 @@ export const RedocAttribution = styled.div`
   a,
   a:visited,
   a:hover {
-    color: ${({ theme }) => theme.colors.text.primary} !important;
+    color: ${theme.colors.text.primary} !important;
     border-top: 1px solid #e1e1e1;
-    padding-top: 10px;
+    padding: ${theme.spacing.unit}px 0;
     display: block;
   }
+`};
 `;

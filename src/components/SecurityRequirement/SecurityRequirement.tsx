@@ -82,20 +82,23 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
   }
 }
 
-const AuthHeaderColumn = styled.td``;
+const AuthHeaderColumn = styled.div`
+  flex: 1;
+`;
 
-const SecuritiesColumn = styled.td`
+const SecuritiesColumn = styled.div`
   width: ${props => props.theme.schema.defaultDetailsWidth};
 `;
 
 const AuthHeader = UnderlinedHeader.extend`
   display: inline-block;
+  margin: 0;
 `;
 
-const Table = styled.table`
+const Wrap = styled.div`
   width: 100%;
-  border-collapse: collapse;
-  font-size: inherit;
+  display: flex;
+  margin: 1em 0;
 `;
 
 export interface SecurityRequirementsProps {
@@ -109,20 +112,14 @@ export class SecurityRequirements extends React.PureComponent<SecurityRequiremen
       return null;
     }
     return (
-      <Table>
-        <tbody>
-          <tr>
-            <AuthHeaderColumn>
-              <AuthHeader>Authorizations: </AuthHeader>
-            </AuthHeaderColumn>
-            <SecuritiesColumn>
-              {securities.map((security, idx) => (
-                <SecurityRequirement key={idx} security={security} />
-              ))}
-            </SecuritiesColumn>
-          </tr>
-        </tbody>
-      </Table>
+      <Wrap>
+        <AuthHeaderColumn>
+          <AuthHeader>Authorizations: </AuthHeader>
+        </AuthHeaderColumn>
+        <SecuritiesColumn>
+          {securities.map((security, idx) => <SecurityRequirement key={idx} security={security} />)}
+        </SecuritiesColumn>
+      </Wrap>
     );
   }
 }

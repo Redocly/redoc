@@ -23,20 +23,10 @@ const OperationRow = Row.extend`
   contain: content;
 
   overflow: hidden;
-  position: relative;
-
-  &:after {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: block;
-    content: '';
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const Description = styled(Markdown)`
-  margin-bottom: ${({ theme }) => theme.spacing.unit * 8};
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
 `;
 
 export interface OperationProps {

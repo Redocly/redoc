@@ -1,7 +1,6 @@
 export * from './RedocStandalone';
 export * from './Redoc/Redoc';
 export * from './ApiInfo/ApiInfo';
-export * from './ApiInfo/ApiDescription';
 export * from './ApiLogo/ApiLogo';
 export * from './ContentItems/ContentItems';
 export { ApiContentWrap, BackgroundStub, RedocWrap } from './Redoc/styled.elements';

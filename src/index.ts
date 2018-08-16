@@ -1,5 +1,5 @@
 export * from './components';
-export { MiddlePanel, Row, RightPanel } from './common-elements/';
+export { MiddlePanel, Row, RightPanel, Section } from './common-elements/';
 export * from './services';
 export * from './utils';
 
