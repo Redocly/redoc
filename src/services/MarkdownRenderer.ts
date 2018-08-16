@@ -12,7 +12,7 @@ marked.setOptions({
   },
 });
 
-export const LEGACY_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?{component}\\s+?-->\\s*$';
+export const LEGACY_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?<{component}\\s*?/?>\\s+?-->\\s*$';
 export const MDX_COMPONENT_REGEXP = '^\\s*<{component}\\s*?/>\\s*$';
 export const COMPONENT_REGEXP = '(?:' + LEGACY_REGEXP + '|' + MDX_COMPONENT_REGEXP + ')';
 
@@ -35,6 +35,14 @@ export function buildComponentComment(name: string) {
 }
 
 export class MarkdownRenderer {
+  static containsComponent(rawText: string, componentName: string) {
+    const anyCompRegexp = new RegExp(
+      COMPONENT_REGEXP.replace(/{component}/g, componentName),
+      'gmi',
+    );
+    return anyCompRegexp.test(rawText);
+  }
+
   headings: MarkdownHeading[] = [];
   currentTopHeading: MarkdownHeading;
 
@@ -142,13 +150,17 @@ export class MarkdownRenderer {
   // Use marked ecosystem
   renderMdWithComponents(
     rawText: string,
-    components: Dict<MDXComponentMeta>,
+    components?: Dict<MDXComponentMeta>,
   ): Array<string | MDXComponentMeta> {
+    if (!components || Object.keys(components).length === 0) {
+      return [this.renderMd(rawText)];
+    }
+
     const componentDefs: string[] = [];
     const names = '(?:' + Object.keys(components).join('|') + ')';
 
     const anyCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, '(<?' + names + '.*?)'),
+      COMPONENT_REGEXP.replace(/{component}/g, '(' + names + ')'),
       'gmi',
     );
     let match = anyCompRegexp.exec(rawText);
@@ -157,10 +169,7 @@ export class MarkdownRenderer {
       match = anyCompRegexp.exec(rawText);
     }
 
-    const splitCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, names + '.*?'),
-      'mi',
-    );
+    const splitCompRegexp = new RegExp(COMPONENT_REGEXP.replace(/{component}/g, names), 'mi');
     const htmlParts = rawText.split(splitCompRegexp);
     const res: any[] = [];
     for (let i = 0; i < htmlParts.length; i++) {
@@ -189,10 +198,6 @@ function parseComponent(
   componentName?: string;
   attrs: any;
 } {
-  if (htmlTag.startsWith('<')) {
-    return legacyParse(htmlTag);
-  }
-
   const match = /([\w_-]+)(\s+[\w_-]+\s*={[^}]*?})*/.exec(htmlTag);
   if (match === null || match.length <= 1) {
     return { componentName: undefined, attrs: {} };
@@ -214,22 +219,5 @@ function parseComponent(
   return {
     componentName,
     attrs,
-  };
-}
-
-function legacyParse(
-  htmlTag: string,
-): {
-  componentName?: string;
-  attrs: any;
-} {
-  const match = /<([\w_-]+).*?>/.exec(htmlTag);
-  if (match === null || match.length <= 1) {
-    return { componentName: undefined, attrs: {} };
-  }
-  const componentName = match[1];
-  return {
-    componentName,
-    attrs: {}, // TODO
   };
 }

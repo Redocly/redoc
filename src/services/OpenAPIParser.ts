@@ -5,7 +5,7 @@ import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 import { appendToMdHeading, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import { isNamedDefinition } from '../utils/openapi';
-import { buildComponentComment, COMPONENT_REGEXP, MDX_COMPONENT_REGEXP } from './MarkdownRenderer';
+import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
@@ -74,15 +74,7 @@ export class OpenAPIParser {
     ) {
       // Automatically inject Authentication section with SecurityDefinitions component
       const description = spec.info.description || '';
-      const legacySecurityRegexp = new RegExp(
-        COMPONENT_REGEXP.replace('{component}', '<security-definitions>'),
-        'mi',
-      );
-      const securityRegexp = new RegExp(
-        MDX_COMPONENT_REGEXP.replace('{component}', 'security-definitions'),
-        'mi',
-      );
-      if (!legacySecurityRegexp.test(description) && !securityRegexp.test(description)) {
+      if (!MarkdownRenderer.containsComponent(description, 'security-definitions')) {
         const comment = buildComponentComment('security-definitions');
         spec.info.description = appendToMdHeading(description, 'Authentication', comment);
       }
