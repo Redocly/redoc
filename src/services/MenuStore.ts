@@ -74,7 +74,7 @@ export class MenuStore {
    * @param scroll scroll service instance used by this menu
    */
   constructor(spec: SpecStore, public scroll: ScrollService) {
-    this.items = spec.operationGroups;
+    this.items = spec.contentItems;
 
     this.flatItems = flattenByProp(this.items || [], 'items');
     this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));

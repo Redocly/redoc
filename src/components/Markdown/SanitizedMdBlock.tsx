@@ -1,7 +1,7 @@
 import * as DOMPurify from 'dompurify';
 import * as React from 'react';
 
-import { OptionsContext } from '../OptionsProvider';
+import { OptionsConsumer } from '../OptionsProvider';
 import { StylingMarkdownProps } from './Markdown';
 import { StyledMarkdownBlock } from './styled.elements';
 
@@ -15,7 +15,7 @@ export function SanitizedMarkdownHTML(
   const Wrap = props.inline ? StyledMarkdownSpan : StyledMarkdownBlock;
 
   return (
-    <OptionsContext.Consumer>
+    <OptionsConsumer>
       {options => (
         <Wrap
           className={'redoc-markdown ' + (props.className || '')}
@@ -25,6 +25,6 @@ export function SanitizedMarkdownHTML(
           {...props}
         />
       )}
-    </OptionsContext.Consumer>
+    </OptionsConsumer>
   );
 }

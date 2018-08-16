@@ -9,7 +9,6 @@ import { ContentItemModel } from '../../services/MenuBuilder';
 import { GroupModel, OperationModel } from '../../services/models';
 import { Operation } from '../Operation/Operation';
 import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
-import { StoreConsumer } from '../StoreBuilder';
 
 const DEFAULT_ALLOWED_COMPONENTS = {
   'security-definitions': {
@@ -74,7 +73,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
 
     return (
       <>
-        <Section id={item.id} underlined={item.type === 'section'}>
+        <Section id={item.id} underlined={item.type === 'operation'}>
           {content}
         </Section>
         {item.items && (
@@ -91,7 +90,8 @@ const middlePanelWrap = component => <MiddlePanel>{component}</MiddlePanel>;
 export class SectionItem extends React.Component<ContentItemProps> {
   render() {
     const { name, description, level } = this.props.item as GroupModel;
-    const components = this.props.allowedMdComponents;
+    const { allowedMdComponents } = this.props;
+
     const Header = level === 2 ? H2 : H1;
     return (
       <>
@@ -103,16 +103,11 @@ export class SectionItem extends React.Component<ContentItemProps> {
             </Header>
           </MiddlePanel>
         </Row>
-        <StoreConsumer>
-          {store => (
-            <AdvancedMarkdown
-              source={description || ''}
-              allowedComponents={components}
-              store={store}
-              htmlWrap={middlePanelWrap}
-            />
-          )}
-        </StoreConsumer>
+        <AdvancedMarkdown
+          allowedComponents={allowedMdComponents}
+          source={description || ''}
+          htmlWrap={middlePanelWrap}
+        />
       </>
     );
   }
