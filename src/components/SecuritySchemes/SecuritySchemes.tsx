@@ -71,7 +71,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
         <Row>
           <MiddlePanel>
             <H2>
-              <ShareLink href={'#' + scheme.sectionId} />
+              <ShareLink to={scheme.sectionId} />
               {scheme.id}
             </H2>
             <Markdown source={scheme.description || ''} />

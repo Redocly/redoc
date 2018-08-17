@@ -72,7 +72,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
         <Row>
           <MiddlePanel>
             <Header>
-              <ShareLink href={'#' + this.props.item.id} />
+              <ShareLink to={this.props.item.id} />
               {name}
             </Header>
           </MiddlePanel>
