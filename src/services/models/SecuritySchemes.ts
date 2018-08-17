@@ -1,5 +1,5 @@
 import { OpenAPISecurityScheme, Referenced } from '../../types';
-import { SECURITY_SCHEMES_SECTION } from '../../utils/openapi';
+import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecuritySchemeModel {
@@ -25,7 +25,7 @@ export class SecuritySchemeModel {
   constructor(parser: OpenAPIParser, id: string, scheme: Referenced<OpenAPISecurityScheme>) {
     const info = parser.deref(scheme);
     this.id = id;
-    this.sectionId = SECURITY_SCHEMES_SECTION + id;
+    this.sectionId = SECURITY_SCHEMES_SECTION_PREFIX + id;
     this.type = info.type;
     this.description = info.description || '';
     if (info.type === 'apiKey') {

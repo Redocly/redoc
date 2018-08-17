@@ -145,9 +145,12 @@ export class MenuStore {
     if (item) {
       this.activateAndScroll(item, false);
     } else {
+      if (hash.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
+        item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
+        this.activate(item);
+      }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${hash}"]`);
     }
-    return item !== undefined;
   };
 
   /**
