@@ -2,6 +2,7 @@ import * as marked from 'marked';
 
 import { highlight, safeSlugify } from '../utils';
 import { AppStore } from './AppStore';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 const renderer = new marked.Renderer();
 
@@ -49,7 +50,7 @@ export class MarkdownRenderer {
   private headingEnhanceRenderer: marked.Renderer;
   private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
-  constructor() {
+  constructor(public options?: RedocNormalizedOptions) {
     this.headingEnhanceRenderer = new marked.Renderer();
     this.originalHeadingRule = this.headingEnhanceRenderer.heading.bind(
       this.headingEnhanceRenderer,
@@ -148,10 +149,8 @@ export class MarkdownRenderer {
 
   // TODO: rewrite this completelly! Regexp-based 👎
   // Use marked ecosystem
-  renderMdWithComponents(
-    rawText: string,
-    components?: Dict<MDXComponentMeta>,
-  ): Array<string | MDXComponentMeta> {
+  renderMdWithComponents(rawText: string): Array<string | MDXComponentMeta> {
+    const components = this.options && this.options.allowedMdComponents;
     if (!components || Object.keys(components).length === 0) {
       return [this.renderMd(rawText)];
     }
@@ -160,7 +159,7 @@ export class MarkdownRenderer {
     const names = '(?:' + Object.keys(components).join('|') + ')';
 
     const anyCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, '(' + names + ')'),
+      COMPONENT_REGEXP.replace(/{component}/g, '(' + names + '.*?)'),
       'gmi',
     );
     let match = anyCompRegexp.exec(rawText);
@@ -169,7 +168,10 @@ export class MarkdownRenderer {
       match = anyCompRegexp.exec(rawText);
     }
 
-    const splitCompRegexp = new RegExp(COMPONENT_REGEXP.replace(/{component}/g, names), 'mi');
+    const splitCompRegexp = new RegExp(
+      COMPONENT_REGEXP.replace(/{component}/g, names + '.*?'),
+      'mi',
+    );
     const htmlParts = rawText.split(splitCompRegexp);
     const res: any[] = [];
     for (let i = 0; i < htmlParts.length; i++) {
