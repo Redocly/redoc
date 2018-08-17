@@ -4,10 +4,6 @@ import { IS_BROWSER } from '../utils/';
 
 const EVENT = 'hashchange';
 
-function isSameHash(a: string, b: string): boolean {
-  return a === b || '#' + a === b || a === '#' + b;
-}
-
 export class HistoryService {
   private _emiter;
 
@@ -21,6 +17,9 @@ export class HistoryService {
   }
 
   linkForId(id: string) {
+    if (!id) {
+      return '';
+    }
     return '#' + id;
   }
 
@@ -52,7 +51,7 @@ export class HistoryService {
       return;
     }
 
-    if (id == null || isSameHash(id, this.currentId)) {
+    if (id == null || id === this.currentId) {
       return;
     }
     if (rewriteHistory) {
@@ -65,6 +64,7 @@ export class HistoryService {
       return;
     }
     window.history.pushState(null, '', window.location.href.split('#')[0] + this.linkForId(id));
+    this.emit();
   }
 }
 

@@ -31,4 +31,8 @@ describe('History service', () => {
   test('should return correct link for id', () => {
     expect(history.linkForId('testid')).toEqual('#testid');
   });
+
+  test('should return empty link for empty id', () => {
+    expect(history.linkForId('')).toEqual('');
+  });
 });
