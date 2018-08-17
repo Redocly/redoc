@@ -120,13 +120,15 @@ export const MenuItemLabel = withProps<{
   active: boolean;
   deprecated?: boolean;
   type?: string;
-}>(styled.label).attrs({
-  role: 'menuitem',
-  className: props =>
-    classnames('-depth' + props.depth, {
-      active: props.active,
-    }),
-})`
+}>(
+  styled.label.attrs({
+    role: 'menuitem',
+    className: props =>
+      classnames('-depth' + props.depth, {
+        active: props.active,
+      }),
+  }),
+)`
   cursor: pointer;
   color: ${props =>
     props.active ? props.theme.colors.primary.main : props.theme.colors.text.primary};

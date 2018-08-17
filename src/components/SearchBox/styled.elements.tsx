@@ -24,7 +24,7 @@ export const SearchInput = styled.input.attrs({
   outline: none;
 `;
 
-export const SearchIcon = styled((props: any) => (
+export const SearchIcon = styled((props: {className?: string}) => (
   <svg
     className={props.className}
     version="1.1"
