@@ -2,7 +2,7 @@ import { observe } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
-import { HistoryService } from './HistoryService';
+import { history } from './HistoryService';
 import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
@@ -71,10 +71,10 @@ export class AppStore {
     this.scroll = new ScrollService(this.options);
 
     // update position statically based on hash (in case of SSR)
-    MenuStore.updateOnHash(HistoryService.hash, this.scroll);
+    MenuStore.updateOnHistory(history.currentId, this.scroll);
 
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll);
+    this.menu = new MenuStore(this.spec, this.scroll, history);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
@@ -89,7 +89,7 @@ export class AppStore {
   }
 
   onDidMount() {
-    this.menu.updateOnHash();
+    this.menu.updateOnHistory();
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
 
