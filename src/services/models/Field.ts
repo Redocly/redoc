@@ -10,7 +10,8 @@ import { SchemaModel } from './Schema';
  * Field or Parameter model ready to be used by components
  */
 export class FieldModel {
-  @observable expanded: boolean = false;
+  @observable
+  expanded: boolean = false;
 
   schema: SchemaModel;
   name: string;

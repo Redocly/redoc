@@ -21,8 +21,10 @@ export class GroupModel implements IMenuItem {
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
 
-  @observable active: boolean = false;
-  @observable expanded: boolean = false;
+  @observable
+  active: boolean = false;
+  @observable
+  expanded: boolean = false;
 
   depth: number;
   level: number;

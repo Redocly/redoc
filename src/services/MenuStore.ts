@@ -52,12 +52,14 @@ export class MenuStore {
   /**
    * active item absolute index (when flattened). -1 means nothing is selected
    */
-  @observable activeItemIdx: number = -1;
+  @observable
+  activeItemIdx: number = -1;
 
   /**
    * whether sidebar with menu is opened or not
    */
-  @observable sideBarOpened: boolean = false;
+  @observable
+  sideBarOpened: boolean = false;
 
   items: IMenuItem[];
   flatItems: IMenuItem[];
