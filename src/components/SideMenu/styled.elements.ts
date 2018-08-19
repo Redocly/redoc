@@ -8,59 +8,55 @@ export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
 })`
   width: 26px;
   display: inline-block;
-  height: ${props => props.theme.typography.code.fontSize};;
+  height: ${props => props.theme.typography.code.fontSize};
+  line-height: ${props => props.theme.typography.code.fontSize};
   background-color: #333;
   border-radius: 3px;
-  vertical-align: top;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAACgCAMAAADZ0KclAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRF////////VXz1bAAAAAJ0Uk5T/wDltzBKAAAA80lEQVR42uSWSwLCIAxEX+5/aa2QZBJw5UIt9QMdRqSPEAAw/TyvqzZf150NzdXL49qreXwXjeqz9bqN1tgJl/KLyaVrrL7K7gx+1vlNMqy+helOO4rfBGYZiEkq1ubQ3DeKvc97Et+d+e01vIZlLZZqb1WNJFd8ZKYsmv4Hh3H2fDgjMUI5WSExjiEZs7rEZ5T+/jQn9lhgsw53j/e9MQtxqPsbZY54M5fNl/MY/f1s7NbRSkYlYjc0KPsWMrmhIU9933ywxDiSE+upYNH8TdusUotllNvcAUzfnE/NC4OSYyklQhpdl9E4Tw0Cm4/G9xBgAO7VCkjWLOMfAAAAAElFTkSuQmCC");
   background-repeat: no-repeat;
   background-position: 6px 4px;
-  text-indent: -9000px;
+  font-size: 7px;
+  font-family: Verdana; // web-safe
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  vertical-align: middle;
   margin-right: 6px;
   margin-top: 2px;
 
   &.get {
-    background-position: 8px -12px;
     background-color: ${props => props.theme.colors.http.get};
   }
 
   &.post {
-    background-position: 6px 4px;
     background-color: ${props => props.theme.colors.http.post};
   }
 
   &.put {
-    background-position: 8px -28px;
     background-color: ${props => props.theme.colors.http.put};
   }
 
   &.options {
-    background-position: 4px -148px;
     background-color: ${props => props.theme.colors.http.options};
   }
 
   &.patch {
-    background-position: 4px -114px;
     background-color: ${props => props.theme.colors.http.patch};
   }
 
   &.delete {
-    background-position: 4px -44px;
     background-color: ${props => props.theme.colors.http.delete};
   }
 
   &.basic {
-    background-position: 5px -79px;
     background-color: ${props => props.theme.colors.http.basic};
   }
 
   &.link {
-    background-position: 4px -131px;
     background-color: ${props => props.theme.colors.http.link};
   }
 
   &.head {
-    background-position: 6px -102px;
     background-color:  ${props => props.theme.colors.http.head};
   }
 `;
