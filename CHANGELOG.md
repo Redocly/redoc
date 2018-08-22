@@ -1,3 +1,16 @@
+<a name="2.0.0-alpha.37"></a>
+# [2.0.0-alpha.37](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.36...v2.0.0-alpha.37) (2018-08-22)
+
+
+### Bug Fixes
+
+* do not inherit title in allOf ([720e282](https://github.com/Rebilly/ReDoc/commit/720e282)), closes [#601](https://github.com/Rebilly/ReDoc/issues/601)
+* fix crash on empty media object ([fb21212](https://github.com/Rebilly/ReDoc/commit/fb21212)), closes [#608](https://github.com/Rebilly/ReDoc/issues/608)
+* make http badges font-based instead of inline png ([5d84bd4](https://github.com/Rebilly/ReDoc/commit/5d84bd4))
+* use correct parent section for security definition ([f903406](https://github.com/Rebilly/ReDoc/commit/f903406))
+
+
+
 <a name="2.0.0-alpha.36"></a>
 # [2.0.0-alpha.36](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.35...v2.0.0-alpha.36) (2018-08-11)
 

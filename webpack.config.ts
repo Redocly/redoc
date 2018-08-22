@@ -88,8 +88,11 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
           {
             loader: 'babel-loader',
             options: {
+              generatorOpts: {
+                decoratorsBeforeExport: true,
+              },
               plugins: [
-                '@babel/plugin-syntax-typescript',
+                ['@babel/plugin-syntax-typescript', { isTSX: true }],
                 ['@babel/plugin-syntax-decorators', { legacy: true }],
                 '@babel/plugin-syntax-jsx',
                 [
@@ -114,6 +117,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
             transpileOnly: true,
             compilerOptions: {
               allowJs: true,
+              declaration: false,
             },
           },
         },

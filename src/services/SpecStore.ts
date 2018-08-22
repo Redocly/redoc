@@ -13,7 +13,7 @@ export class SpecStore {
 
   info: ApiInfoModel;
   externalDocs?: OpenAPIExternalDocumentation;
-  operationGroups: ContentItemModel[];
+  contentItems: ContentItemModel[];
   securitySchemes: SecuritySchemesModel;
 
   constructor(
@@ -24,8 +24,7 @@ export class SpecStore {
     this.parser = new OpenAPIParser(spec, specUrl, options);
     this.info = new ApiInfoModel(this.parser);
     this.externalDocs = this.parser.spec.externalDocs;
-    this.operationGroups = MenuBuilder.buildStructure(this.parser, this.options);
-
+    this.contentItems = MenuBuilder.buildStructure(this.parser, this.options);
     this.securitySchemes = new SecuritySchemesModel(this.parser);
   }
 }

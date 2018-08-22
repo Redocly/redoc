@@ -4,8 +4,8 @@ import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
 import { appendToMdHeading, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import { isNamedDefinition } from '../utils/openapi';
-import { buildComponentComment, COMPONENT_REGEXP, MDX_COMPONENT_REGEXP } from './MarkdownRenderer';
+import { isNamedDefinition, SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
+import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
@@ -74,16 +74,8 @@ export class OpenAPIParser {
     ) {
       // Automatically inject Authentication section with SecurityDefinitions component
       const description = spec.info.description || '';
-      const legacySecurityRegexp = new RegExp(
-        COMPONENT_REGEXP.replace('{component}', '<security-definitions>'),
-        'mi',
-      );
-      const securityRegexp = new RegExp(
-        MDX_COMPONENT_REGEXP.replace('{component}', 'security-definitions'),
-        'mi',
-      );
-      if (!legacySecurityRegexp.test(description) && !securityRegexp.test(description)) {
-        const comment = buildComponentComment('security-definitions');
+      if (!MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME)) {
+        const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
         spec.info.description = appendToMdHeading(description, 'Authentication', comment);
       }
     }
@@ -264,7 +256,9 @@ export class OpenAPIParser {
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);
         if (receiver.title === undefined && isNamedDefinition(subSchemaRef)) {
-          receiver.title = JsonPointer.baseName(subSchemaRef);
+          // this is not so correct behaviour. comented out for now
+          // ref: https://github.com/Rebilly/ReDoc/issues/601
+          // receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
     }

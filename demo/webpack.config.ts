@@ -29,8 +29,11 @@ const tsLoader = env => ({
 const babelLoader = mode => ({
   loader: 'babel-loader',
   options: {
+    generatorOpts: {
+      decoratorsBeforeExport: true,
+    },
     plugins: compact([
-      '@babel/plugin-syntax-typescript',
+      ['@babel/plugin-syntax-typescript', { isTSX: true }],
       ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-jsx',
       mode !== 'production' ? 'react-hot-loader/babel' : undefined,
@@ -113,6 +116,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
             instance: 'ts2js-transpiler-only',
             compilerOptions: {
               allowJs: true,
+              declaration: false,
             },
           },
         },

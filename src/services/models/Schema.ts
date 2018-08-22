@@ -48,7 +48,8 @@ export class SchemaModel {
   oneOf?: SchemaModel[];
   oneOfType: string;
   discriminatorProp: string;
-  @observable activeOneOf: number = 0;
+  @observable
+  activeOneOf: number = 0;
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
