@@ -256,7 +256,9 @@ export class OpenAPIParser {
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);
         if (receiver.title === undefined && isNamedDefinition(subSchemaRef)) {
-          receiver.title = JsonPointer.baseName(subSchemaRef);
+          // this is not so correct behaviour. comented out for now
+          // ref: https://github.com/Rebilly/ReDoc/issues/601
+          // receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
     }
