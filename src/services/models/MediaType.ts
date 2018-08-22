@@ -56,7 +56,7 @@ export class MediaTypeModel {
           value: sample,
         };
       }
-    } else {
+    } else if (this.schema) {
       this.examples = {
         default: new ExampleModel(parser, {
           value: Sampler.sample(
