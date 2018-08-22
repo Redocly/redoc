@@ -68,7 +68,7 @@ export class SpecManager {
   init() {
     let urlParts = this.specUrl ? urlParse(urlResolve(window.location.href, this.specUrl)) : {
       protocol: window.location.protocol,
-      host: window.locatin.host
+      host: window.location.host
     };
     let schemes = this._schema.schemes;
     let protocol;
