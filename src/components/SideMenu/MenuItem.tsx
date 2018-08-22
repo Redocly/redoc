@@ -52,7 +52,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active || item.expanded} type={item.type}>
+          <MenuItemLabel depth={item.depth} active={item.active} type={item.type}>
             <MenuItemTitle title={item.name}>
               {item.name}
               {this.props.children}
