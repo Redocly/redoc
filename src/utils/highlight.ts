@@ -16,6 +16,7 @@ import 'prismjs/components/prism-php.js';
 import 'prismjs/components/prism-python.js';
 import 'prismjs/components/prism-ruby.js';
 import 'prismjs/components/prism-scala.js';
+import 'prismjs/components/prism-sql.js';
 import 'prismjs/components/prism-swift.js';
 
 const DEFAULT_LANG = 'clike';
