@@ -14,7 +14,7 @@ Two following commands are available:
 
 Some examples:
 
-- Bundle with main color changed to `orange`: <br> `$ redoc-cli bundle [spec] --options.theme.colors.main=orange`
+- Bundle with main color changed to `orange`: <br> `$ redoc-cli bundle [spec] --options.theme.colors.primary.main=orange`
 - Serve with `nativeScrollbars` option set to true: <br> `$ redoc-cli serve [spec] --options.nativeScrollbars`
 - Bundle using custom template (check [default template](https://github.com/Rebilly/ReDoc/blob/master/cli/template.hbs) for reference): <br> `$ redoc-cli bundle [spec] -t custom.hbs`
 
