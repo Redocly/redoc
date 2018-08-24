@@ -161,13 +161,24 @@ export class SchemaModel {
           parser,
           {
             // merge base schema into each of oneOf's subschemas
-            allOf: [variant, { ...this.schema, oneOf: undefined, anyOf: undefined }],
+            ...variant,
+            allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
           } as OpenAPISchema,
           this.pointer + '/oneOf/' + idx,
           this.options,
         ),
     );
-    this.displayType = this.oneOf.map(schema => schema.displayType).join(' or ');
+    this.displayType = this.oneOf
+      .map(schema => {
+        let name =
+          schema.typePrefix +
+          (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
+        if (name.indexOf(' or ') > -1) {
+          name = `(${name})`;
+        }
+        return name;
+      })
+      .join(' or ');
   }
 
   private initDiscriminator(
