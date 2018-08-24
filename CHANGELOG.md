@@ -1,3 +1,14 @@
+<a name="2.0.0-alpha.38"></a>
+# [2.0.0-alpha.38](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.37...v2.0.0-alpha.38) (2018-08-24)
+
+
+### Bug Fixes
+
+* addd indent to array schema internals ([865f3ce](https://github.com/Rebilly/ReDoc/commit/865f3ce))
+* fix oneOf/anyOf titles ([39b930d](https://github.com/Rebilly/ReDoc/commit/39b930d)), closes [#618](https://github.com/Rebilly/ReDoc/issues/618) [#621](https://github.com/Rebilly/ReDoc/issues/621)
+
+
+
 <a name="2.0.0-alpha.37"></a>
 # [2.0.0-alpha.37](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.36...v2.0.0-alpha.37) (2018-08-22)
 
