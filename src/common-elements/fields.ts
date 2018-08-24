@@ -4,7 +4,7 @@ import styled, { extensionsHook } from '../styled-components';
 import { PropertyNameCell } from './fields-layout';
 import { ShelfIcon } from './shelfs';
 
-export const ClickablePropertyNameCell = PropertyNameCell.extend`
+export const ClickablePropertyNameCell = styled(PropertyNameCell)`
   cursor: pointer;
 
   ${ShelfIcon} {
@@ -22,21 +22,21 @@ export const FieldLabel = styled.span`
   line-height: 20px;
 `;
 
-export const TypePrefix = FieldLabel.extend`
+export const TypePrefix = styled(FieldLabel)`
   color: ${props => transparentize(0.2, props.theme.schema.typeNameColor)};
 `;
 
-export const TypeName = FieldLabel.extend`
+export const TypeName = styled(FieldLabel)`
   color: ${props => props.theme.schema.typeNameColor};
 `;
 
-export const TypeTitle = FieldLabel.extend`
+export const TypeTitle = styled(FieldLabel)`
   color: ${props => props.theme.schema.typeTitleColor};
 `;
 
 export const TypeFormat = TypeName;
 
-export const RequiredLabel = FieldLabel.withComponent('div').extend`
+export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
   color: ${props => props.theme.schema.requireLabelColor};
   font-size: ${props => props.theme.schema.labelsTextSize};
   font-weight: normal;
@@ -44,17 +44,17 @@ export const RequiredLabel = FieldLabel.withComponent('div').extend`
   line-height: 1;
 `;
 
-export const RecursiveLabel = FieldLabel.extend`
+export const RecursiveLabel = styled(FieldLabel)`
   color: ${({ theme }) => theme.colors.warning.main};
   font-size: 13px;
 `;
 
-export const NullableLabel = FieldLabel.extend`
+export const NullableLabel = styled(FieldLabel)`
   color: #3195a6;
   font-size: 13px;
 `;
 
-export const PatternLabel = FieldLabel.extend`
+export const PatternLabel = styled(FieldLabel)`
   color: #3195a6;
   &::before,
   &::after {
@@ -63,7 +63,7 @@ export const PatternLabel = FieldLabel.extend`
   }
 `;
 
-export const ExampleValue = FieldLabel.extend`
+export const ExampleValue = styled(FieldLabel)`
   border-radius: 2px;
   ${({ theme }) => `
     background-color: ${transparentize(0.95, theme.colors.text.primary)};
@@ -79,7 +79,7 @@ export const ExampleValue = FieldLabel.extend`
   ${extensionsHook('ExampleValue')};
 `;
 
-export const ConstraintItem = FieldLabel.extend`
+export const ConstraintItem = styled(FieldLabel)`
   border-radius: 2px;
   ${({ theme }) => `
     background-color: ${transparentize(0.95, theme.colors.primary.light)};

@@ -92,7 +92,7 @@ const SecuritiesColumn = styled.div`
   width: ${props => props.theme.schema.defaultDetailsWidth};
 `;
 
-const AuthHeader = UnderlinedHeader.extend`
+const AuthHeader = styled(UnderlinedHeader)`
   display: inline-block;
   margin: 0;
 `;

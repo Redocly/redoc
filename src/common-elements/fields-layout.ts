@@ -54,11 +54,11 @@ export const PropertyCell = styled.td`
   }
 `;
 
-export const PropertyCellWithInner = PropertyCell.extend`
+export const PropertyCellWithInner = styled(PropertyCell)`
   padding: 0;
 `;
 
-export const PropertyNameCell = withProps<{ kind?: string }>(PropertyCell.extend)`
+export const PropertyNameCell = withProps<{ kind?: string }>(styled(PropertyCell))`
   vertical-align: top;
   line-height: 20px;
   white-space: nowrap;

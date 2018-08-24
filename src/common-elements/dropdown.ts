@@ -93,7 +93,7 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
   }
 ` as StyledComponentClass<any, DropdownProps>;
 
-export const SimpleDropdown = StyledDropdown.extend`
+export const SimpleDropdown = styled(StyledDropdown)`
   margin-left: 10px;
   text-transform: none;
   font-size: 0.929em;
