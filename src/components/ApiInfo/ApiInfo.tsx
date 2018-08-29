@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import { AppStore } from '../../services/AppStore';
 
-import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { MiddlePanel, Row, Section } from '../../common-elements/';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {

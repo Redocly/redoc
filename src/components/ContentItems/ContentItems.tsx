@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
+import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
 
 import { H1, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 import { ContentItemModel } from '../../services/MenuBuilder';
@@ -80,9 +80,13 @@ export class SectionItem extends React.Component<ContentItemProps> {
         </Row>
         <AdvancedMarkdown source={description || ''} htmlWrap={middlePanelWrap} />
         {externalDocs && (
-          <p>
-            <ExternalDocumentation externalDocs={externalDocs} />
-          </p>
+          <Row>
+            <MiddlePanel>
+              <p>
+                <ExternalDocumentation externalDocs={externalDocs} />
+              </p>
+            </MiddlePanel>
+          </Row>
         )}
       </>
     );
