@@ -24,10 +24,6 @@ export function html2Str(html: string): string {
     .join(' ');
 }
 
-export function normalizeHash(hash: string): string {
-  return hash.startsWith('#') ? hash.substr(1) : hash;
-}
-
 // scrollIntoViewIfNeeded polyfill
 
 if (typeof Element !== 'undefined' && !(Element as any).prototype.scrollIntoViewIfNeeded) {

@@ -4,8 +4,9 @@ import { highlight } from '../../utils';
 import { SampleControls, SampleControlsWrap } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
 import { PrismDiv } from '../../common-elements/PrismDiv';
+import styled from '../../styled-components';
 
-const StyledPre = PrismDiv.withComponent('pre').extend`
+const StyledPre = styled(PrismDiv.withComponent('pre'))`
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: ${props => props.theme.typography.code.fontSize};
   overflow-x: auto;

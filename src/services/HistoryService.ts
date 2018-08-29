@@ -4,11 +4,7 @@ import { IS_BROWSER } from '../utils/';
 
 const EVENT = 'hashchange';
 
-function isSameHash(a: string, b: string): boolean {
-  return a === b || '#' + a === b || a === '#' + b;
-}
-
-export class IntHistoryService {
+export class HistoryService {
   private _emiter;
 
   constructor() {
@@ -16,8 +12,15 @@ export class IntHistoryService {
     this.bind();
   }
 
-  get hash(): string {
-    return IS_BROWSER ? window.location.hash : '';
+  get currentId(): string {
+    return IS_BROWSER ? window.location.hash.substring(1) : '';
+  }
+
+  linkForId(id: string) {
+    if (!id) {
+      return '';
+    }
+    return '#' + id;
   }
 
   subscribe(cb): () => void {
@@ -26,7 +29,7 @@ export class IntHistoryService {
   }
 
   emit = () => {
-    this._emiter.emit(EVENT, this.hash);
+    this._emiter.emit(EVENT, this.currentId);
   };
 
   bind() {
@@ -43,26 +46,32 @@ export class IntHistoryService {
 
   @bind
   @debounce
-  update(hash: string | null, rewriteHistory: boolean = false) {
-    if (hash == null || isSameHash(hash, this.hash)) {
+  replace(id: string | null, rewriteHistory: boolean = false) {
+    if (!IS_BROWSER) {
+      return;
+    }
+
+    if (id == null || id === this.currentId) {
       return;
     }
     if (rewriteHistory) {
-      if (IS_BROWSER) {
-        window.history.replaceState(null, '', window.location.href.split('#')[0] + '#' + hash);
-      }
+      window.history.replaceState(
+        null,
+        '',
+        window.location.href.split('#')[0] + this.linkForId(id),
+      );
+
       return;
     }
-    if (IS_BROWSER) {
-      window.history.pushState(null, '', window.location.href.split('#')[0] + '#' + hash);
-    }
+    window.history.pushState(null, '', window.location.href.split('#')[0] + this.linkForId(id));
+    this.emit();
   }
 }
 
-export const HistoryService = new IntHistoryService();
+export const history = new HistoryService();
 
 if (module.hot) {
   module.hot.dispose(() => {
-    HistoryService.dispose();
+    history.dispose();
   });
 }

@@ -33,7 +33,8 @@ export class RedocStandalone extends React.PureComponent<RedocStandaloneProps> {
       }
       return null;
     },
-    options: PropTypes.object,
+    options: PropTypes.any,
+    onLoaded: PropTypes.any,
   };
 
   render() {

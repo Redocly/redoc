@@ -14,7 +14,8 @@ import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 export class MediaContentModel {
   mediaTypes: MediaTypeModel[];
 
-  @observable activeMimeIdx = 0;
+  @observable
+  activeMimeIdx = 0;
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects

@@ -1,6 +1,6 @@
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
 import { PrismDiv } from '../../common-elements/PrismDiv';
-import { css, extensionsHook, withProps } from '../../styled-components';
+import styled, { css, extensionsHook, withProps } from '../../styled-components';
 
 export const linksCss = css`
   a {
@@ -18,7 +18,7 @@ export const linksCss = css`
 `;
 
 export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(
-  PrismDiv.extend,
+  styled(PrismDiv),
 )`
 
   font-family: ${props => props.theme.typography.fontFamily};

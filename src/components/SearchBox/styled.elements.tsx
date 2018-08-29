@@ -24,7 +24,7 @@ export const SearchInput = styled.input.attrs({
   outline: none;
 `;
 
-export const SearchIcon = styled((props: any) => (
+export const SearchIcon = styled((props: { className?: string }) => (
   <svg
     className={props.className}
     version="1.1"
@@ -58,7 +58,6 @@ export const SearchResultsBox = styled.div`
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
-  overflow: auto;
 
   ${MenuItemLabel} {
     padding-top: 6px;

@@ -40,9 +40,12 @@ export class OperationModel implements IMenuItem {
 
   depth: number;
 
-  @observable ready?: boolean = true;
-  @observable active: boolean = false;
-  @observable expanded: boolean = false;
+  @observable
+  ready?: boolean = true;
+  @observable
+  active: boolean = false;
+  @observable
+  expanded: boolean = false;
   //#endregion
 
   pointer: string;

@@ -275,4 +275,14 @@ export function normalizeServers(
   });
 }
 
-export const SECURITY_SCHEMES_SECTION = 'section/Authentication/';
+export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
+export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
+export function setSecuritySchemePrefix(prefix: string) {
+  SECURITY_SCHEMES_SECTION_PREFIX = prefix;
+}
+
+export const shortenHTTPVerb = verb =>
+  ({
+    delete: 'del',
+    options: 'opts',
+  }[verb] || verb);

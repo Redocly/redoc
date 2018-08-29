@@ -19,25 +19,15 @@ import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
 
-const OperationRow = Row.extend`
+const OperationRow = styled(Row)`
   backface-visibility: hidden;
   contain: content;
 
   overflow: hidden;
-  position: relative;
-
-  &:after {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: block;
-    content: '';
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const Description = styled(Markdown)`
-  margin-bottom: ${({ theme }) => theme.spacing.unit * 8};
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
 `;
 
 export interface OperationProps {
@@ -56,7 +46,7 @@ export class Operation extends React.Component<OperationProps> {
           <OperationRow>
             <MiddlePanel>
               <H2>
-                <ShareLink href={'#' + operation.id} />
+                <ShareLink to={operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}

@@ -1,5 +1,9 @@
 import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
-import { isOperationName } from '../utils';
+import {
+  isOperationName,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
+  setSecuritySchemePrefix,
+} from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
 import { OpenAPIParser } from './OpenAPIParser';
@@ -38,7 +42,7 @@ export class MenuBuilder {
 
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
-    items.push(...MenuBuilder.addMarkdownItems(spec.info.description || ''));
+    items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', options));
     if (spec['x-tagGroups']) {
       items.push(
         ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
@@ -53,8 +57,11 @@ export class MenuBuilder {
    * extracts items from markdown description
    * @param description - markdown source
    */
-  static addMarkdownItems(description: string): ContentItemModel[] {
-    const renderer = new MarkdownRenderer();
+  static addMarkdownItems(
+    description: string,
+    options: RedocNormalizedOptions,
+  ): ContentItemModel[] {
+    const renderer = new MarkdownRenderer(options);
     const headings = renderer.extractHeadings(description || '');
 
     const mapHeadingsDeep = (parent, items, depth = 1) =>
@@ -63,6 +70,14 @@ export class MenuBuilder {
         group.depth = depth;
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
+        }
+        if (
+          MarkdownRenderer.containsComponent(
+            group.description || '',
+            SECURITY_DEFINITIONS_COMPONENT_NAME,
+          )
+        ) {
+          setSecuritySchemePrefix(group.id + '/');
         }
         return group;
       });

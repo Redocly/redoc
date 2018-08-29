@@ -3,9 +3,9 @@ import * as React from 'react';
 
 import { AppStore } from '../../services/AppStore';
 
-import { MiddlePanel, Row } from '../../common-elements/';
-
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
+import { MiddlePanel, Row, Section } from '../../common-elements/';
+import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {
   ApiHeader,
@@ -71,41 +71,44 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       null;
 
     return (
-      <Row>
-        <MiddlePanel className="api-info">
-          <ApiHeader>
-            {info.title} <span>({info.version})</span>
-          </ApiHeader>
-          {!hideDownloadButton && (
-            <p>
-              Download OpenAPI specification:
-              <DownloadButton
-                download={downloadFilename}
-                target="_blank"
-                href={downloadLink}
-                onClick={this.handleDownloadClick}
-              >
-                Download
-              </DownloadButton>
-            </p>
-          )}
-          <StyledMarkdownBlock>
-            {((info.license || info.contact || info.termsOfService) && (
-              <InfoSpanBoxWrap>
-                <InfoSpanBox>
-                  {email} {website} {license} {terms}
-                </InfoSpanBox>
-              </InfoSpanBoxWrap>
-            )) ||
-              null}
-          </StyledMarkdownBlock>
-          {externalDocs && (
-            <p>
-              <ExternalDocumentation externalDocs={externalDocs} />
-            </p>
-          )}
-        </MiddlePanel>
-      </Row>
+      <Section>
+        <Row>
+          <MiddlePanel className="api-info">
+            <ApiHeader>
+              {info.title} <span>({info.version})</span>
+            </ApiHeader>
+            {!hideDownloadButton && (
+              <p>
+                Download OpenAPI specification:
+                <DownloadButton
+                  download={downloadFilename}
+                  target="_blank"
+                  href={downloadLink}
+                  onClick={this.handleDownloadClick}
+                >
+                  Download
+                </DownloadButton>
+              </p>
+            )}
+            <StyledMarkdownBlock>
+              {((info.license || info.contact || info.termsOfService) && (
+                <InfoSpanBoxWrap>
+                  <InfoSpanBox>
+                    {email} {website} {license} {terms}
+                  </InfoSpanBox>
+                </InfoSpanBoxWrap>
+              )) ||
+                null}
+            </StyledMarkdownBlock>
+            <Markdown source={store.spec.info.description} />
+            {externalDocs && (
+              <p>
+                <ExternalDocumentation externalDocs={externalDocs} />
+              </p>
+            )}
+          </MiddlePanel>
+        </Row>
+      </Section>
     );
   }
 }

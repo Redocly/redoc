@@ -2,13 +2,16 @@ import { observe } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
-import { HistoryService } from './HistoryService';
+import { history } from './HistoryService';
 import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
 import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
+
+import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
+import { SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
 
 export interface StoreState {
   menu: {
@@ -64,14 +67,14 @@ export class AppStore {
     createSearchIndex: boolean = true,
   ) {
     this.rawOptions = options;
-    this.options = new RedocNormalizedOptions(options);
+    this.options = new RedocNormalizedOptions(options, DEFAULT_OPTIONS);
     this.scroll = new ScrollService(this.options);
 
     // update position statically based on hash (in case of SSR)
-    MenuStore.updateOnHash(HistoryService.hash, this.scroll);
+    MenuStore.updateOnHistory(history.currentId, this.scroll);
 
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll);
+    this.menu = new MenuStore(this.spec, this.scroll, history);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
@@ -86,7 +89,7 @@ export class AppStore {
   }
 
   onDidMount() {
-    this.menu.updateOnHash();
+    this.menu.updateOnHistory();
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
 
@@ -137,3 +140,14 @@ export class AppStore {
     this.marker.mark();
   }
 }
+
+const DEFAULT_OPTIONS: RedocRawOptions = {
+  allowedMdComponents: {
+    [SECURITY_DEFINITIONS_COMPONENT_NAME]: {
+      component: SecurityDefs,
+      propsSelector: (store: AppStore) => ({
+        securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+  },
+};

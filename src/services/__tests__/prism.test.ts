@@ -16,4 +16,8 @@ describe('prism.js helpers', () => {
   test('highlight raw text should just return text', () => {
     expect(highlight('Hello world', 'clike')).toBe('Hello world');
   });
+
+  test('highlight should not throw with lang undefined', () => {
+    expect(highlight('Hello world', undefined)).toBe('Hello world');
+  });
 });

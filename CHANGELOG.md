@@ -1,3 +1,48 @@
+<a name="2.0.0-alpha.38"></a>
+# [2.0.0-alpha.38](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.37...v2.0.0-alpha.38) (2018-08-24)
+
+
+### Bug Fixes
+
+* addd indent to array schema internals ([865f3ce](https://github.com/Rebilly/ReDoc/commit/865f3ce))
+* fix oneOf/anyOf titles ([39b930d](https://github.com/Rebilly/ReDoc/commit/39b930d)), closes [#618](https://github.com/Rebilly/ReDoc/issues/618) [#621](https://github.com/Rebilly/ReDoc/issues/621)
+
+
+
+<a name="2.0.0-alpha.37"></a>
+# [2.0.0-alpha.37](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.36...v2.0.0-alpha.37) (2018-08-22)
+
+
+### Bug Fixes
+
+* do not inherit title in allOf ([720e282](https://github.com/Rebilly/ReDoc/commit/720e282)), closes [#601](https://github.com/Rebilly/ReDoc/issues/601)
+* fix crash on empty media object ([fb21212](https://github.com/Rebilly/ReDoc/commit/fb21212)), closes [#608](https://github.com/Rebilly/ReDoc/issues/608)
+* make http badges font-based instead of inline png ([5d84bd4](https://github.com/Rebilly/ReDoc/commit/5d84bd4))
+* use correct parent section for security definition ([f903406](https://github.com/Rebilly/ReDoc/commit/f903406))
+
+
+
+<a name="2.0.0-alpha.36"></a>
+# [2.0.0-alpha.36](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.35...v2.0.0-alpha.36) (2018-08-11)
+
+
+### Bug Fixes
+
+* broken rendering of code blocks with language in markdown ([8218a26](https://github.com/Rebilly/ReDoc/commit/8218a26))
+* broken rendering of headings with regexp characters ([e660517](https://github.com/Rebilly/ReDoc/commit/e660517))
+
+
+
+<a name="2.0.0-alpha.35"></a>
+# [2.0.0-alpha.35](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.34...v2.0.0-alpha.35) (2018-08-09)
+
+
+### Bug Fixes
+
+* crash on any backticks code block without lang specified ([58ae668](https://github.com/Rebilly/ReDoc/commit/58ae668))
+* fix auth requirements font size ([d13fe13](https://github.com/Rebilly/ReDoc/commit/d13fe13))
+
+
 <a name="2.0.0-alpha.34"></a>
 # [2.0.0-alpha.34](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.33...v2.0.0-alpha.34) (2018-08-08)
 

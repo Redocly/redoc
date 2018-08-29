@@ -12,13 +12,14 @@ describe('Menu', () => {
   it('should sync active menu items while scroll', () => {
     cy.contains('h1', 'Introduction')
       .scrollIntoView()
-      .get('[role=menuitem].active:not(.-depth0)')
+      .get('[role=menuitem].active')
       .should('have.text', 'Introduction');
 
     cy.contains('h2', 'Add a new pet to the store')
       .scrollIntoView()
-      .get('[role=menuitem].active:not(.-depth0)')
-      .should('have.length', 2)
+      .wait(100)
+      .get('[role=menuitem].active')
+      .children()
       .last()
       .should('have.text', 'Add a new pet to the store')
       .should('be.visible');

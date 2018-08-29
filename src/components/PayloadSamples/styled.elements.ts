@@ -9,7 +9,7 @@ export const MimeLabel = styled.div`
   color: rgba(255, 255, 255, 0.8);
 `;
 
-export const InvertedSimpleDropdown = StyledDropdown.extend`
+export const InvertedSimpleDropdown = styled(StyledDropdown)`
   margin-left: 10px;
   text-transform: none;
   font-size: 0.929em;

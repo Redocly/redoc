@@ -9,7 +9,8 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
 export class ResponseModel {
-  @observable expanded: boolean;
+  @observable
+  expanded: boolean;
 
   content?: MediaContentModel;
   code: string;

@@ -5,7 +5,7 @@ const delimiterWidth = 15;
 
 export const ApiInfoWrap = MiddlePanel;
 
-export const ApiHeader = H1.extend`
+export const ApiHeader = styled(H1)`
   margin-top: 0;
   margin-bottom: 0.5em;
 

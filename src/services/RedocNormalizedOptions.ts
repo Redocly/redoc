@@ -2,6 +2,8 @@ import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } fr
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
+import { MDXComponentMeta } from './MarkdownRenderer';
+
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
@@ -17,6 +19,8 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
+
+  allowedMdComponents?: Dict<MDXComponentMeta>;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -98,9 +102,11 @@ export class RedocNormalizedOptions {
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
+  allowedMdComponents: Dict<MDXComponentMeta>;
 
-  constructor(raw: RedocRawOptions) {
+  constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     let hook;
+    raw = { ...defaults, ...raw };
     if (raw.theme && raw.theme.extensionsHook) {
       hook = raw.theme.extensionsHook;
       raw.theme.extensionsHook = undefined;
@@ -120,5 +126,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
+
+    this.allowedMdComponents = raw.allowedMdComponents || {};
   }
 }

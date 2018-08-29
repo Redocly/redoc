@@ -34,7 +34,9 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
       return (
         <SmallTabs>
           <TabList>
-            {examplesNames.map(name => <Tab key={name}> {examples[name].summary || name} </Tab>)}
+            {examplesNames.map(name => (
+              <Tab key={name}> {examples[name].summary || name} </Tab>
+            ))}
           </TabList>
           {examplesNames.map(name => (
             <TabPanel key={name}>{sampleView(examples[name].value)}</TabPanel>

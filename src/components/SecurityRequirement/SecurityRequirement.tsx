@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import styled from '../../styled-components';
 
-import { UnderlinedHeader } from '../../common-elements/headers';
+import { Link, UnderlinedHeader } from '../../common-elements/';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
 import { linksCss } from '../Markdown/styled.elements';
 
@@ -70,9 +70,11 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
         {security.schemes.map(scheme => {
           return (
             <SecurityRequirementAndWrap key={scheme.id}>
-              <a href={'#' + scheme.sectionId}>{scheme.id}</a>
+              <Link to={scheme.sectionId}>{scheme.id}</Link>
               {scheme.scopes.length > 0 && ' ('}
-              {scheme.scopes.map(scope => <ScopeName key={scope}>{scope}</ScopeName>)}
+              {scheme.scopes.map(scope => (
+                <ScopeName key={scope}>{scope}</ScopeName>
+              ))}
               {scheme.scopes.length > 0 && ') '}
             </SecurityRequirementAndWrap>
           );
@@ -82,18 +84,23 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
   }
 }
 
-const AuthHeaderColumn = styled.td``;
+const AuthHeaderColumn = styled.div`
+  flex: 1;
+`;
 
-const SecuritiesColumn = styled.td`
+const SecuritiesColumn = styled.div`
   width: ${props => props.theme.schema.defaultDetailsWidth};
 `;
 
-const AuthHeader = UnderlinedHeader.extend`
+const AuthHeader = styled(UnderlinedHeader)`
   display: inline-block;
+  margin: 0;
 `;
 
-const Table = styled.table`
+const Wrap = styled.div`
   width: 100%;
+  display: flex;
+  margin: 1em 0;
 `;
 
 export interface SecurityRequirementsProps {
@@ -107,20 +114,16 @@ export class SecurityRequirements extends React.PureComponent<SecurityRequiremen
       return null;
     }
     return (
-      <Table>
-        <tbody>
-          <tr>
-            <AuthHeaderColumn>
-              <AuthHeader>Authorizations: </AuthHeader>
-            </AuthHeaderColumn>
-            <SecuritiesColumn>
-              {securities.map((security, idx) => (
-                <SecurityRequirement key={idx} security={security} />
-              ))}
-            </SecuritiesColumn>
-          </tr>
-        </tbody>
-      </Table>
+      <Wrap>
+        <AuthHeaderColumn>
+          <AuthHeader>Authorizations: </AuthHeader>
+        </AuthHeaderColumn>
+        <SecuritiesColumn>
+          {securities.map((security, idx) => (
+            <SecurityRequirement key={idx} security={security} />
+          ))}
+        </SecuritiesColumn>
+      </Wrap>
     );
   }
 }
