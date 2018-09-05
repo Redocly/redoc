@@ -95,7 +95,7 @@ class OperationMenuItemContent extends React.Component<OperationMenuItemContentP
         deprecated={item.deprecated}
       >
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
-        <MenuItemTitle width="calc(100% - 32px)">
+        <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
           {this.props.children}
         </MenuItemTitle>
