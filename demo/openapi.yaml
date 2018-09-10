@@ -767,6 +767,9 @@ components:
           bee: '#/components/schemas/HoneyBee'
       properties:
         id:
+          externalDocs:
+            description: "Find more info here"
+            url: "https://example.com"
           description: Pet ID
           allOf:
             - $ref: '#/components/schemas/Id'
