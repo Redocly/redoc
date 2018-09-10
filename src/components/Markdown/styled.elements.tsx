@@ -17,7 +17,7 @@ export const linksCss = css`
   }
 `;
 
-export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean }>(
+export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boolean }>(
   styled(PrismDiv),
 )`
 
@@ -31,8 +31,8 @@ export const StyledMarkdownBlock = withProps<{ dense?: boolean; inline?: boolean
     }
   }
 
-  ${({ dense }) =>
-    dense &&
+  ${({ compact }) =>
+    compact &&
     `
     p:first-child {
       margin-top: 0;
