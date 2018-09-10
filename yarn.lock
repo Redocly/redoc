@@ -1046,9 +1046,9 @@ clean-css@3.4.x, clean-css@^3.4.9:
     commander "2.8.x"
     source-map "0.4.x"
 
-clipboard@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-1.7.1.tgz#360d6d6946e99a7a1fef395e42ba92b5e9b5a16b"
+clipboard@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.1.tgz#a12481e1c13d8a50f5f036b0560fe5d16d74e46a"
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
@@ -2957,9 +2957,9 @@ he@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hint.css@^2.3.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/hint.css/-/hint.css-2.5.0.tgz#38cae3667e42d91dfddbe503100ab34932f6fd65"
+hint.css@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/hint.css/-/hint.css-2.3.2.tgz#d9c0b604745f4b88e91af2a16e5861540c4c4d9d"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -5255,10 +5255,10 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
 prismjs@^1.8.1:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.10.0.tgz#77e5187c2ae6b3253fcc313029cf25fe53778721"
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.15.0.tgz#8801d332e472091ba8def94976c8877ad60398d9"
   optionalDependencies:
-    clipboard "^1.7.1"
+    clipboard "^2.0.0"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
