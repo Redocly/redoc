@@ -27,7 +27,7 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
           />
         )}
         <strong>{code} </strong>
-        <Markdown dense={true} inline={true} source={title} />
+        <Markdown compact={true} inline={true} source={title} />
       </div>
     );
   }

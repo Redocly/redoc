@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 
-import { OpenAPISchema, Referenced } from '../../types';
+import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
@@ -25,6 +25,7 @@ export class SchemaModel {
   typePrefix: string = '';
   title: string;
   description: string;
+  externalDocs?: OpenAPIExternalDocumentation;
 
   isPrimitive: boolean;
   isCircular: boolean = false;
@@ -101,6 +102,7 @@ export class SchemaModel {
     this.example = schema.example;
     this.deprecated = !!schema.deprecated;
     this.pattern = schema.pattern;
+    this.externalDocs = schema.externalDocs;
 
     this.constraints = humanizeConstraints(schema);
     this.displayType = this.type;

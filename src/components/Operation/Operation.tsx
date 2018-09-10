@@ -9,6 +9,7 @@ import { OptionsContext } from '../OptionsProvider';
 
 import { ShareLink } from '../../common-elements/linkify';
 import { Endpoint } from '../Endpoint/Endpoint';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
@@ -25,7 +26,7 @@ const OperationRow = styled(Row)`
   overflow: hidden;
 `;
 
-const Description = styled(Markdown)`
+const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
 `;
 
@@ -38,7 +39,9 @@ export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
 
-    const { name: summary, description, deprecated } = operation;
+    const { name: summary, description, deprecated, externalDocs } = operation;
+    const hasDescription = !!(description || externalDocs);
+
     return (
       <OptionsContext.Consumer>
         {options => (
@@ -49,7 +52,12 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
-              {description !== undefined && <Description source={description} />}
+              {hasDescription && (
+                <Description>
+                  {description !== undefined && <Markdown source={description} />}
+                  {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+                </Description>
+              )}
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
               <ResponsesList responses={operation.responses} />

@@ -75,6 +75,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       name: '',
       required: false,
       description: schema.description,
+      externalDocs: schema.externalDocs,
       deprecated: false,
       toggle: () => null,
       expanded: false,

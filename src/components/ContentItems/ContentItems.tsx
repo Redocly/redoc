@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
 
 import { H1, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
@@ -64,7 +65,7 @@ const middlePanelWrap = component => <MiddlePanel>{component}</MiddlePanel>;
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {
   render() {
-    const { name, description, level } = this.props.item as GroupModel;
+    const { name, description, externalDocs, level } = this.props.item as GroupModel;
 
     const Header = level === 2 ? H2 : H1;
     return (
@@ -78,6 +79,13 @@ export class SectionItem extends React.Component<ContentItemProps> {
           </MiddlePanel>
         </Row>
         <AdvancedMarkdown source={description || ''} htmlWrap={middlePanelWrap} />
+        {externalDocs && (
+          <Row>
+            <MiddlePanel>
+              <ExternalDocumentation externalDocs={externalDocs} />
+            </MiddlePanel>
+          </Row>
+        )}
       </>
     );
   }
