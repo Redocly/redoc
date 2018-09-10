@@ -101,11 +101,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                 null}
             </StyledMarkdownBlock>
             <Markdown source={store.spec.info.description} />
-            {externalDocs && (
-              <p>
-                <ExternalDocumentation externalDocs={externalDocs} />
-              </p>
-            )}
+            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
           </MiddlePanel>
         </Row>
       </Section>

@@ -55,9 +55,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           <Markdown dense={true} source={description} />
         </div>
         {schema.externalDocs && (
-          <div>
-            <ExternalDocumentation externalDocs={schema.externalDocs} />
-          </div>
+          <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
         )}
         {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
       </div>

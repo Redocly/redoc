@@ -1,16 +1,18 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import styled from '../../styled-components';
+import styled, { withProps } from '../../styled-components';
 import { OpenAPIExternalDocumentation } from '../../types';
 import { linksCss } from '../Markdown/styled.elements';
 
-const Link = styled.span`
+const LinkWrap = withProps<{ compact?: boolean }>(styled.div)`
   ${linksCss};
+  ${({ compact }) => (!compact ? 'margin: 1em 0' : '')}
 `;
 
 @observer
 export class ExternalDocumentation extends React.Component<{
   externalDocs: OpenAPIExternalDocumentation;
+  compact?: boolean;
 }> {
   render() {
     const { externalDocs } = this.props;
@@ -19,9 +21,9 @@ export class ExternalDocumentation extends React.Component<{
     }
 
     return (
-      <Link>
+      <LinkWrap compact={this.props.compact}>
         <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
-      </Link>
+      </LinkWrap>
     );
   }
 }

@@ -82,9 +82,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
         {externalDocs && (
           <Row>
             <MiddlePanel>
-              <p>
-                <ExternalDocumentation externalDocs={externalDocs} />
-              </p>
+              <ExternalDocumentation externalDocs={externalDocs} />
             </MiddlePanel>
           </Row>
         )}

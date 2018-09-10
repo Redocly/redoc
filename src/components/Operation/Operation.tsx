@@ -26,7 +26,7 @@ const OperationRow = styled(Row)`
   overflow: hidden;
 `;
 
-const Description = styled(Markdown)`
+const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
 `;
 
@@ -40,6 +40,8 @@ export class Operation extends React.Component<OperationProps> {
     const { operation } = this.props;
 
     const { name: summary, description, deprecated, externalDocs } = operation;
+    const hasDescription = !!(description || externalDocs);
+
     return (
       <OptionsContext.Consumer>
         {options => (
@@ -50,11 +52,11 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
-              {description !== undefined && <Description source={description} />}
-              {externalDocs && (
-                <p>
-                  <ExternalDocumentation externalDocs={externalDocs} />
-                </p>
+              {hasDescription && (
+                <Description>
+                  {description !== undefined && <Markdown source={description} />}
+                  {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+                </Description>
               )}
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
