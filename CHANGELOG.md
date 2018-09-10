@@ -1,4 +1,4 @@
-<a name="1.22.1"></a>
+<a name="1.22.2"></a>
 ## [1.22.1](https://github.com/Rebilly/ReDoc/compare/v1.22.0...v1.22.1) (2018-09-10)
 
 
@@ -7,7 +7,10 @@
 * crash when using code-samples ([fb7adb6](https://github.com/Rebilly/ReDoc/commit/fb7adb6))
 * ip addresses not supported as host ([#616](https://github.com/Rebilly/ReDoc/issues/616)) ([3b008a1](https://github.com/Rebilly/ReDoc/commit/3b008a1))
 
+<a name="1.22.1"></a>
+## [1.22.1](https://github.com/Rebilly/ReDoc/compare/v1.22.0...v1.22.1) (2018-09-10)
 
+Broken release (unpublished)
 
 <a name="1.22.0"></a>
 # [1.22.0](https://github.com/Rebilly/ReDoc/compare/v1.21.2...v1.22.0) (2018-05-02)
