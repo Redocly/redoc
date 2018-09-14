@@ -37,8 +37,6 @@ export class ContentItem extends React.Component<ContentItemProps> {
         content = null;
         break;
       case 'tag':
-        content = <SectionItem {...this.props} />;
-        break;
       case 'section':
         content = <SectionItem {...this.props} />;
         break;
@@ -46,7 +44,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
         content = <OperationItem item={item as any} />;
         break;
       default:
-        throw new Error('Unknown item type');
+        content = <SectionItem {...this.props} />;
     }
 
     return (
