@@ -1,3 +1,18 @@
+<a name="2.0.0-alpha.39"></a>
+# [2.0.0-alpha.39](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.38...v2.0.0-alpha.39) (2018-09-14)
+
+
+### Bug Fixes
+
+* Increase badge size slightly so that "PATCH" method fits inside ([#632](https://github.com/Rebilly/ReDoc/issues/632)) ([4b3b5ba](https://github.com/Rebilly/ReDoc/commit/4b3b5ba))
+
+
+### Features
+
+* externalDocumentation rendered for tags, operations and schema fields ([#595](https://github.com/Rebilly/ReDoc/issues/595)) ([893c83e](https://github.com/Rebilly/ReDoc/commit/893c83e)), closes [#550](https://github.com/Rebilly/ReDoc/issues/550)
+
+
+
 <a name="2.0.0-alpha.38"></a>
 # [2.0.0-alpha.38](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.37...v2.0.0-alpha.38) (2018-08-24)
 
