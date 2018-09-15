@@ -24,7 +24,10 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
     );
     return (
       <LogoWrap>
-        {info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo}{' '}
+        {
+          logoInfo.href ? LinkWrap(logoInfo.href)(logo) :
+          info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo
+        }{' '}
       </LogoWrap>
     );
   }
