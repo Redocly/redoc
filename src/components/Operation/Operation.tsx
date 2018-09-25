@@ -18,6 +18,7 @@ import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
+import { Extensions } from '../Fields/Extensions';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -58,6 +59,7 @@ export class Operation extends React.Component<OperationProps> {
                   {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
                 </Description>
               )}
+              <Extensions extensions={operation.extensions} />
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
               <ResponsesList responses={operation.responses} />

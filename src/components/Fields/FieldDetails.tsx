@@ -52,7 +52,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         <FieldDetail label={'Default:'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
         {showExamples && <FieldDetail label={'Example:'} value={example} />}
-        {<Extensions schema={schema} />}
+        {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
           <Markdown compact={true} source={description} />
         </div>

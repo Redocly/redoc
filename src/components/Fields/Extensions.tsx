@@ -1,35 +1,37 @@
 import * as React from 'react';
+import styled from '../../styled-components';
 
-import { isRedocExtension } from '../../utils/openapi';
 import { OptionsContext } from '../OptionsProvider';
 
-import { SchemaModel } from '../../services/models';
-import { FieldDetail } from './FieldDetail';
+import { StyledMarkdownBlock } from '../Markdown/styled.elements';
+
+const Extension = styled(StyledMarkdownBlock)`
+  opacity: 0.9;
+  margin: 2px 0;
+`;
+
+const ExtensionLable = styled.span`
+  font-style: italic;
+`;
 
 export interface ExtensionsProps {
-  schema: SchemaModel;
+  extensions: {
+    [k: string]: any;
+  };
 }
 
 export class Extensions extends React.PureComponent<ExtensionsProps> {
-  constructor(props) {
-    super(props);
-    this.getExtensions = this.getExtensions.bind(this);
-  }
-
-  getExtensions() {
-    const { schema } = this.props;
-    const fullSchema = schema.schema;
-    return Object.keys(fullSchema).filter(key => key.startsWith('x-') && !isRedocExtension(key));
-  }
-
   render() {
     return (
       <OptionsContext.Consumer>
         {options => (
           <>
             {options.showExtensions &&
-              this.getExtensions().map(key => (
-                <FieldDetail key={key} label={key} value={this.props.schema.schema[key]} />
+              Object.keys(this.props.extensions).map(key => (
+                <Extension key={key}>
+                  <ExtensionLable>{key}</ExtensionLable>:{' '}
+                  <code>{JSON.stringify(this.props.extensions[key])}</code>
+                </Extension>
               ))}
           </>
         )}

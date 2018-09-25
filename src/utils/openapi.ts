@@ -303,3 +303,17 @@ export function isRedocExtension(key: string): boolean {
 
   return key in redocExtensions;
 }
+
+export function extractExtensions(obj: object, showExtensions: string[] | true): Dict<any> {
+  return Object.keys(obj)
+    .filter(key => {
+      if (showExtensions === true) {
+        return key.startsWith('x-') && !isRedocExtension(key);
+      }
+      return key.startsWith('x-') && showExtensions.indexOf(key) > -1;
+    })
+    .reduce((acc, key) => {
+      acc[key] = obj[key];
+      return acc;
+    }, {});
+}
