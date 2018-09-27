@@ -4,7 +4,12 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
+import {
+  OpenAPIExternalDocumentation,
+  OpenAPIPath,
+  OpenAPIServer,
+  OpenAPIXCodeSample,
+} from '../../types';
 
 import {
   getOperationSummary,
@@ -83,9 +88,14 @@ export class OperationModel implements IMenuItem {
     this.operationId = operationSpec.operationId;
     this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = operationSpec.pathName;
+
+    const pathInfo = parser.byRef<OpenAPIPath>(
+      JsonPointer.compile(['paths', operationSpec.pathName]),
+    );
+
     this.servers = normalizeServers(
       parser.specUrl,
-      operationSpec.servers || parser.spec.servers || [],
+      operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
     );
 
     this.security = (operationSpec.security || parser.spec.security || []).map(
