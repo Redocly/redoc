@@ -3,7 +3,7 @@
   "integrationFolder": "e2e/integration",
   "pluginsFile": "e2e/plugins/index.js",
   "fixturesFolder": false,
-  "supportFile": "e2e/plugins/support.js",
+  "supportFile": false,
   "fileServerFolder": ".",
   "video": true,
   "projectId": "z6eb6h",

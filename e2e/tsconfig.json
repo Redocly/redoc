@@ -21,7 +21,6 @@
   },
   "compileOnSave": false,
   "include": [
-    "custom.d.ts",
     "integration/*.ts",
     "../node_modules/cypress"
   ]
