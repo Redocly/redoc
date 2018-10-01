@@ -161,9 +161,10 @@ export class SchemaModel {
       (variant, idx) =>
         new SchemaModel(
           parser,
+          // merge base schema into each of oneOf's subschemas
           {
-            // merge base schema into each of oneOf's subschemas
-            ...variant,
+            // variant may already have allOf so merge it to not get overwritten
+            ...parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx),
             allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
           } as OpenAPISchema,
           this.pointer + '/oneOf/' + idx,
