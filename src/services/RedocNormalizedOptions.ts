@@ -17,6 +17,7 @@ export interface RedocRawOptions {
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
   disableSearch?: boolean | string;
+  showExtensions?: boolean | string | string[];
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -88,6 +89,21 @@ export class RedocNormalizedOptions {
     return () => 0;
   }
 
+  static normalizeShowExtensions(value: RedocRawOptions['showExtensions']): string[] | boolean {
+    if (typeof value === 'undefined') {
+      return false;
+    }
+    if (value === '') {
+      return true;
+    }
+
+    if (typeof value === 'string') {
+      return value.split(',').map(ext => ext.trim());
+    }
+
+    return value;
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
@@ -99,6 +115,7 @@ export class RedocNormalizedOptions {
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
   disableSearch: boolean;
+  showExtensions: boolean | string[];
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -124,6 +141,7 @@ export class RedocNormalizedOptions {
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
     this.disableSearch = argValueToBoolean(raw.disableSearch);
+    this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

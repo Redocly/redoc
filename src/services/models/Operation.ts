@@ -12,6 +12,7 @@ import {
 } from '../../types';
 
 import {
+  extractExtensions,
   getOperationSummary,
   getStatusCodeType,
   isStatusCode,
@@ -61,6 +62,7 @@ export class OperationModel implements IMenuItem {
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
   codeSamples: OpenAPIXCodeSample[];
+  extensions: Dict<any>;
 
   constructor(
     private parser: OpenAPIParser,
@@ -101,6 +103,10 @@ export class OperationModel implements IMenuItem {
     this.security = (operationSpec.security || parser.spec.security || []).map(
       security => new SecurityRequirementModel(security, parser),
     );
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(operationSpec, options.showExtensions);
+    }
   }
 
   /**

@@ -3,6 +3,7 @@ import { action, observable } from 'mobx';
 import { OpenAPIParameter, Referenced } from '../../types';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
+import { extractExtensions } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
 
@@ -21,6 +22,7 @@ export class FieldModel {
   deprecated: boolean;
   in?: string;
   kind: string;
+  extensions?: Dict<any>;
 
   constructor(
     parser: OpenAPIParser,
@@ -40,6 +42,10 @@ export class FieldModel {
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
     parser.exitRef(infoOrRef);
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(info, options.showExtensions);
+    }
   }
 
   @action

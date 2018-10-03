@@ -14,6 +14,7 @@ import {
   isPrimitiveType,
   JsonPointer,
   sortByRequired,
+  extractExtensions,
 } from '../../utils/';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
@@ -54,6 +55,7 @@ export class SchemaModel {
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
+  extensions?: Dict<any>;
 
   /**
    * @param isChild if schema discriminator Child
@@ -76,6 +78,10 @@ export class SchemaModel {
     for (const parent$ref of this.schema.parentRefs || []) {
       // exit all the refs visited during allOf traverse
       parser.exitRef({ $ref: parent$ref });
+    }
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(this.schema, options.showExtensions);
     }
   }
 
