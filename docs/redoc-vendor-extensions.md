@@ -183,15 +183,54 @@ Operation code sample
 ###### Code Sample Object example
 json
 ```json
-{
-  "lang": "JavaScript",
-  "source": "console.log('Hello World');"
-}
+[
+  {
+    "lang": "JavaScript",
+    "source": "console.log('Hello World');"
+  }
+]
+
 ```
 yaml
 ```yaml
-lang: JavaScript
-source: console.log('Hello World');
+- 
+  lang: JavaScript
+  source: console.log('Hello World');
+```
+
+#### x-response-samples
+| Field Name         |	Type	  | Description |
+| :----------------- | :------: | :---------- |
+| x-response-samples | [ [Code Sample Object](#responseSampleObject) ]  | A list of response samples associated with operation, useful when your SDK renders different structure of your API |
+
+###### Usage in ReDoc
+`x-response-samples` are rendered on the right panel of ReDoc, after response tabs.
+
+#### <a name="codeSampleObject"></a>Code Sample Object
+Operation code sample
+###### Fixed fields
+| Field Name  |	Type	   | Description  |
+| :---------- | :------: | :----------- |
+| lang        | string   | Code sample language. Value should be one of the following [list](https://github.com/github/linguist/blob/master/lib/linguist/popular.yml) |
+| label       | string?  | Code sample label e.g. `Node` or `Python2.7`, _optional_, `lang` will be used by default |
+| source      | string   | Code sample source code |
+
+
+###### Response Sample Object example
+json
+```json
+[
+  {
+    "lang": "JavaScript",
+    "source": "console.log('Hello World');"
+  }
+]
+```
+yaml
+```yaml
+-
+  lang: JavaScript
+  source: console.log('Hello World');
 ```
 
 ### Parameter Object vendor extensions

@@ -291,6 +291,7 @@ export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
     'x-circular-ref': true,
     'x-code-samples': true,
+    'x-response-samples': true,
     'x-displayName': true,
     'x-examples': true,
     'x-ignoredHeaderParameters': true,

@@ -63,6 +63,12 @@ export interface OpenAPIXCodeSample {
   source: string;
 }
 
+export interface OpenAPIXResponseSample {
+  lang: string;
+  label?: string;
+  source: string;
+}
+
 export interface OpenAPIOperation {
   tags?: string[];
   summary?: string;
@@ -77,6 +83,7 @@ export interface OpenAPIOperation {
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
   'x-code-samples'?: OpenAPIXCodeSample[];
+  'x-response-samples'?: OpenAPIXResponseSample[];
 }
 
 export interface OpenAPIParameter {

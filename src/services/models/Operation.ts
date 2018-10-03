@@ -9,6 +9,7 @@ import {
   OpenAPIPath,
   OpenAPIServer,
   OpenAPIXCodeSample,
+  OpenAPIXResponseSample,
 } from '../../types';
 
 import {
@@ -62,6 +63,7 @@ export class OperationModel implements IMenuItem {
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
   codeSamples: OpenAPIXCodeSample[];
+  responseSamples: OpenAPIXResponseSample[];
   extensions: Dict<any>;
 
   constructor(
@@ -89,6 +91,7 @@ export class OperationModel implements IMenuItem {
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
     this.codeSamples = operationSpec['x-code-samples'] || [];
+    this.responseSamples = operationSpec['x-response-samples'] || [];
     this.path = operationSpec.pathName;
 
     const pathInfo = parser.byRef<OpenAPIPath>(
