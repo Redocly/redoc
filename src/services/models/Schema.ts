@@ -9,12 +9,12 @@ import { FieldModel } from './Field';
 import { MergedOpenAPISchema } from '../';
 import {
   detectType,
+  extractExtensions,
   humanizeConstraints,
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
   sortByRequired,
-  extractExtensions,
 } from '../../utils/';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values

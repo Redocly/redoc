@@ -215,7 +215,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
-* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored.
+* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display
 * `noAutoAuth` - do not inject Authentication section automatically
 * `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one
 * `hideLoading` - do not show loading animation. Useful for small docs
