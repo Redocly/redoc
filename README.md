@@ -135,6 +135,10 @@ For npm:
 
 ## Usage as a React component
 
+Install peer dependencies required by ReDoc if you don't have them installed already:
+
+    npm i react react-dom mobx@^4.2.0 styled-components
+
 Import `RedocStandalone` component from 'redoc' module:
 
 ```js
