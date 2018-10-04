@@ -9,10 +9,12 @@ import { FieldModel } from './Field';
 import { MergedOpenAPISchema } from '../';
 import {
   detectType,
+  extractExtensions,
   humanizeConstraints,
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  sortByField,
   sortByRequired,
 } from '../../utils/';
 
@@ -54,6 +56,7 @@ export class SchemaModel {
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
+  extensions?: Dict<any>;
 
   /**
    * @param isChild if schema discriminator Child
@@ -76,6 +79,10 @@ export class SchemaModel {
     for (const parent$ref of this.schema.parentRefs || []) {
       // exit all the refs visited during allOf traverse
       parser.exitRef({ $ref: parent$ref });
+    }
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(this.schema, options.showExtensions);
     }
   }
 
@@ -161,9 +168,10 @@ export class SchemaModel {
       (variant, idx) =>
         new SchemaModel(
           parser,
+          // merge base schema into each of oneOf's subschemas
           {
-            // merge base schema into each of oneOf's subschemas
-            ...variant,
+            // variant may already have allOf so merge it to not get overwritten
+            ...parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx),
             allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
           } as OpenAPISchema,
           this.pointer + '/oneOf/' + idx,
@@ -254,8 +262,12 @@ function buildFields(
     );
   });
 
+  if (options.sortPropsAlphabetically) {
+    sortByField(fields, 'name');
+  }
   if (options.requiredPropsFirst) {
-    sortByRequired(fields, schema.required);
+    // if not sort alphabetically sort in the order from required keyword
+    sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
 
   if (typeof additionalProps === 'object' || additionalProps === true) {

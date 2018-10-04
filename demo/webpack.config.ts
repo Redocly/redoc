@@ -22,6 +22,7 @@ const tsLoader = env => ({
   options: {
     compilerOptions: {
       module: env.bench ? 'esnext' : 'es2015',
+      declaration: false,
     },
   },
 });
@@ -108,7 +109,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
         },
       },
       {
-        test: /node_modules\/(swagger2openapi|reftools)\/.*\.js$/,
+        test: /node_modules\/(swagger2openapi|reftools|oas-resolver|oas-kit-common|oas-schema-walker)\/.*\.js$/,
         use: {
           loader: 'ts-loader',
           options: {

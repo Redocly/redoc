@@ -13,14 +13,18 @@ marked.setOptions({
   },
 });
 
-export const LEGACY_REGEXP = '^\\s*<!-- ReDoc-Inject:\\s+?<{component}\\s*?/?>\\s+?-->\\s*$';
-export const MDX_COMPONENT_REGEXP = '^\\s*<{component}\\s*?/>\\s*$';
+export const LEGACY_REGEXP = '^ {0,3}<!-- ReDoc-Inject:\\s+?<({component}).*?/?>\\s+?-->\\s*$';
+
+// prettier-ignore
+export const MDX_COMPONENT_REGEXP = '(?:^ {0,3}<({component})([\\s\\S]*?)>([\\s\\S]*?)</\\2>' // with children
+  + '|^ {0,3}<({component})([\\s\\S]*?)(?:/>|\\n{2,}))'; // self-closing
+
 export const COMPONENT_REGEXP = '(?:' + LEGACY_REGEXP + '|' + MDX_COMPONENT_REGEXP + ')';
 
 export interface MDXComponentMeta {
   component: React.ComponentType;
   propsSelector: (store?: AppStore) => any;
-  attrs?: object;
+  props?: object;
 }
 
 export interface MarkdownHeading {
@@ -37,11 +41,8 @@ export function buildComponentComment(name: string) {
 
 export class MarkdownRenderer {
   static containsComponent(rawText: string, componentName: string) {
-    const anyCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, componentName),
-      'gmi',
-    );
-    return anyCompRegexp.test(rawText);
+    const compRegexp = new RegExp(COMPONENT_REGEXP.replace(/{component}/g, componentName), 'gmi');
+    return compRegexp.test(rawText);
   }
 
   headings: MarkdownHeading[] = [];
@@ -147,32 +148,41 @@ export class MarkdownRenderer {
     return res;
   }
 
-  // TODO: rewrite this completelly! Regexp-based 👎
-  // Use marked ecosystem
+  // regexp-based 👎: remark is slow and too big so for now using marked + regexps soup
   renderMdWithComponents(rawText: string): Array<string | MDXComponentMeta> {
     const components = this.options && this.options.allowedMdComponents;
     if (!components || Object.keys(components).length === 0) {
       return [this.renderMd(rawText)];
     }
 
-    const componentDefs: string[] = [];
-    const names = '(?:' + Object.keys(components).join('|') + ')';
+    const names = Object.keys(components).join('|');
+    const componentsRegexp = new RegExp(COMPONENT_REGEXP.replace(/{component}/g, names), 'mig');
 
-    const anyCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, '(' + names + '.*?)'),
-      'gmi',
-    );
-    let match = anyCompRegexp.exec(rawText);
+    const htmlParts: string[] = [];
+    const componentDefs: MDXComponentMeta[] = [];
+
+    let match = componentsRegexp.exec(rawText);
+    let lasxtIdx = 0;
     while (match) {
-      componentDefs.push(match[1] || match[2]);
-      match = anyCompRegexp.exec(rawText);
-    }
+      htmlParts.push(rawText.substring(lasxtIdx, match.index));
+      lasxtIdx = componentsRegexp.lastIndex;
+      const compName = match[1] || match[2] || match[5];
+      const componentMeta = components[compName];
 
-    const splitCompRegexp = new RegExp(
-      COMPONENT_REGEXP.replace(/{component}/g, names + '.*?'),
-      'mi',
-    );
-    const htmlParts = rawText.split(splitCompRegexp);
+      const props = match[3] || match[6];
+      const children = match[4];
+
+      if (componentMeta) {
+        componentDefs.push({
+          component: componentMeta.component,
+          propsSelector: componentMeta.propsSelector,
+          props: { ...parseProps(props), ...componentMeta.props, children },
+        });
+      }
+      match = componentsRegexp.exec(rawText);
+    }
+    htmlParts.push(rawText.substring(lasxtIdx));
+
     const res: any[] = [];
     for (let i = 0; i < htmlParts.length; i++) {
       const htmlPart = htmlParts[i];
@@ -180,46 +190,37 @@ export class MarkdownRenderer {
         res.push(this.renderMd(htmlPart));
       }
       if (componentDefs[i]) {
-        const { componentName, attrs } = parseComponent(componentDefs[i]);
-        if (!componentName) {
-          continue;
-        }
-        res.push({
-          ...components[componentName],
-          attrs,
-        });
+        res.push(componentDefs[i]);
       }
     }
     return res;
   }
 }
 
-function parseComponent(
-  htmlTag: string,
-): {
-  componentName?: string;
-  attrs: any;
-} {
-  const match = /([\w_-]+)(\s+[\w_-]+\s*={[^}]*?})*/.exec(htmlTag);
-  if (match === null || match.length <= 1) {
-    return { componentName: undefined, attrs: {} };
+function parseProps(props: string): object {
+  if (!props) {
+    return {};
   }
-  const componentName = match[1];
-  const attrs = {};
-  for (let i = 2; i < match.length; i++) {
-    if (!match[i]) {
-      continue;
-    }
-    const [name, value] = match[i]
-      .trim()
-      .split('=')
-      .map(p => p.trim());
 
-    // tslint:disable-next-line
-    attrs[name] = value.startsWith('{') ? eval(value.substr(1, value.length - 2)) : eval(value);
+  const regex = /([\w-]+)\s*=\s*(?:{([^}]+?)}|"([^"]+?)")/gim;
+  const parsed = {};
+  let match;
+  // tslint:disable-next-line
+  while ((match = regex.exec(props)) !== null) {
+    if (match[3]) {
+      // string prop match (in double quotes)
+      parsed[match[1]] = match[3];
+    } else if (match[2]) {
+      // jsx prop match (in curly braces)
+      let val;
+      try {
+        val = JSON.parse(match[2]);
+      } catch (e) {
+        /* noop */
+      }
+      parsed[match[1]] = val;
+    }
   }
-  return {
-    componentName,
-    attrs,
-  };
+
+  return parsed;
 }

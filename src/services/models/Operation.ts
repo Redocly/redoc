@@ -4,9 +4,15 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
+import {
+  OpenAPIExternalDocumentation,
+  OpenAPIPath,
+  OpenAPIServer,
+  OpenAPIXCodeSample,
+} from '../../types';
 
 import {
+  extractExtensions,
   getOperationSummary,
   getStatusCodeType,
   isStatusCode,
@@ -14,6 +20,7 @@ import {
   memoize,
   mergeParams,
   normalizeServers,
+  sortByField,
   sortByRequired,
 } from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
@@ -56,6 +63,7 @@ export class OperationModel implements IMenuItem {
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
   codeSamples: OpenAPIXCodeSample[];
+  extensions: Dict<any>;
 
   constructor(
     private parser: OpenAPIParser,
@@ -83,14 +91,23 @@ export class OperationModel implements IMenuItem {
     this.operationId = operationSpec.operationId;
     this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = operationSpec.pathName;
+
+    const pathInfo = parser.byRef<OpenAPIPath>(
+      JsonPointer.compile(['paths', operationSpec.pathName]),
+    );
+
     this.servers = normalizeServers(
       parser.specUrl,
-      operationSpec.servers || parser.spec.servers || [],
+      operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
     );
 
     this.security = (operationSpec.security || parser.spec.security || []).map(
       security => new SecurityRequirementModel(security, parser),
     );
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(operationSpec, options.showExtensions);
+    }
   }
 
   /**
@@ -136,6 +153,9 @@ export class OperationModel implements IMenuItem {
       // TODO: fix pointer
     ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
+    if (this.options.sortPropsAlphabetically) {
+      sortByField(_parameters, 'name');
+    }
     if (this.options.requiredPropsFirst) {
       sortByRequired(_parameters);
     }

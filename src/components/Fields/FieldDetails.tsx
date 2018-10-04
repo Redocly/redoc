@@ -12,6 +12,7 @@ import {
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
+import { Extensions } from './Extensions';
 import { FieldProps } from './Field';
 import { ConstraintsView } from './FieldContstraints';
 import { FieldDetail } from './FieldDetail';
@@ -51,6 +52,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         <FieldDetail label={'Default:'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
         {showExamples && <FieldDetail label={'Example:'} value={example} />}
+        {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
           <Markdown compact={true} source={description} />
         </div>

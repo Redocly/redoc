@@ -10,6 +10,7 @@ export interface RedocRawOptions {
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
+  sortPropsAlphabetically?: boolean | string;
   noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
@@ -18,6 +19,7 @@ export interface RedocRawOptions {
   hideDownloadButton?: boolean | string;
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
+  showExtensions?: boolean | string | string[];
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -89,11 +91,27 @@ export class RedocNormalizedOptions {
     return () => 0;
   }
 
+  static normalizeShowExtensions(value: RedocRawOptions['showExtensions']): string[] | boolean {
+    if (typeof value === 'undefined') {
+      return false;
+    }
+    if (value === '') {
+      return true;
+    }
+
+    if (typeof value === 'string') {
+      return value.split(',').map(ext => ext.trim());
+    }
+
+    return value;
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
   requiredPropsFirst: boolean;
+  sortPropsAlphabetically: boolean;
   noAutoAuth: boolean;
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
@@ -101,6 +119,7 @@ export class RedocNormalizedOptions {
   hideDownloadButton: boolean;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
+  showExtensions: boolean | string[];
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -120,6 +139,7 @@ export class RedocNormalizedOptions {
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
     this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
+    this.sortPropsAlphabetically = argValueToBoolean(raw.sortPropsAlphabetically);
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
@@ -127,6 +147,7 @@ export class RedocNormalizedOptions {
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
+    this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
