@@ -42,7 +42,7 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
           { key: idx },
         );
       }
-      return <part.component key={idx} {...{ ...part.attrs, ...part.propsSelector(store) }} />;
+      return <part.component key={idx} {...{ ...part.props, ...part.propsSelector(store) }} />;
     });
   }
 }
