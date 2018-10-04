@@ -14,6 +14,7 @@ import {
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  sortByField,
   sortByRequired,
 } from '../../utils/';
 
@@ -261,8 +262,12 @@ function buildFields(
     );
   });
 
+  if (options.sortPropsAlphabetically) {
+    sortByField(fields, 'name');
+  }
   if (options.requiredPropsFirst) {
-    sortByRequired(fields, schema.required);
+    // if not sort alphabetically sort in the order from required keyword
+    sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
 
   if (typeof additionalProps === 'object' || additionalProps === true) {

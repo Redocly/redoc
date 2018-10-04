@@ -20,6 +20,7 @@ import {
   memoize,
   mergeParams,
   normalizeServers,
+  sortByField,
   sortByRequired,
 } from '../../utils';
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
@@ -152,6 +153,9 @@ export class OperationModel implements IMenuItem {
       // TODO: fix pointer
     ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
+    if (this.options.sortPropsAlphabetically) {
+      sortByField(_parameters, 'name');
+    }
     if (this.options.requiredPropsFirst) {
       sortByRequired(_parameters);
     }

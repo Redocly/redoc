@@ -196,10 +196,16 @@ export function sortByRequired(
     } else if (a.required && !b.required) {
       return -1;
     } else if (a.required && b.required) {
-      return order.indexOf(a.name) > order.indexOf(b.name) ? 1 : -1;
+      return order.indexOf(a.name) - order.indexOf(b.name);
     } else {
       return 0;
     }
+  });
+}
+
+export function sortByField<T extends string>(fields: Array<{ [P in T]: string }>, param: T) {
+  fields.sort((a, b) => {
+    return a[param].localeCompare(b[param]);
   });
 }
 
