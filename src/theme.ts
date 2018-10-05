@@ -3,6 +3,8 @@ import { darken, desaturate, lighten, readableColor, transparentize } from 'poli
 const defaultTheme: ThemeInterface = {
   spacing: {
     unit: 5,
+    sectionHorizontal: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: ({ spacing }) => spacing.unit * 8,
   },
   breakpoints: {
     small: '50rem',
@@ -202,6 +204,8 @@ export interface FontSettings {
 export interface ResolvedThemeInterface {
   spacing: {
     unit: number;
+    sectionHorizontal: number;
+    sectionVertical: number;
   };
   breakpoints: {
     small: string;
