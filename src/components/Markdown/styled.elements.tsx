@@ -74,7 +74,7 @@ export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boole
 
   pre {
     font-family: ${props => props.theme.typography.code.fontFamily};
-    white-space: pre-wrap;
+    white-space:${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: #263238;
     color: white;
     padding: 12px 14px 15px 14px;

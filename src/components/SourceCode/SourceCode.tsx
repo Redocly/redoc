@@ -12,7 +12,7 @@ const StyledPre = styled(PrismDiv.withComponent('pre'))`
   overflow-x: auto;
   margin: 0;
 
-  white-space: pre-wrap;
+  white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
 `;
 
 export interface SourceCodeProps {

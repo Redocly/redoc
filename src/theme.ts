@@ -102,7 +102,6 @@ const defaultTheme: ThemeInterface = {
     fontFamily: 'Roboto, sans-serif',
     smoothing: 'antialiased',
     optimizeSpeed: true,
-
     headings: {
       fontFamily: 'Montserrat, sans-serif',
     },
@@ -113,6 +112,7 @@ const defaultTheme: ThemeInterface = {
       fontWeight: ({ typography }) => typography.fontWeightRegular,
       color: '#e53935',
       backgroundColor: 'rgba(38, 50, 56, 0.04)',
+      wrap: false,
     },
     links: {
       color: ({ colors }) => colors.primary.main,
@@ -271,6 +271,7 @@ export interface ResolvedThemeInterface {
 
     code: FontSettings & {
       backgroundColor: string;
+      wrap: boolean;
     };
     headings: {
       fontFamily: string;
