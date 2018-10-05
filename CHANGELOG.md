@@ -1,3 +1,26 @@
+<a name="2.0.0-alpha.40"></a>
+# [2.0.0-alpha.40](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.39...v2.0.0-alpha.40) (2018-10-05)
+
+
+### Bug Fixes
+
+* **cli:** add styled-components to dependencies ([2d63fa0](https://github.com/Rebilly/ReDoc/commit/2d63fa0))
+* allOf inside oneOf overwritten and not rendered ([fe3383d](https://github.com/Rebilly/ReDoc/commit/fe3383d)), closes [#660](https://github.com/Rebilly/ReDoc/issues/660)
+* fix panel paddings on small screens ([f39fc98](https://github.com/Rebilly/ReDoc/commit/f39fc98))
+* minor media print improvements ([fbcec82](https://github.com/Rebilly/ReDoc/commit/fbcec82))
+* remove extra-padding caused by empty group sections ([974bc7d](https://github.com/Rebilly/ReDoc/commit/974bc7d))
+* server overriding didn't work on Path Item object ([355764d](https://github.com/Rebilly/ReDoc/commit/355764d)), closes [#656](https://github.com/Rebilly/ReDoc/issues/656)
+
+
+### Features
+
+* new option `onlyRequiredInSamples` ([#646](https://github.com/Rebilly/ReDoc/issues/646)) ([10bca66](https://github.com/Rebilly/ReDoc/commit/10bca66))
+* new option `sortPropsAlphabetically` ([b87cf0d](https://github.com/Rebilly/ReDoc/commit/b87cf0d))
+* new theme options `spacing.sectionHorizontal` and `spacing.sectionVertical` ([505463f](https://github.com/Rebilly/ReDoc/commit/505463f))
+* turn off code-blocks wrapping (enable using `theme.typography.code.wrap: true`) ([393681b](https://github.com/Rebilly/ReDoc/commit/393681b)), closes [#658](https://github.com/Rebilly/ReDoc/issues/658)
+
+
+
 <a name="2.0.0-alpha.39"></a>
 # [2.0.0-alpha.39](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.38...v2.0.0-alpha.39) (2018-09-14)
 
