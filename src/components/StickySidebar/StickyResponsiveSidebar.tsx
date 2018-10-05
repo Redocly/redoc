@@ -43,6 +43,10 @@ const StyledStickySidebar = withProps<{ open?: boolean }>(styled.div)`
     background: #ffffff;
     display: ${props => (props.open ? 'flex' : 'none')};
   `};
+
+  @media print {
+    display: none;
+  }
 `;
 
 const FloatingButton = styled.div`
@@ -60,11 +64,16 @@ const FloatingButton = styled.div`
   ${media.lessThan('small')`
     display: flex;
   `};
+
   bottom: 44px;
 
   width: 60px;
   height: 60px;
   padding: 0 20px;
+
+  @media print {
+    display: none;
+  }
 `;
 
 @observer

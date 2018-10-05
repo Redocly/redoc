@@ -30,9 +30,10 @@ export const ApiContentWrap = styled.div`
   position: relative;
   overflow: hidden;
   width: calc(100% - ${props => props.theme.menu.width});
-  ${media.lessThan('small')`
+  ${media.lessThan('small', true)`
     width: 100%;
   `};
+
   contain: layout;
 `;
 
@@ -43,7 +44,7 @@ export const BackgroundStub = styled.div`
   bottom: 0;
   right: 0;
   width: calc((100% - ${({ theme }) => theme.menu.width}) * 0.4);
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium', true)`
     display: none;
   `};
 `;

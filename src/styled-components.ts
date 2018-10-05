@@ -26,9 +26,10 @@ const {
 >;
 
 export const media = {
-  lessThan(breakpoint) {
+  lessThan(breakpoint, print?: boolean) {
     return (...args) => css`
-      @media (max-width: ${props => props.theme.breakpoints[breakpoint]}) {
+      @media ${print ? 'print, ' : ''} screen and (max-width: ${props =>
+          props.theme.breakpoints[breakpoint]}) {
         ${(css as any)(...args)};
       }
     `;

@@ -5,7 +5,7 @@ export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});
   padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium', true)`
     width: 100%;
     padding: ${props =>
       `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
@@ -19,7 +19,7 @@ export const Section = withProps<{ underlined?: boolean }>(
 )`
   padding: ${props => props.theme.spacing.sectionVertical}px 0;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium', true)`
     padding: 0;
   `}
   ${props =>
@@ -45,7 +45,7 @@ export const RightPanel = styled.div`
   background-color: ${props => props.theme.rightPanel.backgroundColor};
   padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium', true)`
     width: 100%;
     padding: ${props =>
       `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
@@ -61,7 +61,7 @@ export const Row = styled.div`
   width: 100%;
   padding: 0;
 
-  ${media.lessThan('medium')`
+  ${media.lessThan('medium', true)`
     flex-direction: column;
   `};
 `;
