@@ -7,6 +7,8 @@ export const MiddlePanel = styled.div`
 
   ${media.lessThan('medium')`
     width: 100%;
+    padding: ${props =>
+      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
   `};
 `;
 
@@ -17,6 +19,9 @@ export const Section = withProps<{ underlined?: boolean }>(
 )`
   padding: ${props => props.theme.spacing.sectionVertical}px 0;
 
+  ${media.lessThan('medium')`
+    padding: 0;
+  `}
   ${props =>
     (props.underlined &&
       `
@@ -42,6 +47,8 @@ export const RightPanel = styled.div`
 
   ${media.lessThan('medium')`
     width: 100%;
+    padding: ${props =>
+      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
   `};
 `;
 
