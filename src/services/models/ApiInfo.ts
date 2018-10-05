@@ -11,6 +11,9 @@ export class ApiInfoModel implements OpenAPIInfo {
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
+  downloadLink?: string;
+  downloadFileName?: string;
+
   constructor(private parser: OpenAPIParser) {
     Object.assign(this, parser.spec.info);
     this.description = parser.spec.info.description || '';
@@ -18,9 +21,12 @@ export class ApiInfoModel implements OpenAPIInfo {
     if (firstHeadingLinePos > -1) {
       this.description = this.description.substring(0, firstHeadingLinePos);
     }
+
+    this.downloadLink = this.getDownloadLink();
+    this.downloadFileName = this.getDownloadFileName();
   }
 
-  get downloadLink(): string | undefined {
+  private getDownloadLink(): string | undefined {
     if (this.parser.specUrl) {
       return this.parser.specUrl;
     }
@@ -33,7 +39,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     }
   }
 
-  get downloadFileName(): string | undefined {
+  private getDownloadFileName(): string | undefined {
     if (!this.parser.specUrl) {
       return 'swagger.json';
     }
