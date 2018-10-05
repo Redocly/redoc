@@ -41,7 +41,7 @@ export class MediaTypeModel {
   }
 
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
-    const samplerOption = {
+    const samplerOptions = {
       skipReadOnly: this.isRequestType,
       skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
       skipWriteOnly: !this.isRequestType,
@@ -51,7 +51,7 @@ export class MediaTypeModel {
       for (const subSchema of this.schema.oneOf) {
         const sample = Sampler.sample(
           subSchema.rawSchema,
-          samplerOption,
+          samplerOptions,
           parser.spec,
         );
 
@@ -68,7 +68,7 @@ export class MediaTypeModel {
         default: new ExampleModel(parser, {
           value: Sampler.sample(
             info.schema,
-            samplerOption,
+            samplerOptions,
             parser.spec,
           ),
         }),
