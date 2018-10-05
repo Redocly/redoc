@@ -49,9 +49,11 @@ export class ContentItem extends React.Component<ContentItemProps> {
 
     return (
       <>
-        <Section id={item.id} underlined={item.type === 'operation'}>
-          {content}
-        </Section>
+        {content && (
+          <Section id={item.id} underlined={item.type === 'operation'}>
+            {content}
+          </Section>
+        )}
         {item.items && <ContentItems items={item.items} />}
       </>
     );
