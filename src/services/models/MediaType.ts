@@ -13,6 +13,7 @@ export class MediaTypeModel {
   schema?: SchemaModel;
   name: string;
   isRequestType: boolean;
+  onlyRequiredInSamples: boolean;
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
@@ -27,6 +28,7 @@ export class MediaTypeModel {
     this.name = name;
     this.isRequestType = isRequestType;
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
+    this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     if (info.examples !== undefined) {
       this.examples = mapValues(info.examples, example => new ExampleModel(parser, example));
     } else if (info.example !== undefined) {
@@ -39,12 +41,17 @@ export class MediaTypeModel {
   }
 
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
+    const samplerOptions = {
+      skipReadOnly: this.isRequestType,
+      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
+      skipWriteOnly: !this.isRequestType,
+    };
     if (this.schema && this.schema.oneOf) {
       this.examples = {};
       for (const subSchema of this.schema.oneOf) {
         const sample = Sampler.sample(
           subSchema.rawSchema,
-          { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
+          samplerOptions,
           parser.spec,
         );
 
@@ -61,7 +68,7 @@ export class MediaTypeModel {
         default: new ExampleModel(parser, {
           value: Sampler.sample(
             info.schema,
-            { skipReadOnly: this.isRequestType, skipWriteOnly: !this.isRequestType },
+            samplerOptions,
             parser.spec,
           ),
         }),

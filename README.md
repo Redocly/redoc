@@ -227,6 +227,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `disableSearch` - disable search indexing and search box
+* `onlyRequiredInSamples` - shows only required fields in request samples.
 * `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Rebilly/ReDoc/blob/master/src/theme.ts)
 
 ## Advanced usage of standalone version
