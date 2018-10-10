@@ -22,8 +22,9 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
         alt={altText}
       />
     );
+
     return (
-      <LogoWrap>
+      <LogoWrap className="api-logo">
         {info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo}{' '}
       </LogoWrap>
     );

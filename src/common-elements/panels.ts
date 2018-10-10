@@ -15,6 +15,7 @@ export const MiddlePanel = styled.div`
 export const Section = withProps<{ underlined?: boolean }>(
   styled.div.attrs({
     [SECTION_ATTR]: props => props.id,
+    className: 'section',
   } as any),
 )`
   padding: ${props => props.theme.spacing.sectionVertical}px 0;
