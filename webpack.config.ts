@@ -106,7 +106,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
             },
           },
         ],
-        exclude: ['node_modules'],
+        exclude: [/node_modules/],
       },
       {
         test: /node_modules\/(swagger2openapi|reftools|oas-resolver|oas-kit-common|oas-schema-walker)\/.*\.js$/,

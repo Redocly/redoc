@@ -97,7 +97,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       {
         test: /\.tsx?$/,
         use: [tsLoader(env), babelLoader(mode)],
-        exclude: ['node_modules'],
+        exclude: [/node_modules/],
       },
       {
         test: /\.css$/,
