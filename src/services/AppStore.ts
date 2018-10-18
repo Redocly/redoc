@@ -1,4 +1,4 @@
-import { observe, Lambda } from 'mobx';
+import { Lambda, observe } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
