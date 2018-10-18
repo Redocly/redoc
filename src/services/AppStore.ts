@@ -1,4 +1,4 @@
-import { observe } from 'mobx';
+import { observe, Lambda } from 'mobx';
 
 import { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
@@ -58,7 +58,7 @@ export class AppStore {
   marker = new MarkerService();
 
   private scroll: ScrollService;
-  private disposer;
+  private disposer: Lambda | null = null;
 
   constructor(
     spec: OpenAPISpec,
@@ -96,7 +96,9 @@ export class AppStore {
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
-    this.disposer();
+    if (this.disposer != null) {
+      this.disposer();
+    }
   }
 
   /**
