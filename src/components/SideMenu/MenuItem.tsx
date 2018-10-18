@@ -46,7 +46,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
       <MenuItemLi
         onClick={this.activate}
         depth={item.depth}
-        innerRef={this.saveRef}
+        ref={this.saveRef}
         data-item-id={item.id}
       >
         {item.type === 'operation' ? (

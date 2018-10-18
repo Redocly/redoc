@@ -35,7 +35,7 @@ class Json extends React.PureComponent<JsonProps> {
       <PrismDiv
         className={this.props.className}
         // tslint:disable-next-line
-        innerRef={node => (this.node = node!)}
+        ref={node => (this.node = node!)}
         dangerouslySetInnerHTML={{ __html: jsonToHTML(this.props.data) }}
       />
     </JsonViewerWrap>

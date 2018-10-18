@@ -73,6 +73,7 @@
     "@types/react-dom": "^16.0.9",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-tabs": "^2.3.0",
+    "@types/styled-components": "^4.0.1",
     "@types/tapable": "1.0.4",
     "@types/webpack": "^4.4.17",
     "@types/webpack-env": "^1.13.0",
@@ -107,7 +108,7 @@
     "shelljs": "^0.8.1",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
-    "styled-components": "^3.4.5",
+    "styled-components": "^4.0.2",
     "swagger2openapi": "^3.2.8",
     "ts-jest": "23.10.4",
     "ts-loader": "5.2.2",
@@ -126,7 +127,7 @@
     "mobx": "^4.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "styled-components": "^3.4.0"
+    "styled-components": "^4.0.1"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -134,7 +135,7 @@
     "dompurify": "^1.0.7",
     "eventemitter3": "^3.0.0",
     "json-pointer": "^0.6.0",
-    "json-schema-ref-parser": "^5.1.2",
+    "json-schema-ref-parser": "^6.0.1",
     "lunr": "^2.3.2",
     "mark.js": "^8.11.1",
     "marked": "https://github.com/markedjs/marked#fb48827",

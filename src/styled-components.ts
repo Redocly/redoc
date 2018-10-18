@@ -18,7 +18,7 @@ function withProps<T, U extends HTMLElement = HTMLElement>(
 const {
   default: styled,
   css,
-  injectGlobal,
+  createGlobalStyle,
   keyframes,
   ThemeProvider,
 } = (styledComponents as any) as styledComponents.ThemedStyledComponentsModule<
@@ -54,7 +54,7 @@ export const media = {
   },
 };
 
-export { css, injectGlobal, keyframes, ThemeProvider, withProps };
+export { css, createGlobalStyle, keyframes, ThemeProvider, withProps };
 export default styled;
 
 export function extensionsHook(styledName: string) {
