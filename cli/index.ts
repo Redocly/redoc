@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 
 import { compile } from 'handlebars';
-import { createServer, ServerRequest, ServerResponse } from 'http';
+import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { dirname, join } from 'path';
 
 import * as zlib from 'zlib';
@@ -258,7 +258,7 @@ async function getPageHTML(
 // credits: https://stackoverflow.com/a/9238214/1749888
 function respondWithGzip(
   contents: string | ReadStream,
-  request: ServerRequest,
+  request: IncomingMessage,
   response: ServerResponse,
   headers = {},
 ) {
