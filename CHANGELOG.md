@@ -1,3 +1,19 @@
+<a name="2.0.0-alpha.41"></a>
+# [2.0.0-alpha.41](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.40...v2.0.0-alpha.41) (2018-10-18)
+
+
+### Bug Fixes
+
+* add null check in dispose method ([#675](https://github.com/Rebilly/ReDoc/issues/675)) ([6b7c5b7](https://github.com/Rebilly/ReDoc/commit/6b7c5b7))
+* extensionHook not being used ([a4a4013](https://github.com/Rebilly/ReDoc/commit/a4a4013)), closes [#665](https://github.com/Rebilly/ReDoc/issues/665)
+* fix issue with broken markdown caused by marked bug ([70cf293](https://github.com/Rebilly/ReDoc/commit/70cf293))
+
+### Peer dependencies updates
+
+* ReDoc now requires `styled-components@^4.0.1` to be installed if used as React component
+
+
+
 <a name="2.0.0-alpha.40"></a>
 # [2.0.0-alpha.40](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.39...v2.0.0-alpha.40) (2018-10-05)
 
