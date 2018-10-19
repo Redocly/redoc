@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Schema } from '../Schema';
 
-import { MiddlePanel, Row, Section, DarkRightPanel } from '../../common-elements';
-import { OpenAPIParser, RedocNormalizedOptions, MediaTypeModel } from '../../services';
-import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
+import { DarkRightPanel, MiddlePanel, Row, Section } from '../../common-elements';
+import { MediaTypeModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
 import { OpenAPIMediaType } from '../../types';
+import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
 
 export interface ObjectDescriptionProps {
   schemaRef: string;
@@ -14,6 +14,37 @@ export interface ObjectDescriptionProps {
 }
 
 export class ObjectDescription extends React.PureComponent<ObjectDescriptionProps> {
+  private static getMediaType(schemaRef, examplesRef): OpenAPIMediaType {
+    if (!schemaRef) {
+      return {};
+    }
+
+    const info: OpenAPIMediaType = {
+      schema: { $ref: schemaRef },
+    };
+
+    if (examplesRef) {
+      info.examples = { object: { $ref: examplesRef } };
+    }
+
+    return info;
+  }
+
+  private static getMediaModel({
+    schemaRef,
+    examplesRef,
+    parser,
+    options,
+  }: ObjectDescriptionProps) {
+    return new MediaTypeModel(
+      parser,
+      'json',
+      false,
+      ObjectDescription.getMediaType(schemaRef, examplesRef),
+      options,
+    );
+  }
+
   private mediaModel: MediaTypeModel;
 
   constructor(props: ObjectDescriptionProps) {
@@ -33,32 +64,6 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
           </DarkRightPanel>
         </Row>
       </Section>
-    );
-  }
-
-  private static getMediaType(schemaRef, examplesRef): OpenAPIMediaType {
-    if (!schemaRef) return {};
-
-    const info: OpenAPIMediaType = {
-      schema: { $ref: schemaRef },
-    };
-
-    if (examplesRef) info.examples = { object: { $ref: examplesRef } };
-    return info;
-  }
-
-  private static getMediaModel({
-    schemaRef,
-    examplesRef,
-    parser,
-    options,
-  }: ObjectDescriptionProps) {
-    return new MediaTypeModel(
-      parser,
-      'json',
-      false,
-      ObjectDescription.getMediaType(schemaRef, examplesRef),
-      options,
     );
   }
 }

@@ -59,7 +59,7 @@ export class MenuBuilder {
    */
   static addMarkdownItems(
     description: string,
-    parent: GroupModel | undefined,
+    grandparent: GroupModel | undefined,
     options: RedocNormalizedOptions,
   ): ContentItemModel[] {
     const renderer = new MarkdownRenderer(options);
@@ -83,7 +83,7 @@ export class MenuBuilder {
         return group;
       });
 
-    return mapHeadingsDeep(parent, headings, 1);
+    return mapHeadingsDeep(grandparent, headings, 1);
   }
 
   /**

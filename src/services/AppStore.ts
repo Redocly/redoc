@@ -13,8 +13,8 @@ import { SearchStore } from './SearchStore';
 import { ObjectDescription } from '../components/ObjectDescription/ObjectDescription';
 import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
 import {
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
   OBJECT_DEFINTION_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
 } from '../utils/openapi';
 
 export interface StoreState {
