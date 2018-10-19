@@ -58,9 +58,21 @@ externalDocs:
   url: 'https://github.com/Rebilly/generator-openapi-repo'
 tags:
   - name: pet
-    description: Everything about your Pets
+    description: |
+      Everything about your Pets
+
+      ## The Pet Object
+
+      <object-description schemaRef="#/components/schemas/Pet" />
+
   - name: store
-    description: Access to Petstore orders
+    description: |
+      Access to Petstore orders
+
+      ## The Order Object
+
+      <object-description schemaRef="#/components/schemas/Order" examplesRef="#/components/examples/Order" />
+
   - name: user
     description: Operations about user
 x-tagGroups:
@@ -926,3 +938,10 @@ components:
       type: apiKey
       name: api_key
       in: header
+  examples:
+    Order:
+      value:
+        quantity: 1,
+        shipDate: 2018-10-19T16:46:45Z,
+        status: placed,
+        complete: false
