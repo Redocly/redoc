@@ -42,7 +42,7 @@ export class MenuBuilder {
 
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
-    items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, options));
+    items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
         ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
@@ -60,6 +60,7 @@ export class MenuBuilder {
   static addMarkdownItems(
     description: string,
     grandparent: GroupModel | undefined,
+    initialDepth: number,
     options: RedocNormalizedOptions,
   ): ContentItemModel[] {
     const renderer = new MarkdownRenderer(options);
@@ -83,7 +84,7 @@ export class MenuBuilder {
         return group;
       });
 
-    return mapHeadingsDeep(grandparent, headings, 1);
+    return mapHeadingsDeep(grandparent, headings, initialDepth);
   }
 
   /**
@@ -149,7 +150,7 @@ export class MenuBuilder {
       // don't put empty tag into content, instead put its operations
       if (tag.name === '') {
         const items = [
-          ...MenuBuilder.addMarkdownItems(tag.description || '', item, options),
+          ...MenuBuilder.addMarkdownItems(tag.description || '', item, item.depth + 1, options),
           ...this.getOperationsItems(parser, undefined, tag, item.depth + 1, options),
         ];
         res.push(...items);
@@ -157,7 +158,7 @@ export class MenuBuilder {
       }
 
       item.items = [
-        ...MenuBuilder.addMarkdownItems(tag.description || '', item, options),
+        ...MenuBuilder.addMarkdownItems(tag.description || '', item, item.depth + 1, options),
         ...this.getOperationsItems(parser, item, tag, item.depth + 1, options),
       ];
 
