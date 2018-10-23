@@ -9,6 +9,7 @@ export const jsonStyles = css`
   font-size: ${props => props.theme.typography.code.fontSize};
 
   white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
+  contain: content;
   overflow-x: auto;
 
   .callback-function {
