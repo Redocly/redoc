@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
@@ -8,6 +8,7 @@
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "chokidar": "^2.0.4",
     "handlebars": "^4.0.11",
     "isarray": "^2.0.4",
     "mkdirp": "^0.5.1",
@@ -26,6 +27,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@types/chokidar": "^1.7.5",
     "@types/handlebars": "^4.0.39",
     "@types/mkdirp": "^0.5.2",
     "ci-publish": "^1.3.1"
