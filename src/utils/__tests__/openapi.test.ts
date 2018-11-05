@@ -2,6 +2,7 @@ import {
   detectType,
   getOperationSummary,
   getStatusCodeType,
+  humanizeConstraints,
   isOperationName,
   isPrimitiveType,
   mergeParams,
@@ -319,6 +320,37 @@ describe('Utils', () => {
       expect(servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
       expect(servers[1].url).toEqual('http://127.0.0.2:{port}');
       expect(servers[2].url).toEqual('http://127.0.0.3');
+    });
+  });
+
+  describe('openapi humanizeConstraints', () => {
+    const itemConstraintSchema = (
+      min: number | undefined = undefined,
+      max: number | undefined = undefined,
+    ) => ({ type: 'array', minItems: min, maxItems: max });
+
+    it('should not have a humanized constraint without schema constraints', () => {
+      expect(humanizeConstraints(itemConstraintSchema())).toHaveLength(0);
+    });
+
+    it('should have a humanized constraint when minItems is set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(2))).toContain('>= 2 items');
+    });
+
+    it('should have a humanized constraint when maxItems is set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, 8))).toContain('<= 8 items');
+    });
+
+    it('should have a humanized constraint when minItems and maxItems are both set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(2, 8))).toContain('[ 2 .. 8 ] items');
+    });
+
+    it('should have a humanized constraint when minItems and maxItems are the same', () => {
+      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
+    });
+
+    it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
+      expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
     });
   });
 });
