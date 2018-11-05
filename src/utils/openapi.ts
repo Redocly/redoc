@@ -141,7 +141,11 @@ export function isNamedDefinition(pointer?: string): boolean {
   return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
-function humanizeRangeConstraint(description: string, min: number | undefined, max: number | undefined): string | undefined {
+function humanizeRangeConstraint(
+  description: string,
+  min: number | undefined,
+  max: number | undefined,
+): string | undefined {
   let stringRange;
   if (min !== undefined && max !== undefined) {
     if (min === max) {
