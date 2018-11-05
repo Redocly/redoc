@@ -296,6 +296,8 @@ paths:
           style: form
           schema:
             type: array
+            minItems: 1
+            maxItems: 3
             items:
               type: string
               enum:
@@ -784,6 +786,7 @@ components:
         photoUrls:
           description: The list of URL to a cute photos featuring pet
           type: array
+          maxItems: 20
           xml:
             name: photoUrl
             wrapped: true
@@ -796,6 +799,7 @@ components:
         tags:
           description: Tags attached to the pet
           type: array
+          minItems: 1
           xml:
             name: tag
             wrapped: true
