@@ -161,3 +161,7 @@ export function resolveUrl(url: string, to: string) {
   }
   return stripTrailingSlash(res);
 }
+
+export function getBasePath(serverUrl: string): string {
+  return new URL(serverUrl).pathname;
+}

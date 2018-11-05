@@ -4,6 +4,7 @@ import { OperationModel } from '../../services';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
+import { getBasePath } from '../../utils';
 import {
   EndpointInfo,
   HttpVerb,
@@ -63,7 +64,11 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                   <div>{server.description}</div>
                   <SelectOnClick>
                     <ServerUrl>
-                      {!(hideHostname || options.hideHostname) && <span>{server.url}</span>}
+                      <span>
+                        {hideHostname || options.hideHostname
+                          ? getBasePath(server.url)
+                          : server.url}
+                      </span>
                       {operation.path}
                     </ServerUrl>
                   </SelectOnClick>
