@@ -52,7 +52,14 @@ export class StoreBuilder extends Component<StoreBuilderProps, StoreBuilderState
     if (!spec) {
       return undefined;
     }
-    return new AppStore(spec, specUrl, options);
+    try {
+      return new AppStore(spec, specUrl, options);
+    } catch (e) {
+      if (this.props.onLoaded) {
+        this.props.onLoaded(e);
+      }
+      throw e;
+    }
   }
 
   componentDidMount() {
