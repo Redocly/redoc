@@ -17,12 +17,18 @@ const nodeExternals = require('webpack-node-externals')({
 });
 
 const VERSION = JSON.stringify(require('./package.json').version);
-const REVISION = JSON.stringify(
-  require('child_process')
-    .execSync('git rev-parse --short HEAD')
-    .toString()
-    .trim(),
-);
+let REVISION;
+
+try {
+  REVISION = JSON.stringify(
+    require('child_process')
+      .execSync('git rev-parse --short HEAD')
+      .toString()
+      .trim(),
+  );
+} catch (e) {
+  console.error('Skipping REDOC_REVISION');
+}
 
 const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
 -------------------------------------------------------------

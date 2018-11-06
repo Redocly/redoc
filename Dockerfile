@@ -9,10 +9,16 @@ FROM node:alpine
 
 RUN apk update && apk add --no-cache git 
 
-# generate bundle
+# Install dependencies
 WORKDIR /build
-COPY . /build
+COPY package.json yarn.lock /build/
 RUN yarn install --frozen-lockfile --ignore-optional --ignore-scripts
+
+# copy only required for the build files
+COPY src /build/src
+COPY webpack.config.ts tsconfig.json custom.d.ts /build/
+COPY typings/styled-patch.d.ts /build/typings/styled-patch.d.ts
+
 RUN npm run bundle:standalone
 
 FROM nginx:alpine
