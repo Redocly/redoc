@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# DockerHub cd into Dockerfile location before buil
+# So we have to undo this.
+cd ../..
+docker build -f config/docker/Dockerfile -t $IMAGE_NAME .
