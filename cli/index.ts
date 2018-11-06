@@ -6,14 +6,15 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { compile } from 'handlebars';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { dirname, join } from 'path';
+import { dirname, join, resolve } from 'path';
 
 import * as zlib from 'zlib';
 
 // @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
-import { createReadStream, existsSync, readFileSync, ReadStream, watch, writeFileSync } from 'fs';
+import {watch} from 'chokidar';
+import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
@@ -167,28 +168,25 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   server.listen(port, () => console.log(`Server started: http://127.0.0.1:${port}`));
 
   if (options.watch && existsSync(pathToSpec)) {
-    const pathToSpecDirectory = dirname(pathToSpec);
+    const pathToSpecDirectory = resolve(dirname(pathToSpec));
     const watchOptions = {
-      recursive: true,
+      ignored: /(^|[\/\\])\../,
     };
 
-    watch(
-      pathToSpecDirectory,
-      watchOptions,
-      debounce(async (event, filename) => {
-        if (event === 'change' || event === 'rename') {
-          console.log(`${join(pathToSpecDirectory, filename)} changed, updating docs`);
-          try {
-            spec = await loadAndBundleSpec(pathToSpec);
-            pageHTML = await getPageHTML(spec, pathToSpec, options);
-            console.log('Updated successfully');
-          } catch (e) {
-            console.error('Error while updating: ', e.message);
-          }
-        }
-      }, 2200),
-    );
-    console.log(`👀  Watching ${pathToSpecDirectory} for changes...`);
+    const watcher = watch(pathToSpecDirectory, watchOptions);
+    const log = console.log.bind(console);
+    watcher
+      .on('change', async path => {
+        log(`${path} changed, updating docs`);
+        try {
+          spec = await loadAndBundleSpec(pathToSpec);
+          pageHTML = await getPageHTML(spec, pathToSpec, options);
+          log('Updated successfully');
+        } catch (e) {
+          console.error('Error while updating: ', e.message);
+        }})
+      .on('error', error => console.error(`Watcher error: ${error}`))
+      .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
   }
 }
 
@@ -289,17 +287,6 @@ function respondWithGzip(
   } else {
     contents.pipe(compressedStream).pipe(response);
   }
-}
-
-function debounce(callback: (...args) => void, time: number) {
-  let interval;
-  return (...args) => {
-    clearTimeout(interval);
-    interval = setTimeout(() => {
-      interval = null;
-      callback(...args);
-    }, time);
-  };
 }
 
 function isURL(str: string): boolean {
