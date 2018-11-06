@@ -1,8 +1,4 @@
-# Redoc docker image
-
-## Build
-
-    docker build -t redoc .
+# Official ReDoc Docker Image
 
 ## Usage
 
@@ -24,3 +20,7 @@ Serve local file:
 - `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) - URL to spec
 - `PORT` (default `80`) - nginx port
 - `REDOC_OPTIONS` - [`<redoc>` tag attributes](https://github.com/Rebilly/ReDoc#redoc-tag-attributes)
+
+## Build
+
+    docker build -t redoc .
