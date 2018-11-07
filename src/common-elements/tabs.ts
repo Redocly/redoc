@@ -1,5 +1,6 @@
 import { Tabs as ReactTabs } from 'react-tabs';
 import styled from '../styled-components';
+import { darken, lighten } from 'polished';
 
 export { Tab, TabList, TabPanel } from 'react-tabs';
 
@@ -14,14 +15,14 @@ export const Tabs = styled(ReactTabs)`
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: ${({ theme }) => darken(0.05, theme.rightPanel.backgroundColor)};
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
       outline: none;
-      color: #ccc;
+      color: ${({ theme }) => darken(0.2, theme.rightPanel.textColor)};
       margin: 5px;
-      border: 1px solid #181f22;
+      border: 1px solid ${({ theme }) => darken(0.1, theme.rightPanel.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
@@ -29,7 +30,7 @@ export const Tabs = styled(ReactTabs)`
 
       &.react-tabs__tab--selected {
         color: ${props => props.theme.colors.text.primary};
-        background: #e2e2e2;
+        background: ${({ theme }) => lighten(0.8, theme.rightPanel.backgroundColor)};
       }
 
       &:only-child {
@@ -55,7 +56,7 @@ export const Tabs = styled(ReactTabs)`
     }
   }
   > .react-tabs__tab-panel {
-    background: #171e21;
+    background: ${({ theme }) => theme.codeSample.backgroundColor};
     & > div,
     & > pre {
       padding: 20px;
@@ -74,7 +75,7 @@ export const SmallTabs = styled(Tabs)`
       font-size: 13px;
       font-weight: normal;
       border-bottom: 1px dashed;
-      color: #787b7d;
+      color: ${({ theme }) => darken(0.55, theme.rightPanel.textColor)};
       border-radius: 0;
       background: none;
 
@@ -83,7 +84,7 @@ export const SmallTabs = styled(Tabs)`
       }
 
       &.react-tabs__tab--selected {
-        color: #babcbf;
+        color: ${({ theme }) => darken(0.25, theme.rightPanel.textColor)};
         background: none;
       }
     }

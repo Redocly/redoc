@@ -1,5 +1,6 @@
 import { SECTION_ATTR } from '../services/MenuStore';
 import styled, { media, withProps } from '../styled-components';
+import { darken } from 'polished';
 
 export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});
@@ -41,7 +42,7 @@ export const Section = withProps<{ underlined?: boolean }>(
 
 export const RightPanel = styled.div`
   width: ${props => props.theme.rightPanel.width};
-  color: #fafbfc;
+  color: ${({ theme }) => darken(0.01, theme.rightPanel.textColor)};
   background-color: ${props => props.theme.rightPanel.backgroundColor};
   padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
 

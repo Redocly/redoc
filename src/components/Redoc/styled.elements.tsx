@@ -43,7 +43,14 @@ export const BackgroundStub = styled.div`
   top: 0;
   bottom: 0;
   right: 0;
-  width: calc((100% - ${({ theme }) => theme.menu.width}) * 0.4);
+  width: ${({ theme }) => {
+    if (theme.rightPanel.width.endsWith('%')) {
+      const percents = parseInt(theme.rightPanel.width, 10);
+      return `calc((100% - ${theme.menu.width}) * ${percents / 100})`;
+    } else {
+      return theme.rightPanel.width;
+    }
+  }};
   ${media.lessThan('medium', true)`
     display: none;
   `};
