@@ -229,11 +229,18 @@ export class SchemaDereferencer {
     if ( keysCount > 2 || (keysCount === 2 && !schema.description) ) {
       WarningsService.warn(`Other properties are defined at the same level as $ref at "#${pointer}". ` +
         'They are IGNORED according to the JsonSchema spec');
-      resolved.description = resolved.description || schema.description;
     }
 
     resolved = this.normalizator.normalize(resolved, $ref);
     this._refCouner.exit($ref);
+
+    // schema description should always override $ref description
+    if (schema.description) {
+      // make a copy of resolved object with updated description, do not globally override the description
+      resolved = Object.assign({}, resolved);
+      resolved.description = schema.description;
+    }
+
     return resolved;
   }
 }
