@@ -16,10 +16,10 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
+import { ReadMore } from '../../common-elements/ReadMore';
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
 import { Extensions } from '../Fields/Extensions';
-import { ReadMore } from "../../common-elements/ReadMore";
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -40,12 +40,12 @@ export interface OperationProps {
 
 function splitDescription(description) {
   if (!description) {
-    return ["", ""];
+    return ['', ''];
   } else {
     // str#split split at all occurence of matched string.
     // So "a<!--READMORE-->b<!--READMORE-->c" --> ["a", "<!..>", "b", "<!..>", "c"]
     const [head, ...rest] = description.split(ReadmorePattern);
-    const more = rest.join("");
+    const more = rest.join('');
     return [head, more];
   }
 }

@@ -1,22 +1,21 @@
 import * as React from 'react';
 
+import {Markdown} from '../components';
 import styled from '../styled-components';
-import {ShelfIcon} from "./shelfs";
-import {Markdown} from "../components";
-
+import {ShelfIcon} from './shelfs';
 
 export interface ReadMoreProps {
   content?: string;
 }
 
 interface ReadMoreState {
-  open: boolean
+  open: boolean;
 }
 
 const ReadMoreWrapper = styled.div`
   position: relative;
   overflow: hidden;
-  max-height: ${(props: ReadMoreState) => props.open ? 'auto': '5em'};
+  max-height: ${(props: ReadMoreState) => props.open ? 'auto' : '5em'};
   padding-bottom: ${(props: ReadMoreState) => props.open ? '3em' : '1em'};
 `;
 
@@ -27,7 +26,7 @@ const ReadMoreButtonBackground = styled.div`
   background-image: linear-gradient(to bottom, rgba(255,255,255,0.3), white);
   width: 100%;
   bottom: 0;
-  padding: ${(props: ReadMoreState) => props.open ? '0': '2em'};
+  padding: ${(props: ReadMoreState) => props.open ? '0' : '2em'};
 `;
 
 const ReadMoreButton = styled.span`
@@ -41,18 +40,17 @@ const ReadMoreButtonText = styled.span`
   text-transform: uppercase;
 `;
 
-
 export class ReadMore extends React.Component<ReadMoreProps, ReadMoreState> {
   constructor(props: ReadMoreProps) {
     super(props);
     this.state = {
-      open: false
+      open: false,
     };
   }
 
   toggle = () => {
     this.setState(prevState => ({
-      open: !prevState.open
+      open: !prevState.open,
     }));
   };
 
@@ -60,7 +58,7 @@ export class ReadMore extends React.Component<ReadMoreProps, ReadMoreState> {
     const { content } = this.props;
 
     if (!content) {
-      return <ReadMoreWrapper open={false} />
+      return <ReadMoreWrapper open={false} />;
     }
 
     return (
