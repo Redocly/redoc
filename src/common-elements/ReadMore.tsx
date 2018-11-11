@@ -37,6 +37,11 @@ const ReadMoreButton = styled.span`
   border-radius: 2px;
 `;
 
+const ReadMoreButtonText = styled.span`
+  text-transform: uppercase;
+`;
+
+
 export class ReadMore extends React.Component<ReadMoreProps, ReadMoreState> {
   constructor(props: ReadMoreProps) {
     super(props);
@@ -67,7 +72,9 @@ export class ReadMore extends React.Component<ReadMoreProps, ReadMoreState> {
               color={'white'}
               direction={this.state.open ? 'up' : 'down'}
             />
-            {this.state.open ? 'CLOSE' : 'READ MORE'}
+            <ReadMoreButtonText>
+              {this.state.open ? 'Read More' : 'Close'}
+            </ReadMoreButtonText>
           </ReadMoreButton>
         </ReadMoreButtonBackground>
         <Markdown source={content} />
