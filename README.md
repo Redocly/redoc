@@ -204,6 +204,9 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 ### Security Definition location
 You can inject Security Definitions widget into any place of your specification `description`. Check out details [here](docs/security-definitions-injection.md).
 
+### "Read More" button
+You can add "Read More" button that allows readers to continue reading more by adding `<!-- READMORE -->` into any place of your specification `description`. Check out details [here](docs/read-more-description.md).
+
 ### Swagger vendor extensions
 ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
