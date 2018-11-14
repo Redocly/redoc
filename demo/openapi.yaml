@@ -75,6 +75,14 @@ tags:
 
   - name: user
     description: Operations about user
+  - name: pet_model
+    x-displayName: The Pet Model
+    description: |
+      <object-description schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: The Order Model
+    description: |
+      <object-description schemaRef="#/components/schemas/Order" examplesRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 x-tagGroups:
   - name: General
     tags:
@@ -83,6 +91,10 @@ x-tagGroups:
   - name: User Management
     tags:
       - user
+  - name: Models
+    tags:
+      - pet_model
+      - store_model
 paths:
   /pet:
     parameters:
@@ -766,6 +778,11 @@ components:
           description: Indicates whenever order was completed or not
           type: boolean
           default: false
+          readOnly: true
+        rqeuestId:
+          description: Unique Request Id
+          type: string
+          writeOnly: true
       xml:
         name: Order
     Pet:
