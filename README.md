@@ -191,7 +191,7 @@ ReDoc is available as pre-built Docker image in official [Docker Hub repository]
     docker pull redocly/redoc
     docker run -p 8080:80 redocly/redoc
 
-Also you may rewrite some predefined environment variables defined in [Dockerfile](./Dockerfile). By default ReDoc starts with demo Petstore spec located at `http://petstore.swagger.io/v2/swagger.json`, but you may change this URL using environment variable `SPEC_URL`:
+Also you may rewrite some predefined environment variables defined in [Dockerfile](./config/docker/Dockerfile). By default ReDoc starts with demo Petstore spec located at `http://petstore.swagger.io/v2/swagger.json`, but you may change this URL using environment variable `SPEC_URL`:
 
     docker run -p 8080:80 -e SPEC_URL=https://api.example.com/openapi.json redocly/redoc
 
