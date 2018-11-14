@@ -56,7 +56,6 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
 
   render() {
     const { showReadOnly = true, showWriteOnly = false } = this.props;
-    console.log(this.props);
     return (
       <Section>
         <Row>
