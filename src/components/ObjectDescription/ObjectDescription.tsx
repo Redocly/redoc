@@ -9,6 +9,8 @@ import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
 export interface ObjectDescriptionProps {
   schemaRef: string;
   examplesRef?: string;
+  showReadOnly?: boolean;
+  showWriteOnly?: boolean;
   parser: OpenAPIParser;
   options: RedocNormalizedOptions;
 }
@@ -53,11 +55,18 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
   }
 
   render() {
+    const { showReadOnly = true, showWriteOnly = false } = this.props;
+    console.log(this.props);
     return (
       <Section>
         <Row>
           <MiddlePanel>
-            <Schema skipWriteOnly={true} key="schema" schema={this.mediaModel.schema} />
+            <Schema
+              skipWriteOnly={!showWriteOnly}
+              skipReadOnly={!showReadOnly}
+              key="schema"
+              schema={this.mediaModel.schema}
+            />
           </MiddlePanel>
           <DarkRightPanel>
             <MediaTypeSamples mediaType={this.mediaModel} />
