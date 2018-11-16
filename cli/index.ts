@@ -170,7 +170,8 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   if (options.watch && existsSync(pathToSpec)) {
     const pathToSpecDirectory = resolve(dirname(pathToSpec));
     const watchOptions = {
-      ignored: /(^|[\/\\])\../,
+      ignored: [/(^|[\/\\])\../, /___jb_[a-z]+___$/],
+      ignoreInitial: true,
     };
 
     const watcher = watch(pathToSpecDirectory, watchOptions);
@@ -184,7 +185,21 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
           log('Updated successfully');
         } catch (e) {
           console.error('Error while updating: ', e.message);
-        }})
+        }
+      })
+      .on('add', async path => {
+        log(`File ${path} added, updating docs`);
+        try {
+          spec = await loadAndBundleSpec(pathToSpec);
+          pageHTML = await getPageHTML(spec, pathToSpec, options);
+          log('Updated successfully');
+        } catch (e) {
+          console.error('Error while updating: ', e.message);
+        }
+      })
+      .on('addDir', path => {
+        log(`↗  Directory ${path} added. Files in here will trigger reload.`);
+      })
       .on('error', error => console.error(`Watcher error: ${error}`))
       .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
   }
