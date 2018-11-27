@@ -1,7 +1,7 @@
 import styled from '../styled-components';
 
 export const OneOfList = styled.ul`
-  margin: 0;
+  margin: 0 0 3px 0;
   padding: 0;
   list-style: none;
   display: inline-block;
