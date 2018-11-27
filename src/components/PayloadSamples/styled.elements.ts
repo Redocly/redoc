@@ -1,3 +1,5 @@
+// @ts-ignore
+import Dropdown from 'react-dropdown';
 import styled from '../../styled-components';
 
 import { StyledDropdown } from '../../common-elements';
