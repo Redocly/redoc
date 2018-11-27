@@ -1,3 +1,26 @@
+# [2.0.0-rc.0](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.41...v2.0.0-rc.0) (2018-11-27)
+
+
+### Bug Fixes
+
+* false-positive recursive detection with oneOf ([59eaa8d](https://github.com/Rebilly/ReDoc/commit/59eaa8d)), closes [#723](https://github.com/Rebilly/ReDoc/issues/723) [#585](https://github.com/Rebilly/ReDoc/issues/585)
+* fix hideHostname also hiding basePath ([b5f3224](https://github.com/Rebilly/ReDoc/commit/b5f3224)), closes [#677](https://github.com/Rebilly/ReDoc/issues/677)
+* fix spacing with nested markdown lists ([f2f6909](https://github.com/Rebilly/ReDoc/commit/f2f6909)), closes [#718](https://github.com/Rebilly/ReDoc/issues/718)
+* improve scrolling performance in Chrome with non-wrapped json examples ([a69c402](https://github.com/Rebilly/ReDoc/commit/a69c402))
+* nested oneOf button spacing ([3673720](https://github.com/Rebilly/ReDoc/commit/3673720)), closes [#719](https://github.com/Rebilly/ReDoc/issues/719)
+* onLoaded callback not run on spec error ([e77df0c](https://github.com/Rebilly/ReDoc/commit/e77df0c)), closes [#690](https://github.com/Rebilly/ReDoc/issues/690)
+* theme improvments by [@stasiukanya](https://github.com/stasiukanya) ([e2d0cd5](https://github.com/Rebilly/ReDoc/commit/e2d0cd5))
+* **cli:** old peer dependency issue with styled-components ([#699](https://github.com/Rebilly/ReDoc/issues/699)) ([9e2853c](https://github.com/Rebilly/ReDoc/commit/9e2853c))
+
+
+### Features
+
+* Add feature to specify href for logo explicitly ([#645](https://github.com/Rebilly/ReDoc/issues/645)) ([87fd7d7](https://github.com/Rebilly/ReDoc/commit/87fd7d7))
+* add support for markdown in Server Object ([155d214](https://github.com/Rebilly/ReDoc/commit/155d214))
+* Add support for minLength and maxLength constraint humanization ([#700](https://github.com/Rebilly/ReDoc/issues/700)) ([f40568b](https://github.com/Rebilly/ReDoc/commit/f40568b)), closes [#42](https://github.com/Rebilly/ReDoc/issues/42) [/github.com/Rebilly/ReDoc/issues/42#issuecomment-371883853](https://github.com//github.com/Rebilly/ReDoc/issues/42/issues/issuecomment-371883853)
+
+
+
 <a name="2.0.0-alpha.41"></a>
 # [2.0.0-alpha.41](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.40...v2.0.0-alpha.41) (2018-10-18)
 
