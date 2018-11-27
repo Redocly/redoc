@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ShelfIcon } from '../../common-elements';
 import { OperationModel } from '../../services';
+import { Markdown } from '../Markdown/Markdown';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
@@ -61,7 +62,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
             <ServersOverlay expanded={expanded}>
               {operation.servers.map(server => (
                 <ServerItem key={server.url}>
-                  <div>{server.description}</div>
+                  <Markdown source={server.description || ''} compact={true} />
                   <SelectOnClick>
                     <ServerUrl>
                       <span>
