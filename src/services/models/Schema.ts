@@ -75,11 +75,7 @@ export class SchemaModel {
     this.init(parser, isChild);
 
     parser.exitRef(schemaOrRef);
-
-    for (const parent$ref of this.schema.parentRefs || []) {
-      // exit all the refs visited during allOf traverse
-      parser.exitRef({ $ref: parent$ref });
-    }
+    parser.exitParents(this.schema);
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(this.schema, options.showExtensions);
@@ -164,20 +160,28 @@ export class SchemaModel {
   }
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
-    this.oneOf = oneOf!.map(
-      (variant, idx) =>
-        new SchemaModel(
-          parser,
-          // merge base schema into each of oneOf's subschemas
-          {
-            // variant may already have allOf so merge it to not get overwritten
-            ...parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx),
-            allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
-          } as OpenAPISchema,
-          this.pointer + '/oneOf/' + idx,
-          this.options,
-        ),
-    );
+    this.oneOf = oneOf!.map((variant, idx) => {
+      const merged = parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx);
+
+      const schema = new SchemaModel(
+        parser,
+        // merge base schema into each of oneOf's subschemas
+        {
+          // variant may already have allOf so merge it to not get overwritten
+          ...merged,
+          allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
+        } as OpenAPISchema,
+        this.pointer + '/oneOf/' + idx,
+        this.options,
+      );
+
+      // each oneOf should be independent so exiting all the parent refs
+      // otherwise it will cause false-positive recursive detection
+      parser.exitParents(merged);
+
+      return schema;
+    });
+
     this.displayType = this.oneOf
       .map(schema => {
         let name =
