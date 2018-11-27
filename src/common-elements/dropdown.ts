@@ -38,6 +38,8 @@ export const StyledDropdown = styled(Dropdown)`
     margin-top: 5px;
     background: white;
 
+    box-sizing: border-box;
+
     &:hover {
       border-color: ${props => props.theme.colors.primary.main};
       color: ${props => props.theme.colors.primary.main};

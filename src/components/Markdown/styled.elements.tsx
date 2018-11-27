@@ -72,6 +72,7 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
     border: 1px solid rgba(38, 50, 56, 0.1);
     padding: 0.1em 0.25em 0.2em;
     font-size: ${props => props.theme.typography.code.fontSize};
+    font-weight: ${({ theme }) => theme.typography.code.fontWeight};
 
     word-break: break-word;
   }
@@ -141,7 +142,7 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
     border-top: 1px solid #ccc;
 
     &:nth-child(2n) {
-      background-color: #f8f8f8;
+      background-color: ${({ theme }) => theme.schema.nestedBackground};
     }
   }
 

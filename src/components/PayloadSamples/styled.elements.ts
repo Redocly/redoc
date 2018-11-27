@@ -13,7 +13,7 @@ export const InvertedSimpleDropdown = styled(StyledDropdown)`
   margin-left: 10px;
   text-transform: none;
   font-size: 0.929em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid ${({ theme }) => theme.rightPanel.textColor};
   margin: 0 0 10px 0;
   display: block;
 
@@ -23,11 +23,11 @@ export const InvertedSimpleDropdown = styled(StyledDropdown)`
     border: none;
     padding: 0 1.2em 0 0;
     background: transparent;
-    color: rgba(255, 255, 255, 0.9);
+    color: ${({ theme }) => theme.rightPanel.textColor};
     box-shadow: none;
 
     .Dropdown-arrow {
-      border-top-color: rgba(255, 255, 255, 0.9);
+      border-top-color: ${({ theme }) => theme.rightPanel.textColor};
     }
   }
   .Dropdown-menu {

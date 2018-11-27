@@ -1,13 +1,12 @@
 import * as classnames from 'classnames';
+import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css, WithProps } from '../../styled-components';
+import styled, { css } from '../../styled-components';
 
-export const OperationBadge = (styled.span as WithProps<'span', { type: string }>).attrs(
-  (props: any) => ({
-    className: `operation-type ${props.type}`,
-  }),
-)`
+export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
+  className: `operation-type ${props.type}`,
+}))<{ type: string }>`
   width: 32px;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
@@ -63,11 +62,11 @@ export const OperationBadge = (styled.span as WithProps<'span', { type: string }
   }
 `;
 
-function menuItemActiveBg(depth): string {
+function menuItemActiveBg(depth, { theme }): string {
   if (depth > 1) {
-    return '#e1e1e1';
+    return darken(0.1, theme.menu.backgroundColor);
   } else if (depth === 1) {
-    return '#f0f0f0';
+    return darken(0.05, theme.menu.backgroundColor);
   } else {
     return '';
   }
@@ -99,7 +98,7 @@ export const menuItemDepth = {
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
-    color: ${props => props.theme.colors.text.primary};
+    color: ${props => props.theme.menu.textColor};
   `,
   1: css`
     font-size: 0.929em;
@@ -109,7 +108,7 @@ export const menuItemDepth = {
     }
   `,
   2: css`
-    color: ${props => props.theme.colors.text.primary};
+    color: ${props => props.theme.menu.textColor};
   `,
 };
 
@@ -127,8 +126,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }),
 }))<MenuItemLabelType>`
   cursor: pointer;
-  color: ${props =>
-    props.active ? props.theme.colors.primary.main : props.theme.colors.text.primary};
+  color: ${props => (props.active ? props.theme.colors.primary.main : props.theme.menu.textColor)};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
@@ -137,12 +135,12 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   ${props => menuItemDepth[props.depth]};
-  background-color: ${props => (props.active ? menuItemActiveBg(props.depth) : '')};
+  background-color: ${props => (props.active ? menuItemActiveBg(props.depth, props) : '')};
 
   ${props => (props.deprecated && deprecatedCss) || ''};
 
   &:hover {
-    background-color: ${props => menuItemActiveBg(props.depth)};
+    background-color: ${props => menuItemActiveBg(props.depth, props)};
   }
 
   ${ShelfIcon} {
@@ -174,8 +172,8 @@ export const RedocAttribution = styled.div`
   a,
   a:visited,
   a:hover {
-    color: ${theme.colors.text.primary} !important;
-    border-top: 1px solid #e1e1e1;
+    color: ${theme.menu.textColor} !important;
+    border-top: 1px solid ${darken(0.1, theme.menu.backgroundColor)};
     padding: ${theme.spacing.unit}px 0;
     display: block;
   }

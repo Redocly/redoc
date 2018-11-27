@@ -17,7 +17,8 @@ export const ServerRelativeURL = styled.span`
 export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean }>`
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props => (props.inverted ? 'transparent' : '#222d32')};
+  background-color: ${props =>
+    props.inverted ? 'transparent' : props.theme.codeSample.backgroundColor};
   display: flex;
   white-space: nowrap;
   align-items: center;

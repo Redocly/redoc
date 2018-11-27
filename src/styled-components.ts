@@ -1,14 +1,8 @@
-import * as React from 'react';
 import * as styledComponents from 'styled-components';
 
 import { ResolvedThemeInterface } from './theme';
 
 export { ResolvedThemeInterface };
-
-type WithProps<
-  C extends keyof JSX.IntrinsicElements | React.ComponentType<any>,
-  T extends object
-> = styledComponents.ThemedStyledFunction<C, ResolvedThemeInterface, T>;
 
 const {
   default: styled,
@@ -49,7 +43,7 @@ export const media = {
   },
 };
 
-export { css, createGlobalStyle, keyframes, ThemeProvider, WithProps };
+export { css, createGlobalStyle, keyframes, ThemeProvider };
 export default styled;
 
 export function extensionsHook(styledName: string) {
