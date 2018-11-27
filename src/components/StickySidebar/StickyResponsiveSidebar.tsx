@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { MenuStore } from '../../services/MenuStore';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
-import styled, { media, withProps } from '../../styled-components';
+import styled, { media } from '../../styled-components';
 import { IS_BROWSER } from '../../utils/index';
 import { OptionsContext } from '../OptionsProvider';
 import { AnimatedChevronButton } from './ChevronSvg';
@@ -21,7 +21,7 @@ export interface StickySidebarProps {
 
 const stickyfill = Stickyfill && Stickyfill();
 
-const StyledStickySidebar = withProps<{ open?: boolean }>(styled.div)`
+const StyledStickySidebar = styled.div<{ open?: boolean }>`
   width: ${props => props.theme.menu.width};
   background-color: ${props => props.theme.menu.backgroundColor};
   overflow: hidden;

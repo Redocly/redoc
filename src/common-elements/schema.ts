@@ -1,4 +1,4 @@
-import styled, { withProps } from '../styled-components';
+import styled from '../styled-components';
 
 export const OneOfList = styled.ul`
   margin: 0;
@@ -15,7 +15,7 @@ export const OneOfLabel = styled.span`
 }
 `;
 
-export const OneOfButton = withProps<{ active: boolean }>(styled.li)`
+export const OneOfButton = styled.li<{ active: boolean }>`
   display: inline-block;
   margin-right: 10px;
   font-size: 0.8em;

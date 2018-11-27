@@ -1,11 +1,13 @@
 import * as classnames from 'classnames';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css, withProps } from '../../styled-components';
+import styled, { css, WithProps } from '../../styled-components';
 
-export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
-  className: props => `operation-type ${props.type}`,
-})`
+export const OperationBadge = (styled.span as WithProps<'span', { type: string }>).attrs(
+  (props: any) => ({
+    className: `operation-type ${props.type}`,
+  }),
+)`
   width: 32px;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
@@ -57,7 +59,7 @@ export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   }
 
   &.head {
-    background-color:  ${props => props.theme.colors.http.head};
+    background-color: ${props => props.theme.colors.http.head};
   }
 `;
 
@@ -71,7 +73,7 @@ function menuItemActiveBg(depth): string {
   }
 }
 
-export const MenuItemUl = withProps<{ expanded: boolean }>(styled.ul)`
+export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
 
@@ -82,7 +84,7 @@ export const MenuItemUl = withProps<{ expanded: boolean }>(styled.ul)`
   ${props => (props.expanded ? '' : 'display: none;')};
 `;
 
-export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
+export const MenuItemLi = styled.li<{ depth: number }>`
   list-style: none inside none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -111,18 +113,19 @@ export const menuItemDepth = {
   `,
 };
 
-export const MenuItemLabel = withProps<{
+export interface MenuItemLabelType {
   depth: number;
   active: boolean;
   deprecated?: boolean;
   type?: string;
-}>(styled.label).attrs({
+}
+
+export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   role: 'menuitem',
-  className: props =>
-    classnames('-depth' + props.depth, {
-      active: props.active,
-    }),
-})`
+  className: classnames('-depth' + props.depth, {
+    active: props.active,
+  }),
+}))<MenuItemLabelType>`
   cursor: pointer;
   color: ${props =>
     props.active ? props.theme.colors.primary.main : props.theme.colors.text.primary};
@@ -151,7 +154,7 @@ export const MenuItemLabel = withProps<{
   }
 `;
 
-export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
+export const MenuItemTitle = styled.span<{ width?: string }>`
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};

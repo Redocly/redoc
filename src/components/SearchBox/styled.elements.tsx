@@ -7,9 +7,9 @@ export const SearchWrap = styled.div`
   padding: 5px 0;
 `;
 
-export const SearchInput = styled.input.attrs({
+export const SearchInput = styled.input.attrs(() => ({
   className: 'search-input',
-})`
+}))`
   width: calc(100% - ${props => props.theme.spacing.unit * 8}px);
   box-sizing: border-box;
   margin: 0 ${props => props.theme.spacing.unit * 4}px;

@@ -32,7 +32,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
     }
     if (examplesNames.length > 1) {
       return (
-        <SmallTabs>
+        <SmallTabs defaultIndex={0}>
           <TabList>
             {examplesNames.map(name => (
               <Tab key={name}> {examples[name].summary || name} </Tab>

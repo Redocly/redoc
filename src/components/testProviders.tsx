@@ -4,7 +4,9 @@ import defaultTheme from '../theme';
 
 export default class TestThemeProvider extends React.Component {
   render() {
-    return <ThemeProvider theme={defaultTheme}>{this.props.children}</ThemeProvider>;
+    return (
+      <ThemeProvider theme={defaultTheme}>{React.Children.only(this.props.children)}</ThemeProvider>
+    );
   }
 }
 

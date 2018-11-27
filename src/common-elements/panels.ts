@@ -1,5 +1,5 @@
 import { SECTION_ATTR } from '../services/MenuStore';
-import styled, { media, withProps } from '../styled-components';
+import styled, { media, WithProps } from '../styled-components';
 
 export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});
@@ -12,17 +12,15 @@ export const MiddlePanel = styled.div`
   `};
 `;
 
-export const Section = withProps<{ underlined?: boolean }>(
-  styled.div.attrs({
-    [SECTION_ATTR]: props => props.id,
-  } as any),
-)`
+export const Section = (styled.div as WithProps<'div', { underlined?: boolean }>).attrs(props => ({
+  [SECTION_ATTR]: props.id,
+}))`
   padding: ${props => props.theme.spacing.sectionVertical}px 0;
 
   ${media.lessThan('medium', true)`
     padding: 0;
   `}
-  ${props =>
+  ${(props: any) =>
     (props.underlined &&
       `
     position: relative;
