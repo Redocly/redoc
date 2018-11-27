@@ -117,9 +117,11 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
-    // > li {
-    //   margin: 0.5em 0;
-    // }
+
+    ul, ol {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
   }
 
   table {
