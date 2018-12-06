@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 import { JsonPointer } from './JsonPointer';
 import { parse as urlParse, resolve as urlResolve } from 'url';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { MdRenderer } from './md-renderer';
 

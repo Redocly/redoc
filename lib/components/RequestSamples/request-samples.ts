@@ -3,7 +3,7 @@
 import { Component, ViewChildren, QueryList, Input,
  ChangeDetectionStrategy, OnInit, HostBinding, ElementRef, NgZone } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { BaseComponent, SpecManager } from '../base';
 import JsonPointer from '../../utils/JsonPointer';

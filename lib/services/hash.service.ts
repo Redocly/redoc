@@ -1,7 +1,7 @@
 'use strict';
 import { Injectable } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { debounce } from '../utils/';
 

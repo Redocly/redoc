@@ -1,7 +1,6 @@
 'use strict';
 import { Injectable, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription ,  BehaviorSubject } from 'rxjs';
 import { ScrollService, INVIEW_POSITION } from './scroll.service';
 import { WarningsService } from './warnings.service';
 import { Hash } from './hash.service';

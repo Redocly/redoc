@@ -11,7 +11,7 @@ import { Component,
   OnDestroy
 } from '@angular/core';
 
-import { trigger, state, animate, transition, style } from '@angular/core';
+import { trigger, state, animate, transition, style } from '@angular/animations';
 import { ScrollService, MenuService, OptionsService, MenuItem } from '../../services/';
 import { PerfectScrollbar } from '../../shared/components';
 import { BrowserDomAdapter as DOM } from '../../utils/browser-adapter';

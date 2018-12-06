@@ -2,7 +2,7 @@
 import { OnInit, OnDestroy } from '@angular/core';
 import { SpecManager } from '../utils/spec-manager';
 import { AppStateService } from '../services/app-state.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 export { SpecManager };
 
