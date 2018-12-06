@@ -27,7 +27,7 @@ You will need [Node.js](http://nodejs.org) at `v8.0.0+` and [Yarn](https://yarnp
 After cloning the repo, run:
 
 ```bash
-$ yarn install # or yarn
+$ yarn install # or npm
 ```
 
 ### Commonly used NPM scripts
