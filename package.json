@@ -7,8 +7,8 @@
     "url": "git://github.com/Rebilly/ReDoc"
   },
   "engines": {
-    "node": ">=6.9",
-    "npm": ">=3.0.0"
+    "node": ">=8.10.0",
+    "npm": ">=6.3.0"
   },
   "main": "dist/redoc.module.js",
   "module": "dist/redoc.module.js",
@@ -105,7 +105,7 @@
     "style-loader": "^0.18.2",
     "swagger-schema-official": "^2.0.0-bab6bed",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.2",
+    "typescript": "2.9",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2",
     "webpack-merge": "^4.1.0"
