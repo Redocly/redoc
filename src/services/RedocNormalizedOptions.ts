@@ -126,14 +126,13 @@ export class RedocNormalizedOptions {
   allowedMdComponents: Dict<MDXComponentMeta>;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
-    let hook;
     raw = { ...defaults, ...raw };
-    if (raw.theme && raw.theme.extensionsHook) {
-      hook = raw.theme.extensionsHook;
-      raw.theme.extensionsHook = undefined;
-    }
-    this.theme = resolveTheme(mergeObjects({} as any, defaultTheme, raw.theme || {}));
-    this.theme.extensionsHook = hook;
+    const hook = raw.theme && raw.theme.extensionsHook;
+    this.theme = resolveTheme(
+      mergeObjects({} as any, defaultTheme, { ...raw.theme, extensionsHook: undefined }),
+    );
+
+    this.theme.extensionsHook = hook as any;
 
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);

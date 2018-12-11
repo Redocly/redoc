@@ -4,7 +4,7 @@ import PerfectScrollbarType, * as PerfectScrollbarNamespace from 'perfect-scroll
 import psStyles from 'perfect-scrollbar/css/perfect-scrollbar.css';
 
 import { OptionsContext } from '../components/OptionsProvider';
-import styled, { injectGlobal } from '../styled-components';
+import styled, { createGlobalStyle } from '../styled-components';
 
 /*
  * perfect scrollbar umd bundle uses exports assignment while module uses default export
@@ -14,7 +14,7 @@ import styled, { injectGlobal } from '../styled-components';
 const PerfectScrollbarConstructor =
   PerfectScrollbarNamespace.default || ((PerfectScrollbarNamespace as any) as PerfectScrollbarType);
 
-injectGlobal`${psStyles && psStyles.toString()}`;
+const PSStyling = createGlobalStyle`${psStyles && psStyles.toString()}`;
 
 const StyledScrollWrapper = styled.div`
   position: relative;
@@ -58,9 +58,12 @@ export class PerfectScrollbar extends React.Component<PerfectScrollbarProps> {
     }
 
     return (
-      <StyledScrollWrapper className={`scrollbar-container ${className}`} innerRef={this.handleRef}>
-        {children}
-      </StyledScrollWrapper>
+      <>
+        <PSStyling />
+        <StyledScrollWrapper className={`scrollbar-container ${className}`} ref={this.handleRef}>
+          {children}
+        </StyledScrollWrapper>
+      </>
     );
   }
 }

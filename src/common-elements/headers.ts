@@ -8,7 +8,7 @@ const headerFontSize = {
 
 export const headerCommonMixin = level => css`
   font-family: ${props => props.theme.typography.headings.fontFamily};
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.typography.headings.fontWeight};
   font-size: ${headerFontSize[level]};
 `;
 

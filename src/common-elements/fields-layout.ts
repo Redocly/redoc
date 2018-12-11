@@ -1,6 +1,6 @@
 // import { transparentize } from 'polished';
 
-import styled, { extensionsHook, withProps } from '../styled-components';
+import styled, { extensionsHook } from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
@@ -10,7 +10,7 @@ export const PropertiesTableCaption = styled.caption`
   color: ${props => props.theme.colors.text.secondary};
 `;
 
-export const PropertyCell = styled.td`
+export const PropertyCell = styled.td<{ kind?: string }>`
   border-left: 1px solid ${props => props.theme.schema.linesColor};
   box-sizing: border-box;
   position: relative;
@@ -58,7 +58,7 @@ export const PropertyCellWithInner = styled(PropertyCell)`
   padding: 0;
 `;
 
-export const PropertyNameCell = withProps<{ kind?: string }>(styled(PropertyCell))`
+export const PropertyNameCell = styled(PropertyCell)`
   vertical-align: top;
   line-height: 20px;
   white-space: nowrap;

@@ -1,7 +1,6 @@
 import Dropdown from 'react-dropdown';
 
-import { StyledComponentClass } from 'styled-components';
-import styled, { withProps } from '../styled-components';
+import styled from '../styled-components';
 
 export interface DropdownOption {
   label: string;
@@ -14,17 +13,17 @@ export interface DropdownProps {
   onChange: (val: DropdownOption) => void;
 }
 
-export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
+export const StyledDropdown = styled(Dropdown)`
   min-width: 100px;
   display: inline-block;
   position: relative;
   width: auto;
   font-family: ${props => props.theme.typography.headings.fontFamily};
 
-  .Dropdown-control  {
+  .Dropdown-control {
     font-family: ${props => props.theme.typography.headings.fontFamily};
     position: relative;
-    font-size: .929em;
+    font-size: 0.929em;
     width: 100%;
     line-height: 1.5em;
     vertical-align: middle;
@@ -38,6 +37,8 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
     border-style: solid;
     margin-top: 5px;
     background: white;
+
+    box-sizing: border-box;
 
     &:hover {
       border-color: ${props => props.theme.colors.primary.main};
@@ -84,14 +85,14 @@ export const StyledDropdown = withProps<DropdownProps>(styled(Dropdown))`
     padding: 0.4em;
 
     &.is-selected {
-      background-color: rgba(0, 0, 0, 0.05)
+      background-color: rgba(0, 0, 0, 0.05);
     }
 
     &:hover {
-      background-color: rgba(38, 50, 56, 0.12)
+      background-color: rgba(38, 50, 56, 0.12);
     }
   }
-` as StyledComponentClass<any, DropdownProps>;
+`;
 
 export const SimpleDropdown = styled(StyledDropdown)`
   margin-left: 10px;
@@ -105,7 +106,7 @@ export const SimpleDropdown = styled(StyledDropdown)`
     background: transparent;
 
     &:hover {
-      color: ${props => props.theme.colors.main};
+      color: ${props => props.theme.colors.primary.main};
       box-shadow: none;
     }
   }

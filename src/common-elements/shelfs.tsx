@@ -1,6 +1,6 @@
 import * as classnames from 'classnames';
 import * as React from 'react';
-import styled, { withProps } from '../styled-components';
+import styled from '../styled-components';
 
 const directionMap = {
   left: '90deg',
@@ -49,7 +49,7 @@ export const ShelfIcon = styled(IntShelfIcon)`
   }
 `;
 
-export const Badge = withProps<{ type: string }>(styled.span)`
+export const Badge = styled.span<{ type: string }>`
   display: inline-block;
   padding: 0 5px;
   margin: 0;

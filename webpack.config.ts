@@ -17,12 +17,18 @@ const nodeExternals = require('webpack-node-externals')({
 });
 
 const VERSION = JSON.stringify(require('./package.json').version);
-const REVISION = JSON.stringify(
-  require('child_process')
-    .execSync('git rev-parse --short HEAD')
-    .toString()
-    .trim(),
-);
+let REVISION;
+
+try {
+  REVISION = JSON.stringify(
+    require('child_process')
+      .execSync('git rev-parse --short HEAD')
+      .toString()
+      .trim(),
+  );
+} catch (e) {
+  console.error('Skipping REDOC_REVISION');
+}
 
 const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
 -------------------------------------------------------------
@@ -106,7 +112,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
             },
           },
         ],
-        exclude: ['node_modules'],
+        exclude: [/node_modules/],
       },
       {
         test: /node_modules\/(swagger2openapi|reftools|oas-resolver|oas-kit-common|oas-schema-walker)\/.*\.js$/,

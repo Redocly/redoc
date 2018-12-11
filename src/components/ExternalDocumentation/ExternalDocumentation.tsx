@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import styled, { withProps } from '../../styled-components';
+import styled from '../../styled-components';
 import { OpenAPIExternalDocumentation } from '../../types';
 import { linksCss } from '../Markdown/styled.elements';
 
-const LinkWrap = withProps<{ compact?: boolean }>(styled.div)`
+const LinkWrap = styled.div<{ compact?: boolean }>`
   ${linksCss};
   ${({ compact }) => (!compact ? 'margin: 1em 0' : '')}
 `;

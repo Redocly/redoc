@@ -95,7 +95,7 @@ const defaultTheme: ThemeInterface = {
   },
   typography: {
     fontSize: '14px',
-    lineHeight: '1.5',
+    lineHeight: '1.5em',
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
@@ -104,6 +104,7 @@ const defaultTheme: ThemeInterface = {
     optimizeSpeed: true,
     headings: {
       fontFamily: 'Montserrat, sans-serif',
+      fontWeight: '400',
     },
     code: {
       fontSize: '13px',
@@ -111,18 +112,19 @@ const defaultTheme: ThemeInterface = {
       lineHeight: ({ typography }) => typography.lineHeight,
       fontWeight: ({ typography }) => typography.fontWeightRegular,
       color: '#e53935',
-      backgroundColor: 'rgba(38, 50, 56, 0.04)',
+      backgroundColor: 'rgba(38, 50, 56, 0.05)',
       wrap: false,
     },
     links: {
       color: ({ colors }) => colors.primary.main,
-      visited: ({ colors }) => colors.primary.main,
-      hover: ({ colors }) => lighten(0.2, colors.primary.main),
+      visited: ({ typography }) => typography.links.color,
+      hover: ({ typography }) => lighten(0.2, typography.links.color),
     },
   },
   menu: {
     width: '260px',
     backgroundColor: '#fafafa',
+    textColor: '#333333',
     groupItems: {
       textTransform: 'uppercase',
     },
@@ -131,7 +133,7 @@ const defaultTheme: ThemeInterface = {
     },
     arrow: {
       size: '1.5em',
-      color: theme => theme.colors.text.primary,
+      color: theme => theme.menu.textColor,
     },
   },
   logo: {
@@ -142,6 +144,9 @@ const defaultTheme: ThemeInterface = {
     backgroundColor: '#263238',
     width: '40%',
     textColor: '#ffffff',
+  },
+  codeSample: {
+    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
 };
 
@@ -275,6 +280,7 @@ export interface ResolvedThemeInterface {
     };
     headings: {
       fontFamily: string;
+      fontWeight: string;
     };
 
     links: {
@@ -286,6 +292,7 @@ export interface ResolvedThemeInterface {
   menu: {
     width: string;
     backgroundColor: string;
+    textColor: string;
     groupItems: {
       textTransform: string;
     };
@@ -305,6 +312,9 @@ export interface ResolvedThemeInterface {
     backgroundColor: string;
     textColor: string;
     width: string;
+  };
+  codeSample: {
+    backgroundColor: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

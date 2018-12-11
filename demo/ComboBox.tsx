@@ -4,16 +4,10 @@
  */
 
 import * as React from 'react';
-import styled, { StyledFunction } from 'styled-components';
+import styled from '../src/styled-components';
 
-function withProps<T, U extends HTMLElement = HTMLElement>(
-  styledFunction: StyledFunction<React.HTMLProps<U>>,
-): StyledFunction<T & React.HTMLProps<U>> {
-  return styledFunction;
-}
-
-const DropDownItem = withProps<{ active: boolean }>(styled.li)`
-  ${props => ((props as any).active ? 'background-color: #eee' : '')};
+const DropDownItem = styled.li<{ active?: boolean }>`
+  ${(props: any) => (props.active ? 'background-color: #eee' : '')};
   padding: 13px 16px;
   &:hover {
     background-color: #eee;

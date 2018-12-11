@@ -36,6 +36,7 @@ const babelLoader = mode => ({
     plugins: compact([
       ['@babel/plugin-syntax-typescript', { isTSX: true }],
       ['@babel/plugin-syntax-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-syntax-jsx',
       mode !== 'production' ? 'react-hot-loader/babel' : undefined,
       [
@@ -96,7 +97,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       {
         test: /\.tsx?$/,
         use: [tsLoader(env), babelLoader(mode)],
-        exclude: ['node_modules'],
+        exclude: [/node_modules/],
       },
       {
         test: /\.css$/,
@@ -132,7 +133,11 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
-      template: env.playground ? 'demo/playground/index.html' : 'demo/index.html',
+      template: env.playground
+        ? 'demo/playground/index.html'
+        : env.bench
+          ? 'benchmark/index.html'
+          : 'demo/index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
     ignore(/js-yaml\/dumper\.js$/),

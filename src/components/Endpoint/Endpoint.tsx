@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ShelfIcon } from '../../common-elements';
 import { OperationModel } from '../../services';
+import { Markdown } from '../Markdown/Markdown';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
+import { getBasePath } from '../../utils';
 import {
   EndpointInfo,
   HttpVerb,
@@ -60,10 +62,14 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
             <ServersOverlay expanded={expanded}>
               {operation.servers.map(server => (
                 <ServerItem key={server.url}>
-                  <div>{server.description}</div>
+                  <Markdown source={server.description || ''} compact={true} />
                   <SelectOnClick>
                     <ServerUrl>
-                      {!(hideHostname || options.hideHostname) && <span>{server.url}</span>}
+                      <span>
+                        {hideHostname || options.hideHostname
+                          ? getBasePath(server.url)
+                          : server.url}
+                      </span>
                       {operation.path}
                     </ServerUrl>
                   </SelectOnClick>

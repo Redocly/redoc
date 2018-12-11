@@ -141,27 +141,42 @@ export function isNamedDefinition(pointer?: string): boolean {
   return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
+function humanizeRangeConstraint(
+  description: string,
+  min: number | undefined,
+  max: number | undefined,
+): string | undefined {
+  let stringRange;
+  if (min !== undefined && max !== undefined) {
+    if (min === max) {
+      stringRange = `${min} ${description}`;
+    } else {
+      stringRange = `[ ${min} .. ${max} ] ${description}`;
+    }
+  } else if (max !== undefined) {
+    stringRange = `<= ${max} ${description}`;
+  } else if (min !== undefined) {
+    if (min === 1) {
+      stringRange = 'non-empty';
+    } else {
+      stringRange = `>= ${min} ${description}`;
+    }
+  }
+
+  return stringRange;
+}
+
 export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const res: string[] = [];
 
-  let stringRange;
-  if (schema.minLength !== undefined && schema.maxLength !== undefined) {
-    if (schema.minLength === schema.maxLength) {
-      stringRange = `${schema.minLength} characters`;
-    } else {
-      stringRange = `[ ${schema.minLength} .. ${schema.maxLength} ] characters`;
-    }
-  } else if (schema.maxLength !== undefined) {
-    stringRange = `<= ${schema.maxLength} characters`;
-  } else if (schema.minLength !== undefined) {
-    if (schema.minLength === 1) {
-      stringRange = 'non-empty';
-    } else {
-      stringRange = `>= ${schema.minLength} characters`;
-    }
-  }
+  const stringRange = humanizeRangeConstraint('characters', schema.minLength, schema.maxLength);
   if (stringRange !== undefined) {
     res.push(stringRange);
+  }
+
+  const arrayRange = humanizeRangeConstraint('items', schema.minItems, schema.maxItems);
+  if (arrayRange !== undefined) {
+    res.push(arrayRange);
   }
 
   let numberRange;

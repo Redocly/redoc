@@ -291,6 +291,12 @@ export class OpenAPIParser {
     return res;
   }
 
+  exitParents(shema: MergedOpenAPISchema) {
+    for (const parent$ref of shema.parentRefs || []) {
+      this.exitRef({ $ref: parent$ref });
+    }
+  }
+
   private hoistOneOfs(schema: OpenAPISchema) {
     if (schema.allOf === undefined) {
       return schema;
@@ -304,9 +310,14 @@ export class OpenAPIParser {
         const afterAllOf = allOf.slice(i + 1);
         return {
           oneOf: sub.oneOf.map(part => {
-            return this.mergeAllOf({
+            const merged = this.mergeAllOf({
               allOf: [...beforeAllOf, part, ...afterAllOf],
             });
+
+            // each oneOf should be independent so exiting all the parent refs
+            // otherwise it will cause false-positive recursive detection
+            this.exitParents(merged);
+            return merged;
           }),
         };
       }

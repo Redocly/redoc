@@ -1,10 +1,10 @@
 # ReDoc vendor extensions
-ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions)
+ReDoc makes use of the following [vendor extensions](https://swagger.io/specification/#specificationExtensions)
 
 ### Swagger Object vendor extensions
-Extend OpenAPI root [Swagger Object](http://swagger.io/specification/#swaggerObject)
+Extend OpenAPI root [Swagger Object](https://swagger.io/specification/#oasObject)
 #### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#server-object). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#server-object). Currently doesn't support templates.
 
 #### x-tagGroups
 
@@ -96,6 +96,7 @@ The information about API logo
 | url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL. It SHOULD be an absolute URL so your API definition is usable from any location
 | backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)
 | altText        | string   | Text to use for alt tag on the logo. Defaults to 'logo' if nothing is provided.
+| href        | string   | The URL pointing to the contact page. Default to 'info.contact.url' field of the OAS.
 
 
 ###### x-logo example
@@ -205,7 +206,7 @@ Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObj
 `x-examples` are rendered in the JSON tab on the right panel of ReDoc.
 
 ### Response Object vendor extensions
-Extends OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
+Extends OpenAPI [Response Object](https://swagger.io/specification/#requestBodyObject)
 
 #### x-summary
 | Field Name     |	Type	  | Description |

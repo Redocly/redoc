@@ -46,7 +46,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
       <MenuItemLi
         onClick={this.activate}
         depth={item.depth}
-        innerRef={this.saveRef}
+        ref={this.saveRef}
         data-item-id={item.id}
       >
         {item.type === 'operation' ? (
@@ -80,20 +80,14 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
 export interface OperationMenuItemContentProps {
   item: OperationModel;
-  className?: string;
 }
 
 @observer
 class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
   render() {
-    const { item, className } = this.props;
+    const { item } = this.props;
     return (
-      <MenuItemLabel
-        className={className}
-        depth={item.depth}
-        active={item.active}
-        deprecated={item.deprecated}
-      >
+      <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated}>
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
         <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
