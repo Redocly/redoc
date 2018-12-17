@@ -206,7 +206,7 @@ Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObj
 `x-examples` are rendered in the JSON tab on the right panel of ReDoc.
 
 ### Response Object vendor extensions
-Extends OpenAPI [Response Object](https://swagger.io/specification/#requestBodyObject)
+Extends OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
 
 #### x-summary
 | Field Name     |	Type	  | Description |
