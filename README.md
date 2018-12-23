@@ -70,6 +70,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
 - [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
 - [Discourse](http://docs.discourse.org)
 - [APIs.guru](https://apis.guru/api-doc/)
+- [FastAPI](https://github.com/tiangolo/fastapi)
 
 ## Deployment
 
