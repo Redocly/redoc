@@ -26,6 +26,7 @@ import {
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { CallbackModel } from './Callback';
 import { FieldModel } from './Field';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
@@ -77,8 +78,8 @@ export class OperationModel implements IMenuItem {
       operationSpec.operationId !== undefined
         ? 'operation/' + operationSpec.operationId
         : parent !== undefined
-          ? parent.id + this.pointer
-          : this.pointer;
+        ? parent.id + this.pointer
+        : this.pointer;
 
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
@@ -186,5 +187,17 @@ export class OperationModel implements IMenuItem {
           this.options,
         );
       });
+  }
+
+  @memoize
+  get callbacks() {
+    return Object.keys(this.operationSpec.callbacks || []).map(callbackName => {
+      return new CallbackModel(
+        this.parser,
+        callbackName,
+        this.operationSpec.callbacks![callbackName],
+        this.options,
+      );
+    });
   }
 }
