@@ -1,12 +1,8 @@
 import { action, observable } from 'mobx';
 
-import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
-
-import { OpenAPIParser } from '../OpenAPIParser';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-import { FieldModel } from './Field';
-
 import { MergedOpenAPISchema } from '../';
+
+import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 import {
   detectType,
   extractExtensions,
@@ -20,6 +16,10 @@ import {
 } from '../../utils/';
 
 import { l } from '../Labels';
+
+import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { FieldModel } from './Field';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -216,29 +216,52 @@ export class SchemaModel {
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
-    const derived = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
+    let derived: Dict<string> = {};
 
-    if (schema.oneOf) {
-      for (const variant of schema.oneOf) {
-        if (variant.$ref === undefined) {
-          continue;
+    const mapping = discriminator.mapping || {};
+    // Defines if the mapping is exhaustive. This avoids having references
+    // that overlap with the mapping entries
+    let isLimitedToMapping = discriminator['x-limitToMapping'] || false;
+    // if there are no mappings, assume non-exhaustive
+    if (Object.keys(mapping).length === 0) {
+      isLimitedToMapping = false;
+    }
+
+    // when non-exhaustive, search for implicit references
+    if (!isLimitedToMapping) {
+      derived = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
+
+      if (schema.oneOf) {
+        for (const variant of schema.oneOf) {
+          if (variant.$ref === undefined) {
+            continue;
+          }
+          derived[variant.$ref] = JsonPointer.baseName(variant.$ref);
         }
-        const name = JsonPointer.baseName(variant.$ref);
-        derived[variant.$ref] = name;
       }
     }
 
-    const mapping = discriminator.mapping || {};
-    for (const name in mapping) {
-      derived[mapping[name]] = name;
-    }
+    // concatenate the implict refs with the mapping ones
+    const mappingOneOf = Object.keys(mapping).map(name => {
+      const ref = mapping[name];
 
-    const refs = Object.keys(derived);
-    this.oneOf = refs.map(ref => {
+      // do not include implicit refs in the list when we have a mapped one
+      if (ref in derived) {
+        delete derived[ref];
+      }
+
       const innerSchema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
-      innerSchema.title = derived[ref];
+      innerSchema.title = name;
       return innerSchema;
     });
+
+    this.oneOf = mappingOneOf.concat(
+      Object.keys(derived).map(ref => {
+        const innerSchema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
+        innerSchema.title = derived[ref];
+        return innerSchema;
+      }),
+    );
   }
 }
 
