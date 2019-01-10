@@ -9,7 +9,6 @@ export const PrismDiv = styled.div`
   pre[class*='language-'] {
     /* color: white;
     background: none; */
-    text-shadow: 0 -0.1em 0.2em black;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
