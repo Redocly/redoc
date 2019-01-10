@@ -84,7 +84,7 @@ const defaultTheme: ThemeInterface = {
     defaultDetailsWidth: '75%',
     typeNameColor: theme => theme.colors.text.secondary,
     typeTitleColor: theme => theme.schema.typeNameColor,
-    requireLabelColor: theme => theme.colors.error.main,
+    optionalLabelColor: theme => theme.colors.success.main,
     labelsTextSize: '0.9em',
     nestingSpacing: '1em',
     nestedBackground: '#fafafa',
@@ -141,12 +141,12 @@ const defaultTheme: ThemeInterface = {
     maxWidth: ({ menu }) => menu.width,
   },
   rightPanel: {
-    backgroundColor: '#263238',
+    backgroundColor: '#ffffff',
     width: '40%',
-    textColor: '#ffffff',
+    textColor: '#333333',
   },
   codeSample: {
-    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
+    backgroundColor: '#ffffff',
   },
 };
 
@@ -254,7 +254,7 @@ export interface ResolvedThemeInterface {
     defaultDetailsWidth: string;
     typeNameColor: string;
     typeTitleColor: string;
-    requireLabelColor: string;
+    optionalLabelColor: string;
     labelsTextSize: string;
     nestingSpacing: string;
     nestedBackground: string;

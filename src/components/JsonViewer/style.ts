@@ -5,6 +5,10 @@ export const jsonStyles = css`
     display: none;
   }
 
+  .redoc-json {
+    color: #c2c2c2;
+  }
+
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: ${props => props.theme.typography.code.fontSize};
 

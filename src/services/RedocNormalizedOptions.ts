@@ -141,7 +141,7 @@ export class RedocNormalizedOptions {
     this.sortPropsAlphabetically = argValueToBoolean(raw.sortPropsAlphabetically);
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
-    this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
+    this.pathInMiddlePanel = true;
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
     this.disableSearch = argValueToBoolean(raw.disableSearch);

@@ -22,9 +22,6 @@ import { Extensions } from '../Fields/Extensions';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
-  contain: content;
-
-  overflow: hidden;
 `;
 
 const Description = styled.div`

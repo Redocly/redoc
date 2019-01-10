@@ -2,14 +2,9 @@ import { SECTION_ATTR } from '../services/MenuStore';
 import styled, { media } from '../styled-components';
 
 export const MiddlePanel = styled.div`
-  width: calc(100% - ${props => props.theme.rightPanel.width});
-  padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
-
-  ${media.lessThan('medium', true)`
-    width: 100%;
-    padding: ${props =>
-      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
-  `};
+  width: 100%;
+  padding: ${props =>
+    `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
 `;
 
 export const Section = styled.div.attrs(props => ({
@@ -38,16 +33,11 @@ export const Section = styled.div.attrs(props => ({
 `;
 
 export const RightPanel = styled.div`
-  width: ${props => props.theme.rightPanel.width};
   color: ${({ theme }) => theme.rightPanel.textColor};
   background-color: ${props => props.theme.rightPanel.backgroundColor};
-  padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
-
-  ${media.lessThan('medium', true)`
-    width: 100%;
-    padding: ${props =>
-      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
-  `};
+  width: 100%;
+  padding: ${props =>
+    `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
 `;
 
 export const DarkRightPanel = styled(RightPanel)`
@@ -58,8 +48,5 @@ export const Row = styled.div`
   display: flex;
   width: 100%;
   padding: 0;
-
-  ${media.lessThan('medium', true)`
-    flex-direction: column;
-  `};
+  flex-direction: column;
 `;

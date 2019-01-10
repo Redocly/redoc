@@ -36,8 +36,8 @@ export const TypeTitle = styled(FieldLabel)`
 
 export const TypeFormat = TypeName;
 
-export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
-  color: ${props => props.theme.schema.requireLabelColor};
+export const OptionalLabel = styled(FieldLabel.withComponent('div'))`
+  color: ${props => props.theme.schema.optionalLabelColor};
   font-size: ${props => props.theme.schema.labelsTextSize};
   font-weight: normal;
   margin-left: 20px;

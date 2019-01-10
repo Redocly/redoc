@@ -73,8 +73,9 @@ export const PrismDiv = styled.div`
   .token.string,
   .token.char,
   .token.builtin,
+  .token.punctuation,
   .token.inserted {
-    color: #a0fbaa;
+    color: #333333;
     & + a,
     & + a:visited {
       color: #4ed2ba;

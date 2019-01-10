@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
+import { ClickablePropertyNameCell, OptionalLabel } from '../../common-elements/fields';
 import { FieldDetails } from './FieldDetails';
 
 import {
@@ -47,13 +47,13 @@ export class Field extends React.Component<FieldProps> {
         <PropertyBullet />
         {name}
         <ShelfIcon direction={expanded ? 'down' : 'right'} />
-        {required && <RequiredLabel> required </RequiredLabel>}
+        {!required && <OptionalLabel> optional </OptionalLabel>}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
         {name}
-        {required && <RequiredLabel> required </RequiredLabel>}
+        {!required && <OptionalLabel> optional </OptionalLabel>}
       </PropertyNameCell>
     );
 
@@ -65,21 +65,20 @@ export class Field extends React.Component<FieldProps> {
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
         </tr>
-        {field.expanded &&
-          withSubSchema && (
-            <tr key={field.name + 'inner'}>
-              <PropertyCellWithInner colSpan={2}>
-                <InnerPropertiesWrap>
-                  <Schema
-                    schema={field.schema}
-                    skipReadOnly={this.props.skipReadOnly}
-                    skipWriteOnly={this.props.skipWriteOnly}
-                    showTitle={this.props.showTitle}
-                  />
-                </InnerPropertiesWrap>
-              </PropertyCellWithInner>
-            </tr>
-          )}
+        {field.expanded && withSubSchema && (
+          <tr key={field.name + 'inner'}>
+            <PropertyCellWithInner colSpan={2}>
+              <InnerPropertiesWrap>
+                <Schema
+                  schema={field.schema}
+                  skipReadOnly={this.props.skipReadOnly}
+                  skipWriteOnly={this.props.skipWriteOnly}
+                  showTitle={this.props.showTitle}
+                />
+              </InnerPropertiesWrap>
+            </PropertyCellWithInner>
+          </tr>
+        )}
       </>
     );
   }
