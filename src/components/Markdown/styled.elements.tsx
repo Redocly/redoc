@@ -24,7 +24,6 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
   ResolvedThemeInterface,
   { compact?: boolean; inline?: boolean }
 >)`
-
   font-family: ${props => props.theme.typography.fontFamily};
   font-weight: ${props => props.theme.typography.fontWeightRegular};
   line-height: ${props => props.theme.typography.lineHeight};
@@ -77,16 +76,13 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
 
   pre {
     font-family: ${props => props.theme.typography.code.fontFamily};
-    white-space:${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
+    white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: #f5f5f5;
     color: #333333;
     padding: 12px 14px 15px 14px;
     overflow-x: auto;
     line-height: normal;
-    border-radius: 0px
-    border: 1px solid rgba(38, 50, 56, 0.1);
-
-    code {
+    border-radius: 0px code {
       background-color: transparent;
       color: #333333;
       padding: 0;
@@ -117,7 +113,8 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
     margin: 0;
     margin-bottom: 1em;
 
-    ul, ol {
+    ul,
+    ol {
       margin-bottom: 0;
       margin-top: 0;
     }
