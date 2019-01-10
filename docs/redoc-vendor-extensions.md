@@ -132,13 +132,13 @@ Extends OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
 #### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-traitTag     | boolean  | In Swagger two operations can have multiply tags. This property distinguish between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
+| x-traitTag     | boolean  | In Swagger two operations can have multiple tags. This property distinguishes between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
 
 #### x-displayName
 
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-displayName  | string   | Define the text that is used for this tag in the menu and in section headings |
+| x-displayName  | string   | Defines the text that is used for this tag in the menu and in section headings |
 
 
 ###### Usage in Redoc
