@@ -44,7 +44,7 @@ export const PrismDiv = styled.div`
   .token.prolog,
   .token.doctype,
   .token.cdata {
-    color: hsl(30, 20%, 50%);
+    color: #bbb;
   }
 
   .token.punctuation {
@@ -90,13 +90,13 @@ export const PrismDiv = styled.div`
   .token.entity,
   .token.url,
   .token.variable {
-    color: hsl(40, 90%, 60%);
+    color: #ee8208;
   }
 
   .token.atrule,
   .token.attr-value,
   .token.keyword {
-    color: hsl(350, 40%, 70%);
+    color: #aa64cc;
   }
 
   .token.regex,

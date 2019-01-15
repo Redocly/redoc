@@ -24,7 +24,7 @@ export const Tabs = styled(ReactTabs)`
       color: #333333;
       margin: 5px;
       border: 1px solid ${({ theme }) => darken(0.1, theme.rightPanel.backgroundColor)};
-      border-radius: 5px;
+      border-radius: 4px;
       min-width: 60px;
       font-size: 0.9em;
       font-weight: bold;
@@ -44,7 +44,7 @@ export const Tabs = styled(ReactTabs)`
       }
 
       &.tab-redirect {
-        color: ${props => props.theme.colors.responses.redirect.color};
+        color: ${props => props.theme.colors.responses.redirect.color};\
       }
 
       &.tab-info {
@@ -58,6 +58,7 @@ export const Tabs = styled(ReactTabs)`
   }
   > .react-tabs__tab-panel {
     background: ${({ theme }) => theme.codeSample.backgroundColor};
+    border-radius: 4px;
     & > div,
     & > pre {
       padding: 20px;

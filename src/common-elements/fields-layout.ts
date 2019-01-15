@@ -75,7 +75,7 @@ export const PropertyNameCell = styled(PropertyCell)`
 `;
 
 export const PropertyDetailsCell = styled.td`
-  border-bottom: 1px solid #9fb4be;
+  border-bottom: 1px solid #eee;
   padding: 10px 0;
   width: ${props => props.theme.schema.defaultDetailsWidth};
   box-sizing: border-box;

@@ -26,7 +26,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.success.main),
     },
     warning: {
-      main: '#fbc03d',
+      main: '#ff8f73',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.warning.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.warning.main),
       contrastText: '#ffffff',
