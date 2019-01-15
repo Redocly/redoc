@@ -7,8 +7,8 @@ export const PrismDiv = styled.div`
 
   code[class*='language-'],
   pre[class*='language-'] {
-    /* color: white;
-    background: none; */
+    /* color: white; */
+    background: #f8f8f8;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
