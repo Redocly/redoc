@@ -14,25 +14,25 @@ const defaultTheme: ThemeInterface = {
   colors: {
     tonalOffset: 0.3,
     primary: {
-      main: '#697CFF',
+      main: '#697cff',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       contrastText: ({ colors }) => readableColor(colors.primary.main),
     },
     success: {
-      main: '#2CB72D',
+      main: '#2cb72d',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.success.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.success.main),
       contrastText: ({ colors }) => readableColor(colors.success.main),
     },
     warning: {
-      main: '##FBC03D',
+      main: '#fbc03d',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.warning.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.warning.main),
       contrastText: '#ffffff',
     },
     error: {
-      main: '#FC5B4F',
+      main: '#fc5b4f',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
@@ -64,9 +64,9 @@ const defaultTheme: ThemeInterface = {
       },
     },
     http: {
-      get: '#6bbd5b',
-      post: '#248fb2',
-      put: '#9b708b',
+      get: '#2cb72d',
+      post: '#697cff',
+      put: '#fbc03d',
       options: '#d3ca12',
       patch: '#e09d43',
       delete: '#e27a7a',
@@ -146,7 +146,7 @@ const defaultTheme: ThemeInterface = {
     textColor: '#333333',
   },
   codeSample: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f8f8f8',
   },
 };
 
