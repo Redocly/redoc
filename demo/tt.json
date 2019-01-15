@@ -1,0 +1,2177 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.0.5",
+        "title": "TamTam Bot API",
+        "license": {
+            "name": "Apache 2.0"
+        },
+        "description": "# About\n Bot API allows bots to interact with TamTam. Methods are called by sending HTTPS requests to botapi.tamtam.chat domain.\n Bots are third-party applications that use TamTam features. A bot can legitimately take part in a conversation. It can be achieved through HTTP requests to the TamTam Bot API.\n## Features\nTamTam bots of the current version are able to:\n- Communicate with users and respond to requests\n- Recommend users complete actions via programmed buttons\n- Request personal data from users (name, short reference, phone number)\n- more ?\n\nWe'll keep working on expanding bot capabilities in the future.\n## Examples\nBots can be used for following purposes:\n- Providing support, answering frequently asked questions\n- Sending typical information\n- Voting\n- Likes/dislikes\n- Following external links\n- Forwarding a user to a chat/channel\n## @PrimeBot\nWe are beta testing bots in TamTam now. To become a beta tester, please, contact us on **https://tt.me/support** or team@tamtam.chat. We'll give you an access to PrimeBot, all TamTam bots creator. It will help you choose an unique short name for a bot and fill in its full name and description. With PrimeBot you can create bots as well as edit and delete them and browse information on bots you have created.\n#### [PrimeBot](https://tt.me/primebot) commands:\n`/start` &mdash; start a dialog with a bot<br/>\n`/create` &mdash; create a bot, assign the unique short name to it (from 4 to 64 characters)<br/>\n`/set_name [name]` &mdash; assign a short or full name to the bot (up to 200 characters)<br/>\n`/set_description [description]` &mdash; enter the description for the bot profile (up to 400 characters)<br/>\n`/set_picture [URL]` &mdash; enter the URL of bot's picture<br/>\n`/delete [username]` &mdash; delete the bot<br/>\n`/list` &mdash; show the list of all bots<br/>\n`/get_token` &mdash; obtain a token for a bot<br/>\n`/revoke` &mdash; request a new token<br/>\n`/help` &mdash; help<br/>\n## Authentification\nA token is given to you by PrimeBot after you have created a bot. You can request additional tokens by sending a /token command to PrimeBot.\nIf [Terms and Conditions of TamTam usage](https://team.tamtam.chat/en/terms/) have been violated, the TamTam administration may withdraw tokens by aborting user sessions.\nIf your token has been compromised, you can request a new one by sending a /revoke command to **[PrimeBot](https://tt.me/primebot)**.\nIn all subsequent requests to the Bot API, you must pass the received token as an access_token parameter to the HTTP request.\n##  HTTP verbs\n`GET` &mdash; getting resources, parameters are transmitted via URL<br/>\n`POST` &mdash; creation of resources (for example, sending new messages)<br/>\n`PUT` &mdash; editing resources<br/>\n`DELETE` &mdash; deleting resources<br/>\n## HTTP response codes\n`200` &mdash; successful operation<br/>\n`400` &mdash; invalid request<br/>\n`401` &mdash; authentication error<br/>\n`404` &mdash; resource not found<br/>\n`405` &mdash; method not allowed<br/>\n`429` &mdash; the number of requests is exceeded<br/>\n`503` &mdash; service unavailable<br/>\n## Resources format\nFor content requests (PUT and POST) and responses, the API uses the JSON format.\nAll strings are UTF-8 encoded.\nDate/time fields are represented as the number of milliseconds that have elapsed since 00:00 January 1, 1970 in the long format. To get it, you can simply multiply the UNIX timestamp by 1000. All date / time fields have a UTC timezone.\n## Error responses\nIn case of an error, the API returns a response with the corresponding HTTP code and JSON with the following fields:\n<br/>\n`error` - the string with the error key <br/>\n`message` - a string describing the error </br>\nFor example:\n```bash\n> http https://botapi.tamtam.chat/chats?access_token={EXAMPLE_TOKEN}\nHTTP / 1.1 403 Forbidden\nCache-Control: no-cache\nConnection: Keep-Alive\nContent-Length: 57\nContent-Type: application / json; charset = utf-8\nSet-Cookie: web_ui_lang = ru; Path = /; Domain = .tamtam.chat; Expires = 2019-03-24T11: 45: 36.500Z\n{\n   \"error\": \"verify.token\",\n   \"message\": \"Invalid access_token\"\n}\n```\n## Recieving Notifications\nTamTam Bot API supports 2 options of receiving notifications on new dialog events for bots:\n- Push notifications via WebHook. You'll have to use the /subscribe method;\n- Notifications upon request via long polling\nAll data can be received via long polling by default after creating the bot. To receive data via WebHook, you'll have to subscribe explicitly (/subscribe method).\nBoth methods cannot be used simultaneously.\n## Message buttons\nYou can program buttons for users answering a bot.\nTamTam supports the following types of buttons: <br/>\n`callback` &mdash; sends a notification to a bot (via WebHook or long polling) <br/>\n`link` &mdash; makes a user to follow a link <br/>\n`message` &mdash; sends a pre-formed message to the bot as a regular text message <br/>\n`request_contact` &mdash; requests the user permission to access contact information (phone number, short link, email) <br/>\nYou may also send a message with an [InlineKeyboard]() type attachment to start creating buttons. When the user presses a button, the bot receives the answer with filled callback field. It is recommended to edit that message so the user can receive updated buttons.\n"
+    },
+    "servers": [
+        {
+            "url": "https://botapi.tamtam.chat"
+        }
+    ],
+    "security": [
+        {
+            "api_key": []
+        }
+    ],
+    "x-tagGroups": [{
+        "name": "Methods",
+        "tags": [
+            "bots",
+            "chats",
+            "messages",
+            "subscriptions",
+            "upload"
+        ]
+    }],
+    "paths": {
+        "/me": {
+            "get": {
+                "tags": ["bots"],
+                "summary": "Get current bot info",
+                "operationId": "getMyInfo",
+                "description": "Returns info about current bot. Current bot can be identified by access token. Method returns bot identifier, name and avatar (if any).",
+                "responses": {
+                    "200": {
+                        "description": "Expected response to a valid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/chats": {
+            "get": {
+                "tags": [
+                    "chats"
+                ],
+                "operationId": "getChats",
+                "description": "Returns information about chats that bot participated in: a result list and marker points to the next page.",
+                "summary": "Get all chats",
+                "parameters": [
+                    {
+                        "description": "Number of chats requested",
+                        "name": "count",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": "50"
+                        }
+                    },
+                    {
+                        "description": "Points to next data page. `null` for the first page",
+                        "name": "marker",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/bigint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns paginated response of chats",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatList"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/chats/{chatId}": {
+            "get": {
+                "tags": [
+                    "chats"
+                ],
+                "operationId": "getChat",
+                "description": "Returns info about chat.",
+                "summary": "Get chat",
+                "parameters": [
+                    {
+                        "name": "chatId",
+                        "description": "Requested chat identifier",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "pattern": "\\-?\\d+"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chat information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Chat"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/chats/{chatId}/action": {
+            "post": {
+                "tags": [
+                    "chats"
+                ],
+                "operationId": "sendAction",
+                "description": "Send bot action to chat",
+                "summary": "Send action",
+                "parameters": [
+                    {
+                        "name": "chatId",
+                        "description": "Chat identifier",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "pattern": "\\-?\\d+"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ActionRequestBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/chats/{chatId}/control": {
+            "post": {
+                "tags": [
+                    "chats"
+                ],
+                "operationId": "sendControl",
+                "description": "Send control message to chat",
+                "summary": "Control chat",
+                "parameters": [
+                    {
+                        "name": "chatId",
+                        "description": "Chat identifier",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "pattern": "\\-?\\d+"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatControl"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/subscriptions": {
+            "get": {
+                "tags": [
+                    "subscriptions"
+                ],
+                "operationId": "getSubscriptions",
+                "description": "In case your bot gets data via WebHook, the method returns list of all subscriptions.",
+                "summary": "Get subscriptions",
+                "responses": {
+                    "200": {
+                        "description": "As expected",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSubscriptionsResult"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "subscriptions"
+                ],
+                "operationId": "subscribe",
+                "description": "Subscribes bot to receive updates via WebHook. After calling this method, the bot will receive notifications about new events in chat rooms at the specified URL",
+                "summary": "Subscribe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscriptionRequestBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "subscriptions"
+                ],
+                "operationId": "unsubscribe",
+                "description": "Unsubscribes bot from receiving updates via WebHook. After calling the method, the bot stops receiving notifications about new events. Notification via the long-poll API becomes available for the bot",
+                "summary": "Unsubscribe",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "URL to remove from WebHook subscriptions",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/uploads": {
+            "post": {
+                "tags": [
+                    "upload"
+                ],
+                "operationId": "getUploadUrl",
+                "description": "Returns the URL for the subsequent file upload.\n\nFor example, you can upload it via curl:\n```\ncurl -i -X POST \n    -H \"Content-Type: multipart/form-data\" \n    -F \"data=@movie.mp4\" \"%UPLOAD_URL%\"\n```\n\nTwo types of an upload are supported: \n- single request upload (multipart request)\n- and resumable upload.\n \n##### Multipart upload\n\nThis type of upload is a simpler one but it is less reliable and agile. If a `Content-Type`: multipart/form-data header is passed in a request our service indicates upload type as a simple single request upload. \nThis type of an upload has some restrictions: \n- Max. file size - 2 Gb\u2028\n- Only one file per request can be uploaded\n- No possibility to restart stopped / failed upload\n\n##### Resumable upload\nIf `Content-Type` header value is not equal to `multipart/form-data` our service indicated upload type as a resumable upload.\nWith a `Content-Range` header current file chunk range and complete file size can be passed. If a network error has happened or upload was stopped you can continue to upload a file from the last successfully uploaded file chunk. You can request the last known byte of uploaded file from server and continue to upload a file. \n\n##### Get upload status\nTo GET an upload status you simply need to perform HTTP-GET request to a file upload URL. Our service will respond with current upload status, complete file size and last known uploaded byte. This data can be used to complete stopped upload if something went wrong. If `REQUESTED_RANGE_NOT_SATISFIABLE` or `INTERNAL_SERVER_ERROR` status was returned it is a good point to try to restart an upload",
+                "summary": "Get upload URL",
+                "parameters": [
+                    {
+                        "description": "Uploaded file type: photo, audio, video, file",
+                        "name": "type",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/UploadType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns URL to upload attachment",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UploadEndpoint"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/messages": {
+            "get": {
+                "tags": [
+                    "messages"
+                ],
+                "operationId": "getMessages",
+                "description": "Returns messages in chat: result page and marker referencing to the next page",
+                "summary": "Get messages",
+                "parameters": [
+                    {
+                        "description": "Chat identifier",
+                        "name": "chat_id",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/bigint"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "description": "Start time for requested messages",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/bigint"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "description": "End time for requested messages",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/bigint"
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "description": "Maximum amount of messages in response",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 50,
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns list of messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageList"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "This exception happens when user suspended bot or it doesn't have access to chat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "messages"
+                ],
+                "operationId": "sendMessage",
+                "description": "Sends a message to a chat. As a result for this method new message identifier returns.",
+                "summary": "Send message",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "Fill this paramter if you want to send message to user",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "chat_id",
+                        "description": "Fill this if you send message to chat",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewMessageBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns info about created message",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SendMessageResult"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "messages"
+                ],
+                "operationId": "editMessage",
+                "description": "Updated message should be sent as `NewMessage` in a request body. In case `attachments` field is `null`, the current message attachments won’t be changed. In case of sending an empty list in this field, all attachments will be deleted.",
+                "summary": "Edit message",
+                "parameters": [
+                    {
+                        "name": "message_id",
+                        "description": "Editing message identifier",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/bigint"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewMessageBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns info about created message",
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/answers": {
+            "post": {
+                "tags": [
+                    "messages"
+                ],
+                "operationId": "answerOnCallback",
+                "description": "This method should be called to send an answer after a user has clicked the button. The answer may be an updated message or a one-time user notification.",
+                "summary": "Answer on callback",
+                "parameters": [
+                    {
+                        "name": "callback_id",
+                        "description": "Identifies a button clicked by user. Bot receives this identifier after user pressed button as part of `MessageCallbackUpdate`",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CallbackAnswer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SuccessResponse"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/NotAllowed"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/updates": {
+            "get": {
+                "operationId": "getUpdates",
+                "tags": ["subscriptions"],
+                "description": "You can use this method for getting updates in case your bot is not subscribed to WebHook. The method based on long polling.",
+                "summary": "Get updates",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "description": "Maximim number of updates to be retrieved.",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 1000,
+                            "default": 100
+                        }
+                    },
+                    {
+                        "name": "timeout",
+                        "description": "Timeout in seconds for long polling.",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 90,
+                            "default": 30
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of updates",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateList"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalError"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/NotAllowed"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "access_token",
+                "description": "Bot API token. Get it using https://tt.me/PrimeBot",
+                "in": "query"
+            }
+        },
+        "responses": {
+            "SuccessResponse": {
+                "description": "Success or not result",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/SimpleQueryResult"
+                        }
+                    }
+                }
+            },
+            "InternalError": {
+                "description": "Internal Server Error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Authorization Error. No `access_token` provided or token is invalid",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "NotAllowed": {
+                "description": "Method not allowed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "bigint": {
+                "type": "integer",
+                "format": "int64"
+            },
+            "User": {
+                "properties": {
+                    "user_id": {
+                        "description": "Users identifier",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Users visible name",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "Unique public user name. Can be `null` if user is not accessible or it is not set",
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "user_id",
+                    "name",
+                    "username"
+                ]
+            },
+            "UserWithPhoto": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    {
+                        "properties": {
+                            "avatar_url": {
+                                "description": "URL of avatar",
+                                "type": "string"
+                            },
+                            "full_avatar_url": {
+                                "description": "URL of avatar of a bigger size",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "avatar_url",
+                            "full_avatar_url"
+                        ]
+                    }
+                ]
+            },
+            "Chat": {
+                "properties": {
+                    "chat_id": {
+                        "description": "Chats identifier",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": {
+                        "description": "Type of chat. One of: dialog, chat, channel",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ChatType"
+                            }
+                        ]
+                    },
+                    "status": {
+                        "description": "Status of chat. One of: ACTIVE, REMOVED, LEFT of CLOSED",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ChatStatus"
+                            }
+                        ]
+                    },
+                    "title": {
+                        "description": "Visible title of chat",
+                        "type": "string"
+                    },
+                    "icon": {
+                        "description": "Icon of chat",
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Image"
+                            }
+                        ]
+                    },
+                    "last_event_time": {
+                        "description": "Time of last event occured in chat",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "participants_count": {
+                        "description": "Number of people in chat. Always 2 for `dialog` chat type",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "owner_id": {
+                        "description": "Identifier of chat owner. Visible only for chat admins",
+                        "nullable": true,
+                        "type": "integer",
+                        "format": "int64",
+                        "readOnly": false
+                    },
+                    "participants": {
+                        "description": "Participants in chat with time of last activity. Visible only for chat admins",
+                        "nullable": true,
+                        "readOnly": false,
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "required": [
+                    "chat_id",
+                    "type",
+                    "status",
+                    "title",
+                    "last_event_time",
+                    "participants_count",
+                    "icon"
+                ]
+            },
+            "ChatType": {
+                "description": "Type of chat. Dialog (one-on-one), chat or channel",
+                "enum": [
+                    "dialog",
+                    "chat",
+                    "channel"
+                ]
+            },
+            "ChatStatus": {
+                "description": "Chat status for current bot",
+                "enum": [
+                    "ACTIVE",
+                    "REMOVED",
+                    "LEFT",
+                    "CLOSED"
+                ]
+            },
+            "ChatList": {
+                "properties": {
+                    "chats": {
+                        "description": "List of requested chats",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Chat"
+                        }
+                    },
+                    "marker": {
+                        "description": "Reference to the next page of requested chats",
+                        "nullable": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "chats",
+                    "marker"
+                ]
+            },
+            "Image": {
+                "description": "Generic schema describing image object",
+                "properties": {
+                    "url": {
+                        "description": "URL of image",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "Subscription": {
+                "description": "Schema to describe WebHook subscription",
+                "properties": {
+                    "url": {
+                        "description": "WebHook URL",
+                        "type": "string"
+                    },
+                    "time": {
+                        "description": "Unix-time when subscription was created",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "url",
+                    "time"
+                ]
+            },
+            "Recipient": {
+                "description": "New message recepient. Could be user or chat",
+                "properties": {
+                    "chat_id": {
+                        "description": "User identifier",
+                        "type": "integer",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "user_id": {
+                        "description": "Chat identifier",
+                        "type": "integer",
+                        "format": "int64",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "chat_id",
+                    "user_id"
+                ]
+            },
+            "Message": {
+                "description": "Message in chat",
+                "properties": {
+                    "sender": {
+                        "description": "User that sent this message",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "recipient": {
+                        "description": "Message recipient. Could be user or chat",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Recipient"
+                            }
+                        ]
+                    },
+                    "timestamp": {
+                        "description": "Unix-time when message was created",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "description": "Body of created message. Text+attachments.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageBody"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "sender",
+                    "recipient",
+                    "message",
+                    "timestamp"
+                ]
+            },
+            "MessageBody": {
+                "description": "Schema representing body of message",
+                "type": "object",
+                "properties": {
+                    "mid": {
+                        "description": "Unique identifier of message",
+                        "type": "string"
+                    },
+                    "seq": {
+                        "description": "Sequence identifier of message in chat",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "text": {
+                        "description": "Message text",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "attachments": {
+                        "description": "Message attachments. Could be one of `Attachment` type. See description of this schema",
+                        "type": "array",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/Attachment"
+                        }
+                    },
+                    "link": {
+                        "description": "Forwarder or replied message",
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LinkedMessage"
+                            }
+                        ]
+                    },
+                    "reply_to": {
+                        "deprecated": true,
+                        "description": "In case this message is repled to, it is the unique identifier of the replied message",
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": false
+                    }
+                },
+                "required": [
+                    "mid",
+                    "seq",
+                    "text",
+                    "attachments",
+                    "link"
+                ]
+            },
+            "MessageList": {
+                "description": "Paginated list of messages",
+                "properties": {
+                    "messages": {
+                        "description": "List of messages",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                },
+                "required": [
+                    "messages"
+                ]
+            },
+            "NewMessage": {
+                "description": "New message. Could be `control`, `sender_action` or real `message`",
+                "properties": {
+                    "recipient": {
+                        "description": "Message recipient. User or chat",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Recipient"
+                            }
+                        ]
+                    },
+                    "sender_action": {
+                        "description": "Action to send to chat. For example: `typing` or `sending photo`. See `SenderAction` for full information",
+                        "nullable": true,
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SenderAction"
+                            }
+                        ]
+                    },
+                    "chat_control": {
+                        "description": "Control message to chat. For example: to set icon or title of chat. See `ChatControl` description for full information",
+                        "nullable": true,
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ChatControl"
+                            }
+                        ]
+                    },
+                    "message": {
+                        "description": "Real message to send to chat",
+                        "nullable": true,
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NewMessageBody"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "recipient"
+                ]
+            },
+            "NewMessageBody": {
+                "properties": {
+                    "text": {
+                        "description": "Message text",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "attachment": {
+                        "description": "Single message attachment.",
+                        "type": "object",
+                        "nullable": true,
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AttachmentRequest"
+                            }
+                        ]
+                    },
+                    "attachments": {
+                        "description": "Message attachments. See `AttachmentRequest` and it's inheritors for full information.",
+                        "type": "array",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/AttachmentRequest"
+                        }
+                    },
+                    "notify": {
+                        "description": "If false, chat participants wouldn't be notified",
+                        "type": "boolean",
+                        "default": true,
+                        "readOnly": false
+                    }
+                },
+                "required": [
+                    "text",
+                    "attachments"
+                ]
+            },
+            "LinkedMessage": {
+                "properties": {
+                    "type": {
+                        "description": "Type of linked message",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageLinkType"
+                            }
+                        ]
+                    },
+                    "message": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Message"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "type",
+                    "message"
+                ]
+            },
+            "SendMessageResult": {
+                "properties": {
+                    "chat_id": {
+                        "description": "Identifier of chat message was created in",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "recipient_id": {
+                        "description": "In most cases same as chat_id.",
+                        "nullable": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message_id": {
+                        "description": "Unique identifier of created message",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "chat_id",
+                    "recipient_id",
+                    "message_id"
+                ]
+            },
+            "Attachment": {
+                "description": "Generic schema representing message attachment",
+                "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                        "image": "#/components/schemas/PhotoAttachment",
+                        "video": "#/components/schemas/VideoAttachment",
+                        "audio": "#/components/schemas/AudioAttachment",
+                        "file": "#/components/schemas/FileAttachment",
+                        "sticker": "#/components/schemas/StickerAttachment",
+                        "contact": "#/components/schemas/ContactAttachment",
+                        "inline_keyboard": "#/components/schemas/InlineKeyboardAttachment",
+                        "share": "#/components/schemas/ShareAttachment"
+                    }
+                },
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PhotoAttachment": {
+                "description": "Image attachment",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/PhotoAttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "PhotoAttachmentPayload": {
+                "properties": {
+                    "photo_id": {
+                        "description": "Unique identifier of this image",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "url": {
+                        "description": "Image URL",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "photo_id",
+                    "url"
+                ]
+            },
+            "VideoAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "AudioAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "FileAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "AttachmentPayload": {
+                "properties": {
+                    "url": {
+                        "description": "Media attachment URL",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "ContactAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ContactAttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "ContactAttachmentPayload": {
+                "properties": {
+                    "vcfInfo": {
+                        "description": "User info in VCF format",
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "tamInfo": {
+                        "description": "User info",
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "vcfInfo",
+                    "tamInfo"
+                ]
+            },
+            "StickerAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "ShareAttachment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AttachmentPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "InlineKeyboardAttachment": {
+                "description": "Buttons in messages",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Attachment"
+                    },
+                    {
+                        "properties": {
+                            "callback_id": {
+                                "description": "Unique identifier of keyboard",
+                                "type": "string"
+                            },
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Keyboard"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "callback_id",
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "Keyboard": {
+                "description": "Keyboard is two-dimension array of buttons",
+                "properties": {
+                    "buttons": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/Button"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "buttons"
+                ]
+            },
+            "Button": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "description": "Visible text of button",
+                        "type": "string"
+                    },
+                    "intent": {
+                        "description": "Intent of button. Affects clients representation.",
+                        "nullable": true,
+                        "default": "default",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Intent"
+                            }
+                        ]
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                        "callback": "#/components/schemas/CallbackButton",
+                        "link": "#/components/schemas/LinkButton",
+                        "request_geo_location": "#/components/schemas/RequestGeoLocationButton",
+                        "request_contact": "#/components/schemas/RequestContactButton"
+                    }
+                },
+                "required": [
+                    "text",
+                    "intent"
+                ]
+            },
+            "CallbackButton": {
+                "description": "After pressing this type of button client sends to server payload it contains",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Button"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "payload": {
+                                "description": "Button payload",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "LinkButton": {
+                "description": "After pressing this type of button user follows the link it contains",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Button"
+                    },
+                    {
+                        "properties": {
+                            "url": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "url"
+                        ]
+                    }
+                ]
+            },
+            "RequestContactButton": {
+                "description": "After pressing this type of button client sends new message with attachment of curent user contact",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Button"
+                    }
+                ]
+            },
+            "RequestGeoLocationButton": {
+                "description": "After pressing this type of button client sends new message with attachment of current user geo location",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Button"
+                    },
+                    {
+                        "properties": {
+                        }
+                    }
+                ]
+            },
+            "Intent": {
+                "description": "Intent of button",
+                "type": "string",
+                "enum": [
+                    "positive",
+                    "negative",
+                    "default"
+                ]
+            },
+            "MessageLinkType": {
+                "description": "Type of linked message",
+                "type": "string",
+                "enum": [
+                    "forward",
+                    "reply"
+                ]
+            },
+            "AttachmentRequest": {
+                "description": "Request to attach some data to message",
+                "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                        "image": "#/components/schemas/PhotoAttachmentRequest",
+                        "video": "#/components/schemas/VideoAttachmentRequest",
+                        "audio": "#/components/schemas/AudioAttachmentRequest",
+                        "file": "#/components/schemas/FileAttachmentRequest",
+                        "sticker": "#/components/schemas/StickerAttachmentRequest",
+                        "contact": "#/components/schemas/ContactAttachmentRequest",
+                        "inline_keyboard": "#/components/schemas/InlineKeyboardAttachmentRequest"
+                    }
+                },
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PhotoAttachmentRequest": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/PhotoAttachmentRequestPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "PhotoAttachmentRequestPayload": {
+                "description": "Request to attach image",
+                "properties": {
+                    "url": {
+                        "description": "If specified, given URL will be attached to message as image",
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "photos": {
+                        "description": "Tokens were obtained after uploading images",
+                        "nullable": true,
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/PhotoToken"
+                        }
+                    }
+                },
+                "required": [
+                    "url",
+                    "photos"
+                ]
+            },
+            "PhotoToken": {
+                "properties": {
+                    "token": {
+                        "description": "Encoded information of uploaded image",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "token"
+                ]
+            },
+            "PhotoTokens": {
+                "description": "This is information you will recieve as soon as an image uploaded",
+                "properties": {
+                    "photos": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/PhotoToken"
+                        }
+                    }
+                },
+                "required": [
+                    "photos"
+                ]
+            },
+            "VideoAttachmentRequest": {
+                "description": "Request to attach video to message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/UploadedInfo"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "AudioAttachmentRequest": {
+                "description": "Request to attach audio to message. MUST be the only attachment in message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/UploadedInfo"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "UploadedInfo": {
+                "description": "This is information you will recieve as soon as audio/video is uploaded",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "FileAttachmentRequest": {
+                "description": "Request to attach file to message. MUST be the only attachment in message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/UploadedFileInfo"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "UploadType": {
+                "description": "Type of file uploading",
+                "enum": [
+                    "photo",
+                    "video",
+                    "audio",
+                    "file"
+                ]
+            },
+            "UploadedFileInfo": {
+                "description": "This is information you will recieve as soon as a file is uploaded",
+                "properties": {
+                    "fileId": {
+                        "description": "Unique file identifier",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "fileId"
+                ]
+            },
+            "ContactAttachmentRequest": {
+                "description": "Request to attach contact card to message. MUST be the only attachment in message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ContactAttachmentRequestPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "ContactAttachmentRequestPayload": {
+                "properties": {
+                    "name": {
+                        "description": "Contact name",
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "contactId": {
+                        "description": "Contact identifier",
+                        "nullable": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "vcfInfo": {
+                        "description": "Full information about contact in VCF format",
+                        "nullable": true,
+                        "type": "string"
+                    },
+                    "vcfPhone": {
+                        "description": "Contact phone in VCF format",
+                        "nullable": true,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "contactId",
+                    "vcfInfo",
+                    "vcfPhone"
+                ]
+            },
+            "StickerAttachmentRequest": {
+                "description": "Request to attach sticker. MUST be the only attachment request in message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/StickerAttachmentRequestPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "StickerAttachmentRequestPayload": {
+                "properties": {
+                    "code": {
+                        "description": "Sticker code",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code"
+                ]
+            },
+            "InlineKeyboardAttachmentRequest": {
+                "description": "Request to attach keyboard to message",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/AttachmentRequest"
+                    },
+                    {
+                        "properties": {
+                            "payload": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/InlineKeyboardAttachmentRequestPayload"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "payload"
+                        ]
+                    }
+                ]
+            },
+            "InlineKeyboardAttachmentRequestPayload": {
+                "properties": {
+                    "buttons": {
+                        "description": "Two-dimensional array of buttons",
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/Button"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "buttons"
+                ]
+            },
+            "SubscriptionRequestBody": {
+                "description": "Request to set up WebHook subscription",
+                "properties": {
+                    "url": {
+                        "description": "URL of HTTP(S)-endpoint of your bot",
+                        "type": "string"
+                    },
+                    "filter": {
+                        "type": "string",
+                        "readOnly": false
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "GetSubscriptionsResult": {
+                "description": "List of all WebHook subscriptions",
+                "properties": {
+                    "subscriptions": {
+                        "description": "Current suscriptions",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Subscription"
+                        }
+                    }
+                },
+                "required": [
+                    "subscriptions"
+                ]
+            },
+            "SimpleQueryResult": {
+                "description": "Simple response to request",
+                "properties": {
+                    "success": {
+                        "description": "`true` if request was successful. `false` otherwise",
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "success"
+                ]
+            },
+            "Callback": {
+                "description": "Object sent to bot when user presses button",
+                "properties": {
+                    "timestamp": {
+                        "description": "Unix-time when user pressed the button",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "callback_id": {
+                        "description": "Current keyboard identifier",
+                        "type": "string"
+                    },
+                    "payload": {
+                        "description": "Button payload",
+                        "type": "string"
+                    },
+                    "user": {
+                        "description": "User pressed the button",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "timestamp",
+                    "callback_id",
+                    "payload",
+                    "user"
+                ]
+            },
+            "CallbackAnswer": {
+                "description": "Send this object when your bot wants to react to when a button is pressed",
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "readOnly": false
+                    },
+                    "message": {
+                        "description": "Fill this if you want to modify current message",
+                        "nullable": true,
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NewMessageBody"
+                            }
+                        ]
+                    },
+                    "notification": {
+                        "description": "Fill this if you just want to send one-time notification to user",
+                        "nullable": true,
+                        "readOnly": false,
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "description": "Server returns this if there was an exception to your request",
+                "properties": {
+                    "error": {
+                        "description": "Error",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "Error code",
+                        "type": "string"
+                    },
+                    "message": {
+                        "description": "Human-readable description",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code",
+                    "message"
+                ]
+            },
+            "UploadEndpoint": {
+                "description": "Endpoint you should upload to your binaries",
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "description": "URL to upload",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "ChatControl": {
+                "description": "Part of NewMessage if your want to control your chat",
+                "properties": {
+                    "title": {
+                        "description": "Fill this if you want to change chat title",
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "icon": {
+                        "description": "Fill this if you want to change chat icon",
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PhotoAttachmentRequest"
+                            }
+                        ]
+                    },
+                    "leave": {
+                        "description": "Fill this if you want to leave chat",
+                        "type": "string",
+                        "readOnly": false
+                    },
+                    "add_members": {
+                        "description": "Fill this if you want to add members to chat. Admin permissions required",
+                        "type": "array",
+                        "readOnly": false,
+                        "items": {
+                            "$ref": "#/components/schemas/ChatMember"
+                        }
+                    },
+                    "remove_member": {
+                        "description": "Fill this if you want to remove members from chat. Admin permissions required",
+                        "readOnly": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ChatMember"
+                            }
+                        ]
+                    }
+                }
+            },
+            "ChatMember": {
+                "description": "Describes member of chat",
+                "properties": {
+                    "user_id": {
+                        "description": "User identifier",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "chat_id": {
+                        "description": "Identifier of chat user participated in",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "user_id",
+                    "chat_id"
+                ]
+            },
+            "ActionRequestBody": {
+                "properties": {
+                    "action": {
+                        "$ref": "#/components/schemas/SenderAction"
+                    }
+                },
+                "required": [
+                    "action"
+                ]
+            },
+            "SenderAction": {
+                "description": "Different actions to send to chat members",
+                "enum": [
+                    "typing_on",
+                    "typing_off",
+                    "sending_photo",
+                    "sending_video",
+                    "sending_audio",
+                    "mark_seen"
+                ]
+            },
+            "UpdateList": {
+                "description": "List of all updates in chats your bot participated in",
+                "properties": {
+                    "updates": {
+                        "description": "Page of updates",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Update"
+                        }
+                    }
+                },
+                "required": [
+                    "updates"
+                ]
+            },
+            "Update": {
+                "description": "`Update` object repsesents different types of events that happened in chat. See its inheritors",
+                "discriminator": {
+                    "propertyName": "update_type",
+                    "mapping": {
+                        "message_created": "#/components/schemas/MessageCreatedUpdate",
+                        "message_callback": "#/components/schemas/MessageCallbackUpdate",
+                        "message_removed": "#/components/schemas/MessageRemovedUpdate",
+                        "message_restored": "#/components/schemas/MessageRestoredUpdate"
+                    }
+                },
+                "properties": {
+                    "update_type": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "description": "Unix-time when event occured",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "required": [
+                    "timestamp"
+                ]
+            },
+            "MessageCallbackUpdate": {
+                "description": "You will get this `update` as soon as user presses button",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Update"
+                    },
+                    {
+                        "properties": {
+                            "callback": {
+                                "description": "",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Callback"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "callback"
+                        ]
+                    }
+                ]
+            },
+            "MessageCreatedUpdate": {
+                "description": "You will get this `update` as soon as message is created",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Update"
+                    },
+                    {
+                        "properties": {
+                            "message": {
+                                "description": "Newly created message",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Message"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "message"
+                        ]
+                    }
+                ]
+            },
+            "MessageRemovedUpdate": {
+                "description": "You will get this `update` as soon as message is removed",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Update"
+                    },
+                    {
+                        "properties": {
+                            "message_id": {
+                                "description": "Identifier of removed message",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message_id"
+                        ]
+                    }
+                ]
+            },
+            "MessageRestoredUpdate": {
+                "description": "You will get this `update` as soon as message is restored",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Update"
+                    },
+                    {
+                        "properties": {
+                            "message_id": {
+                                "description": "Restored message identifier",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message_id"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
