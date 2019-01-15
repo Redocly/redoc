@@ -3,7 +3,7 @@ import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement
 
 import { observer } from 'mobx-react';
 
-import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
+import { Badge, H2, MiddlePanel, Row } from '../../common-elements';
 
 import { OptionsContext } from '../OptionsProvider';
 
@@ -22,6 +22,7 @@ import { Extensions } from '../Fields/Extensions';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
+  background: #f8f8f8;
 `;
 
 const Description = styled.div`
