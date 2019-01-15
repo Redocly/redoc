@@ -144,7 +144,7 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = true;
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
-    this.disableSearch = argValueToBoolean(raw.disableSearch);
+    this.disableSearch = true; //argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
 

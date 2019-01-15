@@ -122,13 +122,13 @@ module.exports = require("mobx-react");
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("polished");
+module.exports = require("mobx");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("mobx");
+module.exports = require("polished");
 
 /***/ }),
 /* 5 */
@@ -3837,7 +3837,7 @@ var external_prop_types_ = __webpack_require__(9);
 var external_react_ = __webpack_require__(0);
 
 // EXTERNAL MODULE: external "polished"
-var external_polished_ = __webpack_require__(3);
+var external_polished_ = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./src/theme.ts
 
@@ -3974,7 +3974,7 @@ var defaultTheme = {
         }
     },
     schema: {
-        linesColor: function (theme) { return Object(external_polished_["lighten"])(theme.colors.tonalOffset, Object(external_polished_["desaturate"])(theme.colors.tonalOffset, theme.colors.primary.main)); },
+        linesColor: '#ddd',
         defaultDetailsWidth: '75%',
         typeNameColor: function (theme) { return theme.colors.text.secondary; },
         typeTitleColor: function (theme) { return theme.schema.typeNameColor; },
@@ -4327,7 +4327,7 @@ var RedocNormalizedOptions_RedocNormalizedOptions = /** @class */ (function () {
         this.pathInMiddlePanel = true;
         this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
         this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
-        this.disableSearch = argValueToBoolean(raw.disableSearch);
+        this.disableSearch = true; //argValueToBoolean(raw.disableSearch);
         this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
         this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
         this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
@@ -4484,7 +4484,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "1dfed34"));
+                    "c056c81"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -4541,7 +4541,7 @@ var OptionsProvider = OptionsContext.Provider;
 var OptionsConsumer = OptionsContext.Consumer;
 
 // EXTERNAL MODULE: external "mobx"
-var external_mobx_ = __webpack_require__(4);
+var external_mobx_ = __webpack_require__(3);
 
 // EXTERNAL MODULE: external "json-schema-ref-parser"
 var external_json_schema_ref_parser_ = __webpack_require__(31);
@@ -8877,7 +8877,7 @@ var Content = styled_components.div.withConfig({
 })(["background:#fff;color:#000;display:inline;font-size:0.85em;white-space:nowrap;"]);
 var Arrow = styled_components.div.withConfig({
     componentId: "t0v3fg-3"
-})(["position:absolute;width:0;height:0;bottom:-5px;left:50%;margin-left:-5px;border-left:solid transparent 5px;border-right:solid transparent 5px;border-top:solid #fff 5px;"]);
+})(["position:absolute;width:0;height:0;bottom:-5px;left:50%;margin-left:-5px;border-left:solid transparent 5px;border-right:solid transparent 5px;border-top:solid #bbb 5px;"]);
 var Gap = styled_components.div.withConfig({
     componentId: "t0v3fg-4"
 })(["position:absolute;width:100%;height:20px;bottom:-20px;"]);
@@ -9472,7 +9472,7 @@ var ResponsesList_ResponsesList = /** @class */ (function (_super) {
 
 var OperationRow = styled_components(Row).withConfig({
     componentId: "bf7xj3-0"
-})(["backface-visibility:hidden;"]);
+})(["backface-visibility:hidden;margin-bottom:12px;padding-bottom:40px;"]);
 var Description = styled_components.div.withConfig({
     componentId: "bf7xj3-1"
 })(["margin-bottom:", "px;"], function (_a) {

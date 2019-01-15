@@ -39,7 +39,7 @@ const Arrow = styled.div`
   margin-left: -5px;
   border-left: solid transparent 5px;
   border-right: solid transparent 5px;
-  border-top: solid #fff 5px;
+  border-top: solid #bbb 5px;
 `;
 
 const Gap = styled.div`

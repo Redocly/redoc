@@ -1,4 +1,4 @@
-import { darken, desaturate, lighten, readableColor, transparentize } from 'polished';
+import { darken, lighten, readableColor, transparentize } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacing: {
@@ -76,11 +76,7 @@ const defaultTheme: ThemeInterface = {
     },
   },
   schema: {
-    linesColor: theme =>
-      lighten(
-        theme.colors.tonalOffset,
-        desaturate(theme.colors.tonalOffset, theme.colors.primary.main),
-      ),
+    linesColor: '#ddd',
     defaultDetailsWidth: '75%',
     typeNameColor: theme => theme.colors.text.secondary,
     typeTitleColor: theme => theme.schema.typeNameColor,

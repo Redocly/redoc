@@ -16,10 +16,7 @@ const renderRoot = (props: RedocProps) =>
     document.getElementById('example'),
   );
 
-const big = window.location.search.indexOf('big') > -1;
-const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
-
-const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
+const specUrl = 'tt.json';
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };
