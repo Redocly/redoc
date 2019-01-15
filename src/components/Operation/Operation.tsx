@@ -60,12 +60,12 @@ export class Operation extends React.Component<OperationProps> {
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
               <ResponsesList responses={operation.responses} />
-            </MiddlePanel>
-            <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
               <RequestSamples operation={operation} />
+            </MiddlePanel>
+            {/* <DarkRightPanel>
+              {!options.pathInMiddlePanel &&
               {/* <ResponseSamples operation={operation} /> */}
-            </DarkRightPanel>
+            {/* </DarkRightPanel> */}
           </OperationRow>
         )}
       </OptionsContext.Consumer>
