@@ -1,0 +1,3 @@
+[submodule "cli"]
+	path = cli
+	url = https://github.com/BusinessDuck/redoc-cli.git
