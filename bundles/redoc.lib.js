@@ -3858,7 +3858,7 @@ var defaultTheme = {
     colors: {
         tonalOffset: 0.3,
         primary: {
-            main: '#32329f',
+            main: '#697cff',
             light: function (_a) {
                 var colors = _a.colors;
                 return Object(external_polished_["lighten"])(colors.tonalOffset, colors.primary.main);
@@ -3873,7 +3873,7 @@ var defaultTheme = {
             }
         },
         success: {
-            main: '#00aa13',
+            main: '#2cb72d',
             light: function (_a) {
                 var colors = _a.colors;
                 return Object(external_polished_["lighten"])(colors.tonalOffset, colors.success.main);
@@ -3888,7 +3888,7 @@ var defaultTheme = {
             }
         },
         warning: {
-            main: '#d4ad03',
+            main: '#ff8f73',
             light: function (_a) {
                 var colors = _a.colors;
                 return Object(external_polished_["lighten"])(colors.tonalOffset, colors.warning.main);
@@ -3900,7 +3900,7 @@ var defaultTheme = {
             contrastText: '#ffffff'
         },
         error: {
-            main: '#e53935',
+            main: '#fc5b4f',
             light: function (_a) {
                 var colors = _a.colors;
                 return Object(external_polished_["lighten"])(colors.tonalOffset, colors.error.main);
@@ -3962,9 +3962,9 @@ var defaultTheme = {
             }
         },
         http: {
-            get: '#6bbd5b',
-            post: '#248fb2',
-            put: '#9b708b',
+            get: '#2cb72d',
+            post: '#697cff',
+            put: '#fbc03d',
             options: '#d3ca12',
             patch: '#e09d43',
             delete: '#e27a7a',
@@ -4061,7 +4061,7 @@ var defaultTheme = {
         textColor: '#333333'
     },
     codeSample: {
-        backgroundColor: '#ffffff'
+        backgroundColor: '#f8f8f8'
     }
 };
 /* harmony default export */ var src_theme = (defaultTheme);
@@ -4484,7 +4484,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "294fb9e"));
+                    "1dfed34"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -7260,7 +7260,7 @@ var PropertyNameCell = styled_components(PropertyCell).withConfig({
 }, extensionsHook('PropertyNameCell'));
 var PropertyDetailsCell = styled_components.td.withConfig({
     componentId: "dz44d2-4"
-})(["border-bottom:1px solid #9fb4be;padding:10px 0;width:", ";box-sizing:border-box;tr.expanded &{border-bottom:none;}"], function (props) { return props.theme.schema.defaultDetailsWidth; });
+})(["border-bottom:1px solid #eee;padding:10px 0;width:", ";box-sizing:border-box;tr.expanded &{border-bottom:none;}"], function (props) { return props.theme.schema.defaultDetailsWidth; });
 var PropertyBullet = styled_components.span.withConfig({
     componentId: "dz44d2-5"
 })(["color:", ";font-family:", ";margin-right:10px;&::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:", ";}&::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:", ";height:7px;}"], function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.typography.code.fontFamily; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; });
@@ -7332,7 +7332,7 @@ var external_react_tabs_ = __webpack_require__(8);
 
 var Tabs = styled_components(external_react_tabs_["Tabs"]).withConfig({
     componentId: "sc-1vrf7wa-0"
-})(["> ul{list-style:none;padding:0;margin:0;margin:0 -5px;> li{padding:5px 10px;display:inline-block;background-color:#ffffff;border-bottom:1px solid rgba(0,0,0,0.5);cursor:pointer;text-align:center;outline:none;color:#333333;margin:5px;border:1px solid ", ";border-radius:5px;min-width:60px;font-size:0.9em;font-weight:bold;&.react-tabs__tab--selected{color:", ";border:1px solid ", ";}&:only-child{flex:none;min-width:100px;}&.tab-success{color:", ";}&.tab-redirect{color:", ";}&.tab-info{color:", ";}&.tab-error{color:", ";}}}> .react-tabs__tab-panel{background:", ";& > div,& > pre{padding:20px;margin:0;}}"], function (_a) {
+})(["> ul{list-style:none;padding:0;margin:0;margin:0 -5px;> li{padding:5px 10px;display:inline-block;background-color:#ffffff;border-bottom:1px solid rgba(0,0,0,0.5);cursor:pointer;text-align:center;outline:none;color:#333333;margin:5px;border:1px solid ", ";border-radius:4px;min-width:60px;font-size:0.9em;font-weight:bold;&.react-tabs__tab--selected{color:", ";border:1px solid ", ";}&:only-child{flex:none;min-width:100px;}&.tab-success{color:", ";}&.tab-redirect{color:", ";}&.tab-info{color:", ";}&.tab-error{color:", ";}}}> .react-tabs__tab-panel{background:", ";border-radius:4px;& > div,& > pre{padding:20px;margin:0;}}"], function (_a) {
     var theme = _a.theme;
     return Object(external_polished_["darken"])(0.1, theme.rightPanel.backgroundColor);
 }, function (props) { return props.theme.colors.text.primary; }, function (_a) {
@@ -7448,7 +7448,7 @@ var external_dompurify_ = __webpack_require__(35);
 
 var PrismDiv = styled_components.div.withConfig({
     componentId: "sc-107yc6q-0"
-})(["code[class*='language-'],pre[class*='language-']{text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}@media print{code[class*='language-'],pre[class*='language-']{text-shadow:none;}}pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:hsl(30,20%,50%);}.token.punctuation{opacity:0.7;}.namespace{opacity:0.7;}.token.property,.token.tag,.token.number,.token.constant,.token.symbol{color:#4a8bb3;}.token.boolean{color:firebrick;}.token.selector,.token.attr-name,.token.string,.token.char,.token.builtin,.token.punctuation,.token.inserted{color:#333333;& + a,& + a:visited{color:#4ed2ba;text-decoration:underline;}}.token.operator,.token.entity,.token.url,.token.variable{color:hsl(40,90%,60%);}.token.atrule,.token.attr-value,.token.keyword{color:hsl(350,40%,70%);}.token.regex,.token.important{color:#e90;}.token.important,.token.bold{font-weight:bold;}.token.italic{font-style:italic;}.token.entity{cursor:help;}.token.deleted{color:red;}", ";"], extensionsHook('Prism'));
+})(["code[class*='language-'],pre[class*='language-']{background:#f8f8f8;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}@media print{code[class*='language-'],pre[class*='language-']{text-shadow:none;}}pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}.token.comment,.token.prolog,.token.doctype,.token.cdata{color:#bbb;}.token.punctuation{opacity:0.7;}.namespace{opacity:0.7;}.token.property,.token.tag,.token.number,.token.constant,.token.symbol{color:#4a8bb3;}.token.boolean{color:firebrick;}.token.selector,.token.attr-name,.token.string,.token.char,.token.builtin,.token.punctuation,.token.inserted{color:#333333;& + a,& + a:visited{color:#4ed2ba;text-decoration:underline;}}.token.operator,.token.entity,.token.url,.token.variable{color:#ee8208;}.token.atrule,.token.attr-value,.token.keyword{color:#aa64cc;}.token.regex,.token.important{color:#e90;}.token.important,.token.bold{font-weight:bold;}.token.italic{font-style:italic;}.token.entity{cursor:help;}.token.deleted{color:red;}", ";"], extensionsHook('Prism'));
 
 // CONCATENATED MODULE: ./src/components/Markdown/styled.elements.tsx
 
@@ -8150,7 +8150,7 @@ var ServerRelativeURL = styled_components.span.withConfig({
 })(["font-family:", ";margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;"], function (props) { return props.theme.typography.headings.fontFamily; });
 var EndpointInfo = styled_components.div.withConfig({
     componentId: "nrhuz6-2"
-})(["padding:10px 30px 10px ", ";border-radius:", ";background-color:", ";display:flex;white-space:nowrap;align-items:center;border:", ";border-bottom:", ";transition:border-color 0.25s ease;", " .", "{color:", "}"], function (props) { return props.inverted ? '10px' : '20px'; }, function (props) { return props.inverted ? '0' : '4px 4px 0 0'; }, function (props) { return props.inverted ? 'transparent' : props.theme.codeSample.backgroundColor; }, function (props) { return props.inverted ? '0' : '1px solid transparent'; }, function (props) { return props.inverted ? '1px solid #ccc' : '0'; }, function (props) { return props.expanded && !props.inverted && "border-color: " + props.theme.colors.border.dark + ";" || ''; }, ServerRelativeURL, function (props) { return props.inverted ? props.theme.colors.text.primary : '#ffffff'; });
+})(["margin-top:-15px;padding:10px 30px 10px ", ";border-radius:", ";background-color:", ";display:flex;white-space:nowrap;align-items:center;border:", ";border-bottom:", ";border-radius:4px;transition:border-color 0.25s ease;", " .", "{color:", "}"], function (props) { return props.inverted ? '10px' : '20px'; }, function (props) { return props.inverted ? '0' : '4px 4px 0 0'; }, function (props) { return props.theme.codeSample.backgroundColor; }, function (props) { return props.inverted ? '0' : '1px solid transparent'; }, function (props) { return props.inverted ? '1px solid #ccc' : '0'; }, function (props) { return props.expanded && !props.inverted && "border-color: " + props.theme.colors.border.dark + ";" || ''; }, ServerRelativeURL, function (props) { return props.inverted ? props.theme.colors.text.primary : '#ffffff'; });
 var HttpVerb = styled_components.span.attrs(function (props) { return ({
     className: "http-verb " + props.type
 }); }).withConfig({
@@ -9174,7 +9174,7 @@ var SourceCode_SourceCodeWithCopy = /** @class */ (function (_super) {
 
 var styled_elements_MimeLabel = styled_components.div.withConfig({
     componentId: "futasu-0"
-})(["border-bottom:1px solid rgba(255,255,255,0.9);margin:0 0 10px 0;display:block;"]);
+})(["border-bottom:1px solid #c2c2c2;margin:0 0 10px 0;display:block;"]);
 var InvertedSimpleDropdown = styled_components(StyledDropdown).withConfig({
     componentId: "futasu-1"
 })(["margin-left:10px;text-transform:none;font-size:0.929em;border-bottom:1px solid ", ";margin:0 0 10px 0;display:block;.Dropdown-control,.Dropdown-control:hover{font-size:1em;border:none;padding:0 1.2em 0 0;background:transparent;color:", ";box-shadow:none;.Dropdown-arrow{border-top-color:", ";}}.Dropdown-menu{margin:0;}"], function (_a) {
@@ -9328,7 +9328,7 @@ var ResponseTitle_ResponseTitle = /** @class */ (function (_super) {
 
 var StyledResponseTitle = styled_components(ResponseTitle_ResponseTitle).withConfig({
     componentId: "sc-1kbihq-0"
-})(["padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;background-color:#f2f2f2;cursor:pointer;color:", ";background-color:", ";", ";"], function (props) { return props.theme.colors.responses[props.type].color; }, function (props) { return props.theme.colors.responses[props.type].backgroundColor; }, function (props) { return props.empty && "\ncursor: default;\n&::before {\n  content: \"\u2014\";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n}\n" || ''; });
+})(["padding:10px;border-radius:4px;margin-bottom:4px;line-height:1.5em;background-color:#f2f2f2;cursor:pointer;color:", ";background-color:", ";", ";"], function (props) { return props.theme.colors.responses[props.type].color; }, function (props) { return props.theme.colors.responses[props.type].backgroundColor; }, function (props) { return props.empty && "\ncursor: default;\n&::before {\n  content: \"\u2014\";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n}\n" || ''; });
 var ResponseDetailsWrap = styled_components.div.withConfig({
     componentId: "sc-1kbihq-1"
 })(["padding:10px;"]);
@@ -9454,37 +9454,6 @@ var ResponsesList_ResponsesList = /** @class */ (function (_super) {
 }(external_react_["PureComponent"]));
 
 
-// CONCATENATED MODULE: ./src/components/ResponseSamples/ResponseSamples.tsx
-
-
-
-
-
-var ResponseSamples_ResponseSamples = /** @class */ (function (_super) {
-    external_tslib_["__extends"](ResponseSamples, _super);
-    function ResponseSamples() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ResponseSamples.prototype.render = function () {
-        var operation = this.props.operation;
-        var responses = operation.responses.filter(function (response) {
-            return response.content && response.content.hasSample;
-        });
-        return responses.length > 0 && external_react_["createElement"]("div", null,
-            external_react_["createElement"](RightPanelHeader, null, " Response samples "),
-            external_react_["createElement"](Tabs, { defaultIndex: 0 },
-                external_react_["createElement"](external_react_tabs_["TabList"], null, responses.map(function (response) { return external_react_["createElement"](external_react_tabs_["Tab"], { className: 'tab-' + response.type, key: response.code }, response.code); })),
-                responses.map(function (response) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: response.code },
-                    external_react_["createElement"]("div", null,
-                        external_react_["createElement"](PayloadSamples_PayloadSamples, { content: response.content }))); }))) || null;
-    };
-    ResponseSamples = external_tslib_["__decorate"]([
-        external_mobx_react_["observer"]
-    ], ResponseSamples);
-    return ResponseSamples;
-}(external_react_["Component"]));
-
-
 // CONCATENATED MODULE: ./src/components/Operation/Operation.tsx
 
 
@@ -9498,8 +9467,7 @@ var ResponseSamples_ResponseSamples = /** @class */ (function (_super) {
 
 
 
-
-
+ // import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 
 var OperationRow = styled_components(Row).withConfig({
@@ -9534,11 +9502,8 @@ var Operation_Operation = /** @class */ (function (_super) {
                 external_react_["createElement"](Extensions_Extensions, { extensions: operation.extensions }),
                 external_react_["createElement"](SecurityRequirement_SecurityRequirements, { securities: operation.security }),
                 external_react_["createElement"](Parameters_Parameters, { parameters: operation.parameters, body: operation.requestBody }),
-                external_react_["createElement"](ResponsesList_ResponsesList, { responses: operation.responses })),
-            external_react_["createElement"](DarkRightPanel, null,
-                !options.pathInMiddlePanel && external_react_["createElement"](Endpoint_Endpoint, { operation: operation }),
-                external_react_["createElement"](RequestSamples_RequestSamples, { operation: operation }),
-                external_react_["createElement"](ResponseSamples_ResponseSamples, { operation: operation }))); });
+                external_react_["createElement"](ResponsesList_ResponsesList, { responses: operation.responses }),
+                external_react_["createElement"](RequestSamples_RequestSamples, { operation: operation }))); });
     };
     Operation = external_tslib_["__decorate"]([
         external_mobx_react_["observer"]
@@ -10217,6 +10182,37 @@ var RedocStandalone_RedocStandalone = /** @class */ (function (_super) {
 
 
 // CONCATENATED MODULE: ./src/components/JsonViewer/index.tsx
+
+
+// CONCATENATED MODULE: ./src/components/ResponseSamples/ResponseSamples.tsx
+
+
+
+
+
+var ResponseSamples_ResponseSamples = /** @class */ (function (_super) {
+    external_tslib_["__extends"](ResponseSamples, _super);
+    function ResponseSamples() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ResponseSamples.prototype.render = function () {
+        var operation = this.props.operation;
+        var responses = operation.responses.filter(function (response) {
+            return response.content && response.content.hasSample;
+        });
+        return responses.length > 0 && external_react_["createElement"]("div", null,
+            external_react_["createElement"](RightPanelHeader, null, " Response samples "),
+            external_react_["createElement"](Tabs, { defaultIndex: 0 },
+                external_react_["createElement"](external_react_tabs_["TabList"], null, responses.map(function (response) { return external_react_["createElement"](external_react_tabs_["Tab"], { className: 'tab-' + response.type, key: response.code }, response.code); })),
+                responses.map(function (response) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: response.code },
+                    external_react_["createElement"]("div", null,
+                        external_react_["createElement"](PayloadSamples_PayloadSamples, { content: response.content }))); }))) || null;
+    };
+    ResponseSamples = external_tslib_["__decorate"]([
+        external_mobx_react_["observer"]
+    ], ResponseSamples);
+    return ResponseSamples;
+}(external_react_["Component"]));
 
 
 // CONCATENATED MODULE: ./src/components/SideMenu/index.ts
