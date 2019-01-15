@@ -14,7 +14,7 @@ import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
-import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
+// import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
@@ -64,7 +64,7 @@ export class Operation extends React.Component<OperationProps> {
             <DarkRightPanel>
               {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
               <RequestSamples operation={operation} />
-              <ResponseSamples operation={operation} />
+              {/* <ResponseSamples operation={operation} /> */}
             </DarkRightPanel>
           </OperationRow>
         )}
