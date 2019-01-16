@@ -9,8 +9,6 @@ export const OperationEndpointWrap = styled.div`
 export const ServerRelativeURL = styled.span`
   font-family: ${props => props.theme.typography.headings.fontFamily};
   margin-left: 10px;
-  flex: 1;
-  overflow-x: hidden;
   text-overflow: ellipsis;
 `;
 
@@ -26,6 +24,7 @@ export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean 
   border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   border-radius: 4px;
   transition: border-color 0.25s ease;
+  width: fit-content;
 
   ${props =>
     (props.expanded && !props.inverted && `border-color: ${props.theme.colors.border.dark};`) || ''}
@@ -50,12 +49,12 @@ export const HttpVerb = styled.span.attrs((props: { type: string }) => ({
 
 export const ServersOverlay = styled.div<{ expanded: boolean }>`
   position: absolute;
-  width: 100%;
+  width: fit-content;
   z-index: 100;
   background: #fafafa;
   color: #263238;
   box-sizing: border-box;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.33);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.33);
   overflow: hidden;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
