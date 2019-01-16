@@ -4484,7 +4484,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "3865371"));
+                    "0a01a71"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -8147,10 +8147,10 @@ var OperationEndpointWrap = styled_components.div.withConfig({
 })(["cursor:pointer;position:relative;margin-bottom:5px;"]);
 var ServerRelativeURL = styled_components.span.withConfig({
     componentId: "nrhuz6-1"
-})(["font-family:", ";margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;"], function (props) { return props.theme.typography.headings.fontFamily; });
+})(["font-family:", ";margin-left:10px;text-overflow:ellipsis;"], function (props) { return props.theme.typography.headings.fontFamily; });
 var EndpointInfo = styled_components.div.withConfig({
     componentId: "nrhuz6-2"
-})(["margin-top:-15px;padding:10px 30px 10px ", ";border-radius:", ";background-color:", ";display:flex;white-space:nowrap;align-items:center;border:", ";border-bottom:", ";border-radius:4px;transition:border-color 0.25s ease;", " .", "{color:", "}"], function (props) { return props.inverted ? '10px' : '20px'; }, function (props) { return props.inverted ? '0' : '4px 4px 0 0'; }, function (props) { return props.theme.codeSample.backgroundColor; }, function (props) { return props.inverted ? '0' : '1px solid transparent'; }, function (props) { return props.inverted ? '1px solid #ccc' : '0'; }, function (props) { return props.expanded && !props.inverted && "border-color: " + props.theme.colors.border.dark + ";" || ''; }, ServerRelativeURL, function (props) { return props.inverted ? props.theme.colors.text.primary : '#ffffff'; });
+})(["margin-top:-15px;padding:10px 30px 10px ", ";border-radius:", ";background-color:", ";display:flex;white-space:nowrap;align-items:center;border:", ";border-bottom:", ";border-radius:4px;transition:border-color 0.25s ease;width:fit-content;", " .", "{color:", "}"], function (props) { return props.inverted ? '10px' : '20px'; }, function (props) { return props.inverted ? '0' : '4px 4px 0 0'; }, function (props) { return props.theme.codeSample.backgroundColor; }, function (props) { return props.inverted ? '0' : '1px solid transparent'; }, function (props) { return props.inverted ? '1px solid #ccc' : '0'; }, function (props) { return props.expanded && !props.inverted && "border-color: " + props.theme.colors.border.dark + ";" || ''; }, ServerRelativeURL, function (props) { return props.inverted ? props.theme.colors.text.primary : '#ffffff'; });
 var HttpVerb = styled_components.span.attrs(function (props) { return ({
     className: "http-verb " + props.type
 }); }).withConfig({
@@ -8158,7 +8158,7 @@ var HttpVerb = styled_components.span.attrs(function (props) { return ({
 })(["font-size:0.929em;line-height:20px;background-color:", ";color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:", ";margin:0;"], function (props) { return props.theme.colors.http[props.type] || '#999999'; }, function (props) { return props.theme.typography.headings.fontFamily; });
 var ServersOverlay = styled_components.div.withConfig({
     componentId: "nrhuz6-4"
-})(["position:absolute;width:100%;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0px 0px 6px rgba(0,0,0,0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;", ""], function (props) { return props.expanded ? '' : 'transform: translateY(-50%) scaleY(0);'; });
+})(["position:absolute;width:fit-content;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0px 2px 2px rgba(0,0,0,0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;", ""], function (props) { return props.expanded ? '' : 'transform: translateY(-50%) scaleY(0);'; });
 var ServerItem = styled_components.div.withConfig({
     componentId: "nrhuz6-5"
 })(["padding:10px;"]);
@@ -9331,7 +9331,7 @@ var StyledResponseTitle = styled_components(ResponseTitle_ResponseTitle).withCon
 })(["padding:10px;border-radius:4px;margin-bottom:4px;line-height:1.5em;background-color:#f8f8f8;cursor:pointer;color:", ";", ";"], function (props) { return props.theme.colors.responses[props.type].color; }, function (props) { return props.empty && "\ncursor: default;\n&::before {\n  content: \"\u2014\";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n}\n" || ''; });
 var ResponseDetailsWrap = styled_components.div.withConfig({
     componentId: "sc-1kbihq-1"
-})(["padding:10px;"]);
+})([""]);
 var HeadersCaption = styled_components(UnderlinedHeader.withComponent('caption')).withConfig({
     componentId: "sc-1kbihq-2"
 })(["text-align:left;margin-top:1em;caption-side:top;"]);
@@ -9411,13 +9411,11 @@ var Response_ResponseView = /** @class */ (function (_super) {
         return _this;
     }
     ResponseView.prototype.render = function () {
-        var _a = this.props.response, headers = _a.headers, type = _a.type, summary = _a.summary, description = _a.description, code = _a.code, expanded = _a.expanded, content = _a.content;
+        var _a = this.props.response, headers = _a.headers, description = _a.description, code = _a.code, content = _a.content;
         var mimes = content === undefined ? [] : content.mediaTypes.filter(function (mime) { return mime.schema !== undefined; });
         var empty = headers.length === 0 && mimes.length === 0 && !description;
-        return external_react_["createElement"]("div", null,
-            external_react_["createElement"](StyledResponseTitle, { onClick: this.toggle, type: type, empty: empty, title: summary || '', code: code, opened: expanded }),
-            expanded && !empty && external_react_["createElement"](ResponseDetailsWrap, null,
-                external_react_["createElement"](ResponseDetails_ResponseDetails, { response: this.props.response })));
+        return external_react_["createElement"]("div", null, code === '200' && !empty && external_react_["createElement"](ResponseDetailsWrap, null,
+            external_react_["createElement"](ResponseDetails_ResponseDetails, { response: this.props.response })));
     };
     ResponseView = external_tslib_["__decorate"]([
         external_mobx_react_["observer"]
@@ -9430,10 +9428,6 @@ var Response_ResponseView = /** @class */ (function (_super) {
 
 
 
-
-var ResponsesHeader = styled_components.h3.withConfig({
-    componentId: "zr04gj-0"
-})(["font-size:18px;padding:0.2em 0;margin:3em 0 1.1em;color:#253137;font-weight:normal;"]);
 var ResponsesList_ResponsesList = /** @class */ (function (_super) {
     external_tslib_["__extends"](ResponsesList, _super);
     function ResponsesList() {
@@ -9444,11 +9438,9 @@ var ResponsesList_ResponsesList = /** @class */ (function (_super) {
         if (!responses || responses.length === 0) {
             return null;
         }
-        return external_react_["createElement"]("div", null,
-            external_react_["createElement"](ResponsesHeader, null, " Responses "),
-            responses.map(function (response) {
-                return external_react_["createElement"](Response_ResponseView, { key: response.code, response: response });
-            }));
+        return external_react_["createElement"]("div", null, responses.map(function (response) {
+            return external_react_["createElement"](Response_ResponseView, { key: response.code, response: response });
+        }));
     };
     return ResponsesList;
 }(external_react_["PureComponent"]));
@@ -9783,7 +9775,6 @@ var MenuItems_MenuItems = /** @class */ (function (_super) {
 
 
 
-
 var SideMenu_SideMenu = /** @class */ (function (_super) {
     external_tslib_["__extends"](SideMenu, _super);
     function SideMenu() {
@@ -9806,9 +9797,7 @@ var SideMenu_SideMenu = /** @class */ (function (_super) {
         return external_react_["createElement"](PerfectScrollbarWrap, { updateFn: this.saveScrollUpdate, className: this.props.className, options: {
                 wheelPropagation: false
             } },
-            external_react_["createElement"](MenuItems_MenuItems, { items: store.items, onActivate: this.activate, root: true }),
-            external_react_["createElement"](RedocAttribution, null,
-                external_react_["createElement"]("a", { target: "_blank", href: "https://github.com/Rebilly/ReDoc" }, "Documentation Powered by ReDoc")));
+            external_react_["createElement"](MenuItems_MenuItems, { items: store.items, onActivate: this.activate, root: true }));
     };
     SideMenu = external_tslib_["__decorate"]([
         external_mobx_react_["observer"]

@@ -29,9 +29,7 @@ cursor: default;
     ''};
 `;
 
-export const ResponseDetailsWrap = styled.div`
-  padding: 10px;
-`;
+export const ResponseDetailsWrap = styled.div``;
 
 export const HeadersCaption = styled(UnderlinedHeader.withComponent('caption'))`
   text-align: left;
