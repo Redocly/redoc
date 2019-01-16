@@ -3997,7 +3997,7 @@ var defaultTheme = {
         smoothing: 'antialiased',
         optimizeSpeed: true,
         headings: {
-            fontFamily: 'Montserrat, sans-serif',
+            fontFamily: 'Arial',
             fontWeight: '400'
         },
         code: {
@@ -4484,7 +4484,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "c056c81"));
+                    "3865371"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -9328,7 +9328,7 @@ var ResponseTitle_ResponseTitle = /** @class */ (function (_super) {
 
 var StyledResponseTitle = styled_components(ResponseTitle_ResponseTitle).withConfig({
     componentId: "sc-1kbihq-0"
-})(["padding:10px;border-radius:4px;margin-bottom:4px;line-height:1.5em;background-color:#f2f2f2;cursor:pointer;color:", ";background-color:", ";", ";"], function (props) { return props.theme.colors.responses[props.type].color; }, function (props) { return props.theme.colors.responses[props.type].backgroundColor; }, function (props) { return props.empty && "\ncursor: default;\n&::before {\n  content: \"\u2014\";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n}\n" || ''; });
+})(["padding:10px;border-radius:4px;margin-bottom:4px;line-height:1.5em;background-color:#f8f8f8;cursor:pointer;color:", ";", ";"], function (props) { return props.theme.colors.responses[props.type].color; }, function (props) { return props.empty && "\ncursor: default;\n&::before {\n  content: \"\u2014\";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n}\n" || ''; });
 var ResponseDetailsWrap = styled_components.div.withConfig({
     componentId: "sc-1kbihq-1"
 })(["padding:10px;"]);

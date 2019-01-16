@@ -9,11 +9,10 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   border-radius: 4px;
   margin-bottom: 4px;
   line-height: 1.5em;
-  background-color: #f2f2f2;
+  background-color: #f8f8f8;
   cursor: pointer;
 
   color: ${props => props.theme.colors.responses[props.type].color};
-  background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
 
   ${props =>
     (props.empty &&

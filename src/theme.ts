@@ -99,7 +99,7 @@ const defaultTheme: ThemeInterface = {
     smoothing: 'antialiased',
     optimizeSpeed: true,
     headings: {
-      fontFamily: 'Montserrat, sans-serif',
+      fontFamily: 'Arial',
       fontWeight: '400',
     },
     code: {
