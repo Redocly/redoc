@@ -67,7 +67,7 @@ export class OpenAPIParser {
       throw new Error('OpenAPI 3.0.0 requires an `info` section');
     }
     if (spec.info.version === undefined) {
-      console.warn('OpenAPI 3.0.0 requires setting a `info.version` field, ignoring.')
+      console.warn('OpenAPI 3.0.0 requires setting a `info.version` field, ignoring.');
     }
   }
 
