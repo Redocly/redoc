@@ -63,12 +63,6 @@ export class OpenAPIParser {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
     }
-    if (spec.info === undefined) {
-      throw new Error('OpenAPI 3.0.0 requires an `info` section');
-    }
-    if (spec.info.version === undefined) {
-      console.warn('OpenAPI 3.0.0 requires setting a `info.version` field, ignoring.');
-    }
   }
 
   preprocess(spec: OpenAPISpec) {
