@@ -58,8 +58,15 @@ export const PatternLabel = styled(FieldLabel)`
   color: #3195a6;
   &::before,
   &::after {
-    content: '/';
     font-weight: bold;
+  }
+
+  &::before {
+    content: ' /';
+  }
+
+  &::after {
+    content: '/ ';
   }
 `;
 
