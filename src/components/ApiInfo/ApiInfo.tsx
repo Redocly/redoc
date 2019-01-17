@@ -70,12 +70,18 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       )) ||
       null;
 
+    const version =
+      (info.version && (
+        <span>({info.version})</span>
+      )) ||
+      null;
+
     return (
       <Section>
         <Row>
           <MiddlePanel className="api-info">
             <ApiHeader>
-              {info.title} <span>({info.version})</span>
+              {info.title} {version}
             </ApiHeader>
             {!hideDownloadButton && (
               <p>
