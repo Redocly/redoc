@@ -18,7 +18,7 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
 
 export const FieldLabel = styled.span`
   vertical-align: middle;
-  font-size: 0.929em;
+  font-size: ${({ theme }) => theme.typography.code.fontSize};
   line-height: 20px;
 `;
 
@@ -79,6 +79,8 @@ export const ExampleValue = styled(FieldLabel)`
     margin: ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
+    font-family: ${theme.typography.code.fontFamily};
+    color: ${theme.typography.code.color};
 }`};
   & + & {
     margin-left: 0;
