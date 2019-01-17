@@ -1,3 +1,15 @@
+# [2.0.0-rc.1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2019-01-17)
+
+
+### Bug Fixes
+
+* allow docker container serving under non-root URLs ([#731](https://github.com/Rebilly/ReDoc/issues/731)) ([cfb6f0f](https://github.com/Rebilly/ReDoc/commit/cfb6f0f)), closes [#730](https://github.com/Rebilly/ReDoc/issues/730)
+* make example/defaults badge consistent with code blocks ([fa39ce4](https://github.com/Rebilly/ReDoc/commit/fa39ce4))
+* pattern constrain spacing ([c7436f2](https://github.com/Rebilly/ReDoc/commit/c7436f2))
+* sidebar navigation issues when scrollYOffset is float number ([c04f387](https://github.com/Rebilly/ReDoc/commit/c04f387)), closes [#748](https://github.com/Rebilly/ReDoc/issues/748)
+
+
+
 # [2.0.0-rc.0](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.41...v2.0.0-rc.0) (2018-11-27)
 
 
