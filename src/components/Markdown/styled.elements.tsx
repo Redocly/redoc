@@ -82,7 +82,7 @@ export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
     white-space:${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: #263238;
     color: white;
-    padding: 12px 14px 15px 14px;
+    padding: ${props => props.theme.spacing.unit * 4}px;
     overflow-x: auto;
     line-height: normal;
     border-radius: 0px
