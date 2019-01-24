@@ -26,6 +26,7 @@ interface Options {
   output?: string;
   title?: string;
   templateFileName?: string;
+  templateOptions?: any;
   redocOptions?: any;
 }
 
@@ -65,6 +66,7 @@ YargsParser.command(
       ssr: argv.ssr,
       watch: argv.watch,
       templateFileName: argv.template,
+      templateOptions: argv.templateOptions || {},
       redocOptions: argv.options || {},
     };
 
@@ -112,6 +114,7 @@ YargsParser.command(
         cdn: argv.cdn,
         title: argv.title,
         templateFileName: argv.template,
+        templateOptions: argv.templateOptions || {},
         redocOptions: argv.options || {},
       };
 
@@ -127,6 +130,9 @@ YargsParser.command(
     alias: 'template',
     describe: 'Path to handlebars page template, see https://git.io/vh8fP for the example ',
     type: 'string',
+  })
+  .options('templateOptions', {
+    describe: 'Additional options that you want pass to template. Use dot notation, e.g. templateOptions.metaDescription',
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
@@ -207,7 +213,7 @@ async function bundle(pathToSpec, options: Options = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
+  { ssr, cdn, title, templateFileName, templateOptions, redocOptions = {} }: Options,
 ) {
   let html;
   let css;
@@ -241,15 +247,16 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-    };
+      };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+      ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+      : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
+    templateOptions,
   });
 }
 
