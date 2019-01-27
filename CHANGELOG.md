@@ -1,3 +1,14 @@
+# [2.0.0-rc.2](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2019-01-27)
+
+
+### Bug Fixes
+
+* make padding for md code blocks and code samples consistent ([007752d](https://github.com/Rebilly/ReDoc/commit/007752d))
+* make syntax highlighting for md js code blocks same as for payload samples ([d197c0f](https://github.com/Rebilly/ReDoc/commit/d197c0f))
+* Only display API version if present ([#773](https://github.com/Rebilly/ReDoc/issues/773)) ([fb3cb36](https://github.com/Rebilly/ReDoc/commit/fb3cb36))
+
+
+
 # [2.0.0-rc.1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2019-01-17)
 
 
