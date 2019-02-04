@@ -61,15 +61,17 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
+    const port = Number(argv.port);
+    const spec = String(argv.spec);
     const config = {
-      ssr: argv.ssr,
-      watch: argv.watch,
-      templateFileName: argv.template,
+      ssr: Boolean(argv.ssr),
+      watch: Boolean(argv.watch),
+      templateFileName: String(argv.template),
       redocOptions: argv.options || {},
     };
 
     try {
-      await serve(argv.port, argv.spec, config);
+      await serve(port, spec, config);
     } catch (e) {
       handleError(e);
     }
@@ -108,10 +110,10 @@ YargsParser.command(
     async argv => {
       const config = {
         ssr: true,
-        output: argv.o,
-        cdn: argv.cdn,
-        title: argv.title,
-        templateFileName: argv.template,
+        output: String(argv.o),
+        cdn: Boolean(argv.cdn),
+        title: String(argv.title),
+        templateFileName: String(argv.template),
         redocOptions: argv.options || {},
       };
 
