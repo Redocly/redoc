@@ -8,7 +8,6 @@ export const RedocWrap = styled.div`
   line-height: ${theme.typography.lineHeight};
   color: ${theme.colors.text.primary};
   display: flex;
-  position: relative;
   text-align: left;
 
   -webkit-font-smoothing: ${theme.typography.smoothing};
@@ -43,10 +42,11 @@ export const BackgroundStub = styled.div`
   top: 0;
   bottom: 0;
   right: 0;
+  z-index: -1;
   width: ${({ theme }) => {
     if (theme.rightPanel.width.endsWith('%')) {
       const percents = parseInt(theme.rightPanel.width, 10);
-      return `calc((100% - ${theme.menu.width}) * ${percents / 100})`;
+      return `calc(100% * ${percents / 100})`;
     } else {
       return theme.rightPanel.width;
     }

@@ -7,11 +7,13 @@ import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 const EVENT = 'scroll';
 
 export class ScrollService {
-  private _scrollParent: Window | HTMLElement | undefined;
+  private _scrollParent: Window | HTMLElement | Element | null | undefined;
   private _emiter: EventEmitter;
   private _prevOffsetY: number = 0;
+  private _redocContainer: Window | HTMLElement | Element | null | undefined;
   constructor(private options: RedocNormalizedOptions) {
-    this._scrollParent = IS_BROWSER ? window : undefined;
+    const browserContainer = options.parentElement || window;
+    this._scrollParent = IS_BROWSER ? browserContainer : undefined;
     this._emiter = new EventEmitter();
     this.bind();
   }
@@ -31,8 +33,8 @@ export class ScrollService {
   }
 
   scrollY(): number {
-    if (typeof HTMLElement !== 'undefined' && this._scrollParent instanceof HTMLElement) {
-      return this._scrollParent.scrollTop;
+    if (typeof HTMLElement !== 'undefined' && this._scrollParent instanceof Element && this._redocContainer instanceof Element) {
+      return this._scrollParent.getBoundingClientRect().top - this._redocContainer.getBoundingClientRect().top;
     } else if (this._scrollParent !== undefined) {
       return (this._scrollParent as Window).pageYOffset;
     } else {
@@ -44,12 +46,21 @@ export class ScrollService {
     if (el === null) {
       return;
     }
+    if (this._scrollParent instanceof Element) {
+      return el.getBoundingClientRect().top - this._scrollParent.getBoundingClientRect().top > this.options.scrollYOffset();
+    }
+
     return el.getBoundingClientRect().top > this.options.scrollYOffset();
   }
 
   isElementAbove(el: Element | null) {
     if (el === null) {
       return;
+    }
+
+    if (this._scrollParent instanceof Element) {
+      const topDistance = el.getBoundingClientRect().top - this._scrollParent.getBoundingClientRect().top;
+      return (topDistance > 0 ? Math.floor(topDistance) : Math.ceil(topDistance)) <= this.options.scrollYOffset();
     }
     const top = el.getBoundingClientRect().top;
     return (top > 0 ? Math.floor(top) : Math.ceil(top)) <= this.options.scrollYOffset();
@@ -74,6 +85,11 @@ export class ScrollService {
   scrollIntoViewBySelector(selector: string) {
     const element = querySelector(selector);
     this.scrollIntoView(element);
+  }
+
+  @bind
+  setRedocElement(node: HTMLDivElement) {
+    this._redocContainer = node;
   }
 
   @bind

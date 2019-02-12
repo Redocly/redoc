@@ -20,6 +20,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  parentElementSelector?: string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -106,6 +107,22 @@ export class RedocNormalizedOptions {
     return value;
   }
 
+  static normalizeParentElementSelector(value: RedocRawOptions['parentElementSelector']): Element | null {
+    if (typeof value === 'string') {
+      try {
+        return querySelector(value);
+      } catch (e) {
+        console.warn(
+          'Invalid selector for parent element.',
+        );
+      }
+
+      return null;
+    }
+
+    return null;
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
@@ -120,6 +137,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  parentElement: Element | null;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -147,6 +165,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.parentElement = RedocNormalizedOptions.normalizeParentElementSelector(raw.parentElementSelector);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

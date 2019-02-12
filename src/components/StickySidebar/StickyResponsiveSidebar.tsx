@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 
 import { MenuStore } from '../../services/MenuStore';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
@@ -66,9 +67,10 @@ const FloatingButton = styled.div`
   `};
 
   bottom: 44px;
+  box-sizing: content-box;
 
-  width: 60px;
   height: 60px;
+  width: 20px;
   padding: 0 20px;
 
   @media print {
@@ -76,11 +78,101 @@ const FloatingButton = styled.div`
   }
 `;
 
+
+export interface FloatingButtonProps {
+  onClick?: () => void;
+  parentElement: Element;
+}
+
+@observer
+class PortaledFloatingButton extends React.Component<FloatingButtonProps> {
+  portalRoot: HTMLElement;
+  floatingButtonRef: HTMLElement;
+
+  constructor(props) {
+    super(props);
+    this.portalRoot = document.createElement('div');
+    this.portalRoot.classList.add('portalled-element');
+  }
+
+
+
+  private setFloatingButtonRef = (node) => {
+    this.floatingButtonRef = node;
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.portalRoot);
+  }
+
+  componentDidMount() {
+    const { parentElement } = this.props;
+
+    document.body.appendChild(this.portalRoot);
+    this.floatingButtonRef.style.top = `${parentElement.getBoundingClientRect().bottom - 88}px`;
+    this.floatingButtonRef.style.left = `${parentElement.getBoundingClientRect().right - 88}px`;
+  }
+
+  render() {
+    return createPortal(
+      <FloatingButton ref={this.setFloatingButtonRef} {...this.props} />,
+      this.portalRoot,
+    );
+  }
+}
+
+@observer
+class PortaledStickySidebar extends React.Component<FloatingButtonProps> {
+  portalRoot: HTMLElement;
+  stickySidebarRef: HTMLElement;
+
+  constructor(props) {
+    super(props);
+    this.portalRoot = document.createElement('div');
+    this.portalRoot.classList.add('portalled-element');
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.portalRoot);
+  }
+
+  private setStickySidebarRef = (node) => {
+    this.stickySidebarRef = node;
+  }
+
+  componentDidMount() {
+    const { parentElement } = this.props;
+
+    document.body.appendChild(this.portalRoot);
+    this.stickySidebarRef.style.top = `${parentElement.getBoundingClientRect().top}px`;
+    this.stickySidebarRef.style.left = `${parentElement.getBoundingClientRect().left}px`;
+    this.stickySidebarRef.style.width = `${parentElement.clientWidth}px`;
+    this.stickySidebarRef.style.zIndex = '99';
+  }
+
+  render() {
+    return createPortal(
+      <StyledStickySidebar ref={this.setStickySidebarRef} {...this.props} />,
+      this.portalRoot,
+    );
+  }
+}
+
 @observer
 export class StickyResponsiveSidebar extends React.Component<StickySidebarProps> {
   stickyElement: Element;
+  portalRoot: Element;
+
+  constructor(props) {
+    super(props);
+    this.portalRoot = document.createElement('div');
+    this.portalRoot.classList.add('portalled-element');
+
+  }
 
   componentDidMount() {
+    document.body.appendChild(this.portalRoot);
+
     if (stickyfill) {
       stickyfill.add(this.stickyElement);
     }
@@ -102,37 +194,52 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
     return top + 'px';
   }
 
-  render() {
-    const open = this.props.menu.sideBarOpened;
-
-    const style = options => {
+  getSidebarStyles = options => {
+    if (options.parentElement instanceof Element) {
+      return {
+        height: options.parentElement.offsetHeight,
+      };
+    } else {
       const top = this.getScrollYOffset(options);
       return {
         top,
         height: `calc(100vh - ${top})`,
       };
-    };
+    }
+  }
+
+  setStickyElementRef = el => {
+    this.stickyElement = el as any;
+  }
+
+  render() {
+    const open = this.props.menu.sideBarOpened;
 
     return (
       <OptionsContext.Consumer>
-        {options => (
-          <>
-            <StyledStickySidebar
-              open={open}
-              className={this.props.className}
-              style={style(options)}
-              // tslint:disable-next-line
-              ref={el => {
-                this.stickyElement = el as any;
-              }}
-            >
-              {this.props.children}
-            </StyledStickySidebar>
-            <FloatingButton onClick={this.toggleNavMenu}>
-              <AnimatedChevronButton open={open} />
-            </FloatingButton>
-          </>
-        )}
+        {options => {
+          const CondFloating = options.parentElement ? PortaledFloatingButton :
+            FloatingButton;
+          const CondSidebar = options.parentElement && window.innerWidth < 800 ? PortaledStickySidebar :
+            StyledStickySidebar;
+
+          return (
+            <>
+              <CondSidebar
+                open={open}
+                className={this.props.className}
+                style={this.getSidebarStyles(options)}
+                ref={this.setStickyElementRef}
+                parentElement={options.parentElement}
+              >
+                {this.props.children}
+              </CondSidebar>
+              <CondFloating onClick={this.toggleNavMenu} parentElement={options.parentElement}>
+                <AnimatedChevronButton open={open} />
+              </CondFloating>
+            </>
+          )
+        }}
       </OptionsContext.Consumer>
     );
   }
