@@ -21,8 +21,8 @@ function htmlEncode(t) {
     : '';
 }
 
-function escapeStringQuotes(str: string) {
-  return str.replace(/"/g, '\\"');
+function escapeForStringLiteral(str: string) {
+  return str.replace(/([\\"])/g, '\\$1');
 }
 
 function decorateWithSpan(value, className) {
@@ -57,11 +57,11 @@ function valueToHTML(value) {
         '<a href="' +
         value +
         '">' +
-        htmlEncode(escapeStringQuotes(value)) +
+        htmlEncode(escapeForStringLiteral(value)) +
         '</a>' +
         decorateWithSpan('"', 'token string');
     } else {
-      output += decorateWithSpan('"' + escapeStringQuotes(value) + '"', 'token string');
+      output += decorateWithSpan('"' + escapeForStringLiteral(value) + '"', 'token string');
     }
   } else if (valueType === 'boolean') {
     output += decorateWithSpan(value, 'token boolean');
