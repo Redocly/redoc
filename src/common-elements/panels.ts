@@ -17,6 +17,10 @@ export const Section = styled.div.attrs(props => ({
 }))<{ underlined?: boolean }>`
   padding: ${props => props.theme.spacing.sectionVertical}px 0;
 
+  &:last-child {
+    min-height: calc(100vh + 1px);
+  }
+
   ${media.lessThan('medium', true)`
     padding: 0;
   `}
