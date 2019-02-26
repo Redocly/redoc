@@ -30,7 +30,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             <TabList>
               {hasBodySample && <Tab key="payload"> Payload </Tab>}
               {samples.map(sample => (
-                <Tab key={sample.lang}>
+                <Tab key={sample.lang + '_' + (sample.label || '')}>
                   {sample.label !== undefined ? sample.label : sample.lang}
                 </Tab>
               ))}
