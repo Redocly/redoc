@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
+import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
+
 import { IMenuItem, MenuStore } from '../../services/MenuStore';
 import { MenuItems } from './MenuItems';
-
-import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import { RedocAttribution } from './styled.elements';
 
 @observer
@@ -21,10 +21,10 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
           wheelPropagation: false,
         }}
       >
-        <MenuItems items={store.items} onActivate={this.activate} root={true} />
+        <MenuItems items={store.items} onActivate={this.activate} root={true}/>
         <RedocAttribution>
-          <a target="_blank" href="https://github.com/Rebilly/ReDoc">
-            Documentation Powered by ReDoc
+          <a target="_blank" href="https://www.opentext.com/">
+            © Copyright 2019 OpenText Corp
           </a>
         </RedocAttribution>
       </PerfectScrollbarWrap>
