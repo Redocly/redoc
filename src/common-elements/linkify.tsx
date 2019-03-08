@@ -5,6 +5,10 @@ import styled, { css } from '../styled-components';
 
 import { HistoryService } from '../services';
 
+export const StyledLink = styled.a`
+  text-decoration: none;
+`;
+
 // tslint:disable-next-line
 export const linkifyMixin = className => css`
   ${className} {

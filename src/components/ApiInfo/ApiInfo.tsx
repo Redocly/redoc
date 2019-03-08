@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { LinkWrap } from '../../../src/components/SearchBox/styled.elements';
+import { StyledLink } from '../../../src/common-elements';
 
 import { AppStore } from '../../services/AppStore';
 
@@ -39,7 +39,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
     const license =
       (info.license && (
         <InfoSpan>
-          License: <LinkWrap href={info.license.url}>{info.license.name}</LinkWrap>
+          License: <StyledLink href={info.license.url}>{info.license.name}</StyledLink>
         </InfoSpan>
       )) ||
       null;
@@ -48,7 +48,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       (info.contact &&
         info.contact.url && (
           <InfoSpan>
-            URL: <LinkWrap href={info.contact.url}>{info.contact.url}</LinkWrap>
+            URL: <StyledLink href={info.contact.url}>{info.contact.url}</StyledLink>
           </InfoSpan>
         )) ||
       null;
@@ -58,7 +58,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
         info.contact.email && (
           <InfoSpan>
             {info.contact.name || 'E-mail'}:{' '}
-            <LinkWrap href={'mailto:' + info.contact.email}>{info.contact.email}</LinkWrap>
+            <StyledLink href={'mailto:' + info.contact.email}>{info.contact.email}</StyledLink>
           </InfoSpan>
         )) ||
       null;
@@ -66,7 +66,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
     const terms =
       (info.termsOfService && (
         <InfoSpan>
-          <LinkWrap href={info.termsOfService}>Terms of Service</LinkWrap>
+          <StyledLink href={info.termsOfService}>Terms of Service</StyledLink>
         </InfoSpan>
       )) ||
       null;

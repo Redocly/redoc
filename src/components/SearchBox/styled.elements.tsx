@@ -7,10 +7,6 @@ export const SearchWrap = styled.div`
   padding: 5px 0;
 `;
 
-export const LinkWrap = styled.a`
-  text-decoration: none;
-`;
-
 export const SearchInput = styled.input.attrs(() => ({
   className: 'search-input',
 }))`
