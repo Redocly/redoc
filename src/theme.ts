@@ -141,7 +141,7 @@ const defaultTheme: ThemeInterface = {
     maxWidth: ({menu}) => menu.width,
   },
   rightPanel: {
-    backgroundColor: '#263238',
+    backgroundColor: '#3C3C3C',
     width: '40%',
     textColor: '#ffffff',
   },
