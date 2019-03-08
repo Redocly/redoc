@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { LinkWrap } from '../../../src/components/SearchBox/styled.elements';
 
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 
@@ -23,9 +24,9 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
       >
         <MenuItems items={store.items} onActivate={this.activate} root={true}/>
         <RedocAttribution>
-          <a target="_blank" href="https://www.opentext.com/">
+          <LinkWrap href="https://www.opentext.com/" target={'_blank'}>
             © Copyright 2019 OpenText Corp
-          </a>
+          </LinkWrap>
         </RedocAttribution>
       </PerfectScrollbarWrap>
     );

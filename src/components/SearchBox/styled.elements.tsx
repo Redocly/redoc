@@ -1,11 +1,14 @@
-import * as React from 'react';
-
 import { darken } from 'polished';
+import * as React from 'react';
 import styled from '../../styled-components';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
 export const SearchWrap = styled.div`
   padding: 5px 0;
+`;
+
+export const LinkWrap = styled.a`
+  text-decoration: none;
 `;
 
 export const SearchInput = styled.input.attrs(() => ({
@@ -17,10 +20,9 @@ export const SearchInput = styled.input.attrs(() => ({
   padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
     ${props => props.theme.spacing.unit * 4}px;
   border: 0;
-  border-bottom: 1px solid ${({ theme }) => darken(0.1, theme.menu.backgroundColor)};
-  font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-weight: bold;
-  font-size: 13px;
+  border-bottom: 1px solid ${({theme}) => darken(0.1, theme.menu.backgroundColor)};
+  font-family: ${({theme}) => theme.typography.fontFamily};
+  font-size: 1em;
   color: ${props => props.theme.menu.textColor};
   background-color: transparent;
   outline: none;
@@ -28,14 +30,23 @@ export const SearchInput = styled.input.attrs(() => ({
 
 export const SearchIcon = styled((props: { className?: string }) => (
   <svg
-    className={props.className}
     version="1.1"
-    viewBox="0 0 1000 1000"
-    x="0px"
+    id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"
+    x="0px"
     y="0px"
+    className={props.className}
+    viewBox="0 0 24 24"
+    xmlSpace="preserve"
   >
-    <path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z" />
+    <g>
+      <path
+        className="st0"
+        d="M22.7,21.5l-5.1-5c1.5-1.7,2.4-4,2.4-6.5c0-5.5-4.5-10-10-10S0,4.5,0,10s4.5,10,10,10c2.3,0,4.4-0.8,6.1-2.1
+		l5.2,5.1c0.2,0.2,0.4,0.3,0.7,0.3c0.3,0,0.5-0.1,0.7-0.3C23.1,22.5,23.1,21.9,22.7,21.5z M10,18c-4.4,0-8-3.6-8-8s3.6-8,8-8
+		s8,3.6,8,8S14.4,18,10,18z"
+      />
+    </g>
   </svg>
 )).attrs({
   className: 'search-icon',
