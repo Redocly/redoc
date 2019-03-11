@@ -1,4 +1,5 @@
 import styled from '../styled-components';
+import { PrismDiv } from './PrismDiv';
 
 export const SampleControls = styled.div`
   opacity: 0.4;
@@ -20,4 +21,13 @@ export const SampleControlsWrap = styled.div`
   &:hover ${SampleControls} {
     opacity: 1;
   }
+`;
+
+export const StyledPre = styled(PrismDiv.withComponent('pre'))`
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: ${props => props.theme.typography.code.fontSize};
+  overflow-x: auto;
+  margin: 0;
+
+  white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
 `;
