@@ -134,7 +134,6 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
           loader: 'css-loader',
           options: {
             sourceMap: false,
-            minimize: true,
           },
         },
       },
