@@ -57,8 +57,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       env.playground
         ? 'playground/hmr-playground.tsx'
         : env.bench
-          ? '../benchmark/index.tsx'
-          : 'index.tsx',
+        ? '../benchmark/index.tsx'
+        : 'index.tsx',
     ),
   ],
   output: {
@@ -77,6 +77,12 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias:
+      mode !== 'production'
+        ? {
+            'react-dom': '@hot-loader/react-dom',
+          }
+        : {},
   },
 
   node: {
@@ -105,7 +111,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
           loader: 'css-loader',
           options: {
             sourceMap: true,
-            minimize: true,
           },
         },
       },
@@ -136,8 +141,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       template: env.playground
         ? 'demo/playground/index.html'
         : env.bench
-          ? 'benchmark/index.html'
-          : 'demo/index.html',
+        ? 'benchmark/index.html'
+        : 'demo/index.html',
     }),
     new ForkTsCheckerWebpackPlugin(),
     ignore(/js-yaml\/dumper\.js$/),

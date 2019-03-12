@@ -2,11 +2,9 @@ import * as React from 'react';
 
 import { SmallTabs, Tab, TabList, TabPanel } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
-import { JsonViewer } from '../JsonViewer/JsonViewer';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
-import { NoSampleLabel } from './styled.elements';
 
-import { isJsonLike, langFromMime } from '../../utils';
+import { Example } from './Example';
+import { NoSampleLabel } from './styled.elements';
 
 export interface PayloadSamplesProps {
   mediaType: MediaTypeModel;
@@ -18,13 +16,6 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
     const mimeType = this.props.mediaType.name;
 
     const noSample = <NoSampleLabel>No sample</NoSampleLabel>;
-    const sampleView = isJsonLike(mimeType)
-      ? sample => <JsonViewer data={sample} />
-      : sample =>
-          (sample !== undefined && (
-            <SourceCodeWithCopy lang={langFromMime(mimeType)} source={sample} />
-          )) ||
-          noSample;
 
     const examplesNames = Object.keys(examples);
     if (examplesNames.length === 0) {
@@ -39,13 +30,19 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
             ))}
           </TabList>
           {examplesNames.map(name => (
-            <TabPanel key={name}>{sampleView(examples[name].value)}</TabPanel>
+            <TabPanel key={name}>
+              <Example example={examples[name]} mimeType={mimeType} />
+            </TabPanel>
           ))}
         </SmallTabs>
       );
     } else {
       const name = examplesNames[0];
-      return <div>{sampleView(examples[name].value)}</div>;
+      return (
+        <div>
+          <Example example={examples[name]} mimeType={mimeType} />
+        </div>
+      );
     }
   }
 }
