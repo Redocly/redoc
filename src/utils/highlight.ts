@@ -65,7 +65,7 @@ export function mapLang(lang: string): string {
  * Highlight source code string using Prism.js
  * @param source source code to highlight
  * @param lang highlight language
- * @return highlighted souce code as **html string**
+ * @return highlighted source code as **html string**
  */
 export function highlight(source: string, lang: string = DEFAULT_LANG): string {
   lang = lang.toLowerCase();

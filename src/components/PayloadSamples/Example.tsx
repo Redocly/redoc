@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import { StyledPre } from '../../common-elements/samples';
 import { ExampleModel } from '../../services/models';
-import { isJsonLike, langFromMime } from '../../utils';
+import { isJsonLike, isTextPlainLike, langFromMime } from '../../utils';
+import { jsonToTextPlain } from '../../utils/jsonToTextPlain';
 import { JsonViewer } from '../JsonViewer/JsonViewer';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ExampleValue } from './ExampleValue';
@@ -43,10 +44,13 @@ export function ExternalExample({ example, mimeType }: ExampleProps) {
   if (isJsonLike(mimeType)) {
     return <JsonViewer data={value} />;
   } else {
-    if (typeof value === 'object') {
+    if (isTextPlainLike(mimeType)) {
+      value = jsonToTextPlain(value);
+    } else if (typeof value === 'object') {
       // just in case example was cached as json but used as non-json
       value = JSON.stringify(value, null, 2);
     }
+
     return <SourceCodeWithCopy lang={langFromMime(mimeType)} source={value} />;
   }
 }

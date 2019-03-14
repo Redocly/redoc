@@ -130,10 +130,17 @@ export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
 }
 
+export function isTextPlainLike(contentType: string): boolean {
+  return contentType.search(/form-data/i) !== -1;
+}
+
 export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';
+  } else if (isTextPlainLike(contentType)) {
+    return 'markup';
   }
+
   return 'clike';
 }
 
