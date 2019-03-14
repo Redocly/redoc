@@ -1,4 +1,9 @@
 import * as React from 'react';
+
+import { startCase } from 'lodash';
+
+import { FieldLabel } from '../../common-elements/fields';
+
 import styled from '../../styled-components';
 
 import { OptionsContext } from '../OptionsProvider';
@@ -8,10 +13,6 @@ import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 const Extension = styled(StyledMarkdownBlock)`
   opacity: 0.9;
   margin: 2px 0;
-`;
-
-const ExtensionLable = styled.span`
-  font-style: italic;
 `;
 
 export interface ExtensionsProps {
@@ -29,8 +30,10 @@ export class Extensions extends React.PureComponent<ExtensionsProps> {
             {options.showExtensions &&
               Object.keys(this.props.extensions).map(key => (
                 <Extension key={key}>
-                  <ExtensionLable>{key}</ExtensionLable>:{' '}
-                  <code>{JSON.stringify(this.props.extensions[key])}</code>
+                  <FieldLabel>{startCase(key.substring(2))}</FieldLabel>:{' '}
+                  <code>
+                    {JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}
+                  </code>
                 </Extension>
               ))}
           </>
