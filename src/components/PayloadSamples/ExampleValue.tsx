@@ -1,9 +1,9 @@
 import * as React from 'react';
 
+import { jsonToTextPlain } from '../../utils/jsonToTextPlain';
 import { isJsonLike, isTextPlainLike, langFromMime } from '../../utils/openapi';
 import { JsonViewer } from '../JsonViewer/JsonViewer';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
-import { jsonToTextPlain } from '../../utils/jsonToTextPlain';
 
 export interface ExampleValueProps {
   value: any;
