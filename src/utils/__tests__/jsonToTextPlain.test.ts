@@ -8,7 +8,7 @@ describe('Utils', () => {
     };
 
     const actual = jsonToTextPlain(json);
-    const expected = '"key": "value"<br>' + '"anotherKey": "anotherValue"';
+    const expected = '"key": "value"\n' + '"anotherKey": "anotherValue"\n';
     expect(actual).toEqual(expected);
   });
 });
