@@ -138,7 +138,7 @@
     "eventemitter3": "^3.0.0",
     "json-pointer": "^0.6.0",
     "json-schema-ref-parser": "^6.1.0",
-    "lunr": "^2.3.6",
+    "lunr": "2.3.6",
     "mark.js": "^8.11.1",
     "marked": "^0.6.1",
     "memoize-one": "^5.0.0",
