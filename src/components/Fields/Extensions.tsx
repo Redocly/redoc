@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { startCase } from 'lodash';
-
 import { FieldLabel } from '../../common-elements/fields';
 
 import styled from '../../styled-components';
@@ -30,7 +28,7 @@ export class Extensions extends React.PureComponent<ExtensionsProps> {
             {options.showExtensions &&
               Object.keys(this.props.extensions).map(key => (
                 <Extension key={key}>
-                  <FieldLabel>{startCase(key.substring(2))}</FieldLabel>:{' '}
+                  <FieldLabel>{key.substring(2)}</FieldLabel>:{' '}
                   <code>
                     {JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}
                   </code>
