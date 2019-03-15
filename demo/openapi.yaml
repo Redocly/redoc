@@ -40,7 +40,6 @@ info:
 
     <security-definitions />
 
-  x-opentext-other: foo
   version: 1.0.0
   title: Swagger Petstore
   termsOfService: 'http://swagger.io/terms/'
@@ -83,7 +82,6 @@ paths:
           type: integer
           format: int64
     post:
-      x-opentext-other: bar
       tags:
         - pet
       summary: Add a new pet to the store
