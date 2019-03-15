@@ -161,7 +161,15 @@ export class SchemaModel {
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
     this.oneOf = oneOf!.map((variant, idx) => {
-      const merged = parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx);
+      const derefVariant = parser.deref(variant);
+
+      const merged = parser.mergeAllOf(derefVariant, this.pointer + '/oneOf/' + idx);
+
+      // try to infer title
+      const title =
+        isNamedDefinition(variant.$ref) && !merged.title
+          ? JsonPointer.baseName(variant.$ref)
+          : merged.title;
 
       const schema = new SchemaModel(
         parser,
@@ -169,12 +177,14 @@ export class SchemaModel {
         {
           // variant may already have allOf so merge it to not get overwritten
           ...merged,
+          title,
           allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
         } as OpenAPISchema,
         this.pointer + '/oneOf/' + idx,
         this.options,
       );
 
+      parser.exitRef(variant);
       // each oneOf should be independent so exiting all the parent refs
       // otherwise it will cause false-positive recursive detection
       parser.exitParents(merged);
