@@ -13,6 +13,7 @@
     "isarray": "^2.0.4",
     "mkdirp": "^0.5.1",
     "mobx": "^4.2.0",
+    "node-libs-browser": "^2.2.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "redoc": "^2.0.0-rc.4",
