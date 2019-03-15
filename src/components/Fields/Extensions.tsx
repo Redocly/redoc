@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FieldLabel, ExtensionValue } from '../../common-elements/fields';
+import { ExtensionValue, FieldLabel } from '../../common-elements/fields';
 
 import styled from '../../styled-components';
 
