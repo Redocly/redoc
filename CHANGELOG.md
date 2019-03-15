@@ -1,3 +1,16 @@
+# [2.0.0-rc.4](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2019-03-15)
+
+
+### Bug Fixes
+
+* move swagger2openapi to deps because of missing transitive deps ([ed9b878](https://github.com/Rebilly/ReDoc/commit/ed9b878))
+
+
+### Features
+
+* display requestBody description [#833](https://github.com/Rebilly/ReDoc/issues/833) ([#838](https://github.com/Rebilly/ReDoc/issues/838)) ([56ca371](https://github.com/Rebilly/ReDoc/commit/56ca371))
+
+
 # [2.0.0-rc.3](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2019-03-15)
 
 
