@@ -4,11 +4,12 @@ import { ParametersGroup } from './ParametersGroup';
 
 import { UnderlinedHeader } from '../../common-elements';
 
+import { MediaContentModel } from '../../services';
 import { FieldModel, RequestBodyModel } from '../../services/models';
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
 
-import { MediaContentModel } from '../../services';
+import { Markdown } from '../Markdown/Markdown';
 
 function safePush(obj, prop, item) {
   if (!obj[prop]) {
@@ -45,13 +46,15 @@ export class Parameters extends React.PureComponent<ParametersProps> {
 
     const bodyContent = body && body.content;
 
+    const bodyDescription = body && body.description;
+
     return (
-      <div>
+      <>
         {paramsPlaces.map(place => (
           <ParametersGroup key={place} place={place} parameters={paramsMap[place]} />
         ))}
-        {bodyContent && <BodyContent content={bodyContent} />}
-      </div>
+        {bodyContent && <BodyContent content={bodyContent} description={bodyDescription} />}
+      </>
     );
   }
 }
@@ -64,12 +67,17 @@ function DropdownWithinHeader(props) {
   );
 }
 
-function BodyContent(props: { content: MediaContentModel }): JSX.Element {
-  const { content } = props;
+function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+  const { content, description } = props;
   return (
     <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>
       {({ schema }) => {
-        return <Schema skipReadOnly={true} key="schema" schema={schema} />;
+        return (
+          <>
+            {description !== undefined && <Markdown source={description} />}
+            <Schema skipReadOnly={true} key="schema" schema={schema} />
+          </>
+        );
       }}
     </MediaTypesSwitch>
   );
