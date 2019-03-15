@@ -1,20 +1,16 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { StyledLink } from '../../../src/common-elements';
-
-import { AppStore } from '../../services/AppStore';
+import { Constants } from '../../../src/services/Constants';
+import { DarkRightPanel, StyledLink } from '../../../src/common-elements';
+import { ContentPanel } from '../RightPanelContent/ContentPanel';
 
 import { MiddlePanel, Row, Section } from '../../common-elements/';
+
+import { AppStore } from '../../services/AppStore';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
-import {
-  ApiHeader,
-  DownloadButton,
-  InfoSpan,
-  InfoSpanBox,
-  InfoSpanBoxWrap,
-} from './styled.elements';
+import { ApiHeader, DownloadButton, InfoSpan, InfoSpanBox, InfoSpanBoxWrap, } from './styled.elements';
 
 export interface ApiInfoProps {
   store: AppStore;
@@ -29,8 +25,8 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
   };
 
   render() {
-    const { store } = this.props;
-    const { info, externalDocs } = store.spec;
+    const {store} = this.props;
+    const {info, externalDocs} = store.spec;
     const hideDownloadButton = store.options.hideDownloadButton;
 
     const downloadFilename = info.downloadFileName;
@@ -105,11 +101,13 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                   </InfoSpanBox>
                 </InfoSpanBoxWrap>
               )) ||
-                null}
+              null}
             </StyledMarkdownBlock>
-            <Markdown source={store.spec.info.description} />
-            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+            <Markdown source={store.spec.info.description}/>
+            {externalDocs && <ExternalDocumentation externalDocs={externalDocs}/>}
           </MiddlePanel>
+          {store.options.showOtherInfoPanel &&
+          <DarkRightPanel><ContentPanel content={info[Constants.OTX_EXTENSION_KEY]}/></DarkRightPanel>}
         </Row>
       </Section>
     );
