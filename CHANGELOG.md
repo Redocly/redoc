@@ -1,3 +1,23 @@
+# [2.0.0-rc.3](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2019-03-15)
+
+
+### Bug Fixes
+
+* add extra deref step for anyOf/oneOf variants ([d81b631](https://github.com/Rebilly/ReDoc/commit/d81b631)), closes [#810](https://github.com/Rebilly/ReDoc/issues/810)
+* duplicate keys in request samples ([3ce5bff](https://github.com/Rebilly/ReDoc/commit/3ce5bff)), closes [#815](https://github.com/Rebilly/ReDoc/issues/815)
+* escape backslashes in string literals ([#823](https://github.com/Rebilly/ReDoc/issues/823)) ([70faca1](https://github.com/Rebilly/ReDoc/commit/70faca1)), closes [#822](https://github.com/Rebilly/ReDoc/issues/822)
+* escape quotes in string values ([0473165](https://github.com/Rebilly/ReDoc/commit/0473165)), closes [#882](https://github.com/Rebilly/ReDoc/issues/882)
+* pin lunr version in ReDoc ([178ff4c](https://github.com/Rebilly/ReDoc/commit/178ff4c)), closes [#844](https://github.com/Rebilly/ReDoc/issues/844)
+* set last section min-height ([4dd79cd](https://github.com/Rebilly/ReDoc/commit/4dd79cd)), closes [#820](https://github.com/Rebilly/ReDoc/issues/820)
+
+
+### Features
+
+* support externalValue for examples ([2cdfcd2](https://github.com/Rebilly/ReDoc/commit/2cdfcd2)), closes [#551](https://github.com/Rebilly/ReDoc/issues/551) [#840](https://github.com/Rebilly/ReDoc/issues/840)
+* **cli:** Add templateOptions param to pass additional data to custom template ([#792](https://github.com/Rebilly/ReDoc/issues/792)) ([4e8ee03](https://github.com/Rebilly/ReDoc/commit/4e8ee03))
+
+
+
 # [2.0.0-rc.2](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2019-01-27)
 
 
