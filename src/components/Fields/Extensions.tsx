@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { FieldLabel } from '../../common-elements/fields';
+import { FieldLabel, ExtensionValue } from '../../common-elements/fields';
 
 import styled from '../../styled-components';
 
@@ -9,7 +9,6 @@ import { OptionsContext } from '../OptionsProvider';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 
 const Extension = styled(StyledMarkdownBlock)`
-  opacity: 0.9;
   margin: 2px 0;
 `;
 
@@ -28,10 +27,8 @@ export class Extensions extends React.PureComponent<ExtensionsProps> {
             {options.showExtensions &&
               Object.keys(this.props.extensions).map(key => (
                 <Extension key={key}>
-                  <FieldLabel>{key.substring(2)}:</FieldLabel>{' '}
-                  <code>
-                    {JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}
-                  </code>
+                  <FieldLabel>{key.substring(2)}:</FieldLabel>
+                  <ExtensionValue>{JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}</ExtensionValue>
                 </Extension>
               ))}
           </>
