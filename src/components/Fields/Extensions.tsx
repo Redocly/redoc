@@ -27,7 +27,7 @@ export class Extensions extends React.PureComponent<ExtensionsProps> {
             {options.showExtensions &&
               Object.keys(this.props.extensions).map(key => (
                 <Extension key={key}>
-                  <FieldLabel>{key.substring(2)}:</FieldLabel>
+                  <FieldLabel> {key.substring(2)}: </FieldLabel>{' '}
                   <ExtensionValue>
                     {JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}
                   </ExtensionValue>
