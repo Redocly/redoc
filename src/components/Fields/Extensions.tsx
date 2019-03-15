@@ -20,16 +20,17 @@ export interface ExtensionsProps {
 
 export class Extensions extends React.PureComponent<ExtensionsProps> {
   render() {
+    const exts = this.props.extensions;
     return (
       <OptionsContext.Consumer>
         {options => (
           <>
             {options.showExtensions &&
-              Object.keys(this.props.extensions).map(key => (
+              Object.keys(exts).map(key => (
                 <Extension key={key}>
                   <FieldLabel> {key.substring(2)}: </FieldLabel>{' '}
                   <ExtensionValue>
-                    {JSON.stringify(this.props.extensions[key]).replace(/(^")|("$)/g, '')}
+                    {typeof exts[key] === 'string' ? exts[key] : JSON.stringify(exts[key])}
                   </ExtensionValue>
                 </Extension>
               ))}
