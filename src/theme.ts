@@ -166,7 +166,7 @@ export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
               counter++;
               if (counter > 1000) {
                 throw new Error(
-                  `Theme probably contains cirucal dependency at ${currentPath}: ${val.toString()}`,
+                  `Theme probably contains circular dependency at ${currentPath}: ${val.toString()}`,
                 );
               }
 
