@@ -193,6 +193,7 @@ export class MenuStore {
     item: IMenuItem | undefined,
     updateLocation: boolean = true,
     rewriteHistory: boolean = false,
+    activateFirstChild: boolean = true,
   ) {
     if ((this.activeItem && this.activeItem.id) === (item && item.id)) {
       return;
@@ -211,7 +212,7 @@ export class MenuStore {
       this.history.replace(item.id, rewriteHistory);
     }
 
-    if (item.type === 'group') {
+    if (item.type === 'group' && activateFirstChild) {
       this.activate(item.items[0], updateLocation, rewriteHistory);
     } else {
       item.activate();
@@ -220,14 +221,13 @@ export class MenuStore {
   }
 
   collapse(item: IMenuItem) {
-    this.activate(item.parent, true, true);
+    this.activate(item.parent, true, true, false);
     const activeItem = this.activeItem;
-    if (!activeItem) {
-      if (item.items.length > 0) {
-        this.scroll.scrollIntoView(this.getElementAt(item.absoluteIdx || -1));
-      } else if (item.parent && item.parent.type === 'group') {
-        this.scroll.scrollIntoView(this.getElementAt(item.parent.absoluteIdx || -1));
-      }
+    if (item.items.length > 0) {
+      this.scroll.scrollIntoView(this.getElementAt(item.absoluteIdx || -1));
+    } else if (!activeItem) {
+      const parentIdx = (item.parent && item.parent.absoluteIdx) || -1;
+      this.scroll.scrollIntoView(this.getElementAt(parentIdx));
     } else {
       this.scroll.scrollIntoView(this.getElementAt(activeItem.absoluteIdx || -1));
     }

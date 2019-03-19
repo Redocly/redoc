@@ -71,6 +71,7 @@ tags:
       SubItem Two Description!
 x-tagGroups:
   - name: General
+    collapsible: true
     tags:
       - pet
       - store
@@ -82,7 +83,6 @@ x-tagGroups:
     tags:
       - SubItem One
       - SubItem Two
-
 paths:
   /pet:
     parameters:
