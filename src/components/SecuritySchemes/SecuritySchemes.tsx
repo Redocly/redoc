@@ -93,13 +93,12 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                         <th> HTTP Authorization Scheme </th>
                         <td> {scheme.http.scheme} </td>
                       </tr>,
-                      scheme.http.scheme === 'bearer' &&
-                        scheme.http.bearerFormat && (
-                          <tr key="bearer">
-                            <th> Bearer format </th>
-                            <td> "{scheme.http.bearerFormat}" </td>
-                          </tr>
-                        ),
+                      scheme.http.scheme === 'bearer' && scheme.http.bearerFormat && (
+                        <tr key="bearer">
+                          <th> Bearer format </th>
+                          <td> "{scheme.http.bearerFormat}" </td>
+                        </tr>
+                      ),
                     ]
                   ) : scheme.openId ? (
                     <tr>
