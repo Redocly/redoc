@@ -66,7 +66,7 @@ export class MenuBuilder {
 
     const mapHeadingsDeep = (parent, items, depth = 1) =>
       items.map(heading => {
-        const group = new GroupModel('section', heading, parent);
+        const group = new GroupModel('section', heading, options, parent);
         group.depth = depth;
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
@@ -98,7 +98,7 @@ export class MenuBuilder {
   ): GroupModel[] {
     const res: GroupModel[] = [];
     for (const group of groups) {
-      const item = new GroupModel('group', group, parent);
+      const item = new GroupModel('group', group, options, parent);
       item.depth = GROUP_DEPTH;
       item.items = MenuBuilder.getTagsItems(parser, tags, item, group, options);
       res.push(item);
@@ -142,7 +142,7 @@ export class MenuBuilder {
       if (!tag) {
         continue;
       }
-      const item = new GroupModel('tag', tag, parent);
+      const item = new GroupModel('tag', tag, options, parent);
       item.depth = GROUP_DEPTH + 1;
       item.items = this.getOperationsItems(parser, item, tag, item.depth + 1, options);
 
