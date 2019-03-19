@@ -74,14 +74,14 @@ x-tagGroups:
     tags:
       - pet
       - store
+  - name: User Management
+    tags:
+      - user
   - name: Collapsible Group
     collapsible: true
     tags:
       - SubItem One
       - SubItem Two
-  # - name: User Management
-  #   tags:
-  #     - user
 
 paths:
   /pet:
