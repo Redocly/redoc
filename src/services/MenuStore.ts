@@ -6,7 +6,7 @@ import { history as historyInst, HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
 import { flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
-import { GROUP_DEPTH } from './MenuBuilder';
+// import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
 export type MenuItemType = MenuItemGroupType | 'operation';
@@ -22,6 +22,9 @@ export interface IMenuItem {
   expanded: boolean;
   items: IMenuItem[];
   parent?: IMenuItem;
+
+  collapsible?: boolean;
+
   deprecated?: boolean;
   type: MenuItemType;
 
@@ -128,7 +131,6 @@ export class MenuStore {
       }
       itemIdx += step;
     }
-
     this.activate(this.flatItems[itemIdx], true, true);
   };
 
@@ -160,6 +162,12 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
+    if (item.type === 'group') {
+      // group attempts to return first child - likely requires a smarter
+      // search function for highly-nested values, however at this time this
+      // should be enough.
+      return this.getElementAt(item.items[0].absoluteIdx || -1);
+    }
     return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
   }
 
@@ -190,24 +198,39 @@ export class MenuStore {
       return;
     }
     this.deactivate(this.activeItem);
-    if (!item) {
+
+    if (!item || item.collapsible === false) {
       this.history.replace('', rewriteHistory);
+      this.activeItemIdx = -1;
       return;
     }
 
-    // do not allow activating group items
-    // TODO: control over options
-    if (item.depth <= GROUP_DEPTH) {
-      return;
-    }
+    this.activeItemIdx = item.absoluteIdx || -1;
 
-    this.activeItemIdx = item.absoluteIdx!;
     if (updateLocation) {
       this.history.replace(item.id, rewriteHistory);
     }
 
-    item.activate();
-    item.expand();
+    if (item.type === 'group') {
+      this.activate(item.items[0], updateLocation, rewriteHistory);
+    } else {
+      item.activate();
+      item.expand();
+    }
+  }
+
+  collapse(item: IMenuItem) {
+    this.activate(item.parent, true, true);
+    const activeItem = this.activeItem;
+    if (!activeItem) {
+      if (item.items.length > 0) {
+        this.scroll.scrollIntoView(this.getElementAt(item.absoluteIdx || -1));
+      } else if (item.parent && item.parent.type === 'group') {
+        this.scroll.scrollIntoView(this.getElementAt(item.parent.absoluteIdx || -1));
+      }
+    } else {
+      this.scroll.scrollIntoView(this.getElementAt(activeItem.absoluteIdx || -1));
+    }
   }
 
   /**
