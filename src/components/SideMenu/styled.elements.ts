@@ -67,6 +67,8 @@ function menuItemActiveBg(depth, { theme }): string {
     return darken(0.1, theme.menu.backgroundColor);
   } else if (depth === 1) {
     return darken(0.05, theme.menu.backgroundColor);
+  } else if (depth === 0 && theme.options.collapseTagGroups) {
+    return darken(0.15, theme.menu.backgroundColor);
   } else {
     return '';
   }
@@ -99,6 +101,9 @@ export const menuItemDepth = {
     padding-bottom: 0;
     cursor: default;
     color: ${props => props.theme.menu.textColor};
+    &:hover {
+      color: ${props => props.theme.colors.primary.main};
+    }
   `,
   1: css`
     font-size: 0.929em;
