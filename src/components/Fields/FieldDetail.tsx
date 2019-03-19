@@ -14,7 +14,9 @@ export class FieldDetail extends React.PureComponent<FieldDetailProps> {
     return (
       <div>
         <FieldLabel> {this.props.label} </FieldLabel>{' '}
-        <ExampleValue> {JSON.stringify(this.props.value)} </ExampleValue>
+        <ExampleValue>
+          {typeof this.props.value === 'string' ? this.props.value : JSON.stringify(this.props.value)}
+        </ExampleValue>
       </div>
     );
   }
