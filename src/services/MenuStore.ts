@@ -220,16 +220,25 @@ export class MenuStore {
     }
   }
 
-  collapse(item: IMenuItem) {
+  /**
+   * Collapsed the given item without collapsing all parent items like
+   * `deactivate` does.  This is used to close a group item when clicked
+   * if it is already expanded.
+   *
+   * @param {IMenuItem} item
+   */
+  collapse(item: IMenuItem, updateScrollPosition: boolean = true) {
     this.activate(item.parent, true, true, false);
-    const activeItem = this.activeItem;
-    if (item.items.length > 0) {
-      this.scroll.scrollIntoView(this.getElementAt(item.absoluteIdx || -1));
-    } else if (!activeItem) {
-      const parentIdx = (item.parent && item.parent.absoluteIdx) || -1;
-      this.scroll.scrollIntoView(this.getElementAt(parentIdx));
-    } else {
-      this.scroll.scrollIntoView(this.getElementAt(activeItem.absoluteIdx || -1));
+    if (updateScrollPosition) {
+      const activeItem = this.activeItem;
+      if (item.items.length > 0) {
+        this.scroll.scrollIntoView(this.getElementAt(item.absoluteIdx || -1));
+      } else if (!activeItem) {
+        const parentIdx = (item.parent && item.parent.absoluteIdx) || -1;
+        this.scroll.scrollIntoView(this.getElementAt(parentIdx));
+      } else {
+        this.scroll.scrollIntoView(this.getElementAt(activeItem.absoluteIdx || -1));
+      }
     }
   }
 
