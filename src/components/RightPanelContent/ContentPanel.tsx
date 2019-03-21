@@ -13,9 +13,9 @@ export class ContentPanel extends React.Component<ContentPanelProps> {
       <>
         <Row>
           <MiddlePanel>
-            <h1>
+            <h3>
               {this.props.content}
-            </h1>
+            </h3>
           </MiddlePanel>
         </Row>
       </>
