@@ -21,6 +21,10 @@ export const Section = styled.div.attrs(props => ({
     min-height: calc(100vh + 1px);
   }
 
+  & > &:last-child {
+    min-height: initial;
+  }
+
   ${media.lessThan('medium', true)`
     padding: 0;
   `}
