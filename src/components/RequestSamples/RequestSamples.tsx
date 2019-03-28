@@ -26,28 +26,33 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
         <div>
           <RightPanelHeader> Request samples </RightPanelHeader>
 
-          <Tabs defaultIndex={0}>
-            <TabList>
-              {hasBodySample && <Tab key="payload"> Payload </Tab>}
+          {samples.length > 0 ?
+            <Tabs defaultIndex={0}>
+              <TabList>
+                {hasBodySample && <Tab key="payload"> Payload </Tab>}
+                {samples.map(sample => (
+                  <Tab key={sample.lang}>
+                    {sample.label !== undefined ? sample.label : sample.lang}
+                  </Tab>
+                ))}
+              </TabList>
+              {hasBodySample && (
+                <TabPanel key="payload">
+                  <div>
+                    <PayloadSamples content={requestBodyContent!} />
+                  </div>
+                </TabPanel>
+              )}
               {samples.map(sample => (
-                <Tab key={sample.lang}>
-                  {sample.label !== undefined ? sample.label : sample.lang}
-                </Tab>
+                <TabPanel key={sample.lang}>
+                  <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
+                </TabPanel>
               ))}
-            </TabList>
-            {hasBodySample && (
-              <TabPanel key="payload">
-                <div>
-                  <PayloadSamples content={requestBodyContent!} />
-                </div>
-              </TabPanel>
-            )}
-            {samples.map(sample => (
-              <TabPanel key={sample.lang}>
-                <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
-              </TabPanel>
-            ))}
-          </Tabs>
+            </Tabs>
+            : <div>
+              <PayloadSamples content={requestBodyContent!} />
+            </div>
+          }
         </div>
       )) ||
       null
