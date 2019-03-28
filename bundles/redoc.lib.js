@@ -4484,7 +4484,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "0a01a71"));
+                    "b9b1d69"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -8144,7 +8144,7 @@ var SelectOnClick_SelectOnClick = /** @class */ (function (_super) {
 
 var OperationEndpointWrap = styled_components.div.withConfig({
     componentId: "nrhuz6-0"
-})(["cursor:pointer;position:relative;margin-bottom:5px;"]);
+})(["cursor:pointer;position:relative;margin-bottom:5px;margin-top:20px;"]);
 var ServerRelativeURL = styled_components.span.withConfig({
     componentId: "nrhuz6-1"
 })(["font-family:", ";margin-left:10px;text-overflow:ellipsis;"], function (props) { return props.theme.typography.headings.fontFamily; });
@@ -9281,7 +9281,7 @@ var RequestSamples_RequestSamples = /** @class */ (function (_super) {
         var hasSamples = hasBodySample || samples.length > 0;
         return hasSamples && external_react_["createElement"]("div", null,
             external_react_["createElement"](RightPanelHeader, null, " Request samples "),
-            external_react_["createElement"](Tabs, { defaultIndex: 0 },
+            samples.length > 0 ? external_react_["createElement"](Tabs, { defaultIndex: 0 },
                 external_react_["createElement"](external_react_tabs_["TabList"], null,
                     hasBodySample && external_react_["createElement"](external_react_tabs_["Tab"], { key: "payload" }, " Payload "),
                     samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["Tab"], { key: sample.lang }, sample.label !== undefined ? sample.label : sample.lang); })),
@@ -9289,7 +9289,8 @@ var RequestSamples_RequestSamples = /** @class */ (function (_super) {
                     external_react_["createElement"]("div", null,
                         external_react_["createElement"](PayloadSamples_PayloadSamples, { content: requestBodyContent }))),
                 samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: sample.lang },
-                    external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: sample.lang, source: sample.source })); }))) || null;
+                    external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: sample.lang, source: sample.source })); })) : external_react_["createElement"]("div", null,
+                external_react_["createElement"](PayloadSamples_PayloadSamples, { content: requestBodyContent }))) || null;
     };
     RequestSamples = external_tslib_["__decorate"]([
         external_mobx_react_["observer"]
