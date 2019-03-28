@@ -4,6 +4,7 @@ export const OperationEndpointWrap = styled.div`
   cursor: pointer;
   position: relative;
   margin-bottom: 5px;
+  margin-top: 20px;
 `;
 
 export const ServerRelativeURL = styled.span`
@@ -36,7 +37,7 @@ export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean 
 
 export const HttpVerb = styled.span.attrs((props: { type: string }) => ({
   className: `http-verb ${props.type}`,
-}))<{ type: string }>`
+})) <{ type: string }>`
   font-size: 0.929em;
   line-height: 20px;
   background-color: ${(props: any) => props.theme.colors.http[props.type] || '#999999'};
