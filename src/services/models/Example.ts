@@ -1,7 +1,7 @@
 import { resolve as urlResolve } from 'url';
 
-import { OpenAPIExample, Referenced } from '../../types';
-import { isJsonLike } from '../../utils/openapi';
+import { OpenAPIEncoding, OpenAPIExample, Referenced } from '../../types';
+import { isFormUrlEncoded, isJsonLike, urlFormEncodePayload } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 const externalExamplesCache: { [url: string]: Promise<any> } = {};
@@ -12,7 +12,12 @@ export class ExampleModel {
   description?: string;
   externalValueUrl?: string;
 
-  constructor(parser: OpenAPIParser, infoOrRef: Referenced<OpenAPIExample>) {
+  constructor(
+    parser: OpenAPIParser,
+    infoOrRef: Referenced<OpenAPIExample>,
+    mime: string,
+    encoding?: { [field: string]: OpenAPIEncoding },
+  ) {
     const example = parser.deref(infoOrRef);
     this.value = example.value;
     this.summary = example.summary;
@@ -21,6 +26,10 @@ export class ExampleModel {
       this.externalValueUrl = urlResolve(parser.specUrl || '', example.externalValue);
     }
     parser.exitRef(infoOrRef);
+
+    if (isFormUrlEncoded(mime) && this.value && typeof this.value === 'object') {
+      this.value = urlFormEncodePayload(this.value, encoding);
+    }
   }
 
   getExternalValue(mimeType: string): Promise<any> {

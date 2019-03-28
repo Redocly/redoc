@@ -30,10 +30,18 @@ export class MediaTypeModel {
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     if (info.examples !== undefined) {
-      this.examples = mapValues(info.examples, example => new ExampleModel(parser, example));
+      this.examples = mapValues(
+        info.examples,
+        example => new ExampleModel(parser, example, name, info.encoding),
+      );
     } else if (info.example !== undefined) {
       this.examples = {
-        default: new ExampleModel(parser, { value: parser.shalowDeref(info.example) }),
+        default: new ExampleModel(
+          parser,
+          { value: parser.shalowDeref(info.example) },
+          name,
+          info.encoding,
+        ),
       };
     } else if (isJsonLike(name)) {
       this.generateExample(parser, info);
@@ -55,15 +63,25 @@ export class MediaTypeModel {
           sample[this.schema.discriminatorProp] = subSchema.title;
         }
 
-        this.examples[subSchema.title] = new ExampleModel(parser, {
-          value: sample,
-        });
+        this.examples[subSchema.title] = new ExampleModel(
+          parser,
+          {
+            value: sample,
+          },
+          this.name,
+          info.encoding,
+        );
       }
     } else if (this.schema) {
       this.examples = {
-        default: new ExampleModel(parser, {
-          value: Sampler.sample(info.schema, samplerOptions, parser.spec),
-        }),
+        default: new ExampleModel(
+          parser,
+          {
+            value: Sampler.sample(info.schema, samplerOptions, parser.spec),
+          },
+          this.name,
+          info.encoding,
+        ),
       };
     }
   }
