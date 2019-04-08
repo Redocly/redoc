@@ -10,6 +10,7 @@ export const LogoImgEl = styled.img`
 
 export const LogoWrap = styled.div`
   text-align: center;
+  padding: ${props => props.theme.logo.gutter};
 `;
 
 const Link = styled.a`

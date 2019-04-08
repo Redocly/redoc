@@ -139,6 +139,7 @@ const defaultTheme: ThemeInterface = {
   logo: {
     maxHeight: ({ menu }) => menu.width,
     maxWidth: ({ menu }) => menu.width,
+    gutter: '2px',
   },
   rightPanel: {
     backgroundColor: '#263238',
@@ -307,6 +308,7 @@ export interface ResolvedThemeInterface {
   logo: {
     maxHeight: string;
     maxWidth: string;
+    gutter: string;
   };
   rightPanel: {
     backgroundColor: string;
