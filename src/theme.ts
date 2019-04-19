@@ -105,6 +105,7 @@ const defaultTheme: ThemeInterface = {
     headings: {
       fontFamily: 'Montserrat, sans-serif',
       fontWeight: '400',
+      lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
@@ -282,6 +283,7 @@ export interface ResolvedThemeInterface {
     headings: {
       fontFamily: string;
       fontWeight: string;
+      lineHeight: string;
     };
 
     links: {
