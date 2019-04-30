@@ -84,7 +84,12 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                   </tr>
                   {scheme.apiKey ? (
                     <tr>
-                      <th> {scheme.apiKey.in} parameter name:</th>
+                      <th>
+                        {' '}
+                        {(scheme.apiKey.in || '').charAt(0).toUpperCase() +
+                          (scheme.apiKey.in || '').slice(1)}{' '}
+                        parameter name:
+                      </th>
                       <td> {scheme.apiKey.name} </td>
                     </tr>
                   ) : scheme.http ? (
@@ -93,13 +98,12 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                         <th> HTTP Authorization Scheme </th>
                         <td> {scheme.http.scheme} </td>
                       </tr>,
-                      scheme.http.scheme === 'bearer' &&
-                        scheme.http.bearerFormat && (
-                          <tr key="bearer">
-                            <th> Bearer format </th>
-                            <td> "{scheme.http.bearerFormat}" </td>
-                          </tr>
-                        ),
+                      scheme.http.scheme === 'bearer' && scheme.http.bearerFormat && (
+                        <tr key="bearer">
+                          <th> Bearer format </th>
+                          <td> "{scheme.http.bearerFormat}" </td>
+                        </tr>
+                      ),
                     ]
                   ) : scheme.openId ? (
                     <tr>
