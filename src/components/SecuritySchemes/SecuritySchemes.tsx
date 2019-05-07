@@ -4,6 +4,7 @@ import { SecuritySchemesModel } from '../../services/models';
 
 import { H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 import { OpenAPISecurityScheme } from '../../types';
+import { titleize } from '../../utils/helpers';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 
@@ -84,12 +85,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                   </tr>
                   {scheme.apiKey ? (
                     <tr>
-                      <th>
-                        {' '}
-                        {(scheme.apiKey.in || '').charAt(0).toUpperCase() +
-                          (scheme.apiKey.in || '').slice(1)}{' '}
-                        parameter name:
-                      </th>
+                      <th> {titleize(scheme.apiKey.in || '')} parameter name:</th>
                       <td> {scheme.apiKey.name} </td>
                     </tr>
                   ) : scheme.http ? (

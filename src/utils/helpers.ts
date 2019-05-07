@@ -165,3 +165,7 @@ export function resolveUrl(url: string, to: string) {
 export function getBasePath(serverUrl: string): string {
   return new URL(serverUrl).pathname;
 }
+
+export function titleize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

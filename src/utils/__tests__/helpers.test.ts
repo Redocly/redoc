@@ -1,5 +1,5 @@
 import slugify from 'slugify';
-import { mapWithLast, appendToMdHeading, mergeObjects, safeSlugify } from '../helpers';
+import { appendToMdHeading, mapWithLast, mergeObjects, safeSlugify, titleize } from '../helpers';
 
 describe('Utils', () => {
   describe('helpers', () => {
@@ -66,6 +66,12 @@ describe('Utils', () => {
         const obj1 = { a: ['A', 'B'] };
         const obj2 = { a: ['C'], b: ['D'] };
         expect(mergeObjects({}, obj1, obj2)).toEqual({ a: ['C'], b: ['D'] });
+      });
+    });
+
+    describe('titleize', () => {
+      test('should return the string with the first letter capitalized', () => {
+        expect(titleize('my title')).toEqual('My title');
       });
     });
   });
