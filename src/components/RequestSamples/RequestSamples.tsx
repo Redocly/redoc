@@ -24,7 +24,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     return (
       (hasSamples && (
         <div>
-          <RightPanelHeader> Request samples </RightPanelHeader>
+          <RightPanelHeader> Request </RightPanelHeader>
 
           {samples.length > 0 ?
             <Tabs defaultIndex={0}>
