@@ -162,10 +162,10 @@ Also you can pass options:
 
 ```js
 <RedocStandalone
-  specUrl="http://rebilly.github.io/RebillyAPI/swagger.json"
+  specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
   options={{
     nativeScrollbars: true,
-    theme: { colors: { main: '#dd5522' } },
+    theme: { colors: { primary { main: '#dd5522' } } },
   }}
 />
 ```
@@ -176,7 +176,7 @@ You can also specify `onLoaded` callback which will be called each time Redoc ha
 
 ```js
 <RedocStandalone
-  specUrl="http://rebilly.github.io/RebillyAPI/swagger.json"
+  specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
   onLoaded={error => {
     if (!error) {
       console.log('Yay!');

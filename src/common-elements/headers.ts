@@ -7,14 +7,15 @@ const headerFontSize = {
 };
 
 export const headerCommonMixin = level => css`
-  font-family: ${props => props.theme.typography.headings.fontFamily};
+  font-family: ${({ theme }) => theme.typography.headings.fontFamily};
   font-weight: ${({ theme }) => theme.typography.headings.fontWeight};
   font-size: ${headerFontSize[level]};
+  line-height: ${({ theme }) => theme.typography.headings.lineHeight};
 `;
 
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
-  color: ${props => props.theme.colors.primary.main};
+  color: ${({ theme }) => theme.colors.primary.main};
 
   ${extensionsHook('H1')};
 `;

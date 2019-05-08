@@ -21,6 +21,30 @@ import 'prismjs/components/prism-swift.js';
 
 const DEFAULT_LANG = 'clike';
 
+Prism.languages.insertBefore(
+  'javascript',
+  'string',
+  {
+    'property string': {
+      pattern: /([{,]\s*)"(?:\\.|[^\\"\r\n])*"(?=\s*:)/i,
+      lookbehind: true,
+    },
+  } as any,
+  undefined as any,
+);
+
+Prism.languages.insertBefore(
+  'javascript',
+  'punctuation',
+  {
+    property: {
+      pattern: /([{,]\s*)[a-z]\w*(?=\s*:)/i,
+      lookbehind: true,
+    },
+  },
+  undefined as any,
+);
+
 /**
  * map language names to Prism.js names
  */
@@ -49,5 +73,5 @@ export function highlight(source: string, lang: string = DEFAULT_LANG): string {
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];
   }
-  return Prism.highlight(source, grammar);
+  return Prism.highlight(source, grammar, lang);
 }

@@ -8,7 +8,7 @@ export const OperationEndpointWrap = styled.div`
 `;
 
 export const ServerRelativeURL = styled.span`
-  font-family: ${props => props.theme.typography.headings.fontFamily};
+  font-family: ${props => props.theme.typography.code.fontFamily};
   margin-left: 10px;
   text-overflow: ellipsis;
 `;

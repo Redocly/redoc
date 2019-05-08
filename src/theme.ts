@@ -101,6 +101,7 @@ const defaultTheme: ThemeInterface = {
     headings: {
       fontFamily: 'Arial',
       fontWeight: '400',
+      lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
@@ -135,6 +136,7 @@ const defaultTheme: ThemeInterface = {
   logo: {
     maxHeight: ({ menu }) => menu.width,
     maxWidth: ({ menu }) => menu.width,
+    gutter: '2px',
   },
   rightPanel: {
     backgroundColor: '#ffffff',
@@ -162,7 +164,7 @@ export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
               counter++;
               if (counter > 1000) {
                 throw new Error(
-                  `Theme probably contains cirucal dependency at ${currentPath}: ${val.toString()}`,
+                  `Theme probably contains circular dependency at ${currentPath}: ${val.toString()}`,
                 );
               }
 
@@ -277,6 +279,7 @@ export interface ResolvedThemeInterface {
     headings: {
       fontFamily: string;
       fontWeight: string;
+      lineHeight: string;
     };
 
     links: {
@@ -303,6 +306,7 @@ export interface ResolvedThemeInterface {
   logo: {
     maxHeight: string;
     maxWidth: string;
+    gutter: string;
   };
   rightPanel: {
     backgroundColor: string;

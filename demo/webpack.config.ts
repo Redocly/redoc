@@ -77,6 +77,12 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias:
+      mode !== 'production'
+        ? {
+            'react-dom': '@hot-loader/react-dom',
+          }
+        : {},
   },
 
   node: {
@@ -105,7 +111,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
           loader: 'css-loader',
           options: {
             sourceMap: true,
-            minimize: true,
           },
         },
       },

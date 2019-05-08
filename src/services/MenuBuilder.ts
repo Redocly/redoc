@@ -43,7 +43,7 @@ export class MenuBuilder {
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', options));
-    if (spec['x-tagGroups']) {
+    if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
         ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
       );

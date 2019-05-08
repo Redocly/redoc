@@ -61,8 +61,12 @@ export const Tabs = styled(ReactTabs)`
     border-radius: 4px;
     & > div,
     & > pre {
-      padding: 20px;
+      padding: ${props => props.theme.spacing.unit * 4}px;
       margin: 0;
+    }
+
+    & > div > pre {
+      padding: 0;
     }
   }
 `;
@@ -94,8 +98,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: 10px 0;
-      margin: 0;
+      padding: ${props => props.theme.spacing.unit * 2} 0;
     }
   }
 `;

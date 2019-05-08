@@ -118,7 +118,7 @@ export class MarkdownRenderer {
       .trim();
   }
 
-  headingRule = (text: string, level: number, raw: string) => {
+  headingRule = (text: string, level: number, raw: string, slugger: marked.Slugger) => {
     if (level === 1) {
       this.currentTopHeading = this.saveHeading(text, level);
     } else if (level === 2) {
@@ -129,7 +129,7 @@ export class MarkdownRenderer {
         this.currentTopHeading && this.currentTopHeading.id,
       );
     }
-    return this.originalHeadingRule(text, level, raw);
+    return this.originalHeadingRule(text, level, raw, slugger);
   };
 
   renderMd(rawText: string, extractHeadings: boolean = false): string {
