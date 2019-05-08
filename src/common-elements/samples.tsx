@@ -5,6 +5,9 @@ export const SampleControls = styled.div`
   opacity: 0.4;
   transition: opacity 0.3s ease;
   text-align: right;
+  position: absolute;
+  right: 30px;
+  z-index: 5;
 
   > span {
     display: inline-block;

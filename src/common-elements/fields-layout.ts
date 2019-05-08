@@ -10,6 +10,18 @@ export const PropertiesTableCaption = styled.caption`
   color: ${props => props.theme.colors.text.secondary};
 `;
 
+export const PropertyRow = styled.tr<{ kind?: string }>`
+  &:focus {
+    outline: none;
+  }
+
+  &.hidden,
+  &.hidden > td {
+    overflow: hidden;
+    position: absolute;
+  }
+`;
+
 export const PropertyCell = styled.td<{ kind?: string }>`
   border-left: 1px solid ${props => props.theme.schema.linesColor};
   box-sizing: border-box;

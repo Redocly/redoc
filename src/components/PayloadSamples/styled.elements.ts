@@ -5,8 +5,12 @@ import styled from '../../styled-components';
 import { StyledDropdown } from '../../common-elements';
 
 export const MimeLabel = styled.div`
-  border-bottom: 1px solid #c2c2c2;
-  margin: 0 0 10px 0;
+  position: relative;
+  top: -35px;
+  left: 132px;
+  margin: 0;
+  font-size: 0.929em;
+  color: #000;
   display: block;
 `;
 

@@ -10,6 +10,7 @@ import {
   PropertyCellWithInner,
   PropertyDetailsCell,
   PropertyNameCell,
+  PropertyRow,
 } from '../../common-elements/fields-layout';
 
 import { ShelfIcon } from '../../common-elements/';
@@ -27,14 +28,32 @@ export interface FieldProps extends SchemaOptions {
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
 }
 
+interface FieldState {
+  expanded?: boolean;
+}
+
 @observer
-export class Field extends React.Component<FieldProps> {
+export class Field extends React.Component<FieldProps, FieldState> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      expanded: false,
+    };
+  }
+
   toggle = () => {
-    this.props.field.toggle();
+    this.setState({ expanded: !this.state.expanded });
   };
+
+  onFocus = () => {
+    this.setState({ expanded: true });
+  };
+
   render() {
     const { className, field, isLast } = this.props;
-    const { name, expanded, deprecated, required, kind } = field;
+    const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
     const paramName = withSubSchema ? (
@@ -46,16 +65,16 @@ export class Field extends React.Component<FieldProps> {
       >
         <PropertyBullet />
         {name}
-        <ShelfIcon direction={expanded ? 'down' : 'right'} />
+        <ShelfIcon direction={this.state.expanded ? 'down' : 'right'} />
         {!required && <OptionalLabel> optional </OptionalLabel>}
       </ClickablePropertyNameCell>
     ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-        <PropertyBullet />
-        {name}
-        {!required && <OptionalLabel> optional </OptionalLabel>}
-      </PropertyNameCell>
-    );
+        <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
+          <PropertyBullet />
+          {name}
+          {!required && <OptionalLabel> optional </OptionalLabel>}
+        </PropertyNameCell>
+      );
 
     return (
       <>
@@ -65,8 +84,8 @@ export class Field extends React.Component<FieldProps> {
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
         </tr>
-        {field.expanded && withSubSchema && (
-          <tr key={field.name + 'inner'}>
+        {withSubSchema && (
+          <PropertyRow className={ this.state.expanded ? 'visible' : 'hidden' } key={field.name + 'inner'} onFocus={  this.onFocus  } tabIndex={1} >
             <PropertyCellWithInner colSpan={2}>
               <InnerPropertiesWrap>
                 <Schema
@@ -77,7 +96,7 @@ export class Field extends React.Component<FieldProps> {
                 />
               </InnerPropertiesWrap>
             </PropertyCellWithInner>
-          </tr>
+          </PropertyRow>
         )}
       </>
     );

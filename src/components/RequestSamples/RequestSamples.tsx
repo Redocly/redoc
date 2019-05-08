@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { Tab, TabList, TabPanel, Tabs, UnderlinedHeader } from '../../common-elements';
 import { OperationModel } from '../../services/models';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
-
-import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 
 export interface RequestSamplesProps {
   operation: OperationModel;
@@ -24,7 +23,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     return (
       (hasSamples && (
         <div>
-          <RightPanelHeader> Request </RightPanelHeader>
+          <UnderlinedHeader key="header"> Request Example: </UnderlinedHeader>
 
           {samples.length > 0 ?
             <Tabs defaultIndex={0}>
