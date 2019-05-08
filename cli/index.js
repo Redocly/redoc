@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* tslint:disable:no-implicit-dependencies */
 const React = require("react");
 const server_1 = require("react-dom/server");
 const styled_components_1 = require("styled-components");
