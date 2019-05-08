@@ -17,7 +17,7 @@ export const StyledDropdown = styled(Dropdown)`
   min-width: 100px;
   display: inline-block;
   position: relative;
-  width: auto;
+  width: 100%;
   font-family: ${props => props.theme.typography.headings.fontFamily};
 
   .Dropdown-control {

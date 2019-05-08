@@ -85,7 +85,7 @@ const defaultTheme: ThemeInterface = {
     nestingSpacing: '1em',
     nestedBackground: '#fafafa',
     arrow: {
-      size: '1.1em',
+      size: '1.4em',
       color: theme => theme.colors.text.secondary,
     },
   },
