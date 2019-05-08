@@ -37,6 +37,21 @@ export const ApiContentWrap = styled.div`
   contain: layout;
 `;
 
+export const Copyright = styled.div`
+  color: #c2c2c2;
+  position: absolute;
+  bottom: 14px;
+  right: 40px;
+  z-index: 5;
+
+  a {
+    color: #c2c2c2;
+    b {
+      font-size: 16px;
+    }
+  }
+`;
+
 export const BackgroundStub = styled.div`
   background: ${({ theme }) => theme.rightPanel.backgroundColor};
   position: absolute;
