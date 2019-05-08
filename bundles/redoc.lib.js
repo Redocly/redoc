@@ -7144,7 +7144,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "ab7a245"));
+                    "de64856"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -11699,536 +11699,6 @@ function BodyContent(props) {
     });
 }
 
-// CONCATENATED MODULE: ./src/common-elements/Tooltip.tsx
-
-
-
-var Wrapper = styled_components.div.withConfig({
-    componentId: "t0v3fg-0"
-})(["position:relative;"]);
-var Tip = styled_components.div.withConfig({
-    componentId: "t0v3fg-1"
-})(["position:absolute;min-width:80px;max-width:500px;background:#fff;bottom:100%;left:50%;margin-bottom:10px;transform:translateX(-50%);border-radius:4px;padding:0.3em 0.6em;text-align:center;box-shadow:0px 0px 5px 0px rgba(204,204,204,1);"]);
-var Content = styled_components.div.withConfig({
-    componentId: "t0v3fg-2"
-})(["background:#fff;color:#000;display:inline;font-size:0.85em;white-space:nowrap;"]);
-var Arrow = styled_components.div.withConfig({
-    componentId: "t0v3fg-3"
-})(["position:absolute;width:0;height:0;bottom:-5px;left:50%;margin-left:-5px;border-left:solid transparent 5px;border-right:solid transparent 5px;border-top:solid #bbb 5px;"]);
-var Gap = styled_components.div.withConfig({
-    componentId: "t0v3fg-4"
-})(["position:absolute;width:100%;height:20px;bottom:-20px;"]);
-var Tooltip_Tooltip = /** @class */ (function (_super) {
-    external_tslib_["__extends"](Tooltip, _super);
-    function Tooltip() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Tooltip.prototype.render = function () {
-        var _a = this.props, open = _a.open, title = _a.title, children = _a.children;
-        return external_react_["createElement"](Wrapper, null,
-            children,
-            open && external_react_["createElement"](Tip, null,
-                external_react_["createElement"](Content, null, title),
-                external_react_["createElement"](Arrow, null),
-                external_react_["createElement"](Gap, null)));
-    };
-    return Tooltip;
-}(external_react_["Component"]));
-
-
-// CONCATENATED MODULE: ./src/common-elements/CopyButtonWrapper.tsx
-
-
-
-
-var CopyButtonWrapper_CopyButtonWrapper = /** @class */ (function (_super) {
-    external_tslib_["__extends"](CopyButtonWrapper, _super);
-    function CopyButtonWrapper(props) {
-        var _this = _super.call(this, props) || this;
-        _this.copy = function () {
-            var content = typeof _this.props.data === 'string' ? _this.props.data : JSON.stringify(_this.props.data, null, 2);
-            ClipboardService.copyCustom(content);
-            _this.showTooltip();
-        };
-        _this.renderCopyButton = function () {
-            return external_react_["createElement"]("span", { onClick: _this.copy },
-                external_react_["createElement"](Tooltip_Tooltip, { title: ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser', open: _this.state.tooltipShown }, "Copy"));
-        };
-        _this.state = {
-            tooltipShown: false
-        };
-        return _this;
-    }
-    CopyButtonWrapper.prototype.render = function () {
-        return this.props.children({
-            renderCopyButton: this.renderCopyButton
-        });
-    };
-    CopyButtonWrapper.prototype.showTooltip = function () {
-        var _this = this;
-        this.setState({
-            tooltipShown: true
-        });
-        setTimeout(function () {
-            _this.setState({
-                tooltipShown: false
-            });
-        }, 1500);
-    };
-    return CopyButtonWrapper;
-}(external_react_["PureComponent"]));
-
-
-// CONCATENATED MODULE: ./src/utils/jsonToHtml.ts
-var jsonToHtml_level = 1;
-var COLLAPSE_LEVEL = 2;
-function jsonToHTML(json) {
-    jsonToHtml_level = 1;
-    var output = '';
-    output += '<div class="redoc-json">';
-    output += valueToHTML(json);
-    output += '</div>';
-    return output;
-}
-function htmlEncode(t) {
-    return t !== undefined ? t.toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
-}
-function escapeForStringLiteral(str) {
-    return str.replace(/([\\"])/g, '\\$1');
-}
-function decorateWithSpan(value, className) {
-    return '<span class="' + className + '">' + htmlEncode(value) + '</span>';
-}
-function punctuation(val) {
-    return '<span class="token punctuation">' + val + '</span>';
-}
-function valueToHTML(value) {
-    var valueType = typeof value;
-    var output = '';
-    if (value === undefined || value === null) {
-        output += decorateWithSpan('null', 'token keyword');
-    }
-    else if (value && value.constructor === Array) {
-        jsonToHtml_level++;
-        output += arrayToHTML(value);
-        jsonToHtml_level--;
-    }
-    else if (value && value.constructor === Date) {
-        output += decorateWithSpan('"' + value.toISOString() + '"', 'token string');
-    }
-    else if (valueType === 'object') {
-        jsonToHtml_level++;
-        output += objectToHTML(value);
-        jsonToHtml_level--;
-    }
-    else if (valueType === 'number') {
-        output += decorateWithSpan(value, 'token number');
-    }
-    else if (valueType === 'string') {
-        if (/^(http|https):\/\/[^\s]+$/.test(value)) {
-            output += decorateWithSpan('"', 'token string') + '<a href="' + value + '">' + htmlEncode(escapeForStringLiteral(value)) + '</a>' + decorateWithSpan('"', 'token string');
-        }
-        else {
-            output += decorateWithSpan('"' + escapeForStringLiteral(value) + '"', 'token string');
-        }
-    }
-    else if (valueType === 'boolean') {
-        output += decorateWithSpan(value, 'token boolean');
-    }
-    return output;
-}
-function arrayToHTML(json) {
-    var collapsed = jsonToHtml_level > COLLAPSE_LEVEL ? 'collapsed' : '';
-    var output = "<div class=\"collapser\"></div>" + punctuation('[') + "<span class=\"ellipsis\"></span><ul class=\"array collapsible\">";
-    var hasContents = false;
-    var length = json.length;
-    for (var i = 0; i < length; i++) {
-        hasContents = true;
-        output += '<li><div class="hoverable ' + collapsed + '">';
-        output += valueToHTML(json[i]);
-        if (i < length - 1) {
-            output += ',';
-        }
-        output += '</div></li>';
-    }
-    output += "</ul>" + punctuation(']');
-    if (!hasContents) {
-        output = punctuation('[ ]');
-    }
-    return output;
-}
-function objectToHTML(json) {
-    var collapsed = jsonToHtml_level > COLLAPSE_LEVEL ? 'collapsed' : '';
-    var keys = Object.keys(json);
-    var length = keys.length;
-    var output = "<div class=\"collapser\"></div>" + punctuation('{') + "<span class=\"ellipsis\"></span><ul class=\"obj collapsible\">";
-    var hasContents = false;
-    for (var i = 0; i < length; i++) {
-        var key = keys[i];
-        hasContents = true;
-        output += '<li><div class="hoverable ' + collapsed + '">';
-        output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
-        output += valueToHTML(json[key]);
-        if (i < length - 1) {
-            output += punctuation(',');
-        }
-        output += '</div></li>';
-    }
-    output += "</ul>" + punctuation('}');
-    if (!hasContents) {
-        output = punctuation('{ }');
-    }
-    return output;
-}
-
-// CONCATENATED MODULE: ./src/components/JsonViewer/style.ts
-
-var jsonStyles = css([".redoc-json > .collapser{display:none;}.redoc-json{color:#c2c2c2;}font-family:", ";font-size:", ";white-space:", ";contain:content;overflow-x:auto;.callback-function{color:gray;}.collapser:after{content:'-';cursor:pointer;}.collapsed > .collapser:after{content:'+';cursor:pointer;}.ellipsis:after{content:' \u2026 ';}.collapsible{margin-left:2em;}.hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}.hovered{background-color:rgba(235,238,249,1);}.collapser{padding-right:6px;padding-left:6px;}ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}li{position:relative;display:block;}.hoverable{display:inline-block;}.selected{outline-style:solid;outline-width:1px;outline-style:dotted;}.collapsed > .collapsible{display:none;}.ellipsis{display:none;}.collapsed > .ellipsis{display:inherit;}.collapser{position:absolute;top:1px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;}"], function (props) { return props.theme.typography.code.fontFamily; }, function (props) { return props.theme.typography.code.fontSize; }, function (_a) {
-    var theme = _a.theme;
-    return theme.typography.code.wrap ? 'pre-wrap' : 'pre';
-});
-
-// CONCATENATED MODULE: ./src/components/JsonViewer/JsonViewer.tsx
-
-
-
-
-
-
-
-
-var JsonViewerWrap = styled_components.div.withConfig({
-    componentId: "sc-1d3n1g3-0"
-})(["&:hover > ", "{opacity:1;}"], SampleControls);
-var JsonViewer_Json = /** @class */ (function (_super) {
-    external_tslib_["__extends"](Json, _super);
-    function Json() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.renderInner = function (_a) {
-            var renderCopyButton = _a.renderCopyButton;
-            return external_react_["createElement"](JsonViewerWrap, null,
-                external_react_["createElement"](SampleControls, null,
-                    renderCopyButton(),
-                    external_react_["createElement"]("span", { onClick: _this.expandAll }, " Expand all "),
-                    external_react_["createElement"]("span", { onClick: _this.collapseAll }, " Collapse all ")),
-                external_react_["createElement"](PrismDiv, { className: _this.props.className, ref: function (node) { return _this.node = node; }, dangerouslySetInnerHTML: {
-                        __html: jsonToHTML(_this.props.data)
-                    } }));
-        };
-        _this.expandAll = function () {
-            var elements = _this.node.getElementsByClassName('collapsible');
-            for (var _i = 0, _a = Array.prototype.slice.call(elements); _i < _a.length; _i++) {
-                var collapsed = _a[_i];
-                collapsed.parentNode.classList.remove('collapsed');
-            }
-        };
-        _this.collapseAll = function () {
-            var elements = _this.node.getElementsByClassName('collapsible');
-            for (var _i = 0, _a = Array.prototype.slice.call(elements); _i < _a.length; _i++) {
-                var expanded = _a[_i];
-                // const collapsed = elements[i];
-                if (expanded.parentNode.classList.contains('redoc-json')) {
-                    continue;
-                }
-                expanded.parentNode.classList.add('collapsed');
-            }
-        };
-        _this.clickListener = function (event) {
-            var collapsed;
-            var target = event.target;
-            if (target.className === 'collapser') {
-                collapsed = target.parentElement.getElementsByClassName('collapsible')[0];
-                if (collapsed.parentElement.classList.contains('collapsed')) {
-                    collapsed.parentElement.classList.remove('collapsed');
-                }
-                else {
-                    collapsed.parentElement.classList.add('collapsed');
-                }
-            }
-        };
-        return _this;
-    }
-    Json.prototype.render = function () {
-        return external_react_["createElement"](CopyButtonWrapper_CopyButtonWrapper, { data: this.props.data }, this.renderInner);
-    };
-    Json.prototype.componentDidMount = function () {
-        this.node.addEventListener('click', this.clickListener);
-    };
-    Json.prototype.componentWillUnmount = function () {
-        this.node.removeEventListener('click', this.clickListener);
-    };
-    return Json;
-}(external_react_["PureComponent"]));
-var JsonViewer = styled_components(JsonViewer_Json).withConfig({
-    componentId: "sc-1d3n1g3-1"
-})(["", ";"], jsonStyles);
-
-// CONCATENATED MODULE: ./src/components/SourceCode/SourceCode.tsx
-
-
-
-
-
-var SourceCode_SourceCode = /** @class */ (function (_super) {
-    external_tslib_["__extends"](SourceCode, _super);
-    function SourceCode() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SourceCode.prototype.render = function () {
-        var _a = this.props, source = _a.source, lang = _a.lang;
-        return external_react_["createElement"](StyledPre, { dangerouslySetInnerHTML: {
-                __html: highlight(source, lang)
-            } });
-    };
-    return SourceCode;
-}(external_react_["PureComponent"]));
-
-var SourceCode_SourceCodeWithCopy = /** @class */ (function (_super) {
-    external_tslib_["__extends"](SourceCodeWithCopy, _super);
-    function SourceCodeWithCopy() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SourceCodeWithCopy.prototype.render = function () {
-        var _this = this;
-        return external_react_["createElement"](CopyButtonWrapper_CopyButtonWrapper, { data: this.props.source }, function (_a) {
-            var renderCopyButton = _a.renderCopyButton;
-            return external_react_["createElement"](SampleControlsWrap, null,
-                external_react_["createElement"](SampleControls, null, renderCopyButton()),
-                external_react_["createElement"](SourceCode_SourceCode, { lang: _this.props.lang, source: _this.props.source }));
-        });
-    };
-    return SourceCodeWithCopy;
-}(external_react_["PureComponent"]));
-
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/ExampleValue.tsx
-
-
-
-
-function ExampleValue_ExampleValue(_a) {
-    var value = _a.value, mimeType = _a.mimeType;
-    if (isJsonLike(mimeType)) {
-        return external_react_["createElement"](JsonViewer, { data: value });
-    }
-    else {
-        return external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: langFromMime(mimeType), source: value });
-    }
-}
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/exernalExampleHook.ts
-
-
-function useExternalExample(example, mimeType) {
-    var _this = this;
-    var _a = Object(external_react_["useState"])(true), setIsLoading = _a[1]; // to trigger component reload
-    var value = Object(external_react_["useRef"])(undefined);
-    var prevRef = Object(external_react_["useRef"])(undefined);
-    if (prevRef.current !== example) {
-        value.current = undefined;
-    }
-    prevRef.current = example;
-    Object(external_react_["useEffect"])(function () {
-        var load = function () { return external_tslib_["__awaiter"](_this, void 0, void 0, function () {
-            var _a, e_1;
-            return external_tslib_["__generator"](this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        setIsLoading(true);
-                        _b.label = 1;
-                    case 1:
-                        _b.trys.push([1, 3, , 4]);
-                        _a = value;
-                        return [4 /*yield*/, example.getExternalValue(mimeType)];
-                    case 2:
-                        _a.current = _b.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_1 = _b.sent();
-                        value.current = e_1;
-                        return [3 /*break*/, 4];
-                    case 4:
-                        setIsLoading(false);
-                        return [2 /*return*/];
-                }
-            });
-        }); };
-        load();
-    }, [example, mimeType]);
-    return value.current;
-}
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/Example.tsx
-
-
-
-
-
-
-
-function Example(_a) {
-    var example = _a.example, mimeType = _a.mimeType;
-    if (example.value === undefined && example.externalValueUrl) {
-        return external_react_["createElement"](ExternalExample, { example: example, mimeType: mimeType });
-    }
-    else {
-        return external_react_["createElement"](ExampleValue_ExampleValue, { value: example.value, mimeType: mimeType });
-    }
-}
-function ExternalExample(_a) {
-    var example = _a.example, mimeType = _a.mimeType;
-    var value = useExternalExample(example, mimeType);
-    if (value === undefined) {
-        return external_react_["createElement"]("span", null, "Loading...");
-    }
-    if (value instanceof Error) {
-        console.log(value);
-        return external_react_["createElement"](StyledPre, null,
-            "Error loading external example: ",
-            external_react_["createElement"]("br", null),
-            external_react_["createElement"]("a", { className: 'token string', href: example.externalValueUrl, target: "_blank" }, example.externalValueUrl));
-    }
-    if (isJsonLike(mimeType)) {
-        return external_react_["createElement"](JsonViewer, { data: value });
-    }
-    else {
-        if (typeof value === 'object') {
-            // just in case example was cached as json but used as non-json
-            value = JSON.stringify(value, null, 2);
-        }
-        return external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: langFromMime(mimeType), source: value });
-    }
-}
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/styled.elements.ts
-
-
-var styled_elements_MimeLabel = styled_components.div.withConfig({
-    componentId: "futasu-0"
-})(["position:relative;top:-35px;left:132px;margin:0;font-size:0.929em;color:#000;display:block;"]);
-var InvertedSimpleDropdown = styled_components(StyledDropdown).withConfig({
-    componentId: "futasu-1"
-})(["margin-left:10px;text-transform:none;font-size:0.929em;border-bottom:1px solid ", ";margin:0 0 10px 0;display:block;.Dropdown-control,.Dropdown-control:hover{font-size:1em;border:none;padding:0 1.2em 0 0;background:transparent;color:", ";box-shadow:none;.Dropdown-arrow{border-top-color:", ";}}.Dropdown-menu{margin:0;}"], function (_a) {
-    var theme = _a.theme;
-    return theme.rightPanel.textColor;
-}, function (_a) {
-    var theme = _a.theme;
-    return theme.rightPanel.textColor;
-}, function (_a) {
-    var theme = _a.theme;
-    return theme.rightPanel.textColor;
-});
-var NoSampleLabel = styled_components.div.withConfig({
-    componentId: "futasu-2"
-})(["font-family:", ";font-size:12px;color:#ee807f;"], function (props) { return props.theme.typography.code.fontFamily; });
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/MediaTypeSamples.tsx
-
-
-
-
-
-var MediaTypeSamples_MediaTypeSamples = /** @class */ (function (_super) {
-    external_tslib_["__extends"](MediaTypeSamples, _super);
-    function MediaTypeSamples() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    MediaTypeSamples.prototype.render = function () {
-        var examples = this.props.mediaType.examples || {};
-        var mimeType = this.props.mediaType.name;
-        var noSample = external_react_["createElement"](NoSampleLabel, null, "No sample");
-        var examplesNames = Object.keys(examples);
-        if (examplesNames.length === 0) {
-            return noSample;
-        }
-        if (examplesNames.length > 1) {
-            return external_react_["createElement"](SmallTabs, { defaultIndex: 0 },
-                external_react_["createElement"](external_react_tabs_["TabList"], null, examplesNames.map(function (name) { return external_react_["createElement"](external_react_tabs_["Tab"], { key: name },
-                    " ",
-                    examples[name].summary || name,
-                    " "); })),
-                examplesNames.map(function (name) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: name },
-                    external_react_["createElement"](Example, { example: examples[name], mimeType: mimeType })); }));
-        }
-        else {
-            var name_1 = examplesNames[0];
-            return external_react_["createElement"]("div", null,
-                external_react_["createElement"](Example, { example: examples[name_1], mimeType: mimeType }));
-        }
-    };
-    return MediaTypeSamples;
-}(external_react_["Component"]));
-
-
-// CONCATENATED MODULE: ./src/components/PayloadSamples/PayloadSamples.tsx
-
-
-
-
-
-
-
-var PayloadSamples_PayloadSamples = /** @class */ (function (_super) {
-    external_tslib_["__extends"](PayloadSamples, _super);
-    function PayloadSamples() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.renderDropdown = function (props) {
-            return external_react_["createElement"](DropdownOrLabel, external_tslib_["__assign"]({ Label: styled_elements_MimeLabel, Dropdown: InvertedSimpleDropdown }, props));
-        };
-        return _this;
-    }
-    PayloadSamples.prototype.render = function () {
-        var mimeContent = this.props.content;
-        if (mimeContent === undefined) {
-            return null;
-        }
-        return external_react_["createElement"](MediaTypesSwitch_MediaTypesSwitch, { content: mimeContent, renderDropdown: this.renderDropdown }, function (mediaType) { return external_react_["createElement"](MediaTypeSamples_MediaTypeSamples, { key: "samples", mediaType: mediaType }); });
-    };
-    PayloadSamples = external_tslib_["__decorate"]([
-        external_mobx_react_["observer"]
-    ], PayloadSamples);
-    return PayloadSamples;
-}(external_react_["Component"]));
-
-
-// CONCATENATED MODULE: ./src/components/RequestSamples/RequestSamples.tsx
-
-
-
-
-
-
-var RequestSamples_RequestSamples = /** @class */ (function (_super) {
-    external_tslib_["__extends"](RequestSamples, _super);
-    function RequestSamples() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    RequestSamples.prototype.render = function () {
-        var operation = this.props.operation;
-        var requestBodyContent = operation.requestBody && operation.requestBody.content;
-        var hasBodySample = requestBodyContent && requestBodyContent.hasSample;
-        var samples = operation.codeSamples;
-        var hasSamples = hasBodySample || samples.length > 0;
-        return hasSamples && external_react_["createElement"]("div", null,
-            external_react_["createElement"](UnderlinedHeader, { key: "header" }, " Request Example: "),
-            samples.length > 0 ? external_react_["createElement"](Tabs, { defaultIndex: 0 },
-                external_react_["createElement"](external_react_tabs_["TabList"], null,
-                    hasBodySample && external_react_["createElement"](external_react_tabs_["Tab"], { key: "payload" }, " Payload "),
-                    samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["Tab"], { key: sample.lang }, sample.label !== undefined ? sample.label : sample.lang); })),
-                hasBodySample && external_react_["createElement"](external_react_tabs_["TabPanel"], { key: "payload" },
-                    external_react_["createElement"]("div", null,
-                        external_react_["createElement"](PayloadSamples_PayloadSamples, { content: requestBodyContent }))),
-                samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: sample.lang },
-                    external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: sample.lang, source: sample.source })); })) : external_react_["createElement"]("div", null,
-                external_react_["createElement"](PayloadSamples_PayloadSamples, { content: requestBodyContent }))) || null;
-    };
-    RequestSamples = external_tslib_["__decorate"]([
-        external_mobx_react_["observer"]
-    ], RequestSamples);
-    return RequestSamples;
-}(external_react_["Component"]));
-
-
 // CONCATENATED MODULE: ./src/components/Responses/ResponseTitle.tsx
 
 
@@ -12389,7 +11859,6 @@ var ResponsesList_ResponsesList = /** @class */ (function (_super) {
 
 
 
-
  // import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 
@@ -12425,8 +11894,7 @@ var Operation_Operation = /** @class */ (function (_super) {
                 external_react_["createElement"](Extensions_Extensions, { extensions: operation.extensions }),
                 external_react_["createElement"](SecurityRequirement_SecurityRequirements, { securities: operation.security }),
                 external_react_["createElement"](Parameters_Parameters, { parameters: operation.parameters, body: operation.requestBody }),
-                external_react_["createElement"](ResponsesList_ResponsesList, { responses: operation.responses }),
-                external_react_["createElement"](RequestSamples_RequestSamples, { operation: operation }))); });
+                external_react_["createElement"](ResponsesList_ResponsesList, { responses: operation.responses }))); });
     };
     Operation = external_tslib_["__decorate"]([
         external_mobx_react_["observer"]
@@ -13108,7 +12576,499 @@ var RedocStandalone_RedocStandalone = /** @class */ (function (_super) {
 }(external_react_["PureComponent"]));
 
 
+// CONCATENATED MODULE: ./src/common-elements/Tooltip.tsx
+
+
+
+var Wrapper = styled_components.div.withConfig({
+    componentId: "t0v3fg-0"
+})(["position:relative;"]);
+var Tip = styled_components.div.withConfig({
+    componentId: "t0v3fg-1"
+})(["position:absolute;min-width:80px;max-width:500px;background:#fff;bottom:100%;left:50%;margin-bottom:10px;transform:translateX(-50%);border-radius:4px;padding:0.3em 0.6em;text-align:center;box-shadow:0px 0px 5px 0px rgba(204,204,204,1);"]);
+var Content = styled_components.div.withConfig({
+    componentId: "t0v3fg-2"
+})(["background:#fff;color:#000;display:inline;font-size:0.85em;white-space:nowrap;"]);
+var Arrow = styled_components.div.withConfig({
+    componentId: "t0v3fg-3"
+})(["position:absolute;width:0;height:0;bottom:-5px;left:50%;margin-left:-5px;border-left:solid transparent 5px;border-right:solid transparent 5px;border-top:solid #bbb 5px;"]);
+var Gap = styled_components.div.withConfig({
+    componentId: "t0v3fg-4"
+})(["position:absolute;width:100%;height:20px;bottom:-20px;"]);
+var Tooltip_Tooltip = /** @class */ (function (_super) {
+    external_tslib_["__extends"](Tooltip, _super);
+    function Tooltip() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Tooltip.prototype.render = function () {
+        var _a = this.props, open = _a.open, title = _a.title, children = _a.children;
+        return external_react_["createElement"](Wrapper, null,
+            children,
+            open && external_react_["createElement"](Tip, null,
+                external_react_["createElement"](Content, null, title),
+                external_react_["createElement"](Arrow, null),
+                external_react_["createElement"](Gap, null)));
+    };
+    return Tooltip;
+}(external_react_["Component"]));
+
+
+// CONCATENATED MODULE: ./src/common-elements/CopyButtonWrapper.tsx
+
+
+
+
+var CopyButtonWrapper_CopyButtonWrapper = /** @class */ (function (_super) {
+    external_tslib_["__extends"](CopyButtonWrapper, _super);
+    function CopyButtonWrapper(props) {
+        var _this = _super.call(this, props) || this;
+        _this.copy = function () {
+            var content = typeof _this.props.data === 'string' ? _this.props.data : JSON.stringify(_this.props.data, null, 2);
+            ClipboardService.copyCustom(content);
+            _this.showTooltip();
+        };
+        _this.renderCopyButton = function () {
+            return external_react_["createElement"]("span", { onClick: _this.copy },
+                external_react_["createElement"](Tooltip_Tooltip, { title: ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser', open: _this.state.tooltipShown }, "Copy"));
+        };
+        _this.state = {
+            tooltipShown: false
+        };
+        return _this;
+    }
+    CopyButtonWrapper.prototype.render = function () {
+        return this.props.children({
+            renderCopyButton: this.renderCopyButton
+        });
+    };
+    CopyButtonWrapper.prototype.showTooltip = function () {
+        var _this = this;
+        this.setState({
+            tooltipShown: true
+        });
+        setTimeout(function () {
+            _this.setState({
+                tooltipShown: false
+            });
+        }, 1500);
+    };
+    return CopyButtonWrapper;
+}(external_react_["PureComponent"]));
+
+
+// CONCATENATED MODULE: ./src/utils/jsonToHtml.ts
+var jsonToHtml_level = 1;
+var COLLAPSE_LEVEL = 2;
+function jsonToHTML(json) {
+    jsonToHtml_level = 1;
+    var output = '';
+    output += '<div class="redoc-json">';
+    output += valueToHTML(json);
+    output += '</div>';
+    return output;
+}
+function htmlEncode(t) {
+    return t !== undefined ? t.toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+}
+function escapeForStringLiteral(str) {
+    return str.replace(/([\\"])/g, '\\$1');
+}
+function decorateWithSpan(value, className) {
+    return '<span class="' + className + '">' + htmlEncode(value) + '</span>';
+}
+function punctuation(val) {
+    return '<span class="token punctuation">' + val + '</span>';
+}
+function valueToHTML(value) {
+    var valueType = typeof value;
+    var output = '';
+    if (value === undefined || value === null) {
+        output += decorateWithSpan('null', 'token keyword');
+    }
+    else if (value && value.constructor === Array) {
+        jsonToHtml_level++;
+        output += arrayToHTML(value);
+        jsonToHtml_level--;
+    }
+    else if (value && value.constructor === Date) {
+        output += decorateWithSpan('"' + value.toISOString() + '"', 'token string');
+    }
+    else if (valueType === 'object') {
+        jsonToHtml_level++;
+        output += objectToHTML(value);
+        jsonToHtml_level--;
+    }
+    else if (valueType === 'number') {
+        output += decorateWithSpan(value, 'token number');
+    }
+    else if (valueType === 'string') {
+        if (/^(http|https):\/\/[^\s]+$/.test(value)) {
+            output += decorateWithSpan('"', 'token string') + '<a href="' + value + '">' + htmlEncode(escapeForStringLiteral(value)) + '</a>' + decorateWithSpan('"', 'token string');
+        }
+        else {
+            output += decorateWithSpan('"' + escapeForStringLiteral(value) + '"', 'token string');
+        }
+    }
+    else if (valueType === 'boolean') {
+        output += decorateWithSpan(value, 'token boolean');
+    }
+    return output;
+}
+function arrayToHTML(json) {
+    var collapsed = jsonToHtml_level > COLLAPSE_LEVEL ? 'collapsed' : '';
+    var output = "<div class=\"collapser\"></div>" + punctuation('[') + "<span class=\"ellipsis\"></span><ul class=\"array collapsible\">";
+    var hasContents = false;
+    var length = json.length;
+    for (var i = 0; i < length; i++) {
+        hasContents = true;
+        output += '<li><div class="hoverable ' + collapsed + '">';
+        output += valueToHTML(json[i]);
+        if (i < length - 1) {
+            output += ',';
+        }
+        output += '</div></li>';
+    }
+    output += "</ul>" + punctuation(']');
+    if (!hasContents) {
+        output = punctuation('[ ]');
+    }
+    return output;
+}
+function objectToHTML(json) {
+    var collapsed = jsonToHtml_level > COLLAPSE_LEVEL ? 'collapsed' : '';
+    var keys = Object.keys(json);
+    var length = keys.length;
+    var output = "<div class=\"collapser\"></div>" + punctuation('{') + "<span class=\"ellipsis\"></span><ul class=\"obj collapsible\">";
+    var hasContents = false;
+    for (var i = 0; i < length; i++) {
+        var key = keys[i];
+        hasContents = true;
+        output += '<li><div class="hoverable ' + collapsed + '">';
+        output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
+        output += valueToHTML(json[key]);
+        if (i < length - 1) {
+            output += punctuation(',');
+        }
+        output += '</div></li>';
+    }
+    output += "</ul>" + punctuation('}');
+    if (!hasContents) {
+        output = punctuation('{ }');
+    }
+    return output;
+}
+
+// CONCATENATED MODULE: ./src/components/JsonViewer/style.ts
+
+var jsonStyles = css([".redoc-json > .collapser{display:none;}.redoc-json{color:#c2c2c2;}font-family:", ";font-size:", ";white-space:", ";contain:content;overflow-x:auto;.callback-function{color:gray;}.collapser:after{content:'-';cursor:pointer;}.collapsed > .collapser:after{content:'+';cursor:pointer;}.ellipsis:after{content:' \u2026 ';}.collapsible{margin-left:2em;}.hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}.hovered{background-color:rgba(235,238,249,1);}.collapser{padding-right:6px;padding-left:6px;}ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}li{position:relative;display:block;}.hoverable{display:inline-block;}.selected{outline-style:solid;outline-width:1px;outline-style:dotted;}.collapsed > .collapsible{display:none;}.ellipsis{display:none;}.collapsed > .ellipsis{display:inherit;}.collapser{position:absolute;top:1px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;}"], function (props) { return props.theme.typography.code.fontFamily; }, function (props) { return props.theme.typography.code.fontSize; }, function (_a) {
+    var theme = _a.theme;
+    return theme.typography.code.wrap ? 'pre-wrap' : 'pre';
+});
+
+// CONCATENATED MODULE: ./src/components/JsonViewer/JsonViewer.tsx
+
+
+
+
+
+
+
+
+var JsonViewerWrap = styled_components.div.withConfig({
+    componentId: "sc-1d3n1g3-0"
+})(["&:hover > ", "{opacity:1;}"], SampleControls);
+var JsonViewer_Json = /** @class */ (function (_super) {
+    external_tslib_["__extends"](Json, _super);
+    function Json() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.renderInner = function (_a) {
+            var renderCopyButton = _a.renderCopyButton;
+            return external_react_["createElement"](JsonViewerWrap, null,
+                external_react_["createElement"](SampleControls, null,
+                    renderCopyButton(),
+                    external_react_["createElement"]("span", { onClick: _this.expandAll }, " Expand all "),
+                    external_react_["createElement"]("span", { onClick: _this.collapseAll }, " Collapse all ")),
+                external_react_["createElement"](PrismDiv, { className: _this.props.className, ref: function (node) { return _this.node = node; }, dangerouslySetInnerHTML: {
+                        __html: jsonToHTML(_this.props.data)
+                    } }));
+        };
+        _this.expandAll = function () {
+            var elements = _this.node.getElementsByClassName('collapsible');
+            for (var _i = 0, _a = Array.prototype.slice.call(elements); _i < _a.length; _i++) {
+                var collapsed = _a[_i];
+                collapsed.parentNode.classList.remove('collapsed');
+            }
+        };
+        _this.collapseAll = function () {
+            var elements = _this.node.getElementsByClassName('collapsible');
+            for (var _i = 0, _a = Array.prototype.slice.call(elements); _i < _a.length; _i++) {
+                var expanded = _a[_i];
+                // const collapsed = elements[i];
+                if (expanded.parentNode.classList.contains('redoc-json')) {
+                    continue;
+                }
+                expanded.parentNode.classList.add('collapsed');
+            }
+        };
+        _this.clickListener = function (event) {
+            var collapsed;
+            var target = event.target;
+            if (target.className === 'collapser') {
+                collapsed = target.parentElement.getElementsByClassName('collapsible')[0];
+                if (collapsed.parentElement.classList.contains('collapsed')) {
+                    collapsed.parentElement.classList.remove('collapsed');
+                }
+                else {
+                    collapsed.parentElement.classList.add('collapsed');
+                }
+            }
+        };
+        return _this;
+    }
+    Json.prototype.render = function () {
+        return external_react_["createElement"](CopyButtonWrapper_CopyButtonWrapper, { data: this.props.data }, this.renderInner);
+    };
+    Json.prototype.componentDidMount = function () {
+        this.node.addEventListener('click', this.clickListener);
+    };
+    Json.prototype.componentWillUnmount = function () {
+        this.node.removeEventListener('click', this.clickListener);
+    };
+    return Json;
+}(external_react_["PureComponent"]));
+var JsonViewer = styled_components(JsonViewer_Json).withConfig({
+    componentId: "sc-1d3n1g3-1"
+})(["", ";"], jsonStyles);
+
 // CONCATENATED MODULE: ./src/components/JsonViewer/index.tsx
+
+
+// CONCATENATED MODULE: ./src/components/SourceCode/SourceCode.tsx
+
+
+
+
+
+var SourceCode_SourceCode = /** @class */ (function (_super) {
+    external_tslib_["__extends"](SourceCode, _super);
+    function SourceCode() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SourceCode.prototype.render = function () {
+        var _a = this.props, source = _a.source, lang = _a.lang;
+        return external_react_["createElement"](StyledPre, { dangerouslySetInnerHTML: {
+                __html: highlight(source, lang)
+            } });
+    };
+    return SourceCode;
+}(external_react_["PureComponent"]));
+
+var SourceCode_SourceCodeWithCopy = /** @class */ (function (_super) {
+    external_tslib_["__extends"](SourceCodeWithCopy, _super);
+    function SourceCodeWithCopy() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SourceCodeWithCopy.prototype.render = function () {
+        var _this = this;
+        return external_react_["createElement"](CopyButtonWrapper_CopyButtonWrapper, { data: this.props.source }, function (_a) {
+            var renderCopyButton = _a.renderCopyButton;
+            return external_react_["createElement"](SampleControlsWrap, null,
+                external_react_["createElement"](SampleControls, null, renderCopyButton()),
+                external_react_["createElement"](SourceCode_SourceCode, { lang: _this.props.lang, source: _this.props.source }));
+        });
+    };
+    return SourceCodeWithCopy;
+}(external_react_["PureComponent"]));
+
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/ExampleValue.tsx
+
+
+
+
+function ExampleValue_ExampleValue(_a) {
+    var value = _a.value, mimeType = _a.mimeType;
+    if (isJsonLike(mimeType)) {
+        return external_react_["createElement"](JsonViewer, { data: value });
+    }
+    else {
+        return external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: langFromMime(mimeType), source: value });
+    }
+}
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/exernalExampleHook.ts
+
+
+function useExternalExample(example, mimeType) {
+    var _this = this;
+    var _a = Object(external_react_["useState"])(true), setIsLoading = _a[1]; // to trigger component reload
+    var value = Object(external_react_["useRef"])(undefined);
+    var prevRef = Object(external_react_["useRef"])(undefined);
+    if (prevRef.current !== example) {
+        value.current = undefined;
+    }
+    prevRef.current = example;
+    Object(external_react_["useEffect"])(function () {
+        var load = function () { return external_tslib_["__awaiter"](_this, void 0, void 0, function () {
+            var _a, e_1;
+            return external_tslib_["__generator"](this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        setIsLoading(true);
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        _a = value;
+                        return [4 /*yield*/, example.getExternalValue(mimeType)];
+                    case 2:
+                        _a.current = _b.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _b.sent();
+                        value.current = e_1;
+                        return [3 /*break*/, 4];
+                    case 4:
+                        setIsLoading(false);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
+        load();
+    }, [example, mimeType]);
+    return value.current;
+}
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/Example.tsx
+
+
+
+
+
+
+
+function Example(_a) {
+    var example = _a.example, mimeType = _a.mimeType;
+    if (example.value === undefined && example.externalValueUrl) {
+        return external_react_["createElement"](ExternalExample, { example: example, mimeType: mimeType });
+    }
+    else {
+        return external_react_["createElement"](ExampleValue_ExampleValue, { value: example.value, mimeType: mimeType });
+    }
+}
+function ExternalExample(_a) {
+    var example = _a.example, mimeType = _a.mimeType;
+    var value = useExternalExample(example, mimeType);
+    if (value === undefined) {
+        return external_react_["createElement"]("span", null, "Loading...");
+    }
+    if (value instanceof Error) {
+        console.log(value);
+        return external_react_["createElement"](StyledPre, null,
+            "Error loading external example: ",
+            external_react_["createElement"]("br", null),
+            external_react_["createElement"]("a", { className: 'token string', href: example.externalValueUrl, target: "_blank" }, example.externalValueUrl));
+    }
+    if (isJsonLike(mimeType)) {
+        return external_react_["createElement"](JsonViewer, { data: value });
+    }
+    else {
+        if (typeof value === 'object') {
+            // just in case example was cached as json but used as non-json
+            value = JSON.stringify(value, null, 2);
+        }
+        return external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: langFromMime(mimeType), source: value });
+    }
+}
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/styled.elements.ts
+
+
+var styled_elements_MimeLabel = styled_components.div.withConfig({
+    componentId: "futasu-0"
+})(["position:relative;top:-35px;left:132px;margin:0;font-size:0.929em;color:#000;display:block;"]);
+var InvertedSimpleDropdown = styled_components(StyledDropdown).withConfig({
+    componentId: "futasu-1"
+})(["margin-left:10px;text-transform:none;font-size:0.929em;border-bottom:1px solid ", ";margin:0 0 10px 0;display:block;.Dropdown-control,.Dropdown-control:hover{font-size:1em;border:none;padding:0 1.2em 0 0;background:transparent;color:", ";box-shadow:none;.Dropdown-arrow{border-top-color:", ";}}.Dropdown-menu{margin:0;}"], function (_a) {
+    var theme = _a.theme;
+    return theme.rightPanel.textColor;
+}, function (_a) {
+    var theme = _a.theme;
+    return theme.rightPanel.textColor;
+}, function (_a) {
+    var theme = _a.theme;
+    return theme.rightPanel.textColor;
+});
+var NoSampleLabel = styled_components.div.withConfig({
+    componentId: "futasu-2"
+})(["font-family:", ";font-size:12px;color:#ee807f;"], function (props) { return props.theme.typography.code.fontFamily; });
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/MediaTypeSamples.tsx
+
+
+
+
+
+var MediaTypeSamples_MediaTypeSamples = /** @class */ (function (_super) {
+    external_tslib_["__extends"](MediaTypeSamples, _super);
+    function MediaTypeSamples() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MediaTypeSamples.prototype.render = function () {
+        var examples = this.props.mediaType.examples || {};
+        var mimeType = this.props.mediaType.name;
+        var noSample = external_react_["createElement"](NoSampleLabel, null, "No sample");
+        var examplesNames = Object.keys(examples);
+        if (examplesNames.length === 0) {
+            return noSample;
+        }
+        if (examplesNames.length > 1) {
+            return external_react_["createElement"](SmallTabs, { defaultIndex: 0 },
+                external_react_["createElement"](external_react_tabs_["TabList"], null, examplesNames.map(function (name) { return external_react_["createElement"](external_react_tabs_["Tab"], { key: name },
+                    " ",
+                    examples[name].summary || name,
+                    " "); })),
+                examplesNames.map(function (name) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: name },
+                    external_react_["createElement"](Example, { example: examples[name], mimeType: mimeType })); }));
+        }
+        else {
+            var name_1 = examplesNames[0];
+            return external_react_["createElement"]("div", null,
+                external_react_["createElement"](Example, { example: examples[name_1], mimeType: mimeType }));
+        }
+    };
+    return MediaTypeSamples;
+}(external_react_["Component"]));
+
+
+// CONCATENATED MODULE: ./src/components/PayloadSamples/PayloadSamples.tsx
+
+
+
+
+
+
+
+var PayloadSamples_PayloadSamples = /** @class */ (function (_super) {
+    external_tslib_["__extends"](PayloadSamples, _super);
+    function PayloadSamples() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.renderDropdown = function (props) {
+            return external_react_["createElement"](DropdownOrLabel, external_tslib_["__assign"]({ Label: styled_elements_MimeLabel, Dropdown: InvertedSimpleDropdown }, props));
+        };
+        return _this;
+    }
+    PayloadSamples.prototype.render = function () {
+        var mimeContent = this.props.content;
+        if (mimeContent === undefined) {
+            return null;
+        }
+        return external_react_["createElement"](MediaTypesSwitch_MediaTypesSwitch, { content: mimeContent, renderDropdown: this.renderDropdown }, function (mediaType) { return external_react_["createElement"](MediaTypeSamples_MediaTypeSamples, { key: "samples", mediaType: mediaType }); });
+    };
+    PayloadSamples = external_tslib_["__decorate"]([
+        external_mobx_react_["observer"]
+    ], PayloadSamples);
+    return PayloadSamples;
+}(external_react_["Component"]));
 
 
 // CONCATENATED MODULE: ./src/components/ResponseSamples/ResponseSamples.tsx
