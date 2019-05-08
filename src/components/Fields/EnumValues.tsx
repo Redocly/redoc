@@ -20,7 +20,7 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
         </FieldLabel>{' '}
         {values.map((value, idx) => (
           <ExampleValue key={idx}>
-            {typeof value === 'string' ? value : JSON.stringify(value)}
+            {JSON.stringify(value)}
           </ExampleValue>
         ))}
       </div>
