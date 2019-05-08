@@ -18,7 +18,10 @@
     "redoc": "github:BusinessDuck/ReDoc#master",
     "styled-components": "^4.1.1",
     "tslib": "^1.9.3",
-    "yargs": "^12.0.5"
+    "yargs": "^12.0.5",
+    "node-fetch-h2": "^2.3.1-0",
+    "builtin-status-codes": "^3.0.0",
+    "to-arraybuffer": "^1.0.1"
   },
   "scripts": {
     "ci-publish": "ci-publish"
