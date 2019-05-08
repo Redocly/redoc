@@ -12,7 +12,6 @@ import { Endpoint } from '../Endpoint/Endpoint';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { Parameters } from '../Parameters/Parameters';
-import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 // import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
