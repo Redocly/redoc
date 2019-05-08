@@ -7144,7 +7144,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "4452eb1"));
+                    "ab7a245"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -10052,32 +10052,35 @@ var deprecatedCss = css(["text-decoration:line-through;color:#bdccd3;"]);
 var PropertiesTableCaption = styled_components.caption.withConfig({
     componentId: "dz44d2-0"
 })(["text-align:right;font-size:0.9em;font-weight:normal;color:", ";"], function (props) { return props.theme.colors.text.secondary; });
-var PropertyCell = styled_components.td.withConfig({
+var PropertyRow = styled_components.tr.withConfig({
     componentId: "dz44d2-1"
+})(["&:focus{outline:none;}&.hidden,&.hidden > td{overflow:hidden;position:absolute;}"]);
+var PropertyCell = styled_components.td.withConfig({
+    componentId: "dz44d2-2"
 })(["border-left:1px solid ", ";box-sizing:border-box;position:relative;padding:10px 10px 10px 0;tr:first-of-type > &,tr.last > &{border-left-width:0;background-position:top left;background-repeat:no-repeat;background-size:1px 100%;}tr:first-of-type > &{background-image:linear-gradient( to bottom,transparent 0%,transparent 22px,", " 22px,", " 100% );}tr.last > &{background-image:linear-gradient( to bottom,", " 0%,", " 22px,transparent 22px,transparent 100% );}tr.last + tr > &{border-left-color:transparent;}tr.last:first-child > &{background:none;border-left-color:transparent;}"], function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; });
 var PropertyCellWithInner = styled_components(PropertyCell).withConfig({
-    componentId: "dz44d2-2"
+    componentId: "dz44d2-3"
 })(["padding:0;"]);
 var PropertyNameCell = styled_components(PropertyCell).withConfig({
-    componentId: "dz44d2-3"
+    componentId: "dz44d2-4"
 })(["vertical-align:top;line-height:20px;white-space:nowrap;font-size:0.929em;font-family:", ";&.deprecated{", ";}", ";", ";"], function (props) { return props.theme.typography.headings.fontFamily; }, deprecatedCss, function (_a) {
     var kind = _a.kind;
     return kind !== 'field' ? 'font-style: italic' : '';
 }, extensionsHook('PropertyNameCell'));
 var PropertyDetailsCell = styled_components.td.withConfig({
-    componentId: "dz44d2-4"
+    componentId: "dz44d2-5"
 })(["border-bottom:1px solid #eee;padding:10px 0;width:", ";box-sizing:border-box;tr.expanded &{border-bottom:none;}"], function (props) { return props.theme.schema.defaultDetailsWidth; });
 var PropertyBullet = styled_components.span.withConfig({
-    componentId: "dz44d2-5"
+    componentId: "dz44d2-6"
 })(["color:", ";font-family:", ";margin-right:10px;&::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:", ";}&::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:", ";height:7px;}"], function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.typography.code.fontFamily; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; });
 var InnerPropertiesWrap = styled_components.div.withConfig({
-    componentId: "dz44d2-6"
+    componentId: "dz44d2-7"
 })(["padding:", ";"], function (_a) {
     var theme = _a.theme;
     return theme.schema.nestingSpacing;
 });
 var PropertiesTable = styled_components.table.withConfig({
-    componentId: "dz44d2-7"
+    componentId: "dz44d2-8"
 })(["border-collapse:separate;border-radius:3px;font-size:", ";border-spacing:0;width:100%;> tr{vertical-align:middle;}& ", ",& ", " ", " ", ",& ", " ", " ", " ", " ", "{margin:", ";margin-right:0;background:", ";}& ", " ", ",& ", " ", " ", " ", ",& ", " ", " ", " ", " ", " ", "{background:#ffffff;}"], function (props) { return props.theme.typography.fontSize; }, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, InnerPropertiesWrap, function (_a) {
     var theme = _a.theme;
     return theme.schema.nestingSpacing;
@@ -10169,7 +10172,7 @@ var PrismDiv = styled_components.div.withConfig({
 
 var SampleControls = styled_components.div.withConfig({
     componentId: "sc-1rd7dj7-0"
-})(["opacity:0.4;transition:opacity 0.3s ease;text-align:right;> span{display:inline-block;padding:2px 10px;cursor:pointer;:hover{background:rgba(255,255,255,0.1);}}"]);
+})(["opacity:0.4;transition:opacity 0.3s ease;text-align:right;position:absolute;right:30px;z-index:5;> span{display:inline-block;padding:2px 10px;cursor:pointer;:hover{background:rgba(255,255,255,0.1);}}"]);
 var SampleControlsWrap = styled_components.div.withConfig({
     componentId: "sc-1rd7dj7-1"
 })(["&:hover ", "{opacity:1;}"], SampleControls);
@@ -11513,21 +11516,31 @@ var Schema_Schema = /** @class */ (function (_super) {
 
 var Field_Field = /** @class */ (function (_super) {
     external_tslib_["__extends"](Field, _super);
-    function Field() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Field(props) {
+        var _this = _super.call(this, props) || this;
         _this.toggle = function () {
-            _this.props.field.toggle();
+            _this.setState({
+                expanded: !_this.state.expanded
+            });
+        };
+        _this.onFocus = function () {
+            _this.setState({
+                expanded: true
+            });
+        };
+        _this.state = {
+            expanded: false
         };
         return _this;
     }
     Field.prototype.render = function () {
         var _a = this.props, className = _a.className, field = _a.field, isLast = _a.isLast;
-        var name = field.name, expanded = field.expanded, deprecated = field.deprecated, required = field.required, kind = field.kind;
+        var name = field.name, deprecated = field.deprecated, required = field.required, kind = field.kind;
         var withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
         var paramName = withSubSchema ? external_react_["createElement"](ClickablePropertyNameCell, { onClick: this.toggle, className: deprecated ? 'deprecated' : '', kind: kind, title: name },
             external_react_["createElement"](PropertyBullet, null),
             name,
-            external_react_["createElement"](ShelfIcon, { direction: expanded ? 'down' : 'right' }),
+            external_react_["createElement"](ShelfIcon, { direction: this.state.expanded ? 'down' : 'right' }),
             !required && external_react_["createElement"](OptionalLabel, null, " optional ")) : external_react_["createElement"](PropertyNameCell, { className: deprecated ? 'deprecated' : undefined, kind: kind, title: name },
             external_react_["createElement"](PropertyBullet, null),
             name,
@@ -11537,7 +11550,7 @@ var Field_Field = /** @class */ (function (_super) {
                 paramName,
                 external_react_["createElement"](PropertyDetailsCell, null,
                     external_react_["createElement"](FieldDetails_FieldDetails, external_tslib_["__assign"]({}, this.props)))),
-            field.expanded && withSubSchema && external_react_["createElement"]("tr", { key: field.name + 'inner' },
+            withSubSchema && external_react_["createElement"](PropertyRow, { className: this.state.expanded ? 'visible' : 'hidden', key: field.name + 'inner', onFocus: this.onFocus, tabIndex: 1 },
                 external_react_["createElement"](PropertyCellWithInner, { colSpan: 2 },
                     external_react_["createElement"](InnerPropertiesWrap, null,
                         external_react_["createElement"](Schema_Schema, { schema: field.schema, skipReadOnly: this.props.skipReadOnly, skipWriteOnly: this.props.skipWriteOnly, showTitle: this.props.showTitle })))));
@@ -12092,7 +12105,7 @@ function ExternalExample(_a) {
 
 var styled_elements_MimeLabel = styled_components.div.withConfig({
     componentId: "futasu-0"
-})(["border-bottom:1px solid #c2c2c2;margin:0 0 10px 0;display:block;"]);
+})(["position:relative;top:-35px;left:132px;margin:0;font-size:0.929em;color:#000;display:block;"]);
 var InvertedSimpleDropdown = styled_components(StyledDropdown).withConfig({
     componentId: "futasu-1"
 })(["margin-left:10px;text-transform:none;font-size:0.929em;border-bottom:1px solid ", ";margin:0 0 10px 0;display:block;.Dropdown-control,.Dropdown-control:hover{font-size:1em;border:none;padding:0 1.2em 0 0;background:transparent;color:", ";box-shadow:none;.Dropdown-arrow{border-top-color:", ";}}.Dropdown-menu{margin:0;}"], function (_a) {
@@ -12197,7 +12210,7 @@ var RequestSamples_RequestSamples = /** @class */ (function (_super) {
         var samples = operation.codeSamples;
         var hasSamples = hasBodySample || samples.length > 0;
         return hasSamples && external_react_["createElement"]("div", null,
-            external_react_["createElement"](RightPanelHeader, null, " Request samples "),
+            external_react_["createElement"](UnderlinedHeader, { key: "header" }, " Request Example: "),
             samples.length > 0 ? external_react_["createElement"](Tabs, { defaultIndex: 0 },
                 external_react_["createElement"](external_react_tabs_["TabList"], null,
                     hasBodySample && external_react_["createElement"](external_react_tabs_["Tab"], { key: "payload" }, " Payload "),
@@ -12294,7 +12307,7 @@ var ResponseDetails_ResponseDetails = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.renderDropdown = function (props) {
             return external_react_["createElement"](UnderlinedHeader, { key: "header" },
-                "Response Schema: ",
+                "Response: ",
                 external_react_["createElement"](DropdownOrLabel, external_tslib_["__assign"]({}, props)));
         };
         return _this;
@@ -12838,8 +12851,11 @@ var RedocWrap = styled_components.div.withConfig({
 var ApiContentWrap = styled_components.div.withConfig({
     componentId: "sc-13p9gjn-1"
 })(["z-index:1;position:relative;overflow:hidden;width:calc(100% - ", ");", ";contain:layout;"], function (props) { return props.theme.menu.width; }, media.lessThan('small', true)(styled_elements_templateObject_1 || (styled_elements_templateObject_1 = external_tslib_["__makeTemplateObject"](["\n    width: 100%;\n  "], ["\n    width: 100%;\n  "]))));
-var BackgroundStub = styled_components.div.withConfig({
+var Copyright = styled_components.div.withConfig({
     componentId: "sc-13p9gjn-2"
+})(["color:#c2c2c2;position:absolute;bottom:14px;right:40px;z-index:5;a{color:#c2c2c2;b{font-size:16px;}}"]);
+var BackgroundStub = styled_components.div.withConfig({
+    componentId: "sc-13p9gjn-3"
 })(["background:", ";position:absolute;top:0;bottom:0;right:0;width:", ";", ";"], function (_a) {
     var theme = _a.theme;
     return theme.rightPanel.backgroundColor;
@@ -13035,6 +13051,10 @@ var Redoc_Redoc = /** @class */ (function (_super) {
                         external_react_["createElement"](ApiContentWrap, { className: "api-content" },
                             external_react_["createElement"](ApiInfo_ApiInfo, { store: store }),
                             external_react_["createElement"](ContentItems_ContentItems, { items: menu.items })),
+                        external_react_["createElement"](Copyright, null,
+                            external_react_["createElement"]("a", { href: "https://github.com/Rebilly/ReDoc", target: "_blank", title: "Swagger-generated API Reference Documentation" },
+                                "Powered by ",
+                                external_react_["createElement"]("b", null, "ReDoc"))),
                         external_react_["createElement"](BackgroundStub, null)))));
     };
     Redoc.propTypes = {
