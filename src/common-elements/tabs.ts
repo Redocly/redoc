@@ -16,14 +16,14 @@ export const Tabs = styled(ReactTabs)`
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: ${({ theme }) => darken(0.05, theme.rightPanel.backgroundColor)};
+      background-color: ${({ theme }) => theme.codeSample.backgroundColor};
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
       outline: none;
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
       margin: 5px;
-      border: 1px solid ${({ theme }) => darken(0.1, theme.rightPanel.backgroundColor)};
+      border: 1px solid ${({ theme }) => darken(0.05, theme.codeSample.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
