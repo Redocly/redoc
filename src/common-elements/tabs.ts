@@ -22,7 +22,8 @@ export const Tabs = styled(ReactTabs)`
       text-align: center;
       outline: none;
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
-      margin: 5px;
+      margin: 0
+        ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
       border: 1px solid ${({ theme }) => darken(0.05, theme.codeSample.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
