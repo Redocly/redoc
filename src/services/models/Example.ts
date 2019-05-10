@@ -15,7 +15,7 @@ export class ExampleModel {
   constructor(
     parser: OpenAPIParser,
     infoOrRef: Referenced<OpenAPIExample>,
-    mime: string,
+    public mime: string,
     encoding?: { [field: string]: OpenAPIEncoding },
   ) {
     const example = parser.deref(infoOrRef);
