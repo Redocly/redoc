@@ -20,6 +20,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  hideSingleRequestSampleTab?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -120,6 +121,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  hideSingleRequestSampleTab: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -147,6 +149,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
