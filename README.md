@@ -185,6 +185,8 @@ You can also specify `onLoaded` callback which will be called each time Redoc ha
 />
 ```
 
+[**IE11 Support Notes**](docs/usage-with-ie11.md)
+
 ## The Docker way
 
 ReDoc is available as pre-built Docker image in official [Docker Hub repository](https://hub.docker.com/r/redocly/redoc/). You may simply pull & run it:
