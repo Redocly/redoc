@@ -434,3 +434,10 @@ export function extractExtensions(obj: object, showExtensions: string[] | true):
       return acc;
     }, {});
 }
+
+export function pluralizeType(displayType: string): string {
+  return displayType
+    .split(' or ')
+    .map(type => type.replace(/^(string|object|number|integer|array|boolean)( ?.*)/, '$1s$2'))
+    .join(' or ');
+}

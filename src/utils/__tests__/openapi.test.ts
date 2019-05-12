@@ -7,6 +7,7 @@ import {
   isPrimitiveType,
   mergeParams,
   normalizeServers,
+  pluralizeType,
 } from '../';
 
 import { OpenAPIParser } from '../../services';
@@ -351,6 +352,29 @@ describe('Utils', () => {
 
     it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
       expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
+    });
+  });
+
+  describe('OpenAPI pluralizeType', () => {
+    it('should pluralize all simple types', () => {
+      expect(pluralizeType('string')).toEqual('strings');
+      expect(pluralizeType('number')).toEqual('numbers');
+      expect(pluralizeType('object')).toEqual('objects');
+      expect(pluralizeType('integer')).toEqual('integers');
+      expect(pluralizeType('boolean')).toEqual('booleans');
+      expect(pluralizeType('array')).toEqual('arrays');
+    });
+
+    it('should pluralize complex dislay types', () => {
+      expect(pluralizeType('object (Pet)')).toEqual('objects (Pet)');
+      expect(pluralizeType('string <email>')).toEqual('strings <email>');
+    });
+
+    it('should pluralize oneOf-ed dislay types', () => {
+      expect(pluralizeType('object or string')).toEqual('objects or strings');
+      expect(pluralizeType('object (Pet) or number <int64>')).toEqual(
+        'objects (Pet) or numbers <int64>',
+      );
     });
   });
 });

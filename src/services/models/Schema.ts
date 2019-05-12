@@ -14,6 +14,7 @@ import {
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  pluralizeType,
   sortByField,
   sortByRequired,
 } from '../../utils/';
@@ -145,7 +146,7 @@ export class SchemaModel {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
     } else if (this.type === 'array' && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
-      this.displayType = this.items.displayType;
+      this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
       this.typePrefix = this.items.typePrefix + 'Array of ';
       this.title = this.title || this.items.title;
