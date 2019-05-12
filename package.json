@@ -117,6 +117,8 @@
     "tslint": "^5.13.1",
     "tslint-react": "^3.4.0",
     "typescript": "^3.3.3333",
+    "unfetch": "^4.1.0",
+    "url-polyfill": "^1.1.5",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1",
