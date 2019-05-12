@@ -223,7 +223,7 @@ export class SchemaModel {
         if (variant.$ref === undefined) {
           continue;
         }
-        const name = JsonPointer.dirName(variant.$ref);
+        const name = JsonPointer.baseName(variant.$ref);
         derived[variant.$ref] = name;
       }
     }
