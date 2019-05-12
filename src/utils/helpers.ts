@@ -165,3 +165,9 @@ export function resolveUrl(url: string, to: string) {
 export function getBasePath(serverUrl: string): string {
   return new URL(serverUrl).pathname;
 }
+
+export function removeQueryString(serverUrl: string): string {
+  const url = new URL(serverUrl);
+  url.search = '';
+  return url.toString();
+}
