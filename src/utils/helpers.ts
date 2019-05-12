@@ -169,3 +169,9 @@ export function getBasePath(serverUrl: string): string {
 export function titleize(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
+
+export function removeQueryString(serverUrl: string): string {
+  const url = new URL(serverUrl);
+  url.search = '';
+  return url.toString();
+}
