@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ExampleValue, FieldLabel } from '../../common-elements/fields';
 
+import { l } from '../../services/Labels';
+
 export interface EnumValuesProps {
   values: string[];
   type: string;
@@ -16,12 +18,11 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
     return (
       <div>
         <FieldLabel>
-          {type === 'array' ? 'Items' : ''} {values.length === 1 ? 'Value' : 'Enum'}:
-        </FieldLabel>{' '}
+          {type === 'array' ? l('enumArray') : ''}{' '}
+          {values.length === 1 ? l('enumSingleValue') : l('enum')}:
+        </FieldLabel>
         {values.map((value, idx) => (
-          <ExampleValue key={idx}>
-            {JSON.stringify(value)}
-          </ExampleValue>
+          <ExampleValue key={idx}>{JSON.stringify(value)}</ExampleValue>
         ))}
       </div>
     );

@@ -19,6 +19,8 @@ import { FieldDetail } from './FieldDetail';
 
 import { Badge } from '../../common-elements/';
 
+import { l } from '../../services/Labels';
+
 export class FieldDetails extends React.PureComponent<FieldProps> {
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
@@ -40,18 +42,18 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           )}
           {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
-          {schema.nullable && <NullableLabel> Nullable </NullableLabel>}
+          {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
           {schema.pattern && <PatternLabel>{schema.pattern}</PatternLabel>}
-          {schema.isCircular && <RecursiveLabel> Recursive </RecursiveLabel>}
+          {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
           <div>
-            <Badge type="warning"> Deprecated </Badge>
+            <Badge type="warning"> {l('deprecated')} </Badge>
           </div>
         )}
-        <FieldDetail label={'Default:'} value={schema.default} />
+        <FieldDetail label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
-        {showExamples && <FieldDetail label={'Example:'} value={example} />}
+        {showExamples && <FieldDetail label={l('example') + ':'} value={example} />}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
           <Markdown compact={true} source={description} />

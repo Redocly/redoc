@@ -2,6 +2,7 @@ import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } fr
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
+import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
 
 export interface RedocRawOptions {
@@ -25,6 +26,8 @@ export interface RedocRawOptions {
   unstable_ignoreMimeParameters?: boolean;
 
   allowedMdComponents?: Dict<MDXComponentMeta>;
+
+  labels?: LabelsConfigRaw;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -135,6 +138,9 @@ export class RedocNormalizedOptions {
     );
 
     this.theme.extensionsHook = hook as any;
+
+    // do not support dynamic labels changes. Labels should be configured before
+    setRedocLabels(raw.labels);
 
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);

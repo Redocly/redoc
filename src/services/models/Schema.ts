@@ -19,6 +19,8 @@ import {
   sortByRequired,
 } from '../../utils/';
 
+import { l } from '../Labels';
+
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
   pointer: string;
@@ -148,7 +150,7 @@ export class SchemaModel {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
       this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
-      this.typePrefix = this.items.typePrefix + 'Array of ';
+      this.typePrefix = this.items.typePrefix + l('arrayOf');
       this.title = this.title || this.items.title;
       this.isPrimitive = this.items.isPrimitive;
       if (this.example === undefined && this.items.example !== undefined) {
