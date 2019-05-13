@@ -1,3 +1,12 @@
+# [2.0.0-rc.7](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2019-05-13)
+
+
+### Bug Fixes
+
+* crash in node due to broken URL parsing ([8df2b97](https://github.com/Rebilly/ReDoc/commit/8df2b97))
+
+
+
 # [2.0.0-rc.6](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2019-05-13)
 
 
