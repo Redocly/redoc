@@ -22,9 +22,9 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
           {values.length === 1 ? l('enumSingleValue') : l('enum')}:
         </FieldLabel>
         {values.map((value, idx) => (
-          <>
-            <ExampleValue key={idx}>{JSON.stringify(value)}</ExampleValue>{' '}
-          </>
+          <React.Fragment key={idx}>
+            <ExampleValue>{JSON.stringify(value)}</ExampleValue>{' '}
+          </React.Fragment>
         ))}
       </div>
     );
