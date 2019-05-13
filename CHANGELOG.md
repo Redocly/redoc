@@ -1,3 +1,13 @@
+# [2.0.0-rc.6](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2019-05-13)
+
+
+### Bug Fixes
+
+* broken schema talbes with long enums ([3a74b74](https://github.com/Rebilly/ReDoc/commit/3a74b74))
+* deep linking sometimes not working when sent over messengers ([2491d97](https://github.com/Rebilly/ReDoc/commit/2491d97))
+
+
+
 # [2.0.0-rc.5](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2019-05-13)
 
 
