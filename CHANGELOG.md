@@ -1,3 +1,33 @@
+# [2.0.0-rc.5](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2019-05-13)
+
+
+### Bug Fixes
+
+* change fontFamily for EndpointInfo ([#866](https://github.com/Rebilly/ReDoc/issues/866)) ([851b133](https://github.com/Rebilly/ReDoc/commit/851b133))
+* clean up field values display ([#855](https://github.com/Rebilly/ReDoc/issues/855)) ([5c91590](https://github.com/Rebilly/ReDoc/commit/5c91590))
+* discriminator and oneOf title fix ([a3d7d7a](https://github.com/Rebilly/ReDoc/commit/a3d7d7a))
+* encode x-www-form-urlencoded examples correctly ([65930ad](https://github.com/Rebilly/ReDoc/commit/65930ad)), closes [#870](https://github.com/Rebilly/ReDoc/issues/870)
+* fix redoc-cli broken dependencies ([81a7568](https://github.com/Rebilly/ReDoc/commit/81a7568))
+* IE11 add missing fetch and URL polyfills ([d2ce1bd](https://github.com/Rebilly/ReDoc/commit/d2ce1bd)), closes [#875](https://github.com/Rebilly/ReDoc/issues/875)
+* ignore empty x-tagGroups array ([#869](https://github.com/Rebilly/ReDoc/issues/869)) ([4366a0d](https://github.com/Rebilly/ReDoc/commit/4366a0d))
+* incorrect detected schema title for deeply inherited schemas ([7d7b4e3](https://github.com/Rebilly/ReDoc/commit/7d7b4e3))
+* pluralize arrray of types ([fdcac30](https://github.com/Rebilly/ReDoc/commit/fdcac30))
+* remove huge space after Authentication section ([548fae3](https://github.com/Rebilly/ReDoc/commit/548fae3)), closes [#872](https://github.com/Rebilly/ReDoc/issues/872)
+* remove query string from server URL ([#895](https://github.com/Rebilly/ReDoc/issues/895)) ([64453ff](https://github.com/Rebilly/ReDoc/commit/64453ff))
+* remove tabs top margin ([5c187f3](https://github.com/Rebilly/ReDoc/commit/5c187f3))
+* right panel code samples bg color ([de2aed2](https://github.com/Rebilly/ReDoc/commit/de2aed2))
+* tidy up non-redoc vendor extension presentation ([#847](https://github.com/Rebilly/ReDoc/issues/847)) ([b21cd3d](https://github.com/Rebilly/ReDoc/commit/b21cd3d))
+* update apiKey in to be titleize ([#902](https://github.com/Rebilly/ReDoc/issues/902)) ([35df477](https://github.com/Rebilly/ReDoc/commit/35df477))
+* **cli:** add node-libs-browser to the deps ([6c79901](https://github.com/Rebilly/ReDoc/commit/6c79901)), closes [#850](https://github.com/Rebilly/ReDoc/issues/850)
+
+
+### Features
+
+* add hideSingleRequestSampleTab option ([4550e4d](https://github.com/Rebilly/ReDoc/commit/4550e4d))
+* add lineHeight config for headings ([#894](https://github.com/Rebilly/ReDoc/issues/894)) ([5dd5d6d](https://github.com/Rebilly/ReDoc/commit/5dd5d6d))
+* basic UI labels configuration ([b0e660e](https://github.com/Rebilly/ReDoc/commit/b0e660e)). Can be used for translations later.
+* add logo gutter to the theme ([82c0cb1a](https://github.com/Rebilly/ReDoc/commit/82c0cb1a)).
+
 # [2.0.0-rc.4](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2019-03-15)
 
 
