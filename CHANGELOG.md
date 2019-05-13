@@ -1,3 +1,12 @@
+# [2.0.0-rc.8-1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.8...v2.0.0-rc.8-1) (2019-05-13)
+
+
+### Bug Fixes
+
+* crash with empty servers with redoc-cli ([3d52b39](https://github.com/Rebilly/ReDoc/commit/3d52b39))
+
+
+
 # [2.0.0-rc.8](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2019-05-13)
 
 
