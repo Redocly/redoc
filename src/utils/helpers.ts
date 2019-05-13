@@ -147,7 +147,7 @@ export function resolveUrl(url: string, to: string) {
   let res;
   if (to.startsWith('//')) {
     const { protocol: specProtocol } = parse(url);
-    res = `${specProtocol}${to}`;
+    res = `${specProtocol || 'https:'}${to}`;
   } else if (isAbsoluteUrl(to)) {
     res = to;
   } else if (!to.startsWith('/')) {
@@ -163,7 +163,7 @@ export function resolveUrl(url: string, to: string) {
 }
 
 export function getBasePath(serverUrl: string): string {
-  return new URL(serverUrl).pathname;
+  return parseURL(serverUrl).pathname;
 }
 
 export function titleize(text: string) {
@@ -171,7 +171,16 @@ export function titleize(text: string) {
 }
 
 export function removeQueryString(serverUrl: string): string {
-  const url = new URL(serverUrl);
+  const url = parseURL(serverUrl);
   url.search = '';
   return url.toString();
+}
+
+function parseURL(url: string) {
+  if (typeof URL === undefined) {
+    // node
+    return new (require('url')).URL(url);
+  } else {
+    return new URL(url);
+  }
 }
