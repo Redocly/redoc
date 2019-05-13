@@ -1,10 +1,19 @@
+# [2.0.0-rc.8](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2019-05-13)
+
+
+### Bug Fixes
+
+* fix broken CLI again ([4e12b5d](https://github.com/Rebilly/ReDoc/commit/4e12b5d))
+* fix logo gutter bg ([81896d3](https://github.com/Rebilly/ReDoc/commit/81896d3))
+
+
+
 # [2.0.0-rc.7](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2019-05-13)
 
 
 ### Bug Fixes
 
 * crash in node due to broken URL parsing ([8df2b97](https://github.com/Rebilly/ReDoc/commit/8df2b97))
-* fix: fix logo gutter bg ([e43f7219](https://github.com/Rebilly/ReDoc/commit/e43f7219))
 
 
 
