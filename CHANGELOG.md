@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * crash in node due to broken URL parsing ([8df2b97](https://github.com/Rebilly/ReDoc/commit/8df2b97))
+* fix: fix logo gutter bg ([e43f7219](https://github.com/Rebilly/ReDoc/commit/e43f7219))
 
 
 
