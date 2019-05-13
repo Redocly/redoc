@@ -177,7 +177,7 @@ export function removeQueryString(serverUrl: string): string {
 }
 
 function parseURL(url: string) {
-  if (typeof URL === undefined) {
+  if (typeof URL === 'undefined') {
     // node
     return new (require('url')).URL(url);
   } else {
