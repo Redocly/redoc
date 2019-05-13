@@ -11,7 +11,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, resolveUrl } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, stripTrailingSlash } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -367,13 +367,20 @@ export function normalizeServers(
   specUrl: string | undefined,
   servers: OpenAPIServer[],
 ): OpenAPIServer[] {
-  const baseUrl =
-    specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : dirname(specUrl);
+  const getHref = () => {
+    if (!IS_BROWSER) {
+      return '';
+    }
+    const href = window.location.href;
+    return href.endsWith('.html') ? dirname(href) : href;
+  };
+
+  const baseUrl = specUrl === undefined ? removeQueryString(getHref()) : dirname(specUrl);
 
   if (servers.length === 0) {
     return [
       {
-        url: baseUrl,
+        url: stripTrailingSlash(baseUrl),
       },
     ];
   }

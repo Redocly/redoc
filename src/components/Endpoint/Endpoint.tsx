@@ -5,7 +5,7 @@ import { Markdown } from '../Markdown/Markdown';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
-import {getBasePath, removeQueryString} from '../../utils';
+import { getBasePath } from '../../utils';
 import {
   EndpointInfo,
   HttpVerb,
@@ -68,7 +68,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                       <span>
                         {hideHostname || options.hideHostname
                           ? getBasePath(server.url)
-                          : removeQueryString(server.url)}
+                          : server.url}
                       </span>
                       {operation.path}
                     </ServerUrl>
