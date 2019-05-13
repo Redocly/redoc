@@ -163,7 +163,12 @@ export function resolveUrl(url: string, to: string) {
 }
 
 export function getBasePath(serverUrl: string): string {
-  return parseURL(serverUrl).pathname;
+  try {
+    return parseURL(serverUrl).pathname;
+  } catch (e) {
+    // when using with redoc-cli serverUrl can be empty resulting in crash
+    return serverUrl;
+  }
 }
 
 export function titleize(text: string) {
@@ -171,9 +176,14 @@ export function titleize(text: string) {
 }
 
 export function removeQueryString(serverUrl: string): string {
-  const url = parseURL(serverUrl);
-  url.search = '';
-  return url.toString();
+  try {
+    const url = parseURL(serverUrl);
+    url.search = '';
+    return url.toString();
+  } catch (e) {
+    // when using with redoc-cli serverUrl can be empty resulting in crash
+    return serverUrl;
+  }
 }
 
 function parseURL(url: string) {
