@@ -4,6 +4,7 @@ import { ExampleValue, FieldLabel } from '../../common-elements/fields';
 export interface FieldDetailProps {
   value?: any;
   label: string;
+  raw?: boolean;
 }
 
 export class FieldDetail extends React.PureComponent<FieldDetailProps> {
@@ -11,11 +12,14 @@ export class FieldDetail extends React.PureComponent<FieldDetailProps> {
     if (this.props.value === undefined) {
       return null;
     }
+
+    const value = this.props.raw ? this.props.value : JSON.stringify(this.props.value);
+
     return (
       <div>
         <FieldLabel> {this.props.label} </FieldLabel>{' '}
         <ExampleValue>
-          {JSON.stringify(this.props.value)}
+          {value}
         </ExampleValue>
       </div>
     );

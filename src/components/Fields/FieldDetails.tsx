@@ -9,6 +9,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
+import { serializeParameterValue } from '../../utils/openapi';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
@@ -26,6 +27,18 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
 
     const { schema, description, example, deprecated } = field;
+
+    let exampleField: JSX.Element | null = null;
+
+    if (showExamples) {
+      const label = l('example') + ':';
+      if (field.in && field.style) {
+        const serializedValue = serializeParameterValue(field, example);
+        exampleField = <FieldDetail label={label} value={serializedValue} raw={true} />;
+      } else {
+        exampleField = <FieldDetail label={label} value={example} />;
+      }
+    }
 
     return (
       <div>
@@ -53,7 +66,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         )}
         <FieldDetail label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
-        {showExamples && <FieldDetail label={l('example') + ':'} value={example} />}
+        {exampleField}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
           <Markdown compact={true} source={description} />

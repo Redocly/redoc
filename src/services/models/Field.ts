@@ -1,11 +1,29 @@
 import { action, observable } from 'mobx';
 
-import { OpenAPIParameter, Referenced } from '../../types';
+import {
+  OpenAPIParameter,
+  OpenAPIParameterLocation,
+  OpenAPIParameterStyle,
+  Referenced,
+} from '../../types';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 import { extractExtensions } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
+
+function getDefaultStyleValue(parameterLocation: OpenAPIParameterLocation): OpenAPIParameterStyle {
+  switch (parameterLocation) {
+    case 'header':
+      return 'simple';
+    case 'query':
+      return 'form';
+    case 'path':
+      return 'simple';
+    default:
+      return 'form';
+  }
+}
 
 /**
  * Field or Parameter model ready to be used by components
@@ -20,9 +38,11 @@ export class FieldModel {
   description: string;
   example?: string;
   deprecated: boolean;
-  in?: string;
+  in?: OpenAPIParameterLocation;
   kind: string;
   extensions?: Dict<any>;
+  explode: boolean;
+  style?: OpenAPIParameterStyle;
 
   constructor(
     parser: OpenAPIParser,
@@ -39,6 +59,14 @@ export class FieldModel {
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;
+
+    if (info.style) {
+      this.style = info.style;
+    } else if (this.in) {
+      this.style = getDefaultStyleValue(this.in);
+    }
+
+    this.explode = !!info.explode;
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
     parser.exitRef(infoOrRef);
