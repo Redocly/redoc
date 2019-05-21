@@ -5,13 +5,13 @@
 Serve remote spec by URL:
 
     docker run -it --rm -p 80:80 \
-      -e SPEC_URL='http://localhost:8000/swagger.yaml' redoc
+      -e SPEC_URL='http://localhost:8000/swagger.yaml' redocly/redoc
 
 Serve local file:
 
     docker run -it --rm -p 80:80 \
-      -v $(PWD)/demo/swagger.yaml:/usr/share/nginx/html/swagger.yaml \
-      -e SPEC_URL=swagger.yaml redoc
+      -v $(pwd)/demo/swagger.yaml:/usr/share/nginx/html/swagger.yaml \
+      -e SPEC_URL=swagger.yaml redocly/redoc
 
 ## Runtime configuration options
 
@@ -23,4 +23,4 @@ Serve local file:
 
 ## Build
 
-    docker build -t redoc .
+    docker build -t redocly/redoc .

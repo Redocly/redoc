@@ -1,19 +1,8 @@
 import * as React from 'react';
 import { highlight } from '../../utils';
 
-import { SampleControls, SampleControlsWrap } from '../../common-elements';
+import { SampleControls, SampleControlsWrap, StyledPre } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
-import { PrismDiv } from '../../common-elements/PrismDiv';
-import styled from '../../styled-components';
-
-const StyledPre = styled(PrismDiv.withComponent('pre'))`
-  font-family: ${props => props.theme.typography.code.fontFamily};
-  font-size: ${props => props.theme.typography.code.fontSize};
-  overflow-x: auto;
-  margin: 0;
-
-  white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
-`;
 
 export interface SourceCodeProps {
   source: string;

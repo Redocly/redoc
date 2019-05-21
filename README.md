@@ -165,7 +165,7 @@ Also you can pass options:
   specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
   options={{
     nativeScrollbars: true,
-    theme: { colors: { main: '#dd5522' } },
+    theme: { colors: { primary { main: '#dd5522' } } },
   }}
 />
 ```
@@ -184,6 +184,8 @@ You can also specify `onLoaded` callback which will be called each time Redoc ha
   }}
 />
 ```
+
+[**IE11 Support Notes**](docs/usage-with-ie11.md)
 
 ## The Docker way
 

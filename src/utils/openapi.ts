@@ -2,6 +2,7 @@ import { dirname } from 'path';
 
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
+  OpenAPIEncoding,
   OpenAPIMediaType,
   OpenAPIOperation,
   OpenAPIParameter,
@@ -10,7 +11,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, resolveUrl } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, stripTrailingSlash } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -128,6 +129,101 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined 
 
 export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
+}
+
+export function isFormUrlEncoded(contentType: string): boolean {
+  return contentType === 'application/x-www-form-urlencoded';
+}
+
+function formEncodeField(fieldVal: any, fieldName: string, explode: boolean): string {
+  if (!fieldVal || !fieldVal.length) {
+    return fieldName + '=';
+  }
+
+  if (Array.isArray(fieldVal)) {
+    if (explode) {
+      return fieldVal.map(val => `${fieldName}=${val}`).join('&');
+    } else {
+      return fieldName + '=' + fieldVal.map(val => val.toString()).join(',');
+    }
+  } else if (typeof fieldVal === 'object') {
+    if (explode) {
+      return Object.keys(fieldVal)
+        .map(k => `${k}=${fieldVal[k]}`)
+        .join('&');
+    } else {
+      return (
+        fieldName +
+        '=' +
+        Object.keys(fieldVal)
+          .map(k => `${k},${fieldVal[k]}`)
+          .join(',')
+      );
+    }
+  } else {
+    return fieldName + '=' + fieldVal.toString();
+  }
+}
+
+function delimitedEncodeField(fieldVal: any, fieldName: string, delimeter: string): string {
+  if (Array.isArray(fieldVal)) {
+    return fieldVal.map(v => v.toString()).join(delimeter);
+  } else if (typeof fieldVal === 'object') {
+    return Object.keys(fieldVal)
+      .map(k => `${k}${delimeter}${fieldVal[k]}`)
+      .join(delimeter);
+  } else {
+    return fieldName + '=' + fieldVal.toString();
+  }
+}
+
+function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
+  if (Array.isArray(fieldVal)) {
+    console.warn('deepObject style cannot be used with array value:' + fieldVal.toString());
+    return '';
+  } else if (typeof fieldVal === 'object') {
+    return Object.keys(fieldVal)
+      .map(k => `${fieldName}[${k}]=${fieldVal[k]}`)
+      .join('&');
+  } else {
+    console.warn('deepObject style cannot be used with non-object value:' + fieldVal.toString());
+    return '';
+  }
+}
+
+/*
+ * Should be used only for url-form-encoded body payloads
+ * To be used for parmaters should be extended with other style values
+ */
+export function urlFormEncodePayload(
+  payload: object,
+  encoding: { [field: string]: OpenAPIEncoding } = {},
+) {
+  if (Array.isArray(payload)) {
+    throw new Error('Payload must have fields: ' + payload.toString());
+  } else {
+    return Object.keys(payload)
+      .map(fieldName => {
+        const fieldVal = payload[fieldName];
+        const { style = 'form', explode = true } = encoding[fieldName] || {};
+        switch (style) {
+          case 'form':
+            return formEncodeField(fieldVal, fieldName, explode);
+            break;
+          case 'spaceDelimited':
+            return delimitedEncodeField(fieldVal, fieldName, '%20');
+          case 'pipeDelimited':
+            return delimitedEncodeField(fieldVal, fieldName, '|');
+          case 'deepObject':
+            return deepObjectEncodeField(fieldVal, fieldName);
+          default:
+            // TODO implement rest of styles for path parameters
+            console.warn('Incorrect or unsupported encoding style: ' + style);
+            return '';
+        }
+      })
+      .join('&');
+  }
 }
 
 export function langFromMime(contentType: string): string {
@@ -271,13 +367,20 @@ export function normalizeServers(
   specUrl: string | undefined,
   servers: OpenAPIServer[],
 ): OpenAPIServer[] {
-  const baseUrl =
-    specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : dirname(specUrl);
+  const getHref = () => {
+    if (!IS_BROWSER) {
+      return '';
+    }
+    const href = window.location.href;
+    return href.endsWith('.html') ? dirname(href) : href;
+  };
+
+  const baseUrl = specUrl === undefined ? removeQueryString(getHref()) : dirname(specUrl);
 
   if (servers.length === 0) {
     return [
       {
-        url: baseUrl,
+        url: stripTrailingSlash(baseUrl),
       },
     ];
   }
@@ -337,4 +440,11 @@ export function extractExtensions(obj: object, showExtensions: string[] | true):
       acc[key] = obj[key];
       return acc;
     }, {});
+}
+
+export function pluralizeType(displayType: string): string {
+  return displayType
+    .split(' or ')
+    .map(type => type.replace(/^(string|object|number|integer|array|boolean)( ?.*)/, '$1s$2'))
+    .join(' or ');
 }

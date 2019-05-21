@@ -6,3 +6,6 @@ import 'core-js/fn/string/starts-with';
 
 import 'core-js/es6/map';
 import 'core-js/es6/symbol';
+
+import 'unfetch/polyfill/index';
+import 'url-polyfill';

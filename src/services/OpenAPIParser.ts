@@ -187,6 +187,7 @@ export class OpenAPIParser {
       ...schema,
       allOf: undefined,
       parentRefs: [],
+      title: schema.title || (isNamedDefinition($ref) ? JsonPointer.baseName($ref) : undefined),
     };
 
     // avoid mutating inner objects
@@ -261,11 +262,6 @@ export class OpenAPIParser {
           // receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
-    }
-
-    // name of definition or title on top level
-    if (schema.title === undefined && isNamedDefinition($ref)) {
-      receiver.title = JsonPointer.baseName($ref);
     }
 
     return receiver;

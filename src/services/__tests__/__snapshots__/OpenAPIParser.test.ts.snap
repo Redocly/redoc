@@ -21,6 +21,7 @@ Object {
               "type": "string",
             },
           },
+          "title": undefined,
         },
         Object {
           "allOf": undefined,
@@ -38,6 +39,7 @@ Object {
               "type": "string",
             },
           },
+          "title": undefined,
         },
       ],
     },
@@ -59,6 +61,7 @@ Object {
               "type": "string",
             },
           },
+          "title": undefined,
         },
         Object {
           "allOf": undefined,
@@ -76,6 +79,7 @@ Object {
               "type": "string",
             },
           },
+          "title": undefined,
         },
       ],
     },

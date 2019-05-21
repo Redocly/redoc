@@ -13,7 +13,7 @@ import * as zlib from 'zlib';
 // @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
-import {watch} from 'chokidar';
+import { watch } from 'chokidar';
 import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
@@ -25,6 +25,7 @@ interface Options {
   cdn?: boolean;
   output?: string;
   title?: string;
+  port?: number;
   templateFileName?: string;
   templateOptions?: any;
   redocOptions?: any;
@@ -62,16 +63,16 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
-    const config = {
-      ssr: argv.ssr,
-      watch: argv.watch,
-      templateFileName: argv.template,
+    const config: Options = {
+      ssr: argv.ssr as boolean,
+      watch: argv.watch as boolean,
+      templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
       redocOptions: argv.options || {},
     };
 
     try {
-      await serve(argv.port, argv.spec, config);
+      await serve(argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
     }
@@ -108,12 +109,12 @@ YargsParser.command(
       return yargs;
     },
     async argv => {
-      const config = {
+      const config: Options = {
         ssr: true,
-        output: argv.o,
-        cdn: argv.cdn,
-        title: argv.title,
-        templateFileName: argv.template,
+        output: argv.o as string,
+        cdn: argv.cdn as boolean,
+        title: argv.title as string,
+        templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
         redocOptions: argv.options || {},
       };
@@ -132,7 +133,8 @@ YargsParser.command(
     type: 'string',
   })
   .options('templateOptions', {
-    describe: 'Additional options that you want pass to template. Use dot notation, e.g. templateOptions.metaDescription',
+    describe:
+      'Additional options that you want pass to template. Use dot notation, e.g. templateOptions.metaDescription',
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
@@ -190,7 +192,8 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
           log('Updated successfully');
         } catch (e) {
           console.error('Error while updating: ', e.message);
-        }})
+        }
+      })
       .on('error', error => console.error(`Watcher error: ${error}`))
       .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
   }
@@ -247,13 +250,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-      };
+    };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-      ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-      : `<script>${redocStandaloneSrc}</script>`) + css
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
     templateOptions,
