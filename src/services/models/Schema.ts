@@ -20,6 +20,7 @@ import {
 } from '../../utils/';
 
 import { l } from '../Labels';
+import { Schema } from '../../components';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -42,6 +43,7 @@ export class SchemaModel {
   pattern?: string;
   example?: any;
   enum: any[];
+  const: any;
   default?: any;
   readOnly: boolean;
   writeOnly: boolean;
@@ -105,6 +107,7 @@ export class SchemaModel {
     this.format = schema.format;
     this.nullable = !!schema.nullable;
     this.enum = schema.enum || [];
+    this.const = schema.const;
     this.example = schema.example;
     this.deprecated = !!schema.deprecated;
     this.pattern = schema.pattern;
@@ -195,17 +198,21 @@ export class SchemaModel {
       return schema;
     });
 
-    this.displayType = this.oneOf
-      .map(schema => {
-        let name =
-          schema.typePrefix +
-          (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
-        if (name.indexOf(' or ') > -1) {
-          name = `(${name})`;
-        }
-        return name;
-      })
-      .join(' or ');
+    // If the displayType hasn't been defined, then assemble an aggregate
+    // displayType from all the oneOf variants
+    if (this.displayType == 'any') {
+      this.displayType = this.oneOf
+        .map(schema => {
+          let name =
+            schema.typePrefix +
+            (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
+          if (name.indexOf(' or ') > -1) {
+            name = `(${name})`;
+          }
+          return name;
+        })
+        .join(' or ');
+    }
   }
 
   private initDiscriminator(

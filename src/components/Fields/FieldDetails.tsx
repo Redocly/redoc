@@ -53,6 +53,9 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
         )}
         <FieldDetail label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
+
+        {schema.const && <FieldDetail label={l('enumSingleValue') + ':'} value={schema.const} />}
+
         {showExamples && <FieldDetail label={l('example') + ':'} value={example} />}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>

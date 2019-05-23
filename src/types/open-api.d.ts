@@ -138,6 +138,7 @@ export interface OpenAPISchema {
   maxProperties?: number;
   minProperties?: number;
   enum?: any[];
+  const?: any;
   example?: any;
 }
 
