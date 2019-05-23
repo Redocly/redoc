@@ -20,7 +20,6 @@ import {
 } from '../../utils/';
 
 import { l } from '../Labels';
-import { Schema } from '../../components';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
