@@ -199,7 +199,7 @@ export class SchemaModel {
 
     // If the displayType hasn't been defined, then assemble an aggregate
     // displayType from all the oneOf variants
-    if (this.displayType == 'any') {
+    if (this.displayType === 'any') {
       this.displayType = this.oneOf
         .map(schema => {
           let name =
