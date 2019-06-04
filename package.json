@@ -102,7 +102,6 @@
     "mobx": "^4.3.1",
     "prettier": "^1.16.4",
     "prettier-eslint": "^8.8.2",
-    "puppeteer": "^1.13.0",
     "raf": "^3.4.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
