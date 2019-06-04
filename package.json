@@ -4,7 +4,7 @@
   "description": "ReDoc",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Rebilly/ReDoc"
+    "url": "git://github.com/Redocly/redoc"
   },
   "engines": {
     "node": ">=6.9",

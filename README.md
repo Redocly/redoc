@@ -1,27 +1,27 @@
 <div align="center">
-  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Rebilly/ReDoc/master/docs/images/redoc-logo.png" width="400px" />
+  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master/docs/images/redoc-logo.png" width="400px" />
 
   **OpenAPI/Swagger-generated API Reference Documentation**
 
-  [![Build Status](https://travis-ci.org/Rebilly/ReDoc.svg?branch=master)](https://travis-ci.org/Rebilly/ReDoc) [![Coverage Status](https://coveralls.io/repos/Rebilly/ReDoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Rebilly/ReDoc?branch=master) [![dependencies Status](https://david-dm.org/Rebilly/ReDoc/status.svg)](https://david-dm.org/Rebilly/ReDoc) [![devDependencies Status](https://david-dm.org/Rebilly/ReDoc/dev-status.svg)](https://david-dm.org/Rebilly/ReDoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Rebilly/ReDoc/blob/master/LICENSE)
+  [![Build Status](https://travis-ci.org/Redocly/redoc.svg?branch=master)](https://travis-ci.org/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
 
   [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
 
 
 </div>
 
-**This is README for `2.0` version of ReDoc (React based). README for `1.x` version is on the branch [v1.x](https://github.com/Rebilly/ReDoc/tree/v1.x)**
+**This is README for `2.0` version of ReDoc (React based). README for `1.x` version is on the branch [v1.x](https://github.com/Redocly/redoc/tree/v1.x)**
 
 
-![ReDoc demo](https://raw.githubusercontent.com/Rebilly/ReDoc/master/demo/redoc-demo.png)
+![ReDoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
 
-## [Live demo](http://rebilly.github.io/ReDoc/)
+## [Live demo](http://redocly.github.io/redoc/)
 
 [<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
 
 ## Features
 - Extremely easy deployment
-- [redoc-cli](https://github.com/Rebilly/ReDoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
+- [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
 - Server Side Rendering ready
 - The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
@@ -37,7 +37,7 @@
 - Branding/customizations via [`theme` option](#redoc-options-object)
 
 ## Roadmap
-  - [x] ~~[OpenAPI v3.0 support](https://github.com/Rebilly/ReDoc/issues/312)~~
+  - [x] ~~[OpenAPI v3.0 support](https://github.com/Redocly/redoc/issues/312)~~
   - [x] ~~performance optimizations~~
   - [x] ~~better navigation (menu improvements + search)~~
   - [x] ~~React rewrite~~
@@ -50,7 +50,7 @@
 - particular release, e.g. `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
 - `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
 
-Additionally, all the 1.x releases are hosted on our GitHub Pages-based **CDN**:
+Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
@@ -200,7 +200,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[See here](https://github.com/Rebilly/ReDoc/blob/master/cli/README.md)
+[See here](https://github.com/Redocly/redoc/blob/master/cli/README.md)
 
 ## Configuration
 
@@ -229,7 +229,7 @@ You can use all of the following options with standalone version on <redoc> tag 
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
   * **function**: A getter function. Must return a number representing the offset (in pixels);
 * `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
-* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\rebilly.github.io/ReDoc) for the example.~~
+* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
@@ -242,7 +242,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `disableSearch` - disable search indexing and search box
 * `onlyRequiredInSamples` - shows only required fields in request samples.
-* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Rebilly/ReDoc/blob/master/src/theme.ts)
+* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts)
 
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:

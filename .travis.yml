@@ -4,7 +4,7 @@ node_js:
 cache: yarn
 env:
   global:
-  - GH_REF: github.com/Rebilly/ReDoc.git
+  - GH_REF: github.com/Redocly/redoc.git
   - GIT_AUTHOR_EMAIL: redoc-bot@users.noreply.github.com
   - GIT_AUTHOR_NAME: RedocBot
   - secure: H2GClDJ7TEQaWgnk8d2fIVDpLwG3rTmN8TalUzrCqXGoG6ylCVmlwzKLgfPPWrVgSA7QTdfNV0ab7c2KyPoZBinHmeGMSuKNLVbhOXRc2VFxTBntBTuyJhfCgQEpUKvJesJUuv5RuBn//wC7VZcVVNc06TZDEe8+aDVYQuCRMXZJ4X3e6nSZ64QX2veyVcr+TjnRsZPkeBVcK9hngvuaxLb/hbJ85CvjiseZRt47PGIcrEpMn9n2GMw1m0fNnPoN+MBTSCnIklTmdjPG7t4GUSLmD6H0lNLdXuehYqmQAHgYrLec1aiFlV57QaDoDZrq2hSf4vDmCB/FVydGhD5JunI67pujoV2OnD1V80eUZhYNWOYsJ2Nfp4NxgXsPUcE6zWLYsLfktMPZADhOXInQRACt1cnx8zMYKLnch1RY/ZqjSg0nPtRjLzQ0lNsw5leixvBdBnMjxYHVyAWVwg8WiJMaLO9vog2Qnxg1NTacHO2CsOmm2rw6stpg7ndp/+nOleRlfUKggjt0Tn3FjwCIXeGup2P2EBa+WW2YMAaoMFofYviR5vRlKBgdKo9fsAruaO1r6nm2EdAjOlniyw92bEfU/qOey1nVp/oK2S82uT5In8KB7vl6rF3ak7WAsT9Q5vZUhsrG+eE4PVyIyWNBhs4A7pSwZGHDR/MYtp0E2ug=

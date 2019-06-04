@@ -107,7 +107,7 @@ json
     "version": "1.0.0",
     "title": "Swagger Petstore",
     "x-logo": {
-      "url": "https://rebilly.github.io/ReDoc/petstore-logo.png",
+      "url": "https://redocly.github.io/redoc/petstore-logo.png",
       "backgroundColor": "#FFFFFF",
       "altText": "Petstore logo"
     }
@@ -120,7 +120,7 @@ info:
   version: "1.0.0"
   title: "Swagger Petstore"
   x-logo:
-    url: "https://rebilly.github.io/ReDoc/petstore-logo.png"
+    url: "https://redocly.github.io/redoc/petstore-logo.png"
     backgroundColor: "#FFFFFF"
     altText: "Petstore logo"
 ```

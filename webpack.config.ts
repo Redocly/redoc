@@ -33,7 +33,7 @@ try {
 const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
 -------------------------------------------------------------
   Version: ${VERSION}
-  Repo: https://github.com/Rebilly/ReDoc`;
+  Repo: https://github.com/Redocly/redoc`;
 
 export default (env: { standalone?: boolean } = {}, { mode }) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',

@@ -15,16 +15,16 @@ info:
     This API is documented in **OpenAPI format** and is based on
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Rebilly/ReDoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-    
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
     # OpenAPI Specification
     This API is documented in **OpenAPI format** and is based on
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Rebilly/ReDoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-    
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
     # Cross-Origin Resource Sharing
     This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
     And that allows cross-domain communication from the browser.
@@ -38,7 +38,7 @@ info:
     OAuth2 - an open protocol to allow secure authorization in a simple
     and standard method from web, mobile and desktop applications.
 
-    <security-definitions /> 
+    <security-definitions />
 
   version: 1.0.0
   title: Swagger Petstore
@@ -46,9 +46,9 @@ info:
   contact:
     name: API Support
     email: apiteam@swagger.io
-    url: https://github.com/Rebilly/ReDoc
+    url: https://github.com/Redocly/redoc
   x-logo:
-    url: 'https://rebilly.github.io/ReDoc/petstore-logo.png'
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
     altText: Petstore logo
   license:
     name: Apache 2.0
