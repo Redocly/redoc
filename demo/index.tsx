@@ -97,7 +97,7 @@ class DemoApp extends React.Component<
             </CorsCheckbox>
           </ControlsContainer>
           <iframe
-            src="https://ghbtns.com/github-btn.html?user=Rebilly&amp;repo=ReDoc&amp;type=star&amp;count=true&amp;size=large"
+            src="https://ghbtns.com/github-btn.html?user=Redocly&amp;repo=redoc&amp;type=star&amp;count=true&amp;size=large"
             frameBorder="0"
             scrolling="0"
             width="150px"
