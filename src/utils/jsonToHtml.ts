@@ -1,8 +1,9 @@
 let level = 1;
-const COLLAPSE_LEVEL = 2;
+let collapseLevel;
 
-export function jsonToHTML(json) {
+export function jsonToHTML(json, maxCollapseLevel) {
   level = 1;
+  collapseLevel = maxCollapseLevel;
   let output = '';
   output += '<div class="redoc-json">';
   output += valueToHTML(json);
@@ -71,7 +72,7 @@ function valueToHTML(value) {
 }
 
 function arrayToHTML(json) {
-  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+  const collapsed = level > collapseLevel ? 'collapsed' : '';
   let output = `<div class="collapser"></div>${punctuation(
     '[',
   )}<span class="ellipsis"></span><ul class="array collapsible">`;
@@ -94,7 +95,7 @@ function arrayToHTML(json) {
 }
 
 function objectToHTML(json) {
-  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+  const collapsed = level > collapseLevel ? 'collapsed' : '';
   const keys = Object.keys(json);
   const length = keys.length;
   let output = `<div class="collapser"></div>${punctuation(

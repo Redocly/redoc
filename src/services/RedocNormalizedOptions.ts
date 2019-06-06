@@ -22,6 +22,7 @@ export interface RedocRawOptions {
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
   hideSingleRequestSampleTab?: boolean | string;
+  sampleCollapseLevel?: number | string | 'all';
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -110,6 +111,16 @@ export class RedocNormalizedOptions {
     return value;
   }
 
+  private static normalizeSampleCollapseLevel(level?: number | string | 'all'): number {
+    if (level === 'all') {
+      return +Infinity;
+    }
+    if (!isNaN(Number(level))) {
+      return Math.ceil(Number(level));
+    }
+    return 2;
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
@@ -125,6 +136,7 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
+  sampleCollapseLevel: number;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -156,6 +168,9 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
+    this.sampleCollapseLevel = RedocNormalizedOptions.normalizeSampleCollapseLevel(
+      raw.sampleCollapseLevel,
+    );
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
