@@ -29,6 +29,7 @@ interface Options {
   templateFileName?: string;
   templateOptions?: any;
   redocOptions?: any;
+  customScript?: string;
 }
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
@@ -59,6 +60,12 @@ YargsParser.command(
       type: 'boolean',
     });
 
+    yargs.option('customScript', {
+      describe: 'Include custom ReDoc JavaScript source file',
+      type: 'string',
+      default: null
+    });
+
     yargs.demandOption('spec');
     return yargs;
   },
@@ -66,6 +73,7 @@ YargsParser.command(
     const config: Options = {
       ssr: argv.ssr as boolean,
       watch: argv.watch as boolean,
+      customScript: argv.customScript as string,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
       redocOptions: argv.options || {},
@@ -105,6 +113,12 @@ YargsParser.command(
         default: false,
       });
 
+      yargs.option('customScript', {
+        describe: 'Include custom ReDoc JavaScript source file',
+        type: 'string',
+        default: null
+      });
+
       yargs.demandOption('spec');
       return yargs;
     },
@@ -117,6 +131,7 @@ YargsParser.command(
         templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
         redocOptions: argv.options || {},
+        customScript: argv.customScript as string
       };
 
       try {
@@ -147,8 +162,9 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   const server = createServer((request, response) => {
     console.time('GET ' + request.url);
     if (request.url === '/redoc.standalone.js') {
+      let actualRedocPath = options.customScript ? options.customScript : join(BUNDLES_DIR, 'redoc.standalone.js');
       respondWithGzip(
-        createReadStream(join(BUNDLES_DIR, 'redoc.standalone.js'), 'utf8'),
+        createReadStream(actualRedocPath, 'utf8'),
         request,
         response,
         {
@@ -216,7 +232,7 @@ async function bundle(pathToSpec, options: Options = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName, templateOptions, redocOptions = {} }: Options,
+  { ssr, cdn, customScript, title, templateFileName, templateOptions, redocOptions = {} }: Options,
 ) {
   let html;
   let css;
@@ -233,7 +249,11 @@ async function getPageHTML(
     state = await store.toJS();
 
     if (!cdn) {
-      redocStandaloneSrc = readFileSync(join(BUNDLES_DIR, 'redoc.standalone.js'));
+      if (customScript) {
+        redocStandaloneSrc = readFileSync(customScript);
+      } else {
+        redocStandaloneSrc = readFileSync(join(BUNDLES_DIR, 'redoc.standalone.js'));
+      }
     }
   }
 
@@ -250,13 +270,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-    };
+      };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+        : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
     templateOptions,
