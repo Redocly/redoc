@@ -1,11 +1,11 @@
 {
-  "name": "redoc-cli",
+  "name": "redoc-cli-kb",
   "version": "0.8.4",
-  "description": "ReDoc's Command Line Interface",
+  "description": "ReDoc's Command Line Interface (fork)",
   "main": "index.js",
   "bin": "index.js",
-  "repository": "https://github.com/Redocly/redoc",
-  "author": "Roman Hotsiy <gotsijroman@gmail.com>",
+  "repository": "https://github.com/konradbartecki/redoc",
+  "author": "Konrad Bartecki <konrad@bartecki.me>",
   "license": "MIT",
   "dependencies": {
     "chokidar": "^2.0.4",
