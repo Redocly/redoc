@@ -26,7 +26,7 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
             float={'left'}
           />
         )}
-        <strong>{code} </strong>
+        {/* <strong>{code} </strong> */}
         <Markdown compact={true} inline={true} source={title} />
       </div>
     );
