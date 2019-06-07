@@ -29,7 +29,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
             <TabList>
               {responses.map(response => (
                 <Tab className={'tab-' + response.type} key={response.code}>
-                  {response.code}
+                  {response.summary ? response.summary : response.code}
                 </Tab>
               ))}
             </TabList>
