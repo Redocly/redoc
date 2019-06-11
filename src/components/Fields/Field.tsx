@@ -13,7 +13,7 @@ import {
   PropertyRow,
 } from '../../common-elements/fields-layout';
 
-import { ShelfIcon } from '../../common-elements/';
+import { Button, ShelfIcon } from '../../common-elements/';
 
 import { FieldModel } from '../../services/models';
 import { Schema, SchemaOptions } from '../Schema/Schema';
@@ -65,7 +65,9 @@ export class Field extends React.Component<FieldProps, FieldState> {
       >
         <PropertyBullet />
         {name}
-        <ShelfIcon direction={this.state.expanded ? 'down' : 'right'} />
+        <Button>
+          <ShelfIcon direction={this.state.expanded ? 'down' : 'right'} />
+        </Button>
         {!required && <OptionalLabel> optional </OptionalLabel>}
       </ClickablePropertyNameCell>
     ) : (
@@ -85,7 +87,7 @@ export class Field extends React.Component<FieldProps, FieldState> {
           </PropertyDetailsCell>
         </tr>
         {withSubSchema && (
-          <PropertyRow className={ this.state.expanded ? 'visible' : 'hidden' } key={field.name + 'inner'} onFocus={  this.onFocus  } tabIndex={1} >
+          <PropertyRow className={this.state.expanded ? 'visible' : 'hidden'} key={field.name + 'inner'} onFocus={this.onFocus} tabIndex={1} >
             <PropertyCellWithInner colSpan={2}>
               <InnerPropertiesWrap>
                 <Schema
