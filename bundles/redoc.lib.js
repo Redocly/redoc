@@ -7144,7 +7144,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "de64856"));
+                    "ce65864"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -10250,7 +10250,14 @@ function PerfectScrollbarWrap(props) {
 }
 var perfect_scrollbar_templateObject_1;
 
+// CONCATENATED MODULE: ./src/common-elements/buttons.ts
+
+var Button = styled_components.button.withConfig({
+    componentId: "sc-1f1xs96-0"
+})(["display:inline-block;vertical-align:middle;border:0;padding:0;margin:4px;position:relative;width:24px;height:24px;background-color:#ebebeb;cursor:pointer;transition:background .15s,opacity .15s,border-color .15s;white-space:nowrap;border-radius:16px;&:hover{background-color:#ccc;text-decoration:none;}&:focus{outline:none;}@media screen and (max-width:450px){display:none;}"]);
+
 // CONCATENATED MODULE: ./src/common-elements/index.ts
+
 
 
 
@@ -11540,7 +11547,8 @@ var Field_Field = /** @class */ (function (_super) {
         var paramName = withSubSchema ? external_react_["createElement"](ClickablePropertyNameCell, { onClick: this.toggle, className: deprecated ? 'deprecated' : '', kind: kind, title: name },
             external_react_["createElement"](PropertyBullet, null),
             name,
-            external_react_["createElement"](ShelfIcon, { direction: this.state.expanded ? 'down' : 'right' }),
+            external_react_["createElement"](Button, null,
+                external_react_["createElement"](ShelfIcon, { direction: this.state.expanded ? 'down' : 'right' })),
             !required && external_react_["createElement"](OptionalLabel, null, " optional ")) : external_react_["createElement"](PropertyNameCell, { className: deprecated ? 'deprecated' : undefined, kind: kind, title: name },
             external_react_["createElement"](PropertyBullet, null),
             name,
