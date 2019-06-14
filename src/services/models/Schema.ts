@@ -292,7 +292,11 @@ function buildFields(
       new FieldModel(
         parser,
         {
-          name: 'property name *',
+          name: (
+            typeof additionalProps === 'object'
+              ? (additionalProps["x-additionalPropertiesName"] || 'property name')
+              : 'property name'
+            ).concat("*"),
           required: false,
           schema: additionalProps === true ? {} : additionalProps,
           kind: 'additionalProperties',
