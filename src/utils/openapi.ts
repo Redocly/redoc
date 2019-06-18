@@ -423,6 +423,7 @@ export function isRedocExtension(key: string): boolean {
     'x-servers': true,
     'x-tagGroups': true,
     'x-traitTag': true,
+    'x-additionalPropertiesName': true,
   };
 
   return key in redocExtensions;
