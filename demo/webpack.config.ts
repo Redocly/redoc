@@ -94,6 +94,9 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
   externals: {
     esprima: 'esprima',
     'node-fetch': 'null',
+    'node-fetch-h2': 'null',
+    yaml: 'null',
+    'safe-json-stringify': 'null',
   },
 
   module: {

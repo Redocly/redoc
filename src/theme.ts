@@ -105,6 +105,7 @@ const defaultTheme: ThemeInterface = {
     headings: {
       fontFamily: resolveFontFamily(),
       fontWeight: '400',
+      lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
@@ -139,6 +140,7 @@ const defaultTheme: ThemeInterface = {
   logo: {
     maxHeight: ({menu}) => menu.width,
     maxWidth: ({menu}) => menu.width,
+    gutter: '2px',
   },
   rightPanel: {
     backgroundColor: '#3C3C3C',
@@ -293,6 +295,7 @@ export interface ResolvedThemeInterface {
     headings: {
       fontFamily: string;
       fontWeight: string;
+      lineHeight: string;
     };
 
     links: {
@@ -319,6 +322,7 @@ export interface ResolvedThemeInterface {
   logo: {
     maxHeight: string;
     maxWidth: string;
+    gutter: string;
   };
   rightPanel: {
     backgroundColor: string;

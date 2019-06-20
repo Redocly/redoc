@@ -8,7 +8,6 @@ export * from './Schema/';
 export * from './SearchBox/SearchBox';
 export * from './Operation/Operation';
 export * from './Loading/Loading';
-export * from './RedocStandalone';
 export * from './JsonViewer';
 export * from './Markdown/Markdown';
 export { StyledMarkdownBlock } from './Markdown/styled.elements';

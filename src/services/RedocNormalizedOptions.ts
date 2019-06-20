@@ -2,6 +2,7 @@ import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } fr
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
+import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
 
 export interface RedocRawOptions {
@@ -21,10 +22,13 @@ export interface RedocRawOptions {
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
   showOtherInfoPanel?: boolean;
+  hideSingleRequestSampleTab?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
   allowedMdComponents?: Dict<MDXComponentMeta>;
+
+  labels?: LabelsConfigRaw;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -121,6 +125,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  hideSingleRequestSampleTab: boolean;
   showOtherInfoPanel: boolean;
 
   /* tslint:disable-next-line */
@@ -136,6 +141,9 @@ export class RedocNormalizedOptions {
 
     this.theme.extensionsHook = hook as any;
 
+    // do not support dynamic labels changes. Labels should be configured before
+    setRedocLabels(raw.labels);
+
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
@@ -150,6 +158,7 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.showOtherInfoPanel = argValueToBoolean(raw.showOtherInfoPanel);
+    this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

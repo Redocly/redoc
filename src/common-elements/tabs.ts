@@ -16,14 +16,15 @@ export const Tabs = styled(ReactTabs)`
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: ${({ theme }) => darken(0.05, theme.rightPanel.backgroundColor)};
+      background-color: ${({ theme }) => theme.codeSample.backgroundColor};
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
       outline: none;
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
-      margin: 5px;
-      border: 1px solid ${({ theme }) => darken(0.1, theme.rightPanel.backgroundColor)};
+      margin: 0
+        ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
+      border: 1px solid ${({ theme }) => darken(0.05, theme.codeSample.backgroundColor)};
       border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
@@ -97,7 +98,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 2} 0;
+      padding: ${props => props.theme.spacing.unit * 2}px 0;
     }
   }
 `;

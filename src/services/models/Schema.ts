@@ -14,9 +14,12 @@ import {
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  pluralizeType,
   sortByField,
   sortByRequired,
 } from '../../utils/';
+
+import { l } from '../Labels';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -145,9 +148,9 @@ export class SchemaModel {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
     } else if (this.type === 'array' && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
-      this.displayType = this.items.displayType;
+      this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
-      this.typePrefix = this.items.typePrefix + 'Array of ';
+      this.typePrefix = this.items.typePrefix + l('arrayOf');
       this.title = this.title || this.items.title;
       this.isPrimitive = this.items.isPrimitive;
       if (this.example === undefined && this.items.example !== undefined) {
@@ -161,7 +164,15 @@ export class SchemaModel {
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
     this.oneOf = oneOf!.map((variant, idx) => {
-      const merged = parser.mergeAllOf(variant, this.pointer + '/oneOf/' + idx);
+      const derefVariant = parser.deref(variant);
+
+      const merged = parser.mergeAllOf(derefVariant, this.pointer + '/oneOf/' + idx);
+
+      // try to infer title
+      const title =
+        isNamedDefinition(variant.$ref) && !merged.title
+          ? JsonPointer.baseName(variant.$ref)
+          : merged.title;
 
       const schema = new SchemaModel(
         parser,
@@ -169,12 +180,14 @@ export class SchemaModel {
         {
           // variant may already have allOf so merge it to not get overwritten
           ...merged,
+          title,
           allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
         } as OpenAPISchema,
         this.pointer + '/oneOf/' + idx,
         this.options,
       );
 
+      parser.exitRef(variant);
       // each oneOf should be independent so exiting all the parent refs
       // otherwise it will cause false-positive recursive detection
       parser.exitParents(merged);
@@ -210,7 +223,7 @@ export class SchemaModel {
         if (variant.$ref === undefined) {
           continue;
         }
-        const name = JsonPointer.dirName(variant.$ref);
+        const name = JsonPointer.baseName(variant.$ref);
         derived[variant.$ref] = name;
       }
     }
@@ -279,7 +292,10 @@ function buildFields(
       new FieldModel(
         parser,
         {
-          name: 'property name *',
+          name: (typeof additionalProps === 'object'
+            ? additionalProps['x-additionalPropertiesName'] || 'property name'
+            : 'property name'
+          ).concat('*'),
           required: false,
           schema: additionalProps === true ? {} : additionalProps,
           kind: 'additionalProperties',

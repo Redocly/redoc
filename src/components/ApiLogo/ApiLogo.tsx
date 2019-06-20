@@ -17,13 +17,11 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
     // Use the english word logo if no alt text is provided
     const altText = logoInfo.altText ? logoInfo.altText : 'logo';
 
-    const logo = (
-      <LogoImgEl
-        src={logoInfo.url}
-        style={{ backgroundColor: logoInfo.backgroundColor }}
-        alt={altText}
-      />
+    const logo = <LogoImgEl src={logoInfo.url} alt={altText} />;
+    return (
+      <LogoWrap style={{ backgroundColor: logoInfo.backgroundColor }}>
+        {logoHref ? LinkWrap(logoHref)(logo) : logo}
+      </LogoWrap>
     );
-    return <LogoWrap>{logoHref ? LinkWrap(logoHref)(logo) : logo}</LogoWrap>;
   }
 }
