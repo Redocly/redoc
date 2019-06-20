@@ -10,6 +10,13 @@
         "in": "path",
         "name": "test_name",
         "schema": { "type": "string" }
+      },
+      "serializationParam": {
+        "in": "query",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" },
+        "style": "form",
+        "explode": true
       }
     },
     "headers": {

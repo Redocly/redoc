@@ -26,6 +26,23 @@ describe('Models', () => {
       expect(field.schema.type).toEqual('string');
     });
 
+    test('field details relevant for parameter serialization', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          $ref: '#/components/parameters/serializationParam',
+        },
+        '#/components/parameters/serializationParam',
+        opts,
+      );
+
+      expect(field.name).toEqual('serialization_test_name');
+      expect(field.in).toEqual('query');
+      expect(field.schema.type).toEqual('array');
+      expect(field.style).toEqual('form');
+      expect(field.explode).toEqual(true);
+    });
+
     test('field name should populated from name even if $ref (headers)', () => {
       const field = new FieldModel(
         parser,

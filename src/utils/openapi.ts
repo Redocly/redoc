@@ -1,4 +1,5 @@
 import { dirname } from 'path';
+import { URI } from 'uri-template-lite';
 
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
@@ -6,6 +7,7 @@ import {
   OpenAPIMediaType,
   OpenAPIOperation,
   OpenAPIParameter,
+  OpenAPIParameterStyle,
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
@@ -135,36 +137,6 @@ export function isFormUrlEncoded(contentType: string): boolean {
   return contentType === 'application/x-www-form-urlencoded';
 }
 
-function formEncodeField(fieldVal: any, fieldName: string, explode: boolean): string {
-  if (!fieldVal || !fieldVal.length) {
-    return fieldName + '=';
-  }
-
-  if (Array.isArray(fieldVal)) {
-    if (explode) {
-      return fieldVal.map(val => `${fieldName}=${val}`).join('&');
-    } else {
-      return fieldName + '=' + fieldVal.map(val => val.toString()).join(',');
-    }
-  } else if (typeof fieldVal === 'object') {
-    if (explode) {
-      return Object.keys(fieldVal)
-        .map(k => `${k}=${fieldVal[k]}`)
-        .join('&');
-    } else {
-      return (
-        fieldName +
-        '=' +
-        Object.keys(fieldVal)
-          .map(k => `${k},${fieldVal[k]}`)
-          .join(',')
-      );
-    }
-  } else {
-    return fieldName + '=' + fieldVal.toString();
-  }
-}
-
 function delimitedEncodeField(fieldVal: any, fieldName: string, delimeter: string): string {
   if (Array.isArray(fieldVal)) {
     return fieldVal.map(v => v.toString()).join(delimeter);
@@ -191,6 +163,13 @@ function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
   }
 }
 
+function serializeFormValue(name: string, explode: boolean, value: any) {
+  const suffix = explode ? '*' : '';
+  const template = new URI.Template(`{?${name}${suffix}}`);
+
+  return template.expand({ [name]: value }).substring(1);
+}
+
 /*
  * Should be used only for url-form-encoded body payloads
  * To be used for parmaters should be extended with other style values
@@ -208,7 +187,7 @@ export function urlFormEncodePayload(
         const { style = 'form', explode = true } = encoding[fieldName] || {};
         switch (style) {
           case 'form':
-            return formEncodeField(fieldVal, fieldName, explode);
+            return serializeFormValue(fieldName, explode, fieldVal);
             break;
           case 'spaceDelimited':
             return delimitedEncodeField(fieldVal, fieldName, '%20');
@@ -223,6 +202,124 @@ export function urlFormEncodePayload(
         }
       })
       .join('&');
+  }
+}
+
+function serializePathParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  const suffix = explode ? '*' : '';
+  let prefix = '';
+
+  if (style === 'label') {
+    prefix = '.';
+  } else if (style === 'matrix') {
+    prefix = ';';
+  }
+
+  const template = new URI.Template(`{${prefix}${name}${suffix}}`);
+
+  return template.expand({ [name]: value });
+}
+
+function serializeQueryParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'form':
+      return serializeFormValue(name, explode, value);
+    case 'spaceDelimited':
+      if (!Array.isArray(value)) {
+        console.warn('The style spaceDelimited is only applicable to arrays');
+        return '';
+      }
+      if (explode) {
+        return serializeFormValue(name, explode, value);
+      }
+
+      return `${name}=${value.join('%20')}`;
+    case 'pipeDelimited':
+      if (!Array.isArray(value)) {
+        console.warn('The style pipeDelimited is only applicable to arrays');
+        return '';
+      }
+      if (explode) {
+        return serializeFormValue(name, explode, value);
+      }
+
+      return `${name}=${value.join('|')}`;
+    case 'deepObject':
+      if (!explode || Array.isArray(value) || typeof value !== 'object') {
+        console.warn('The style deepObject is only applicable for objects with expolde=true');
+        return '';
+      }
+
+      return deepObjectEncodeField(value, name);
+    default:
+      console.warn('Unexpected style for query: ' + style);
+      return '';
+  }
+}
+
+function serializeHeaderParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'simple':
+      const suffix = explode ? '*' : '';
+      const template = new URI.Template(`{${name}${suffix}}`);
+
+      return template.expand({ [name]: value });
+    default:
+      console.warn('Unexpected style for header: ' + style);
+      return '';
+  }
+}
+
+function serializeCookieParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'form':
+      return serializeFormValue(name, explode, value);
+    default:
+      console.warn('Unexpected style for cookie: ' + style);
+      return '';
+  }
+}
+
+export function serializeParameterValue(parameter: OpenAPIParameter, value: any): string {
+  const { name, style, explode = false } = parameter;
+
+  if (!style) {
+    console.warn(`Missing style attribute for parameter ${name}`);
+    return '';
+  }
+
+  switch (parameter.in) {
+    case 'path':
+      return serializePathParameter(name, style, explode, value);
+    case 'query':
+      return serializeQueryParameter(name, style, explode, value);
+    case 'header':
+      return serializeHeaderParameter(name, style, explode, value);
+    case 'cookie':
+      return serializeCookieParameter(name, style, explode, value);
+    default:
+      console.warn('Unexpected parameter location: ' + parameter.in);
+      return '';
   }
 }
 
