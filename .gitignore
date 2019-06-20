@@ -24,7 +24,7 @@ node_modules
 lib/
 stats.json
 cypress/
-bundles/
+# TODO: ignore this (and delete the files from the git cache) once we have a build via npm in place bundles/
 typings/*
 !typings/styled-patch.d.ts
 cli/index.js
