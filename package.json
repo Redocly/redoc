@@ -129,7 +129,8 @@
     "mobx": "^4.2.0 || ^5.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "styled-components": "^4.1.1"
+    "styled-components": "^4.1.1",
+    "core-js": "^2.6.5"
   },
   "dependencies": {
     "classnames": "^2.2.6",
