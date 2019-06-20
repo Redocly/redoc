@@ -20,7 +20,7 @@ export class Loading extends React.PureComponent<LoadingProps> {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <LoadingMessage color={this.props.color}>Loading ...</LoadingMessage>
+        <LoadingMessage color={this.props.color}/>
         <Spinner color={this.props.color} />
       </div>
     );
