@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 import { observer } from 'mobx-react';
 
@@ -60,7 +59,6 @@ export class Operation extends React.Component<OperationProps> {
                 </Description>
               )}
               <Extensions extensions={operation.extensions} />
-              <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
               <ResponsesList responses={operation.responses} />
             </MiddlePanel>

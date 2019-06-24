@@ -1,4 +1,4 @@
-import { darken, desaturate, lighten, readableColor, transparentize } from 'polished';
+import { darken, lighten, readableColor, transparentize } from 'polished';
 
 const defaultTheme: ThemeInterface = {
   spacing: {
@@ -14,7 +14,7 @@ const defaultTheme: ThemeInterface = {
   colors: {
     tonalOffset: 0.3,
     primary: {
-      main: '#32329f',
+      main: '#2e4369',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       contrastText: ({ colors }) => readableColor(colors.primary.main),
@@ -38,7 +38,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.error.main),
     },
     text: {
-      primary: '#333333',
+      primary: '#5d7079',
       secondary: ({ colors }) => lighten(colors.tonalOffset, colors.text.primary),
     },
     border: {
@@ -76,26 +76,22 @@ const defaultTheme: ThemeInterface = {
     },
   },
   schema: {
-    linesColor: theme =>
-      lighten(
-        theme.colors.tonalOffset,
-        desaturate(theme.colors.tonalOffset, theme.colors.primary.main),
-      ),
+    linesColor: '#ffffff',
     defaultDetailsWidth: '75%',
     typeNameColor: theme => theme.colors.text.secondary,
     typeTitleColor: theme => theme.schema.typeNameColor,
     requireLabelColor: theme => theme.colors.error.main,
     labelsTextSize: '0.9em',
     nestingSpacing: '1em',
-    nestedBackground: '#fafafa',
+    nestedBackground: '#ffffff',
     arrow: {
       size: '1.1em',
       color: theme => theme.colors.text.secondary,
     },
   },
   typography: {
-    fontSize: '14px',
-    lineHeight: '1.5em',
+    fontSize: '16px',
+    lineHeight: '1.6em',
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
@@ -117,14 +113,14 @@ const defaultTheme: ThemeInterface = {
       wrap: false,
     },
     links: {
-      color: ({ colors }) => colors.primary.main,
+      color: '#757de6',
       visited: ({ typography }) => typography.links.color,
-      hover: ({ typography }) => lighten(0.2, typography.links.color),
+      hover: ({ typography }) => darken(0.5, typography.links.color),
     },
   },
   menu: {
     width: '260px',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#ffffff',
     textColor: '#333333',
     groupItems: {
       textTransform: 'uppercase',
@@ -134,7 +130,7 @@ const defaultTheme: ThemeInterface = {
     },
     arrow: {
       size: '1.5em',
-      color: theme => theme.menu.textColor,
+      color: '#e3e8ee',
     },
   },
   logo: {
@@ -143,7 +139,7 @@ const defaultTheme: ThemeInterface = {
     gutter: '2px',
   },
   rightPanel: {
-    backgroundColor: '#263238',
+    backgroundColor: '#ffffff',
     width: '40%',
     textColor: '#ffffff',
   },

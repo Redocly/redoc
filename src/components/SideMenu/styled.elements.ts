@@ -6,7 +6,7 @@ import styled, { css } from '../../styled-components';
 
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
-}))<{ type: string }>`
+})) <{ type: string }>`
   width: 32px;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
@@ -64,7 +64,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
 
 function menuItemActiveBg(depth, { theme }): string {
   if (depth > 1) {
-    return darken(0.1, theme.menu.backgroundColor);
+    return '';
   } else if (depth === 1) {
     return darken(0.05, theme.menu.backgroundColor);
   } else {
@@ -108,7 +108,7 @@ export const menuItemDepth = {
     }
   `,
   2: css`
-    color: ${props => props.theme.menu.textColor};
+    margin-left: 20px;
   `,
 };
 
@@ -124,11 +124,11 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   className: classnames('-depth' + props.depth, {
     active: props.active,
   }),
-}))<MenuItemLabelType>`
+})) <MenuItemLabelType>`
   cursor: pointer;
-  color: ${props => (props.active ? props.theme.colors.primary.main : props.theme.menu.textColor)};
+  color: ${props => (props.active ? '#757de6' : props.theme.menu.textColor)};
   margin: 0;
-  padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
+  padding: 6.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;

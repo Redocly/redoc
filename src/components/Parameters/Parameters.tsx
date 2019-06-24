@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { ParametersGroup } from './ParametersGroup';
 
 import { UnderlinedHeader } from '../../common-elements';
@@ -59,10 +58,10 @@ export class Parameters extends React.PureComponent<ParametersProps> {
   }
 }
 
-function DropdownWithinHeader(props) {
+function DropdownWithinHeader() {
   return (
     <UnderlinedHeader key="header">
-      Request Body schema: <DropdownOrLabel {...props} />
+      Request
     </UnderlinedHeader>
   );
 }

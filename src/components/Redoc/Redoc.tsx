@@ -5,7 +5,6 @@ import { ThemeProvider } from '../../styled-components';
 import { OptionsProvider } from '../OptionsProvider';
 
 import { AppStore } from '../../services';
-import { ApiInfo } from '../ApiInfo/';
 import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { SideMenu } from '../SideMenu/SideMenu';
@@ -36,7 +35,7 @@ export class Redoc extends React.Component<RedocProps> {
     const {
       store: { spec, menu, options, search, marker },
     } = this.props;
-    const store = this.props.store;
+
     return (
       <ThemeProvider theme={options.theme}>
         <StoreProvider value={this.props.store}>
@@ -56,7 +55,6 @@ export class Redoc extends React.Component<RedocProps> {
                 <SideMenu menu={menu} />
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">
-                <ApiInfo store={store} />
                 <ContentItems items={menu.items as any} />
               </ApiContentWrap>
               <BackgroundStub />

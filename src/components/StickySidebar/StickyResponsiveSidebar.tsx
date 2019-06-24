@@ -27,7 +27,9 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #e3e8ee;
   backface-visibility: hidden;
   contain: strict;
 

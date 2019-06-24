@@ -8,15 +8,15 @@ export const MiddlePanel = styled.div`
   ${media.lessThan('medium', true)`
     width: 100%;
     padding: ${props =>
-      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
+      `0 ${props.theme.spacing.sectionHorizontal}px ${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
   `};
 `;
 
 export const Section = styled.div.attrs(props => ({
   [SECTION_ATTR]: props.id,
-}))<{ underlined?: boolean }>`
-  padding: ${props => props.theme.spacing.sectionVertical}px 0;
-
+})) <{ underlined?: boolean }>`
+  padding: 0 0 ${props => props.theme.spacing.sectionVertical}px 0;
+  border-bottom: 1px solid #e3e8ee;
   &:last-child {
     min-height: calc(100vh + 1px);
   }
@@ -39,7 +39,6 @@ export const Section = styled.div.attrs(props => ({
       width: 100%;
       display: block;
       content: '';
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     }
   `) ||
     ''}

@@ -3,7 +3,6 @@ import * as React from 'react';
 import { ResponseModel } from '../../services/models';
 
 import { UnderlinedHeader } from '../../common-elements';
-import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
 
@@ -26,10 +25,10 @@ export class ResponseDetails extends React.PureComponent<{ response: ResponseMod
     );
   }
 
-  private renderDropdown = props => {
+  private renderDropdown = () => {
     return (
       <UnderlinedHeader key="header">
-        Response Schema: <DropdownOrLabel {...props} />
+        Response
       </UnderlinedHeader>
     );
   };

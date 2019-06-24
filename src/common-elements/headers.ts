@@ -16,7 +16,7 @@ export const headerCommonMixin = level => css`
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
   color: ${({ theme }) => theme.colors.primary.main};
-
+  padding-top: 20px;
   ${extensionsHook('H1')};
 `;
 
@@ -41,13 +41,14 @@ export const RightPanelHeader = styled.h3`
 `;
 
 export const UnderlinedHeader = styled.h5`
-  border-bottom: 1px solid rgba(38, 50, 56, 0.3);
+  border-bottom: 1px solid #e3e8ee;
   margin: 1em 0 1em 0;
   color: rgba(38, 50, 56, 0.5);
   font-weight: normal;
   text-transform: uppercase;
   font-size: 0.929em;
   line-height: 20px;
+  padding: 1em 0 1em 0;
 
   ${extensionsHook('UnderlinedHeader')};
 `;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { darken } from 'polished';
 import styled from '../../styled-components';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
@@ -14,12 +13,10 @@ export const SearchInput = styled.input.attrs(() => ({
   width: calc(100% - ${props => props.theme.spacing.unit * 8}px);
   box-sizing: border-box;
   margin: 0 ${props => props.theme.spacing.unit * 4}px;
-  padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
-    ${props => props.theme.spacing.unit * 4}px;
-  border: 0;
-  border-bottom: 1px solid ${({ theme }) => darken(0.1, theme.menu.backgroundColor)};
+  padding: 10px ${props => props.theme.spacing.unit * 2}px 10px
+    ${props => props.theme.spacing.unit * 6}px;
+  border: 1px solid #d1d5da;
   font-family: ${({ theme }) => theme.typography.fontFamily};
-  font-weight: bold;
   font-size: 13px;
   color: ${props => props.theme.menu.textColor};
   background-color: transparent;
@@ -41,8 +38,8 @@ export const SearchIcon = styled((props: { className?: string }) => (
   className: 'search-icon',
 })`
   position: absolute;
-  left: ${props => props.theme.spacing.unit * 4}px;
-  height: 1.8em;
+  left: ${props => props.theme.spacing.unit * 6}px;
+  height: 2.4em;
   width: 0.9em;
 
   path {
