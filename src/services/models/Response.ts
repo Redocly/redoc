@@ -26,7 +26,7 @@ export class ResponseModel {
     infoOrRef: Referenced<OpenAPIResponse>,
     options: RedocNormalizedOptions,
   ) {
-    this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
+    this.expanded = true;
 
     const info = parser.deref(infoOrRef);
     parser.exitRef(infoOrRef);

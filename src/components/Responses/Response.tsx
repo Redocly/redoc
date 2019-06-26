@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { ResponseModel } from '../../services/models';
 import { ResponseDetails } from './ResponseDetails';
-import { ResponseDetailsWrap, StyledResponseTitle } from './styled.elements';
+import { ResponseDetailsWrap } from './styled.elements';
 
 @observer
 export class ResponseView extends React.Component<{ response: ResponseModel }> {
@@ -12,7 +12,7 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
   };
 
   render() {
-    const { headers, type, summary, description, code, expanded, content } = this.props.response;
+    const { headers, description, expanded, content } = this.props.response;
     const mimes =
       content === undefined ? [] : content.mediaTypes.filter(mime => mime.schema !== undefined);
 
@@ -20,14 +20,6 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
 
     return (
       <div>
-        <StyledResponseTitle
-          onClick={this.toggle}
-          type={type}
-          empty={empty}
-          title={summary || ''}
-          code={code}
-          opened={expanded}
-        />
         {expanded &&
           !empty && (
             <ResponseDetailsWrap>

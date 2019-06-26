@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { OperationModel } from '../../services/models';
 
-import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
+import { Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 
 export interface ResponseSamplesProps {
@@ -23,8 +23,6 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
     return (
       (responses.length > 0 && (
         <div>
-          <RightPanelHeader> Response samples </RightPanelHeader>
-
           <Tabs defaultIndex={0}>
             <TabList>
               {responses.map(response => (

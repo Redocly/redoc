@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 export const OperationEndpointWrap = styled.div`
   cursor: pointer;
   position: relative;
-  margin-bottom: 5px;
+  margin: 60px 0px 0px 0px;
 `;
 
 export const ServerRelativeURL = styled.span`
@@ -17,8 +17,7 @@ export const ServerRelativeURL = styled.span`
 export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean }>`
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props =>
-    props.inverted ? 'transparent' : props.theme.codeSample.backgroundColor};
+  background-color: #3c4257;
   display: flex;
   white-space: nowrap;
   align-items: center;
@@ -36,10 +35,9 @@ export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean 
 
 export const HttpVerb = styled.span.attrs((props: { type: string }) => ({
   className: `http-verb ${props.type}`,
-}))<{ type: string }>`
+})) <{ type: string }>`
   font-size: 0.929em;
   line-height: 20px;
-  background-color: ${(props: any) => props.theme.colors.http[props.type] || '#999999'};
   color: #ffffff;
   padding: 3px 10px;
   text-transform: uppercase;

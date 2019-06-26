@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { ShelfIcon } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 
 export interface ResponseTitleProps {
@@ -15,17 +14,9 @@ export interface ResponseTitleProps {
 
 export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
   render() {
-    const { title, type, empty, code, opened, className, onClick } = this.props;
+    const { title, empty, code, className, onClick } = this.props;
     return (
       <div className={className} onClick={(!empty && onClick) || undefined}>
-        {!empty && (
-          <ShelfIcon
-            size={'1.5em'}
-            color={type}
-            direction={opened ? 'up' : 'down'}
-            float={'left'}
-          />
-        )}
         <strong>{code} </strong>
         <Markdown compact={true} inline={true} source={title} />
       </div>

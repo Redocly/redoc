@@ -4,7 +4,7 @@ const defaultTheme: ThemeInterface = {
   spacing: {
     unit: 5,
     sectionHorizontal: ({ spacing }) => spacing.unit * 8,
-    sectionVertical: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: ({ spacing }) => spacing.unit * 20,
   },
   breakpoints: {
     small: '50rem',
@@ -81,7 +81,7 @@ const defaultTheme: ThemeInterface = {
     typeNameColor: theme => theme.colors.text.secondary,
     typeTitleColor: theme => theme.schema.typeNameColor,
     requireLabelColor: theme => theme.colors.error.main,
-    labelsTextSize: '0.9em',
+    labelsTextSize: '0.7em',
     nestingSpacing: '1em',
     nestedBackground: '#ffffff',
     arrow: {
@@ -90,7 +90,7 @@ const defaultTheme: ThemeInterface = {
     },
   },
   typography: {
-    fontSize: '16px',
+    fontSize: '14px',
     lineHeight: '1.6em',
     fontWeightRegular: '400',
     fontWeightBold: '600',
@@ -144,7 +144,7 @@ const defaultTheme: ThemeInterface = {
     textColor: '#ffffff',
   },
   codeSample: {
-    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
+    backgroundColor: '#4f566b',
   },
 };
 
