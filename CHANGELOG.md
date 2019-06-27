@@ -1,3 +1,20 @@
+# [2.0.0-rc.9](https://github.com/Redocly/redoc/compare/v2.0.0-rc.8-1...v2.0.0-rc.9) (2019-06-27)
+
+
+### Bug Fixes
+
+* fix regression double slashes added to full URL display ([f29a4fe](https://github.com/Redocly/redoc/commit/f29a4fe))
+* IE11, add missing Object.assign polyfill ([888f04e](https://github.com/Redocly/redoc/commit/888f04e))
+* serialize parameter example values according to the spec ([#917](https://github.com/Redocly/redoc/issues/917)) ([3939286](https://github.com/Redocly/redoc/commit/3939286))
+* styled-component style error in tabs ([#946](https://github.com/Redocly/redoc/issues/946)) ([c488bbf](https://github.com/Redocly/redoc/commit/c488bbf))
+
+
+### Features
+
+* add x-additionalPropertiesName ([#622](https://github.com/Redocly/redoc/issues/622)) ([#944](https://github.com/Redocly/redoc/issues/944)) ([0eb1e66](https://github.com/Redocly/redoc/commit/0eb1e66))
+
+
+
 # [2.0.0-rc.8-1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.8...v2.0.0-rc.8-1) (2019-05-13)
 
 
