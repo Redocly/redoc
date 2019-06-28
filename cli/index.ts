@@ -156,7 +156,9 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
         },
       );
     } else if (request.url === '/') {
-      respondWithGzip(pageHTML, request, response);
+      respondWithGzip(pageHTML, request, response, {
+        'Content-Type': 'text/html',
+      });
     } else if (request.url === '/spec.json') {
       const specStr = JSON.stringify(spec, null, 2);
       respondWithGzip(specStr, request, response, {
