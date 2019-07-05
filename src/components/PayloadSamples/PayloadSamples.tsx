@@ -4,6 +4,7 @@ import { MediaTypeSamples } from './MediaTypeSamples';
 
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 
+import styled from '../../../src/styled-components';
 import { MediaContentModel } from '../../services/models';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { InvertedSimpleDropdown, MimeLabel } from './styled.elements';
@@ -22,7 +23,15 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
 
     return (
       <MediaTypesSwitch content={mimeContent} renderDropdown={this.renderDropdown}>
-        {mediaType => <MediaTypeSamples key="samples" mediaType={mediaType} />}
+        {mediaType => (
+          <SamplesWrapper>
+            <MediaTypeSamples
+              key="samples"
+              mediaType={mediaType}
+              renderDropdown={this.renderDropdown}
+            />
+          </SamplesWrapper>
+        )}
       </MediaTypesSwitch>
     );
   }
@@ -31,3 +40,7 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
     return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
   };
 }
+
+const SamplesWrapper = styled.div`
+  margin-top: 15px;
+`;
