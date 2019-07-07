@@ -22,7 +22,7 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
     }
 
     return (
-      <MediaTypesSwitch content={mimeContent} renderDropdown={this.renderDropdown}>
+      <MediaTypesSwitch content={mimeContent} renderDropdown={this.renderDropdown} withLabel={true}>
         {mediaType => (
           <SamplesWrapper>
             <MediaTypeSamples
