@@ -33,7 +33,8 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
     if (showExamples) {
       const label = l('example') + ':';
       if (field.in && field.style) {
-        const serializedValue = serializeParameterValue(field, example);
+        const serializedValue =
+          example !== undefined ? serializeParameterValue(field, example) : undefined;
         exampleField = <FieldDetail label={label} value={serializedValue} raw={true} />;
       } else {
         exampleField = <FieldDetail label={label} value={example} />;
