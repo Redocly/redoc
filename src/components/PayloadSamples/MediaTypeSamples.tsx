@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { DropdownProps } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
-
+import { Markdown } from '../Markdown/Markdown';
 import { Example } from './Example';
-import { Description, DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
+import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
 
 export interface PayloadSamplesProps {
   mediaType: MediaTypeModel;
@@ -35,6 +35,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
     if (examplesNames.length === 0) {
       return noSample;
     }
+
     if (examplesNames.length > 1) {
       const options = examplesNames.map((name, idx) => {
         return {
@@ -42,6 +43,10 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
           value: idx.toString(),
         };
       });
+
+      const example = examples[examplesNames[activeIdx]];
+      const description = example.description;
+
       return (
         <>
           <DropdownWrapper>
@@ -52,27 +57,18 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
               onChange: this.switchMedia,
             })}
           </DropdownWrapper>
-          {examplesNames.map(name => {
-            const description = examples[name].description;
-            const activeValue = options[activeIdx].label;
-
-            return (
-              (name === activeValue || examples[name].summary === activeValue) && (
-                <div key={name}>
-                  {description && <Description>{description}</Description>}
-                  <Example example={examples[name]} mimeType={mimeType} />
-                </div>
-              )
-            );
-          })}
+          <div>
+            {description && <Markdown source={description} />}
+            <Example example={example} mimeType={mimeType} />
+          </div>
         </>
       );
     } else {
-      const name = examplesNames[0];
+      const example = examples[examplesNames[0]];
       return (
         <div>
-          {examples[name].description && <Description>{examples[name].description}</Description>}
-          <Example example={examples[name]} mimeType={mimeType} />
+          {example.description && <Markdown source={example.description} />}
+          <Example example={example} mimeType={mimeType} />
         </div>
       );
     }
