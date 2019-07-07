@@ -17,10 +17,7 @@ export class FieldDetail extends React.PureComponent<FieldDetailProps> {
 
     return (
       <div>
-        <FieldLabel> {this.props.label} </FieldLabel>{' '}
-        <ExampleValue>
-          {value}
-        </ExampleValue>
+        <FieldLabel> {this.props.label} </FieldLabel> <ExampleValue>{value}</ExampleValue>
       </div>
     );
   }
