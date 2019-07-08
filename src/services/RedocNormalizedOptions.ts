@@ -28,6 +28,7 @@ export interface RedocRawOptions {
   allowedMdComponents?: Dict<MDXComponentMeta>;
 
   labels?: LabelsConfigRaw;
+  enumSkipQuotes?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -129,6 +130,7 @@ export class RedocNormalizedOptions {
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
   allowedMdComponents: Dict<MDXComponentMeta>;
+  enumSkipQuotes: boolean;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -160,5 +162,6 @@ export class RedocNormalizedOptions {
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};
+    this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
   }
 }
