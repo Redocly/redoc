@@ -126,11 +126,11 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
+  enumSkipQuotes: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
   allowedMdComponents: Dict<MDXComponentMeta>;
-  enumSkipQuotes: boolean;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -158,10 +158,10 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
+    this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};
-    this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
   }
 }
