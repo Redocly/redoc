@@ -8,7 +8,11 @@ import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import { RedocAttribution } from './styled.elements';
 
 @observer
-export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
+export class SideMenu extends React.Component<{
+  menu: MenuStore;
+  menuToggle?: boolean;
+  className?: string;
+}> {
   private _updateScroll?: () => void;
 
   render() {
@@ -32,7 +36,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
   }
 
   activate = (item: IMenuItem) => {
-    if (item && item.active) {
+    if (item && item.active && this.props.menuToggle) {
       return item.expanded ? item.collapse() : item.expand();
     }
 
