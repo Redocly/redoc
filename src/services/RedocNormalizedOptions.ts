@@ -22,7 +22,7 @@ export interface RedocRawOptions {
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
   hideSingleRequestSampleTab?: boolean | string;
-  sampleCollapseLevel?: number | string | 'all';
+  jsonSampleExpandLevel?: number | string | 'all';
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -136,7 +136,7 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
-  sampleCollapseLevel: number;
+  jsonSampleExpandLevel: number;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -168,8 +168,8 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
-    this.sampleCollapseLevel = RedocNormalizedOptions.normalizeSampleCollapseLevel(
-      raw.sampleCollapseLevel,
+    this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeSampleCollapseLevel(
+      raw.jsonSampleExpandLevel,
     );
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);

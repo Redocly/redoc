@@ -40,7 +40,7 @@ class Json extends React.PureComponent<JsonProps> {
             // tslint:disable-next-line
             ref={node => (this.node = node!)}
             dangerouslySetInnerHTML={{
-              __html: jsonToHTML(this.props.data, options.sampleCollapseLevel),
+              __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
             }}
           />
         )}
