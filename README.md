@@ -64,6 +64,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
+- [TamTam API](https://dev.tamtam.chat)
 - [Rebilly](https://rebilly.github.io/RebillyAPI)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
