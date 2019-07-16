@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "schemas": {
+      "BaseObj": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string"
+          }
+        }
+      },
+      "ExtendedObj": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseObj"
+          },
+          {
+            "description": "Extended"
+          }
+        ]
+      },
+      "Base": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "$ref": "#/components/schemas/BaseObj"
+          }
+        }
+      },
+      "test": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Base"
+          },
+          {
+            "properties": {
+              "object": {
+                "$ref": "#/components/schemas/ExtendedObj"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
