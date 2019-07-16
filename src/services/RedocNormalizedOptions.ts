@@ -111,7 +111,7 @@ export class RedocNormalizedOptions {
     return value;
   }
 
-  private static normalizeSampleCollapseLevel(level?: number | string | 'all'): number {
+  private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
     if (level === 'all') {
       return +Infinity;
     }
@@ -168,7 +168,7 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
-    this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeSampleCollapseLevel(
+    this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
       raw.jsonSampleExpandLevel,
     );
 

@@ -1,10 +1,10 @@
 let level = 1;
 
-export function jsonToHTML(json, maxCollapseLevel) {
+export function jsonToHTML(json, maxExpandLevel) {
   level = 1;
   let output = '';
   output += '<div class="redoc-json">';
-  output += valueToHTML(json, maxCollapseLevel);
+  output += valueToHTML(json, maxExpandLevel);
   output += '</div>';
   return output;
 }
@@ -32,20 +32,20 @@ function punctuation(val) {
   return '<span class="token punctuation">' + val + '</span>';
 }
 
-function valueToHTML(value, maxCollapseLevel: number) {
+function valueToHTML(value, maxExpandLevel: number) {
   const valueType = typeof value;
   let output = '';
   if (value === undefined || value === null) {
     output += decorateWithSpan('null', 'token keyword');
   } else if (value && value.constructor === Array) {
     level++;
-    output += arrayToHTML(value, maxCollapseLevel);
+    output += arrayToHTML(value, maxExpandLevel);
     level--;
   } else if (value && value.constructor === Date) {
     output += decorateWithSpan('"' + value.toISOString() + '"', 'token string');
   } else if (valueType === 'object') {
     level++;
-    output += objectToHTML(value, maxCollapseLevel);
+    output += objectToHTML(value, maxExpandLevel);
     level--;
   } else if (valueType === 'number') {
     output += decorateWithSpan(value, 'token number');
@@ -69,8 +69,8 @@ function valueToHTML(value, maxCollapseLevel: number) {
   return output;
 }
 
-function arrayToHTML(json, maxCollapseLevel: number) {
-  const collapsed = level > maxCollapseLevel ? 'collapsed' : '';
+function arrayToHTML(json, maxExpandLevel: number) {
+  const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   let output = `<div class="collapser"></div>${punctuation(
     '[',
   )}<span class="ellipsis"></span><ul class="array collapsible">`;
@@ -79,7 +79,7 @@ function arrayToHTML(json, maxCollapseLevel: number) {
   for (let i = 0; i < length; i++) {
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += valueToHTML(json[i], maxCollapseLevel);
+    output += valueToHTML(json[i], maxExpandLevel);
     if (i < length - 1) {
       output += ',';
     }
@@ -92,8 +92,8 @@ function arrayToHTML(json, maxCollapseLevel: number) {
   return output;
 }
 
-function objectToHTML(json, maxCollapseLevel: number) {
-  const collapsed = level > maxCollapseLevel ? 'collapsed' : '';
+function objectToHTML(json, maxExpandLevel: number) {
+  const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   const keys = Object.keys(json);
   const length = keys.length;
   let output = `<div class="collapser"></div>${punctuation(
@@ -105,7 +105,7 @@ function objectToHTML(json, maxCollapseLevel: number) {
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
     output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
-    output += valueToHTML(json[key], maxCollapseLevel);
+    output += valueToHTML(json[key], maxExpandLevel);
     if (i < length - 1) {
       output += punctuation(',');
     }
