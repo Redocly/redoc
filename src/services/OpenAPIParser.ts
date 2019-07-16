@@ -198,18 +198,19 @@ export class OpenAPIParser {
       receiver.items = { ...receiver.items };
     }
 
-    const allOfSchemas = schema.allOf.map(subSchema => {
-      const resolved = this.deref(subSchema, forceCircular);
-      const subRef = subSchema.$ref || undefined;
-      const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
-      receiver.parentRefs!.push(...(subMerged.parentRefs || []));
-      return {
-        $ref: subRef,
-        schema: subMerged,
-      };
-    });
+    const originalRefCounts = { ...this._refCounter._counter };
+    const originalRefCounter = this._refCounter;
 
-    for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
+    for (const rawSubSchema of schema.allOf) {
+      const resolved = this.deref(rawSubSchema, forceCircular);
+
+      this._refCounter = new RefCounter();
+      this._refCounter._counter = { ...originalRefCounts };
+
+      const subSchemaRef = rawSubSchema.$ref || undefined;
+      const subSchema = this.mergeAllOf(resolved, subSchemaRef, forceCircular);
+      receiver.parentRefs!.push(...(subSchema.parentRefs || []));
+
       if (
         receiver.type !== subSchema.type &&
         receiver.type !== undefined &&
@@ -262,6 +263,8 @@ export class OpenAPIParser {
           // receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
+
+      this._refCounter = originalRefCounter;
     }
 
     return receiver;
