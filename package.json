@@ -156,7 +156,8 @@
     "stickyfill": "^1.1.1",
     "swagger2openapi": "^5.2.3",
     "tslib": "^1.9.3",
-    "uri-template-lite": "^19.4.0"
+    "uri-template-lite": "^19.4.0",
+    "lodash": "^4.17.11"
   },
   "bundlesize": [
     {
