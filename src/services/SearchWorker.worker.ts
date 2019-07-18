@@ -49,7 +49,7 @@ builder.pipeline.add(lunr.trimmer, lunr.stopWordFilter, lunr.stemmer);
 const expandTerm = term => '*' + lunr.stemmer(new lunr.Token(term, {})) + '*';
 
 export function add<T>(title: string, description: string, meta?: T) {
-  const ref = store.push(meta) - 1;
+  const ref = store.indexOf(meta) === -1 ? store.push(meta) - 1 : store.indexOf(meta);
   const item = { title: title.toLowerCase(), description: description.toLowerCase(), ref };
   builder.add(item);
 }
