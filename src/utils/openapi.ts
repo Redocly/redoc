@@ -453,7 +453,7 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
   return mergedTypes;
 }
 
-function expandVariables(url: string, variables: object = {}) {
+export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
     /(?:{)(\w+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
@@ -482,15 +482,14 @@ export function normalizeServers(
     ];
   }
 
-  function normalizeUrl(url: string, variables: object | undefined): string {
-    url = expandVariables(url, variables);
+  function normalizeUrl(url: string): string {
     return resolveUrl(baseUrl, url);
   }
 
   return servers.map(server => {
     return {
       ...server,
-      url: normalizeUrl(server.url, server.variables),
+      url: normalizeUrl(server.url),
       description: server.description || '',
     };
   });
