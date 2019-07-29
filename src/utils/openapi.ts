@@ -497,7 +497,7 @@ export function normalizeServers(
 
 export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
 export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
-export const OBJECT_DEFINTION_JSX_NAME = 'ObjectDescription';
+export const SCHEMA_DEFINITION_JSX_NAME = 'ObjectDescription';
 
 export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
 export function setSecuritySchemePrefix(prefix: string) {

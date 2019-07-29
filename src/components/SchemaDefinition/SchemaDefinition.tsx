@@ -18,7 +18,7 @@ export interface ObjectDescriptionProps {
   options: RedocNormalizedOptions;
 }
 
-export class ObjectDescription extends React.PureComponent<ObjectDescriptionProps> {
+export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps> {
   private static getMediaType(schemaRef: string, exampleRef?: string): OpenAPIMediaType {
     if (!schemaRef) {
       return {};
@@ -44,7 +44,7 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
         parser,
         'json',
         false,
-        ObjectDescription.getMediaType(schemaRef, exampleRef),
+        SchemaDefinition.getMediaType(schemaRef, exampleRef),
         options,
       );
     }
