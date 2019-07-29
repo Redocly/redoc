@@ -1,7 +1,16 @@
 language: node_js
 node_js:
-- '8'
-cache: yarn
+- '10'
+addons:
+  apt:
+    packages:
+      # Cypress: Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+      - libgconf-2-4
+cache:
+  yarn: true
+  directories:
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 env:
   global:
   - GH_REF: github.com/Redocly/redoc.git
