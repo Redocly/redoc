@@ -13,8 +13,9 @@ import { SearchStore } from './SearchStore';
 import { ObjectDescription } from '../components/ObjectDescription/ObjectDescription';
 import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
 import {
-  OBJECT_DEFINTION_COMPONENT_NAME,
+  OBJECT_DEFINTION_JSX_NAME,
   SECURITY_DEFINITIONS_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_JSX_NAME,
 } from '../utils/openapi';
 
 export interface StoreState {
@@ -155,10 +156,15 @@ const DEFAULT_OPTIONS: RedocRawOptions = {
         securitySchemes: store.spec.securitySchemes,
       }),
     },
-    [OBJECT_DEFINTION_COMPONENT_NAME]: {
-      component: ObjectDescription,
+    [SECURITY_DEFINITIONS_JSX_NAME]: {
+      component: SecurityDefs,
       propsSelector: (store: AppStore) => ({
         securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+    [OBJECT_DEFINTION_JSX_NAME]: {
+      component: ObjectDescription,
+      propsSelector: (store: AppStore) => ({
         parser: store.spec.parser,
         options: store.options,
       }),

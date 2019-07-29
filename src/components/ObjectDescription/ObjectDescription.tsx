@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Schema } from '../Schema';
 
 import { DarkRightPanel, MiddlePanel, Row, Section } from '../../common-elements';
 import { MediaTypeModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
+import styled from '../../styled-components';
 import { OpenAPIMediaType } from '../../types';
 import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
+import { Schema } from '../Schema';
 
 export interface ObjectDescriptionProps {
   schemaRef: string;
-  examplesRef?: string;
+  exampleRef?: string;
   showReadOnly?: boolean;
   showWriteOnly?: boolean;
   parser: OpenAPIParser;
@@ -16,7 +17,7 @@ export interface ObjectDescriptionProps {
 }
 
 export class ObjectDescription extends React.PureComponent<ObjectDescriptionProps> {
-  private static getMediaType(schemaRef, examplesRef): OpenAPIMediaType {
+  private static getMediaType(schemaRef: string, exampleRef?: string): OpenAPIMediaType {
     if (!schemaRef) {
       return {};
     }
@@ -25,33 +26,28 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
       schema: { $ref: schemaRef },
     };
 
-    if (examplesRef) {
-      info.examples = { object: { $ref: examplesRef } };
+    if (exampleRef) {
+      info.examples = { example: { $ref: exampleRef } };
     }
 
     return info;
   }
 
-  private static getMediaModel({
-    schemaRef,
-    examplesRef,
-    parser,
-    options,
-  }: ObjectDescriptionProps) {
-    return new MediaTypeModel(
-      parser,
-      'json',
-      false,
-      ObjectDescription.getMediaType(schemaRef, examplesRef),
-      options,
-    );
-  }
+  private _mediaModel: MediaTypeModel;
 
-  private mediaModel: MediaTypeModel;
+  private get mediaModel() {
+    const { parser, schemaRef, exampleRef, options } = this.props;
+    if (!this._mediaModel) {
+      this._mediaModel = new MediaTypeModel(
+        parser,
+        'json',
+        false,
+        ObjectDescription.getMediaType(schemaRef, exampleRef),
+        options,
+      );
+    }
 
-  constructor(props: ObjectDescriptionProps) {
-    super(props);
-    this.mediaModel = ObjectDescription.getMediaModel(this.props);
+    return this._mediaModel;
   }
 
   render() {
@@ -63,15 +59,29 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
             <Schema
               skipWriteOnly={!showWriteOnly}
               skipReadOnly={!showReadOnly}
-              key="schema"
               schema={this.mediaModel.schema}
             />
           </MiddlePanel>
           <DarkRightPanel>
-            <MediaTypeSamples mediaType={this.mediaModel} />
+            <MediaSamplesWrap>
+              <MediaTypeSamples mediaType={this.mediaModel} />
+            </MediaSamplesWrap>
           </DarkRightPanel>
         </Row>
       </Section>
     );
   }
 }
+
+const MediaSamplesWrap = styled.div`
+  background: ${({ theme }) => theme.codeSample.backgroundColor};
+  & > div,
+  & > pre {
+    padding: ${props => props.theme.spacing.unit * 4}px;
+    margin: 0;
+  }
+
+  & > div > pre {
+    padding: 0;
+  }
+`;

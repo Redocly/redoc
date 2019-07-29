@@ -59,16 +59,16 @@ export class MenuBuilder {
    */
   static addMarkdownItems(
     description: string,
-    grandparent: GroupModel | undefined,
+    parent: GroupModel | undefined,
     initialDepth: number,
     options: RedocNormalizedOptions,
   ): ContentItemModel[] {
     const renderer = new MarkdownRenderer(options);
     const headings = renderer.extractHeadings(description || '');
 
-    const mapHeadingsDeep = (parent, items, depth = 1) =>
+    const mapHeadingsDeep = (_parent, items, depth = 1) =>
       items.map(heading => {
-        const group = new GroupModel('section', heading, parent);
+        const group = new GroupModel('section', heading, _parent);
         group.depth = depth;
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
@@ -84,7 +84,7 @@ export class MenuBuilder {
         return group;
       });
 
-    return mapHeadingsDeep(grandparent, headings, initialDepth);
+    return mapHeadingsDeep(parent, headings, initialDepth);
   }
 
   /**
