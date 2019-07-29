@@ -1,10 +1,12 @@
 import * as React from 'react';
 
-import { DarkRightPanel, MiddlePanel, Row, Section } from '../../common-elements';
+import { DarkRightPanel, MiddlePanel, MimeLabel, Row, Section } from '../../common-elements';
 import { MediaTypeModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
 import styled from '../../styled-components';
 import { OpenAPIMediaType } from '../../types';
+import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
+import { InvertedSimpleDropdown } from '../PayloadSamples/styled.elements';
 import { Schema } from '../Schema';
 
 export interface ObjectDescriptionProps {
@@ -64,13 +66,17 @@ export class ObjectDescription extends React.PureComponent<ObjectDescriptionProp
           </MiddlePanel>
           <DarkRightPanel>
             <MediaSamplesWrap>
-              <MediaTypeSamples mediaType={this.mediaModel} />
+              <MediaTypeSamples renderDropdown={this.renderDropdown} mediaType={this.mediaModel} />
             </MediaSamplesWrap>
           </DarkRightPanel>
         </Row>
       </Section>
     );
   }
+
+  private renderDropdown = props => {
+    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+  };
 }
 
 const MediaSamplesWrap = styled.div`
