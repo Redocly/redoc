@@ -1,11 +1,6 @@
 language: node_js
 node_js:
 - '10'
-addons:
-  apt:
-    packages:
-      # Cypress: Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-      - libgconf-2-4
 cache:
   yarn: true
   directories:
@@ -23,6 +18,9 @@ env:
   - secure: SEqTg6WoGPPpcWzJ03ZfcSBb3nZ2Mdhug0ec2PszuzYO3libCb9usiqi+jils9z6qyXsL6ecz8HYazDGOUepnubhIpI5otLgfn9XiapjMT06Bj//AjbKpH7eu3TJSpJMzoRHZrKIE1y9ZKIBqKwl9Xs7ko+1oa+MLhrLuxXkoi0JqRB5UzkQtJRDoxVNjysnLQn+hsfnm+yuqPHZd2+Loy++q//WHuf9bwJrlkXn2ICYQIX5oQGlxNO6ui+OZklb0YknvyO5GdQeoKaHYru3MMKKCIS6I7AG9wLmPs5Ou3T0Ia0Xx4/7xazs0rH4NCVpIceSYc3v6evR37pp8MsFTC3BzjL1V3slTnmitC1KSNM8ndGRUg1nsCBkJysnR3HpX6SHuCH+UzOuMxEjwiPdSRnzJPEbTHa1HqMfTkTJMbm4zhp7W4/ozX4TtjUB0ql6NoQE2n0Z3aYgR2C78TmzaPQun8EgredWnCID1FedyexaNcw4HyZ2rXlcvG3rBzSwLHH5PePT9skyqy6KtIaL0MlAP556ilgUeyCZfCNdTmzCvPDZuqaeLRezWDdsKnRfTkxIW80QWlmZ6sW0hynJV5JN2Oghk9Tr+QzgV4ZF68FHwoU9YXCTyX4w5iTYq/GjvfTBqB3VSGPOz3PwU7r47tmaYzPj+I44zqktgxyuxDo=
 addons:
   chrome: stable
+  apt:
+    packages:
+      - libgconf-2-4 # for cypress
 before_script: npm run bundle
 script: npm test && ([ "${TRAVIS_PULL_REQUEST}" = "false" ] && npm run e2e-ci || npm
   run e2e)
