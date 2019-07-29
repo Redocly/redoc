@@ -163,11 +163,20 @@ function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
   }
 }
 
+// URI.Template doesn't support names with hypen, while OpenAPI allow
+function escapeURITemplateName(template: string): string {
+  return template.replace(/-/g, '%2D');
+}
+
+function unescapeURITemplateName(template: string): string {
+  return template.replace(/%2D/g, '-');
+}
+
 function serializeFormValue(name: string, explode: boolean, value: any) {
+  name = escapeURITemplateName(name);
   const suffix = explode ? '*' : '';
   const template = new URI.Template(`{?${name}${suffix}}`);
-
-  return template.expand({ [name]: value }).substring(1);
+  return unescapeURITemplateName(template.expand({ [name]: value }).substring(1));
 }
 
 /*
@@ -188,7 +197,6 @@ export function urlFormEncodePayload(
         switch (style) {
           case 'form':
             return serializeFormValue(fieldName, explode, fieldVal);
-            break;
           case 'spaceDelimited':
             return delimitedEncodeField(fieldVal, fieldName, '%20');
           case 'pipeDelimited':
@@ -211,6 +219,7 @@ function serializePathParameter(
   explode: boolean,
   value: any,
 ): string {
+  name = escapeURITemplateName(name);
   const suffix = explode ? '*' : '';
   let prefix = '';
 
@@ -222,7 +231,7 @@ function serializePathParameter(
 
   const template = new URI.Template(`{${prefix}${name}${suffix}}`);
 
-  return template.expand({ [name]: value });
+  return unescapeURITemplateName(template.expand({ [name]: value }));
 }
 
 function serializeQueryParameter(
@@ -273,12 +282,13 @@ function serializeHeaderParameter(
   explode: boolean,
   value: any,
 ): string {
+  name = escapeURITemplateName(name);
   switch (style) {
     case 'simple':
       const suffix = explode ? '*' : '';
       const template = new URI.Template(`{${name}${suffix}}`);
 
-      return template.expand({ [name]: value });
+      return unescapeURITemplateName(template.expand({ [name]: value }));
     default:
       console.warn('Unexpected style for header: ' + style);
       return '';
