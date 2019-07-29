@@ -40,7 +40,14 @@ export class GroupModel implements IMenuItem {
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.level = (tagOrGroup as MarkdownHeading).level || 1;
+
+    // remove sections from markdown, same as in ApiInfo
     this.description = tagOrGroup.description || '';
+    const firstHeadingLinePos = this.description.search(/^##?\s+/m);
+    if (firstHeadingLinePos > -1) {
+      this.description = this.description.substring(0, firstHeadingLinePos);
+    }
+
     this.parent = parent;
     this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;
 

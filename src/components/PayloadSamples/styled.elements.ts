@@ -53,7 +53,7 @@ export const InvertedSimpleDropdown = styled(StyledDropdown)`
   }
   .Dropdown-menu {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 2px;
   }
 `;
 

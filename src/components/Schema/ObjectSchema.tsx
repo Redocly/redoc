@@ -34,9 +34,9 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
 
     const filteredFields = needFilter
       ? fields.filter(item => {
-          return (
-            (this.props.skipReadOnly && !item.schema.readOnly) ||
-            (this.props.skipWriteOnly && !item.schema.writeOnly)
+          return !(
+            (this.props.skipReadOnly && item.schema.readOnly) ||
+            (this.props.skipWriteOnly && item.schema.writeOnly)
           );
         })
       : fields;

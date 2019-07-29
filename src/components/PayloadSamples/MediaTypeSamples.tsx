@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import styled from '../../styled-components';
+
 import { DropdownProps } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
 import { Markdown } from '../Markdown/Markdown';
@@ -48,7 +50,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
       const description = example.description;
 
       return (
-        <>
+        <SamplesWrapper>
           <DropdownWrapper>
             <DropdownLabel>Example</DropdownLabel>
             {this.props.renderDropdown({
@@ -61,16 +63,20 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
             {description && <Markdown source={description} />}
             <Example example={example} mimeType={mimeType} />
           </div>
-        </>
+        </SamplesWrapper>
       );
     } else {
       const example = examples[examplesNames[0]];
       return (
-        <div>
+        <SamplesWrapper>
           {example.description && <Markdown source={example.description} />}
           <Example example={example} mimeType={mimeType} />
-        </div>
+        </SamplesWrapper>
       );
     }
   }
 }
+
+const SamplesWrapper = styled.div`
+  margin-top: 15px;
+`;
