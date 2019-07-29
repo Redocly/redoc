@@ -73,5 +73,5 @@ export function highlight(source: string, lang: string = DEFAULT_LANG): string {
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];
   }
-  return Prism.highlight(source, grammar);
+  return Prism.highlight(source, grammar, lang);
 }

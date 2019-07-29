@@ -38,7 +38,6 @@ const babelLoader = mode => ({
       ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-syntax-jsx',
-      mode !== 'production' ? 'react-hot-loader/babel' : undefined,
       [
         'babel-plugin-styled-components',
         {
@@ -49,6 +48,13 @@ const babelLoader = mode => ({
     ]),
   },
 });
+
+const babelHotLoader = {
+  loader: 'babel-loader',
+  options: {
+    plugins: ['react-hot-loader/babel'],
+  },
+};
 
 export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) => ({
   entry: [
@@ -105,7 +111,11 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.tsx?$/,
-        use: [tsLoader(env), babelLoader(mode)],
+        use: compact([
+          mode !== 'production' ? babelHotLoader : undefined,
+          tsLoader(env),
+          babelLoader(mode),
+        ]),
         exclude: [/node_modules/],
       },
       {

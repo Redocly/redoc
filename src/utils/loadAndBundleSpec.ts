@@ -5,9 +5,9 @@ import { OpenAPISpec } from '../types';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
   const parser = new JsonSchemaRefParser();
-  const spec = await parser.bundle(specUrlOrObject, {
+  const spec = (await parser.bundle(specUrlOrObject, {
     resolve: { http: { withCredentials: false } },
-  } as object);
+  } as object)) as any;
 
   if (spec.swagger !== undefined) {
     return convertSwagger2OpenAPI(spec);
