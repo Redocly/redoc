@@ -13,7 +13,7 @@
   "dependencies": {
     "chokidar": "^3.0.2",
     "handlebars": "^4.1.2",
-    "isarray": "^2.0.4",
+    "isarray": "^2.0.5",
     "mkdirp": "^0.5.1",
     "mobx": "^4.2.0",
     "node-libs-browser": "^2.2.1",
@@ -22,7 +22,7 @@
     "redoc": "^2.0.0-rc.10",
     "styled-components": "^4.3.2",
     "tslib": "^1.10.0",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   },
   "scripts": {
     "ci-publish": "ci-publish"
