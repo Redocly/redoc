@@ -21,10 +21,13 @@ import { FieldDetail } from './FieldDetail';
 import { Badge } from '../../common-elements/';
 
 import { l } from '../../services/Labels';
+import { OptionsContext } from '../OptionsProvider';
 
 export class FieldDetails extends React.PureComponent<FieldProps> {
+  static contextType = OptionsContext;
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
+    const { enumSkipQuotes } = this.context;
 
     const { schema, description, example, deprecated } = field;
 
@@ -33,7 +36,8 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
     if (showExamples) {
       const label = l('example') + ':';
       if (field.in && field.style) {
-        const serializedValue = serializeParameterValue(field, example);
+        const serializedValue =
+          example !== undefined ? serializeParameterValue(field, example) : undefined;
         exampleField = <FieldDetail label={label} value={serializedValue} raw={true} />;
       } else {
         exampleField = <FieldDetail label={label} value={example} />;
@@ -64,7 +68,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
             <Badge type="warning"> {l('deprecated')} </Badge>
           </div>
         )}
-        <FieldDetail label={l('default') + ':'} value={schema.default} />
+        <FieldDetail raw={enumSkipQuotes} label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
         {exampleField}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}

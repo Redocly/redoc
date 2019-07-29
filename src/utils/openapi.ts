@@ -453,7 +453,7 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
   return mergedTypes;
 }
 
-function expandVariables(url: string, variables: object = {}) {
+export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
     /(?:{)(\w+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
@@ -482,21 +482,23 @@ export function normalizeServers(
     ];
   }
 
-  function normalizeUrl(url: string, variables: object | undefined): string {
-    url = expandVariables(url, variables);
+  function normalizeUrl(url: string): string {
     return resolveUrl(baseUrl, url);
   }
 
   return servers.map(server => {
     return {
       ...server,
-      url: normalizeUrl(server.url, server.variables),
+      url: normalizeUrl(server.url),
       description: server.description || '',
     };
   });
 }
 
 export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
+export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
+export const SCHEMA_DEFINITION_JSX_NAME = 'ObjectDescription';
+
 export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
 export function setSecuritySchemePrefix(prefix: string) {
   SECURITY_SCHEMES_SECTION_PREFIX = prefix;

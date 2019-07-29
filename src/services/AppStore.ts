@@ -10,8 +10,13 @@ import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOption
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
 
+import { SchemaDefinition } from '../components/SchemaDefinition/SchemaDefinition';
 import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
-import { SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
+import {
+  SCHEMA_DEFINITION_JSX_NAME,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_JSX_NAME,
+} from '../utils/openapi';
 
 export interface StoreState {
   menu: {
@@ -149,6 +154,19 @@ const DEFAULT_OPTIONS: RedocRawOptions = {
       component: SecurityDefs,
       propsSelector: (store: AppStore) => ({
         securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+    [SECURITY_DEFINITIONS_JSX_NAME]: {
+      component: SecurityDefs,
+      propsSelector: (store: AppStore) => ({
+        securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+    [SCHEMA_DEFINITION_JSX_NAME]: {
+      component: SchemaDefinition,
+      propsSelector: (store: AppStore) => ({
+        parser: store.spec.parser,
+        options: store.options,
       }),
     },
   },

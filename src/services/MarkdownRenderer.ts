@@ -1,6 +1,6 @@
 import * as marked from 'marked';
 
-import { highlight, safeSlugify } from '../utils';
+import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
 import { AppStore } from './AppStore';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
@@ -65,6 +65,7 @@ export class MarkdownRenderer {
     container: MarkdownHeading[] = this.headings,
     parentId?: string,
   ): MarkdownHeading {
+    name = unescapeHTMLChars(name);
     const item = {
       id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
@@ -88,7 +89,7 @@ export class MarkdownRenderer {
   }
 
   attachHeadingsDescriptions(rawText: string) {
-    const buildRegexp = heading => {
+    const buildRegexp = (heading: MarkdownHeading) => {
       return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
     };
 

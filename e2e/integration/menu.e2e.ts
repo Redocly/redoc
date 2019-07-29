@@ -6,7 +6,7 @@ describe('Menu', () => {
   it('should have valid items count', () => {
     cy.get('.menu-content')
       .find('li')
-      .should('have.length', 6 + (2 + 8 + 4) + (1 + 8));
+      .should('have.length', 6 + (2 + 8 + 1 + 4 + 2) + (1 + 8));
   });
 
   it('should sync active menu items while scroll', () => {

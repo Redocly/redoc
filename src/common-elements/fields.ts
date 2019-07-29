@@ -32,6 +32,7 @@ export const TypeName = styled(FieldLabel)`
 
 export const TypeTitle = styled(FieldLabel)`
   color: ${props => props.theme.schema.typeTitleColor};
+  word-break: break-word;
 `;
 
 export const TypeFormat = TypeName;

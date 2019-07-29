@@ -13,6 +13,7 @@ import {
 
 import { OpenAPIParser } from '../../services';
 import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
+import { expandDefaultServerVariables } from '../openapi';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -297,11 +298,8 @@ describe('Utils', () => {
     it('should expand variables', () => {
       const servers = normalizeServers('', [
         {
-          url: '{protocol}{host}{basePath}',
+          url: 'http://{host}{basePath}',
           variables: {
-            protocol: {
-              default: 'http://',
-            },
             host: {
               default: '127.0.0.1',
             },
@@ -319,9 +317,15 @@ describe('Utils', () => {
         },
       ]);
 
-      expect(servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
-      expect(servers[1].url).toEqual('http://127.0.0.2:{port}');
-      expect(servers[2].url).toEqual('http://127.0.0.3');
+      expect(expandDefaultServerVariables(servers[0].url, servers[0].variables)).toEqual(
+        'http://127.0.0.1/path/to/endpoint',
+      );
+      expect(expandDefaultServerVariables(servers[1].url, servers[1].variables)).toEqual(
+        'http://127.0.0.2:{port}',
+      );
+      expect(expandDefaultServerVariables(servers[2].url, servers[2].variables)).toEqual(
+        'http://127.0.0.3',
+      );
     });
   });
 
