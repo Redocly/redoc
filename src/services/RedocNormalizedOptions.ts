@@ -22,6 +22,7 @@ export interface RedocRawOptions {
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
   hideSingleRequestSampleTab?: boolean | string;
+  menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
 
   unstable_ignoreMimeParameters?: boolean;
@@ -137,6 +138,7 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
+  menuToggle: boolean;
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
 
@@ -170,6 +172,7 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
+    this.menuToggle = argValueToBoolean(raw.menuToggle);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
       raw.jsonSampleExpandLevel,
     );
