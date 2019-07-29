@@ -9,10 +9,7 @@ import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import { RedocAttribution } from './styled.elements';
 
 @observer
-export class SideMenu extends React.Component<{
-  menu: MenuStore;
-  className?: string;
-}> {
+export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
   static contextType = OptionsContext;
   private _updateScroll?: () => void;
 
