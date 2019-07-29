@@ -29,6 +29,7 @@ export interface RedocRawOptions {
   allowedMdComponents?: Dict<MDXComponentMeta>;
 
   labels?: LabelsConfigRaw;
+  enumSkipQuotes?: boolean | string;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -137,6 +138,7 @@ export class RedocNormalizedOptions {
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
   jsonSampleExpandLevel: number;
+  enumSkipQuotes: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -171,6 +173,7 @@ export class RedocNormalizedOptions {
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
       raw.jsonSampleExpandLevel,
     );
+    this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

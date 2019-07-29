@@ -194,3 +194,7 @@ function parseURL(url: string) {
     return new URL(url);
   }
 }
+
+export function unescapeHTMLChars(str: string): string {
+  return str.replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)));
+}

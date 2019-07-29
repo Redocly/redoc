@@ -278,3 +278,31 @@ PayPalPayment:
 
 In the example above the names of definitions (`PayPalPayment`) are named differently than
 names in the payload (`paypal`) which is not supported by default `discriminator`.
+
+#### x-additionalPropertiesName
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+Extends the `additionalProperties` property of the schema object.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-additionalPropertiesName | string | descriptive name of additional properties keys  |
+
+###### Usage in ReDoc
+ReDoc uses this extension to display a more descriptive property name in objects with `additionalProperties` when viewing the property list with an `object`.
+
+###### x-additionalPropertiesName example
+
+```yaml
+Player:
+  required:
+  - name
+
+  properties:
+    name:
+      type: string
+
+  additionalProperties:
+    x-additionalPropertiesName: attribute-name
+    type: string
+```

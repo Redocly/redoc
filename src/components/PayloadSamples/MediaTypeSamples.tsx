@@ -1,17 +1,31 @@
 import * as React from 'react';
 
-import { SmallTabs, Tab, TabList, TabPanel } from '../../common-elements';
+import { DropdownProps } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
-
+import { Markdown } from '../Markdown/Markdown';
 import { Example } from './Example';
-import { NoSampleLabel } from './styled.elements';
+import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
 
 export interface PayloadSamplesProps {
   mediaType: MediaTypeModel;
+  renderDropdown: (props: DropdownProps) => JSX.Element;
 }
 
-export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
+interface MediaTypeSamplesState {
+  activeIdx: number;
+}
+
+export class MediaTypeSamples extends React.Component<PayloadSamplesProps, MediaTypeSamplesState> {
+  state = {
+    activeIdx: 0,
+  };
+  switchMedia = ({ value }) => {
+    this.setState({
+      activeIdx: parseInt(value, 10),
+    });
+  };
   render() {
+    const { activeIdx } = this.state;
     const examples = this.props.mediaType.examples || {};
     const mimeType = this.props.mediaType.name;
 
@@ -21,26 +35,40 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps> {
     if (examplesNames.length === 0) {
       return noSample;
     }
+
     if (examplesNames.length > 1) {
+      const options = examplesNames.map((name, idx) => {
+        return {
+          label: examples[name].summary || name,
+          value: idx.toString(),
+        };
+      });
+
+      const example = examples[examplesNames[activeIdx]];
+      const description = example.description;
+
       return (
-        <SmallTabs defaultIndex={0}>
-          <TabList>
-            {examplesNames.map(name => (
-              <Tab key={name}> {examples[name].summary || name} </Tab>
-            ))}
-          </TabList>
-          {examplesNames.map(name => (
-            <TabPanel key={name}>
-              <Example example={examples[name]} mimeType={mimeType} />
-            </TabPanel>
-          ))}
-        </SmallTabs>
+        <>
+          <DropdownWrapper>
+            <DropdownLabel>Example</DropdownLabel>
+            {this.props.renderDropdown({
+              value: options[activeIdx],
+              options,
+              onChange: this.switchMedia,
+            })}
+          </DropdownWrapper>
+          <div>
+            {description && <Markdown source={description} />}
+            <Example example={example} mimeType={mimeType} />
+          </div>
+        </>
       );
     } else {
-      const name = examplesNames[0];
+      const example = examples[examplesNames[0]];
       return (
         <div>
-          <Example example={examples[name]} mimeType={mimeType} />
+          {example.description && <Markdown source={example.description} />}
+          <Example example={example} mimeType={mimeType} />
         </div>
       );
     }

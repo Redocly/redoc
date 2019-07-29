@@ -55,7 +55,7 @@ export const StyledDropdown = styled(Dropdown)`
     display: block;
     height: 0;
     position: absolute;
-    right: 0.35em;
+    right: 0.6em;
     top: 50%;
     margin-top: -0.125em;
     width: 0;
