@@ -1,3 +1,21 @@
+# [2.0.0-rc.11](https://github.com/Redocly/redoc/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2019-07-30)
+
+
+### Bug Fixes
+
+* do not add extra slashes to pattern ([70d1ee9](https://github.com/Redocly/redoc/commit/70d1ee9)), closes [#983](https://github.com/Redocly/redoc/issues/983)
+* dropdown fixes related to object description ([0504ad4](https://github.com/Redocly/redoc/commit/0504ad4))
+* incorrect serialization of parameter sample with hypen ([f7dd658](https://github.com/Redocly/redoc/commit/f7dd658))
+* redoc-cli: Add missing content type header on compressed responses of `/` path
+
+
+### Features
+
+* menu items from tags + md extension for Schema Definition ([#681](https://github.com/Redocly/redoc/pull/681))
+* new option `menuToggle` - fold active MenuItem if clicked ([#963](https://github.com/Redocly/redoc/issues/963))
+* Add option for skipping quotes in enums `enumSkipQuotes` ([#968](https://github.com/Redocly/redoc/issues/968)) ([afc7e36](https://github.com/Redocly/redoc/commit/afc7e36))
+* add `sampleCollapseLevel` option ([#937](https://github.com/Redocly/redoc/issues/937)) ([d3f1c16](https://github.com/Redocly/redoc/commit/d3f1c16))
+
 # [2.0.0-rc.10](https://github.com/Redocly/redoc/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2019-07-08)
 
 
