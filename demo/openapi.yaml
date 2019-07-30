@@ -883,12 +883,12 @@ components:
             as well as digits
           format: password
           minLength: 8
-          pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: drowssaP123
         phone:
           description: User phone number in international format
           type: string
-          pattern: '^\+(?:[0-9]-?){6,14}[0-9]$'
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
           example: +1-202-555-0192
           nullable: true
         userStatus:

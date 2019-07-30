@@ -61,14 +61,6 @@ export const PatternLabel = styled(FieldLabel)`
   &::after {
     font-weight: bold;
   }
-
-  &::before {
-    content: ' /';
-  }
-
-  &::after {
-    content: '/ ';
-  }
 `;
 
 export const ExampleValue = styled(FieldLabel)`
