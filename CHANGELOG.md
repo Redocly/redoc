@@ -1,3 +1,12 @@
+# [2.0.0-rc.12](https://github.com/Redocly/redoc/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2019-07-30)
+
+
+### Bug Fixes
+
+* rename ObjectDescription to SchemaDefinition as discussed ([4496622](https://github.com/Redocly/redoc/commit/4496622))
+
+
+
 # [2.0.0-rc.11](https://github.com/Redocly/redoc/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2019-07-30)
 
 
