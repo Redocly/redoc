@@ -66,11 +66,11 @@ tags:
   - name: pet_model
     x-displayName: The Pet Model
     description: |
-      <ObjectDescription schemaRef="#/components/schemas/Pet" />
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
   - name: store_model
     x-displayName: The Order Model
     description: |
-      <ObjectDescription schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 x-tagGroups:
   - name: General
     tags:
