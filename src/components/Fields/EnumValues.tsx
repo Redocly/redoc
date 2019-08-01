@@ -23,12 +23,12 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
         <FieldLabel>
           {type === 'array' ? l('enumArray') : ''}{' '}
           {values.length === 1 ? l('enumSingleValue') : l('enum')}:
-        </FieldLabel>
+        </FieldLabel>{' '}
         {values.map((value, idx) => {
           const exampleValue = enumSkipQuotes ? value : JSON.stringify(value);
           return (
             <React.Fragment key={idx}>
-              <ExampleValue>{exampleValue}</ExampleValue>
+              <ExampleValue>{exampleValue}</ExampleValue>{' '}
             </React.Fragment>
           );
         })}

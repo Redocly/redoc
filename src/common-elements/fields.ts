@@ -69,7 +69,6 @@ export const ExampleValue = styled(FieldLabel)`
     background-color: ${transparentize(0.95, theme.colors.text.primary)};
     color: ${transparentize(0.1, theme.colors.text.primary)};
 
-    margin: ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
     font-family: ${theme.typography.code.fontFamily};
