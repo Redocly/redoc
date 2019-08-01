@@ -163,20 +163,16 @@ function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
   }
 }
 
-// URI.Template doesn't support names with hypen, while OpenAPI allow
-function escapeURITemplateName(template: string): string {
-  return template.replace(/-/g, '%2D');
-}
-
-function unescapeURITemplateName(template: string): string {
-  return template.replace(/%2D/g, '-');
-}
-
 function serializeFormValue(name: string, explode: boolean, value: any) {
-  name = escapeURITemplateName(name);
+  // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
+  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  const safeName = '__redoc_param_name__';
   const suffix = explode ? '*' : '';
-  const template = new URI.Template(`{?${name}${suffix}}`);
-  return unescapeURITemplateName(template.expand({ [name]: value }).substring(1));
+  const template = new URI.Template(`{?${safeName}${suffix}}`);
+  return template
+    .expand({ [safeName]: value })
+    .substring(1)
+    .replace(/__redoc_param_name__/g, name);
 }
 
 /*
@@ -219,7 +215,6 @@ function serializePathParameter(
   explode: boolean,
   value: any,
 ): string {
-  name = escapeURITemplateName(name);
   const suffix = explode ? '*' : '';
   let prefix = '';
 
@@ -229,9 +224,12 @@ function serializePathParameter(
     prefix = ';';
   }
 
-  const template = new URI.Template(`{${prefix}${name}${suffix}}`);
+  // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
+  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  const safeName = '__redoc_param_name__';
+  const template = new URI.Template(`{${prefix}${safeName}${suffix}}`);
 
-  return unescapeURITemplateName(template.expand({ [name]: value }));
+  return template.expand({ [safeName]: value }).replace(/__redoc_param_name__/g, name);
 }
 
 function serializeQueryParameter(
@@ -277,18 +275,18 @@ function serializeQueryParameter(
 }
 
 function serializeHeaderParameter(
-  name: string,
   style: OpenAPIParameterStyle,
   explode: boolean,
   value: any,
 ): string {
-  name = escapeURITemplateName(name);
   switch (style) {
     case 'simple':
       const suffix = explode ? '*' : '';
-      const template = new URI.Template(`{${name}${suffix}}`);
 
-      return unescapeURITemplateName(template.expand({ [name]: value }));
+      // name is not important here, so use RFC6570 safe name ([a-zA-Z0-9_])
+      const name = '__redoc_param_name__';
+      const template = new URI.Template(`{${name}${suffix}}`);
+      return decodeURIComponent(template.expand({ [name]: value }));
     default:
       console.warn('Unexpected style for header: ' + style);
       return '';
@@ -324,7 +322,7 @@ export function serializeParameterValue(parameter: OpenAPIParameter, value: any)
     case 'query':
       return serializeQueryParameter(name, style, explode, value);
     case 'header':
-      return serializeHeaderParameter(name, style, explode, value);
+      return serializeHeaderParameter(style, explode, value);
     case 'cookie':
       return serializeCookieParameter(name, style, explode, value);
     default:

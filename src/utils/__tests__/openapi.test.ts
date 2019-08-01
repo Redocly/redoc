@@ -513,7 +513,7 @@ describe('Utils', () => {
       },
       {
         location: 'header',
-        name: 'id',
+        name: 'x-id',
         description: 'header parameters',
         cases: [
           {
@@ -549,9 +549,7 @@ describe('Utils', () => {
         locationTestGroup.cases.forEach(valueTypeTestGroup => {
           describe(valueTypeTestGroup.description, () => {
             valueTypeTestGroup.cases.forEach(testCase => {
-              it(`should serialize correctly when style is ${testCase.style} and explode is ${
-                testCase.explode
-              }`, () => {
+              it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
                 const parameter: OpenAPIParameter = {
                   name: locationTestGroup.name,
                   in: locationTestGroup.location,
