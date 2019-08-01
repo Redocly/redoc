@@ -19,7 +19,7 @@
     "node-libs-browser": "^2.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "redoc": "^2.0.0-rc.10",
+    "redoc": "2.0.0-rc.13",
     "styled-components": "^4.3.2",
     "tslib": "^1.10.0",
     "yargs": "^13.3.0"
