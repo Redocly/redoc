@@ -11,7 +11,7 @@ import {
   serializeParameterValue,
 } from '../';
 
-import { OpenAPIParser } from '../../services';
+import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
 import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
 import { expandDefaultServerVariables } from '../openapi';
 
@@ -389,6 +389,7 @@ describe('Utils', () => {
       explode: boolean;
       expected: string;
     }
+
     interface TestValueTypeGroup {
       value: any;
       description: string;
@@ -563,6 +564,52 @@ describe('Utils', () => {
             });
           });
         });
+      });
+    });
+
+    describe('advanced serialization', () => {
+      it('should serialize correctly query parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'id',
+          in: 'query',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        };
+
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          'id={"name":"test","age":23}',
+        );
+      });
+
+      it('should serialize correctly header parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'x-header',
+          in: 'header',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        };
+
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          '{"name":"test","age":23}',
+        );
       });
     });
   });

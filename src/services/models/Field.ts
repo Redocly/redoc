@@ -44,6 +44,8 @@ export class FieldModel {
   explode: boolean;
   style?: OpenAPIParameterStyle;
 
+  serializationMime?: string;
+
   constructor(
     parser: OpenAPIParser,
     infoOrRef: Referenced<OpenAPIParameter> & { name?: string; kind?: string },
@@ -55,12 +57,22 @@ export class FieldModel {
     this.name = infoOrRef.name || info.name;
     this.in = info.in;
     this.required = !!info.required;
-    this.schema = new SchemaModel(parser, info.schema || {}, pointer, options);
+
+    let fieldSchema = info.schema;
+    let serializationMime = '';
+    if (!fieldSchema && info.in && info.content) {
+      serializationMime = Object.keys(info.content)[0];
+      fieldSchema = info.content[serializationMime] && info.content[serializationMime].schema;
+    }
+
+    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;
 
-    if (info.style) {
+    if (serializationMime) {
+      this.serializationMime = serializationMime;
+    } else if (info.style) {
       this.style = info.style;
     } else if (this.in) {
       this.style = getDefaultStyleValue(this.in);

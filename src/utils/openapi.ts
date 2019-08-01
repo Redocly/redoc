@@ -308,11 +308,37 @@ function serializeCookieParameter(
   }
 }
 
-export function serializeParameterValue(parameter: OpenAPIParameter, value: any): string {
-  const { name, style, explode = false } = parameter;
+export function serializeParameterValueWithMime(value: any, mime: string): string {
+  if (isJsonLike(mime)) {
+    return JSON.stringify(value);
+  } else {
+    console.warn(`Parameter serialization as ${mime} is not supported`);
+    return '';
+  }
+}
+
+export function serializeParameterValue(
+  parameter: OpenAPIParameter & { serializationMime?: string },
+  value: any,
+): string {
+  const { name, style, explode = false, serializationMime } = parameter;
+
+  if (serializationMime) {
+    switch (parameter.in) {
+      case 'path':
+      case 'header':
+        return serializeParameterValueWithMime(value, serializationMime);
+      case 'cookie':
+      case 'query':
+        return `${name}=${serializeParameterValueWithMime(value, serializationMime)}`;
+      default:
+        console.warn('Unexpected parameter location: ' + parameter.in);
+        return '';
+    }
+  }
 
   if (!style) {
-    console.warn(`Missing style attribute for parameter ${name}`);
+    console.warn(`Missing style attribute or content for parameter ${name}`);
     return '';
   }
 
