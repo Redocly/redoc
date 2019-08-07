@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-import { URI } from 'uri-template-lite';
+const URLtemplate = require('url-template');
 
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
@@ -168,7 +168,7 @@ function serializeFormValue(name: string, explode: boolean, value: any) {
   // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
   const suffix = explode ? '*' : '';
-  const template = new URI.Template(`{?${safeName}${suffix}}`);
+  const template = URLtemplate.parse(`{?${safeName}${suffix}}`);
   return template
     .expand({ [safeName]: value })
     .substring(1)
@@ -227,7 +227,7 @@ function serializePathParameter(
   // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
   // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
-  const template = new URI.Template(`{${prefix}${safeName}${suffix}}`);
+  const template = URLtemplate.parse(`{${prefix}${safeName}${suffix}}`);
 
   return template.expand({ [safeName]: value }).replace(/__redoc_param_name__/g, name);
 }
@@ -285,7 +285,7 @@ function serializeHeaderParameter(
 
       // name is not important here, so use RFC6570 safe name ([a-zA-Z0-9_])
       const name = '__redoc_param_name__';
-      const template = new URI.Template(`{${name}${suffix}}`);
+      const template = URLtemplate.parse(`{${name}${suffix}}`);
       return decodeURIComponent(template.expand({ [name]: value }));
     default:
       console.warn('Unexpected style for header: ' + style);

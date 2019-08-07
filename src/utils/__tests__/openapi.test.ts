@@ -404,7 +404,7 @@ describe('Utils', () => {
               { style: 'simple', explode: false, expected: 'role,admin,firstName,Alex' },
               { style: 'simple', explode: true, expected: 'role=admin,firstName=Alex' },
               { style: 'label', explode: false, expected: '.role,admin,firstName,Alex' },
-              { style: 'label', explode: true, expected: '.role=admin,firstName=Alex' },
+              { style: 'label', explode: true, expected: '.role=admin.firstName=Alex' },
               { style: 'matrix', explode: false, expected: ';id=role,admin,firstName,Alex' },
               { style: 'matrix', explode: true, expected: ';role=admin;firstName=Alex' },
             ],
@@ -516,9 +516,7 @@ describe('Utils', () => {
         locationTestGroup.cases.forEach(valueTypeTestGroup => {
           describe(valueTypeTestGroup.description, () => {
             valueTypeTestGroup.cases.forEach(testCase => {
-              it(`should serialize correctly when style is ${testCase.style} and explode is ${
-                testCase.explode
-              }`, () => {
+              it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
                 const parameter: OpenAPIParameter = {
                   name: locationTestGroup.name,
                   in: locationTestGroup.location,
