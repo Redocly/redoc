@@ -1,3 +1,13 @@
+# [2.0.0-rc.14](https://github.com/Redocly/redoc/compare/v2.0.0-rc.13...v2.0.0-rc.14) (2019-08-07)
+
+
+### Bug Fixes
+
+* fix escaping JSON string values ([58cb20d](https://github.com/Redocly/redoc/commit/58cb20d)), closes [#999](https://github.com/Redocly/redoc/issues/999)
+* revert expanding default server variables ([7849f7f](https://github.com/Redocly/redoc/commit/7849f7f))
+
+
+
 # [2.0.0-rc.13](https://github.com/Redocly/redoc/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2019-08-01)
 
 
