@@ -28,7 +28,10 @@ export class ClipboardService {
     if ((document as any).selection) {
       (document as any).selection.empty();
     } else if (window.getSelection) {
-      window.getSelection().removeAllRanges();
+      let seln = window.getSelection();
+      if (seln) {
+        seln.removeAllRanges();
+      }
     }
   }
 
