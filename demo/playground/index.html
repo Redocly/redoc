@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ReDoc</title>
+  <title>ReDoc Playground</title>
   <style>
     body {
       margin: 0;
@@ -26,6 +26,14 @@
 
 <body>
   <redoc id="example"></redoc>
+  <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+  <script>
+  Redoc.init('../openapi.yaml', {
+    scrollYOffset: 50,
+    theme:{ colors:{primary:{main: "#ff0000"}}},
+    showExtensions: ['x-accessControl']
+  }, document.getElementById('example'))
+  </script>
 </body>
 
 </html>
