@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { OperationModel, RedocNormalizedOptions } from '../../services';
+import { OpenAPIXCodeSample } from '../../types';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
@@ -11,17 +12,64 @@ export interface RequestSamplesProps {
   operation: OperationModel;
 }
 
+export interface RequestSamplesState {
+  codeSamples: OpenAPIXCodeSample[];
+}
+
 @observer
-export class RequestSamples extends React.Component<RequestSamplesProps> {
+export class RequestSamples extends React.Component<RequestSamplesProps, RequestSamplesState> {
   static contextType = OptionsContext;
   context: RedocNormalizedOptions;
   operation: OperationModel;
+
+  constructor(props) {
+    super(props);
+    const { operation } = this.props;
+    const codeSamples = operation.codeSamples;
+    this.state = {
+      codeSamples,
+    };
+  }
+
+  componentWillMount() {
+    const { codeSamples } = this.state;
+    codeSamples.forEach(codeSample => {
+      if (codeSample.source && codeSample.source.startsWith('@url:')) {
+        const fileURL = codeSample.source.substr(5);
+        this.fetchOriginSample(fileURL)
+        .then(source => {
+          codeSample.source = source;
+          this.setState({ codeSamples });
+        });
+      }
+    });
+  }
+
+  fetchOriginSample = async fileURL => {
+    try {
+      const utf8Decoder = new TextDecoder('utf-8');
+      const response = await fetch(fileURL,
+        {
+          headers: { 'Content-type': 'text/plain' },
+        },
+      );
+      if (response && response.body) {
+        const reader = response.body.getReader();
+        const { value } = await reader.read();
+        const source = value ? utf8Decoder.decode(value) : '';
+        return source ? source : '';
+      }
+    } catch (e) {
+      console.error(e.stack);
+    }
+    return '';
+  }
 
   render() {
     const { operation } = this.props;
     const requestBodyContent = operation.requestBody && operation.requestBody.content;
     const hasBodySample = requestBodyContent && requestBodyContent.hasSample;
-    const samples = operation.codeSamples;
+    const { codeSamples: samples } = this.state;
 
     const hasSamples = hasBodySample || samples.length > 0;
     const hideTabList =
