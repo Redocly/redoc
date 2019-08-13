@@ -44,6 +44,7 @@
   - [x] ~~docs pre-rendering (performance and SEO)~~
   - [ ] ability to simple branding/styling
   - [ ] built-in API Console
+  - [ ] support RTL languages
 
 ## Releases
 **Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
