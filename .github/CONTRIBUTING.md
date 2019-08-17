@@ -1,4 +1,4 @@
-# ReDoc Contributing Guide
+ Contributing Guide
 
 Hi! We're really excited that you are interested in contributing to ReDoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
 
