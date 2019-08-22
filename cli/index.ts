@@ -253,6 +253,7 @@ async function getPageHTML(
     };
 
     </script>`,
+    redocOptions: `${JSON.stringify(redocOptions)}`,
     redocHead: ssr
       ? (cdn
           ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
