@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import * as prettyCompactJSON from 'json-stringify-pretty-compact';
+
 import { ExtensionValue, FieldLabel } from '../../common-elements/fields';
 
 import styled from '../../styled-components';
@@ -30,7 +32,7 @@ export class Extensions extends React.PureComponent<ExtensionsProps> {
                 <Extension key={key}>
                   <FieldLabel> {key.substring(2)}: </FieldLabel>{' '}
                   <ExtensionValue>
-                    {typeof exts[key] === 'string' ? exts[key] : JSON.stringify(exts[key])}
+                      {typeof exts[key] === 'string' ? exts[key] : prettyCompactJSON(exts[key], {indent: 2})}
                   </ExtensionValue>
                 </Extension>
               ))}

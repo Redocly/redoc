@@ -88,7 +88,14 @@ export const ExampleValue = styled(FieldLabel)`
   ${extensionsHook('ExampleValue')};
 `;
 
-export const ExtensionValue = styled(ExampleValue)``;
+
+export const ExtensionValue = styled(ExampleValue)`
+  white-space: pre;
+  display: block;
+  overflow: scroll;
+  max-height: ${({ theme }) => theme.extension.maxHeight};
+  ${extensionsHook('ExtensionValue')};
+`;
 
 export const ConstraintItem = styled(FieldLabel)`
   border-radius: 2px;
