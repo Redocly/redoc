@@ -144,6 +144,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }
 
   ${ShelfIcon} {
+    transform: ${({ theme }) => (theme.typography.direction === 'rtl') ? 'rotate(0deg)' : 'none'};
     height: ${({ theme }) => theme.menu.arrow.size};
     width: ${({ theme }) => theme.menu.arrow.size};
     polygon {
