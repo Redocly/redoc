@@ -1,0 +1,925 @@
+openapi: 3.0.0
+servers:
+  - url: //petstore.swagger.io/v2
+    description: Default server
+  - url: //petstore.swagger.io/sandbox
+    description: Sandbox server
+info:
+  description: |
+    این یک فایل تست api-doc است که مرتبط با مدیریت یک پت‌شاپ طراحی و نوشته شده است.
+    مثال های بیشتر را میتوانید در
+    [http://swagger.io](http://swagger.io) یا در [irc.freenode.net, #swagger](http://swagger.io/irc/).
+
+    # معرفی
+    این سند بر اساس **OpenAPI format** تهیه و تنظیم شده است که بر گرفته از
+    [مثال پت‌شاپ](http://petstore.swagger.io/) تهیه شده به وسیله [swagger.io](http://swagger.io) team.
+
+  version: 1.0.0
+  title: پت‌شاپ
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: پشتیبانی
+    email: apiteam@swagger.io
+    url: https://github.com/Redocly/redoc
+  x-logo:
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: لوگو پت‌شاپ
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: راجع به ساختن ریپو گیت‌هاب برای OpenAPI خودتان بیشتر بخوانید
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
+tags:
+  - name: pet
+    x-displayName: پت
+    description: همه چیز در باره پت‌ها
+  - name: store
+    x-displayName: فروشگاه
+    description: دسترسی به سفارشات در فروشگاه
+  - name: user
+    x-displayName: کاربر
+    description: عملیات مرتبط با کاربر
+  - name: pet_model
+    x-displayName: مدل پت‌ها
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: مدل سفارشات
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+x-tagGroups:
+  - name: عمومی
+    tags:
+      - pet
+      - store
+  - name: مدیریت کاربران
+    tags:
+      - user
+  - name: مدل ها
+    tags:
+      - pet_model
+      - store_model
+paths:
+  /pet:
+    parameters:
+      - name: cookieParam
+        in: cookie
+        description: کوکی ها
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags:
+        - pet
+      summary: اضافه کردن یک پت چدید به فروشگاه
+      description: اضافه کردن پت به دارایی های فروشگاه
+      operationId: addPet
+      responses:
+        '405':
+          description: ورودی نادرست
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      x-code-samples:
+        - lang: 'C#'
+          source: |
+            PetStore.v1.Pet pet = new PetStore.v1.Pet();
+            pet.setApiKey("your api key");
+            pet.petType = PetStore.v1.Pet.TYPE_DOG;
+            pet.name = "Rex";
+            // تعین فیلد های سفارش
+            PetStoreResponse response = pet.create();
+            if (response.statusCode == HttpStatusCode.Created)
+            {
+              // با موفقیت ساخته شد
+            }
+            else
+            {
+              // مشکلی پیش آمده، برای اطلاعات بیشتر پاسخ سرویس را بخوانید
+              Console.WriteLine(response.getRawResponse());
+            }
+        - lang: PHP
+          source: |
+            $form = new \PetStore\Entities\Pet();
+            $form->setPetType("Dog");
+            $form->setName("Rex");
+            // تعین فیلد های سفارش
+            try {
+                $pet = $client->pets()->create($form);
+            } catch (UnprocessableEntityException $e) {
+                // مشکلی پیش آمده، برای اطلاعات بیشتر پاسخ سرویس را بخوانید
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/Pet'
+    put:
+      tags:
+        - pet
+      summary: آپدیت پت موجود
+      description: ''
+      operationId: updatePet
+      responses:
+        '400':
+          description: آی‌دی نادرست فرستاده شده
+        '404':
+          description: پت یافت نشد
+        '405':
+          description: ورودی نادرست
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      x-code-samples:
+        - lang: PHP
+          source: |
+            $form = new \PetStore\Entities\Pet();
+            $form->setPetId(1);
+            $form->setPetType("Dog");
+            $form->setName("Rex");
+            // تعین فیلد های دیگر
+            try {
+                $pet = $client->pets()->update($form);
+            } catch (UnprocessableEntityException $e) {
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/Pet'
+  '/pet/{petId}':
+    get:
+      tags:
+        - pet
+      summary: پیدا کردن پت با آی‌دی
+      description: یک پت برگردانده میشود
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: آی‌دی پت مورد نظر
+          required: true
+          deprecated: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: آی‌دی نادرست ارسال شده
+        '404':
+          description: پت یافت نشد
+      security:
+        - api_key: []
+    post:
+      tags:
+        - pet
+      summary: آپدیت پت در فروشگاه با استفاده از فرم دیتا
+      description: ''
+      operationId: updatePetWithForm
+      parameters:
+        - name: petId
+          in: path
+          description: آی‌دی پت مورد نظر برای آپدیت
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '405':
+          description: ورودی نادرست
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: آپدیت اسم پت
+                  type: string
+                status:
+                  description: آپدیت وضعیت پت
+                  type: string
+    delete:
+      tags:
+        - pet
+      summary: پاک کردن پت
+      description: ''
+      operationId: deletePet
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+          example: "Bearer <TOKEN>"
+        - name: petId
+          in: path
+          description: آی‌دی پت موردنظر برای دیلیت
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: مقدار نادرست برای پت
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/pet/{petId}/uploadImage':
+    post:
+      tags:
+        - pet
+      summary: آپلود یک تصویر
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: petId
+          in: path
+          description: آی‌دی پت موردنظر برای آپدیت
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+  /pet/findByStatus:
+    get:
+      tags:
+        - pet
+      summary: پیدا کردن پت‌ها بر اساس وضعیت
+      description: بیش از یک وضعیت را هم میتوان با استفاده از کاما از هم جدا کرد و فرستاد
+      operationId: findPetsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: مقدار وضعیت هایی که نیاز است تا فیلتر شوند
+          required: true
+          style: form
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 3
+            items:
+              type: string
+              enum:
+                - available
+                - pending
+                - sold
+              default: available
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: مقدار وضعیت نادرست
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /pet/findByTags:
+    get:
+      tags:
+        - pet
+      summary: پیدا کردن پت با استفاده از تگ
+      description: >-
+        بیش از یک مقدار هم برای وضعیت میتوان فرستاد که باید با کاما از هم جدا شوند،‌مثال tag1, tag2, tag3
+      operationId: findPetsByTags
+      deprecated: true
+      parameters:
+        - name: tags
+          in: query
+          description: تگ‌ها برای فیلتر نتایج بر اساس آنها
+          required: true
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: مقدار تگ نادرست
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /store/inventory:
+    get:
+      tags:
+        - store
+      summary: برگرداندن موجودیت پت‌ها بر اساس وضعیت
+      description: یک مپ از وضعیت ها به تعداد برگردانده میشود
+      operationId: getInventory
+      responses:
+        '200':
+          description: غملیات موفق
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+      security:
+        - api_key: []
+  /store/order:
+    post:
+      tags:
+        - store
+      summary: یک در سفارش برای پت بگذارید
+      description: ''
+      operationId: placeOrder
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: سفارش نادرست
+          content:
+            application/json:
+              example:
+                status: 400
+                message: "Invalid Order"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        description: سفارش گذاشته شده برای پرداخت پت
+        required: true
+  '/store/order/{orderId}':
+    get:
+      tags:
+        - store
+      summary: پیدا کردن پرداخت سفارش با استفاده از آی‌دی
+      description: >-
+        برای گرفتن جواب درست لطفا از مقادیر عددی استفاده کنید
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: آی‌دی پتی که میخواهید اطلاعاتش را دریافت کنید
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 5
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: آی‌دی نادرست ارسال شده
+        '404':
+          description: سفارش یافت نشد
+    delete:
+      tags:
+        - store
+      summary: حذف درخواست های خرید با آی‌دی
+      description: >-
+        برای گرفتن جواب درست لطفا مقادیر عددی ارسال کنید، در غیراین‌صورت خطا دریافت میکنید
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: آی‌دی سفارشی که قصد حذفش را دارید
+          required: true
+          schema:
+            type: string
+            minimum: 1
+      responses:
+        '400':
+          description: آی‌دی نادرست ارسال شده
+        '404':
+          description: سفارش یافت نشد
+  /user:
+    post:
+      tags:
+        - user
+      summary: ساخت یوزر
+      description: این عملیات فقط به وسیله یوزر های وارد شده امکان پذیر است.
+      operationId: createUser
+      responses:
+        default:
+          description: عملیات موفق
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: آبجکت یوزر ساخته شد
+        required: true
+  '/user/{username}':
+    get:
+      tags:
+        - user
+      summary: گرفتن کاربر با نام‌کاربر
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: 'نام‌کاربری که میخواید دریافت کنید، برای تست از test1 استفاده کنید. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: عملیات موفق
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: نام‌کاربری نادرست ارسال شده
+        '404':
+          description: کاربر یافت نشد
+    put:
+      tags:
+        - user
+      summary: Updated user
+      description: این عملیات فقط به وسیله یوزر های وارد شده امکان پذیر است.
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: نام‌کاربری که میخواید آپدیت کنید
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: نام‌کاربری نادرست ارسال شده
+        '404':
+          description: کاربر یافت نشد
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: آبجکت کاربر آپدیت شد
+        required: true
+    delete:
+      tags:
+        - user
+      summary: حذف کاربر
+      description: این عملیات فقط به وسیله یوزر های وارد شده امکان پذیر است.
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: نام‌کاربری که میخواهید حذف کنید
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: نام‌کاربری نادرست ارسال شده
+        '404':
+          description: کاربر یافت نشد
+  /user/createWithArray:
+    post:
+      tags:
+        - user
+      summary: ساختن لیستی از یوزر ها بر اساس آرایه اطلاعات ارسال شده
+      description: ''
+      operationId: createUsersWithArrayInput
+      responses:
+        default:
+          description: عملیات موفق
+      requestBody:
+        $ref: '#/components/requestBodies/UserArray'
+  /user/createWithList:
+    post:
+      tags:
+        - user
+      summary: ساختن لیستی از یوزر ها بر اساس آرایه اطلاعات ارسال شده
+      description: ''
+      operationId: createUsersWithListInput
+      responses:
+        default:
+          description: عملیات موفق
+      requestBody:
+        $ref: '#/components/requestBodies/UserArray'
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: ورود کاربر به سیستم
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: نام‌کاربری برای ورود
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: کلمه عبور کاربر به صورت plain text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: عملیات موفق
+          headers:
+            X-Rate-Limit:
+              description: تماس بر ساعت مجاز برای کاربر
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: تاریخ UTC انقضای توکن
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: OK
+            application/xml:
+              schema:
+                type: string
+              examples:
+                response:
+                  value:  <Message> OK </Message>
+            text/plain:
+              examples:
+                response:
+                  value:  OK
+        '400':
+          description: نام‌کاربری یا کلمه عبور نادرست ارسال شده
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: خروج کاربر فعلی
+      description: ''
+      operationId: logoutUser
+      responses:
+        default:
+          description: عملیات موفق
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Cat:
+      description: خروجی قابل نمایش یک گربه
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            huntingSkill:
+              type: string
+              description: توانایی شکار
+              default: lazy
+              enum:
+                - clueless
+                - lazy
+                - adventurous
+                - aggressive
+          required:
+            - huntingSkill
+    Category:
+      type: object
+      properties:
+        id:
+          description: آی‌دی دسته‌بندی
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        name:
+          description: نام دسته‌بندی
+          type: string
+          minLength: 1
+        sub:
+          description: آزمایش زیردسته‌بندی
+          type: object
+          properties:
+            prop1:
+              type: string
+              description: Dumb Property
+      xml:
+        name: Category
+    Dog:
+      description: خروجی قابل نمایش یک سگ
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            packSize:
+              type: integer
+              format: int32
+              description: اندازه نژاد سگ
+              default: 1
+              minimum: 1
+          required:
+            - packSize
+    HoneyBee:
+      description: خروجی قابل نمایش یک زنبورعسل
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            honeyPerDay:
+              type: number
+              description: میانگین تولید عسل در واحد اونس در روز
+              example: 3.14
+          required:
+            - honeyPerDay
+    Id:
+      type: integer
+      format: int64
+      readOnly: true
+    Order:
+      type: object
+      properties:
+        id:
+          description: آی‌دی سفارش
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        petId:
+          description: آی‌دی پت
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
+          default: 1
+        shipDate:
+          description: مدت ارسال تخمین زده‌شده
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: وضعیت سفارش
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          description: وضعیت تکمیل شدن سفارش را به نمایش میگذارد
+          type: boolean
+          default: false
+          readOnly: true
+        rqeuestId:
+          description: آی‌دی درخواست یکتا
+          type: string
+          writeOnly: true
+      xml:
+        name: Order
+    Pet:
+      type: object
+      required:
+        - name
+        - photoUrls
+      discriminator:
+        propertyName: petType
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+          bee: '#/components/schemas/HoneyBee'
+      properties:
+        id:
+          externalDocs:
+            description: "Find more info here"
+            url: "https://example.com"
+          description: آی‌دی پت
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        category:
+          description: دسته بندی که پت متعلق به آن است
+          allOf:
+            - $ref: '#/components/schemas/Category'
+        name:
+          description: اسم پت
+          type: string
+          example: Guru
+        photoUrls:
+          description: لیست آدرس عکس های پت
+          type: array
+          maxItems: 20
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+            format: url
+        friend:
+          allOf:
+            - $ref: '#/components/schemas/Pet'
+        tags:
+          description: تگ متصل به پت
+          type: array
+          minItems: 1
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: وضعیت پت در فروشگاه
+          enum:
+            - available
+            - pending
+            - sold
+        petType:
+          description: نوع پت
+          type: string
+      xml:
+        name: Pet
+    Tag:
+      type: object
+      properties:
+        id:
+          description: آی‌دی تگ
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        name:
+          description: اسم تگ
+          type: string
+          minLength: 1
+      xml:
+        name: تگ
+    User:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        pet:
+          oneOf:
+            - $ref: '#/components/schemas/Pet'
+            - $ref: '#/components/schemas/Tag'
+        username:
+          description: نام‌کاربری کاربر
+          type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: اسم کوچک کاربر
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: نام خانوادگی کاربر
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: ایمیل کاربر
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            کلمه عبور باید شامل حروف بزرگ، کوچک و اعداد باشد
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: drowssaP123
+        phone:
+          description: شماره تماس کاربر که باید با کد کشور باشد
+          type: string
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
+          example: +1-202-555-0192
+          nullable: true
+        userStatus:
+          description: وضعیت کاربر
+          type: integer
+          format: int32
+      xml:
+        name: User
+  requestBodies:
+    Pet:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - description: پت من
+                title: Pettie
+              - $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            type: 'object'
+            properties:
+              name:
+                type: string
+                description: hooray
+      description: آبجکت پتی که شما میخواهید اضافه کنید به فروشگاه
+      required: true
+    UserArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      description: لیست آبجکت کاربر
+      required: true
+  securitySchemes:
+    petstore_auth:
+      description: |
+        حین دسترسی به اطلاعات از اطلاعات کاربری خود محافظت کنید.
+        همچنین OAuth2 یک راه مطمئن تر و امن تر برای دسترسی به اطلاعات است.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/api/oauth/dialog'
+          scopes:
+            'write:pets': ویرایش پت های موجود در ناحیه کاربری
+            'read:pets': خواندن اطلاعات پت
+    api_key:
+      description: >
+        برای مثال میتوانید special-key رو ارسال کنید.
+      type: apiKey
+      name: api_key
+      in: header
+  examples:
+    Order:
+      value:
+        quantity: 1,
+        shipDate: 2018-10-19T16:46:45Z,
+        status: placed,
+        complete: false
