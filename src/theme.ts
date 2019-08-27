@@ -99,7 +99,7 @@ const defaultTheme: ThemeInterface = {
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Roboto, sans-serif, Vazir',
     smoothing: 'antialiased',
     optimizeSpeed: true,
     headings: {
