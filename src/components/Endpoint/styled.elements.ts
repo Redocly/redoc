@@ -25,6 +25,7 @@ export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean 
   border: ${props => (props.inverted ? '0' : '1px solid transparent')};
   border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   transition: border-color 0.25s ease;
+  direction: ltr;
 
   ${props =>
     (props.expanded && !props.inverted && `border-color: ${props.theme.colors.border.dark};`) || ''}
@@ -59,7 +60,7 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   transition: all 0.25s ease;
-
+  text-align: ${({ theme }) => (theme.typography.direction === 'rtl') ? 'right' : 'left'};
   ${props => (props.expanded ? '' : 'transform: translateY(-50%) scaleY(0);')}
 `;
 
@@ -68,6 +69,7 @@ export const ServerItem = styled.div`
 `;
 
 export const ServerUrl = styled.div`
+  text-align: left;
   padding: 5px;
   border: 1px solid #ccc;
   background: #fff;
@@ -75,5 +77,5 @@ export const ServerUrl = styled.div`
   color: ${props => props.theme.colors.primary.main};
   > span {
     color: ${props => props.theme.colors.text.primary};
-  }
+  };
 `;
