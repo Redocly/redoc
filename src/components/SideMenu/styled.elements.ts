@@ -182,6 +182,3 @@ export const RedocAttribution = styled.div`
   }
 `};
 `;
-export const WrappedShelfIcon = styled.i`
-  transform: ${({ theme }) => (theme.typography.direction === 'rtl') ? 'rotateY(180deg)' : 'none'};
-`;

@@ -111,7 +111,6 @@ export const PropertyBullet = styled.span`
   }
 `;
 export const WrappedShelfIcon = styled.i`
-  transform: ${({ theme }) => (theme.typography.direction === 'rtl') ? 'rotateY(180deg)' : 'none'};
   display: inline-block
 `;
 export const InnerPropertiesWrap = styled.div`

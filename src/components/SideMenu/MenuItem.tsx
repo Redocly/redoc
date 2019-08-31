@@ -5,7 +5,7 @@ import { ShelfIcon } from '../../common-elements/shelfs';
 import { IMenuItem, OperationModel } from '../../services';
 import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
-import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge, WrappedShelfIcon } from './styled.elements';
+import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 
 export interface MenuItemProps {
   item: IMenuItem;
@@ -58,9 +58,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
               {this.props.children}
             </MenuItemTitle>
             {(item.depth > 0 && item.items.length > 0 && (
-              <WrappedShelfIcon>
                 <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
-              </WrappedShelfIcon>
             )) ||
               null}
           </MenuItemLabel>
