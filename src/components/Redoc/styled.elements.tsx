@@ -43,7 +43,7 @@ export const BackgroundStub = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  ${({ theme }) => theme.typography.direction === 'ltr' ? 'right: 0;' : 'left: 0;'};
+  ${({ theme }) => theme.typography.direction === 'rtl' ? 'left: 0;' : 'right: 0;'};
   width: ${({ theme }) => {
     if (theme.rightPanel.width.endsWith('%')) {
       const percents = parseInt(theme.rightPanel.width, 10);
