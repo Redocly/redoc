@@ -4,7 +4,8 @@ import styled, { media } from '../styled-components';
 export const MiddlePanel = styled.div`
   width: calc(100% - ${props => props.theme.rightPanel.width});
   padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
-  text-align: ${({ theme }) => (theme.typography.direction === 'rtl') ? 'right' : 'left'};
+  direction: ${props => props.theme.typography.direction || 'ltr'};
+  text-align: ${props => (props.theme.typography.direction === 'rtl') ? 'right' : 'inherit'};
 
   ${media.lessThan('medium', true)`
     width: 100%;

@@ -1,9 +1,9 @@
 openapi: 3.0.0
 servers:
   - url: //petstore.swagger.io/v2
-    description: Default server
+    description: سرور پیش فرض
   - url: //petstore.swagger.io/sandbox
-    description: Sandbox server
+    description: sandbox سرور
 info:
   description: |
     این یک فایل تست api-doc است که مرتبط با مدیریت یک پت‌شاپ طراحی و نوشته شده است.
