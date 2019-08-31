@@ -10,6 +10,7 @@ import {
   PropertyCellWithInner,
   PropertyDetailsCell,
   PropertyNameCell,
+  WrappedShelfIcon,
 } from '../../common-elements/fields-layout';
 
 import { ShelfIcon } from '../../common-elements/';
@@ -46,7 +47,9 @@ export class Field extends React.Component<FieldProps> {
       >
         <PropertyBullet />
         {name}
-        <ShelfIcon direction={expanded ? 'down' : 'right'} />
+        <WrappedShelfIcon>
+          <ShelfIcon direction={expanded ? 'down' : 'right'} />
+        </WrappedShelfIcon>
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
