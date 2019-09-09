@@ -21,6 +21,9 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "default": undefined,
             "deprecated": false,
             "description": "",
+            "displayFormat": undefined,
+            "displayType": "number",
+            "enum": Array [],
             "example": undefined,
             "externalDocs": undefined,
             "format": undefined,
@@ -32,34 +35,18 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "pointer": "#/components/schemas/Dog/properties/packSize",
             "rawSchema": Object {
               "default": undefined,
-              "deprecated": false,
-              "description": "",
-              "displayFormat": undefined,
-              "displayType": "number",
-              "enum": Array [],
-              "example": undefined,
-              "format": undefined,
-              "isCircular": undefined,
-              "isPrimitive": true,
-              "nullable": false,
-              "options": "<<<filtered>>>",
-              "pattern": undefined,
-              "pointer": "#/components/schemas/Dog/properties/packSize",
-              "rawSchema": Object {
-                "default": undefined,
-                "type": "number",
-              },
-              "readOnly": false,
-              "schema": Object {
-                "default": undefined,
-                "type": "number",
-              },
-              "title": "",
               "type": "number",
-              "typePrefix": "",
-              "writeOnly": false,
             },
-          }
+            "readOnly": false,
+            "schema": Object {
+              "default": undefined,
+              "type": "number",
+            },
+            "title": "",
+            "type": "number",
+            "typePrefix": "",
+            "writeOnly": false,
+          },
         }
       }
       isLast={false}
@@ -84,6 +71,9 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "default": undefined,
             "deprecated": false,
             "description": "",
+            "displayFormat": undefined,
+            "displayType": "string",
+            "enum": Array [],
             "example": undefined,
             "externalDocs": undefined,
             "format": undefined,
@@ -100,41 +90,20 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "readOnly": false,
             "schema": Object {
               "default": undefined,
-              "deprecated": false,
-              "description": "",
-              "displayFormat": undefined,
-              "displayType": "string",
-              "enum": Array [],
-              "example": undefined,
-              "format": undefined,
-              "isCircular": undefined,
-              "isPrimitive": true,
-              "nullable": false,
-              "options": "<<<filtered>>>",
-              "pattern": undefined,
-              "pointer": "#/components/schemas/Dog/properties/type",
-              "rawSchema": Object {
-                "default": undefined,
-                "type": "string",
-              },
-              "readOnly": false,
-              "schema": Object {
-                "default": undefined,
-                "type": "string",
-              },
-              "title": "",
               "type": "string",
-              "typePrefix": "",
-              "writeOnly": false,
             },
-          }
+            "title": "",
+            "type": "string",
+            "typePrefix": "",
+            "writeOnly": false,
+          },
         }
-        isLast={true}
-        key="type"
-        renderDiscriminatorSwitch={[Function]}
-        showExamples={false}
-      />
-    </tbody>
-  </styled.table>
-</div>
+      }
+      isLast={true}
+      key="type"
+      renderDiscriminatorSwitch={[Function]}
+      showExamples={false}
+    />
+  </tbody>
+</styled.table>
 `;
