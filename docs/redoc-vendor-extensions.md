@@ -1,10 +1,10 @@
 # ReDoc vendor extensions
-ReDoc makes use of the following [vendor extensions](http://swagger.io/specification/#vendorExtensions)
+ReDoc makes use of the following [vendor extensions](https://swagger.io/specification/#specificationExtensions)
 
 ### Swagger Object vendor extensions
-Extend OpenAPI root [Swagger Object](http://swagger.io/specification/#swaggerObject)
+Extend OpenAPI root [Swagger Object](https://swagger.io/specification/#oasObject)
 #### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.md#server-object). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#server-object). Currently doesn't support templates.
 
 #### x-tagGroups
 
@@ -96,6 +96,7 @@ The information about API logo
 | url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL. It SHOULD be an absolute URL so your API definition is usable from any location
 | backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)
 | altText        | string   | Text to use for alt tag on the logo. Defaults to 'logo' if nothing is provided.
+| href        | string   | The URL pointing to the contact page. Default to 'info.contact.url' field of the OAS.
 
 
 ###### x-logo example
@@ -106,7 +107,7 @@ json
     "version": "1.0.0",
     "title": "Swagger Petstore",
     "x-logo": {
-      "url": "https://rebilly.github.io/ReDoc/petstore-logo.png",
+      "url": "https://redocly.github.io/redoc/petstore-logo.png",
       "backgroundColor": "#FFFFFF",
       "altText": "Petstore logo"
     }
@@ -119,7 +120,7 @@ info:
   version: "1.0.0"
   title: "Swagger Petstore"
   x-logo:
-    url: "https://rebilly.github.io/ReDoc/petstore-logo.png"
+    url: "https://redocly.github.io/redoc/petstore-logo.png"
     backgroundColor: "#FFFFFF"
     altText: "Petstore logo"
 ```
@@ -131,14 +132,7 @@ Extends OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
 #### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-traitTag     | boolean  | In Swagger two operations can have multiply tags. This property distinguish between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
-
-#### x-displayName
-
-| Field Name     |	Type	  | Description |
-| :------------- | :------: | :---------- |
-| x-displayName  | string   | Define the text that is used for this tag in the menu and in section headings |
-
+| x-traitTag     | boolean  | In Swagger two operations can have multiple tags. This property distinguishes between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
 
 ###### Usage in Redoc
 Tags that have `x-traitTag` set to `true` are listed in side-menu but don't have any subitems (operations). Tag `description` is rendered as well.
@@ -159,6 +153,12 @@ name: Pagination
 description: Pagination description (can use markdown syntax)
 x-traitTag: true
 ```
+
+#### x-displayName
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-displayName  | string   | Defines the text that is used for this tag in the menu and in section headings |
 
 ### Operation Object vendor extensions
 Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
@@ -278,3 +278,31 @@ PayPalPayment:
 
 In the example above the names of definitions (`PayPalPayment`) are named differently than
 names in the payload (`paypal`) which is not supported by default `discriminator`.
+
+#### x-additionalPropertiesName
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+Extends the `additionalProperties` property of the schema object.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-additionalPropertiesName | string | descriptive name of additional properties keys  |
+
+###### Usage in ReDoc
+ReDoc uses this extension to display a more descriptive property name in objects with `additionalProperties` when viewing the property list with an `object`.
+
+###### x-additionalPropertiesName example
+
+```yaml
+Player:
+  required:
+  - name
+
+  properties:
+    name:
+      type: string
+
+  additionalProperties:
+    x-additionalPropertiesName: attribute-name
+    type: string
+```

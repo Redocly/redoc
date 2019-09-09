@@ -18,6 +18,8 @@ declare module '*.css' {
 declare var __REDOC_VERSION__: string;
 declare var __REDOC_REVISION__: string;
 
+declare var reactHotLoaderGlobal: any;
+
 interface Element {
   scrollIntoViewIfNeeded(centerIfNeeded?: boolean): void;
 }

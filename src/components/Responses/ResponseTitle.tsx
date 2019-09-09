@@ -22,12 +22,12 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
           <ShelfIcon
             size={'1.5em'}
             color={type}
-            direction={opened ? 'up' : 'down'}
+            direction={opened ? 'down' : 'right'}
             float={'left'}
           />
         )}
         <strong>{code} </strong>
-        <Markdown dense={true} inline={true} source={title} />
+        <Markdown compact={true} inline={true} source={title} />
       </div>
     );
   }

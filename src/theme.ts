@@ -3,6 +3,8 @@ import { darken, desaturate, lighten, readableColor, transparentize } from 'poli
 const defaultTheme: ThemeInterface = {
   spacing: {
     unit: 5,
+    sectionHorizontal: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: ({ spacing }) => spacing.unit * 8,
   },
   breakpoints: {
     small: '50rem',
@@ -93,16 +95,17 @@ const defaultTheme: ThemeInterface = {
   },
   typography: {
     fontSize: '14px',
-    lineHeight: '1.5',
+    lineHeight: '1.5em',
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
     fontFamily: 'Roboto, sans-serif',
     smoothing: 'antialiased',
     optimizeSpeed: true,
-
     headings: {
       fontFamily: 'Montserrat, sans-serif',
+      fontWeight: '400',
+      lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
@@ -110,17 +113,19 @@ const defaultTheme: ThemeInterface = {
       lineHeight: ({ typography }) => typography.lineHeight,
       fontWeight: ({ typography }) => typography.fontWeightRegular,
       color: '#e53935',
-      backgroundColor: 'rgba(38, 50, 56, 0.04)',
+      backgroundColor: 'rgba(38, 50, 56, 0.05)',
+      wrap: false,
     },
     links: {
       color: ({ colors }) => colors.primary.main,
-      visited: ({ colors }) => colors.primary.main,
-      hover: ({ colors }) => lighten(0.2, colors.primary.main),
+      visited: ({ typography }) => typography.links.color,
+      hover: ({ typography }) => lighten(0.2, typography.links.color),
     },
   },
   menu: {
     width: '260px',
     backgroundColor: '#fafafa',
+    textColor: '#333333',
     groupItems: {
       textTransform: 'uppercase',
     },
@@ -129,17 +134,21 @@ const defaultTheme: ThemeInterface = {
     },
     arrow: {
       size: '1.5em',
-      color: theme => theme.colors.text.primary,
+      color: theme => theme.menu.textColor,
     },
   },
   logo: {
     maxHeight: ({ menu }) => menu.width,
     maxWidth: ({ menu }) => menu.width,
+    gutter: '2px',
   },
   rightPanel: {
     backgroundColor: '#263238',
     width: '40%',
     textColor: '#ffffff',
+  },
+  codeSample: {
+    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
 };
 
@@ -159,7 +168,7 @@ export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
               counter++;
               if (counter > 1000) {
                 throw new Error(
-                  `Theme probably contains cirucal dependency at ${currentPath}: ${val.toString()}`,
+                  `Theme probably contains circular dependency at ${currentPath}: ${val.toString()}`,
                 );
               }
 
@@ -202,6 +211,8 @@ export interface FontSettings {
 export interface ResolvedThemeInterface {
   spacing: {
     unit: number;
+    sectionHorizontal: number;
+    sectionVertical: number;
   };
   breakpoints: {
     small: string;
@@ -267,9 +278,12 @@ export interface ResolvedThemeInterface {
 
     code: FontSettings & {
       backgroundColor: string;
+      wrap: boolean;
     };
     headings: {
       fontFamily: string;
+      fontWeight: string;
+      lineHeight: string;
     };
 
     links: {
@@ -281,6 +295,7 @@ export interface ResolvedThemeInterface {
   menu: {
     width: string;
     backgroundColor: string;
+    textColor: string;
     groupItems: {
       textTransform: string;
     };
@@ -295,11 +310,15 @@ export interface ResolvedThemeInterface {
   logo: {
     maxHeight: string;
     maxWidth: string;
+    gutter: string;
   };
   rightPanel: {
     backgroundColor: string;
     textColor: string;
     width: string;
+  };
+  codeSample: {
+    backgroundColor: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

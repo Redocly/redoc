@@ -4,7 +4,7 @@ import { MarkdownRenderer } from '../../services';
 import { SanitizedMarkdownHTML } from './SanitizedMdBlock';
 
 export interface StylingMarkdownProps {
-  dense?: boolean;
+  compact?: boolean;
   inline?: boolean;
 }
 
@@ -21,13 +21,13 @@ export type MarkdownProps = BaseMarkdownProps &
 
 export class Markdown extends React.Component<MarkdownProps> {
   render() {
-    const { source, inline, dense, className } = this.props;
+    const { source, inline, compact, className } = this.props;
     const renderer = new MarkdownRenderer();
     return (
       <SanitizedMarkdownHTML
         html={renderer.renderMd(source)}
         inline={inline}
-        dense={dense}
+        compact={compact}
         className={className}
       />
     );

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { AppStore } from '../../services/AppStore';
 
 import { MiddlePanel, Row, Section } from '../../common-elements/';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 import {
@@ -43,22 +44,20 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       null;
 
     const website =
-      (info.contact &&
-        info.contact.url && (
-          <InfoSpan>
-            URL: <a href={info.contact.url}>{info.contact.url}</a>
-          </InfoSpan>
-        )) ||
+      (info.contact && info.contact.url && (
+        <InfoSpan>
+          URL: <a href={info.contact.url}>{info.contact.url}</a>
+        </InfoSpan>
+      )) ||
       null;
 
     const email =
-      (info.contact &&
-        info.contact.email && (
-          <InfoSpan>
-            {info.contact.name || 'E-mail'}:{' '}
-            <a href={'mailto:' + info.contact.email}>{info.contact.email}</a>
-          </InfoSpan>
-        )) ||
+      (info.contact && info.contact.email && (
+        <InfoSpan>
+          {info.contact.name || 'E-mail'}:{' '}
+          <a href={'mailto:' + info.contact.email}>{info.contact.email}</a>
+        </InfoSpan>
+      )) ||
       null;
 
     const terms =
@@ -69,12 +68,14 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       )) ||
       null;
 
+    const version = (info.version && <span>({info.version})</span>) || null;
+
     return (
       <Section>
         <Row>
           <MiddlePanel className="api-info">
             <ApiHeader>
-              {info.title} <span>({info.version})</span>
+              {info.title} {version}
             </ApiHeader>
             {!hideDownloadButton && (
               <p>
@@ -98,15 +99,9 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                 </InfoSpanBoxWrap>
               )) ||
                 null}
-
-              {(externalDocs && (
-                <p>
-                  <a href={externalDocs.url}>{externalDocs.description || externalDocs.url}</a>
-                </p>
-              )) ||
-                null}
             </StyledMarkdownBlock>
             <Markdown source={store.spec.info.description} />
+            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
           </MiddlePanel>
         </Row>
       </Section>

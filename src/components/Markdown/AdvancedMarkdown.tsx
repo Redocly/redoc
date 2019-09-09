@@ -38,11 +38,11 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
     return parts.map((part, idx) => {
       if (typeof part === 'string') {
         return React.cloneElement(
-          htmlWrap(<SanitizedMarkdownHTML html={part} inline={false} dense={false} />),
+          htmlWrap(<SanitizedMarkdownHTML html={part} inline={false} compact={false} />),
           { key: idx },
         );
       }
-      return <part.component key={idx} {...{ ...part.attrs, ...part.propsSelector(store) }} />;
+      return <part.component key={idx} {...{ ...part.props, ...part.propsSelector(store) }} />;
     });
   }
 }

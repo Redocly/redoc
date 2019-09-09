@@ -1,11 +1,10 @@
 let level = 1;
-const COLLAPSE_LEVEL = 2;
 
-export function jsonToHTML(json) {
+export function jsonToHTML(json, maxExpandLevel) {
   level = 1;
   let output = '';
   output += '<div class="redoc-json">';
-  output += valueToHTML(json);
+  output += valueToHTML(json, maxExpandLevel);
   output += '</div>';
   return output;
 }
@@ -21,6 +20,10 @@ function htmlEncode(t) {
     : '';
 }
 
+function stringifyStringLiteral(str: string) {
+  return JSON.stringify(str).slice(1, -1);
+}
+
 function decorateWithSpan(value, className) {
   return '<span class="' + className + '">' + htmlEncode(value) + '</span>';
 }
@@ -29,20 +32,20 @@ function punctuation(val) {
   return '<span class="token punctuation">' + val + '</span>';
 }
 
-function valueToHTML(value) {
+function valueToHTML(value, maxExpandLevel: number) {
   const valueType = typeof value;
   let output = '';
   if (value === undefined || value === null) {
     output += decorateWithSpan('null', 'token keyword');
   } else if (value && value.constructor === Array) {
     level++;
-    output += arrayToHTML(value);
+    output += arrayToHTML(value, maxExpandLevel);
     level--;
   } else if (value && value.constructor === Date) {
     output += decorateWithSpan('"' + value.toISOString() + '"', 'token string');
   } else if (valueType === 'object') {
     level++;
-    output += objectToHTML(value);
+    output += objectToHTML(value, maxExpandLevel);
     level--;
   } else if (valueType === 'number') {
     output += decorateWithSpan(value, 'token number');
@@ -53,11 +56,11 @@ function valueToHTML(value) {
         '<a href="' +
         value +
         '">' +
-        htmlEncode(value) +
+        htmlEncode(stringifyStringLiteral(value)) +
         '</a>' +
         decorateWithSpan('"', 'token string');
     } else {
-      output += decorateWithSpan('"' + value + '"', 'token string');
+      output += decorateWithSpan('"' + stringifyStringLiteral(value) + '"', 'token string');
     }
   } else if (valueType === 'boolean') {
     output += decorateWithSpan(value, 'token boolean');
@@ -66,8 +69,8 @@ function valueToHTML(value) {
   return output;
 }
 
-function arrayToHTML(json) {
-  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+function arrayToHTML(json, maxExpandLevel: number) {
+  const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   let output = `<div class="collapser"></div>${punctuation(
     '[',
   )}<span class="ellipsis"></span><ul class="array collapsible">`;
@@ -76,7 +79,7 @@ function arrayToHTML(json) {
   for (let i = 0; i < length; i++) {
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += valueToHTML(json[i]);
+    output += valueToHTML(json[i], maxExpandLevel);
     if (i < length - 1) {
       output += ',';
     }
@@ -89,8 +92,8 @@ function arrayToHTML(json) {
   return output;
 }
 
-function objectToHTML(json) {
-  const collapsed = level > COLLAPSE_LEVEL ? 'collapsed' : '';
+function objectToHTML(json, maxExpandLevel: number) {
+  const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   const keys = Object.keys(json);
   const length = keys.length;
   let output = `<div class="collapser"></div>${punctuation(
@@ -102,7 +105,7 @@ function objectToHTML(json) {
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
     output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
-    output += valueToHTML(json[key]);
+    output += valueToHTML(json[key], maxExpandLevel);
     if (i < length - 1) {
       output += punctuation(',');
     }

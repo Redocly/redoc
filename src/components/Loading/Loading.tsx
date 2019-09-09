@@ -1,9 +1,9 @@
 import * as React from 'react';
-import styled, { withProps } from '../../styled-components';
+import styled from '../../styled-components';
 
 import { Spinner } from './Spinner.svg';
 
-const LoadingMessage = withProps<{ color: string }>(styled.div)`
+const LoadingMessage = styled.div<{ color: string }>`
   font-family: helvetica, sans;
   width: 100%;
   text-align: center;

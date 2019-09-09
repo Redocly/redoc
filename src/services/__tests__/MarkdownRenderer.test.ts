@@ -53,11 +53,47 @@ describe('Markdown renderer', () => {
   });
 
   test('renderMdWithComponents should parse attribute names', () => {
-    const source = '<security-definitions pointer={"test"}/>';
+    const source = '<security-definitions pointer={"test"} />';
     const parts = renderer.renderMdWithComponents(source);
     expect(parts).toHaveLength(1);
     const part = parts[0] as MDXComponentMeta;
     expect(part.component).toBe(TestComponent);
-    expect(part.attrs).toEqual({ pointer: 'test' });
+    expect(part.props).toEqual({ pointer: 'test' });
+  });
+
+  test('renderMdWithComponents should parse string attribute names', () => {
+    const source = '<security-definitions pointer="test" />';
+    const parts = renderer.renderMdWithComponents(source);
+    expect(parts).toHaveLength(1);
+    const part = parts[0] as MDXComponentMeta;
+    expect(part.component).toBe(TestComponent);
+    expect(part.props).toEqual({ pointer: 'test' });
+  });
+
+  test('renderMdWithComponents should parse string attribute with spaces new-lines', () => {
+    const source = '<security-definitions \n pointer = "test" \n   flag-dash={ \nfalse } />';
+    const parts = renderer.renderMdWithComponents(source);
+    expect(parts).toHaveLength(1);
+    const part = parts[0] as MDXComponentMeta;
+    expect(part.component).toBe(TestComponent);
+    expect(part.props).toEqual({ pointer: 'test', 'flag-dash': false });
+  });
+
+  test('renderMdWithComponents should parse children', () => {
+    const source = '<security-definitions> Test Test </security-definitions>';
+    const parts = renderer.renderMdWithComponents(source);
+    expect(parts).toHaveLength(1);
+    const part = parts[0] as MDXComponentMeta;
+    expect(part.component).toBe(TestComponent);
+    expect(part.props).toEqual({ children: ' Test Test ' });
+  });
+
+  test('renderMdWithComponents should parse children', () => {
+    const source = '<security-definitions> Test Test </security-definitions>';
+    const parts = renderer.renderMdWithComponents(source);
+    expect(parts).toHaveLength(1);
+    const part = parts[0] as MDXComponentMeta;
+    expect(part.component).toBe(TestComponent);
+    expect(part.props).toEqual({ children: ' Test Test ' });
   });
 });

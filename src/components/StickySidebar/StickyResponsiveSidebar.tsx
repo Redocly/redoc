@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { MenuStore } from '../../services/MenuStore';
 import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
-import styled, { media, withProps } from '../../styled-components';
+import styled, { media } from '../../styled-components';
 import { IS_BROWSER } from '../../utils/index';
 import { OptionsContext } from '../OptionsProvider';
 import { AnimatedChevronButton } from './ChevronSvg';
@@ -21,7 +21,7 @@ export interface StickySidebarProps {
 
 const stickyfill = Stickyfill && Stickyfill();
 
-const StyledStickySidebar = withProps<{ open?: boolean }>(styled.div)`
+const StyledStickySidebar = styled.div<{ open?: boolean }>`
   width: ${props => props.theme.menu.width};
   background-color: ${props => props.theme.menu.backgroundColor};
   overflow: hidden;
@@ -43,6 +43,10 @@ const StyledStickySidebar = withProps<{ open?: boolean }>(styled.div)`
     background: #ffffff;
     display: ${props => (props.open ? 'flex' : 'none')};
   `};
+
+  @media print {
+    display: none;
+  }
 `;
 
 const FloatingButton = styled.div`
@@ -60,11 +64,16 @@ const FloatingButton = styled.div`
   ${media.lessThan('small')`
     display: flex;
   `};
+
   bottom: 44px;
 
   width: 60px;
   height: 60px;
   padding: 0 20px;
+
+  @media print {
+    display: none;
+  }
 `;
 
 @observer
@@ -113,7 +122,7 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
               className={this.props.className}
               style={style(options)}
               // tslint:disable-next-line
-              innerRef={el => {
+              ref={el => {
                 this.stickyElement = el as any;
               }}
             >

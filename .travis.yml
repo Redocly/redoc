@@ -1,10 +1,14 @@
 language: node_js
 node_js:
-- '8'
-cache: yarn
+- '10'
+cache:
+  yarn: true
+  directories:
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 env:
   global:
-  - GH_REF: github.com/Rebilly/ReDoc.git
+  - GH_REF: github.com/Redocly/redoc.git
   - GIT_AUTHOR_EMAIL: redoc-bot@users.noreply.github.com
   - GIT_AUTHOR_NAME: RedocBot
   - secure: H2GClDJ7TEQaWgnk8d2fIVDpLwG3rTmN8TalUzrCqXGoG6ylCVmlwzKLgfPPWrVgSA7QTdfNV0ab7c2KyPoZBinHmeGMSuKNLVbhOXRc2VFxTBntBTuyJhfCgQEpUKvJesJUuv5RuBn//wC7VZcVVNc06TZDEe8+aDVYQuCRMXZJ4X3e6nSZ64QX2veyVcr+TjnRsZPkeBVcK9hngvuaxLb/hbJ85CvjiseZRt47PGIcrEpMn9n2GMw1m0fNnPoN+MBTSCnIklTmdjPG7t4GUSLmD6H0lNLdXuehYqmQAHgYrLec1aiFlV57QaDoDZrq2hSf4vDmCB/FVydGhD5JunI67pujoV2OnD1V80eUZhYNWOYsJ2Nfp4NxgXsPUcE6zWLYsLfktMPZADhOXInQRACt1cnx8zMYKLnch1RY/ZqjSg0nPtRjLzQ0lNsw5leixvBdBnMjxYHVyAWVwg8WiJMaLO9vog2Qnxg1NTacHO2CsOmm2rw6stpg7ndp/+nOleRlfUKggjt0Tn3FjwCIXeGup2P2EBa+WW2YMAaoMFofYviR5vRlKBgdKo9fsAruaO1r6nm2EdAjOlniyw92bEfU/qOey1nVp/oK2S82uT5In8KB7vl6rF3ak7WAsT9Q5vZUhsrG+eE4PVyIyWNBhs4A7pSwZGHDR/MYtp0E2ug=
@@ -14,6 +18,9 @@ env:
   - secure: SEqTg6WoGPPpcWzJ03ZfcSBb3nZ2Mdhug0ec2PszuzYO3libCb9usiqi+jils9z6qyXsL6ecz8HYazDGOUepnubhIpI5otLgfn9XiapjMT06Bj//AjbKpH7eu3TJSpJMzoRHZrKIE1y9ZKIBqKwl9Xs7ko+1oa+MLhrLuxXkoi0JqRB5UzkQtJRDoxVNjysnLQn+hsfnm+yuqPHZd2+Loy++q//WHuf9bwJrlkXn2ICYQIX5oQGlxNO6ui+OZklb0YknvyO5GdQeoKaHYru3MMKKCIS6I7AG9wLmPs5Ou3T0Ia0Xx4/7xazs0rH4NCVpIceSYc3v6evR37pp8MsFTC3BzjL1V3slTnmitC1KSNM8ndGRUg1nsCBkJysnR3HpX6SHuCH+UzOuMxEjwiPdSRnzJPEbTHa1HqMfTkTJMbm4zhp7W4/ozX4TtjUB0ql6NoQE2n0Z3aYgR2C78TmzaPQun8EgredWnCID1FedyexaNcw4HyZ2rXlcvG3rBzSwLHH5PePT9skyqy6KtIaL0MlAP556ilgUeyCZfCNdTmzCvPDZuqaeLRezWDdsKnRfTkxIW80QWlmZ6sW0hynJV5JN2Oghk9Tr+QzgV4ZF68FHwoU9YXCTyX4w5iTYq/GjvfTBqB3VSGPOz3PwU7r47tmaYzPj+I44zqktgxyuxDo=
 addons:
   chrome: stable
+  apt:
+    packages:
+      - libgconf-2-4 # for cypress
 before_script: npm run bundle
 script: npm test && ([ "${TRAVIS_PULL_REQUEST}" = "false" ] && npm run e2e-ci || npm
   run e2e)
@@ -27,9 +34,6 @@ deploy:
   api_key: "$NPM_TOKEN"
   on:
     tags: true
-- provider: script
-  skip_cleanup: true
-  script: cd cli && yarn install && yarn ci-publish || true
 - provider: script
   skip_cleanup: true
   script: yarn deploy:demo

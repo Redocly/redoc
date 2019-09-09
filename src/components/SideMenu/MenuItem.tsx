@@ -46,7 +46,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
       <MenuItemLi
         onClick={this.activate}
         depth={item.depth}
-        innerRef={this.saveRef}
+        ref={this.saveRef}
         data-item-id={item.id}
       >
         {item.type === 'operation' ? (
@@ -57,22 +57,19 @@ export class MenuItem extends React.Component<MenuItemProps> {
               {item.name}
               {this.props.children}
             </MenuItemTitle>
-            {(item.depth > 0 &&
-              item.items.length > 0 && (
-                <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
-              )) ||
+            {(item.depth > 0 && item.items.length > 0 && (
+              <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
+            )) ||
               null}
           </MenuItemLabel>
         )}
-        {!withoutChildren &&
-          item.items &&
-          item.items.length > 0 && (
-            <MenuItems
-              expanded={item.expanded}
-              items={item.items}
-              onActivate={this.props.onActivate}
-            />
-          )}
+        {!withoutChildren && item.items && item.items.length > 0 && (
+          <MenuItems
+            expanded={item.expanded}
+            items={item.items}
+            onActivate={this.props.onActivate}
+          />
+        )}
       </MenuItemLi>
     );
   }
@@ -80,22 +77,16 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
 export interface OperationMenuItemContentProps {
   item: OperationModel;
-  className?: string;
 }
 
 @observer
-class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
+export class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
   render() {
-    const { item, className } = this.props;
+    const { item } = this.props;
     return (
-      <MenuItemLabel
-        className={className}
-        depth={item.depth}
-        active={item.active}
-        deprecated={item.deprecated}
-      >
+      <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated}>
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
-        <MenuItemTitle width="calc(100% - 32px)">
+        <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
           {this.props.children}
         </MenuItemTitle>

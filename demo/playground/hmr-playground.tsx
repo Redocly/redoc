@@ -17,9 +17,12 @@ const renderRoot = (props: RedocProps) =>
   );
 
 const big = window.location.search.indexOf('big') > -1;
-const swagger = window.location.search.indexOf('swagger') > -1; // compatibility mode ?
+const swagger = window.location.search.indexOf('swagger') > -1;
 
-const specUrl = swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml';
+const userUrl = window.location.search.match(/url=(.*)$/);
+
+const specUrl =
+  (userUrl && userUrl[1]) || (swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
 let store;
 const options: RedocRawOptions = { nativeScrollbars: false };

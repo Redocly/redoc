@@ -1,0 +1,12 @@
+*
+!src/
+!config
+!demo/favicon.png
+
+!custom.d.ts
+!typings/styled-patch.d.ts
+!tsconfig.json
+!webpack.config.ts
+
+!package.json
+!yarn.lock

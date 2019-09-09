@@ -22,10 +22,6 @@ export const RedocWrap = styled.div`
     box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
-
-  .redoc-markdown h1 {
-    padding-top: ${theme.spacing.unit * 16}px;
-  }
 `};
 `;
 
@@ -34,9 +30,10 @@ export const ApiContentWrap = styled.div`
   position: relative;
   overflow: hidden;
   width: calc(100% - ${props => props.theme.menu.width});
-  ${media.lessThan('small')`
+  ${media.lessThan('small', true)`
     width: 100%;
   `};
+
   contain: layout;
 `;
 
@@ -46,8 +43,15 @@ export const BackgroundStub = styled.div`
   top: 0;
   bottom: 0;
   right: 0;
-  width: calc((100% - ${({ theme }) => theme.menu.width}) * 0.4);
-  ${media.lessThan('medium')`
+  width: ${({ theme }) => {
+    if (theme.rightPanel.width.endsWith('%')) {
+      const percents = parseInt(theme.rightPanel.width, 10);
+      return `calc((100% - ${theme.menu.width}) * ${percents / 100})`;
+    } else {
+      return theme.rightPanel.width;
+    }
+  }};
+  ${media.lessThan('medium', true)`
     display: none;
   `};
 `;

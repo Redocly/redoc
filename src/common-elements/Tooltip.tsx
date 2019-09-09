@@ -19,6 +19,7 @@ const Tip = styled.div`
   border-radius: 4px;
   padding: 0.3em 0.6em;
   text-align: center;
+  box-shadow: 0px 0px 5px 0px rgba(204, 204, 204, 1);
 `;
 
 const Content = styled.div`

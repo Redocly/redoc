@@ -2,7 +2,7 @@ import * as lunr from 'lunr';
 
 try {
   // tslint:disable-next-line
-  require('core-js/es6/promise'); // bundle into worker
+  require('core-js/es/promise'); // bundle into worker
 } catch (_) {
   // nope
 }

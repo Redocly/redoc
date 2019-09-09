@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 
-import { OpenAPISchema, Referenced } from '../../types';
+import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
@@ -9,12 +9,17 @@ import { FieldModel } from './Field';
 import { MergedOpenAPISchema } from '../';
 import {
   detectType,
+  extractExtensions,
   humanizeConstraints,
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
+  pluralizeType,
+  sortByField,
   sortByRequired,
 } from '../../utils/';
+
+import { l } from '../Labels';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
@@ -25,6 +30,7 @@ export class SchemaModel {
   typePrefix: string = '';
   title: string;
   description: string;
+  externalDocs?: OpenAPIExternalDocumentation;
 
   isPrimitive: boolean;
   isCircular: boolean = false;
@@ -53,6 +59,7 @@ export class SchemaModel {
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
+  extensions?: Dict<any>;
 
   /**
    * @param isChild if schema discriminator Child
@@ -71,10 +78,10 @@ export class SchemaModel {
     this.init(parser, isChild);
 
     parser.exitRef(schemaOrRef);
+    parser.exitParents(this.schema);
 
-    for (const parent$ref of this.schema.parentRefs || []) {
-      // exit all the refs visited during allOf traverse
-      parser.exitRef({ $ref: parent$ref });
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(this.schema, options.showExtensions);
     }
   }
 
@@ -101,6 +108,7 @@ export class SchemaModel {
     this.example = schema.example;
     this.deprecated = !!schema.deprecated;
     this.pattern = schema.pattern;
+    this.externalDocs = schema.externalDocs;
 
     this.constraints = humanizeConstraints(schema);
     this.displayType = this.type;
@@ -140,9 +148,9 @@ export class SchemaModel {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
     } else if (this.type === 'array' && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
-      this.displayType = this.items.displayType;
+      this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
-      this.typePrefix = this.items.typePrefix + 'Array of ';
+      this.typePrefix = this.items.typePrefix + l('arrayOf');
       this.title = this.title || this.items.title;
       this.isPrimitive = this.items.isPrimitive;
       if (this.example === undefined && this.items.example !== undefined) {
@@ -155,19 +163,38 @@ export class SchemaModel {
   }
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
-    this.oneOf = oneOf!.map(
-      (variant, idx) =>
-        new SchemaModel(
-          parser,
-          {
-            // merge base schema into each of oneOf's subschemas
-            ...variant,
-            allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
-          } as OpenAPISchema,
-          this.pointer + '/oneOf/' + idx,
-          this.options,
-        ),
-    );
+    this.oneOf = oneOf!.map((variant, idx) => {
+      const derefVariant = parser.deref(variant);
+
+      const merged = parser.mergeAllOf(derefVariant, this.pointer + '/oneOf/' + idx);
+
+      // try to infer title
+      const title =
+        isNamedDefinition(variant.$ref) && !merged.title
+          ? JsonPointer.baseName(variant.$ref)
+          : merged.title;
+
+      const schema = new SchemaModel(
+        parser,
+        // merge base schema into each of oneOf's subschemas
+        {
+          // variant may already have allOf so merge it to not get overwritten
+          ...merged,
+          title,
+          allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
+        } as OpenAPISchema,
+        this.pointer + '/oneOf/' + idx,
+        this.options,
+      );
+
+      parser.exitRef(variant);
+      // each oneOf should be independent so exiting all the parent refs
+      // otherwise it will cause false-positive recursive detection
+      parser.exitParents(merged);
+
+      return schema;
+    });
+
     this.displayType = this.oneOf
       .map(schema => {
         let name =
@@ -196,7 +223,7 @@ export class SchemaModel {
         if (variant.$ref === undefined) {
           continue;
         }
-        const name = JsonPointer.dirName(variant.$ref);
+        const name = JsonPointer.baseName(variant.$ref);
         derived[variant.$ref] = name;
       }
     }
@@ -252,8 +279,12 @@ function buildFields(
     );
   });
 
+  if (options.sortPropsAlphabetically) {
+    sortByField(fields, 'name');
+  }
   if (options.requiredPropsFirst) {
-    sortByRequired(fields, schema.required);
+    // if not sort alphabetically sort in the order from required keyword
+    sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
@@ -261,7 +292,10 @@ function buildFields(
       new FieldModel(
         parser,
         {
-          name: 'property name *',
+          name: (typeof additionalProps === 'object'
+            ? additionalProps['x-additionalPropertiesName'] || 'property name'
+            : 'property name'
+          ).concat('*'),
           required: false,
           schema: additionalProps === true ? {} : additionalProps,
           kind: 'additionalProperties',

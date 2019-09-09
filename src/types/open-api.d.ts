@@ -255,7 +255,7 @@ export interface OpenAPITag {
 
 export interface OpenAPIExternalDocumentation {
   description?: string;
-  url?: string;
+  url: string;
 }
 
 export interface OpenAPIContact {

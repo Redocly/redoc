@@ -10,6 +10,8 @@ import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
+import { l } from '../../services/Labels';
+
 export interface SchemaOptions {
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
@@ -33,7 +35,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
         <div>
           <TypeName>{schema.displayType}</TypeName>
           {schema.title && <TypeTitle> {schema.title} </TypeTitle>}
-          <RecursiveLabel> Recursive </RecursiveLabel>
+          <RecursiveLabel> {l('recursive')} </RecursiveLabel>
         </div>
       );
     }
@@ -74,6 +76,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       name: '',
       required: false,
       description: schema.description,
+      externalDocs: schema.externalDocs,
       deprecated: false,
       toggle: () => null,
       expanded: false,

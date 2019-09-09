@@ -2,14 +2,17 @@ import {
   detectType,
   getOperationSummary,
   getStatusCodeType,
+  humanizeConstraints,
   isOperationName,
   isPrimitiveType,
   mergeParams,
   normalizeServers,
+  pluralizeType,
+  serializeParameterValue,
 } from '../';
 
-import { OpenAPIParser } from '../../services';
-import { OpenAPIParameter } from '../../types';
+import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
+import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -290,35 +293,292 @@ describe('Utils', () => {
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
     });
+  });
 
-    it('should expand variables', () => {
-      const servers = normalizeServers('', [
-        {
-          url: '{protocol}{host}{basePath}',
-          variables: {
-            protocol: {
-              default: 'http://',
-            },
-            host: {
-              default: '127.0.0.1',
-            },
-            basePath: {
-              default: '/path/to/endpoint',
+  describe('openapi humanizeConstraints', () => {
+    const itemConstraintSchema = (
+      min: number | undefined = undefined,
+      max: number | undefined = undefined,
+    ) => ({ type: 'array', minItems: min, maxItems: max });
+
+    it('should not have a humanized constraint without schema constraints', () => {
+      expect(humanizeConstraints(itemConstraintSchema())).toHaveLength(0);
+    });
+
+    it('should have a humanized constraint when minItems is set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(2))).toContain('>= 2 items');
+    });
+
+    it('should have a humanized constraint when maxItems is set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, 8))).toContain('<= 8 items');
+    });
+
+    it('should have a humanized constraint when minItems and maxItems are both set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(2, 8))).toContain('[ 2 .. 8 ] items');
+    });
+
+    it('should have a humanized constraint when minItems and maxItems are the same', () => {
+      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
+    });
+
+    it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
+      expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
+    });
+  });
+
+  describe('OpenAPI pluralizeType', () => {
+    it('should pluralize all simple types', () => {
+      expect(pluralizeType('string')).toEqual('strings');
+      expect(pluralizeType('number')).toEqual('numbers');
+      expect(pluralizeType('object')).toEqual('objects');
+      expect(pluralizeType('integer')).toEqual('integers');
+      expect(pluralizeType('boolean')).toEqual('booleans');
+      expect(pluralizeType('array')).toEqual('arrays');
+    });
+
+    it('should pluralize complex dislay types', () => {
+      expect(pluralizeType('object (Pet)')).toEqual('objects (Pet)');
+      expect(pluralizeType('string <email>')).toEqual('strings <email>');
+    });
+
+    it('should pluralize oneOf-ed dislay types', () => {
+      expect(pluralizeType('object or string')).toEqual('objects or strings');
+      expect(pluralizeType('object (Pet) or number <int64>')).toEqual(
+        'objects (Pet) or numbers <int64>',
+      );
+    });
+  });
+
+  describe('openapi serializeParameter', () => {
+    interface TestCase {
+      style: OpenAPIParameterStyle;
+      explode: boolean;
+      expected: string;
+    }
+
+    interface TestValueTypeGroup {
+      value: any;
+      description: string;
+      cases: TestCase[];
+    }
+    interface TestLocationGroup {
+      location: OpenAPIParameterLocation;
+      name: string;
+      description: string;
+      cases: TestValueTypeGroup[];
+    }
+    const testCases: TestLocationGroup[] = [
+      {
+        location: 'path',
+        name: 'id',
+        description: 'path parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'simple', explode: false, expected: '5' },
+              { style: 'simple', explode: true, expected: '5' },
+              { style: 'label', explode: false, expected: '.5' },
+              { style: 'label', explode: true, expected: '.5' },
+              { style: 'matrix', explode: false, expected: ';id=5' },
+              { style: 'matrix', explode: true, expected: ';id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'simple', explode: false, expected: '3,4,5' },
+              { style: 'simple', explode: true, expected: '3,4,5' },
+              { style: 'label', explode: false, expected: '.3,4,5' },
+              { style: 'label', explode: true, expected: '.3.4.5' },
+              { style: 'matrix', explode: false, expected: ';id=3,4,5' },
+              { style: 'matrix', explode: true, expected: ';id=3;id=4;id=5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'simple', explode: false, expected: 'role,admin,firstName,Alex' },
+              { style: 'simple', explode: true, expected: 'role=admin,firstName=Alex' },
+              { style: 'label', explode: false, expected: '.role,admin,firstName,Alex' },
+              { style: 'label', explode: true, expected: '.role=admin,firstName=Alex' },
+              { style: 'matrix', explode: false, expected: ';id=role,admin,firstName,Alex' },
+              { style: 'matrix', explode: true, expected: ';role=admin;firstName=Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'query',
+        name: 'id',
+        description: 'query parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=5' },
+              { style: 'form', explode: false, expected: 'id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'form', explode: false, expected: 'id=3,4,5' },
+              { style: 'spaceDelimited', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'spaceDelimited', explode: false, expected: 'id=3%204%205' },
+              { style: 'pipeDelimited', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'pipeDelimited', explode: false, expected: 'id=3|4|5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'form', explode: true, expected: 'role=admin&firstName=Alex' },
+              { style: 'form', explode: false, expected: 'id=role,admin,firstName,Alex' },
+              { style: 'deepObject', explode: true, expected: 'id[role]=admin&id[firstName]=Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'cookie',
+        name: 'id',
+        description: 'cookie parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=5' },
+              { style: 'form', explode: false, expected: 'id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'form', explode: false, expected: 'id=3,4,5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'form', explode: true, expected: 'role=admin&firstName=Alex' },
+              { style: 'form', explode: false, expected: 'id=role,admin,firstName,Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'header',
+        name: 'x-id',
+        description: 'header parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'simple', explode: false, expected: '5' },
+              { style: 'simple', explode: true, expected: '5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'simple', explode: false, expected: '3,4,5' },
+              { style: 'simple', explode: true, expected: '3,4,5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'simple', explode: false, expected: 'role,admin,firstName,Alex' },
+              { style: 'simple', explode: true, expected: 'role=admin,firstName=Alex' },
+            ],
+          },
+        ],
+      },
+    ];
+
+    testCases.forEach(locationTestGroup => {
+      describe(locationTestGroup.description, () => {
+        locationTestGroup.cases.forEach(valueTypeTestGroup => {
+          describe(valueTypeTestGroup.description, () => {
+            valueTypeTestGroup.cases.forEach(testCase => {
+              it(`should serialize correctly when style is ${testCase.style} and explode is ${
+                testCase.explode
+              }`, () => {
+                const parameter: OpenAPIParameter = {
+                  name: locationTestGroup.name,
+                  in: locationTestGroup.location,
+                  style: testCase.style,
+                  explode: testCase.explode,
+                };
+                const serialized = serializeParameterValue(parameter, valueTypeTestGroup.value);
+
+                expect(serialized).toEqual(testCase.expected);
+              });
+            });
+          });
+        });
+      });
+    });
+
+    describe('advanced serialization', () => {
+      it('should serialize correctly query parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'id',
+          in: 'query',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
             },
           },
-        },
-        {
-          url: 'http://127.0.0.2:{port}',
-          variables: {},
-        },
-        {
-          url: 'http://127.0.0.3',
-        },
-      ]);
+        };
 
-      expect(servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
-      expect(servers[1].url).toEqual('http://127.0.0.2:{port}');
-      expect(servers[2].url).toEqual('http://127.0.0.3');
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          'id={"name":"test","age":23}',
+        );
+      });
+
+      it('should serialize correctly header parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'x-header',
+          in: 'header',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        };
+
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          '{"name":"test","age":23}',
+        );
+      });
     });
   });
 });

@@ -18,7 +18,7 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
 
 export const FieldLabel = styled.span`
   vertical-align: middle;
-  font-size: 0.929em;
+  font-size: ${({ theme }) => theme.typography.code.fontSize};
   line-height: 20px;
 `;
 
@@ -32,6 +32,7 @@ export const TypeName = styled(FieldLabel)`
 
 export const TypeTitle = styled(FieldLabel)`
   color: ${props => props.theme.schema.typeTitleColor};
+  word-break: break-word;
 `;
 
 export const TypeFormat = TypeName;
@@ -58,7 +59,6 @@ export const PatternLabel = styled(FieldLabel)`
   color: #3195a6;
   &::before,
   &::after {
-    content: '/';
     font-weight: bold;
   }
 `;
@@ -69,15 +69,18 @@ export const ExampleValue = styled(FieldLabel)`
     background-color: ${transparentize(0.95, theme.colors.text.primary)};
     color: ${transparentize(0.1, theme.colors.text.primary)};
 
-    margin: ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
+    font-family: ${theme.typography.code.fontFamily};
+    color: ${theme.typography.code.color};
 }`};
   & + & {
     margin-left: 0;
   }
   ${extensionsHook('ExampleValue')};
 `;
+
+export const ExtensionValue = styled(ExampleValue)``;
 
 export const ConstraintItem = styled(FieldLabel)`
   border-radius: 2px;
