@@ -60,11 +60,14 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
     return (
       <div>
         <ObjectSchemaDetails>
-          <ObjectSchemaTitle>{this.props.schema.title}</ObjectSchemaTitle>
-
-          <ObjectSchemaDescription>
-            <Markdown dense={true} source={this.props.schema.description} />
-          </ObjectSchemaDescription>
+          {!this.props.skipObjectTitle && (
+            <ObjectSchemaTitle>{this.props.schema.title}</ObjectSchemaTitle>
+          )}
+          {!this.props.skipObjectDescription && (
+            <ObjectSchemaDescription>
+              <Markdown compact={true} source={this.props.schema.description} />
+            </ObjectSchemaDescription>
+          )}
         </ObjectSchemaDetails>
 
         <PropertiesTable>
