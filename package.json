@@ -137,7 +137,7 @@
     "remarkable": "1.7.1",
     "scrollparent": "^2.0.1",
     "slugify": "^1.2.1",
-    "stream-http": "^2.6.1",
+    "stream-http": "2.7.2",
     "ts-helpers": "^1.1.2",
     "zone.js": "^0.8.17"
   }
