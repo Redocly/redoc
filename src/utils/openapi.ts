@@ -263,7 +263,7 @@ function serializeQueryParameter(
       return `${name}=${value.join('|')}`;
     case 'deepObject':
       if (!explode || Array.isArray(value) || typeof value !== 'object') {
-        console.warn('The style deepObject is only applicable for objects with expolde=true');
+        console.warn('The style deepObject is only applicable for objects with explode=true');
         return '';
       }
 
