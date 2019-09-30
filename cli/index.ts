@@ -64,14 +64,12 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
-    const redocOptions = getRedocOptions(argv.options);
-
     const config: Options = {
       ssr: argv.ssr as boolean,
       watch: argv.watch as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
-      redocOptions,
+      redocOptions: getObjectOrJSON(argv.options),
     };
 
     console.log(config);
@@ -120,8 +118,6 @@ YargsParser.command(
       return yargs;
     },
     async (argv: any) => {
-      const redocOptions = getRedocOptions(argv.options);
-
       const config = {
         ssr: true,
         output: argv.o as string,
@@ -130,7 +126,7 @@ YargsParser.command(
         disableGoogleFont: argv.disableGoogleFont as boolean,
         templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
-        redocOptions,
+        redocOptions: getObjectOrJSON(argv.options),
       };
 
       try {
@@ -360,7 +356,7 @@ function handleError(error: Error) {
   process.exit(1);
 }
 
-function getRedocOptions(options) {
+function getObjectOrJSON(options) {
   return options && typeof options === 'string' 
         ? JSON.parse(options) : options
         ? options
