@@ -12,19 +12,15 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
       return null;
     }
 
+    const logoHref = logoInfo.href || (info.contact && info.contact.url);
+
     // Use the english word logo if no alt text is provided
     const altText = logoInfo.altText ? logoInfo.altText : 'logo';
 
-    const logo = (
-      <LogoImgEl
-        src={logoInfo.url}
-        style={{ backgroundColor: logoInfo.backgroundColor }}
-        alt={altText}
-      />
-    );
+    const logo = <LogoImgEl src={logoInfo.url} alt={altText} />;
     return (
-      <LogoWrap>
-        {info.contact && info.contact.url ? LinkWrap(info.contact.url)(logo) : logo}{' '}
+      <LogoWrap style={{ backgroundColor: logoInfo.backgroundColor }}>
+        {logoHref ? LinkWrap(logoHref)(logo) : logo}
       </LogoWrap>
     );
   }

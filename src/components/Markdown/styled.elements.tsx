@@ -1,6 +1,8 @@
 import { headerCommonMixin, linkifyMixin } from '../../common-elements';
 import { PrismDiv } from '../../common-elements/PrismDiv';
-import styled, { css, extensionsHook, withProps } from '../../styled-components';
+import styled, { css, extensionsHook, ResolvedThemeInterface } from '../../styled-components';
+
+import { StyledComponent } from 'styled-components';
 
 export const linksCss = css`
   a {
@@ -17,9 +19,11 @@ export const linksCss = css`
   }
 `;
 
-export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boolean }>(
-  styled(PrismDiv),
-)`
+export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
+  'div',
+  ResolvedThemeInterface,
+  { compact?: boolean; inline?: boolean }
+>)`
 
   font-family: ${props => props.theme.typography.fontFamily};
   font-weight: ${props => props.theme.typography.fontWeightRegular};
@@ -66,8 +70,9 @@ export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boole
     font-family: ${props => props.theme.typography.code.fontFamily};
     border-radius: 2px;
     border: 1px solid rgba(38, 50, 56, 0.1);
-    padding: 0.1em 0.25em 0.2em;
+    padding: 0 ${({ theme }) => theme.spacing.unit}px;
     font-size: ${props => props.theme.typography.code.fontSize};
+    font-weight: ${({ theme }) => theme.typography.code.fontWeight};
 
     word-break: break-word;
   }
@@ -77,7 +82,7 @@ export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boole
     white-space:${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: #263238;
     color: white;
-    padding: 12px 14px 15px 14px;
+    padding: ${props => props.theme.spacing.unit * 4}px;
     overflow-x: auto;
     line-height: normal;
     border-radius: 0px
@@ -113,9 +118,11 @@ export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boole
     padding-left: 2em;
     margin: 0;
     margin-bottom: 1em;
-    // > li {
-    //   margin: 0.5em 0;
-    // }
+
+    ul, ol {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
   }
 
   table {
@@ -135,7 +142,7 @@ export const StyledMarkdownBlock = withProps<{ compact?: boolean; inline?: boole
     border-top: 1px solid #ccc;
 
     &:nth-child(2n) {
-      background-color: #f8f8f8;
+      background-color: ${({ theme }) => theme.schema.nestedBackground};
     }
   }
 

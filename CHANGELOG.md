@@ -1,3 +1,230 @@
+# [2.0.0-rc.14](https://github.com/Redocly/redoc/compare/v2.0.0-rc.13...v2.0.0-rc.14) (2019-08-07)
+
+
+### Bug Fixes
+
+* fix escaping JSON string values ([58cb20d](https://github.com/Redocly/redoc/commit/58cb20d)), closes [#999](https://github.com/Redocly/redoc/issues/999)
+* revert expanding default server variables ([7849f7f](https://github.com/Redocly/redoc/commit/7849f7f))
+
+
+
+# [2.0.0-rc.13](https://github.com/Redocly/redoc/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2019-08-01)
+
+
+### Bug Fixes
+
+* enum list doesn't wrap ([bfbb0c1](https://github.com/Redocly/redoc/commit/bfbb0c1)), closes [#993](https://github.com/Redocly/redoc/issues/993)
+* incorrect serialization of some parameter samples ([aba45db](https://github.com/Redocly/redoc/commit/aba45db)), closes [#992](https://github.com/Redocly/redoc/issues/992)
+* support json serialization for parameter examples ([1367380](https://github.com/Redocly/redoc/commit/1367380)), closes [#934](https://github.com/Redocly/redoc/issues/934)
+* unify accordion icons for responses section ([2afc2e4](https://github.com/Redocly/redoc/commit/2afc2e4)), closes [#975](https://github.com/Redocly/redoc/issues/975)
+* update to core.js 3 ([9e3375d](https://github.com/Redocly/redoc/commit/9e3375d)), closes [#997](https://github.com/Redocly/redoc/issues/997)
+
+
+
+# [2.0.0-rc.12](https://github.com/Redocly/redoc/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2019-07-30)
+
+
+### Bug Fixes
+
+* rename ObjectDescription to SchemaDefinition as discussed ([4496622](https://github.com/Redocly/redoc/commit/4496622))
+
+
+
+# [2.0.0-rc.11](https://github.com/Redocly/redoc/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2019-07-30)
+
+
+### Bug Fixes
+
+* do not add extra slashes to pattern ([70d1ee9](https://github.com/Redocly/redoc/commit/70d1ee9)), closes [#983](https://github.com/Redocly/redoc/issues/983)
+* dropdown fixes related to object description ([0504ad4](https://github.com/Redocly/redoc/commit/0504ad4))
+* incorrect serialization of parameter sample with hypen ([f7dd658](https://github.com/Redocly/redoc/commit/f7dd658))
+* redoc-cli: Add missing content type header on compressed responses of `/` path
+
+
+### Features
+
+* menu items from tags + md extension for Schema Definition ([#681](https://github.com/Redocly/redoc/pull/681))
+* new option `menuToggle` - fold active MenuItem if clicked ([#963](https://github.com/Redocly/redoc/issues/963))
+* Add option for skipping quotes in enums `enumSkipQuotes` ([#968](https://github.com/Redocly/redoc/issues/968)) ([afc7e36](https://github.com/Redocly/redoc/commit/afc7e36))
+* add `sampleCollapseLevel` option ([#937](https://github.com/Redocly/redoc/issues/937)) ([d3f1c16](https://github.com/Redocly/redoc/commit/d3f1c16))
+
+# [2.0.0-rc.10](https://github.com/Redocly/redoc/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2019-07-08)
+
+
+### Bug Fixes
+
+* broken headings with single quote ([51d3b9b](https://github.com/Redocly/redoc/commit/51d3b9b)), closes [#955](https://github.com/Redocly/redoc/issues/955)
+* fix fields table overflow if deeply nested with long title ([12b7057](https://github.com/Redocly/redoc/commit/12b7057))
+* hide empty example when it is not defined ([4bd499f](https://github.com/Redocly/redoc/commit/4bd499f))
+* markdown in examples descriptions + minor ui tweaks ([f52d9e8](https://github.com/Redocly/redoc/commit/f52d9e8))
+* organize response examples in dropdown and display description ([995e557](https://github.com/Redocly/redoc/commit/995e557))
+
+
+
+# [2.0.0-rc.9](https://github.com/Redocly/redoc/compare/v2.0.0-rc.8-1...v2.0.0-rc.9) (2019-06-27)
+
+
+### Bug Fixes
+
+* fix regression double slashes added to full URL display ([f29a4fe](https://github.com/Redocly/redoc/commit/f29a4fe))
+* IE11, add missing Object.assign polyfill ([888f04e](https://github.com/Redocly/redoc/commit/888f04e))
+* serialize parameter example values according to the spec ([#917](https://github.com/Redocly/redoc/issues/917)) ([3939286](https://github.com/Redocly/redoc/commit/3939286))
+* styled-component style error in tabs ([#946](https://github.com/Redocly/redoc/issues/946)) ([c488bbf](https://github.com/Redocly/redoc/commit/c488bbf))
+
+
+### Features
+
+* add x-additionalPropertiesName ([#622](https://github.com/Redocly/redoc/issues/622)) ([#944](https://github.com/Redocly/redoc/issues/944)) ([0eb1e66](https://github.com/Redocly/redoc/commit/0eb1e66))
+
+
+
+# [2.0.0-rc.8-1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.8...v2.0.0-rc.8-1) (2019-05-13)
+
+
+### Bug Fixes
+
+* crash with empty servers with redoc-cli ([3d52b39](https://github.com/Rebilly/ReDoc/commit/3d52b39))
+
+
+
+# [2.0.0-rc.8](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2019-05-13)
+
+
+### Bug Fixes
+
+* fix broken CLI again ([4e12b5d](https://github.com/Rebilly/ReDoc/commit/4e12b5d))
+* fix logo gutter bg ([81896d3](https://github.com/Rebilly/ReDoc/commit/81896d3))
+
+
+
+# [2.0.0-rc.7](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2019-05-13)
+
+
+### Bug Fixes
+
+* crash in node due to broken URL parsing ([8df2b97](https://github.com/Rebilly/ReDoc/commit/8df2b97))
+
+
+
+# [2.0.0-rc.6](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2019-05-13)
+
+
+### Bug Fixes
+
+* broken schema talbes with long enums ([3a74b74](https://github.com/Rebilly/ReDoc/commit/3a74b74))
+* deep linking sometimes not working when sent over messengers ([2491d97](https://github.com/Rebilly/ReDoc/commit/2491d97))
+
+
+
+# [2.0.0-rc.5](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2019-05-13)
+
+
+### Bug Fixes
+
+* change fontFamily for EndpointInfo ([#866](https://github.com/Rebilly/ReDoc/issues/866)) ([851b133](https://github.com/Rebilly/ReDoc/commit/851b133))
+* clean up field values display ([#855](https://github.com/Rebilly/ReDoc/issues/855)) ([5c91590](https://github.com/Rebilly/ReDoc/commit/5c91590))
+* discriminator and oneOf title fix ([a3d7d7a](https://github.com/Rebilly/ReDoc/commit/a3d7d7a))
+* encode x-www-form-urlencoded examples correctly ([65930ad](https://github.com/Rebilly/ReDoc/commit/65930ad)), closes [#870](https://github.com/Rebilly/ReDoc/issues/870)
+* fix redoc-cli broken dependencies ([81a7568](https://github.com/Rebilly/ReDoc/commit/81a7568))
+* IE11 add missing fetch and URL polyfills ([d2ce1bd](https://github.com/Rebilly/ReDoc/commit/d2ce1bd)), closes [#875](https://github.com/Rebilly/ReDoc/issues/875)
+* ignore empty x-tagGroups array ([#869](https://github.com/Rebilly/ReDoc/issues/869)) ([4366a0d](https://github.com/Rebilly/ReDoc/commit/4366a0d))
+* incorrect detected schema title for deeply inherited schemas ([7d7b4e3](https://github.com/Rebilly/ReDoc/commit/7d7b4e3))
+* pluralize arrray of types ([fdcac30](https://github.com/Rebilly/ReDoc/commit/fdcac30))
+* remove huge space after Authentication section ([548fae3](https://github.com/Rebilly/ReDoc/commit/548fae3)), closes [#872](https://github.com/Rebilly/ReDoc/issues/872)
+* remove query string from server URL ([#895](https://github.com/Rebilly/ReDoc/issues/895)) ([64453ff](https://github.com/Rebilly/ReDoc/commit/64453ff))
+* remove tabs top margin ([5c187f3](https://github.com/Rebilly/ReDoc/commit/5c187f3))
+* right panel code samples bg color ([de2aed2](https://github.com/Rebilly/ReDoc/commit/de2aed2))
+* tidy up non-redoc vendor extension presentation ([#847](https://github.com/Rebilly/ReDoc/issues/847)) ([b21cd3d](https://github.com/Rebilly/ReDoc/commit/b21cd3d))
+* update apiKey in to be titleize ([#902](https://github.com/Rebilly/ReDoc/issues/902)) ([35df477](https://github.com/Rebilly/ReDoc/commit/35df477))
+* **cli:** add node-libs-browser to the deps ([6c79901](https://github.com/Rebilly/ReDoc/commit/6c79901)), closes [#850](https://github.com/Rebilly/ReDoc/issues/850)
+
+
+### Features
+
+* add hideSingleRequestSampleTab option ([4550e4d](https://github.com/Rebilly/ReDoc/commit/4550e4d))
+* add lineHeight config for headings ([#894](https://github.com/Rebilly/ReDoc/issues/894)) ([5dd5d6d](https://github.com/Rebilly/ReDoc/commit/5dd5d6d))
+* basic UI labels configuration ([b0e660e](https://github.com/Rebilly/ReDoc/commit/b0e660e)). Can be used for translations later.
+* add logo gutter to the theme ([82c0cb1a](https://github.com/Rebilly/ReDoc/commit/82c0cb1a)).
+
+# [2.0.0-rc.4](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2019-03-15)
+
+
+### Bug Fixes
+
+* move swagger2openapi to deps because of missing transitive deps ([ed9b878](https://github.com/Rebilly/ReDoc/commit/ed9b878))
+
+
+### Features
+
+* display requestBody description [#833](https://github.com/Rebilly/ReDoc/issues/833) ([#838](https://github.com/Rebilly/ReDoc/issues/838)) ([56ca371](https://github.com/Rebilly/ReDoc/commit/56ca371))
+
+
+# [2.0.0-rc.3](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2019-03-15)
+
+
+### Bug Fixes
+
+* add extra deref step for anyOf/oneOf variants ([d81b631](https://github.com/Rebilly/ReDoc/commit/d81b631)), closes [#810](https://github.com/Rebilly/ReDoc/issues/810)
+* duplicate keys in request samples ([3ce5bff](https://github.com/Rebilly/ReDoc/commit/3ce5bff)), closes [#815](https://github.com/Rebilly/ReDoc/issues/815)
+* escape backslashes in string literals ([#823](https://github.com/Rebilly/ReDoc/issues/823)) ([70faca1](https://github.com/Rebilly/ReDoc/commit/70faca1)), closes [#822](https://github.com/Rebilly/ReDoc/issues/822)
+* escape quotes in string values ([0473165](https://github.com/Rebilly/ReDoc/commit/0473165)), closes [#882](https://github.com/Rebilly/ReDoc/issues/882)
+* pin lunr version in ReDoc ([178ff4c](https://github.com/Rebilly/ReDoc/commit/178ff4c)), closes [#844](https://github.com/Rebilly/ReDoc/issues/844)
+* set last section min-height ([4dd79cd](https://github.com/Rebilly/ReDoc/commit/4dd79cd)), closes [#820](https://github.com/Rebilly/ReDoc/issues/820)
+
+
+### Features
+
+* support externalValue for examples ([2cdfcd2](https://github.com/Rebilly/ReDoc/commit/2cdfcd2)), closes [#551](https://github.com/Rebilly/ReDoc/issues/551) [#840](https://github.com/Rebilly/ReDoc/issues/840)
+* **cli:** Add templateOptions param to pass additional data to custom template ([#792](https://github.com/Rebilly/ReDoc/issues/792)) ([4e8ee03](https://github.com/Rebilly/ReDoc/commit/4e8ee03))
+
+
+
+# [2.0.0-rc.2](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2019-01-27)
+
+
+### Bug Fixes
+
+* make padding for md code blocks and code samples consistent ([007752d](https://github.com/Rebilly/ReDoc/commit/007752d))
+* make syntax highlighting for md js code blocks same as for payload samples ([d197c0f](https://github.com/Rebilly/ReDoc/commit/d197c0f))
+* Only display API version if present ([#773](https://github.com/Rebilly/ReDoc/issues/773)) ([fb3cb36](https://github.com/Rebilly/ReDoc/commit/fb3cb36))
+
+
+
+# [2.0.0-rc.1](https://github.com/Rebilly/ReDoc/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2019-01-17)
+
+
+### Bug Fixes
+
+* allow docker container serving under non-root URLs ([#731](https://github.com/Rebilly/ReDoc/issues/731)) ([cfb6f0f](https://github.com/Rebilly/ReDoc/commit/cfb6f0f)), closes [#730](https://github.com/Rebilly/ReDoc/issues/730)
+* make example/defaults badge consistent with code blocks ([fa39ce4](https://github.com/Rebilly/ReDoc/commit/fa39ce4))
+* pattern constrain spacing ([c7436f2](https://github.com/Rebilly/ReDoc/commit/c7436f2))
+* sidebar navigation issues when scrollYOffset is float number ([c04f387](https://github.com/Rebilly/ReDoc/commit/c04f387)), closes [#748](https://github.com/Rebilly/ReDoc/issues/748)
+
+
+
+# [2.0.0-rc.0](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.41...v2.0.0-rc.0) (2018-11-27)
+
+
+### Bug Fixes
+
+* false-positive recursive detection with oneOf ([59eaa8d](https://github.com/Rebilly/ReDoc/commit/59eaa8d)), closes [#723](https://github.com/Rebilly/ReDoc/issues/723) [#585](https://github.com/Rebilly/ReDoc/issues/585)
+* fix hideHostname also hiding basePath ([b5f3224](https://github.com/Rebilly/ReDoc/commit/b5f3224)), closes [#677](https://github.com/Rebilly/ReDoc/issues/677)
+* fix spacing with nested markdown lists ([f2f6909](https://github.com/Rebilly/ReDoc/commit/f2f6909)), closes [#718](https://github.com/Rebilly/ReDoc/issues/718)
+* improve scrolling performance in Chrome with non-wrapped json examples ([a69c402](https://github.com/Rebilly/ReDoc/commit/a69c402))
+* nested oneOf button spacing ([3673720](https://github.com/Rebilly/ReDoc/commit/3673720)), closes [#719](https://github.com/Rebilly/ReDoc/issues/719)
+* onLoaded callback not run on spec error ([e77df0c](https://github.com/Rebilly/ReDoc/commit/e77df0c)), closes [#690](https://github.com/Rebilly/ReDoc/issues/690)
+* theme improvments by [@stasiukanya](https://github.com/stasiukanya) ([e2d0cd5](https://github.com/Rebilly/ReDoc/commit/e2d0cd5))
+* **cli:** old peer dependency issue with styled-components ([#699](https://github.com/Rebilly/ReDoc/issues/699)) ([9e2853c](https://github.com/Rebilly/ReDoc/commit/9e2853c))
+
+
+### Features
+
+* Add feature to specify href for logo explicitly ([#645](https://github.com/Rebilly/ReDoc/issues/645)) ([87fd7d7](https://github.com/Rebilly/ReDoc/commit/87fd7d7))
+* add support for markdown in Server Object ([155d214](https://github.com/Rebilly/ReDoc/commit/155d214))
+* Add support for minLength and maxLength constraint humanization ([#700](https://github.com/Rebilly/ReDoc/issues/700)) ([f40568b](https://github.com/Rebilly/ReDoc/commit/f40568b)), closes [#42](https://github.com/Rebilly/ReDoc/issues/42) [/github.com/Rebilly/ReDoc/issues/42#issuecomment-371883853](https://github.com//github.com/Rebilly/ReDoc/issues/42/issues/issuecomment-371883853)
+
+
+
 <a name="2.0.0-alpha.41"></a>
 # [2.0.0-alpha.41](https://github.com/Rebilly/ReDoc/compare/v2.0.0-alpha.40...v2.0.0-alpha.41) (2018-10-18)
 

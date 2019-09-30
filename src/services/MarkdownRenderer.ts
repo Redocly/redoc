@@ -1,6 +1,6 @@
 import * as marked from 'marked';
 
-import { highlight, safeSlugify } from '../utils';
+import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
 import { AppStore } from './AppStore';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
@@ -65,6 +65,7 @@ export class MarkdownRenderer {
     container: MarkdownHeading[] = this.headings,
     parentId?: string,
   ): MarkdownHeading {
+    name = unescapeHTMLChars(name);
     const item = {
       id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
@@ -88,7 +89,7 @@ export class MarkdownRenderer {
   }
 
   attachHeadingsDescriptions(rawText: string) {
-    const buildRegexp = heading => {
+    const buildRegexp = (heading: MarkdownHeading) => {
       return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
     };
 
@@ -118,7 +119,7 @@ export class MarkdownRenderer {
       .trim();
   }
 
-  headingRule = (text: string, level: number, raw: string) => {
+  headingRule = (text: string, level: number, raw: string, slugger: marked.Slugger) => {
     if (level === 1) {
       this.currentTopHeading = this.saveHeading(text, level);
     } else if (level === 2) {
@@ -129,7 +130,7 @@ export class MarkdownRenderer {
         this.currentTopHeading && this.currentTopHeading.id,
       );
     }
-    return this.originalHeadingRule(text, level, raw);
+    return this.originalHeadingRule(text, level, raw, slugger);
   };
 
   renderMd(rawText: string, extractHeadings: boolean = false): string {

@@ -25,7 +25,10 @@ interface Options {
   cdn?: boolean;
   output?: string;
   title?: string;
+  disableGoogleFont?: boolean;
+  port?: number;
   templateFileName?: string;
+  templateOptions?: any;
   redocOptions?: any;
 }
 
@@ -60,16 +63,17 @@ YargsParser.command(
     yargs.demandOption('spec');
     return yargs;
   },
-  async (argv: any) => {
-    const config = {
-      ssr: argv.ssr,
-      watch: argv.watch,
-      templateFileName: argv.template,
+  async argv => {
+    const config: Options = {
+      ssr: argv.ssr as boolean,
+      watch: argv.watch as boolean,
+      templateFileName: argv.template as string,
+      templateOptions: argv.templateOptions || {},
       redocOptions: argv.options || {},
     };
 
     try {
-      await serve(argv.port, argv.spec, config);
+      await serve(argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
     }
@@ -96,6 +100,12 @@ YargsParser.command(
         default: 'ReDoc documentation',
       });
 
+      yargs.options('disableGoogleFont', {
+        describe: 'Disable Google Font',
+        type: 'boolean',
+        default: false,
+      });
+
       yargs.option('cdn', {
         describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
         type: 'boolean',
@@ -108,10 +118,12 @@ YargsParser.command(
     async (argv: any) => {
       const config = {
         ssr: true,
-        output: argv.o,
-        cdn: argv.cdn,
-        title: argv.title,
-        templateFileName: argv.template,
+        output: argv.o as string,
+        cdn: argv.cdn as boolean,
+        title: argv.title as string,
+        disableGoogleFont: argv.disableGoogleFont as boolean,
+        templateFileName: argv.template as string,
+        templateOptions: argv.templateOptions || {},
         redocOptions: argv.options || {},
       };
 
@@ -127,6 +139,10 @@ YargsParser.command(
     alias: 'template',
     describe: 'Path to handlebars page template, see https://git.io/vh8fP for the example ',
     type: 'string',
+  })
+  .options('templateOptions', {
+    describe:
+      'Additional options that you want pass to template. Use dot notation, e.g. templateOptions.metaDescription',
   })
   .options('options', {
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
@@ -148,7 +164,9 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
         },
       );
     } else if (request.url === '/') {
-      respondWithGzip(pageHTML, request, response);
+      respondWithGzip(pageHTML, request, response, {
+        'Content-Type': 'text/html',
+      });
     } else if (request.url === '/spec.json') {
       const specStr = JSON.stringify(spec, null, 2);
       respondWithGzip(specStr, request, response, {
@@ -221,7 +239,15 @@ async function bundle(pathToSpec, options: Options = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
+  {
+    ssr,
+    cdn,
+    title,
+    disableGoogleFont,
+    templateFileName,
+    templateOptions,
+    redocOptions = {},
+  }: Options,
 ) {
   let html;
   let css;
@@ -264,6 +290,8 @@ async function getPageHTML(
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
+    disableGoogleFont,
+    templateOptions,
   });
 }
 

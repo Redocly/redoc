@@ -66,7 +66,8 @@ export class ScrollService {
     }
     element.scrollIntoView();
     if (this._scrollParent && this._scrollParent.scrollBy) {
-      (this._scrollParent.scrollBy as any)(0, -this.options.scrollYOffset());
+      // adding 1 account rounding errors in case scrollYOffset is float-number
+      (this._scrollParent.scrollBy as any)(0, -this.options.scrollYOffset() + 1);
     }
   }
 

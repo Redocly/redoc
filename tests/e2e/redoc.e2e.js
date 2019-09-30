@@ -107,7 +107,7 @@ if (process.env.JOB === 'e2e-guru') {
     delete apisGuruList['googleapis.com:mirror']; // bad urls in images
     delete apisGuruList['googleapis.com:discovery']; // non-string references
     delete apisGuruList['clarify.io']; // non-string references
-    //delete apisGuruList['pushpay.com']; // https://github.com/Rebilly/ReDoc/issues/30
+    //delete apisGuruList['pushpay.com']; // https://github.com/Redocly/redoc/issues/30
     delete apisGuruList['bbci.co.uk']; // too big
     delete apisGuruList['bbc.com']; // too big
     delete apisGuruList['osisoft.com']; // too big

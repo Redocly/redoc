@@ -1,4 +1,7 @@
 import * as React from 'react';
+
+import { ExtensionValue, FieldLabel } from '../../common-elements/fields';
+
 import styled from '../../styled-components';
 
 import { OptionsContext } from '../OptionsProvider';
@@ -6,12 +9,7 @@ import { OptionsContext } from '../OptionsProvider';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
 
 const Extension = styled(StyledMarkdownBlock)`
-  opacity: 0.9;
   margin: 2px 0;
-`;
-
-const ExtensionLable = styled.span`
-  font-style: italic;
 `;
 
 export interface ExtensionsProps {
@@ -22,15 +20,18 @@ export interface ExtensionsProps {
 
 export class Extensions extends React.PureComponent<ExtensionsProps> {
   render() {
+    const exts = this.props.extensions;
     return (
       <OptionsContext.Consumer>
         {options => (
           <>
             {options.showExtensions &&
-              Object.keys(this.props.extensions).map(key => (
+              Object.keys(exts).map(key => (
                 <Extension key={key}>
-                  <ExtensionLable>{key}</ExtensionLable>:{' '}
-                  <code>{JSON.stringify(this.props.extensions[key])}</code>
+                  <FieldLabel> {key.substring(2)}: </FieldLabel>{' '}
+                  <ExtensionValue>
+                    {typeof exts[key] === 'string' ? exts[key] : JSON.stringify(exts[key])}
+                  </ExtensionValue>
                 </Extension>
               ))}
           </>

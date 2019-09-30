@@ -10,6 +10,8 @@ import { ArraySchema } from './ArraySchema';
 import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
+import { l } from '../../services/Labels';
+
 export interface SchemaOptions {
   showTitle?: boolean;
   skipReadOnly?: boolean;
@@ -34,7 +36,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
         <div>
           <TypeName>{schema.displayType}</TypeName>
           {schema.title && <TypeTitle> {schema.title} </TypeTitle>}
-          <RecursiveLabel> Recursive </RecursiveLabel>
+          <RecursiveLabel> {l('recursive')} </RecursiveLabel>
         </div>
       );
     }
@@ -42,9 +44,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     if (discriminatorProp !== undefined) {
       if (!oneOf || !oneOf.length) {
         throw new Error(
-          `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${
-            schema.title
-          }`,
+          `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${schema.title}`,
         );
       }
       return (
@@ -64,9 +64,9 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
 
     switch (type) {
       case 'object':
-        return <ObjectSchema {...this.props as any} />;
+        return <ObjectSchema {...(this.props as any)} />;
       case 'array':
-        return <ArraySchema {...this.props as any} />;
+        return <ArraySchema {...(this.props as any)} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema

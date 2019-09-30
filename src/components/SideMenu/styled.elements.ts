@@ -1,11 +1,12 @@
 import * as classnames from 'classnames';
+import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css, withProps } from '../../styled-components';
+import styled, { css } from '../../styled-components';
 
-export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
-  className: props => `operation-type ${props.type}`,
-})`
+export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
+  className: `operation-type ${props.type}`,
+}))<{ type: string }>`
   width: 32px;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
@@ -57,21 +58,21 @@ export const OperationBadge = withProps<{ type: string }>(styled.span).attrs({
   }
 
   &.head {
-    background-color:  ${props => props.theme.colors.http.head};
+    background-color: ${props => props.theme.colors.http.head};
   }
 `;
 
-function menuItemActiveBg(depth): string {
+function menuItemActiveBg(depth, { theme }): string {
   if (depth > 1) {
-    return '#e1e1e1';
+    return darken(0.1, theme.menu.backgroundColor);
   } else if (depth === 1) {
-    return '#f0f0f0';
+    return darken(0.05, theme.menu.backgroundColor);
   } else {
     return '';
   }
 }
 
-export const MenuItemUl = withProps<{ expanded: boolean }>(styled.ul)`
+export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
 
@@ -82,7 +83,7 @@ export const MenuItemUl = withProps<{ expanded: boolean }>(styled.ul)`
   ${props => (props.expanded ? '' : 'display: none;')};
 `;
 
-export const MenuItemLi = withProps<{ depth: number }>(styled.li)`
+export const MenuItemLi = styled.li<{ depth: number }>`
   list-style: none inside none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -97,7 +98,7 @@ export const menuItemDepth = {
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
-    color: ${props => props.theme.colors.text.primary};
+    color: ${props => props.theme.menu.textColor};
   `,
   1: css`
     font-size: 0.929em;
@@ -107,25 +108,25 @@ export const menuItemDepth = {
     }
   `,
   2: css`
-    color: ${props => props.theme.colors.text.primary};
+    color: ${props => props.theme.menu.textColor};
   `,
 };
 
-export const MenuItemLabel = withProps<{
+export interface MenuItemLabelType {
   depth: number;
   active: boolean;
   deprecated?: boolean;
   type?: string;
-}>(styled.label).attrs({
+}
+
+export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   role: 'menuitem',
-  className: props =>
-    classnames('-depth' + props.depth, {
-      active: props.active,
-    }),
-})`
+  className: classnames('-depth' + props.depth, {
+    active: props.active,
+  }),
+}))<MenuItemLabelType>`
   cursor: pointer;
-  color: ${props =>
-    props.active ? props.theme.colors.primary.main : props.theme.colors.text.primary};
+  color: ${props => (props.active ? props.theme.colors.primary.main : props.theme.menu.textColor)};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
@@ -134,12 +135,12 @@ export const MenuItemLabel = withProps<{
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   ${props => menuItemDepth[props.depth]};
-  background-color: ${props => (props.active ? menuItemActiveBg(props.depth) : '')};
+  background-color: ${props => (props.active ? menuItemActiveBg(props.depth, props) : '')};
 
   ${props => (props.deprecated && deprecatedCss) || ''};
 
   &:hover {
-    background-color: ${props => menuItemActiveBg(props.depth)};
+    background-color: ${props => menuItemActiveBg(props.depth, props)};
   }
 
   ${ShelfIcon} {
@@ -151,7 +152,7 @@ export const MenuItemLabel = withProps<{
   }
 `;
 
-export const MenuItemTitle = withProps<{ width?: string }>(styled.span)`
+export const MenuItemTitle = styled.span<{ width?: string }>`
   display: inline-block;
   vertical-align: middle;
   width: ${props => (props.width ? props.width : 'auto')};
@@ -171,8 +172,8 @@ export const RedocAttribution = styled.div`
   a,
   a:visited,
   a:hover {
-    color: ${theme.colors.text.primary} !important;
-    border-top: 1px solid #e1e1e1;
+    color: ${theme.menu.textColor} !important;
+    border-top: 1px solid ${darken(0.1, theme.menu.backgroundColor)};
     padding: ${theme.spacing.unit}px 0;
     display: block;
   }

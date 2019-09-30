@@ -1,5 +1,5 @@
 import slugify from 'slugify';
-import { mapWithLast, appendToMdHeading, mergeObjects, safeSlugify } from '../helpers';
+import { appendToMdHeading, mapWithLast, mergeObjects, safeSlugify, titleize } from '../helpers';
 
 describe('Utils', () => {
   describe('helpers', () => {
@@ -60,12 +60,18 @@ describe('Utils', () => {
       test('should behave like Object.assign on the top level', () => {
         const obj1 = { a: { a1: 'A1' }, c: 'C' };
         const obj2 = { a: undefined, b: { b1: 'B1' } };
-        expect(mergeObjects({}, obj1, obj2)).toEqual(Object.assign({}, obj1, obj2));
+        expect(mergeObjects({}, obj1, obj2)).toEqual({ ...obj1, ...obj2 });
       });
       test('should not merge array values, just override', () => {
         const obj1 = { a: ['A', 'B'] };
         const obj2 = { a: ['C'], b: ['D'] };
         expect(mergeObjects({}, obj1, obj2)).toEqual({ a: ['C'], b: ['D'] });
+      });
+    });
+
+    describe('titleize', () => {
+      test('should return the string with the first letter capitalized', () => {
+        expect(titleize('my title')).toEqual('My title');
       });
     });
   });

@@ -1,16 +1,19 @@
 import { dirname } from 'path';
+const URLtemplate = require('url-template');
 
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
+  OpenAPIEncoding,
   OpenAPIMediaType,
   OpenAPIOperation,
   OpenAPIParameter,
+  OpenAPIParameterStyle,
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, resolveUrl } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, stripTrailingSlash } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -128,6 +131,230 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined 
 
 export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
+}
+
+export function isFormUrlEncoded(contentType: string): boolean {
+  return contentType === 'application/x-www-form-urlencoded';
+}
+
+function delimitedEncodeField(fieldVal: any, fieldName: string, delimeter: string): string {
+  if (Array.isArray(fieldVal)) {
+    return fieldVal.map(v => v.toString()).join(delimeter);
+  } else if (typeof fieldVal === 'object') {
+    return Object.keys(fieldVal)
+      .map(k => `${k}${delimeter}${fieldVal[k]}`)
+      .join(delimeter);
+  } else {
+    return fieldName + '=' + fieldVal.toString();
+  }
+}
+
+function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
+  if (Array.isArray(fieldVal)) {
+    console.warn('deepObject style cannot be used with array value:' + fieldVal.toString());
+    return '';
+  } else if (typeof fieldVal === 'object') {
+    return Object.keys(fieldVal)
+      .map(k => `${fieldName}[${k}]=${fieldVal[k]}`)
+      .join('&');
+  } else {
+    console.warn('deepObject style cannot be used with non-object value:' + fieldVal.toString());
+    return '';
+  }
+}
+
+function serializeFormValue(name: string, explode: boolean, value: any) {
+  // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
+  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  const safeName = '__redoc_param_name__';
+  const suffix = explode ? '*' : '';
+  const template = URLtemplate.parse(`{?${safeName}${suffix}}`);
+  return template
+    .expand({ [safeName]: value })
+    .substring(1)
+    .replace(/__redoc_param_name__/g, name);
+}
+
+/*
+ * Should be used only for url-form-encoded body payloads
+ * To be used for parmaters should be extended with other style values
+ */
+export function urlFormEncodePayload(
+  payload: object,
+  encoding: { [field: string]: OpenAPIEncoding } = {},
+) {
+  if (Array.isArray(payload)) {
+    throw new Error('Payload must have fields: ' + payload.toString());
+  } else {
+    return Object.keys(payload)
+      .map(fieldName => {
+        const fieldVal = payload[fieldName];
+        const { style = 'form', explode = true } = encoding[fieldName] || {};
+        switch (style) {
+          case 'form':
+            return serializeFormValue(fieldName, explode, fieldVal);
+          case 'spaceDelimited':
+            return delimitedEncodeField(fieldVal, fieldName, '%20');
+          case 'pipeDelimited':
+            return delimitedEncodeField(fieldVal, fieldName, '|');
+          case 'deepObject':
+            return deepObjectEncodeField(fieldVal, fieldName);
+          default:
+            // TODO implement rest of styles for path parameters
+            console.warn('Incorrect or unsupported encoding style: ' + style);
+            return '';
+        }
+      })
+      .join('&');
+  }
+}
+
+function serializePathParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  const suffix = explode ? '*' : '';
+  let prefix = '';
+
+  if (style === 'label') {
+    prefix = '.';
+  } else if (style === 'matrix') {
+    prefix = ';';
+  }
+
+  // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
+  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  const safeName = '__redoc_param_name__';
+  const template = URLtemplate.parse(`{${prefix}${safeName}${suffix}}`);
+
+  return template.expand({ [safeName]: value }).replace(/__redoc_param_name__/g, name);
+}
+
+function serializeQueryParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'form':
+      return serializeFormValue(name, explode, value);
+    case 'spaceDelimited':
+      if (!Array.isArray(value)) {
+        console.warn('The style spaceDelimited is only applicable to arrays');
+        return '';
+      }
+      if (explode) {
+        return serializeFormValue(name, explode, value);
+      }
+
+      return `${name}=${value.join('%20')}`;
+    case 'pipeDelimited':
+      if (!Array.isArray(value)) {
+        console.warn('The style pipeDelimited is only applicable to arrays');
+        return '';
+      }
+      if (explode) {
+        return serializeFormValue(name, explode, value);
+      }
+
+      return `${name}=${value.join('|')}`;
+    case 'deepObject':
+      if (!explode || Array.isArray(value) || typeof value !== 'object') {
+        console.warn('The style deepObject is only applicable for objects with explode=true');
+        return '';
+      }
+
+      return deepObjectEncodeField(value, name);
+    default:
+      console.warn('Unexpected style for query: ' + style);
+      return '';
+  }
+}
+
+function serializeHeaderParameter(
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'simple':
+      const suffix = explode ? '*' : '';
+
+      // name is not important here, so use RFC6570 safe name ([a-zA-Z0-9_])
+      const name = '__redoc_param_name__';
+      const template = URLtemplate.parse(`{${name}${suffix}}`);
+      return decodeURIComponent(template.expand({ [name]: value }));
+    default:
+      console.warn('Unexpected style for header: ' + style);
+      return '';
+  }
+}
+
+function serializeCookieParameter(
+  name: string,
+  style: OpenAPIParameterStyle,
+  explode: boolean,
+  value: any,
+): string {
+  switch (style) {
+    case 'form':
+      return serializeFormValue(name, explode, value);
+    default:
+      console.warn('Unexpected style for cookie: ' + style);
+      return '';
+  }
+}
+
+export function serializeParameterValueWithMime(value: any, mime: string): string {
+  if (isJsonLike(mime)) {
+    return JSON.stringify(value);
+  } else {
+    console.warn(`Parameter serialization as ${mime} is not supported`);
+    return '';
+  }
+}
+
+export function serializeParameterValue(
+  parameter: OpenAPIParameter & { serializationMime?: string },
+  value: any,
+): string {
+  const { name, style, explode = false, serializationMime } = parameter;
+
+  if (serializationMime) {
+    switch (parameter.in) {
+      case 'path':
+      case 'header':
+        return serializeParameterValueWithMime(value, serializationMime);
+      case 'cookie':
+      case 'query':
+        return `${name}=${serializeParameterValueWithMime(value, serializationMime)}`;
+      default:
+        console.warn('Unexpected parameter location: ' + parameter.in);
+        return '';
+    }
+  }
+
+  if (!style) {
+    console.warn(`Missing style attribute or content for parameter ${name}`);
+    return '';
+  }
+
+  switch (parameter.in) {
+    case 'path':
+      return serializePathParameter(name, style, explode, value);
+    case 'query':
+      return serializeQueryParameter(name, style, explode, value);
+    case 'header':
+      return serializeHeaderParameter(style, explode, value);
+    case 'cookie':
+      return serializeCookieParameter(name, style, explode, value);
+    default:
+      console.warn('Unexpected parameter location: ' + parameter.in);
+      return '';
+  }
 }
 
 export function langFromMime(contentType: string): string {
@@ -260,7 +487,7 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
   return mergedTypes;
 }
 
-function expandVariables(url: string, variables: object = {}) {
+export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
     /(?:{)(\w+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
@@ -271,32 +498,41 @@ export function normalizeServers(
   specUrl: string | undefined,
   servers: OpenAPIServer[],
 ): OpenAPIServer[] {
-  const baseUrl =
-    specUrl === undefined ? (IS_BROWSER ? window.location.href : '') : dirname(specUrl);
+  const getHref = () => {
+    if (!IS_BROWSER) {
+      return '';
+    }
+    const href = window.location.href;
+    return href.endsWith('.html') ? dirname(href) : href;
+  };
+
+  const baseUrl = specUrl === undefined ? removeQueryString(getHref()) : dirname(specUrl);
 
   if (servers.length === 0) {
     return [
       {
-        url: baseUrl,
+        url: stripTrailingSlash(baseUrl),
       },
     ];
   }
 
-  function normalizeUrl(url: string, variables: object | undefined): string {
-    url = expandVariables(url, variables);
+  function normalizeUrl(url: string): string {
     return resolveUrl(baseUrl, url);
   }
 
   return servers.map(server => {
     return {
       ...server,
-      url: normalizeUrl(server.url, server.variables),
+      url: normalizeUrl(server.url),
       description: server.description || '',
     };
   });
 }
 
 export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
+export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
+export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
+
 export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
 export function setSecuritySchemePrefix(prefix: string) {
   SECURITY_SCHEMES_SECTION_PREFIX = prefix;
@@ -320,6 +556,7 @@ export function isRedocExtension(key: string): boolean {
     'x-servers': true,
     'x-tagGroups': true,
     'x-traitTag': true,
+    'x-additionalPropertiesName': true,
   };
 
   return key in redocExtensions;
@@ -337,4 +574,11 @@ export function extractExtensions(obj: object, showExtensions: string[] | true):
       acc[key] = obj[key];
       return acc;
     }, {});
+}
+
+export function pluralizeType(displayType: string): string {
+  return displayType
+    .split(' or ')
+    .map(type => type.replace(/^(string|object|number|integer|array|boolean)( ?.*)/, '$1s$2'))
+    .join(' or ');
 }

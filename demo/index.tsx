@@ -82,7 +82,7 @@ class DemoApp extends React.Component<
       <>
         <Heading>
           <a href=".">
-            <Logo src="https://github.com/Rebilly/ReDoc/raw/master/docs/images/redoc-logo.png" />
+            <Logo src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png" />
           </a>
           <ControlsContainer>
             <ComboBox
@@ -97,7 +97,7 @@ class DemoApp extends React.Component<
             </CorsCheckbox>
           </ControlsContainer>
           <iframe
-            src="https://ghbtns.com/github-btn.html?user=Rebilly&amp;repo=ReDoc&amp;type=star&amp;count=true&amp;size=large"
+            src="https://ghbtns.com/github-btn.html?user=Redocly&amp;repo=redoc&amp;type=star&amp;count=true&amp;size=large"
             frameBorder="0"
             scrolling="0"
             width="150px"

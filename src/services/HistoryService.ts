@@ -13,7 +13,7 @@ export class HistoryService {
   }
 
   get currentId(): string {
-    return IS_BROWSER ? window.location.hash.substring(1) : '';
+    return IS_BROWSER ? decodeURIComponent(window.location.hash.substring(1)) : '';
   }
 
   linkForId(id: string) {
