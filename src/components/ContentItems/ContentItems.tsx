@@ -60,7 +60,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
   }
 }
 
-const middlePanelWrap = component => <MiddlePanel>{component}</MiddlePanel>;
+const middlePanelWrap = component => <MiddlePanel compact={true}>{component}</MiddlePanel>;
 
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {
@@ -71,7 +71,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
     return (
       <>
         <Row>
-          <MiddlePanel>
+          <MiddlePanel compact={level !== 1}>
             <Header>
               <ShareLink to={this.props.item.id} />
               {name}
