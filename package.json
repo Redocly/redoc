@@ -156,7 +156,7 @@
     "stickyfill": "^1.1.1",
     "swagger2openapi": "^5.3.1",
     "tslib": "^1.10.0",
-    "uri-template-lite": "^19.4.0"
+    "url-template": "^2.0.8"
   },
   "bundlesize": [
     {
