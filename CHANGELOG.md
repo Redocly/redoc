@@ -1,3 +1,12 @@
+# [2.0.0-rc.16](https://github.com/Redocly/redoc/compare/v2.0.0-rc.15...v2.0.0-rc.16) (2019-09-30)
+
+
+### Bug Fixes
+
+* fix scrollYOffset when SSR ([d09c1c1](https://github.com/Redocly/redoc/commit/d09c1c1))
+
+
+
 # [2.0.0-rc.15](https://github.com/Redocly/redoc/compare/v2.0.0-rc.14...v2.0.0-rc.15) (2019-09-30)
 
 
