@@ -13,6 +13,7 @@ import {
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
 import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
+import { expandDefaultServerVariables } from '../openapi';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -292,6 +293,39 @@ describe('Utils', () => {
         },
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
+    });
+
+    it('should expand variables', () => {
+      const servers = normalizeServers('', [
+        {
+          url: 'http://{host}{basePath}',
+          variables: {
+            host: {
+              default: '127.0.0.1',
+            },
+            basePath: {
+              default: '/path/to/endpoint',
+            },
+          },
+        },
+        {
+          url: 'http://127.0.0.2:{port}',
+          variables: {},
+        },
+        {
+          url: 'http://127.0.0.3',
+        },
+      ]);
+
+      expect(expandDefaultServerVariables(servers[0].url, servers[0].variables)).toEqual(
+        'http://127.0.0.1/path/to/endpoint',
+      );
+      expect(expandDefaultServerVariables(servers[1].url, servers[1].variables)).toEqual(
+        'http://127.0.0.2:{port}',
+      );
+      expect(expandDefaultServerVariables(servers[2].url, servers[2].variables)).toEqual(
+        'http://127.0.0.3',
+      );
     });
   });
 

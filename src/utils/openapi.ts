@@ -487,6 +487,13 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
   return mergedTypes;
 }
 
+export function expandDefaultServerVariables(url: string, variables: object = {}) {
+  return url.replace(
+    /(?:{)(\w+)(?:})/g,
+    (match, name) => (variables[name] && variables[name].default) || match,
+  );
+}
+
 export function normalizeServers(
   specUrl: string | undefined,
   servers: OpenAPIServer[],
