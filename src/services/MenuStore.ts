@@ -201,6 +201,11 @@ export class MenuStore {
     if ((this.activeItem && this.activeItem.id) === (item && item.id)) {
       return;
     }
+
+    if (item && item.type === 'group') {
+      return;
+    }
+
     this.deactivate(this.activeItem);
     if (!item) {
       this.history.replace('', rewriteHistory);
