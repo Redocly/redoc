@@ -357,8 +357,13 @@ function handleError(error: Error) {
 }
 
 function getObjectOrJSON(options) {
-  return options && typeof options === 'string' 
-        ? JSON.parse(options) : options
-        ? options
-        : {};
+  try {
+    return options && typeof options === 'string' 
+    ? JSON.parse(options) : options
+    ? options
+    : {};
+  } catch (e) {
+    console.log(`Encountered error:\n${options}\nis not a valid JSON.`);
+    handleError(e);
+  }
 }
