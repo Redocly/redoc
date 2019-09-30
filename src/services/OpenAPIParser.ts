@@ -4,7 +4,11 @@ import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
 import { appendToMdHeading, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import { isNamedDefinition, SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
+import {
+  isNamedDefinition,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_JSX_NAME,
+} from '../utils/openapi';
 import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
@@ -74,7 +78,10 @@ export class OpenAPIParser {
     ) {
       // Automatically inject Authentication section with SecurityDefinitions component
       const description = spec.info.description || '';
-      if (!MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME)) {
+      if (
+        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME) &&
+        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_JSX_NAME)
+      ) {
         const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
         spec.info.description = appendToMdHeading(description, 'Authentication', comment);
       }
