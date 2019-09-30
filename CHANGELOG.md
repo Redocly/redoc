@@ -1,3 +1,27 @@
+# [2.0.0-rc.15](https://github.com/Redocly/redoc/compare/v2.0.0-rc.14...v2.0.0-rc.15) (2019-09-30)
+
+
+### Bug Fixes
+
+* auth section appears twice ([5aa7784](https://github.com/Redocly/redoc/commit/5aa7784)), closes [#818](https://github.com/Redocly/redoc/issues/818)
+* clicking on group title breaks first tag ([4649683](https://github.com/Redocly/redoc/commit/4649683)), closes [#1034](https://github.com/Redocly/redoc/issues/1034)
+* do not crash on empty scopes ([e787d9e](https://github.com/Redocly/redoc/commit/e787d9e)), closes [#1044](https://github.com/Redocly/redoc/issues/1044)
+* false-positive recursive detection with allOf at the same level ([faa74d6](https://github.com/Redocly/redoc/commit/faa74d6))
+* fix scrollYOffset when SSR ([21258a5](https://github.com/Redocly/redoc/commit/21258a5))
+* left menu item before group is not highligted ([67e2a8f](https://github.com/Redocly/redoc/commit/67e2a8f)), closes [#1033](https://github.com/Redocly/redoc/issues/1033)
+* remove excessive whitespace between md sections on small screens ([e318fb3](https://github.com/Redocly/redoc/commit/e318fb3)), closes [#874](https://github.com/Redocly/redoc/issues/874)
+* use url-template dependency ([#1008](https://github.com/Redocly/redoc/issues/1008)) ([32a464a](https://github.com/Redocly/redoc/commit/32a464a)), closes [#1007](https://github.com/Redocly/redoc/issues/1007)
+
+
+### Features
+
+* **cli:** added support for JSON string value for --options CLI argument ([#1047](https://github.com/Redocly/redoc/issues/1047)) ([2a28130](https://github.com/Redocly/redoc/commit/2a28130)), closes [#797](https://github.com/Redocly/redoc/issues/797)
+* **cli:** add `disableGoogleFont` parameter to cli ([#1045](https://github.com/Redocly/redoc/issues/1045)) ([aceb343](https://github.com/Redocly/redoc/commit/aceb343))
+* new option expandDefaultServerVariables ([#1014](https://github.com/Redocly/redoc/issues/1014)) ([0360dce](https://github.com/Redocly/redoc/commit/0360dce))
+
+
+
+
 # [2.0.0-rc.14](https://github.com/Redocly/redoc/compare/v2.0.0-rc.13...v2.0.0-rc.14) (2019-08-07)
 
 
