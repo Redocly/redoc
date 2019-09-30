@@ -116,7 +116,7 @@ export class MenuStore {
       }
 
       if (isScrolledDown) {
-        const el = this.getElementAt(itemIdx + 1);
+        const el = this.getElementAtOrFirstChild(itemIdx + 1);
         if (this.scroll.isElementBellow(el)) {
           break;
         }
@@ -160,6 +160,18 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
+    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+  }
+
+  /**
+   * get section/operation DOM Node related to the item or if it is group item, returns first item of the group
+   * @param idx item absolute index
+   */
+  getElementAtOrFirstChild(idx: number): Element | null {
+    let item = this.flatItems[idx];
+    if (item && item.type === 'group') {
+      item = item.items[0];
+    }
     return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
   }
 
