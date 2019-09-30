@@ -64,13 +64,17 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
+    const redocOptions = getRedocOptions(argv.options);
+
     const config: Options = {
       ssr: argv.ssr as boolean,
       watch: argv.watch as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
-      redocOptions: argv.options || {},
+      redocOptions,
     };
+
+    console.log(config);
 
     try {
       await serve(argv.port as number, argv.spec as string, config);
@@ -116,6 +120,8 @@ YargsParser.command(
       return yargs;
     },
     async (argv: any) => {
+      const redocOptions = getRedocOptions(argv.options);
+
       const config = {
         ssr: true,
         output: argv.o as string,
@@ -124,7 +130,7 @@ YargsParser.command(
         disableGoogleFont: argv.disableGoogleFont as boolean,
         templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
-        redocOptions: argv.options || {},
+        redocOptions,
       };
 
       try {
@@ -352,4 +358,11 @@ function escapeUnicode(str) {
 function handleError(error: Error) {
   console.error(error.stack);
   process.exit(1);
+}
+
+function getRedocOptions(options) {
+  return options && typeof options === 'string' 
+        ? JSON.parse(options) : options
+        ? options
+        : {};
 }
