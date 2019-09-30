@@ -13,7 +13,7 @@ import * as zlib from 'zlib';
 // @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
-import {watch} from 'chokidar';
+import { watch } from 'chokidar';
 import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
@@ -60,7 +60,7 @@ YargsParser.command(
     yargs.demandOption('spec');
     return yargs;
   },
-  async argv => {
+  async (argv: any) => {
     const config = {
       ssr: argv.ssr,
       watch: argv.watch,
@@ -105,7 +105,7 @@ YargsParser.command(
       yargs.demandOption('spec');
       return yargs;
     },
-    async argv => {
+    async (argv: any) => {
       const config = {
         ssr: true,
         output: argv.o,
@@ -176,26 +176,25 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
 
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
+
+    const handlePath = async path => {
+      try {
+        spec = await loadAndBundleSpec(pathToSpec);
+        pageHTML = await getPageHTML(spec, pathToSpec, options);
+        log('Updated successfully');
+      } catch (e) {
+        console.error('Error while updating: ', e.message);
+      }
+    };
+
     watcher
       .on('change', async path => {
         log(`${path} changed, updating docs`);
-        try {
-          spec = await loadAndBundleSpec(pathToSpec);
-          pageHTML = await getPageHTML(spec, pathToSpec, options);
-          log('Updated successfully');
-        } catch (e) {
-          console.error('Error while updating: ', e.message);
-        }
+        handlePath(path);
       })
       .on('add', async path => {
         log(`File ${path} added, updating docs`);
-        try {
-          spec = await loadAndBundleSpec(pathToSpec);
-          pageHTML = await getPageHTML(spec, pathToSpec, options);
-          log('Updated successfully');
-        } catch (e) {
-          console.error('Error while updating: ', e.message);
-        }
+        handlePath(path);
       })
       .on('addDir', path => {
         log(`↗  Directory ${path} added. Files in here will trigger reload.`);
