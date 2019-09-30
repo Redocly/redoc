@@ -19,6 +19,10 @@ export interface StickySidebarProps {
   menu: MenuStore;
 }
 
+export interface StickySidebarState {
+  offsetTop?: string;
+}
+
 const stickyfill = Stickyfill && Stickyfill();
 
 const StyledStickySidebar = styled.div<{ open?: boolean }>`
@@ -77,13 +81,26 @@ const FloatingButton = styled.div`
 `;
 
 @observer
-export class StickyResponsiveSidebar extends React.Component<StickySidebarProps> {
+export class StickyResponsiveSidebar extends React.Component<
+  StickySidebarProps,
+  StickySidebarState
+> {
+  static contextType = OptionsContext;
+  context!: React.ContextType<typeof OptionsContext>;
+  state: StickySidebarState = {};
+
   stickyElement: Element;
 
   componentDidMount() {
     if (stickyfill) {
       stickyfill.add(this.stickyElement);
     }
+
+    // rerender when hydrating from SSR
+    // see https://github.com/facebook/react/issues/8017#issuecomment-256351955
+    this.setState({
+      offsetTop: this.getScrollYOffset(this.context),
+    });
   }
 
   componentWillUnmount() {
@@ -92,7 +109,7 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
     }
   }
 
-  getScrollYOffset(options) {
+  getScrollYOffset(options: RedocNormalizedOptions) {
     let top;
     if (this.props.scrollYOffset !== undefined) {
       top = RedocNormalizedOptions.normalizeScrollYOffset(this.props.scrollYOffset)();
@@ -105,43 +122,32 @@ export class StickyResponsiveSidebar extends React.Component<StickySidebarProps>
   render() {
     const open = this.props.menu.sideBarOpened;
 
-    const style = options => {
-      const top = this.getScrollYOffset(options);
-      return {
-        top,
-        height: `calc(100vh - ${top})`,
-      };
-    };
+    const top = this.state.offsetTop || this.getScrollYOffset(this.context);
 
     return (
-      <OptionsContext.Consumer>
-        {options => (
-          <>
-            <StyledStickySidebar
-              open={open}
-              className={this.props.className}
-              style={style(options)}
-              // tslint:disable-next-line
-              ref={el => {
-                this.stickyElement = el as any;
-              }}
-            >
-              {this.props.children}
-            </StyledStickySidebar>
-            <FloatingButton onClick={this.toggleNavMenu}>
-              <AnimatedChevronButton open={open} />
-            </FloatingButton>
-          </>
-        )}
-      </OptionsContext.Consumer>
+      <>
+        <StyledStickySidebar
+          open={open}
+          className={this.props.className}
+          style={{
+            top,
+            height: `calc(100vh - ${top})`,
+          }}
+          // tslint:disable-next-line
+          ref={el => {
+            this.stickyElement = el as any;
+          }}
+        >
+          {this.props.children}
+        </StyledStickySidebar>
+        <FloatingButton onClick={this.toggleNavMenu}>
+          <AnimatedChevronButton open={open} />
+        </FloatingButton>
+      </>
     );
   }
 
   private toggleNavMenu = () => {
     this.props.menu.toggleSidebar();
   };
-
-  // private closeNavMenu = () => {
-  //   this.setState({ open: false });
-  // };
 }
