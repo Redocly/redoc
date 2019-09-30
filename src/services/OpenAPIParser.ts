@@ -44,6 +44,7 @@ class RefCounter {
 export class OpenAPIParser {
   specUrl?: string;
   spec: OpenAPISpec;
+  mergeRefs: Set<string>;
 
   private _refCounter: RefCounter = new RefCounter();
 
@@ -56,6 +57,8 @@ export class OpenAPIParser {
     this.preprocess(spec);
 
     this.spec = spec;
+
+    this.mergeRefs = new Set();
 
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
@@ -183,7 +186,12 @@ export class OpenAPIParser {
     schema: OpenAPISchema,
     $ref?: string,
     forceCircular: boolean = false,
+    used$Refs = new Set<string>(),
   ): MergedOpenAPISchema {
+    if ($ref) {
+      used$Refs.add($ref);
+    }
+
     schema = this.hoistOneOfs(schema);
 
     if (schema.allOf === undefined) {
@@ -205,16 +213,25 @@ export class OpenAPIParser {
       receiver.items = { ...receiver.items };
     }
 
-    const allOfSchemas = schema.allOf.map(subSchema => {
-      const resolved = this.deref(subSchema, forceCircular);
-      const subRef = subSchema.$ref || undefined;
-      const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
-      receiver.parentRefs!.push(...(subMerged.parentRefs || []));
-      return {
-        $ref: subRef,
-        schema: subMerged,
-      };
-    });
+    const allOfSchemas = schema.allOf
+      .map(subSchema => {
+        if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
+          return undefined;
+        }
+
+        const resolved = this.deref(subSchema, forceCircular);
+        const subRef = subSchema.$ref || undefined;
+        const subMerged = this.mergeAllOf(resolved, subRef, forceCircular, used$Refs);
+        receiver.parentRefs!.push(...(subMerged.parentRefs || []));
+        return {
+          $ref: subRef,
+          schema: subMerged,
+        };
+      })
+      .filter(child => child !== undefined) as Array<{
+      $ref: string | undefined;
+      schema: MergedOpenAPISchema;
+    }>;
 
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       if (
