@@ -87,7 +87,7 @@ export class StickyResponsiveSidebar extends React.Component<
 > {
   static contextType = OptionsContext;
   context!: React.ContextType<typeof OptionsContext>;
-  state: StickySidebarState = {};
+  state: StickySidebarState = { offsetTop: '0px' };
 
   stickyElement: Element;
 
@@ -122,7 +122,7 @@ export class StickyResponsiveSidebar extends React.Component<
   render() {
     const open = this.props.menu.sideBarOpened;
 
-    const top = this.state.offsetTop || this.getScrollYOffset(this.context);
+    const top = this.state.offsetTop;
 
     return (
       <>

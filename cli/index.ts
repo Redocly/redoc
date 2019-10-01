@@ -69,8 +69,10 @@ YargsParser.command(
       watch: argv.watch as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
-      redocOptions: argv.options || {},
+      redocOptions: getObjectOrJSON(argv.options),
     };
+
+    console.log(config);
 
     try {
       await serve(argv.port as number, argv.spec as string, config);
@@ -124,7 +126,7 @@ YargsParser.command(
         disableGoogleFont: argv.disableGoogleFont as boolean,
         templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
-        redocOptions: argv.options || {},
+        redocOptions: getObjectOrJSON(argv.options),
       };
 
       try {
@@ -352,4 +354,16 @@ function escapeUnicode(str) {
 function handleError(error: Error) {
   console.error(error.stack);
   process.exit(1);
+}
+
+function getObjectOrJSON(options) {
+  try {
+    return options && typeof options === 'string' 
+    ? JSON.parse(options) : options
+    ? options
+    : {};
+  } catch (e) {
+    console.log(`Encountered error:\n${options}\nis not a valid JSON.`);
+    handleError(e);
+  }
 }

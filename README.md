@@ -245,6 +245,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `onlyRequiredInSamples` - shows only required fields in request samples.
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value 'all' expands all levels. The default value is `2`.
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `false`
+* `expandDefaultServerVariables` - enable expanding default server variables, default `false`
 * `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts)
 
 ## Advanced usage of standalone version
