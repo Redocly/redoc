@@ -14,7 +14,7 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
-import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
+import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync, lstatSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
@@ -283,13 +283,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-    };
+      };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+        : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
     disableGoogleFont,
@@ -357,13 +357,23 @@ function handleError(error: Error) {
 }
 
 function getObjectOrJSON(options) {
-  try {
-    return options && typeof options === 'string' 
-    ? JSON.parse(options) : options
-    ? options
-    : {};
-  } catch (e) {
-    console.log(`Encountered error:\n${options}\nis not a valid JSON.`);
-    handleError(e);
+  switch (typeof options) {
+    case 'object':
+      return options;
+    case 'string':
+      try {
+        if (existsSync(options) && lstatSync(options).isFile()) {
+          return JSON.parse(readFileSync(options, 'utf-8'));
+        } else {
+          return JSON.parse(options);
+        }
+      } catch (e) {
+        console.log(
+          `Encountered error:\n\n${options}\n\nis neither a file with a valid JSON object neither a stringified JSON object.`
+        );
+        handleError(e);
+      }
+    default:
+      return {};
   }
 }
