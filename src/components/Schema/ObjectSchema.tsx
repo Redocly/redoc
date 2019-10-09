@@ -63,7 +63,7 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
                   undefined
                 }
                 className={field.expanded ? 'expanded' : undefined}
-                showExamples={false}
+                showExamples={true}
                 skipReadOnly={this.props.skipReadOnly}
                 skipWriteOnly={this.props.skipWriteOnly}
                 showTitle={this.props.showTitle}
