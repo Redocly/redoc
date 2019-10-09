@@ -83,7 +83,7 @@ export function appendToMdHeading(md: string, heading: string, content: string) 
 }
 
 // credits https://stackoverflow.com/a/46973278/1749888
-export const mergeObjects = <T extends object = object>(target: T, ...sources: T[]): T => {
+export const mergeObjects = (target: any, ...sources: any[]): any => {
   if (!sources.length) {
     return target;
   }
