@@ -31,6 +31,8 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
 
     const { schema, description, example, deprecated } = field;
 
+    const rawDefault = !!enumSkipQuotes || field.in === 'header'; // having quotes around header field default values is confusing and inappropriate
+
     let exampleField: JSX.Element | null = null;
 
     if (showExamples && example !== undefined) {
@@ -59,7 +61,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
-          {schema.pattern && <PatternLabel>{schema.pattern}</PatternLabel>}
+          {schema.pattern && <PatternLabel> {schema.pattern} </PatternLabel>}
           {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
@@ -67,7 +69,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
             <Badge type="warning"> {l('deprecated')} </Badge>
           </div>
         )}
-        <FieldDetail raw={enumSkipQuotes} label={l('default') + ':'} value={schema.default} />
+        <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
         {exampleField}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
