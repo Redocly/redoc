@@ -381,6 +381,14 @@ describe('Utils', () => {
         'objects (Pet) or numbers <int64>',
       );
     });
+
+    it('should not pluralize display types that are already pluralized', () => {
+      expect(pluralizeType('strings')).toEqual('strings');
+      expect(pluralizeType('objects (Pet)')).toEqual('objects (Pet)');
+      expect(pluralizeType('strings <email>')).toEqual('strings <email>');
+      expect(pluralizeType('objects or strings')).toEqual('objects or strings');
+      expect(pluralizeType('objects (Pet) or numbers <int64>')).toEqual('objects (Pet) or numbers <int64>');
+    });
   });
 
   describe('openapi serializeParameter', () => {
