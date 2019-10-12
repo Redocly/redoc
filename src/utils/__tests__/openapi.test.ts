@@ -333,7 +333,8 @@ describe('Utils', () => {
     const itemConstraintSchema = (
       min: number | undefined = undefined,
       max: number | undefined = undefined,
-    ) => ({ type: 'array', minItems: min, maxItems: max });
+      multipleOf: number | undefined = undefined,
+    ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf });
 
     it('should not have a humanized constraint without schema constraints', () => {
       expect(humanizeConstraints(itemConstraintSchema())).toHaveLength(0);
@@ -357,6 +358,18 @@ describe('Utils', () => {
 
     it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
       expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
+    });
+
+    it('should have a humazined constraint when multipleOf is set, and it is in format of /^0\\.0*1$/', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.01))).toContain(
+        'decimals <= 2 digits',
+      );
+    });
+
+    it('should have a humazined constraint when multipleOf is set, and it is in format other than /^0\\.0*1$/', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.5))).toContain(
+        'multiple of 0.5',
+      );
     });
   });
 
@@ -387,7 +400,9 @@ describe('Utils', () => {
       expect(pluralizeType('objects (Pet)')).toEqual('objects (Pet)');
       expect(pluralizeType('strings <email>')).toEqual('strings <email>');
       expect(pluralizeType('objects or strings')).toEqual('objects or strings');
-      expect(pluralizeType('objects (Pet) or numbers <int64>')).toEqual('objects (Pet) or numbers <int64>');
+      expect(pluralizeType('objects (Pet) or numbers <int64>')).toEqual(
+        'objects (Pet) or numbers <int64>',
+      );
     });
   });
 
