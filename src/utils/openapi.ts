@@ -369,11 +369,14 @@ export function isNamedDefinition(pointer?: string): boolean {
 }
 
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
-  if (multipleOf === undefined) return;
+  if (multipleOf === undefined) {
+    return;
+  }
   const strigifiedMultipleOf = multipleOf.toString(10);
-  const parts = strigifiedMultipleOf.split('.');
-  if (parts.length < 2 || !/^0*1$/.test(parts[1])) return `multiple of ${strigifiedMultipleOf}`;
-  return `decimals <= ${parts[1].length} digits`;
+  if (!/^0\.0*1$/.test(strigifiedMultipleOf)) {
+    return `multiple of ${multipleOf}`;
+  }
+  return `decimals <= ${strigifiedMultipleOf.split('.')[1].length} digits`;
 }
 
 function humanizeRangeConstraint(
