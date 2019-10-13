@@ -356,17 +356,17 @@ describe('Utils', () => {
       expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
     });
 
-    it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
+    it('should have a humanized constraint when justMinItems is set, and it is equal to 1', () => {
       expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
     });
 
-    it('should have a humazined constraint when multipleOf is set, and it is in format of /^0\\.0*1$/', () => {
+    it('should have a humanized constraint when multipleOf is set, and it is in format of /^0\\.0*1$/', () => {
       expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.01))).toContain(
         'decimals <= 2 digits',
       );
     });
 
-    it('should have a humazined constraint when multipleOf is set, and it is in format other than /^0\\.0*1$/', () => {
+    it('should have a humanized constraint when multipleOf is set, and it is in format other than /^0\\.0*1$/', () => {
       expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.5))).toContain(
         'multiple of 0.5',
       );
