@@ -42,6 +42,9 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
   render() {
     const { item, withoutChildren } = this.props;
+    if (item.type === 'field' && this.props['data-role'] !== 'search:result') {
+      return null;
+    }
     return (
       <MenuItemLi
         onClick={this.activate}
