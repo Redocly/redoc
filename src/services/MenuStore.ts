@@ -153,12 +153,6 @@ export class MenuStore {
     }
     let item: IMenuItem | undefined;
 
-    // Make jumps possible even if last char in URL is '/'
-    if (id[id.length - 1] === '/') {
-      id = id.slice(0, -1);
-      this.history.replace(id, false);
-    }
-
     item = this.flatItems.find(i => i.id === id);
     if (item) {
       this.activateAndScroll(item, false);
@@ -172,7 +166,7 @@ export class MenuStore {
   };
 
   /**
-   * get section/operation DOM Node related to the item or null if it doesn't exist
+   * get section/operation DOM Node related to the item or null if it doesn't exisgt
    * @param idx item absolute index
    */
   getElementAt(idx: number): Element | null {
