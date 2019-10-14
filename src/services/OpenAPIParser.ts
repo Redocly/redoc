@@ -4,7 +4,11 @@ import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
 import { appendToMdHeading, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import { isNamedDefinition, SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
+import {
+  isNamedDefinition,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_JSX_NAME,
+} from '../utils/openapi';
 import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
@@ -40,6 +44,7 @@ class RefCounter {
 export class OpenAPIParser {
   specUrl?: string;
   spec: OpenAPISpec;
+  mergeRefs: Set<string>;
 
   private _refCounter: RefCounter = new RefCounter();
 
@@ -52,6 +57,8 @@ export class OpenAPIParser {
     this.preprocess(spec);
 
     this.spec = spec;
+
+    this.mergeRefs = new Set();
 
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
@@ -74,7 +81,10 @@ export class OpenAPIParser {
     ) {
       // Automatically inject Authentication section with SecurityDefinitions component
       const description = spec.info.description || '';
-      if (!MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME)) {
+      if (
+        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME) &&
+        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_JSX_NAME)
+      ) {
         const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
         spec.info.description = appendToMdHeading(description, 'Authentication', comment);
       }
@@ -176,7 +186,12 @@ export class OpenAPIParser {
     schema: OpenAPISchema,
     $ref?: string,
     forceCircular: boolean = false,
+    used$Refs = new Set<string>(),
   ): MergedOpenAPISchema {
+    if ($ref) {
+      used$Refs.add($ref);
+    }
+
     schema = this.hoistOneOfs(schema);
 
     if (schema.allOf === undefined) {
@@ -198,16 +213,25 @@ export class OpenAPIParser {
       receiver.items = { ...receiver.items };
     }
 
-    const allOfSchemas = schema.allOf.map(subSchema => {
-      const resolved = this.deref(subSchema, forceCircular);
-      const subRef = subSchema.$ref || undefined;
-      const subMerged = this.mergeAllOf(resolved, subRef, forceCircular);
-      receiver.parentRefs!.push(...(subMerged.parentRefs || []));
-      return {
-        $ref: subRef,
-        schema: subMerged,
-      };
-    });
+    const allOfSchemas = schema.allOf
+      .map(subSchema => {
+        if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
+          return undefined;
+        }
+
+        const resolved = this.deref(subSchema, forceCircular);
+        const subRef = subSchema.$ref || undefined;
+        const subMerged = this.mergeAllOf(resolved, subRef, forceCircular, used$Refs);
+        receiver.parentRefs!.push(...(subMerged.parentRefs || []));
+        return {
+          $ref: subRef,
+          schema: subMerged,
+        };
+      })
+      .filter(child => child !== undefined) as Array<{
+      $ref: string | undefined;
+      schema: MergedOpenAPISchema;
+    }>;
 
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       if (
