@@ -166,7 +166,7 @@ export class MenuStore {
   };
 
   /**
-   * get section/operation DOM Node related to the item or null if it doesn't exisgt
+   * get section/operation DOM Node related to the item or null if it doesn't exist
    * @param idx item absolute index
    */
   getElementAt(idx: number): Element | null {
