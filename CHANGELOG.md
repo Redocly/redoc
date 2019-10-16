@@ -1,3 +1,13 @@
+# [2.0.0-rc.18](https://github.com/Redocly/redoc/compare/v2.0.0-rc.17...v2.0.0-rc.18) (2019-10-16)
+
+
+### Bug Fixes
+
+* add oneOf buttons vertical space when wrapped to new line ([cd9fd61](https://github.com/Redocly/redoc/commit/cd9fd61))
+* improve mime-type dropdown font ([ce885f8](https://github.com/Redocly/redoc/commit/ce885f8))
+
+
+
 # [2.0.0-rc.17](https://github.com/Redocly/redoc/compare/v2.0.0-rc.16...v2.0.0-rc.17) (2019-10-16)
 
 
