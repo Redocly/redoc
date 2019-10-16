@@ -21,7 +21,7 @@ export const StyledDropdown = styled(Dropdown)`
   font-family: ${props => props.theme.typography.headings.fontFamily};
 
   .Dropdown-control {
-    font-family: ${props => props.theme.typography.headings.fontFamily};
+    font-family: ${props => props.theme.typography.code.fontFamily};
     position: relative;
     font-size: 0.929em;
     width: 100%;
