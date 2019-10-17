@@ -40,7 +40,7 @@
     "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
     "declarations": "tsc --emitDeclarationOnly -p tsconfig.lib.json && cp -R src/types typings/",
     "stats": "webpack --env.standalone --json --profile --mode=production > stats.json",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "lint": "tslint --project tsconfig.json",
     "benchmark": "node ./benchmark/benchmark.js",

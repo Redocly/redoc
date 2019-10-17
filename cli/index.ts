@@ -14,7 +14,14 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
-import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync, lstatSync } from 'fs';
+import {
+  createReadStream,
+  existsSync,
+  readFileSync,
+  ReadStream,
+  writeFileSync,
+  lstatSync,
+} from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
@@ -282,13 +289,13 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-      };
+    };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-        : `<script>${redocStandaloneSrc}</script>`) + css
+          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title: title || spec.info.title || 'ReDoc documentation',
     disableGoogleFont,
@@ -368,7 +375,7 @@ function getObjectOrJSON(options) {
         }
       } catch (e) {
         console.log(
-          `Encountered error:\n\n${options}\n\nis neither a file with a valid JSON object neither a stringified JSON object.`
+          `Encountered error:\n\n${options}\n\nis neither a file with a valid JSON object neither a stringified JSON object.`,
         );
         handleError(e);
       }
