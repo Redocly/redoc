@@ -17,10 +17,10 @@ import { watch } from 'chokidar';
 import {
   createReadStream,
   existsSync,
+  lstatSync,
   readFileSync,
   ReadStream,
   writeFileSync,
-  lstatSync,
 } from 'fs';
 import * as mkdirp from 'mkdirp';
 
