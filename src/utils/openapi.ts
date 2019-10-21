@@ -374,9 +374,9 @@ function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | 
   }
   const strigifiedMultipleOf = multipleOf.toString(10);
   if (!/^0\.0*1$/.test(strigifiedMultipleOf)) {
-    return `multiple of ${multipleOf}`;
+    return `multiple of ${strigifiedMultipleOf}`;
   }
-  return `decimals <= ${strigifiedMultipleOf.split('.')[1].length} digits`;
+  return `decimal places <= ${strigifiedMultipleOf.split('.')[1].length} digits`;
 }
 
 function humanizeRangeConstraint(

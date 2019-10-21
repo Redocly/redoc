@@ -362,7 +362,7 @@ describe('Utils', () => {
 
     it('should have a humanized constraint when multipleOf is set, and it is in format of /^0\\.0*1$/', () => {
       expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.01))).toContain(
-        'decimals <= 2 digits',
+        'decimal places <= 2',
       );
     });
 
