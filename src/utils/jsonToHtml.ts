@@ -6,7 +6,7 @@ export function jsonToHTML(json, maxExpandLevel) {
   output += '<div class="redoc-json">';
   output += '<code>';
   output += valueToHTML(json, maxExpandLevel);
-  output += '</code>'
+  output += '</code>';
   output += '</div>';
   return output;
 }
