@@ -376,7 +376,7 @@ function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | 
   if (!/^0\.0*1$/.test(strigifiedMultipleOf)) {
     return `multiple of ${strigifiedMultipleOf}`;
   }
-  return `decimal places <= ${strigifiedMultipleOf.split('.')[1].length} digits`;
+  return `decimal places <= ${strigifiedMultipleOf.split('.')[1].length}`;
 }
 
 function humanizeRangeConstraint(
