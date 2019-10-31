@@ -14,7 +14,7 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
-import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync, lstatSync } from 'fs';
+import { createReadStream, existsSync, lstatSync, readFileSync, ReadStream, writeFileSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';

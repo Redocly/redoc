@@ -24,6 +24,7 @@ export interface RedocRawOptions {
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
+  disableInfiniteScroll?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -144,6 +145,7 @@ export class RedocNormalizedOptions {
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
+  disableInfiniteScroll: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -182,7 +184,7 @@ export class RedocNormalizedOptions {
       raw.jsonSampleExpandLevel,
     );
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
-
+    this.disableInfiniteScroll = argValueToBoolean(raw.disableInfiniteScroll);
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};
