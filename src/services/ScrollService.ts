@@ -18,13 +18,13 @@ export class ScrollService {
 
   bind() {
     this._prevOffsetY = this.scrollY();
-    if (this._scrollParent) {
+    if (this._scrollParent && !this.options.disableInfiniteScroll) {
       this._scrollParent.addEventListener('scroll', this.handleScroll);
     }
   }
 
   dispose() {
-    if (this._scrollParent) {
+    if (this._scrollParent && !this.options.disableInfiniteScroll) {
       this._scrollParent.removeEventListener('scroll', this.handleScroll);
     }
     this._emiter.removeAllListeners(EVENT);

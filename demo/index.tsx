@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import {render} from 'react-dom';
 import styled from 'styled-components';
-import { resolve as urlResolve } from 'url';
-import { RedocStandalone } from '../src';
+import {resolve as urlResolve} from 'url';
+import {RedocStandalone} from '../src';
 import ComboBox from './ComboBox';
 
 const demos = [
-  { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
+  {value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram'},
   {
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml',
     label: 'Google Calendar',
   },
-  { value: 'https://api.apis.guru/v2/specs/slack.com/1.0.6/swagger.yaml', label: 'Slack' },
-  { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
+  {value: 'https://api.apis.guru/v2/specs/slack.com/1.0.6/swagger.yaml', label: 'Slack'},
+  {value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us'},
   {
     value: 'https://api.apis.guru/v2/specs/graphhopper.com/1.0/swagger.yaml',
     label: 'GraphHopper',
@@ -21,10 +21,8 @@ const demos = [
 
 const DEFAULT_SPEC = 'openapi.yaml';
 
-class DemoApp extends React.Component<
-  {},
-  { specUrl: string; dropdownOpen: boolean; cors: boolean }
-> {
+class DemoApp extends React.Component<{},
+  { specUrl: string; dropdownOpen: boolean; cors: boolean }> {
   constructor(props) {
     super(props);
 
@@ -71,7 +69,7 @@ class DemoApp extends React.Component<
   };
 
   render() {
-    const { specUrl, cors } = this.state;
+    const {specUrl, cors} = this.state;
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
@@ -82,7 +80,7 @@ class DemoApp extends React.Component<
       <>
         <Heading>
           <a href=".">
-            <Logo src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png" />
+            <Logo src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png"/>
           </a>
           <ControlsContainer>
             <ComboBox
@@ -92,7 +90,7 @@ class DemoApp extends React.Component<
               value={specUrl === DEFAULT_SPEC ? '' : specUrl}
             />
             <CorsCheckbox title="Use CORS proxy">
-              <input id="cors_checkbox" type="checkbox" onChange={this.toggleCors} checked={cors} />
+              <input id="cors_checkbox" type="checkbox" onChange={this.toggleCors} checked={cors}/>
               <label htmlFor="cors_checkbox">CORS</label>
             </CorsCheckbox>
           </ControlsContainer>
@@ -104,7 +102,7 @@ class DemoApp extends React.Component<
             height="30px"
           />
         </Heading>
-        <RedocStandalone specUrl={proxiedUrl} options={{ scrollYOffset: 'nav' }} />
+        <RedocStandalone specUrl={proxiedUrl} options={{scrollYOffset: 'nav', disableInfiniteScroll: true}}/>
       </>
     );
   }
