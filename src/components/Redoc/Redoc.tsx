@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ThemeProvider } from '../../styled-components';
 import { OptionsProvider } from '../OptionsProvider';
 
-import {AppStore} from '../../services';
+import { AppStore } from '../../services';
 import { ApiInfo } from '../ApiInfo/';
 import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
@@ -12,7 +12,7 @@ import { SideMenu } from '../SideMenu/SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
 import { ApiContentWrap, BackgroundStub, RedocWrap } from './styled.elements';
 
-import {SingleContentItem} from '../ContentItems/SingleContentItem';
+import { SingleContentItem } from '../ContentItems/SingleContentItem';
 import { SearchBox } from '../SearchBox/SearchBox';
 import { StoreProvider } from '../StoreBuilder';
 
@@ -58,10 +58,11 @@ export class Redoc extends React.Component<RedocProps> {
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">
                 <ApiInfo store={store} />
-                {options.disableInfiniteScroll
-                  ? <SingleContentItem menu={menu}/>
-                  : <ContentItems items={menu.items as any}/>
-                }
+                {options.disableInfiniteScroll ? (
+                  <SingleContentItem menu={menu} />
+                ) : (
+                  <ContentItems items={menu.items as any} />
+                )}
               </ApiContentWrap>
               <BackgroundStub />
             </RedocWrap>
