@@ -1,3 +1,4 @@
+// import { observe } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
@@ -15,7 +16,7 @@ export interface MenuItemProps {
 
 @observer
 export class MenuItem extends React.Component<MenuItemProps> {
-  ref: Element | null;
+  ref = React.createRef<HTMLLabelElement>();
 
   activate = (evt: React.MouseEvent<HTMLElement>) => {
     this.props.onActivate!(this.props.item);
@@ -31,24 +32,15 @@ export class MenuItem extends React.Component<MenuItemProps> {
   }
 
   scrollIntoViewIfActive() {
-    if (this.props.item.active && this.ref) {
-      this.ref.scrollIntoViewIfNeeded();
+    if (this.props.item.active && this.ref.current) {
+      this.ref.current.scrollIntoViewIfNeeded();
     }
   }
-
-  saveRef = ref => {
-    this.ref = ref;
-  };
 
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi
-        onClick={this.activate}
-        depth={item.depth}
-        ref={this.saveRef}
-        data-item-id={item.id}
-      >
+      <MenuItemLi onClick={this.activate} depth={item.depth} data-item-id={item.id}>
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
@@ -83,11 +75,24 @@ export interface OperationMenuItemContentProps {
 }
 
 @observer
-class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
+export class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
+  ref = React.createRef<HTMLLabelElement>();
+
+  componentDidUpdate() {
+    if (this.props.item.active && this.ref.current) {
+      this.ref.current.scrollIntoViewIfNeeded();
+    }
+  }
+
   render() {
     const { item } = this.props;
     return (
-      <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated}>
+      <MenuItemLabel
+        depth={item.depth}
+        active={item.active}
+        deprecated={item.deprecated}
+        ref={this.ref}
+      >
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
         <MenuItemTitle width="calc(100% - 38px)">
           {item.name}

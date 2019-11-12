@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Tab, TabList, TabPanel, Tabs, UnderlinedHeader } from '../../common-elements';
-import { OperationModel } from '../../services/models';
+import { OperationModel, RedocNormalizedOptions } from '../../services';
+import { OptionsContext } from '../OptionsProvider';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
@@ -11,6 +12,8 @@ export interface RequestSamplesProps {
 
 @observer
 export class RequestSamples extends React.Component<RequestSamplesProps> {
+  static contextType = OptionsContext;
+  context: RedocNormalizedOptions;
   operation: OperationModel;
 
   render() {
@@ -20,6 +23,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     const samples = operation.codeSamples;
 
     const hasSamples = hasBodySample || samples.length > 0;
+
     return (
       (hasSamples && (
         <div>

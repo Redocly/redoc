@@ -14,7 +14,7 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
-import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
+import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync, lstatSync } from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
@@ -25,7 +25,10 @@ interface Options {
   cdn?: boolean;
   output?: string;
   title?: string;
+  disableGoogleFont?: boolean;
+  port?: number;
   templateFileName?: string;
+  templateOptions?: any;
   redocOptions?: any;
 }
 
@@ -61,12 +64,15 @@ YargsParser.command(
     return yargs;
   },
   async argv => {
-    const config = {
-      ssr: argv.ssr,
-      watch: argv.watch,
-      templateFileName: argv.template,
-      redocOptions: argv.options || {},
+    const config: Options = {
+      ssr: argv.ssr as boolean,
+      watch: argv.watch as boolean,
+      templateFileName: argv.template as string,
+      templateOptions: argv.templateOptions || {},
+      redocOptions: getObjectOrJSON(argv.options),
     };
+
+    console.log(config);
 
     try {
       await serve(argv.port, argv.spec, config);
@@ -96,6 +102,12 @@ YargsParser.command(
         default: 'ReDoc documentation',
       });
 
+      yargs.options('disableGoogleFont', {
+        describe: 'Disable Google Font',
+        type: 'boolean',
+        default: false,
+      });
+
       yargs.option('cdn', {
         describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
         type: 'boolean',
@@ -105,14 +117,16 @@ YargsParser.command(
       yargs.demandOption('spec');
       return yargs;
     },
-    async argv => {
+    async (argv: any) => {
       const config = {
         ssr: true,
-        output: argv.o,
-        cdn: argv.cdn,
-        title: argv.title,
-        templateFileName: argv.template,
-        redocOptions: argv.options || {},
+        output: argv.o as string,
+        cdn: argv.cdn as boolean,
+        title: argv.title as string,
+        disableGoogleFont: argv.disableGoogleFont as boolean,
+        templateFileName: argv.template as string,
+        templateOptions: argv.templateOptions || {},
+        redocOptions: getObjectOrJSON(argv.options),
       };
 
       try {
@@ -148,7 +162,9 @@ async function serve(port: any, pathToSpec: any, options: any = {}) {
         },
       );
     } else if (request.url === '/') {
-      respondWithGzip(pageHTML, request, response);
+      respondWithGzip(pageHTML, request, response, {
+        'Content-Type': 'text/html',
+      });
     } else if (request.url === '/spec.json') {
       const specStr = JSON.stringify(spec, null, 2);
       respondWithGzip(specStr, request, response, {
@@ -170,21 +186,34 @@ async function serve(port: any, pathToSpec: any, options: any = {}) {
   if (options.watch && existsSync(pathToSpec)) {
     const pathToSpecDirectory = resolve(dirname(pathToSpec));
     const watchOptions = {
-      ignored: /(^|[\/\\])\../,
+      ignored: [/(^|[\/\\])\../, /___jb_[a-z]+___$/],
+      ignoreInitial: true,
     };
 
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
+
+    const handlePath = async path => {
+      try {
+        spec = await loadAndBundleSpec(pathToSpec);
+        pageHTML = await getPageHTML(spec, pathToSpec, options);
+        log('Updated successfully');
+      } catch (e) {
+        console.error('Error while updating: ', e.message);
+      }
+    };
+
     watcher
       .on('change', async path => {
         log(`${path} changed, updating docs`);
-        try {
-          spec = await loadAndBundleSpec(pathToSpec);
-          pageHTML = await getPageHTML(spec, pathToSpec, options);
-          log('Updated successfully');
-        } catch (e) {
-          console.error('Error while updating: ', e.message);
-        }
+        handlePath(path);
+      })
+      .on('add', async path => {
+        log(`File ${path} added, updating docs`);
+        handlePath(path);
+      })
+      .on('addDir', path => {
+        log(`↗  Directory ${path} added. Files in here will trigger reload.`);
       })
       .on('error', error => console.error(`Watcher error: ${error}`))
       .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
@@ -208,7 +237,15 @@ async function bundle(pathToSpec, options: any = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName, redocOptions = {} }: Options,
+  {
+    ssr,
+    cdn,
+    title,
+    disableGoogleFont,
+    templateFileName,
+    templateOptions,
+    redocOptions = {},
+  }: Options,
 ) {
   let html;
   let css;
@@ -242,15 +279,17 @@ async function getPageHTML(
       ssr
         ? 'hydrate(__redoc_state, container);'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
-    };
+      };
 
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
-          : `<script>${redocStandaloneSrc}</script>`) + css
+        ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+        : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
+    disableGoogleFont,
+    templateOptions,
   });
 }
 
@@ -311,4 +350,26 @@ function escapeUnicode(str) {
 function handleError(error: Error) {
   console.error(error.stack);
   process.exit(1);
+}
+
+function getObjectOrJSON(options) {
+  switch (typeof options) {
+    case 'object':
+      return options;
+    case 'string':
+      try {
+        if (existsSync(options) && lstatSync(options).isFile()) {
+          return JSON.parse(readFileSync(options, 'utf-8'));
+        } else {
+          return JSON.parse(options);
+        }
+      } catch (e) {
+        console.log(
+          `Encountered error:\n\n${options}\n\nis neither a file with a valid JSON object neither a stringified JSON object.`
+        );
+        handleError(e);
+      }
+    default:
+      return {};
+  }
 }

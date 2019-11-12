@@ -32,6 +32,7 @@ export const TypeName = styled(FieldLabel)`
 
 export const TypeTitle = styled(FieldLabel)`
   color: ${props => props.theme.schema.typeTitleColor};
+  word-break: break-word;
 `;
 
 export const TypeFormat = TypeName;
@@ -60,14 +61,6 @@ export const PatternLabel = styled(FieldLabel)`
   &::after {
     font-weight: bold;
   }
-
-  &::before {
-    content: ' /';
-  }
-
-  &::after {
-    content: '/ ';
-  }
 `;
 
 export const ExampleValue = styled(FieldLabel)`
@@ -76,11 +69,9 @@ export const ExampleValue = styled(FieldLabel)`
     background-color: ${transparentize(0.95, theme.colors.text.primary)};
     color: ${transparentize(0.1, theme.colors.text.primary)};
 
-    margin: ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
     font-family: ${theme.typography.code.fontFamily};
-    color: ${theme.typography.code.color};
 }`};
   & + & {
     margin-left: 0;
@@ -99,6 +90,7 @@ export const ConstraintItem = styled(FieldLabel)`
     margin: 0 ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.primary.main)};
+    font-family: ${theme.typography.code.fontFamily};
 }`};
   & + & {
     margin-left: 0;

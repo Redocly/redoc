@@ -19,7 +19,7 @@ Serve local file:
 - `PAGE_FAVICON` (default `"favicon.png"`) - URL to page favicon
 - `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) - URL to spec
 - `PORT` (default `80`) - nginx port
-- `REDOC_OPTIONS` - [`<redoc>` tag attributes](https://github.com/Rebilly/ReDoc#redoc-tag-attributes)
+- `REDOC_OPTIONS` - [`<redoc>` tag attributes](https://github.com/Redocly/redoc#redoc-tag-attributes)
 
 ## Build
 

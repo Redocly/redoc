@@ -2,9 +2,6 @@ import * as React from 'react';
 
 import { StyledPre } from '../../common-elements/samples';
 import { ExampleModel } from '../../services/models';
-import { isJsonLike, langFromMime } from '../../utils';
-import { JsonViewer } from '../JsonViewer/JsonViewer';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ExampleValue } from './ExampleValue';
 import { useExternalExample } from './exernalExampleHook';
 
@@ -22,14 +19,13 @@ export function Example({ example, mimeType }: ExampleProps) {
 }
 
 export function ExternalExample({ example, mimeType }: ExampleProps) {
-  let value = useExternalExample(example, mimeType);
+  const value = useExternalExample(example, mimeType);
 
   if (value === undefined) {
     return <span>Loading...</span>;
   }
 
   if (value instanceof Error) {
-    console.log(value);
     return (
       <StyledPre>
         Error loading external example: <br />
@@ -40,13 +36,5 @@ export function ExternalExample({ example, mimeType }: ExampleProps) {
     );
   }
 
-  if (isJsonLike(mimeType)) {
-    return <JsonViewer data={value} />;
-  } else {
-    if (typeof value === 'object') {
-      // just in case example was cached as json but used as non-json
-      value = JSON.stringify(value, null, 2);
-    }
-    return <SourceCodeWithCopy lang={langFromMime(mimeType)} source={value} />;
-  }
+  return <ExampleValue value={value} mimeType={mimeType} />;
 }

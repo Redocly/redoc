@@ -9,6 +9,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
+import { serializeParameterValue } from '../../utils/openapi';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
@@ -19,11 +20,30 @@ import { FieldDetail } from './FieldDetail';
 
 import { Badge } from '../../common-elements/';
 
+import { l } from '../../services/Labels';
+import { OptionsContext } from '../OptionsProvider';
+
 export class FieldDetails extends React.PureComponent<FieldProps> {
+  static contextType = OptionsContext;
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
+    const { enumSkipQuotes } = this.context;
 
     const { schema, description, example, deprecated } = field;
+
+    const rawDefault = !!enumSkipQuotes || field.in === 'header'; // having quotes around header field default values is confusing and inappropriate
+
+    let exampleField: JSX.Element | null = null;
+
+    if (showExamples && example !== undefined) {
+      const label = l('example') + ':';
+      if (field.in && (field.style || field.serializationMime)) {
+        const serializedValue = serializeParameterValue(field, example);
+        exampleField = <FieldDetail label={label} value={serializedValue} raw={true} />;
+      } else {
+        exampleField = <FieldDetail label={label} value={example} />;
+      }
+    }
 
     return (
       <div>
@@ -40,18 +60,18 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           )}
           {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
-          {schema.nullable && <NullableLabel> Nullable </NullableLabel>}
-          {schema.pattern && <PatternLabel>{schema.pattern}</PatternLabel>}
-          {schema.isCircular && <RecursiveLabel> Recursive </RecursiveLabel>}
+          {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
+          {schema.pattern && <PatternLabel> {schema.pattern} </PatternLabel>}
+          {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
           <div>
-            <Badge type="warning"> Deprecated </Badge>
+            <Badge type="warning"> {l('deprecated')} </Badge>
           </div>
         )}
-        <FieldDetail label={'Default:'} value={schema.default} />
+        <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
         {!renderDiscriminatorSwitch && <EnumValues type={schema.type} values={schema.enum} />}{' '}
-        {showExamples && <FieldDetail label={'Example:'} value={example} />}
+        {exampleField}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
           <Markdown compact={true} source={description} />

@@ -98,7 +98,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 2} 0;
+      padding: ${props => props.theme.spacing.unit * 2}px 0;
     }
   }
 `;

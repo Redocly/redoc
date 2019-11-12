@@ -83,7 +83,7 @@ export function appendToMdHeading(md: string, heading: string, content: string) 
 }
 
 // credits https://stackoverflow.com/a/46973278/1749888
-export const mergeObjects = <T extends object = object>(target: T, ...sources: T[]): T => {
+export const mergeObjects = (target: any, ...sources: any[]): any => {
   if (!sources.length) {
     return target;
   }
@@ -147,7 +147,7 @@ export function resolveUrl(url: string, to: string) {
   let res;
   if (to.startsWith('//')) {
     const { protocol: specProtocol } = parse(url);
-    res = `${specProtocol}${to}`;
+    res = `${specProtocol || 'https:'}${to}`;
   } else if (isAbsoluteUrl(to)) {
     res = to;
   } else if (!to.startsWith('/')) {
@@ -163,5 +163,38 @@ export function resolveUrl(url: string, to: string) {
 }
 
 export function getBasePath(serverUrl: string): string {
-  return new URL(serverUrl).pathname;
+  try {
+    return parseURL(serverUrl).pathname;
+  } catch (e) {
+    // when using with redoc-cli serverUrl can be empty resulting in crash
+    return serverUrl;
+  }
+}
+
+export function titleize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export function removeQueryString(serverUrl: string): string {
+  try {
+    const url = parseURL(serverUrl);
+    url.search = '';
+    return url.toString();
+  } catch (e) {
+    // when using with redoc-cli serverUrl can be empty resulting in crash
+    return serverUrl;
+  }
+}
+
+function parseURL(url: string) {
+  if (typeof URL === 'undefined') {
+    // node
+    return new (require('url')).URL(url);
+  } else {
+    return new URL(url);
+  }
+}
+
+export function unescapeHTMLChars(str: string): string {
+  return str.replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)));
 }

@@ -37,7 +37,7 @@ describe('Models', () => {
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = new SchemaModel(parser, spec.components.schemas.WithArray, '', opts);
       expect(schema.oneOf).toHaveLength(2);
-      expect(schema.displayType).toBe('(Array of string or number) or string');
+      expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
   });
 });

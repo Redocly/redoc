@@ -2,6 +2,7 @@ import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } fr
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
 
+import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
 
 export interface RedocRawOptions {
@@ -20,10 +21,19 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  hideSingleRequestSampleTab?: boolean | string;
+  menuToggle?: boolean | string;
+  jsonSampleExpandLevel?: number | string | 'all';
 
   unstable_ignoreMimeParameters?: boolean;
 
   allowedMdComponents?: Dict<MDXComponentMeta>;
+
+  labels?: LabelsConfigRaw;
+
+  enumSkipQuotes?: boolean | string;
+
+  expandDefaultServerVariables?: boolean;
 }
 
 function argValueToBoolean(val?: string | boolean): boolean {
@@ -106,6 +116,16 @@ export class RedocNormalizedOptions {
     return value;
   }
 
+  private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
+    if (level === 'all') {
+      return +Infinity;
+    }
+    if (!isNaN(Number(level))) {
+      return Math.ceil(Number(level));
+    }
+    return 2;
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
@@ -120,10 +140,16 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  hideSingleRequestSampleTab: boolean;
+  menuToggle: boolean;
+  jsonSampleExpandLevel: number;
+  enumSkipQuotes: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
   allowedMdComponents: Dict<MDXComponentMeta>;
+
+  expandDefaultServerVariables: boolean;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -133,6 +159,9 @@ export class RedocNormalizedOptions {
     );
 
     this.theme.extensionsHook = hook as any;
+
+    // do not support dynamic labels changes. Labels should be configured before
+    setRedocLabels(raw.labels);
 
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
@@ -147,9 +176,17 @@ export class RedocNormalizedOptions {
     this.disableSearch = true; //argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
+    this.menuToggle = argValueToBoolean(raw.menuToggle);
+    this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
+      raw.jsonSampleExpandLevel,
+    );
+    this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};
+
+    this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
   }
 }

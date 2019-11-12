@@ -15,16 +15,16 @@ info:
     This API is documented in **OpenAPI format** and is based on
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Rebilly/ReDoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-    
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
     # OpenAPI Specification
     This API is documented in **OpenAPI format** and is based on
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and [ReDoc](https://github.com/Rebilly/ReDoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-    
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
     # Cross-Origin Resource Sharing
     This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
     And that allows cross-domain communication from the browser.
@@ -38,7 +38,7 @@ info:
     OAuth2 - an open protocol to allow secure authorization in a simple
     and standard method from web, mobile and desktop applications.
 
-    <security-definitions /> 
+    <SecurityDefinitions />
 
   version: 1.0.0
   title: Swagger Petstore
@@ -46,9 +46,9 @@ info:
   contact:
     name: API Support
     email: apiteam@swagger.io
-    url: https://github.com/Rebilly/ReDoc
+    url: https://github.com/Redocly/redoc
   x-logo:
-    url: 'https://rebilly.github.io/ReDoc/petstore-logo.png'
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
     altText: Petstore logo
   license:
     name: Apache 2.0
@@ -63,6 +63,14 @@ tags:
     description: Access to Petstore orders
   - name: user
     description: Operations about user
+  - name: pet_model
+    x-displayName: The Pet Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: The Order Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 x-tagGroups:
   - name: General
     tags:
@@ -71,9 +79,21 @@ x-tagGroups:
   - name: User Management
     tags:
       - user
+  - name: Models
+    tags:
+      - pet_model
+      - store_model
 paths:
   /pet:
     parameters:
+      - name: Accept-Language
+        in: header
+        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        example: en-US
+        required: false
+        schema:
+          type: string
+          default: en-AU
       - name: cookieParam
         in: cookie
         description: Some cookie
@@ -666,6 +686,7 @@ components:
               type: string
               description: The measured skill for hunting
               default: lazy
+              example: adventurous
               enum:
                 - clueless
                 - lazy
@@ -754,6 +775,11 @@ components:
           description: Indicates whenever order was completed or not
           type: boolean
           default: false
+          readOnly: true
+        rqeuestId:
+          description: Unique Request Id
+          type: string
+          writeOnly: true
       xml:
         name: Order
     Pet:
@@ -866,14 +892,13 @@ components:
             as well as digits
           format: password
           minLength: 8
-          pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: drowssaP123
         phone:
           description: User phone number in international format
           type: string
-          pattern: '^\+(?:[0-9]-?){6,14}[0-9]$'
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
           example: +1-202-555-0192
-          nullable: true
         userStatus:
           description: User status
           type: integer
@@ -926,3 +951,10 @@ components:
       type: apiKey
       name: api_key
       in: header
+  examples:
+    Order:
+      value:
+        quantity: 1,
+        shipDate: 2018-10-19T16:46:45Z,
+        status: placed,
+        complete: false
