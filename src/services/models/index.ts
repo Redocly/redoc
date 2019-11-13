@@ -1,3 +1,4 @@
+export * from './Callback';
 export * from '../SpecStore';
 export * from './Group.model';
 export * from './Operation';
