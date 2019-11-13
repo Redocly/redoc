@@ -4,9 +4,10 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 
 import { OpenAPIParser } from '../../services';
-import { CallbackModel } from '../../services/models/Callback';
-import { CallbackView, CallbacksList, CallbackTitle } from '../Callbacks';
 import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
+
+import { CallbackModel } from '../../services/models/Callback';
+import { CallbacksList, CallbackTitle, CallbackView } from '../Callbacks';
 import * as simpleCallbackFixture from './fixtures/simple-callback.json';
 
 const options = new RedocNormalizedOptions({});
