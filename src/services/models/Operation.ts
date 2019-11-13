@@ -86,7 +86,7 @@ export class OperationModel implements IMenuItem {
     parent: GroupModel | undefined,
     private options: RedocNormalizedOptions,
     isCallback: boolean = false,
-    callbackEventName: string | undefined = undefined,
+    callbackEventName?: string,
   ) {
     this.pointer = JsonPointer.compile(['paths', operationSpec.pathName, operationSpec.httpVerb]);
 
