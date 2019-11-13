@@ -140,7 +140,7 @@ const defaultTheme: ThemeInterface = {
   },
   rightPanel: {
     backgroundColor: '#ffffff',
-    width: '40%',
+    width: '0%',
     textColor: '#333333',
   },
   codeSample: {

@@ -7294,7 +7294,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "7a8a289c"));
+                    "bcae2d5d"));
         }
         return external_react_["Children"].only(this.props.children);
     };
