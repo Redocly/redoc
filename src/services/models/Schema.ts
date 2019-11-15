@@ -251,7 +251,7 @@ function buildFields(
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
   const defaults = schema.default || {};
-  const fields = Object.keys(props || []).map(fieldName => {
+  let fields = Object.keys(props || []).map(fieldName => {
     let field = props[fieldName];
 
     if (!field) {
@@ -280,11 +280,11 @@ function buildFields(
   });
 
   if (options.sortPropsAlphabetically) {
-    sortByField(fields, 'name');
+    fields = sortByField(fields, 'name');
   }
   if (options.requiredPropsFirst) {
     // if not sort alphabetically sort in the order from required keyword
-    sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
+    fields = sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
