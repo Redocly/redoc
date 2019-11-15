@@ -9,6 +9,7 @@ import {
   normalizeServers,
   pluralizeType,
   serializeParameterValue,
+  sortByRequired,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
@@ -634,6 +635,372 @@ describe('Utils', () => {
           '{"name":"test","age":23}',
         );
       });
+    });
+  });
+
+  describe('OpenAPI sortByRequired', () => {
+    it('should equal to the old data when all items have no required props', () => {
+      let fields = [
+        {
+          name: 'loginName',
+          required: false,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'email',
+          required: false,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(sortByRequired(fields as FieldModel[])).toEqual(fields);
+    });
+
+    it('other item should be the same order when some of items are required', () => {
+      let fields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      let sortedFields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(sortByRequired(fields as FieldModel[])).toEqual(sortedFields);
+    });
+
+    it('should the order of required items is as same as the order parameter ', () => {
+      let fields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(
+        sortByRequired(fields as FieldModel[], ['siteId', 'displayName', 'loginName', 'email']),
+      ).toEqual([
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
+      expect(sortByRequired(fields as FieldModel[], ['email', 'displayName'])).toEqual([
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
+
+      expect(sortByRequired(fields as FieldModel[], ['displayName'])).toEqual([
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
     });
   });
 });

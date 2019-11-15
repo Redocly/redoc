@@ -1,6 +1,7 @@
 import { dirname } from 'path';
 const URLtemplate = require('url-template');
 
+import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIEncoding,
@@ -444,25 +445,29 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   return res;
 }
 
-export function sortByRequired(
-  fields: Array<{ required: boolean; name: string }>,
-  order: string[] = [],
-) {
-  fields.sort((a, b) => {
-    if (!a.required && b.required) {
-      return 1;
-    } else if (a.required && !b.required) {
-      return -1;
-    } else if (a.required && b.required) {
-      return order.indexOf(a.name) - order.indexOf(b.name);
+export function sortByRequired(fields: FieldModel[], order: string[] = []) {
+  const unrequiredFields: FieldModel[] = [];
+  const orderedFields: FieldModel[] = [];
+  const unorderedFields: FieldModel[] = [];
+
+  fields.forEach(field => {
+    if (field.required) {
+      order.includes(field.name) ? orderedFields.push(field) : unorderedFields.push(field);
     } else {
-      return 0;
+      unrequiredFields.push(field);
     }
   });
+
+  orderedFields.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
+
+  return [...orderedFields, ...unorderedFields, ...unrequiredFields];
 }
 
-export function sortByField<T extends string>(fields: Array<{ [P in T]: string }>, param: T) {
-  fields.sort((a, b) => {
+export function sortByField(
+  fields: FieldModel[],
+  param: keyof Pick<FieldModel, 'name' | 'description' | 'kind'>,
+) {
+  return [...fields].sort((a, b) => {
     return a[param].localeCompare(b[param]);
   });
 }
