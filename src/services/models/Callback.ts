@@ -44,8 +44,6 @@ export class CallbackModel {
         this.operations.push(operation);
       }
     }
-
-    console.log(this.operations);
   }
 
   @action
