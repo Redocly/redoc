@@ -7,7 +7,7 @@
 # To run:
 # To display the command line options:
 # $ docker run --rm -it redoc-cli --help
-# .. will display the comand line help
+# .. will display the command line help
 #
 # To turn `swagger.yml` file in the current directory, to html documentation 'redoc-static.html'
 # $  docker run --rm -it  -v $PWD:/data redoc-cli bundle swagger.yml
