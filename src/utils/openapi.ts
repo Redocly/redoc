@@ -114,6 +114,9 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined 
   }
 
   if (type === 'object') {
+    if (schema.required !== undefined && schema.required.length !== 0) {
+      return false;
+    }
     return schema.properties !== undefined
       ? Object.keys(schema.properties).length === 0
       : schema.additionalProperties === undefined;
