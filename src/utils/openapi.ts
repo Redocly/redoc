@@ -368,6 +368,17 @@ export function isNamedDefinition(pointer?: string): boolean {
   return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
+function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
+  if (multipleOf === undefined) {
+    return;
+  }
+  const strigifiedMultipleOf = multipleOf.toString(10);
+  if (!/^0\.0*1$/.test(strigifiedMultipleOf)) {
+    return `multiple of ${strigifiedMultipleOf}`;
+  }
+  return `decimal places <= ${strigifiedMultipleOf.split('.')[1].length}`;
+}
+
 function humanizeRangeConstraint(
   description: string,
   min: number | undefined,
@@ -404,6 +415,11 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const arrayRange = humanizeRangeConstraint('items', schema.minItems, schema.maxItems);
   if (arrayRange !== undefined) {
     res.push(arrayRange);
+  }
+
+  const multipleOfConstraint = humanizeMultipleOfConstraint(schema.multipleOf);
+  if (multipleOfConstraint !== undefined) {
+    res.push(multipleOfConstraint);
   }
 
   let numberRange;

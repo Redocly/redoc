@@ -738,6 +738,7 @@ components:
               type: number
               description: Average amount of honey produced per day in ounces
               example: 3.14
+              multipleOf: .01
           required:
             - honeyPerDay
     Id:
