@@ -6,7 +6,7 @@ import { SecuritySchemesModel } from './models/SecuritySchemes';
 import { OpenAPIParser } from './OpenAPIParser';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 /**
- * Store that containts all the specification related information in the form of tree
+ * Store that contains all the specification related information in the form of tree
  */
 export class SpecStore {
   parser: OpenAPIParser;

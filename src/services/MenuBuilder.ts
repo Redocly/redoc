@@ -88,7 +88,7 @@ export class MenuBuilder {
   }
 
   /**
-   * Returns array of OperationsGroup items for the tag groups (x-tagGroups vendor extenstion)
+   * Returns array of OperationsGroup items for the tag groups (x-tagGroups vendor extension)
    * @param tags value of `x-tagGroups` vendor extension
    */
   static getTagGroupsItems(

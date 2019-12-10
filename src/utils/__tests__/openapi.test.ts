@@ -249,7 +249,7 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
     });
 
-    it('should correcly resolve url with server relative path', () => {
+    it('should correctly resolve url with server relative path', () => {
       const res = normalizeServers('http://base.com/subpath/spec.yaml', [
         {
           url: '/sandbox/test',
@@ -258,7 +258,7 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
     });
 
-    it('should correcly resolve url with relative path', () => {
+    it('should correctly resolve url with relative path', () => {
       const res = normalizeServers('http://base.com/subpath/spec.yaml', [
         {
           url: 'sandbox/test',
@@ -383,12 +383,12 @@ describe('Utils', () => {
       expect(pluralizeType('array')).toEqual('arrays');
     });
 
-    it('should pluralize complex dislay types', () => {
+    it('should pluralize complex display types', () => {
       expect(pluralizeType('object (Pet)')).toEqual('objects (Pet)');
       expect(pluralizeType('string <email>')).toEqual('strings <email>');
     });
 
-    it('should pluralize oneOf-ed dislay types', () => {
+    it('should pluralize oneOf-ed display types', () => {
       expect(pluralizeType('object or string')).toEqual('objects or strings');
       expect(pluralizeType('object (Pet) or number <int64>')).toEqual(
         'objects (Pet) or numbers <int64>',

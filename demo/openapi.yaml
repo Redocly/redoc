@@ -306,7 +306,7 @@ paths:
       tags:
         - pet
       summary: Finds Pets by status
-      description: Multiple status values can be provided with comma seperated strings
+      description: Multiple status values can be provided with comma separated strings
       operationId: findPetsByStatus
       parameters:
         - name: status
@@ -351,7 +351,7 @@ paths:
         - pet
       summary: Finds Pets by tags
       description: >-
-        Muliple tags can be provided with comma seperated strings. Use tag1,
+        Multiple tags can be provided with comma separated strings. Use tag1,
         tag2, tag3 for testing.
       operationId: findPetsByTags
       deprecated: true
@@ -631,7 +631,7 @@ paths:
                 type: integer
                 format: int32
             X-Expires-After:
-              description: date in UTC when toekn expires
+              description: date in UTC when token expires
               schema:
                 type: string
                 format: date-time
@@ -777,7 +777,7 @@ components:
           type: boolean
           default: false
           readOnly: true
-        rqeuestId:
+        requestId:
           description: Unique Request Id
           type: string
           writeOnly: true

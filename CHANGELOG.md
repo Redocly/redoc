@@ -44,7 +44,7 @@
 * do not crash on empty scopes ([e787d9e](https://github.com/Redocly/redoc/commit/e787d9e)), closes [#1044](https://github.com/Redocly/redoc/issues/1044)
 * false-positive recursive detection with allOf at the same level ([faa74d6](https://github.com/Redocly/redoc/commit/faa74d6))
 * fix scrollYOffset when SSR ([21258a5](https://github.com/Redocly/redoc/commit/21258a5))
-* left menu item before group is not highligted ([67e2a8f](https://github.com/Redocly/redoc/commit/67e2a8f)), closes [#1033](https://github.com/Redocly/redoc/issues/1033)
+* left menu item before group is not highlighted ([67e2a8f](https://github.com/Redocly/redoc/commit/67e2a8f)), closes [#1033](https://github.com/Redocly/redoc/issues/1033)
 * remove excessive whitespace between md sections on small screens ([e318fb3](https://github.com/Redocly/redoc/commit/e318fb3)), closes [#874](https://github.com/Redocly/redoc/issues/874)
 * use url-template dependency ([#1008](https://github.com/Redocly/redoc/issues/1008)) ([32a464a](https://github.com/Redocly/redoc/commit/32a464a)), closes [#1007](https://github.com/Redocly/redoc/issues/1007)
 
@@ -97,7 +97,7 @@
 
 * do not add extra slashes to pattern ([70d1ee9](https://github.com/Redocly/redoc/commit/70d1ee9)), closes [#983](https://github.com/Redocly/redoc/issues/983)
 * dropdown fixes related to object description ([0504ad4](https://github.com/Redocly/redoc/commit/0504ad4))
-* incorrect serialization of parameter sample with hypen ([f7dd658](https://github.com/Redocly/redoc/commit/f7dd658))
+* incorrect serialization of parameter sample with hyphen ([f7dd658](https://github.com/Redocly/redoc/commit/f7dd658))
 * redoc-cli: Add missing content type header on compressed responses of `/` path
 
 
@@ -171,7 +171,7 @@
 
 ### Bug Fixes
 
-* broken schema talbes with long enums ([3a74b74](https://github.com/Rebilly/ReDoc/commit/3a74b74))
+* broken schema tables with long enums ([3a74b74](https://github.com/Rebilly/ReDoc/commit/3a74b74))
 * deep linking sometimes not working when sent over messengers ([2491d97](https://github.com/Rebilly/ReDoc/commit/2491d97))
 
 
@@ -189,7 +189,7 @@
 * IE11 add missing fetch and URL polyfills ([d2ce1bd](https://github.com/Rebilly/ReDoc/commit/d2ce1bd)), closes [#875](https://github.com/Rebilly/ReDoc/issues/875)
 * ignore empty x-tagGroups array ([#869](https://github.com/Rebilly/ReDoc/issues/869)) ([4366a0d](https://github.com/Rebilly/ReDoc/commit/4366a0d))
 * incorrect detected schema title for deeply inherited schemas ([7d7b4e3](https://github.com/Rebilly/ReDoc/commit/7d7b4e3))
-* pluralize arrray of types ([fdcac30](https://github.com/Rebilly/ReDoc/commit/fdcac30))
+* pluralize array of types ([fdcac30](https://github.com/Rebilly/ReDoc/commit/fdcac30))
 * remove huge space after Authentication section ([548fae3](https://github.com/Rebilly/ReDoc/commit/548fae3)), closes [#872](https://github.com/Rebilly/ReDoc/issues/872)
 * remove query string from server URL ([#895](https://github.com/Rebilly/ReDoc/issues/895)) ([64453ff](https://github.com/Rebilly/ReDoc/commit/64453ff))
 * remove tabs top margin ([5c187f3](https://github.com/Rebilly/ReDoc/commit/5c187f3))
@@ -273,7 +273,7 @@
 * improve scrolling performance in Chrome with non-wrapped json examples ([a69c402](https://github.com/Rebilly/ReDoc/commit/a69c402))
 * nested oneOf button spacing ([3673720](https://github.com/Rebilly/ReDoc/commit/3673720)), closes [#719](https://github.com/Rebilly/ReDoc/issues/719)
 * onLoaded callback not run on spec error ([e77df0c](https://github.com/Rebilly/ReDoc/commit/e77df0c)), closes [#690](https://github.com/Rebilly/ReDoc/issues/690)
-* theme improvments by [@stasiukanya](https://github.com/stasiukanya) ([e2d0cd5](https://github.com/Rebilly/ReDoc/commit/e2d0cd5))
+* theme improvements by [@stasiukanya](https://github.com/stasiukanya) ([e2d0cd5](https://github.com/Rebilly/ReDoc/commit/e2d0cd5))
 * **cli:** old peer dependency issue with styled-components ([#699](https://github.com/Rebilly/ReDoc/issues/699)) ([9e2853c](https://github.com/Rebilly/ReDoc/commit/9e2853c))
 
 
@@ -345,7 +345,7 @@
 
 ### Bug Fixes
 
-* addd indent to array schema internals ([865f3ce](https://github.com/Rebilly/ReDoc/commit/865f3ce))
+* add indent to array schema internals ([865f3ce](https://github.com/Rebilly/ReDoc/commit/865f3ce))
 * fix oneOf/anyOf titles ([39b930d](https://github.com/Rebilly/ReDoc/commit/39b930d)), closes [#618](https://github.com/Rebilly/ReDoc/issues/618) [#621](https://github.com/Rebilly/ReDoc/issues/621)
 
 
@@ -391,7 +391,7 @@
 ### Bug Fixes
 
 * add some spacing between operation description and parameters ([597688e](https://github.com/Rebilly/ReDoc/commit/597688e))
-* description is not rendered if doesn't containt markdown headings ([90ed717](https://github.com/Rebilly/ReDoc/commit/90ed717)), closes [#591](https://github.com/Rebilly/ReDoc/issues/591)
+* description is not rendered if doesn't contain markdown headings ([90ed717](https://github.com/Rebilly/ReDoc/commit/90ed717)), closes [#591](https://github.com/Rebilly/ReDoc/issues/591)
 * download button downloads index.html instead of spec with CLI ([334f904](https://github.com/Rebilly/ReDoc/commit/334f904)), closes [#594](https://github.com/Rebilly/ReDoc/issues/594)
 * fix Authentication section is not rendered ([2ecc8bc](https://github.com/Rebilly/ReDoc/commit/2ecc8bc)), closes [#590](https://github.com/Rebilly/ReDoc/issues/590)
 * fix linebreaks in multiparagraph field descriptions ([8fb9cd6](https://github.com/Rebilly/ReDoc/commit/8fb9cd6))
@@ -702,7 +702,7 @@
 
 ### Bug Fixes
 
-* Path parameters are not correctly overriden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
+* Path parameters are not correctly overridden ([c406dc5](https://github.com/Rebilly/ReDoc/commit/c406dc5)), closes [#400](https://github.com/Rebilly/ReDoc/issues/400)
 * Use parentNode instead of parentElement to fix IE11 crash ([e8adb60](https://github.com/Rebilly/ReDoc/commit/e8adb60)), closes [#406](https://github.com/Rebilly/ReDoc/issues/406)
 
 
@@ -864,7 +864,7 @@
 * do not ignore path level parameters ([14f8408](https://github.com/Rebilly/Redoc/commit/14f8408))
 * improve rendering of types ([17da7b7](https://github.com/Rebilly/Redoc/commit/17da7b7))
 * move title propagation to the correct place ([0b0bc99](https://github.com/Rebilly/Redoc/commit/0b0bc99))
-* owerwrite text-align to left ([bfee3ed](https://github.com/Rebilly/Redoc/commit/bfee3ed))
+* overwrite text-align to left ([bfee3ed](https://github.com/Rebilly/Redoc/commit/bfee3ed))
 
 
 ### Features
@@ -926,7 +926,7 @@ Complete rewrite also means that this rewrite may introduce issues, but they sho
 
 ### Deprecations
 
-- Fonts are not loaded by ReDoc so you should load them. Default fonts can be loaded as bellow:
+- Fonts are not loaded by ReDoc so you should load them. Default fonts can be loaded as below:
 
 ```html
 <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
@@ -1295,7 +1295,7 @@ closes [#321](https://github.com/Rebilly/ReDoc/issues/321)
 ### Bug fixes
 * Update webpack to the latest beta ([#143](https://github.com/Rebilly/ReDoc/issues/143))
 * Fix read-only fields appear in request samples ([#142](https://github.com/Rebilly/ReDoc/issues/142))
-* A few more minor UI improvemnts
+* A few more minor UI improvements
 
 ### Features/Improvements
 * Major performance optimization with new option `lazy-rendering`

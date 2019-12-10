@@ -24,14 +24,14 @@ describe('Components', () => {
     });
 
     test('should collapse/uncollapse', () => {
-      expect(component.html()).not.toContain('class="hoverable"'); // all are collapesed by default
+      expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed by default
       const expandAll = component.find('div > span[children=" Expand all "]');
       expandAll.simulate('click');
-      expect(component.html()).toContain('class="hoverable"'); // all are collapesed
+      expect(component.html()).toContain('class="hoverable"'); // all are collapsed
 
       const collapseAll = component.find('div > span[children=" Collapse all "]');
       collapseAll.simulate('click');
-      expect(component.html()).not.toContain('class="hoverable"'); // all are collapesed
+      expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed
     });
 
     test('should collapse/uncollapse', () => {

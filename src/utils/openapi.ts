@@ -137,13 +137,13 @@ export function isFormUrlEncoded(contentType: string): boolean {
   return contentType === 'application/x-www-form-urlencoded';
 }
 
-function delimitedEncodeField(fieldVal: any, fieldName: string, delimeter: string): string {
+function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: string): string {
   if (Array.isArray(fieldVal)) {
-    return fieldVal.map(v => v.toString()).join(delimeter);
+    return fieldVal.map(v => v.toString()).join(delimiter);
   } else if (typeof fieldVal === 'object') {
     return Object.keys(fieldVal)
-      .map(k => `${k}${delimeter}${fieldVal[k]}`)
-      .join(delimeter);
+      .map(k => `${k}${delimiter}${fieldVal[k]}`)
+      .join(delimiter);
   } else {
     return fieldName + '=' + fieldVal.toString();
   }
@@ -165,7 +165,7 @@ function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
 
 function serializeFormValue(name: string, explode: boolean, value: any) {
   // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
-  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  // e.g. URI.template doesn't parse names with hyphen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
   const suffix = explode ? '*' : '';
   const template = URLtemplate.parse(`{?${safeName}${suffix}}`);
@@ -177,7 +177,7 @@ function serializeFormValue(name: string, explode: boolean, value: any) {
 
 /*
  * Should be used only for url-form-encoded body payloads
- * To be used for parmaters should be extended with other style values
+ * To be used for parameters should be extended with other style values
  */
 export function urlFormEncodePayload(
   payload: object,
@@ -225,7 +225,7 @@ function serializePathParameter(
   }
 
   // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
-  // e.g. URI.template doesn't parse names with hypen (-) which are valid query param names
+  // e.g. URI.template doesn't parse names with hyphen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
   const template = URLtemplate.parse(`{${prefix}${safeName}${suffix}}`);
 
@@ -478,7 +478,7 @@ export function mergeParams(
     operationParamNames[param.name + '_' + param.in] = true;
   });
 
-  // filter out path params overriden by operation ones with the same name
+  // filter out path params overridden by operation ones with the same name
   pathParams = pathParams.filter(param => {
     param = parser.shalowDeref(param);
     return !operationParamNames[param.name + '_' + param.in];
