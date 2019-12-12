@@ -216,7 +216,7 @@ export class SchemaModel {
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
-    const derived = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
+    const inversedMapping = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
 
     if (schema.oneOf) {
       for (const variant of schema.oneOf) {
@@ -224,19 +224,37 @@ export class SchemaModel {
           continue;
         }
         const name = JsonPointer.baseName(variant.$ref);
-        derived[variant.$ref] = name;
+        inversedMapping[variant.$ref] = [name];
       }
     }
 
     const mapping = discriminator.mapping || {};
     for (const name in mapping) {
-      derived[mapping[name]] = name;
+      const $ref = mapping[name];
+
+      if (Array.isArray(inversedMapping[$ref])) {
+        inversedMapping[$ref].push(name);
+      } else {
+        inversedMapping[$ref] = [name];
+      }
     }
 
-    const refs = Object.keys(derived);
-    this.oneOf = refs.map(ref => {
-      const innerSchema = new SchemaModel(parser, parser.byRef(ref)!, ref, this.options, true);
-      innerSchema.title = derived[ref];
+    const refs: Array<{ $ref; name }> = [];
+
+    for (const $ref of Object.keys(inversedMapping)) {
+      const names = inversedMapping[$ref];
+      if (Array.isArray(names)) {
+        for (const name of names) {
+          refs.push({ $ref, name });
+        }
+      } else {
+        refs.push({ $ref, name: names });
+      }
+    }
+
+    this.oneOf = refs.map(({ $ref, name }) => {
+      const innerSchema = new SchemaModel(parser, parser.byRef($ref)!, $ref, this.options, true);
+      innerSchema.title = name;
       return innerSchema;
     });
   }
