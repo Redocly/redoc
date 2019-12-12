@@ -45,6 +45,14 @@ export class MarkdownRenderer {
     return compRegexp.test(rawText);
   }
 
+  static getTextBeforeHading(md: string, heading: string): string {
+    const headingLinePos = md.search(new RegExp(`^##?\s+${heading}`, 'm'));
+    if (headingLinePos > -1) {
+      return md.substring(0, headingLinePos);
+    }
+    return md;
+  }
+
   headings: MarkdownHeading[] = [];
   currentTopHeading: MarkdownHeading;
 
