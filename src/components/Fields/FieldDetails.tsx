@@ -27,7 +27,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
   static contextType = OptionsContext;
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
-    const { enumSkipQuotes } = this.context;
+    const { enumSkipQuotes, hideSchemaTitles } = this.context;
 
     const { schema, description, example, deprecated } = field;
 
@@ -59,7 +59,7 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
               &gt;{' '}
             </TypeFormat>
           )}
-          {schema.title && <TypeTitle> ({schema.title}) </TypeTitle>}
+          {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
           {schema.pattern && <PatternLabel> {schema.pattern} </PatternLabel>}

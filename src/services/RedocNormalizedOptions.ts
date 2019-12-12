@@ -24,6 +24,7 @@ export interface RedocRawOptions {
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
+  hideSchemaTitles?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -144,6 +145,7 @@ export class RedocNormalizedOptions {
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
+  hideSchemaTitles: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -182,6 +184,7 @@ export class RedocNormalizedOptions {
       raw.jsonSampleExpandLevel,
     );
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
+    this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
