@@ -27,8 +27,22 @@ import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
+import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
+
+interface XPayloadSample {
+  lang: 'payload';
+  label: string;
+  requestBodyContent: MediaContentModel;
+  source: string;
+}
+
+export function isPayloadSample(
+  sample: XPayloadSample | OpenAPIXCodeSample,
+): sample is XPayloadSample {
+  return sample.lang === 'payload' && (sample as any).requestBodyContent;
+}
 
 /**
  * Operation model ready to be used by components
@@ -62,7 +76,7 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  codeSamples: OpenAPIXCodeSample[];
+  codeSamples: Array<OpenAPIXCodeSample | XPayloadSample>;
   extensions: Dict<any>;
 
   constructor(
@@ -89,8 +103,21 @@ export class OperationModel implements IMenuItem {
     this.httpVerb = operationSpec.httpVerb;
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
-    this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = operationSpec.pathName;
+    this.codeSamples = operationSpec['x-code-samples'] || [];
+
+    const requestBodyContent = this.requestBody && this.requestBody.content;
+    if (requestBodyContent && requestBodyContent.hasSample) {
+      this.codeSamples = [
+        {
+          lang: 'payload',
+          label: 'Payload',
+          source: '',
+          requestBodyContent,
+        },
+        ...this.codeSamples,
+      ];
+    }
 
     const pathInfo = parser.byRef<OpenAPIPath>(
       JsonPointer.compile(['paths', operationSpec.pathName]),
