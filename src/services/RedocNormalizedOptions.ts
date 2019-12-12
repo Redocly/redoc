@@ -25,6 +25,7 @@ export interface RedocRawOptions {
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
   hideSchemaTitles?: boolean | string;
+  payloadSampleIdx?: number;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -117,6 +118,18 @@ export class RedocNormalizedOptions {
     return value;
   }
 
+  static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
+    if (typeof value === 'number') {
+      return Math.max(0, value); // always greater or equal than 0
+    }
+
+    if (typeof value === 'string') {
+      return isFinite(value) ? parseInt(value, 10) : 0;
+    }
+
+    return 0;
+  }
+
   private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
     if (level === 'all') {
       return +Infinity;
@@ -146,6 +159,7 @@ export class RedocNormalizedOptions {
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
   hideSchemaTitles: boolean;
+  payloadSampleIdx: number;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -185,6 +199,7 @@ export class RedocNormalizedOptions {
     );
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
+    this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

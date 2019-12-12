@@ -246,6 +246,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
 * `sortPropsAlphabetically` - sort properties alphabetically.
 * `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
+* `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
 * `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 

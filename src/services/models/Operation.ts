@@ -108,14 +108,17 @@ export class OperationModel implements IMenuItem {
 
     const requestBodyContent = this.requestBody && this.requestBody.content;
     if (requestBodyContent && requestBodyContent.hasSample) {
+      const insertInx = Math.min(this.codeSamples.length, options.payloadSampleIdx);
+
       this.codeSamples = [
+        ...this.codeSamples.slice(0, insertInx),
         {
           lang: 'payload',
           label: 'Payload',
           source: '',
           requestBodyContent,
         },
-        ...this.codeSamples,
+        ...this.codeSamples.slice(insertInx),
       ];
     }
 
