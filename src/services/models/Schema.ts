@@ -216,7 +216,10 @@ export class SchemaModel {
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
-    const inversedMapping = parser.findDerived([...(schema.parentRefs || []), this.pointer]);
+    const implicitInversedMapping = parser.findDerived([
+      ...(schema.parentRefs || []),
+      this.pointer,
+    ]);
 
     if (schema.oneOf) {
       for (const variant of schema.oneOf) {
@@ -224,20 +227,23 @@ export class SchemaModel {
           continue;
         }
         const name = JsonPointer.baseName(variant.$ref);
-        inversedMapping[variant.$ref] = [name];
+        implicitInversedMapping[variant.$ref] = [name];
       }
     }
 
     const mapping = discriminator.mapping || {};
+    const explicitInversedMapping = {};
     for (const name in mapping) {
       const $ref = mapping[name];
 
-      if (Array.isArray(inversedMapping[$ref])) {
-        inversedMapping[$ref].push(name);
+      if (Array.isArray(explicitInversedMapping[$ref])) {
+        explicitInversedMapping[$ref].push(name);
       } else {
-        inversedMapping[$ref] = [name];
+        explicitInversedMapping[$ref] = [name];
       }
     }
+
+    const inversedMapping = { ...implicitInversedMapping, ...explicitInversedMapping };
 
     const refs: Array<{ $ref; name }> = [];
 
