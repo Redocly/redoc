@@ -99,7 +99,6 @@ YargsParser.command(
       yargs.options('title', {
         describe: 'Page Title',
         type: 'string',
-        default: 'ReDoc documentation',
       });
 
       yargs.options('disableGoogleFont', {
@@ -291,7 +290,7 @@ async function getPageHTML(
         ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
         : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
-    title,
+    title: title || spec.info.title || 'ReDoc documentation',
     disableGoogleFont,
     templateOptions,
   });
