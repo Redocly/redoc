@@ -36,12 +36,12 @@ export interface RedocRawOptions {
   expandDefaultServerVariables?: boolean;
 }
 
-function argValueToBoolean(val?: string | boolean): boolean {
+function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
   if (val === undefined) {
-    return false;
+    return defaultValue || false;
   }
   if (typeof val === 'string') {
-    return true;
+    return val === 'false' ? false : true;
   }
   return val;
 }
@@ -177,7 +177,7 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
-    this.menuToggle = argValueToBoolean(raw.menuToggle);
+    this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
       raw.jsonSampleExpandLevel,
     );
