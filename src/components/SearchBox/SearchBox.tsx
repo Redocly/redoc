@@ -7,6 +7,7 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchResult } from '../../services/SearchWorker.worker';
 
+import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import {
   ClearIcon,
@@ -99,6 +100,14 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     this.props.marker.mark(term);
   }
 
+  @bind
+  @debounce(300)
+  searchCallback(searchTerm: string) {
+    this.props.search.search(searchTerm).then(res => {
+      this.setResults(res, searchTerm);
+    });
+  }
+
   search = (event: React.ChangeEvent<HTMLInputElement>) => {
     const q = event.target.value;
     if (q.length < 3) {
@@ -106,13 +115,12 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
       return;
     }
 
-    this.setState({
-      term: q,
-    });
-
-    this.props.search.search(event.target.value).then(res => {
-      this.setResults(res, q);
-    });
+    this.setState(
+      {
+        term: q,
+      },
+      () => this.searchCallback(this.state.term),
+    );
   };
 
   render() {
