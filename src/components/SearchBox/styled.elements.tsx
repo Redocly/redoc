@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { darken } from 'polished';
+import { darken, getLuminance, lighten } from 'polished';
 import styled from '../../styled-components';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
@@ -17,7 +17,12 @@ export const SearchInput = styled.input.attrs(() => ({
   padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
     ${props => props.theme.spacing.unit * 4}px;
   border: 0;
-  border-bottom: 1px solid ${({ theme }) => darken(0.1, theme.menu.backgroundColor)};
+  border-bottom: 1px solid
+    ${({ theme }) =>
+      (getLuminance(theme.menu.backgroundColor) > 0.5 ? darken : lighten)(
+        0.1,
+        theme.menu.backgroundColor,
+      )};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-weight: bold;
   font-size: 13px;
@@ -52,11 +57,12 @@ export const SearchIcon = styled((props: { className?: string }) => (
 
 export const SearchResultsBox = styled.div`
   padding: ${props => props.theme.spacing.unit}px 0;
-  background-color: #ededed;
+  background-color: ${({ theme }) => darken(0.05, theme.menu.backgroundColor)}};
+  color: ${props => props.theme.menu.textColor};
   min-height: 150px;
   max-height: 250px;
-  border-top: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
+  border-top: ${({ theme }) => darken(0.1, theme.menu.backgroundColor)}};
+  border-bottom: ${({ theme }) => darken(0.1, theme.menu.backgroundColor)}};
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
@@ -65,16 +71,13 @@ export const SearchResultsBox = styled.div`
     padding-top: 6px;
     padding-bottom: 6px;
 
-    &:hover {
-      background-color: #e1e1e1;
+    &:hover,
+    &.active {
+      background-color: ${({ theme }) => darken(0.1, theme.menu.backgroundColor)};
     }
 
     > svg {
       display: none;
-    }
-
-    &.active {
-      background-color: #e1e1e1;
     }
   }
 `;
