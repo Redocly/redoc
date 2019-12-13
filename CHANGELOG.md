@@ -1,3 +1,12 @@
+# [2.0.0-rc.20](https://github.com/Redocly/redoc/compare/v2.0.0-rc.19...v2.0.0-rc.20) (2019-12-13)
+
+
+### Bug Fixes
+
+* fix missing parameters ([942d782](https://github.com/Redocly/redoc/commit/942d782b5a8d08767a7538741b75587cf1e67f44)), closes [#1142](https://github.com/Redocly/redoc/issues/1142)
+
+
+
 # [2.0.0-rc.19](https://github.com/Redocly/redoc/compare/v2.0.0-rc.18...v2.0.0-rc.19) (2019-12-13)
 
 
