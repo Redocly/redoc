@@ -189,6 +189,8 @@ export class OperationModel implements IMenuItem {
     if (this.options.requiredPropsFirst) {
       return sortByRequired(_parameters);
     }
+
+    return _parameters;
   }
 
   @memoize
