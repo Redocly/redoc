@@ -184,12 +184,11 @@ export class OperationModel implements IMenuItem {
     ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
     if (this.options.sortPropsAlphabetically) {
-      sortByField(_parameters, 'name');
+      return sortByField(_parameters, 'name');
     }
     if (this.options.requiredPropsFirst) {
-      sortByRequired(_parameters);
+      return sortByRequired(_parameters);
     }
-    return _parameters;
   }
 
   @memoize
