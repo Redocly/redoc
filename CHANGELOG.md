@@ -1,3 +1,29 @@
+# [2.0.0-rc.19](https://github.com/Redocly/redoc/compare/v2.0.0-rc.18...v2.0.0-rc.19) (2019-12-13)
+
+
+### Bug Fixes
+
+* change the title of "Security Scheme Type" to match "HTTP Authorization Scheme" ([#1126](https://github.com/Redocly/redoc/issues/1126)) ([289c8e6](https://github.com/Redocly/redoc/commit/289c8e6ae1ff00371f86d3f2646607c64bc30050))
+* do not URI-encode parameter values for better readability ([6aeb0bf](https://github.com/Redocly/redoc/commit/6aeb0bf68df3f03f2ca1317f8b5787545bd363f1)), closes [#1138](https://github.com/Redocly/redoc/issues/1138)
+* fix sortByRequired (stabilise sort) ([#1136](https://github.com/Redocly/redoc/issues/1136)) ([d92434d](https://github.com/Redocly/redoc/commit/d92434d11b08e8b0f6be5453ec69aa1d0e0df79f)), closes [#1104](https://github.com/Redocly/redoc/issues/1104) [#1121](https://github.com/Redocly/redoc/issues/1121) [#1061](https://github.com/Redocly/redoc/issues/1061)
+* h2 padding on mobile ([7ed1a7e](https://github.com/Redocly/redoc/commit/7ed1a7ef0e7978a0dfb40afcc72c3362466f9624)), closes [#1118](https://github.com/Redocly/redoc/issues/1118)
+* python comment stripped in headings ([4a25aae](https://github.com/Redocly/redoc/commit/4a25aaef69fad814836392ea7e41eb32c182a261)), closes [#1116](https://github.com/Redocly/redoc/issues/1116)
+* remove hardcoded fontFamily for oneOf labels ([094ce91](https://github.com/Redocly/redoc/commit/094ce914e3f9cfe567b39db4ea88208014d8b686)), closes [#1120](https://github.com/Redocly/redoc/issues/1120)
+* search-box use theme ([1bf490c](https://github.com/Redocly/redoc/commit/1bf490c05b343d262f8819bf1ddc433e070be1b9))
+* support discriminator mapping 1-n ([6e390f9](https://github.com/Redocly/redoc/commit/6e390f9c7909da0b5d1d6fc571ab4ad92e715d6e)), closes [#1111](https://github.com/Redocly/redoc/issues/1111)
+* wrap json examples in code tag ([#1064](https://github.com/Redocly/redoc/issues/1064)) ([dc5430e](https://github.com/Redocly/redoc/commit/dc5430e53def780a81612d269cc3aea3f8785eea))
+
+
+### Features
+
+* display `multipleOf` constrains ([#1065](https://github.com/Redocly/redoc/issues/1065)) ([3e90133](https://github.com/Redocly/redoc/commit/3e901336643b988ae45ae86c485005b8865e6e04))
+* enable menuToggle by default ([5d81abe](https://github.com/Redocly/redoc/commit/5d81abeb28c1e4f2826e41424c10163834c37e45))
+* new option hideSchemaTitles ([11cc4c4](https://github.com/Redocly/redoc/commit/11cc4c4c3e04a7e5bf3a9ebba20d10fa882a49e5))
+* new option payloadSampleIdx ([eaaa99d](https://github.com/Redocly/redoc/commit/eaaa99d68e2392273e8d9c0173db3b546e035d5f))
+* **cli:** Fallback on the spec's title before falling back on… ([#1073](https://github.com/Redocly/redoc/issues/1073)) ([e01eea4](https://github.com/Redocly/redoc/commit/e01eea445c93d74b66533c860d76bb3aff4d6df2))
+
+
+
 # [2.0.0-rc.18](https://github.com/Redocly/redoc/compare/v2.0.0-rc.17...v2.0.0-rc.18) (2019-10-16)
 
 
