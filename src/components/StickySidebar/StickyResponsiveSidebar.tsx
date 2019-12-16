@@ -44,7 +44,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
     position: fixed;
     z-index: 20;
     width: 100%;
-    background: #ffffff;
+    background: ${({ theme }) => theme.menu.backgroundColor};
     display: ${props => (props.open ? 'flex' : 'none')};
   `};
 
