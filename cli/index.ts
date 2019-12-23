@@ -203,7 +203,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
 
-    const handlePath = async path => {
+    const handlePath = async _path => {
       try {
         spec = await loadAndBundleSpec(pathToSpec);
         pageHTML = await getPageHTML(spec, pathToSpec, options);
