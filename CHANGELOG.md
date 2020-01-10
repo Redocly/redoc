@@ -1,3 +1,14 @@
+# [2.0.0-rc.21](https://github.com/Redocly/redoc/compare/v2.0.0-rc.20...v2.0.0-rc.21) (2020-01-10)
+
+
+### Bug Fixes
+
+* empty servers behaviour per OAS spec ([ed1db0c](https://github.com/Redocly/redoc/commit/ed1db0c9027087ae0ae923e390e3e1d638a647ae)), closes [#1151](https://github.com/Redocly/redoc/issues/1151)
+* fix duplicated content in tags when using md headings ([a260c84](https://github.com/Redocly/redoc/commit/a260c8414c34a259a70a20ebcd20ecbb06c3d250)), closes [#1150](https://github.com/Redocly/redoc/issues/1150) [#1152](https://github.com/Redocly/redoc/issues/1152)
+* use mobile menu background color value from theme ([#1144](https://github.com/Redocly/redoc/issues/1144)) ([41a9b3c](https://github.com/Redocly/redoc/commit/41a9b3c18228d236d182d3c15c9abc35ae72a0d5))
+
+
+
 # [2.0.0-rc.20](https://github.com/Redocly/redoc/compare/v2.0.0-rc.19...v2.0.0-rc.20) (2019-12-13)
 
 
