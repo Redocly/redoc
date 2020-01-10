@@ -7,7 +7,6 @@ cache:
   - "~/.cache"
 env:
   global:
-  - matrix:
     - GH_REF: github.com/Redocly/redoc.git
     - GIT_AUTHOR_EMAIL: redoc-bot@users.noreply.github.com
     - GIT_AUTHOR_NAME: RedocBot
