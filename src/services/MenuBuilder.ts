@@ -66,6 +66,13 @@ export class MenuBuilder {
     const renderer = new MarkdownRenderer(options);
     const headings = renderer.extractHeadings(description || '');
 
+    if (headings.length && parent && parent.description) {
+      parent.description = MarkdownRenderer.getTextBeforeHading(
+        parent.description,
+        headings[0].name,
+      );
+    }
+
     const mapHeadingsDeep = (_parent, items, depth = 1) =>
       items.map(heading => {
         const group = new GroupModel('section', heading, _parent);
