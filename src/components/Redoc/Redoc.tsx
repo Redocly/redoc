@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ThemeProvider } from '../../styled-components';
 import { OptionsProvider } from '../OptionsProvider';
 
-import { AppStore } from '../../services';
+import { AppStore, IMenuItem } from '../../services';
 import { ApiInfo } from '../ApiInfo/';
 import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
@@ -19,10 +19,16 @@ export interface RedocProps {
   store: AppStore;
 }
 
-export class Redoc extends React.Component<RedocProps> {
+export interface AppState {
+  activeSelection: string | undefined;
+}
+
+export class Redoc extends React.Component<RedocProps, AppState> {
   static propTypes = {
     store: PropTypes.instanceOf(AppStore).isRequired,
   };
+
+  state = { activeSelection: undefined };
 
   componentDidMount() {
     this.props.store.onDidMount();
@@ -30,6 +36,12 @@ export class Redoc extends React.Component<RedocProps> {
 
   componentWillUnmount() {
     this.props.store.dispose();
+  }
+
+  setActiveSelection = (item: IMenuItem) => {
+    if (item && item.type === "tag") {
+      this.setState({ activeSelection: item.name });
+    }
   }
 
   render() {
@@ -50,14 +62,15 @@ export class Redoc extends React.Component<RedocProps> {
                     marker={marker}
                     getItemById={menu.getItemById}
                     onActivate={menu.activateAndScroll}
+                    setActiveSelection={() => this.setActiveSelection}
                   />
                 )) ||
                   null}
-                <SideMenu menu={menu} />
+                <SideMenu menu={menu} setActiveSelection={this.setActiveSelection} />
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">
                 <ApiInfo store={store} />
-                <ContentItems items={menu.items as any} />
+                <ContentItems activeSelection={this.state.activeSelection} items={menu.items as any} />
               </ApiContentWrap>
               <BackgroundStub />
             </RedocWrap>

@@ -64,6 +64,8 @@ export class MenuStore {
   items: IMenuItem[];
   flatItems: IMenuItem[];
 
+  activeSelection?: string;
+
   /**
    * cached flattened menu items to support absolute indexing
    */

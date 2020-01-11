@@ -14,6 +14,8 @@ export interface MenuItemsProps {
   root?: boolean;
 
   className?: string;
+
+  setActiveSelection: (item: IMenuItem) => void;
 }
 
 @observer
@@ -29,7 +31,7 @@ export class MenuItems extends React.Component<MenuItemsProps> {
         {...(root ? { role: 'navigation' } : {})}
       >
         {items.map((item, idx) => (
-          <MenuItem key={idx} item={item} onActivate={this.props.onActivate} />
+          <MenuItem key={idx} item={item} onActivate={this.props.onActivate} setActiveSelection={this.props.setActiveSelection} />
         ))}
       </MenuItemUl>
     );

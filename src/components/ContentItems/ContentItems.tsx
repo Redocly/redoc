@@ -11,14 +11,19 @@ import { Operation } from '../Operation/Operation';
 
 @observer
 export class ContentItems extends React.Component<{
+  activeSelection?: string;
   items: ContentItemModel[];
 }> {
   render() {
     const items = this.props.items;
+    const activeSelection = this.props.activeSelection;
     if (items.length === 0) {
       return null;
     }
-    return items.map(item => <ContentItem item={item} key={item.id} />);
+    const filteredItems = items.filter(item => {
+      return item.type == "tag" ? item.name == `${activeSelection}` : true;
+    });
+    return filteredItems.map(item => <ContentItem item={item} key={item.id} />);
   }
 }
 

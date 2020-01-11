@@ -11,6 +11,7 @@ import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styl
 export interface MenuItemProps {
   item: IMenuItem;
   onActivate?: (item: IMenuItem) => void;
+  setActiveSelection: (item: IMenuItem) => void;
   withoutChildren?: boolean;
 }
 
@@ -19,6 +20,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
   ref = React.createRef<HTMLLabelElement>();
 
   activate = (evt: React.MouseEvent<HTMLElement>) => {
+    this.props.setActiveSelection(this.props.item);
     this.props.onActivate!(this.props.item);
     evt.stopPropagation();
   };
@@ -44,22 +46,23 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.name}>
-              {item.name}
-              {this.props.children}
-            </MenuItemTitle>
-            {(item.depth > 0 && item.items.length > 0 && (
-              <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
-            )) ||
-              null}
-          </MenuItemLabel>
-        )}
+            <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
+              <MenuItemTitle title={item.name}>
+                {item.name}
+                {this.props.children}
+              </MenuItemTitle>
+              {(item.depth > 0 && item.items.length > 0 && (
+                <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
+              )) ||
+                null}
+            </MenuItemLabel>
+          )}
         {!withoutChildren && item.items && item.items.length > 0 && (
           <MenuItems
             expanded={item.expanded}
             items={item.items}
             onActivate={this.props.onActivate}
+            setActiveSelection={() => this.props.setActiveSelection}
           />
         )}
       </MenuItemLi>

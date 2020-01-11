@@ -23,6 +23,8 @@ export interface SearchBoxProps {
   onActivate: (item: IMenuItem) => void;
 
   className?: string;
+
+  setActiveSelection: () => void;
 }
 
 export interface SearchBoxState {
@@ -153,6 +155,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
                   withoutChildren={true}
                   key={res.item.id}
                   data-role="search:result"
+                  setActiveSelection={() => this.props.setActiveSelection}
                 />
               ))}
             </SearchResultsBox>
