@@ -32,7 +32,7 @@ export class ContentItems extends React.Component<{
         return (
           <React.Fragment key={item.id}>
             <ContentItem item={item} />
-            <CallbacksHeader>Callbacks:</CallbacksHeader>
+            <CallbacksHeader>Callbacks</CallbacksHeader>
             {item.callbacks.map((callbackIndex, idx) => {
               return <ContentItems key={idx} items={callbackIndex.operations} />;
             })}
