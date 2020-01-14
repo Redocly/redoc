@@ -62,7 +62,7 @@ export class Redoc extends React.Component<RedocProps, AppState> {
                     marker={marker}
                     getItemById={menu.getItemById}
                     onActivate={menu.activateAndScroll}
-                    setActiveSelection={() => this.setActiveSelection}
+                    setActiveSelection={this.setActiveSelection}
                   />
                 )) ||
                   null}

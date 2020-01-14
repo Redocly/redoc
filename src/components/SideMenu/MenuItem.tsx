@@ -10,6 +10,7 @@ import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styl
 
 export interface MenuItemProps {
   item: IMenuItem;
+  isSearchItem?: boolean;
   onActivate?: (item: IMenuItem) => void;
   setActiveSelection: (item: IMenuItem) => void;
   withoutChildren?: boolean;
@@ -20,6 +21,9 @@ export class MenuItem extends React.Component<MenuItemProps> {
   ref = React.createRef<HTMLLabelElement>();
 
   activate = (evt: React.MouseEvent<HTMLElement>) => {
+    if (this.props.isSearchItem) {
+      this.searchItemClick(this.props.item);
+    }
     this.props.setActiveSelection(this.props.item);
     this.props.onActivate!(this.props.item);
     evt.stopPropagation();
@@ -36,6 +40,12 @@ export class MenuItem extends React.Component<MenuItemProps> {
   scrollIntoViewIfActive() {
     if (this.props.item.active && this.ref.current) {
       this.ref.current.scrollIntoViewIfNeeded();
+    }
+  }
+
+  searchItemClick(item: IMenuItem) {
+    if (item.parent) {
+      this.props.setActiveSelection(item.parent);
     }
   }
 

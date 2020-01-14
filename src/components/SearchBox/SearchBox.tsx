@@ -15,16 +15,16 @@ import {
   SearchResultsBox,
   SearchWrap,
 } from './styled.elements';
+import { bind, debounce } from 'decko';
 
 export interface SearchBoxProps {
   search: SearchStore<string>;
   marker: MarkerService;
   getItemById: (id: string) => IMenuItem | undefined;
   onActivate: (item: IMenuItem) => void;
+  setActiveSelection: (item: IMenuItem) => void;
 
   className?: string;
-
-  setActiveSelection: () => void;
 }
 
 export interface SearchBoxState {
@@ -101,6 +101,14 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
     this.props.marker.mark(term);
   }
 
+  @bind
+  @debounce(600)
+  searchCallback(searchTerm: string) {
+    this.props.search.search(searchTerm).then(res => {
+      this.setResults(res, searchTerm);
+    });
+  }
+
   search = (event: React.ChangeEvent<HTMLInputElement>) => {
     const q = event.target.value;
     if (q.length < 3) {
@@ -108,13 +116,12 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
       return;
     }
 
-    this.setState({
-      term: q,
-    });
-
-    this.props.search.search(event.target.value).then(res => {
-      this.setResults(res, q);
-    });
+    this.setState(
+      {
+        term: q,
+      },
+      () => this.searchCallback(this.state.term),
+    );
   };
 
   render() {
@@ -155,7 +162,8 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
                   withoutChildren={true}
                   key={res.item.id}
                   data-role="search:result"
-                  setActiveSelection={() => this.props.setActiveSelection}
+                  setActiveSelection={this.props.setActiveSelection}
+                  isSearchItem={true}
                 />
               ))}
             </SearchResultsBox>
