@@ -1,3 +1,17 @@
+# [2.0.0-rc.22](https://github.com/Redocly/redoc/compare/v2.0.0-rc.21...v2.0.0-rc.22) (2020-01-15)
+
+
+### Bug Fixes
+
+* do not process oneOf if inherited from parent with discriminator ([5248415](https://github.com/Redocly/redoc/commit/52484157912d908daea8255d0b7d684b33258d7a))
+
+
+### Features
+
+* add HTTP syntax highlighting ([#1157](https://github.com/Redocly/redoc/issues/1157)) ([27a4af7](https://github.com/Redocly/redoc/commit/27a4af707686d56280753473b4294ee4af096534))
+
+
+
 # [2.0.0-rc.21](https://github.com/Redocly/redoc/compare/v2.0.0-rc.20...v2.0.0-rc.21) (2020-01-10)
 
 
