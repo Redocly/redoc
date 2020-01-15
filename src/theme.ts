@@ -150,6 +150,9 @@ const defaultTheme: ThemeInterface = {
   codeSample: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
+  styledPre: {
+    maxHeight: '500px',
+  },
 };
 
 export default defaultTheme;
@@ -324,6 +327,9 @@ export interface ResolvedThemeInterface {
   };
 
   extensionsHook?: (name: string, props: any) => string;
+  styledPre: {
+    maxHeight: string;
+  };
 }
 
 export type primitive = string | number | boolean | undefined | null;
