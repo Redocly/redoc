@@ -76,7 +76,6 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  codeSamples: Array<OpenAPIXCodeSample | XPayloadSample>;
   extensions: Dict<any>;
 
   constructor(
@@ -104,23 +103,6 @@ export class OperationModel implements IMenuItem {
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
-    this.codeSamples = operationSpec['x-code-samples'] || [];
-
-    const requestBodyContent = this.requestBody && this.requestBody.content;
-    if (requestBodyContent && requestBodyContent.hasSample) {
-      const insertInx = Math.min(this.codeSamples.length, options.payloadSampleIdx);
-
-      this.codeSamples = [
-        ...this.codeSamples.slice(0, insertInx),
-        {
-          lang: 'payload',
-          label: 'Payload',
-          source: '',
-          requestBodyContent,
-        },
-        ...this.codeSamples.slice(insertInx),
-      ];
-    }
 
     const pathInfo = parser.byRef<OpenAPIPath>(
       JsonPointer.compile(['paths', operationSpec.pathName]),
@@ -172,6 +154,30 @@ export class OperationModel implements IMenuItem {
       this.operationSpec.requestBody &&
       new RequestBodyModel(this.parser, this.operationSpec.requestBody, this.options)
     );
+  }
+
+  @memoize
+  get codeSamples() {
+    let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
+      this.operationSpec['x-code-samples'] || [];
+
+    const requestBodyContent = this.requestBody && this.requestBody.content;
+    if (requestBodyContent && requestBodyContent.hasSample) {
+      const insertInx = Math.min(samples.length, this.options.payloadSampleIdx);
+
+      samples = [
+        ...samples.slice(0, insertInx),
+        {
+          lang: 'payload',
+          label: 'Payload',
+          source: '',
+          requestBodyContent,
+        },
+        ...samples.slice(insertInx),
+      ];
+    }
+
+    return samples;
   }
 
   @memoize
