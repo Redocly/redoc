@@ -9,12 +9,6 @@ import 'brace/theme/github';
 import 'brace/theme/monokai';
 
 import { MediaTypeModel } from '../../services/models';
-import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
-
-import { MediaTypeSamples } from '../PayloadSamples/MediaTypeSamples';
-
-import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
-import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
 
 export interface ConsoleEditorProps {
   mediaTypes: MediaTypeModel[];
@@ -35,7 +29,8 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     for (const mediaType of mediaTypes) {
       if (mediaType.name.indexOf('json') > -1) {
         if (mediaType.examples) {
-          sample = mediaType.examples && mediaType.examples.default && mediaType.examples.default.value;
+          const example = getDefaultOrFirst(mediaType.examples);
+          sample = example && example.value;
         }
         break;
       }
@@ -44,10 +39,16 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     return (
       <div>
         <AceEditor
-          tabSize={1}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true,
+            showLineNumbers: true,
+            tabSize: 2,
+          }}
           fontSize={10}
           mode="json"
-          theme="github"
+          theme="monokai"
           name="request-builder-editor"
           editorProps={{ $blockScrolling: true }}
           value={JSON.stringify(sample, null, 2)}
@@ -59,4 +60,16 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     );
   }
 
+}
+
+function getDefaultOrFirst(object) {
+  if (typeof object === 'object') {
+    if (typeof object.default === 'object') {
+      return object.default;
+    } else {
+      return object[Object.keys(object)[0]];
+    }
+  } else {
+    return false;
+  }
 }

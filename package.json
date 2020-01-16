@@ -81,7 +81,6 @@
     "@types/tapable": "1.0.4",
     "@types/webpack": "^4.32.1",
     "@types/webpack-env": "^1.14.0",
-    "@types/whatwg-fetch": "^0.0.33",
     "@types/yargs": "^13.0.0",
     "babel-loader": "8.0.6",
     "babel-plugin-styled-components": "^1.10.6",

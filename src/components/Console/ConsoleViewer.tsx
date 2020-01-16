@@ -4,7 +4,6 @@ import { SendButton } from '../../common-elements/buttons';
 import { ConsoleActionsRow } from '../../common-elements/panels';
 import { FieldModel, OperationModel } from '../../services/models';
 import { OpenAPISchema } from '../../types';
-import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ConsoleEditor } from './ConsoleEditor';
 
@@ -41,25 +40,15 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
   }
   onClickSend = async () => {
     const ace = this.consoleEditor && this.consoleEditor.editor;
-    // const value = ace && ace.editor &&
-    const schema = this.getSchema();
     const { operation, additionalHeaders = {} } = this.props;
-    // console.log('Schema: ' + JSON.stringify(schema, null, 2));
     let value = ace && ace.editor.getValue();
 
-    const ref = schema && schema._$ref;
-    // var valid = window && window.ajv.validate({ $ref: `specs.json${ref}` }, value);
-    // console.log(JSON.stringify(window.ajv.errors));
-    // if (!valid) {
-    //  console.warn('INVALID REQUEST!');
-    // }
     const content = operation.requestBody && operation.requestBody.content;
     const mediaType = content && content.mediaTypes[content.activeMimeIdx];
     const endpoint = {
       method: operation.httpVerb,
       path: operation.servers[0].url + operation.path,
     };
-    // console.log('Value: ' + value);
     if (value) {
       value = JSON.parse(value);
     }
@@ -127,7 +116,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
 
       const contentType = result.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
-        // successful cross-domain connect/ability
         const resp = await result.json();
 
         return { json: resp, statusCode: result.status, _fetchRes: result };
@@ -203,11 +191,9 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     for (const mediaType of mediaTypes) {
       if (mediaType.name.indexOf('json') > -1) {
         if (mediaType.schema) {
-          // schema = mediaType.schema;
           schema.rawSchema = mediaType.schema && mediaType.schema.rawSchema;
           console.log('rawSchema : ' + JSON.stringify(schema));
           console.log('schema : ' + JSON.stringify(mediaType.schema.schema));
-          schema._$ref = mediaType.schema && mediaType.schema._$ref;
         }
         break;
       }

@@ -80,10 +80,10 @@ export const FlexLayout = styled.div`
   width: 100%;
 `;
 
-export const ConsoleActionsRow = FlexLayout.extend`
+export const ConsoleActionsRow = styled(FlexLayout)`
   padding: 5px 0px;
 `;
 
-export const FlexLayoutReverse = FlexLayout.extend`
+export const FlexLayoutReverse = styled(FlexLayout)`
   flex-direction: row-reverse;
 `;

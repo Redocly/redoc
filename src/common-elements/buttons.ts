@@ -1,5 +1,4 @@
-import * as React from 'react';
-import styled, { ResolvedThemeInterface, StyledComponentClass } from '../styled-components';
+import styled from '../styled-components';
 
 export const Button = styled.button`
   background: #248fb2;
@@ -10,11 +9,11 @@ export const Button = styled.button`
   padding: 5px;
 `;
 
-export const SendButton = Button.extend`
+export const SendButton = styled(Button)`
   background: #B0045E;
 `;
 
-export const ConsoleButton = Button.extend`
+export const ConsoleButton = styled(Button)`
   background: #e2e2e2;
   color: black;
   float: right;

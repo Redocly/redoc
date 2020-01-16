@@ -10,5 +10,3 @@ import 'core-js/es/symbol';
 
 import 'unfetch/polyfill/index';
 import 'url-polyfill';
-
-import 'whatwg-fetch';

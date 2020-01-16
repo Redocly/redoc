@@ -3,7 +3,7 @@ import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement
 
 import { observer } from 'mobx-react';
 
-import { Badge, ConsoleButton, DarkRightPanel, FlexLayoutReverse, H2, MiddlePanel, Row, Toggle } from '../../common-elements';
+import { Badge, ConsoleButton, DarkRightPanel, FlexLayoutReverse, H2, MiddlePanel, Row } from '../../common-elements';
 
 import { OptionsContext } from '../OptionsProvider';
 
@@ -21,26 +21,17 @@ import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
 import { Extensions } from '../Fields/Extensions';
 
-const OperationRow = Row.extend`
+const OperationRow = styled(Row)`
   backface-visibility: hidden;
   contain: content;
 
   overflow: hidden;
-  position: relative;
-
-  &:after {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: block;
-    content: '';
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
 `;
+
 export interface OperationProps {
   operation: OperationType;
 }
