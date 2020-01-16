@@ -15,10 +15,17 @@ import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
+import { CallbacksList } from '../Callbacks';
+import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
 import { Extensions } from '../Fields/Extensions';
+
+const CallbackMiddlePanel = styled(MiddlePanel)`
+  width: 100%;
+  padding: 0;
+`;
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -42,18 +49,23 @@ export class Operation extends React.Component<OperationProps> {
 
     const { name: summary, description, deprecated, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
+    const AdaptiveMiddlePanel = operation.isCallback ? CallbackMiddlePanel : MiddlePanel;
 
     return (
       <OptionsContext.Consumer>
         {options => (
           <OperationRow>
-            <MiddlePanel>
-              <H2>
-                <ShareLink to={operation.id} />
-                {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-              </H2>
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
-              {hasDescription && (
+            <AdaptiveMiddlePanel>
+              {!operation.isCallback && (
+                <H2>
+                  <ShareLink to={operation.id} />
+                  {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+                </H2>
+              )}
+              {!operation.isCallback && options.pathInMiddlePanel && (
+                <Endpoint operation={operation} inverted={true} />
+              )}
+              {!operation.isCallback && hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
                   {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
@@ -63,12 +75,18 @@ export class Operation extends React.Component<OperationProps> {
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
               <ResponsesList responses={operation.responses} />
-            </MiddlePanel>
-            <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
-              <RequestSamples operation={operation} />
-              <ResponseSamples operation={operation} />
-            </DarkRightPanel>
+              <CallbacksList callbacks={operation.callbacks} />
+            </AdaptiveMiddlePanel>
+            {!operation.isCallback && (
+              <DarkRightPanel>
+                {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+                <RequestSamples operation={operation} />
+                <ResponseSamples operation={operation} />
+                {operation.callbacks.length > 0 && (
+                  <CallbackSamples callbacks={operation.callbacks} />
+                )}
+              </DarkRightPanel>
+            )}
           </OperationRow>
         )}
       </OptionsContext.Consumer>

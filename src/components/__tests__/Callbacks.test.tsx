@@ -22,7 +22,7 @@ describe('Components', () => {
         options,
       );
       const callbackViewElement = shallow(
-        <CallbackView key={callback.name} callback={callback} />,
+        <CallbackView key={callback.name} callbackOperation={callback.operations[0]} />,
       ).getElement();
       expect(callbackViewElement.props).toBeDefined();
       expect(callbackViewElement.props.children).toBeDefined();

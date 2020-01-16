@@ -172,6 +172,14 @@ export class OperationModel implements IMenuItem {
     this.active = false;
   }
 
+  /**
+   * Toggle expansion in middle panel (for callbacks, which are operations)
+   */
+  @action
+  toggle() {
+    this.expanded = !this.expanded;
+  }
+
   expand() {
     if (this.parent) {
       this.parent.expand();

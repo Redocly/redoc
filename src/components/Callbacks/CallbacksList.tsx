@@ -27,7 +27,9 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
       <div>
         <CallbacksHeader> Callbacks </CallbacksHeader>
         {callbacks.map(callback => {
-          return <CallbackView key={callback.name} callback={callback} />;
+          return callback.operations.map(operation => {
+            return <CallbackView key={callback.name} callbackOperation={operation} />;
+          });
         })}
       </div>
     );
