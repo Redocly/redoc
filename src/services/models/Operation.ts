@@ -107,7 +107,6 @@ export class OperationModel implements IMenuItem {
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
-    this.codeSamples = operationSpec['x-code-samples'] || [];
 
     if (this.isCallback) {
       // NOTE: Use callback's event name as the view label, not the operationID.
@@ -122,22 +121,6 @@ export class OperationModel implements IMenuItem {
       this.security = (operationSpec.security || parser.spec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
-    }
-
-    const requestBodyContent = this.requestBody && this.requestBody.content;
-    if (requestBodyContent && requestBodyContent.hasSample) {
-      const insertInx = Math.min(this.codeSamples.length, options.payloadSampleIdx);
-
-      this.codeSamples = [
-        ...this.codeSamples.slice(0, insertInx),
-        {
-          lang: 'payload',
-          label: 'Payload',
-          source: '',
-          requestBodyContent,
-        },
-        ...this.codeSamples.slice(insertInx),
-      ];
     }
 
     const pathInfo = parser.byRef<OpenAPIPath>(
