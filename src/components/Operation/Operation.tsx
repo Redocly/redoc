@@ -1,26 +1,22 @@
-import * as React from 'react';
-import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
-
-import { OptionsContext } from '../OptionsProvider';
-
 import { ShareLink } from '../../common-elements/linkify';
+import { OperationModel as OperationType } from '../../services/models';
+import styled from '../../styled-components';
+import { CallbacksList } from '../Callbacks';
+import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
 import { Endpoint } from '../Endpoint/Endpoint';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
+import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
+import { OptionsContext } from '../OptionsProvider';
 import { Parameters } from '../Parameters/Parameters';
 import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
-import { CallbacksList } from '../Callbacks';
-import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
-
-import { OperationModel as OperationType } from '../../services/models';
-import styled from '../../styled-components';
-import { Extensions } from '../Fields/Extensions';
+import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 const CallbackMiddlePanel = styled(MiddlePanel)`
   width: 100%;

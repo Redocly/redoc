@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+
 import { OpenAPICallback, Referenced } from '../../types';
 import { isOperationName } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';

@@ -4,9 +4,8 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 
 import { OpenAPIParser } from '../../services';
-import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
-
 import { CallbackModel } from '../../services/models/Callback';
+import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
 import { CallbacksList, CallbackTitle, CallbackView } from '../Callbacks';
 import * as simpleCallbackFixture from './fixtures/simple-callback.json';
 
@@ -21,6 +20,7 @@ describe('Components', () => {
         { $ref: '#/components/callbacks/Test' },
         options,
       );
+      // There should be 1 operation defined in simple-callback.json, just get it manually for readability.
       const callbackViewElement = shallow(
         <CallbackView key={callback.name} callbackOperation={callback.operations[0]} />,
       ).getElement();

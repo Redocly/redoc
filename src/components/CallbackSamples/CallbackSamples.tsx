@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { isPayloadSample, RedocNormalizedOptions } from '../../services';
-import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
-import { OptionsContext } from '../OptionsProvider';
+import { isPayloadSample, RedocNormalizedOptions } from '../../services';
 import { CallbackModel } from '../../services/models';
 import { Endpoint } from '../Endpoint/Endpoint';
+import { OptionsContext } from '../OptionsProvider';
+import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
+import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
 export interface CallbackSamplesProps {
   callbacks: CallbackModel[];
