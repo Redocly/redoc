@@ -25,7 +25,10 @@ const specUrl =
   (userUrl && userUrl[1]) || (swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
 let store;
-const options: RedocRawOptions = { nativeScrollbars: false };
+const headers = {
+  'x-nutanix-client': 'ui',
+};
+const options: RedocRawOptions = { nativeScrollbars: false, enableConsole: true, providedByName: 'Intent ApiDocs by Nutanix', providedByUri: 'http://www.nutanix.com', additionalHeaders: headers };
 
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);

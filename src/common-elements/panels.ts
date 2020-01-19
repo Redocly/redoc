@@ -73,3 +73,17 @@ export const Row = styled.div`
     flex-direction: column;
   `};
 `;
+
+export const FlexLayout = styled.div`
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
+`;
+
+export const ConsoleActionsRow = styled(FlexLayout)`
+  padding: 5px 0px;
+`;
+
+export const FlexLayoutReverse = styled(FlexLayout)`
+  flex-direction: row-reverse;
+`;

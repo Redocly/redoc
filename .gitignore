@@ -36,3 +36,6 @@ cli/index.js
 stats.json
 /package-lock.json
 /.idea/
+
+# npmrc for local npm
+.npmrc
