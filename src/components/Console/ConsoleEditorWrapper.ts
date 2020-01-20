@@ -1,5 +1,5 @@
 import {lighten} from 'polished';
-import {styled} from '../../index';
+import styled from '../../styled-components';
 
 export const ConsoleEditorWrapper = styled.div`
   font-family: ${props => props.theme.typography.code.fontFamily};

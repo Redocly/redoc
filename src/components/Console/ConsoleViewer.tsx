@@ -153,7 +153,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const { operation } = this.props;
     const requestBodyContent = operation.requestBody && operation.requestBody.content && operation.requestBody.content;
     const hasBodySample = requestBodyContent && requestBodyContent.hasSample;
-    const samples = operation.codeSamples;
     const mediaTypes = (requestBodyContent && requestBodyContent.mediaTypes) ? requestBodyContent.mediaTypes : [];
     const { result } = this.state;
     return (
@@ -165,9 +164,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
             ref={(editor: any) => (this.consoleEditor = editor)}
           />
         )}
-        {false && samples.map(sample => (
-          <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
-        ))}
         <FlexLayoutReverse>
           <SubmitButton onClick={this.onClickSend} >Send Request</SubmitButton>
         </FlexLayoutReverse>
