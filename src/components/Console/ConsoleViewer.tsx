@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { SendButton } from '../../common-elements/buttons';
-import { ConsoleActionsRow } from '../../common-elements/panels';
+import { SubmitButton } from '../../common-elements/buttons';
+import { FlexLayoutReverse } from '../../common-elements/panels';
 import { FieldModel, OperationModel } from '../../services/models';
 import { OpenAPISchema } from '../../types';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
@@ -30,7 +30,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
   operation: OperationModel;
   additionalHeaders: object;
   visited = new Set();
-  private consoleEditor: ConsoleEditor;
+  private consoleEditor: any;
 
   constructor(props) {
     super(props);
@@ -158,19 +158,19 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const { result } = this.state;
     return (
       <div>
-        <h3> Console </h3>
+        <h3> Request </h3>
         {hasBodySample && (
           <ConsoleEditor
             mediaTypes={mediaTypes}
-            ref={(editor: ConsoleEditor) => (this.consoleEditor = editor)}
+            ref={(editor: any) => (this.consoleEditor = editor)}
           />
         )}
         {false && samples.map(sample => (
           <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
         ))}
-        <ConsoleActionsRow>
-          <SendButton onClick={this.onClickSend} >Send Request</SendButton>
-        </ConsoleActionsRow>
+        <FlexLayoutReverse>
+          <SubmitButton onClick={this.onClickSend} >Send Request</SubmitButton>
+        </FlexLayoutReverse>
         {result &&
           <SourceCodeWithCopy lang="json" source={JSON.stringify(result, null, 2)} />
         }
