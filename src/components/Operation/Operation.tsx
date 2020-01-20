@@ -1,25 +1,25 @@
-import * as React from 'react';
-import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-
 import { observer } from 'mobx-react';
+import * as React from 'react';
 
-import { Badge, ConsoleButton, DarkRightPanel, FlexLayoutReverse, H2, MiddlePanel, Row } from '../../common-elements';
-
-import { OptionsContext } from '../OptionsProvider';
+import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 
 import { ShareLink } from '../../common-elements/linkify';
-import { ConsoleViewer } from '../Console/ConsoleViewer';
-import { Endpoint } from '../Endpoint/Endpoint';
-import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
-import { Markdown } from '../Markdown/Markdown';
-import { Parameters } from '../Parameters/Parameters';
-import { RequestSamples } from '../RequestSamples/RequestSamples';
-import { ResponsesList } from '../Responses/ResponsesList';
-import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
+import { ConsoleViewer } from '../Console/ConsoleViewer';
+import { Endpoint } from '../Endpoint/Endpoint';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Extensions } from '../Fields/Extensions';
+import { Markdown } from '../Markdown/Markdown';
+
+import {SwitchBox} from '../../common-elements/SwitchBox';
+import {OptionsContext } from '../OptionsProvider';
+import {Parameters } from '../Parameters/Parameters';
+import {RequestSamples } from '../RequestSamples/RequestSamples';
+import {ResponsesList } from '../Responses/ResponsesList';
+import {ResponseSamples } from '../ResponseSamples/ResponseSamples';
+import {SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -62,7 +62,6 @@ export class Operation extends React.Component<OperationProps, OperationState> {
 
     const { name: summary, description, deprecated, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
-    const consoleButtonLabel = (executeMode) ? 'Hide Console' : 'Show Console';
 
     return (
       <OptionsContext.Consumer>
@@ -74,9 +73,11 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
               {options.enableConsole &&
-                <FlexLayoutReverse>
-                  <ConsoleButton onClick={this.onConsoleClick}>{consoleButtonLabel}</ConsoleButton>
-                </FlexLayoutReverse>
+                <SwitchBox
+                  onClick={this.onConsoleClick}
+                  checked={this.state.executeMode}
+                  label="Try it out!"
+                />
               }
               {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
               {hasDescription && (
