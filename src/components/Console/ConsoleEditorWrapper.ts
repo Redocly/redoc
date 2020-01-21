@@ -15,8 +15,9 @@ export const ConsoleEditorWrapper = styled.div`
     background: #11171a !important;
     width: 100% !important;
   }
-  & .ace_editor .ace_marker-layer .ace_selection {
+  & .ace_editor .ace_marker-layer .ace_selection, & .ace_editor .ace_marker-layer .ace_selected-word {
     background: ${lighten(0.05, '#11171a')} !important;
+    border-color: ${lighten(0.05, '#11171a')} !important;
   }
   & .ace_editor .ace_marker-layer .ace_active-line {
     background: rgba(0, 0, 0, 0.2);
@@ -30,6 +31,7 @@ export const ConsoleEditorWrapper = styled.div`
   & .ace_editor .ace_line .ace_fold {
     background: none !important;
     color: #aaa;
+    border: none;
   }
   & .ace_editor .ace_line .ace_fold:hover {
     background: none !important;

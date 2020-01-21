@@ -46,8 +46,13 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
             enableSnippets: true,
             showLineNumbers: true,
             tabSize: 2,
+            fontFamily: 'Courier,monospace,Vazir',
+            displayIndentGuides: false,
           }}
-          fontSize={15}
+          fontSize={13}
+          style={{
+            lineHeight: '23px',
+          }}
           mode="json"
           name="request-builder-editor"
           editorProps={{ $blockScrolling: true }}
