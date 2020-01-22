@@ -8,7 +8,8 @@ import 'brace/mode/json';
 import 'brace/theme/github';
 import 'brace/theme/monokai';
 
-import { MediaTypeModel } from '../../services/models';
+import {MediaTypeModel} from '../../services/models';
+import {ConsoleEditorWrapper} from './ConsoleEditorWrapper';
 
 export interface ConsoleEditorProps {
   mediaTypes: MediaTypeModel[];
@@ -37,7 +38,7 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
     }
 
     return (
-      <div>
+      <ConsoleEditorWrapper>
         <AceEditor
           setOptions={{
             enableBasicAutocompletion: true,
@@ -46,17 +47,14 @@ export class ConsoleEditor extends React.Component<ConsoleEditorProps> {
             showLineNumbers: true,
             tabSize: 2,
           }}
-          fontSize={10}
+          fontSize={15}
           mode="json"
-          theme="monokai"
           name="request-builder-editor"
           editorProps={{ $blockScrolling: true }}
           value={JSON.stringify(sample, null, 2)}
           ref={(ace: AceEditor) => (this.editor = ace)}
-          width="100%"
-          height="400px"
         />
-      </div>
+      </ConsoleEditorWrapper>
     );
   }
 

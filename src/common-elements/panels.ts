@@ -1,16 +1,18 @@
 import { SECTION_ATTR } from '../services/MenuStore';
 import styled, { media } from '../styled-components';
 
-export const MiddlePanel = styled.div`
+export const MiddlePanel = styled.div<{ compact?: boolean }>`
   width: calc(100% - ${props => props.theme.rightPanel.width});
   padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
   direction: ${props => props.theme.typography.direction || 'ltr'};
   text-align: ${props => (props.theme.typography.direction === 'rtl') ? 'right' : 'inherit'};
 
-  ${media.lessThan('medium', true)`
+  ${({ compact, theme }) =>
+    media.lessThan('medium', true)`
     width: 100%;
-    padding: ${props =>
-      `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
+    padding: ${`${compact ? 0 : theme.spacing.sectionVertical}px ${
+      theme.spacing.sectionHorizontal
+    }px`};
   `};
 `;
 
@@ -78,10 +80,6 @@ export const FlexLayout = styled.div`
   align-items: flex-end;
   display: flex;
   width: 100%;
-`;
-
-export const ConsoleActionsRow = styled(FlexLayout)`
-  padding: 5px 0px;
 `;
 
 export const FlexLayoutReverse = styled(FlexLayout)`

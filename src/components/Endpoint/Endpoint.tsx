@@ -5,7 +5,7 @@ import { Markdown } from '../Markdown/Markdown';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
-import { getBasePath } from '../../utils';
+import { expandDefaultServerVariables, getBasePath } from '../../utils';
 import {
   EndpointInfo,
   HttpVerb,
@@ -61,15 +61,18 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
             </EndpointInfo>
             <ServersOverlay expanded={expanded}>
               {operation.servers.map(server => {
+                const normalizedUrl = options.expandDefaultServerVariables
+                  ? expandDefaultServerVariables(server.url, server.variables)
+                  : server.url;
                 return (
-                  <ServerItem key={server.url}>
+                  <ServerItem key={normalizedUrl}>
                     <Markdown source={server.description || ''} compact={true} />
                     <SelectOnClick>
                       <ServerUrl>
                         <span>
                           {hideHostname || options.hideHostname
-                            ? getBasePath(server.url)
-                            : server.url}
+                            ? getBasePath(normalizedUrl)
+                            : normalizedUrl}
                         </span>
                         {operation.path}
                       </ServerUrl>

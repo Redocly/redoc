@@ -44,9 +44,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     if (discriminatorProp !== undefined) {
       if (!oneOf || !oneOf.length) {
         throw new Error(
-          `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${
-            schema.title
-          }`,
+          `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${schema.title}`,
         );
       }
       return (
@@ -66,9 +64,9 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
 
     switch (type) {
       case 'object':
-        return <ObjectSchema {...this.props as any} />;
+        return <ObjectSchema {...(this.props as any)} />;
       case 'array':
-        return <ArraySchema {...this.props as any} />;
+        return <ArraySchema {...(this.props as any)} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
