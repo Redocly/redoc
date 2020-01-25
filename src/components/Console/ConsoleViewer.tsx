@@ -4,6 +4,7 @@ import { SendButton } from '../../common-elements/buttons';
 import { ConsoleActionsRow } from '../../common-elements/panels';
 import { FieldModel, OperationModel } from '../../services/models';
 import { OpenAPISchema } from '../../types';
+import { ConsoleResponse } from '../ConsoleResponse/Response';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ConsoleEditor } from './ConsoleEditor';
 
@@ -14,6 +15,7 @@ export interface ConsoleViewerProps {
   additionalHeaders?: object;
   queryParamPrefix?: string;
   queryParamSuffix?: string;
+  urlIndex: number;
 }
 
 export interface ConsoleViewerState {
@@ -47,7 +49,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const mediaType = content && content.mediaTypes[content.activeMimeIdx];
     const endpoint = {
       method: operation.httpVerb,
-      path: operation.servers[0].url + operation.path,
+      path: operation.servers[this.props.urlIndex].url + operation.path,
     };
     if (value) {
       value = JSON.parse(value);
@@ -172,7 +174,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
           <SendButton onClick={this.onClickSend} >Send Request</SendButton>
         </ConsoleActionsRow>
         {result &&
-          <SourceCodeWithCopy lang="json" source={JSON.stringify(result, null, 2)} />
+          <ConsoleResponse response={result} />
         }
       </div>
     );
