@@ -9,12 +9,15 @@ export const Button = styled.button`
   padding: 5px;
 `;
 
-export const SendButton = styled(Button)`
-  background: #B0045E;
-`;
-
-export const ConsoleButton = styled(Button)`
-  background: #e2e2e2;
-  color: black;
-  float: right;
+export const SubmitButton = styled(Button)`
+  background: ${props => props.theme.colors.primary.main}
+  padding: 10px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  margin: 1em 0;
+  min-width: 60px;
+  font-weight: bold;
+  order: 1;
 `;
