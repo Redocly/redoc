@@ -6,6 +6,7 @@ import 'prismjs/components/prism-coffeescript.js';
 import 'prismjs/components/prism-cpp.js';
 import 'prismjs/components/prism-csharp.js';
 import 'prismjs/components/prism-go.js';
+import 'prismjs/components/prism-http.js';
 import 'prismjs/components/prism-java.js';
 import 'prismjs/components/prism-lua.js';
 import 'prismjs/components/prism-markup-templating.js'; // dep of php
@@ -65,7 +66,7 @@ export function mapLang(lang: string): string {
  * Highlight source code string using Prism.js
  * @param source source code to highlight
  * @param lang highlight language
- * @return highlighted souce code as **html string**
+ * @return highlighted source code as **html string**
  */
 export function highlight(source: string, lang: string = DEFAULT_LANG): string {
   lang = lang.toLowerCase();
@@ -73,5 +74,5 @@ export function highlight(source: string, lang: string = DEFAULT_LANG): string {
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];
   }
-  return Prism.highlight(source, grammar);
+  return Prism.highlight(source, grammar, lang);
 }

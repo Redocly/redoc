@@ -32,7 +32,7 @@ const configDir = './benchmark/revisions/config.js';
 console.log(`Writing config "${configDir}"`);
 fs.writeFileSync(configDir, configFile);
 
-console.log('Starging benchmark server');
+console.log('Starting benchmark server');
 const proc = spawn('npm', ['run', 'start:benchmark']);
 
 proc.stdout.on('data', data => {

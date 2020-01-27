@@ -22,7 +22,7 @@ describe('Models', () => {
       expect(resp.type).toEqual('error');
     });
 
-    test('default should be sucessful by default', () => {
+    test('default should be successful by default', () => {
       const resp = new ResponseModel(parser, 'default', false, {}, opts);
       expect(resp.type).toEqual('success');
     });

@@ -38,7 +38,7 @@ info:
     OAuth2 - an open protocol to allow secure authorization in a simple
     and standard method from web, mobile and desktop applications.
 
-    <security-definitions />
+    <SecurityDefinitions />
 
   version: 1.0.0
   title: Swagger Petstore
@@ -63,6 +63,14 @@ tags:
     description: Access to Petstore orders
   - name: user
     description: Operations about user
+  - name: pet_model
+    x-displayName: The Pet Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: The Order Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 x-tagGroups:
   - name: General
     tags:
@@ -71,9 +79,21 @@ x-tagGroups:
   - name: User Management
     tags:
       - user
+  - name: Models
+    tags:
+      - pet_model
+      - store_model
 paths:
   /pet:
     parameters:
+      - name: Accept-Language
+        in: header
+        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        example: en-US
+        required: false
+        schema:
+          type: string
+          default: en-AU
       - name: cookieParam
         in: cookie
         description: Some cookie
@@ -286,7 +306,7 @@ paths:
       tags:
         - pet
       summary: Finds Pets by status
-      description: Multiple status values can be provided with comma seperated strings
+      description: Multiple status values can be provided with comma separated strings
       operationId: findPetsByStatus
       parameters:
         - name: status
@@ -331,7 +351,7 @@ paths:
         - pet
       summary: Finds Pets by tags
       description: >-
-        Muliple tags can be provided with comma seperated strings. Use tag1,
+        Multiple tags can be provided with comma separated strings. Use tag1,
         tag2, tag3 for testing.
       operationId: findPetsByTags
       deprecated: true
@@ -611,7 +631,7 @@ paths:
                 type: integer
                 format: int32
             X-Expires-After:
-              description: date in UTC when toekn expires
+              description: date in UTC when token expires
               schema:
                 type: string
                 format: date-time
@@ -666,6 +686,7 @@ components:
               type: string
               description: The measured skill for hunting
               default: lazy
+              example: adventurous
               enum:
                 - clueless
                 - lazy
@@ -717,6 +738,7 @@ components:
               type: number
               description: Average amount of honey produced per day in ounces
               example: 3.14
+              multipleOf: .01
           required:
             - honeyPerDay
     Id:
@@ -754,6 +776,11 @@ components:
           description: Indicates whenever order was completed or not
           type: boolean
           default: false
+          readOnly: true
+        requestId:
+          description: Unique Request Id
+          type: string
+          writeOnly: true
       xml:
         name: Order
     Pet:
@@ -866,14 +893,13 @@ components:
             as well as digits
           format: password
           minLength: 8
-          pattern: '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: drowssaP123
         phone:
           description: User phone number in international format
           type: string
-          pattern: '^\+(?:[0-9]-?){6,14}[0-9]$'
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
           example: +1-202-555-0192
-          nullable: true
         userStatus:
           description: User status
           type: integer
@@ -926,3 +952,10 @@ components:
       type: apiKey
       name: api_key
       in: header
+  examples:
+    Order:
+      value:
+        quantity: 1,
+        shipDate: 2018-10-19T16:46:45Z,
+        status: placed,
+        complete: false

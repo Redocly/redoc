@@ -49,7 +49,7 @@ export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
             <strong> Scopes: </strong>
           </div>
           <ul>
-            {Object.keys(flow!.scopes).map(scope => (
+            {Object.keys(flow!.scopes || {}).map(scope => (
               <li key={scope}>
                 <code>{scope}</code> - <Markdown inline={true} source={flow!.scopes[scope] || ''} />
               </li>
@@ -80,7 +80,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
               <table className="security-details">
                 <tbody>
                   <tr>
-                    <th> Security scheme type: </th>
+                    <th> Security Scheme Type </th>
                     <td> {AUTH_TYPES[scheme.type] || scheme.type} </td>
                   </tr>
                   {scheme.apiKey ? (

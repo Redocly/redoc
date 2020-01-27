@@ -13,7 +13,7 @@ describe('History service', () => {
     expect(fn).toHaveBeenCalled();
   });
 
-  test('History subscribe should return unsubsribe function', () => {
+  test('History subscribe should return unsubscribe function', () => {
     const fn = jest.fn();
     const unsubscribe = history.subscribe(fn);
     history.emit();

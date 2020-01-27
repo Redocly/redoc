@@ -34,6 +34,7 @@
     "e2e/**"
   ],
   "include": [
+    "cli/index.ts",
     "./custom.d.ts",
     "./demo/playground/hmr-playground.tsx",
     "./src/**/*.ts?",

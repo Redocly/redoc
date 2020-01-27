@@ -5,7 +5,7 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
-  // bundle in moudules that need transpiling + non-js (e.g. css)
+  // bundle in modules that need transpiling + non-js (e.g. css)
   whitelist: [
     'swagger2openapi',
     /reftools/,

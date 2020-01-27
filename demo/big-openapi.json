@@ -53,7 +53,7 @@
     },
     {
       "name": "Contacts",
-      "description": "Contacts are Customer's address book.\nAll contact information used in Invoices, Subscriptions, Transacions, etc is enlisted here. Hovewer, changing a Contact won't change corresponding contact information in related resources\n"
+      "description": "Contacts are Customer's address book.\nAll contact information used in Invoices, Subscriptions, Transacions, etc is enlisted here. However, changing a Contact won't change corresponding contact information in related resources\n"
     },
     {
       "name": "Coupons",
@@ -93,7 +93,7 @@
     },
     {
       "name": "Files",
-      "description": "A File is an entity that can store a phyiscal file and some metadata. It also provides an easy access to\nits size, mime-type, user-defined tags and description thus allowing easy sorting and searching among stored\nfiles.\nThere are several methods of file uploading available: multipart/form-data encoded form, RAW POST (by sending\nfile contents as POST body), fetching from URL (by providing the file URL via 'url' param)\nAttachment is an entity that is used to link a File to one or multiple objects like Customer, Dispute, Payment,\nTransaction, Subscription, Plan, Product, Invoice, Note. That allows to quickly find and use files related to\nthose specific entities.\n"
+      "description": "A File is an entity that can store a physical file and some metadata. It also provides an easy access to\nits size, mime-type, user-defined tags and description thus allowing easy sorting and searching among stored\nfiles.\nThere are several methods of file uploading available: multipart/form-data encoded form, RAW POST (by sending\nfile contents as POST body), fetching from URL (by providing the file URL via 'url' param)\nAttachment is an entity that is used to link a File to one or multiple objects like Customer, Dispute, Payment,\nTransaction, Subscription, Plan, Product, Invoice, Note. That allows to quickly find and use files related to\nthose specific entities.\n"
     },
     {
       "name": "Gateway Accounts",
@@ -15623,7 +15623,7 @@
         "description": "Reset user password\n",
         "responses": {
           "201": {
-            "description": "Password was reseted successfully",
+            "description": "Password was reset successfully",
             "headers": {
               "Rate-Limit-Limit": {
                 "description": "The number of allowed requests in the current period",
@@ -23851,17 +23851,17 @@
             "type": "string"
           },
           "totpRequired": {
-            "description": "The user setting of two-factor authentification",
+            "description": "The user setting of two-factor authentication",
             "readOnly": true,
             "type": "boolean"
           },
           "totpSecret": {
-            "description": "The user TOTP key for authentification app (if TOTP enabled)",
+            "description": "The user TOTP key for authentication app (if TOTP enabled)",
             "readOnly": true,
             "type": "string"
           },
           "totpUrl": {
-            "description": "The user link to QR-code for TOTP authentification app (if TOTP enabled)",
+            "description": "The user link to QR-code for TOTP authentication app (if TOTP enabled)",
             "readOnly": true,
             "type": "string",
             "format": "url"
@@ -24250,7 +24250,7 @@
           },
           "bodyHtml": {
             "type": "string",
-            "description": "Leave empty to recieve \"text/plain\" email.\nThe template palceholders are allowed.\n"
+            "description": "Leave empty to receive \"text/plain\" email.\nThe template palceholders are allowed.\n"
           }
         },
         "required": [
@@ -26495,15 +26495,15 @@
             }
           },
           "totpRequired": {
-            "description": "The user setting of two-factor authentification",
+            "description": "The user setting of two-factor authentication",
             "type": "boolean"
           },
           "totpSecret": {
-            "description": "The user TOTP key for authentification app (if TOTP enabled)",
+            "description": "The user TOTP key for authentication app (if TOTP enabled)",
             "type": "string"
           },
           "totpUrl": {
-            "description": "The user link to QR-code for TOTP authentification app (if TOTP enabled)",
+            "description": "The user link to QR-code for TOTP authentication app (if TOTP enabled)",
             "type": "string",
             "format": "url"
           },
@@ -26984,7 +26984,7 @@
       "collectionExpand": {
         "name": "expand",
         "in": "query",
-        "description": "Expand response to get full related object intead of ID.  See the expand guide for more info.",
+        "description": "Expand response to get full related object instead of ID.  See the expand guide for more info.",
         "schema": {
           "type": "string"
         }

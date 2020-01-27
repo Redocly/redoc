@@ -1,6 +1,6 @@
 import * as marked from 'marked';
 
-import { highlight, safeSlugify } from '../utils';
+import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
 import { AppStore } from './AppStore';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
@@ -45,6 +45,14 @@ export class MarkdownRenderer {
     return compRegexp.test(rawText);
   }
 
+  static getTextBeforeHading(md: string, heading: string): string {
+    const headingLinePos = md.search(new RegExp(`^##?\\s+${heading}`, 'm'));
+    if (headingLinePos > -1) {
+      return md.substring(0, headingLinePos);
+    }
+    return md;
+  }
+
   headings: MarkdownHeading[] = [];
   currentTopHeading: MarkdownHeading;
 
@@ -65,6 +73,7 @@ export class MarkdownRenderer {
     container: MarkdownHeading[] = this.headings,
     parentId?: string,
   ): MarkdownHeading {
+    name = unescapeHTMLChars(name);
     const item = {
       id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
@@ -88,7 +97,7 @@ export class MarkdownRenderer {
   }
 
   attachHeadingsDescriptions(rawText: string) {
-    const buildRegexp = heading => {
+    const buildRegexp = (heading: MarkdownHeading) => {
       return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
     };
 
@@ -118,7 +127,12 @@ export class MarkdownRenderer {
       .trim();
   }
 
-  headingRule = (text: string, level: number, raw: string, slugger: marked.Slugger) => {
+  headingRule = (
+    text: string,
+    level: 1 | 2 | 3 | 4 | 5 | 6,
+    raw: string,
+    slugger: marked.Slugger,
+  ) => {
     if (level === 1) {
       this.currentTopHeading = this.saveHeading(text, level);
     } else if (level === 2) {

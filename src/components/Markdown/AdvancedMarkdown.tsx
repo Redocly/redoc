@@ -25,7 +25,7 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
   renderWithOptionsAndStore(options: RedocNormalizedOptions, store?: AppStore) {
     const { source, htmlWrap = i => i } = this.props;
     if (!store) {
-      throw new Error('When using componentes in markdown, store prop must be provided');
+      throw new Error('When using components in markdown, store prop must be provided');
     }
 
     const renderer = new MarkdownRenderer(options);
