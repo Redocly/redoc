@@ -6,7 +6,7 @@ import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
   padding: 10px;
-  border-radius: 2px;
+  border-radius: 6px;
   margin-bottom: 4px;
   line-height: 1.5em;
   background-color: #f2f2f2;

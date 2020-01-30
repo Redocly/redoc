@@ -126,6 +126,7 @@ const defaultTheme: ThemeInterface = {
     width: '260px',
     backgroundColor: '#F3F6FB',
     textColor: '#232E72',
+    activeTextColor: '#232E72',
     groupItems: {
       textTransform: 'uppercase',
     },
@@ -308,6 +309,7 @@ export interface ResolvedThemeInterface {
     width: string;
     backgroundColor: string;
     textColor: string;
+    activeTextColor: string;
     groupItems: {
       textTransform: string;
     };

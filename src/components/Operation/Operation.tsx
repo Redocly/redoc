@@ -4,8 +4,6 @@ import { OperationPanel } from '../RightPanelContent/OperationPanel';
 
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 
-import { ShareLink } from '../../common-elements/linkify';
-
 import { OperationModel as OperationType } from '../../services/models';
 import styled from '../../styled-components';
 import { Endpoint } from '../Endpoint/Endpoint';
@@ -13,10 +11,12 @@ import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocument
 import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
 
+import { shortenHTTPVerb } from '../../utils';
 import { OptionsContext } from '../OptionsProvider';
 import { Parameters } from '../Parameters/Parameters';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { OperationBadge } from '../SideMenu';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -46,6 +46,29 @@ export class Operation extends React.Component<OperationProps> {
         {options => (
           <OperationRow>
             <MiddlePanel>
+              <div style={{display: 'flex'}}>
+                <div style={{zoom: '125%'}}>
+                  <OperationBadge type={operation.httpVerb}>{shortenHTTPVerb(operation.httpVerb)}</OperationBadge>
+                </div>
+                <div style={{margin: '-24px 0 0 7px'}}>
+                  <div style={{fontWeight: 'bolder'}}>
+                    <H2>
+                      {/*<ShareLink to={operation.id}/>*/}
+                      {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+                    </H2>
+                  </div>
+                  <div style={{marginTop: '-20px'}}>
+                    {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true}/>}
+                    {hasDescription && (
+                      <Description>
+                        {description !== undefined && <Markdown source={description}/>}
+                        {externalDocs && <ExternalDocumentation externalDocs={externalDocs}/>}
+                      </Description>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/*<OperationBadge type={operation.httpVerb}>{shortenHTTPVerb(operation.httpVerb)}</OperationBadge>
               <H2>
                 <ShareLink to={operation.id}/>
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
@@ -56,7 +79,7 @@ export class Operation extends React.Component<OperationProps> {
                   {description !== undefined && <Markdown source={description}/>}
                   {externalDocs && <ExternalDocumentation externalDocs={externalDocs}/>}
                 </Description>
-              )}
+              )}*/}
               <Extensions extensions={operation.extensions}/>
               <SecurityRequirements securities={operation.security}/>
               <Parameters parameters={operation.parameters} body={operation.requestBody}/>
