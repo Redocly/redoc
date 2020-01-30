@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { Constants } from '../../../src/services/Constants';
 import { DarkRightPanel, StyledLink } from '../../../src/common-elements';
+import { Constants } from '../../../src/services/Constants';
 import { ContentPanel } from '../RightPanelContent/ContentPanel';
 
 import { MiddlePanel, Row, Section } from '../../common-elements/';
@@ -10,7 +10,7 @@ import { AppStore } from '../../services/AppStore';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
-import { ApiHeader, DownloadButton, InfoSpan, InfoSpanBox, InfoSpanBoxWrap, } from './styled.elements';
+import { ApiHeader, DownloadButton, InfoSpan, InfoSpanBox, InfoSpanBoxWrap } from './styled.elements';
 
 export interface ApiInfoProps {
   store: AppStore;
