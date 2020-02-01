@@ -38,6 +38,7 @@ export interface OperationProps {
 
 export interface OperationState {
   executeMode: boolean;
+  urlIndex: number;
 }
 
 @observer
@@ -47,6 +48,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     super(props);
     this.state = {
       executeMode: false,
+      urlIndex: 0,
     };
   }
 
@@ -79,7 +81,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                   label="Try it out!"
                 />
               }
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true}  handleUrl={this.onUrlChanged}/>}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
@@ -92,10 +94,10 @@ export class Operation extends React.Component<OperationProps, OperationState> {
               <ResponsesList responses={operation.responses} />
             </MiddlePanel>
             <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              {!options.pathInMiddlePanel && <Endpoint operation={operation}  handleUrl={this.onUrlChanged}/>}
               {executeMode &&
                 <div>
-                  <ConsoleViewer operation={operation} additionalHeaders={options.additionalHeaders} queryParamPrefix={options.queryParamPrefix} queryParamSuffix={options.queryParamSuffix} />
+                  <ConsoleViewer urlIndex={this.state.urlIndex} operation={operation} additionalHeaders={options.additionalHeaders} queryParamPrefix={options.queryParamPrefix} queryParamSuffix={options.queryParamSuffix} />
                 </div>
               }
               {!executeMode &&
@@ -109,5 +111,10 @@ export class Operation extends React.Component<OperationProps, OperationState> {
         )}
       </OptionsContext.Consumer>
     );
+  }
+  onUrlChanged = (index= 0) => {
+    this.setState({
+      urlIndex: index,
+    });
   }
 }
