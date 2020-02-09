@@ -1543,10 +1543,10 @@ readdirp@^3.1.1:
   dependencies:
     picomatch "^2.0.4"
 
-redoc@2.0.0-rc.21:
-  version "2.0.0-rc.21"
-  resolved "https://registry.yarnpkg.com/redoc/-/redoc-2.0.0-rc.21.tgz#cf780f82364cbef0bf85cdd63a722fa03b4d4f3d"
-  integrity sha512-dLyzwNRkcipssE10bUwOrbQWLYA1uWXVQJ81xb8o4H/h31lksZ4OcPMX0OlSHGfNAxW3RicRoAJH6hBknv1r+w==
+redoc@2.0.0-rc.23:
+  version "2.0.0-rc.23"
+  resolved "https://registry.yarnpkg.com/redoc/-/redoc-2.0.0-rc.23.tgz#3b8a47d9357e6ee52a0d93d08fb03ce00f424728"
+  integrity sha512-ifrewYzrCrGBv6bFSh5FEnDTywVm6IL/VEb7PUpVPCC1lMceMAB1HrlyKlBCyNqjq9LcRO+y9q881LfPXS4PUw==
   dependencies:
     classnames "^2.2.6"
     decko "^1.2.0"
