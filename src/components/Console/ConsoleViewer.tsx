@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { SecuritySchemeModel } from '../../../typings/services/models';
 import { SubmitButton } from '../../common-elements/buttons';
 import { FlexLayoutReverse } from '../../common-elements/panels';
-import { FieldModel, OperationModel } from '../../services/models';
-import { OpenAPISchema } from '../../types';
+import { FieldModel, OperationModel, SecuritySchemesModel } from '../../services/models';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ConsoleEditor } from './ConsoleEditor';
 
@@ -14,6 +14,7 @@ export interface ConsoleViewerProps {
   additionalHeaders?: object;
   queryParamPrefix?: string;
   queryParamSuffix?: string;
+  securitySchemes: SecuritySchemesModel;
 }
 
 export interface ConsoleViewerState {
@@ -22,7 +23,6 @@ export interface ConsoleViewerState {
 
 export interface Schema {
   _$ref?: any;
-  rawSchema?: OpenAPISchema;
 }
 
 @observer
@@ -40,7 +40,8 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
   }
   onClickSend = async () => {
     const ace = this.consoleEditor && this.consoleEditor.editor;
-    const { operation, additionalHeaders = {} } = this.props;
+    const { operation, securitySchemes: {schemes}, additionalHeaders = {} } = this.props;
+
     let value = ace && ace.editor.getValue();
 
     const content = operation.requestBody && operation.requestBody.content;
@@ -54,7 +55,23 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     }
     const contentType = mediaType && mediaType.name || 'application/json';
     const contentTypeHeader = { 'Content-Type': contentType };
-    const headers = { ...additionalHeaders, ...contentTypeHeader };
+
+    const schemeMapper: Map<string, SecuritySchemeModel> = new Map<string, SecuritySchemeModel>();
+    schemes.forEach(scheme => {
+      schemeMapper.set(scheme.id, scheme);
+    });
+
+    const securityHeaders: Dict<string | undefined> = {};
+
+    operation.security.forEach(({schemes: [{ id }]}) => {
+      if (schemeMapper.has(id)) {
+        // this part of code needs a ts-ignore because typescript couldn't detect that schemeMapper.get(id) -
+        // has been checked to avoid token of undefined.
+        // @ts-ignore
+        securityHeaders[id] = schemeMapper.get(id).token;
+      }
+    });
+    const headers = { ...additionalHeaders, ...contentTypeHeader, ...securityHeaders };
     let result;
     try {
       result = await this.invoke(endpoint, value, headers);
@@ -76,8 +93,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const queryParamSuffix = '}';
 
     for (const fieldModel of params) {
-      console.log(fieldModel.name + ' ' + url);
-      console.log(fieldModel.$value);
       if (url.indexOf(`${queryParamPrefix}${fieldModel.name}${queryParamSuffix}`) > -1 && fieldModel.$value.length > 0) {
         url = url.replace(`${queryParamPrefix}${fieldModel.name}${queryParamSuffix}`, fieldModel.$value);
       }
@@ -106,7 +121,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
 
       const request = new Request(url, {
         method: endpoint.method,
-        credentials: 'include',
         redirect: 'manual',
         headers: myHeaders,
         body: (body) ? JSON.stringify(body) : undefined,
@@ -172,30 +186,5 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         }
       </div>
     );
-  }
-
-  getSchema() {
-    const { operation } = this.props;
-    const requestBodyContent = operation.requestBody && operation.requestBody.content && operation.requestBody.content;
-    const mediaTypes = (requestBodyContent && requestBodyContent.mediaTypes) ? requestBodyContent.mediaTypes : [];
-
-    if (!mediaTypes.length) {
-      return null;
-    }
-    const schema: Schema = {
-    };
-    for (const mediaType of mediaTypes) {
-      if (mediaType.name.indexOf('json') > -1) {
-        if (mediaType.schema) {
-          schema.rawSchema = mediaType.schema && mediaType.schema.rawSchema;
-          console.log('rawSchema : ' + JSON.stringify(schema));
-          console.log('schema : ' + JSON.stringify(mediaType.schema.schema));
-        }
-        break;
-      }
-    }
-
-    return schema;
-
   }
 }

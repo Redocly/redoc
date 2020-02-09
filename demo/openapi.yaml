@@ -1,8 +1,8 @@
 openapi: 3.0.0
 servers:
-  - url: //petstore.swagger.io/v2
+  - url: https://petstore.swagger.io/v2
     description: Default server
-  - url: //petstore.swagger.io/sandbox
+  - url: https://petstore.swagger.io/sandbox
     description: Sandbox server
 info:
   description: |
@@ -101,7 +101,7 @@ paths:
         '405':
           description: Invalid input
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
       x-code-samples:
@@ -149,7 +149,7 @@ paths:
         '405':
           description: Validation exception
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
       x-code-samples:
@@ -217,7 +217,7 @@ paths:
         '405':
           description: Invalid input
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
       requestBody:
@@ -256,7 +256,7 @@ paths:
         '400':
           description: Invalid pet value
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
   '/pet/{petId}/uploadImage':
@@ -282,7 +282,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
       requestBody:
@@ -332,7 +332,7 @@ paths:
         '400':
           description: Invalid status value
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
   /pet/findByTags:
@@ -372,7 +372,7 @@ paths:
         '400':
           description: Invalid tag value
       security:
-        - petstore_auth:
+        - authorization:
             - 'write:pets'
             - 'read:pets'
   /store/inventory:
@@ -923,7 +923,7 @@ components:
       description: List of user object
       required: true
   securitySchemes:
-    petstore_auth:
+    authorization:
       description: |
         Get access to data while protecting your account credentials.
         OAuth2 is also a safer and more secure way to give you access.

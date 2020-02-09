@@ -5,7 +5,7 @@ import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elemen
 
 import { ShareLink } from '../../common-elements/linkify';
 
-import { OperationModel as OperationType } from '../../services/models';
+import { OperationModel as OperationType, SecuritySchemesModel } from '../../services/models';
 import styled from '../../styled-components';
 import { ConsoleViewer } from '../Console/ConsoleViewer';
 import { Endpoint } from '../Endpoint/Endpoint';
@@ -34,6 +34,7 @@ const Description = styled.div`
 
 export interface OperationProps {
   operation: OperationType;
+  securitySchemes: SecuritySchemesModel;
 }
 
 export interface OperationState {
@@ -57,7 +58,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
   }
 
   render() {
-    const { operation } = this.props;
+    const { operation, securitySchemes } = this.props;
     const { executeMode } = this.state;
 
     const { name: summary, description, deprecated, externalDocs } = operation;
@@ -95,7 +96,13 @@ export class Operation extends React.Component<OperationProps, OperationState> {
               {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
               {executeMode &&
                 <div>
-                  <ConsoleViewer operation={operation} additionalHeaders={options.additionalHeaders} queryParamPrefix={options.queryParamPrefix} queryParamSuffix={options.queryParamSuffix} />
+                  <ConsoleViewer
+                    securitySchemes={securitySchemes}
+                    operation={operation}
+                    additionalHeaders={options.additionalHeaders}
+                    queryParamPrefix={options.queryParamPrefix}
+                    queryParamSuffix={options.queryParamSuffix}
+                  />
                 </div>
               }
               {!executeMode &&

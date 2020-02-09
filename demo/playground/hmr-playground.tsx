@@ -25,9 +25,7 @@ const specUrl =
   (userUrl && userUrl[1]) || (swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
 let store;
-const headers = {
-  'x-nutanix-client': 'ui',
-};
+const headers = {};
 const options: RedocRawOptions = { nativeScrollbars: false, enableConsole: true, providedByName: 'Intent ApiDocs by Nutanix', providedByUri: 'http://www.nutanix.com', additionalHeaders: headers };
 
 async function init() {
