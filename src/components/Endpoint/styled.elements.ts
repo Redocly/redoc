@@ -4,6 +4,26 @@ export const OperationEndpointWrap = styled.div`
   cursor: pointer;
   position: relative;
   margin-bottom: 5px;
+  .showToolTip {
+    visibility: initial;
+    background-color: white;
+    color: black;
+    padding: 3px;
+    position: initial;
+    width: 53px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  };
+  .hideToolTip {
+    visibility:hidden;
+    padding: 3px;
+    position: initial;
+    width: 53px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
 `;
 
 export const ServerRelativeURL = styled.span`
@@ -66,16 +86,28 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
 
 export const ServerItem = styled.div`
   padding: 10px;
+  background-color: #002c2d;
+  color: white;
+  display: flex;
+  flex-wrap: nowrap;
+  &.selected {
+      background-color: #3c7173;
+  }
+  div:first-child {
+      width: 20%;
+      padding-top: 5px;
+      }
 `;
 
 export const ServerUrl = styled.div`
   text-align: left;
-  padding: 5px;
-  border: 1px solid #ccc;
-  background: #fff;
+  user-select: none;
+  padding: 5px !important;
+  background-color: #ffffff33;
   word-break: break-all;
-  color: ${props => props.theme.colors.primary.main};
+  width: 100% !important;
+  color: #00ff1c;
   > span {
-    color: ${props => props.theme.colors.text.primary};
+    color: white;
   };
 `;

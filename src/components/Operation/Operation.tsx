@@ -39,6 +39,7 @@ export interface OperationProps {
 
 export interface OperationState {
   executeMode: boolean;
+  urlIndex: number;
 }
 
 @observer
@@ -48,6 +49,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     super(props);
     this.state = {
       executeMode: false,
+      urlIndex: 0,
     };
   }
 
@@ -59,7 +61,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
 
   render() {
     const { operation, securitySchemes } = this.props;
-    const { executeMode } = this.state;
+    const { executeMode, urlIndex } = this.state;
 
     const { name: summary, description, deprecated, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
@@ -80,7 +82,7 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                   label="Try it out!"
                 />
               }
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} handleUrl={this.onUrlChanged}/>}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
@@ -93,12 +95,13 @@ export class Operation extends React.Component<OperationProps, OperationState> {
               <ResponsesList responses={operation.responses} />
             </MiddlePanel>
             <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              {!options.pathInMiddlePanel && <Endpoint operation={operation} handleUrl={this.onUrlChanged}/>}
               {executeMode &&
                 <div>
                   <ConsoleViewer
                     securitySchemes={securitySchemes}
                     operation={operation}
+                    urlIndex={urlIndex}
                     additionalHeaders={options.additionalHeaders}
                     queryParamPrefix={options.queryParamPrefix}
                     queryParamSuffix={options.queryParamSuffix}
@@ -116,5 +119,10 @@ export class Operation extends React.Component<OperationProps, OperationState> {
         )}
       </OptionsContext.Consumer>
     );
+  }
+  onUrlChanged = (index= 0) => {
+    this.setState({
+      urlIndex: index,
+    });
   }
 }

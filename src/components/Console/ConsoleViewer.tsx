@@ -4,6 +4,7 @@ import { SecuritySchemeModel } from '../../../typings/services/models';
 import { SubmitButton } from '../../common-elements/buttons';
 import { FlexLayoutReverse } from '../../common-elements/panels';
 import { FieldModel, OperationModel, SecuritySchemesModel } from '../../services/models';
+import { ConsoleResponse } from '../ConsoleResponse/Response';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ConsoleEditor } from './ConsoleEditor';
 
@@ -15,6 +16,7 @@ export interface ConsoleViewerProps {
   queryParamPrefix?: string;
   queryParamSuffix?: string;
   securitySchemes: SecuritySchemesModel;
+  urlIndex: number;
 }
 
 export interface ConsoleViewerState {
@@ -40,7 +42,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
   }
   onClickSend = async () => {
     const ace = this.consoleEditor && this.consoleEditor.editor;
-    const { operation, securitySchemes: {schemes}, additionalHeaders = {} } = this.props;
+    const { operation, securitySchemes: {schemes}, additionalHeaders = {}, urlIndex = 0 } = this.props;
 
     let value = ace && ace.editor.getValue();
 
@@ -48,7 +50,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const mediaType = content && content.mediaTypes[content.activeMimeIdx];
     const endpoint = {
       method: operation.httpVerb,
-      path: operation.servers[0].url + operation.path,
+      path: operation.servers[urlIndex].url + operation.path,
     };
     if (value) {
       value = JSON.parse(value);
@@ -182,7 +184,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
           <SubmitButton onClick={this.onClickSend} >Send Request</SubmitButton>
         </FlexLayoutReverse>
         {result &&
-          <SourceCodeWithCopy lang="json" source={JSON.stringify(result, null, 2)} />
+          <ConsoleResponse response={result} />
         }
       </div>
     );
