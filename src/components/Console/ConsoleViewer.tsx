@@ -5,7 +5,6 @@ import { SubmitButton } from '../../common-elements/buttons';
 import { FlexLayoutReverse } from '../../common-elements/panels';
 import { FieldModel, OperationModel, SecuritySchemesModel } from '../../services/models';
 import { ConsoleResponse } from '../ConsoleResponse/Response';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { ConsoleEditor } from './ConsoleEditor';
 
 const qs = require('qs');
