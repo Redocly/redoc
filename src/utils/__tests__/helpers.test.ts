@@ -60,7 +60,7 @@ describe('Utils', () => {
       test('should behave like Object.assign on the top level', () => {
         const obj1 = { a: { a1: 'A1' }, c: 'C' };
         const obj2 = { a: undefined, b: { b1: 'B1' } };
-        expect(mergeObjects({}, obj1, obj2)).toEqual(Object.assign({}, obj1, obj2));
+        expect(mergeObjects({}, obj1, obj2)).toEqual({ ...obj1, ...obj2 });
       });
       test('should not merge array values, just override', () => {
         const obj1 = { a: ['A', 'B'] };

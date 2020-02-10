@@ -25,6 +25,7 @@ interface Options {
   cdn?: boolean;
   output?: string;
   title?: string;
+  disableGoogleFont?: boolean;
   port?: number;
   templateFileName?: string;
   templateOptions?: any;
@@ -68,8 +69,10 @@ YargsParser.command(
       watch: argv.watch as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
-      redocOptions: argv.options || {},
+      redocOptions: getObjectOrJSON(argv.options),
     };
+
+    console.log(config);
 
     try {
       await serve(argv.port as number, argv.spec as string, config);
@@ -99,6 +102,12 @@ YargsParser.command(
         default: 'ReDoc documentation',
       });
 
+      yargs.options('disableGoogleFont', {
+        describe: 'Disable Google Font',
+        type: 'boolean',
+        default: false,
+      });
+
       yargs.option('cdn', {
         describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
         type: 'boolean',
@@ -108,15 +117,16 @@ YargsParser.command(
       yargs.demandOption('spec');
       return yargs;
     },
-    async argv => {
-      const config: Options = {
+    async (argv: any) => {
+      const config = {
         ssr: true,
         output: argv.o as string,
         cdn: argv.cdn as boolean,
         title: argv.title as string,
+        disableGoogleFont: argv.disableGoogleFont as boolean,
         templateFileName: argv.template as string,
         templateOptions: argv.templateOptions || {},
-        redocOptions: argv.options || {},
+        redocOptions: getObjectOrJSON(argv.options),
       };
 
       try {
@@ -180,21 +190,34 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
   if (options.watch && existsSync(pathToSpec)) {
     const pathToSpecDirectory = resolve(dirname(pathToSpec));
     const watchOptions = {
-      ignored: /(^|[\/\\])\../,
+      ignored: [/(^|[\/\\])\../, /___jb_[a-z]+___$/],
+      ignoreInitial: true,
     };
 
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
+
+    const handlePath = async path => {
+      try {
+        spec = await loadAndBundleSpec(pathToSpec);
+        pageHTML = await getPageHTML(spec, pathToSpec, options);
+        log('Updated successfully');
+      } catch (e) {
+        console.error('Error while updating: ', e.message);
+      }
+    };
+
     watcher
       .on('change', async path => {
         log(`${path} changed, updating docs`);
-        try {
-          spec = await loadAndBundleSpec(pathToSpec);
-          pageHTML = await getPageHTML(spec, pathToSpec, options);
-          log('Updated successfully');
-        } catch (e) {
-          console.error('Error while updating: ', e.message);
-        }
+        handlePath(path);
+      })
+      .on('add', async path => {
+        log(`File ${path} added, updating docs`);
+        handlePath(path);
+      })
+      .on('addDir', path => {
+        log(`↗  Directory ${path} added. Files in here will trigger reload.`);
       })
       .on('error', error => console.error(`Watcher error: ${error}`))
       .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
@@ -218,7 +241,15 @@ async function bundle(pathToSpec, options: Options = {}) {
 async function getPageHTML(
   spec: any,
   pathToSpec: string,
-  { ssr, cdn, title, templateFileName, templateOptions, redocOptions = {} }: Options,
+  {
+    ssr,
+    cdn,
+    title,
+    disableGoogleFont,
+    templateFileName,
+    templateOptions,
+    redocOptions = {},
+  }: Options,
 ) {
   let html;
   let css;
@@ -261,6 +292,7 @@ async function getPageHTML(
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title,
+    disableGoogleFont,
     templateOptions,
   });
 }
@@ -322,4 +354,16 @@ function escapeUnicode(str) {
 function handleError(error: Error) {
   console.error(error.stack);
   process.exit(1);
+}
+
+function getObjectOrJSON(options) {
+  try {
+    return options && typeof options === 'string' 
+    ? JSON.parse(options) : options
+    ? options
+    : {};
+  } catch (e) {
+    console.log(`Encountered error:\n${options}\nis not a valid JSON.`);
+    handleError(e);
+  }
 }
