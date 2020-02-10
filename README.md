@@ -43,7 +43,7 @@
   - [x] ~~React rewrite~~
   - [x] ~~docs pre-rendering (performance and SEO)~~
   - [ ] ability to simple branding/styling
-  - [ ] built-in API Console
+  - [x] built-in API Console
   - [ ] support RTL languages
 
 ## Releases
