@@ -100,7 +100,6 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     }
 
     if (url.split(queryParamPrefix).length > 1) {
-      console.error('** we have missing query params ** ', url);
       throw Error(`** we have missing query params ** ${url}`);
     }
 
@@ -127,37 +126,19 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         body: (body) ? JSON.stringify(body) : undefined,
       });
 
-      const result = await fetch(request);
+      const response = await fetch(request);
+      const content = await response.json();
+      const { ok, status, statusText, redirected } = response;
+      return {
+        content,
+        ok,
+        status,
+        statusText,
+        redirected,
+        headers: response.headers,
+        url: response.url,
+      };
 
-      const contentType = result.headers.get('content-type');
-      if (contentType && contentType.indexOf('application/json') !== -1) {
-        const resp = await result.json();
-
-        return { json: resp, statusCode: result.status, _fetchRes: result };
-      } else if (result.status === 200 && contentType && contentType.indexOf('text/plain') !== -1) {
-        const resp = await result.text();
-        return { resp, _fetchRes: result };
-      } else {
-        if (result && result.type && result.type === 'opaqueredirect') {
-          return {
-            json: {
-              endpoint,
-              error_code: 'RECEIVED_LOGIN_REDIRECT',
-              details: 'Your session expired. Please refresh the page.',
-              severity: 'error',
-            },
-          };
-        }
-
-        return {
-          json: {
-            endpoint,
-            error_code: 'INVALID_SERVER_RESPONSE',
-            details: 'Either server not authenticated or error on server',
-            severity: 'error',
-          },
-        };
-      }
     } catch (error) {
       console.error(error);
     }

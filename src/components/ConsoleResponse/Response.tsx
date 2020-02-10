@@ -25,22 +25,27 @@ export class ConsoleResponse extends React.PureComponent<ConsoleResponseProps, C
   };
 
   render() {
+    const { response: { headers, type, status, statusText, content } } = this.props;
+    const collapse = this.state.collapse;
     return(
       <>
         <RightPanelHeader> status: </RightPanelHeader>
-        <StatusWrapper className={'status-' + this.props.response.type}> {this.props.response.status} {this.props.response.statusText}</StatusWrapper>
+        <StatusWrapper className={'status-' + type}> {status} {statusText}</StatusWrapper>
         <RightPanelHeader> Response Payload </RightPanelHeader>
         <JsonWrapper>
-          <JsonViewer data={this.props.response.content!} />
+          <JsonViewer data={content!} />
         </JsonWrapper>
         <RightPanelHeader> Response Headers</RightPanelHeader>
         <HeaderWrapper>
-          <SourceCodeWrapper className={'collapse-' + this.state.collapse}>
-            <SourceCodeWithCopy lang="json" source={JSON.stringify(this.props.response.headers, null, 2)}/>
+          <SourceCodeWrapper className={'collapse-' + collapse}>
+            <SourceCodeWithCopy lang="json" source={JSON.stringify(headers, null, 2)}/>
           </SourceCodeWrapper>
-          <ShowMore onClick={this.changeCollapse}>
-            <u>+ show undocumented response headers</u>
-          </ShowMore>
+          {
+            collapse &&
+            <ShowMore onClick={this.changeCollapse}>
+              <u>+ show undocumented response headers</u>
+            </ShowMore>
+          }
         </HeaderWrapper>
       </>
     );
