@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { SecuritySchemeModel } from '../../../typings/services/models';
 import { SubmitButton } from '../../common-elements/buttons';
 import { FlexLayoutReverse } from '../../common-elements/panels';
-import { FieldModel, OperationModel, SecuritySchemesModel } from '../../services/models';
+import { FieldModel, OperationModel, SecuritySchemeModel, SecuritySchemesModel } from '../../services/models';
 import { ConsoleResponse } from '../ConsoleResponse/Response';
 import { ConsoleEditor } from './ConsoleEditor';
 
