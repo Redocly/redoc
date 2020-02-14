@@ -50,14 +50,13 @@ export class Operation extends React.Component<OperationProps> {
                 <div style={{zoom: '125%'}}>
                   <OperationBadge type={operation.httpVerb}>{shortenHTTPVerb(operation.httpVerb)}</OperationBadge>
                 </div>
-                <div style={{margin: '-24px 0 0 7px'}}>
+                <div style={{margin: '-5px 0 0 7px'}}>
                   <div style={{fontWeight: 'bolder'}}>
                     <H2>
-                      {/*<ShareLink to={operation.id}/>*/}
                       {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
                     </H2>
                   </div>
-                  <div style={{marginTop: '-20px'}}>
+                  <div>
                     {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true}/>}
                     {hasDescription && (
                       <Description>
@@ -68,18 +67,6 @@ export class Operation extends React.Component<OperationProps> {
                   </div>
                 </div>
               </div>
-              {/*<OperationBadge type={operation.httpVerb}>{shortenHTTPVerb(operation.httpVerb)}</OperationBadge>
-              <H2>
-                <ShareLink to={operation.id}/>
-                {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-              </H2>
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true}/>}
-              {hasDescription && (
-                <Description>
-                  {description !== undefined && <Markdown source={description}/>}
-                  {externalDocs && <ExternalDocumentation externalDocs={externalDocs}/>}
-                </Description>
-              )}*/}
               <Extensions extensions={operation.extensions}/>
               <SecurityRequirements securities={operation.security}/>
               <Parameters parameters={operation.parameters} body={operation.requestBody}/>
