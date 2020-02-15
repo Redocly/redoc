@@ -275,12 +275,17 @@ export class SchemaModel {
   }
 }
 
+const fieldCache: { [index: string]: FieldModel[] } = {};
+
 function buildFields(
   parser: OpenAPIParser,
   schema: OpenAPISchema,
   $ref: string,
   options: RedocNormalizedOptions,
 ): FieldModel[] {
+  if (fieldCache[$ref]) {
+    return fieldCache[$ref];
+  }
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
   const defaults = schema.default || {};
@@ -338,6 +343,8 @@ function buildFields(
       ),
     );
   }
+
+  fieldCache[$ref] = fields;
 
   return fields;
 }
