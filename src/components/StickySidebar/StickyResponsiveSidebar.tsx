@@ -33,7 +33,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
   flex-direction: column;
 
   backface-visibility: hidden;
-  contain: strict;
+  /* contain: strict; TODO: breaks layout since Chrome 80*/
 
   height: 100vh;
   position: sticky;
@@ -44,7 +44,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
     position: fixed;
     z-index: 20;
     width: 100%;
-    background: #ffffff;
+    background: ${({ theme }) => theme.menu.backgroundColor};
     display: ${props => (props.open ? 'flex' : 'none')};
   `};
 

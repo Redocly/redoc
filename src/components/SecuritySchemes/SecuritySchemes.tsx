@@ -108,7 +108,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps, Securit
               <table className="security-details">
                 <tbody>
                   <tr>
-                    <th> Security scheme type: </th>
+                    <th> Security Scheme Type </th>
                     <td> {AUTH_TYPES[scheme.type] || scheme.type} </td>
                     <td> Value </td>
                   </tr>

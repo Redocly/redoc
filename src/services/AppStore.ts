@@ -101,6 +101,9 @@ export class AppStore {
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
+    if (this.search) {
+      this.search.dispose();
+    }
     if (this.disposer != null) {
       this.disposer();
     }

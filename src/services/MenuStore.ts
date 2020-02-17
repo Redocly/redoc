@@ -190,7 +190,7 @@ export class MenuStore {
    * activate menu item
    * @param item item to activate
    * @param updateLocation [true] whether to update location
-   * @param rewriteHistory [false] whether to rewrite browser history (do not create new enrty)
+   * @param rewriteHistory [false] whether to rewrite browser history (do not create new entry)
    */
   @action
   activate(

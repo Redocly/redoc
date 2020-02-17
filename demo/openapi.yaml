@@ -84,6 +84,14 @@ x-tagGroups:
 paths:
   /pet:
     parameters:
+      - name: Accept-Language
+        in: header
+        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        example: en-US
+        required: false
+        schema:
+          type: string
+          default: en-AU
       - name: cookieParam
         in: cookie
         description: Some cookie
@@ -296,7 +304,7 @@ paths:
       tags:
         - pet
       summary: Finds Pets by status
-      description: Multiple status values can be provided with comma seperated strings
+      description: Multiple status values can be provided with comma separated strings
       operationId: findPetsByStatus
       parameters:
         - name: status
@@ -341,7 +349,7 @@ paths:
         - pet
       summary: Finds Pets by tags
       description: >-
-        Muliple tags can be provided with comma seperated strings. Use tag1,
+        Multiple tags can be provided with comma separated strings. Use tag1,
         tag2, tag3 for testing.
       operationId: findPetsByTags
       deprecated: true
@@ -621,7 +629,7 @@ paths:
                 type: integer
                 format: int32
             X-Expires-After:
-              description: date in UTC when toekn expires
+              description: date in UTC when token expires
               schema:
                 type: string
                 format: date-time
@@ -676,6 +684,7 @@ components:
               type: string
               description: The measured skill for hunting
               default: lazy
+              example: adventurous
               enum:
                 - clueless
                 - lazy
@@ -727,6 +736,7 @@ components:
               type: number
               description: Average amount of honey produced per day in ounces
               example: 3.14
+              multipleOf: .01
           required:
             - honeyPerDay
     Id:
@@ -765,7 +775,7 @@ components:
           type: boolean
           default: false
           readOnly: true
-        rqeuestId:
+        requestId:
           description: Unique Request Id
           type: string
           writeOnly: true
@@ -888,7 +898,6 @@ components:
           type: string
           pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
           example: +1-202-555-0192
-          nullable: true
         userStatus:
           description: User status
           type: integer

@@ -1,4 +1,4 @@
-import memoize from 'memoize-one';
+import * as memoize from 'memoize-one/dist/memoize-one.cjs'; // fixme: https://github.com/alexreardon/memoize-one/issues/37
 import { Component, createContext } from 'react';
 
 import { AppStore } from '../services/';

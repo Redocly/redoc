@@ -36,7 +36,7 @@ $ yarn install # or npm
 # dev-server, watch and auto reload playground
 $ yarn start
 
-# start playground app in production environement
+# start playground app in production environment
 $ yarn start:prod
 
 # runt tslint
@@ -84,11 +84,11 @@ There are some other scripts available in the `scripts` section of the `package.
 
 - **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [MobX](https://github.com/mobxjs/mobx)
 
-  - **`src/common-elements`**: containts common Styled elements or components used in multiple places
+  - **`src/common-elements`**: contains common Styled elements or components used in multiple places
   - **`src/components`**: contains main visual components
   - **`src/services`**: contains different services used by ReDoc including MobX stores
   - **`src/services/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions
-  - **`src/styled-components.ts`**: - reexprots styled-components with proper typescript annotations using theme
+  - **`src/styled-components.ts`**: - reexports styled-components with proper typescript annotations using theme
   - **`src/theme.ts`**: - default theme (colors, fonts, etc) used by all the components

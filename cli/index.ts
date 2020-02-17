@@ -14,7 +14,14 @@ import * as zlib from 'zlib';
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
-import { createReadStream, existsSync, readFileSync, ReadStream, writeFileSync } from 'fs';
+import {
+  createReadStream,
+  existsSync,
+  lstatSync,
+  readFileSync,
+  ReadStream,
+  writeFileSync,
+} from 'fs';
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
@@ -99,7 +106,6 @@ YargsParser.command(
       yargs.options('title', {
         describe: 'Page Title',
         type: 'string',
-        default: 'ReDoc documentation',
       });
 
       yargs.options('disableGoogleFont', {
@@ -197,7 +203,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
 
-    const handlePath = async path => {
+    const handlePath = async _path => {
       try {
         spec = await loadAndBundleSpec(pathToSpec);
         pageHTML = await getPageHTML(spec, pathToSpec, options);
@@ -291,7 +297,7 @@ async function getPageHTML(
           ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
-    title,
+    title: title || spec.info.title || 'ReDoc documentation',
     disableGoogleFont,
     templateOptions,
   });
@@ -357,13 +363,23 @@ function handleError(error: Error) {
 }
 
 function getObjectOrJSON(options) {
-  try {
-    return options && typeof options === 'string' 
-    ? JSON.parse(options) : options
-    ? options
-    : {};
-  } catch (e) {
-    console.log(`Encountered error:\n${options}\nis not a valid JSON.`);
-    handleError(e);
+  switch (typeof options) {
+    case 'object':
+      return options;
+    case 'string':
+      try {
+        if (existsSync(options) && lstatSync(options).isFile()) {
+          return JSON.parse(readFileSync(options, 'utf-8'));
+        } else {
+          return JSON.parse(options);
+        }
+      } catch (e) {
+        console.log(
+          `Encountered error:\n\n${options}\n\nis neither a file with a valid JSON object neither a stringified JSON object.`,
+        );
+        handleError(e);
+      }
+    default:
+      return {};
   }
 }

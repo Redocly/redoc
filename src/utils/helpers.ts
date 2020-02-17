@@ -2,7 +2,7 @@ import slugify from 'slugify';
 import { format, parse } from 'url';
 
 /**
- * Maps over array passing `isLast` bool to iterator as the second arguemnt
+ * Maps over array passing `isLast` bool to iterator as the second argument
  */
 export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolean) => P) {
   const res: P[] = [];
@@ -118,7 +118,7 @@ const isMergebleObject = (item): boolean => {
 
 /**
  * slugify() returns empty string when failed to slugify.
- * so try to return minimun slugified-string with failed one which keeps original value
+ * so try to return minimum slugified-string with failed one which keeps original value
  * the regex codes are referenced with https://gist.github.com/mathewbyrne/1280286
  */
 export function safeSlugify(value: string): string {
