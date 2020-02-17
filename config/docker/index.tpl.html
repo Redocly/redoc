@@ -4,6 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>%PAGE_TITLE%</title>
+  <meta name="description" content="%PAGE_DESCRIPTION%" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="%PAGE_TITLE%">
+  <meta property="og:description" content="%PAGE_DESCRIPTION%">
+  <meta property="og:image" content="%PAGE_FAVICON%">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="icon" href="%PAGE_FAVICON%">
   <style>
     body {
@@ -20,8 +28,11 @@
 </head>
 
 <body>
-  <redoc spec-url="%SPEC_URL%" %REDOC_OPTIONS%></redoc>
+  <div id="redoc"></div>
   <script src="redoc.standalone.js"></script>
+  <script>
+    Redoc.init('%SPEC_URL%', %REDOC_OPTIONS%, document.getElementById('redoc'));
+  </script>
 </body>
 
 </html>
