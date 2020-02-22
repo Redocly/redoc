@@ -102,7 +102,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   }
 
   @bind
-  @debounce(600)
+  @debounce(1000)
   searchCallback(searchTerm: string) {
     this.props.search.search(searchTerm).then(res => {
       this.setResults(res, searchTerm);

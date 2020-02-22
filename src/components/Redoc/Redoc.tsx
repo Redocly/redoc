@@ -23,6 +23,11 @@ export interface AppState {
   activeSelection: string | undefined;
 }
 
+export interface InitializeWithSelection {
+  tag: IMenuItem | undefined;
+  operation: IMenuItem | undefined;
+}
+
 export class Redoc extends React.Component<RedocProps, AppState> {
   static propTypes = {
     store: PropTypes.instanceOf(AppStore).isRequired,
@@ -30,16 +35,95 @@ export class Redoc extends React.Component<RedocProps, AppState> {
 
   state = { activeSelection: undefined };
 
+  HOMEPAGE_URL = "https://admin.instagram.com/admin/api/docs";
+
+  getTagByName(tagName: string): IMenuItem | undefined {
+    const menu = this.props.store.menu;
+    return menu.items.find(item => item.name === tagName);
+  }
+
+  getTagFromSitePath(sitePath: string): InitializeWithSelection {
+    const menu = this.props.store.menu
+    const matched: InitializeWithSelection = { tag: undefined, operation: undefined };
+    menu.items.filter(item => item.type === 'tag').forEach(tag => {
+      tag.items.forEach(operation => {
+        // @ts-ignore
+        if (operation.operationId === sitePath.split('/#operation/')[1]) {
+          matched.tag = operation.parent!;
+          matched.operation = operation;
+        }
+      })
+    });
+    return matched;
+  }
+
+  shouldInitializeWithActiveSelection(): Boolean {
+    if (this.state.activeSelection === undefined && window.location.href === this.HOMEPAGE_URL) {
+      return false;
+    };
+    return true;
+  }
+
+  sitePathIsTag(sitePath: string): Boolean {
+    return sitePath.startsWith('/#tag') && !this.sitePathIsOperation(sitePath);
+  }
+
+  sitePathIsOperation(sitePath: string): Boolean {
+    return sitePath.includes('#operation');
+  }
+
+  parseSitePath(fullUrl: string): string {
+    return fullUrl.split(this.HOMEPAGE_URL)[1];
+  }
+
+  nonHomepageLocationIsTag(sitePath: string) {
+    const splitPath = sitePath.split('/');
+    const tagIMenuItem: IMenuItem | undefined = this.getTagByName(splitPath[splitPath.length - 1]);
+    if (tagIMenuItem) {
+      this.setActiveSelection(tagIMenuItem);
+    }
+  }
+
+  nonHomepageLocationIsOperation(sitePath: string) {
+    const parsed: InitializeWithSelection = this.getTagFromSitePath(sitePath);
+    if (parsed.tag && parsed.operation) {
+      this.setActiveSelection(parsed.tag);
+    }
+  }
+
+  nonHomepageLocationSetup() {
+    if (this.shouldInitializeWithActiveSelection()) {
+      const sitePath = this.parseSitePath(window.location.href);
+      if (this.sitePathIsTag(sitePath)) {
+        this.nonHomepageLocationIsTag(sitePath);
+      } else {
+        this.nonHomepageLocationIsOperation(sitePath);
+      }
+    };
+  }
+
   componentDidMount() {
     this.props.store.onDidMount();
+    this.nonHomepageLocationSetup();
+  }
+
+  componentDidUpdate() {
+    if (this.shouldInitializeWithActiveSelection && this.sitePathIsOperation) {
+      const sitePath = this.parseSitePath(window.location.href);
+      const tags = this.getTagFromSitePath(sitePath);
+      this.props.store.menu.activateAndScroll(tags.operation);
+    }
   }
 
   componentWillUnmount() {
     this.props.store.dispose();
   }
 
-  setActiveSelection = (item: IMenuItem) => {
+  setActiveSelection = (item: IMenuItem, callback?: any) => {
     if (item && item.type === "tag") {
+      if (callback) {
+        this.setState({ activeSelection: item.name }, callback());
+      }
       this.setState({ activeSelection: item.name });
     }
   }
