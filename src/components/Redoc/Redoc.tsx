@@ -35,7 +35,12 @@ export class Redoc extends React.Component<RedocProps, AppState> {
 
   state = { activeSelection: undefined };
 
-  HOMEPAGE_URL = "https://admin.instagram.com/admin/api/docs";
+  /*
+  PROBLEM! This will never be true during testing. 
+  Let's at least test to see if current URL endsWith
+  /admin/api/docs/ (trailing slash required). 
+  */
+  HOMEPAGE_ENDING = "/admin/api/docs/"
 
   getTagByName(tagName: string): IMenuItem | undefined {
     const menu = this.props.store.menu;
@@ -58,14 +63,14 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   }
 
   shouldInitializeWithActiveSelection(): Boolean {
-    if (this.state.activeSelection === undefined && window.location.href === this.HOMEPAGE_URL) {
+    if (this.state.activeSelection === undefined && window.location.href.endsWith(this.HOMEPAGE_ENDING)) {
       return false;
     };
     return true;
   }
 
   sitePathIsTag(sitePath: string): Boolean {
-    return sitePath.startsWith('/#tag') && !this.sitePathIsOperation(sitePath);
+    return sitePath.startsWith('#tag') && !this.sitePathIsOperation(sitePath);
   }
 
   sitePathIsOperation(sitePath: string): Boolean {
@@ -73,7 +78,7 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   }
 
   parseSitePath(fullUrl: string): string {
-    return fullUrl.split(this.HOMEPAGE_URL)[1];
+    return fullUrl.split(this.HOMEPAGE_ENDING)[1];
   }
 
   nonHomepageLocationIsTag(sitePath: string) {
