@@ -36,11 +36,9 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   state = { activeSelection: undefined };
 
   /*
-  PROBLEM! This will never be true during testing. 
-  Let's at least test to see if current URL endsWith
-  /admin/api/docs/ (trailing slash required). 
+  Developing locally? Change to ':9090/'
   */
-  HOMEPAGE_ENDING = "/admin/api/docs/"
+  HOMEPAGE_ENDING = "/admin/api/docs/";
 
   getTagByName(tagName: string): IMenuItem | undefined {
     const menu = this.props.store.menu;
@@ -50,10 +48,11 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   getTagFromSitePath(sitePath: string): InitializeWithSelection {
     const menu = this.props.store.menu
     const matched: InitializeWithSelection = { tag: undefined, operation: undefined };
+    //debugger;
     menu.items.filter(item => item.type === 'tag').forEach(tag => {
       tag.items.forEach(operation => {
         // @ts-ignore
-        if (operation.operationId === sitePath.split('/#operation/')[1]) {
+        if (operation.operationId === sitePath.split('#operation/')[1]) {
           matched.tag = operation.parent!;
           matched.operation = operation;
         }
@@ -92,7 +91,7 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   nonHomepageLocationIsOperation(sitePath: string) {
     const parsed: InitializeWithSelection = this.getTagFromSitePath(sitePath);
     if (parsed.tag && parsed.operation) {
-      this.setActiveSelection(parsed.tag);
+      this.setActiveSelection(parsed.tag, this.props.store.menu.activateAndScroll(parsed.operation, true));
     }
   }
 
@@ -110,14 +109,6 @@ export class Redoc extends React.Component<RedocProps, AppState> {
   componentDidMount() {
     this.props.store.onDidMount();
     this.nonHomepageLocationSetup();
-  }
-
-  componentDidUpdate() {
-    if (this.shouldInitializeWithActiveSelection && this.sitePathIsOperation) {
-      const sitePath = this.parseSitePath(window.location.href);
-      const tags = this.getTagFromSitePath(sitePath);
-      this.props.store.menu.activateAndScroll(tags.operation);
-    }
   }
 
   componentWillUnmount() {
