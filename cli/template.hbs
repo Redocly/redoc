@@ -11,9 +11,22 @@
       padding: 0;
       margin: 0;
     }
+
+    .menu-content {
+      position: fixed !important;
+      z-index: 10;
+    }
+
+    .api-content {
+      width: 100% !important;
+      padding-left: 260px;
+    }
   </style>
   {{{redocHead}}}
-  {{#unless disableGoogleFont}}<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">{{/unless}}
+  {{#unless disableGoogleFont}}
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+  {{/unless}}
+
 </head>
 
 <body>
