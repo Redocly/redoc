@@ -9,6 +9,7 @@ import { DiscriminatorDropdown } from './DiscriminatorDropdown';
 import { SchemaProps } from './Schema';
 
 import { mapWithLast } from '../../utils';
+import { OptionsContext } from '../OptionsProvider';
 
 export interface ObjectSchemaProps extends SchemaProps {
   discriminator?: {
@@ -19,6 +20,8 @@ export interface ObjectSchemaProps extends SchemaProps {
 
 @observer
 export class ObjectSchema extends React.Component<ObjectSchemaProps> {
+  static contextType = OptionsContext;
+
   get parentSchema() {
     return this.props.discriminator!.parentSchema;
   }
@@ -41,6 +44,8 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
         })
       : fields;
 
+    const expandByDefault = this.context.expandSingleSchemaField && filteredFields.length === 1;
+
     return (
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{this.props.schema.title}</PropertiesTableCaption>}
@@ -51,6 +56,7 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
                 key={field.name}
                 isLast={isLast}
                 field={field}
+                expandByDefault={expandByDefault}
                 renderDiscriminatorSwitch={
                   (discriminator &&
                     discriminator.fieldName === field.name &&

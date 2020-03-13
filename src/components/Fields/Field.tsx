@@ -23,6 +23,7 @@ export interface FieldProps extends SchemaOptions {
   showExamples?: boolean;
 
   field: FieldModel;
+  expandByDefault?: boolean;
 
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
 }
@@ -30,12 +31,18 @@ export interface FieldProps extends SchemaOptions {
 @observer
 export class Field extends React.Component<FieldProps> {
   toggle = () => {
-    this.props.field.toggle();
+    if (this.props.field.expanded === undefined && this.props.expandByDefault) {
+      this.props.field.expanded = false;
+    } else {
+      this.props.field.toggle();
+    }
   };
   render() {
-    const { className, field, isLast } = this.props;
-    const { name, expanded, deprecated, required, kind } = field;
+    const { className, field, isLast, expandByDefault } = this.props;
+    const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
+
+    const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
@@ -65,7 +72,7 @@ export class Field extends React.Component<FieldProps> {
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
         </tr>
-        {field.expanded && withSubSchema && (
+        {expanded && withSubSchema && (
           <tr key={field.name + 'inner'}>
             <PropertyCellWithInner colSpan={2}>
               <InnerPropertiesWrap>
