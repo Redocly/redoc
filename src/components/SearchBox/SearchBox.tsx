@@ -95,13 +95,12 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   setResults(results: SearchResult[], term: string) {
     this.setState({
       results,
-      term,
     });
     this.props.marker.mark(term);
   }
 
   @bind
-  @debounce(300)
+  @debounce(400)
   searchCallback(searchTerm: string) {
     this.props.search.search(searchTerm).then(res => {
       this.setResults(res, searchTerm);
