@@ -107,13 +107,13 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-options-object) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [yarn](https://yarnpkg.com):
+Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
+
+    npm i redoc
+
+or using [yarn](https://yarnpkg.com):
 
     yarn add redoc
-
-or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
-
-    npm install redoc --save
 
 ### 2. Reference redoc script in HTML
 For **CDN**:
