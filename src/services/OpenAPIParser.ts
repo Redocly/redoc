@@ -148,7 +148,7 @@ export class OpenAPIParser {
    * @param obj object to dereference
    * @param forceCircular whether to dereference even if it is circular ref
    */
-  deref<T extends object>(obj: OpenAPIRef | T, forceCircular: boolean = false): T {
+  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false): T {
     if (this.isRef(obj)) {
       const resolved = this.byRef<T>(obj.$ref)!;
       const visited = this._refCounter.visited(obj.$ref);

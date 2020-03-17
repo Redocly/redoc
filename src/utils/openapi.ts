@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-const URLtemplate = require('url-template');
+import * as URLtemplate from 'url-template';
 
 import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';

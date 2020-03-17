@@ -23,6 +23,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+
     'react/prop-types': 'off',
 
     'import/no-extraneous-dependencies': 'error',
