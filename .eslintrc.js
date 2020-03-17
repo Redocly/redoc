@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
 
     'react/prop-types': 'off',
 
