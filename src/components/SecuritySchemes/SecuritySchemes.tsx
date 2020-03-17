@@ -97,7 +97,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                       scheme.http.scheme === 'bearer' && scheme.http.bearerFormat && (
                         <tr key="bearer">
                           <th> Bearer format </th>
-                          <td> "{scheme.http.bearerFormat}" </td>
+                          <td> &quot;{scheme.http.bearerFormat}&quot; </td>
                         </tr>
                       ),
                     ]
@@ -105,7 +105,11 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
                     <tr>
                       <th> Connect URL </th>
                       <td>
-                        <a target="_blank" href={scheme.openId.connectUrl}>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={scheme.openId.connectUrl}
+                        >
                           {scheme.openId.connectUrl}
                         </a>
                       </td>

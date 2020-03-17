@@ -6,9 +6,9 @@ const opts = new RedocNormalizedOptions({});
 
 describe('Models', () => {
   describe('FieldModel', () => {
-    let parser;
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const spec = require('../fixtures/fields.json');
-    parser = new OpenAPIParser(spec, undefined, opts);
+    const parser = new OpenAPIParser(spec, undefined, opts);
 
     test('basic field details', () => {
       const field = new FieldModel(

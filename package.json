@@ -42,7 +42,7 @@
     "stats": "webpack --env.standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
-    "lint": "eslint src/**/*.{js,ts,tsx}",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "benchmark": "node ./benchmark/benchmark.js",
     "start:demo": "webpack-dev-server --hot --config demo/webpack.config.ts --mode=development",
     "compile:cli": "tsc custom.d.ts cli/index.ts --target es6 --module commonjs --types yargs",

@@ -7,6 +7,7 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     sourceType: 'module',
+    createDefaultProgram: true,
     ecmaFeatures: {
       jsx: true,
     },
@@ -37,6 +38,9 @@ module.exports = {
           'react-dom/*',
           'core-js/**',
           'memoize-one/**',
+          'unfetch/**',
+          'raf/polyfill',
+          '**/fixtures/**', // for tests
         ],
       },
     ],
