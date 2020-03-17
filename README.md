@@ -64,11 +64,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
-- [Rebilly](https://rebilly.github.io/RebillyAPI)
+- [Rebilly](https://rebilly-api.redoc.ly/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
-- [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
 - [Discourse](http://docs.discourse.org)
+- [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [FastAPI](https://github.com/tiangolo/fastapi)
 
