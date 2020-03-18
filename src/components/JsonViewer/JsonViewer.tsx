@@ -5,6 +5,7 @@ import { SampleControls } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
 import { PrismDiv } from '../../common-elements/PrismDiv';
 import { jsonToHTML } from '../../utils/jsonToHtml';
+import { OptionsContext } from '../OptionsProvider';
 import { jsonStyles } from './style';
 
 export interface JsonProps {
@@ -32,12 +33,18 @@ class Json extends React.PureComponent<JsonProps> {
         <span onClick={this.expandAll}> Expand all </span>
         <span onClick={this.collapseAll}> Collapse all </span>
       </SampleControls>
-      <PrismDiv
-        className={this.props.className}
-        // tslint:disable-next-line
-        ref={node => (this.node = node!)}
-        dangerouslySetInnerHTML={{ __html: jsonToHTML(this.props.data) }}
-      />
+      <OptionsContext.Consumer>
+        {options => (
+          <PrismDiv
+            className={this.props.className}
+            // tslint:disable-next-line
+            ref={node => (this.node = node!)}
+            dangerouslySetInnerHTML={{
+              __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
+            }}
+          />
+        )}
+      </OptionsContext.Consumer>
     </JsonViewerWrap>
   );
 

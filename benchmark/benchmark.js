@@ -17,7 +17,7 @@ const localDistDir = './benchmark/revisions/local/bundles';
 sh.rm('-rf', localDistDir);
 console.log(`Building local dist: ${localDistDir}`);
 sh.mkdir('-p', localDistDir);
-exec(`yarn bundle:lib --output-path ${localDistDir}`);
+exec(`npm run bundle:lib --output-path ${localDistDir}`);
 
 const revisions = [];
 for (const arg of args) {
@@ -32,7 +32,7 @@ const configDir = './benchmark/revisions/config.js';
 console.log(`Writing config "${configDir}"`);
 fs.writeFileSync(configDir, configFile);
 
-console.log('Starging benchmark server');
+console.log('Starting benchmark server');
 const proc = spawn('npm', ['run', 'start:benchmark']);
 
 proc.stdout.on('data', data => {
@@ -119,7 +119,7 @@ function buildRevisionDist(revision) {
 
   const pwd = sh.pwd();
   sh.cd(buildDir);
-  exec('yarn remove cypress puppeteer && yarn && yarn bundle:lib');
+  exec('npm uninstall cypress puppeteer && npm install && npm run bundle:lib');
   sh.cd(pwd);
   return distDir;
 }

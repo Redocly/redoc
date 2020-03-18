@@ -64,11 +64,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
-- [Rebilly](https://rebilly.github.io/RebillyAPI)
+- [Rebilly](https://rebilly-api.redoc.ly/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
-- [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
 - [Discourse](http://docs.discourse.org)
+- [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [FastAPI](https://github.com/tiangolo/fastapi)
 
@@ -107,13 +107,13 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-options-object) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [yarn](https://yarnpkg.com):
+Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
+
+    npm i redoc
+
+or using [yarn](https://yarnpkg.com):
 
     yarn add redoc
-
-or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
-
-    npm install redoc --save
 
 ### 2. Reference redoc script in HTML
 For **CDN**:
@@ -138,7 +138,7 @@ For npm:
 
 Install peer dependencies required by ReDoc if you don't have them installed already:
 
-    npm i react react-dom mobx@^4.2.0 styled-components
+    npm i react react-dom mobx@^4.2.0 styled-components core-js
 
 Import `RedocStandalone` component from 'redoc' module:
 
@@ -213,7 +213,7 @@ ReDoc makes use of the following [vendor extensions](https://swagger.io/specific
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
 * [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
-* [`x-nullable`](docs/redoc-vendor-extensions.md#nullable) - mark schema param as a nullable
+* [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
 * [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) - group tags by categories in the side menu
 * [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
@@ -223,27 +223,33 @@ ReDoc makes use of the following [vendor extensions](https://swagger.io/specific
 ### `<redoc>` options object
 You can use all of the following options with standalone version on <redoc> tag by kebab-casing them, e.g. `scrollYOffset` becomes `scroll-y-offset` and `expandResponses` becomes `expand-responses`.
 
-* `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
+* `disableSearch` - disable search indexing and search box.
+* `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
+* `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
+* `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
+* `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
+* `hideLoading` - do not show loading animation. Useful for small docs.
+* `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
+* `expandSingleSchemaField` - automatically expand single field in a schema
+* `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value 'all' expands all levels. The default value is `2`.
+* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
+* `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `false`.
+* `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
+* `noAutoAuth` - do not inject Authentication section automatically.
+* `onlyRequiredInSamples` - shows only required fields in request samples.
+* `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one.
+* `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
 * `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scrollYOffset` can be specified in various ways:
-  * **number**: A fixed number of pixels to be used as offset;
-  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset;
-  * **function**: A getter function. Must return a number representing the offset (in pixels);
+  * **number**: A fixed number of pixels to be used as offset.
+  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
+  * **function**: A getter function. Must return a number representing the offset (in pixels).
+* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
+* `sortPropsAlphabetically` - sort properties alphabetically.
 * `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
-* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
-* `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
-* `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
-* `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
-* `sortPropsAlphabetically` - sort properties alphabetically
-* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display
-* `noAutoAuth` - do not inject Authentication section automatically
-* `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one
-* `hideLoading` - do not show loading animation. Useful for small docs
-* `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs)
-* `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
-* `disableSearch` - disable search indexing and search box
-* `onlyRequiredInSamples` - shows only required fields in request samples.
-* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts)
+* `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
+* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts).
+* `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:

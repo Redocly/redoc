@@ -8,10 +8,13 @@ import {
   mergeParams,
   normalizeServers,
   pluralizeType,
+  serializeParameterValue,
+  sortByRequired,
 } from '../';
 
-import { OpenAPIParser } from '../../services';
-import { OpenAPIParameter } from '../../types';
+import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
+import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
+import { expandDefaultServerVariables } from '../openapi';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -247,7 +250,7 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
     });
 
-    it('should correcly resolve url with server relative path', () => {
+    it('should correctly resolve url with server relative path', () => {
       const res = normalizeServers('http://base.com/subpath/spec.yaml', [
         {
           url: '/sandbox/test',
@@ -256,7 +259,7 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'http://base.com/sandbox/test', description: '' }]);
     });
 
-    it('should correcly resolve url with relative path', () => {
+    it('should correctly resolve url with relative path', () => {
       const res = normalizeServers('http://base.com/subpath/spec.yaml', [
         {
           url: 'sandbox/test',
@@ -296,11 +299,8 @@ describe('Utils', () => {
     it('should expand variables', () => {
       const servers = normalizeServers('', [
         {
-          url: '{protocol}{host}{basePath}',
+          url: 'http://{host}{basePath}',
           variables: {
-            protocol: {
-              default: 'http://',
-            },
             host: {
               default: '127.0.0.1',
             },
@@ -318,9 +318,15 @@ describe('Utils', () => {
         },
       ]);
 
-      expect(servers[0].url).toEqual('http://127.0.0.1/path/to/endpoint');
-      expect(servers[1].url).toEqual('http://127.0.0.2:{port}');
-      expect(servers[2].url).toEqual('http://127.0.0.3');
+      expect(expandDefaultServerVariables(servers[0].url, servers[0].variables)).toEqual(
+        'http://127.0.0.1/path/to/endpoint',
+      );
+      expect(expandDefaultServerVariables(servers[1].url, servers[1].variables)).toEqual(
+        'http://127.0.0.2:{port}',
+      );
+      expect(expandDefaultServerVariables(servers[2].url, servers[2].variables)).toEqual(
+        'http://127.0.0.3',
+      );
     });
   });
 
@@ -328,7 +334,8 @@ describe('Utils', () => {
     const itemConstraintSchema = (
       min: number | undefined = undefined,
       max: number | undefined = undefined,
-    ) => ({ type: 'array', minItems: min, maxItems: max });
+      multipleOf: number | undefined = undefined,
+    ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf });
 
     it('should not have a humanized constraint without schema constraints', () => {
       expect(humanizeConstraints(itemConstraintSchema())).toHaveLength(0);
@@ -350,8 +357,20 @@ describe('Utils', () => {
       expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
     });
 
-    it('should have a humazined constraint when justMinItems is set, and it is equal to 1', () => {
+    it('should have a humanized constraint when justMinItems is set, and it is equal to 1', () => {
       expect(humanizeConstraints(itemConstraintSchema(1))).toContain('non-empty');
+    });
+
+    it('should have a humanized constraint when multipleOf is set, and it is in format of /^0\\.0*1$/', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.01))).toContain(
+        'decimal places <= 2',
+      );
+    });
+
+    it('should have a humanized constraint when multipleOf is set, and it is in format other than /^0\\.0*1$/', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.5))).toContain(
+        'multiple of 0.5',
+      );
     });
   });
 
@@ -365,16 +384,623 @@ describe('Utils', () => {
       expect(pluralizeType('array')).toEqual('arrays');
     });
 
-    it('should pluralize complex dislay types', () => {
+    it('should pluralize complex display types', () => {
       expect(pluralizeType('object (Pet)')).toEqual('objects (Pet)');
       expect(pluralizeType('string <email>')).toEqual('strings <email>');
     });
 
-    it('should pluralize oneOf-ed dislay types', () => {
+    it('should pluralize oneOf-ed display types', () => {
       expect(pluralizeType('object or string')).toEqual('objects or strings');
       expect(pluralizeType('object (Pet) or number <int64>')).toEqual(
         'objects (Pet) or numbers <int64>',
       );
+    });
+
+    it('should not pluralize display types that are already pluralized', () => {
+      expect(pluralizeType('strings')).toEqual('strings');
+      expect(pluralizeType('objects (Pet)')).toEqual('objects (Pet)');
+      expect(pluralizeType('strings <email>')).toEqual('strings <email>');
+      expect(pluralizeType('objects or strings')).toEqual('objects or strings');
+      expect(pluralizeType('objects (Pet) or numbers <int64>')).toEqual(
+        'objects (Pet) or numbers <int64>',
+      );
+    });
+  });
+
+  describe('openapi serializeParameter', () => {
+    interface TestCase {
+      style: OpenAPIParameterStyle;
+      explode: boolean;
+      expected: string;
+    }
+
+    interface TestValueTypeGroup {
+      value: any;
+      description: string;
+      cases: TestCase[];
+    }
+    interface TestLocationGroup {
+      location: OpenAPIParameterLocation;
+      name: string;
+      description: string;
+      cases: TestValueTypeGroup[];
+    }
+    const testCases: TestLocationGroup[] = [
+      {
+        location: 'path',
+        name: 'id',
+        description: 'path parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'simple', explode: false, expected: '5' },
+              { style: 'simple', explode: true, expected: '5' },
+              { style: 'label', explode: false, expected: '.5' },
+              { style: 'label', explode: true, expected: '.5' },
+              { style: 'matrix', explode: false, expected: ';id=5' },
+              { style: 'matrix', explode: true, expected: ';id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'simple', explode: false, expected: '3,4,5' },
+              { style: 'simple', explode: true, expected: '3,4,5' },
+              { style: 'label', explode: false, expected: '.3,4,5' },
+              { style: 'label', explode: true, expected: '.3.4.5' },
+              { style: 'matrix', explode: false, expected: ';id=3,4,5' },
+              { style: 'matrix', explode: true, expected: ';id=3;id=4;id=5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'simple', explode: false, expected: 'role,admin,firstName,Alex' },
+              { style: 'simple', explode: true, expected: 'role=admin,firstName=Alex' },
+              { style: 'label', explode: false, expected: '.role,admin,firstName,Alex' },
+              { style: 'label', explode: true, expected: '.role=admin.firstName=Alex' },
+              { style: 'matrix', explode: false, expected: ';id=role,admin,firstName,Alex' },
+              { style: 'matrix', explode: true, expected: ';role=admin;firstName=Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'query',
+        name: 'id',
+        description: 'query parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=5' },
+              { style: 'form', explode: false, expected: 'id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'form', explode: false, expected: 'id=3,4,5' },
+              { style: 'spaceDelimited', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'spaceDelimited', explode: false, expected: 'id=3%204%205' },
+              { style: 'pipeDelimited', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'pipeDelimited', explode: false, expected: 'id=3|4|5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'form', explode: true, expected: 'role=admin&firstName=Alex' },
+              { style: 'form', explode: false, expected: 'id=role,admin,firstName,Alex' },
+              { style: 'deepObject', explode: true, expected: 'id[role]=admin&id[firstName]=Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'cookie',
+        name: 'id',
+        description: 'cookie parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=5' },
+              { style: 'form', explode: false, expected: 'id=5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'form', explode: true, expected: 'id=3&id=4&id=5' },
+              { style: 'form', explode: false, expected: 'id=3,4,5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'form', explode: true, expected: 'role=admin&firstName=Alex' },
+              { style: 'form', explode: false, expected: 'id=role,admin,firstName,Alex' },
+            ],
+          },
+        ],
+      },
+      {
+        location: 'header',
+        name: 'x-id',
+        description: 'header parameters',
+        cases: [
+          {
+            value: 5,
+            description: 'primitive values',
+            cases: [
+              { style: 'simple', explode: false, expected: '5' },
+              { style: 'simple', explode: true, expected: '5' },
+            ],
+          },
+          {
+            value: [3, 4, 5],
+            description: 'array values',
+            cases: [
+              { style: 'simple', explode: false, expected: '3,4,5' },
+              { style: 'simple', explode: true, expected: '3,4,5' },
+            ],
+          },
+          {
+            value: { role: 'admin', firstName: 'Alex' },
+            description: 'object values',
+            cases: [
+              { style: 'simple', explode: false, expected: 'role,admin,firstName,Alex' },
+              { style: 'simple', explode: true, expected: 'role=admin,firstName=Alex' },
+            ],
+          },
+        ],
+      },
+    ];
+
+    testCases.forEach(locationTestGroup => {
+      describe(locationTestGroup.description, () => {
+        locationTestGroup.cases.forEach(valueTypeTestGroup => {
+          describe(valueTypeTestGroup.description, () => {
+            valueTypeTestGroup.cases.forEach(testCase => {
+              it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
+                const parameter: OpenAPIParameter = {
+                  name: locationTestGroup.name,
+                  in: locationTestGroup.location,
+                  style: testCase.style,
+                  explode: testCase.explode,
+                };
+                const serialized = serializeParameterValue(parameter, valueTypeTestGroup.value);
+
+                expect(serialized).toEqual(testCase.expected);
+              });
+            });
+          });
+        });
+      });
+    });
+
+    describe('advanced serialization', () => {
+      it('should serialize correctly query parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'id',
+          in: 'query',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        };
+
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          'id={"name":"test","age":23}',
+        );
+      });
+
+      it('should serialize correctly header parameter with content with application/json', () => {
+        const parameter: OpenAPIParameter = {
+          name: 'x-header',
+          in: 'header',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'string',
+              },
+            },
+          },
+        };
+
+        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
+        const opts = new RedocNormalizedOptions({});
+
+        const field = new FieldModel(parser, parameter, '', opts);
+        expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
+          '{"name":"test","age":23}',
+        );
+      });
+    });
+  });
+
+  describe('OpenAPI sortByRequired', () => {
+    it('should equal to the old data when all items have no required props', () => {
+      const fields = [
+        {
+          name: 'loginName',
+          required: false,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'email',
+          required: false,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(sortByRequired(fields as FieldModel[])).toEqual(fields);
+    });
+
+    it('other item should be the same order when some of items are required', () => {
+      const fields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      const sortedFields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: false,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(sortByRequired(fields as FieldModel[])).toEqual(sortedFields);
+    });
+
+    it('should the order of required items is as same as the order parameter ', () => {
+      const fields = [
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ];
+      expect(
+        sortByRequired(fields as FieldModel[], ['siteId', 'displayName', 'loginName', 'email']),
+      ).toEqual([
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
+      expect(sortByRequired(fields as FieldModel[], ['email', 'displayName'])).toEqual([
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
+
+      expect(sortByRequired(fields as FieldModel[], ['displayName'])).toEqual([
+        {
+          name: 'displayName',
+          required: true,
+        },
+        {
+          name: 'loginName',
+          required: true,
+        },
+        {
+          name: 'email',
+          required: true,
+        },
+        {
+          name: 'space',
+          required: false,
+        },
+        {
+          name: 'type',
+          required: false,
+        },
+        {
+          name: 'depIds',
+          required: false,
+        },
+        {
+          name: 'depNames',
+          required: false,
+        },
+        {
+          name: 'password',
+          required: false,
+        },
+        {
+          name: 'pwdControl',
+          required: false,
+        },
+        {
+          name: 'csfLevel',
+          required: false,
+        },
+        {
+          name: 'priority',
+          required: false,
+        },
+        {
+          name: 'siteId',
+          required: false,
+        },
+      ]);
     });
   });
 });

@@ -42,7 +42,7 @@ describe('Servers', () => {
       // TODO add cy-data attributes
       cy.get('[data-section-id="operation/addPet"]').should(
         'contain',
-        'http://localhost:' + win.location.port + '/e2e/pet',
+        'http://localhost:' + win.location.port + '/pet',
       );
     });
   });
@@ -57,7 +57,7 @@ describe('Servers', () => {
       // TODO add cy-data attributes
       cy.get('[data-section-id="operation/addPet"]').should(
         'contain',
-        'http://localhost:' + win.location.port + '/e2e/pet',
+        'http://localhost:' + win.location.port + '/pet',
       );
     });
   });

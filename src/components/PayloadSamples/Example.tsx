@@ -29,7 +29,12 @@ export function ExternalExample({ example, mimeType }: ExampleProps) {
     return (
       <StyledPre>
         Error loading external example: <br />
-        <a className={'token string'} href={example.externalValueUrl} target="_blank">
+        <a
+          className={'token string'}
+          href={example.externalValueUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {example.externalValueUrl}
         </a>
       </StyledPre>

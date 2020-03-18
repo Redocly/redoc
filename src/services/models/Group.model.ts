@@ -2,7 +2,7 @@ import { action, observable } from 'mobx';
 
 import { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
 import { safeSlugify } from '../../utils';
-import { MarkdownHeading } from '../MarkdownRenderer';
+import { MarkdownHeading, MarkdownRenderer } from '../MarkdownRenderer';
 import { ContentItemModel } from '../MenuBuilder';
 import { IMenuItem, MenuItemGroupType } from '../MenuStore';
 
@@ -40,7 +40,15 @@ export class GroupModel implements IMenuItem {
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.level = (tagOrGroup as MarkdownHeading).level || 1;
+
+    // remove sections from markdown, same as in ApiInfo
     this.description = tagOrGroup.description || '';
+
+    const items = (tagOrGroup as MarkdownHeading).items;
+    if (items && items.length) {
+      this.description = MarkdownRenderer.getTextBeforeHading(this.description, items[0].name);
+    }
+
     this.parent = parent;
     this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;
 

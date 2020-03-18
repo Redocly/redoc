@@ -10,8 +10,15 @@ import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOption
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
 
+import { SchemaDefinition } from '../components/SchemaDefinition/SchemaDefinition';
 import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
-import { SECURITY_DEFINITIONS_COMPONENT_NAME } from '../utils/openapi';
+import {
+  SCHEMA_DEFINITION_JSX_NAME,
+  SECURITY_DEFINITIONS_COMPONENT_NAME,
+  SECURITY_DEFINITIONS_JSX_NAME,
+} from '../utils/openapi';
+
+import { IS_BROWSER } from '../utils';
 
 export interface StoreState {
   menu: {
@@ -96,6 +103,9 @@ export class AppStore {
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
+    if (this.search) {
+      this.search.dispose();
+    }
     if (this.disposer != null) {
       this.disposer();
     }
@@ -126,16 +136,16 @@ export class AppStore {
 
     const elements: Element[] = [];
     for (let i = start; i < end; i++) {
-      let elem = this.menu.getElementAt(i);
+      const elem = this.menu.getElementAt(i);
       if (!elem) {
         continue;
       }
-      if (this.menu.flatItems[i].type === 'section') {
-        elem = elem.parentElement!.parentElement;
-      }
-      if (elem) {
-        elements.push(elem);
-      }
+      elements.push(elem);
+    }
+
+    if (idx === -1 && IS_BROWSER) {
+      const $description = document.querySelector('[data-role="redoc-description"]');
+      if ($description) elements.push($description);
     }
 
     this.marker.addOnly(elements);
@@ -149,6 +159,19 @@ const DEFAULT_OPTIONS: RedocRawOptions = {
       component: SecurityDefs,
       propsSelector: (store: AppStore) => ({
         securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+    [SECURITY_DEFINITIONS_JSX_NAME]: {
+      component: SecurityDefs,
+      propsSelector: (store: AppStore) => ({
+        securitySchemes: store.spec.securitySchemes,
+      }),
+    },
+    [SCHEMA_DEFINITION_JSX_NAME]: {
+      component: SchemaDefinition,
+      propsSelector: (store: AppStore) => ({
+        parser: store.spec.parser,
+        options: store.options,
       }),
     },
   },

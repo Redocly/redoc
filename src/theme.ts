@@ -3,8 +3,8 @@ import { darken, desaturate, lighten, readableColor, transparentize } from 'poli
 const defaultTheme: ThemeInterface = {
   spacing: {
     unit: 5,
-    sectionHorizontal: ({spacing}) => spacing.unit * 8,
-    sectionVertical: ({spacing}) => spacing.unit * 8,
+    sectionHorizontal: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: ({ spacing }) => spacing.unit * 8,
   },
   breakpoints: {
     small: '50rem',
@@ -15,31 +15,31 @@ const defaultTheme: ThemeInterface = {
     tonalOffset: 0.3,
     primary: {
       main: '#232E72',
-      light: ({colors}) => lighten(colors.tonalOffset, colors.primary.main),
-      dark: ({colors}) => darken(colors.tonalOffset, colors.primary.main),
-      contrastText: ({colors}) => readableColor(colors.primary.main),
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
+      contrastText: ({ colors }) => readableColor(colors.primary.main),
     },
     success: {
       main: '#00aa13',
-      light: ({colors}) => lighten(colors.tonalOffset, colors.success.main),
-      dark: ({colors}) => darken(colors.tonalOffset, colors.success.main),
-      contrastText: ({colors}) => readableColor(colors.success.main),
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.success.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.success.main),
+      contrastText: ({ colors }) => readableColor(colors.success.main),
     },
     warning: {
       main: '#d4ad03',
-      light: ({colors}) => lighten(colors.tonalOffset, colors.warning.main),
-      dark: ({colors}) => darken(colors.tonalOffset, colors.warning.main),
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.warning.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.warning.main),
       contrastText: '#ffffff',
     },
     error: {
       main: '#e53935',
-      light: ({colors}) => lighten(colors.tonalOffset, colors.error.main),
-      dark: ({colors}) => darken(colors.tonalOffset, colors.error.main),
-      contrastText: ({colors}) => readableColor(colors.error.main),
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
+      contrastText: ({ colors }) => readableColor(colors.error.main),
     },
     text: {
       primary: '#333333',
-      secondary: ({colors}) => lighten(colors.tonalOffset, colors.text.primary),
+      secondary: ({ colors }) => lighten(colors.tonalOffset, colors.text.primary),
     },
     border: {
       dark: 'rgba(0,0,0, 0.1)',
@@ -47,20 +47,20 @@ const defaultTheme: ThemeInterface = {
     },
     responses: {
       success: {
-        color: ({colors}) => colors.success.main,
-        backgroundColor: ({colors}) => transparentize(0.9, colors.success.main),
+        color: ({ colors }) => colors.success.main,
+        backgroundColor: ({ colors }) => transparentize(0.9, colors.success.main),
       },
       error: {
-        color: ({colors}) => colors.error.main,
-        backgroundColor: ({colors}) => transparentize(0.9, colors.error.main),
+        color: ({ colors }) => colors.error.main,
+        backgroundColor: ({ colors }) => transparentize(0.9, colors.error.main),
       },
       redirect: {
         color: '#ffa500',
-        backgroundColor: ({colors}) => transparentize(0.9, colors.responses.redirect.color),
+        backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.redirect.color),
       },
       info: {
         color: '#87ceeb',
-        backgroundColor: ({colors}) => transparentize(0.9, colors.responses.info.color),
+        backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.info.color),
       },
     },
     http: {
@@ -110,22 +110,26 @@ const defaultTheme: ThemeInterface = {
     code: {
       fontSize: '13px',
       fontFamily: 'Courier, monospace',
-      lineHeight: ({typography}) => typography.lineHeight,
-      fontWeight: ({typography}) => typography.fontWeightRegular,
+      lineHeight: ({ typography }) => typography.lineHeight,
+      fontWeight: ({ typography }) => typography.fontWeightRegular,
       color: '#e53935',
       backgroundColor: 'rgba(38, 50, 56, 0.05)',
       wrap: false,
     },
     links: {
-      color: ({colors}) => colors.primary.main,
-      visited: ({typography}) => typography.links.color,
-      hover: ({typography}) => lighten(0.2, typography.links.color),
+      color: ({ colors }) => colors.primary.main,
+      visited: ({ typography }) => typography.links.color,
+      hover: ({ typography }) => lighten(0.2, typography.links.color),
     },
   },
   menu: {
     width: '260px',
     backgroundColor: '#F3F6FB',
     textColor: '#232E72',
+    activeTextColor: theme =>
+      theme.menu.textColor !== defaultTheme.menu!.textColor
+        ? theme.menu.textColor
+        : theme.colors.primary.main,
     groupItems: {
       textTransform: 'uppercase',
     },
@@ -138,8 +142,8 @@ const defaultTheme: ThemeInterface = {
     },
   },
   logo: {
-    maxHeight: ({menu}) => menu.width,
-    maxWidth: ({menu}) => menu.width,
+    maxHeight: ({ menu }) => menu.width,
+    maxWidth: ({ menu }) => menu.width,
     gutter: '2px',
   },
   rightPanel: {
@@ -148,7 +152,7 @@ const defaultTheme: ThemeInterface = {
     textColor: '#ffffff',
   },
   codeSample: {
-    backgroundColor: ({rightPanel}) => darken(0.1, rightPanel.backgroundColor),
+    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
 };
 
@@ -308,6 +312,7 @@ export interface ResolvedThemeInterface {
     width: string;
     backgroundColor: string;
     textColor: string;
+    activeTextColor: string;
     groupItems: {
       textTransform: string;
     };

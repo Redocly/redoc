@@ -27,8 +27,22 @@ import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
+import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
+
+interface XPayloadSample {
+  lang: 'payload';
+  label: string;
+  requestBodyContent: MediaContentModel;
+  source: string;
+}
+
+export function isPayloadSample(
+  sample: XPayloadSample | OpenAPIXCodeSample,
+): sample is XPayloadSample {
+  return sample.lang === 'payload' && (sample as any).requestBodyContent;
+}
 
 /**
  * Operation model ready to be used by components
@@ -62,7 +76,6 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  codeSamples: OpenAPIXCodeSample[];
   extensions: Dict<any>;
 
   constructor(
@@ -77,8 +90,8 @@ export class OperationModel implements IMenuItem {
       operationSpec.operationId !== undefined
         ? 'operation/' + operationSpec.operationId
         : parent !== undefined
-          ? parent.id + this.pointer
-          : this.pointer;
+        ? parent.id + this.pointer
+        : this.pointer;
 
     this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
@@ -89,7 +102,6 @@ export class OperationModel implements IMenuItem {
     this.httpVerb = operationSpec.httpVerb;
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
-    this.codeSamples = operationSpec['x-code-samples'] || [];
     this.path = operationSpec.pathName;
 
     const pathInfo = parser.byRef<OpenAPIPath>(
@@ -145,6 +157,30 @@ export class OperationModel implements IMenuItem {
   }
 
   @memoize
+  get codeSamples() {
+    let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
+      this.operationSpec['x-code-samples'] || [];
+
+    const requestBodyContent = this.requestBody && this.requestBody.content;
+    if (requestBodyContent && requestBodyContent.hasSample) {
+      const insertInx = Math.min(samples.length, this.options.payloadSampleIdx);
+
+      samples = [
+        ...samples.slice(0, insertInx),
+        {
+          lang: 'payload',
+          label: 'Payload',
+          source: '',
+          requestBodyContent,
+        },
+        ...samples.slice(insertInx),
+      ];
+    }
+
+    return samples;
+  }
+
+  @memoize
   get parameters() {
     const _parameters = mergeParams(
       this.parser,
@@ -154,11 +190,12 @@ export class OperationModel implements IMenuItem {
     ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
     if (this.options.sortPropsAlphabetically) {
-      sortByField(_parameters, 'name');
+      return sortByField(_parameters, 'name');
     }
     if (this.options.requiredPropsFirst) {
-      sortByRequired(_parameters);
+      return sortByRequired(_parameters);
     }
+
     return _parameters;
   }
 

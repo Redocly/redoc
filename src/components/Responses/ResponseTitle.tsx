@@ -22,7 +22,7 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
           <ShelfIcon
             size={'1.5em'}
             color={type}
-            direction={opened ? 'up' : 'down'}
+            direction={opened ? 'down' : 'right'}
             float={'left'}
           />
         )}
