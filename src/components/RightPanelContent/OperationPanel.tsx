@@ -30,8 +30,7 @@ export class OperationPanel extends React.Component<RightPanelContentProps> {
   }
 
   private shouldShowOtherInfoPanel() {
-    return this.props.options.showOtherInfoPanel &&
-      this.props.options.showExtensions &&
+    return this.props.options.showExtensions &&
       this.props.operation.extensions[Constants.OTX_EXTENSION_KEY];
   }
 }
