@@ -4,21 +4,23 @@ import { OperationModel } from './models';
 
 import Worker from './SearchWorker.worker';
 
-let worker: new () => Worker;
-
-if (IS_BROWSER) {
-  try {
-    // tslint:disable-next-line
-    worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker');
-  } catch (e) {
+function getWorker() {
+  let worker: new () => Worker;
+  if (IS_BROWSER) {
+    try {
+      // tslint:disable-next-line
+      worker = require('workerize-loader?inline&fallback=false!./SearchWorker.worker');
+    } catch (e) {
+      worker = require('./SearchWorker.worker').default;
+    }
+  } else {
     worker = require('./SearchWorker.worker').default;
   }
-} else {
-  worker = require('./SearchWorker.worker').default;
+  return new worker();
 }
 
 export class SearchStore<T> {
-  searchWorker = new worker();
+  searchWorker = getWorker();
 
   indexItems(groups: Array<IMenuItem | OperationModel>) {
     const recurse = items => {

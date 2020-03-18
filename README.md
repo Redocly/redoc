@@ -64,11 +64,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
-- [Rebilly](https://rebilly.github.io/RebillyAPI)
+- [Rebilly](https://rebilly-api.redoc.ly/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
-- [Shopify Draft Orders](https://help.shopify.com/api/draft-orders)
 - [Discourse](http://docs.discourse.org)
+- [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [FastAPI](https://github.com/tiangolo/fastapi)
 
@@ -107,13 +107,13 @@ That's all folks!
 **IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-options-object) to prevent XSS security risks.
 
 ### 1. Install ReDoc (skip this step for CDN)
-Install using [yarn](https://yarnpkg.com):
+Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
+
+    npm i redoc
+
+or using [yarn](https://yarnpkg.com):
 
     yarn add redoc
-
-or using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
-
-    npm install redoc --save
 
 ### 2. Reference redoc script in HTML
 For **CDN**:
@@ -230,6 +230,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
+* `expandSingleSchemaField` - automatically expand single field in a schema
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value 'all' expands all levels. The default value is `2`.
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `false`.

@@ -30,7 +30,7 @@ function getDefaultStyleValue(parameterLocation: OpenAPIParameterLocation): Open
  */
 export class FieldModel {
   @observable
-  expanded: boolean = false;
+  expanded: boolean | undefined;
 
   schema: SchemaModel;
   name: string;

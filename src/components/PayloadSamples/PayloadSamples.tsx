@@ -1,3 +1,7 @@
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import ReactDropdown from 'react-dropdown';
+
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { MediaTypeSamples } from './MediaTypeSamples';

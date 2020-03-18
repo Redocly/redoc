@@ -21,12 +21,12 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
-  showOtherInfoPanel?: boolean;
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
   hideSchemaTitles?: boolean | string;
   payloadSampleIdx?: number;
+  expandSingleSchemaField?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -156,12 +156,12 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   hideSingleRequestSampleTab: boolean;
-  showOtherInfoPanel: boolean;
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
   hideSchemaTitles: boolean;
   payloadSampleIdx: number;
+  expandSingleSchemaField: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -194,7 +194,6 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
-    this.showOtherInfoPanel = argValueToBoolean(raw.showOtherInfoPanel);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
@@ -203,7 +202,9 @@ export class RedocNormalizedOptions {
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
+    this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
 
+    // eslint-disable-next-line @typescript-eslint/camelcase
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};

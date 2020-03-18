@@ -9,7 +9,7 @@ const EVENT = 'scroll';
 export class ScrollService {
   private _scrollParent: Window | HTMLElement | undefined;
   private _emiter: EventEmitter;
-  private _prevOffsetY: number = 0;
+  private _prevOffsetY = 0;
   constructor(private options: RedocNormalizedOptions) {
     this._scrollParent = IS_BROWSER ? window : undefined;
     this._emiter = new EventEmitter();

@@ -13,9 +13,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 10.x
-    - name: yarn install, build, and test
+    - name: npm install, build, and test
       run: |
-        npm install -g yarn
-        yarn install
-        yarn bundle
-        yarn test
+        npm install
+        npm run bundle
+        npm test

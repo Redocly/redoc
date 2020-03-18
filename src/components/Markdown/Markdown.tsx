@@ -17,11 +17,12 @@ export type MarkdownProps = BaseMarkdownProps &
   StylingMarkdownProps & {
     source: string;
     className?: string;
+    'data-role'?: string;
   };
 
 export class Markdown extends React.Component<MarkdownProps> {
   render() {
-    const { source, inline, compact, className } = this.props;
+    const { source, inline, compact, className, 'data-role': dataRole } = this.props;
     const renderer = new MarkdownRenderer();
     return (
       <SanitizedMarkdownHTML
@@ -29,6 +30,7 @@ export class Markdown extends React.Component<MarkdownProps> {
         inline={inline}
         compact={compact}
         className={className}
+        data-role={dataRole}
       />
     );
   }

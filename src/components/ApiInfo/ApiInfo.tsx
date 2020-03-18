@@ -1,16 +1,19 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { DarkRightPanel, StyledLink } from '../../../src/common-elements';
-import { Constants } from '../../../src/services/Constants';
-import { ContentPanel } from '../RightPanelContent/ContentPanel';
-
-import { MiddlePanel, Row, Section } from '../../common-elements/';
 
 import { AppStore } from '../../services/AppStore';
+
+import { MiddlePanel, Row, Section } from '../../common-elements/';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
-import { ApiHeader, DownloadButton, InfoSpan, InfoSpanBox, InfoSpanBoxWrap } from './styled.elements';
+import {
+  ApiHeader,
+  DownloadButton,
+  InfoSpan,
+  InfoSpanBox,
+  InfoSpanBoxWrap,
+} from './styled.elements';
 
 export interface ApiInfoProps {
   store: AppStore;
@@ -25,8 +28,8 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
   };
 
   render() {
-    const {store} = this.props;
-    const {info, externalDocs} = store.spec;
+    const { store } = this.props;
+    const { info, externalDocs } = store.spec;
     const hideDownloadButton = store.options.hideDownloadButton;
 
     const downloadFilename = info.downloadFileName;
@@ -35,34 +38,32 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
     const license =
       (info.license && (
         <InfoSpan>
-          License: <StyledLink href={info.license.url}>{info.license.name}</StyledLink>
+          License: <a href={info.license.url}>{info.license.name}</a>
         </InfoSpan>
       )) ||
       null;
 
     const website =
-      (info.contact &&
-        info.contact.url && (
-          <InfoSpan>
-            URL: <StyledLink href={info.contact.url}>{info.contact.url}</StyledLink>
-          </InfoSpan>
-        )) ||
+      (info.contact && info.contact.url && (
+        <InfoSpan>
+          URL: <a href={info.contact.url}>{info.contact.url}</a>
+        </InfoSpan>
+      )) ||
       null;
 
     const email =
-      (info.contact &&
-        info.contact.email && (
-          <InfoSpan>
-            {info.contact.name || 'E-mail'}:{' '}
-            <StyledLink href={'mailto:' + info.contact.email}>{info.contact.email}</StyledLink>
-          </InfoSpan>
-        )) ||
+      (info.contact && info.contact.email && (
+        <InfoSpan>
+          {info.contact.name || 'E-mail'}:{' '}
+          <a href={'mailto:' + info.contact.email}>{info.contact.email}</a>
+        </InfoSpan>
+      )) ||
       null;
 
     const terms =
       (info.termsOfService && (
         <InfoSpan>
-          <StyledLink href={info.termsOfService}>Terms of Service</StyledLink>
+          <a href={info.termsOfService}>Terms of Service</a>
         </InfoSpan>
       )) ||
       null;
@@ -97,13 +98,11 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                   </InfoSpanBox>
                 </InfoSpanBoxWrap>
               )) ||
-              null}
+                null}
             </StyledMarkdownBlock>
-            <Markdown source={store.spec.info.description}/>
-            {externalDocs && <ExternalDocumentation externalDocs={externalDocs}/>}
+            <Markdown source={store.spec.info.description} data-role="redoc-description" />
+            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
           </MiddlePanel>
-          {store.options.showOtherInfoPanel &&
-          <DarkRightPanel><ContentPanel content={info[Constants.OTX_EXTENSION_KEY]}/></DarkRightPanel>}
         </Row>
       </Section>
     );
