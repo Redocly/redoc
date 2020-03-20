@@ -58,7 +58,7 @@ class Json extends React.PureComponent<JsonProps> {
   collapseAll = () => {
     const elements = this.node.getElementsByClassName('collapsible');
     // skip first item to avoid collapsing whole object/array
-    const elementsArr = Array.prototype.slice.call(elements).slice(1);
+    const elementsArr = Array.prototype.slice.call(elements, 1);
 
     for (const expanded of elementsArr) {
       (expanded.parentNode as Element)!.classList.add('collapsed');
