@@ -112,11 +112,18 @@ export class RedocNormalizedOptions {
       return true;
     }
 
-    if (typeof value === 'string') {
-      return value.split(',').map(ext => ext.trim());
+    if (typeof value !== 'string') {
+      return value
     }
 
-    return value;
+    switch (value) {
+      case 'true':
+        return true
+      case 'false':
+        return false
+      default:
+        return value.split(',').map(ext => ext.trim());
+    }
   }
 
   static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
