@@ -1,4 +1,4 @@
-import 'core-js/es/promise';
+// import 'core-js/es/promise';
 
 import 'core-js/es/array/find';
 import 'core-js/es/object/assign';
