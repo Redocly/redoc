@@ -12,6 +12,12 @@ export const ApiHeader = styled(H1)`
   ${extensionsHook('ApiHeader')};
 `;
 
+export const AdditionalDocLink = styled.a`
+  padding-left: 100px;
+  font-size: 16px;
+  color: #0084CE;
+`;
+
 export const DownloadButton = styled.a`
   border: 1px solid ${props => props.theme.colors.primary.main};
   color: ${props => props.theme.colors.primary.main};

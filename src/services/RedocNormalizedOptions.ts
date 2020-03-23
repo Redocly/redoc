@@ -21,6 +21,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  additionalDocUrl?: string;
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
@@ -47,6 +48,15 @@ function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): bool
     return val === 'false' ? false : true;
   }
   return val;
+}
+
+function argValueToString(val?: string | undefined, defaultValue?: string): string | undefined {
+  if (val === undefined) {
+    return defaultValue || '';
+  }
+  if (typeof val === 'string') {
+    return val;
+  }
 }
 
 export class RedocNormalizedOptions {
@@ -155,6 +165,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  additionalDocUrl: string | undefined;
   hideSingleRequestSampleTab: boolean;
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
@@ -194,6 +205,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.additionalDocUrl = argValueToString(raw.additionalDocUrl);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
