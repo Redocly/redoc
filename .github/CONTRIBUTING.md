@@ -15,56 +15,56 @@ Hi! We're really excited that you are interested in contributing to ReDoc. Befor
 Before submitting a pull request, please make sure the following is done:
 
 1. Fork the repository and create your branch from master.
-2. Run `yarn` in the repository root.
+2. Run `npm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
-4. Ensure the test suite passes (`yarn test`). Tip: `yarn test --watch TestName` is helpful in development.
-5. Format your code with prettier (`yarn prettier`).
+4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
+5. Format your code with prettier (`npm run prettier`).
 
 ## Development Setup
 
-You will need [Node.js](http://nodejs.org) at `v8.0.0+` and [Yarn](https://yarnpkg.com/en/) at `v1.2.0+`
+You will need [Node.js](http://nodejs.org) at `v12.0.0+`.
 
 After cloning the repo, run:
 
 ```bash
-$ yarn install # or npm
+$ npm install # or npm
 ```
 
 ### Commonly used NPM scripts
 
 ``` bash
 # dev-server, watch and auto reload playground
-$ yarn start
+$ npm start
 
 # start playground app in production environment
-$ yarn start:prod
+$ npm run start:prod
 
 # runt tslint
-$ yarn lint
+$ npm run lint
 
 # try autofix tslint issues
-$ yarn lint --fix
+$ npm run lint -- --fix
 
 # run unit tests
-$ yarn unit
+$ npm run unit
 
 # run e2e tests
-$ yarn e2e
+$ npm run e2e
 
 # open cypress UI to debug e2e test
-$ yarn cy:open
+$ npm run cy:open
 
 # run the full test suite, include linting / unit / e2e
-$ yarn test
+$ npm test
 
 # prepare bundles
-$ yarn bundle
+$ npm run bundle
 
 # format the code using prettier
-$ yarn prettier
+$ npm run prettier
 
 # auto-generate changelog
-$ yarn changelog
+$ npm run changelog
 ```
 
 There are some other scripts available in the `scripts` section of the `package.json` file.

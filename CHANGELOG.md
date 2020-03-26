@@ -1,3 +1,19 @@
+# [2.0.0-rc.24](https://github.com/Redocly/redoc/compare/v2.0.0-rc.23...v2.0.0-rc.24) (2020-03-17)
+
+
+### Bug Fixes
+
+* Add debounce for 300 ms when searching ([#1089](https://github.com/Redocly/redoc/issues/1089)) ([373f018](https://github.com/Redocly/redoc/commit/373f018d0c183f83d07a4dbad4a4e2c9ab159f69))
+* do not load SearchWorker if disableSearch is `true` ([#1191](https://github.com/Redocly/redoc/issues/1191)) ([af415e8](https://github.com/Redocly/redoc/commit/af415e89e8c074a3f7c84f76f24020a7bd545483)), closes [#764](https://github.com/Redocly/redoc/issues/764)
+* fix major search performance due to wrong marker element ([8c053cc](https://github.com/Redocly/redoc/commit/8c053cc474e88befc3338307317c0702d212d4c3)), closes [#1109](https://github.com/Redocly/redoc/issues/1109)
+
+
+### Features
+
+* new option expandSingleSchemaField ([7608800](https://github.com/Redocly/redoc/commit/7608800d0acaa2fa0099dc840e17cd5aa90b54ca))
+
+
+
 # [2.0.0-rc.23](https://github.com/Redocly/redoc/compare/v2.0.0-rc.22...v2.0.0-rc.23) (2020-02-09)
 
 

@@ -38,6 +38,7 @@
     "./custom.d.ts",
     "./demo/playground/hmr-playground.tsx",
     "./src/**/*.ts?",
-    "demo/*.tsx"
+    "demo/*.tsx",
+    "src/empty.js"
   ]
 }

@@ -640,7 +640,7 @@ describe('Utils', () => {
 
   describe('OpenAPI sortByRequired', () => {
     it('should equal to the old data when all items have no required props', () => {
-      let fields = [
+      const fields = [
         {
           name: 'loginName',
           required: false,
@@ -694,7 +694,7 @@ describe('Utils', () => {
     });
 
     it('other item should be the same order when some of items are required', () => {
-      let fields = [
+      const fields = [
         {
           name: 'loginName',
           required: true,
@@ -744,7 +744,7 @@ describe('Utils', () => {
           required: false,
         },
       ];
-      let sortedFields = [
+      const sortedFields = [
         {
           name: 'loginName',
           required: true,
@@ -798,7 +798,7 @@ describe('Utils', () => {
     });
 
     it('should the order of required items is as same as the order parameter ', () => {
-      let fields = [
+      const fields = [
         {
           name: 'loginName',
           required: true,

@@ -26,6 +26,7 @@ export interface RedocRawOptions {
   jsonSampleExpandLevel?: number | string | 'all';
   hideSchemaTitles?: boolean | string;
   payloadSampleIdx?: number;
+  expandSingleSchemaField?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -160,6 +161,7 @@ export class RedocNormalizedOptions {
   enumSkipQuotes: boolean;
   hideSchemaTitles: boolean;
   payloadSampleIdx: number;
+  expandSingleSchemaField: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -200,7 +202,9 @@ export class RedocNormalizedOptions {
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
+    this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
 
+    // eslint-disable-next-line @typescript-eslint/camelcase
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};

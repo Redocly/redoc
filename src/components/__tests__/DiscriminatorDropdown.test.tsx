@@ -1,3 +1,4 @@
+/* eslint-disable import/no-internal-modules */
 /* tslint:disable:no-implicit-dependencies */
 
 import { shallow } from 'enzyme';

@@ -19,11 +19,13 @@ export const linksCss = css`
   }
 `;
 
-export const StyledMarkdownBlock = styled(PrismDiv as StyledComponent<
-  'div',
-  ResolvedThemeInterface,
-  { compact?: boolean; inline?: boolean }
->)`
+export const StyledMarkdownBlock = styled(
+  PrismDiv as StyledComponent<
+    'div',
+    ResolvedThemeInterface,
+    { compact?: boolean; inline?: boolean }
+  >,
+)`
 
   font-family: ${props => props.theme.typography.fontFamily};
   font-weight: ${props => props.theme.typography.fontWeightRegular};

@@ -18,6 +18,8 @@ import {
   SECURITY_DEFINITIONS_JSX_NAME,
 } from '../utils/openapi';
 
+import { IS_BROWSER } from '../utils';
+
 export interface StoreState {
   menu: {
     activeItemIdx: number;
@@ -134,16 +136,16 @@ export class AppStore {
 
     const elements: Element[] = [];
     for (let i = start; i < end; i++) {
-      let elem = this.menu.getElementAt(i);
+      const elem = this.menu.getElementAt(i);
       if (!elem) {
         continue;
       }
-      if (this.menu.flatItems[i].type === 'section') {
-        elem = elem.parentElement!.parentElement;
-      }
-      if (elem) {
-        elements.push(elem);
-      }
+      elements.push(elem);
+    }
+
+    if (idx === -1 && IS_BROWSER) {
+      const $description = document.querySelector('[data-role="redoc-description"]');
+      if ($description) elements.push($description);
     }
 
     this.marker.addOnly(elements);
