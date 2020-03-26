@@ -306,3 +306,37 @@ Player:
     x-additionalPropertiesName: attribute-name
     type: string
 ```
+
+#### x-explicitMappingOnly
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+Extends the `discriminator` property of the schema object.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-explicitMappingOnly | boolean | limit the discriminator selectpicker to the explicit mappings only |
+
+###### Usage in ReDoc
+ReDoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
+When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`,
+the default behavior is kept, i.e. explicit and implicit mappings will be shown.
+
+###### x-explicitMappingOnly example
+
+
+```yaml
+Pet:
+  type: object
+  required:
+    - name
+    - photoUrls
+  discriminator:
+    propertyName: petType
+    x-explicitMappingOnly: true
+    mapping:
+      cat: "#/components/schemas/Cat"
+      bee: "#/components/schemas/HoneyBee"
+```
+
+Will show in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from
+the `Pet` class.
