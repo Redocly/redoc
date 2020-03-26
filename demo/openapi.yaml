@@ -489,6 +489,124 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Order not found
+  /store/subscribe:
+    post:
+      tags:
+        - store
+      summary: Subscribe to the Store events
+      description: Add subscription for a store events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackUrl:
+                  type: string
+                  format: uri
+                  description: This URL will be called by the server when the desired event will occur
+                  example: https://myserver.com/send/callback/here
+                eventName:
+                  type: string
+                  description: Event name for the subscription
+                  enum:
+                    - orderInProgress
+                    - orderShipped
+                    - orderDelivered
+                  example: orderInProgress
+              required:
+                - callbackUrl
+                - eventName
+      responses:
+        '201':
+          description: Subscription added
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                    example: AAA-123-BBB-456
+      callbacks:
+        orderInProgress:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: A callback triggered every time an Order is updated status to "inProgress"
+              requestBody:
+                content:
+                  application/json:
+                    schema: 
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                '299':
+                  description: Response for cancelling subscription
+                '500':
+                  description: Callback processing failed and retries will be performed
+        orderShipped:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: A callback triggered every time an Order is shipped
+              requestBody:
+                content:
+                  application/json:
+                    schema: 
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        estimatedDeliveryDate:
+                          type: string
+                          format: date-time
+                          example: '2018-11-11T16:00:00Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+        orderDelivered:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: A callback triggered every time an Order is delivered to the recipient
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
   /user:
     post:
       tags:
@@ -955,7 +1073,7 @@ components:
   examples:
     Order:
       value:
-        quantity: 1,
-        shipDate: 2018-10-19T16:46:45Z,
-        status: placed,
+        quantity: 1
+        shipDate: '2018-10-19T16:46:45Z'
+        status: placed
         complete: false
