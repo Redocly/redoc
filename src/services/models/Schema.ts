@@ -283,7 +283,7 @@ export class SchemaModel {
 
         if (indexLeft < 0 && indexRight < 0) {
           // out of mapping, order by name
-          return left.name - right.name;
+          return left.name.localCompare(right.name);
         } else if (indexLeft < 0) {
           // the right is found, so mapping wins
           return 1;
