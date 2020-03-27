@@ -1,3 +1,20 @@
+# [2.0.0-rc.25](https://github.com/Redocly/redoc/compare/v2.0.0-rc.24...v2.0.0-rc.25) (2020-03-27)
+
+
+### Bug Fixes
+
+* do not collapse top level on Collapse All in json samples ([#1209](https://github.com/Redocly/redoc/issues/1209)) ([830371b](https://github.com/Redocly/redoc/commit/830371b5d1edf4ba7a138b3b3d78148d020e0349))
+* fix passing boolean value to showExtensions options ([#1211](https://github.com/Redocly/redoc/issues/1211)) ([c6eaa02](https://github.com/Redocly/redoc/commit/c6eaa0281bb0f62b019c865e4aefb863ce84d628))
+* improve names for some theme settings ([a0bd27c](https://github.com/Redocly/redoc/commit/a0bd27c75427a39abc9c753b0654678eed2f3851))
+* sort discriminator entries by mapping order ([#1216](https://github.com/Redocly/redoc/issues/1216)) ([ac4f915](https://github.com/Redocly/redoc/commit/ac4f915494f289d1c97ffdfe3af59efd94734f8c))
+
+
+### Features
+
+* add x-explicitMappingOnly extension ([#1215](https://github.com/Redocly/redoc/issues/1215)) ([ea5b0aa](https://github.com/Redocly/redoc/commit/ea5b0aabf9133d11d3a8fcb79f9515d21e0d7ac0))
+
+
+
 # [2.0.0-rc.24](https://github.com/Redocly/redoc/compare/v2.0.0-rc.23...v2.0.0-rc.24) (2020-03-17)
 
 
