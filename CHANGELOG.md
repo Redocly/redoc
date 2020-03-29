@@ -1,3 +1,12 @@
+# [2.0.0-rc.26](https://github.com/Redocly/redoc/compare/v2.0.0-rc.25...v2.0.0-rc.26) (2020-03-29)
+
+
+### Bug Fixes
+
+* crash to wrong spelling in localeCompare ([3908a7c](https://github.com/Redocly/redoc/commit/3908a7c46448d277b82318659cdea65db52f9e70)), closes [#1218](https://github.com/Redocly/redoc/issues/1218)
+
+
+
 # [2.0.0-rc.25](https://github.com/Redocly/redoc/compare/v2.0.0-rc.24...v2.0.0-rc.25) (2020-03-27)
 
 
