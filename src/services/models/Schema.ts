@@ -261,7 +261,9 @@ export class SchemaModel {
       }
     }
 
-    const inversedMapping = isLimitedToMapping ? { ...explicitInversedMapping } : { ...implicitInversedMapping, ...explicitInversedMapping };
+    const inversedMapping = isLimitedToMapping
+      ? { ...explicitInversedMapping }
+      : { ...implicitInversedMapping, ...explicitInversedMapping };
 
     let refs: Array<{ $ref; name }> = [];
 
@@ -276,7 +278,7 @@ export class SchemaModel {
       }
     }
 
-    // Make the listing respects the mapping 
+    // Make the listing respects the mapping
     // in case a mapping is defined, the user usually wants to have the order shown
     // as it was defined in the yaml. This will sort the names given the provided
     // mapping (if provided).
@@ -292,7 +294,7 @@ export class SchemaModel {
 
         if (indexLeft < 0 && indexRight < 0) {
           // out of mapping, order by name
-          return left.name.localCompare(right.name);
+          return left.name.localeCompare(right.name);
         } else if (indexLeft < 0) {
           // the right is found, so mapping wins
           return 1;
