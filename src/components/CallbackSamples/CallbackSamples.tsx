@@ -4,7 +4,6 @@ import * as React from 'react';
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { isPayloadSample, RedocNormalizedOptions } from '../../services';
 import { CallbackModel } from '../../services/models';
-import { Endpoint } from '../Endpoint/Endpoint';
 import { OptionsContext } from '../OptionsProvider';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
@@ -57,7 +56,6 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
               <TabPanel key={sample.lang + '_' + (sample.label || '')}>
                 {isPayloadSample(sample) ? (
                   <div>
-                    <Endpoint operation={operation} inverted={false} />
                     <PayloadSamples content={sample.requestBodyContent} />
                   </div>
                 ) : (

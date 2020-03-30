@@ -11,5 +11,8 @@ export const StyledCallbackTitle = styled(CallbackTitle)`
 `;
 
 export const CallbackDetailsWrap = styled.div`
-  padding: 10px;
+  padding: 10px 25px;
+  background-color: #fafafa;
+  margin-bottom: 5px;
+  margin-top: 5px;
 `;

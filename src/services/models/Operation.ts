@@ -108,6 +108,10 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
 
+    const pathInfo = parser.byRef<OpenAPIPath>(
+      JsonPointer.compile(['paths', operationSpec.pathName]),
+    );
+
     if (this.isCallback) {
       // NOTE: Use callback's event name as the view label, not the operationID.
       this.name = callbackEventName || getOperationSummary(operationSpec);
@@ -116,23 +120,23 @@ export class OperationModel implements IMenuItem {
       this.security = (operationSpec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
+
+      // TODO: update getting pathInfo
+      this.servers = normalizeServers(
+        '',
+        operationSpec.servers || (pathInfo && pathInfo.servers) || [],
+      );
     } else {
       this.name = getOperationSummary(operationSpec);
       this.security = (operationSpec.security || parser.spec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
+
+      this.servers = normalizeServers(
+        parser.specUrl,
+        operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
+      );
     }
-
-    const pathInfo = parser.byRef<OpenAPIPath>(
-      JsonPointer.compile(['paths', operationSpec.pathName]),
-    );
-
-    // NOTE: Callbacks by default will inherit the specification's global `servers` definition.
-    // In many cases, this may be undesirable. Override individually in the specification to remedy this.
-    this.servers = normalizeServers(
-      parser.specUrl,
-      operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
-    );
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(operationSpec, options.showExtensions);

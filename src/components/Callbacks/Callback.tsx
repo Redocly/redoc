@@ -15,7 +15,7 @@ export class CallbackView extends React.Component<{ callbackOperation: Operation
     const { name, description, expanded } = this.props.callbackOperation;
 
     return (
-      <div>
+      <>
         <StyledCallbackTitle
           onClick={this.toggle}
           name={name}
@@ -27,7 +27,7 @@ export class CallbackView extends React.Component<{ callbackOperation: Operation
             <CallbackDetails callbackOperation={this.props.callbackOperation} />
           </CallbackDetailsWrap>
         )}
-      </div>
+      </>
     );
   }
 }
