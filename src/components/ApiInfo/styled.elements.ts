@@ -35,10 +35,12 @@ export const DownloadButton = styled.a`
   cursor: pointer;
   background: #0084CE;
   &:hover {
-    background: #339DD8;;
+    background: #339DD8;
+    color: #FFFFFF;
   }
   &:active {
-    background: #00639B;;
+    background: #00639B;
+    color: #FFFFFF;
   }
 
   ${extensionsHook('DownloadButton')};
