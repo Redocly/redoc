@@ -32,7 +32,7 @@ import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
 
-interface XPayloadSample {
+export interface XPayloadSample {
   lang: 'payload';
   label: string;
   requestBodyContent: MediaContentModel;

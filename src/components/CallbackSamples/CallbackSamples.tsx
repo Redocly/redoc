@@ -1,12 +1,15 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
-import { isPayloadSample, RedocNormalizedOptions } from '../../services';
+import { RightPanelHeader } from '../../common-elements';
+import { RedocNormalizedOptions } from '../../services';
 import { CallbackModel } from '../../services/models';
 import { OptionsContext } from '../OptionsProvider';
-import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
+import { CallbacksSwitch } from '../CallbacksSwitch/CallbacksSwitch';
+import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
+import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
+import { CallbackReqSamples } from './CallbackReqSamples';
+import { SamplesWrapper } from './styled.elements';
 
 export interface CallbackSamplesProps {
   callbacks: CallbackModel[];
@@ -17,66 +20,45 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
   static contextType = OptionsContext;
   context: RedocNormalizedOptions;
 
+  private renderDropdown = props => {
+    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+  };
+
   render() {
     const { callbacks } = this.props;
 
+    const operations = callbacks
+      .map(callback => callback.operations.map(operation => operation))
+      .reduce((a, b) => a.concat(b), []);
+
     // Sums number of code samples per operation per callback
-    const numSamples = callbacks.reduce(
-      (callbackSum, callback) =>
-        callbackSum +
-        callback.operations.reduce(
-          (sampleSum, operation) => sampleSum + operation.codeSamples.length,
-          0,
-        ),
+    const numSamples = operations.reduce(
+      (sampleSum, operation) => sampleSum + operation.codeSamples.length,
       0,
     );
 
     const hasSamples = numSamples > 0;
-    const hideTabList = numSamples === 1 ? this.context.hideSingleRequestSampleTab : false;
-
-    const renderTabs = () => {
-      return callbacks.map(callback => {
-        return callback.operations.map(operation => {
-          return operation.codeSamples.map(sample => {
-            return (
-              <Tab key={operation.id + '_' + operation.name}>
-                {operation.name} {sample.label !== undefined ? sample.label : sample.lang}
-              </Tab>
-            );
-          });
-        });
-      });
-    };
-
-    const renderTabPanels = () => {
-      return callbacks.map(callback => {
-        return callback.operations.map(operation => {
-          return operation.codeSamples.map(sample => {
-            return (
-              <TabPanel key={sample.lang + '_' + (sample.label || '')}>
-                {isPayloadSample(sample) ? (
-                  <div>
-                    <PayloadSamples content={sample.requestBodyContent} />
-                  </div>
-                ) : (
-                  <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
-                )}
-              </TabPanel>
-            );
-          });
-        });
-      });
-    };
 
     return (
       (hasSamples && (
         <div>
-          <RightPanelHeader> Callback samples </RightPanelHeader>
+          <RightPanelHeader> Callback request samples </RightPanelHeader>
 
-          <Tabs defaultIndex={0}>
-            <TabList hidden={hideTabList}>{renderTabs()}</TabList>
-            {renderTabPanels()}
-          </Tabs>
+          <SamplesWrapper>
+            <CallbacksSwitch
+              callbacks={operations}
+              renderDropdown={this.renderDropdown}
+              withLabel={true}
+            >
+              {callback => (
+                <CallbackReqSamples
+                  key="callbackReqSamples"
+                  callback={callback}
+                  renderDropdown={this.renderDropdown}
+                />
+              )}
+            </CallbacksSwitch>
+          </SamplesWrapper>
         </div>
       )) ||
       null
