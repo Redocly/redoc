@@ -124,7 +124,7 @@ const defaultTheme: ThemeInterface = {
   },
   menu: {
     width: '260px',
-    backgroundColor: '#F3F6FB',
+    backgroundColor: '#FFFFFF',
     textColor: '#232E72',
     activeTextColor: theme =>
       theme.menu.textColor !== defaultTheme.menu!.textColor
