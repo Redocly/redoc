@@ -530,7 +530,12 @@ paths:
                     example: AAA-123-BBB-456
       callbacks:
         orderInProgress:
-          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+          '/{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            servers:
+              - url: //petstore.swagger.io/v2
+                description: Default server callback
+              - url: //petstore.swagger.io/sandbox
+                description: Sandbox server callback
             post:
               description: A callback triggered every time an Order is updated status to "inProgress"
               requestBody:
@@ -556,15 +561,102 @@ paths:
                         orderId:
                           type: string
                           example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
               responses:
                 '200':
                   description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
                 '299':
                   description: Response for cancelling subscription
                 '500':
                   description: Callback processing failed and retries will be performed
+              x-code-samples:
+                - lang: 'C#'
+                  source: |
+                    PetStore.v1.Pet pet = new PetStore.v1.Pet();
+                    pet.setApiKey("your api key");
+                    pet.petType = PetStore.v1.Pet.TYPE_DOG;
+                    pet.name = "Rex";
+                    // set other fields
+                    PetStoreResponse response = pet.create();
+                    if (response.statusCode == HttpStatusCode.Created)
+                    {
+                      // Successfully created
+                    }
+                    else
+                    {
+                      // Something wrong -- check response for errors
+                      Console.WriteLine(response.getRawResponse());
+                    }
+                - lang: PHP
+                  source: |
+                    $form = new \PetStore\Entities\Pet();
+                    $form->setPetType("Dog");
+                    $form->setName("Rex");
+                    // set other fields
+                    try {
+                        $pet = $client->pets()->create($form);
+                    } catch (UnprocessableEntityException $e) {
+                        var_dump($e->getErrors());
+                    }
+            put:
+              description: A Put callback triggered
+              requestBody:
+                content:
+                  application/json:
+                    schema: 
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
         orderShipped:
-          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+          '/{$request.body#/callbackUrl}?event={$request.body#/eventName}':
             post:
               description: A callback triggered every time an Order is shipped
               requestBody:
@@ -588,7 +680,7 @@ paths:
                 '200':
                   description: Callback successfully processed and no retries will be performed
         orderDelivered:
-          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+          '/{$request.body#/callbackUrl}?event={$request.body#/eventName}':
             post:
               description: A callback triggered every time an Order is delivered to the recipient
               requestBody:
