@@ -8,10 +8,13 @@ import styled from '../../styled-components';
 import { StyledDropdown } from '../../common-elements';
 
 export const MimeLabel = styled.div`
-  padding: 12px;
+  padding: 0.9em;
   background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
   margin: 0 0 10px 0;
   display: block;
+  font-family: ${({ theme }) => theme.typography.headings.fontFamily};
+  font-size: 0.929em;
+  line-height: 1.5em;
 `;
 
 export const DropdownLabel = styled.span`
