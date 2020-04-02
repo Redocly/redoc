@@ -29,7 +29,7 @@ export const ApiContentWrap = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
-  width: calc(100% - ${props => props.theme.menu.width});
+  width: calc(100% - ${props => props.theme.sidebar.width});
   ${media.lessThan('small', true)`
     width: 100%;
   `};
@@ -46,7 +46,7 @@ export const BackgroundStub = styled.div`
   width: ${({ theme }) => {
     if (theme.rightPanel.width.endsWith('%')) {
       const percents = parseInt(theme.rightPanel.width, 10);
-      return `calc((100% - ${theme.menu.width}) * ${percents / 100})`;
+      return `calc((100% - ${theme.sidebar.width}) * ${percents / 100})`;
     } else {
       return theme.rightPanel.width;
     }

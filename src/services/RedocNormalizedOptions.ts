@@ -112,11 +112,18 @@ export class RedocNormalizedOptions {
       return true;
     }
 
-    if (typeof value === 'string') {
-      return value.split(',').map(ext => ext.trim());
+    if (typeof value !== 'string') {
+      return value;
     }
 
-    return value;
+    switch (value) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return value.split(',').map(ext => ext.trim());
+    }
   }
 
   static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
@@ -172,6 +179,18 @@ export class RedocNormalizedOptions {
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
     const hook = raw.theme && raw.theme.extensionsHook;
+
+    // migrate from old theme
+    if ((raw.theme as any)?.menu && !raw.theme?.sidebar) {
+      console.warn('Theme setting "menu" is deprecated. Rename to "sidebar"');
+      raw.theme!.sidebar = (raw.theme as any).menu;
+    }
+
+    if ((raw.theme as any)?.codeSample && !raw.theme?.codeBlock) {
+      console.warn('Theme setting "codeSample" is deprecated. Rename to "codeBlock"');
+      raw.theme!.codeBlock = (raw.theme as any).codeSample;
+    }
+
     this.theme = resolveTheme(
       mergeObjects({} as any, defaultTheme, { ...raw.theme, extensionsHook: undefined }),
     );

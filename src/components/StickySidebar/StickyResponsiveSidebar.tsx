@@ -26,8 +26,8 @@ export interface StickySidebarState {
 const stickyfill = Stickyfill && Stickyfill();
 
 const StyledStickySidebar = styled.div<{ open?: boolean }>`
-  width: ${props => props.theme.menu.width};
-  background-color: ${props => props.theme.menu.backgroundColor};
+  width: ${props => props.theme.sidebar.width};
+  background-color: ${props => props.theme.sidebar.backgroundColor};
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
     position: fixed;
     z-index: 20;
     width: 100%;
-    background: ${({ theme }) => theme.menu.backgroundColor};
+    background: ${({ theme }) => theme.sidebar.backgroundColor};
     display: ${props => (props.open ? 'flex' : 'none')};
   `};
 

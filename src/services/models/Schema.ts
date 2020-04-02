@@ -240,6 +240,15 @@ export class SchemaModel {
     }
 
     const mapping = discriminator.mapping || {};
+
+    // Defines if the mapping is exhaustive. This avoids having references
+    // that overlap with the mapping entries
+    let isLimitedToMapping = discriminator['x-explicitMappingOnly'] || false;
+    // if there are no mappings, assume non-exhaustive
+    if (Object.keys(mapping).length === 0) {
+      isLimitedToMapping = false;
+    }
+
     const explicitInversedMapping = {};
     for (const name in mapping) {
       const $ref = mapping[name];
@@ -252,9 +261,11 @@ export class SchemaModel {
       }
     }
 
-    const inversedMapping = { ...implicitInversedMapping, ...explicitInversedMapping };
+    const inversedMapping = isLimitedToMapping
+      ? { ...explicitInversedMapping }
+      : { ...implicitInversedMapping, ...explicitInversedMapping };
 
-    const refs: Array<{ $ref; name }> = [];
+    let refs: Array<{ $ref; name }> = [];
 
     for (const $ref of Object.keys(inversedMapping)) {
       const names = inversedMapping[$ref];
@@ -265,6 +276,35 @@ export class SchemaModel {
       } else {
         refs.push({ $ref, name: names });
       }
+    }
+
+    // Make the listing respects the mapping
+    // in case a mapping is defined, the user usually wants to have the order shown
+    // as it was defined in the yaml. This will sort the names given the provided
+    // mapping (if provided).
+    // The logic is:
+    // - If a name is among the mapping, promote it to first
+    // - Names among the mapping are sorted by their order in the mapping
+    // - Names outside the mapping are sorted alphabetically
+    const names = Object.keys(mapping);
+    if (names.length !== 0) {
+      refs = refs.sort((left, right) => {
+        const indexLeft = names.indexOf(left.name);
+        const indexRight = names.indexOf(right.name);
+
+        if (indexLeft < 0 && indexRight < 0) {
+          // out of mapping, order by name
+          return left.name.localeCompare(right.name);
+        } else if (indexLeft < 0) {
+          // the right is found, so mapping wins
+          return 1;
+        } else if (indexRight < 0) {
+          // left wins as it's in mapping
+          return -1;
+        } else {
+          return indexLeft - indexRight;
+        }
+      });
     }
 
     this.oneOf = refs.map(({ $ref, name }) => {

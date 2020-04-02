@@ -2,7 +2,7 @@ import * as classnames from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css } from '../../styled-components';
+import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
@@ -62,11 +62,11 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   }
 `;
 
-function menuItemActiveBg(depth, { theme }): string {
+function menuItemActiveBg(depth, { theme }: { theme: ResolvedThemeInterface }): string {
   if (depth > 1) {
-    return darken(0.1, theme.menu.backgroundColor);
+    return darken(0.1, theme.sidebar.backgroundColor);
   } else if (depth === 1) {
-    return darken(0.05, theme.menu.backgroundColor);
+    return darken(0.05, theme.sidebar.backgroundColor);
   } else {
     return '';
   }
@@ -94,21 +94,21 @@ export const MenuItemLi = styled.li<{ depth: number }>`
 export const menuItemDepth = {
   0: css`
     opacity: 0.7;
-    text-transform: ${({ theme }) => theme.menu.groupItems.textTransform};
+    text-transform: ${({ theme }) => theme.sidebar.groupItems.textTransform};
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
-    color: ${props => props.theme.menu.textColor};
+    color: ${props => props.theme.sidebar.textColor};
   `,
   1: css`
     font-size: 0.929em;
-    text-transform: ${({ theme }) => theme.menu.level1Items.textTransform};
+    text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
     &:hover {
-      color: ${props => props.theme.menu.activeTextColor};
+      color: ${props => props.theme.sidebar.activeTextColor};
     }
   `,
   2: css`
-    color: ${props => props.theme.menu.textColor};
+    color: ${props => props.theme.sidebar.textColor};
   `,
 };
 
@@ -126,7 +126,8 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }),
 }))<MenuItemLabelType>`
   cursor: pointer;
-  color: ${props => (props.active ? props.theme.menu.activeTextColor : props.theme.menu.textColor)};
+  color: ${props =>
+    props.active ? props.theme.sidebar.activeTextColor : props.theme.sidebar.textColor};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
@@ -144,10 +145,10 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }
 
   ${ShelfIcon} {
-    height: ${({ theme }) => theme.menu.arrow.size};
-    width: ${({ theme }) => theme.menu.arrow.size};
+    height: ${({ theme }) => theme.sidebar.arrow.size};
+    width: ${({ theme }) => theme.sidebar.arrow.size};
     polygon {
-      fill: ${({ theme }) => theme.menu.arrow.color};
+      fill: ${({ theme }) => theme.sidebar.arrow.color};
     }
   }
 `;
@@ -172,8 +173,8 @@ export const RedocAttribution = styled.div`
   a,
   a:visited,
   a:hover {
-    color: ${theme.menu.textColor} !important;
-    border-top: 1px solid ${darken(0.1, theme.menu.backgroundColor)};
+    color: ${theme.sidebar.textColor} !important;
+    border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
     padding: ${theme.spacing.unit}px 0;
     display: block;
   }
