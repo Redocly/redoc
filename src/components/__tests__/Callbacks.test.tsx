@@ -31,7 +31,7 @@ describe('Components', () => {
 
     it('should correctly render CallbackTitle', () => {
       const callbackTitleViewElement = shallow(
-        <CallbackTitle name={'Test'} className={'.test'} onClick={undefined} />,
+        <CallbackTitle name={'Test'} className={'.test'} onClick={undefined} httpVerb={'get'} />,
       ).getElement();
       expect(callbackTitleViewElement.props).toBeDefined();
       expect(callbackTitleViewElement.props.className).toEqual('.test');

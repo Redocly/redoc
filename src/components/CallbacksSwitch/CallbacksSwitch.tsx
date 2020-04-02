@@ -43,7 +43,7 @@ export class CallbacksSwitch extends React.Component<CallbacksSwitchProps, Callb
 
     const options = callbacks.map((callback, idx) => {
       return {
-        label: `[${callback.httpVerb.toUpperCase()}] ${callback.name}`,
+        label: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
         value: idx.toString(),
       };
     });

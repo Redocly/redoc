@@ -6,21 +6,23 @@ import { CallbackDetailsWrap, StyledCallbackTitle } from '../Callbacks/styled.el
 import { CallbackDetails } from './CallbackDetails';
 
 @observer
+// TODO: rename to Callback
 export class CallbackView extends React.Component<{ callbackOperation: OperationModel }> {
   toggle = () => {
     this.props.callbackOperation.toggle();
   };
 
   render() {
-    const { name, description, expanded } = this.props.callbackOperation;
+    const { name, expanded, httpVerb, deprecated } = this.props.callbackOperation;
 
     return (
       <>
         <StyledCallbackTitle
           onClick={this.toggle}
           name={name}
-          description={description}
           opened={expanded}
+          httpVerb={httpVerb}
+          deprecated={deprecated}
         />
         {expanded && (
           <CallbackDetailsWrap>

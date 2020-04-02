@@ -39,7 +39,6 @@ export class CallbackModel {
           undefined,
           options,
           true,
-          this.name,
         );
 
         this.operations.push(operation);

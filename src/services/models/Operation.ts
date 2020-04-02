@@ -86,7 +86,6 @@ export class OperationModel implements IMenuItem {
     parent: GroupModel | undefined,
     private options: RedocNormalizedOptions,
     isCallback: boolean = false,
-    callbackEventName?: string,
   ) {
     this.pointer = JsonPointer.compile(['paths', operationSpec.pathName, operationSpec.httpVerb]);
 
@@ -112,22 +111,21 @@ export class OperationModel implements IMenuItem {
       JsonPointer.compile(['paths', operationSpec.pathName]),
     );
 
+    this.name = getOperationSummary(operationSpec);
+
     if (this.isCallback) {
-      // NOTE: Use callback's event name as the view label, not the operationID.
-      this.name = callbackEventName || getOperationSummary(operationSpec);
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
       // Can be defined individually per-callback in the specification. Defaults to none.
       this.security = (operationSpec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
 
-      // TODO: update getting pathInfo
+      // TODO: update getting pathInfo for overriding servers on path level
       this.servers = normalizeServers(
         '',
         operationSpec.servers || (pathInfo && pathInfo.servers) || [],
       );
     } else {
-      this.name = getOperationSummary(operationSpec);
       this.security = (operationSpec.security || parser.spec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
@@ -256,6 +254,7 @@ export class OperationModel implements IMenuItem {
 
   @memoize
   get callbacks() {
+    console.log('this.operationSpec.callbacks', this.operationSpec.callbacks);
     return Object.keys(this.operationSpec.callbacks || []).map(callbackEventName => {
       return new CallbackModel(
         this.parser,

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 import { ShareLink } from '../../common-elements/linkify';
 import { OperationModel as OperationType } from '../../services/models';
-import styled from '../../styled-components';
+import styled, { media } from '../../styled-components';
 import { CallbacksList } from '../Callbacks';
 import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
 import { Endpoint } from '../Endpoint/Endpoint';
@@ -17,22 +17,6 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-
-const CallbackMiddlePanel = styled(MiddlePanel)`
-  width: 100%;
-  padding: 0;
-`;
-
-const OperationRow = styled(Row)`
-  backface-visibility: hidden;
-  contain: content;
-
-  overflow: hidden;
-`;
-
-const Description = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
-`;
 
 export interface OperationProps {
   operation: OperationType;
@@ -70,7 +54,7 @@ export class Operation extends React.Component<OperationProps> {
               <Extensions extensions={operation.extensions} />
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
-              <ResponsesList responses={operation.responses} />
+              <ResponsesList responses={operation.responses} isCallback={operation.isCallback} />
               <CallbacksList callbacks={operation.callbacks} />
             </AdaptiveMiddlePanel>
             {!operation.isCallback && (
@@ -89,3 +73,22 @@ export class Operation extends React.Component<OperationProps> {
     );
   }
 }
+
+const CallbackMiddlePanel = styled(MiddlePanel)`
+  width: 100%;
+  padding: 0;
+  ${() => media.lessThan('medium', true)`
+    padding: 0
+  `};
+`;
+
+const OperationRow = styled(Row)`
+  backface-visibility: hidden;
+  contain: content;
+
+  overflow: hidden;
+`;
+
+const Description = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
+`;
