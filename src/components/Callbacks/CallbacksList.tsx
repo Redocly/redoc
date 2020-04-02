@@ -4,14 +4,6 @@ import { CallbackModel } from '../../services/models';
 import styled from '../../styled-components';
 import { CallbackOperation } from './CallbackOperation';
 
-const CallbacksHeader = styled.h3`
-  font-size: 18px;
-  padding: 0.2em 0;
-  margin: 3em 0 1.1em;
-  color: #253137;
-  font-weight: normal;
-`;
-
 export interface CallbacksListProps {
   callbacks: CallbackModel[];
 }
@@ -38,3 +30,11 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
     );
   }
 }
+
+const CallbacksHeader = styled.h3`
+  font-size: 18px;
+  padding: 0.2em 0;
+  margin: 3em 0 1.1em;
+  color: #253137;
+  font-weight: normal;
+`;

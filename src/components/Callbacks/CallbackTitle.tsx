@@ -23,7 +23,7 @@ export class CallbackTitle extends React.PureComponent<CallbackTitleProps> {
       <CallbackTitleWrapper className={className} onClick={onClick || undefined}>
         <OperationBadgeStyled type={httpVerb}>{shortenHTTPVerb(httpVerb)}</OperationBadgeStyled>
         <ShelfIcon size={'1.5em'} direction={expanded ? 'down' : 'right'} float={'left'} />
-        <CallbackNameStyled deprecated={deprecated}>{name}</CallbackNameStyled>
+        <CallbackName deprecated={deprecated}>{name}</CallbackName>
         {deprecated ? <Badge type="warning"> {l('deprecated')} </Badge> : null}
       </CallbackTitleWrapper>
     );
@@ -36,7 +36,7 @@ const CallbackTitleWrapper = styled.div`
   }
 `;
 
-const CallbackNameStyled = styled.span<{ deprecated?: boolean }>`
+const CallbackName = styled.span<{ deprecated?: boolean }>`
   text-decoration: ${props => (props.deprecated ? 'line-through' : 'none')};
   margin-right: 8px;
 `;

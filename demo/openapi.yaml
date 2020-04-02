@@ -539,6 +539,9 @@ paths:
             post:
               summary: Order in Progress (Summary)
               description: A callback triggered every time an Order is updated status to "inProgress" (Description)
+              externalDocs:
+                description: Find out more
+                url: 'https://more-details.com/demo'
               requestBody:
                 content:
                   application/json:

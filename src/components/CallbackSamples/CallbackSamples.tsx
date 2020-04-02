@@ -27,6 +27,10 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
   render() {
     const { callbacks } = this.props;
 
+    if (!callbacks || callbacks.length === 0) {
+      return null;
+    }
+
     const operations = callbacks
       .map(callback => callback.operations.map(operation => operation))
       .reduce((a, b) => a.concat(b), []);

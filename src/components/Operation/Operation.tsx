@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 import { ShareLink } from '../../common-elements/linkify';
-import { OperationModel as OperationType } from '../../services/models';
-import styled, { media } from '../../styled-components';
+import { OperationModel } from '../../services/models';
+import styled from '../../styled-components';
 import { CallbacksList } from '../Callbacks';
 import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
 import { Endpoint } from '../Endpoint/Endpoint';
@@ -19,7 +19,7 @@ import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 export interface OperationProps {
-  operation: OperationType;
+  operation: OperationModel;
 }
 
 @observer
@@ -29,23 +29,18 @@ export class Operation extends React.Component<OperationProps> {
 
     const { name: summary, description, deprecated, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
-    const AdaptiveMiddlePanel = operation.isCallback ? CallbackMiddlePanel : MiddlePanel;
 
     return (
       <OptionsContext.Consumer>
         {options => (
           <OperationRow>
-            <AdaptiveMiddlePanel>
-              {!operation.isCallback && (
-                <H2>
-                  <ShareLink to={operation.id} />
-                  {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-                </H2>
-              )}
-              {!operation.isCallback && options.pathInMiddlePanel && (
-                <Endpoint operation={operation} inverted={true} />
-              )}
-              {!operation.isCallback && hasDescription && (
+            <MiddlePanel>
+              <H2>
+                <ShareLink to={operation.id} />
+                {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+              </H2>
+              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
                   {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
@@ -54,19 +49,15 @@ export class Operation extends React.Component<OperationProps> {
               <Extensions extensions={operation.extensions} />
               <SecurityRequirements securities={operation.security} />
               <Parameters parameters={operation.parameters} body={operation.requestBody} />
-              <ResponsesList responses={operation.responses} isCallback={operation.isCallback} />
+              <ResponsesList responses={operation.responses} />
               <CallbacksList callbacks={operation.callbacks} />
-            </AdaptiveMiddlePanel>
-            {!operation.isCallback && (
-              <DarkRightPanel>
-                {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
-                <RequestSamples operation={operation} />
-                <ResponseSamples operation={operation} />
-                {operation.callbacks.length > 0 && (
-                  <CallbackSamples callbacks={operation.callbacks} />
-                )}
-              </DarkRightPanel>
-            )}
+            </MiddlePanel>
+            <DarkRightPanel>
+              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              <RequestSamples operation={operation} />
+              <ResponseSamples operation={operation} />
+              <CallbackSamples callbacks={operation.callbacks} />
+            </DarkRightPanel>
           </OperationRow>
         )}
       </OptionsContext.Consumer>
@@ -74,18 +65,9 @@ export class Operation extends React.Component<OperationProps> {
   }
 }
 
-const CallbackMiddlePanel = styled(MiddlePanel)`
-  width: 100%;
-  padding: 0;
-  ${() => media.lessThan('medium', true)`
-    padding: 0
-  `};
-`;
-
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
   contain: content;
-
   overflow: hidden;
 `;
 

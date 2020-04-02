@@ -1,30 +1,47 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
 
 import { OperationModel } from '../../services/models';
-import { OperationItem } from '../ContentItems/ContentItems';
-import { Endpoint } from '../Endpoint/Endpoint';
-import { Markdown } from '../Markdown/Markdown';
 import styled from '../../styled-components';
+import { Endpoint } from '../Endpoint/Endpoint';
+import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
+import { Extensions } from '../Fields/Extensions';
+import { Markdown } from '../Markdown/Markdown';
+import { Parameters } from '../Parameters/Parameters';
+import { ResponsesList } from '../Responses/ResponsesList';
+import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { CallbackDetailsWrap } from './styled.elements';
 
-export class CallbackDetails extends React.PureComponent<{ callbackOperation: OperationModel }> {
+export interface CallbackDetailsProps {
+  operation: OperationModel;
+}
+
+@observer
+export class CallbackDetails extends React.Component<CallbackDetailsProps> {
   render() {
-    const description = this.props.callbackOperation.description;
+    const { operation } = this.props;
+    const { description, externalDocs } = operation;
+    const hasDescription = !!(description || externalDocs);
 
     return (
-      <div>
-        {description && (
-          <CallbackDescription>
-            <Markdown compact={true} inline={true} source={description} />
-          </CallbackDescription>
+      <CallbackDetailsWrap>
+        {hasDescription && (
+          <Description>
+            {description !== undefined && <Markdown source={description} />}
+            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+          </Description>
         )}
-        <Endpoint operation={this.props.callbackOperation} inverted={true} compact={true} />
-        <OperationItem item={this.props.callbackOperation} />
-      </div>
+        <Endpoint operation={this.props.operation} inverted={true} compact={true} />
+        {/* Do we need Extensions in callback details? */}
+        <Extensions extensions={operation.extensions} />
+        <SecurityRequirements securities={operation.security} />
+        <Parameters parameters={operation.parameters} body={operation.requestBody} />
+        <ResponsesList responses={operation.responses} isCallback={operation.isCallback} />
+      </CallbackDetailsWrap>
     );
   }
 }
 
-const CallbackDescription = styled.div`
-  margin-top: 10px;
-  margin-bottom: 20px;
+const Description = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 3}px;
 `;

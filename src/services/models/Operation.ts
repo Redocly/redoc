@@ -254,7 +254,6 @@ export class OperationModel implements IMenuItem {
 
   @memoize
   get callbacks() {
-    console.log('this.operationSpec.callbacks', this.operationSpec.callbacks);
     return Object.keys(this.operationSpec.callbacks || []).map(callbackEventName => {
       return new CallbackModel(
         this.parser,
