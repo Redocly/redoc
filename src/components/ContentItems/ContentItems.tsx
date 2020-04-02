@@ -3,11 +3,10 @@ import * as React from 'react';
 
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
-
-import { Operation } from '..';
 import { H1, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
-import { ContentItemModel } from '../../services';
+import { ContentItemModel } from '../../services/MenuBuilder';
 import { GroupModel, OperationModel } from '../../services/models';
+import { Operation } from '../Operation/Operation';
 
 @observer
 export class ContentItems extends React.Component<{
