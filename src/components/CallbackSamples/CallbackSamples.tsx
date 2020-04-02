@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
+import styled from '../../styled-components';
 import { RightPanelHeader } from '../../common-elements';
 import { RedocNormalizedOptions } from '../../services';
 import { CallbackModel } from '../../services/models';
 import { OptionsContext } from '../OptionsProvider';
-import { CallbacksSwitch } from '../CallbacksSwitch/CallbacksSwitch';
+import { GenericDropdown } from '../GenericDropdown/GenericDropdown';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
 import { CallbackReqSamples } from './CallbackReqSamples';
-import { SamplesWrapper } from './styled.elements';
 
 export interface CallbackSamplesProps {
   callbacks: CallbackModel[];
@@ -39,16 +39,24 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
 
     const hasSamples = numSamples > 0;
 
+    const dropdownOptions = operations.map((callback, idx) => {
+      return {
+        label: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
+        value: idx.toString(),
+      };
+    });
+
     return (
       (hasSamples && (
         <div>
           <RightPanelHeader> Callback request samples </RightPanelHeader>
 
           <SamplesWrapper>
-            <CallbacksSwitch
-              callbacks={operations}
+            <GenericDropdown
+              items={operations}
               renderDropdown={this.renderDropdown}
-              withLabel={true}
+              label={'Callback'}
+              options={dropdownOptions}
             >
               {callback => (
                 <CallbackReqSamples
@@ -57,7 +65,7 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
                   renderDropdown={this.renderDropdown}
                 />
               )}
-            </CallbacksSwitch>
+            </GenericDropdown>
           </SamplesWrapper>
         </div>
       )) ||
@@ -65,3 +73,8 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
     );
   }
 }
+
+export const SamplesWrapper = styled.div`
+  background: ${({ theme }) => theme.codeSample.backgroundColor};
+  padding: ${props => props.theme.spacing.unit * 4}px;
+`;

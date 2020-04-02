@@ -1,11 +1,11 @@
 import * as React from 'react';
 
+import styled from '../../styled-components';
 import { DropdownProps } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { OperationModel } from '../../services/models';
 import { XPayloadSample } from '../../services/models/Operation';
 import { isPayloadSample } from '../../services';
-import { ReqSamplesWrapper } from './styled.elements';
 
 export interface PayloadSamplesProps {
   callback: OperationModel;
@@ -29,3 +29,7 @@ export class CallbackReqSamples extends React.Component<PayloadSamplesProps> {
     );
   }
 }
+
+export const ReqSamplesWrapper = styled.div`
+  margin-top: 15px;
+`;
