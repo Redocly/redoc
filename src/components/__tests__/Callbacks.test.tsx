@@ -6,8 +6,9 @@ import * as React from 'react';
 import { OpenAPIParser } from '../../services';
 import { CallbackModel } from '../../services/models/Callback';
 import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
-import { CallbacksList, CallbackTitle, CallbackView } from '../Callbacks';
+import { CallbacksList, CallbackTitle, CallbackOperation } from '../Callbacks';
 import * as simpleCallbackFixture from './fixtures/simple-callback.json';
+import { OperationModel } from '../../services/models';
 
 const options = new RedocNormalizedOptions({});
 describe('Components', () => {
@@ -22,7 +23,7 @@ describe('Components', () => {
       );
       // There should be 1 operation defined in simple-callback.json, just get it manually for readability.
       const callbackViewElement = shallow(
-        <CallbackView key={callback.name} callbackOperation={callback.operations[0]} />,
+        <CallbackOperation key={callback.name} callbackOperation={callback.operations[0]} />,
       ).getElement();
       expect(callbackViewElement.props).toBeDefined();
       expect(callbackViewElement.props.children).toBeDefined();
@@ -30,8 +31,16 @@ describe('Components', () => {
     });
 
     it('should correctly render CallbackTitle', () => {
+      const callbackOperation = {
+        name: 'Test',
+        httpVerb: 'get',
+      } as OperationModel;
       const callbackTitleViewElement = shallow(
-        <CallbackTitle name={'Test'} className={'.test'} onClick={undefined} httpVerb={'get'} />,
+        <CallbackTitle
+          className={'.test'}
+          onClick={undefined}
+          callbackOperation={callbackOperation}
+        />,
       ).getElement();
       expect(callbackTitleViewElement.props).toBeDefined();
       expect(callbackTitleViewElement.props.className).toEqual('.test');

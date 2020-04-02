@@ -1,6 +1,8 @@
 import styled from '../../styled-components';
 import { CallbackTitle } from './CallbackTitle';
 
+// TODO: get 'background-color' from theme
+// e.g. "theme.colors.secondary.main" or "theme.colors.callbacks.background.main"
 export const StyledCallbackTitle = styled(CallbackTitle)`
   padding: 10px;
   border-radius: 2px;
@@ -10,6 +12,8 @@ export const StyledCallbackTitle = styled(CallbackTitle)`
   cursor: pointer;
 `;
 
+// TODO: get 'background-color' from theme
+// e.g. "theme.colors.secondary.light" or "theme.colors.callbacks.background.light"
 export const CallbackDetailsWrap = styled.div`
   padding: 10px 25px;
   background-color: #fafafa;

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { CallbackModel } from '../../services/models';
 import styled from '../../styled-components';
-import { CallbackView } from './Callback';
+import { CallbackOperation } from './CallbackOperation';
 
 const CallbacksHeader = styled.h3`
   font-size: 18px;
@@ -29,7 +29,9 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
         <CallbacksHeader> Callbacks </CallbacksHeader>
         {callbacks.map(callback => {
           return callback.operations.map((operation, index) => {
-            return <CallbackView key={callback.name + index} callbackOperation={operation} />;
+            return (
+              <CallbackOperation key={`${callback.name}_${index}`} callbackOperation={operation} />
+            );
           });
         })}
       </div>
