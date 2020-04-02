@@ -79,6 +79,6 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
 }
 
 export const SamplesWrapper = styled.div`
-  background: ${({ theme }) => theme.codeSample.backgroundColor};
+  background: ${({ theme }) => theme.codeBlock.backgroundColor};
   padding: ${props => props.theme.spacing.unit * 4}px;
 `;
