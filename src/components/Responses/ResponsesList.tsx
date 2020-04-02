@@ -3,6 +3,7 @@ import { ResponseModel } from '../../services/models';
 import styled from '../../styled-components';
 import { ResponseView } from './Response';
 
+// TODO: get text color and font size from the theme?
 const ResponsesHeader = styled.h3`
   font-size: 18px;
   padding: 0.2em 0;

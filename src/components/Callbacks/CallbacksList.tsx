@@ -31,6 +31,7 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
   }
 }
 
+// TODO: get text color and font size from the theme?
 const CallbacksHeader = styled.h3`
   font-size: 18px;
   padding: 0.2em 0;
