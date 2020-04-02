@@ -8,7 +8,6 @@ export interface GenericDropdownProps<T> {
   items?: T[];
   options: DropdownOption[];
   label?: string;
-
   renderDropdown: (props: DropdownProps) => JSX.Element;
   children: (activeItem: T) => JSX.Element;
 }

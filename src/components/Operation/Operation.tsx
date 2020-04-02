@@ -18,6 +18,16 @@ import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
+const OperationRow = styled(Row)`
+  backface-visibility: hidden;
+  contain: content;
+  overflow: hidden;
+`;
+
+const Description = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
+`;
+
 export interface OperationProps {
   operation: OperationModel;
 }
@@ -64,13 +74,3 @@ export class Operation extends React.Component<OperationProps> {
     );
   }
 }
-
-const OperationRow = styled(Row)`
-  backface-visibility: hidden;
-  contain: content;
-  overflow: hidden;
-`;
-
-const Description = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
-`;
