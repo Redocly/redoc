@@ -80,19 +80,20 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
       null;
 
     const version = (info.version && <span>({info.version})</span>) || null;
+    const hasAdditionalDoc = store.options.hasAdditionalDoc;
 
     return (
       <Section>
         <Row>
           <MiddlePanel className="api-info">
             <ApiHeader>
-              <div style={{width: '60%', color: '#111B58', fontWeight: 500}}>
+              <div style={{width: hasAdditionalDoc? '60%':'', color: '#111B58', fontWeight: 500}}>
                 {info.title} {version}
               </div>
-              <div style={{margin: '0 auto'}}
-                   onMouseEnter={this.handleHoverState}
-                   onMouseDown={this.handleActiveState}
-                   onMouseLeave={this.handleLeaveState}>
+              {hasAdditionalDoc? <div style={{margin: '0 auto'}}
+                          onMouseEnter={this.handleHoverState}
+                          onMouseDown={this.handleActiveState}
+                          onMouseLeave={this.handleLeaveState}>
                 <AdditionalDocLink
                   target="_blank"
                   href={store.options.additionalDocUrl}
@@ -109,7 +110,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                     Additional Docs
                   </span>
                 </AdditionalDocLink>
-              </div>
+              </div>:null}
             </ApiHeader>
             {!hideDownloadButton && (
               <p>

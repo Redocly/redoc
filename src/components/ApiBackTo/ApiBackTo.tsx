@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { OpenAPIInfo } from '../../types';
 import { ApiBackToText } from './styled.elements';
 
 @observer
-export class ApiBackTo extends React.Component<{ info: OpenAPIInfo }> {
+export class ApiBackTo extends React.Component<{ isOt2: boolean }> {
   state = {
     backTextColor: '#0084CE'
   };
@@ -13,9 +12,10 @@ export class ApiBackTo extends React.Component<{ info: OpenAPIInfo }> {
   handleActiveState = () => {this.setState({backTextColor: '#00639B'})};
   handleLeaveState = () => {this.setState({backTextColor: '#0084CE'})};
   render() {
+    const { isOt2 } = this.props;
     return(
       <div>
-        <ApiBackToText href={'/apis'}
+        <ApiBackToText href={isOt2?'/apis': '/apis/other'}
                        onMouseEnter={this.handleHoverState}
                        onMouseDown={this.handleActiveState}
                        onMouseLeave={this.handleLeaveState}>

@@ -21,6 +21,8 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  isOt2?: boolean;
+  hasAdditionalDoc?: boolean;
   additionalDocUrl?: string;
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
@@ -165,6 +167,8 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  isOt2: boolean;
+  hasAdditionalDoc: boolean;
   additionalDocUrl: string | undefined;
   hideSingleRequestSampleTab: boolean;
   menuToggle: boolean;
@@ -205,6 +209,8 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.isOt2 = argValueToBoolean(raw.isOt2);
+    this.hasAdditionalDoc = argValueToBoolean(raw.hasAdditionalDoc);
     this.additionalDocUrl = argValueToString(raw.additionalDocUrl);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
