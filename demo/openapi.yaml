@@ -522,7 +522,7 @@ paths:
           description: Subscription added
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   subscriptionId:
@@ -620,13 +620,13 @@ paths:
               description: Order in Progress (Only Description)
               servers:
                 - url: //callback-url.operation-level/v1
-                  description: Operation level server 1 (Path override)
+                  description: Operation level server 1 (Operation override)
                 - url: //callback-url.operation-level/v2
-                  description: Operation level server 2 (Path override)
+                  description: Operation level server 2 (Operation override)
               requestBody:
                 content:
                   application/json:
-                    schema: 
+                    schema:
                       type: object
                       properties:
                         orderId:
@@ -667,18 +667,18 @@ paths:
         orderShipped:
           '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
             post:
-              description: | 
+              description: |
                 Very long description
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
                 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                 culpa qui officia deserunt mollit anim id est laborum.
               requestBody:
                 content:
                   application/json:
-                    schema: 
+                    schema:
                       type: object
                       properties:
                         orderId:

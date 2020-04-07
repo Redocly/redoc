@@ -4,19 +4,13 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import {
-  OpenAPIExternalDocumentation,
-  OpenAPIPath,
-  OpenAPIServer,
-  OpenAPIXCodeSample,
-} from '../../types';
+import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
 
 import {
   extractExtensions,
   getOperationSummary,
   getStatusCodeType,
   isStatusCode,
-  JsonPointer,
   memoize,
   mergeParams,
   normalizeServers,
@@ -87,14 +81,7 @@ export class OperationModel implements IMenuItem {
     private options: RedocNormalizedOptions,
     isCallback: boolean = false,
   ) {
-    this.pointer = JsonPointer.compile(['paths', operationSpec.pathName, operationSpec.httpVerb]);
-
-    this.id =
-      operationSpec.operationId !== undefined
-        ? 'operation/' + operationSpec.operationId
-        : parent !== undefined
-        ? parent.id + this.pointer
-        : this.pointer;
+    this.pointer = operationSpec.pointer;
 
     this.description = operationSpec.description;
     this.parent = parent;
@@ -107,10 +94,6 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
 
-    const pathInfo = parser.byRef<OpenAPIPath>(
-      JsonPointer.compile(['paths', operationSpec.pathName]),
-    );
-
     this.name = getOperationSummary(operationSpec);
 
     if (this.isCallback) {
@@ -121,18 +104,22 @@ export class OperationModel implements IMenuItem {
       );
 
       // TODO: update getting pathInfo for overriding servers on path level
-      this.servers = normalizeServers(
-        '',
-        operationSpec.servers || (pathInfo && pathInfo.servers) || [],
-      );
+      this.servers = normalizeServers('', operationSpec.servers || operationSpec.pathServers || []);
     } else {
+      this.id =
+        operationSpec.operationId !== undefined
+          ? 'operation/' + operationSpec.operationId
+          : parent !== undefined
+          ? parent.id + this.pointer
+          : this.pointer;
+
       this.security = (operationSpec.security || parser.spec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
 
       this.servers = normalizeServers(
         parser.specUrl,
-        operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
+        operationSpec.servers || operationSpec.pathServers || parser.spec.servers || [],
       );
     }
 
@@ -259,6 +246,7 @@ export class OperationModel implements IMenuItem {
         this.parser,
         callbackEventName,
         this.operationSpec.callbacks![callbackEventName],
+        this.pointer,
         this.options,
       );
     });

@@ -19,6 +19,7 @@ describe('Components', () => {
         parser,
         'Test.Callback',
         { $ref: '#/components/callbacks/Test' },
+        '',
         options,
       );
       // There should be 1 operation defined in simple-callback.json, just get it manually for readability.
@@ -53,6 +54,7 @@ describe('Components', () => {
         parser,
         'Test.Callback',
         { $ref: '#/components/callbacks/Test' },
+        '',
         options,
       );
       const callbacksListViewElement = shallow(

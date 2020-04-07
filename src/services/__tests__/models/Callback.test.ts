@@ -15,11 +15,11 @@ describe('Models', () => {
         parser,
         'Test.Callback',
         { $ref: '#/components/callbacks/Test' },
+        '',
         opts,
       );
       expect(callback.name).toEqual('Test.Callback');
       expect(callback.operations.length).toEqual(0);
-      expect(callback.paths).toBeDefined();
       expect(callback.expanded).toBeUndefined();
     });
   });

@@ -1,4 +1,3 @@
-export * from './Callback';
 export * from '../SpecStore';
 export * from './Group.model';
 export * from './Operation';
@@ -11,3 +10,4 @@ export * from './Schema';
 export * from './Field';
 export * from './ApiInfo';
 export * from './SecuritySchemes';
+export * from './Callback';

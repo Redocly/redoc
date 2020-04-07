@@ -196,7 +196,7 @@ export interface OpenAPILink {
 export type OpenAPIHeader = Omit<OpenAPIParameter, 'in' | 'name'>;
 
 export interface OpenAPICallback {
-  $ref?: string;
+  [name: string]: OpenAPIPath;
 }
 
 export interface OpenAPIComponents {
