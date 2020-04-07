@@ -27,7 +27,7 @@ export type ExtendedOpenAPIOperation = {
   pathName: string;
   httpVerb: string;
   pathParameters: Array<Referenced<OpenAPIParameter>>;
-  pathServers: Array<OpenAPIServer>;
+  pathServers: Array<OpenAPIServer> | undefined;
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Dict<TagInfo>;
@@ -250,7 +250,7 @@ export class MenuBuilder {
             pointer: JsonPointer.compile(['paths', pathName, operationName]),
             httpVerb: operationName,
             pathParameters: path.parameters || [],
-            pathServers: path.servers || [],
+            pathServers: path.servers,
           });
         }
       }

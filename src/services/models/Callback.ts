@@ -37,7 +37,7 @@ export class CallbackModel {
             pointer: JsonPointer.compile([pointer, name, pathName, operationName]),
             httpVerb: operationName,
             pathParameters: path.parameters || [],
-            pathServers: path.servers || [],
+            pathServers: path.servers,
           },
           undefined,
           options,
