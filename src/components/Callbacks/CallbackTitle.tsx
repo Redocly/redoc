@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { darken } from 'polished';
 import { ShelfIcon } from '../../common-elements';
 import { OperationBadge } from '../SideMenu/styled.elements';
 import { shortenHTTPVerb } from '../../utils/openapi';
@@ -38,7 +39,7 @@ const CallbackTitleWrapper = styled.div`
 
   ${ShelfIcon} {
     polygon {
-      fill: ${({ theme }) => theme.colors.gray.A200};
+      fill: ${({ theme }) => darken(theme.colors.tonalOffset, theme.colors.gray[100])};
     }
   }
 `;

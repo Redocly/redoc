@@ -6,7 +6,7 @@ export const StyledCallbackTitle = styled(CallbackTitle)`
   border-radius: 2px;
   margin-bottom: 4px;
   line-height: 1.5em;
-  background-color: ${({ theme }) => theme.colors.gray.A50};
+  background-color: ${({ theme }) => theme.colors.gray[100]};
   cursor: pointer;
 `;
 

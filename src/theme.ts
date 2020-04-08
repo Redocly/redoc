@@ -38,9 +38,8 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.error.main),
     },
     gray: {
-      50: '#fafafa',
-      A50: '#f2f2f2',
-      A200: '#aaaaaa',
+      50: '#FAFAFA',
+      100: '#F5F5F5',
     },
     text: {
       primary: '#333333',
@@ -236,8 +235,7 @@ export interface ResolvedThemeInterface {
     error: ColorSetting;
     gray: {
       50: string;
-      A50: string;
-      A200: string;
+      100: string;
     };
     border: {
       light: string;
