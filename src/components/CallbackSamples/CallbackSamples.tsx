@@ -53,7 +53,7 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
     return (
       (hasSamples && (
         <div>
-          <RightPanelHeader> Callback request samples </RightPanelHeader>
+          <RightPanelHeader> Callback payload samples </RightPanelHeader>
 
           <SamplesWrapper>
             <GenericDropdown

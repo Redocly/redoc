@@ -37,6 +37,11 @@ const defaultTheme: ThemeInterface = {
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
     },
+    gray: {
+      50: '#fafafa',
+      A50: '#f2f2f2',
+      A200: '#aaaaaa',
+    },
     text: {
       primary: '#333333',
       secondary: ({ colors }) => lighten(colors.tonalOffset, colors.text.primary),
@@ -229,6 +234,11 @@ export interface ResolvedThemeInterface {
     success: ColorSetting;
     warning: ColorSetting;
     error: ColorSetting;
+    gray: {
+      50: string;
+      A50: string;
+      A200: string;
+    };
     border: {
       light: string;
       dark: string;
