@@ -32,7 +32,6 @@ export class CallbackDetails extends React.Component<CallbackDetailsProps> {
           </Description>
         )}
         <Endpoint operation={this.props.operation} inverted={true} compact={true} />
-        {/* Do we need Extensions in callback details? */}
         <Extensions extensions={operation.extensions} />
         <SecurityRequirements securities={operation.security} />
         <Parameters parameters={operation.parameters} body={operation.requestBody} />

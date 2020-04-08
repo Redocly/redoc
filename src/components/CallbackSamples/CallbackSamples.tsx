@@ -6,10 +6,10 @@ import { RightPanelHeader } from '../../common-elements';
 import { RedocNormalizedOptions } from '../../services';
 import { CallbackModel } from '../../services/models';
 import { OptionsContext } from '../OptionsProvider';
-import { GenericDropdown } from '../GenericDropdown/GenericDropdown';
+import { GenericChildrenSwitcher } from '../GenericChildrenSwitcher/GenericChildrenSwitcher';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
 import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
-import { CallbackReqSamples } from './CallbackReqSamples';
+import { CallbackPayloadSample } from './CallbackReqSamples';
 
 export interface CallbackSamplesProps {
   callbacks: CallbackModel[];
@@ -35,13 +35,11 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
       .map(callback => callback.operations.map(operation => operation))
       .reduce((a, b) => a.concat(b), []);
 
-    // Sums number of code samples per operation per callback
-    const numSamples = operations.reduce(
-      (sampleSum, operation) => sampleSum + operation.codeSamples.length,
-      0,
-    );
+    const hasSamples = operations.some(operation => operation.codeSamples.length > 0);
 
-    const hasSamples = numSamples > 0;
+    if (!hasSamples) {
+      return null;
+    }
 
     const dropdownOptions = operations.map((callback, idx) => {
       return {
@@ -51,29 +49,26 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
     });
 
     return (
-      (hasSamples && (
-        <div>
-          <RightPanelHeader> Callback payload samples </RightPanelHeader>
+      <div>
+        <RightPanelHeader> Callback payload samples </RightPanelHeader>
 
-          <SamplesWrapper>
-            <GenericDropdown
-              items={operations}
-              renderDropdown={this.renderDropdown}
-              label={'Callback'}
-              options={dropdownOptions}
-            >
-              {callback => (
-                <CallbackReqSamples
-                  key="callbackReqSamples"
-                  callback={callback}
-                  renderDropdown={this.renderDropdown}
-                />
-              )}
-            </GenericDropdown>
-          </SamplesWrapper>
-        </div>
-      )) ||
-      null
+        <SamplesWrapper>
+          <GenericChildrenSwitcher
+            items={operations}
+            renderDropdown={this.renderDropdown}
+            label={'Callback'}
+            options={dropdownOptions}
+          >
+            {callback => (
+              <CallbackPayloadSample
+                key="callbackPayloadSample"
+                callback={callback}
+                renderDropdown={this.renderDropdown}
+              />
+            )}
+          </GenericChildrenSwitcher>
+        </SamplesWrapper>
+      </div>
     );
   }
 }
