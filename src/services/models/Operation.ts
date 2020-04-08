@@ -4,19 +4,13 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import {
-  OpenAPIExternalDocumentation,
-  OpenAPIPath,
-  OpenAPIServer,
-  OpenAPIXCodeSample,
-} from '../../types';
+import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
 
 import {
   extractExtensions,
   getOperationSummary,
   getStatusCodeType,
   isStatusCode,
-  JsonPointer,
   memoize,
   mergeParams,
   normalizeServers,
@@ -26,12 +20,13 @@ import {
 import { ContentItemModel, ExtendedOpenAPIOperation } from '../MenuBuilder';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { CallbackModel } from './Callback';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
 
-interface XPayloadSample {
+export interface XPayloadSample {
   lang: 'payload';
   label: string;
   requestBodyContent: MediaContentModel;
@@ -77,23 +72,17 @@ export class OperationModel implements IMenuItem {
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
   extensions: Dict<any>;
+  isCallback: boolean;
 
   constructor(
     private parser: OpenAPIParser,
     private operationSpec: ExtendedOpenAPIOperation,
     parent: GroupModel | undefined,
     private options: RedocNormalizedOptions,
+    isCallback: boolean = false,
   ) {
-    this.pointer = JsonPointer.compile(['paths', operationSpec.pathName, operationSpec.httpVerb]);
+    this.pointer = operationSpec.pointer;
 
-    this.id =
-      operationSpec.operationId !== undefined
-        ? 'operation/' + operationSpec.operationId
-        : parent !== undefined
-        ? parent.id + this.pointer
-        : this.pointer;
-
-    this.name = getOperationSummary(operationSpec);
     this.description = operationSpec.description;
     this.parent = parent;
     this.externalDocs = operationSpec.externalDocs;
@@ -103,19 +92,36 @@ export class OperationModel implements IMenuItem {
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
+    this.isCallback = isCallback;
 
-    const pathInfo = parser.byRef<OpenAPIPath>(
-      JsonPointer.compile(['paths', operationSpec.pathName]),
-    );
+    this.name = getOperationSummary(operationSpec);
 
-    this.servers = normalizeServers(
-      parser.specUrl,
-      operationSpec.servers || (pathInfo && pathInfo.servers) || parser.spec.servers || [],
-    );
+    if (this.isCallback) {
+      // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
+      // Can be defined individually per-callback in the specification. Defaults to none.
+      this.security = (operationSpec.security || []).map(
+        security => new SecurityRequirementModel(security, parser),
+      );
 
-    this.security = (operationSpec.security || parser.spec.security || []).map(
-      security => new SecurityRequirementModel(security, parser),
-    );
+      // TODO: update getting pathInfo for overriding servers on path level
+      this.servers = normalizeServers('', operationSpec.servers || operationSpec.pathServers || []);
+    } else {
+      this.id =
+        operationSpec.operationId !== undefined
+          ? 'operation/' + operationSpec.operationId
+          : parent !== undefined
+          ? parent.id + this.pointer
+          : this.pointer;
+
+      this.security = (operationSpec.security || parser.spec.security || []).map(
+        security => new SecurityRequirementModel(security, parser),
+      );
+
+      this.servers = normalizeServers(
+        parser.specUrl,
+        operationSpec.servers || operationSpec.pathServers || parser.spec.servers || [],
+      );
+    }
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(operationSpec, options.showExtensions);
@@ -136,6 +142,14 @@ export class OperationModel implements IMenuItem {
   @action
   deactivate() {
     this.active = false;
+  }
+
+  /**
+   * Toggle expansion in middle panel (for callbacks, which are operations)
+   */
+  @action
+  toggle() {
+    this.expanded = !this.expanded;
   }
 
   expand() {
@@ -223,5 +237,18 @@ export class OperationModel implements IMenuItem {
           this.options,
         );
       });
+  }
+
+  @memoize
+  get callbacks() {
+    return Object.keys(this.operationSpec.callbacks || []).map(callbackEventName => {
+      return new CallbackModel(
+        this.parser,
+        callbackEventName,
+        this.operationSpec.callbacks![callbackEventName],
+        this.pointer,
+        this.options,
+      );
+    });
   }
 }

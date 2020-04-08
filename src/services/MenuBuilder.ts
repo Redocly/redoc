@@ -1,8 +1,16 @@
-import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
+import {
+  OpenAPIOperation,
+  OpenAPIParameter,
+  OpenAPISpec,
+  OpenAPITag,
+  Referenced,
+  OpenAPIServer,
+} from '../types';
 import {
   isOperationName,
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
+  JsonPointer,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -15,9 +23,11 @@ export type TagInfo = OpenAPITag & {
 };
 
 export type ExtendedOpenAPIOperation = {
+  pointer: string;
   pathName: string;
   httpVerb: string;
   pathParameters: Array<Referenced<OpenAPIParameter>>;
+  pathServers: Array<OpenAPIServer> | undefined;
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Dict<TagInfo>;
@@ -237,8 +247,10 @@ export class MenuBuilder {
           tag.operations.push({
             ...operationInfo,
             pathName,
+            pointer: JsonPointer.compile(['paths', pathName, operationName]),
             httpVerb: operationName,
             pathParameters: path.parameters || [],
+            pathServers: path.servers,
           });
         }
       }

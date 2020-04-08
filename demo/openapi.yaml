@@ -489,6 +489,234 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Order not found
+  /store/subscribe:
+    post:
+      tags:
+        - store
+      summary: Subscribe to the Store events
+      description: Add subscription for a store events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackUrl:
+                  type: string
+                  format: uri
+                  description: This URL will be called by the server when the desired event will occur
+                  example: https://myserver.com/send/callback/here
+                eventName:
+                  type: string
+                  description: Event name for the subscription
+                  enum:
+                    - orderInProgress
+                    - orderShipped
+                    - orderDelivered
+                  example: orderInProgress
+              required:
+                - callbackUrl
+                - eventName
+      responses:
+        '201':
+          description: Subscription added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                    example: AAA-123-BBB-456
+      callbacks:
+        orderInProgress:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            servers:
+              - url: //callback-url.path-level/v1
+                description: Path level server 1
+              - url: //callback-url.path-level/v2
+                description: Path level server 2
+            post:
+              summary: Order in Progress (Summary)
+              description: A callback triggered every time an Order is updated status to "inProgress" (Description)
+              externalDocs:
+                description: Find out more
+                url: 'https://more-details.com/demo'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+                '299':
+                  description: Response for cancelling subscription
+                '500':
+                  description: Callback processing failed and retries will be performed
+              x-code-samples:
+                - lang: 'C#'
+                  source: |
+                    PetStore.v1.Pet pet = new PetStore.v1.Pet();
+                    pet.setApiKey("your api key");
+                    pet.petType = PetStore.v1.Pet.TYPE_DOG;
+                    pet.name = "Rex";
+                    // set other fields
+                    PetStoreResponse response = pet.create();
+                    if (response.statusCode == HttpStatusCode.Created)
+                    {
+                      // Successfully created
+                    }
+                    else
+                    {
+                      // Something wrong -- check response for errors
+                      Console.WriteLine(response.getRawResponse());
+                    }
+                - lang: PHP
+                  source: |
+                    $form = new \PetStore\Entities\Pet();
+                    $form->setPetType("Dog");
+                    $form->setName("Rex");
+                    // set other fields
+                    try {
+                        $pet = $client->pets()->create($form);
+                    } catch (UnprocessableEntityException $e) {
+                        var_dump($e->getErrors());
+                    }
+            put:
+              description: Order in Progress (Only Description)
+              servers:
+                - url: //callback-url.operation-level/v1
+                  description: Operation level server 1 (Operation override)
+                - url: //callback-url.operation-level/v2
+                  description: Operation level server 2 (Operation override)
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+        orderShipped:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: |
+                Very long description
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum.
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        estimatedDeliveryDate:
+                          type: string
+                          format: date-time
+                          example: '2018-11-11T16:00:00Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+        orderDelivered:
+          'http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}':
+            post:
+              deprecated: true
+              summary: Order delivered
+              description: A callback triggered every time an Order is delivered to the recipient
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
   /user:
     post:
       tags:
@@ -955,7 +1183,7 @@ components:
   examples:
     Order:
       value:
-        quantity: 1,
-        shipDate: 2018-10-19T16:46:45Z,
-        status: placed,
+        quantity: 1
+        shipDate: '2018-10-19T16:46:45Z'
+        status: placed
         complete: false

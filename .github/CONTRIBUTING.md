@@ -50,11 +50,13 @@ $ npm run unit
 
 # run e2e tests
 $ npm run e2e
+# Make sure you have created bundle before running e2e test
+# E.g. run `npm run bundle` and wait for the finishing process.
 
 # open cypress UI to debug e2e test
 $ npm run cy:open
 
-# run the full test suite, include linting / unit / e2e
+# run the unit tests (includes linting and license checks)
 $ npm test
 
 # prepare bundles

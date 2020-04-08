@@ -10,3 +10,4 @@ export * from './Schema';
 export * from './Field';
 export * from './ApiInfo';
 export * from './SecuritySchemes';
+export * from './Callback';
