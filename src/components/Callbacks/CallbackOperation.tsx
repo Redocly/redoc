@@ -12,13 +12,16 @@ export class CallbackOperation extends React.Component<{ callbackOperation: Oper
   };
 
   render() {
-    const { expanded } = this.props.callbackOperation;
+    const { name, expanded, httpVerb, deprecated } = this.props.callbackOperation;
 
     return (
       <>
         <StyledCallbackTitle
           onClick={this.toggle}
-          callbackOperation={this.props.callbackOperation}
+          name={name}
+          opened={expanded}
+          httpVerb={httpVerb}
+          deprecated={deprecated}
         />
         {expanded && <CallbackDetails operation={this.props.callbackOperation} />}
       </>

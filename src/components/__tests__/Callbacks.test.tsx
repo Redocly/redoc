@@ -8,7 +8,6 @@ import { CallbackModel } from '../../services/models/Callback';
 import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
 import { CallbacksList, CallbackTitle, CallbackOperation } from '../Callbacks';
 import * as simpleCallbackFixture from './fixtures/simple-callback.json';
-import { OperationModel } from '../../services/models';
 
 const options = new RedocNormalizedOptions({});
 describe('Components', () => {
@@ -32,16 +31,8 @@ describe('Components', () => {
     });
 
     it('should correctly render CallbackTitle', () => {
-      const callbackOperation = {
-        name: 'Test',
-        httpVerb: 'get',
-      } as OperationModel;
       const callbackTitleViewElement = shallow(
-        <CallbackTitle
-          className={'.test'}
-          onClick={undefined}
-          callbackOperation={callbackOperation}
-        />,
+        <CallbackTitle name={'Test'} className={'.test'} onClick={undefined} httpVerb={'get'} />,
       ).getElement();
       expect(callbackTitleViewElement.props).toBeDefined();
       expect(callbackTitleViewElement.props.className).toEqual('.test');
