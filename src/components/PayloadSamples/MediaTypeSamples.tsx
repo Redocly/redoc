@@ -1,9 +1,7 @@
 import * as React from 'react';
-
-import styled from '../../styled-components';
-
 import { DropdownProps } from '../../common-elements';
 import { MediaTypeModel } from '../../services/models';
+import styled from '../../styled-components';
 import { Markdown } from '../Markdown/Markdown';
 import { Example } from './Example';
 import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
@@ -28,6 +26,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
   };
   render() {
     const { activeIdx } = this.state;
+    console.log(this.props);
     const examples = this.props.mediaType.examples || {};
     const mimeType = this.props.mediaType.name;
 
