@@ -26,7 +26,6 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
   };
   render() {
     const { activeIdx } = this.state;
-    console.log(this.props);
     const examples = this.props.mediaType.examples || {};
     const mimeType = this.props.mediaType.name;
 
