@@ -46,7 +46,7 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
 
     return (
       <div>
-        <Markdown compact={true} inline={true} source={this.props.schema.description} />
+        <Markdown compact={true} inline={false} source={this.props.schema.description} />
         <PropertiesTable>
           {showTitle && <PropertiesTableCaption>{this.props.schema.title}</PropertiesTableCaption>}
           <tbody>
