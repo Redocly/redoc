@@ -4,7 +4,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
 <div>
   <Markdown
     compact={true}
-    inline={true}
+    inline={false}
     source=""
   />
   <styled.table>
