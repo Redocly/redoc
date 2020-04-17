@@ -24,7 +24,7 @@ export class ApiBackTo extends React.Component<{ isOt2: boolean }> {
           </svg>
 
           {isOt2 ? <span style={{color: this.state.backTextColor}}>OT2 services</span>
-                 : <span style={{color: this.state.backTextColor}}>OpenText product</span>}
+                 : <span style={{color: this.state.backTextColor}}>OpenText products</span>}
         </ApiBackToText>
       </div>
     );
