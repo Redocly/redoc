@@ -1,3 +1,12 @@
+# [2.0.0-rc.27](https://github.com/Redocly/redoc/compare/v2.0.0-rc.26...v2.0.0-rc.27) (2020-04-20)
+
+
+### Features
+
+* add callbacks support ([#1224](https://github.com/Redocly/redoc/issues/1224)) ([57e93ec](https://github.com/Redocly/redoc/commit/57e93ec4355de2659fcb5449b14b7ed738c6c276))
+
+
+
 # [2.0.0-rc.26](https://github.com/Redocly/redoc/compare/v2.0.0-rc.25...v2.0.0-rc.26) (2020-03-29)
 
 
