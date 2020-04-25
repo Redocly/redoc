@@ -23,24 +23,26 @@ export const AdditionalDocLink = styled.a`
 `;
 
 export const DownloadButton = styled.a`
-  border-radius: 16px;
-  color: #FFFFFF;
+  border: 1px solid #0084CE;
+  border-radius: 9px;
+  color: #0084CE;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 18px;
   text-align: center;
   margin-left: 0.5em;
-  padding: 6px 24px;
+  padding: 0 12px;
   display: inline-block;
   text-decoration: none;
   cursor: pointer;
-  background: #0084CE;
+  background: ##FFFFFF;
   &:hover {
-    background: #339DD8;
-    color: #FFFFFF;
+    border: 1px solid #339DD8;
+    color: #339DD8;
   }
   &:active {
-    background: #00639B;
-    color: #FFFFFF;
+    border: 1px solid #00639B;
+    color: #00639B;
   }
 
   ${extensionsHook('DownloadButton')};
