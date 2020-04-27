@@ -1,3 +1,12 @@
+# [2.0.0-rc.28](https://github.com/Redocly/redoc/compare/v2.0.0-rc.27...v2.0.0-rc.28) (2020-04-27)
+
+
+### Bug Fixes
+
+* encode URLs in json samples linkify (xss) ([62c01da](https://github.com/Redocly/redoc/commit/62c01da420fca2137674ae562d4ecba54db97da9)), thanks to @masatokinugawa
+
+
+
 # [2.0.0-rc.27](https://github.com/Redocly/redoc/compare/v2.0.0-rc.26...v2.0.0-rc.27) (2020-04-20)
 
 
