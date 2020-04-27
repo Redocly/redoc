@@ -56,7 +56,7 @@ function valueToHTML(value, maxExpandLevel: number) {
       output +=
         decorateWithSpan('"', 'token string') +
         '<a href="' +
-        value +
+        encodeURI(value) +
         '">' +
         htmlEncode(stringifyStringLiteral(value)) +
         '</a>' +
