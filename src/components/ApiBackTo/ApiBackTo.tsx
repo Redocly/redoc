@@ -8,8 +8,7 @@ export class ApiBackTo extends React.Component<{ isOt2: boolean }> {
     backTextColor: '#0084CE'
   };
 
-  handleHoverState = () => {this.setState({backTextColor: '#339DD8'})};
-  handleActiveState = () => {this.setState({backTextColor: '#00639B'})};
+  handleHoverState = () => {this.setState({backTextColor: '#004267'})};
   handleLeaveState = () => {this.setState({backTextColor: '#0084CE'})};
   render() {
     const { isOt2 } = this.props;
@@ -17,10 +16,9 @@ export class ApiBackTo extends React.Component<{ isOt2: boolean }> {
       <div>
         <ApiBackToText href={isOt2?'/apis': '/apis/other'}
                        onMouseEnter={this.handleHoverState}
-                       onMouseDown={this.handleActiveState}
                        onMouseLeave={this.handleLeaveState}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.5 22L2 11.5L12.5 1" stroke="#0084CE" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M12.5 22L2 11.5L12.5 1" stroke={this.state.backTextColor} strokeWidth="2" strokeLinecap="round"/>
           </svg>
 
           {isOt2 ? <span style={{color: this.state.backTextColor}}>OT2 services</span>
