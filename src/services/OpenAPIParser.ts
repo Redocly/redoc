@@ -239,7 +239,9 @@ export class OpenAPIParser {
         receiver.type !== undefined &&
         subSchema.type !== undefined
       ) {
-        throw new Error(`Incompatible types in allOf at "${$ref}"`);
+        console.warn(
+          `Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${subSchema.type}"`,
+        );
       }
 
       if (subSchema.type !== undefined) {
