@@ -114,7 +114,7 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
-      x-code-samples:
+      x-codeSamples:
         - lang: 'C#'
           source: |
             PetStore.v1.Pet pet = new PetStore.v1.Pet();
@@ -162,7 +162,7 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
-      x-code-samples:
+      x-codeSamples:
         - lang: PHP
           source: |
             $form = new \PetStore\Entities\Pet();
@@ -587,7 +587,7 @@ paths:
                   description: Response for cancelling subscription
                 '500':
                   description: Callback processing failed and retries will be performed
-              x-code-samples:
+              x-codeSamples:
                 - lang: 'C#'
                   source: |
                     PetStore.v1.Pet pet = new PetStore.v1.Pet();

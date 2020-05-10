@@ -76,7 +76,8 @@ export interface OpenAPIOperation {
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
-  'x-code-samples'?: OpenAPIXCodeSample[];
+  'x-codeSamples'?: OpenAPIXCodeSample[];
+  'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
 }
 
 export interface OpenAPIParameter {

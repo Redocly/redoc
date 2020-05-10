@@ -211,7 +211,7 @@ You can inject Security Definitions widget into any place of your specification 
 ReDoc makes use of the following [vendor extensions](https://swagger.io/specification/#specificationExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
-* [`x-code-samples`](docs/redoc-vendor-extensions.md#x-code-samples) - specify operation code samples
+* [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
 * [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
 * [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories

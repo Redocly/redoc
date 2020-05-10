@@ -39,6 +39,8 @@ export function isPayloadSample(
   return sample.lang === 'payload' && (sample as any).requestBodyContent;
 }
 
+let isCodeSamplesWarningPrinted = false;
+
 /**
  * Operation model ready to be used by components
  */
@@ -173,7 +175,12 @@ export class OperationModel implements IMenuItem {
   @memoize
   get codeSamples() {
     let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
-      this.operationSpec['x-code-samples'] || [];
+      this.operationSpec['x-codeSamples'] || this.operationSpec['x-code-samples'] || [];
+
+    if (this.operationSpec['x-code-samples'] && !isCodeSamplesWarningPrinted) {
+      isCodeSamplesWarningPrinted = true;
+      console.warn('"x-code-samples" is deprecated. Use "x-codeSamples" instead');
+    }
 
     const requestBodyContent = this.requestBody && this.requestBody.content;
     if (requestBodyContent && requestBodyContent.hasSample) {

@@ -162,13 +162,13 @@ x-traitTag: true
 
 ### Operation Object vendor extensions
 Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
-#### x-code-samples
+#### x-codeSamples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-code-samples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
+| x-codeSamples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
 
 ###### Usage in ReDoc
-`x-code-samples` are rendered on the right panel of ReDoc
+`x-codeSamples` are rendered on the right panel of ReDoc
 
 #### <a name="codeSampleObject"></a>Code Sample Object
 Operation code sample
