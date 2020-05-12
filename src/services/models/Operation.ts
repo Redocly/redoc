@@ -66,6 +66,7 @@ export class OperationModel implements IMenuItem {
 
   pointer: string;
   operationId?: string;
+  operationHash?: string;
   httpVerb: string;
   deprecated: boolean;
   path: string;
@@ -106,9 +107,10 @@ export class OperationModel implements IMenuItem {
       // TODO: update getting pathInfo for overriding servers on path level
       this.servers = normalizeServers('', operationSpec.servers || operationSpec.pathServers || []);
     } else {
+      this.operationHash = operationSpec.operationId && 'operation/' + operationSpec.operationId
       this.id =
         operationSpec.operationId !== undefined
-          ? (parent ? parent.id + '/' : '') + 'operation/' + operationSpec.operationId
+          ? (parent ? parent.id + '/' : '') + this.operationHash
           : parent !== undefined
           ? parent.id + this.pointer
           : this.pointer;
