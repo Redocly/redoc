@@ -4,7 +4,7 @@ ReDoc makes use of the following [vendor extensions](https://swagger.io/specific
 ### Swagger Object vendor extensions
 Extend OpenAPI root [Swagger Object](https://swagger.io/specification/#oasObject)
 #### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#server-object). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
 
 #### x-tagGroups
 
