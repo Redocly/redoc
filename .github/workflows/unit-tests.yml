@@ -3,18 +3,10 @@ name: Unit Tests
 on: [push]
 
 jobs:
-  build:
-
+  build-and-unit:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run bundle
-        npm test
+    - run: npm install
+    - run: npm run bundle
+    - run: npm test
