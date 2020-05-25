@@ -492,7 +492,9 @@ export function mergeParams(
   return pathParams.concat(operationParams);
 }
 
-export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<OpenAPIMediaType> {
+export function mergeSimilarMediaTypes(
+  types: Record<string, OpenAPIMediaType>,
+): Record<string, OpenAPIMediaType> {
   const mergedTypes = {};
   Object.keys(types).forEach(name => {
     const mime = types[name];
@@ -586,7 +588,10 @@ export function isRedocExtension(key: string): boolean {
   return key in redocExtensions;
 }
 
-export function extractExtensions(obj: object, showExtensions: string[] | true): Dict<any> {
+export function extractExtensions(
+  obj: object,
+  showExtensions: string[] | true,
+): Record<string, any> {
   return Object.keys(obj)
     .filter(key => {
       if (showExtensions === true) {

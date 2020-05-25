@@ -30,7 +30,7 @@ export type ExtendedOpenAPIOperation = {
   pathServers: Array<OpenAPIServer> | undefined;
 } & OpenAPIOperation;
 
-export type TagsInfoMap = Dict<TagInfo>;
+export type TagsInfoMap = Record<string, TagInfo>;
 
 export interface TagGroup {
   name: string;

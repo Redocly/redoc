@@ -40,7 +40,7 @@ export class FieldModel {
   deprecated: boolean;
   in?: OpenAPIParameterLocation;
   kind: string;
-  extensions?: Dict<any>;
+  extensions?: Record<string, any>;
   explode: boolean;
   style?: OpenAPIParameterStyle;
 

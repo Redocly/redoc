@@ -22,7 +22,7 @@ export class MediaContentModel {
    */
   constructor(
     parser: OpenAPIParser,
-    info: Dict<OpenAPIMediaType>,
+    info: Record<string, OpenAPIMediaType>,
     public isRequestType: boolean,
     options: RedocNormalizedOptions,
   ) {

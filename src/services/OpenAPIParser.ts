@@ -298,8 +298,8 @@ export class OpenAPIParser {
    * returns map of definition pointer to definition name
    * @param $refs array of references to find derived from
    */
-  findDerived($refs: string[]): Dict<string[] | string> {
-    const res: Dict<string[]> = {};
+  findDerived($refs: string[]): Record<string, string[] | string> {
+    const res: Record<string, string[]> = {};
     const schemas = (this.spec.components && this.spec.components.schemas) || {};
     for (const defName in schemas) {
       const def = this.deref(schemas[defName]);

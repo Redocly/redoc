@@ -226,22 +226,22 @@ export interface OpenAPISecurityScheme {
   flows: {
     implicit?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       authorizationUrl: string;
     };
     password?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     clientCredentials?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     authorizationCode?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
   };

@@ -30,7 +30,7 @@ export interface RedocRawOptions {
 
   unstable_ignoreMimeParameters?: boolean;
 
-  allowedMdComponents?: Dict<MDXComponentMeta>;
+  allowedMdComponents?: Record<string, MDXComponentMeta>;
 
   labels?: LabelsConfigRaw;
 
@@ -172,7 +172,7 @@ export class RedocNormalizedOptions {
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
-  allowedMdComponents: Dict<MDXComponentMeta>;
+  allowedMdComponents: Record<string, MDXComponentMeta>;
 
   expandDefaultServerVariables: boolean;
 

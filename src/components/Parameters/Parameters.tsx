@@ -26,7 +26,7 @@ export interface ParametersProps {
 const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
 
 export class Parameters extends React.PureComponent<ParametersProps> {
-  orderParams(params: FieldModel[]): Dict<FieldModel[]> {
+  orderParams(params: FieldModel[]): Record<string, FieldModel[]> {
     const res = {};
     params.forEach(param => {
       safePush(res, param.in, param);

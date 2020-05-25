@@ -59,7 +59,7 @@ export class SchemaModel {
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
-  extensions?: Dict<any>;
+  extensions?: Record<string, any>;
 
   /**
    * @param isChild if schema discriminator Child

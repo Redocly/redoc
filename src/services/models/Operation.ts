@@ -73,7 +73,7 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  extensions: Dict<any>;
+  extensions: Record<string, any>;
   isCallback: boolean;
 
   constructor(

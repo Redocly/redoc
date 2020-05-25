@@ -24,9 +24,9 @@ export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolea
  * @param iteratee the function invoked per iteration.
  */
 export function mapValues<T, P>(
-  object: Dict<T>,
-  iteratee: (val: T, key: string, obj: Dict<T>) => P,
-): Dict<P> {
+  object: Record<string, T>,
+  iteratee: (val: T, key: string, obj: Record<string, T>) => P,
+): Record<string, P> {
   const res: { [key: string]: P } = {};
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
