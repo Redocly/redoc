@@ -1,3 +1,14 @@
+# [2.0.0-rc.30](https://github.com/Redocly/redoc/compare/v2.0.0-rc.29...v2.0.0-rc.30) (2020-05-25)
+
+
+### Bug Fixes
+
+* add security headers to Docker nginx config ([#1244](https://github.com/Redocly/redoc/issues/1244)) ([4512436](https://github.com/Redocly/redoc/commit/4512436f1d88bd99558fe5f8384b37aa62562480))
+* keep 3-column layout on 13-inch mbp ([8d1d4c8](https://github.com/Redocly/redoc/commit/8d1d4c82e1377aecf936985ac13fa9bf5257562a))
+* proper search-index dispose ([9dd129d](https://github.com/Redocly/redoc/commit/9dd129d90b87f24ad20f084c44d48be50d750c94))
+
+
+
 # [2.0.0-rc.29](https://github.com/Redocly/redoc/compare/v2.0.0-rc.28...v2.0.0-rc.29) (2020-05-10)
 
 
