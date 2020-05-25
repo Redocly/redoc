@@ -8,7 +8,7 @@ const defaultTheme: ThemeInterface = {
   },
   breakpoints: {
     small: '50rem',
-    medium: '85rem',
+    medium: '75rem',
     large: '105rem',
   },
   colors: {
