@@ -42,6 +42,7 @@ export class SearchStore<T> {
 
   dispose() {
     (this.searchWorker as any).terminate();
+    (this.searchWorker as any).dispose();
   }
 
   search(q: string) {

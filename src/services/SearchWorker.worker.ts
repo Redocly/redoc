@@ -14,6 +14,7 @@ export default class Worker {
   search: typeof search = search;
   toJS = toJS;
   load = load;
+  dispose = dispose;
 }
 
 export interface SearchDocument {
@@ -29,22 +30,28 @@ export interface SearchResult<T = string> {
 
 let store: any[] = [];
 
-let resolveIndex: (v: lunr.Index) => void = () => {
-  throw new Error('Should not be called');
-};
-
-const index: Promise<lunr.Index> = new Promise(resolve => {
-  resolveIndex = resolve;
-});
-
 lunr.tokenizer.separator = /\s+/;
 
-const builder = new lunr.Builder();
-builder.field('title');
-builder.field('description');
-builder.ref('ref');
+let builder: lunr.Builder;
 
-builder.pipeline.add(lunr.trimmer, lunr.stopWordFilter, lunr.stemmer);
+let resolveIndex: (v: lunr.Index) => void;
+
+let index: Promise<lunr.Index>;
+
+function initEmpty() {
+  builder = new lunr.Builder();
+  builder.field('title');
+  builder.field('description');
+  builder.ref('ref');
+
+  builder.pipeline.add(lunr.trimmer, lunr.stopWordFilter, lunr.stemmer);
+
+  index = new Promise(resolve => {
+    resolveIndex = resolve;
+  });
+}
+
+initEmpty();
 
 const expandTerm = term => '*' + lunr.stemmer(new lunr.Token(term, {})) + '*';
 
@@ -68,6 +75,11 @@ export async function toJS() {
 export async function load(state: any) {
   store = state.store;
   resolveIndex(lunr.Index.load(state.index));
+}
+
+export async function dispose() {
+  store = [];
+  initEmpty();
 }
 
 export async function search<Meta = string>(
