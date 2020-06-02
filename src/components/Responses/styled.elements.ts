@@ -5,6 +5,10 @@ import styled from '../../styled-components';
 import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
+  display: block;
+  border: 0;
+  width: 100%;
+  text-align: left;
   padding: 10px;
   border-radius: 2px;
   margin-bottom: 4px;
@@ -14,7 +18,10 @@ export const StyledResponseTitle = styled(ResponseTitle)`
 
   color: ${props => props.theme.colors.responses[props.type].color};
   background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
-
+  &:focus {
+    outline: auto;
+    outline-color: ${props => props.theme.colors.responses[props.type].color};
+  }
   ${props =>
     (props.empty &&
       `
@@ -25,6 +32,9 @@ cursor: default;
   width: 1.5em;
   text-align: center;
   display: inline-block;
+}
+&:focus {
+  outline: 0;
 }
 `) ||
     ''};

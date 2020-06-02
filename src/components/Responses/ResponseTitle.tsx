@@ -17,7 +17,12 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
   render() {
     const { title, type, empty, code, opened, className, onClick } = this.props;
     return (
-      <div className={className} onClick={(!empty && onClick) || undefined}>
+      <button
+        className={className}
+        onClick={(!empty && onClick) || undefined}
+        aria-expanded={opened}
+        disabled={empty}
+      >
         {!empty && (
           <ShelfIcon
             size={'1.5em'}
@@ -28,7 +33,7 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
         )}
         <strong>{code} </strong>
         <Markdown compact={true} inline={true} source={title} />
-      </div>
+      </button>
     );
   }
 }
