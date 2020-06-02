@@ -155,12 +155,27 @@ export class MenuStore {
   };
 
   /**
+   * simple utility to build the correct selector query using parent's
+   * id to identify the right element in the case of repeating id's
+   * @param item item to inspect
+   */
+  selectorStringBuilder(item: IMenuItem): string {
+    let selectorString = `[${SECTION_ATTR}="${item.id}"]`;
+    const parentItemId = item.parent?.id || null;
+    if (parentItemId) {
+      selectorString = `[${SECTION_ATTR}="${parentItemId}"] ~ ${selectorString}`;
+    }
+    return selectorString;
+  }
+
+  /**
    * get section/operation DOM Node related to the item or null if it doesn't exist
    * @param idx item absolute index
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    const selectorString = this.selectorStringBuilder(item);
+    return (item && querySelector(selectorString)) || null;
   }
 
   /**
@@ -172,7 +187,8 @@ export class MenuStore {
     if (item && item.type === 'group') {
       item = item.items[0];
     }
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    const selectorString = this.selectorStringBuilder(item);
+    return (item && querySelector(selectorString)) || null;
   }
 
   /**
@@ -184,6 +200,10 @@ export class MenuStore {
 
   getItemById = (id: string) => {
     return this.flatItems.find(item => item.id === id);
+  };
+
+  getItemByIndexAndId = (id: string, itemIndex: number) => {
+    return this.flatItems.find(item => item.id === id && item.absoluteIdx === itemIndex);
   };
 
   /**
@@ -253,7 +273,8 @@ export class MenuStore {
     rewriteHistory?: boolean,
   ) {
     // item here can be a copy from search results so find corresponding item from menu
-    const menuItem = (item && this.getItemById(item.id)) || item;
+    // @ts-ignore
+    const menuItem = (item && this.getItemByIndexAndId(item.id, item.absoluteIdx)) || item;
     this.activate(menuItem, updateLocation, rewriteHistory);
     this.scrollToActive();
     if (!menuItem || !menuItem.items.length) {
