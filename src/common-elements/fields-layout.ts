@@ -62,7 +62,7 @@ export const PropertyNameCell = styled(PropertyCell)`
   vertical-align: top;
   line-height: 20px;
   white-space: nowrap;
-  font-size: 0.929em;
+  font-size: 13px;
   font-family: ${props => props.theme.typography.code.fontFamily};
 
   &.deprecated {

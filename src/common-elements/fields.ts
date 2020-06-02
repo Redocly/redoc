@@ -5,8 +5,19 @@ import { PropertyNameCell } from './fields-layout';
 import { ShelfIcon } from './shelfs';
 
 export const ClickablePropertyNameCell = styled(PropertyNameCell)`
-  cursor: pointer;
-
+  button {
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    font-size: 13px;
+    font-family: ${props => props.theme.typography.code.fontFamily};
+    cursor: pointer;
+    padding: 0;
+    color: ${props => props.theme.colors.text.primary};
+    &:focus {
+      font-weight: ${({ theme }) => theme.typography.fontWeightBold};
+    }
+  }
   ${ShelfIcon} {
     height: ${({ theme }) => theme.schema.arrow.size};
     width: ${({ theme }) => theme.schema.arrow.size};
