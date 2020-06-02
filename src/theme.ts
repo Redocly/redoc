@@ -20,7 +20,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.primary.main),
     },
     success: {
-      main: '#37d247',
+      main: '#1d8127',
       light: ({ colors }) => lighten(colors.tonalOffset * 2, colors.success.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.success.main),
       contrastText: ({ colors }) => readableColor(colors.success.main),
@@ -32,7 +32,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: '#ffffff',
     },
     error: {
-      main: '#e53935',
+      main: '#d41f1c',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
@@ -52,11 +52,11 @@ const defaultTheme: ThemeInterface = {
     responses: {
       success: {
         color: ({ colors }) => colors.success.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.success.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.success.main),
       },
       error: {
         color: ({ colors }) => colors.error.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.error.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.error.main),
       },
       redirect: {
         color: ({ colors }) => colors.warning.main,
