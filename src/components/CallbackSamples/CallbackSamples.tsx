@@ -43,8 +43,8 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
 
     const dropdownOptions = operations.map((callback, idx) => {
       return {
-        label: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
-        value: idx.toString(),
+        value: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
+        idx,
       };
     });
 

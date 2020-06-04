@@ -20,9 +20,9 @@ export interface MediaTypesSwitchProps {
 
 @observer
 export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
-  switchMedia = ({ value }) => {
+  switchMedia = ({ idx }) => {
     if (this.props.content) {
-      this.props.content.activate(parseInt(value, 10));
+      this.props.content.activate(idx);
     }
   };
 
@@ -35,8 +35,8 @@ export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
 
     const options = content.mediaTypes.map((mime, idx) => {
       return {
-        label: mime.name,
-        value: idx.toString(),
+        value: mime.name,
+        idx,
       };
     });
 
@@ -54,9 +54,10 @@ export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
       <>
         <Wrapper>
           {this.props.renderDropdown({
-            value: options[activeMimeIdx],
+            value: options[activeMimeIdx].value,
             options,
             onChange: this.switchMedia,
+            ariaLabel: 'Content type',
           })}
         </Wrapper>
         {this.props.children(content.active)}
