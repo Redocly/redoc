@@ -14,7 +14,12 @@ export const ServerRelativeURL = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean }>`
+export const EndpointInfo = styled.button<{ expanded?: boolean; inverted?: boolean }>`
+  outline: 0;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
   background-color: ${props =>
@@ -31,6 +36,9 @@ export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean 
 
   .${ServerRelativeURL} {
     color: ${props => (props.inverted ? props.theme.colors.text.primary : '#ffffff')}
+  }
+  &:focus {
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.3), 0 2px 0 rgba(128, 128, 128, 0.15);
   }
 `;
 
