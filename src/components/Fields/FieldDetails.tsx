@@ -62,7 +62,9 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
-          {schema.pattern && <PatternLabel> {schema.pattern} </PatternLabel>}
+          {schema.pattern && schema.pattern.length < 45 && (
+            <PatternLabel> {schema.pattern} </PatternLabel>
+          )}
           {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
