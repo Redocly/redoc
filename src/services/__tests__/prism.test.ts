@@ -1,6 +1,10 @@
 import { highlight, mapLang } from '../../utils/highlight';
 
 describe('prism.js helpers', () => {
+  test('mapLang should map "json" to "js"', () => {
+    expect(mapLang('json')).toBe('js');
+  });
+
   test('mapLang should map to "clike" by default', () => {
     expect(mapLang('non-existring')).toBe('clike');
   });

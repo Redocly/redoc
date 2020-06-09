@@ -8,7 +8,6 @@ import 'prismjs/components/prism-csharp.js';
 import 'prismjs/components/prism-go.js';
 import 'prismjs/components/prism-http.js';
 import 'prismjs/components/prism-java.js';
-import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-lua.js';
 import 'prismjs/components/prism-markup-templating.js'; // dep of php
 import 'prismjs/components/prism-markup.js'; // xml
@@ -53,6 +52,7 @@ Prism.languages.insertBefore(
 export function mapLang(lang: string): string {
   return (
     {
+      json: 'js',
       'c++': 'cpp',
       'c#': 'csharp',
       'objective-c': 'objectivec',
