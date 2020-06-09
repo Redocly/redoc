@@ -53,7 +53,6 @@ Prism.languages.insertBefore(
 export function mapLang(lang: string): string {
   return (
     {
-      json: 'js',
       'c++': 'cpp',
       'c#': 'csharp',
       'objective-c': 'objectivec',
