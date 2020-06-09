@@ -23,6 +23,8 @@ import { Badge } from '../../common-elements/';
 import { l } from '../../services/Labels';
 import { OptionsContext } from '../OptionsProvider';
 
+const MAX_PATTERN_LENGTH = 45;
+
 export class FieldDetails extends React.PureComponent<FieldProps> {
   static contextType = OptionsContext;
   render() {
@@ -62,7 +64,9 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
-          {schema.pattern && <PatternLabel> {schema.pattern} </PatternLabel>}
+          {schema.pattern && schema.pattern.length < MAX_PATTERN_LENGTH && (
+            <PatternLabel> {schema.pattern} </PatternLabel>
+          )}
           {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
