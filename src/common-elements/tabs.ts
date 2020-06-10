@@ -33,6 +33,9 @@ export const Tabs = styled(ReactTabs)`
       &.react-tabs__tab--selected {
         color: ${props => props.theme.colors.text.primary};
         background: ${({ theme }) => theme.rightPanel.textColor};
+        &:focus {
+          outline: auto;
+        }
       }
 
       &:only-child {

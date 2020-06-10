@@ -42,6 +42,7 @@ export const InvertedSimpleDropdown = styled(StyledDropdown)`
     &:hover,
     &:focus-within {
       border: none;
+      box-shadow: none;
     }
     &:focus-within {
       background-color: ${({ theme }) => transparentize(0.3, theme.rightPanel.backgroundColor)};

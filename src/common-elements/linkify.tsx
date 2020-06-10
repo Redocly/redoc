@@ -14,6 +14,7 @@ export const linkifyMixin = className => css`
     line-height: 1;
     width: 20px;
     display: inline-block;
+    outline: 0;
   }
   ${className}:before {
     content: '';
