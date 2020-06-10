@@ -5,7 +5,9 @@ export const SampleControls = styled.div`
   opacity: 0.4;
   transition: opacity 0.3s ease;
   text-align: right;
-
+  &:focus-within {
+    opacity: 1;
+  }
   > button {
     background-color: transparent;
     border: 0;

@@ -32,11 +32,12 @@ export const StyledDropdown = styled(Dropdown)`
     font-size: 0.929em;
     line-height: 1.5em;
     cursor: pointer;
+    transition: border 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     &:hover,
     &:focus-within {
       border: 1px solid ${props => props.theme.colors.primary.main};
       color: ${props => props.theme.colors.primary.main};
-      box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12);
+      box-shadow: 0px 0px 0px 1px ${props => props.theme.colors.primary.main};
     }
     .dropdown-selector {
       display: inline-flex;
@@ -55,6 +56,7 @@ export const StyledDropdown = styled(Dropdown)`
       vertical-align: middle;
       color: #263238;
       left: 0;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
     }
     .dropdown-arrow {
       position: absolute;
@@ -73,7 +75,7 @@ export const StyledDropdown = styled(Dropdown)`
     .dropdown-selector-content {
       position: absolute;
       margin-top: 2px;
-      left: -1px;
+      left: -2px;
       right: 0;
 
       z-index: 10;
@@ -90,7 +92,6 @@ export const StyledDropdown = styled(Dropdown)`
     .dropdown-option {
       font-size: 0.9em;
       color: #263238;
-      background-color: #fff;
       cursor: pointer;
       padding: 0.4em;
 
@@ -101,6 +102,10 @@ export const StyledDropdown = styled(Dropdown)`
       &:hover {
         background-color: rgba(38, 50, 56, 0.12);
       }
+    }
+    input {
+      cursor: pointer;
+      height: 1px;
     }
   }
 `;
@@ -122,6 +127,7 @@ export const SimpleDropdown = styled(StyledDropdown)`
       box-shadow: none;
       .dropdown-selector-value {
         color: ${props => props.theme.colors.primary.main};
+        text-shadow: 0px 0px 0px ${props => props.theme.colors.primary.main};
       }
     }
   }
