@@ -90,7 +90,11 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
         deprecated={item.deprecated}
         ref={this.ref}
       >
-        <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+        {item.isWebhook ? (
+          <OperationBadge type="hook">hook</OperationBadge>
+        ) : (
+          <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+        )}
         <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
           {this.props.children}

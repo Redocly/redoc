@@ -75,6 +75,7 @@ export class OperationModel implements IMenuItem {
   security: SecurityRequirementModel[];
   extensions: Record<string, any>;
   isCallback: boolean;
+  isWebhook: boolean;
 
   constructor(
     private parser: OpenAPIParser,
@@ -95,6 +96,7 @@ export class OperationModel implements IMenuItem {
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
+    this.isWebhook = !!operationSpec.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
 
