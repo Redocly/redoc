@@ -129,6 +129,10 @@ export class MenuStore {
       itemIdx += step;
     }
 
+    if (window.pageYOffset === 0) {
+      itemIdx = 0;
+    }
+
     this.activate(this.flatItems[itemIdx], true, true);
   };
 
