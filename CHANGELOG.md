@@ -1,3 +1,13 @@
+# [2.0.0-rc.31](https://github.com/Redocly/redoc/compare/v2.0.0-rc.30...v2.0.0-rc.31) (2020-06-25)
+
+
+### Bug Fixes
+
+* do not display long regexps ([#1295](https://github.com/Redocly/redoc/issues/1295)) ([2ede22c](https://github.com/Redocly/redoc/commit/2ede22c45cc970ea1ac296adbae1f6032744f823))
+* prevent body scrolling when user scrolls side menu ([#1300](https://github.com/Redocly/redoc/issues/1300)) ([865a56a](https://github.com/Redocly/redoc/commit/865a56a2a9a105ef7b3b9150767399ca7339195a))
+
+
+
 # [2.0.0-rc.30](https://github.com/Redocly/redoc/compare/v2.0.0-rc.29...v2.0.0-rc.30) (2020-05-25)
 
 
