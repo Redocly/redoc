@@ -12,18 +12,27 @@ import { extractExtensions } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
 
-function getDefaultStyleValue(parameterLocation: OpenAPIParameterLocation): OpenAPIParameterStyle {
-  switch (parameterLocation) {
-    case 'header':
-      return 'simple';
-    case 'query':
-      return 'form';
-    case 'path':
-      return 'simple';
-    default:
-      return 'form';
-  }
-}
+const DEFAULT_SERIALIZATION: Record<
+  OpenAPIParameterLocation,
+  { explode: boolean; style: OpenAPIParameterStyle }
+> = {
+  path: {
+    style: 'simple',
+    explode: false,
+  },
+  query: {
+    style: 'form',
+    explode: true,
+  },
+  header: {
+    style: 'simple',
+    explode: false,
+  },
+  cookie: {
+    style: 'form',
+    explode: true,
+  },
+};
 
 /**
  * Field or Parameter model ready to be used by components
@@ -75,10 +84,14 @@ export class FieldModel {
     } else if (info.style) {
       this.style = info.style;
     } else if (this.in) {
-      this.style = getDefaultStyleValue(this.in);
+      this.style = DEFAULT_SERIALIZATION[this.in].style;
     }
 
-    this.explode = !!info.explode;
+    if (info.explode === undefined && this.in) {
+      this.explode = DEFAULT_SERIALIZATION[this.in].explode;
+    } else {
+      this.explode = !!info.explode;
+    }
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
     parser.exitRef(infoOrRef);
