@@ -147,7 +147,7 @@
     "marked": "^0.7.0",
     "memoize-one": "~5.1.1",
     "mobx-react": "6.1.5",
-    "openapi-sampler": "1.0.0-beta.15",
+    "openapi-sampler": "^1.0.0-beta.16",
     "perfect-scrollbar": "^1.4.0",
     "polished": "^3.4.4",
     "prismjs": "^1.19.0",
