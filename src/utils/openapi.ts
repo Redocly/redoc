@@ -512,7 +512,7 @@ export function mergeSimilarMediaTypes(
 
 export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
-    /(?:{)(\w+)(?:})/g,
+    /(?:{)([\w-.]+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
   );
 }
