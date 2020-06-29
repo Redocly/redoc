@@ -12,7 +12,6 @@ import {
   setSecuritySchemePrefix,
   JsonPointer,
   extractContent,
-  removeContent,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -55,14 +54,18 @@ export class MenuBuilder {
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
 
-    let setionToTheEnd = '';
+    let sectionsBefore = '';
+    let sectionsAfter = '';
 
-    options.sectionsAtTheEnd.forEach(function(s) {
-      setionToTheEnd += extractContent(spec.info.description || '', s);
-      spec.info.description = removeContent(spec.info.description || '', s);
+    new MarkdownRenderer(options).extractHeadings(spec.info.description || '').forEach(function(h) {
+      if (options.sectionsAtTheEnd.includes(h.name)) {
+        sectionsAfter += extractContent(spec.info.description || '', h.name);
+      } else {
+        sectionsBefore += extractContent(spec.info.description || '', h.name);
+      }
     });
 
-    items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
+    items.push(...MenuBuilder.addMarkdownItems(sectionsBefore, undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
         ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
@@ -71,7 +74,15 @@ export class MenuBuilder {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
 
-    items.push(...MenuBuilder.addMarkdownItems(setionToTheEnd, undefined, 1, options));
+    items.push(
+      ...MenuBuilder.addMarkdownItems(
+        sectionsAfter,
+        undefined,
+        1,
+        options,
+        spec['x-tagGroups'] && spec['x-tagGroups'].length > 0, // If tagGroups, add topMargin to side menu item
+      ),
+    );
 
     return items;
   }
@@ -85,6 +96,7 @@ export class MenuBuilder {
     parent: GroupModel | undefined,
     initialDepth: number,
     options: RedocNormalizedOptions,
+    topMargin: boolean = false,
   ): ContentItemModel[] {
     const renderer = new MarkdownRenderer(options);
     const headings = renderer.extractHeadings(description || '');
@@ -99,6 +111,10 @@ export class MenuBuilder {
     const mapHeadingsDeep = (_parent, items, depth = 1) =>
       items.map(heading => {
         const group = new GroupModel('section', heading, _parent);
+        if (topMargin) {
+          group.topMargin = true;
+          topMargin = false;
+        }
         group.depth = depth;
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
