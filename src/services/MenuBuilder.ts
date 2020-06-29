@@ -11,6 +11,8 @@ import {
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
   JsonPointer,
+  extractContent,
+  removeContent,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -52,6 +54,14 @@ export class MenuBuilder {
 
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
+
+    var setionToTheEnd = '';
+
+    options.sectionsAtTheEnd.forEach(function(s) {
+      setionToTheEnd += extractContent(spec.info.description || '', s);
+      spec.info.description = removeContent(spec.info.description || '', s);
+    });
+
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
@@ -60,6 +70,9 @@ export class MenuBuilder {
     } else {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
+
+    items.push(...MenuBuilder.addMarkdownItems(setionToTheEnd, undefined, 1, options));
+
     return items;
   }
 

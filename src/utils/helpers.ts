@@ -82,6 +82,29 @@ export function appendToMdHeading(md: string, heading: string, content: string) 
   }
 }
 
+export function extractContent(md: string, heading: string): string {
+  // return the content of section with given heading
+  const testRegex = new RegExp(`(^|\\n)#\\s?${heading}\\s*\\n`, 'i');
+  const replaceRegex = new RegExp(`((\\n|^)#\\s*${heading}\\s*(\\n|$)(?:.|\\n)*?)(?=\\n#|$)`, 'i');
+  if (testRegex.test(md)) {
+    var extractedContent = replaceRegex.exec(md);
+    return extractedContent != null ? extractedContent[0] : '';
+  }
+
+  return '';
+}
+
+export function removeContent(md: string, heading: string): string {
+  // remove the content of section with given heading
+  const testRegex = new RegExp(`(^|\\n)#\\s?${heading}\\s*\\n`, 'i');
+  const replaceRegex = new RegExp(`((\\n|^)#\\s*${heading}\\s*(\\n|$)(?:.|\\n)*?)(?=\\n#|$)`, 'i');
+  if (testRegex.test(md)) {
+    return md.replace(replaceRegex, '');
+  }
+
+  return md;
+}
+
 // credits https://stackoverflow.com/a/46973278/1749888
 export const mergeObjects = (target: any, ...sources: any[]): any => {
   if (!sources.length) {

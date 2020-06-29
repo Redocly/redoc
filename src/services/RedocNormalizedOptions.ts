@@ -27,6 +27,7 @@ export interface RedocRawOptions {
   hideSchemaTitles?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
+  sectionsAtTheEnd?: string | string[];
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -126,6 +127,14 @@ export class RedocNormalizedOptions {
     }
   }
 
+  static normalizeSectionsAtTheEnd(value: RedocRawOptions['sectionsAtTheEnd']): string[] {
+    if (typeof value === 'undefined' || typeof value !== 'string') {
+      return new Array(0);
+    }
+
+    return value.split(',').map(ext => ext.trim());
+  }
+
   static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
     if (typeof value === 'number') {
       return Math.max(0, value); // always greater or equal than 0
@@ -169,6 +178,7 @@ export class RedocNormalizedOptions {
   hideSchemaTitles: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
+  sectionsAtTheEnd: string[];
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -222,6 +232,7 @@ export class RedocNormalizedOptions {
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
+    this.sectionsAtTheEnd = RedocNormalizedOptions.normalizeSectionsAtTheEnd(raw.sectionsAtTheEnd);
 
     // eslint-disable-next-line @typescript-eslint/camelcase
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
