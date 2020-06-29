@@ -55,7 +55,7 @@ export class MenuBuilder {
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
 
-    var setionToTheEnd = '';
+    let setionToTheEnd = '';
 
     options.sectionsAtTheEnd.forEach(function(s) {
       setionToTheEnd += extractContent(spec.info.description || '', s);

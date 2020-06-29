@@ -87,7 +87,7 @@ export function extractContent(md: string, heading: string): string {
   const testRegex = new RegExp(`(^|\\n)#\\s?${heading}\\s*\\n`, 'i');
   const replaceRegex = new RegExp(`((\\n|^)#\\s*${heading}\\s*(\\n|$)(?:.|\\n)*?)(?=\\n#|$)`, 'i');
   if (testRegex.test(md)) {
-    var extractedContent = replaceRegex.exec(md);
+    const extractedContent = replaceRegex.exec(md);
     return extractedContent != null ? extractedContent[0] : '';
   }
 
