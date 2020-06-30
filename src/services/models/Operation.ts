@@ -75,6 +75,7 @@ export class OperationModel implements IMenuItem {
   security: SecurityRequirementModel[];
   extensions: Record<string, any>;
   isCallback: boolean;
+  topMargin: boolean;
 
   constructor(
     private parser: OpenAPIParser,

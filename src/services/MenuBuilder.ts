@@ -11,7 +11,6 @@ import {
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
   JsonPointer,
-  extractContent,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -54,35 +53,29 @@ export class MenuBuilder {
     const items: ContentItemModel[] = [];
     const tagsMap = MenuBuilder.getTagsWithOperations(spec);
 
-    let sectionsBefore = '';
-    let sectionsAfter = '';
+    const mdHeadings = MenuBuilder.addMarkdownItems(
+      spec.info.description || '',
+      undefined,
+      1,
+      options,
+    );
+    const mdHeadingsBefore = mdHeadings.filter(h => !options.sectionsAtTheEnd.includes(h.name));
+    const mdHeadingsAfter = mdHeadings.filter(h => options.sectionsAtTheEnd.includes(h.name));
 
-    new MarkdownRenderer(options).extractHeadings(spec.info.description || '').forEach(function(h) {
-      if (options.sectionsAtTheEnd.includes(h.name)) {
-        sectionsAfter += extractContent(spec.info.description || '', h.name);
-      } else {
-        sectionsBefore += extractContent(spec.info.description || '', h.name);
-      }
-    });
-
-    items.push(...MenuBuilder.addMarkdownItems(sectionsBefore, undefined, 1, options));
+    items.push(...mdHeadingsBefore);
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
         ...MenuBuilder.getTagGroupsItems(parser, undefined, spec['x-tagGroups'], tagsMap, options),
       );
+
+      if (mdHeadingsAfter.length > 0) {
+        mdHeadingsAfter[0].topMargin = true;
+      }
     } else {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
 
-    items.push(
-      ...MenuBuilder.addMarkdownItems(
-        sectionsAfter,
-        undefined,
-        1,
-        options,
-        spec['x-tagGroups'] && spec['x-tagGroups'].length > 0, // If tagGroups, add topMargin to side menu item
-      ),
-    );
+    items.push(...mdHeadingsAfter);
 
     return items;
   }
@@ -96,7 +89,6 @@ export class MenuBuilder {
     parent: GroupModel | undefined,
     initialDepth: number,
     options: RedocNormalizedOptions,
-    topMargin: boolean = false,
   ): ContentItemModel[] {
     const renderer = new MarkdownRenderer(options);
     const headings = renderer.extractHeadings(description || '');
@@ -111,10 +103,6 @@ export class MenuBuilder {
     const mapHeadingsDeep = (_parent, items, depth = 1) =>
       items.map(heading => {
         const group = new GroupModel('section', heading, _parent);
-        if (topMargin) {
-          group.topMargin = true;
-          topMargin = false;
-        }
         group.depth = depth;
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
