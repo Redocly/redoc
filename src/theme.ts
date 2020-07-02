@@ -4,7 +4,7 @@ const defaultTheme: ThemeInterface = {
   spacing: {
     unit: 5,
     sectionHorizontal: ({ spacing }) => spacing.unit * 8,
-    sectionVertical: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: ({ spacing }) => spacing.unit * 2,
   },
   breakpoints: {
     small: '50rem',
@@ -14,7 +14,7 @@ const defaultTheme: ThemeInterface = {
   colors: {
     tonalOffset: 0.3,
     primary: {
-      main: '#32329f',
+      main: '#030c38',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       contrastText: ({ colors }) => readableColor(colors.primary.main),

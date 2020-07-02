@@ -6,7 +6,6 @@ import { OptionsContext } from '../OptionsProvider';
 import { MenuItems } from './MenuItems';
 
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
-import { RedocAttribution } from './styled.elements';
 
 @observer
 export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
@@ -24,11 +23,6 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
         }}
       >
         <MenuItems items={store.items} onActivate={this.activate} root={true} />
-        <RedocAttribution>
-          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Redocly/redoc">
-            Documentation Powered by ReDoc
-          </a>
-        </RedocAttribution>
       </PerfectScrollbarWrap>
     );
   }
