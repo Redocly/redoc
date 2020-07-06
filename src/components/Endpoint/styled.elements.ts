@@ -67,7 +67,8 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   transition: all 0.25s ease;
-  ${props => (props.expanded ? '' : 'transform: translateY(-50%) scaleY(0);')}
+  visibility: hidden;
+  ${props => (props.expanded ? 'visibility: visible;' : 'transform: translateY(-50%) scaleY(0);')}
 `;
 
 export const ServerItem = styled.div`
