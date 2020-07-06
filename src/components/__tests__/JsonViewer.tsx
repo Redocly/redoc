@@ -25,11 +25,11 @@ describe('Components', () => {
 
     test('should collapse/uncollapse', () => {
       expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed by default
-      const expandAll = component.find('div > span[children=" Expand all "]');
+      const expandAll = component.find('div > button[children=" Expand all "]');
       expandAll.simulate('click');
       expect(component.html()).toContain('class="hoverable"'); // all are collapsed
 
-      const collapseAll = component.find('div > span[children=" Collapse all "]');
+      const collapseAll = component.find('div > button[children=" Collapse all "]');
       collapseAll.simulate('click');
       expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed
     });
@@ -37,7 +37,7 @@ describe('Components', () => {
     test('should collapse/uncollapse', () => {
       ClipboardService.copySelected = jest.fn();
 
-      const copy = component.find('span[onClick]').first();
+      const copy = component.find('button[onClick]').first();
       copy.simulate('click');
 
       expect(ClipboardService.copySelected as jest.Mock).toHaveBeenCalled();

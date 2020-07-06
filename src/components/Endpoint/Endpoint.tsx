@@ -62,7 +62,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 style={{ marginRight: '-25px' }}
               />
             </EndpointInfo>
-            <ServersOverlay expanded={expanded}>
+            <ServersOverlay expanded={expanded} aria-hidden={!expanded}>
               {operation.servers.map(server => {
                 const normalizedUrl = options.expandDefaultServerVariables
                   ? expandDefaultServerVariables(server.url, server.variables)
