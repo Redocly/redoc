@@ -38,6 +38,7 @@ export interface RedocRawOptions {
   enumSkipQuotes?: boolean | string;
 
   expandDefaultServerVariables?: boolean;
+  maxDisplayedEnumValues?: number;
 }
 
 function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -48,6 +49,16 @@ function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): bool
     return val === 'false' ? false : true;
   }
   return val;
+}
+
+function argValueToNumber(value: number | string | undefined): number | undefined {
+  if (typeof value === 'string') {
+    return parseInt(value, 10);
+  }
+
+  if (typeof value === 'number') {
+    return value;
+  }
 }
 
 export class RedocNormalizedOptions {
@@ -177,6 +188,7 @@ export class RedocNormalizedOptions {
   allowedMdComponents: Record<string, MDXComponentMeta>;
 
   expandDefaultServerVariables: boolean;
+  maxDisplayedEnumValues?: number;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -232,5 +244,6 @@ export class RedocNormalizedOptions {
     this.allowedMdComponents = raw.allowedMdComponents || {};
 
     this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
+    this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
   }
 }

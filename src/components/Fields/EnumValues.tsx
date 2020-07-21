@@ -3,20 +3,44 @@ import { ExampleValue, FieldLabel } from '../../common-elements/fields';
 
 import { l } from '../../services/Labels';
 import { OptionsContext } from '../OptionsProvider';
+import styled from '../../styled-components';
+import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
 
 export interface EnumValuesProps {
   values: string[];
   type: string;
 }
 
-export class EnumValues extends React.PureComponent<EnumValuesProps> {
+export interface EnumValuesState {
+  collapsed: boolean;
+}
+
+export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesState> {
+  state: EnumValuesState = {
+    collapsed: true,
+  };
+
   static contextType = OptionsContext;
+
+  private toggle() {
+    this.setState({ collapsed: !this.state.collapsed });
+  }
+
   render() {
     const { values, type } = this.props;
-    const { enumSkipQuotes } = this.context;
+    const { collapsed } = this.state;
+
+    // TODO: provide context interface in more elegant way
+    const { enumSkipQuotes, maxDisplayedEnumValues } = this.context as RedocRawOptions;
+
     if (!values.length) {
       return null;
     }
+
+    const displayedItems =
+      this.state.collapsed && maxDisplayedEnumValues
+        ? values.slice(0, maxDisplayedEnumValues)
+        : values;
 
     return (
       <div>
@@ -24,7 +48,7 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
           {type === 'array' ? l('enumArray') : ''}{' '}
           {values.length === 1 ? l('enumSingleValue') : l('enum')}:
         </FieldLabel>{' '}
-        {values.map((value, idx) => {
+        {displayedItems.map((value, idx) => {
           const exampleValue = enumSkipQuotes ? value : JSON.stringify(value);
           return (
             <React.Fragment key={idx}>
@@ -32,7 +56,25 @@ export class EnumValues extends React.PureComponent<EnumValuesProps> {
             </React.Fragment>
           );
         })}
+        {maxDisplayedEnumValues ? (
+          <ToggleButton
+            onClick={() => {
+              this.toggle();
+            }}
+          >
+            {collapsed ? `… ${values.length - maxDisplayedEnumValues} more` : 'Hide'}
+          </ToggleButton>
+        ) : null}
       </div>
     );
   }
 }
+
+const ToggleButton = styled.span`
+  color: ${props => props.theme.colors.primary.main};
+  vertical-align: middle;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 0 5px;
+  cursor: pointer;
+`;
