@@ -58,8 +58,6 @@ function argValueToNumber(value: number | string | undefined): number | undefine
   if (typeof value === 'number') {
     return value;
   }
-
-  return undefined;
 }
 
 export class RedocNormalizedOptions {
@@ -188,7 +186,7 @@ export class RedocNormalizedOptions {
   allowedMdComponents: Record<string, MDXComponentMeta>;
 
   expandDefaultServerVariables: boolean;
-  maxDisplayedEnumValues: number | undefined;
+  maxDisplayedEnumValues?: number;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
