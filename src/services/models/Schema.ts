@@ -168,6 +168,10 @@ export class SchemaModel {
         this.enum = this.items.enum;
       }
     }
+
+    if (this.enum.length && this.options.sortEnumValuesAlphabetically) {
+      this.enum.sort();
+    }
   }
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
