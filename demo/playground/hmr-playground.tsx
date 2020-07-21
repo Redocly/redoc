@@ -26,7 +26,7 @@ const specUrl =
   (userUrl && userUrl[1]) || (swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
 let store;
-const options: RedocRawOptions = { nativeScrollbars: false };
+const options: RedocRawOptions = { nativeScrollbars: false, maxDisplayedEnumValues: 2 };
 
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
