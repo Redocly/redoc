@@ -100,7 +100,7 @@ class DemoApp extends React.Component<
         </Heading>
         <RedocStandalone
           specUrl={proxiedUrl}
-          options={{ scrollYOffset: 'nav', untrustedSpec: true }}
+          options={{ scrollYOffset: 'nav', untrustedSpec: true, sortNavigationTags: true }}
         />
       </>
     );
