@@ -11,6 +11,7 @@ export interface RedocRawOptions {
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
   requiredPropsFirst?: boolean | string;
+  sortNavigationTags?: boolean | string;
   sortPropsAlphabetically?: boolean | string;
   sortEnumValuesAlphabetically?: boolean | string;
   noAutoAuth?: boolean | string;
@@ -165,6 +166,7 @@ export class RedocNormalizedOptions {
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
   requiredPropsFirst: boolean;
+  sortNavigationTags: boolean;
   sortPropsAlphabetically: boolean;
   sortEnumValuesAlphabetically: boolean;
   noAutoAuth: boolean;
@@ -220,6 +222,7 @@ export class RedocNormalizedOptions {
     this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
     this.sortPropsAlphabetically = argValueToBoolean(raw.sortPropsAlphabetically);
     this.sortEnumValuesAlphabetically = argValueToBoolean(raw.sortEnumValuesAlphabetically);
+    this.sortNavigationTags = argValueToBoolean(raw.sortNavigationTags);
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
