@@ -1,3 +1,12 @@
+# [2.0.0-rc.34](https://github.com/Redocly/redoc/compare/v2.0.0-rc.33...v2.0.0-rc.34) (2020-07-24)
+
+
+### Bug Fixes
+
+* update EnumValues component ([#1324](https://github.com/Redocly/redoc/issues/1324)) ([de27ac0](https://github.com/Redocly/redoc/commit/de27ac03081d55967f5a479fb1352a83b8ceb8b2))
+
+
+
 # [2.0.0-rc.32](https://github.com/Redocly/redoc/compare/v2.0.0-rc.31...v2.0.0-rc.32) (2020-07-21)
 
 
