@@ -7,7 +7,10 @@ import ComboBox from './ComboBox';
 
 const demos = [
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
-  { value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml', label: 'Google Calendar' },
+  {
+    value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml',
+    label: 'Google Calendar',
+  },
   { value: 'https://api.apis.guru/v2/specs/slack.com/1.2.0/swagger.yaml', label: 'Slack' },
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
   { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
@@ -94,7 +97,7 @@ class DemoApp extends React.Component<
             src="https://ghbtns.com/github-btn.html?user=Redocly&amp;repo=redoc&amp;type=star&amp;count=true&amp;size=large"
             frameBorder="0"
             scrolling="0"
-            width="150px"
+            width="160px"
             height="30px"
           />
         </Heading>
