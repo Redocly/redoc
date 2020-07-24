@@ -42,6 +42,16 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
         ? values.slice(0, maxDisplayedEnumValues)
         : values;
 
+    const showToggleButton = maxDisplayedEnumValues
+      ? values.length > maxDisplayedEnumValues
+      : false;
+
+    const toggleButtonText = maxDisplayedEnumValues
+      ? collapsed
+        ? `… ${values.length - maxDisplayedEnumValues} more`
+        : 'Hide'
+      : '';
+
     return (
       <div>
         <FieldLabel>
@@ -56,13 +66,13 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
             </React.Fragment>
           );
         })}
-        {maxDisplayedEnumValues ? (
+        {showToggleButton ? (
           <ToggleButton
             onClick={() => {
               this.toggle();
             }}
           >
-            {collapsed ? `… ${values.length - maxDisplayedEnumValues} more` : 'Hide'}
+            {toggleButtonText}
           </ToggleButton>
         ) : null}
       </div>
