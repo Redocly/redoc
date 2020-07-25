@@ -68,7 +68,7 @@ export class RedocNormalizedOptions {
     }
     if (typeof value === 'string') {
       const res = {};
-      value.split(',').forEach(code => {
+      value.split(',').forEach((code) => {
         res[code.trim()] = true;
       });
       return res;
@@ -134,7 +134,7 @@ export class RedocNormalizedOptions {
       case 'false':
         return false;
       default:
-        return value.split(',').map(ext => ext.trim());
+        return value.split(',').map((ext) => ext.trim());
     }
   }
 
@@ -238,7 +238,6 @@ export class RedocNormalizedOptions {
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
 
-    // eslint-disable-next-line @typescript-eslint/camelcase
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
     this.allowedMdComponents = raw.allowedMdComponents || {};

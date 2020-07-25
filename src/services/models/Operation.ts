@@ -50,7 +50,7 @@ export class OperationModel implements IMenuItem {
   absoluteIdx?: number;
   name: string;
   description?: string;
-  type = 'operation' as 'operation';
+  type = 'operation' as const;
 
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
@@ -102,7 +102,7 @@ export class OperationModel implements IMenuItem {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
       // Can be defined individually per-callback in the specification. Defaults to none.
       this.security = (operationSpec.security || []).map(
-        security => new SecurityRequirementModel(security, parser),
+        (security) => new SecurityRequirementModel(security, parser),
       );
 
       // TODO: update getting pathInfo for overriding servers on path level
@@ -116,7 +116,7 @@ export class OperationModel implements IMenuItem {
           : this.pointer;
 
       this.security = (operationSpec.security || parser.spec.security || []).map(
-        security => new SecurityRequirementModel(security, parser),
+        (security) => new SecurityRequirementModel(security, parser),
       );
 
       this.servers = normalizeServers(
@@ -208,7 +208,7 @@ export class OperationModel implements IMenuItem {
       this.operationSpec.pathParameters,
       this.operationSpec.parameters,
       // TODO: fix pointer
-    ).map(paramOrRef => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
+    ).map((paramOrRef) => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
     if (this.options.sortPropsAlphabetically) {
       return sortByField(_parameters, 'name');
@@ -224,7 +224,7 @@ export class OperationModel implements IMenuItem {
   get responses() {
     let hasSuccessResponses = false;
     return Object.keys(this.operationSpec.responses || [])
-      .filter(code => {
+      .filter((code) => {
         if (code === 'default') {
           return true;
         }
@@ -235,7 +235,7 @@ export class OperationModel implements IMenuItem {
 
         return isStatusCode(code);
       }) // filter out other props (e.g. x-props)
-      .map(code => {
+      .map((code) => {
         return new ResponseModel(
           this.parser,
           code,
@@ -248,7 +248,7 @@ export class OperationModel implements IMenuItem {
 
   @memoize
   get callbacks() {
-    return Object.keys(this.operationSpec.callbacks || []).map(callbackEventName => {
+    return Object.keys(this.operationSpec.callbacks || []).map((callbackEventName) => {
       return new CallbackModel(
         this.parser,
         callbackEventName,
