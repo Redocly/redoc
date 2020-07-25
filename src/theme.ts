@@ -146,8 +146,8 @@ const defaultTheme: ThemeInterface = {
     },
   },
   logo: {
-    maxHeight: ({ sidebar: menu }) => menu.width,
-    maxWidth: ({ sidebar: menu }) => menu.width,
+    maxHeight: ({ sidebar }) => sidebar.width,
+    maxWidth: ({ sidebar }) => sidebar.width,
     gutter: '2px',
   },
   rightPanel: {
