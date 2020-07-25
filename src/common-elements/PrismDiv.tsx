@@ -82,9 +82,9 @@ export const PrismDiv = styled.div`
     }
   }
 
-  /* .property.token.string {
+  .token.property.string {
     color: white;
-  } */
+  }
 
   .token.operator,
   .token.entity,
