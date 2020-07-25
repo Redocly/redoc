@@ -1,5 +1,5 @@
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { compact } from 'lodash';
 import { resolve } from 'path';
@@ -7,17 +7,14 @@ import * as webpack from 'webpack';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
-  require('child_process')
-    .execSync('git rev-parse --short HEAD')
-    .toString()
-    .trim(),
+  require('child_process').execSync('git rev-parse --short HEAD').toString().trim(),
 );
 
 function root(filename) {
   return resolve(__dirname + '/' + filename);
 }
 
-const tsLoader = env => ({
+const tsLoader = (env) => ({
   loader: 'ts-loader',
   options: {
     compilerOptions: {
@@ -27,7 +24,7 @@ const tsLoader = env => ({
   },
 });
 
-const babelLoader = mode => ({
+const babelLoader = (mode) => ({
   loader: 'babel-loader',
   options: {
     generatorOpts: {
@@ -161,7 +158,9 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     ignore(/js-yaml\/dumper\.js$/),
     ignore(/json-schema-ref-parser\/lib\/dereference\.js/),
     ignore(/^\.\/SearchWorker\.worker$/),
-    new CopyWebpackPlugin(['demo/openapi.yaml']),
+    new CopyWebpackPlugin({
+      patterns: ['demo/openapi.yaml'],
+    }),
   ],
 });
 
