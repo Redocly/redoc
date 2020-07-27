@@ -80,21 +80,21 @@ const defaultTheme: ThemeInterface = {
     },
   },
   schema: {
-    linesColor: (theme) =>
+    linesColor: theme =>
       lighten(
         theme.colors.tonalOffset,
         desaturate(theme.colors.tonalOffset, theme.colors.primary.main),
       ),
     defaultDetailsWidth: '75%',
-    typeNameColor: (theme) => theme.colors.text.secondary,
-    typeTitleColor: (theme) => theme.schema.typeNameColor,
-    requireLabelColor: (theme) => theme.colors.error.main,
+    typeNameColor: theme => theme.colors.text.secondary,
+    typeTitleColor: theme => theme.schema.typeNameColor,
+    requireLabelColor: theme => theme.colors.error.main,
     labelsTextSize: '0.9em',
     nestingSpacing: '1em',
     nestedBackground: '#fafafa',
     arrow: {
       size: '1.1em',
-      color: (theme) => theme.colors.text.secondary,
+      color: theme => theme.colors.text.secondary,
     },
   },
   typography: {
@@ -130,7 +130,7 @@ const defaultTheme: ThemeInterface = {
     width: '260px',
     backgroundColor: '#fafafa',
     textColor: '#333333',
-    activeTextColor: (theme) =>
+    activeTextColor: theme =>
       theme.sidebar.textColor !== defaultTheme.sidebar!.textColor
         ? theme.sidebar.textColor
         : theme.colors.primary.main,
@@ -142,7 +142,7 @@ const defaultTheme: ThemeInterface = {
     },
     arrow: {
       size: '1.5em',
-      color: (theme) => theme.sidebar.textColor,
+      color: theme => theme.sidebar.textColor,
     },
   },
   logo: {
@@ -155,14 +155,14 @@ const defaultTheme: ThemeInterface = {
     width: '40%',
     textColor: '#ffffff',
     tabs: {
-      selectedBackgroundColor: (theme) => theme.rightPanel.textColor,
-      selectedTextColor: (theme) => theme.colors.text.primary,
+      selectedBackgroundColor: theme => theme.rightPanel.textColor,
+      selectedTextColor: theme => theme.colors.text.primary,
     },
     endpoint: {
       backgroundColor: '#fafafa',
-      textColor: (theme) => theme.colors.primary.main,
+      textColor: theme => theme.colors.primary.main,
       serverBackgroundColor: '#ffffff',
-      serverTextColor: (theme) => theme.colors.text.primary,
+      serverTextColor: theme => theme.colors.text.primary,
     },
   },
   codeBlock: {
@@ -176,7 +176,7 @@ export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
   const resolvedValues = {};
   let counter = 0;
   const setProxy = (obj, path: string) => {
-    Object.keys(obj).forEach((k) => {
+    Object.keys(obj).forEach(k => {
       const currentPath = (path ? path + '.' : '') + k;
       const val = obj[k];
       if (typeof val === 'function') {

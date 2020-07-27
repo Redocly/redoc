@@ -68,7 +68,7 @@ export class RedocNormalizedOptions {
     }
     if (typeof value === 'string') {
       const res = {};
-      value.split(',').forEach((code) => {
+      value.split(',').forEach(code => {
         res[code.trim()] = true;
       });
       return res;
@@ -134,7 +134,7 @@ export class RedocNormalizedOptions {
       case 'false':
         return false;
       default:
-        return value.split(',').map((ext) => ext.trim());
+        return value.split(',').map(ext => ext.trim());
     }
   }
 
