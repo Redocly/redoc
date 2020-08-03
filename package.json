@@ -152,7 +152,7 @@
     "polished": "^3.6.5",
     "prismjs": "^1.20.0",
     "prop-types": "^15.7.2",
-    "react-dropdown-aria": "^2.0.6",
+    "react-dropdown-aria": "^2.0.7",
     "react-tabs": "^3.1.1",
     "slugify": "^1.4.4",
     "stickyfill": "^1.1.1",
