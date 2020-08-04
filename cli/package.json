@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
@@ -19,7 +19,7 @@
     "node-libs-browser": "^2.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "redoc": "2.0.0-rc.35",
+    "redoc": "2.0.0-rc.36",
     "styled-components": "^5.1.1",
     "tslib": "^2.0.0",
     "yargs": "^15.4.1"
