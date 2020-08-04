@@ -1,3 +1,18 @@
+# [2.0.0-rc.36](https://github.com/Redocly/redoc/compare/v2.0.0-rc.35...v2.0.0-rc.36) (2020-08-04)
+
+
+### Bug Fixes
+
+* highlight json keys using different color ([#1287](https://github.com/Redocly/redoc/issues/1287)) ([c9596d4](https://github.com/Redocly/redoc/commit/c9596d4b6cd9dced9fdee77525e0da90960c562a))
+* make elements accessible by keyboard navigation tools ([#1339](https://github.com/Redocly/redoc/issues/1339)) ([2ce7189](https://github.com/Redocly/redoc/commit/2ce71895bc14f9189b4e6cbdb6d838898717823f))
+
+
+### Features
+
+* new option simpleOneOfTypeLabel ([7af2efe](https://github.com/Redocly/redoc/commit/7af2efe731cdb16ebe5de6cb3e96f80cceb7d98d))
+
+
+
 # [2.0.0-rc.35](https://github.com/Redocly/redoc/compare/v2.0.0-rc.34...v2.0.0-rc.35) (2020-07-24)
 
 ### Bug Fixes
