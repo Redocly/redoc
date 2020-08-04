@@ -16,6 +16,7 @@ export class SelectOnClick extends React.PureComponent {
         onClick={this.selectElement}
         onFocus={this.selectElement}
         tabIndex={0}
+        role="button"
       >
         {children}
       </div>
