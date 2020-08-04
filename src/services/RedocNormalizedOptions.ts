@@ -26,6 +26,7 @@ export interface RedocRawOptions {
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
   hideSchemaTitles?: boolean | string;
+  simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
 
@@ -180,6 +181,7 @@ export class RedocNormalizedOptions {
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
   hideSchemaTitles: boolean;
+  simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
 
@@ -235,6 +237,7 @@ export class RedocNormalizedOptions {
     );
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
+    this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
 
