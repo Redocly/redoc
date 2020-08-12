@@ -98,4 +98,4 @@ There are some other scripts available in the `scripts` section of the `package.
   
   ## Style Guide
   
-  Please find our style-guide [here](style-guide).
+  For any questions related to word choices or language, please refer to our style-guide [here](style-guide.md).
