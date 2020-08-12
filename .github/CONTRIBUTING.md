@@ -6,6 +6,7 @@ Hi! We're really excited that you are interested in contributing to ReDoc. Befor
 - [Pull Request Guidelines](#pull-request-guidelines)
 - [Development Setup](#development-setup)
 - [Project Structure](#project-structure)
+- [Style Guide](#style-guide)
 
 ## Issue Reporting Guidelines
 - Before filing a new issue, try to make sure your problem doesn’t already exist.
@@ -94,3 +95,7 @@ There are some other scripts available in the `scripts` section of the `package.
   - **`src/utils`**: utility functions
   - **`src/styled-components.ts`**: - reexports styled-components with proper typescript annotations using theme
   - **`src/theme.ts`**: - default theme (colors, fonts, etc) used by all the components
+  
+  ## Style Guide
+  
+  Please find our style-guide [here](/style-guide).
