@@ -47,12 +47,12 @@ The following sections provide general guidelines on topics specific to Redocly 
 ### General
 
 * Use active voice. Avoid passive voice.
-  - Passive: The heatmap visualization is displayed.
-  - Active: Redocly displays the heatmap visualization.
+  - Passive: The page is displayed.
+  - Active: Redocly displays the page.
 * Write in the imperative second person. Examples: You can write an API. Click the panel. Close the window.
 * Write in present tense.
   - Not: The rule will check content.
-  - Use: The checks content. Redocly checks the content.
+  - Use: The rule checks content. Redocly checks the content.
 * Do not use an ampersand (&) as an abbreviation for "and."
   - **Exceptions:** If an ampersand is used in the Redocly UI, then match the UI.
 * Avoid using internal slang and jargon in technical documentation.
