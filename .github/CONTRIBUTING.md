@@ -98,4 +98,4 @@ There are some other scripts available in the `scripts` section of the `package.
   
   ## Style Guide
   
-  Please find our style-guide [here](/style-guide).
+  Please find our style-guide [here](style-guide).
