@@ -1,0 +1,44 @@
+# Redocly Frequently Asked Questions
+
+- [How do I enable the Console API?](#how-do-i-enable-the-console-api)
+- [Redoc Community Edition is not rendering my large json file smoothly.](#redoc-community-edition-is-not-rendering-my-large-json-file-smoothly)
+- [Does Redocly support webhooks with OpenAPI 3.1?](#does-redocly-support-webhooks-with-openapi-31)
+- [How do I adjust the theme settings on a page, such as color, line spacing, and fonts?](#how-do-i-adjust-the-theme-settings-on-a-page-such-as-color-line-spacing-and-fonts)
+- [Where can I locate Docker images for Redocly and redoc.cli?](#where-can-i-locate-docker-images-for-redocly-and-redoc-cli)
+- [Which tag should I use for operations that cannot be logically grouped?](#which-tag-should-i-use-for-operations-that-cannot-be-logically-grouped)
+- [Which vendor extensions does Redocly support?](#which-vendor-extensions-does-redocly-support)
+
+## How do I enable the Console API?
+
+Redoc.ly API Reference Docs supports the Console API, though it is disabled by default. You can enable it in 'API Reference Settings'->'Live Configuration'.
+
+## Redoc Community Edition is not rendering my large json file smoothly.
+
+Consider upgrading. Redocly API Reference Docs includes an option to section files.
+
+'referenceDocs:
+   layout:
+      scope: section`
+
+If upgrading is not an option, simplifying your schema or reducing file size can both help to improve performance.
+
+## Does Redocly support webhooks with OpenAPI 3.1?
+
+Yes, Redocly supports OpenAPI 3.1 webhooks. See [\#1304](https://github.com/Redocly/redoc/pull/1304) for more information.
+
+## How do I adjust the theme settings on a page, such as color, line spacing, and fonts?
+
+Redoc.ly API Reference Docs supports themes, with a limited subset of theme features supported by Redoc Community Edition. Discover more information on configuring page themes [here](https://redoc.ly/docs/cli/configuration/reference-docs/#theming).
+
+## Where can I locate Docker images for Redocly and redoc cli?
+
+[Redoc Docker Image](https://hub.docker.com/r/redocly/redoc)  
+[redoc.cli Docker Image](https://hub.docker.com/r/broothie/redoc-cli). See [\#1158](https://github.com/Redocly/redoc/pull/1158) for more information.  
+
+## Which tag should I use for operations that cannot be logically grouped?
+
+When `x-tagGroups` is enabled, each tag must have a group or it will not be displayed. For operations that cannot be logically grouped, use the `other` group/tag. Lint your API definition to ensure that each path has a tag.
+
+## Which vendor extensions does Redocly support?
+
+You can view the list of supported vendor extensions [here](https://redoc.ly/docs/api-reference-docs/vendor-extensions/redoc-supported-extensions/).
