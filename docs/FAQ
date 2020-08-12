@@ -10,15 +10,15 @@
 
 ## How do I enable the Console API?
 
-Redoc.ly API Reference Docs supports the Console API, though it is disabled by default. You can enable it in 'API Reference Settings'->'Live Configuration'.
+Redocly API Reference Docs supports the Console API, though it is disabled by default. You can enable it in 'API Reference Settings'->'Live Configuration'. Redoc Community Edition does not support the Console API.
 
 ## Redoc Community Edition is not rendering my large json file smoothly.
 
 Consider upgrading. Redocly API Reference Docs includes an option to section files.
 
-'referenceDocs:
-   layout:
-      scope: section`
+    referenceDocs:
+       layout:
+         scope: section
 
 If upgrading is not an option, simplifying your schema or reducing file size can both help to improve performance.
 
@@ -37,7 +37,7 @@ Redoc.ly API Reference Docs supports themes, with a limited subset of theme feat
 
 ## Which tag should I use for operations that cannot be logically grouped?
 
-When `x-tagGroups` is enabled, each tag must have a group or it will not be displayed. For operations that cannot be logically grouped, use the `other` group/tag. Lint your API definition to ensure that each path has a tag.
+When `x-tagGroups` is enabled, each tag must have a group or it will not be displayed. For operations that cannot be logically grouped, use the `other` group/tag. By default, Lint your API definition to ensure that each path has a tag using the [operation-tag-defined](https://redoc.ly/docs/cli/built-in-rules/#operation-tag-defined) built-in rule. Note that there is no built-in rule to check that tags aren't missing from the `x-tagGroups` groups definitions.
 
 ## Which vendor extensions does Redocly support?
 
