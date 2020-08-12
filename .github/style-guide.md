@@ -108,7 +108,7 @@ Always give the reader some idea of what to expect in the reference. Avoid blind
 When possible, use the exact title of the page or section you are linking to as the link text.
 
 **Example**
-Refer to the [Documentation style guide](documentation-style-guide.md) for information about word usage and capitalization guidelines.
+Refer to the [Documentation style guide](style-guide.md) for information about word usage and capitalization guidelines.
 
 ### Command line examples
 
