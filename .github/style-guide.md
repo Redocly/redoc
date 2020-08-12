@@ -123,7 +123,7 @@ Refer to the [Documentation style guide](style-guide.md) for information about w
 
 For terminal examples and Redocly configuration, use a `bash` code block:
 ```bash
-npm i redoc
+sudo npm i redoc
 ```
 For HTTP request/response, use an `http` code block:
 ```http
