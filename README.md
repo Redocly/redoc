@@ -46,14 +46,14 @@
   - [ ] built-in API Console
 
 ## Releases
-**Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
+**Important:** all the **2.x** releases are deployed to npm and can be used via jsdeliver:
 - particular release, e.g. `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
 - `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
 - particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest `1.x.x` release since `2.x` releases are not hosted on this CDN but on unpkg.
 
 ## Version Guidance
 | ReDoc Release | OpenAPI Specification |
@@ -200,7 +200,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition(s) into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
+[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
 
 ## Create-openapi-repo
 [Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files organized in folders **compatible with version 3x only**. You can also use this tool to start a new API definition and validate your OpenAPI definition.
@@ -214,7 +214,7 @@ The [Redocly CE](https://redoc.ly/redoc) is free and open source and is aimed at
 * [Openapi-cli](https://redoc.ly/openapi-cli): lint and bundle your OpenAPI definition(s).
 * [Create-openapi-repo](https://github.com/Redocly/create-openapi-repo): write and start a new OpenAPI definition.
 
-The [Redocly PE](https://redoc.ly/pricing) comes in the starter versions and the paid versions. The [Redocly PE](https://redoc.ly/pricing)products are:
+The [Redocly PE](https://redoc.ly/pricing) comes in the starter versions and the paid versions. The [Redocly PE](https://redoc.ly/pricing) products are:
 * [API Reference Docs](https://redoc.ly/reference-docs): easily create, style, and manage your API documentation with advanced developer friendly features.
 * [Developer Portal (Beta)](https://redoc.ly/developer-portal): where docs-as-code meets docs-as-marketing.
 * [Workflows](https://redoc.ly/workflows): build, maintain, and automatically update your API documentation in the cloud.
@@ -298,7 +298,7 @@ Redocly has a variety of products, this table shows an overview of all Redocly p
 | Redoc | The API reference documentation output from the OpenAPI definition. This edition has limited functionality.  | Community Edition |
 | create-openapi-repo   | CLI tool for splitting a single OpenAPI definition file into multiple files, start a new API definition, validating your OpenAPI definition, and other features. | Community Edition  |
 | openapi-cli  | CLI tool that provides linting against a customizable rules, as well as bundling of the OpenAPI files into a single file. You can also preview the output of your docs with the Redocly API References through this tool. | Community Edition  |
-| API Reference Docs | The premium version of Redoc – the API reference documentation output from the OpenAPI definition file. This premium version includes Try-it functionality, enhanced search, fast loading, special tags, and other advanced features. | Premium Editon  |
+| API Reference Docs | The premium version of Redoc – the API reference documentation output from the OpenAPI definition file. This premium version includes `Try-it functionality`, `enhanced search`, `fast loading`, `special tags`, and other advanced features. | Premium Editon  |
 | Developer Portal (beta)  | A sample `starter` developer portal, built on top of Gatsby. Intended for more robust documentation such as landing pages, how-to guides, tutorials and so much more. | Premium Editon  |
 | Workflows | An online Redocly app that provides the full authoring and publishing toolset in the cloud, with GitHub, Gitlab, Azure and Bitbucket integration and docs-as-code worflows. | Premium Editon |
 
