@@ -203,7 +203,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 [ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
 
 ## Create-openapi-repo
-[Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files organized in folders **compatible with version 3x only**. You can also use this tool to start a new API definition and validate your OpenAPI definition.
+[Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files organized in folders. You can also use this tool to start a new API definition and validate your OpenAPI definition.
 
 ## Community Edition(CE) vs Premium Edition(PE)
 
