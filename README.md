@@ -46,7 +46,7 @@
   - [ ] built-in API Console
 
 ## Releases
-**Important:** all the **2.x** releases are deployed to npm and can be used via jsdeliver:
+**Important:** all the **2.x** releases are deployed to `npm` and can be used via `jsdeliver`:
 - particular release, e.g. `v2.0.0-alpha.17`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
 - `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
 
