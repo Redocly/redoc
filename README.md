@@ -306,4 +306,4 @@ Redocly has a variety of products, this table shows an overview of all Redocly p
 **WE'RE HIRING!** Love APIs and working with distributed teams? Learn more about our [open positions](https://redoc.ly/careers)
 
 ## Development
-see [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md)
