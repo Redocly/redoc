@@ -284,5 +284,9 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 ```
 
 -----------
+
+## Join Us
+WE'RE HIRING! Love APIs and working with distributed systems? Learn more about our [open positions](https://redoc.ly/careers)
+
 ## Development
 see [CONTRIBUTING.md](.github/CONTRIBUTING.md)
