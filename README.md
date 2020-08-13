@@ -298,9 +298,9 @@ Redocly has a variety of products, this table shows an overview of all Redocly p
 | Redoc | The API reference documentation output from the OpenAPI definition. This edition has limited functionality.  | Community Edition |
 | create-openapi-repo   | CLI tool for splitting a single OpenAPI definition file into multiple files, start a new API definition, validating your OpenAPI definition, and other features. | Community Edition  |
 | openapi-cli  | CLI tool that provides linting against a customizable rules, as well as bundling of the OpenAPI files into a single file. You can also preview the output of your docs with the Redocly API References through this tool. | Community Edition  |
-| API Reference Docs | The premium version of Redoc – the API reference documentation output from the OpenAPI definition file. This premium version includes `Try-it functionality`, `enhanced search`, `fast loading`, `special tags`, and other advanced features. | Premium Editon  |
-| Developer Portal (beta)  | A sample `starter` developer portal, built on top of Gatsby. Intended for more robust documentation such as landing pages, how-to guides, tutorials and so much more. | Premium Editon  |
-| Workflows | An online Redocly app that provides the full authoring and publishing toolset in the cloud, with GitHub, Gitlab, Azure and Bitbucket integration and docs-as-code worflows. | Premium Editon |
+| API Reference Docs | The premium version of Redoc – the API reference documentation output from the OpenAPI definition file. This premium version includes `Try-it functionality`, `enhanced search`, `fast loading`, `special tags`, and other advanced features. | Premium Edition  |
+| Developer Portal (beta)  | A sample `starter` developer portal, built on top of Gatsby. Intended for more robust documentation such as landing pages, how-to guides, tutorials and so much more. | Premium Edition  |
+| Workflows | An online Redocly app that provides the full authoring and publishing toolset in the cloud, with GitHub, Gitlab, Azure and Bitbucket integration and docs-as-code worflows. | Premium Edition |
 
 ## Join Us
 **WE'RE HIRING!** Love APIs and working with distributed teams? Learn more about our [open positions](https://redoc.ly/careers)
