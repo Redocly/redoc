@@ -200,10 +200,10 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition(s). It can be installed as a development dependency in your project to generate documentation for your API specification
+[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition(s) into **zero-dependency** HTML file .It can be installed as a development dependency in your project.
 
-## create-openapi-repo
-[create-openapi-repo](https://github.com/Redocly/create-openapi-repo) `cli` tool is used for splitting a single OpenAPI definition file into multiple files (compatible with version 3x only). You can also use this `cli` tool to start a new API definition.
+## Create-openapi-repo
+[Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files (compatible with version 3x only). You can also use this tool to start a new API definition.
 
 ## Community Edition(CE) vs Premium Edition(PE)
 
@@ -211,7 +211,8 @@ Redocly offers two different editions: the [Community Edition (CE)](https://redo
 
 The **Redocly CE** is free and open source and is aimed at developers and teams who are looking to create easily deployable API documentation. The **Redocly CE** benefits are:
 * [Redoc](https://redoc.ly/redoc) simple to set up: no server required and fully customizable theme.
-* [Openapi-cli](https://redoc.ly/openapi-cli) validate a multi-file OpenAPI definition
+* [Openapi-cli](https://redoc.ly/openapi-cli) lint and bundle your OpenAPI definition(s)
+* [Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) write and start a new OpenAPI definition.
 
 The **Redocly PE** comes in the starter versions and the paid versions. The **Redocly PE** benefits are:
 * [Reference documentation](https://redoc.ly/reference-docs) easily create, style, and manage your API documentation with advanced developer friendly features
