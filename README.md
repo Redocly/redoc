@@ -207,13 +207,13 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 Redocly offers two different editions: the [Community Edition (CE)](https://redoc.ly/redoc) and the [Premium Edition (PE)](https://redoc.ly/pricing). They offer the same easily deployable API documentation, on your website, fully supporting OpenAPI v2 and OpenAPI v3., but the difference is the limited features which is only available in the Premium Edition.
 
 The **Redocly CE** is free and open source and is aimed at developers and teams who are looking to create easily deployable API documentation. The **Redocly CE** benefits are:
-* [Redoc](https://redoc.ly/redoc) Simple to set up: No server required and fully customizable theme.
-* [Openapi-cli](https://redoc.ly/openapi-cli)validate a multi-file OpenAPI definition
+* [Redoc](https://redoc.ly/redoc) simple to set up: no server required and fully customizable theme.
+* [Openapi-cli](https://redoc.ly/openapi-cli) validate a multi-file OpenAPI definition
 
 The **Redocly PE** comes in the starter versions and the paid versions. The **Redocly PE** benefits are:
-* [Reference documentation](https://redoc.ly/reference-docs) Easily create, style, and manage your API documentation with advanced developer friendly features
-* [Developer Portal (Beta)](https://redoc.ly/developer-portal) Where docs-as-code meets docs-as-marketing
-* [Workflows](https://redoc.ly/workflows) Build, maintain, and automatically update your API documentation in the cloud
+* [Reference documentation](https://redoc.ly/reference-docs) easily create, style, and manage your API documentation with advanced developer friendly features
+* [Developer Portal (Beta)](https://redoc.ly/developer-portal) where docs-as-code meets docs-as-marketing
+* [Workflows](https://redoc.ly/workflows) build, maintain, and automatically update your API documentation in the cloud
 
 ## Configuration
 
