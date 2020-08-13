@@ -21,7 +21,7 @@
 
 ## Features
 - Extremely easy deployment
-- [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
+- [Redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
 - Server Side Rendering ready
 - The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
@@ -203,7 +203,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 [ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition(s) into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
 
 ## Create-openapi-repo
-[Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files (compatible with version 3x only). You can also use this tool to start a new API definition.
+[Create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files **compatible with version 3x only**. You can also use this tool to start a new API definition.
 
 ## Community Edition(CE) vs Premium Edition(PE)
 
@@ -289,13 +289,13 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 
 -----------
 
-## Redocly products
+## Redocly Products
 
 Redocly has a variety of products, this table shows an overview of all Redocly products.
 
-| Tools       | Description     | Edition    |
-| :------------- | ---------- | ----------- |
-|  Redoc | The API reference documentation output from the OpenAPI definition. This free version has limited functionality.  | Community Edition |
+| Tools   | Description     | Edition    |
+| :------------- | :---------- | :----------- |
+| Redoc | The API reference documentation output from the OpenAPI definition. This free version has limited functionality.  | Community Edition |
 | create-openapi-repo   | CLI tool for splitting a single OpenAPI definition file into multiple files (compatible with version 3x only). You can also use this CLI tool to start a new API definition. | Community Edition  |
 | openapi-cli  | CLI tool that provides linting against a customizable ruleset, as well as bundling of the OpenAPI files into a single file. You can also preview the output of your docs with the Redocly API References through this tool. | Community Edition  |
 | Redocly API Reference   | The premium version of Redoc – the API reference documentation output from the OpenAPI definition file. This premium version includes Try-it functionality, enhanced search, fast loading, special tags, and other features. | Premium Editon  |
