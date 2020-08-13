@@ -1,6 +1,6 @@
-# redoc-cli
+# Redoc-cli
 
-**[ReDoc](https://github.com/Redocly/redoc)'s Command Line Interface**
+Redoc CLI tool provides linting against a customizable ruleset, as well as bundling of the OpenAPI files into a single file. You can also preview the output of your docs with the Redocly API References through this tool.
 
 ## Installation
 You can use redoc cli by installing `redoc-cli` globally or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
