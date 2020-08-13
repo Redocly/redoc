@@ -200,7 +200,10 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[See here](https://github.com/Redocly/redoc/blob/master/cli/README.md)
+[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) can be installed as a development dependency in your project to generate documentation for your API specification
+
+## create-openapi-repo
+[create-openapi-repo](https://github.com/Redocly/create-openapi-repo) `cli` tool is used for splitting a single OpenAPI definition file into multiple files (compatible with version 3x only). You can also use this `cli` tool to start a new API definition.
 
 ## Community Edition(CE) vs Premium Edition(PE)
 
