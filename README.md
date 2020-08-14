@@ -48,7 +48,7 @@ The current ReDoc version is `2.0`. For older version please see the [`v1.x`](ht
 All of these features are available in our open source community edition.
 
 - Deploy **extremely fast** via CDN, npm, CLI, or Docker.
-- Bundle your docs into a **zero-dependency** HTML file (when using [`redoc-cli`]()).
+- Bundle your docs into a **zero-dependency** HTML file (when using [`redoc-cli`](#redoc-cli)).
 - Integrate with any React app, with client or server-side rendering.
 - Take full advantage of OpenAPI 2.0/3.0 features, from `discriminator` to `allOf`.
  <br> <br>
@@ -80,7 +80,7 @@ These features are availale in our hosted or on-premise premium edition.
 - Embedded Markdown
 
 ## Live Examples
-- [Rebilly](https://rebilly-api.redoc.ly/)
+- [Rebilly](https://api-reference.rebilly.com)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
 - [Discourse](http://docs.discourse.org)
@@ -96,10 +96,11 @@ These features are availale in our hosted or on-premise premium edition.
   - [x] ~~better navigation (menu improvements + search)~~
   - [x] ~~React rewrite~~
   - [x] ~~docs pre-rendering (performance and SEO)~~
-  - [ ] use `redoc-cli` under the hood
+  - [x] add `x-webhooks` support
+  - [ ] use `openapi-cli` under the hood
   - [ ] address accessibility issues
   - [ ] add support for links (OpenAPI v3)
-  - [ ] add `x-webhooks` support
+
 
 
 ## Getting Started
