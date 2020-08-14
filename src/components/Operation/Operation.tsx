@@ -42,7 +42,7 @@ export class Operation extends React.Component<OperationProps> {
 
     return (
       <OptionsContext.Consumer>
-        {options => (
+        {(options) => (
           <OperationRow>
             <MiddlePanel>
               <H2>
@@ -50,7 +50,9 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
                 {isWebhook && <Badge type="primary"> Webhook </Badge>}
               </H2>
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {options.pathInMiddlePanel && !isWebhook && (
+                <Endpoint operation={operation} inverted={true} />
+              )}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
