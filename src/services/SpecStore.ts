@@ -16,7 +16,7 @@ export class SpecStore {
   externalDocs?: OpenAPIExternalDocumentation;
   contentItems: ContentItemModel[];
   securitySchemes: SecuritySchemesModel;
-  'x-webhooks'?: WebhookModel;
+  webhooks?: WebhookModel;
 
   constructor(
     spec: OpenAPISpec,
@@ -28,6 +28,6 @@ export class SpecStore {
     this.externalDocs = this.parser.spec.externalDocs;
     this.contentItems = MenuBuilder.buildStructure(this.parser, this.options);
     this.securitySchemes = new SecuritySchemesModel(this.parser);
-    this['x-webhooks'] = new WebhookModel(this.parser, options, this.parser.spec['x-webhooks']);
+    this.webhooks = new WebhookModel(this.parser, options, this.parser.spec['x-webhooks']);
   }
 }
