@@ -1,3 +1,12 @@
+# [2.0.0-rc.37](https://github.com/Redocly/redoc/compare/v2.0.0-rc.36...v2.0.0-rc.37) (2020-08-14)
+
+
+### Features
+
+* add webhooks support ([#1304](https://github.com/Redocly/redoc/issues/1304)) ([41f81b4](https://github.com/Redocly/redoc/commit/41f81b4d96648fec6bf0c39799c0aa2dded48749))
+
+
+
 # [2.0.0-rc.36](https://github.com/Redocly/redoc/compare/v2.0.0-rc.35...v2.0.0-rc.36) (2020-08-04)
 
 
