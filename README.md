@@ -1,69 +1,85 @@
 <div align="center">
-  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master/docs/images/redoc-logo.png" width="400px" />
+  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master/docs/images/redoc-logo.png" width="400px" /style="margin-bottom: 15px">
 
-  **OpenAPI/Swagger-generated API Reference Documentation**
+  <hr style="margin-bottom: 25px">
 
-  [![Build Status](https://travis-ci.org/Redocly/redoc.svg?branch=master)](https://travis-ci.org/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
+  <!-- **OpenAPI/Swagger-generated API Reference Documentation** -->
 
-  [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
+  **ReDoc transforms your OpenAPI definition into comprehensive and interactive documentation, fast.**
+
+  [![Build Status](https://travis-ci.org/Redocly/redoc.svg?branch=master)](https://travis-ci.org/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
+
+  <!-- [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js)  -->
+
+
+
+
+The current ReDoc version is `2.0`. For older version please see the [`v1.x`](https://github.com/Redocly/redoc/tree/v1.x) branch.
+
 
 
 </div>
 
-**This is README for `2.0` version of ReDoc (React based). README for `1.x` version is on the branch [v1.x](https://github.com/Redocly/redoc/tree/v1.x)**
+
+## What's In This Document
+
+- [Demo](#demo)
+- [Features](#features)
+- [Premium Features](#premium-features)
+- [Live Examples](#live-examples)
+- [Roadmap](#roadmap)
+- [Getting Started](#getting-started)
+- [Deployment](#deployment)
+- [Releases](#releases)
+- [Version Guidance](#version-guidance)
+- [Development](#development)
 
 
-![ReDoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
+## Demo
 
-## [Live demo](http://redocly.github.io/redoc/)
+[<img alt="ReDoc live demo" src="https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png">](http://redocly.github.io/redoc/)
 
-[<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
+
+
+<!-- [<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services) -->
 
 ## Features
-- Extremely easy deployment
-- [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
-- Server Side Rendering ready
-- The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
+
+All of these features are available in our open source community edition.
+
+- Deploy **extremely fast** via CDN, npm, CLI, or Docker.
+- Bundle your docs into a **zero-dependency** HTML file (when using [`redoc-cli`]()).
+- Integrate with any React app, with client or server-side rendering.
+- Take full advantage of OpenAPI 2.0/3.0 features, from `discriminator` to `allOf`.
+ <br> <br>
 ![](docs/images/discriminator-demo.gif)
-- OpenAPI 3.0 support
-- Neat **interactive** documentation for nested objects <br>
+- Use **interactive** documentation for nested objects
+ <br> <br>
 ![](docs/images/nested-demo.gif)
-- Code samples support (via vendor extension) <br>
+ <br> <br>
+- Include **code samples** (via vendor extension)
+ <br> <br>
 ![](docs/images/code-samples-demo.gif)
-- Responsive three-panel design with menu/scrolling synchronization
-- Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
-- High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
-- Simple integration with `create-react-app` ([sample](https://github.com/APIs-guru/create-react-app-redoc))
-- Branding/customizations via [`theme` option](#redoc-options-object)
+ <br> <br>
+- Get a fully responsive, three-panel design out of the box (with menu/scrolling synchronization)
+- Integrate your API Introduction into the side menu (with support for deep linking)
+- Create high-level groupings in the side menu with the [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
+- Match your docs and your brand by using the [`theme` option](#redoc-options-object)
 
-## Roadmap
-  - [x] ~~[OpenAPI v3.0 support](https://github.com/Redocly/redoc/issues/312)~~
-  - [x] ~~performance optimizations~~
-  - [x] ~~better navigation (menu improvements + search)~~
-  - [x] ~~React rewrite~~
-  - [x] ~~docs pre-rendering (performance and SEO)~~
-  - [ ] ability to simple branding/styling
-  - [ ] built-in API Console
+## Premium Features
 
-## Releases
-**Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
-- particular release, e.g. `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
-- `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
+These features are availale in our hosted or on-premise premium edition.
 
-Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
-- particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
-- `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
+- SEO Friendly URLs
+- 10x Page Load Speed
+- 'Try It' API console
+  - Multiple Servers
+  - OAS3 security schemes
+- Enhanced Search
+- Additional Theming Control
+- Embedded Markdown
 
-## Version Guidance
-| ReDoc Release | OpenAPI Specification |
-|:--------------|:----------------------|
-| 2.0.0-alpha.x | 3.0, 2.0              |
-| 1.19.x        | 2.0                   |
-| 1.18.x        | 2.0                   |
-| 1.17.x        | 2.0                   |
-
-## Some Real-life usages
+## Live Examples
 - [Rebilly](https://rebilly-api.redoc.ly/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
@@ -71,6 +87,24 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 - [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [FastAPI](https://github.com/tiangolo/fastapi)
+- [Spoke Phone](https://developer.spokephone.com/)
+- [SignRequest](https://signrequest.com/api/v1/docs/)
+
+## Roadmap
+  - [x] ~~OpenAPI v3.0 support~~
+  - [x] ~~performance optimizations~~
+  - [x] ~~better navigation (menu improvements + search)~~
+  - [x] ~~React rewrite~~
+  - [x] ~~docs pre-rendering (performance and SEO)~~
+  - [ ] use `redoc-cli` under the hood
+  - [ ] address accessibility issues
+  - [ ] add support for links (OpenAPI v3)
+  - [ ] add `x-webhooks` support
+
+
+## Getting Started
+
+Do you need to create, contribute to, or split an OpenAPI definition? We created [`create-openapi-repo`](https://github.com/Redocly/create-openapi-repo) just for you.
 
 ## Deployment
 
@@ -200,7 +234,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[See here](https://github.com/Redocly/redoc/blob/master/cli/README.md)
+[`redoc-cli`](https://github.com/Redocly/redoc/tree/master/cli) allows you to run a local server that renders your spec with ReDoc, and to  bundle ReDoc and your spec into a **zero-dependency** HTML file.
 
 ## Configuration
 
@@ -270,6 +304,24 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 }, document.getElementById('redoc-container'))
 ```
 
+## Releases
+**Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
+- particular release, e.g. `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
+- `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
+
+Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
+- particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
+- `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
+
+## Version Guidance
+| ReDoc Release | OpenAPI Specification |
+|:--------------|:----------------------|
+| 2.0.0-alpha.x | 3.0, 2.0              |
+| 1.19.x        | 2.0                   |
+| 1.18.x        | 2.0                   |
+| 1.17.x        | 2.0                   |
+
 -----------
 ## Development
-see [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+Want to help us build ReDoc? Awesome! Please read our [Contributing Guide](.github/CONTRIBUTING.md) first.
