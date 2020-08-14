@@ -7,6 +7,7 @@ import { IMenuItem, OperationModel } from '../../services';
 import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
+import { l } from '../../services/Labels';
 
 export interface MenuItemProps {
   item: IMenuItem;
@@ -91,7 +92,7 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
         ref={this.ref}
       >
         {item.isWebhook ? (
-          <OperationBadge type="hook">hook</OperationBadge>
+          <OperationBadge type="hook">{l('webhook')}</OperationBadge>
         ) : (
           <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
         )}
