@@ -37,19 +37,22 @@ export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
 
-    const { name: summary, description, deprecated, externalDocs } = operation;
+    const { name: summary, description, deprecated, externalDocs, isWebhook } = operation;
     const hasDescription = !!(description || externalDocs);
 
     return (
       <OptionsContext.Consumer>
-        {options => (
+        {(options) => (
           <OperationRow>
             <MiddlePanel>
               <H2>
                 <ShareLink to={operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+                {isWebhook && <Badge type="primary"> Webhook </Badge>}
               </H2>
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {options.pathInMiddlePanel && !isWebhook && (
+                <Endpoint operation={operation} inverted={true} />
+              )}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
@@ -63,7 +66,7 @@ export class Operation extends React.Component<OperationProps> {
               <CallbacksList callbacks={operation.callbacks} />
             </MiddlePanel>
             <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
               <RequestSamples operation={operation} />
               <ResponseSamples operation={operation} />
               <CallbackSamples callbacks={operation.callbacks} />

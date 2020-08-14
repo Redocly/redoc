@@ -9,6 +9,7 @@ export interface OpenAPISpec {
   security?: OpenAPISecurityRequirement[];
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
+  'x-webhooks'?: OpenAPIPaths;
 }
 
 export interface OpenAPIInfo {

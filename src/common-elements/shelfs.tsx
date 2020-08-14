@@ -51,10 +51,17 @@ export const ShelfIcon = styled(IntShelfIcon)`
 
 export const Badge = styled.span<{ type: string }>`
   display: inline-block;
-  padding: 0 5px;
+  padding: 2px 8px;
   margin: 0;
   background-color: ${props => props.theme.colors[props.type].main};
   color: ${props => props.theme.colors[props.type].contrastText};
   font-size: ${props => props.theme.typography.code.fontSize};
-  vertical-align: text-top;
+  vertical-align: middle;
+  line-height: 1.6;
+  border-radius: 4px;
+  font-weight: ${({ theme }) => theme.typography.fontWeightBold};
+  font-size: 12px;
+  + span[type] {
+    margin-left: 4px;
+  }
 `;

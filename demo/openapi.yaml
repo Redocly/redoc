@@ -1187,3 +1187,19 @@ components:
         shipDate: '2018-10-19T16:46:45Z'
         status: placed
         complete: false
+x-webhooks:
+  newPet:
+    post:
+      summary: New pet
+      description: Information about a new pet in the systems
+      operationId: newPet
+      tags: 
+        - pet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pet"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully
