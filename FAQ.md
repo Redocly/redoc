@@ -14,7 +14,7 @@ Before reporting a new issue, we recommend reading through this list. You might 
 
 ## Jump To:
 
-### 1. [ReDoc Features and Capabilities](#1-redoc-features-and-capabilities-1)
+### 1. [Understanding ReDoc Features](#1-understanding-redoc-features-1)
 
 ### 2. [Deploying ReDoc](#2-deploying-redoc-1)
 
@@ -26,7 +26,7 @@ Before reporting a new issue, we recommend reading through this list. You might 
 ----
 
 
-## 1. ReDoc Features and Capabilities
+## 1. Understanding ReDoc Features
 
 
 ### Can ReDoc load a spec file from the local filesystem and build API documentation from it?
