@@ -11,7 +11,7 @@
  
  # About ReDoc
  
-TODO: Two-sentence introduction: what it does, who makes it, who it's for.
+TODO: Three-sentence introduction: what it does, who makes it, who it's for.
  
 [Try the live demo](http://redocly.github.io/redoc/)
 
