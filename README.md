@@ -11,7 +11,7 @@
  
  # About ReDoc
  
- Two-sentence introduction: what it does, who makes it, who it's for.
+TODO: Two-sentence introduction: what it does, who makes it, who it's for.
  
 [Try the live demo](http://redocly.github.io/redoc/)
 
@@ -21,49 +21,67 @@
  
  [<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
  
- **What's the difference between ReDoc and Redoc.ly?**
+ **What's the difference between ReDoc and other Redoc.ly products?**
  
- Describe the difference, mention other products, insert link to detailed feature comparison.
+TODO: Describe the difference, insert link to detailed feature comparison.
  
  ## Project Status
  
-  [![Build Status](https://travis-ci.org/Redocly/redoc.svg?branch=master)](https://travis-ci.org/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
+  [![Build Status](https://travis-ci.org/Redocly/redoc.svg?branch=master)](https://travis-ci.org/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) 
 
   [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
+  
+  **Project License** 
+  
+[![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
+  
+TODO: Link to contributing guidelines
 
 
 # Table of Contents
 
+TODO: add links
+
+- Feature Guide
+- Quick Start Guide
+  - Support
+- Installation and Usage
+  - Standalone
+  - React component
+  - redoc-cli
+  - Docker
+- Configuration
+  - Advanced Options
+- Who is using ReDoc?
+- Project Development
+  - Roadmap
+  - Contributing
+  - Releases
+  - OpenAPI Version Support
+
 
 # Feature Guide
 
+TODO:
+
 Insert a table that compares ReDoc Community Edition features and premium features.
 
-## Features
-- Extremely easy deployment
-- [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
-- Server Side Rendering ready
-- The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
-![](docs/images/discriminator-demo.gif)
-- OpenAPI 3.0 support
-- Neat **interactive** documentation for nested objects <br>
-![](docs/images/nested-demo.gif)
-- Code samples support (via vendor extension) <br>
-![](docs/images/code-samples-demo.gif)
-- Responsive three-panel design with menu/scrolling synchronization
-- Integrate API Introduction into side menu - ReDoc takes advantage of markdown headings from OpenAPI description field. It pulls them into side menu and also supports deep linking.
-- High-level grouping in side-menu via [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) vendor extension
-- Simple integration with `create-react-app` ([sample](https://github.com/APIs-guru/create-react-app-redoc))
-- Branding/customizations via [`theme` option](#redoc-options-object)
+Clean up the old list of features with animated GIFs.
+
+Mention how ReDoc can integrate into a workflow with other tools like create-openapi-repo.
 
 
 # Quick Start Guide
+
+TODO:
 
 - Provide steps for the fastest way to build something
 - Clarify that OpenAPI specs must be edited in another tool - redoc only builds them!
 
 
 ## Support
+
+TODO:
 
 Links to
 
@@ -74,145 +92,20 @@ Links to
 
 # Installation and Usage
 
+TODO:
+
 - List all supported ways to install and deploy
 - For each, include **Dependencies and Prerequisites**
 
-### TL;DR
 
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>ReDoc</title>
-    <!-- needed for adaptive design -->
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+# Configuration
 
-    <!--
-    ReDoc doesn't change outer page styles
-    -->
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
-  </body>
-</html>
-```
-That's all folks!
+TODO: Clean up and reorganize this section
 
-**IMPORTANT NOTE:** if you work with untrusted user spec, use `untrusted-spec` [option](#redoc-options-object) to prevent XSS security risks.
-
-### 1. Install ReDoc (skip this step for CDN)
-Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
-
-    npm i redoc
-
-or using [yarn](https://yarnpkg.com):
-
-    yarn add redoc
-
-### 2. Reference redoc script in HTML
-For **CDN**:
-```html
-<script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> </script>
-```
-
-For npm:
-```html
-<script src="node_modules/redoc/bundles/redoc.standalone.js"> </script>
-```
-
-### 3. Add `<redoc>` element to your page
-```html
-<redoc spec-url="url/to/your/spec"></redoc>
-```
-
-### 4. Enjoy :smile:
-
-
-## Usage as a React component
-
-Install peer dependencies required by ReDoc if you don't have them installed already:
-
-    npm i react react-dom mobx@^4.2.0 styled-components core-js
-
-Import `RedocStandalone` component from 'redoc' module:
-
-```js
-import { RedocStandalone } from 'redoc';
-```
-
-and use it somewhere in your component:
-
-```js
-<RedocStandalone specUrl="url/to/your/spec"/>
-```
-
-or
-
-```js
-<RedocStandalone spec={/* spec as an object */}/>
-```
-
-Also you can pass options:
-
-```js
-<RedocStandalone
-  specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
-  options={{
-    nativeScrollbars: true,
-    theme: { colors: { primary: { main: '#dd5522' } } },
-  }}
-/>
-```
-
-Here are detailed [options docs](#redoc-options-object).
-
-You can also specify `onLoaded` callback which will be called each time Redoc has been fully rendered or when error occurs (with an error as the first argument). *NOTE*: It may be called multiply times if you change component properties
-
-```js
-<RedocStandalone
-  specUrl="http://rebilly.github.io/RebillyAPI/openapi.json"
-  onLoaded={error => {
-    if (!error) {
-      console.log('Yay!');
-    }
-  }}
-/>
-```
-
-[**IE11 Support Notes**](docs/usage-with-ie11.md)
-
-## The Docker way
-
-ReDoc is available as pre-built Docker image in official [Docker Hub repository](https://hub.docker.com/r/redocly/redoc/). You may simply pull & run it:
-
-    docker pull redocly/redoc
-    docker run -p 8080:80 redocly/redoc
-
-Also you may rewrite some predefined environment variables defined in [Dockerfile](./config/docker/Dockerfile). By default ReDoc starts with demo Petstore spec located at `http://petstore.swagger.io/v2/swagger.json`, but you may change this URL using environment variable `SPEC_URL`:
-
-    docker run -p 8080:80 -e SPEC_URL=https://api.example.com/openapi.json redocly/redoc
-
-## ReDoc CLI
-
-[See here](https://github.com/Redocly/redoc/blob/master/cli/README.md)
-
-
-
-## Configuration
-
-### Security Definition location
+## Security Definition location
 You can inject Security Definitions widget into any place of your specification `description`. Check out details [here](docs/security-definitions-injection.md).
 
-### Swagger vendor extensions
+## Swagger vendor extensions
 ReDoc makes use of the following [vendor extensions](https://swagger.io/specification/#specificationExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
@@ -225,7 +118,7 @@ ReDoc makes use of the following [vendor extensions](https://swagger.io/specific
 * [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 * [`x-additionalPropertiesName`](docs/redoc-vendor-extensions.md#x-additionalPropertiesName) - ability to supply a descriptive name for the additional property keys
 
-### `<redoc>` options object
+## `<redoc>` options object
 You can use all of the following options with standalone version on <redoc> tag by kebab-casing them, e.g. `scrollYOffset` becomes `scroll-y-offset` and `expandResponses` becomes `expand-responses`.
 
 * `disableSearch` - disable search indexing and search box.
@@ -292,6 +185,8 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 
 ## Roadmap
 
+TODO: update this
+
   - [x] ~~[OpenAPI v3.0 support](https://github.com/Redocly/redoc/issues/312)~~
   - [x] ~~performance optimizations~~
   - [x] ~~better navigation (menu improvements + search)~~
@@ -303,7 +198,9 @@ Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
 
 ## Contributing
 
-see [CONTRIBUTING.md](.github/CONTRIBUTING.md)
+TODO:
+
+[CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
 mention career options
 
@@ -329,7 +226,3 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 
-
-## License
-
-Add license information.
