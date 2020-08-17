@@ -8,8 +8,10 @@ Hi! We're really excited that you are interested in contributing to ReDoc. Befor
 - [Project Structure](#project-structure)
 
 ## Issue Reporting Guidelines
-- Before filing a new issue, try to make sure your problem doesn’t already exist.
+- Before filing a new issue, try to make sure your problem hasn't already been reported. Check our [FAQ](https://github.com/Redocly/redoc/blob/master/FAQ.md) for a list of common questions and problems.
+- When describing your issue, let us know which version of ReDoc you are using.
 - The best way to get your bug fixed is to provide a reduced test case.
+- We recommend sharing lengthy code and spec examples [in a gist](https://gist.github.com/) instead of pasting them directly into the issue description or comments. This makes the discussions more readable and easier to follow.
 
 ## Pull Request Guidelines
 Before submitting a pull request, please make sure the following is done:
