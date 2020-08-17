@@ -1,5 +1,13 @@
 export * from './components';
-export { MiddlePanel, Row, RightPanel, Section } from './common-elements/';
+export {
+  MiddlePanel,
+  Row,
+  RightPanel,
+  Section,
+  StyledDropdown,
+  SimpleDropdown,
+  DropdownOption,
+} from './common-elements/';
 export { OpenAPIEncoding } from './types';
 export * from './services';
 export * from './utils';
