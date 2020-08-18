@@ -24,7 +24,7 @@ const tsLoader = (env) => ({
   },
 });
 
-const babelLoader = (mode) => ({
+const babelLoader = () => ({
   loader: 'babel-loader',
   options: {
     generatorOpts: {
@@ -35,13 +35,6 @@ const babelLoader = (mode) => ({
       ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-syntax-jsx',
-      [
-        'babel-plugin-styled-components',
-        {
-          minify: true,
-          displayName: mode !== 'production',
-        },
-      ],
     ]),
   },
 });
@@ -111,7 +104,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
         use: compact([
           mode !== 'production' ? babelHotLoader : undefined,
           tsLoader(env),
-          babelLoader(mode),
+          babelLoader(),
         ]),
         exclude: [/node_modules/],
       },
