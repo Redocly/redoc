@@ -16,7 +16,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   background-repeat: no-repeat;
   background-position: 6px 4px;
   font-size: 7px;
-  font-family: Verdana; // web-safe
+  font-family: Verdana, sans-serif; // web-safe
   color: white;
   text-transform: uppercase;
   text-align: center;
