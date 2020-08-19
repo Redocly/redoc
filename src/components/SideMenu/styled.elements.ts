@@ -7,7 +7,7 @@ import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
 }))<{ type: string }>`
-  width: 32px;
+  width: 9ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
