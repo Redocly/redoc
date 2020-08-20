@@ -32,7 +32,10 @@ export class CallbackTitle extends React.PureComponent<CallbackTitleProps> {
   }
 }
 
-const CallbackTitleWrapper = styled.div`
+const CallbackTitleWrapper = styled.button`
+  border: 0;
+  width: 100%;
+  text-align: left;
   & > * {
     vertical-align: middle;
   }
@@ -45,7 +48,7 @@ const CallbackTitleWrapper = styled.div`
 `;
 
 const CallbackName = styled.span<{ deprecated?: boolean }>`
-  text-decoration: ${props => (props.deprecated ? 'line-through' : 'none')};
+  text-decoration: ${(props) => (props.deprecated ? 'line-through' : 'none')};
   margin-right: 8px;
 `;
 
