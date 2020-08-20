@@ -7,7 +7,7 @@ import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
 }))<{ type: string }>`
-  width: 32px;
+  width: 9ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
@@ -16,7 +16,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   background-repeat: no-repeat;
   background-position: 6px 4px;
   font-size: 7px;
-  font-family: Verdana; // web-safe
+  font-family: Verdana, sans-serif; // web-safe
   color: white;
   text-transform: uppercase;
   text-align: center;
