@@ -1,16 +1,16 @@
 import { action, observable } from 'mobx';
-
 import {
   OpenAPIParameter,
   OpenAPIParameterLocation,
   OpenAPIParameterStyle,
-  Referenced,
+  Referenced
 } from '../../types';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-
 import { extractExtensions } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { SchemaModel } from './Schema';
+
+
 
 const DEFAULT_SERIALIZATION: Record<
   OpenAPIParameterLocation,
@@ -51,6 +51,7 @@ export class FieldModel {
   kind: string;
   extensions?: Record<string, any>;
   explode: boolean;
+  expandAll: boolean;
   style?: OpenAPIParameterStyle;
 
   serializationMime?: string;

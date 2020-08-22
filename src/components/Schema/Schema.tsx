@@ -13,6 +13,7 @@ import { OneOfSchema } from './OneOfSchema';
 import { l } from '../../services/Labels';
 
 export interface SchemaOptions {
+  expandAllFields?: boolean | string
   showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;

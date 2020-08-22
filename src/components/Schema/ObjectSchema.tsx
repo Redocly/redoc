@@ -45,6 +45,7 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
       : fields;
 
     const expandByDefault = this.context.expandSingleSchemaField && filteredFields.length === 1;
+    const expandAllFields = this.context.expandAllSchemaFields;
 
     return (
       <PropertiesTable>
@@ -57,6 +58,7 @@ export class ObjectSchema extends React.Component<ObjectSchemaProps> {
                 isLast={isLast}
                 field={field}
                 expandByDefault={expandByDefault}
+                expandAllFields={expandAllFields}
                 renderDiscriminatorSwitch={
                   (discriminator &&
                     discriminator.fieldName === field.name &&

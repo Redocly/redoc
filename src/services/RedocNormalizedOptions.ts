@@ -1,9 +1,9 @@
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
-
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
+
 
 export interface RedocRawOptions {
   theme?: ThemeInterface;
@@ -29,6 +29,9 @@ export interface RedocRawOptions {
   simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
+  expandAllSchemaFields?: boolean | string;
+  hideShelfIcon?: boolean | string;
+  hideHttpVerbs?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -184,6 +187,9 @@ export class RedocNormalizedOptions {
   simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
+  expandAllSchemaFields: boolean;
+  hideShelfIcon: boolean;
+  hideHttpVerbs: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -240,6 +246,9 @@ export class RedocNormalizedOptions {
     this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
+    this.expandAllSchemaFields = argValueToBoolean(raw.expandAllSchemaFields);
+    this.hideShelfIcon = argValueToBoolean(raw.hideShelfIcon);
+    this.hideHttpVerbs = argValueToBoolean(raw.hideHttpVerbs);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

@@ -8,6 +8,7 @@ import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 import { l } from '../../services/Labels';
+import { OptionsContext } from '../OptionsProvider';
 
 export interface MenuItemProps {
   item: IMenuItem;
@@ -17,6 +18,8 @@ export interface MenuItemProps {
 
 @observer
 export class MenuItem extends React.Component<MenuItemProps> {
+  static contextType = OptionsContext;
+
   ref = React.createRef<HTMLLabelElement>();
 
   activate = (evt: React.MouseEvent<HTMLElement>) => {
@@ -40,6 +43,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
   render() {
     const { item, withoutChildren } = this.props;
+    const hideShelfIcon = this.context.hideShelfIcon;
     return (
       <MenuItemLi onClick={this.activate} depth={item.depth} data-item-id={item.id}>
         {item.type === 'operation' ? (
@@ -50,7 +54,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
               {item.name}
               {this.props.children}
             </MenuItemTitle>
-            {(item.depth > 0 && item.items.length > 0 && (
+            {(!hideShelfIcon && item.depth > 0 && item.items.length > 0 && (
               <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
             )) ||
               null}
@@ -74,6 +78,8 @@ export interface OperationMenuItemContentProps {
 
 @observer
 export class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
+  static contextType = OptionsContext;
+
   ref = React.createRef<HTMLLabelElement>();
 
   componentDidUpdate() {
@@ -84,6 +90,7 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
 
   render() {
     const { item } = this.props;
+    const hideHttpVerbsMenu = this.context.hideHttpVerbs;
     return (
       <MenuItemLabel
         depth={item.depth}
@@ -94,7 +101,9 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
         {item.isWebhook ? (
           <OperationBadge type="hook">{l('webhook')}</OperationBadge>
         ) : (
-          <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+          !hideHttpVerbsMenu && (
+            <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+          )
         )}
         <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
