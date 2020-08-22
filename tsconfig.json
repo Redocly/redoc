@@ -39,6 +39,7 @@
     "./demo/playground/hmr-playground.tsx",
     "./src/**/*.ts?",
     "demo/*.tsx",
-    "src/empty.js"
+    "src/empty.js",
+    "src/types/mdx.d.ts"
   ]
 }
