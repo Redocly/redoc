@@ -1,9 +1,13 @@
 import * as CopyWebpackPlugin from 'copy-webpack-plugin';
-import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { compact } from 'lodash';
 import { resolve } from 'path';
 import * as webpack from 'webpack';
+import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
+const remarkSlugs = require('remark-slug');
+const rehypeHtml = require('rehype-stringify');
+const exportToc = require('../src/markdown/plugins/export-toc');
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
@@ -34,6 +38,7 @@ const babelLoader = (mode) => ({
       ['@babel/plugin-syntax-typescript', { isTSX: true }],
       ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-transform-react-jsx',
       '@babel/plugin-syntax-jsx',
       [
         'babel-plugin-styled-components',
@@ -106,6 +111,19 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     rules: [
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
+      {
+        test: /\.mdx?$/,
+        use: [
+          babelLoader(mode),
+          {
+            loader: '@mdx-js/loader',
+            options: {
+              remarkPlugins: [remarkSlugs, exportToc],
+              rehypePlugins: [rehypeHtml],
+            },
+          },
+        ],
+      },
       {
         test: /\.tsx?$/,
         use: compact([
