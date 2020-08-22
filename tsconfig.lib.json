@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declarationDir": "typings",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
     "./custom.d.ts",

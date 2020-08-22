@@ -135,6 +135,7 @@
     "styled-components": "^4.1.1"
   },
   "dependencies": {
+    "@redocly/react-dropdown-aria": "^2.0.11",
     "@types/node": "^13.11.1",
     "classnames": "^2.2.6",
     "decko": "^1.2.0",
@@ -152,7 +153,6 @@
     "polished": "^3.6.5",
     "prismjs": "^1.20.0",
     "prop-types": "^15.7.2",
-    "react-dropdown-aria": "^2.0.7",
     "react-tabs": "^3.1.1",
     "slugify": "^1.4.4",
     "stickyfill": "^1.1.1",

@@ -1,4 +1,4 @@
-import Dropdown from 'react-dropdown-aria';
+import Dropdown from '@redocly/react-dropdown-aria';
 
 import styled from '../styled-components';
 
@@ -28,16 +28,16 @@ export const StyledDropdown = styled(Dropdown)`
     width: auto;
     background: white;
     color: #263238;
-    font-family: ${props => props.theme.typography.headings.fontFamily};
+    font-family: ${(props) => props.theme.typography.headings.fontFamily};
     font-size: 0.929em;
     line-height: 1.5em;
     cursor: pointer;
     transition: border 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     &:hover,
     &:focus-within {
-      border: 1px solid ${props => props.theme.colors.primary.main};
-      color: ${props => props.theme.colors.primary.main};
-      box-shadow: 0px 0px 0px 1px ${props => props.theme.colors.primary.main};
+      border: 1px solid ${(props) => props.theme.colors.primary.main};
+      color: ${(props) => props.theme.colors.primary.main};
+      box-shadow: 0px 0px 0px 1px ${(props) => props.theme.colors.primary.main};
     }
     .dropdown-selector {
       display: inline-flex;
@@ -48,7 +48,7 @@ export const StyledDropdown = styled(Dropdown)`
       margin-bottom: 5px;
     }
     .dropdown-selector-value {
-      font-family: ${props => props.theme.typography.headings.fontFamily};
+      font-family: ${(props) => props.theme.typography.headings.fontFamily};
       position: relative;
       font-size: 0.929em;
       width: 100%;
@@ -63,7 +63,7 @@ export const StyledDropdown = styled(Dropdown)`
       right: 3px;
       top: 50%;
       transform: translateY(-50%);
-      border-color: ${props => props.theme.colors.primary.main} transparent transparent;
+      border-color: ${(props) => props.theme.colors.primary.main} transparent transparent;
       border-style: solid;
       border-width: 0.35em 0.35em 0;
       width: 0;
@@ -94,6 +94,7 @@ export const StyledDropdown = styled(Dropdown)`
       color: #263238;
       cursor: pointer;
       padding: 0.4em;
+      background-color: #ffffff;
 
       &[aria-selected='true'] {
         background-color: rgba(0, 0, 0, 0.05);
@@ -126,8 +127,8 @@ export const SimpleDropdown = styled(StyledDropdown)`
       border: none;
       box-shadow: none;
       .dropdown-selector-value {
-        color: ${props => props.theme.colors.primary.main};
-        text-shadow: 0px 0px 0px ${props => props.theme.colors.primary.main};
+        color: ${(props) => props.theme.colors.primary.main};
+        text-shadow: 0px 0px 0px ${(props) => props.theme.colors.primary.main};
       }
     }
   }
