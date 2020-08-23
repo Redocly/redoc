@@ -1,0 +1,55 @@
+
+# Authentication
+
+```bash
+#!/bin/bash
+
+BSDEX_API_KEY=put-your-api-key-here
+BSDEX_API_SECRET=put-your-api-secret-here
+DATE="`date -u '+%a, %d %b %Y %T %Z'`"
+# The signature is in fact HMAC signature of a few fields, currently only "date", using your API secret.
+AUTHORIZATION="hmac username=\"$BSDEX_API_KEY\", algorithm=\"hmac-sha1\", headers=\"date\", signature=\"`/bin/echo -n "date: ${DATE}" | openssl sha1 -binary -hmac "${BSDEX_API_SECRET}" | base64 `\""
+
+curl -v \
+    -H "Date: $DATE" \
+    -H "ApiKey: $BSDEX_API_KEY" \
+    -H "Authorization: $AUTHORIZATION" \
+    -X GET "https://api-public.prelive.cex.tribe.sh/api/v1/balance"
+```
+
+> And you'll receive a response such as:
+
+```json
+[
+  {
+    "asset_id": "btc",
+    "available": "0",
+    "locked": "0"
+  },
+  {
+    "asset_id": "eur",
+    "available": "34163",
+    "locked": "123"
+  }
+]
+```
+
+The requests are secured via Keyed-Hashing for Message Authentication (HMAC).
+
+In order to authenticate, you need to add the following headers in your HTTP requests in addition to the `Authentication` header:
+
+| Header | Description | Example |
+| ------ | ----------- | ------- |
+|`Date`| Current date in RFC7231 format | Wed, 12 Aug 2020 12:49:26 UTC |
+|`ApiKey`| Your API key | put-your-api-key-here |
+
+The `Authentication` header's value has the pattern
+`hmac username=<ApiKey>, algorithm="hmac-sha1", headers="date", signature="<signed_date>"`
+where `signed_date` is the base64-encoded HMAC-SHA1 signature for the expression `date: <Date>`.
+
+Have a look at the code example to understand the HMAC signing process better.
+
+<aside class="notice">
+It is important to note that the value of the <em>Date</em> header must match the signed date value.
+</aside>
+

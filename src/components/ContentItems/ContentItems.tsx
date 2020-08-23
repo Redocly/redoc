@@ -17,9 +17,11 @@ export class ContentItems extends React.Component<{
     if (items.length === 0) {
       return null;
     }
-    return items.map(item => {
-      return <ContentItem key={item.id} item={item} />;
-    });
+    return items
+      .filter((item) => item.type !== 'extra')
+      .map((item) => {
+        return <ContentItem key={item.id} item={item} />;
+      });
   }
 }
 
@@ -61,7 +63,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
   }
 }
 
-const middlePanelWrap = component => <MiddlePanel compact={true}>{component}</MiddlePanel>;
+const middlePanelWrap = (component) => <MiddlePanel compact={true}>{component}</MiddlePanel>;
 
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {

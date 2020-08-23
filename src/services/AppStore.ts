@@ -89,7 +89,7 @@ export class AppStore {
         this.search.indexItems(this.menu.items);
       }
 
-      this.disposer = observe(this.menu, 'activeItemIdx', change => {
+      this.disposer = observe(this.menu, 'activeItemIdx', (change) => {
         this.updateMarkOnMenu(change.newValue as number);
       });
     }

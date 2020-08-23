@@ -1,6 +1,5 @@
 import * as classnames from 'classnames';
 import { darken } from 'polished';
-
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
 import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 
@@ -107,12 +106,17 @@ export const menuItemDepth = {
   1: css`
     font-size: 0.929em;
     text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
+    font-weight: ${({ theme }) => theme.sidebar.level1Items.fw};
+    font-size: ${({ theme }) => theme.sidebar.level1Items.fontSize};
+    color: ${({theme}) => theme.sidebar.level1Items.color};
+
     &:hover {
       color: ${props => props.theme.sidebar.activeTextColor};
     }
   `,
   2: css`
-    color: ${props => props.theme.sidebar.textColor};
+    color: ${({ theme }) => theme.sidebar.level1Items.color};
+    font-size: ${({ theme }) => theme.sidebar.level2Items.fontSize};
   `,
 };
 
@@ -133,7 +137,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   color: ${props =>
     props.active ? props.theme.sidebar.activeTextColor : props.theme.sidebar.textColor};
   margin: 0;
-  padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
+  padding: 12.5px ${props => !props.depth || props.depth === 0 ? `${props.theme.spacing.unit * 2}px` : `${props.depth}rem`};
   ${({ depth, type, theme }) =>
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;

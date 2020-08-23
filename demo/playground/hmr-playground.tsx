@@ -27,14 +27,12 @@ const specUrl =
 
 let store;
 const options: RedocRawOptions = {
-  nativeScrollbars: false,
-  maxDisplayedEnumValues: 3,
   expandAllSchemaFields: true,
+  hideHttpVerbs: true,
   hideShelfIcon: true,
-  hideHttpVerbs: true
+  maxDisplayedEnumValues: 3,
+  nativeScrollbars: false,
 };
-
-console.log('options', options)
 
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);

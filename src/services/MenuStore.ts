@@ -1,14 +1,14 @@
 import { action, observable } from 'mobx';
-import { querySelector } from '../utils/dom';
-import { SpecStore } from './models';
-
-import { history as historyInst, HistoryService } from './HistoryService';
-import { ScrollService } from './ScrollService';
-
 import { flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
+import { querySelector } from '../utils/dom';
+import { history as historyInst, HistoryService } from './HistoryService';
 import { GROUP_DEPTH } from './MenuBuilder';
+import { SpecStore } from './models';
+import { ScrollService } from './ScrollService';
+import { ExtraContent } from './models/ExtraContent';
+import { headings } from '../markdown';
 
-export type MenuItemGroupType = 'group' | 'tag' | 'section';
+export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'extra';
 export type MenuItemType = MenuItemGroupType | 'operation';
 
 /** Generic interface for MenuItems */
@@ -76,7 +76,15 @@ export class MenuStore {
    * @param scroll scroll service instance used by this menu
    */
   constructor(spec: SpecStore, public scroll: ScrollService, public history: HistoryService) {
-    this.items = spec.contentItems;
+    const extraItems = headings.map(
+      ({ id, text, depth }) =>
+        new ExtraContent({
+          id,
+          name: text,
+          depth,
+        }),
+    );
+    this.items = [...extraItems, ...spec.contentItems];
 
     this.flatItems = flattenByProp(this.items || [], 'items');
     this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
@@ -142,12 +150,12 @@ export class MenuStore {
     }
     let item: IMenuItem | undefined;
 
-    item = this.flatItems.find(i => i.id === id);
+    item = this.flatItems.find((i) => i.id === id);
     if (item) {
       this.activateAndScroll(item, false);
     } else {
       if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
-        item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
+        item = this.flatItems.find((i) => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
         this.activate(item);
       }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
@@ -183,7 +191,7 @@ export class MenuStore {
   }
 
   getItemById = (id: string) => {
-    return this.flatItems.find(item => item.id === id);
+    return this.flatItems.find((item) => item.id === id);
   };
 
   /**
