@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReDoc Demo: Multiple apis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        margin: 0;
+        padding-top: 40px;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+      }
+      #links_container {
+          margin: 0;
+          padding: 0;
+          background-color: #0033a0;
+      }
+
+      #links_container li {
+          display: inline-block;
+          padding: 10px;
+          color: white;
+          cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Top navigation placeholder -->
+    <nav>
+      <ul id="links_container">
+      </ul>
+    </nav>
+
+    <redoc scroll-y-offset="body > nav"></redoc>
+
+    <script src="https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js"> </script>
+    <script>
+      // list of APIS
+      var apis = [
+        {
+          name: 'PetStore',
+          url: 'https://rebilly.github.io/ReDoc/swagger.yaml'
+        },
+        {
+          name: 'Instagram',
+          url: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml'
+        },
+        {
+          name: 'Google Calendar',
+          url: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml'
+        }
+      ];
+
+      // initially render first API
+      Redoc.init(apis[0].url);
+
+      function onClick() {
+        var url = this.getAttribute('data-link');
+        Redoc.init(url);
+      }
+
+      // dynamically building navigation items
+      var $list = document.getElementById('links_container');
+      apis.forEach(function(api) {
+        var $listitem = document.createElement('li');
+        $listitem.setAttribute('data-link', api.url);
+        $listitem.innerText = api.name;
+        $listitem.addEventListener('click', onClick);
+        $list.appendChild($listitem);
+      });
+    </script>
+  </body>
+</html>

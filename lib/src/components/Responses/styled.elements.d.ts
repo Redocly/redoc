@@ -1,0 +1,5 @@
+export declare const StyledResponseTitle: import("styled-components").StyledComponentClass<import("./ResponseTitle").ResponseTitleProps, import("../../theme").ResolvedThemeInterface, Pick<import("./ResponseTitle").ResponseTitleProps, "code" | "title" | "className" | "onClick" | "type" | "empty" | "opened"> & {
+    theme?: import("../../theme").ResolvedThemeInterface | undefined;
+}>;
+export declare const ResponseDetailsWrap: import("styled-components").StyledComponentClass<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLDivElement>, HTMLDivElement>, import("../../theme").ResolvedThemeInterface, import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLDivElement>, HTMLDivElement>>;
+export declare const HeadersCaption: import("styled-components").StyledComponentClass<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLElement>, HTMLElement>, import("../../theme").ResolvedThemeInterface, import("react").ClassAttributes<HTMLElement> & import("react").HTMLAttributes<HTMLElement> & import("react").ClassAttributes<HTMLHeadingElement> & import("react").HTMLAttributes<HTMLHeadingElement>>;
