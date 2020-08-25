@@ -64,12 +64,10 @@ const Wrapper = ({ children }) => {
 
   const sections = getSections(children);
 
-  console.log('sections', sections);
-
   return (
     <>
       {sections.map((section) => (
-        <Section key={`resection-${section.id}`} id={section.id}>
+        <Section key={`section-${section.id}`} id={section.id}>
           <Row id={section.id}>
             {section.middle && <MiddlePanel>{section.middle}</MiddlePanel>}
             {section.right && <DarkRightPanel>{section.right}</DarkRightPanel>}

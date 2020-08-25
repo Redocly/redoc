@@ -40,8 +40,6 @@ export class Redoc extends React.Component<RedocProps> {
     } = this.props;
     const store = this.props.store;
 
-    console.log('components', components);
-
     return (
       <ThemeProvider theme={options.theme}>
         <StoreProvider value={this.props.store}>
@@ -65,7 +63,7 @@ export class Redoc extends React.Component<RedocProps> {
                   <ApiInfo store={store} />
                   {markdownIndex &&
                     markdownIndex.components.map((MDXComponent, idx) => {
-                      return <MDXComponent key={`mdxsection-${idx}`} />;
+                      return <MDXComponent key={`mdx-${idx}`} />;
                     })}
                   <ContentItems items={menu.items as any} />
                 </ApiContentWrap>

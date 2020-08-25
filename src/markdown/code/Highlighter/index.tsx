@@ -13,7 +13,6 @@ const OverflowHighlighter = styled.pre`
 `;
 
 const Highlighter: React.FC<Props> = ({ children, className }) => {
-  console.log('className', className);
   const language = className ? className.replace(/language-/, '').trim() : 'bash';
 
   if (!children) {
