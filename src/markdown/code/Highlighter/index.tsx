@@ -1,17 +1,20 @@
 import * as React from 'react';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
-import styled from 'styled-components';
+import styled from '../../../styled-components';
 
 type Props = {
   className: string;
+  style: any;
+  componentId?: string;
 };
 
 const OverflowHighlighter = styled.pre`
   overflow-x: scroll;
 `;
 
-const Highligher: React.FC<Props> = ({ children, className }) => {
-  const language = className.replace(/language-/, '');
+const Highlighter: React.FC<Props> = ({ children, className }) => {
+  console.log('className', className);
+  const language = className ? className.replace(/language-/, '').trim() : 'bash';
 
   if (!children) {
     return null;
@@ -34,4 +37,4 @@ const Highligher: React.FC<Props> = ({ children, className }) => {
   );
 };
 
-export default Highligher;
+export default Highlighter;

@@ -19,26 +19,29 @@ import {
 } from '../utils/openapi';
 
 import { IS_BROWSER } from '../utils';
+import { MarkdownIndex } from '../markdown';
 
 export interface StoreState {
   menu: {
     activeItemIdx: number;
   };
   spec: {
-    url?: string;
+    url?: string | null;
     data: any;
   };
   searchIndex: any;
   options: RedocRawOptions;
+  markdownIndex?: MarkdownIndex;
 }
 
 export async function createStore(
   spec: object,
-  specUrl: string | undefined,
+  specUrl: string | undefined | null,
   options: RedocRawOptions = {},
+  markdownIndex?: MarkdownIndex,
 ) {
   const resolvedSpec = await loadAndBundleSpec(spec || specUrl);
-  return new AppStore(resolvedSpec, specUrl, options);
+  return new AppStore(resolvedSpec, specUrl, options, true, markdownIndex);
 }
 
 export class AppStore {
@@ -47,8 +50,8 @@ export class AppStore {
    * **SUPER HACKY AND NOT OPTIMAL IMPLEMENTATION**
    */
   // TODO:
-  static fromJS(state: StoreState): AppStore {
-    const inst = new AppStore(state.spec.data, state.spec.url, state.options, false);
+  static fromJS(state: StoreState, markdownIndex?: MarkdownIndex): AppStore {
+    const inst = new AppStore(state.spec.data, state.spec.url, state.options, false, markdownIndex);
     inst.menu.activeItemIdx = state.menu.activeItemIdx || 0;
     inst.menu.activate(inst.menu.flatItems[inst.menu.activeItemIdx]);
     if (!inst.options.disableSearch) {
@@ -63,15 +66,17 @@ export class AppStore {
   options: RedocNormalizedOptions;
   search?: SearchStore<string>;
   marker = new MarkerService();
+  markdownIndex?: MarkdownIndex;
 
   private scroll: ScrollService;
   private disposer: Lambda | null = null;
 
   constructor(
     spec: OpenAPISpec,
-    specUrl?: string,
+    specUrl?: string | null,
     options: RedocRawOptions = {},
     createSearchIndex: boolean = true,
+    markdownIndex?: MarkdownIndex,
   ) {
     this.rawOptions = options;
     this.options = new RedocNormalizedOptions(options, DEFAULT_OPTIONS);
@@ -81,7 +86,9 @@ export class AppStore {
     MenuStore.updateOnHistory(history.currentId, this.scroll);
 
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll, history);
+
+    this.menu = new MenuStore(this.spec, this.scroll, history, markdownIndex);
+    this.markdownIndex = markdownIndex;
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
@@ -122,11 +129,12 @@ export class AppStore {
         activeItemIdx: this.menu.activeItemIdx,
       },
       spec: {
-        url: this.spec.parser.specUrl,
+        url: this.spec.parser.specUrl || null,
         data: this.spec.parser.spec,
       },
       searchIndex: this.search ? await this.search.toJS() : undefined,
       options: this.rawOptions,
+      markdownIndex: this.markdownIndex,
     };
   }
 

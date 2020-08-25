@@ -6,11 +6,13 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { Loading } from './Loading/Loading';
 import { Redoc } from './Redoc/Redoc';
 import { StoreBuilder } from './StoreBuilder';
+import { MarkdownIndex } from '../markdown';
 
 export interface RedocStandaloneProps {
   spec?: object;
   specUrl?: string;
   options?: RedocRawOptions;
+  markdownIndex?: MarkdownIndex;
   onLoaded?: (e?: Error) => any;
 }
 

@@ -30,14 +30,6 @@ info:
     And that allows cross-domain communication from the browser.
     All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
 
-    # Authentication
-
-    Petstore offers two forms of authentication:
-      - API Key
-      - OAuth2
-    OAuth2 - an open protocol to allow secure authorization in a simple
-    and standard method from web, mobile and desktop applications.
-
     <SecurityDefinitions />
 
   version: 1.0.0
@@ -1193,7 +1185,7 @@ x-webhooks:
       summary: New pet
       description: Information about a new pet in the systems
       operationId: newPet
-      tags: 
+      tags:
         - pet
       requestBody:
         content:

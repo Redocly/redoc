@@ -28,7 +28,7 @@ const tsLoader = (env) => ({
   },
 });
 
-const babelLoader = (mode) => ({
+const babelLoader = (mode, transformJsx = false) => ({
   loader: 'babel-loader',
   options: {
     generatorOpts: {
@@ -38,7 +38,7 @@ const babelLoader = (mode) => ({
       ['@babel/plugin-syntax-typescript', { isTSX: true }],
       ['@babel/plugin-syntax-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-transform-react-jsx',
+      ...(transformJsx ? ['@babel/plugin-transform-react-jsx'] : []),
       '@babel/plugin-syntax-jsx',
       [
         'babel-plugin-styled-components',
@@ -114,7 +114,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       {
         test: /\.mdx?$/,
         use: [
-          babelLoader(mode),
+          babelLoader(mode, true),
           {
             loader: '@mdx-js/loader',
             options: {

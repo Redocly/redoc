@@ -15,8 +15,7 @@ import { ApiContentWrap, BackgroundStub, RedocWrap } from './styled.elements';
 
 import { SearchBox } from '../SearchBox/SearchBox';
 import { StoreProvider } from '../StoreBuilder';
-
-import { sections, components } from '../../markdown';
+import components from '../../markdown/components';
 
 export interface RedocProps {
   store: AppStore;
@@ -37,9 +36,12 @@ export class Redoc extends React.Component<RedocProps> {
 
   render() {
     const {
-      store: { spec, menu, options, search, marker },
+      store: { spec, menu, options, search, marker, markdownIndex },
     } = this.props;
     const store = this.props.store;
+
+    console.log('components', components);
+
     return (
       <ThemeProvider theme={options.theme}>
         <StoreProvider value={this.props.store}>
@@ -61,9 +63,10 @@ export class Redoc extends React.Component<RedocProps> {
                 </StickyResponsiveSidebar>
                 <ApiContentWrap className="api-content">
                   <ApiInfo store={store} />
-                  {sections.map((MDXComponent, idx) => {
-                    return <MDXComponent key={`section-${idx}`} />;
-                  })}
+                  {markdownIndex &&
+                    markdownIndex.components.map((MDXComponent, idx) => {
+                      return <MDXComponent key={`mdxsection-${idx}`} />;
+                    })}
                   <ContentItems items={menu.items as any} />
                 </ApiContentWrap>
                 <BackgroundStub />

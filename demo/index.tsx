@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import styled from 'styled-components';
+import styled from '../src/styled-components';
 import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';

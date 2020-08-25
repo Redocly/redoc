@@ -1,6 +1,12 @@
-import styled from 'styled-components'
+import styled from '../styled-components';
 
-export const Flex = styled.div`
+type FlexProps = {
+  justifyContent?: string;
+};
+
+export const Flex = styled.div.attrs((props: FlexProps) => ({
+  justifyContent: props.justifyContent,
+}))<FlexProps>`
   display: flex;
   justify-content: ${(props) => props.justifyContent};
   width: 100%;

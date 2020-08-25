@@ -12,7 +12,7 @@ export class SelectOnClick extends React.PureComponent {
     const { children } = this.props;
     return (
       <div
-        ref={el => (this.child = el)}
+        ref={el => (this.child = (el as HTMLDivElement))}
         onClick={this.selectElement}
         onFocus={this.selectElement}
         tabIndex={0}

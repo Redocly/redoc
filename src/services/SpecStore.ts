@@ -20,7 +20,7 @@ export class SpecStore {
 
   constructor(
     spec: OpenAPISpec,
-    specUrl: string | undefined,
+    specUrl: string | undefined | null,
     private options: RedocNormalizedOptions,
   ) {
     this.parser = new OpenAPIParser(spec, specUrl, options);

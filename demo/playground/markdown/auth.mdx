@@ -4,17 +4,17 @@
 ```bash
 #!/bin/bash
 
-BSDEX_API_KEY=put-your-api-key-here
-BSDEX_API_SECRET=put-your-api-secret-here
+YOUR_API_KEY=put-your-api-key-here
+YOUR_SECRET=put-your-api-secret-here
 DATE="`date -u '+%a, %d %b %Y %T %Z'`"
 # The signature is in fact HMAC signature of a few fields, currently only "date", using your API secret.
-AUTHORIZATION="hmac username=\"$BSDEX_API_KEY\", algorithm=\"hmac-sha1\", headers=\"date\", signature=\"`/bin/echo -n "date: ${DATE}" | openssl sha1 -binary -hmac "${BSDEX_API_SECRET}" | base64 `\""
+AUTHORIZATION="hmac username=\"$YOUR_API_KEY\", algorithm=\"hmac-sha1\", headers=\"date\", signature=\"`/bin/echo -n "date: ${DATE}" | openssl sha1 -binary -hmac "${YOUR_API_SECRET}" | base64 `\""
 
 curl -v \
     -H "Date: $DATE" \
-    -H "ApiKey: $BSDEX_API_KEY" \
+    -H "ApiKey: $YOUR_API_KEY" \
     -H "Authorization: $AUTHORIZATION" \
-    -X GET "https://api-public.prelive.cex.tribe.sh/api/v1/balance"
+    -X GET "https://example.com/api/v1/pets"
 ```
 
 > And you'll receive a response such as:
@@ -22,14 +22,10 @@ curl -v \
 ```json
 [
   {
-    "asset_id": "btc",
-    "available": "0",
-    "locked": "0"
+    "foo": "bar"
   },
   {
-    "asset_id": "eur",
-    "available": "34163",
-    "locked": "123"
+    "bar": "foo"
   }
 ]
 ```
@@ -49,7 +45,7 @@ where `signed_date` is the base64-encoded HMAC-SHA1 signature for the expression
 
 Have a look at the code example to understand the HMAC signing process better.
 
-<aside class="notice">
+<aside className="notice">
 It is important to note that the value of the <em>Date</em> header must match the signed date value.
 </aside>
 

@@ -2,7 +2,7 @@ import { resolve as urlResolve } from 'url';
 
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, IS_BROWSER } from '../utils/';
+import { appendToMdHeading } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import {
   isNamedDefinition,
@@ -42,7 +42,7 @@ class RefCounter {
  * Loads and keeps spec. Provides raw spec operations
  */
 export class OpenAPIParser {
-  specUrl?: string;
+  specUrl?: string | null;
   spec: OpenAPISpec;
   mergeRefs: Set<string>;
 
@@ -50,7 +50,7 @@ export class OpenAPIParser {
 
   constructor(
     spec: OpenAPISpec,
-    specUrl?: string,
+    specUrl?: string | null,
     private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
@@ -60,7 +60,7 @@ export class OpenAPIParser {
 
     this.mergeRefs = new Set();
 
-    const href = IS_BROWSER ? window.location.href : '';
+    const href = '';
     if (typeof specUrl === 'string') {
       this.specUrl = urlResolve(href, specUrl);
     }
@@ -214,7 +214,7 @@ export class OpenAPIParser {
     }
 
     const allOfSchemas = schema.allOf
-      .map(subSchema => {
+      .map((subSchema) => {
         if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
           return undefined;
         }
@@ -228,7 +228,7 @@ export class OpenAPIParser {
           schema: subMerged,
         };
       })
-      .filter(child => child !== undefined) as Array<{
+      .filter((child) => child !== undefined) as Array<{
       $ref: string | undefined;
       schema: MergedOpenAPISchema;
     }>;
@@ -305,7 +305,7 @@ export class OpenAPIParser {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&
-        def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
+        def.allOf.find((obj) => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
       ) {
         res['#/components/schemas/' + defName] = [def['x-discriminator-value'] || defName];
       }
@@ -331,7 +331,7 @@ export class OpenAPIParser {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {
-          oneOf: sub.oneOf.map(part => {
+          oneOf: sub.oneOf.map((part) => {
             const merged = this.mergeAllOf({
               allOf: [...beforeAllOf, part, ...afterAllOf],
             });

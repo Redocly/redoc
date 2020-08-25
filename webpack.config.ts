@@ -4,6 +4,10 @@ import * as webpack from 'webpack';
 
 import * as path from 'path';
 
+const remarkSlugs = require('remark-slug');
+const rehypeHtml = require('rehype-stringify');
+const exportToc = require('./src/markdown/plugins/export-toc');
+
 const nodeExternals = require('webpack-node-externals')({
   // bundle in modules that need transpiling + non-js (e.g. css)
   allowlist: [
@@ -26,6 +30,28 @@ try {
 } catch (e) {
   console.error('Skipping REDOC_REVISION');
 }
+
+const babelLoader = (mode, transformJsx = false) => ({
+  loader: 'babel-loader',
+  options: {
+    generatorOpts: {
+      decoratorsBeforeExport: true,
+    },
+    plugins: [
+      ['@babel/plugin-syntax-typescript', { isTSX: true }],
+      ['@babel/plugin-syntax-decorators', { legacy: true }],
+      '@babel/plugin-syntax-jsx',
+      ...(transformJsx ? ['@babel/plugin-transform-react-jsx'] : []),
+      [
+        'babel-plugin-styled-components',
+        {
+          minify: true,
+          displayName: mode !== 'production',
+        },
+      ],
+    ],
+  },
+});
 
 const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
 -------------------------------------------------------------
@@ -77,6 +103,19 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
   module: {
     rules: [
       {
+        test: /\.mdx?$/,
+        use: [
+          babelLoader(mode, true),
+          {
+            loader: '@mdx-js/loader',
+            options: {
+              remarkPlugins: [remarkSlugs, exportToc],
+              rehypePlugins: [rehypeHtml],
+            },
+          },
+        ],
+      },
+      {
         test: /\.tsx?$/,
         use: [
           {
@@ -88,26 +127,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
               },
             },
           },
-          {
-            loader: 'babel-loader',
-            options: {
-              generatorOpts: {
-                decoratorsBeforeExport: true,
-              },
-              plugins: [
-                ['@babel/plugin-syntax-typescript', { isTSX: true }],
-                ['@babel/plugin-syntax-decorators', { legacy: true }],
-                '@babel/plugin-syntax-jsx',
-                [
-                  'babel-plugin-styled-components',
-                  {
-                    minify: true,
-                    displayName: mode !== 'production',
-                  },
-                ],
-              ],
-            },
-          },
+          babelLoader(mode),
         ],
         exclude: [/node_modules/],
       },

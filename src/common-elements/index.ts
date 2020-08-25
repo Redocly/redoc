@@ -9,3 +9,4 @@ export * from './mixins';
 export * from './tabs';
 export * from './samples';
 export * from './perfect-scrollbar';
+export * as Flex from './flex';

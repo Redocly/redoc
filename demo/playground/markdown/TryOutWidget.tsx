@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { HFlex } from '../common-elements/flex';
-import styled from 'styled-components';
+import { HFlex } from '../../../src/common-elements/flex';
+import styled from '../../../src/styled-components';
 
 const Button = styled.button`
   margin-left: auto;

@@ -26,14 +26,7 @@ info:
     This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
     And that allows cross-domain communication from the browser.
     All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
-    # Authentication
-    Petstore offers two forms of authentication:
-      - API Key
-      - OAuth2
 
-    OAuth2 - an open protocol to allow secure authorization in a simple
-    and standard method from web, mobile and desktop applications.
-    <!-- ReDoc-Inject: <security-definitions> -->
   version: 1.0.0
   title: Swagger Petstore
   termsOfService: 'http://swagger.io/terms/'

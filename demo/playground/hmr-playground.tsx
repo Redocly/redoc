@@ -8,6 +8,7 @@ import { Redoc, RedocProps } from '../../src/components/Redoc/Redoc';
 import { AppStore } from '../../src/services/AppStore';
 import { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
 import { loadAndBundleSpec } from '../../src/utils/loadAndBundleSpec';
+import markdown from './markdown';
 
 const renderRoot = (props: RedocProps) =>
   render(
@@ -32,11 +33,12 @@ const options: RedocRawOptions = {
   hideShelfIcon: true,
   maxDisplayedEnumValues: 3,
   nativeScrollbars: false,
+  noAutoAuth: true,
 };
 
 async function init() {
   const spec = await loadAndBundleSpec(specUrl);
-  store = new AppStore(spec, specUrl, options);
+  store = new AppStore(spec, specUrl, options, true, markdown);
   renderRoot({ store });
 }
 
