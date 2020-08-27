@@ -21,7 +21,7 @@
 
 ## Features
 - Extremely easy deployment
-- [Redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
+- [redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) with ability to bundle your docs into **zero-dependency** HTML file
 - Server Side Rendering ready
 - The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
@@ -200,7 +200,7 @@ Also you may rewrite some predefined environment variables defined in [Dockerfil
 
 ## ReDoc CLI
 
-[ReDoc CLI](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
+[redoc-cli](https://github.com/Redocly/redoc/blob/master/cli/README.md) tool is used to lint and bundle your OpenAPI definition into **zero-dependency** HTML file. It can be installed as a development dependency in your project.
 
 ## Generator for GH repo
 [create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool is used for splitting a single OpenAPI definition file into multiple files organized in folders. You can also use this tool to start a new API definition and validate your OpenAPI definition.
