@@ -47,7 +47,7 @@
     "start:demo": "webpack-dev-server --hot --config demo/webpack.config.ts --mode=development",
     "compile:cli": "tsc custom.d.ts cli/index.ts --target es6 --module commonjs --types yargs",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
-    "deploy:demo": "npm run build:demo && deploy-to-gh-pages --update demo/dist",
+    "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
     "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause' --summary",
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc ."
   },
