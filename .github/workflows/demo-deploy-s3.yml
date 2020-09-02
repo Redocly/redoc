@@ -5,15 +5,20 @@ on:
     tags:
       - v[0-9]*.[0-9]*.[0-9]*
 
-defaults:
-  run:
-    working-directory: demo
-
 jobs:
-  build:
+  build-and-unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - run: npm ci
+      - run: npm run bundle
+      - run: npm test
+  deploy:
+    needs: build-and-unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: cache node modules
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -21,7 +26,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build package
         run: npm run build:demo
       - name: Deploy to S3 bucket
