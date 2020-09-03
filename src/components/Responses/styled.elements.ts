@@ -16,13 +16,13 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   background-color: #f2f2f2;
   cursor: pointer;
 
-  color: ${props => props.theme.colors.responses[props.type].color};
-  background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
+  color: ${(props) => props.theme.colors.responses[props.type].color};
+  background-color: ${(props) => props.theme.colors.responses[props.type].backgroundColor};
   &:focus {
     outline: auto;
-    outline-color: ${props => props.theme.colors.responses[props.type].color};
+    outline-color: ${(props) => props.theme.colors.responses[props.type].color};
   }
-  ${props =>
+  ${(props) =>
     (props.empty &&
       `
 cursor: default;
@@ -48,4 +48,8 @@ export const HeadersCaption = styled(UnderlinedHeader.withComponent('caption'))`
   text-align: left;
   margin-top: 1em;
   caption-side: top;
+`;
+
+export const Code = styled.strong`
+  vertical-align: top;
 `;
