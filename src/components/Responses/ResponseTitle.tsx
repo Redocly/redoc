@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Strong } from './styled.elements';
+import { Code } from './styled.elements';
 import { ShelfIcon } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 
@@ -32,7 +32,7 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
             float={'left'}
           />
         )}
-        <Strong>{code} </Strong>
+        <Code>{code} </Code>
         <Markdown compact={true} inline={true} source={title} />
       </button>
     );

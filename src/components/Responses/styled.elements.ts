@@ -50,6 +50,6 @@ export const HeadersCaption = styled(UnderlinedHeader.withComponent('caption'))`
   caption-side: top;
 `;
 
-export const Strong = styled.strong`
+export const Code = styled.strong`
   vertical-align: top;
 `;
