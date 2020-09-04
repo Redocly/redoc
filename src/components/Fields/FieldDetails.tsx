@@ -8,6 +8,7 @@ import {
   TypeName,
   TypePrefix,
   TypeTitle,
+  ToggleButton,
 } from '../../common-elements/fields';
 import { serializeParameterValue } from '../../utils/openapi';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
@@ -25,10 +26,22 @@ import { OptionsContext } from '../OptionsProvider';
 
 const MAX_PATTERN_LENGTH = 45;
 
-export class FieldDetails extends React.PureComponent<FieldProps> {
+export class FieldDetails extends React.PureComponent<FieldProps, { patternShown: boolean }> {
+  state = {
+    patternShown: false,
+  };
+
   static contextType = OptionsContext;
+
+  togglePattern = () => {
+    this.setState({
+      patternShown: !this.state.patternShown,
+    });
+  };
+
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
+    const { patternShown } = this.state;
     const { enumSkipQuotes, hideSchemaTitles } = this.context;
 
     const { schema, description, example, deprecated } = field;
@@ -64,8 +77,19 @@ export class FieldDetails extends React.PureComponent<FieldProps> {
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
-          {schema.pattern && schema.pattern.length < MAX_PATTERN_LENGTH && (
-            <PatternLabel> {schema.pattern} </PatternLabel>
+          {schema.pattern && (
+            <>
+              <PatternLabel>
+                {patternShown || schema.pattern.length < MAX_PATTERN_LENGTH
+                  ? schema.pattern
+                  : `${schema.pattern.substr(0, MAX_PATTERN_LENGTH)}...`}
+              </PatternLabel>
+              {schema.pattern.length > MAX_PATTERN_LENGTH && (
+                <ToggleButton onClick={this.togglePattern}>
+                  {patternShown ? 'Hide pattern' : 'Show pattern'}
+                </ToggleButton>
+              )}
+            </>
           )}
           {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
