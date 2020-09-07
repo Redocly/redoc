@@ -108,3 +108,14 @@ export const ConstraintItem = styled(FieldLabel)`
   }
   ${extensionsHook('ConstraintItem')};
 `;
+
+export const ToggleButton = styled.button`
+  background-color: transparent;
+  border: 0;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  margin-left: ${({ theme }) => theme.spacing.unit}px;
+  border-radius: 2px;
+  cursor: pointer;
+  outline-color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: 12px;
+`;
