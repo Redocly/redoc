@@ -32,6 +32,7 @@ cursor: default;
   width: 1.5em;
   text-align: center;
   display: inline-block;
+  vertical-align: top;
 }
 &:focus {
   outline: 0;
