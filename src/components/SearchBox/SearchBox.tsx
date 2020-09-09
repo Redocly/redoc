@@ -16,7 +16,6 @@ import {
   SearchResultsBox,
   SearchWrap,
 } from './styled.elements';
-import { bind, debounce } from 'decko';
 
 export interface SearchBoxProps {
   search: SearchStore<string>;
