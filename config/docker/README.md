@@ -12,6 +12,12 @@ Serve local file:
     docker run -it --rm -p 80:80 \
       -v $(pwd)/demo/swagger.yaml:/usr/share/nginx/html/swagger.yaml \
       -e SPEC_URL=swagger.yaml redocly/redoc
+      
+Serve local file and watch for updates:
+
+    docker run -it --rm -p 80:80 \
+      -v $(pwd)/demo/:/usr/share/nginx/html/swagger/ \
+      -e SPEC_URL=swagger/swagger.yaml redocly/redoc
 
 ## Runtime configuration options
 

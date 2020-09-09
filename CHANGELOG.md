@@ -1,3 +1,221 @@
+# [2.0.0-rc.40](https://github.com/Redocly/redoc/compare/v2.0.0-rc.39...v2.0.0-rc.40) (2020-08-24)
+
+
+### Bug Fixes
+
+* invalid discriminator dropdown behaviour with enum ([be07197](https://github.com/Redocly/redoc/commit/be07197e6d1e85a3fd3e61189a36b288751c077d))
+
+
+
+# [2.0.0-rc.39](https://github.com/Redocly/redoc/compare/v2.0.0-rc.38...v2.0.0-rc.39) (2020-08-22)
+
+
+### Bug Fixes
+
+* fix broken dropdowns with SSR by using forked react-dropdown-aria ([c322639](https://github.com/Redocly/redoc/commit/c322639f7c3e7efbbd623ae83afb88faa91d9e67))
+* make callbacks expandable by keyboard ([#1354](https://github.com/Redocly/redoc/issues/1354)) ([46eee7b](https://github.com/Redocly/redoc/commit/46eee7b70c8ee9da0d8857a823c4df39a5f18b53))
+
+
+
+# [2.0.0-rc.38](https://github.com/Redocly/redoc/compare/v2.0.0-rc.37...v2.0.0-rc.38) (2020-08-20)
+
+
+### Bug Fixes
+
+* do not crash for invalid parameter.in value ([addf895](https://github.com/Redocly/redoc/commit/addf8956e33654a1586a8ac6ed7325519cd99da8)), closes [#1340](https://github.com/Redocly/redoc/issues/1340)
+* scale sideMenu labels according to computed font size ([#1356](https://github.com/Redocly/redoc/issues/1356)) ([fed9a06](https://github.com/Redocly/redoc/commit/fed9a061d59592ec17cedbe4fd392e1f74c21527))
+
+
+
+# [2.0.0-rc.37](https://github.com/Redocly/redoc/compare/v2.0.0-rc.36...v2.0.0-rc.37) (2020-08-14)
+
+
+### Features
+
+* add webhooks support ([#1304](https://github.com/Redocly/redoc/issues/1304)) ([41f81b4](https://github.com/Redocly/redoc/commit/41f81b4d96648fec6bf0c39799c0aa2dded48749))
+
+
+
+# [2.0.0-rc.36](https://github.com/Redocly/redoc/compare/v2.0.0-rc.35...v2.0.0-rc.36) (2020-08-04)
+
+
+### Bug Fixes
+
+* highlight json keys using different color ([#1287](https://github.com/Redocly/redoc/issues/1287)) ([c9596d4](https://github.com/Redocly/redoc/commit/c9596d4b6cd9dced9fdee77525e0da90960c562a))
+* make elements accessible by keyboard navigation tools ([#1339](https://github.com/Redocly/redoc/issues/1339)) ([2ce7189](https://github.com/Redocly/redoc/commit/2ce71895bc14f9189b4e6cbdb6d838898717823f))
+
+
+### Features
+
+* new option simpleOneOfTypeLabel ([7af2efe](https://github.com/Redocly/redoc/commit/7af2efe731cdb16ebe5de6cb3e96f80cceb7d98d))
+
+
+
+# [2.0.0-rc.35](https://github.com/Redocly/redoc/compare/v2.0.0-rc.34...v2.0.0-rc.35) (2020-07-24)
+
+### Bug Fixes
+
+* update EnumValues component ([#1324](https://github.com/Redocly/redoc/issues/1324)) ([de27ac0](https://github.com/Redocly/redoc/commit/de27ac03081d55967f5a479fb1352a83b8ceb8b2))
+
+
+
+# [2.0.0-rc.34](https://github.com/Redocly/redoc/compare/v2.0.0-rc.33...v2.0.0-rc.34) (2020-07-24)
+
+Same as rc.33 by mistake
+
+
+
+# [2.0.0-rc.33](https://github.com/Redocly/redoc/compare/v2.0.0-rc.31...v2.0.0-rc.33) (2020-07-21)
+
+
+### Bug Fixes
+
+* default style and explode for params ([633d712](https://github.com/Redocly/redoc/commit/633d71293fa9af2bda3bf456a9258625ee2b94a1)), closes [#1016](https://github.com/Redocly/redoc/issues/1016)
+* fix contrast ratio for response titles ([47c6319](https://github.com/Redocly/redoc/commit/47c63192062d87b2b3205b915472930eaff6cc03))
+* fix expand variable for vars with hyphens or dots ([0904b3f](https://github.com/Redocly/redoc/commit/0904b3fec24edc56c4a4951501fe02ae22fd852b)), closes [#926](https://github.com/Redocly/redoc/issues/926)
+* make dropdowns accessible by keyboard ([e8a0d10](https://github.com/Redocly/redoc/commit/e8a0d105ca52204b0d6fd61f5e909d9dbbe6f147))
+* make endpoint dropdown accessible ([3d25005](https://github.com/Redocly/redoc/commit/3d25005f084f06ac01b8fa13eb1d69092e99fd27))
+* make properties focusable ([05fd754](https://github.com/Redocly/redoc/commit/05fd7543a29e0aeb364c1ba3f2d736656de7b3b7))
+* make response sections focusable ([442014c](https://github.com/Redocly/redoc/commit/442014c06d6a7d2260adf7bc5798dd29869f10c9))
+* make sample controls focusable ([006031c](https://github.com/Redocly/redoc/commit/006031c51787b617f2b0aed80a4b8486c5d2d3ca))
+* update focus styling ([30a27c1](https://github.com/Redocly/redoc/commit/30a27c116b366428570d0b5516b5b2b4bcd0c5fc))
+
+
+### Features
+
+* add maxDisplayedEnumValues config and buttons for show/hide enums ([#1322](https://github.com/Redocly/redoc/issues/1322)) ([a2b018d](https://github.com/Redocly/redoc/commit/a2b018d393ee25fb8e9233f8123c29d14ab054c7))
+* array size info based on min max Items properties ([#1308](https://github.com/Redocly/redoc/issues/1308)) ([644e96a](https://github.com/Redocly/redoc/commit/644e96ae457047ce09f55aa1f14a42c41dbc1dc8))
+* new option sortEnumValuesAlphabetically ([#1321](https://github.com/Redocly/redoc/issues/1321)) ([a96a11a](https://github.com/Redocly/redoc/commit/a96a11a4dc8a509c6c3fba67dc4e065b66624e18))
+
+
+
+# [2.0.0-rc.32](https://github.com/Redocly/redoc/compare/v2.0.0-rc.31...v2.0.0-rc.32) (2020-07-21)
+
+Same as rc.31 by mistake
+
+
+
+# [2.0.0-rc.31](https://github.com/Redocly/redoc/compare/v2.0.0-rc.30...v2.0.0-rc.31) (2020-06-25)
+
+
+### Bug Fixes
+
+* do not display long regexps ([#1295](https://github.com/Redocly/redoc/issues/1295)) ([2ede22c](https://github.com/Redocly/redoc/commit/2ede22c45cc970ea1ac296adbae1f6032744f823))
+* prevent body scrolling when user scrolls side menu ([#1300](https://github.com/Redocly/redoc/issues/1300)) ([865a56a](https://github.com/Redocly/redoc/commit/865a56a2a9a105ef7b3b9150767399ca7339195a))
+
+
+
+# [2.0.0-rc.30](https://github.com/Redocly/redoc/compare/v2.0.0-rc.29...v2.0.0-rc.30) (2020-05-25)
+
+
+### Bug Fixes
+
+* add security headers to Docker nginx config ([#1244](https://github.com/Redocly/redoc/issues/1244)) ([4512436](https://github.com/Redocly/redoc/commit/4512436f1d88bd99558fe5f8384b37aa62562480))
+* keep 3-column layout on 13-inch mbp ([8d1d4c8](https://github.com/Redocly/redoc/commit/8d1d4c82e1377aecf936985ac13fa9bf5257562a))
+* proper search-index dispose ([9dd129d](https://github.com/Redocly/redoc/commit/9dd129d90b87f24ad20f084c44d48be50d750c94))
+
+
+
+# [2.0.0-rc.29](https://github.com/Redocly/redoc/compare/v2.0.0-rc.28...v2.0.0-rc.29) (2020-05-10)
+
+
+### Bug Fixes
+
+* depreacate x-code-samples, rename to x-codeSamples for consistency ([becc2f5](https://github.com/Redocly/redoc/commit/becc2f58568388b6500e6476874f27f62ff58ba9))
+* do not crash on incompatible allOf, console.warn instead ([6e607b9](https://github.com/Redocly/redoc/commit/6e607b9a2928b062c7705087432c0f0d88e74f5d)), closes [#1156](https://github.com/Redocly/redoc/issues/1156)
+* download button opens in new tab instead of downloading ([b59faad](https://github.com/Redocly/redoc/commit/b59faada8210a4c8f61fa0e850b7d844574a46d1)), closes [#1247](https://github.com/Redocly/redoc/issues/1247)
+* fix broken md headings with ampersand ([8460659](https://github.com/Redocly/redoc/commit/846065916d58cf628f0bc93c74be429ecdea12e7)), closes [#1173](https://github.com/Redocly/redoc/issues/1173)
+
+
+### Features
+
+* **cli:** add the --title option to the serve subcommand ([#1160](https://github.com/Redocly/redoc/issues/1160)) ([10414fc](https://github.com/Redocly/redoc/commit/10414fc6d5c0f91b5e93b1ed2326e4e508611324))
+
+
+
+# [2.0.0-rc.28](https://github.com/Redocly/redoc/compare/v2.0.0-rc.27...v2.0.0-rc.28) (2020-04-27)
+
+
+### Bug Fixes
+
+* encode URLs in json samples linkify (xss) ([62c01da](https://github.com/Redocly/redoc/commit/62c01da420fca2137674ae562d4ecba54db97da9)), thanks to @masatokinugawa
+
+
+
+# [2.0.0-rc.27](https://github.com/Redocly/redoc/compare/v2.0.0-rc.26...v2.0.0-rc.27) (2020-04-20)
+
+
+### Features
+
+* add callbacks support ([#1224](https://github.com/Redocly/redoc/issues/1224)) ([57e93ec](https://github.com/Redocly/redoc/commit/57e93ec4355de2659fcb5449b14b7ed738c6c276))
+
+
+
+# [2.0.0-rc.26](https://github.com/Redocly/redoc/compare/v2.0.0-rc.25...v2.0.0-rc.26) (2020-03-29)
+
+
+### Bug Fixes
+
+* crash to wrong spelling in localeCompare ([3908a7c](https://github.com/Redocly/redoc/commit/3908a7c46448d277b82318659cdea65db52f9e70)), closes [#1218](https://github.com/Redocly/redoc/issues/1218)
+
+
+
+# [2.0.0-rc.25](https://github.com/Redocly/redoc/compare/v2.0.0-rc.24...v2.0.0-rc.25) (2020-03-27)
+
+
+### Bug Fixes
+
+* do not collapse top level on Collapse All in json samples ([#1209](https://github.com/Redocly/redoc/issues/1209)) ([830371b](https://github.com/Redocly/redoc/commit/830371b5d1edf4ba7a138b3b3d78148d020e0349))
+* fix passing boolean value to showExtensions options ([#1211](https://github.com/Redocly/redoc/issues/1211)) ([c6eaa02](https://github.com/Redocly/redoc/commit/c6eaa0281bb0f62b019c865e4aefb863ce84d628))
+* improve names for some theme settings ([a0bd27c](https://github.com/Redocly/redoc/commit/a0bd27c75427a39abc9c753b0654678eed2f3851))
+* sort discriminator entries by mapping order ([#1216](https://github.com/Redocly/redoc/issues/1216)) ([ac4f915](https://github.com/Redocly/redoc/commit/ac4f915494f289d1c97ffdfe3af59efd94734f8c))
+
+
+### Features
+
+* add x-explicitMappingOnly extension ([#1215](https://github.com/Redocly/redoc/issues/1215)) ([ea5b0aa](https://github.com/Redocly/redoc/commit/ea5b0aabf9133d11d3a8fcb79f9515d21e0d7ac0))
+
+
+
+# [2.0.0-rc.24](https://github.com/Redocly/redoc/compare/v2.0.0-rc.23...v2.0.0-rc.24) (2020-03-17)
+
+
+### Bug Fixes
+
+* Add debounce for 300 ms when searching ([#1089](https://github.com/Redocly/redoc/issues/1089)) ([373f018](https://github.com/Redocly/redoc/commit/373f018d0c183f83d07a4dbad4a4e2c9ab159f69))
+* do not load SearchWorker if disableSearch is `true` ([#1191](https://github.com/Redocly/redoc/issues/1191)) ([af415e8](https://github.com/Redocly/redoc/commit/af415e89e8c074a3f7c84f76f24020a7bd545483)), closes [#764](https://github.com/Redocly/redoc/issues/764)
+* fix major search performance due to wrong marker element ([8c053cc](https://github.com/Redocly/redoc/commit/8c053cc474e88befc3338307317c0702d212d4c3)), closes [#1109](https://github.com/Redocly/redoc/issues/1109)
+
+
+### Features
+
+* new option expandSingleSchemaField ([7608800](https://github.com/Redocly/redoc/commit/7608800d0acaa2fa0099dc840e17cd5aa90b54ca))
+
+
+
+# [2.0.0-rc.23](https://github.com/Redocly/redoc/compare/v2.0.0-rc.22...v2.0.0-rc.23) (2020-02-09)
+
+
+### Bug Fixes
+
+* fix broken sticky sidebar in Chrome 80 ([1a2a7dd](https://github.com/Redocly/redoc/commit/1a2a7dd8331cedd6ced4c18accf0b417549b3ff3)), closes [#1167](https://github.com/Redocly/redoc/issues/1167)
+
+
+
+# [2.0.0-rc.22](https://github.com/Redocly/redoc/compare/v2.0.0-rc.21...v2.0.0-rc.22) (2020-01-15)
+
+
+### Bug Fixes
+
+* do not process oneOf if inherited from parent with discriminator ([5248415](https://github.com/Redocly/redoc/commit/52484157912d908daea8255d0b7d684b33258d7a))
+
+
+### Features
+
+* add HTTP syntax highlighting ([#1157](https://github.com/Redocly/redoc/issues/1157)) ([27a4af7](https://github.com/Redocly/redoc/commit/27a4af707686d56280753473b4294ee4af096534))
+
+
+
 # [2.0.0-rc.21](https://github.com/Redocly/redoc/compare/v2.0.0-rc.20...v2.0.0-rc.21) (2020-01-10)
 
 

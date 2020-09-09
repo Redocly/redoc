@@ -3,7 +3,6 @@ import * as React from 'react';
 
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
-
 import { H1, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 import { ContentItemModel } from '../../services/MenuBuilder';
 import { GroupModel, OperationModel } from '../../services/models';
@@ -24,6 +23,9 @@ export class ContentItems extends React.Component<{
       return item.type == "tag" ? item.name == `${activeSelection}` : true;
     });
     return filteredItems.map(item => <ContentItem item={item} key={item.id} />);
+    // return items.map(item => {
+    //   return <ContentItem key={item.id} item={item} />;
+    // });
   }
 }
 

@@ -8,7 +8,7 @@ const defaultTheme: ThemeInterface = {
   },
   breakpoints: {
     small: '50rem',
-    medium: '85rem',
+    medium: '75rem',
     large: '105rem',
   },
   colors: {
@@ -20,22 +20,26 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.primary.main),
     },
     success: {
-      main: '#00aa13',
-      light: ({ colors }) => lighten(colors.tonalOffset, colors.success.main),
+      main: '#1d8127',
+      light: ({ colors }) => lighten(colors.tonalOffset * 2, colors.success.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.success.main),
       contrastText: ({ colors }) => readableColor(colors.success.main),
     },
     warning: {
-      main: '#d4ad03',
+      main: '#ffa500',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.warning.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.warning.main),
       contrastText: '#ffffff',
     },
     error: {
-      main: '#e53935',
+      main: '#d41f1c',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
+    },
+    gray: {
+      50: '#FAFAFA',
+      100: '#F5F5F5',
     },
     text: {
       primary: '#333333',
@@ -48,14 +52,14 @@ const defaultTheme: ThemeInterface = {
     responses: {
       success: {
         color: ({ colors }) => colors.success.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.success.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.success.main),
       },
       error: {
         color: ({ colors }) => colors.error.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.error.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.error.main),
       },
       redirect: {
-        color: '#ffa500',
+        color: ({ colors }) => colors.warning.main,
         backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.redirect.color),
       },
       info: {
@@ -122,13 +126,13 @@ const defaultTheme: ThemeInterface = {
       hover: ({ typography }) => lighten(0.2, typography.links.color),
     },
   },
-  menu: {
+  sidebar: {
     width: '260px',
     backgroundColor: '#fafafa',
     textColor: '#333333',
     activeTextColor: theme =>
-      theme.menu.textColor !== defaultTheme.menu!.textColor
-        ? theme.menu.textColor
+      theme.sidebar.textColor !== defaultTheme.sidebar!.textColor
+        ? theme.sidebar.textColor
         : theme.colors.primary.main,
     groupItems: {
       textTransform: 'uppercase',
@@ -138,12 +142,12 @@ const defaultTheme: ThemeInterface = {
     },
     arrow: {
       size: '1.5em',
-      color: theme => theme.menu.textColor,
+      color: theme => theme.sidebar.textColor,
     },
   },
   logo: {
-    maxHeight: ({ menu }) => menu.width,
-    maxWidth: ({ menu }) => menu.width,
+    maxHeight: ({ sidebar }) => sidebar.width,
+    maxWidth: ({ sidebar }) => sidebar.width,
     gutter: '2px',
   },
   rightPanel: {
@@ -151,7 +155,7 @@ const defaultTheme: ThemeInterface = {
     width: '40%',
     textColor: '#ffffff',
   },
-  codeSample: {
+  codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
 };
@@ -229,6 +233,10 @@ export interface ResolvedThemeInterface {
     success: ColorSetting;
     warning: ColorSetting;
     error: ColorSetting;
+    gray: {
+      50: string;
+      100: string;
+    };
     border: {
       light: string;
       dark: string;
@@ -296,7 +304,7 @@ export interface ResolvedThemeInterface {
       hover: string;
     };
   };
-  menu: {
+  sidebar: {
     width: string;
     backgroundColor: string;
     textColor: string;
@@ -322,7 +330,7 @@ export interface ResolvedThemeInterface {
     textColor: string;
     width: string;
   };
-  codeSample: {
+  codeBlock: {
     backgroundColor: string;
   };
 

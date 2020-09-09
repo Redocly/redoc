@@ -80,6 +80,7 @@ export function PerfectScrollbarWrap(
           <div
             style={{
               overflow: 'auto',
+              overscrollBehavior: 'contain',
               msOverflowStyle: '-ms-autohiding-scrollbar',
             }}
           >

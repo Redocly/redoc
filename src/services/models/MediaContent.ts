@@ -21,8 +21,8 @@ export class MediaContentModel {
    * @param isRequestType needed to know if skipe RO/RW fields in objects
    */
   constructor(
-    public parser: OpenAPIParser,
-    info: Dict<OpenAPIMediaType>,
+    parser: OpenAPIParser,
+    info: Record<string, OpenAPIMediaType>,
     public isRequestType: boolean,
     options: RedocNormalizedOptions,
   ) {

@@ -7,12 +7,12 @@
 
 FROM node:alpine
 
-RUN apk update && apk add --no-cache git 
+RUN apk update && apk add --no-cache git
 
 # Install dependencies
 WORKDIR /build
-COPY package.json yarn.lock /build/
-RUN yarn install --frozen-lockfile --ignore-optional --ignore-scripts
+COPY package.json package-lock.json /build/
+RUN npm ci --no-optional --ignore-scripts
 
 # copy only required for the build files
 COPY src /build/src

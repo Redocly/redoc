@@ -1,16 +1,15 @@
-// @ts-ignore
-import Dropdown from 'react-dropdown';
-
 import { transparentize } from 'polished';
 import styled from '../../styled-components';
-
 import { StyledDropdown } from '../../common-elements';
 
 export const MimeLabel = styled.div`
-  padding: 12px;
+  padding: 0.9em;
   background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
   margin: 0 0 10px 0;
   display: block;
+  font-family: ${({ theme }) => theme.typography.headings.fontFamily};
+  font-size: 0.929em;
+  line-height: 1.5em;
 `;
 
 export const DropdownLabel = styled.span`
@@ -29,31 +28,45 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const InvertedSimpleDropdown = styled(StyledDropdown)`
-  margin-left: 10px;
-  text-transform: none;
-  font-size: 0.929em;
-  margin: 0 0 10px 0;
-  display: block;
-  background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
-  .Dropdown-control {
-    margin-top: 0;
-  }
-  .Dropdown-control,
-  .Dropdown-control:hover {
+  && {
+    margin-left: 10px;
+    text-transform: none;
+    font-size: 0.929em;
+    margin: 0 0 10px 0;
+    display: block;
+    background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
     font-size: 1em;
     border: none;
     padding: 0.9em 1.6em 0.9em 0.9em;
-    background: transparent;
-    color: ${({ theme }) => theme.rightPanel.textColor};
     box-shadow: none;
+    &:hover,
+    &:focus-within {
+      border: none;
+      box-shadow: none;
+    }
+    &:focus-within {
+      background-color: ${({ theme }) => transparentize(0.3, theme.rightPanel.backgroundColor)};
+    }
 
-    .Dropdown-arrow {
+    .dropdown-arrow {
       border-top-color: ${({ theme }) => theme.rightPanel.textColor};
     }
-  }
-  .Dropdown-menu {
-    margin: 0;
-    margin-top: 2px;
+    .dropdown-selector-value {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: ${({ theme }) => theme.rightPanel.textColor};
+    }
+
+    .dropdown-selector-content {
+      margin: 0;
+      margin-top: 2px;
+      .dropdown-option {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
   }
 `;
 

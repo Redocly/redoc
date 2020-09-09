@@ -10,7 +10,7 @@ const StyledMarkdownSpan = StyledMarkdownBlock.withComponent('span');
 const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
 
 export function SanitizedMarkdownHTML(
-  props: StylingMarkdownProps & { html: string; className?: string },
+  props: StylingMarkdownProps & { html: string; className?: string; 'data-role'?: string },
 ) {
   const Wrap = props.inline ? StyledMarkdownSpan : StyledMarkdownBlock;
 
@@ -22,6 +22,7 @@ export function SanitizedMarkdownHTML(
           dangerouslySetInnerHTML={{
             __html: sanitize(options.untrustedSpec, props.html),
           }}
+          data-role={props['data-role']}
           {...props}
         />
       )}

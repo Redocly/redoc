@@ -7,6 +7,7 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchResult } from '../../services/SearchWorker.worker';
 
+import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import {
   ClearIcon,
@@ -96,7 +97,6 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   setResults(results: SearchResult[], term: string) {
     this.setState({
       results,
-      term,
     });
     this.props.marker.mark(term);
   }

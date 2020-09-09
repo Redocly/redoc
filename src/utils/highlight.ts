@@ -6,6 +6,7 @@ import 'prismjs/components/prism-coffeescript.js';
 import 'prismjs/components/prism-cpp.js';
 import 'prismjs/components/prism-csharp.js';
 import 'prismjs/components/prism-go.js';
+import 'prismjs/components/prism-http.js';
 import 'prismjs/components/prism-java.js';
 import 'prismjs/components/prism-lua.js';
 import 'prismjs/components/prism-markup-templating.js'; // dep of php

@@ -1,0 +1,42 @@
+name: Redoc demo CI/CD
+
+on:
+  push:
+    tags:
+      - v[0-9]*.[0-9]*.[0-9]*
+
+jobs:
+  build-and-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm ci
+      - run: npm run bundle
+      - run: npm test
+  deploy:
+    needs: build-and-unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Install dependencies
+        run: npm ci
+      - name: Build package
+        run: npm run build:demo
+      - name: Deploy to S3 bucket
+        run: npm run deploy:demo
+      - name: Invalidate
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"

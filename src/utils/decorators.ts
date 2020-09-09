@@ -16,6 +16,7 @@ function throttle(func, wait) {
     const now = new Date().getTime();
     const remaining = wait - (now - previous);
     context = this;
+    // eslint-disable-next-line prefer-rest-params
     args = arguments;
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {

@@ -9,4 +9,4 @@
 !webpack.config.ts
 
 !package.json
-!yarn.lock
+!package-lock.json

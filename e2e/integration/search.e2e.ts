@@ -27,6 +27,8 @@ describe('Search', () => {
   it('should support arrow navigation', () => {
     getSearchInput().type('int', { force: true });
 
+    cy.wait(500);
+
     getSearchInput().type('{downarrow}', { force: true });
     getResult(0).should('have.class', 'active');
 

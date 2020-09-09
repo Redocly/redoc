@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Code } from './styled.elements';
 import { ShelfIcon } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 
@@ -17,7 +18,12 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
   render() {
     const { title, type, empty, code, opened, className, onClick } = this.props;
     return (
-      <div className={className} onClick={(!empty && onClick) || undefined}>
+      <button
+        className={className}
+        onClick={(!empty && onClick) || undefined}
+        aria-expanded={opened}
+        disabled={empty}
+      >
         {!empty && (
           <ShelfIcon
             size={'1.5em'}
@@ -26,9 +32,9 @@ export class ResponseTitle extends React.PureComponent<ResponseTitleProps> {
             float={'left'}
           />
         )}
-        <strong>{code} </strong>
+        <Code>{code} </Code>
         <Markdown compact={true} inline={true} source={title} />
-      </div>
+      </button>
     );
   }
 }

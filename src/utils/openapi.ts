@@ -1,5 +1,5 @@
 import { dirname } from 'path';
-const URLtemplate = require('url-template');
+import * as URLtemplate from 'url-template';
 
 import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';
@@ -492,7 +492,9 @@ export function mergeParams(
   return pathParams.concat(operationParams);
 }
 
-export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<OpenAPIMediaType> {
+export function mergeSimilarMediaTypes(
+  types: Record<string, OpenAPIMediaType>,
+): Record<string, OpenAPIMediaType> {
   const mergedTypes = {};
   Object.keys(types).forEach(name => {
     const mime = types[name];
@@ -510,7 +512,7 @@ export function mergeSimilarMediaTypes(types: Dict<OpenAPIMediaType>): Dict<Open
 
 export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
-    /(?:{)(\w+)(?:})/g,
+    /(?:{)([\w-.]+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
   );
 }
@@ -569,7 +571,8 @@ export const shortenHTTPVerb = verb =>
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
     'x-circular-ref': true,
-    'x-code-samples': true,
+    'x-code-samples': true, // deprecated
+    'x-codeSamples': true,
     'x-displayName': true,
     'x-examples': true,
     'x-ignoredHeaderParameters': true,
@@ -579,12 +582,16 @@ export function isRedocExtension(key: string): boolean {
     'x-tagGroups': true,
     'x-traitTag': true,
     'x-additionalPropertiesName': true,
+    'x-explicitMappingOnly': true,
   };
 
   return key in redocExtensions;
 }
 
-export function extractExtensions(obj: object, showExtensions: string[] | true): Dict<any> {
+export function extractExtensions(
+  obj: object,
+  showExtensions: string[] | true,
+): Record<string, any> {
   return Object.keys(obj)
     .filter(key => {
       if (showExtensions === true) {

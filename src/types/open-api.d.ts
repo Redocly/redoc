@@ -9,6 +9,7 @@ export interface OpenAPISpec {
   security?: OpenAPISecurityRequirement[];
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
+  'x-webhooks'?: OpenAPIPaths;
 }
 
 export interface OpenAPIInfo {
@@ -76,7 +77,8 @@ export interface OpenAPIOperation {
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
-  'x-code-samples'?: OpenAPIXCodeSample[];
+  'x-codeSamples'?: OpenAPIXCodeSample[];
+  'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
 }
 
 export interface OpenAPIParameter {
@@ -144,6 +146,7 @@ export interface OpenAPISchema {
 export interface OpenAPIDiscriminator {
   propertyName: string;
   mapping?: { [name: string]: string };
+  'x-explicitMappingOnly'?: boolean;
 }
 
 export interface OpenAPIMediaType {
@@ -195,7 +198,7 @@ export interface OpenAPILink {
 export type OpenAPIHeader = Omit<OpenAPIParameter, 'in' | 'name'>;
 
 export interface OpenAPICallback {
-  $ref?: string;
+  [name: string]: OpenAPIPath;
 }
 
 export interface OpenAPIComponents {
@@ -224,22 +227,22 @@ export interface OpenAPISecurityScheme {
   flows: {
     implicit?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       authorizationUrl: string;
     };
     password?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     clientCredentials?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     authorizationCode?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
   };

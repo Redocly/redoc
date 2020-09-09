@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { SchemaModel } from '../../models/Schema';
 import { OpenAPIParser } from '../../OpenAPIParser';
 import { RedocNormalizedOptions } from '../../RedocNormalizedOptions';

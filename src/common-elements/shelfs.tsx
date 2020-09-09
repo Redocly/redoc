@@ -26,6 +26,7 @@ class IntShelfIcon extends React.PureComponent<{
         x="0"
         xmlns="http://www.w3.org/2000/svg"
         y="0"
+        aria-hidden="true"
       >
         <polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 " />
       </svg>
@@ -50,10 +51,17 @@ export const ShelfIcon = styled(IntShelfIcon)`
 
 export const Badge = styled.span<{ type: string }>`
   display: inline-block;
-  padding: 0 5px;
+  padding: 2px 8px;
   margin: 0;
   background-color: ${props => props.theme.colors[props.type].main};
   color: ${props => props.theme.colors[props.type].contrastText};
   font-size: ${props => props.theme.typography.code.fontSize};
-  vertical-align: text-top;
+  vertical-align: middle;
+  line-height: 1.6;
+  border-radius: 4px;
+  font-weight: ${({ theme }) => theme.typography.fontWeightBold};
+  font-size: 12px;
+  + span[type] {
+    margin-left: 4px;
+  }
 `;

@@ -80,7 +80,7 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
 }
 
 const MediaSamplesWrap = styled.div`
-  background: ${({ theme }) => theme.codeSample.backgroundColor};
+  background: ${({ theme }) => theme.codeBlock.backgroundColor};
   & > div,
   & > pre {
     padding: ${props => props.theme.spacing.unit * 4}px;

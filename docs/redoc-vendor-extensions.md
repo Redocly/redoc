@@ -4,7 +4,7 @@ ReDoc makes use of the following [vendor extensions](https://swagger.io/specific
 ### Swagger Object vendor extensions
 Extend OpenAPI root [Swagger Object](https://swagger.io/specification/#oasObject)
 #### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#server-object). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
 
 #### x-tagGroups
 
@@ -162,13 +162,13 @@ x-traitTag: true
 
 ### Operation Object vendor extensions
 Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
-#### x-code-samples
+#### x-codeSamples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-code-samples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
+| x-codeSamples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
 
 ###### Usage in ReDoc
-`x-code-samples` are rendered on the right panel of ReDoc
+`x-codeSamples` are rendered on the right panel of ReDoc
 
 #### <a name="codeSampleObject"></a>Code Sample Object
 Operation code sample
@@ -306,3 +306,37 @@ Player:
     x-additionalPropertiesName: attribute-name
     type: string
 ```
+
+#### x-explicitMappingOnly
+**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+
+Extends the `discriminator` property of the schema object.
+
+| Field Name     |	Type	  | Description |
+| :------------- | :------: | :---------- |
+| x-explicitMappingOnly | boolean | limit the discriminator selectpicker to the explicit mappings only |
+
+###### Usage in ReDoc
+ReDoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
+When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`,
+the default behavior is kept, i.e. explicit and implicit mappings will be shown.
+
+###### x-explicitMappingOnly example
+
+
+```yaml
+Pet:
+  type: object
+  required:
+    - name
+    - photoUrls
+  discriminator:
+    propertyName: petType
+    x-explicitMappingOnly: true
+    mapping:
+      cat: "#/components/schemas/Cat"
+      bee: "#/components/schemas/HoneyBee"
+```
+
+Will show in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from
+the `Pet` class.

@@ -50,6 +50,11 @@ YargsParser.command(
       describe: 'path or URL to your spec',
     });
 
+    yargs.options('title', {
+      describe: 'Page Title',
+      type: 'string',
+    });
+
     yargs.option('s', {
       alias: 'ssr',
       describe: 'Enable server-side rendering',
@@ -73,6 +78,7 @@ YargsParser.command(
   async argv => {
     const config: Options = {
       ssr: argv.ssr as boolean,
+      title: argv.title as string,
       watch: argv.watch as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},

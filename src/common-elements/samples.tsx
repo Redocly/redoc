@@ -5,13 +5,22 @@ export const SampleControls = styled.div`
   opacity: 0.4;
   transition: opacity 0.3s ease;
   text-align: right;
-
-  > span {
-    display: inline-block;
+  &:focus-within {
+    opacity: 1;
+  }
+  > button {
+    background-color: transparent;
+    border: 0;
+    color: inherit;
     padding: 2px 10px;
+    font-family: ${({ theme }) => theme.typography.fontFamily};
+    font-size: ${({ theme }) => theme.typography.fontSize};
+    line-height: ${({ theme }) => theme.typography.lineHeight};
     cursor: pointer;
+    outline: 0;
 
-    :hover {
+    :hover,
+    :focus {
       background: rgba(255, 255, 255, 0.1);
     }
   }

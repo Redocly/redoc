@@ -24,9 +24,9 @@ export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolea
  * @param iteratee the function invoked per iteration.
  */
 export function mapValues<T, P>(
-  object: Dict<T>,
-  iteratee: (val: T, key: string, obj: Dict<T>) => P,
-): Dict<P> {
+  object: Record<string, T>,
+  iteratee: (val: T, key: string, obj: Record<string, T>) => P,
+): Record<string, P> {
   const res: { [key: string]: P } = {};
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
@@ -189,12 +189,14 @@ export function removeQueryString(serverUrl: string): string {
 function parseURL(url: string) {
   if (typeof URL === 'undefined') {
     // node
-    return new (require('url')).URL(url);
+    return new (require('url').URL)(url);
   } else {
     return new URL(url);
   }
 }
 
 export function unescapeHTMLChars(str: string): string {
-  return str.replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)));
+  return str
+    .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
+    .replace(/&amp;/g, '&');
 }

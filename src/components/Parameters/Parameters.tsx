@@ -26,7 +26,7 @@ export interface ParametersProps {
 const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
 
 export class Parameters extends React.PureComponent<ParametersProps> {
-  orderParams(params: FieldModel[]): Dict<FieldModel[]> {
+  orderParams(params: FieldModel[]): Record<string, FieldModel[]> {
     const res = {};
     params.forEach(param => {
       safePush(res, param.in, param);
@@ -67,7 +67,7 @@ function DropdownWithinHeader(props) {
   );
 }
 
-function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+export function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
   const { content, description } = props;
   return (
     <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>

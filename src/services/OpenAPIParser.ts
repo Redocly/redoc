@@ -148,7 +148,7 @@ export class OpenAPIParser {
    * @param obj object to dereference
    * @param forceCircular whether to dereference even if it is circular ref
    */
-  deref<T extends object>(obj: OpenAPIRef | T, forceCircular: boolean = false): T {
+  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false): T {
     if (this.isRef(obj)) {
       const resolved = this.byRef<T>(obj.$ref)!;
       const visited = this._refCounter.visited(obj.$ref);
@@ -239,7 +239,9 @@ export class OpenAPIParser {
         receiver.type !== undefined &&
         subSchema.type !== undefined
       ) {
-        throw new Error(`Incompatible types in allOf at "${$ref}"`);
+        console.warn(
+          `Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${subSchema.type}"`,
+        );
       }
 
       if (subSchema.type !== undefined) {
@@ -296,8 +298,8 @@ export class OpenAPIParser {
    * returns map of definition pointer to definition name
    * @param $refs array of references to find derived from
    */
-  findDerived($refs: string[]): Dict<string[]> {
-    const res: Dict<string[]> = {};
+  findDerived($refs: string[]): Record<string, string[] | string> {
+    const res: Record<string, string[]> = {};
     const schemas = (this.spec.components && this.spec.components.schemas) || {};
     for (const defName in schemas) {
       const def = this.deref(schemas[defName]);

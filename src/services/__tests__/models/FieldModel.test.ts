@@ -6,9 +6,9 @@ const opts = new RedocNormalizedOptions({});
 
 describe('Models', () => {
   describe('FieldModel', () => {
-    let parser;
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const spec = require('../fixtures/fields.json');
-    parser = new OpenAPIParser(spec, undefined, opts);
+    const parser = new OpenAPIParser(spec, undefined, opts);
 
     test('basic field details', () => {
       const field = new FieldModel(
@@ -33,6 +33,57 @@ describe('Models', () => {
           $ref: '#/components/parameters/serializationParam',
         },
         '#/components/parameters/serializationParam',
+        opts,
+      );
+
+      expect(field.name).toEqual('serialization_test_name');
+      expect(field.in).toEqual('query');
+      expect(field.schema.type).toEqual('array');
+      expect(field.style).toEqual('form');
+      expect(field.explode).toEqual(true);
+    });
+
+    test('field details relevant for default path param serialization', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          $ref: '#/components/parameters/pathParamWithNoStyle',
+        },
+        '#/components/parameters/pathParamWithNoStyle',
+        opts,
+      );
+
+      expect(field.name).toEqual('serialization_test_name');
+      expect(field.in).toEqual('path');
+      expect(field.schema.type).toEqual('array');
+      expect(field.style).toEqual('simple');
+      expect(field.explode).toEqual(false);
+    });
+
+    test('field details relevant for default query parameter serialization', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          $ref: '#/components/parameters/queryParamWithNoStyle',
+        },
+        '#/components/parameters/queryParamWithNoStyle',
+        opts,
+      );
+
+      expect(field.name).toEqual('serialization_test_name');
+      expect(field.in).toEqual('query');
+      expect(field.schema.type).toEqual('array');
+      expect(field.style).toEqual('form');
+      expect(field.explode).toEqual(true);
+    });
+
+    test('field details relevant for default cookie parameter serialization', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          $ref: '#/components/parameters/queryParamWithNoStyle',
+        },
+        '#/components/parameters/queryParamWithNoStyle',
         opts,
       );
 

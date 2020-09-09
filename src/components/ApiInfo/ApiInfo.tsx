@@ -81,7 +81,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               <p>
                 Download OpenAPI specification:
                 <DownloadButton
-                  download={downloadFilename}
+                  download={downloadFilename || true}
                   target="_blank"
                   href={downloadLink}
                   onClick={this.handleDownloadClick}
@@ -100,7 +100,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               )) ||
                 null}
             </StyledMarkdownBlock>
-            <Markdown source={store.spec.info.description} />
+            <Markdown source={store.spec.info.description} data-role="redoc-description" />
             {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
           </MiddlePanel>
         </Row>

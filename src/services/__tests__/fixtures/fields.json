@@ -17,6 +17,21 @@
         "schema": { "type": "array" },
         "style": "form",
         "explode": true
+      },
+      "queryParamWithNoStyle": {
+        "in": "query",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
+      },
+      "pathParamWithNoStyle": {
+        "in": "path",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
+      },
+      "cookieParamWithNoStyle": {
+        "in": "cookie",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
       }
     },
     "headers": {

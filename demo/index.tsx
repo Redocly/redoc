@@ -13,10 +13,7 @@ const demos = [
   },
   { value: 'https://api.apis.guru/v2/specs/slack.com/1.2.0/swagger.yaml', label: 'Slack' },
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
-  {
-    value: 'https://api.apis.guru/v2/specs/graphhopper.com/1.0/swagger.yaml',
-    label: 'GraphHopper',
-  },
+  { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
 
 const DEFAULT_SPEC = 'openapi.yaml';
@@ -100,11 +97,14 @@ class DemoApp extends React.Component<
             src="https://ghbtns.com/github-btn.html?user=Redocly&amp;repo=redoc&amp;type=star&amp;count=true&amp;size=large"
             frameBorder="0"
             scrolling="0"
-            width="150px"
+            width="160px"
             height="30px"
           />
         </Heading>
-        <RedocStandalone specUrl={proxiedUrl} options={{ scrollYOffset: 'nav' }} />
+        <RedocStandalone
+          specUrl={proxiedUrl}
+          options={{ scrollYOffset: 'nav', untrustedSpec: true }}
+        />
       </>
     );
   }

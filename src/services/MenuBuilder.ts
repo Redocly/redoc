@@ -1,8 +1,17 @@
-import { OpenAPIOperation, OpenAPIParameter, OpenAPISpec, OpenAPITag, Referenced } from '../types';
+import {
+  OpenAPIOperation,
+  OpenAPIParameter,
+  OpenAPISpec,
+  OpenAPITag,
+  Referenced,
+  OpenAPIServer,
+  OpenAPIPaths,
+} from '../types';
 import {
   isOperationName,
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
+  JsonPointer,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -15,12 +24,15 @@ export type TagInfo = OpenAPITag & {
 };
 
 export type ExtendedOpenAPIOperation = {
+  pointer: string;
   pathName: string;
   httpVerb: string;
   pathParameters: Array<Referenced<OpenAPIParameter>>;
+  pathServers: Array<OpenAPIServer> | undefined;
+  isWebhook: boolean;
 } & OpenAPIOperation;
 
-export type TagsInfoMap = Dict<TagInfo>;
+export type TagsInfoMap = Record<string, TagInfo>;
 
 export interface TagGroup {
   name: string;
@@ -209,41 +221,49 @@ export class MenuBuilder {
       tags[tag.name] = { ...tag, operations: [] };
     }
 
-    const paths = spec.paths;
-    for (const pathName of Object.keys(paths)) {
-      const path = paths[pathName];
-      const operations = Object.keys(path).filter(isOperationName);
-      for (const operationName of operations) {
-        const operationInfo = path[operationName];
-        let operationTags = operationInfo.tags;
+    getTags(spec.paths);
+    if (spec['x-webhooks']) {
+      getTags(spec['x-webhooks'], true);
+    }
 
-        if (!operationTags || !operationTags.length) {
-          // empty tag
-          operationTags = [''];
-        }
+    function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
+      for (const pathName of Object.keys(paths)) {
+        const path = paths[pathName];
+        const operations = Object.keys(path).filter(isOperationName);
+        for (const operationName of operations) {
+          const operationInfo = path[operationName];
+          let operationTags = operationInfo.tags;
 
-        for (const tagName of operationTags) {
-          let tag = tags[tagName];
-          if (tag === undefined) {
-            tag = {
-              name: tagName,
-              operations: [],
-            };
-            tags[tagName] = tag;
+          if (!operationTags || !operationTags.length) {
+            // empty tag
+            operationTags = [''];
           }
-          if (tag['x-traitTag']) {
-            continue;
+
+          for (const tagName of operationTags) {
+            let tag = tags[tagName];
+            if (tag === undefined) {
+              tag = {
+                name: tagName,
+                operations: [],
+              };
+              tags[tagName] = tag;
+            }
+            if (tag['x-traitTag']) {
+              continue;
+            }
+            tag.operations.push({
+              ...operationInfo,
+              pathName,
+              pointer: JsonPointer.compile(['paths', pathName, operationName]),
+              httpVerb: operationName,
+              pathParameters: path.parameters || [],
+              pathServers: path.servers,
+              isWebhook: !!isWebhook,
+            });
           }
-          tag.operations.push({
-            ...operationInfo,
-            pathName,
-            httpVerb: operationName,
-            pathParameters: path.parameters || [],
-          });
         }
       }
     }
-
     return tags;
   }
 }

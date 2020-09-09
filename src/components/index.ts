@@ -20,7 +20,11 @@ export * from './Responses/ResponsesList';
 export * from './Responses/ResponseTitle';
 export * from './ResponseSamples/ResponseSamples';
 export * from './PayloadSamples/PayloadSamples';
+export * from './PayloadSamples/styled.elements';
 export * from './MediaTypeSwitch/MediaTypesSwitch';
+export * from './Parameters/Parameters';
+export * from './PayloadSamples/Example';
+export * from './DropdownOrLabel/DropdownOrLabel';
 
 export * from './ErrorBoundary';
 export * from './StoreBuilder';
