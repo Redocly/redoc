@@ -164,6 +164,9 @@ export class OpenAPIParser {
         this.exitRef(resolved);
         return res;
       }
+      if (obj['x-description']) {
+        return Object.assign({}, resolved, { description: obj['x-description'] });
+      }
       return resolved;
     }
     return obj;
@@ -229,9 +232,9 @@ export class OpenAPIParser {
         };
       })
       .filter(child => child !== undefined) as Array<{
-      $ref: string | undefined;
-      schema: MergedOpenAPISchema;
-    }>;
+        $ref: string | undefined;
+        schema: MergedOpenAPISchema;
+      }>;
 
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       if (
