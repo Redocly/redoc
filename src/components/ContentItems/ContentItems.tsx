@@ -23,9 +23,6 @@ export class ContentItems extends React.Component<{
       return item.type == "tag" ? item.name == `${activeSelection}` : true;
     });
     return filteredItems.map(item => <ContentItem item={item} key={item.id} />);
-    // return items.map(item => {
-    //   return <ContentItem key={item.id} item={item} />;
-    // });
   }
 }
 
