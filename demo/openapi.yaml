@@ -813,6 +813,7 @@ components:
         photoUrls:
           description: The list of URL to a cute photos featuring pet
           type: array
+          example: http://facebook.com/maxthecat
           maxItems: 20
           xml:
             name: photoUrl

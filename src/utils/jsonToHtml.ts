@@ -14,11 +14,11 @@ export function jsonToHTML(json, maxExpandLevel) {
 function htmlEncode(t) {
   return t !== undefined
     ? t
-        .toString()
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
+      .toString()
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
     : '';
 }
 
@@ -58,7 +58,7 @@ function valueToHTML(value, maxExpandLevel: number) {
         '<a href="' +
         value +
         '">' +
-        htmlEncode(stringifyStringLiteral(value)) +
+        decorateWithSpan(htmlEncode(stringifyStringLiteral(value)), "token url") +
         '</a>' +
         decorateWithSpan('"', 'token string');
     } else {
@@ -106,7 +106,8 @@ function objectToHTML(json, maxExpandLevel: number) {
     const key = keys[i];
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
+    output += '<span class="property token">"' + htmlEncode(key) + '"</span>';
+    output += punctuation(':') + ' ';
     output += valueToHTML(json[key], maxExpandLevel);
     if (i < length - 1) {
       output += punctuation(',');
