@@ -1,8 +1,61 @@
 # ReDoc vendor extensions
-ReDoc makes use of the following [vendor extensions](https://swagger.io/specification/#specificationExtensions)
 
-### Swagger Object vendor extensions
-Extend OpenAPI root [Swagger Object](https://swagger.io/specification/#oasObject)
+You can use the following [vendor extensions](https://swagger.io/specification/#specificationExtensions) with Redoc.
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [ReDoc vendor extensions](#redoc-vendor-extensions)
+		- [Swagger Object](#swagger-object)
+			- [x-servers](#x-servers)
+			- [x-tagGroups](#x-taggroups)
+					- [How to use with Redoc](#how-to-use-with-redoc)
+			- [<a name="tagGroupObject"></a>Tag Group Object](#a-nametaggroupobjectatag-group-object)
+					- [Fixed fields](#fixed-fields)
+					- [x-tagGroups example](#x-taggroups-example)
+			- [x-ignoredHeaderParameters](#x-ignoredheaderparameters)
+					- [How to use with Redoc](#how-to-use-with-redoc)
+					- [x-ignoredHeaderParameters example](#x-ignoredheaderparameters-example)
+		- [Info Object](#info-object)
+			- [x-logo](#x-logo)
+					- [How to use with Redoc](#how-to-use-with-redoc)
+			- [<a name="logoObject"></a>Logo Object](#a-namelogoobjectalogo-object)
+					- [Fixed fields](#fixed-fields)
+					- [x-logo example](#x-logo-example)
+		- [Tag Object](#tag-object)
+			- [x-traitTag](#x-traittag)
+					- [How to use with Redoc](#how-to-use-with-redoc)
+					- [x-traitTag example](#x-traittag-example)
+			- [x-displayName](#x-displayname)
+		- [Operation Object vendor extensions](#operation-object-vendor-extensions)
+			- [x-codeSamples](#x-codesamples)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+			- [<a name="codeSampleObject"></a>Code Sample Object](#a-namecodesampleobjectacode-sample-object)
+					- [Fixed fields](#fixed-fields)
+					- [Code Sample Object example](#code-sample-object-example)
+		- [Parameter Object](#parameter-object)
+			- [x-examples](#x-examples)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+		- [Response Object vendor extensions](#response-object-vendor-extensions)
+			- [x-summary](#x-summary)
+					- [Usage in ReDoc](#usage-in-redoc)
+		- [Schema Object](#schema-object)
+			- [x-nullable](#x-nullable)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+			- [x-extendedDiscriminator](#x-extendeddiscriminator)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+					- [x-extendedDiscriminator example](#x-extendeddiscriminator-example)
+			- [x-additionalPropertiesName](#x-additionalpropertiesname)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+					- [x-additionalPropertiesName example](#x-additionalpropertiesname-example)
+			- [x-explicitMappingOnly](#x-explicitmappingonly)
+					- [How to use with ReDoc](#how-to-use-with-redoc)
+					- [x-explicitMappingOnly example](#x-explicitmappingonly-example)
+
+<!-- /TOC -->
+
+### Swagger Object
+Extends the OpenAPI root [OpenAPI Object](https://swagger.io/specification/#oasObject)
+
 #### x-servers
 Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
 
@@ -12,9 +65,9 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 | :------------- | :-----------: | :---------- |
 | x-tagGroups         | [ [Tag Group Object](#tagGroupObject) ] | A list of tag groups |
 
-###### Usage in Redoc
+###### How to use with Redoc
 `x-tagGroups` is used to group tags in the side menu.
-If you are going to use `x-tagGroups`, please make sure you **add all tags to a group**, since a tag that is not in a group, **will not be displayed** at all!
+Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a tag that is not in a group, **will not be displayed** at all!
 
 #### <a name="tagGroupObject"></a>Tag Group Object
 Information about tags group
@@ -62,8 +115,8 @@ x-tagGroups:
 | x-ignoredHeaderParameters   | [ string ] | A list of ignored headers |
 
 
-###### Usage in Redoc
-`x-ignoredHeaderParameters` is used to specify header parameter names which are ignored by ReDoc
+###### How to use with Redoc
+Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by ReDoc.
 
 ###### x-ignoredHeaderParameters example
 ```yaml
@@ -77,19 +130,20 @@ x-ignoredHeaderParameters:
   - X-Test-Header
 ```
 
-### Info Object vendor extensions
-Extends OpenAPI [Info Object](http://swagger.io/specification/#infoObject)
+### Info Object
+Extends the OpenAPI [Info Object](http://swagger.io/specification/#infoObject)
 #### x-logo
 
 | Field Name     |	Type	       | Description |
 | :------------- | :-----------: | :---------- |
 | x-logo         | [Logo Object](#logoObject)  | The information about API logo |
 
-###### Usage in Redoc
-`x-logo` is used to specify API logo. The corresponding image are displayed just above side-menu.
+###### How to use with Redoc
+`x-logo` is used to specify API logo. The corresponding image is displayed just above the side-menu.
 
 #### <a name="logoObject"></a>Logo Object
 The information about API logo
+
 ###### Fixed fields
 | Field Name      |	Type	   | Description |
 | :-------------- | :------: | :---------- |
@@ -125,17 +179,16 @@ info:
     altText: "Petstore logo"
 ```
 
+### Tag Object
+Extends the OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
 
-
-### Tag Object vendor extensions
-Extends OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
 #### x-traitTag
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-traitTag     | boolean  | In Swagger two operations can have multiple tags. This property distinguishes between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
 
-###### Usage in Redoc
-Tags that have `x-traitTag` set to `true` are listed in side-menu but don't have any subitems (operations). Tag `description` is rendered as well.
+###### How to use with Redoc
+Tags that have `x-traitTag` set to `true` are listed in the side-menu but don't have any subitems (operations). It also renders the `description` tag.
 This is useful for handling out common things like Pagination, Rate-Limits, etc.
 
 ###### x-traitTag example
@@ -161,17 +214,19 @@ x-traitTag: true
 | x-displayName  | string   | Defines the text that is used for this tag in the menu and in section headings |
 
 ### Operation Object vendor extensions
-Extends OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
+Extends the OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
+
 #### x-codeSamples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-codeSamples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
 
-###### Usage in ReDoc
-`x-codeSamples` are rendered on the right panel of ReDoc
+###### How to use with ReDoc
+`x-codeSamples` are rendered on the right panel in ReDoc.
 
 #### <a name="codeSampleObject"></a>Code Sample Object
 Operation code sample
+
 ###### Fixed fields
 | Field Name  |	Type	   | Description  |
 | :---------- | :------: | :----------- |
@@ -194,18 +249,19 @@ lang: JavaScript
 source: console.log('Hello World');
 ```
 
-### Parameter Object vendor extensions
-Extends OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObject)
+### Parameter Object
+Extends the OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObject)
+
 #### x-examples
 | Field Name     |  Type    | Description |
 | :------------- | :------: | :---------- |
 | x-examples | [Example Object](http://swagger.io/specification/#exampleObject)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
 
-###### Usage in ReDoc
-`x-examples` are rendered in the JSON tab on the right panel of ReDoc.
+###### How to use with ReDoc
+`x-examples` are rendered in the JSON tab on the right panel in ReDoc.
 
 ### Response Object vendor extensions
-Extends OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
+Extends the OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
 
 #### x-summary
 | Field Name     |	Type	  | Description |
@@ -213,30 +269,31 @@ Extends OpenAPI [Response Object](https://swagger.io/specification/#responseObje
 | x-summary      | string   | a short summary of the response |
 
 ###### Usage in ReDoc
-If specified, `x-summary` is used as the response button text. Description is rendered under the button.
+If specified, you can use `x-summary` as the response button text, with description rendered under the button.
 
-### Schema Object vendor extensions
-Extends OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
+### Schema Object
+Extends the OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
+
 #### x-nullable
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-nullable | boolean | marks schema as a nullable |
 
-###### Usage in ReDoc
+###### How to use with ReDoc
 Schemas marked as `x-nullable` are marked in ReDoc with the label Nullable
 
 #### x-extendedDiscriminator
-**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+**ATTENTION**: This is a ReDoc-specific vendor extension, and is not supported by other tools.
 
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-extendedDiscriminator | string | specifies extended discriminator |
 
-###### Usage in ReDoc
+###### How to use with ReDoc
 ReDoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
 Value of this field specifies the field which will be used as a extended discriminator.
 ReDoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
-ReDoc displays the definition which is derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
+ReDoc displays the definition derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
 
 ###### x-extendedDiscriminator example
 
@@ -276,11 +333,10 @@ PayPalPayment:
           type: string
 ```
 
-In the example above the names of definitions (`PayPalPayment`) are named differently than
-names in the payload (`paypal`) which is not supported by default `discriminator`.
+In the example above, the names of definitions (`PayPalPayment`) are named differently than names in the payload (`paypal`) which is not supported by default `discriminator`.
 
 #### x-additionalPropertiesName
-**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+**ATTENTION**: This is a ReDoc-specific vendor extension, and is not supported by other tools.
 
 Extends the `additionalProperties` property of the schema object.
 
@@ -288,7 +344,7 @@ Extends the `additionalProperties` property of the schema object.
 | :------------- | :------: | :---------- |
 | x-additionalPropertiesName | string | descriptive name of additional properties keys  |
 
-###### Usage in ReDoc
+###### How to use with ReDoc
 ReDoc uses this extension to display a more descriptive property name in objects with `additionalProperties` when viewing the property list with an `object`.
 
 ###### x-additionalPropertiesName example
@@ -308,7 +364,7 @@ Player:
 ```
 
 #### x-explicitMappingOnly
-**ATTENTION**: This is ReDoc-specific vendor extension. It won't be supported by other tools.
+**ATTENTION**: This is ReDoc-specific vendor extension, and is not supported by other tools.
 
 Extends the `discriminator` property of the schema object.
 
@@ -316,10 +372,9 @@ Extends the `discriminator` property of the schema object.
 | :------------- | :------: | :---------- |
 | x-explicitMappingOnly | boolean | limit the discriminator selectpicker to the explicit mappings only |
 
-###### Usage in ReDoc
+###### How to use with ReDoc
 ReDoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
-When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`,
-the default behavior is kept, i.e. explicit and implicit mappings will be shown.
+When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`, the default behavior is kept, i.e. explicit and implicit mappings will be shown.
 
 ###### x-explicitMappingOnly example
 
@@ -338,5 +393,4 @@ Pet:
       bee: "#/components/schemas/HoneyBee"
 ```
 
-Will show in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from
-the `Pet` class.
+Will show in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
