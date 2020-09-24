@@ -109,6 +109,7 @@ export async function search<Meta = string>(
       .toLowerCase()
       .split(/\s+/)
       .forEach(term => {
+        if (term.length === 1) return;
         const exp = expandTerm(term);
         t.term(exp, {});
       });
