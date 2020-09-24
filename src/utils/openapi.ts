@@ -369,6 +369,12 @@ export function isNamedDefinition(pointer?: string): boolean {
   return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
+export function getDefinitionName(pointer?: string): string | undefined {
+  if (!pointer) return undefined;
+  const match = pointer.match(/^#\/components\/schemas\/([^\/]+)$/);
+  return match === null ? undefined : match[1]
+}
+
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
   if (multipleOf === undefined) {
     return;
