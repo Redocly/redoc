@@ -15,6 +15,7 @@ export default class Worker {
   toJS = toJS;
   load = load;
   dispose = dispose;
+  fromExternalJS = fromExternalJS;
 }
 
 export interface SearchDocument {
@@ -70,6 +71,19 @@ export async function toJS() {
     store,
     index: (await index).toJSON(),
   };
+}
+
+export async function fromExternalJS(path: string, exportName: string) {
+  try {
+    importScripts(path);
+    if (!self[exportName]) {
+      throw new Error('Broken index file format');
+    }
+
+    load(self[exportName]);
+  } catch (e) {
+    console.error('Failed to load search index: ' + e.message);
+  }
 }
 
 export async function load(state: any) {
