@@ -1,3 +1,21 @@
+# [2.0.0-rc.41](https://github.com/Redocly/redoc/compare/v2.0.0-rc.40...v2.0.0-rc.41) (2020-09-24)
+
+
+### Bug Fixes
+
+* display response code at the top after adding a line break ([#1374](https://github.com/Redocly/redoc/issues/1374)) ([c801b87](https://github.com/Redocly/redoc/commit/c801b87d2aea5e17d35093e2548e1f51f42b1ee3))
+* fix displaying response title ([#1376](https://github.com/Redocly/redoc/issues/1376)) ([f3e8ab4](https://github.com/Redocly/redoc/commit/f3e8ab4f8e5522c9ea1ddedb143e23c7d62f5807))
+* fix displaying top-level object without any properties ([a5468fb](https://github.com/Redocly/redoc/commit/a5468fb7bb99fcfe33724af939b1a589c1219052))
+* show long pattern and add toggle button ([#1375](https://github.com/Redocly/redoc/issues/1375)) ([a6b41aa](https://github.com/Redocly/redoc/commit/a6b41aa00b7592512fdaa7532d9f5d85238db29b))
+
+
+### Features
+
+* load external search index ([346b10f](https://github.com/Redocly/redoc/commit/346b10f1739d6b44066bdf1f6aac39d5ee3567d2))
+* support for ignoring specified named schemas ([9730c4e](https://github.com/Redocly/redoc/commit/9730c4ee1c274c5775966959b69c209c40034b11))
+
+
+
 # [2.0.0-rc.40](https://github.com/Redocly/redoc/compare/v2.0.0-rc.39...v2.0.0-rc.40) (2020-08-24)
 
 
