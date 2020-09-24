@@ -65,7 +65,10 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
 
     switch (type) {
       case 'object':
-        return <ObjectSchema {...(this.props as any)} />;
+        if (schema.fields?.length) {
+          return <ObjectSchema {...(this.props as any)} />;
+        }
+        break;
       case 'array':
         return <ArraySchema {...(this.props as any)} />;
     }
