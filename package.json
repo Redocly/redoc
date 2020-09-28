@@ -87,6 +87,7 @@
     "bundlesize": "^0.18.0",
     "conventional-changelog-cli": "^2.0.31",
     "copy-webpack-plugin": "^5.1.1",
+    "copyfiles": "^2.3.0",
     "core-js": "^3.5.0",
     "coveralls": "^3.0.9",
     "css-loader": "^3.4.2",
