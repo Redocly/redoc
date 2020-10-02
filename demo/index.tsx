@@ -8,10 +8,10 @@ import ComboBox from './ComboBox';
 const demos = [
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
   {
-    value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/swagger.yaml',
+    value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml',
     label: 'Google Calendar',
   },
-  { value: 'https://api.apis.guru/v2/specs/slack.com/1.2.0/swagger.yaml', label: 'Slack' },
+  { value: 'https://api.apis.guru/v2/specs/slack.com/1.5.0/openapi.yaml', label: 'Slack' },
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
   { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
