@@ -34,11 +34,11 @@ class Json extends React.PureComponent<JsonProps> {
         <button onClick={this.collapseAll}> Collapse all </button>
       </SampleControls>
       <OptionsContext.Consumer>
-        {options => (
+        {(options) => (
           <PrismDiv
             className={this.props.className}
             // tslint:disable-next-line
-            ref={node => (this.node = node!)}
+            ref={(node) => (this.node = node!)}
             dangerouslySetInnerHTML={{
               __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
             }}
@@ -65,9 +65,8 @@ class Json extends React.PureComponent<JsonProps> {
     }
   };
 
-  clickListener = (event: MouseEvent) => {
+  collapseElement = (target: HTMLElement) => {
     let collapsed;
-    const target = event.target as HTMLElement;
     if (target.className === 'collapser') {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
       if (collapsed.parentElement.classList.contains('collapsed')) {
@@ -78,12 +77,24 @@ class Json extends React.PureComponent<JsonProps> {
     }
   };
 
+  clickListener = (event: MouseEvent) => {
+    this.collapseElement(event.target as HTMLElement);
+  };
+
+  focusListener = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.collapseElement(event.target as HTMLElement);
+    }
+  };
+
   componentDidMount() {
     this.node!.addEventListener('click', this.clickListener);
+    this.node!.addEventListener('focus', this.focusListener);
   }
 
   componentWillUnmount() {
     this.node!.removeEventListener('click', this.clickListener);
+    this.node!.removeEventListener('focus', this.focusListener);
   }
 }
 
