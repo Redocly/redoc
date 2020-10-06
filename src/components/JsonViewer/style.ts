@@ -68,9 +68,11 @@ export const jsonStyles = css`
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
+    padding: 2px;
     &:focus {
       outline-color: #fff;
       outline-style: dotted;
+      outline-width: 1px;
     }
   }
 
