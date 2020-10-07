@@ -99,8 +99,8 @@ export const StyledDropdown = styled(Dropdown)`
       &[aria-selected='true'] {
         background-color: rgba(0, 0, 0, 0.05);
       }
-
-      &:hover {
+      &:hover,
+      &.focused {
         background-color: rgba(38, 50, 56, 0.12);
       }
     }
