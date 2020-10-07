@@ -6,7 +6,7 @@ import styled from '../styled-components';
 export { Tab, TabList, TabPanel } from 'react-tabs';
 
 export const Tabs = styled(ReactTabs)`
-  > ul {
+  .react-tabs__tab-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -101,7 +101,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 2}px 0;
+      padding: ${(props) => props.theme.spacing.unit * 2}px 0;
     }
   }
 `;
