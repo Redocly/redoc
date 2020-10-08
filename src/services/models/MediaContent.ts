@@ -29,7 +29,7 @@ export class MediaContentModel {
     if (options.unstable_ignoreMimeParameters) {
       info = mergeSimilarMediaTypes(info);
     }
-    this.mediaTypes = Object.keys(info).map(name => {
+    this.mediaTypes = Object.keys(info).map((name) => {
       const mime = info[name];
       // reset deref cache just in case something is left there
       parser.resetVisited();
@@ -52,6 +52,6 @@ export class MediaContentModel {
   }
 
   get hasSample(): boolean {
-    return this.mediaTypes.filter(mime => !!mime.examples).length > 0;
+    return this.mediaTypes.filter((mime) => !!mime.examples).length > 0;
   }
 }

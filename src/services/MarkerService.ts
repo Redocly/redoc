@@ -37,7 +37,7 @@ export class MarkerService {
     if (!term && !this.prevTerm) {
       return;
     }
-    this.map.forEach(val => {
+    this.map.forEach((val) => {
       val.unmark();
       val.mark(term || this.prevTerm);
     });
@@ -45,7 +45,7 @@ export class MarkerService {
   }
 
   unmark() {
-    this.map.forEach(val => val.unmark());
+    this.map.forEach((val) => val.unmark());
     this.prevTerm = '';
   }
 }

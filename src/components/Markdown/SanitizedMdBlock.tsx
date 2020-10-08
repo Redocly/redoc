@@ -16,7 +16,7 @@ export function SanitizedMarkdownHTML(
 
   return (
     <OptionsConsumer>
-      {options => (
+      {(options) => (
         <Wrap
           className={'redoc-markdown ' + (props.className || '')}
           dangerouslySetInnerHTML={{

@@ -10,10 +10,10 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
     border: 0;
     outline: 0;
     font-size: 13px;
-    font-family: ${props => props.theme.typography.code.fontFamily};
+    font-family: ${(props) => props.theme.typography.code.fontFamily};
     cursor: pointer;
     padding: 0;
-    color: ${props => props.theme.colors.text.primary};
+    color: ${(props) => props.theme.colors.text.primary};
     &:focus {
       font-weight: ${({ theme }) => theme.typography.fontWeightBold};
     }
@@ -34,23 +34,23 @@ export const FieldLabel = styled.span`
 `;
 
 export const TypePrefix = styled(FieldLabel)`
-  color: ${props => transparentize(0.2, props.theme.schema.typeNameColor)};
+  color: ${(props) => transparentize(0.2, props.theme.schema.typeNameColor)};
 `;
 
 export const TypeName = styled(FieldLabel)`
-  color: ${props => props.theme.schema.typeNameColor};
+  color: ${(props) => props.theme.schema.typeNameColor};
 `;
 
 export const TypeTitle = styled(FieldLabel)`
-  color: ${props => props.theme.schema.typeTitleColor};
+  color: ${(props) => props.theme.schema.typeTitleColor};
   word-break: break-word;
 `;
 
 export const TypeFormat = TypeName;
 
 export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
-  color: ${props => props.theme.schema.requireLabelColor};
-  font-size: ${props => props.theme.schema.labelsTextSize};
+  color: ${(props) => props.theme.schema.requireLabelColor};
+  font-size: ${(props) => props.theme.schema.labelsTextSize};
   font-weight: normal;
   margin-left: 20px;
   line-height: 1;

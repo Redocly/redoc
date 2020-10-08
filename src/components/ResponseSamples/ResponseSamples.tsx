@@ -16,7 +16,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
 
   render() {
     const { operation } = this.props;
-    const responses = operation.responses.filter(response => {
+    const responses = operation.responses.filter((response) => {
       return response.content && response.content.hasSample;
     });
 
@@ -27,13 +27,13 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
 
           <Tabs defaultIndex={0}>
             <TabList>
-              {responses.map(response => (
+              {responses.map((response) => (
                 <Tab className={'tab-' + response.type} key={response.code}>
                   {response.code}
                 </Tab>
               ))}
             </TabList>
-            {responses.map(response => (
+            {responses.map((response) => (
               <TabPanel key={response.code}>
                 <div>
                   <PayloadSamples content={response.content!} />

@@ -31,7 +31,7 @@ export const Tabs = styled(ReactTabs)`
       font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: ${props => props.theme.colors.text.primary};
+        color: ${(props) => props.theme.colors.text.primary};
         background: ${({ theme }) => theme.rightPanel.textColor};
         &:focus {
           outline: auto;
@@ -44,19 +44,19 @@ export const Tabs = styled(ReactTabs)`
       }
 
       &.tab-success {
-        color: ${props => props.theme.colors.responses.success.color};
+        color: ${(props) => props.theme.colors.responses.success.color};
       }
 
       &.tab-redirect {
-        color: ${props => props.theme.colors.responses.redirect.color};
+        color: ${(props) => props.theme.colors.responses.redirect.color};
       }
 
       &.tab-info {
-        color: ${props => props.theme.colors.responses.info.color};
+        color: ${(props) => props.theme.colors.responses.info.color};
       }
 
       &.tab-error {
-        color: ${props => props.theme.colors.responses.error.color};
+        color: ${(props) => props.theme.colors.responses.error.color};
       }
     }
   }
@@ -64,7 +64,7 @@ export const Tabs = styled(ReactTabs)`
     background: ${({ theme }) => theme.codeBlock.backgroundColor};
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 4}px;
+      padding: ${(props) => props.theme.spacing.unit * 4}px;
       margin: 0;
     }
 
@@ -101,7 +101,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 2}px 0;
+      padding: ${(props) => props.theme.spacing.unit * 2}px 0;
     }
   }
 `;

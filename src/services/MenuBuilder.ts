@@ -86,7 +86,7 @@ export class MenuBuilder {
     }
 
     const mapHeadingsDeep = (_parent, items, depth = 1) =>
-      items.map(heading => {
+      items.map((heading) => {
         const group = new GroupModel('section', heading, _parent);
         group.depth = depth;
         if (heading.items) {
@@ -149,7 +149,7 @@ export class MenuBuilder {
       tagNames = group.tags;
     }
 
-    const tags = tagNames.map(tagName => {
+    const tags = tagNames.map((tagName) => {
       if (!tagsMap[tagName]) {
         console.warn(`Non-existing tag "${tagName}" is added to the group "${group!.name}"`);
         return null;

@@ -26,8 +26,8 @@ export interface StickySidebarState {
 const stickyfill = Stickyfill && Stickyfill();
 
 const StyledStickySidebar = styled.div<{ open?: boolean }>`
-  width: ${props => props.theme.sidebar.width};
-  background-color: ${props => props.theme.sidebar.backgroundColor};
+  width: ${(props) => props.theme.sidebar.width};
+  background-color: ${(props) => props.theme.sidebar.backgroundColor};
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
     z-index: 20;
     width: 100%;
     background: ${({ theme }) => theme.sidebar.backgroundColor};
-    display: ${props => (props.open ? 'flex' : 'none')};
+    display: ${(props) => (props.open ? 'flex' : 'none')};
   `};
 
   @media print {
@@ -57,7 +57,7 @@ const FloatingButton = styled.div`
   outline: none;
   user-select: none;
   background-color: #f2f2f2;
-  color: ${props => props.theme.colors.primary.main};
+  color: ${(props) => props.theme.colors.primary.main};
   display: none;
   cursor: pointer;
   position: fixed;
@@ -134,7 +134,7 @@ export class StickyResponsiveSidebar extends React.Component<
             height: `calc(100vh - ${top})`,
           }}
           // tslint:disable-next-line
-          ref={el => {
+          ref={(el) => {
             this.stickyElement = el as any;
           }}
         >

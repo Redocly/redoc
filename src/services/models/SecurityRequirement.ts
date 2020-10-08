@@ -15,7 +15,7 @@ export class SecurityRequirementModel {
     const schemes = (parser.spec.components && parser.spec.components.securitySchemes) || {};
 
     this.schemes = Object.keys(requirement || {})
-      .map(id => {
+      .map((id) => {
         const scheme = parser.deref(schemes[id]);
         const scopes = requirement[id] || [];
 
@@ -31,6 +31,6 @@ export class SecurityRequirementModel {
           scopes,
         };
       })
-      .filter(scheme => scheme !== undefined) as SecurityScheme[];
+      .filter((scheme) => scheme !== undefined) as SecurityScheme[];
   }
 }

@@ -6,7 +6,7 @@ import styled, { css } from '../styled-components';
 import { HistoryService } from '../services';
 
 // tslint:disable-next-line
-export const linkifyMixin = className => css`
+export const linkifyMixin = (className) => css`
   ${className} {
     cursor: pointer;
     margin-left: -20px;
@@ -33,7 +33,7 @@ export const linkifyMixin = className => css`
   }
 `;
 
-const isModifiedEvent = event =>
+const isModifiedEvent = (event) =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
 export class Link extends React.Component<{ to: string; className?: string; children?: any }> {
@@ -51,7 +51,7 @@ export class Link extends React.Component<{ to: string; className?: string; chil
   render() {
     return (
       <StoreConsumer>
-        {store => (
+        {(store) => (
           <a
             className={this.props.className}
             href={store!.menu.history.linkForId(this.props.to)}

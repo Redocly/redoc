@@ -21,7 +21,7 @@ export interface ApiInfoProps {
 
 @observer
 export class ApiInfo extends React.Component<ApiInfoProps> {
-  handleDownloadClick = e => {
+  handleDownloadClick = (e) => {
     if (!e.target.href) {
       e.target.href = this.props.store.spec.info.downloadLink;
     }

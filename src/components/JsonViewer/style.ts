@@ -5,8 +5,8 @@ export const jsonStyles = css`
     display: none;
   }
 
-  font-family: ${props => props.theme.typography.code.fontFamily};
-  font-size: ${props => props.theme.typography.code.fontSize};
+  font-family: ${(props) => props.theme.typography.code.fontFamily};
+  font-size: ${(props) => props.theme.typography.code.fontSize};
 
   white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
   contain: content;

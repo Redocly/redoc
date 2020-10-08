@@ -9,8 +9,8 @@ export const OneOfList = styled.div`
 export const OneOfLabel = styled.span`
   font-size: 0.9em;
   margin-right: 10px;
-  color: ${props => props.theme.colors.primary.main};
-  font-family: ${props => props.theme.typography.headings.fontFamily};
+  color: ${(props) => props.theme.colors.primary.main};
+  font-family: ${(props) => props.theme.typography.headings.fontFamily};
 }
 `;
 
@@ -20,15 +20,15 @@ export const OneOfButton = styled.button<{ active: boolean }>`
   margin-bottom: 5px;
   font-size: 0.8em;
   cursor: pointer;
-  border: 1px solid ${props => props.theme.colors.primary.main};
+  border: 1px solid ${(props) => props.theme.colors.primary.main};
   padding: 2px 10px;
   line-height: 1.5em;
   outline: none;
   &:focus {
-    box-shadow: 0 0 0 1px ${props => props.theme.colors.primary.main};
+    box-shadow: 0 0 0 1px ${(props) => props.theme.colors.primary.main};
   }
 
-  ${props => {
+  ${(props) => {
     if (props.active) {
       return `
       color: white;
@@ -49,7 +49,7 @@ export const OneOfButton = styled.button<{ active: boolean }>`
 
 export const ArrayOpenningLabel = styled.div`
   font-size: 0.9em;
-  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-family: ${(props) => props.theme.typography.code.fontFamily};
   &::after {
     content: ' [';
   }
@@ -57,7 +57,7 @@ export const ArrayOpenningLabel = styled.div`
 
 export const ArrayClosingLabel = styled.div`
   font-size: 0.9em;
-  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-family: ${(props) => props.theme.typography.code.fontFamily};
   &::after {
     content: ']';
   }

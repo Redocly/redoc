@@ -47,7 +47,7 @@ export class ResponseModel {
 
     const headers = info.headers;
     if (headers !== undefined) {
-      this.headers = Object.keys(headers).map(name => {
+      this.headers = Object.keys(headers).map((name) => {
         const header = headers[name];
         return new FieldModel(parser, { ...header, name }, '', options);
       });

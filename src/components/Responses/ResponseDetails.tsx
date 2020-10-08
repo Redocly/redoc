@@ -26,7 +26,7 @@ export class ResponseDetails extends React.PureComponent<{ response: ResponseMod
     );
   }
 
-  private renderDropdown = props => {
+  private renderDropdown = (props) => {
     return (
       <UnderlinedHeader key="header">
         Response Schema: <DropdownOrLabel {...props} />

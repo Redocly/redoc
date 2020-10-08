@@ -41,8 +41,8 @@ export class ExampleModel {
       return externalExamplesCache[this.externalValueUrl];
     }
 
-    externalExamplesCache[this.externalValueUrl] = fetch(this.externalValueUrl).then(res => {
-      return res.text().then(txt => {
+    externalExamplesCache[this.externalValueUrl] = fetch(this.externalValueUrl).then((res) => {
+      return res.text().then((txt) => {
         if (!res.ok) {
           return Promise.reject(new Error(txt));
         }

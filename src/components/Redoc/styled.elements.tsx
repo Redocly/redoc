@@ -29,7 +29,7 @@ export const ApiContentWrap = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
-  width: calc(100% - ${props => props.theme.sidebar.width});
+  width: calc(100% - ${(props) => props.theme.sidebar.width});
   ${media.lessThan('small', true)`
     width: 100%;
   `};

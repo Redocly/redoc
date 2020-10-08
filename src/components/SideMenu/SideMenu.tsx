@@ -46,7 +46,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
     });
   };
 
-  private saveScrollUpdate = upd => {
+  private saveScrollUpdate = (upd) => {
     this._updateScroll = upd;
   };
 }
