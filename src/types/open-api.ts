@@ -192,7 +192,7 @@ export interface OpenAPIRequestBody {
 }
 
 export interface OpenAPIResponses {
-  [code: string]: OpenAPIResponse;
+  [code: string]: Referenced<OpenAPIResponse>;
 }
 
 export interface OpenAPIResponse
