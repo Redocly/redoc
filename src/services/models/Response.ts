@@ -2,7 +2,10 @@ import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIResponse, Referenced } from '../../types';
 
-import { getStatusCodeType } from '../../utils';
+import {
+  getStatusCodeType,
+  extractExtensions
+} from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
@@ -27,6 +30,7 @@ export class ResponseModel {
   description: string;
   type: string;
   headers: FieldModel[] = [];
+  extensions: Record<string, any>;
 
   constructor(props: ResponseProps) {
     const { parser, code, defaultAsError, infoOrRef, options, isEvent } = props;
@@ -58,6 +62,10 @@ export class ResponseModel {
         const header = headers[name];
         return new FieldModel(parser, { ...header, name }, '', options);
       });
+    }
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(info, options.showExtensions);
     }
   }
 
