@@ -16,7 +16,8 @@ export class ResponseView extends React.Component<{ response: ResponseModel }> {
     const mimes =
       content === undefined ? [] : content.mediaTypes.filter(mime => mime.schema !== undefined);
 
-    const empty = Object.keys(extensions).length === 0 && headers.length === 0 && mimes.length === 0 && !description;
+    const empty = (!extensions || Object.keys(extensions).length === 0) &&
+      headers.length === 0 && mimes.length === 0 && !description;
 
     return (
       <div>
