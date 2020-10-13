@@ -8,7 +8,8 @@ import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class CallbackModel {
   @observable
-  expanded: boolean;
+  expanded: boolean = false;
+
   name: string;
   operations: OperationModel[] = [];
 
