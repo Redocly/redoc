@@ -10,7 +10,7 @@ import { MediaContentModel } from './MediaContent';
 
 export class ResponseModel {
   @observable
-  expanded: boolean;
+  expanded: boolean = false;
 
   content?: MediaContentModel;
   code: string;
