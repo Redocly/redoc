@@ -1,3 +1,12 @@
+# [2.0.0-rc.43](https://github.com/Redocly/redoc/compare/v2.0.0-rc.42...v2.0.0-rc.43) (2020-10-13)
+
+
+### Bug Fixes
+
+* fix broken observable after mobx upgrade ([#1415](https://github.com/Redocly/redoc/issues/1415)) ([26c407b](https://github.com/Redocly/redoc/commit/26c407bd0f2bc1ec9881e0a3668e09e645fc0cc0))
+
+
+
 # [2.0.0-rc.42](https://github.com/Redocly/redoc/compare/v2.0.0-rc.41...v2.0.0-rc.42) (2020-10-13)
 
 
