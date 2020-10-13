@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
@@ -72,6 +72,8 @@ export class SchemaModel {
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
+    makeObservable(this);
+
     this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
