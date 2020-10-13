@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
 import { safeSlugify } from '../../utils';
@@ -35,6 +35,8 @@ export class GroupModel implements IMenuItem {
     tagOrGroup: OpenAPITag | MarkdownHeading,
     parent?: GroupModel,
   ) {
+    makeObservable(this);
+
     // markdown headings already have ids calculated as they are needed for heading anchors
     this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + safeSlugify(tagOrGroup.name);
     this.type = type;

@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
@@ -84,6 +84,8 @@ export class OperationModel implements IMenuItem {
     private options: RedocNormalizedOptions,
     isCallback: boolean = false,
   ) {
+    makeObservable(this);
+
     this.pointer = operationSpec.pointer;
 
     this.description = operationSpec.description;

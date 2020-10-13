@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import {
   OpenAPIParameter,
@@ -61,6 +61,8 @@ export class FieldModel {
     pointer: string,
     options: RedocNormalizedOptions,
   ) {
+    makeObservable(this);
+
     const info = parser.deref<OpenAPIParameter>(infoOrRef);
     this.kind = infoOrRef.kind || 'field';
     this.name = infoOrRef.name || info.name;
