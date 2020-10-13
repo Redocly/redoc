@@ -73,7 +73,7 @@ function valueToHTML(value, maxExpandLevel: number) {
 
 function arrayToHTML(json, maxExpandLevel: number) {
   const collapsed = level > maxExpandLevel ? 'collapsed' : '';
-  let output = `<div class="collapser"></div>${punctuation(
+  let output = `<button class="collapser"></button>${punctuation(
     '[',
   )}<span class="ellipsis"></span><ul class="array collapsible">`;
   let hasContents = false;
@@ -98,7 +98,7 @@ function objectToHTML(json, maxExpandLevel: number) {
   const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   const keys = Object.keys(json);
   const length = keys.length;
-  let output = `<div class="collapser"></div>${punctuation(
+  let output = `<button class="collapser"></button>${punctuation(
     '{',
   )}<span class="ellipsis"></span><ul class="obj collapsible">`;
   let hasContents = false;
