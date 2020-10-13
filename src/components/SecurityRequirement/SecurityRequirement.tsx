@@ -1,7 +1,7 @@
 // import { transparentize } from 'polished';
 import * as React from 'react';
 
-import styled from '../../styled-components';
+import styled, { media } from '../../styled-components';
 
 import { Link, UnderlinedHeader } from '../../common-elements/';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
@@ -90,6 +90,9 @@ const AuthHeaderColumn = styled.div`
 
 const SecuritiesColumn = styled.div`
   width: ${props => props.theme.schema.defaultDetailsWidth};
+  ${media.lessThan('small')`
+    margin-top: 10px;
+  `}
 `;
 
 const AuthHeader = styled(UnderlinedHeader)`
@@ -101,6 +104,10 @@ const Wrap = styled.div`
   width: 100%;
   display: flex;
   margin: 1em 0;
+
+  ${media.lessThan('small')`
+    flex-direction: column;
+  `}
 `;
 
 export interface SecurityRequirementsProps {
