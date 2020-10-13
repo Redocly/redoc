@@ -32,7 +32,7 @@ describe('Models', () => {
       expect(resp.type).toEqual('error');
     });
 
-    test('should be error if showExtensions is true', () => {
+    test('ensure extensions are shown if showExtensions is true', () => {
       const options = new RedocNormalizedOptions({ showExtensions: true });
       const resp = new ResponseModel(parser, 'default', true, { 'x-example': {a: 1} } as any, options);
       expect(Object.keys(resp.extensions).length).toEqual(1);
