@@ -85,7 +85,7 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
 }
 
 const AuthHeaderColumn = styled.div`
-  flex: 1;
+  flex: 1 1 auto;
 `;
 
 const SecuritiesColumn = styled.div`

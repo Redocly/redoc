@@ -142,8 +142,15 @@ export const PropertiesTable = styled.table`
 
   ${media.lessThan('small')`
     display: block;
-    > tr, > tbody, tr {
+    > tr, > tbody > tr {
       display: block;
+    }
+  `}
+
+  ${media.lessThan('small', false, ' and (-ms-high-contrast:none)')`
+    td {
+      float: left;
+      width: 100%;
     }
   `}
 
