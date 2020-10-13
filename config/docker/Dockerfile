@@ -36,6 +36,18 @@ COPY demo/favicon.png /usr/share/nginx/html/
 COPY config/docker/nginx.conf /etc/nginx/
 COPY config/docker/docker-run.sh /usr/local/bin
 
+# Provide rights to the root group to write to nginx repositories (needed to run in OpenShift)
+RUN chgrp -R 0 /etc/nginx && \
+    chgrp -R 0 /usr/share/nginx/html && \
+    chgrp -R 0 /var/cache/nginx && \
+    chgrp -R 0 /var/log/nginx && \
+    chgrp -R 0 /var/run && \
+    chmod -R g+rwX /etc/nginx && \
+    chmod -R g+rwX /usr/share/nginx/html && \
+    chmod -R g+rwX /var/cache/nginx && \
+    chmod -R g+rwX /var/log/nginx && \
+    chmod -R g+rwX /var/run
+
 EXPOSE 80
 
 CMD ["sh", "/usr/local/bin/docker-run.sh"]
