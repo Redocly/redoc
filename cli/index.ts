@@ -76,6 +76,7 @@ YargsParser.command(
 
     yargs.option('static', {
       type: 'string',
+      describe: 'Add folder to be served statically'
     });
 
     yargs.demandOption('spec');
@@ -95,7 +96,7 @@ YargsParser.command(
     console.log(config);
 
     try {
-      await serve(argv.port as number, argv.spec as string, argv.static as string, config);
+      await serve(argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
     }
@@ -169,7 +170,7 @@ YargsParser.command(
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
   }).argv;
 
-async function serve(port: number, pathToSpec: string, staticFolder: string,  options: Options = {}) {
+async function serve(port: number, pathToSpec: string, options: Options = {}) {
   let spec = await loadAndBundleSpec(pathToSpec);
   let pageHTML = await getPageHTML(spec, pathToSpec, options);
 
@@ -201,10 +202,11 @@ async function serve(port: number, pathToSpec: string, staticFolder: string,  op
         'Content-Type': 'application/json',
       });
     } else {
-      if (staticFolder !== '' && request.url.split('/').shift() === staticFolder) {
+      if (options.static && options.static !== '' && request.url?.startsWith('/' + options.static)) {
         const filePath = join(dirname(pathToSpec), request.url);
         const fileExists = existsSync(filePath);
         if (fileExists) {
+
           respondWithGzip(
             createReadStream(filePath, 'utf8'),
             request,
