@@ -7,6 +7,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { compile } from 'handlebars';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { dirname, join, resolve } from 'path';
+import { lookup } from 'mime-types';
 
 import * as zlib from 'zlib';
 
@@ -29,6 +30,7 @@ import * as YargsParser from 'yargs';
 interface Options {
   ssr?: boolean;
   watch?: boolean;
+  static?: string;
   cdn?: boolean;
   output?: string;
   title?: string;
@@ -72,6 +74,10 @@ YargsParser.command(
       type: 'boolean',
     });
 
+    yargs.option('static', {
+      type: 'string',
+    });
+
     yargs.demandOption('spec');
     return yargs;
   },
@@ -80,6 +86,7 @@ YargsParser.command(
       ssr: argv.ssr as boolean,
       title: argv.title as string,
       watch: argv.watch as boolean,
+      static: argv.static as string,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
       redocOptions: getObjectOrJSON(argv.options),
@@ -88,7 +95,7 @@ YargsParser.command(
     console.log(config);
 
     try {
-      await serve(argv.port as number, argv.spec as string, config);
+      await serve(argv.port as number, argv.spec as string, argv.static as string, config);
     } catch (e) {
       handleError(e);
     }
@@ -162,12 +169,19 @@ YargsParser.command(
     describe: 'ReDoc options, use dot notation, e.g. options.nativeScrollbars',
   }).argv;
 
-async function serve(port: number, pathToSpec: string, options: Options = {}) {
+async function serve(port: number, pathToSpec: string, staticFolder: string,  options: Options = {}) {
   let spec = await loadAndBundleSpec(pathToSpec);
   let pageHTML = await getPageHTML(spec, pathToSpec, options);
 
   const server = createServer((request, response) => {
     console.time('GET ' + request.url);
+
+    const fileNotFound = () => {
+      response.writeHead(404);
+      response.write('Not found');
+      response.end();
+    };
+
     if (request.url === '/redoc.standalone.js') {
       respondWithGzip(
         createReadStream(join(BUNDLES_DIR, 'redoc.standalone.js'), 'utf8'),
@@ -187,9 +201,24 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
         'Content-Type': 'application/json',
       });
     } else {
-      response.writeHead(404);
-      response.write('Not found');
-      response.end();
+      if (staticFolder !== '' && request.url.split('/').shift() === staticFolder) {
+        const filePath = join(dirname(pathToSpec), request.url);
+        const fileExists = existsSync(filePath);
+        if (fileExists) {
+          respondWithGzip(
+            createReadStream(filePath, 'utf8'),
+            request,
+            response,
+            {
+              'Content-Type': lookup(filePath),
+            },
+          );
+        } else {
+          fileNotFound();
+        }
+      } else {
+        fileNotFound();
+      }
     }
 
     console.timeEnd('GET ' + request.url);
