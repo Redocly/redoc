@@ -204,7 +204,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     } else {
       const filePath = normalize(join(dirname(pathToSpec), request.url || ''));
       const relativePath = relative(dirname(pathToSpec), filePath);
-      if (options.static && options.static !== '' && relativePath.startsWith(options.static)) {
+      if (options.static && options.static !== '' && relativePath.startsWith(options.static + '/')) {
         const file = createReadStream(filePath);
         file.on('open', function () {
           response.setHeader('Content-Type', lookup(filePath) || 'text/plain');
