@@ -6,7 +6,7 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { compile } from 'handlebars';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { dirname, join, resolve } from 'path';
+import { dirname, join, resolve, normalize, relative } from 'path';
 import { lookup } from 'mime-types';
 
 import * as zlib from 'zlib';
@@ -202,8 +202,9 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
         'Content-Type': 'application/json',
       });
     } else {
-      if (options.static && options.static !== '' && request.url?.startsWith('/' + options.static)) {
-        const filePath = join(dirname(pathToSpec), request.url);
+      const filePath = normalize(join(dirname(pathToSpec), request.url || ''));
+      const relativePath = relative(dirname(pathToSpec), filePath);
+      if (options.static && options.static !== '' && relativePath.startsWith(options.static)) {
         const file = createReadStream(filePath);
         file.on('open', function () {
           response.setHeader('Content-Type', lookup(filePath) || 'text/plain');
