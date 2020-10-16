@@ -1,3 +1,12 @@
+# [2.0.0-rc.44](https://github.com/Redocly/redoc/compare/v2.0.0-rc.43...v2.0.0-rc.44) (2020-10-16)
+
+
+### Features
+
+* new extensions hook PropertyDetailsCell + wrap property name into span ([0fae030](https://github.com/Redocly/redoc/commit/0fae03099645bd9d3795709175640583b08dfc3d))
+
+
+
 # [2.0.0-rc.43](https://github.com/Redocly/redoc/compare/v2.0.0-rc.42...v2.0.0-rc.43) (2020-10-13)
 
 
