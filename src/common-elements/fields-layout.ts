@@ -98,6 +98,8 @@ export const PropertyDetailsCell = styled.td`
       border-left: none;
     }
   `}
+
+  ${extensionsHook('PropertyDetailsCell')};
 `;
 
 export const PropertyBullet = styled.span`
