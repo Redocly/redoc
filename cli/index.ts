@@ -204,20 +204,14 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     } else {
       if (options.static && options.static !== '' && request.url?.startsWith('/' + options.static)) {
         const filePath = join(dirname(pathToSpec), request.url);
-        const fileExists = existsSync(filePath);
-        if (fileExists) {
-
-          respondWithGzip(
-            createReadStream(filePath, 'utf8'),
-            request,
-            response,
-            {
-              'Content-Type': lookup(filePath),
-            },
-          );
-        } else {
+        const file = createReadStream(filePath);
+        file.on('open', function () {
+          response.setHeader('Content-Type', lookup(filePath) || 'text/plain');
+          file.pipe(response);
+        });
+        file.on('error', function () {
           fileNotFound();
-        }
+        });
       } else {
         fileNotFound();
       }
