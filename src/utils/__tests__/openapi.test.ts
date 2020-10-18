@@ -335,7 +335,8 @@ describe('Utils', () => {
       min: number | undefined = undefined,
       max: number | undefined = undefined,
       multipleOf: number | undefined = undefined,
-    ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf });
+      uniqueItems?: boolean,
+    ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
     it('should not have a humanized constraint without schema constraints', () => {
       expect(humanizeConstraints(itemConstraintSchema())).toHaveLength(0);
@@ -370,6 +371,12 @@ describe('Utils', () => {
     it('should have a humanized constraint when multipleOf is set, and it is in format other than /^0\\.0*1$/', () => {
       expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, 0.5))).toContain(
         'multiple of 0.5',
+      );
+    });
+
+    it('should have a humanized constraint when uniqueItems is set', () => {
+      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true))).toContain(
+        'unique',
       );
     });
   });
