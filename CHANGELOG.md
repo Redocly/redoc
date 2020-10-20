@@ -1,3 +1,32 @@
+# [2.0.0-rc.44](https://github.com/Redocly/redoc/compare/v2.0.0-rc.43...v2.0.0-rc.44) (2020-10-16)
+
+
+### Features
+
+* new extensions hook PropertyDetailsCell + wrap property name into span ([0fae030](https://github.com/Redocly/redoc/commit/0fae03099645bd9d3795709175640583b08dfc3d))
+
+
+
+# [2.0.0-rc.43](https://github.com/Redocly/redoc/compare/v2.0.0-rc.42...v2.0.0-rc.43) (2020-10-13)
+
+
+### Bug Fixes
+
+* fix broken observable after mobx upgrade ([#1415](https://github.com/Redocly/redoc/issues/1415)) ([26c407b](https://github.com/Redocly/redoc/commit/26c407bd0f2bc1ec9881e0a3668e09e645fc0cc0))
+
+
+
+# [2.0.0-rc.42](https://github.com/Redocly/redoc/compare/v2.0.0-rc.41...v2.0.0-rc.42) (2020-10-13)
+
+
+### Bug Fixes
+
+* hide dropdown input on IE 11 ([#1403](https://github.com/Redocly/redoc/issues/1403)) ([6632d84](https://github.com/Redocly/redoc/commit/6632d844536532227cb92290f9fc2b6b2f913270))
+* make samples accessible by keyboard ([#1401](https://github.com/Redocly/redoc/issues/1401)) ([146b38c](https://github.com/Redocly/redoc/commit/146b38c9d0b926765d8e00dd37204c30bf3ac4e0))
+* make schema layout more responsive on small screen ([#1411](https://github.com/Redocly/redoc/issues/1411)) ([84ab95d](https://github.com/Redocly/redoc/commit/84ab95ddc7b5dc159098aecf82ad922ffd4a3093))
+
+
+
 # [2.0.0-rc.41](https://github.com/Redocly/redoc/compare/v2.0.0-rc.40...v2.0.0-rc.41) (2020-09-24)
 
 

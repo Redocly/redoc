@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIResponse, Referenced } from '../../types';
 
@@ -13,7 +13,7 @@ import { MediaContentModel } from './MediaContent';
 
 export class ResponseModel {
   @observable
-  expanded: boolean;
+  expanded: boolean = false;
 
   content?: MediaContentModel;
   code: string;
@@ -31,6 +31,8 @@ export class ResponseModel {
     infoOrRef: Referenced<OpenAPIResponse>,
     options: RedocNormalizedOptions,
   ) {
+    makeObservable(this);
+
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
 
     const info = parser.deref(infoOrRef);

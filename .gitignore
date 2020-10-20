@@ -36,3 +36,4 @@ cli/index.js
 stats.json
 yarn.lock
 .idea
+.vscode

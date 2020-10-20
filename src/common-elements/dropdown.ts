@@ -107,6 +107,7 @@ export const StyledDropdown = styled(Dropdown)`
     input {
       cursor: pointer;
       height: 1px;
+      background-color: transparent;
     }
   }
 `;
