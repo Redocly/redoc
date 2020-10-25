@@ -20,7 +20,7 @@ export const DropdownLabel = styled.span`
   top: -11px;
   left: 12px;
   font-weight: ${({ theme }) => theme.typography.fontWeightBold};
-  color: ${({ theme }) => transparentize(0.6, theme.rightPanel.textColor)};
+  color: ${({ theme }) => transparentize(0.3, theme.rightPanel.textColor)};
 `;
 
 export const DropdownWrapper = styled.div`

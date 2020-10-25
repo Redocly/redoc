@@ -12,7 +12,7 @@ const defaultTheme: ThemeInterface = {
     large: '105rem',
   },
   colors: {
-    tonalOffset: 0.3,
+    tonalOffset: 0.2,
     primary: {
       main: '#32329f',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
@@ -68,15 +68,15 @@ const defaultTheme: ThemeInterface = {
       },
     },
     http: {
-      get: '#6bbd5b',
-      post: '#248fb2',
-      put: '#9b708b',
-      options: '#d3ca12',
-      patch: '#e09d43',
-      delete: '#e27a7a',
-      basic: '#999',
-      link: '#31bbb6',
-      head: '#c167e4',
+      get: '#2F8132',
+      post: '#186FAF',
+      put: '#95507c',
+      options: '#947014',
+      patch: '#bf581d',
+      delete: '#cc3333',
+      basic: '#707070',
+      link: '#07818F',
+      head: '#A23DAD',
     },
   },
   schema: {
