@@ -175,7 +175,7 @@ export class OpenAPIParser {
     return obj;
   }
 
-  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
+  shallowDeref<T extends object>(obj: OpenAPIRef | T): T {
     if (this.isRef(obj)) {
       return this.byRef<T>(obj.$ref)!;
     }
