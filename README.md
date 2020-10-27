@@ -247,6 +247,7 @@ You can use all of the following options with standalone version on <redoc> tag 
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
   * **function**: A getter function. Must return a number representing the offset (in pixels).
 * `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
+* `showSchemas` - Show all top-level Schemas under group in menu, default `false`.
 * `sortPropsAlphabetically` - sort properties alphabetically.
 * `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
