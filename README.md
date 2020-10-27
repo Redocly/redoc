@@ -251,9 +251,68 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `sortPropsAlphabetically` - sort properties alphabetically.
 * `suppressWarnings` - if set, warnings are not rendered at the top of documentation (they still are logged to the console).
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
-* `theme` - ReDoc theme. Not documented yet. For details check source code: [theme.ts](https://github.com/Redocly/redoc/blob/master/src/theme.ts).
+* `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 
+### `<redoc>` theme object
+Theme options below designated with `#CE` are supported by Redoc Community Edition (CE).
+
+* `spacing`
+  * `unit`: 5 # CE  # main spacing unit used in autocomputed theme values later
+  * `sectionHorizontal`: 40 # CE  # Horizontal section padding. COMPUTED: spacing.unit * 8
+  * `sectionVertical`: 40 # CE  # Horizontal section padding. COMPUTED: spacing.unit * 8
+* `breakpoints` # CE  # breakpoints for switching three/two and mobile view layouts
+  * `small`: '50rem'
+  * `medium`: '85rem'
+  * `large`: '105rem'
+* `colors`
+  * `tonalOffset`: 0.3 # CE  # default tonal offset used in computations
+* `typography`
+  * `fontSize`: '14px' # CE
+  * `lineHeight`: '1.5em' # CE
+  * `fontWeightRegular`: '400' # CE
+  * `fontWeightBold`: '600' # CE
+  * `fontWeightLight`: '300' # CE
+  * `fontFamily`: 'Roboto, sans-serif' # CE
+  * `smoothing`: 'antialiased' # CE
+  * `optimizeSpeed`: true # CE
+  * `headings`
+    * `fontFamily`: 'Montserrat, sans-serif' # CE
+    * `fontWeight`: '400' # CE
+    * `lineHeight`: '1.6em' # CE
+  * `code` # inline code styling
+    * `fontSize`: '13px' # CE
+    * `fontFamily`: 'Courier, monospace' # CE
+    * `lineHeight`: # COMPUTED: typography.lineHeight # CE
+    * `fontWeight`: # COMPUTED: typography.fontWeightRegular # CE
+    * `color`: '#e53935' # CE
+    * `backgroundColor`: 'rgba(38, 50, 56, 0.05)' # CE
+    * `wrap`: false # whether to break word for inline blocks (otherwise they can overflow) # CE
+  * `links`
+    * `color`: # COMPUTED: colors.primary.main # CE
+    * `visited`: # COMPUTED: typography.links.color # CE
+    * `hover`: # COMPUTED: lighten(0.2 typography.links.color) # CE
+* `menu`
+  * `width`: '260px' # CE
+  * `backgroundColor`: '#fafafa' # CE
+  * `textColor`: '#333333' # CE
+  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main # CE
+  * `groupItems` # Group headings # CE
+    * `textTransform`: 'uppercase' # CE
+  * `level1Items` # Level 1 items like tags or section 1st level items # CE
+    * `textTransform: 'none' # CE
+  * `arrow` # menu arrow # CE
+    * `size`: '1.5em' # CE
+    * `color`: # COMPUTED: theme.menu.textColor # CE
+* `logo`
+  * `maxHeight`: # COMPUTED: menu.width # CE
+  * `maxWidth`: # COMPUTED: menu.width # CE
+  * `gutter`: '2px' # logo image padding # CE
+* `rightPanel`
+  * `backgroundColor`: '#263238' # CE
+  * `width`: '40%' # CE
+  * `textColor`: '#ffffff' # CE
+  
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
 ```js
