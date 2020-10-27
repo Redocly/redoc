@@ -41,6 +41,7 @@ export interface RedocRawOptions {
   expandDefaultServerVariables?: boolean;
   maxDisplayedEnumValues?: number;
   ignoreNamedSchemas?: string[] | string;
+  expandSchemas?: boolean;
 }
 
 function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -83,6 +84,10 @@ export class RedocNormalizedOptions {
   }
 
   static normalizeHideHostname(value: RedocRawOptions['hideHostname']): boolean {
+    return !!value;
+  }
+
+  static normalizeExpandSchemas(value: RedocRawOptions['expandSchemas']): boolean {
     return !!value;
   }
 
@@ -194,6 +199,7 @@ export class RedocNormalizedOptions {
   maxDisplayedEnumValues?: number;
 
   ignoreNamedSchemas: Set<string>;
+  expandSchemas: boolean;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -252,5 +258,6 @@ export class RedocNormalizedOptions {
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
     const ignoreNamedSchemas = Array.isArray(raw.ignoreNamedSchemas) ? raw.ignoreNamedSchemas : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
+    this.expandSchemas = RedocNormalizedOptions.normalizeExpandSchemas(raw.expandSchemas);
   }
 }

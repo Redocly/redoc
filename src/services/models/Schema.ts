@@ -348,7 +348,7 @@ function buildFields(
     const required =
       schema.required === undefined ? false : schema.required.indexOf(fieldName) > -1;
 
-    return new FieldModel(
+    const fieldModel = new FieldModel(
       parser,
       {
         name: fieldName,
@@ -361,6 +361,8 @@ function buildFields(
       $ref + '/properties/' + fieldName,
       options,
     );
+    fieldModel.expanded = options.expandSchemas;
+    return fieldModel;
   });
 
   if (options.sortPropsAlphabetically) {
@@ -372,22 +374,22 @@ function buildFields(
   }
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
-    fields.push(
-      new FieldModel(
-        parser,
-        {
-          name: (typeof additionalProps === 'object'
-            ? additionalProps['x-additionalPropertiesName'] || 'property name'
-            : 'property name'
-          ).concat('*'),
-          required: false,
-          schema: additionalProps === true ? {} : additionalProps,
-          kind: 'additionalProperties',
-        },
-        $ref + '/additionalProperties',
-        options,
-      ),
+    const fieldModel = new FieldModel(
+      parser,
+      {
+        name: (typeof additionalProps === 'object'
+          ? additionalProps['x-additionalPropertiesName'] || 'property name'
+          : 'property name'
+        ).concat('*'),
+        required: false,
+        schema: additionalProps === true ? {} : additionalProps,
+        kind: 'additionalProperties',
+      },
+      $ref + '/additionalProperties',
+      options,
     );
+    fieldModel.expanded = options.expandSchemas;
+    fields.push(fieldModel);
   }
 
   return fields;

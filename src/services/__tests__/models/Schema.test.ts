@@ -40,5 +40,25 @@ describe('Models', () => {
       expect(schema.oneOf).toHaveLength(2);
       expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
+
+    test('expandSchemas != true', () => {
+      const spec = require('../fixtures/expandSchemas.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Foo, '', opts);
+      expect(schema.fields).toHaveLength(2);
+      expect(schema.fields![0].expanded).toEqual(false);
+      expect(schema.fields![1].expanded).toEqual(false);
+    });
+
+    test('expandSchemas == true', () => {
+      const opts = new RedocNormalizedOptions({ expandSchemas: true});
+
+      const spec = require('../fixtures/expandSchemas.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Foo, '', opts);
+      expect(schema.fields).toHaveLength(2);
+      expect(schema.fields![0].expanded).toEqual(true);
+      expect(schema.fields![1].expanded).toEqual(true);
+    });
   });
 });
