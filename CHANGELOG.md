@@ -1,3 +1,19 @@
+# [2.0.0-rc.45](https://github.com/Redocly/redoc/compare/v2.0.0-rc.43...v2.0.0-rc.45) (2020-10-27)
+
+
+### Bug Fixes
+
+* fix the name of OpenID Connect security scheme ([#1425](https://github.com/Redocly/redoc/issues/1425)) ([c11f679](https://github.com/Redocly/redoc/commit/c11f679f82586a96225488c8a96d0c908bfd2e09))
+* increase colors contrast to make them more accessible ([#1433](https://github.com/Redocly/redoc/issues/1433)) ([e2de5b0](https://github.com/Redocly/redoc/commit/e2de5b065eabd00d301ea61106ddafc65bd83afa))
+
+
+### Features
+
+* add field constraint indicator for uniqueItems ([#1423](https://github.com/Redocly/redoc/issues/1423)) ([c0ae9de](https://github.com/Redocly/redoc/commit/c0ae9de60758aa7561ce8a04b6e0060d0bc4a258)), closes [#1353](https://github.com/Redocly/redoc/issues/1353)
+* new extensions hook PropertyDetailsCell + wrap property name into span ([0703f73](https://github.com/Redocly/redoc/commit/0703f73f79a1cabafdc1a908ebb0c5ab142ca825))
+
+
+
 # [2.0.0-rc.44](https://github.com/Redocly/redoc/compare/v2.0.0-rc.43...v2.0.0-rc.44) (2020-10-16)
 
 
