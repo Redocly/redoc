@@ -34,7 +34,7 @@ export const FieldLabel = styled.span`
 `;
 
 export const TypePrefix = styled(FieldLabel)`
-  color: ${props => transparentize(0.2, props.theme.schema.typeNameColor)};
+  color: ${props => transparentize(0.1, props.theme.schema.typeNameColor)};
 `;
 
 export const TypeName = styled(FieldLabel)`
@@ -62,12 +62,12 @@ export const RecursiveLabel = styled(FieldLabel)`
 `;
 
 export const NullableLabel = styled(FieldLabel)`
-  color: #3195a6;
+  color: #0e7c86;
   font-size: 13px;
 `;
 
 export const PatternLabel = styled(FieldLabel)`
-  color: #3195a6;
+  color: #0e7c86;
   &::before,
   &::after {
     font-weight: bold;
