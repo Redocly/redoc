@@ -300,7 +300,7 @@ Theme options below designated with `#CE` are supported by Redoc Community Editi
   * `groupItems` # Group headings # CE
     * `textTransform`: 'uppercase' # CE
   * `level1Items` # Level 1 items like tags or section 1st level items # CE
-    * `textTransform: 'none' # CE
+    * `textTransform`: 'none' # CE
   * `arrow` # menu arrow # CE
     * `size`: '1.5em' # CE
     * `color`: # COMPUTED: theme.menu.textColor # CE
