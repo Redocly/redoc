@@ -27,8 +27,8 @@ class Json extends React.PureComponent<JsonProps> {
   }
 
   renderInner = ({ renderCopyButton }) => {
-    const showFoldingButtons = Object.values(this.props.data).some(
-      (value) => typeof value === 'object',
+    const showFoldingButtons = this.props.data && Object.values(this.props.data).some(
+      (value) => typeof value === 'object' && value !== null,
     );
 
     return (

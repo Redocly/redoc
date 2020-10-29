@@ -44,7 +44,7 @@ describe('Components', () => {
     });
 
     test('Expand/Collapse buttons disappears for flat structures', () => {
-      const flatData = { a: 1, b: '2' };
+      const flatData = { a: 1, b: '2', c: null };
       const flatDataComponent = mount(withTheme(<JsonViewer data={flatData} />));
 
       const expandButton = flatDataComponent.find('div > button[children=" Expand all "]');
