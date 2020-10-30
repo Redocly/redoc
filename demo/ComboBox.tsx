@@ -211,6 +211,7 @@ export default class ComboBox extends React.Component<ComboBoxProps, ComboBoxSta
           onFocus={this.open}
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyPress}
+          aria-label="URL to a spec to try"
         />
         <Button onClick={this.handleTryItClick}> TRY IT </Button>
         {open && <DropDownList>{options.map(this.renderOption)}</DropDownList>}
