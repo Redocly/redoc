@@ -64,7 +64,7 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          {name}
+          <span>{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
         {required && <RequiredLabel> required </RequiredLabel>}
@@ -72,7 +72,7 @@ export class Field extends React.Component<FieldProps> {
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
-        {name}
+        <span>{name}</span>
         {required && <RequiredLabel> required </RequiredLabel>}
       </PropertyNameCell>
     );

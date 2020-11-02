@@ -448,6 +448,10 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     res.push(numberRange);
   }
 
+  if (schema.uniqueItems) {
+    res.push('unique');
+  }
+
   return res;
 }
 
