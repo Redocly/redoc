@@ -67,6 +67,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 const normalizedUrl = options.expandDefaultServerVariables
                   ? expandDefaultServerVariables(server.url, server.variables)
                   : server.url;
+                const basePath = getBasePath(normalizedUrl) === '/' ? '' : getBasePath(normalizedUrl);
                 return (
                   <ServerItem key={normalizedUrl}>
                     <Markdown source={server.description || ''} compact={true} />
@@ -74,7 +75,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                       <ServerUrl>
                         <span>
                           {hideHostname || options.hideHostname
-                            ? getBasePath(normalizedUrl)
+                            ? basePath
                             : normalizedUrl}
                         </span>
                         {operation.path}
