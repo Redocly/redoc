@@ -1,3 +1,19 @@
+# [2.0.0-rc.46](https://github.com/Redocly/redoc/compare/v2.0.0-rc.45...v2.0.0-rc.46) (2020-11-05)
+
+
+### Bug Fixes
+
+* fix arrow color in responses ([#1452](https://github.com/Redocly/redoc/issues/1452)) ([6bedcf9](https://github.com/Redocly/redoc/commit/6bedcf94b26d820101ab510b28d2b76a38999eea))
+* remove duplicated slash if hideHostname option enabled ([#1448](https://github.com/Redocly/redoc/issues/1448)) ([4729fc3](https://github.com/Redocly/redoc/commit/4729fc3d8fc83f4af087cd7932adf500b45bab4e))
+* use shrinkwrap for cli package ([#1446](https://github.com/Redocly/redoc/issues/1446)) ([4567534](https://github.com/Redocly/redoc/commit/4567534cbb26f13a72a64d49faca64fc992d6dd8))
+
+
+### Features
+
+* add tabTextColor option for responses ([#1451](https://github.com/Redocly/redoc/issues/1451)) ([702fea0](https://github.com/Redocly/redoc/commit/702fea0f410499101efc554983c6db58acc84889))
+
+
+
 # [2.0.0-rc.45](https://github.com/Redocly/redoc/compare/v2.0.0-rc.43...v2.0.0-rc.45) (2020-10-27)
 
 
