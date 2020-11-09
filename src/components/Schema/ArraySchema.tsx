@@ -24,7 +24,7 @@ export class ArraySchema extends React.PureComponent<SchemaProps> {
     return (
       <div>
         <ArrayOpenningLabel> Array ({minMaxItems})</ArrayOpenningLabel>
-        <TypeTitle>{itemsSchema.schema.title}</TypeTitle>
+        {itemsSchema.schema.title && <TypeTitle> {itemsSchema.schema.title} </TypeTitle>}
         <PaddedSchema>
           <Schema {...this.props} schema={itemsSchema} />
         </PaddedSchema>
