@@ -53,6 +53,7 @@ export class MediaTypeModel {
       skipReadOnly: this.isRequestType,
       skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
       skipWriteOnly: !this.isRequestType,
+      maxSampleDepth: 10,
     };
     if (this.schema && this.schema.oneOf) {
       this.examples = {};
