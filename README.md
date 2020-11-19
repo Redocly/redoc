@@ -255,63 +255,61 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 
 ### `<redoc>` theme object
-Theme options below designated with `#CE` are supported by Redoc Community Edition (CE).
-
 * `spacing`
-  * `unit`: 5 # CE  # main spacing unit used in autocomputed theme values later
-  * `sectionHorizontal`: 40 # CE  # Horizontal section padding. COMPUTED: spacing.unit * 8
-  * `sectionVertical`: 40 # CE  # Horizontal section padding. COMPUTED: spacing.unit * 8
-* `breakpoints` # CE  # breakpoints for switching three/two and mobile view layouts
+  * `unit`: 5 # main spacing unit used in autocomputed theme values later
+  * `sectionHorizontal`: 40 # Horizontal section padding. COMPUTED: spacing.unit * 8
+  * `sectionVertical`: 40 # Horizontal section padding. COMPUTED: spacing.unit * 8
+* `breakpoints` # breakpoints for switching three/two and mobile view layouts
   * `small`: '50rem'
   * `medium`: '85rem'
   * `large`: '105rem'
 * `colors`
-  * `tonalOffset`: 0.3 # CE  # default tonal offset used in computations
+  * `tonalOffset`: 0.3 # default tonal offset used in computations
 * `typography`
-  * `fontSize`: '14px' # CE
-  * `lineHeight`: '1.5em' # CE
-  * `fontWeightRegular`: '400' # CE
-  * `fontWeightBold`: '600' # CE
-  * `fontWeightLight`: '300' # CE
-  * `fontFamily`: 'Roboto, sans-serif' # CE
-  * `smoothing`: 'antialiased' # CE
-  * `optimizeSpeed`: true # CE
+  * `fontSize`: '14px'
+  * `lineHeight`: '1.5em'
+  * `fontWeightRegular`: '400'
+  * `fontWeightBold`: '600'
+  * `fontWeightLight`: '300'
+  * `fontFamily`: 'Roboto, sans-serif'
+  * `smoothing`: 'antialiased'
+  * `optimizeSpeed`: true
   * `headings`
-    * `fontFamily`: 'Montserrat, sans-serif' # CE
-    * `fontWeight`: '400' # CE
-    * `lineHeight`: '1.6em' # CE
+    * `fontFamily`: 'Montserrat, sans-serif'
+    * `fontWeight`: '400'
+    * `lineHeight`: '1.6em'
   * `code` # inline code styling
-    * `fontSize`: '13px' # CE
-    * `fontFamily`: 'Courier, monospace' # CE
-    * `lineHeight`: # COMPUTED: typography.lineHeight # CE
-    * `fontWeight`: # COMPUTED: typography.fontWeightRegular # CE
-    * `color`: '#e53935' # CE
-    * `backgroundColor`: 'rgba(38, 50, 56, 0.05)' # CE
-    * `wrap`: false # whether to break word for inline blocks (otherwise they can overflow) # CE
+    * `fontSize`: '13px'
+    * `fontFamily`: 'Courier, monospace'
+    * `lineHeight`: # COMPUTED: typography.lineHeight
+    * `fontWeight`: # COMPUTED: typography.fontWeightRegular
+    * `color`: '#e53935'
+    * `backgroundColor`: 'rgba(38, 50, 56, 0.05)'
+    * `wrap`: false # whether to break word for inline blocks (otherwise they can overflow)
   * `links`
-    * `color`: # COMPUTED: colors.primary.main # CE
-    * `visited`: # COMPUTED: typography.links.color # CE
-    * `hover`: # COMPUTED: lighten(0.2 typography.links.color) # CE
+    * `color`: # COMPUTED: colors.primary.main
+    * `visited`: # COMPUTED: typography.links.color
+    * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
 * `menu`
-  * `width`: '260px' # CE
-  * `backgroundColor`: '#fafafa' # CE
-  * `textColor`: '#333333' # CE
-  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main # CE
-  * `groupItems` # Group headings # CE
-    * `textTransform`: 'uppercase' # CE
-  * `level1Items` # Level 1 items like tags or section 1st level items # CE
-    * `textTransform`: 'none' # CE
-  * `arrow` # menu arrow # CE
-    * `size`: '1.5em' # CE
-    * `color`: # COMPUTED: theme.menu.textColor # CE
+  * `width`: '260px'
+  * `backgroundColor`: '#fafafa'
+  * `textColor`: '#333333'
+  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main
+  * `groupItems` # Group headings
+    * `textTransform`: 'uppercase'
+  * `level1Items` # Level 1 items like tags or section 1st level items
+    * `textTransform`: 'none' 
+  * `arrow` # menu arrow
+    * `size`: '1.5em'
+    * `color`: # COMPUTED: theme.menu.textColor
 * `logo`
-  * `maxHeight`: # COMPUTED: menu.width # CE
-  * `maxWidth`: # COMPUTED: menu.width # CE
-  * `gutter`: '2px' # logo image padding # CE
+  * `maxHeight`: # COMPUTED: menu.width
+  * `maxWidth`: # COMPUTED: menu.width
+  * `gutter`: '2px' # logo image padding
 * `rightPanel`
-  * `backgroundColor`: '#263238' # CE
-  * `width`: '40%' # CE
-  * `textColor`: '#ffffff' # CE
+  * `backgroundColor`: '#263238'
+  * `width`: '40%'
+  * `textColor`: '#ffffff'
   
 ## Advanced usage of standalone version
 Instead of adding `spec-url` attribute to the `<redoc>` element you can initialize ReDoc via globally exposed `Redoc` object:
