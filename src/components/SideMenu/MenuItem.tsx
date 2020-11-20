@@ -91,16 +91,22 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
         deprecated={item.deprecated}
         ref={this.ref}
       >
-        {item.isWebhook ? (
-          <OperationBadge type="hook">{l('webhook')}</OperationBadge>
-        ) : (
-          <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
-        )}
+        {this.renderOperationBadge(item)}
         <MenuItemTitle width="calc(100% - 38px)">
           {item.name}
           {this.props.children}
         </MenuItemTitle>
       </MenuItemLabel>
     );
+  }
+
+  renderOperationBadge(item: OperationModel) {
+    if (item.isWebhook) {
+      return <OperationBadge type="hook">{l('webhook')}</OperationBadge>
+    } else if (item.isJsonRpc) {
+      return <OperationBadge type="rpc">{l('jsonrpc')}</OperationBadge>;
+    } else {
+      return <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+    }
   }
 }

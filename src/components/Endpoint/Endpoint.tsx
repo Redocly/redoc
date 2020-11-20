@@ -22,6 +22,7 @@ export interface EndpointProps {
   hideHostname?: boolean;
   inverted?: boolean;
   compact?: boolean;
+  isJsonRpc?: boolean;
 }
 
 export interface EndpointState {
@@ -41,7 +42,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
   };
 
   render() {
-    const { operation, inverted, hideHostname } = this.props;
+    const { operation, inverted, hideHostname, isJsonRpc } = this.props;
     const { expanded } = this.state;
 
     // TODO: highlight server variables, e.g. https://{user}.test.com
@@ -80,7 +81,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                               : basePath
                             : normalizedUrl}
                         </span>
-                        {operation.path}
+                        {!!isJsonRpc ? `/json` : operation.path}
                       </ServerUrl>
                     </SelectOnClick>
                   </ServerItem>

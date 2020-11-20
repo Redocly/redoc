@@ -76,6 +76,7 @@ export class OperationModel implements IMenuItem {
   extensions: Record<string, any>;
   isCallback: boolean;
   isWebhook: boolean;
+  isJsonRpc: boolean;
 
   constructor(
     private parser: OpenAPIParser,
@@ -99,6 +100,7 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
     this.isWebhook = !!operationSpec.isWebhook;
+    this.isJsonRpc = !!operationSpec.isJsonRpc;
 
     this.name = getOperationSummary(operationSpec);
 

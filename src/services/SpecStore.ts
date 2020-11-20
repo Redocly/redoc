@@ -7,7 +7,7 @@ import { SecuritySchemesModel } from './models/SecuritySchemes';
 import { OpenAPIParser } from './OpenAPIParser';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 /**
- * Store that contains all the specification related information in the form of tree
+ * 모든 specification 관련 정보를 트리 형태로 포함하는 Store
  */
 export class SpecStore {
   parser: OpenAPIParser;

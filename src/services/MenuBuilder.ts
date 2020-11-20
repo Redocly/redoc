@@ -30,6 +30,7 @@ export type ExtendedOpenAPIOperation = {
   pathParameters: Array<Referenced<OpenAPIParameter>>;
   pathServers: Array<OpenAPIServer> | undefined;
   isWebhook: boolean;
+  isJsonRpc: boolean;
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Record<string, TagInfo>;
@@ -129,10 +130,10 @@ export class MenuBuilder {
   }
 
   /**
-   * Returns array of OperationsGroup items for the tags of the group or for all tags
-   * @param tagsMap tags info returned from `getTagsWithOperations`
-   * @param parent parent item
-   * @param group group which this tag belongs to. if not provided gets all tags
+   * 그룹의 태그 또는 모든 태그에 대한 OperationsGroup 항목의 배열을 반환한다.
+   * @param tagsMap `getTagsWithOperations`에서 반환된 태그 정보
+   * @param parent 상위 항목
+   * @param group 이 태그가 속한 그룹. 주어지지 않으면 모든 태그를 가져온다.
    */
   static getTagsItems(
     parser: OpenAPIParser,
@@ -213,7 +214,7 @@ export class MenuBuilder {
   }
 
   /**
-   * collects tags and maps each tag to list of operations belonging to this tag
+   * 태그를 수집하고 각 태그를 이 태그에 속하는 operations 목록에 매핑한다.
    */
   static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
@@ -225,8 +226,11 @@ export class MenuBuilder {
     if (spec['x-webhooks']) {
       getTags(spec['x-webhooks'], true);
     }
+    if (spec['jsonrpc']) {
+      getTags(spec['jsonrpc'], false, true);
+    }
 
-    function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
+    function getTags(paths: OpenAPIPaths, isWebhook?: boolean, isJsonRpc?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
         const operations = Object.keys(path).filter(isOperationName);
@@ -259,6 +263,7 @@ export class MenuBuilder {
               pathParameters: path.parameters || [],
               pathServers: path.servers,
               isWebhook: !!isWebhook,
+              isJsonRpc: !!isJsonRpc,
             });
           }
         }

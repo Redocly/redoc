@@ -7,7 +7,7 @@ import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
 }))<{ type: string }>`
-  width: 9ex;
+  width: 15ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
@@ -138,6 +138,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   ${props => menuItemDepth[props.depth]};
   background-color: ${props => (props.active ? menuItemActiveBg(props.depth, props) : '')};
