@@ -11,6 +11,8 @@ import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { extractExtensions } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
+import { ExampleModel } from './Example';
+import { mapValues } from '../../utils/helpers';
 
 const DEFAULT_SERIALIZATION: Record<
   OpenAPIParameterLocation,
@@ -46,6 +48,7 @@ export class FieldModel {
   required: boolean;
   description: string;
   example?: string;
+  examples?: Record<string, ExampleModel>;
   deprecated: boolean;
   in?: OpenAPIParameterLocation;
   kind: string;
@@ -80,6 +83,13 @@ export class FieldModel {
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;
+
+    if (info.examples !== undefined) {
+      this.examples = mapValues(
+        info.examples,
+        example => new ExampleModel(parser, example, name, info.encoding),
+      );
+    }
 
     if (serializationMime) {
       this.serializationMime = serializationMime;
