@@ -64,7 +64,7 @@ class Json extends React.PureComponent<JsonProps> {
 
     for (const expanded of elementsArr) {
       const parentNode = expanded.parentNode as Element;
-      parentNode!.classList.add('collapsed');
+      parentNode.classList.add('collapsed');
       parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'expand');
     }
   };
