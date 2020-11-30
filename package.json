@@ -150,7 +150,7 @@
     "openapi-sampler": "^1.0.0-beta.18",
     "perfect-scrollbar": "^1.4.0",
     "polished": "^3.6.5",
-    "prismjs": "^1.20.0",
+    "prismjs": "^1.22.0",
     "prop-types": "^15.7.2",
     "react-tabs": "^3.1.1",
     "slugify": "^1.4.4",
