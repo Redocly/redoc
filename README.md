@@ -233,6 +233,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
+* `hideSchemaPattern` - if set, the pattern is not shown in the schema. 
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
 * `expandSingleSchemaField` - automatically expand single field in a schema
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value 'all' expands all levels. The default value is `2`.
