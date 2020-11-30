@@ -52,7 +52,7 @@ class Json extends React.PureComponent<JsonProps> {
     const elements = this.node.getElementsByClassName('collapsible');
     for (const collapsed of Array.prototype.slice.call(elements)) {
       const parentNode = collapsed.parentNode as Element;
-      parentNode!.classList.remove('collapsed');
+      parentNode.classList.remove('collapsed');
       parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'collapse');
     }
   };
