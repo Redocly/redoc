@@ -46,7 +46,7 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
   render() {
     const { showExamples, field, renderDiscriminatorSwitch } = this.props;
     const { patternShown } = this.state;
-    const { enumSkipQuotes, hideSchemaTitles } = this.context;
+    const { enumSkipQuotes, hideSchemaTitles, hideSchemaPattern } = this.context;
 
     const { schema, description, example, deprecated, examples } = field;
 
@@ -80,7 +80,7 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
           {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
-          {schema.pattern && (
+          {schema.pattern && !hideSchemaPattern && (
             <>
               <PatternLabel>
                 {patternShown || schema.pattern.length < MAX_PATTERN_LENGTH
