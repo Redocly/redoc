@@ -1,3 +1,18 @@
+# [2.0.0-rc.48](https://github.com/Redocly/redoc/compare/v2.0.0-rc.47...v2.0.0-rc.48) (2020-11-30)
+
+
+### Bug Fixes
+
+* add missed labels to elements ([#1445](https://github.com/Redocly/redoc/issues/1445)) ([8c559bc](https://github.com/Redocly/redoc/commit/8c559bcbcde39efee7f1570b88840468bfdfb17c))
+
+
+### Features
+
+* add new option hideSchemaPattern ([#1475](https://github.com/Redocly/redoc/issues/1475)) ([bb4594e](https://github.com/Redocly/redoc/commit/bb4594ee58d89819c975bdb575083c0667e3d940))
+* support multiple examples for parameters ([#1470](https://github.com/Redocly/redoc/issues/1470)) ([d12e410](https://github.com/Redocly/redoc/commit/d12e410d99a988948b359093159df79572bc78ab))
+
+
+
 # [2.0.0-rc.46](https://github.com/Redocly/redoc/compare/v2.0.0-rc.45...v2.0.0-rc.46) (2020-11-05)
 
 
