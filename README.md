@@ -64,7 +64,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 | 1.17.x        | 2.0                   |
 
 ## Some Real-life usages
-- [Rebilly](https://rebilly-api.redoc.ly/)
+- [Rebilly](https://api-reference.rebilly.com/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)
 - [Zuora](https://www.zuora.com/developer/api-reference/)
 - [Discourse](http://docs.discourse.org)
