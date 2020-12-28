@@ -33,12 +33,12 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
               {samples.map(sample => (
                 <Tab className="exampleButton" key={sample.lang + '_' + (sample.label || '')}>
                   {sample.label !== undefined ? sample.label : 
-                  sample.lang === 'Shell + curl' ? sample.lang.slice(8) : 
-                  sample.lang === 'Node + native' ? sample.lang.slice(0, 4) :
-                  sample.lang === 'Go + native' ? sample.lang.slice(0, 2) :
-                  sample.lang === 'Ruby + native' ? sample.lang.slice(0, 4) : 
-                  sample.lang === 'Python + python3' ? sample.lang.slice(9) : 
-                  sample.lang === 'Javascript + jquery' ? sample.lang.slice(0, 10) : sample.lang}
+                  sample.lang === 'Shell + Curl' ? sample.lang.slice(8) : 
+                  sample.lang === 'Node + Native' ? sample.lang.slice(0, 4) :
+                  sample.lang === 'Go + Native' ? sample.lang.slice(0, 2) :
+                  sample.lang === 'Ruby + Native' ? sample.lang.slice(0, 4) : 
+                  sample.lang === 'Python + Python3' ? sample.lang.slice(9) : 
+                  sample.lang === 'Javascript + Jquery' ? sample.lang.slice(0, 10) : sample.lang}
                 </Tab>
               ))}
             </TabList>
