@@ -68,7 +68,7 @@ export interface SecurityDefsProps {
 export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
   render() {
     return this.props.securitySchemes.schemes.map(scheme => (
-      <Section id={scheme.sectionId} key={scheme.id}>
+      <Section id={scheme.sectionId} key={scheme.id} className='auth'>
         <Row>
           <MiddlePanel>
             <H2>
