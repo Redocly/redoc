@@ -7686,7 +7686,7 @@ var ErrorBoundary_ErrorBoundary = /** @class */ (function (_super) {
                 external_react_["createElement"]("br", null),
                 external_react_["createElement"]("small", null,
                     " Commit: ",
-                    "7d4eba52"));
+                    "35783e91"));
         }
         return external_react_["Children"].only(this.props.children);
     };
@@ -11086,7 +11086,7 @@ var PropertyNameCell = styled_components(PropertyCell)(fields_layout_templateObj
     var kind = _a.kind;
     return kind !== 'field' ? 'font-style: italic' : '';
 }, extensionsHook('PropertyNameCell'));
-var PropertyDetailsCell = styled_components.td(fields_layout_templateObject_7 || (fields_layout_templateObject_7 = Object(external_tslib_["__makeTemplateObject"])(["\n  border-bottom: none;\n  padding: 10px 0;\n  width: ", ";\n  box-sizing: border-box;\n\n  tr.expanded & {\n    border-bottom: none;\n  }\n\n  ", "\n\n  ", ";\n"], ["\n  border-bottom: none;\n  padding: 10px 0;\n  width: ", ";\n  box-sizing: border-box;\n\n  tr.expanded & {\n    border-bottom: none;\n  }\n\n  ",
+var PropertyDetailsCell = styled_components.td(fields_layout_templateObject_7 || (fields_layout_templateObject_7 = Object(external_tslib_["__makeTemplateObject"])(["\n  border-bottom: 1px solid #9fb4be;\n  padding: 10px 0;\n  width: ", ";\n  box-sizing: border-box;\n\n  tr.expanded & {\n    border-bottom: none;\n  }\n\n  ", "\n\n  ", ";\n"], ["\n  border-bottom: 1px solid #9fb4be;\n  padding: 10px 0;\n  width: ", ";\n  box-sizing: border-box;\n\n  tr.expanded & {\n    border-bottom: none;\n  }\n\n  ",
     "\n\n  ", ";\n"])), function (props) { return props.theme.schema.defaultDetailsWidth; }, media.lessThan('small')(fields_layout_templateObject_6 || (fields_layout_templateObject_6 = Object(external_tslib_["__makeTemplateObject"])(["\n    padding: 0 20px;\n    border-bottom: none;\n    border-left: 1px solid ", ";\n\n    tr.last > & {\n      border-left: none;\n    }\n  "], ["\n    padding: 0 20px;\n    border-bottom: none;\n    border-left: 1px solid ", ";\n\n    tr.last > & {\n      border-left: none;\n    }\n  "])), function (props) { return props.theme.schema.linesColor; }), extensionsHook('PropertyDetailsCell'));
 var PropertyBullet = styled_components.span(fields_layout_templateObject_8 || (fields_layout_templateObject_8 = Object(external_tslib_["__makeTemplateObject"])(["\n  color: ", ";\n  font-family: ", ";\n  margin-right: 10px;\n\n  &::before {\n    content: '';\n    display: inline-block;\n    vertical-align: middle;\n    width: 10px;\n    height: 1px;\n    background: ", ";\n  }\n\n  &::after {\n    content: '';\n    display: inline-block;\n    vertical-align: middle;\n    width: 1px;\n    background: ", ";\n    height: 7px;\n  }\n"], ["\n  color: ", ";\n  font-family: ", ";\n  margin-right: 10px;\n\n  &::before {\n    content: '';\n    display: inline-block;\n    vertical-align: middle;\n    width: 10px;\n    height: 1px;\n    background: ", ";\n  }\n\n  &::after {\n    content: '';\n    display: inline-block;\n    vertical-align: middle;\n    width: 1px;\n    background: ", ";\n    height: 7px;\n  }\n"])), function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.typography.code.fontFamily; }, function (props) { return props.theme.schema.linesColor; }, function (props) { return props.theme.schema.linesColor; });
 var InnerPropertiesWrap = styled_components.div(fields_layout_templateObject_9 || (fields_layout_templateObject_9 = Object(external_tslib_["__makeTemplateObject"])(["\n  padding: ", ";\n"], ["\n  padding: ",
@@ -12772,7 +12772,7 @@ var SecuritySchemes_SecurityDefs = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SecurityDefs.prototype.render = function () {
-        return this.props.securitySchemes.schemes.map(function (scheme) { return external_react_["createElement"](Section, { id: scheme.sectionId, key: scheme.id },
+        return this.props.securitySchemes.schemes.map(function (scheme) { return external_react_["createElement"](Section, { id: scheme.sectionId, key: scheme.id, className: 'auth' },
             external_react_["createElement"](Row, null,
                 external_react_["createElement"](MiddlePanel, null,
                     external_react_["createElement"](H2, null,
@@ -14028,7 +14028,7 @@ var RequestSamples_RequestSamples = /** @class */ (function (_super) {
         return hasSamples && external_react_["createElement"]("div", null,
             external_react_["createElement"](RightPanelHeader, null, " Request samples "),
             external_react_["createElement"](Tabs, { defaultIndex: 0 },
-                external_react_["createElement"](external_react_tabs_["TabList"], { hidden: hideTabList }, samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["Tab"], { key: sample.lang + '_' + (sample.label || '') }, sample.label !== undefined ? sample.label : sample.lang); })),
+                external_react_["createElement"](external_react_tabs_["TabList"], { hidden: hideTabList }, samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["Tab"], { className: "exampleButton", key: sample.lang + '_' + (sample.label || '') }, sample.label !== undefined ? sample.label : sample.lang === 'Shell + Curl' ? sample.lang.slice(8) : sample.lang === 'Node + Native' ? sample.lang.slice(0, 4) : sample.lang === 'Go + Native' ? sample.lang.slice(0, 2) : sample.lang === 'Ruby + Native' ? sample.lang.slice(0, 4) : sample.lang === 'Python + Python3' ? sample.lang.slice(9) : sample.lang === 'Javascript + Jquery' ? sample.lang.slice(0, 10) : sample.lang); })),
                 samples.map(function (sample) { return external_react_["createElement"](external_react_tabs_["TabPanel"], { key: sample.lang + '_' + (sample.label || '') }, isPayloadSample(sample) ? external_react_["createElement"]("div", null,
                     external_react_["createElement"](PayloadSamples_PayloadSamples, { content: sample.requestBodyContent })) : external_react_["createElement"](SourceCode_SourceCodeWithCopy, { lang: sample.lang, source: sample.source })); }))) || null;
     };
