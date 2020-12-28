@@ -31,8 +31,14 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
           <Tabs defaultIndex={0}>
             <TabList hidden={hideTabList}>
               {samples.map(sample => (
-                <Tab key={sample.lang + '_' + (sample.label || '')}>
-                  {sample.label !== undefined ? sample.label : sample.lang}
+                <Tab className="exampleButton" key={sample.lang + '_' + (sample.label || '')}>
+                  {sample.label !== undefined ? sample.label : 
+                  sample.lang === 'Shell + curl' ? sample.lang.slice(8) : 
+                  sample.lang === 'Node + native' ? sample.lang.slice(0, 4) :
+                  sample.lang === 'Go + native' ? sample.lang.slice(0, 2) :
+                  sample.lang === 'Ruby + native' ? sample.lang.slice(0, 4) : 
+                  sample.lang === 'Python + python3' ? sample.lang.slice(9) : 
+                  sample.lang === 'Javascript + jquery' ? sample.lang.slice(0, 10) : sample.lang}
                 </Tab>
               ))}
             </TabList>
