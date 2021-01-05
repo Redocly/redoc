@@ -32,7 +32,13 @@ function parseOptionsFromElement(element: Element) {
   const res = {};
   for (const attrName in attrMap) {
     const optionName = attrName.replace(/-(.)/g, (_, $1) => $1.toUpperCase());
-    res[optionName] = attrMap[attrName];
+    let attr = attrMap[attrName];
+
+    if (attrName === 'theme') {
+      attr = JSON.parse(attr);
+    }
+
+    res[optionName] = attr;
     // TODO: normalize options
   }
   return res;
