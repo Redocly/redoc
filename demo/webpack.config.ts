@@ -73,20 +73,12 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
-    alias:
-      mode !== 'production'
-        ? {
-            'react-dom': '@hot-loader/react-dom',
-          }
-        : {},
+    alias: {
+      fs: root('fs.mock.js'),
+      ...(mode !== 'production' && { 'react-dom': '@hot-loader/react-dom' })
+    }
   },
-
-  node: {
-    fs: 'empty',
-  },
-
   performance: false,
-
   externals: {
     esprima: 'esprima',
     'node-fetch': 'null',

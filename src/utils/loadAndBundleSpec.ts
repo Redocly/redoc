@@ -1,19 +1,29 @@
-import * as JsonSchemaRefParser from 'json-schema-ref-parser';
 /* tslint:disable-next-line:no-implicit-dependencies */
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
+import { Source, Document, bundle, loadConfig } from '@redocly/openapi-core';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const parser = new JsonSchemaRefParser();
-  const spec = (await parser.bundle(specUrlOrObject, {
-    resolve: { http: { withCredentials: false } },
-  } as object)) as any;
-
-  if (spec.swagger !== undefined) {
-    return convertSwagger2OpenAPI(spec);
+  const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+  let bundleRef;
+  const config = await loadConfig();
+  if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
+    bundleRef = {
+      source: { absoluteRef: '' } as Source,
+      parsed: specUrlOrObject
+    } as Document
   } else {
-    return spec;
+    config.resolve.http.customFetch = fetch;
+    bundleRef = specUrlOrObject;
   }
+
+  const { bundle: { parsed } } = await bundle({
+    ref: bundleRef,
+    config,
+    base: isNode ? process.cwd() : window.location.href
+  });
+
+  return parsed.swagger !== undefined ? convertSwagger2OpenAPI(parsed) : parsed;
 }
 
 export function convertSwagger2OpenAPI(spec: any): Promise<OpenAPISpec> {
