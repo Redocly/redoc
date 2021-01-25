@@ -2,17 +2,13 @@ import * as CopyWebpackPlugin from 'copy-webpack-plugin';
 import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { compact } from 'lodash';
-import { resolve } from 'path';
 import * as webpack from 'webpack';
+import { root } from '../webpack.config';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
   require('child_process').execSync('git rev-parse --short HEAD').toString().trim(),
 );
-
-function root(filename) {
-  return resolve(__dirname + '/' + filename);
-}
 
 const tsLoader = (env) => ({
   loader: 'ts-loader',
@@ -48,18 +44,18 @@ const babelHotLoader = {
 
 export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) => ({
   entry: [
-    root('../src/polyfills.ts'),
+    root('src/polyfills.ts'),
     root(
       env.playground
-        ? 'playground/hmr-playground.tsx'
+        ? 'demo/playground/hmr-playground.tsx'
         : env.bench
-        ? '../benchmark/index.tsx'
-        : 'index.tsx',
+        ? 'benchmark/index.tsx'
+        : 'demo/index.tsx',
     ),
   ],
   output: {
     filename: 'redoc-demo.bundle.js',
-    path: root('dist'),
+    path: root('demo/dist'),
     globalObject: 'this',
   },
 

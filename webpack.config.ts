@@ -1,8 +1,8 @@
 /* tslint:disable:no-implicit-dependencies */
 import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as webpack from 'webpack';
-
 import * as path from 'path';
+import { resolve } from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in modules that need transpiling + non-js (e.g. css)
@@ -32,6 +32,11 @@ const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
   Version: ${VERSION}
   Repo: https://github.com/Redocly/redoc`;
 
+
+export function root(filename) {
+  return resolve(__dirname + '/' + filename);
+}
+
 export default (env: { standalone?: boolean } = {}, { mode }) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',
   output: {
@@ -41,19 +46,14 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
     libraryTarget: 'umd',
     globalObject: 'this',
   },
-
   devtool: 'source-map',
-
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      fs: root('fs.mock.js'),
+    }
   },
-
-  node: {
-    fs: 'empty',
-  },
-
   performance: false,
-
   optimization: {
     minimize: !!env.standalone,
   },
