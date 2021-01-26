@@ -52,7 +52,7 @@ export const StyledDropdown = styled(Dropdown)`
       position: relative;
       font-size: 0.929em;
       width: 100%;
-      line-height: 1;
+      line-height: normal;
       vertical-align: middle;
       color: #263238;
       left: 0;
