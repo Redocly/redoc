@@ -5,24 +5,23 @@ import { Source, Document, bundle, loadConfig } from '@redocly/openapi-core';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
   const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
-  let bundleRef;
   const config = await loadConfig();
+  const bundleOpts = {
+    config,
+    base: isNode ? process.cwd() : window.location.href
+  }
+
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
-    bundleRef = {
+    bundleOpts['doc'] = {
       source: { absoluteRef: '' } as Source,
       parsed: specUrlOrObject
     } as Document
   } else {
     config.resolve.http.customFetch = fetch;
-    bundleRef = specUrlOrObject;
+    bundleOpts['ref'] = specUrlOrObject;
   }
 
-  const { bundle: { parsed } } = await bundle({
-    ref: bundleRef,
-    config,
-    base: isNode ? process.cwd() : window.location.href
-  });
-
+  const { bundle: { parsed } } = await bundle(bundleOpts);
   return parsed.swagger !== undefined ? convertSwagger2OpenAPI(parsed) : parsed;
 }
 

@@ -50,7 +50,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: {
-      fs: root('fs.mock.js'),
+      fs: root('fs.mock.js')
     }
   },
   performance: false,
