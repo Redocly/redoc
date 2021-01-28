@@ -87,7 +87,7 @@ export class FieldModel {
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
-        example => new ExampleModel(parser, example, name, info.encoding),
+        (example, name) => new ExampleModel(parser, example, name, info.encoding),
       );
     }
 
