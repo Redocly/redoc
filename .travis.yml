@@ -30,8 +30,3 @@ deploy:
   api_key: "$NPM_TOKEN"
   on:
     tags: true
-- provider: script
-  skip_cleanup: true
-  script: npm run deploy:demo
-  on:
-    tags: true
