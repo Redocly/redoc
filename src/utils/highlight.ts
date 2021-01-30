@@ -68,11 +68,11 @@ export function mapLang(lang: string): string {
  * @param lang highlight language
  * @return highlighted source code as **html string**
  */
-export function highlight(source: string, lang: string = DEFAULT_LANG): string {
+export function highlight(source: string | number | boolean, lang: string = DEFAULT_LANG): string {
   lang = lang.toLowerCase();
   let grammar = Prism.languages[lang];
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];
   }
-  return Prism.highlight(source, grammar, lang);
+  return Prism.highlight(source.toString(), grammar, lang);
 }
