@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
+import ClipboardImporter from './ClipboardImporter';
 
 const demos = [
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
@@ -20,7 +21,7 @@ const DEFAULT_SPEC = 'openapi.yaml';
 
 class DemoApp extends React.Component<
   {},
-  { specUrl: string; dropdownOpen: boolean; cors: boolean }
+  { spec?: object; specUrl: string; dropdownOpen: boolean; cors: boolean }
 > {
   constructor(props) {
     super(props);
@@ -38,14 +39,23 @@ class DemoApp extends React.Component<
     }
 
     this.state = {
+      spec: undefined,
       specUrl: url,
       dropdownOpen: false,
       cors,
     };
   }
 
+  handlePaste = (spec: object) => {
+    this.setState({
+      spec,
+      specUrl: '',
+    });
+  };
+
   handleChange = (url: string) => {
     this.setState({
+      spec: undefined,
       specUrl: url,
     });
     window.history.pushState(
@@ -85,6 +95,7 @@ class DemoApp extends React.Component<
             />
           </a>
           <ControlsContainer>
+            <ClipboardImporter onPaste={this.handlePaste}/>
             <ComboBox
               placeholder={'URL to a spec to try'}
               options={demos}
@@ -105,6 +116,7 @@ class DemoApp extends React.Component<
           />
         </Heading>
         <RedocStandalone
+          spec={this.state.spec}
           specUrl={proxiedUrl}
           options={{ scrollYOffset: 'nav', untrustedSpec: true }}
         />
