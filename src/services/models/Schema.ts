@@ -104,9 +104,17 @@ export class SchemaModel {
     this.title =
       schema.title || (isNamedDefinition(this.pointer) && JsonPointer.baseName(this.pointer)) || '';
     this.description = schema.description || '';
-    this.type = schema.type || detectType(schema);
+
+    if (Array.isArray(schema.type) && schema.type.includes('null')) {
+      this.nullable = true;
+      const schemaType = schema.type.filter((t) => t !== 'null');
+      this.type = schemaType.length === 1 ? schemaType[0] : schemaType;
+    } else {
+      this.nullable = !!schema.nullable;
+      this.type = schema.type || detectType(schema);
+    }
+
     this.format = schema.format;
-    this.nullable = !!schema.nullable;
     this.enum = schema.enum || [];
     this.example = schema.example;
     this.deprecated = !!schema.deprecated;
@@ -221,9 +229,12 @@ export class SchemaModel {
           if (name.indexOf(' or ') > -1) {
             name = `(${name})`;
           }
+          if (name.indexOf('null') !== -1) {
+            this.nullable = true;
+          }
           return name;
         })
-        .join(' or ');
+        .filter((t) => t !== 'null').join(' or ');
     }
   }
 
