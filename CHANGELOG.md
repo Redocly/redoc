@@ -1,3 +1,14 @@
+# [2.0.0-rc.50](https://github.com/Redocly/redoc/compare/v2.0.0-rc.49...v2.0.0-rc.50) (2021-02-15)
+
+
+### Bug Fixes
+
+* add includes polyfill ([3ba622f](https://github.com/Redocly/redoc/commit/3ba622f3ab9e28c954fe05f42e7b90862fc3d544)), closes [#1530](https://github.com/Redocly/redoc/issues/1530)
+* background-color in search results ([#1531](https://github.com/Redocly/redoc/issues/1531)) ([d288165](https://github.com/Redocly/redoc/commit/d288165a4ea04aedc23dba12020a73e86f20755b))
+* false-positive recursive tag case when using oneOf + allOf ([#1534](https://github.com/Redocly/redoc/issues/1534)) ([8270481](https://github.com/Redocly/redoc/commit/8270481e9f0f381b392f7921d21cb06e0e673b6d))
+
+
+
 # [2.0.0-rc.49](https://github.com/Redocly/redoc/compare/v2.0.0-rc.48...v2.0.0-rc.49) (2021-01-30)
 
 
