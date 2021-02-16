@@ -24,6 +24,9 @@ export interface ClipboardImporterProps {
 
 export default class ClipboardImporter extends React.Component<any, any> {
   render() {
+    if (!('clipboard' in navigator)) {
+      return null;
+    }
     return <Button title='Get spec from clipboard' onClick={() => this.import()}>📋</Button>;
   }
 
