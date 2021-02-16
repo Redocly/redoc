@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as yaml from 'yaml-js';
 import styled from '../src/styled-components';
 
 const Button = styled.button`
@@ -36,9 +37,9 @@ export default class ClipboardImporter extends React.Component<any, any> {
         if (!text) {
           return;
         }
-        const asJson = JSON.parse(text);
-        if (asJson) {
-          this.props.onPaste(asJson);
+        const fromYamlOrJson = yaml.load(text);
+        if (fromYamlOrJson) {
+          this.props.onPaste(fromYamlOrJson);
         }
       })
       .catch(() => {
