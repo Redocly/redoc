@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import { querySelector } from '../utils/dom';
 import { SpecStore } from './models';
 
@@ -77,6 +77,8 @@ export class MenuStore {
    * @param scroll scroll service instance used by this menu
    */
   constructor(spec: SpecStore, public scroll: ScrollService, public history: HistoryService) {
+    makeObservable(this);
+
     this.items = spec.contentItems;
 
     this.flatItems = flattenByProp(this.items || [], 'items');

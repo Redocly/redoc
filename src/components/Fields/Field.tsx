@@ -37,6 +37,14 @@ export class Field extends React.Component<FieldProps> {
       this.props.field.toggle();
     }
   };
+
+  handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.toggle();
+    }
+  };
+
   render() {
     const { className, field, isLast, expandByDefault } = this.props;
     const { name, deprecated, required, kind } = field;
@@ -46,20 +54,25 @@ export class Field extends React.Component<FieldProps> {
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
-        onClick={this.toggle}
         className={deprecated ? 'deprecated' : ''}
         kind={kind}
         title={name}
       >
         <PropertyBullet />
-        {name}
-        <ShelfIcon direction={expanded ? 'down' : 'right'} />
+        <button
+          onClick={this.toggle}
+          onKeyPress={this.handleKeyPress}
+          aria-label="expand properties"
+        >
+          <span>{name}</span>
+          <ShelfIcon direction={expanded ? 'down' : 'right'} />
+        </button>
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
-        {name}
+        <span>{name}</span>
         {required && <RequiredLabel> required </RequiredLabel>}
       </PropertyNameCell>
     );

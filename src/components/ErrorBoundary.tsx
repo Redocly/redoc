@@ -6,7 +6,10 @@ const ErrorWrapper = styled.div`
   color: red;
 `;
 
-export class ErrorBoundary extends React.Component<{}, { error?: Error }> {
+export class ErrorBoundary extends React.Component<
+  React.PropsWithChildren<unknown>,
+  { error?: Error }
+> {
   constructor(props) {
     super(props);
     this.state = { error: undefined };

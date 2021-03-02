@@ -14,6 +14,7 @@ export const linkifyMixin = className => css`
     line-height: 1;
     width: 20px;
     display: inline-block;
+    outline: 0;
   }
   ${className}:before {
     content: '';
@@ -55,6 +56,7 @@ export class Link extends React.Component<{ to: string; className?: string; chil
             className={this.props.className}
             href={store!.menu.history.linkForId(this.props.to)}
             onClick={this.navigate.bind(this, store!.menu.history)}
+            aria-label={this.props.to}
           >
             {this.props.children}
           </a>

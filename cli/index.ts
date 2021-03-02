@@ -293,7 +293,7 @@ async function getPageHTML(
     var container = document.getElementById('redoc');
     Redoc.${
       ssr
-        ? 'hydrate(__redoc_state, container);'
+        ? 'hydrate(__redoc_state, container)'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
     };
 

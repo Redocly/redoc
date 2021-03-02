@@ -369,6 +369,12 @@ export function isNamedDefinition(pointer?: string): boolean {
   return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
 }
 
+export function getDefinitionName(pointer?: string): string | undefined {
+  if (!pointer) return undefined;
+  const match = pointer.match(/^#\/components\/schemas\/([^\/]+)$/);
+  return match === null ? undefined : match[1]
+}
+
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
   if (multipleOf === undefined) {
     return;
@@ -442,6 +448,10 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     res.push(numberRange);
   }
 
+  if (schema.uniqueItems) {
+    res.push('unique');
+  }
+
   return res;
 }
 
@@ -512,7 +522,7 @@ export function mergeSimilarMediaTypes(
 
 export function expandDefaultServerVariables(url: string, variables: object = {}) {
   return url.replace(
-    /(?:{)(\w+)(?:})/g,
+    /(?:{)([\w-.]+)(?:})/g,
     (match, name) => (variables[name] && variables[name].default) || match,
   );
 }

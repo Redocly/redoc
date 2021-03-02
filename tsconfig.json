@@ -17,7 +17,8 @@
       "es2015",
       "es2016",
       "es2017",
-      "dom"
+      "dom",
+      "WebWorker.ImportScripts"
     ],
     "jsx": "react",
     "types": [

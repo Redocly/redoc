@@ -34,14 +34,14 @@ export class CopyButtonWrapper extends React.PureComponent<
 
   renderCopyButton = () => {
     return (
-      <span onClick={this.copy}>
+      <button onClick={this.copy}>
         <Tooltip
           title={ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser'}
           open={this.state.tooltipShown}
         >
           Copy
         </Tooltip>
-      </span>
+      </button>
     );
   };
 

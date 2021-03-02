@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
@@ -72,6 +72,8 @@ export class SchemaModel {
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
+    makeObservable(this);
+
     this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
@@ -129,7 +131,7 @@ export class SchemaModel {
     } else if (
       isChild &&
       Array.isArray(schema.oneOf) &&
-      schema.oneOf.find(s => s.$ref === this.pointer)
+      schema.oneOf.find((s) => s.$ref === this.pointer)
     ) {
       // we hit allOf of the schema with the parent discriminator
       delete schema.oneOf;
@@ -168,6 +170,10 @@ export class SchemaModel {
         this.enum = this.items.enum;
       }
     }
+
+    if (this.enum.length && this.options.sortEnumValuesAlphabetically) {
+      this.enum.sort();
+    }
   }
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
@@ -203,17 +209,22 @@ export class SchemaModel {
       return schema;
     });
 
-    this.displayType = this.oneOf
-      .map(schema => {
-        let name =
-          schema.typePrefix +
-          (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
-        if (name.indexOf(' or ') > -1) {
-          name = `(${name})`;
-        }
-        return name;
-      })
-      .join(' or ');
+    if (this.options.simpleOneOfTypeLabel) {
+      const types = collectUniqueOneOfTypesDeep(this);
+      this.displayType = types.join(' or ');
+    } else {
+      this.displayType = this.oneOf
+        .map((schema) => {
+          let name =
+            schema.typePrefix +
+            (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
+          if (name.indexOf(' or ') > -1) {
+            name = `(${name})`;
+          }
+          return name;
+        })
+        .join(' or ');
+    }
   }
 
   private initDiscriminator(
@@ -324,7 +335,7 @@ function buildFields(
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
   const defaults = schema.default || {};
-  let fields = Object.keys(props || []).map(fieldName => {
+  let fields = Object.keys(props || []).map((fieldName) => {
     let field = props[fieldName];
 
     if (!field) {
@@ -384,4 +395,24 @@ function buildFields(
 
 function getDiscriminator(schema: OpenAPISchema): OpenAPISchema['discriminator'] {
   return schema.discriminator || schema['x-discriminator'];
+}
+
+function collectUniqueOneOfTypesDeep(schema: SchemaModel) {
+  const uniqueTypes = new Set();
+
+  function crawl(schema: SchemaModel) {
+    for (const oneOfType of schema.oneOf || []) {
+      if (oneOfType.oneOf) {
+        crawl(oneOfType);
+        continue;
+      }
+
+      if (oneOfType.type) {
+        uniqueTypes.add(oneOfType.type);
+      }
+    }
+  }
+
+  crawl(schema);
+  return Array.from(uniqueTypes.values());
 }

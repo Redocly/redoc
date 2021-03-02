@@ -30,15 +30,15 @@ class Json extends React.PureComponent<JsonProps> {
     <JsonViewerWrap>
       <SampleControls>
         {renderCopyButton()}
-        <span onClick={this.expandAll}> Expand all </span>
-        <span onClick={this.collapseAll}> Collapse all </span>
+        <button onClick={this.expandAll}> Expand all </button>
+        <button onClick={this.collapseAll}> Collapse all </button>
       </SampleControls>
       <OptionsContext.Consumer>
-        {options => (
+        {(options) => (
           <PrismDiv
             className={this.props.className}
             // tslint:disable-next-line
-            ref={node => (this.node = node!)}
+            ref={(node) => (this.node = node!)}
             dangerouslySetInnerHTML={{
               __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
             }}
@@ -51,7 +51,9 @@ class Json extends React.PureComponent<JsonProps> {
   expandAll = () => {
     const elements = this.node.getElementsByClassName('collapsible');
     for (const collapsed of Array.prototype.slice.call(elements)) {
-      (collapsed.parentNode as Element)!.classList.remove('collapsed');
+      const parentNode = collapsed.parentNode as Element;
+      parentNode.classList.remove('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'collapse');
     }
   };
 
@@ -61,29 +63,44 @@ class Json extends React.PureComponent<JsonProps> {
     const elementsArr = Array.prototype.slice.call(elements, 1);
 
     for (const expanded of elementsArr) {
-      (expanded.parentNode as Element)!.classList.add('collapsed');
+      const parentNode = expanded.parentNode as Element;
+      parentNode.classList.add('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'expand');
     }
   };
 
-  clickListener = (event: MouseEvent) => {
+  collapseElement = (target: HTMLElement) => {
     let collapsed;
-    const target = event.target as HTMLElement;
     if (target.className === 'collapser') {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
       if (collapsed.parentElement.classList.contains('collapsed')) {
         collapsed.parentElement.classList.remove('collapsed');
+        target.setAttribute('aria-label', 'collapse');
       } else {
         collapsed.parentElement.classList.add('collapsed');
+        target.setAttribute('aria-label', 'expand');
       }
+    }
+  };
+
+  clickListener = (event: MouseEvent) => {
+    this.collapseElement(event.target as HTMLElement);
+  };
+
+  focusListener = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.collapseElement(event.target as HTMLElement);
     }
   };
 
   componentDidMount() {
     this.node!.addEventListener('click', this.clickListener);
+    this.node!.addEventListener('focus', this.focusListener);
   }
 
   componentWillUnmount() {
     this.node!.removeEventListener('click', this.clickListener);
+    this.node!.removeEventListener('focus', this.focusListener);
   }
 }
 

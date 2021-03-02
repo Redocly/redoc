@@ -5,9 +5,11 @@ export interface LabelsConfig {
   default: string;
   deprecated: string;
   example: string;
+  examples: string;
   nullable: string;
   recursive: string;
   arrayOf: string;
+  webhook: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -19,9 +21,11 @@ const labels: LabelsConfig = {
   default: 'Default',
   deprecated: 'Deprecated',
   example: 'Example',
+  examples: 'Examples',
   nullable: 'Nullable',
   recursive: 'Recursive',
   arrayOf: 'Array of ',
+  webhook: 'Event',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {
