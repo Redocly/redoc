@@ -20,7 +20,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "redoc": "2.0.0-rc.50",
-    "styled-components": "^5.1.1",
+    "styled-components": "5.2.1",
     "tslib": "^2.0.0",
     "yargs": "^15.4.1"
   },
