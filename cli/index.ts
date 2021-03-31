@@ -72,6 +72,12 @@ YargsParser.command(
       type: 'boolean',
     });
 
+    yargs.options('disable-google-font', {
+      describe: 'Disable Google Font',
+      type: 'boolean',
+      default: false,
+    });
+
     yargs.demandOption('spec');
     return yargs;
   },
@@ -80,6 +86,7 @@ YargsParser.command(
       ssr: argv.ssr as boolean,
       title: argv.title as string,
       watch: argv.watch as boolean,
+      disableGoogleFont: argv.disableGoogleFont as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
       redocOptions: getObjectOrJSON(argv.options),
