@@ -72,7 +72,7 @@ YargsParser.command(
       type: 'boolean',
     });
 
-    yargs.options('disableGoogleFont', {
+    yargs.options('disable-google-font', {
       describe: 'Disable Google Font',
       type: 'boolean',
       default: false,
