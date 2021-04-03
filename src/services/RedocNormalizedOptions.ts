@@ -43,6 +43,7 @@ export interface RedocRawOptions {
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
   generatedPayloadSamplesMaxDepth?: number;
+  nonce?: string;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -209,6 +210,8 @@ export class RedocNormalizedOptions {
   hideSchemaPattern: boolean;
   generatedPayloadSamplesMaxDepth: number;
 
+  nonce?: string;
+
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
     const hook = raw.theme && raw.theme.extensionsHook;
@@ -273,5 +276,7 @@ export class RedocNormalizedOptions {
       RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
         raw.generatedPayloadSamplesMaxDepth,
       );
+
+    this.nonce = raw.nonce;
   }
 }

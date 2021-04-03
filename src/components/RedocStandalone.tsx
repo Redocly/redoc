@@ -13,11 +13,17 @@ export interface RedocStandaloneProps {
   onLoaded?: (e?: Error) => any;
 }
 
+declare let __webpack_nonce__: string;
+
 export const RedocStandalone = function (props: RedocStandaloneProps) {
   const { spec, specUrl, options = {}, onLoaded } = props;
   const hideLoading = argValueToBoolean(options.hideLoading, false);
 
   const normalizedOpts = new RedocNormalizedOptions(options);
+
+  if (normalizedOpts.nonce !== undefined) {
+    __webpack_nonce__ = normalizedOpts.nonce;
+  }
 
   return (
     <ErrorBoundary>
