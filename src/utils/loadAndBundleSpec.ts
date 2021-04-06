@@ -1,11 +1,12 @@
 /* tslint:disable-next-line:no-implicit-dependencies */
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
-import { Source, Document, bundle, loadConfig } from '@redocly/openapi-core';
+import { Source, Document, bundle, Config, RawConfig } from '@redocly/openapi-core';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
   const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
-  const config = await loadConfig();
+  const rawConfig: RawConfig = {};
+  const config = new Config(rawConfig);
   const bundleOpts = {
     config,
     base: isNode ? process.cwd() : window.location.href
