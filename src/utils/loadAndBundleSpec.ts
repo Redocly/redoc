@@ -1,12 +1,11 @@
 /* tslint:disable-next-line:no-implicit-dependencies */
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
-import { Source, Document, bundle, Config, RawConfig } from '@redocly/openapi-core';
+import { Source, Document, bundle, Config } from '@redocly/openapi-core';
 import { IS_BROWSER } from './dom';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const rawConfig: RawConfig = {};
-  const config = new Config(rawConfig);
+  const config = new Config({});
   const bundleOpts = {
     config,
     base: IS_BROWSER ? window.location.href : process.cwd()
@@ -18,7 +17,9 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
       parsed: specUrlOrObject
     } as Document
   } else {
-    config.resolve.http.customFetch = fetch;
+    if (IS_BROWSER) {
+      config.resolve.http.customFetch = global.fetch;
+    }
     bundleOpts['ref'] = specUrlOrObject;
   }
 
