@@ -2,14 +2,14 @@
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
 import { Source, Document, bundle, Config, RawConfig } from '@redocly/openapi-core';
+import { IS_BROWSER } from './dom';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
   const rawConfig: RawConfig = {};
   const config = new Config(rawConfig);
   const bundleOpts = {
     config,
-    base: isNode ? process.cwd() : window.location.href
+    base: IS_BROWSER ? window.location.href : process.cwd()
   }
 
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
