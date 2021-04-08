@@ -1,3 +1,13 @@
+# [2.0.0-rc.51](https://github.com/Redocly/redoc/compare/v2.0.0-rc.50...v2.0.0-rc.51) (2021-04-08)
+
+### Bug Fixes
+
+* use openapi-core to bundle definition instead of json-schema-ref-parser ([5033946](https://github.com/Redocly/redoc/commit/503394655da2aac544e278796098cba93d9194b9)),
+closes: [#1506](https://github.com/Redocly/redoc/issues/1506), [#1478](https://github.com/Redocly/redoc/issues/1478)
+* add disable-google-font parameter to serve command in cli ([c7bbef5](https://github.com/Redocly/redoc/commit/c7bbef515524095e957729eac35a5b7a97619b55)), closes [#1501](https://github.com/Redocly/redoc/issues/1501)
+
+
+
 # [2.0.0-rc.50](https://github.com/Redocly/redoc/compare/v2.0.0-rc.49...v2.0.0-rc.50) (2021-02-15)
 
 
