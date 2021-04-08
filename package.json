@@ -134,6 +134,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
+    "@redocly/openapi-core": "^1.0.0-beta.42",
     "@redocly/react-dropdown-aria": "^2.0.11",
     "@types/node": "^13.11.1",
     "classnames": "^2.2.6",
@@ -141,7 +142,6 @@
     "dompurify": "^2.0.12",
     "eventemitter3": "^4.0.4",
     "json-pointer": "^0.6.0",
-    "json-schema-ref-parser": "^6.1.0",
     "lunr": "2.3.8",
     "mark.js": "^8.11.1",
     "marked": "^0.7.0",
