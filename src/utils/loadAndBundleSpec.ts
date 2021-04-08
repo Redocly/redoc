@@ -1,7 +1,7 @@
+import { Source, Document, bundle, Config } from '@redocly/openapi-core';
 /* tslint:disable-next-line:no-implicit-dependencies */
 import { convertObj } from 'swagger2openapi';
 import { OpenAPISpec } from '../types';
-import { Source, Document, bundle, Config } from '@redocly/openapi-core';
 import { IS_BROWSER } from './dom';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
