@@ -11,15 +11,16 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
     base: IS_BROWSER ? window.location.href : process.cwd()
   }
 
+  if (IS_BROWSER) {
+    config.resolve.http.customFetch = global.fetch;
+  }
+
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
     bundleOpts['doc'] = {
       source: { absoluteRef: '' } as Source,
       parsed: specUrlOrObject
     } as Document
   } else {
-    if (IS_BROWSER) {
-      config.resolve.http.customFetch = global.fetch;
-    }
     bundleOpts['ref'] = specUrlOrObject;
   }
 
