@@ -134,7 +134,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.42",
+    "@redocly/openapi-core": "^1.0.0-beta.43",
     "@redocly/react-dropdown-aria": "^2.0.11",
     "@types/node": "^13.11.1",
     "classnames": "^2.2.6",
