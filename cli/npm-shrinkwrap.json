@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -222,9 +222,9 @@
       }
     },
     "@redocly/openapi-core": {
-      "version": "1.0.0-beta.42",
-      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.42.tgz",
-      "integrity": "sha512-DKy/eJNAoN94TmZSVnkn4f4IDasmFUZqSSRRBX6eU//2MSMazY0u3XaFY7Bis28uCxJhwBVcDpT/qMwiX2PI1Q==",
+      "version": "1.0.0-beta.44",
+      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.44.tgz",
+      "integrity": "sha512-9HNnh1MzvMsLK1liuidFBqWiAsZ2Yg3RY58fcEsy0QruSMdDbn7SoeI1qnXe6O+BkBS+vAP4oVzZDMHCMKGsOQ==",
       "requires": {
         "@redocly/ajv": "^6.12.3",
         "@types/node": "^14.11.8",
@@ -1549,9 +1549,9 @@
       "integrity": "sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA=="
     },
     "react-tabs": {
-      "version": "3.2.1",
-      "resolved": "https://registry.npmjs.org/react-tabs/-/react-tabs-3.2.1.tgz",
-      "integrity": "sha512-M7ERQvJgBVLTyojFmC3G4tpaJuMmUtsnYenVQm2oA1NjDrGXq1UuzHgxhVTDwimkJcKEbzgWCybXFSHQ/+2bsA==",
+      "version": "3.2.2",
+      "resolved": "https://registry.npmjs.org/react-tabs/-/react-tabs-3.2.2.tgz",
+      "integrity": "sha512-/o52eGKxFHRa+ssuTEgSM8qORnV4+k7ibW+aNQzKe+5gifeVz8nLxCrsI9xdRhfb0wCLdgIambIpb1qCxaMN+A==",
       "requires": {
         "clsx": "^1.1.0",
         "prop-types": "^15.5.0"
@@ -1605,11 +1605,11 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.51",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.51.tgz",
-      "integrity": "sha512-oy8RVrGXioizboAJaOpxnblvqLxfDknmFyjKvwFCpKzoAnrmgm4zXem73Ni/4NLGQg3dn73KzMmRHIiRQbtuqg==",
+      "version": "2.0.0-rc.53",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.53.tgz",
+      "integrity": "sha512-nyHIEIVo+kxsMfAy7nkYSlU7qjXZAARcj0INaRwCoy/DG9BMMi3xLcpo0CmarL9XeI891+VN2tpyTJ8jhZUtPw==",
       "requires": {
-        "@redocly/openapi-core": "^1.0.0-beta.42",
+        "@redocly/openapi-core": "^1.0.0-beta.44",
         "@redocly/react-dropdown-aria": "^2.0.11",
         "@types/node": "^13.11.1",
         "classnames": "^2.2.6",
