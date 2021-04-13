@@ -170,7 +170,7 @@ YargsParser.command(
   }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
-  let spec = await loadAndBundleSpec(existsSync(pathToSpec) ? resolve(pathToSpec) : pathToSpec);
+  let spec = await loadAndBundleSpec(isURL(pathToSpec) ? pathToSpec : resolve(pathToSpec));
   let pageHTML = await getPageHTML(spec, pathToSpec, options);
   const server = createServer((request, response) => {
     console.time('GET ' + request.url);
@@ -244,7 +244,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
 
 async function bundle(pathToSpec, options: Options = {}) {
   const start = Date.now();
-  const spec = await loadAndBundleSpec(existsSync(pathToSpec) ? resolve(pathToSpec) : pathToSpec);
+  const spec = await loadAndBundleSpec(isURL(pathToSpec) ? pathToSpec : resolve(pathToSpec));
   const pageHTML = await getPageHTML(spec, pathToSpec, { ...options, ssr: true });
 
   mkdirp.sync(dirname(options.output!));
