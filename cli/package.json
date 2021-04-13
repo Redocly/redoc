@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
