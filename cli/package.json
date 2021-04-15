@@ -8,7 +8,7 @@
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">= 8"
+    "node": ">=12.0.0"
   },
   "dependencies": {
     "chokidar": "^3.4.1",
