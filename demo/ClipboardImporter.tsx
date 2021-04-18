@@ -9,7 +9,7 @@ const Button = styled.button`
   touch-action: manipulation;
   cursor: pointer;
   user-select: none;
-  border: none;
+  border: 1px solid #ccc;
   font-size: 16px;
   height: 28px;
   box-sizing: border-box;
@@ -17,6 +17,18 @@ const Button = styled.button`
   line-height: 1;
   outline: none;
   white-space: nowrap;
+
+  @media (max-width: 699px) {
+    display: none;
+  }
+`;
+
+const Separator = styled.em`
+  padding: 0 1rem;
+
+  @media (max-width: 699px) {
+    display: none;
+  }
 `;
 
 export interface ClipboardImporterProps {
@@ -28,7 +40,10 @@ export default class ClipboardImporter extends React.Component<any, any> {
     if (!('clipboard' in navigator)) {
       return null;
     }
-    return <Button title='Get spec from clipboard' onClick={() => this.import()}>📋</Button>;
+    return <>
+      <Button title='Import spec from clipboard' onClick={() => this.import()}>Import from 📋</Button>
+      <Separator>or</Separator>
+    </>;
   }
 
   private import() {
