@@ -101,6 +101,13 @@ describe('Utils', () => {
       expect(getOperationSummary(operation as any).length).toBe(50);
     });
 
+    it('Should return pathName if no summary, operationId, description', () => {
+      const operation = {
+        pathName: '/sandbox/test'
+      };
+      expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
+    });
+
     it('Should return <no summary> if no info', () => {
       const operation = {
         description: undefined,
