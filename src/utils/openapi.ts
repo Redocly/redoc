@@ -1,12 +1,12 @@
 import { dirname } from 'path';
 import * as URLtemplate from 'url-template';
 
+import { ExtendedOpenAPIOperation } from '../services';
 import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIEncoding,
   OpenAPIMediaType,
-  OpenAPIOperation,
   OpenAPIParameter,
   OpenAPIParameterStyle,
   OpenAPISchema,
@@ -62,12 +62,13 @@ export function isOperationName(key: string): boolean {
   return key in operationNames;
 }
 
-export function getOperationSummary(operation: OpenAPIOperation): string {
+export function getOperationSummary(operation: ExtendedOpenAPIOperation): string {
   return (
     operation.summary ||
     operation.operationId ||
     (operation.description && operation.description.substring(0, 50)) ||
-    '<no summary>'
+    operation.pathName ||
+   '<no summary>'
   );
 }
 
