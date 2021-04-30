@@ -22,7 +22,9 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
   const normalizedOpts = new RedocNormalizedOptions(options);
 
   if (normalizedOpts.nonce !== undefined) {
-    __webpack_nonce__ = normalizedOpts.nonce;
+      try {
+        __webpack_nonce__ = normalizedOpts.nonce;
+      } catch { } // If we have exception, Webpack was not used to run this.
   }
 
   return (
