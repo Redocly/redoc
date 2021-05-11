@@ -35,4 +35,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./cli
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
