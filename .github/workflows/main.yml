@@ -12,11 +12,27 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=myorg/myrepository
+          VERSION=edge
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [[ $GITHUB_REF == refs/heads/* ]]; then
+            VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
+          elif [[ $GITHUB_REF == refs/pull/* ]]; then
+            VERSION=pr-${{ github.event.number }}
+          fi
+          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+          fi
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: rkallenkoot/redoc/cli
-          tag_with_ref: true
+          context: ./cli
+          tags: ${{ steps.prep.outputs.tags }}
