@@ -77,6 +77,12 @@ export class SchemaModel {
 
     this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef);
+
+    if (Array.isArray(this.rawSchema.type)) {
+      this.rawSchema.oneOf = this.rawSchema.type.map( type => ({type}));
+      delete this.rawSchema.type;
+    }
+
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
     this.init(parser, isChild);
@@ -149,7 +155,8 @@ export class SchemaModel {
     }
 
     if (schema.oneOf !== undefined) {
-      this.initOneOf(schema.oneOf, parser);
+      this.nullable = this.nullable || schema.oneOf.some(s => s.type === 'null');
+      this.initOneOf(schema.oneOf.filter(s => s.type !== 'null'), parser);
       this.oneOfType = 'One of';
       if (schema.anyOf !== undefined) {
         console.warn(
@@ -160,7 +167,8 @@ export class SchemaModel {
     }
 
     if (schema.anyOf !== undefined) {
-      this.initOneOf(schema.anyOf, parser);
+      this.nullable = this.nullable || schema.anyOf.some(s => s.type === 'null');
+      this.initOneOf(schema.anyOf.filter(s => s.type !== 'null'), parser);
       this.oneOfType = 'Any of';
       return;
     }
