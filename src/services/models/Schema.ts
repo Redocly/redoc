@@ -114,7 +114,7 @@ export class SchemaModel {
     this.externalDocs = schema.externalDocs;
 
     this.constraints = humanizeConstraints(schema);
-    this.displayType = this.type;
+    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type;
     this.displayFormat = this.format;
     this.isPrimitive = isPrimitiveType(schema, this.type);
     this.default = schema.default;
