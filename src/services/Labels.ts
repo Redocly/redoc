@@ -6,7 +6,6 @@ export interface LabelsConfig {
   deprecated: string;
   example: string;
   examples: string;
-  nullable: string;
   recursive: string;
   arrayOf: string;
   webhook: string;
@@ -22,7 +21,6 @@ const labels: LabelsConfig = {
   deprecated: 'Deprecated',
   example: 'Example',
   examples: 'Examples',
-  nullable: 'Nullable',
   recursive: 'Recursive',
   arrayOf: 'Array of ',
   webhook: 'Event',

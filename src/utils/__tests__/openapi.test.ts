@@ -174,6 +174,20 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
+    it('Should return false for array of strings', () => {
+      const schema = {
+        type: ['object', 'string'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('Should return false for array of string which include the null value', () => {
+      const schema = {
+        type: ['object', 'string', 'null'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
     it('Should return false for array with non-empty objects', () => {
       const schema = {
         type: 'array',

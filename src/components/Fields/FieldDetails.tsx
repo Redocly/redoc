@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import {
-  NullableLabel,
   PatternLabel,
   RecursiveLabel,
   TypeFormat,
@@ -79,7 +78,6 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           )}
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
-          {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
           {schema.pattern && !hideSchemaPattern && (
             <>
               <PatternLabel>

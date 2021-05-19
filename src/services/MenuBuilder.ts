@@ -220,10 +220,11 @@ export class MenuBuilder {
     for (const tag of spec.tags || []) {
       tags[tag.name] = { ...tag, operations: [] };
     }
-
-    getTags(spec.paths);
-    if (spec['x-webhooks']) {
-      getTags(spec['x-webhooks'], true);
+    if (spec.paths){
+      getTags(spec.paths);
+    }
+    if (spec.webhooks) {
+      getTags(spec.webhooks, true);
     }
 
     function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {

@@ -96,7 +96,7 @@ const schemaKeywordTypes = {
 };
 
 export function detectType(schema: OpenAPISchema): string {
-  if (schema.type !== undefined) {
+  if (schema.type !== undefined && !Array.isArray(schema.type)) {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
@@ -110,7 +110,7 @@ export function detectType(schema: OpenAPISchema): string {
   return 'any';
 }
 
-export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined = schema.type) {
+export function isPrimitiveType(schema: OpenAPISchema, type: string | string[] | undefined = schema.type) {
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
@@ -127,6 +127,8 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined 
     }
     return false;
   }
+
+  if (Array.isArray(type)) return false
 
   return true;
 }

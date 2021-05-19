@@ -10,6 +10,7 @@ export interface OpenAPISpec {
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
   'x-webhooks'?: OpenAPIPaths;
+  webhooks?: OpenAPIPaths;
 }
 
 export interface OpenAPIInfo {
@@ -107,7 +108,7 @@ export interface OpenAPIExample {
 
 export interface OpenAPISchema {
   $ref?: string;
-  type?: string;
+  type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
   description?: string;
