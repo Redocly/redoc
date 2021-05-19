@@ -78,11 +78,6 @@ export class SchemaModel {
     this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef);
 
-    if (Array.isArray(this.rawSchema.type)) {
-      this.rawSchema.oneOf = this.rawSchema.type.map( type => ({type}));
-      delete this.rawSchema.type;
-    }
-
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
     this.init(parser, isChild);
@@ -111,7 +106,7 @@ export class SchemaModel {
     this.title =
       schema.title || (isNamedDefinition(this.pointer) && JsonPointer.baseName(this.pointer)) || '';
     this.description = schema.description || '';
-    this.type = schema.type || detectType(schema);
+    this.type = (Array.isArray(schema.type) && schema.type) || (schema.type || detectType(schema));
     this.format = schema.format;
     this.enum = schema.enum || [];
     this.example = schema.example;
@@ -120,7 +115,6 @@ export class SchemaModel {
     this.externalDocs = schema.externalDocs;
 
     this.constraints = humanizeConstraints(schema);
-    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type;
     this.displayFormat = this.format;
     this.isPrimitive = isPrimitiveType(schema, this.type);
     this.default = schema.default;
@@ -137,6 +131,13 @@ export class SchemaModel {
     this.displayType = Array.isArray(this.type)
       ? this.type.map(item => item === null ? 'null' : item).join(' or ')
       : this.type;
+
+    if (!!schema.nullable) {
+      if (Array.isArray(this.type)) this.type.push('null');
+      else this.type = [this.type, 'null'];
+    }
+
+    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type;
 
     if (this.isCircular) {
       return;
@@ -155,8 +156,7 @@ export class SchemaModel {
     }
 
     if (schema.oneOf !== undefined) {
-      this.nullable = this.nullable || schema.oneOf.some(s => s.type === 'null');
-      this.initOneOf(schema.oneOf.filter(s => s.type !== 'null'), parser);
+      this.initOneOf(schema.oneOf, parser);
       this.oneOfType = 'One of';
       if (schema.anyOf !== undefined) {
         console.warn(
@@ -167,8 +167,7 @@ export class SchemaModel {
     }
 
     if (schema.anyOf !== undefined) {
-      this.nullable = this.nullable || schema.anyOf.some(s => s.type === 'null');
-      this.initOneOf(schema.anyOf.filter(s => s.type !== 'null'), parser);
+      this.initOneOf(schema.anyOf, parser);
       this.oneOfType = 'Any of';
       return;
     }
