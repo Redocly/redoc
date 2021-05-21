@@ -87,7 +87,7 @@ export const StyledMarkdownBlock = styled(
     padding: ${props => props.theme.spacing.unit * 4}px;
     overflow-x: auto;
     line-height: normal;
-    border-radius: 0px
+    border-radius: 0px;
     border: 1px solid rgba(38, 50, 56, 0.1);
 
     code {

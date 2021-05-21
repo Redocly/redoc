@@ -95,6 +95,7 @@ export interface OpenAPIParameter {
   example?: any;
   examples?: { [media: string]: Referenced<OpenAPIExample> };
   content?: { [media: string]: OpenAPIMediaType };
+  encoding?: Record<string, OpenAPIEncoding>;
 }
 
 export interface OpenAPIExample {

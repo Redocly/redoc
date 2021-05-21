@@ -76,8 +76,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     alias:
       mode !== 'production'
         ? {
-            'react-dom': '@hot-loader/react-dom',
-          }
+          'react-dom': '@hot-loader/react-dom',
+        }
         : {},
   },
 

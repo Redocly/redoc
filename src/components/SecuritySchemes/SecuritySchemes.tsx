@@ -12,7 +12,7 @@ const AUTH_TYPES = {
   oauth2: 'OAuth2',
   apiKey: 'API Key',
   http: 'HTTP',
-  openIdConnect: 'Open ID Connect',
+  openIdConnect: 'OpenID Connect',
 };
 
 export interface OAuthFlowProps {
