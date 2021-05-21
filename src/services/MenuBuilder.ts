@@ -217,14 +217,17 @@ export class MenuBuilder {
    */
   static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
+    const webhooks = spec['x-webhooks'] || spec.webhooks;
     for (const tag of spec.tags || []) {
       tags[tag.name] = { ...tag, operations: [] };
     }
+
+    if (webhooks) {
+      getTags(webhooks, true);
+    }
+
     if (spec.paths){
       getTags(spec.paths);
-    }
-    if (spec.webhooks) {
-      getTags(spec.webhooks, true);
     }
 
     function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
