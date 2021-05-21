@@ -1,7 +1,6 @@
 /* tslint:disable:no-implicit-dependencies */
 import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as webpack from 'webpack';
-
 import * as path from 'path';
 
 const nodeExternals = require('webpack-node-externals')({
@@ -41,23 +40,17 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
     libraryTarget: 'umd',
     globalObject: 'this',
   },
-
   devtool: 'source-map',
-
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
-
   node: {
     fs: 'empty',
   },
-
   performance: false,
-
   optimization: {
     minimize: !!env.standalone,
   },
-
   externals: env.standalone
     ? {
         esprima: 'esprima',
