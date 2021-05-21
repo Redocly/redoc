@@ -18,6 +18,7 @@ export interface OpenAPIInfo {
   version: string;
 
   description?: string;
+  summary?: string;
   termsOfService?: string;
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
@@ -272,4 +273,5 @@ export interface OpenAPIContact {
 export interface OpenAPILicense {
   name: string;
   url?: string;
+  identifier?: string;
 }

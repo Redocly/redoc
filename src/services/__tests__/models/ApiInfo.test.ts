@@ -34,5 +34,17 @@ describe('Models', () => {
       const info = new ApiInfoModel(parser);
       expect(info.description).toEqual('Test description\nsome text\n');
     });
+
+    test('should correctly populate summary up to the first md heading', () => {
+      parser.spec = {
+        openapi: '3.1.0',
+        info: {
+          summary: 'Test summary\nsome text\n## Heading\n test',
+        },
+      } as any;
+
+      const info = new ApiInfoModel(parser);
+      expect(info.summary).toEqual('Test summary\nsome text\n## Heading\n test');
+    });
   });
 });
