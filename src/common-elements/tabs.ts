@@ -44,19 +44,19 @@ export const Tabs = styled(ReactTabs)`
       }
 
       &.tab-success {
-        color: ${props => props.theme.colors.responses.success.color};
+        color: ${props => props.theme.colors.responses.success.tabTextColor};
       }
 
       &.tab-redirect {
-        color: ${props => props.theme.colors.responses.redirect.color};
+        color: ${props => props.theme.colors.responses.redirect.tabTextColor};
       }
 
       &.tab-info {
-        color: ${props => props.theme.colors.responses.info.color};
+        color: ${props => props.theme.colors.responses.info.tabTextColor};
       }
 
       &.tab-error {
-        color: ${props => props.theme.colors.responses.error.color};
+        color: ${props => props.theme.colors.responses.error.tabTextColor};
       }
     }
   }

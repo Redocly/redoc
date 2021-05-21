@@ -65,7 +65,7 @@ export const PrismDiv = styled.div`
   }
 
   .token.boolean {
-    color: firebrick;
+    color: #e64441;
   }
 
   .token.selector,

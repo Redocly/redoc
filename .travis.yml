@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '10'
+- '12'
 cache:
   directories:
   - "~/.cache"
@@ -28,10 +28,5 @@ deploy:
   email: gotsijroman@gmail.com
   tag: next
   api_key: "$NPM_TOKEN"
-  on:
-    tags: true
-- provider: script
-  skip_cleanup: true
-  script: npm run deploy:demo
   on:
     tags: true

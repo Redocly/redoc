@@ -261,10 +261,12 @@ export class OpenAPIParser {
             receiver.properties[prop] = subSchema.properties[prop];
           } else {
             // merge inner properties
-            receiver.properties[prop] = this.mergeAllOf(
+            const mergedProp = this.mergeAllOf(
               { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
               $ref + '/properties/' + prop,
             );
+            receiver.properties[prop] = mergedProp
+            this.exitParents(mergedProp); // every prop resolution should have separate recursive stack
           }
         }
       }
