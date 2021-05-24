@@ -1,8 +1,8 @@
 import { OpenAPIPath, Referenced } from '../../types';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { OperationModel } from './Operation';
-import { isOperationName } from '../..';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { isOperationName } from '../..';
 
 export class WebhookModel {
   operations: OperationModel[] = [];
@@ -17,9 +17,17 @@ export class WebhookModel {
 
     for (const webhookName of Object.keys(webhooks)) {
       const webhook = webhooks[webhookName];
-      const operations = Object.keys(webhook).filter(isOperationName);
-      for (const operationName of operations) {
-        const operationInfo = webhook[operationName];
+      const operations = Object.keys(webhook);
+      for (let operationName of operations) {
+        let operationInfo = isOperationName(operationName) && webhook[operationName];
+
+        if (!isOperationName(operationName) && webhook[operationName].$ref) {
+          const resolvedOperationInfo = parser.deref<OpenAPIPath>(webhook[operationName] || {})
+          operationInfo = resolvedOperationInfo
+          operationName = resolvedOperationInfo[Object.keys(resolvedOperationInfo)[0]]
+        }
+
+        if (!operationInfo) continue;
         const operation = new OperationModel(
           parser,
           {

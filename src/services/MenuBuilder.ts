@@ -6,6 +6,7 @@ import {
   Referenced,
   OpenAPIServer,
   OpenAPIPaths,
+  OpenAPIPath,
 } from '../types';
 import {
   isOperationName,
@@ -53,7 +54,7 @@ export class MenuBuilder {
     const spec = parser.spec;
 
     const items: ContentItemModel[] = [];
-    const tagsMap = MenuBuilder.getTagsWithOperations(spec);
+    const tagsMap = MenuBuilder.getTagsWithOperations(parser, spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
@@ -215,7 +216,7 @@ export class MenuBuilder {
   /**
    * collects tags and maps each tag to list of operations belonging to this tag
    */
-  static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
+  static getTagsWithOperations(parser: OpenAPIParser, spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
     const webhooks = spec['x-webhooks'] || spec.webhooks;
     for (const tag of spec.tags || []) {
@@ -223,19 +224,26 @@ export class MenuBuilder {
     }
 
     if (webhooks) {
-      getTags(webhooks, true);
+      getTags(parser, webhooks, true);
     }
 
     if (spec.paths){
-      getTags(spec.paths);
+      getTags(parser, spec.paths);
     }
 
-    function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
+    function getTags(parser: OpenAPIParser, paths: OpenAPIPaths, isWebhook?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
-        const operations = Object.keys(path).filter(isOperationName);
-        for (const operationName of operations) {
-          const operationInfo = path[operationName];
+        const operations = Object.keys(path);
+        for (let operationName of operations) {
+          let operationInfo = isOperationName(operationName) && path[operationName];
+  
+          if (!isOperationName(operationName) && path[operationName].$ref) {
+            const resolvedOperationInfo = parser.deref<OpenAPIPath>(path[operationName] || {})
+            operationInfo = resolvedOperationInfo
+            delete operationInfo.put
+            operationName = resolvedOperationInfo[Object.keys(resolvedOperationInfo)[0]]
+          }
           let operationTags = operationInfo.tags;
 
           if (!operationTags || !operationTags.length) {

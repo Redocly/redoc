@@ -369,12 +369,12 @@ export function langFromMime(contentType: string): string {
 }
 
 export function isNamedDefinition(pointer?: string): boolean {
-  return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
+  return /^#\/components\/(schemas|pathItems)\/[^\/]+$/.test(pointer || '');
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
   if (!pointer) return undefined;
-  const match = pointer.match(/^#\/components\/schemas\/([^\/]+)$/);
+  const match = pointer.match(/^#\/components\/(schemas|pathItems)\/([^\/]+)$/);
   return match === null ? undefined : match[1]
 }
 
