@@ -447,6 +447,18 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     numberRange += schema.minimum;
   }
 
+  if (typeof schema.exclusiveMinimum === 'number' || typeof schema.exclusiveMaximum === 'number') {
+    let minimum = 0;
+    let maximum = 0;
+    if (schema.minimum) minimum = schema.minimum;
+    if (typeof schema.exclusiveMinimum === 'number') minimum = minimum <= schema.exclusiveMinimum ? minimum : schema.exclusiveMinimum;
+
+    if (schema.maximum) maximum = schema.maximum;
+    if (typeof schema.exclusiveMaximum === 'number') maximum = maximum > schema.exclusiveMaximum ? maximum : schema.exclusiveMaximum;
+
+    numberRange = `[${minimum} .. ${maximum}]`
+  }
+
   if (numberRange !== undefined) {
     res.push(numberRange);
   }
