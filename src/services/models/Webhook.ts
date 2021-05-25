@@ -17,14 +17,13 @@ export class WebhookModel {
 
     for (const webhookName of Object.keys(webhooks)) {
       const webhook = webhooks[webhookName];
-      const operations = Object.keys(webhook);
+      const operations = Object.keys(webhook).filter(isOperationName);
       for (let operationName of operations) {
-        let operationInfo = isOperationName(operationName) && webhook[operationName];
-
-        if (!isOperationName(operationName) && webhook[operationName].$ref) {
-          const resolvedOperationInfo = parser.deref<OpenAPIPath>(webhook[operationName] || {})
-          operationInfo = resolvedOperationInfo
-          operationName = resolvedOperationInfo[Object.keys(resolvedOperationInfo)[0]]
+        let operationInfo = webhook[operationName];
+        if (webhook.$ref) {
+          const resolvedWebhook = parser.deref<OpenAPIPath>(webhook || {});
+          operationName = Object.keys(resolvedWebhook)[0];
+          operationInfo = resolvedWebhook[operationName];
         }
 
         if (!operationInfo) continue;

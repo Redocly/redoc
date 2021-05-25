@@ -234,17 +234,15 @@ export class MenuBuilder {
     function getTags(parser: OpenAPIParser, paths: OpenAPIPaths, isWebhook?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
-        const operations = Object.keys(path);
+        const operations = Object.keys(path).filter(isOperationName);
         for (let operationName of operations) {
-          let operationInfo = isOperationName(operationName) && path[operationName];
-  
-          if (!isOperationName(operationName) && path[operationName].$ref) {
-            const resolvedOperationInfo = parser.deref<OpenAPIPath>(path[operationName] || {})
-            operationInfo = resolvedOperationInfo
-            delete operationInfo.put
-            operationName = resolvedOperationInfo[Object.keys(resolvedOperationInfo)[0]]
+          let operationInfo = path[operationName];
+          if (path.$ref) {
+            const resolvedPath = parser.deref<OpenAPIPath>(path || {})
+            operationName = Object.keys(resolvedPath)[0]
+            operationInfo = resolvedPath[operationName]
           }
-          let operationTags = operationInfo.tags;
+          let operationTags = operationInfo?.tags;
 
           if (!operationTags || !operationTags.length) {
             // empty tag

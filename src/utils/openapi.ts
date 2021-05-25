@@ -56,6 +56,7 @@ const operationNames = {
   patch: true,
   delete: true,
   options: true,
+  $ref: true,
 };
 
 export function isOperationName(key: string): boolean {

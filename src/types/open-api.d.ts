@@ -58,6 +58,7 @@ export interface OpenAPIPath {
   trace?: OpenAPIOperation;
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
+  $ref?: string;
 }
 
 export interface OpenAPIXCodeSample {
