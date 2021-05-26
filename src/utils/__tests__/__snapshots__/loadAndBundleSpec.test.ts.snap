@@ -14,7 +14,7 @@ Object {
       },
     },
     "pathItems": Object {
-      "catsWebhook": Object {
+      "webhooks": Object {
         "post": Object {
           "description": "Info about new cat",
           "operationId": "createdCat",
@@ -35,7 +35,7 @@ Object {
           },
           "summary": "Create new cat",
           "tags": Array [
-            "pet",
+            "webhooks",
           ],
         },
         "put": Object {
@@ -58,7 +58,7 @@ Object {
           },
           "summary": "Get a cat details after update",
           "tags": Array [
-            "pet",
+            "webhooks",
           ],
         },
       },
@@ -1785,6 +1785,10 @@ culpa qui officia deserunt mollit anim id est laborum.
       "name": "pet",
     },
     Object {
+      "description": "Everything about your Webhooks",
+      "name": "webhooks",
+    },
+    Object {
       "description": "Access to Petstore orders",
       "name": "store",
     },
@@ -1807,7 +1811,7 @@ culpa qui officia deserunt mollit anim id est laborum.
   ],
   "webhooks": Object {
     "myWebhook": Object {
-      "$ref": "#/components/pathItems/catsWebhook",
+      "$ref": "#/components/pathItems/webhooks",
       "description": "Overriding description",
       "summary": "Overriding summary",
     },
@@ -1831,7 +1835,7 @@ culpa qui officia deserunt mollit anim id est laborum.
         },
         "summary": "New pet",
         "tags": Array [
-          "pet",
+          "webhooks",
         ],
       },
     },
@@ -1842,6 +1846,7 @@ culpa qui officia deserunt mollit anim id est laborum.
       "tags": Array [
         "pet",
         "store",
+        "webhooks",
       ],
     },
     Object {
