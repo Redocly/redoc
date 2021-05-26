@@ -6,7 +6,6 @@ import {
   Referenced,
   OpenAPIServer,
   OpenAPIPaths,
-  OpenAPIPath,
 } from '../types';
 import {
   isOperationName,

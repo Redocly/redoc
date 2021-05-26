@@ -13,6 +13,56 @@ Object {
         },
       },
     },
+    "pathItems": Object {
+      "catsWebhook": Object {
+        "post": Object {
+          "description": "Info about new cat",
+          "operationId": "createdCat",
+          "requestBody": Object {
+            "content": Object {
+              "multipart/form-data": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Cat",
+                },
+              },
+            },
+            "description": "Information about cat in the system",
+          },
+          "responses": Object {
+            "200": Object {
+              "description": "create Cat details",
+            },
+          },
+          "summary": "Create new cat",
+          "tags": Array [
+            "pet",
+          ],
+        },
+        "put": Object {
+          "description": "Get a cat details after update",
+          "operationId": "updatedCat",
+          "requestBody": Object {
+            "content": Object {
+              "multipart/form-data": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Cat",
+                },
+              },
+            },
+            "description": "Information about cat in the system",
+          },
+          "responses": Object {
+            "200": Object {
+              "description": "update Cat details",
+            },
+          },
+          "summary": "Get a cat details after update",
+          "tags": Array [
+            "pet",
+          ],
+        },
+      },
+    },
     "requestBodies": Object {
       "Pet": Object {
         "content": Object {
@@ -292,13 +342,20 @@ Object {
               "type": "string",
             },
             "maxItems": 20,
-            "type": "array",
+            "minItems": 1,
+            "type": Array [
+              "string",
+              "integer",
+              "null",
+              "array",
+            ],
             "xml": Object {
               "name": "photoUrl",
               "wrapped": true,
             },
           },
           "status": Object {
+            "default": "pending",
             "description": "Pet status in the store",
             "enum": Array [
               "available",
@@ -309,10 +366,11 @@ Object {
           },
           "tags": Object {
             "description": "Tags attached to the pet",
+            "exclusiveMaximum": 100,
+            "exclusiveMinimum": 0,
             "items": Object {
               "$ref": "#/components/schemas/Tag",
             },
-            "minItems": 1,
             "type": "array",
             "xml": Object {
               "name": "tag",
@@ -485,9 +543,11 @@ and standard method from web, mobile and desktop applications.
 <SecurityDefinitions />
 ",
     "license": Object {
+      "identifier": "Apache 2.0",
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html",
     },
+    "summary": "My lovely API",
     "termsOfService": "http://swagger.io/terms/",
     "title": "Swagger Petstore",
     "version": "1.0.0",
@@ -496,7 +556,7 @@ and standard method from web, mobile and desktop applications.
       "url": "https://redocly.github.io/redoc/petstore-logo.png",
     },
   },
-  "openapi": "3.0.0",
+  "openapi": "3.1.0",
   "paths": Object {
     "/pet": Object {
       "parameters": Array [
@@ -1745,29 +1805,12 @@ culpa qui officia deserunt mollit anim id est laborum.
       "x-displayName": "The Order Model",
     },
   ],
-  "x-tagGroups": Array [
-    Object {
-      "name": "General",
-      "tags": Array [
-        "pet",
-        "store",
-      ],
+  "webhooks": Object {
+    "myWebhook": Object {
+      "$ref": "#/components/pathItems/catsWebhook",
+      "description": "Overriding description",
+      "summary": "Overriding summary",
     },
-    Object {
-      "name": "User Management",
-      "tags": Array [
-        "user",
-      ],
-    },
-    Object {
-      "name": "Models",
-      "tags": Array [
-        "pet_model",
-        "store_model",
-      ],
-    },
-  ],
-  "x-webhooks": Object {
     "newPet": Object {
       "post": Object {
         "description": "Information about a new pet in the systems",
@@ -1793,6 +1836,28 @@ culpa qui officia deserunt mollit anim id est laborum.
       },
     },
   },
+  "x-tagGroups": Array [
+    Object {
+      "name": "General",
+      "tags": Array [
+        "pet",
+        "store",
+      ],
+    },
+    Object {
+      "name": "User Management",
+      "tags": Array [
+        "user",
+      ],
+    },
+    Object {
+      "name": "Models",
+      "tags": Array [
+        "pet_model",
+        "store_model",
+      ],
+    },
+  ],
 }
 `;
 
