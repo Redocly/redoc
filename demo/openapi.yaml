@@ -61,6 +61,8 @@ externalDocs:
 tags:
   - name: pet
     description: Everything about your Pets
+  - name: webhooks
+    description: Everything about your Webhooks
   - name: store
     description: Access to Petstore orders
   - name: user
@@ -78,6 +80,7 @@ x-tagGroups:
     tags:
       - pet
       - store
+      - webhooks
   - name: User Management
     tags:
       - user
@@ -896,13 +899,13 @@ paths:
           description: successful operation
 components:
   pathItems:
-    catsWebhook:
+    webhooks:
       put:
         summary: Get a cat details after update
         description: Get a cat details after update
         operationId: updatedCat
         tags:
-          - pet
+          - webhooks
         requestBody:
           description: Information about cat in the system
           content:
@@ -917,7 +920,7 @@ components:
         description: Info about new cat
         operationId: createdCat
         tags:
-          - pet
+          - webhooks
         requestBody:
           description: Information about cat in the system
           content:
@@ -1231,7 +1234,7 @@ webhooks:
       description: Information about a new pet in the systems
       operationId: newPet
       tags:
-        - pet
+        - webhooks
       requestBody:
         content:
           application/json:
@@ -1241,6 +1244,6 @@ webhooks:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
   myWebhook:
-    $ref: '#/components/pathItems/catsWebhook'
+    $ref: '#/components/pathItems/webhooks'
     description: Overriding description
     summary: Overriding summary
