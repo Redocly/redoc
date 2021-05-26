@@ -9,6 +9,7 @@ export interface LabelsConfig {
   recursive: string;
   arrayOf: string;
   webhook: string;
+  const: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -24,6 +25,7 @@ const labels: LabelsConfig = {
   recursive: 'Recursive',
   arrayOf: 'Array of ',
   webhook: 'Event',
+  const: 'Value',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {

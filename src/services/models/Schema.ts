@@ -60,6 +60,7 @@ export class SchemaModel {
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
   extensions?: Record<string, any>;
+  const: any;
 
   /**
    * @param isChild if schema discriminator Child
@@ -119,6 +120,7 @@ export class SchemaModel {
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
+    this.const = schema.const || '';
 
     if (!!schema.nullable) {
       if (Array.isArray(this.type)) this.type.push('null');

@@ -99,6 +99,7 @@ export interface OpenAPIParameter {
   examples?: { [media: string]: Referenced<OpenAPIExample> };
   content?: { [media: string]: OpenAPIMediaType };
   encoding?: Record<string, OpenAPIEncoding>;
+  const?: any;
 }
 
 export interface OpenAPIExample {
@@ -145,6 +146,7 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
+  const?: string;
 }
 
 export interface OpenAPIDiscriminator {

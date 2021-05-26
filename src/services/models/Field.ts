@@ -55,6 +55,7 @@ export class FieldModel {
   extensions?: Record<string, any>;
   explode: boolean;
   style?: OpenAPIParameterStyle;
+  const?: any;
 
   serializationMime?: string;
 
@@ -111,6 +112,8 @@ export class FieldModel {
     if (options.showExtensions) {
       this.extensions = extractExtensions(info, options.showExtensions);
     }
+
+    this.const = this.schema?.const || info?.const || '';
   }
 
   @action
