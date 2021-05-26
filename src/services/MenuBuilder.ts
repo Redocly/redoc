@@ -6,7 +6,6 @@ import {
   Referenced,
   OpenAPIServer,
   OpenAPIPaths,
-  OpenAPIPath,
 } from '../types';
 import {
   isOperationName,
@@ -235,12 +234,11 @@ export class MenuBuilder {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
         const operations = Object.keys(path).filter(isOperationName);
-        for (let operationName of operations) {
-          let operationInfo = path[operationName];
+        for (const operationName of operations) {
+          const operationInfo = path[operationName];
           if (path.$ref) {
-            const resolvedPath = parser.deref<OpenAPIPath>(path || {})
-            operationName = Object.keys(resolvedPath)[0]
-            operationInfo = resolvedPath[operationName]
+            const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+            getTags(parser, { [operationName]: resolvedPaths }, isWebhook);
           }
           let operationTags = operationInfo?.tags;
 

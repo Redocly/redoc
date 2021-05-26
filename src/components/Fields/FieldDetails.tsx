@@ -110,7 +110,7 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
         )}
         {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
-        {field.const && (<FieldDetail label={'Value:'} value={field.const}/>) || null}
+        {field.const && (<FieldDetail label={l('const') + ':'} value={field.const}/>) || null}
       </div>
     );
   }

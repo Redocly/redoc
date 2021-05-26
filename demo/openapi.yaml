@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 servers:
   - url: //petstore.swagger.io/v2
     description: Default server
@@ -42,6 +42,7 @@ info:
 
   version: 1.0.0
   title: Swagger Petstore
+  summary: My lovely API
   termsOfService: 'http://swagger.io/terms/'
   contact:
     name: API Support
@@ -53,6 +54,7 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    identifier: Apache 2.0
 externalDocs:
   description: Find out how to create Github repo for your OpenAPI spec.
   url: 'https://github.com/Rebilly/generator-openapi-repo'
@@ -893,6 +895,38 @@ paths:
         default:
           description: successful operation
 components:
+  pathItems:
+    catsWebhook:
+      put:
+        summary: Get a cat details after update
+        description: Get a cat details after update
+        operationId: updatedCat
+        tags:
+          - pet
+        requestBody:
+          description: Information about cat in the system
+          content:
+            multipart/form-data:
+              schema:
+                $ref: "#/components/schemas/Cat"
+        responses:
+          '200':
+            description: update Cat details
+      post:
+        summary: Create new cat
+        description: Info about new cat
+        operationId: createdCat
+        tags:
+          - pet
+        requestBody:
+          description: Information about cat in the system
+          content:
+            multipart/form-data:
+              schema:
+                $ref: "#/components/schemas/Cat"
+        responses:
+          '200':
+            description: create Cat details
   schemas:
     ApiResponse:
       type: object
@@ -1040,7 +1074,8 @@ components:
           example: Guru
         photoUrls:
           description: The list of URL to a cute photos featuring pet
-          type: array
+          type: [string, integer, 'null', array]
+          minItems: 1
           maxItems: 20
           xml:
             name: photoUrl
@@ -1054,7 +1089,8 @@ components:
         tags:
           description: Tags attached to the pet
           type: array
-          minItems: 1
+          exclusiveMaximum: 100
+          exclusiveMinimum: 0
           xml:
             name: tag
             wrapped: true
@@ -1067,6 +1103,7 @@ components:
             - available
             - pending
             - sold
+          default: pending
         petType:
           description: Type of a pet
           type: string
@@ -1187,13 +1224,13 @@ components:
         shipDate: '2018-10-19T16:46:45Z'
         status: placed
         complete: false
-x-webhooks:
+webhooks:
   newPet:
     post:
       summary: New pet
       description: Information about a new pet in the systems
       operationId: newPet
-      tags: 
+      tags:
         - pet
       requestBody:
         content:
@@ -1203,3 +1240,7 @@ x-webhooks:
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
+  myWebhook:
+    $ref: '#/components/pathItems/catsWebhook'
+    description: Overriding description
+    summary: Overriding summary

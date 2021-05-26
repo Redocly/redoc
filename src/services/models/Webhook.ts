@@ -14,16 +14,18 @@ export class WebhookModel {
   ) {
     const webhooks = parser.deref<OpenAPIPath>(infoOrRef || {});
     parser.exitRef(infoOrRef);
+    this.initWebhooks(parser, webhooks, options);
+  }
 
+  initWebhooks(parser: OpenAPIParser, webhooks: OpenAPIPath, options: RedocNormalizedOptions) {
     for (const webhookName of Object.keys(webhooks)) {
       const webhook = webhooks[webhookName];
       const operations = Object.keys(webhook).filter(isOperationName);
-      for (let operationName of operations) {
-        let operationInfo = webhook[operationName];
+      for (const operationName of operations) {
+        const operationInfo = webhook[operationName];
         if (webhook.$ref) {
           const resolvedWebhook = parser.deref<OpenAPIPath>(webhook || {});
-          operationName = Object.keys(resolvedWebhook)[0];
-          operationInfo = resolvedWebhook[operationName];
+          this.initWebhooks(parser, { [operationName]: resolvedWebhook }, options);
         }
 
         if (!operationInfo) continue;
