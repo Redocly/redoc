@@ -17,6 +17,7 @@ import {
   pluralizeType,
   sortByField,
   sortByRequired,
+  mergeObjects,
 } from '../../utils/';
 
 import { l } from '../Labels';
@@ -136,10 +137,14 @@ export class SchemaModel {
       else this.type = [this.type, 'null'];
     }
 
-    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type;
+    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type; // null problem here
 
     if (this.isCircular) {
       return;
+    }
+
+    if (schema.if || schema.then || schema.else) {
+      this.initConditionalOperators(schema, parser);
     }
 
     if (!isChild && getDiscriminator(schema) !== undefined) {
@@ -345,6 +350,28 @@ export class SchemaModel {
       innerSchema.title = name;
       return innerSchema;
     });
+  }
+
+  private initConditionalOperators(schema: OpenAPISchema, parser: OpenAPIParser) {
+    const { if: ifOperator, else: elseOperator, then: thenOperator, ...clearSchema} = schema;
+    if ((!ifOperator && !thenOperator) || (!ifOperator && !elseOperator)) return;
+
+    const groupedOperators = [mergeObjects({}, clearSchema, { allOf: [ifOperator, thenOperator] }), mergeObjects({}, clearSchema, elseOperator)]
+
+    this.oneOf = groupedOperators.map((variant, idx) => {
+      const merged = parser.mergeAllOf(parser.deref(variant || {}), this.pointer + '/oneOf/' + idx);
+      const title = merged.title || this.title;
+      const result = new SchemaModel(
+        parser,
+        {
+          ...merged,
+          title,
+        } as OpenAPISchema,
+        this.pointer + '/oneOf/' + idx,
+        this.options,
+      );
+      return result;
+    })
   }
 }
 
