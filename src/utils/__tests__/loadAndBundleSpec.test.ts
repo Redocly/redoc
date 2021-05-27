@@ -10,6 +10,12 @@ describe('#loadAndBundleSpec', () => {
     expect(bundledSpec).toMatchSnapshot();
   });
 
+  it('should load And Bundle Spec demo/openapi-3-1.yaml', async () => {
+    const spec = yaml.load(readFileSync(resolve(__dirname, '../../../demo/openapi-3-1.yaml')));
+    const bundledSpec = await loadAndBundleSpec(spec);
+    expect(bundledSpec).toMatchSnapshot();
+  });
+
   it('should load And Bundle Spec demo/swagger.yaml', async () => {
     const spec = yaml.load(readFileSync(resolve(__dirname, '../../../demo/swagger.yaml')));
     const bundledSpec = await loadAndBundleSpec(spec);
