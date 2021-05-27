@@ -238,7 +238,8 @@ export class MenuBuilder {
           const operationInfo = path[operationName];
           if (path.$ref) {
             const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
-            getTags(parser, { [operationName]: resolvedPaths }, isWebhook);
+            getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
+            continue;
           }
           let operationTags = operationInfo?.tags;
 
