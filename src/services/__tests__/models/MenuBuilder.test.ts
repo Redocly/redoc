@@ -10,11 +10,11 @@ describe('Models', () => {
   describe('MenuBuilder', () => {
     let parser;
 
-    test('discriminator with one field', () => {
+    test('should resolve pathItems', () => {
       const spec = require('../fixtures/3.1/pathItems.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       const contentItems = MenuBuilder.buildStructure(parser, opts);
-      expect(contentItems).toHaveLength(2);
+      expect(contentItems).toHaveLength(1);
       expect(contentItems[0].items).toHaveLength(2);
       expect(contentItems[0].id).toEqual('tag/pet');
       expect(contentItems[0].name).toEqual('pet');
