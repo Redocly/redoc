@@ -69,7 +69,7 @@ export function getOperationSummary(operation: ExtendedOpenAPIOperation): string
     operation.operationId ||
     (operation.description && operation.description.substring(0, 50)) ||
     operation.pathName ||
-   '<no summary>'
+    '<no summary>'
   );
 }
 
@@ -116,22 +116,20 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | string[] |
     return false;
   }
 
-  if (type === 'object') {
-    return schema.properties !== undefined
+  let isPrimitive = true;
+  const isArray = Array.isArray(type);
+
+  if (type === 'object' || (isArray && type?.includes('object'))) {
+    isPrimitive = schema.properties !== undefined
       ? Object.keys(schema.properties).length === 0
       : schema.additionalProperties === undefined;
   }
 
-  if (type === 'array') {
-    if (schema.items === undefined) {
-      return true;
-    }
-    return false;
+  if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
+    isPrimitive = false;
   }
 
-  if (Array.isArray(type)) return false
-
-  return true;
+  return isPrimitive;
 }
 
 export function isJsonLike(contentType: string): boolean {
@@ -589,10 +587,10 @@ export function setSecuritySchemePrefix(prefix: string) {
 }
 
 export const shortenHTTPVerb = verb =>
-  ({
-    delete: 'del',
-    options: 'opts',
-  }[verb] || verb);
+({
+  delete: 'del',
+  options: 'opts',
+}[verb] || verb);
 
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {

@@ -9,7 +9,7 @@ const DEFAULT_SPEC = 'openapi.yaml';
 const NEW_VERSION_SPEC = 'openapi-3-1.yaml';
 
 const demos = [
-  { value: NEW_VERSION_SPEC, label: 'OpenApi 3.1' },
+  { value: NEW_VERSION_SPEC, label: 'Petstore OpenAPI 3.1' },
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
   {
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml',

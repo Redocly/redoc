@@ -105,7 +105,7 @@ export class SchemaModel {
     this.title =
       schema.title || (isNamedDefinition(this.pointer) && JsonPointer.baseName(this.pointer)) || '';
     this.description = schema.description || '';
-    this.type = (Array.isArray(schema.type) && schema.type) || (schema.type || detectType(schema));
+    this.type = schema.type || detectType(schema);
     this.format = schema.format;
     this.enum = schema.enum || [];
     this.example = schema.example;
@@ -122,11 +122,14 @@ export class SchemaModel {
     this.const = schema.const || '';
 
     if (!!schema.nullable) {
-      if (Array.isArray(this.type)) this.type.push('null');
-      else this.type = [this.type, 'null'];
+      if (Array.isArray(this.type) && !this.type.includes('null')) {
+        this.type = [...this.type, 'null'];
+      }
     }
 
-    this.displayType = Array.isArray(this.type) ? this.type.join(' or ') : this.type;
+    this.displayType = Array.isArray(this.type)
+      ? this.type.map(item => item === null ? 'null' : item).join(' or ')
+      : this.type;
 
     if (this.isCircular) {
       return;
@@ -193,7 +196,7 @@ export class SchemaModel {
       const title =
         isNamedDefinition(variant.$ref) && !merged.title
           ? JsonPointer.baseName(variant.$ref)
-          : merged.title;
+          : (merged.const && JSON.stringify(merged.const)) || merged.title;
 
       const schema = new SchemaModel(
         parser,
