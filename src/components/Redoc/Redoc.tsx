@@ -39,7 +39,7 @@ export class Redoc extends React.Component<RedocProps> {
     const store = this.props.store;
     return (
       <ThemeProvider theme={options.theme}>
-        <StoreProvider value={this.props.store}>
+        <StoreProvider value={store}>
           <OptionsProvider value={options}>
             <RedocWrap className="redoc-wrap">
               <StickyResponsiveSidebar menu={menu} className="menu-content">

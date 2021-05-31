@@ -174,6 +174,79 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
+    it('should return true for array contains object and schema hasn\'t properties', () => {
+      const schema = {
+        type: ['object', 'string'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('should return false for array contains object and schema has properties', () => {
+      const schema = {
+        type: ['object', 'string'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains array type and schema has items', () => {
+      const schema = {
+        type: ['array'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has items', () => {
+      const schema = {
+        type: ['array', 'object'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has properties', () => {
+      const schema = {
+        type: ['array', 'object'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return true for array contains array of strings', () => {
+      const schema = {
+        type: 'array',
+        items: {
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('Should return false for array of string which include the null value', () => {
+      const schema = {
+        type: ['object', 'string', 'null'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
     it('Should return false for array with non-empty objects', () => {
       const schema = {
         type: 'array',

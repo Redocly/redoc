@@ -5,7 +5,11 @@ import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 
+const DEFAULT_SPEC = 'openapi.yaml';
+const NEW_VERSION_SPEC = 'openapi-3-1.yaml';
+
 const demos = [
+  { value: NEW_VERSION_SPEC, label: 'Petstore OpenAPI 3.1' },
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
   {
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml',
@@ -15,8 +19,6 @@ const demos = [
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
   { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
-
-const DEFAULT_SPEC = 'openapi.yaml';
 
 class DemoApp extends React.Component<
   {},
@@ -45,6 +47,9 @@ class DemoApp extends React.Component<
   }
 
   handleChange = (url: string) => {
+    if (url === NEW_VERSION_SPEC) {
+      this.setState({ cors: false })
+    }
     this.setState({
       specUrl: url,
     });

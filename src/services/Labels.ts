@@ -6,10 +6,10 @@ export interface LabelsConfig {
   deprecated: string;
   example: string;
   examples: string;
-  nullable: string;
   recursive: string;
   arrayOf: string;
   webhook: string;
+  const: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -22,10 +22,10 @@ const labels: LabelsConfig = {
   deprecated: 'Deprecated',
   example: 'Example',
   examples: 'Examples',
-  nullable: 'Nullable',
   recursive: 'Recursive',
   arrayOf: 'Array of ',
   webhook: 'Event',
+  const: 'Value',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {

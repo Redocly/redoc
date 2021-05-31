@@ -10,6 +10,7 @@ export interface OpenAPISpec {
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
   'x-webhooks'?: OpenAPIPaths;
+  webhooks?: OpenAPIPaths;
 }
 
 export interface OpenAPIInfo {
@@ -17,6 +18,7 @@ export interface OpenAPIInfo {
   version: string;
 
   description?: string;
+  summary?: string;
   termsOfService?: string;
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
@@ -56,6 +58,7 @@ export interface OpenAPIPath {
   trace?: OpenAPIOperation;
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
+  $ref?: string;
 }
 
 export interface OpenAPIXCodeSample {
@@ -96,6 +99,7 @@ export interface OpenAPIParameter {
   examples?: { [media: string]: Referenced<OpenAPIExample> };
   content?: { [media: string]: OpenAPIMediaType };
   encoding?: Record<string, OpenAPIEncoding>;
+  const?: any;
 }
 
 export interface OpenAPIExample {
@@ -107,7 +111,7 @@ export interface OpenAPIExample {
 
 export interface OpenAPISchema {
   $ref?: string;
-  type?: string;
+  type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
   description?: string;
@@ -129,9 +133,9 @@ export interface OpenAPISchema {
   title?: string;
   multipleOf?: number;
   maximum?: number;
-  exclusiveMaximum?: boolean;
+  exclusiveMaximum?: boolean | number;
   minimum?: number;
-  exclusiveMinimum?: boolean;
+  exclusiveMinimum?: boolean | number;
   maxLength?: number;
   minLength?: number;
   pattern?: string;
@@ -142,6 +146,7 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
+  const?: string;
 }
 
 export interface OpenAPIDiscriminator {
@@ -271,4 +276,5 @@ export interface OpenAPIContact {
 export interface OpenAPILicense {
   name: string;
   url?: string;
+  identifier?: string;
 }

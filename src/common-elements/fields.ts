@@ -61,11 +61,6 @@ export const RecursiveLabel = styled(FieldLabel)`
   font-size: 13px;
 `;
 
-export const NullableLabel = styled(FieldLabel)`
-  color: #0e7c86;
-  font-size: 13px;
-`;
-
 export const PatternLabel = styled(FieldLabel)`
   color: #0e7c86;
   &::before,

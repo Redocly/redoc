@@ -134,7 +134,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.44",
+    "@redocly/openapi-core": "^1.0.0-beta.48",
     "@redocly/react-dropdown-aria": "^2.0.11",
     "@types/node": "^13.11.1",
     "classnames": "^2.2.6",
@@ -147,7 +147,7 @@
     "marked": "^0.7.0",
     "memoize-one": "~5.1.1",
     "mobx-react": "^7.0.5",
-    "openapi-sampler": "^1.0.0-beta.18",
+    "openapi-sampler": "^1.0.0",
     "perfect-scrollbar": "^1.4.0",
     "polished": "^3.6.5",
     "prismjs": "^1.22.0",

@@ -53,7 +53,7 @@ export class MenuBuilder {
     const spec = parser.spec;
 
     const items: ContentItemModel[] = [];
-    const tagsMap = MenuBuilder.getTagsWithOperations(spec);
+    const tagsMap = MenuBuilder.getTagsWithOperations(parser, spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
@@ -215,24 +215,33 @@ export class MenuBuilder {
   /**
    * collects tags and maps each tag to list of operations belonging to this tag
    */
-  static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
+  static getTagsWithOperations(parser: OpenAPIParser, spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
+    const webhooks = spec['x-webhooks'] || spec.webhooks;
     for (const tag of spec.tags || []) {
       tags[tag.name] = { ...tag, operations: [] };
     }
 
-    getTags(spec.paths);
-    if (spec['x-webhooks']) {
-      getTags(spec['x-webhooks'], true);
+    if (webhooks) {
+      getTags(parser, webhooks, true);
     }
 
-    function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
+    if (spec.paths){
+      getTags(parser, spec.paths);
+    }
+
+    function getTags(parser: OpenAPIParser, paths: OpenAPIPaths, isWebhook?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
         const operations = Object.keys(path).filter(isOperationName);
         for (const operationName of operations) {
           const operationInfo = path[operationName];
-          let operationTags = operationInfo.tags;
+          if (path.$ref) {
+            const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+            getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
+            continue;
+          }
+          let operationTags = operationInfo?.tags;
 
           if (!operationTags || !operationTags.length) {
             // empty tag
