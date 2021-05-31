@@ -227,6 +227,19 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
+    it('should return true for array contains array of strings', () => {
+      const schema = {
+        type: 'array',
+        items: {
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
     it('Should return false for array of string which include the null value', () => {
       const schema = {
         type: ['object', 'string', 'null'],

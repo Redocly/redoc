@@ -196,7 +196,7 @@ export class SchemaModel {
       const title =
         isNamedDefinition(variant.$ref) && !merged.title
           ? JsonPointer.baseName(variant.$ref)
-          : (merged.const && JSON.stringify(merged.const)) || merged.title;
+          : `${(merged.title || '')}${(merged.const && JSON.stringify(merged.const)) || ''}`;
 
       const schema = new SchemaModel(
         parser,

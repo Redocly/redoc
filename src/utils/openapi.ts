@@ -126,7 +126,7 @@ export function isPrimitiveType(schema: OpenAPISchema, type: string | string[] |
   }
 
   if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
-    isPrimitive = false;
+    isPrimitive = isPrimitiveType(schema.items, schema.items.type);
   }
 
   return isPrimitive;
