@@ -179,6 +179,11 @@ export class SchemaModel {
       if (this.items.isPrimitive) {
         this.enum = this.items.enum;
       }
+      if (Array.isArray(this.type)) {
+        const filteredType = this.type.filter(item => item !== 'array');
+        if (filteredType.length)
+          this.displayType += ` or ${filteredType.join(' or ')}`;
+      }
     }
 
     if (this.enum.length && this.options.sortEnumValuesAlphabetically) {
