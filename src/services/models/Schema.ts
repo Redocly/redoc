@@ -166,7 +166,7 @@ export class SchemaModel {
 
     if (this.type === 'object') {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
-    } else if (this.type === 'array' && schema.items) {
+    } else if ((this.type === 'array' || Array.isArray(this.type)) && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
       this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
