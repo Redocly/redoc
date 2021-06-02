@@ -92,8 +92,6 @@ YargsParser.command(
       redocOptions: getObjectOrJSON(argv.options),
     };
 
-    console.log(config);
-
     try {
       await serve(argv.port as number, argv.spec as string, config);
     } catch (e) {
