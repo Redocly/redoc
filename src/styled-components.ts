@@ -10,7 +10,7 @@ const {
   createGlobalStyle,
   keyframes,
   ThemeProvider,
-} = styledComponents as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
+} = styledComponents as unknown as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
 
 export const media = {
   lessThan(breakpoint, print?: boolean, extra?: string) {
