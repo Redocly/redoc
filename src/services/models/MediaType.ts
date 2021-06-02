@@ -58,7 +58,7 @@ export class MediaTypeModel {
     if (this.schema && this.schema.oneOf) {
       this.examples = {};
       for (const subSchema of this.schema.oneOf) {
-        const sample = Sampler.sample(subSchema.rawSchema, samplerOptions, parser.spec);
+        const sample = Sampler.sample(subSchema.rawSchema as any, samplerOptions, parser.spec);
 
         if (this.schema.discriminatorProp && typeof sample === 'object' && sample) {
           sample[this.schema.discriminatorProp] = subSchema.title;
@@ -78,7 +78,7 @@ export class MediaTypeModel {
         default: new ExampleModel(
           parser,
           {
-            value: Sampler.sample(info.schema, samplerOptions, parser.spec),
+            value: Sampler.sample(info.schema as any, samplerOptions, parser.spec),
           },
           this.name,
           info.encoding,
