@@ -964,8 +964,7 @@ components:
       properties:
         id:
           description: Category ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
+          $ref: '#/components/schemas/Id'
         name:
           description: Category name
           type: string
@@ -1015,12 +1014,10 @@ components:
       properties:
         id:
           description: Order ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
+          $ref: '#/components/schemas/Id'
         petId:
           description: Pet ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
+          $ref: '#/components/schemas/Id'
         quantity:
           type: integer
           format: int32
@@ -1065,12 +1062,10 @@ components:
             description: "Find more info here"
             url: "https://example.com"
           description: Pet ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
+          $ref: '#/components/schemas/Id'
         category:
           description: Categories this pet belongs to
-          allOf:
-            - $ref: '#/components/schemas/Category'
+          $ref: '#/components/schemas/Category'
         name:
           description: The name given to a pet
           type: string
@@ -1087,8 +1082,7 @@ components:
             type: string
             format: url
         friend:
-          allOf:
-            - $ref: '#/components/schemas/Pet'
+          $ref: '#/components/schemas/Pet'
         tags:
           description: Tags attached to the pet
           type: array
@@ -1117,8 +1111,7 @@ components:
       properties:
         id:
           description: Tag ID
-          allOf:
-            - $ref: '#/components/schemas/Id'
+          $ref: '#/components/schemas/Id'
         name:
           description: Tag name
           type: string
@@ -1133,6 +1126,7 @@ components:
         pet:
           oneOf:
             - $ref: '#/components/schemas/Pet'
+              title: Pettie
             - $ref: '#/components/schemas/Tag'
         username:
           description: User supplied username
@@ -1179,10 +1173,9 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - description: My Pet
-                title: Pettie
-              - $ref: '#/components/schemas/Pet'
+            description: My Pet
+            title: Pettie
+            $ref: '#/components/schemas/Pet'
         application/xml:
           schema:
             type: 'object'
