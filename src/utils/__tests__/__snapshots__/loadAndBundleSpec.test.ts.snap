@@ -1864,15 +1864,9 @@ Object {
         "content": Object {
           "application/json": Object {
             "schema": Object {
-              "allOf": Array [
-                Object {
-                  "description": "My Pet",
-                  "title": "Pettie",
-                },
-                Object {
-                  "$ref": "#/components/schemas/Pet",
-                },
-              ],
+              "$ref": "#/components/schemas/Pet",
+              "description": "My Pet",
+              "title": "Pettie",
             },
           },
           "application/xml": Object {
@@ -1952,11 +1946,7 @@ Object {
       "Category": Object {
         "properties": Object {
           "id": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Id",
-              },
-            ],
+            "$ref": "#/components/schemas/Id",
             "description": "Category ID",
           },
           "name": Object {
@@ -2039,19 +2029,11 @@ Object {
             "type": "boolean",
           },
           "id": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Id",
-              },
-            ],
+            "$ref": "#/components/schemas/Id",
             "description": "Order ID",
           },
           "petId": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Id",
-              },
-            ],
+            "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
           },
           "quantity": Object {
@@ -2096,26 +2078,14 @@ Object {
         },
         "properties": Object {
           "category": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Category",
-              },
-            ],
+            "$ref": "#/components/schemas/Category",
             "description": "Categories this pet belongs to",
           },
           "friend": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Pet",
-              },
-            ],
+            "$ref": "#/components/schemas/Pet",
           },
           "id": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Id",
-              },
-            ],
+            "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
             "externalDocs": Object {
               "description": "Find more info here",
@@ -2186,11 +2156,7 @@ Object {
       "Tag": Object {
         "properties": Object {
           "id": Object {
-            "allOf": Array [
-              Object {
-                "$ref": "#/components/schemas/Id",
-              },
-            ],
+            "$ref": "#/components/schemas/Id",
             "description": "Tag ID",
           },
           "name": Object {
@@ -2239,6 +2205,7 @@ Object {
             "oneOf": Array [
               Object {
                 "$ref": "#/components/schemas/Pet",
+                "title": "Pettie",
               },
               Object {
                 "$ref": "#/components/schemas/Tag",

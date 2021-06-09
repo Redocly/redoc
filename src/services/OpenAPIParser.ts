@@ -45,9 +45,9 @@ class RefCounter {
 export class OpenAPIParser {
   specUrl?: string;
   spec: OpenAPISpec;
-  mergeRefs: Set<string>;
 
   private _refCounter: RefCounter = new RefCounter();
+  private allowMergeRefs: boolean = false;
 
   constructor(
     spec: OpenAPISpec,
@@ -58,8 +58,7 @@ export class OpenAPIParser {
     this.preprocess(spec);
 
     this.spec = spec;
-
-    this.mergeRefs = new Set();
+    this.allowMergeRefs = spec.openapi.startsWith('3.1');
 
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
@@ -149,7 +148,7 @@ export class OpenAPIParser {
    * @param obj object to dereference
    * @param forceCircular whether to dereference even if it is circular ref
    */
-  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false): T {
+  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false, mergeAsAllOf = false): T {
     if (this.isRef(obj)) {
       const schemaName = getDefinitionName(obj.$ref);
       if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
@@ -165,14 +164,34 @@ export class OpenAPIParser {
         return Object.assign({}, resolved, { 'x-circular-ref': true });
       }
       // deref again in case one more $ref is here
+      let result = resolved;
       if (this.isRef(resolved)) {
-        const res = this.deref(resolved);
+        result = this.deref(resolved, false, mergeAsAllOf);
         this.exitRef(resolved);
-        return res;
       }
-      return resolved;
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, mergeAsAllOf) : result;
     }
     return obj;
+  }
+
+  mergeRefs(ref, resolved, mergeAsAllOf: boolean) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { $ref, ...rest } = ref;
+    const keys = Object.keys(rest);
+    if (keys.length === 0) {
+      return resolved;
+    }
+    if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
+      return {
+        allOf: [resolved, rest],
+      };
+    } else {
+      // small optimization
+      return {
+        ...resolved,
+        ...rest,
+      };
+    }
   }
 
   shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
@@ -225,7 +244,7 @@ export class OpenAPIParser {
           return undefined;
         }
 
-        const resolved = this.deref(subSchema, forceCircular);
+        const resolved = this.deref(subSchema, forceCircular, true);
         const subRef = subSchema.$ref || undefined;
         const subMerged = this.mergeAllOf(resolved, subRef, forceCircular, used$Refs);
         receiver.parentRefs!.push(...(subMerged.parentRefs || []));
@@ -234,7 +253,7 @@ export class OpenAPIParser {
           schema: subMerged,
         };
       })
-      .filter(child => child !== undefined) as Array<{
+      .filter((child) => child !== undefined) as Array<{
       $ref: string | undefined;
       schema: MergedOpenAPISchema;
     }>;
@@ -265,7 +284,7 @@ export class OpenAPIParser {
               { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
               $ref + '/properties/' + prop,
             );
-            receiver.properties[prop] = mergedProp
+            receiver.properties[prop] = mergedProp;
             this.exitParents(mergedProp); // every prop resolution should have separate recursive stack
           }
         }
@@ -313,7 +332,7 @@ export class OpenAPIParser {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&
-        def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
+        def.allOf.find((obj) => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
       ) {
         res['#/components/schemas/' + defName] = [def['x-discriminator-value'] || defName];
       }
@@ -339,7 +358,7 @@ export class OpenAPIParser {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {
-          oneOf: sub.oneOf.map(part => {
+          oneOf: sub.oneOf.map((part) => {
             const merged = this.mergeAllOf({
               allOf: [...beforeAllOf, part, ...afterAllOf],
             });
