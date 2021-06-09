@@ -1,3 +1,21 @@
+# [2.0.0-rc.54](https://github.com/Redocly/redoc/compare/v2.0.0-rc.53...v2.0.0-rc.54) (2021-06-09)
+
+
+### Bug Fixes
+
+* added missing semicolon to styling ([#1578](https://github.com/Redocly/redoc/issues/1578)) ([dfc4cf1](https://github.com/Redocly/redoc/commit/dfc4cf1caa131aa7bc6da6d489e3a8425d800326))
+* parse json theme string for standalone tag ([#1492](https://github.com/Redocly/redoc/issues/1492)) ([d7a0a4d](https://github.com/Redocly/redoc/commit/d7a0a4da17241dd9c089202dba76a8312248616e))
+* right absolute path for load and bundle definition ([#1579](https://github.com/Redocly/redoc/issues/1579)) ([ab2d57a](https://github.com/Redocly/redoc/commit/ab2d57a5a2ac5df007d76be0d664f3fb5f909566))
+* use operation path if operation summary/description is not provided ([#1596](https://github.com/Redocly/redoc/issues/1596)) ([4b072be](https://github.com/Redocly/redoc/commit/4b072be8d1c0dc4f1fa627168eebaed0a0213e08)), closes [#1270](https://github.com/Redocly/redoc/issues/1270)
+
+
+### Features
+
+* add basic support OpenAPI 3.1 ([#1622](https://github.com/Redocly/redoc/issues/1622)) ([823be24](https://github.com/Redocly/redoc/commit/823be24b313c3a2445df7e0801a0cc79c20bacd1))
+* merge refs oas 3.1 ([#1640](https://github.com/Redocly/redoc/issues/1640)) ([f4ea368](https://github.com/Redocly/redoc/commit/f4ea368f78a693fd70d48b5e0e5ffce3560432f4))
+
+
+
 # [2.0.0-rc.51](https://github.com/Redocly/redoc/compare/v2.0.0-rc.50...v2.0.0-rc.51) (2021-04-08)
 
 ### Bug Fixes
