@@ -76,7 +76,7 @@ export class SchemaModel {
     makeObservable(this);
 
     this.pointer = schemaOrRef.$ref || pointer || '';
-    this.rawSchema = parser.deref(schemaOrRef);
+    this.rawSchema = parser.deref(schemaOrRef, false, true);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
     this.init(parser, isChild);
@@ -193,7 +193,7 @@ export class SchemaModel {
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
     this.oneOf = oneOf!.map((variant, idx) => {
-      const derefVariant = parser.deref(variant);
+      const derefVariant = parser.deref(variant, false, true);
 
       const merged = parser.mergeAllOf(derefVariant, this.pointer + '/oneOf/' + idx);
 

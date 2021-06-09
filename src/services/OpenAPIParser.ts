@@ -148,7 +148,7 @@ export class OpenAPIParser {
    * @param obj object to dereference
    * @param forceCircular whether to dereference even if it is circular ref
    */
-  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false): T {
+  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false, mergeAsAllOf = false): T {
     if (this.isRef(obj)) {
       const schemaName = getDefinitionName(obj.$ref);
       if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
@@ -166,22 +166,22 @@ export class OpenAPIParser {
       // deref again in case one more $ref is here
       let result = resolved;
       if (this.isRef(resolved)) {
-        result = this.deref(resolved);
+        result = this.deref(resolved, false, mergeAsAllOf);
         this.exitRef(resolved);
       }
-      return this.allowMergeRefs ? this.mergeRefs(obj, resolved) : result;
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, mergeAsAllOf) : result;
     }
     return obj;
   }
 
-  mergeRefs(ref, resolved) {
+  mergeRefs(ref, resolved, mergeAsAllOf: boolean) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { $ref, ...rest } = ref;
     const keys = Object.keys(rest);
     if (keys.length === 0) {
       return resolved;
     }
-    if (keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
+    if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
       return {
         allOf: [resolved, rest],
       };
@@ -244,7 +244,7 @@ export class OpenAPIParser {
           return undefined;
         }
 
-        const resolved = this.deref(subSchema, forceCircular);
+        const resolved = this.deref(subSchema, forceCircular, true);
         const subRef = subSchema.$ref || undefined;
         const subMerged = this.mergeAllOf(resolved, subRef, forceCircular, used$Refs);
         receiver.parentRefs!.push(...(subMerged.parentRefs || []));
