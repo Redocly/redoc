@@ -1,5 +1,5 @@
-import * as memoize from 'memoize-one/dist/memoize-one.cjs'; // fixme: https://github.com/alexreardon/memoize-one/issues/37
-import { Component, createContext } from 'react';
+import * as React from 'react';
+import { createContext } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
@@ -14,7 +14,7 @@ export interface StoreBuilderProps {
 
   onLoaded?: (e?: Error) => void;
 
-  children: (props: { loading: boolean; store?: AppStore }) => any;
+  children: (props: { loading: boolean; store: AppStore | null }) => any;
 }
 
 export interface StoreBuilderState {
@@ -25,79 +25,41 @@ export interface StoreBuilderState {
   prevSpecUrl?: string;
 }
 
-const { Provider, Consumer } = createContext<AppStore | undefined>(undefined);
-export { Provider as StoreProvider, Consumer as StoreConsumer };
+const StoreContext = createContext<AppStore | undefined>(undefined);
+const { Provider, Consumer } = StoreContext;
+export { Provider as StoreProvider, Consumer as StoreConsumer, StoreContext };
 
-export class StoreBuilder extends Component<StoreBuilderProps, StoreBuilderState> {
-  static getDerivedStateFromProps(nextProps: StoreBuilderProps, prevState: StoreBuilderState) {
-    if (nextProps.specUrl !== prevState.prevSpecUrl || nextProps.spec !== prevState.prevSpec) {
-      return {
-        loading: true,
-        resolvedSpec: null,
-        prevSpec: nextProps.spec,
-        prevSpecUrl: nextProps.specUrl,
-      };
+export function StoreBuilder(props: StoreBuilderProps) {
+  const {spec, specUrl, options, onLoaded, children } = props;
+
+  const [resolvedSpec, setResolvedSpec] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    async function load() {
+      if (!spec && !specUrl) {
+        return undefined;
+      }
+      setResolvedSpec(null);
+      const resolved = await loadAndBundleSpec(spec || specUrl!);
+      setResolvedSpec(resolved);
     }
+    load();
+  }, [spec, specUrl])
 
-    return null;
-  }
-
-  state: StoreBuilderState = {
-    loading: true,
-    resolvedSpec: null,
-  };
-
-  @memoize
-  makeStore(spec, specUrl, options) {
-    if (!spec) {
-      return undefined;
-    }
+  const store = React.useMemo(() => {
+    if (!resolvedSpec) return null;
     try {
-      return new AppStore(spec, specUrl, options);
+      return new AppStore(resolvedSpec, specUrl, options);
     } catch (e) {
-      if (this.props.onLoaded) {
-        this.props.onLoaded(e);
+      if (onLoaded) {
+        onLoaded(e);
       }
       throw e;
     }
-  }
+  }, [resolvedSpec, specUrl, options]);
 
-  componentDidMount() {
-    this.load();
-  }
-
-  componentDidUpdate() {
-    if (this.state.resolvedSpec === null) {
-      this.load();
-    } else if (!this.state.loading && this.props.onLoaded) {
-      // may run multiple time
-      this.props.onLoaded();
-    }
-  }
-
-  async load() {
-    const { specUrl, spec } = this.props;
-    try {
-      const resolvedSpec = await loadAndBundleSpec(spec || specUrl!);
-      this.setState({ resolvedSpec, loading: false });
-    } catch (e) {
-      if (this.props.onLoaded) {
-        this.props.onLoaded(e);
-      }
-      this.setState({ error: e });
-    }
-  }
-
-  render() {
-    if (this.state.error) {
-      throw this.state.error;
-    }
-
-    const { specUrl, options } = this.props;
-    const { loading, resolvedSpec } = this.state;
-    return this.props.children({
-      loading,
-      store: this.makeStore(resolvedSpec, specUrl, options),
-    });
-  }
+  return children({
+    loading: !store,
+    store,
+  });
 }

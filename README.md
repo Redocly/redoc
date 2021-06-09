@@ -26,6 +26,7 @@
 - The widest OpenAPI v2.0 features support (yes, it supports even `discriminator`) <br>
 ![](docs/images/discriminator-demo.gif)
 - OpenAPI 3.0 support
+- Basic OpenAPI 3.1 support
 - Neat **interactive** documentation for nested objects <br>
 ![](docs/images/nested-demo.gif)
 - Code samples support (via vendor extension) <br>
@@ -43,7 +44,6 @@
   - [x] ~~React rewrite~~
   - [x] ~~docs pre-rendering (performance and SEO)~~
   - [ ] ability to simple branding/styling
-  - [ ] built-in API Console
 
 ## Releases
 **Important:** all the 2.x releases are deployed to npm and can be used via jsdeliver:
@@ -58,6 +58,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 ## Version Guidance
 | ReDoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
+| 2.0.0-alpha.54| 3.1, 3.0.x, 2.0       |
 | 2.0.0-alpha.x | 3.0, 2.0              |
 | 1.19.x        | 2.0                   |
 | 1.18.x        | 2.0                   |

@@ -16,7 +16,7 @@ const demos = [
     label: 'Google Calendar',
   },
   { value: 'https://api.apis.guru/v2/specs/slack.com/1.5.0/openapi.yaml', label: 'Slack' },
-  { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
+  { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/openapi.yaml', label: 'Zoom.us' },
   { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
 
@@ -154,7 +154,7 @@ const Heading = styled.nav`
 
   display: flex;
   align-items: center;
-  font-family: 'Lato';
+  font-family: Roboto, sans-serif;
 `;
 
 const Logo = styled.img`

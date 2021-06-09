@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { StoreConsumer } from '../components/StoreBuilder';
+import { StoreContext } from '../components/StoreBuilder';
 import styled, { css } from '../styled-components';
 
 import { HistoryService } from '../services';
 
 // tslint:disable-next-line
-export const linkifyMixin = className => css`
+export const linkifyMixin = (className) => css`
   ${className} {
     cursor: pointer;
     margin-left: -20px;
@@ -33,36 +33,41 @@ export const linkifyMixin = className => css`
   }
 `;
 
-const isModifiedEvent = event =>
+const isModifiedEvent = (event) =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
-export class Link extends React.Component<{ to: string; className?: string; children?: any }> {
-  navigate = (history: HistoryService, event) => {
-    if (
-      !event.defaultPrevented && // onClick prevented default
-      event.button === 0 && // ignore everything but left clicks
-      !isModifiedEvent(event) // ignore clicks with modifier keys
-    ) {
-      event.preventDefault();
-      history.replace(this.props.to);
-    }
-  };
+export function Link(props: { to: string; className?: string; children?: any }) {
+  const store = React.useContext(StoreContext);
+  const clickHandler = React.useCallback(
+    (event) => {
+      if (!store) return;
+      navigate(store.menu.history, event);
+    },
+    [store],
+  );
 
-  render() {
-    return (
-      <StoreConsumer>
-        {store => (
-          <a
-            className={this.props.className}
-            href={store!.menu.history.linkForId(this.props.to)}
-            onClick={this.navigate.bind(this, store!.menu.history)}
-            aria-label={this.props.to}
-          >
-            {this.props.children}
-          </a>
-        )}
-      </StoreConsumer>
-    );
+  if (!store) return null;
+
+  return (
+    <a
+      className={props.className}
+      href={store!.menu.history.linkForId(props.to)}
+      onClick={clickHandler}
+      aria-label={props.to}
+    >
+      {props.children}
+    </a>
+  );
+}
+
+function navigate(history: HistoryService, event) {
+  if (
+    !event.defaultPrevented && // onClick prevented default
+    event.button === 0 && // ignore everything but left clicks
+    !isModifiedEvent(event) // ignore clicks with modifier keys
+  ) {
+    event.preventDefault();
+    history.replace(this.props.to);
   }
 }
 
