@@ -17,11 +17,10 @@
     "mkdirp": "^1.0.4",
     "mobx": "^6.3.2",
     "node-libs-browser": "^2.2.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "redoc": "2.0.0-rc.53",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "redoc": "2.0.0-rc.54",
     "styled-components": "^5.3.0",
-    "tslib": "^2.2.0",
     "yargs": "^17.0.1"
   },
   "publishConfig": {
