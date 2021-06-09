@@ -69,7 +69,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   module: {
     rules: [
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.tsx?$/,
