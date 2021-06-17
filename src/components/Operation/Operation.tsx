@@ -17,7 +17,11 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-
+import {
+  InfoSpan,
+  InfoSpanBox,
+  InfoSpanBoxWrap,
+} from './../ApiInfo/styled.elements';
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
   contain: content;
@@ -37,9 +41,31 @@ export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
 
-    const { name: summary, description, deprecated, externalDocs, isWebhook } = operation;
+    const { name: summary, description, deprecated, externalDocs, isWebhook, contributorDetails} = operation;
     const hasDescription = !!(description || externalDocs);
 
+    const contributorName =  (contributorDetails && contributorDetails['name'] && (
+      <InfoSpan>
+        Contributed by:{' '}
+        { contributorDetails['name']}
+           </InfoSpan>
+    )) ||
+    null;
+
+    const contributorEmail =
+      ( contributorDetails &&  contributorDetails['email'] && (
+        <InfoSpan>
+         <a href={'mailto:' +  contributorDetails['email']}>{ contributorDetails['email']}</a>
+        </InfoSpan>
+      )) ||
+      null;
+
+    const contributorSupportLink = ( contributorDetails &&  contributorDetails['supportlink'] && (
+      <InfoSpan>
+        <a href={ contributorDetails['supportlink']}>Support</a>
+      </InfoSpan>
+    )) ||
+    null;
     return (
       <OptionsContext.Consumer>
         {(options) => (
@@ -50,7 +76,10 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
                 {isWebhook && <Badge type="primary"> Webhook </Badge>}
               </H2>
-              {options.pathInMiddlePanel && !isWebhook && (
+              <InfoSpanBoxWrap><InfoSpanBox>
+              {contributorName}{contributorEmail}{contributorSupportLink}
+              </InfoSpanBox></InfoSpanBoxWrap>
+                {options.pathInMiddlePanel && !isWebhook && (
                 <Endpoint operation={operation} inverted={true} />
               )}
               {hasDescription && (
