@@ -7,6 +7,7 @@ import { MiddlePanel, Row, Section } from '../../common-elements/';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { StyledMarkdownBlock } from '../Markdown/styled.elements';
+import { Contributor } from '../Contributor/Contributor'
 import {
   ApiHeader,
   DownloadButton,
@@ -70,29 +71,6 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
 
     const version = (info.version && <span>({info.version})</span>) || null;
 
-    const contributorName =  (info['x-contributorDetails'] && info['x-contributorDetails'].name && (
-      <InfoSpan>
-        Contributed by: {' '}
-        {info['x-contributorDetails'].name}
-           </InfoSpan>
-    )) ||
-    null;
-
-    const contributorEmail =
-      (info['x-contributorDetails'] && info['x-contributorDetails'].email && (
-        <InfoSpan>
-         <a href={'mailto:' + info['x-contributorDetails'].email}>{info['x-contributorDetails'].email}</a>
-        </InfoSpan>
-      )) ||
-      null;
-
-    const contributorSupportLink = (info['x-contributorDetails'] && info['x-contributorDetails'].supportlink && (
-      <InfoSpan>
-        <a href={info['x-contributorDetails'].supportlink}>Support</a>
-      </InfoSpan>
-    )) ||
-    null;
-
     return (
       <Section>
         <Row>
@@ -122,9 +100,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                 </InfoSpanBoxWrap>
               )) ||
                 null}
-                <InfoSpanBoxWrap><InfoSpanBox>
-                {contributorName} {contributorEmail} {contributorSupportLink} 
-                </InfoSpanBox></InfoSpanBoxWrap>
+              <Contributor contributor={info['x-contributorDetails']}></Contributor>
             </StyledMarkdownBlock>
             <Markdown source={store.spec.info.summary} data-role="redoc-summary"/>
             <Markdown source={store.spec.info.description} data-role="redoc-description"/>

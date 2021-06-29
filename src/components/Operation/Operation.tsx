@@ -17,6 +17,7 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { Contributor } from '../Contributor/Contributor'
 import {
   InfoSpan,
   InfoSpanBox,
@@ -44,28 +45,6 @@ export class Operation extends React.Component<OperationProps> {
     const { name: summary, description, deprecated, externalDocs, isWebhook, contributorDetails} = operation;
     const hasDescription = !!(description || externalDocs);
 
-    const contributorName =  (contributorDetails && contributorDetails['name'] && (
-      <InfoSpan>
-        Contributed by:{' '}
-        { contributorDetails['name']}
-           </InfoSpan>
-    )) ||
-    null;
-
-    const contributorEmail =
-      ( contributorDetails &&  contributorDetails['email'] && (
-        <InfoSpan>
-         <a href={'mailto:' +  contributorDetails['email']}>{ contributorDetails['email']}</a>
-        </InfoSpan>
-      )) ||
-      null;
-
-    const contributorSupportLink = ( contributorDetails &&  contributorDetails['supportlink'] && (
-      <InfoSpan>
-        <a href={ contributorDetails['supportlink']}>Support</a>
-      </InfoSpan>
-    )) ||
-    null;
     return (
       <OptionsContext.Consumer>
         {(options) => (
@@ -76,9 +55,7 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
                 {isWebhook && <Badge type="primary"> Webhook </Badge>}
               </H2>
-              <InfoSpanBoxWrap><InfoSpanBox>
-              {contributorName}{contributorEmail}{contributorSupportLink}
-              </InfoSpanBox></InfoSpanBoxWrap>
+              <Contributor contributor={contributorDetails}></Contributor>
                 {options.pathInMiddlePanel && !isWebhook && (
                 <Endpoint operation={operation} inverted={true} />
               )}
