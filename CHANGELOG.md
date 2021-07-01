@@ -1,3 +1,18 @@
+# [2.0.0-rc.55](https://github.com/Redocly/redoc/compare/v2.0.0-rc.54...v2.0.0-rc.55) (2021-07-01)
+
+
+### Bug Fixes
+
+* broken linkify ([3df72fb](https://github.com/Redocly/redoc/commit/3df72fb99ff24fb9a551565b7568d96f8614ed6f)), closes [#1655](https://github.com/Redocly/redoc/issues/1655)
+* fix accidentally removed onLoaded ([b41a8b4](https://github.com/Redocly/redoc/commit/b41a8b4ac714084dc25de7914fa1f99386e907e2)), closes [#1656](https://github.com/Redocly/redoc/issues/1656)
+
+
+### Features
+
+* added git folder sync config ([a69f0fb](https://github.com/Redocly/redoc/commit/a69f0fb00986a04c812ab273711e8f3501b98139))
+
+
+
 # [2.0.0-rc.54](https://github.com/Redocly/redoc/compare/v2.0.0-rc.53...v2.0.0-rc.54) (2021-06-09)
 
 
