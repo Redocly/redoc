@@ -58,6 +58,12 @@ export function StoreBuilder(props: StoreBuilderProps) {
     }
   }, [resolvedSpec, specUrl, options]);
 
+  React.useEffect(() => {
+    if (store && onLoaded) {
+      onLoaded();
+    }
+  }, [store, onLoaded])
+
   return children({
     loading: !store,
     store,
