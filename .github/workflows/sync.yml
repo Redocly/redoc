@@ -11,6 +11,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@master
       - name: Run GitHub File Sync
-        uses: Redocly/repo-file-sync-action
+        uses: Redocly/repo-file-sync-action@master
         with:
           GH_PAT: ${{ secrets.GH_PAT }}
