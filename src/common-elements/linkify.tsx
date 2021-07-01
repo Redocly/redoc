@@ -39,9 +39,9 @@ const isModifiedEvent = (event) =>
 export function Link(props: { to: string; className?: string; children?: any }) {
   const store = React.useContext(StoreContext);
   const clickHandler = React.useCallback(
-    (event) => {
+    (event:  React.MouseEvent<HTMLAnchorElement>) => {
       if (!store) return;
-      navigate(store.menu.history, event);
+      navigate(store.menu.history, event, props.to);
     },
     [store],
   );
@@ -60,14 +60,14 @@ export function Link(props: { to: string; className?: string; children?: any }) 
   );
 }
 
-function navigate(history: HistoryService, event) {
+function navigate(history: HistoryService, event: React.MouseEvent<HTMLAnchorElement>, to: string) {
   if (
     !event.defaultPrevented && // onClick prevented default
     event.button === 0 && // ignore everything but left clicks
     !isModifiedEvent(event) // ignore clicks with modifier keys
   ) {
     event.preventDefault();
-    history.replace(this.props.to);
+    history.replace(to);
   }
 }
 
