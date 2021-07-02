@@ -14,3 +14,5 @@ jobs:
         uses: Redocly/repo-file-sync-action@master
         with:
           GH_PAT: ${{ secrets.GH_PAT }}
+          COMMIT_PREFIX: "sync:"
+          SKIP_PR: true
