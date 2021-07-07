@@ -10,6 +10,12 @@ export interface LabelsConfig {
   arrayOf: string;
   webhook: string;
   const: string;
+  download: string;
+  downloadSpecification: string;
+  responses: string;
+  callbackResponses: string;
+  requestSamples: string;
+  responseSamples: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -26,6 +32,12 @@ const labels: LabelsConfig = {
   arrayOf: 'Array of ',
   webhook: 'Event',
   const: 'Value',
+  download: 'Download',
+  downloadSpecification: 'Download OpenAPI specification',
+  responses: 'Responses',
+  callbackResponses: 'Callback responses',
+  requestSamples: 'Request samples',
+  responseSamples: 'Response samples',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {
