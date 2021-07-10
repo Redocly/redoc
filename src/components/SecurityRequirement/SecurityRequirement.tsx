@@ -81,7 +81,7 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
             );
           })
         ) : (
-          <SecurityRequirementAndWrap>Anonymous</SecurityRequirementAndWrap>
+          <SecurityRequirementAndWrap>None</SecurityRequirementAndWrap>
         )}
       </SecurityRequirementOrWrap>
     );
