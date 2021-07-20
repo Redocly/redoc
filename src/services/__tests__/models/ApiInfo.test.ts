@@ -54,8 +54,8 @@ describe('Models', () => {
           license: {
             name: 'MIT',
             identifier: 'MIT',
-            url: 'https://opensource.org/licenses/MIT'
-          }
+            url: 'https://opensource.org/licenses/MIT',
+          },
         },
       } as any;
 
@@ -83,7 +83,7 @@ describe('Models', () => {
         },
       } as any;
 
-      const opts = new RedocNormalizedOptions({downloadFileName: 'openapi.yaml'});
+      const opts = new RedocNormalizedOptions({ downloadFileName: 'openapi.yaml' });
       const info = new ApiInfoModel(parser, opts);
       expect(info.downloadFileName).toEqual('openapi.yaml');
     });
@@ -96,7 +96,7 @@ describe('Models', () => {
         },
       } as any;
 
-      const opts = new RedocNormalizedOptions({downloadFileName: 'nope.txt'});
+      const opts = new RedocNormalizedOptions({ downloadFileName: 'nope.txt' });
       const info = new ApiInfoModel(parser, opts);
       expect(info.downloadFileName).toEqual('swagger.json');
     });

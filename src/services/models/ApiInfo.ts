@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as yaml from 'js-yaml'
+import * as yaml from 'js-yaml';
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
 import { OpenAPIParser } from '../OpenAPIParser';
