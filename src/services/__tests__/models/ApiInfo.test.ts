@@ -62,5 +62,43 @@ describe('Models', () => {
       const { license = { identifier: null } } = new ApiInfoModel(parser);
       expect(license.identifier).toEqual('MIT');
     });
+
+    test('should correctly populate default download file name', () => {
+      parser.spec = {
+        openapi: '3.0.0',
+        info: {
+          description: 'Test description',
+        },
+      } as any;
+
+      const info = new ApiInfoModel(parser);
+      expect(info.downloadFileName).toEqual('swagger.json');
+    });
+
+    test('should correctly populate download file name', () => {
+      parser.spec = {
+        openapi: '3.0.0',
+        info: {
+          description: 'Test description',
+        },
+      } as any;
+
+      const opts = new RedocNormalizedOptions({downloadFileName: 'openapi.yaml'});
+      const info = new ApiInfoModel(parser, opts);
+      expect(info.downloadFileName).toEqual('openapi.yaml');
+    });
+
+    test('should correctly populate default download file name if invalid extension is used', () => {
+      parser.spec = {
+        openapi: '3.0.0',
+        info: {
+          description: 'Test description',
+        },
+      } as any;
+
+      const opts = new RedocNormalizedOptions({downloadFileName: 'nope.txt'});
+      const info = new ApiInfoModel(parser, opts);
+      expect(info.downloadFileName).toEqual('swagger.json');
+    });
   });
 });

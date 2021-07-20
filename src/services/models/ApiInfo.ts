@@ -1,6 +1,9 @@
+import * as path from 'path';
+import * as yaml from 'js-yaml'
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;
@@ -15,7 +18,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   downloadLink?: string;
   downloadFileName?: string;
 
-  constructor(private parser: OpenAPIParser) {
+  constructor(
+    private parser: OpenAPIParser,
+    private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
+  ) {
     Object.assign(this, parser.spec.info);
     this.description = parser.spec.info.description || '';
     this.summary = parser.spec.info.summary || '';
@@ -35,7 +41,13 @@ export class ApiInfoModel implements OpenAPIInfo {
     }
 
     if (IS_BROWSER && window.Blob && window.URL && window.URL.createObjectURL) {
-      const blob = new Blob([JSON.stringify(this.parser.spec, null, 2)], {
+      let specString: string;
+      if (path.extname(this.options.downloadFileName) === '.yaml') {
+        specString = yaml.safeDump(this.parser.spec);
+      } else {
+        specString = JSON.stringify(this.parser.spec, null, 2);
+      }
+      const blob = new Blob([specString], {
         type: 'application/json',
       });
       return window.URL.createObjectURL(blob);
@@ -44,7 +56,7 @@ export class ApiInfoModel implements OpenAPIInfo {
 
   private getDownloadFileName(): string | undefined {
     if (!this.parser.specUrl) {
-      return 'swagger.json';
+      return this.options.downloadFileName;
     }
     return undefined;
   }

@@ -24,7 +24,7 @@ export class SpecStore {
     private options: RedocNormalizedOptions,
   ) {
     this.parser = new OpenAPIParser(spec, specUrl, options);
-    this.info = new ApiInfoModel(this.parser);
+    this.info = new ApiInfoModel(this.parser, this.options);
     this.externalDocs = this.parser.spec.externalDocs;
     this.contentItems = MenuBuilder.buildStructure(this.parser, this.options);
     this.securitySchemes = new SecuritySchemesModel(this.parser);
