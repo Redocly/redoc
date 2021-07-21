@@ -61,6 +61,8 @@ export class SchemaModel {
   schema: MergedOpenAPISchema;
   extensions?: Record<string, any>;
   const: any;
+  contentEncoding?: string;
+  contentMediaType?: string;
 
   /**
    * @param isChild if schema discriminator Child
@@ -120,6 +122,8 @@ export class SchemaModel {
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
     this.const = schema.const || '';
+    this.contentEncoding = schema.contentEncoding;
+    this.contentMediaType = schema.contentMediaType;
 
     if (!!schema.nullable) {
       if (Array.isArray(this.type) && !this.type.includes('null')) {

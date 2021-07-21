@@ -1166,6 +1166,11 @@ components:
           description: User status
           type: integer
           format: int32
+        image:
+          description: User image
+          type: string
+          contentEncoding: base64
+          contentMediaType: image/png
       xml:
         name: User
   requestBodies:
