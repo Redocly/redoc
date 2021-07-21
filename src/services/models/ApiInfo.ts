@@ -43,7 +43,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     if (IS_BROWSER && window.Blob && window.URL && window.URL.createObjectURL) {
       let specString: string;
       if (path.extname(this.options.downloadFileName) === '.yaml') {
-        specString = yaml.safeDump(this.parser.spec);
+        specString = yaml.dump(this.parser.spec);
       } else {
         specString = JSON.stringify(this.parser.spec, null, 2);
       }
