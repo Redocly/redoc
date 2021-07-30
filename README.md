@@ -230,6 +230,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `disableSearch` - disable search indexing and search box.
 * `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
+* `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
@@ -241,7 +242,6 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `hideSchemaTitles` - do not display schema `title` next to to the type
 * `simpleOneOfTypeLabel` - show only unique oneOf types in the label without titles
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
-* `maxSampleDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
 * `noAutoAuth` - do not inject Authentication section automatically.
