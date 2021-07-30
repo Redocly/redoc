@@ -1,3 +1,12 @@
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 **Describe the problem to be solved**
 A clear and concise description of what problem to be solved
 
