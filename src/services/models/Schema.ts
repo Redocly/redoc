@@ -125,9 +125,11 @@ export class SchemaModel {
     this.contentEncoding = schema.contentEncoding;
     this.contentMediaType = schema.contentMediaType;
 
-    if (!!schema.nullable) {
-      if (Array.isArray(this.type) && !this.type.includes('null')) {
+    if (!!schema.nullable || schema['x-nullable']) {
+      if (Array.isArray(this.type) && !this.type.some((value) => value === null || value === 'null')) {
         this.type = [...this.type, 'null'];
+      } else if (!Array.isArray(this.type) && (this.type !== null || this.type !== 'null')) {
+        this.type = [this.type, 'null'];
       }
     }
 
