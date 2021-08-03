@@ -44,7 +44,7 @@ export interface RedocRawOptions {
   hideSchemaPattern?: boolean;
 }
 
-function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
+export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
   if (val === undefined) {
     return defaultValue || false;
   }
