@@ -83,6 +83,8 @@ const schemaKeywordTypes = {
   maxLength: 'string',
   minLength: 'string',
   pattern: 'string',
+  contentEncoding: 'string',
+  contentMediaType: 'string',
 
   items: 'array',
   maxItems: 'array',
