@@ -1,0 +1,8 @@
+redoc:
+  - group: Quickstart
+    expanded: false
+    pages:
+      - label: Live demo
+        page: redoc/quickstart/live-demo.md
+      - label: ReDoc HTML element
+        page: redoc/quickstart/html.md
