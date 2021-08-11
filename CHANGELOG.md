@@ -1,3 +1,24 @@
+# [2.0.0-rc.56](https://github.com/Redocly/redoc/compare/v2.0.0-rc.53...v2.0.0-rc.56) (2021-08-11)
+
+
+### Bug Fixes
+
+* handle empty object in security array ([#1678](https://github.com/Redocly/redoc/issues/1678)) ([9e1ea70](https://github.com/Redocly/redoc/commit/9e1ea703e56a71567b13d0d22e2d69945a22de4d))
+* hideLoading options in redoc standalone ([#1709](https://github.com/Redocly/redoc/issues/1709)) ([6a52a16](https://github.com/Redocly/redoc/commit/6a52a16d5b75a2955da7217c4a264f0fa8e98c89))
+* improve openapi 3.1 ([#1700](https://github.com/Redocly/redoc/issues/1700)) ([cd2d6f7](https://github.com/Redocly/redoc/commit/cd2d6f76e87c8385786a9c8e51c0d11c79d9707c))
+  - show contentEncoding on fields
+  - crash with OpenAPI 3.1 type as array of strings in requestBody
+  - nullable label not shown 
+* nullable object's fields were missing ([#1721](https://github.com/Redocly/redoc/issues/1721)) ([ddf297b](https://github.com/Redocly/redoc/commit/ddf297b11269ef515bd62771912a5609721d5e39))
+
+
+### Features
+
+* add github action to build docker images and push to ghcr.io on release ([#1614](https://github.com/Redocly/redoc/issues/1614)) ([919a5f0](https://github.com/Redocly/redoc/commit/919a5f02fb94ca869011d5eaf63ee71b61b60150))
+* add yaml highlight ([#1684](https://github.com/Redocly/redoc/issues/1684)) ([d724440](https://github.com/Redocly/redoc/commit/d72444008533623c87f238fe8758b1dd518b89eb))
+* added localization for some labels ([#1675](https://github.com/Redocly/redoc/issues/1675)) ([ec50858](https://github.com/Redocly/redoc/commit/ec50858ec47af08c5fe553266fe3c209fba97eae))
+
+
 # [2.0.0-rc.55](https://github.com/Redocly/redoc/compare/v2.0.0-rc.54...v2.0.0-rc.55) (2021-07-01)
 
 
