@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.12.2",
+      "version": "0.12.3",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.55",
+        "redoc": "2.0.0-rc.56",
         "styled-components": "^5.3.0",
         "yargs": "^17.0.1"
       },
@@ -1751,9 +1751,9 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.55",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.55.tgz",
-      "integrity": "sha512-32sUHhc33m8zQKz2V7xREwlf05S52dDOkn7K0WMquu2GDl6ZquxmrQfqnlj0IPoVCWQPR+XosmmIJj4rZbqjeA==",
+      "version": "2.0.0-rc.56",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.56.tgz",
+      "integrity": "sha512-ir2TtQ2d/1FqZWIoLmUZ3qvAAnO6jg8dt0SV75TanmfCXpEABcElXWH3mtUf6qKlvgDVt40diDCVuSvyPPxkAw==",
       "dependencies": {
         "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.50",
@@ -1773,7 +1773,7 @@
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
-        "prismjs": "^1.24.0",
+        "prismjs": "^1.24.1",
         "prop-types": "^15.7.2",
         "react-tabs": "^3.2.2",
         "slugify": "~1.4.7",
@@ -3741,9 +3741,9 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.55",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.55.tgz",
-      "integrity": "sha512-32sUHhc33m8zQKz2V7xREwlf05S52dDOkn7K0WMquu2GDl6ZquxmrQfqnlj0IPoVCWQPR+XosmmIJj4rZbqjeA==",
+      "version": "2.0.0-rc.56",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.56.tgz",
+      "integrity": "sha512-ir2TtQ2d/1FqZWIoLmUZ3qvAAnO6jg8dt0SV75TanmfCXpEABcElXWH3mtUf6qKlvgDVt40diDCVuSvyPPxkAw==",
       "requires": {
         "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.50",
@@ -3763,7 +3763,7 @@
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
-        "prismjs": "^1.24.0",
+        "prismjs": "^1.24.1",
         "prop-types": "^15.7.2",
         "react-tabs": "^3.2.2",
         "slugify": "~1.4.7",
