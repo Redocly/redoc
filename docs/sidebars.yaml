@@ -1,0 +1,123 @@
+redoc:
+  - page: redoc/index.md
+  - group: Redoc changelog
+    expanded: true
+    pages:
+      - group: "2021"
+        expanded: false
+        pages:
+          - label: July 2021
+            page: redoc/changelog/2021/07.md
+          - label: June 2021
+            page: redoc/changelog/2021/06.md
+          - label: April 2021
+            page: redoc/changelog/2021/04.md
+          - label: Februrary 2021
+            page: redoc/changelog/2021/02.md
+          - label: January 2021
+            page: redoc/changelog/2021/01.md
+      - group: "2020"
+        expanded: false
+        pages:
+          - label: November 2020
+            page: redoc/changelog/2020/11.md
+          - label: October 2020
+            page: redoc/changelog/2020/10.md
+          - label: September 2020
+            page: redoc/changelog/2020/09.md
+          - label: August 2020
+            page: redoc/changelog/2020/08.md
+          - label: July 2020
+            page: redoc/changelog/2020/07.md
+          - label: June 2020
+            page: redoc/changelog/2020/06.md
+          - label: May 2020
+            page: redoc/changelog/2020/05.md
+          - label: April 2020
+            page: redoc/changelog/2020/04.md
+          - label: March 2020
+            page: redoc/changelog/2020/03.md
+          - label: Februrary 2020
+            page: redoc/changelog/2020/02.md
+          - label: January 2020
+            page: redoc/changelog/2020/01.md
+      - group: "2019"
+        expanded: false
+        pages:
+          - label: December 2019
+            page: redoc/changelog/2019/07.md
+          - label: October 2019
+            page: redoc/changelog/2019/10.md
+          - label: September 2019
+            page: redoc/changelog/2019/09.md
+          - label: August 2019
+            page: redoc/changelog/2019/08.md
+          - label: July 2019
+            page: redoc/changelog/2019/07.md
+          - label: June 2019
+            page: redoc/changelog/2019/06.md
+          - label: May 2019
+            page: redoc/changelog/2019/05.md
+          - label: March 2019
+            page: redoc/changelog/2019/03.md
+          - label: January 2019
+            page: redoc/changelog/2019/01.md
+      - group: "2018"
+        expanded: false
+        pages:
+          - label: November 2018
+            page: redoc/changelog/2018/11.md
+          - label: October 2018
+            page: redoc/changelog/2018/10.md
+          - label: September 2018
+            page: redoc/changelog/2018/09.md
+          - label: August 2018
+            page: redoc/changelog/2018/08.md
+          - label: July 2018
+            page: redoc/changelog/2018/07.md
+          - label: June 2018
+            page: redoc/changelog/2018/06.md
+          - lable: May 2018
+            page: redoc/changelog/2018/05.md
+          - label: March 2018
+            page: redoc/changelog/2018/03.md
+          - label: Februrary 2018
+            page: redoc/changelog/2018/02.md
+          - label: January 2018
+            page: redoc/changelog/2018/01.md
+      - group: "2017"
+        expanded: false
+        pages:
+          - label: December 2017
+            page: redoc/changelog/2017/12.md
+          - label: November 2017
+            page: redoc/changelog/2017/11.md
+          - label: October 2017
+            page: redoc/changelog/2017/10.md
+          - label: September 2017
+            page: redoc/changelog/2017/09.md
+          - label: August 2017
+            page: redoc/changelog/2017/08.md
+          - label: May 2017
+            page: redoc/changelog/2017/05.md
+          - label: April 2017
+            page: redoc/changelog/2017/04.md
+          - label: March 2017
+            page: redoc/changelog/2017/03.md
+          - label: Februrary 2017
+            page: redoc/changelog/2017/02.md
+          - label: January 2017
+            page: redoc/changelog/2017/01.md
+      - group: "2016"
+        expanded: false
+        pages:
+          - label: December 2016
+            page: redoc/changelog/2016/12.md
+          - label: November 2016
+            page: redoc/changelog/2016/11.md
+          - label: October 2016
+            page: redoc/changelog/2016/10.md
+          - label: September 2016
+            page: redoc/changelog/2016/09.md
+          - label: August 2016
+            page: redoc/changelog/2016/08.md
