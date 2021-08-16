@@ -162,7 +162,7 @@ a globally exposed Redoc object.
 
 ### Using the `spec-url` attribute
 
-To add the <redoc> element with a `spec-url` attribute:
+To add the <redoc> element with the `spec-url` attribute:
 
 ```html
 <redoc spec-url="url/to/your/spec"></redoc>
