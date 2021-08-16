@@ -157,7 +157,7 @@ To reference the Redoc script with a node modules link:
 ## Step 3 - Add the <redoc> element
 
 You can add the <redoc> element to your HTML page and reference your OpenAPI
-specification using the `spec-url` attribute, or you can initialize Redoc using
+definition using the `spec-url` attribute, or you can initialize Redoc using
 a globally exposed Redoc object.
 
 ### Using the `spec-url` attribute
@@ -187,8 +187,8 @@ To add the <redoc> element with a globally exposed Redoc object:
 ```js
 Redoc.init(specOrSpecUrl, options, element, callback)
 ```
-- `specOrSpecUrl`: Either a JSON object with OpenAPI specification or a URL to the
-  specification in JSON or YAML format.
+- `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a URL to the
+  definition in JSON or YAML format.
 - `options`: See [options object](https://redoc.ly/docs/api-reference-docs/configuration/) reference.
 - `element`: DOM element Redoc will be inserted into.
 - `callback`(optional): Callback to be called after Redoc has been fully rendered.
