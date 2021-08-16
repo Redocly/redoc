@@ -143,7 +143,7 @@ or the files located in your `node modules` folder.
 To reference the Redoc script with a CDN link:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
 ```
 
 ### Node modules link
