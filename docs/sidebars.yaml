@@ -1,8 +1,11 @@
 redoc:
   - group: Quickstart
     expanded: false
+    page: redoc/quickstart/intro.md
     pages:
-      - label: Live demo
-        page: redoc/quickstart/live-demo.md
-      - label: ReDoc HTML element
+      - label: HTML element
         page: redoc/quickstart/html.md
+      - label: React component
+        page: redoc/quickstart/react.md
+      - label: Docker image
+        page: redoc/quickstart/docker.md

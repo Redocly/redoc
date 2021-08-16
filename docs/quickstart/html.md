@@ -2,22 +2,22 @@
 title: Redoc HTML element
 ---
 
-# ReDoc HTML element
+# Using the Redoc HTML element
 
-## TL;DR Final code example
+## TL;DR final code example
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ReDoc</title>
+    <title>Redoc</title>
     <!-- needed for adaptive design -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
 
     <!--
-    ReDoc doesn't change outer page styles
+    Redoc doesn't change outer page styles
     -->
     <style>
       body {
@@ -28,30 +28,56 @@ title: Redoc HTML element
   </head>
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
 
 ```
 
 :::attention Running Redoc locally requires an HTTP server
-Loading local OpenAPI specifications is impossible without running a web-server because of issues with
+Loading local OpenAPI definitions is impossible without running a web server because of issues with
 [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) and
 other security reasons. 
 :::
 
-### Running ReDoc locally
+### Running Redoc locally
 
-If you want to view your ReDoc output locally, you can simulate an HTTP server.
+If you want to view your Redoc output locally, you can simulate an HTTP server.
+
+#### Using Redocly OpenAPI CLI
+
+Redocly OpenAPI CLI is an open source command-line tool that includes a command
+for simulating an HTTP sever to provide a preview of your OpenAPI definition locally.
+
+If you have [OpenAPI CLI](https://redoc.ly/docs/cli/#installation-and-usage) installed, `cd` into your
+project directory and run the following command:
+
+```bash
+openapi preview-docs openapi.yaml
+```
+
+By default, without providing a port, the preview starts on port 8080, and can be accessed at `http://localhost:8080`.
+To exit the preview, use `control+C`.
+
 
 #### Using Python
 
-If you have [Python3](https://www.python.org/downloads/) installed, `cd` into your
+If you have [Python 3](https://www.python.org/downloads/) installed, `cd` into your
 project directory and run the following command:
 
 ```python
 python3 -m http.server
 ```
+
+If you have [Python 2](https://www.python.org/downloads/) installed, `cd` into your
+project directory and run the following command:
+
+```python
+python -m SimpleHTTPServer 8000
+```
+
+The output after entering the command provides the local where the preview can be accessed.
+To exit the preview, use `control-C`.
 
 #### Using Node.js
 
@@ -68,10 +94,15 @@ Then, `cd` into your project directory and run the following command:
 http-server
 ```
 
-## Step 1 - Install ReDoc
+The output after entering the command provides the local where the preview can be accessed.
+To exit the preview, use `control-C`.
 
-You can install ReDoc using one of the following package managers,
-[npm](https://docs.npmjs.com/about-npm) or [yarn](https://classic.yarnpkg.com/en/docs/getting-started). 
+## Step 1 - Install Redoc
+
+You can install Redoc using one of the following package managers:
+
+- [npm](https://docs.npmjs.com/about-npm)
+- [yarn](https://classic.yarnpkg.com/en/docs/getting-started)
 
 :::attention Initialize your package manager
 If you do not have a `package.json` file in your project directory,
@@ -83,34 +114,33 @@ For more information, see
 [Creating a package.json file](https://docs.npmjs.com/creating-a-package-json-file)
 in the npm documentation or [Yarn init](https://classic.yarnpkg.com/en/docs/cli/init/)
 in the yarn documentation.
+
 :::
 
-### Install with yarn
+### Install Redoc with yarn
 
-To install ReDoc using yarn, after navigating to your project directory in your terminal,
-use the following command: 
+After navigating to your project directory in your terminal, use the following command: 
 
 ```sh
 yarn add redoc
 ```
 
-### Install with npm
+### Install Redoc with npm
 
-To install ReDoc using npm, after navigating to your project directory in your terminal,
-use the following command: 
+After navigating to your project directory in your terminal, use the following command: 
 
 ```sh
 npm i redoc
 ```
 
-## Step 2 - Reference the ReDoc script
+## Step 2 - Reference the Redoc script
 
-You can reference the ReDoc script using either a link to the files hosted on a CDN
-or the files located in your node modules folder.
+You can reference the Redoc script using either a link to the files hosted on a CDN
+or the files located in your `node modules` folder.
 
 ### CDN link
 
-To reference the ReDoc script with a CDN link:
+To reference the Redoc script with a CDN link:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
@@ -118,7 +148,7 @@ To reference the ReDoc script with a CDN link:
 
 ### Node modules link
 
-To reference the ReDoc script with a node modules link:
+To reference the Redoc script with a node modules link:
 
 ```html
 <script src="node_modules/redoc/bundles/redoc.standalone.js"> </script>
@@ -126,11 +156,11 @@ To reference the ReDoc script with a node modules link:
 
 ## Step 3 - Add the <redoc> element
 
-You can add the <redoc> element to your html page and reference your OpenAPI
-specification using a `spec-url` attribute, or you can initialize ReDoc using
-a globally exposed ReDoc object.
+You can add the <redoc> element to your HTML page and reference your OpenAPI
+specification using the `spec-url` attribute, or you can initialize Redoc using
+a globally exposed Redoc object.
 
-### Using a `spec-url` attribute
+### Using the `spec-url` attribute
 
 To add the <redoc> element with a `spec-url` attribute:
 
@@ -150,9 +180,9 @@ You can also use a local file (JSON or YAML) in your project, for instance:
 <redoc spec-url="dist.json"></redoc>
 ```
 
-### Using a ReDoc object
+### Using a Redoc object
 
-To add the <redoc> element with a globally exposed ReDoc object:
+To add the <redoc> element with a globally exposed Redoc object:
 
 ```js
 Redoc.init(specOrSpecUrl, options, element, callback)
@@ -160,9 +190,9 @@ Redoc.init(specOrSpecUrl, options, element, callback)
 - `specOrSpecUrl`: Either a JSON object with OpenAPI specification or a URL to the
   specification in JSON or YAML format.
 - `options`: See [options object](https://redoc.ly/docs/api-reference-docs/configuration/) reference.
-- `element`: DOM element ReDoc will be inserted into.
-- `callback`(optional): Callback to be called after ReDoc has been fully rendered.
-  It is also called on errors with error as the first argument.
+- `element`: DOM element Redoc will be inserted into.
+- `callback`(optional): Callback to be called after Redoc has been fully rendered.
+  It is also called on errors with `error` as the first argument.
 
 #### Examples
 
