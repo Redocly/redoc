@@ -38,5 +38,5 @@ section in the documentation.
 
 If you want to see how ReDoc will render your OpenAPI definition, you can try it out online at https://redocly.github.io/redoc/.
 
-A version of the Swagger Petstore API is already displayed.  To test it with your own OpenAPI definition, enter the URL for your
+A version of the Swagger Petstore API is displayed by default.  To test it with your own OpenAPI definition, enter the URL for your
 definition and select the **TRY IT** button.
