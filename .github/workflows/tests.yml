@@ -3,11 +3,17 @@ name: Tests
 on: [push]
 
 jobs:
-  build-and-test:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run bundle
     - run: npm test
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run bundle
     - run: npm run e2e

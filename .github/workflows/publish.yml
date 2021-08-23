@@ -1,0 +1,136 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - v[0-9]*.[0-9]*.[0-9]*
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-${{ hashFiles('package-lock.json') }}
+          npm-
+    - run: npm ci
+    - run: npm run bundle
+  bundle-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - uses: cd cli/
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Install dependencies
+        run: npm ci
+      - name: Bundle
+        run: npm run compile:cli
+  unit-tests:
+    needs: [bundle]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+  e2e-tests:
+    needs: [bundle]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm run e2e
+  check-version-cli:
+    name: Check Version
+    runs-on: ubuntu-latest
+    needs: [bundle-cli, unit-tests, e2e-tests]
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+      - name: Check if version has been updated
+        id: check
+        uses: EndBug/version-check@v2.0.1
+        with:
+          file-name: ./cli/package.json
+          file-url: https://unpkg.com/redoc-cli/package.json
+          static-checking: localIsNew
+  deploy-demo:
+    needs: [bundle, unit-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Install dependencies
+        run: npm ci
+      - name: Build package
+        run: npm run build:demo
+      - name: Deploy to S3 bucket
+        run: npm run deploy:demo
+      - name: Invalidate
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"
+  publish:
+    needs: [bundle, unit-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Before deploy
+        run: npm run declarations
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: After acript
+        run: cat ./coverage/lcov.info | coveralls
+  publish-cli:
+    needs: [check-version-cli]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Publish to NPM
+        run: cd cli/ && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
