@@ -6,15 +6,16 @@ on:
       - v[0-9]*.[0-9]*.[0-9]*
 
 jobs:
-  build-and-unit:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - run: npm ci
       - run: npm run bundle
       - run: npm test
+      - run: npm run e2e
   deploy:
-    needs: build-and-unit
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -40,3 +41,29 @@ jobs:
         run: npm run deploy:demo
       - name: Invalidate
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"
+  publish:
+    needs: [build-and-test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: actions/checkout@v2
+      - name: cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Bundle
+        run: npm run bundle
+      - name: Before deploy
+        run: npm run compile:cli && npm run declarations
+      - name: Publish to NPM
+        run: npm publish && cd cli/ && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: After acript
+        run: cat ./coverage/lcov.info | coveralls
