@@ -19,7 +19,7 @@ Or you can install `redoc-cli` using [npx](https://www.freecodecamp.org/news/npm
 
 ### Install Redoc CLI with yarn
 
-To install the `redoc-cli` package globally with yarn, use the following command: 
+To install the `redoc-cli` package globally with yarn: 
 
 ```sh
 yarn global add redoc-cli
@@ -27,7 +27,7 @@ yarn global add redoc-cli
 
 ### Install Redoc with npm
 
-To install the `redoc-cli` package globally with npm, use the following command: 
+To install the `redoc-cli` package globally with npm: 
 
 ```sh
 npm i -g redoc-cli
@@ -65,7 +65,7 @@ The CLI includes the following commands:
 
 #### Bundle
 
-Bundle with the main color changed to `orange`, using the following command:
+Bundle with the main color changed to `orange`:
 
 ```sh
 redoc-cli bundle openapi.yaml --options.theme.colors.primary.main=orange
