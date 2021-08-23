@@ -10,22 +10,24 @@ Redoc to render your OpenAPI definition.
 Redoc offers multiple options for rendering your OpenAPI definition.
 You should select the option that best fits your needs.
 
-The different options include using the following:
+The following options are supported:
 
 - **[Live demo](/redoc/quickstart/live-demo.md):**
   The live demo offers a fast way to see how your OpenAPI will render with Redoc.
 - **[HTML element](/redoc/quickstart/html.md):**
-  Using an HTML element works well for typical website deployments.
+  Using the HTML element works well for typical website deployments.
 - **[React component](/redoc/quickstart/react.md):**
-  Using a React component is an option for users with a React-based application.
+  Using the React component is an option for users with a React-based application.
 - **[Docker image](/redoc/quickstart/docker.md):**
-  Using a Docker image works in a container-based deployment.
+  Using the Docker image works in a container-based deployment.
+- **[CLI](/redoc/quickstart/cli.md):**
+  Using the CLI is an option for users who prefer to use a command-line interface.
 
 ## Before you start
 
 You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions: 
 - OpenAPI 3.0
-    - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/master/openapi/users.yaml)
+    - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/main/openapi/users.yaml)
     - [Swagger Petstore Sample OpenAPI Definition](https://petstore3.swagger.io/api/v3/openapi.json)
 - OpenAPI 2.0
     - [Thingful OpenAPI Definition](https://raw.githubusercontent.com/thingful/openapi-spec/master/spec/swagger.yaml)

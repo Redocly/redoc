@@ -1,5 +1,5 @@
 ---
-title: React component
+title: Using the Redoc React component
 ---
 
 # Using the Redoc React component

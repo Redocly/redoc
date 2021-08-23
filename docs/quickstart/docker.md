@@ -1,10 +1,10 @@
 ---
-title: Using a Docker image
+title: Using the Redoc Docker image
 ---
 
 # Using the Redoc Docker image
 
-Redoc is available as a pre-build Docker image in [Docker Hub](https://hub.docker.com/r/redocly/redoc/).
+Redoc is available as a pre-built Docker image in [Docker Hub](https://hub.docker.com/r/redocly/redoc/).
 
 If you have [Docker](https://docs.docker.com/get-docker/) installed, pull the image with the following command:
 
@@ -32,6 +32,8 @@ For example:
 docker run -p 8080:80 -e SPEC_URL=https://api.example.com/openapi.json redocly/redoc
 ```
 
-You can also create a Dockerfile with some redefined environment variables. Check out
+## Using a Dockerfile
+
+You can also create a Dockerfile with some predefined environment variables. Check out
 a sample [Dockerfile](https://github.com/Redocly/redoc/blob/master/config/docker/Dockerfile)
 in our code repo.

@@ -1,5 +1,5 @@
 ---
-title: Redoc HTML element
+title: Using the Redoc HTML element
 ---
 
 # Using the Redoc HTML element
@@ -47,7 +47,7 @@ If you want to view your Redoc output locally, you can simulate an HTTP server.
 #### Using Redocly OpenAPI CLI
 
 Redocly OpenAPI CLI is an open source command-line tool that includes a command
-for simulating an HTTP sever to provide a preview of your OpenAPI definition locally.
+for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
 
 If you have [OpenAPI CLI](https://redoc.ly/docs/cli/#installation-and-usage) installed, `cd` into your
 project directory and run the following command:
@@ -58,7 +58,6 @@ openapi preview-docs openapi.yaml
 
 By default, without providing a port, the preview starts on port 8080, and can be accessed at `http://localhost:8080`.
 To exit the preview, use `control+C`.
-
 
 #### Using Python
 
@@ -76,7 +75,7 @@ project directory and run the following command:
 python -m SimpleHTTPServer 8000
 ```
 
-The output after entering the command provides the local where the preview can be accessed.
+The output after entering the command provides the local URL where the preview can be accessed.
 To exit the preview, use `control-C`.
 
 #### Using Node.js
@@ -94,7 +93,7 @@ Then, `cd` into your project directory and run the following command:
 http-server
 ```
 
-The output after entering the command provides the local where the preview can be accessed.
+The output after entering the command provides the local URL where the preview can be accessed.
 To exit the preview, use `control-C`.
 
 ## Step 1 - Install Redoc

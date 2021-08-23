@@ -9,3 +9,5 @@ redoc:
         page: redoc/quickstart/react.md
       - label: Docker image
         page: redoc/quickstart/docker.md
+      - label: Command-line interface
+        page: redoc/quickstart/cli.md
