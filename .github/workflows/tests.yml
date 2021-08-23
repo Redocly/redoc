@@ -1,12 +1,14 @@
-name: Unit Tests
+name: Tests
 
 on: [push]
 
 jobs:
-  build-and-unit:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - run: npm ci
     - run: npm run bundle
     - run: npm test
+    - run: npm run e2e
+    - run: run run e2e-ci
