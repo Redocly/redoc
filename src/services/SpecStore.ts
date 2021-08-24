@@ -1,4 +1,4 @@
-import { OpenAPIExternalDocumentation, OpenAPISpec } from '../types';
+import { OpenAPIExternalDocumentation, OpenAPIPath, OpenAPISpec, Referenced } from '../types';
 
 import { ContentItemModel, MenuBuilder } from './MenuBuilder';
 import { ApiInfoModel } from './models/ApiInfo';
@@ -28,6 +28,7 @@ export class SpecStore {
     this.externalDocs = this.parser.spec.externalDocs;
     this.contentItems = MenuBuilder.buildStructure(this.parser, this.options);
     this.securitySchemes = new SecuritySchemesModel(this.parser);
-    this.webhooks = new WebhookModel(this.parser, options, this.parser.spec['x-webhooks']);
+    const webhookPath: Referenced<OpenAPIPath> = {...this.parser?.spec?.['x-webhooks'], ...this.parser?.spec.webhooks};
+    this.webhooks = new WebhookModel(this.parser, options, webhookPath);
   }
 }

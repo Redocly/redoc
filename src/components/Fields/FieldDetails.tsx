@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import {
-  NullableLabel,
   PatternLabel,
   RecursiveLabel,
   TypeFormat,
@@ -60,7 +59,7 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
       } else {
         const label = l('example') + ':';
         const raw = !!field.in;
-        renderedExamples = <FieldDetail label={label} value={getSerializedValue(field, field.example)} raw={raw}  />;
+        renderedExamples = <FieldDetail label={label} value={getSerializedValue(field, field.example)} raw={raw} />;
       }
     }
 
@@ -77,9 +76,22 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
               &gt;{' '}
             </TypeFormat>
           )}
+          {schema.contentEncoding && (
+            <TypeFormat>
+              {' '}&lt;
+              {schema.contentEncoding}
+              &gt;{' '}
+            </TypeFormat>
+          )}
+          {schema.contentMediaType && (
+            <TypeFormat>
+              {' '}&lt;
+              {schema.contentMediaType}
+              &gt;{' '}
+            </TypeFormat>
+          )}
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
-          {schema.nullable && <NullableLabel> {l('nullable')} </NullableLabel>}
           {schema.pattern && !hideSchemaPattern && (
             <>
               <PatternLabel>
@@ -112,6 +124,7 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
         )}
         {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
+        {field.const && (<FieldDetail label={l('const') + ':'} value={field.const} />) || null}
       </div>
     );
   }

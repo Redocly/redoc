@@ -1,12 +1,12 @@
 import { dirname } from 'path';
 import * as URLtemplate from 'url-template';
 
+import { ExtendedOpenAPIOperation } from '../services';
 import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIEncoding,
   OpenAPIMediaType,
-  OpenAPIOperation,
   OpenAPIParameter,
   OpenAPIParameterStyle,
   OpenAPISchema,
@@ -56,17 +56,19 @@ const operationNames = {
   patch: true,
   delete: true,
   options: true,
+  $ref: true,
 };
 
 export function isOperationName(key: string): boolean {
   return key in operationNames;
 }
 
-export function getOperationSummary(operation: OpenAPIOperation): string {
+export function getOperationSummary(operation: ExtendedOpenAPIOperation): string {
   return (
     operation.summary ||
     operation.operationId ||
     (operation.description && operation.description.substring(0, 50)) ||
+    operation.pathName ||
     '<no summary>'
   );
 }
@@ -81,6 +83,8 @@ const schemaKeywordTypes = {
   maxLength: 'string',
   minLength: 'string',
   pattern: 'string',
+  contentEncoding: 'string',
+  contentMediaType: 'string',
 
   items: 'array',
   maxItems: 'array',
@@ -95,7 +99,7 @@ const schemaKeywordTypes = {
 };
 
 export function detectType(schema: OpenAPISchema): string {
-  if (schema.type !== undefined) {
+  if (schema.type !== undefined && !Array.isArray(schema.type)) {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
@@ -109,25 +113,25 @@ export function detectType(schema: OpenAPISchema): string {
   return 'any';
 }
 
-export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined = schema.type) {
+export function isPrimitiveType(schema: OpenAPISchema, type: string | string[] | undefined = schema.type) {
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
 
-  if (type === 'object') {
-    return schema.properties !== undefined
+  let isPrimitive = true;
+  const isArray = Array.isArray(type);
+
+  if (type === 'object' || (isArray && type?.includes('object'))) {
+    isPrimitive = schema.properties !== undefined
       ? Object.keys(schema.properties).length === 0
       : schema.additionalProperties === undefined;
   }
 
-  if (type === 'array') {
-    if (schema.items === undefined) {
-      return true;
-    }
-    return false;
+  if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
+    isPrimitive = isPrimitiveType(schema.items, schema.items.type);
   }
 
-  return true;
+  return isPrimitive;
 }
 
 export function isJsonLike(contentType: string): boolean {
@@ -366,12 +370,12 @@ export function langFromMime(contentType: string): string {
 }
 
 export function isNamedDefinition(pointer?: string): boolean {
-  return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
+  return /^#\/components\/(schemas|pathItems)\/[^\/]+$/.test(pointer || '');
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
   if (!pointer) return undefined;
-  const match = pointer.match(/^#\/components\/schemas\/([^\/]+)$/);
+  const match = pointer.match(/^#\/components\/(schemas|pathItems)\/([^\/]+)$/);
   return match === null ? undefined : match[1]
 }
 
@@ -442,6 +446,18 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   } else if (schema.minimum !== undefined) {
     numberRange = schema.exclusiveMinimum ? '> ' : '>= ';
     numberRange += schema.minimum;
+  }
+
+  if (typeof schema.exclusiveMinimum === 'number' || typeof schema.exclusiveMaximum === 'number') {
+    let minimum = 0;
+    let maximum = 0;
+    if (schema.minimum) minimum = schema.minimum;
+    if (typeof schema.exclusiveMinimum === 'number') minimum = minimum <= schema.exclusiveMinimum ? minimum : schema.exclusiveMinimum;
+
+    if (schema.maximum) maximum = schema.maximum;
+    if (typeof schema.exclusiveMaximum === 'number') maximum = maximum > schema.exclusiveMaximum ? maximum : schema.exclusiveMaximum;
+
+    numberRange = `[${minimum} .. ${maximum}]`
   }
 
   if (numberRange !== undefined) {
@@ -573,10 +589,10 @@ export function setSecuritySchemePrefix(prefix: string) {
 }
 
 export const shortenHTTPVerb = verb =>
-  ({
-    delete: 'del',
-    options: 'opts',
-  }[verb] || verb);
+({
+  delete: 'del',
+  options: 'opts',
+}[verb] || verb);
 
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
