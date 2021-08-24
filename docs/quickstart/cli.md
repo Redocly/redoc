@@ -4,9 +4,9 @@ title: Using the Redoc CLI
 
 # Using the Redoc CLI
 
-With Redoc's command-line interface you can locally render your
-OpenAPI definition with Redoc and bundle your OpenAPI definition and Redoc into
-a zero-dependency HTML file.
+With Redoc's command-line interface you can bundle your OpenAPI definition and API documentation
+(made with Redoc) into a zero-dependency HTML file and locally render your
+OpenAPI definition with Redoc.
 
 ## Step 1 - Install Redoc CLI
 
@@ -21,7 +21,7 @@ Or you can install `redoc-cli` using [npx](https://www.freecodecamp.org/news/npm
 
 To install the `redoc-cli` package globally with yarn: 
 
-```sh
+```bash
 yarn global add redoc-cli
 ```
 
@@ -29,7 +29,7 @@ yarn global add redoc-cli
 
 To install the `redoc-cli` package globally with npm: 
 
-```sh
+```bash
 npm i -g redoc-cli
 ```
 
@@ -61,13 +61,13 @@ The CLI includes the following commands:
 - **`--help`:** Prints help text for the Redoc CLI commands and options.
 - **`--version`:** Prints the version of the `redoc-cli` package you have installed.
 
-### Redoc CLI Examples
+### Redoc CLI examples
 
 #### Bundle
 
 Bundle with the main color changed to `orange`:
 
-```sh
+```bash
 redoc-cli bundle openapi.yaml --options.theme.colors.primary.main=orange
 ```
 

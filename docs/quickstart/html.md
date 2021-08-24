@@ -120,7 +120,7 @@ in the yarn documentation.
 
 After navigating to your project directory in your terminal, use the following command: 
 
-```sh
+```bash
 yarn add redoc
 ```
 
@@ -128,7 +128,7 @@ yarn add redoc
 
 After navigating to your project directory in your terminal, use the following command: 
 
-```sh
+```bash
 npm i redoc
 ```
 
