@@ -12,7 +12,7 @@ You should select the option that best fits your needs.
 
 The following options are supported:
 
-- **[Live demo](./live-demo.md):**
+- **[Live demo](https://redocly.github.io/redoc/):**
   The live demo offers a fast way to see how your OpenAPI will render with Redoc.
 - **[HTML element](./html.md):**
   Using the HTML element works well for typical website deployments.
