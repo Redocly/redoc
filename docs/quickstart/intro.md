@@ -12,15 +12,15 @@ You should select the option that best fits your needs.
 
 The following options are supported:
 
-- **[Live demo](/redoc/quickstart/live-demo.md):**
+- **[Live demo](https://redocly.github.io/redoc/):**
   The live demo offers a fast way to see how your OpenAPI will render with Redoc.
-- **[HTML element](/redoc/quickstart/html.md):**
+- **[HTML element](./html.md):**
   Using the HTML element works well for typical website deployments.
-- **[React component](/redoc/quickstart/react.md):**
+- **[React component](./react.md):**
   Using the React component is an option for users with a React-based application.
-- **[Docker image](/redoc/quickstart/docker.md):**
+- **[Docker image](./docker.md):**
   Using the Docker image works in a container-based deployment.
-- **[CLI](/redoc/quickstart/cli.md):**
+- **[CLI](./cli.md):**
   Using the CLI is an option for users who prefer to use a command-line interface.
 
 ## Before you start
