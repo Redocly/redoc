@@ -6,7 +6,6 @@ import { MediaTypeModel } from './MediaType';
 import { mergeSimilarMediaTypes } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-import { ReverseEventsRWOProps } from './Operation';
 
 /**
  * MediaContent model ready to be sued by React components
@@ -26,7 +25,6 @@ export class MediaContentModel {
     info: Record<string, OpenAPIMediaType>,
     public isRequestType: boolean,
     options: RedocNormalizedOptions,
-    reverseEventsReadWriteOnly?: ReverseEventsRWOProps,
   ) {
     makeObservable(this);
 
@@ -37,7 +35,7 @@ export class MediaContentModel {
       const mime = info[name];
       // reset deref cache just in case something is left there
       parser.resetVisited();
-      return new MediaTypeModel(parser, name, isRequestType, mime, options, reverseEventsReadWriteOnly);
+      return new MediaTypeModel(parser, name, isRequestType, mime, options);
     });
   }
 

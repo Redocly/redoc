@@ -33,11 +33,6 @@ export interface XPayloadSample {
   source: string;
 }
 
-export interface ReverseEventsRWOProps {
-  reverseEventsReadOnlyProps?: boolean;
-  reverseEventsWriteOnlyProps?: boolean;
-}
-
 export function isPayloadSample(
   sample: XPayloadSample | OpenAPIXCodeSample,
 ): sample is XPayloadSample {
@@ -81,7 +76,6 @@ export class OperationModel implements IMenuItem {
   extensions: Record<string, any>;
   isCallback: boolean;
   isWebhook: boolean;
-  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
 
   constructor(
     private parser: OpenAPIParser,
@@ -105,11 +99,6 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
     this.isWebhook = !!operationSpec.isWebhook;
-
-    this.reverseEventsReadWriteOnly = (this.isCallback || this.isWebhook) ? {
-      reverseEventsReadOnlyProps: this.options.reverseEventsReadOnlyProps,
-      reverseEventsWriteOnlyProps: this.options.reverseEventsWriteOnlyProps,
-    } : {};
 
     this.name = getOperationSummary(operationSpec);
 
@@ -183,11 +172,7 @@ export class OperationModel implements IMenuItem {
   get requestBody() {
     return (
       this.operationSpec.requestBody &&
-      new RequestBodyModel(this.parser,
-        this.operationSpec.requestBody,
-        this.options,
-        this.reverseEventsReadWriteOnly,
-      )
+      new RequestBodyModel(this.parser, this.operationSpec.requestBody, this.options)
     );
   }
 
@@ -227,13 +212,7 @@ export class OperationModel implements IMenuItem {
       this.operationSpec.pathParameters,
       this.operationSpec.parameters,
       // TODO: fix pointer
-    ).map((paramOrRef) => new FieldModel(
-      this.parser,
-      paramOrRef,
-      this.pointer,
-      this.options,
-      this.reverseEventsReadWriteOnly,
-      ));
+    ).map((paramOrRef) => new FieldModel(this.parser, paramOrRef, this.pointer, this.options));
 
     if (this.options.sortPropsAlphabetically) {
       return sortByField(_parameters, 'name');
@@ -267,7 +246,6 @@ export class OperationModel implements IMenuItem {
           hasSuccessResponses,
           this.operationSpec.responses[code],
           this.options,
-          this.reverseEventsReadWriteOnly,
         );
       });
   }

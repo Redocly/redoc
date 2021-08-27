@@ -42,8 +42,6 @@ export interface RedocRawOptions {
   maxDisplayedEnumValues?: number;
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
-  reverseEventsReadOnlyProps?: boolean;
-  reverseEventsWriteOnlyProps?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -51,7 +49,7 @@ export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean
     return defaultValue || false;
   }
   if (typeof val === 'string') {
-    return val !== 'false';
+    return val === 'false' ? false : true;
   }
   return val;
 }
@@ -199,9 +197,6 @@ export class RedocNormalizedOptions {
   ignoreNamedSchemas: Set<string>;
   hideSchemaPattern: boolean;
 
-  reverseEventsReadOnlyProps: boolean;
-  reverseEventsWriteOnlyProps: boolean;
-
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
     const hook = raw.theme && raw.theme.extensionsHook;
@@ -262,7 +257,5 @@ export class RedocNormalizedOptions {
       : raw.ignoreNamedSchemas?.split(',').map((s) => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
     this.hideSchemaPattern = argValueToBoolean(raw.hideSchemaPattern);
-    this.reverseEventsReadOnlyProps = argValueToBoolean(raw.reverseEventsReadOnlyProps);
-    this.reverseEventsWriteOnlyProps = argValueToBoolean(raw.reverseEventsWriteOnlyProps);
   }
 }

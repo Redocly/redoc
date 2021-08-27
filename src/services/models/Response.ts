@@ -7,7 +7,6 @@ import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
-import { ReverseEventsRWOProps } from './Operation';
 
 export class ResponseModel {
   @observable
@@ -26,7 +25,6 @@ export class ResponseModel {
     defaultAsError: boolean,
     infoOrRef: Referenced<OpenAPIResponse>,
     options: RedocNormalizedOptions,
-    reverseEventsReadWriteOnly?: ReverseEventsRWOProps,
   ) {
     makeObservable(this);
 
@@ -36,7 +34,7 @@ export class ResponseModel {
     parser.exitRef(infoOrRef);
     this.code = code;
     if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, false, options, reverseEventsReadWriteOnly);
+      this.content = new MediaContentModel(parser, info.content, false, options);
     }
 
     if (info['x-summary'] !== undefined) {
@@ -53,7 +51,7 @@ export class ResponseModel {
     if (headers !== undefined) {
       this.headers = Object.keys(headers).map(name => {
         const header = headers[name];
-        return new FieldModel(parser, { ...header, name }, '', options, reverseEventsReadWriteOnly);
+        return new FieldModel(parser, { ...header, name }, '', options);
       });
     }
   }

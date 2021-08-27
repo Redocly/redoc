@@ -11,11 +11,6 @@ const userUrl = window.location.search.match(/url=(.*)$/);
 const specUrl =
   (userUrl && userUrl[1]) || (swagger ? 'swagger.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
-const options: RedocRawOptions = {
-  nativeScrollbars: false,
-  maxDisplayedEnumValues: 3,
-  reverseEventsReadOnlyProps: true,
-  reverseEventsWriteOnlyProps: true,
-};
+const options: RedocRawOptions = { nativeScrollbars: false, maxDisplayedEnumValues: 3 };
 
 render(<RedocStandalone specUrl={specUrl} options={options} />, document.getElementById('example'));

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ResponseModel, ReverseEventsRWOProps } from '../../services/models';
+import { ResponseModel } from '../../services/models';
 
 import { UnderlinedHeader } from '../../common-elements';
 import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
@@ -10,22 +10,16 @@ import { Schema } from '../Schema';
 import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
 
-export interface ResponseDetailsProps {
-  response: ResponseModel;
-  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
-}
-
-export class ResponseDetails extends React.PureComponent<ResponseDetailsProps> {
+export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
   render() {
-    const { reverseEventsReadWriteOnly = {}, response: { description, headers, content } } = this.props;
-    const skipWriteOnly = !reverseEventsReadWriteOnly.reverseEventsWriteOnlyProps;
+    const { description, headers, content } = this.props.response;
     return (
       <>
         {description && <Markdown source={description} />}
         <ResponseHeaders headers={headers} />
         <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>
           {({ schema }) => {
-            return <Schema skipWriteOnly={skipWriteOnly} key="schema" schema={schema} />;
+            return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
           }}
         </MediaTypesSwitch>
       </>

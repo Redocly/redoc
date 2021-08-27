@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { OperationModel, ReverseEventsRWOProps } from '../../services/models';
+import { OperationModel } from '../../services/models';
 import styled from '../../styled-components';
 import { Endpoint } from '../Endpoint/Endpoint';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
@@ -14,13 +14,12 @@ import { CallbackDetailsWrap } from './styled.elements';
 
 export interface CallbackDetailsProps {
   operation: OperationModel;
-  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
 }
 
 @observer
 export class CallbackDetails extends React.Component<CallbackDetailsProps> {
   render() {
-    const { operation, reverseEventsReadWriteOnly } = this.props;
+    const { operation } = this.props;
     const { description, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
 
@@ -35,16 +34,8 @@ export class CallbackDetails extends React.Component<CallbackDetailsProps> {
         <Endpoint operation={this.props.operation} inverted={true} compact={true} />
         <Extensions extensions={operation.extensions} />
         <SecurityRequirements securities={operation.security} />
-        <Parameters
-          parameters={operation.parameters}
-          body={operation.requestBody}
-          reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
-        />
-        <ResponsesList
-          responses={operation.responses}
-          isCallback={operation.isCallback}
-          reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
-        />
+        <Parameters parameters={operation.parameters} body={operation.requestBody} />
+        <ResponsesList responses={operation.responses} isCallback={operation.isCallback} />
       </CallbackDetailsWrap>
     );
   }

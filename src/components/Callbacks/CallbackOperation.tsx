@@ -1,24 +1,18 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { OperationModel, ReverseEventsRWOProps } from '../../services/models';
+import { OperationModel } from '../../services/models';
 import { StyledCallbackTitle } from './styled.elements';
 import { CallbackDetails } from './CallbackDetails';
 
-export interface CallbackOperationProps {
-  callbackOperation: OperationModel;
-  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
-}
-
 @observer
-export class CallbackOperation extends React.Component<CallbackOperationProps> {
+export class CallbackOperation extends React.Component<{ callbackOperation: OperationModel }> {
   toggle = () => {
     this.props.callbackOperation.toggle();
   };
 
   render() {
     const { name, expanded, httpVerb, deprecated } = this.props.callbackOperation;
-    const { reverseEventsReadWriteOnly } = this.props;
 
     return (
       <>
@@ -29,12 +23,7 @@ export class CallbackOperation extends React.Component<CallbackOperationProps> {
           httpVerb={httpVerb}
           deprecated={deprecated}
         />
-        {expanded &&
-          <CallbackDetails
-            operation={this.props.callbackOperation}
-            reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
-          />
-        }
+        {expanded && <CallbackDetails operation={this.props.callbackOperation} />}
       </>
     );
   }

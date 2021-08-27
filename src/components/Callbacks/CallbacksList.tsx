@@ -1,17 +1,16 @@
 import * as React from 'react';
 
-import { CallbackModel, ReverseEventsRWOProps } from '../../services/models';
+import { CallbackModel } from '../../services/models';
 import styled from '../../styled-components';
 import { CallbackOperation } from './CallbackOperation';
 
 export interface CallbacksListProps {
   callbacks: CallbackModel[];
-  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
 }
 
 export class CallbacksList extends React.PureComponent<CallbacksListProps> {
   render() {
-    const { callbacks, reverseEventsReadWriteOnly } = this.props;
+    const { callbacks } = this.props;
 
     if (!callbacks || callbacks.length === 0) {
       return null;
@@ -23,11 +22,7 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
         {callbacks.map(callback => {
           return callback.operations.map((operation, index) => {
             return (
-              <CallbackOperation
-                key={`${callback.name}_${index}`}
-                callbackOperation={operation}
-                reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
-              />
+              <CallbackOperation key={`${callback.name}_${index}`} callbackOperation={operation} />
             );
           });
         })}
