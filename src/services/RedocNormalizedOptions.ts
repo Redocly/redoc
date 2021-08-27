@@ -42,7 +42,6 @@ export interface RedocRawOptions {
   maxDisplayedEnumValues?: number;
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
-  reverseEventsReadWriteProps?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -197,7 +196,6 @@ export class RedocNormalizedOptions {
 
   ignoreNamedSchemas: Set<string>;
   hideSchemaPattern: boolean;
-  reverseEventsReadWriteProps: boolean;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -259,6 +257,5 @@ export class RedocNormalizedOptions {
       : raw.ignoreNamedSchemas?.split(',').map((s) => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
     this.hideSchemaPattern = argValueToBoolean(raw.hideSchemaPattern);
-    this.reverseEventsReadWriteProps = argValueToBoolean(raw.reverseEventsReadWriteProps);
   }
 }

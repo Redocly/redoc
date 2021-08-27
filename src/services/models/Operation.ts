@@ -100,8 +100,7 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
     this.isWebhook = operationSpec.isWebhook;
-    this.reverseEventsReadWriteProps = options.reverseEventsReadWriteProps &&
-      (this.isCallback || this.isWebhook);
+    this.reverseEventsReadWriteProps = this.isCallback || this.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
 

@@ -248,7 +248,6 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `onlyRequiredInSamples` - shows only required fields in request samples.
 * `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one.
 * `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
-* `reverseEventsReadWriteProps` - reverse readOnly/writeOnly schema key for webhooks and callbacks.
 * `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scrollYOffset` can be specified in various ways:
   * **number**: A fixed number of pixels to be used as offset.
