@@ -13,6 +13,7 @@ import { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
 import { ExampleModel } from './Example';
 import { mapValues } from '../../utils/helpers';
+import { ReverseEventsRWOProps } from './Operation';
 
 const DEFAULT_SERIALIZATION: Record<
   OpenAPIParameterLocation,
@@ -64,6 +65,7 @@ export class FieldModel {
     infoOrRef: Referenced<OpenAPIParameter> & { name?: string; kind?: string },
     pointer: string,
     options: RedocNormalizedOptions,
+    reverseEventsReadWriteOnly?: ReverseEventsRWOProps,
   ) {
     makeObservable(this);
 
@@ -80,7 +82,7 @@ export class FieldModel {
       fieldSchema = info.content[serializationMime] && info.content[serializationMime].schema;
     }
 
-    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options);
+    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options, false, reverseEventsReadWriteOnly);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;

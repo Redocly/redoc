@@ -7,6 +7,7 @@ import { SchemaModel } from './Schema';
 import { isJsonLike, mapValues } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { ExampleModel } from './Example';
+import { ReverseEventsRWOProps } from './Operation';
 
 export class MediaTypeModel {
   examples?: { [name: string]: ExampleModel };
@@ -24,10 +25,11 @@ export class MediaTypeModel {
     isRequestType: boolean,
     info: OpenAPIMediaType,
     options: RedocNormalizedOptions,
+    reverseEventsReadWriteOnly: ReverseEventsRWOProps = {},
   ) {
     this.name = name;
     this.isRequestType = isRequestType;
-    this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
+    this.schema = info.schema && new SchemaModel(parser, info.schema, '', options, false, reverseEventsReadWriteOnly);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     if (info.examples !== undefined) {
       this.examples = mapValues(
@@ -44,15 +46,16 @@ export class MediaTypeModel {
         ),
       };
     } else if (isJsonLike(name)) {
-      this.generateExample(parser, info);
+      this.generateExample(parser, info, reverseEventsReadWriteOnly);
     }
   }
 
-  generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
+  generateExample(parser: OpenAPIParser, info: OpenAPIMediaType, reverseEventsReadWriteOnly: ReverseEventsRWOProps) {
+    const { reverseEventsReadOnlyProps, reverseEventsWriteOnlyProps } = reverseEventsReadWriteOnly;
     const samplerOptions = {
-      skipReadOnly: this.isRequestType,
+      skipReadOnly: reverseEventsReadOnlyProps ? !this.isRequestType : this.isRequestType,
+      skipWriteOnly: reverseEventsWriteOnlyProps ? this.isRequestType : !this.isRequestType,
       skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
-      skipWriteOnly: !this.isRequestType,
       maxSampleDepth: 10,
     };
     if (this.schema && this.schema.oneOf) {

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 import { ShareLink } from '../../common-elements/linkify';
-import { OperationModel } from '../../services/models';
+import { OperationModel, ReverseEventsRWOProps } from '../../services/models';
 import styled from '../../styled-components';
 import { CallbacksList } from '../Callbacks';
 import { CallbackSamples } from '../CallbackSamples/CallbackSamples';
@@ -30,14 +30,14 @@ const Description = styled.div`
 
 export interface OperationProps {
   operation: OperationModel;
+  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
 }
 
 @observer
 export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
-
-    const { name: summary, description, deprecated, externalDocs, isWebhook } = operation;
+    const { name: summary, description, deprecated, externalDocs, isWebhook, reverseEventsReadWriteOnly = {} } = operation;
     const hasDescription = !!(description || externalDocs);
 
     return (
@@ -61,9 +61,19 @@ export class Operation extends React.Component<OperationProps> {
               )}
               <Extensions extensions={operation.extensions} />
               <SecurityRequirements securities={operation.security} />
-              <Parameters parameters={operation.parameters} body={operation.requestBody} />
-              <ResponsesList responses={operation.responses} />
-              <CallbacksList callbacks={operation.callbacks} />
+              <Parameters
+                parameters={operation.parameters}
+                body={operation.requestBody}
+                reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
+              />
+              <ResponsesList
+                responses={operation.responses}
+                reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
+              />
+              <CallbacksList
+                callbacks={operation.callbacks}
+                reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
+              />
             </MiddlePanel>
             <DarkRightPanel>
               {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}

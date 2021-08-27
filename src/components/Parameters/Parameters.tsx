@@ -4,7 +4,7 @@ import { ParametersGroup } from './ParametersGroup';
 
 import { UnderlinedHeader } from '../../common-elements';
 
-import { MediaContentModel } from '../../services';
+import { MediaContentModel, ReverseEventsRWOProps } from '../../services';
 import { FieldModel, RequestBodyModel } from '../../services/models';
 import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
@@ -21,6 +21,7 @@ function safePush(obj, prop, item) {
 export interface ParametersProps {
   parameters?: FieldModel[];
   body?: RequestBodyModel;
+  reverseEventsReadWriteOnly?: ReverseEventsRWOProps;
 }
 
 const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
@@ -35,7 +36,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
   }
 
   render() {
-    const { body, parameters = [] } = this.props;
+    const { body, parameters = [], reverseEventsReadWriteOnly } = this.props;
     if (body === undefined && parameters === undefined) {
       return null;
     }
@@ -53,7 +54,13 @@ export class Parameters extends React.PureComponent<ParametersProps> {
         {paramsPlaces.map(place => (
           <ParametersGroup key={place} place={place} parameters={paramsMap[place]} />
         ))}
-        {bodyContent && <BodyContent content={bodyContent} description={bodyDescription} />}
+        {bodyContent &&
+          <BodyContent
+            content={bodyContent}
+            description={bodyDescription}
+            reverseEventsReadWriteOnly={reverseEventsReadWriteOnly}
+          />
+        }
       </>
     );
   }
@@ -67,15 +74,17 @@ function DropdownWithinHeader(props) {
   );
 }
 
-export function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+export function BodyContent(props: { content: MediaContentModel; description?: string, reverseEventsReadWriteOnly?: ReverseEventsRWOProps }): JSX.Element {
   const { content, description } = props;
+  const { reverseEventsReadOnlyProps, reverseEventsWriteOnlyProps } = props.reverseEventsReadWriteOnly || {};
+  const skipReadOnly = !reverseEventsReadOnlyProps;
   return (
     <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>
       {({ schema }) => {
         return (
           <>
             {description !== undefined && <Markdown source={description} />}
-            <Schema skipReadOnly={true} key="schema" schema={schema} />
+            <Schema skipReadOnly={skipReadOnly} skipWriteOnly={reverseEventsWriteOnlyProps} key="schema" schema={schema} />
           </>
         );
       }}

@@ -6,7 +6,7 @@ import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 
-import { MergedOpenAPISchema } from '../';
+import { MergedOpenAPISchema, ReverseEventsRWOProps } from '../';
 import {
   detectType,
   extractExtensions,
@@ -74,6 +74,7 @@ export class SchemaModel {
     pointer: string,
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
+    reverseEventsReadWriteOnly: ReverseEventsRWOProps = {},
   ) {
     makeObservable(this);
 
@@ -81,7 +82,7 @@ export class SchemaModel {
     this.rawSchema = parser.deref(schemaOrRef, false, true);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
-    this.init(parser, isChild);
+    this.init(parser, isChild, reverseEventsReadWriteOnly);
 
     parser.exitRef(schemaOrRef);
     parser.exitParents(this.schema);
@@ -104,7 +105,7 @@ export class SchemaModel {
     return this.type === type || (Array.isArray(this.type) && this.type.includes(type));
   }
 
-  init(parser: OpenAPIParser, isChild: boolean) {
+  init(parser: OpenAPIParser, isChild: boolean, reverseEventsReadWriteOnly: ReverseEventsRWOProps) {
     const schema = this.schema;
     this.isCircular = schema['x-circular-ref'];
 
@@ -146,7 +147,7 @@ export class SchemaModel {
     }
 
     if (!isChild && getDiscriminator(schema) !== undefined) {
-      this.initDiscriminator(schema, parser);
+      this.initDiscriminator(schema, parser, reverseEventsReadWriteOnly);
       return;
     } else if (
       isChild &&
@@ -158,7 +159,7 @@ export class SchemaModel {
     }
 
     if (schema.oneOf !== undefined) {
-      this.initOneOf(schema.oneOf, parser);
+      this.initOneOf(schema.oneOf, parser, reverseEventsReadWriteOnly);
       this.oneOfType = 'One of';
       if (schema.anyOf !== undefined) {
         console.warn(
@@ -169,15 +170,17 @@ export class SchemaModel {
     }
 
     if (schema.anyOf !== undefined) {
-      this.initOneOf(schema.anyOf, parser);
+      this.initOneOf(schema.anyOf, parser, reverseEventsReadWriteOnly);
       this.oneOfType = 'Any of';
       return;
     }
 
     if (this.hasType('object')) {
-      this.fields = buildFields(parser, schema, this.pointer, this.options);
+      this.fields = buildFields(parser, schema, this.pointer, this.options, reverseEventsReadWriteOnly);
     } else if (this.hasType('array') && schema.items) {
-      this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
+      this.items = new SchemaModel(
+        parser, schema.items, this.pointer + '/items', this.options, false, reverseEventsReadWriteOnly
+      );
       this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
       this.typePrefix = this.items.typePrefix + l('arrayOf');
@@ -201,7 +204,7 @@ export class SchemaModel {
     }
   }
 
-  private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
+  private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser, reverseEventsReadWriteOnly: ReverseEventsRWOProps) {
     this.oneOf = oneOf!.map((variant, idx) => {
       const derefVariant = parser.deref(variant, false, true);
 
@@ -224,6 +227,8 @@ export class SchemaModel {
         } as OpenAPISchema,
         this.pointer + '/oneOf/' + idx,
         this.options,
+        false,
+        reverseEventsReadWriteOnly,
       );
 
       parser.exitRef(variant);
@@ -257,6 +262,7 @@ export class SchemaModel {
       parentRefs?: string[];
     },
     parser: OpenAPIParser,
+    reverseEventsReadWriteOnly,
   ) {
     const discriminator = getDiscriminator(schema)!;
     this.discriminatorProp = discriminator.propertyName;
@@ -344,7 +350,7 @@ export class SchemaModel {
     }
 
     this.oneOf = refs.map(({ $ref, name }) => {
-      const innerSchema = new SchemaModel(parser, parser.byRef($ref)!, $ref, this.options, true);
+      const innerSchema = new SchemaModel(parser, parser.byRef($ref)!, $ref, this.options, true, reverseEventsReadWriteOnly);
       innerSchema.title = name;
       return innerSchema;
     });
@@ -356,6 +362,7 @@ function buildFields(
   schema: OpenAPISchema,
   $ref: string,
   options: RedocNormalizedOptions,
+  reverseEventsReadWriteOnly: ReverseEventsRWOProps,
 ): FieldModel[] {
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
@@ -385,6 +392,7 @@ function buildFields(
       },
       $ref + '/properties/' + fieldName,
       options,
+      reverseEventsReadWriteOnly,
     );
   });
 
@@ -411,6 +419,7 @@ function buildFields(
         },
         $ref + '/additionalProperties',
         options,
+        reverseEventsReadWriteOnly,
       ),
     );
   }
