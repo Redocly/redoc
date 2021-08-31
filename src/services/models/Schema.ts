@@ -61,6 +61,8 @@ export class SchemaModel {
   schema: MergedOpenAPISchema;
   extensions?: Record<string, any>;
   const: any;
+  contentEncoding?: string;
+  contentMediaType?: string;
 
   /**
    * @param isChild if schema discriminator Child
@@ -98,6 +100,10 @@ export class SchemaModel {
     this.activeOneOf = idx;
   }
 
+  hasType(type: string) {
+    return this.type === type || (Array.isArray(this.type) && this.type.includes(type));
+  }
+
   init(parser: OpenAPIParser, isChild: boolean) {
     const schema = this.schema;
     this.isCircular = schema['x-circular-ref'];
@@ -120,10 +126,14 @@ export class SchemaModel {
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
     this.const = schema.const || '';
+    this.contentEncoding = schema.contentEncoding;
+    this.contentMediaType = schema.contentMediaType;
 
-    if (!!schema.nullable) {
-      if (Array.isArray(this.type) && !this.type.includes('null')) {
+    if (!!schema.nullable || schema['x-nullable']) {
+      if (Array.isArray(this.type) && !this.type.some((value) => value === null || value === 'null')) {
         this.type = [...this.type, 'null'];
+      } else if (!Array.isArray(this.type) && (this.type !== null || this.type !== 'null')) {
+        this.type = [this.type, 'null'];
       }
     }
 
@@ -164,9 +174,9 @@ export class SchemaModel {
       return;
     }
 
-    if (this.type === 'object') {
+    if (this.hasType('object')) {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
-    } else if ((this.type === 'array' || Array.isArray(this.type)) && schema.items) {
+    } else if (this.hasType('array') && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
       this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;

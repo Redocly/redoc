@@ -1,0 +1,13 @@
+redoc:
+  - group: Quickstart
+    expanded: false
+    page: redoc/quickstart/intro.md
+    pages:
+      - label: HTML element
+        page: redoc/quickstart/html.md
+      - label: React component
+        page: redoc/quickstart/react.md
+      - label: Docker image
+        page: redoc/quickstart/docker.md
+      - label: Command-line interface
+        page: redoc/quickstart/cli.md

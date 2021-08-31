@@ -1193,7 +1193,7 @@ x-webhooks:
       summary: New pet
       description: Information about a new pet in the systems
       operationId: newPet
-      tags: 
+      tags:
         - pet
       requestBody:
         content:

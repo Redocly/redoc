@@ -53,8 +53,8 @@ export class MediaTypeModel {
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
     const samplerOptions = {
       skipReadOnly: this.isRequestType,
-      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
       skipWriteOnly: !this.isRequestType,
+      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
       maxSampleDepth: this.generatedPayloadSamplesMaxDepth,
     };
     if (this.schema && this.schema.oneOf) {

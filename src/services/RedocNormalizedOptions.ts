@@ -45,12 +45,12 @@ export interface RedocRawOptions {
   generatedPayloadSamplesMaxDepth?: number;
 }
 
-function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
+export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
   if (val === undefined) {
     return defaultValue || false;
   }
   if (typeof val === 'string') {
-    return val === 'false' ? false : true;
+    return val !== 'false';
   }
   return val;
 }

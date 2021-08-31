@@ -2187,6 +2187,12 @@ Object {
           "id": Object {
             "$ref": "#/components/schemas/Id",
           },
+          "image": Object {
+            "contentEncoding": "base64",
+            "contentMediaType": "image/png",
+            "description": "User image",
+            "type": "string",
+          },
           "lastName": Object {
             "description": "User last name",
             "example": "Smith",
