@@ -49,7 +49,7 @@ export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean
     return defaultValue || false;
   }
   if (typeof val === 'string') {
-    return val === 'false' ? false : true;
+    return val !== 'false';
   }
   return val;
 }
