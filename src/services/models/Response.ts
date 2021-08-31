@@ -14,7 +14,7 @@ type ResponseProps = {
   defaultAsError: boolean,
   infoOrRef: Referenced<OpenAPIResponse>,
   options: RedocNormalizedOptions,
-  reverseEventsReadWriteProps: boolean,
+  isEvent: boolean,
 }
 
 export class ResponseModel {
@@ -29,8 +29,8 @@ export class ResponseModel {
   headers: FieldModel[] = [];
 
   constructor(props: ResponseProps) {
-    const { parser, code, defaultAsError, infoOrRef, options, reverseEventsReadWriteProps } = props;
-    const isRequest = reverseEventsReadWriteProps ? true : false;
+    const { parser, code, defaultAsError, infoOrRef, options, isEvent } = props;
+    const isRequest = isEvent ? true : false;
     makeObservable(this);
 
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];

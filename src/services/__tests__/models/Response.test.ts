@@ -14,7 +14,7 @@ describe('Models', () => {
         defaultAsError: false,
         infoOrRef: {},
         options: opts,
-        reverseEventsReadWriteProps: false,
+        isEvent: false,
         code: 'default',
       };
     });

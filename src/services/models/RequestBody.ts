@@ -8,7 +8,7 @@ type RequestBodyProps = {
   parser: OpenAPIParser;
   infoOrRef: Referenced<OpenAPIRequestBody>;
   options: RedocNormalizedOptions;
-  reverseEventsReadWriteProps: boolean;
+  isEvent: boolean;
 }
 
 export class RequestBodyModel {
@@ -17,8 +17,8 @@ export class RequestBodyModel {
   content?: MediaContentModel;
 
   constructor(props: RequestBodyProps) {
-    const { parser, infoOrRef, options, reverseEventsReadWriteProps } = props;
-    const isRequest = reverseEventsReadWriteProps ? false : true;
+    const { parser, infoOrRef, options, isEvent } = props;
+    const isRequest = isEvent ? false : true;
     const info = parser.deref(infoOrRef);
     this.description = info.description || '';
     this.required = !!info.required;

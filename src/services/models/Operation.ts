@@ -76,7 +76,7 @@ export class OperationModel implements IMenuItem {
   extensions: Record<string, any>;
   isCallback: boolean;
   isWebhook: boolean;
-  reverseEventsReadWriteProps: boolean;
+  isEvent: boolean;
 
   constructor(
     private parser: OpenAPIParser,
@@ -100,7 +100,7 @@ export class OperationModel implements IMenuItem {
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
     this.isWebhook = operationSpec.isWebhook;
-    this.reverseEventsReadWriteProps = this.isCallback || this.isWebhook;
+    this.isEvent = this.isCallback || this.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
 
@@ -177,7 +177,7 @@ export class OperationModel implements IMenuItem {
         parser: this.parser,
         infoOrRef: this.operationSpec.requestBody,
         options: this.options,
-        reverseEventsReadWriteProps: this.reverseEventsReadWriteProps,
+        isEvent: this.isEvent,
       })
     );
   }
@@ -252,7 +252,7 @@ export class OperationModel implements IMenuItem {
           defaultAsError: hasSuccessResponses,
           infoOrRef: this.operationSpec.responses[code],
           options: this.options,
-          reverseEventsReadWriteProps: this.reverseEventsReadWriteProps,
+          isEvent: this.isEvent,
         });
       });
   }
