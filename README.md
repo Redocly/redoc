@@ -27,7 +27,7 @@
 - Responsive three-panel design with menu/scrolling synchronization
 - Deep linking support
 - Ability to integrate your API introduction into the side menu
-- High-level grouping in side-menu via [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) vendor extension
+- High-level grouping in side-menu via [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - Branding/customizations using the [`theme` option](https://redoc.ly/docs/api-reference-docs/configuration/theming/)
 - OpenAPI v3.0 support
 - Basic OpenAPI v3.1 support
@@ -83,8 +83,8 @@ For more information on Redoc's commmand-line interface, refer to
 You can inject the Security Definitions widget into any place in your definition `description`.
 For more information, refer to [Security definitions injection](docs/security-definitions-injection.md).
 
-### Swagger vendor extensions
-Redoc uses the following [vendor extensions](https://swagger.io/specification/#specificationExtensions):
+### OpenAPI specification extensions
+Redoc uses the following [specification extensions](https://swagger.io/specification/#specificationExtensions):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
