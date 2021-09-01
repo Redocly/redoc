@@ -27,7 +27,7 @@
 - Responsive three-panel design with menu/scrolling synchronization
 - Deep linking support
 - Ability to integrate your API introduction into the side menu
-- High-level grouping in side-menu via [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
+- High-level grouping in side-menu with [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - Branding/customizations using the [`theme` option](https://redoc.ly/docs/api-reference-docs/configuration/theming/)
 - OpenAPI v3.0 support
 - Basic OpenAPI v3.1 support
