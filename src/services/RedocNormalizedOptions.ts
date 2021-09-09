@@ -166,7 +166,7 @@ export class RedocNormalizedOptions {
     }
 
     // Default value
-    return 'swagger.json';
+    return 'openapi.json';
   }
 
   private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
