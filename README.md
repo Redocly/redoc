@@ -100,6 +100,9 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ### TL;DR final code example
 
+To render your OpenAPI definition using Redoc, use the following HTML code sample and
+replace the `spec-url` attribute with the url or local file address to your definition.
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -133,6 +136,7 @@ to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
 
 See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on 
+IE support for Redoc.
 
 ## ReDoc CLI
 For more information on Redoc's commmand-line interface, refer to
