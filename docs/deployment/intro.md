@@ -4,9 +4,6 @@ title: Redoc deployment guide
 
 # Redoc deployment guide
 
-This guide includes step-by-step instructions for how to get started using
-Redoc to render your OpenAPI definition.
-
 Redoc offers multiple options for rendering your OpenAPI definition.
 You should select the option that best fits your needs.
 

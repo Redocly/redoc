@@ -2,7 +2,7 @@
 title: Redoc quickstart guide
 ---
 
-# TL;DR final code example
+# Redoc quickstart guide
 
 To render your OpenAPI definition using Redoc, use the following HTML code sample and
 replace the `spec-url` attribute with the url or local file address to your definition.
@@ -49,4 +49,4 @@ more information.
 :::
 
 For a more detailed explanation  with step-by-step instructions and additional options for using Redoc to render
-your OpenAPI definition, refer to the [Redoc deployment guide](/deployment/intro)
+your OpenAPI definition, refer to the [Redoc deployment guide](/deployment/intro).
