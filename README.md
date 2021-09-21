@@ -22,7 +22,7 @@ examples.
 
 ## Live demo
 
-If you want to see how ReDoc will render your OpenAPI definition,
+If you want to see how Redoc will render your OpenAPI definition,
 you can try it out online at https://redocly.github.io/redoc/.
 
 A version of the Swagger Petstore API is displayed by default.
@@ -138,7 +138,7 @@ to render your OpenAPI definition, refer to the
 See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on 
 IE support for Redoc.
 
-## ReDoc CLI
+## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
 [**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
 
