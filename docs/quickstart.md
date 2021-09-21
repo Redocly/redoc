@@ -48,5 +48,4 @@ other security reasons. Refer to [Running Redoc locally](/deployment/intro/#runn
 more information.
 :::
 
-For a more detailed explanation with step-by-step instructions and additional options for using Redoc to render
-your OpenAPI definition, refer to the [Redoc deployment guide](/deployment/intro).
+For a more detailed explanation with step-by-step instructions and additional options for using Redoc, refer to the [Redoc deployment guide](/deployment/intro).
