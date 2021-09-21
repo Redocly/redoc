@@ -18,12 +18,12 @@
 [<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
 
 ## Features
-- [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
-- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
-- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
+- [Multiple deployment options](https://redoc.ly/docs/redoc/deployment/intro/)
+- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/deployment/cli/#redoc-cli-commands)
+- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/deployment/react/)
   
   [See an example](https://github.com/APIs-guru/create-react-app-redoc)
-- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
+- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/deployment/cli/)
 - Responsive three-panel design with menu/scrolling synchronization
 - Deep linking support
 - Ability to integrate your API introduction into the side menu
@@ -75,7 +75,7 @@ to render your OpenAPI definition, refer to the
 
 ## ReDoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[Using the Redoc CLI](https://redoc.ly/docs/redoc/quickstart/cli/).
+[Using the Redoc CLI](https://redoc.ly/docs/redoc/quickstart).
 
 ## Configuration
 
