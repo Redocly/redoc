@@ -108,6 +108,7 @@ You can use all of the following options with the standalone version of the <red
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
+* `downloadFileName` - set file name and format of downloaded spec file, e.g. `openapi.yaml`, default `swagger.json`.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.

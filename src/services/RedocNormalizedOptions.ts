@@ -1,3 +1,4 @@
+import * as path from 'path';
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
@@ -19,6 +20,7 @@ export interface RedocRawOptions {
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
+  downloadFileName?: string;
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
@@ -154,6 +156,20 @@ export class RedocNormalizedOptions {
     return 0;
   }
 
+  static normalizeDownloadFileName(value: RedocRawOptions['downloadFileName']): string {
+    if (value) {
+      const extname = path.extname(value);
+      if (extname === '.json' || extname === '.yaml') {
+        return value;
+      } else {
+        console.warn(`downloadFileName must be a JSON or YAML file.`);
+      }
+    }
+
+    // Default value
+    return 'openapi.json';
+  }
+
   private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
     if (level === 'all') {
       return +Infinity;
@@ -186,6 +202,7 @@ export class RedocNormalizedOptions {
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
+  downloadFileName: string;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
@@ -244,6 +261,7 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+    this.downloadFileName = RedocNormalizedOptions.normalizeDownloadFileName(raw.downloadFileName);
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
