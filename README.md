@@ -21,7 +21,7 @@ By default Redoc offers a three-panel, responsive layout:
 - The central panel contains the documentation.
 - The right panel contains request and response examples.
 
-![ReDoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
+![Redoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
 
 ## Live demo
 
@@ -82,7 +82,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
 
 ## Version Guidance
-| ReDoc Release | OpenAPI Specification |
+| Redoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
 | 2.0.0-alpha.54| 3.1, 3.0.x, 2.0       |
 | 2.0.0-alpha.x | 3.0, 2.0              |
