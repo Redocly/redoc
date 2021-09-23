@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master/docs/images/redoc-logo.png" width="400px" />
+  <img alt="ReDoc logo" src="/docs/images/redoc.png" width="400px" />
 
   # Generate interactive API documentation from OpenAPI definitions
 
@@ -13,10 +13,13 @@
 
 ## About Redoc
 
-Redoc is an open-source tool for generating OpenAPI(aka Swagger) definitions. By default
-Redoc offers a three-panel, responsive layout: the left panel contains a search bar and navigation menu,
-the central panel contains the documentation, and the right panel contains request and response
-examples. 
+Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions. 
+
+By default Redoc offers a three-panel, responsive layout: 
+
+- The left panel contains a search bar and navigation menu.
+- The central panel contains the documentation.
+- The right panel contains request and response examples.
 
 ![ReDoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
 
