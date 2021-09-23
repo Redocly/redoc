@@ -1,7 +1,7 @@
 <div align="center">
-  <img alt="ReDoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master/docs/images/redoc-logo.png" width="400px" />
+  <img alt="ReDoc logo" src="/docs/images/redoc.png" width="400px" />
 
-  **OpenAPI/Swagger-generated API Reference Documentation**
+  # Generate interactive API documentation from OpenAPI definitions
 
   [![Build Status](https://travis-ci.com/Redocly/redoc.svg?branch=master)](https://travis-ci.com/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
 
@@ -11,30 +11,63 @@
 **This is the README for the `2.x` version of Redoc (React-based).** 
 **The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch**
 
-![ReDoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
+## About Redoc
 
-## [Live demo](http://redocly.github.io/redoc/)
+Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions. 
 
-[<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--) [<img alt="ReDoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly) [<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
+By default Redoc offers a three-panel, responsive layout: 
+
+- The left panel contains a search bar and navigation menu.
+- The central panel contains the documentation.
+- The right panel contains request and response examples.
+
+![Redoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
+
+## Live demo
+
+If you want to see how Redoc will render your OpenAPI definition,
+you can try it out online at https://redocly.github.io/redoc/.
+
+A version of the Swagger Petstore API is displayed by default.
+To test it with your own OpenAPI definition,
+enter the URL for your definition and select **TRY IT**.
+
+## Redoc vs. Redocly Reference docs
+
+Redoc Community Edition is free open-source software (OSS).
+Redocly has developed extensive enhancements on top of Redoc Community Edition's open core, creating Redocly Reference Docs.
+See [Comparison Redoc CE vs. Redocly Reference Docs](https://redoc.ly/redoc-vs-reference/)
+for the main differences between the Redoc Community Edition and Redocly Reference Docs.
+
+## Deploy to GitHub
+[<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--)
+
+## Redoc as a service
+[<img alt="Redoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly/workflows)
 
 ## Features
-- [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
-- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
-- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
-  
-  [See an example](https://github.com/APIs-guru/create-react-app-redoc)
-- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
 - Responsive three-panel design with menu/scrolling synchronization
+- [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
 - Deep linking support
+- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
 - Ability to integrate your API introduction into the side menu
-- High-level grouping in side-menu with [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
+- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
+
+  [Example repo](https://github.com/APIs-guru/create-react-app-redoc)
+- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
+- Neat **interactive** documentation for nested objects <br>
+  ![](docs/images/nested-demo.gif)
+
+## Customization options
+[<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
+- High-level grouping in side-menu with the [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - Branding/customizations using the [`theme` option](https://redoc.ly/docs/api-reference-docs/configuration/theming/)
+
+## Support
 - OpenAPI v3.0 support
 - Basic OpenAPI v3.1 support
 - Broad OpenAPI v2.0 feature support (yes, it supports even `discriminator`) <br>
   ![](docs/images/discriminator-demo.gif)
-- Neat **interactive** documentation for nested objects <br>
-  ![](docs/images/nested-demo.gif)
 - Code samples support (via vendor extension) <br>
   ![](docs/images/code-samples-demo.gif)
 
@@ -44,12 +77,12 @@
 - `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
-- particular release, e.g. `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
+- particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
 
 ## Version Guidance
-| ReDoc Release | OpenAPI Specification |
+| Redoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
 | 2.0.0-alpha.54| 3.1, 3.0.x, 2.0       |
 | 2.0.0-alpha.x | 3.0, 2.0              |
@@ -67,15 +100,50 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 - [BoxKnight](https://www.docs.boxknight.com/)
 
 ## Deployment
+
+### TL;DR final code example
+
+To render your OpenAPI definition using Redoc, use the following HTML code sample and
+replace the `spec-url` attribute with the url or local file address to your definition.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redoc</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+    <!--
+    Redoc doesn't change outer page styles
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+  </body>
+</html>
+
+```
+
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the 
-[Redoc quickstart guide](https://redoc.ly/docs/redoc/quickstart/intro/).
+[**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
 
-[**IE11 Support Notes**](docs/usage-with-ie11.md)
+See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on 
+IE support for Redoc.
 
-## ReDoc CLI
+## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[Using the Redoc CLI](https://redoc.ly/docs/redoc/quickstart/cli/).
+[**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
 
 ## Configuration
 
