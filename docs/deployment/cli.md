@@ -1,5 +1,7 @@
 ---
 title: Using the Redoc CLI
+redirectFrom: 
+  - /docs/quickstart/cli/
 ---
 
 # Using the Redoc CLI

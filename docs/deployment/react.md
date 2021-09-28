@@ -1,5 +1,7 @@
 ---
 title: Using the Redoc React component
+redirectFrom:
+  - /docs/quickstart/react/
 ---
 
 # Using the Redoc React component

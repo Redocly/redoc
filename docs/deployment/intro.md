@@ -1,5 +1,7 @@
 ---
 title: Redoc deployment guide
+redirectFrom:
+  - /docs/quickstart/intro/
 ---
 
 # Redoc deployment guide
@@ -55,8 +57,25 @@ project directory and run the following command:
 openapi preview-docs openapi.yaml
 ```
 
+::: openapi.yaml
+Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition. 
+:::
+
 By default, without providing a port, the preview starts on port 8080, and can be accessed at `http://localhost:8080`.
 To exit the preview, use `control+C`.
+
+You can alter the port if you are using 8080 already, for example:
+
+```bash
+openapi preview-docs -p 8888 openapi.yaml
+```
+
+::: openapi.yaml
+Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition. 
+:::
+
+For more information about the `preview-docs` command, refer to
+[OpenAPI CLI commands](https://redoc.ly/docs/cli/commands/preview-docs/#preview-docs) in the OpenAPI CLI documentation.
 
 #### Using Python
 
