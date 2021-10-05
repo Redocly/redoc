@@ -13,15 +13,10 @@ const PaddedSchema = styled.div`
 
 export class ArraySchema extends React.PureComponent<SchemaProps> {
   render() {
-    const itemsSchema = this.props.schema.items!;
+    const itemsSchema = this.props.schema.items;
     const schema = this.props.schema;
 
-    const itemConstraintSchema = (
-      min: number | undefined = undefined,
-      max: number | undefined = undefined,
-    ) => ({ type: 'array', minItems: min, maxItems: max });
-
-    const minMaxItems = humanizeConstraints(itemConstraintSchema(itemsSchema?.schema?.minItems, itemsSchema?.schema?.maxItems));
+    const minMaxItems = humanizeConstraints(schema);
 
     if (schema.displayType && !itemsSchema && !minMaxItems.length) {
       return (<div>
