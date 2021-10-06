@@ -13,10 +13,12 @@ const PaddedSchema = styled.div`
 
 export class ArraySchema extends React.PureComponent<SchemaProps> {
   render() {
-    const itemsSchema = this.props.schema.items;
     const schema = this.props.schema;
+    const itemsSchema = schema.items;
 
-    const minMaxItems = humanizeConstraints(schema);
+    const minMaxItems = schema.minItems === undefined && schema.maxItems === undefined ?
+      '' :
+      `(${humanizeConstraints(schema)})`;
 
     if (schema.displayType && !itemsSchema && !minMaxItems.length) {
       return (<div>
@@ -26,7 +28,7 @@ export class ArraySchema extends React.PureComponent<SchemaProps> {
 
     return (
       <div>
-        <ArrayOpenningLabel> Array ({minMaxItems})</ArrayOpenningLabel>
+        <ArrayOpenningLabel> Array {minMaxItems}</ArrayOpenningLabel>
         <PaddedSchema>
           <Schema {...this.props} schema={itemsSchema} />
         </PaddedSchema>
