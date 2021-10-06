@@ -384,6 +384,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pet'
+            application/xml-dtd:
+              schema:
+                type: array
+                maxItems: 999
+                minItems: 0
+                items:
+                  type: array
+                  maxItems: 777
+                  minItems: 111
+                  items:
+                    type: number
         '400':
           description: Invalid tag value
       security:
