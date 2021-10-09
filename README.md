@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="ReDoc logo" src="/docs/images/redoc.png" width="400px" />
+  <img alt="Redoc logo" src="/docs/images/redoc.png" width="400px" />
 
   # Generate interactive API documentation from OpenAPI definitions
 
