@@ -32,23 +32,53 @@ A version of the Swagger Petstore API is displayed by default.
 To test it with your own OpenAPI definition,
 enter the URL for your definition and select **TRY IT**.
 
-## Redoc vs. Redocly Reference docs
+## Redoc vs. Reference vs. Portals
 
-Redoc Community Edition is free open-source software (OSS).
-Redocly has developed extensive enhancements on top of Redoc Community Edition's open core, creating Redocly Reference Docs.
-See [Comparison Redoc CE vs. Redocly Reference Docs](https://redoc.ly/redoc-vs-reference/)
-for the main differences between the Redoc Community Edition and Redocly Reference Docs.
+Redoc is Redocly's community-edition product. Looking for something more?
+Checkout the following feature comparison of Redocly's premium products versus Redoc:
 
-## Deploy to GitHub
-[<img alt="Deploy to Github" src="http://i.imgur.com/YZmaqk3.png" height="60px">](https://github.com/Rebilly/generator-openapi-repo#generator-openapi-repo--)
+| Features                     | Redoc     | Reference | Portals     |
+|------------------------------|:---------:|:---------:|:-----------:|
+| **Specs**                    |           |           |             |
+| Swagger 2.0                  | √         | √         | √           |
+| OpenAPI 3.0                  | √         | √         | √           |
+| OpenAPI 3.1                  | √ (basic) | √         | √           |
+|                              |           |           |             |
+| **Theming**                  |           |           |             |
+| Fonts/colors                 | √         | √         | √           |
+| Extra theme options          |           | √         | √           |
+|                              |           |           |             |
+| **Performance**              |           |           |             |
+| Pagination                   |           | √         | √           |
+| Search (enhanced)            |           | √         | √           |
+| Search (server-side)         |           |           | √           |
+|                              |           |           |             |
+| **Multiple APIs**            |           |           |             |
+| Multiple versions            |           | √         | √           |
+| Multiple APIs                |           |           | √           |
+| API catalog                  |           |           | √           |
+|                              |           |           |             |
+| **Additional features**      |           |           |             |
+| Try-it console               |           | √         | √           |
+| Automated code samples       |           | √         | √           |
+| Deep links                   |           | √         | √           |
+| More SEO control             |           |           | √           |
+| Contextual docs              |           |           | √           |
+| Landing pages                |           |           | √           |
+| React hooks for more control |           |           | √           |
+| Personalization              |           |           | √           |
+| Analytics integrations       |           |           | √           |
+| Feedback                     |           |           | Coming Soon |
 
-## Redoc as a service
-[<img alt="Redoc as a service" src="http://i.imgur.com/edqdCv6.png" height="60px">](https://redoc.ly/workflows)
+Refer to the Redocly's documentation for more information on these products:
+
+- [Portals](https://redoc.ly/docs/developer-portal/introduction/)
+- [Reference](https://redoc.ly/docs/api-reference-docs/getting-started/)
+- [Redoc](https://redoc.ly/docs/redoc/quickstart/intro/)
 
 ## Features
 - Responsive three-panel design with menu/scrolling synchronization
 - [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
-- Deep linking support
 - [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
 - Ability to integrate your API introduction into the side menu
 - [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
@@ -98,6 +128,14 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 - [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [BoxKnight](https://www.docs.boxknight.com/)
+
+## Lint OpenAPI definitions
+
+Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
+your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
+OpenAPI definition before publishing. 
+
+Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
 
 ## Deployment
 
