@@ -57,6 +57,6 @@ describe('Search', () => {
   it('should show proper message when no search results are found', () => {
     getSearchResults().should('not.exist');
     getSearchInput().type('xzss', {force: true});
-    getSearchResults().should('exist').should('contain', 'No results found!');
+    getSearchResults().should('exist').should('contain', 'No results found');
   })
 });

@@ -16,6 +16,7 @@ import {
   SearchResultsBox,
   SearchWrap,
 } from './styled.elements';
+import { l } from '../../services/Labels';
 
 export interface SearchBoxProps {
   search: SearchStore<string>;
@@ -171,8 +172,9 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
             </SearchResultsBox>
           </PerfectScrollbarWrap>
         )}
-        {(this.state.term) && this.state.noResults ? <SearchResultsBox data-role="search:results">No results found!</SearchResultsBox> : null
-        }
+        {this.state.term && this.state.noResults ? (
+          <SearchResultsBox data-role="search:results">{l('noResultsFound')}</SearchResultsBox>
+        ) : null}
       </SearchWrap>
     );
   }

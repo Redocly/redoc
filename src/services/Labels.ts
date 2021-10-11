@@ -10,6 +10,7 @@ export interface LabelsConfig {
   arrayOf: string;
   webhook: string;
   const: string;
+  noResultsFound: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -26,6 +27,7 @@ const labels: LabelsConfig = {
   arrayOf: 'Array of ',
   webhook: 'Event',
   const: 'Value',
+  noResultsFound: 'No results found',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {
