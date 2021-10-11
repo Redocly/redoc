@@ -533,6 +533,20 @@ paths:
                   subscriptionId:
                     type: string
                     example: AAA-123-BBB-456
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 999
+                minItems: 0
+                items:
+                  type: array
+                  maxItems: 777
+                  minItems: 111
+                  items:
+                    type: number
       callbacks:
         orderInProgress:
           '{$request.body#/callbackUrl}?event={$request.body#/eventName}':

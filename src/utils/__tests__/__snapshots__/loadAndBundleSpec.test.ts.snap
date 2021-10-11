@@ -729,7 +729,9 @@ try {
                 "schema": Object {
                   "items": Object {
                     "$ref": "#/components/schemas/Pet",
+                    "maxItems": 111,
                   },
+                  "maxItems": 999,
                   "type": "array",
                 },
               },
@@ -3245,6 +3247,26 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         },
         "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "items": Object {
+                    "items": Object {
+                      "type": "number",
+                    },
+                    "maxItems": 777,
+                    "minItems": 111,
+                    "type": "array",
+                  },
+                  "maxItems": 999,
+                  "minItems": 0,
+                  "type": "array",
+                },
+              },
+            },
+            "description": "Successful operation",
+          },
           "201": Object {
             "content": Object {
               "application/json": Object {
