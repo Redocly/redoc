@@ -377,7 +377,9 @@ paths:
             application/xml:
               schema:
                 type: array
+                maxItems: 999
                 items:
+                  maxItems: 111
                   $ref: '#/components/schemas/Pet'
         '400':
           description: Invalid tag value

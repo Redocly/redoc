@@ -63,6 +63,8 @@ export class SchemaModel {
   const: any;
   contentEncoding?: string;
   contentMediaType?: string;
+  minItems?: number;
+  maxItems?: number;
 
   /**
    * @param isChild if schema discriminator Child
@@ -128,6 +130,8 @@ export class SchemaModel {
     this.const = schema.const || '';
     this.contentEncoding = schema.contentEncoding;
     this.contentMediaType = schema.contentMediaType;
+    this.minItems = schema.minItems;
+    this.maxItems = schema.maxItems;
 
     if (!!schema.nullable || schema['x-nullable']) {
       if (Array.isArray(this.type) && !this.type.some((value) => value === null || value === 'null')) {
@@ -359,7 +363,7 @@ function buildFields(
 ): FieldModel[] {
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
-  const defaults = schema.default || {};
+  const defaults = schema.default;
   let fields = Object.keys(props || []).map((fieldName) => {
     let field = props[fieldName];
 
@@ -380,7 +384,7 @@ function buildFields(
         required,
         schema: {
           ...field,
-          default: field.default === undefined ? defaults[fieldName] : field.default,
+          default: field.default === undefined && defaults ? defaults[fieldName] : field.default,
         },
       },
       $ref + '/properties/' + fieldName,
