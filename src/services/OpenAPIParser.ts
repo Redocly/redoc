@@ -206,13 +206,6 @@ export class OpenAPIParser {
     }
   }
 
-  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
-    if (this.isRef(obj)) {
-      return this.byRef<T>(obj.$ref)!;
-    }
-    return obj;
-  }
-
   /**
    * Merge allOf constraints.
    * @param schema schema with allOF
