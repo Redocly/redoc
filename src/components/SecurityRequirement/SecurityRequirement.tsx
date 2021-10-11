@@ -1,4 +1,3 @@
-// import { transparentize } from 'polished';
 import * as React from 'react';
 
 import styled, { media } from '../../styled-components';
