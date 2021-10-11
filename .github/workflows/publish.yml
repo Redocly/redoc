@@ -77,6 +77,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "14.x"
+          registry-url: 'https://registry.npmjs.org'
       - uses: actions/checkout@v2
       - name: Download bundled artifacts
         uses: actions/download-artifact@v2
