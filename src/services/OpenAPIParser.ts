@@ -174,6 +174,18 @@ export class OpenAPIParser {
     return obj;
   }
 
+  shallowDeref<T extends unknown>(obj: OpenAPIRef | T): T {
+    if (this.isRef(obj)) {
+      const schemaName = getDefinitionName(obj.$ref);
+      if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
+        return { type: 'object', title: schemaName } as T;
+      }
+      const resolved = this.byRef<T>(obj.$ref);
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, false) : (resolved as T);
+    }
+    return obj;
+  }
+
   mergeRefs(ref, resolved, mergeAsAllOf: boolean) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { $ref, ...rest } = ref;
@@ -192,13 +204,6 @@ export class OpenAPIParser {
         ...rest,
       };
     }
-  }
-
-  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
-    if (this.isRef(obj)) {
-      return this.byRef<T>(obj.$ref)!;
-    }
-    return obj;
   }
 
   /**

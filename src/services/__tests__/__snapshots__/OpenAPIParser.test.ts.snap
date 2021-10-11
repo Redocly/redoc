@@ -86,3 +86,10 @@ Object {
   ],
 }
 `;
+
+exports[`Models Schema should override description from $ref of the referenced component, when sibling description exists  1`] = `
+Object {
+  "description": "Overriden description",
+  "type": "object",
+}
+`;

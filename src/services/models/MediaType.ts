@@ -40,7 +40,7 @@ export class MediaTypeModel {
       this.examples = {
         default: new ExampleModel(
           parser,
-          { value: parser.shalowDeref(info.example) },
+          { value: parser.shallowDeref(info.example) },
           name,
           info.encoding,
         ),
