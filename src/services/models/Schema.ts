@@ -78,7 +78,7 @@ export class SchemaModel {
     makeObservable(this);
 
     this.pointer = schemaOrRef.$ref || pointer || '';
-    this.rawSchema = parser.deref(schemaOrRef, false, true);
+    this.rawSchema = parser.shallowDeref(schemaOrRef);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
     this.init(parser, isChild);
