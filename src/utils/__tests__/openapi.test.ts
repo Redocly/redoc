@@ -412,10 +412,10 @@ describe('Utils', () => {
 
   describe('openapi humanizeConstraints', () => {
     const itemConstraintSchema = (
-      min: number | undefined = undefined,
-      max: number | undefined = undefined,
-      multipleOf: number | undefined = undefined,
-      uniqueItems?: boolean,
+      min?: number,
+      max?: number,
+      multipleOf?: number,
+      uniqueItems?: boolean
     ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
     it('should not have a humanized constraint without schema constraints', () => {

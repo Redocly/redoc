@@ -15,10 +15,12 @@ import 'prismjs/components/prism-objectivec.js';
 import 'prismjs/components/prism-perl.js';
 import 'prismjs/components/prism-php.js';
 import 'prismjs/components/prism-python.js';
+import 'prismjs/components/prism-q.js';
 import 'prismjs/components/prism-ruby.js';
 import 'prismjs/components/prism-scala.js';
 import 'prismjs/components/prism-sql.js';
 import 'prismjs/components/prism-swift.js';
+import 'prismjs/components/prism-yaml.js';
 
 const DEFAULT_LANG = 'clike';
 
