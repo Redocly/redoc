@@ -195,7 +195,7 @@ export class OpenAPIParser {
     }
     if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
       return {
-        allOf: [resolved, rest],
+        allOf: [rest, resolved],
       };
     } else {
       // small optimization
