@@ -14,6 +14,7 @@ import {
   InfoSpanBox,
   InfoSpanBoxWrap,
 } from './styled.elements';
+import { l } from '../../services/Labels';
 
 export interface ApiInfoProps {
   store: AppStore;
@@ -79,14 +80,14 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             </ApiHeader>
             {!hideDownloadButton && (
               <p>
-                Download OpenAPI specification:
+                {l('downloadSpecification')}:
                 <DownloadButton
                   download={downloadFilename || true}
                   target="_blank"
                   href={downloadLink}
                   onClick={this.handleDownloadClick}
                 >
-                  Download
+                  {l('download')}
                 </DownloadButton>
               </p>
             )}
