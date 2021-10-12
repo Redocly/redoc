@@ -26,7 +26,6 @@ import { l } from '../../services/Labels';
 import { OptionsContext } from '../OptionsProvider';
 import { FieldModel } from '../../services/models/Field';
 import styled from '../../styled-components';
-import { ArraySchema } from '../Schema';
 
 const MAX_PATTERN_LENGTH = 45;
 
@@ -64,19 +63,11 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
       }
     }
 
-
     return (
       <div>
         <div>
-          {schema.type === 'array' ?
-            <ArraySchema schema={schema}/>
-          :
-            (<>
-                <TypePrefix>{schema.typePrefix}</TypePrefix>
-                <TypeName>{schema.displayType}</TypeName>
-            </>
-            )
-          }
+          <TypePrefix>{schema.typePrefix}</TypePrefix>
+          <TypeName>{schema.displayType}</TypeName>
           {schema.displayFormat && (
             <TypeFormat>
               {' '}
