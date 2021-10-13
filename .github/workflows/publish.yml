@@ -1,0 +1,100 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - v[0-9]*.[0-9]*.[0-9]*
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-${{ hashFiles('package-lock.json') }}
+          npm-
+    - run: npm ci
+    - run: npm run bundle
+    - name: Store bundle artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: bundles
+        path: bundles
+        retention-days: 1
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+  e2e-tests:
+    needs: [bundle]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - name: Download bundled artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: bundles
+        path: bundles
+    - run: npm run e2e
+  # disable this for now
+  # deploy-demo:
+  #   needs: [bundle, unit-tests, e2e-tests]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: us-east-1
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Download bundled artifacts
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: bundles
+  #         path: bundles
+  #     - name: Build package
+  #       run: npm run build:demo
+  #     - name: Deploy to S3 bucket
+  #       run: npm run deploy:demo
+  #     - name: Invalidate
+  #       run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"
+  publish:
+    needs: [bundle, unit-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+          registry-url: 'https://registry.npmjs.org'
+      - uses: actions/checkout@v2
+      - name: Download bundled artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: bundles
+          path: bundles
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - name: Before deploy
+        run: npm ci && npm run declarations
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,3 @@
-// import { transparentize } from 'polished';
-
 import styled, { extensionsHook, media } from '../styled-components';
 import { deprecatedCss } from './mixins';
 

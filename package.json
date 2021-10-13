@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.56",
+  "version": "2.0.0-rc.57",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -79,6 +79,7 @@
     "@types/json-pointer": "^1.0.30",
     "@types/lodash": "^4.14.170",
     "@types/lunr": "^2.3.3",
+    "@types/node": "^15.6.1",
     "@types/mark.js": "^8.11.5",
     "@types/marked": "^1.1.0",
     "@types/prismjs": "^1.16.5",
@@ -146,9 +147,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@redocly/openapi-core": "^1.0.0-beta.50",
+    "@redocly/openapi-core": "^1.0.0-beta.54",
     "@redocly/react-dropdown-aria": "^2.0.11",
-    "@types/node": "^15.6.1",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",

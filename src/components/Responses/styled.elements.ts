@@ -1,5 +1,3 @@
-// import { transparentize } from 'polished';
-
 import { UnderlinedHeader } from '../../common-elements';
 import styled from '../../styled-components';
 import { ResponseTitle } from './ResponseTitle';
