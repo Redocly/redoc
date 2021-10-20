@@ -6,9 +6,9 @@ export {
   Section,
   StyledDropdown,
   SimpleDropdown,
-  DropdownOption,
 } from './common-elements/';
-export { OpenAPIEncoding } from './types';
+export type { DropdownOption } from './common-elements';
+export type { OpenAPIEncoding } from './types';
 export * from './services';
 export * from './utils';
 

@@ -5,10 +5,18 @@ export interface LabelsConfig {
   default: string;
   deprecated: string;
   example: string;
-  nullable: string;
+  examples: string;
   recursive: string;
   arrayOf: string;
   webhook: string;
+  const: string;
+  noResultsFound: string;
+  download: string;
+  downloadSpecification: string;
+  responses: string;
+  callbackResponses: string;
+  requestSamples: string;
+  responseSamples: string;
 }
 
 export type LabelsConfigRaw = Partial<LabelsConfig>;
@@ -20,10 +28,18 @@ const labels: LabelsConfig = {
   default: 'Default',
   deprecated: 'Deprecated',
   example: 'Example',
-  nullable: 'Nullable',
+  examples: 'Examples',
   recursive: 'Recursive',
   arrayOf: 'Array of ',
   webhook: 'Event',
+  const: 'Value',
+  noResultsFound: 'No results found',
+  download: 'Download',
+  downloadSpecification: 'Download OpenAPI specification',
+  responses: 'Responses',
+  callbackResponses: 'Callback responses',
+  requestSamples: 'Request samples',
+  responseSamples: 'Response samples',
 };
 
 export function setRedocLabels(_labels?: LabelsConfigRaw) {

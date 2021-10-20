@@ -5,18 +5,20 @@ import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 
+const DEFAULT_SPEC = 'openapi.yaml';
+const NEW_VERSION_SPEC = 'openapi-3-1.yaml';
+
 const demos = [
+  { value: NEW_VERSION_SPEC, label: 'Petstore OpenAPI 3.1' },
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
   {
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml',
     label: 'Google Calendar',
   },
-  { value: 'https://api.apis.guru/v2/specs/slack.com/1.5.0/openapi.yaml', label: 'Slack' },
-  { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/swagger.yaml', label: 'Zoom.us' },
+  { value: 'https://api.apis.guru/v2/specs/slack.com/1.7.0/openapi.yaml', label: 'Slack' },
+  { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/openapi.yaml', label: 'Zoom.us' },
   { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
-
-const DEFAULT_SPEC = 'openapi.yaml';
 
 class DemoApp extends React.Component<
   {},
@@ -45,6 +47,9 @@ class DemoApp extends React.Component<
   }
 
   handleChange = (url: string) => {
+    if (url === NEW_VERSION_SPEC) {
+      this.setState({ cors: false })
+    }
     this.setState({
       specUrl: url,
     });
@@ -72,14 +77,17 @@ class DemoApp extends React.Component<
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
-        ? '\\\\cors.apis.guru/' + urlResolve(window.location.href, specUrl)
+        ? '\\\\cors.redoc.ly/' + urlResolve(window.location.href, specUrl)
         : specUrl;
     }
     return (
       <>
         <Heading>
           <a href=".">
-            <Logo src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png" />
+            <Logo
+              src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png"
+              alt="Redoc logo"
+            />
           </a>
           <ControlsContainer>
             <ComboBox
@@ -146,7 +154,7 @@ const Heading = styled.nav`
 
   display: flex;
   align-items: center;
-  font-family: 'Lato';
+  font-family: Roboto, sans-serif;
 `;
 
 const Logo = styled.img`

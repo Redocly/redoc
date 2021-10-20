@@ -51,7 +51,9 @@ class Json extends React.PureComponent<JsonProps> {
   expandAll = () => {
     const elements = this.node.getElementsByClassName('collapsible');
     for (const collapsed of Array.prototype.slice.call(elements)) {
-      (collapsed.parentNode as Element)!.classList.remove('collapsed');
+      const parentNode = collapsed.parentNode as Element;
+      parentNode.classList.remove('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'collapse');
     }
   };
 
@@ -61,7 +63,9 @@ class Json extends React.PureComponent<JsonProps> {
     const elementsArr = Array.prototype.slice.call(elements, 1);
 
     for (const expanded of elementsArr) {
-      (expanded.parentNode as Element)!.classList.add('collapsed');
+      const parentNode = expanded.parentNode as Element;
+      parentNode.classList.add('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'expand');
     }
   };
 
@@ -71,8 +75,10 @@ class Json extends React.PureComponent<JsonProps> {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
       if (collapsed.parentElement.classList.contains('collapsed')) {
         collapsed.parentElement.classList.remove('collapsed');
+        target.setAttribute('aria-label', 'collapse');
       } else {
         collapsed.parentElement.classList.add('collapsed');
+        target.setAttribute('aria-label', 'expand');
       }
     }
   };

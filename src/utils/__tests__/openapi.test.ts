@@ -101,6 +101,13 @@ describe('Utils', () => {
       expect(getOperationSummary(operation as any).length).toBe(50);
     });
 
+    it('Should return pathName if no summary, operationId, description', () => {
+      const operation = {
+        pathName: '/sandbox/test'
+      };
+      expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
+    });
+
     it('Should return <no summary> if no info', () => {
       const operation = {
         description: undefined,
@@ -165,6 +172,79 @@ describe('Utils', () => {
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return true for array contains object and schema hasn\'t properties', () => {
+      const schema = {
+        type: ['object', 'string'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('should return false for array contains object and schema has properties', () => {
+      const schema = {
+        type: ['object', 'string'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains array type and schema has items', () => {
+      const schema = {
+        type: ['array'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has items', () => {
+      const schema = {
+        type: ['array', 'object'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has properties', () => {
+      const schema = {
+        type: ['array', 'object'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return true for array contains array of strings', () => {
+      const schema = {
+        type: 'array',
+        items: {
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('Should return false for array of string which include the null value', () => {
+      const schema = {
+        type: ['object', 'string', 'null'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
     });
 
     it('Should return false for array with non-empty objects', () => {
@@ -332,10 +412,10 @@ describe('Utils', () => {
 
   describe('openapi humanizeConstraints', () => {
     const itemConstraintSchema = (
-      min: number | undefined = undefined,
-      max: number | undefined = undefined,
-      multipleOf: number | undefined = undefined,
-      uniqueItems?: boolean,
+      min?: number,
+      max?: number,
+      multipleOf?: number,
+      uniqueItems?: boolean
     ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
     it('should not have a humanized constraint without schema constraints', () => {

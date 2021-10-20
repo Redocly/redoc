@@ -53,18 +53,22 @@ const defaultTheme: ThemeInterface = {
       success: {
         color: ({ colors }) => colors.success.main,
         backgroundColor: ({ colors }) => transparentize(0.93, colors.success.main),
+        tabTextColor: ({ colors }) => colors.responses.success.color,
       },
       error: {
         color: ({ colors }) => colors.error.main,
         backgroundColor: ({ colors }) => transparentize(0.93, colors.error.main),
+        tabTextColor: ({ colors }) => colors.responses.error.color,
       },
       redirect: {
         color: ({ colors }) => colors.warning.main,
         backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.redirect.color),
+        tabTextColor: ({ colors }) => colors.responses.redirect.color,
       },
       info: {
         color: '#87ceeb',
         backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.info.color),
+        tabTextColor: ({ colors }) => colors.responses.info.color,
       },
     },
     http: {
@@ -206,6 +210,7 @@ export interface ColorSetting {
 export interface HTTPResponseColos {
   color: string;
   backgroundColor: string;
+  tabTextColor: string;
 }
 
 export interface FontSettings {

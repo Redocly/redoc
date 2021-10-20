@@ -6,6 +6,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
     <Field
       field={
         FieldModel {
+          "const": "",
           "deprecated": false,
           "description": "",
           "example": undefined,
@@ -17,7 +18,10 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "required": false,
           "schema": SchemaModel {
             "activeOneOf": 0,
+            "const": "",
             "constraints": Array [],
+            "contentEncoding": undefined,
+            "contentMediaType": undefined,
             "default": undefined,
             "deprecated": false,
             "description": "",
@@ -29,7 +33,8 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "format": undefined,
             "isCircular": undefined,
             "isPrimitive": true,
-            "nullable": false,
+            "maxItems": undefined,
+            "minItems": undefined,
             "options": "<<<filtered>>>",
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/packSize",
@@ -56,6 +61,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
     <Field
       field={
         FieldModel {
+          "const": "",
           "deprecated": false,
           "description": "",
           "example": undefined,
@@ -67,7 +73,10 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "required": true,
           "schema": SchemaModel {
             "activeOneOf": 0,
+            "const": "",
             "constraints": Array [],
+            "contentEncoding": undefined,
+            "contentMediaType": undefined,
             "default": undefined,
             "deprecated": false,
             "description": "",
@@ -79,7 +88,8 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "format": undefined,
             "isCircular": undefined,
             "isPrimitive": true,
-            "nullable": false,
+            "maxItems": undefined,
+            "minItems": undefined,
             "options": "<<<filtered>>>",
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/type",

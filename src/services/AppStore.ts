@@ -145,7 +145,10 @@ export class AppStore {
 
     if (idx === -1 && IS_BROWSER) {
       const $description = document.querySelector('[data-role="redoc-description"]');
+      const $summary = document.querySelector('[data-role="redoc-summary"]');
+
       if ($description) elements.push($description);
+      if ($summary) elements.push($summary);
     }
 
     this.marker.addOnly(elements);

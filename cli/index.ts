@@ -72,6 +72,12 @@ YargsParser.command(
       type: 'boolean',
     });
 
+    yargs.options('disable-google-font', {
+      describe: 'Disable Google Font',
+      type: 'boolean',
+      default: false,
+    });
+
     yargs.demandOption('spec');
     return yargs;
   },
@@ -80,12 +86,11 @@ YargsParser.command(
       ssr: argv.ssr as boolean,
       title: argv.title as string,
       watch: argv.watch as boolean,
+      disableGoogleFont: argv.disableGoogleFont as boolean,
       templateFileName: argv.template as string,
       templateOptions: argv.templateOptions || {},
       redocOptions: getObjectOrJSON(argv.options),
     };
-
-    console.log(config);
 
     try {
       await serve(argv.port as number, argv.spec as string, config);
@@ -163,9 +168,8 @@ YargsParser.command(
   }).argv;
 
 async function serve(port: number, pathToSpec: string, options: Options = {}) {
-  let spec = await loadAndBundleSpec(pathToSpec);
+  let spec = await loadAndBundleSpec(isURL(pathToSpec) ? pathToSpec : resolve(pathToSpec));
   let pageHTML = await getPageHTML(spec, pathToSpec, options);
-
   const server = createServer((request, response) => {
     console.time('GET ' + request.url);
     if (request.url === '/redoc.standalone.js') {
@@ -211,7 +215,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
 
     const handlePath = async _path => {
       try {
-        spec = await loadAndBundleSpec(pathToSpec);
+        spec = await loadAndBundleSpec(resolve(pathToSpec));
         pageHTML = await getPageHTML(spec, pathToSpec, options);
         log('Updated successfully');
       } catch (e) {
@@ -238,7 +242,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
 
 async function bundle(pathToSpec, options: Options = {}) {
   const start = Date.now();
-  const spec = await loadAndBundleSpec(pathToSpec);
+  const spec = await loadAndBundleSpec(isURL(pathToSpec) ? pathToSpec : resolve(pathToSpec));
   const pageHTML = await getPageHTML(spec, pathToSpec, { ...options, ssr: true });
 
   mkdirp.sync(dirname(options.output!));
@@ -293,7 +297,7 @@ async function getPageHTML(
     var container = document.getElementById('redoc');
     Redoc.${
       ssr
-        ? 'hydrate(__redoc_state, container);'
+        ? 'hydrate(__redoc_state, container)'
         : `init("spec.json", ${JSON.stringify(redocOptions)}, container)`
     };
 
