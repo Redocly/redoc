@@ -80,6 +80,9 @@ export class AppStore {
     // update position statically based on hash (in case of SSR)
     MenuStore.updateOnHistory(history.currentId, this.scroll);
 
+    // override the openApi standard to version 3.1.0
+    // TODO remove when fully supporting open API 3.1.0
+    spec.openapi = "3.1.0";
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll, history);
 
