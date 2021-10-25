@@ -15,15 +15,15 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
   render() {
     return (
       <OptionsConsumer>
-        {options => (
-          <StoreConsumer>{store => this.renderWithOptionsAndStore(options, store)}</StoreConsumer>
+        {(options) => (
+          <StoreConsumer>{(store) => this.renderWithOptionsAndStore(options, store)}</StoreConsumer>
         )}
       </OptionsConsumer>
     );
   }
 
   renderWithOptionsAndStore(options: RedocNormalizedOptions, store?: AppStore) {
-    const { source, htmlWrap = i => i } = this.props;
+    const { source, htmlWrap = (i) => i } = this.props;
     if (!store) {
       throw new Error('When using components in markdown, store prop must be provided');
     }

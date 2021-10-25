@@ -9,13 +9,13 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
 type ResponseProps = {
-  parser: OpenAPIParser,
-  code: string,
-  defaultAsError: boolean,
-  infoOrRef: Referenced<OpenAPIResponse>,
-  options: RedocNormalizedOptions,
-  isEvent: boolean,
-}
+  parser: OpenAPIParser;
+  code: string;
+  defaultAsError: boolean;
+  infoOrRef: Referenced<OpenAPIResponse>;
+  options: RedocNormalizedOptions;
+  isEvent: boolean;
+};
 
 export class ResponseModel {
   @observable
@@ -54,7 +54,7 @@ export class ResponseModel {
 
     const headers = info.headers;
     if (headers !== undefined) {
-      this.headers = Object.keys(headers).map(name => {
+      this.headers = Object.keys(headers).map((name) => {
         const header = headers[name];
         return new FieldModel(parser, { ...header, name }, '', options);
       });

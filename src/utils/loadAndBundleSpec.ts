@@ -14,8 +14,8 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
   const config = new Config({});
   const bundleOpts = {
     config,
-    base: IS_BROWSER ? window.location.href : process.cwd()
-  }
+    base: IS_BROWSER ? window.location.href : process.cwd(),
+  };
 
   if (IS_BROWSER) {
     config.resolve.http.customFetch = global.fetch;
@@ -24,13 +24,15 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
     bundleOpts['doc'] = {
       source: { absoluteRef: '' } as Source,
-      parsed: specUrlOrObject
-    } as Document
+      parsed: specUrlOrObject,
+    } as Document;
   } else {
     bundleOpts['ref'] = specUrlOrObject;
   }
 
-  const { bundle: { parsed } } = await bundle(bundleOpts);
+  const {
+    bundle: { parsed },
+  } = await bundle(bundleOpts);
   return parsed.swagger !== undefined ? convertSwagger2OpenAPI(parsed) : parsed;
 }
 

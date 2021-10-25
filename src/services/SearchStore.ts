@@ -23,8 +23,8 @@ export class SearchStore<T> {
   searchWorker = getWorker();
 
   indexItems(groups: Array<IMenuItem | OperationModel>) {
-    const recurse = items => {
-      items.forEach(group => {
+    const recurse = (items) => {
+      items.forEach((group) => {
         if (group.type !== 'group') {
           this.add(group.name, group.description || '', group.id);
         }
@@ -59,7 +59,7 @@ export class SearchStore<T> {
 
   fromExternalJS(path?: string, exportName?: string) {
     if (path && exportName) {
-      this.searchWorker.fromExternalJS(path, exportName)
+      this.searchWorker.fromExternalJS(path, exportName);
     }
   }
 }

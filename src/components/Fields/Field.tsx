@@ -38,7 +38,7 @@ export class Field extends React.Component<FieldProps> {
     }
   };
 
-  handleKeyPress = e => {
+  handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.toggle();

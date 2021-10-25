@@ -60,7 +60,7 @@ export class SecuritySchemesModel {
   constructor(parser: OpenAPIParser) {
     const schemes = (parser.spec.components && parser.spec.components.securitySchemes) || {};
     this.schemes = Object.keys(schemes).map(
-      name => new SecuritySchemeModel(parser, name, schemes[name]),
+      (name) => new SecuritySchemeModel(parser, name, schemes[name]),
     );
   }
 }

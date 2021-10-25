@@ -34,7 +34,7 @@ export class MediaTypeModel {
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
-        example => new ExampleModel(parser, example, name, info.encoding),
+        (example) => new ExampleModel(parser, example, name, info.encoding),
       );
     } else if (info.example !== undefined) {
       this.examples = {

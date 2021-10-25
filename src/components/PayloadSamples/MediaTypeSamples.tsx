@@ -21,9 +21,10 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
   state = {
     activeIdx: 0,
   };
-  switchMedia = ({ idx }) => {
+
+  switchMedia = ({ value }) => {
     this.setState({
-      activeIdx: idx,
+      activeIdx: parseInt(value, 10),
     });
   };
   render() {
@@ -41,8 +42,8 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
     if (examplesNames.length > 1) {
       const options = examplesNames.map((name, idx) => {
         return {
-          value: examples[name].summary || name,
-          idx,
+          label: examples[name].summary || name,
+          value: idx.toString(),
         };
       });
 
@@ -54,7 +55,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
           <DropdownWrapper>
             <DropdownLabel>Example</DropdownLabel>
             {this.props.renderDropdown({
-              value: options[activeIdx].value,
+              value: options[activeIdx],
               options,
               onChange: this.switchMedia,
               ariaLabel: 'Example',

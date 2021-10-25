@@ -74,8 +74,15 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
     );
   }
 
-  private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+  private renderDropdown = (props) => {
+    return (
+      <DropdownOrLabel
+        Label={MimeLabel}
+        Dropdown={InvertedSimpleDropdown}
+        aria-label="Schema definition dropdown"
+        {...props}
+      />
+    );
   };
 }
 
@@ -83,7 +90,7 @@ const MediaSamplesWrap = styled.div`
   background: ${({ theme }) => theme.codeBlock.backgroundColor};
   & > div,
   & > pre {
-    padding: ${props => props.theme.spacing.unit * 4}px;
+    padding: ${(props) => props.theme.spacing.unit * 4}px;
     margin: 0;
   }
 

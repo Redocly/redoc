@@ -2,8 +2,8 @@ import { SECTION_ATTR } from '../services/MenuStore';
 import styled, { media } from '../styled-components';
 
 export const MiddlePanel = styled.div<{ compact?: boolean }>`
-  width: calc(100% - ${props => props.theme.rightPanel.width});
-  padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
+  width: calc(100% - ${(props) => props.theme.rightPanel.width});
+  padding: 0 ${(props) => props.theme.spacing.sectionHorizontal}px;
 
   ${({ compact, theme }) =>
     media.lessThan('medium', true)`
@@ -14,10 +14,10 @@ export const MiddlePanel = styled.div<{ compact?: boolean }>`
   `};
 `;
 
-export const Section = styled.div.attrs(props => ({
+export const Section = styled.div.attrs((props) => ({
   [SECTION_ATTR]: props.id,
 }))<{ underlined?: boolean }>`
-  padding: ${props => props.theme.spacing.sectionVertical}px 0;
+  padding: ${(props) => props.theme.spacing.sectionVertical}px 0;
 
   &:last-child {
     min-height: calc(100vh + 1px);
@@ -48,20 +48,20 @@ export const Section = styled.div.attrs(props => ({
 `;
 
 export const RightPanel = styled.div`
-  width: ${props => props.theme.rightPanel.width};
+  width: ${(props) => props.theme.rightPanel.width};
   color: ${({ theme }) => theme.rightPanel.textColor};
-  background-color: ${props => props.theme.rightPanel.backgroundColor};
-  padding: 0 ${props => props.theme.spacing.sectionHorizontal}px;
+  background-color: ${(props) => props.theme.rightPanel.backgroundColor};
+  padding: 0 ${(props) => props.theme.spacing.sectionHorizontal}px;
 
   ${media.lessThan('medium', true)`
     width: 100%;
-    padding: ${props =>
+    padding: ${(props) =>
       `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
   `};
 `;
 
 export const DarkRightPanel = styled(RightPanel)`
-  background-color: ${props => props.theme.rightPanel.backgroundColor};
+  background-color: ${(props) => props.theme.rightPanel.backgroundColor};
 `;
 
 export const Row = styled.div`

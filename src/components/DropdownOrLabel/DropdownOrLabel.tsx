@@ -10,7 +10,14 @@ export interface DropdownOrLabelProps extends DropdownProps {
 export function DropdownOrLabel(props: DropdownOrLabelProps): JSX.Element {
   const { Label = MimeLabel, Dropdown = SimpleDropdown } = props;
   if (props.options.length === 1) {
-    return <Label>{props.options[0].value}</Label>;
+    return <Label>{props.options[0].label}</Label>;
   }
-  return <Dropdown {...props} searchable={false} />;
+  return (
+    <Dropdown
+      className={'react-dropdown-container'}
+      classNamePrefix={'react-dropdown'}
+      isSearchable={false}
+      {...props}
+    />
+  );
 }

@@ -100,7 +100,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   setResults(results: SearchResult[], term: string) {
     this.setState({
       results,
-      noResults: results.length === 0
+      noResults: results.length === 0,
     });
     this.props.marker.mark(term);
   }
@@ -108,7 +108,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   @bind
   @debounce(400)
   searchCallback(searchTerm: string) {
-    this.props.search.search(searchTerm).then(res => {
+    this.props.search.search(searchTerm).then((res) => {
       this.setResults(res, searchTerm);
     });
   }
@@ -130,7 +130,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
   render() {
     const { activeItemIdx } = this.state;
-    const results = this.state.results.map(res => ({
+    const results = this.state.results.map((res) => ({
       item: this.props.getItemById(res.meta)!,
       score: res.score,
     }));

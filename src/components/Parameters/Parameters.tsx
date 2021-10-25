@@ -28,7 +28,7 @@ const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
 export class Parameters extends React.PureComponent<ParametersProps> {
   orderParams(params: FieldModel[]): Record<string, FieldModel[]> {
     const res = {};
-    params.forEach(param => {
+    params.forEach((param) => {
       safePush(res, param.in, param);
     });
     return res;
@@ -50,7 +50,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
 
     return (
       <>
-        {paramsPlaces.map(place => (
+        {paramsPlaces.map((place) => (
           <ParametersGroup key={place} place={place} parameters={paramsMap[place]} />
         ))}
         {bodyContent && <BodyContent content={bodyContent} description={bodyDescription} />}
@@ -62,12 +62,15 @@ export class Parameters extends React.PureComponent<ParametersProps> {
 function DropdownWithinHeader(props) {
   return (
     <UnderlinedHeader key="header">
-      Request Body schema: <DropdownOrLabel {...props} />
+      Request Body schema: <DropdownOrLabel {...props} aria-label="Request body schema dropdown" />
     </UnderlinedHeader>
   );
 }
 
-export function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+export function BodyContent(props: {
+  content: MediaContentModel;
+  description?: string;
+}): JSX.Element {
   const { content, description } = props;
   const { isRequestType } = content;
   return (

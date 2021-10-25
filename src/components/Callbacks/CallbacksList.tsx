@@ -19,7 +19,7 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
     return (
       <div>
         <CallbacksHeader> Callbacks </CallbacksHeader>
-        {callbacks.map(callback => {
+        {callbacks.map((callback) => {
           return callback.operations.map((operation, index) => {
             return (
               <CallbackOperation key={`${callback.name}_${index}`} callbackOperation={operation} />

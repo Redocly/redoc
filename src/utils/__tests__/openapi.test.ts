@@ -103,7 +103,7 @@ describe('Utils', () => {
 
     it('Should return pathName if no summary, operationId, description', () => {
       const operation = {
-        pathName: '/sandbox/test'
+        pathName: '/sandbox/test',
       };
       expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
     });
@@ -141,9 +141,9 @@ describe('Utils', () => {
       object: ['maxProperties', 'minProperties', 'required', 'additionalProperties', 'properties'],
     };
 
-    Object.keys(tests).forEach(name => {
+    Object.keys(tests).forEach((name) => {
       it(`Should detect ${name} if ${name} properties are present`, () => {
-        tests[name].forEach(propName => {
+        tests[name].forEach((propName) => {
           expect(
             detectType({
               [propName]: 0,
@@ -174,7 +174,7 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
-    it('should return true for array contains object and schema hasn\'t properties', () => {
+    it("should return true for array contains object and schema hasn't properties", () => {
       const schema = {
         type: ['object', 'string'],
       };
@@ -231,10 +231,10 @@ describe('Utils', () => {
       const schema = {
         type: 'array',
         items: {
-            type: 'array',
-            items: {
-              type: 'string'
-            },
+          type: 'array',
+          items: {
+            type: 'string',
+          },
         },
       };
       expect(isPrimitiveType(schema)).toEqual(true);
@@ -415,7 +415,7 @@ describe('Utils', () => {
       min?: number,
       max?: number,
       multipleOf?: number,
-      uniqueItems?: boolean
+      uniqueItems?: boolean,
     ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
     it('should not have a humanized constraint without schema constraints', () => {
@@ -455,9 +455,9 @@ describe('Utils', () => {
     });
 
     it('should have a humanized constraint when uniqueItems is set', () => {
-      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true))).toContain(
-        'unique',
-      );
+      expect(
+        humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true)),
+      ).toContain('unique');
     });
   });
 
@@ -656,11 +656,11 @@ describe('Utils', () => {
       },
     ];
 
-    testCases.forEach(locationTestGroup => {
+    testCases.forEach((locationTestGroup) => {
       describe(locationTestGroup.description, () => {
-        locationTestGroup.cases.forEach(valueTypeTestGroup => {
+        locationTestGroup.cases.forEach((valueTypeTestGroup) => {
           describe(valueTypeTestGroup.description, () => {
-            valueTypeTestGroup.cases.forEach(testCase => {
+            valueTypeTestGroup.cases.forEach((testCase) => {
               it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
                 const parameter: OpenAPIParameter = {
                   name: locationTestGroup.name,

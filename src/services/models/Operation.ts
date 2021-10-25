@@ -173,7 +173,8 @@ export class OperationModel implements IMenuItem {
   @memoize
   get requestBody() {
     return (
-      this.operationSpec.requestBody && new RequestBodyModel({
+      this.operationSpec.requestBody &&
+      new RequestBodyModel({
         parser: this.parser,
         infoOrRef: this.operationSpec.requestBody,
         options: this.options,

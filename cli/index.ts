@@ -45,7 +45,7 @@ const BUNDLES_DIR = dirname(require.resolve('redoc'));
 YargsParser.command(
   'serve <spec>',
   'start the server',
-  yargs => {
+  (yargs) => {
     yargs.positional('spec', {
       describe: 'path or URL to your spec',
     });
@@ -81,7 +81,7 @@ YargsParser.command(
     yargs.demandOption('spec');
     return yargs;
   },
-  async argv => {
+  async (argv) => {
     const config: Options = {
       ssr: argv.ssr as boolean,
       title: argv.title as string,
@@ -102,7 +102,7 @@ YargsParser.command(
   .command(
     'bundle <spec>',
     'bundle spec into zero-dependency HTML-file',
-    yargs => {
+    (yargs) => {
       yargs.positional('spec', {
         describe: 'path or URL to your spec',
       });
@@ -213,7 +213,7 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     const watcher = watch(pathToSpecDirectory, watchOptions);
     const log = console.log.bind(console);
 
-    const handlePath = async _path => {
+    const handlePath = async (_path) => {
       try {
         spec = await loadAndBundleSpec(resolve(pathToSpec));
         pageHTML = await getPageHTML(spec, pathToSpec, options);
@@ -224,18 +224,18 @@ async function serve(port: number, pathToSpec: string, options: Options = {}) {
     };
 
     watcher
-      .on('change', async path => {
+      .on('change', async (path) => {
         log(`${path} changed, updating docs`);
         handlePath(path);
       })
-      .on('add', async path => {
+      .on('add', async (path) => {
         log(`File ${path} added, updating docs`);
         handlePath(path);
       })
-      .on('addDir', path => {
+      .on('addDir', (path) => {
         log(`↗  Directory ${path} added. Files in here will trigger reload.`);
       })
-      .on('error', error => console.error(`Watcher error: ${error}`))
+      .on('error', (error) => console.error(`Watcher error: ${error}`))
       .on('ready', () => log(`👀  Watching ${pathToSpecDirectory} for changes...`));
   }
 }
@@ -364,7 +364,7 @@ function escapeClosingScriptTag(str) {
 
 // see http://www.thespanner.co.uk/2011/07/25/the-json-specification-is-now-wrong/
 function escapeUnicode(str) {
-  return str.replace(/\u2028|\u2029/g, m => '\\u202' + (m === '\u2028' ? '8' : '9'));
+  return str.replace(/\u2028|\u2029/g, (m) => '\\u202' + (m === '\u2028' ? '8' : '9'));
 }
 
 function handleError(error: Error) {

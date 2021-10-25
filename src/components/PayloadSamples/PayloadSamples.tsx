@@ -21,7 +21,7 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
 
     return (
       <MediaTypesSwitch content={mimeContent} renderDropdown={this.renderDropdown} withLabel={true}>
-        {mediaType => (
+        {(mediaType) => (
           <MediaTypeSamples
             key="samples"
             mediaType={mediaType}
@@ -32,7 +32,14 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
     );
   }
 
-  private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+  private renderDropdown = (props) => {
+    return (
+      <DropdownOrLabel
+        Label={MimeLabel}
+        Dropdown={InvertedSimpleDropdown}
+        aria-label="Payload sample dropdown"
+        {...props}
+      />
+    );
   };
 }

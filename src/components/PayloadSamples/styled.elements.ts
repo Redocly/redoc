@@ -29,49 +29,48 @@ export const DropdownWrapper = styled.div`
 
 export const InvertedSimpleDropdown = styled(StyledDropdown)`
   && {
-    margin-left: 10px;
-    text-transform: none;
-    font-size: 0.929em;
-    margin: 0 0 10px 0;
     display: block;
-    background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
-    font-size: 1em;
     border: none;
+    margin: 0 0 10px 0;
     padding: 0.9em 1.6em 0.9em 0.9em;
     box-shadow: none;
+
+    text-transform: none;
+
+    background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
+
     &:hover,
     &:focus-within {
-      border: none;
+      border-bottom: 1px solid ${({ theme }) => theme.rightPanel.textColor};
+      border-right: 1px solid ${({ theme }) => theme.rightPanel.textColor};
+      border-left: 1px solid ${({ theme }) => theme.rightPanel.textColor};
+      border-top: none;
       box-shadow: none;
-    }
-    &:focus-within {
+
       background-color: ${({ theme }) => transparentize(0.3, theme.rightPanel.backgroundColor)};
     }
 
-    .dropdown-arrow {
-      border-top-color: ${({ theme }) => theme.rightPanel.textColor};
-    }
-    .dropdown-selector-value {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      color: ${({ theme }) => theme.rightPanel.textColor};
+    .react-dropdown__control {
+      border: transparent;
+      background-color: transparent;
+
+      .react-dropdown__single-value {
+        color: ${({ theme }) => theme.rightPanel.textColor};
+      }
+
+      .react-dropdown__indicator {
+        border-color: ${({ theme }) => theme.rightPanel.textColor} transparent transparent;
+      }
     }
 
-    .dropdown-selector-content {
-      margin: 0;
-      margin-top: 2px;
-      .dropdown-option {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
+    .react-dropdown__menu {
+      left: 0;
     }
   }
 `;
 
 export const NoSampleLabel = styled.div`
-  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-family: ${(props) => props.theme.typography.code.fontFamily};
   font-size: 12px;
   color: #ee807f;
 `;

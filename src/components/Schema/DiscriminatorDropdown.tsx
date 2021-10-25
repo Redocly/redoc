@@ -33,12 +33,12 @@ export class DiscriminatorDropdown extends React.Component<{
 
     const options = parent.oneOf.map((subSchema, idx) => {
       return {
-        value: subSchema.title,
-        idx,
+        value: idx.toString(),
+        label: subSchema.title,
       };
     });
 
-    const activeValue = options[parent.activeOneOf].value;
+    const activeValue = options[parent.activeOneOf];
 
     this.sortOptions(options, enumValues);
 
@@ -47,12 +47,16 @@ export class DiscriminatorDropdown extends React.Component<{
         value={activeValue}
         options={options}
         onChange={this.changeActiveChild}
-        ariaLabel="Example"
+        className={'react-dropdown-container'}
+        classNamePrefix={'react-dropdown'}
+        isSearchable={false}
+        aria-label="Example"
       />
     );
   }
 
-  changeActiveChild = (option: DropdownOption) => {
-    this.props.parent.activateOneOf(option.idx);
+  changeActiveChild = ({ value }) => {
+    const idx = parseInt(value, 10);
+    this.props.parent.activateOneOf(idx);
   };
 }

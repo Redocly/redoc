@@ -31,13 +31,13 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
 
           <Tabs defaultIndex={0}>
             <TabList hidden={hideTabList}>
-              {samples.map(sample => (
+              {samples.map((sample) => (
                 <Tab key={sample.lang + '_' + (sample.label || '')}>
                   {sample.label !== undefined ? sample.label : sample.lang}
                 </Tab>
               ))}
             </TabList>
-            {samples.map(sample => (
+            {samples.map((sample) => (
               <TabPanel key={sample.lang + '_' + (sample.label || '')}>
                 {isPayloadSample(sample) ? (
                   <div>

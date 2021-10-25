@@ -20,8 +20,15 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
   static contextType = OptionsContext;
   context: RedocNormalizedOptions;
 
-  private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+  private renderDropdown = (props) => {
+    return (
+      <DropdownOrLabel
+        Label={MimeLabel}
+        Dropdown={InvertedSimpleDropdown}
+        aria-label="Callback sample dropdown"
+        {...props}
+      />
+    );
   };
 
   render() {
@@ -32,10 +39,10 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
     }
 
     const operations = callbacks
-      .map(callback => callback.operations.map(operation => operation))
+      .map((callback) => callback.operations.map((operation) => operation))
       .reduce((a, b) => a.concat(b), []);
 
-    const hasSamples = operations.some(operation => operation.codeSamples.length > 0);
+    const hasSamples = operations.some((operation) => operation.codeSamples.length > 0);
 
     if (!hasSamples) {
       return null;
@@ -43,8 +50,8 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
 
     const dropdownOptions = operations.map((callback, idx) => {
       return {
-        value: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
-        idx,
+        label: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
+        value: idx.toString(),
       };
     });
 
@@ -59,7 +66,7 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
             label={'Callback'}
             options={dropdownOptions}
           >
-            {callback => (
+            {(callback) => (
               <CallbackPayloadSample
                 key="callbackPayloadSample"
                 callback={callback}
@@ -75,5 +82,5 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
 
 export const SamplesWrapper = styled.div`
   background: ${({ theme }) => theme.codeBlock.backgroundColor};
-  padding: ${props => props.theme.spacing.unit * 4}px;
+  padding: ${(props) => props.theme.spacing.unit * 4}px;
 `;

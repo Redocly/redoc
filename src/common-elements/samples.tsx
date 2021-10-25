@@ -33,8 +33,8 @@ export const SampleControlsWrap = styled.div`
 `;
 
 export const StyledPre = styled(PrismDiv.withComponent('pre'))`
-  font-family: ${props => props.theme.typography.code.fontFamily};
-  font-size: ${props => props.theme.typography.code.fontSize};
+  font-family: ${(props) => props.theme.typography.code.fontFamily};
+  font-size: ${(props) => props.theme.typography.code.fontSize};
   overflow-x: auto;
   margin: 0;
 

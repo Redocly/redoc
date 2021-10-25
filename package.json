@@ -148,7 +148,6 @@
   "dependencies": {
     "@babel/runtime": "^7.14.0",
     "@redocly/openapi-core": "^1.0.0-beta.54",
-    "@redocly/react-dropdown-aria": "^2.0.11",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -165,6 +164,7 @@
     "polished": "^4.1.3",
     "prismjs": "^1.24.1",
     "prop-types": "^15.7.2",
+    "react-select": "^5.1.0",
     "react-tabs": "^3.2.2",
     "slugify": "~1.4.7",
     "stickyfill": "^1.1.1",

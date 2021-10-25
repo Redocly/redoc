@@ -9,8 +9,8 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
 }))<{ type: string }>`
   width: 9ex;
   display: inline-block;
-  height: ${props => props.theme.typography.code.fontSize};
-  line-height: ${props => props.theme.typography.code.fontSize};
+  height: ${(props) => props.theme.typography.code.fontSize};
+  line-height: ${(props) => props.theme.typography.code.fontSize};
   background-color: #333;
   border-radius: 3px;
   background-repeat: no-repeat;
@@ -26,43 +26,43 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   margin-top: 2px;
 
   &.get {
-    background-color: ${props => props.theme.colors.http.get};
+    background-color: ${(props) => props.theme.colors.http.get};
   }
 
   &.post {
-    background-color: ${props => props.theme.colors.http.post};
+    background-color: ${(props) => props.theme.colors.http.post};
   }
 
   &.put {
-    background-color: ${props => props.theme.colors.http.put};
+    background-color: ${(props) => props.theme.colors.http.put};
   }
 
   &.options {
-    background-color: ${props => props.theme.colors.http.options};
+    background-color: ${(props) => props.theme.colors.http.options};
   }
 
   &.patch {
-    background-color: ${props => props.theme.colors.http.patch};
+    background-color: ${(props) => props.theme.colors.http.patch};
   }
 
   &.delete {
-    background-color: ${props => props.theme.colors.http.delete};
+    background-color: ${(props) => props.theme.colors.http.delete};
   }
 
   &.basic {
-    background-color: ${props => props.theme.colors.http.basic};
+    background-color: ${(props) => props.theme.colors.http.basic};
   }
 
   &.link {
-    background-color: ${props => props.theme.colors.http.link};
+    background-color: ${(props) => props.theme.colors.http.link};
   }
 
   &.head {
-    background-color: ${props => props.theme.colors.http.head};
+    background-color: ${(props) => props.theme.colors.http.head};
   }
 
   &.hook {
-    background-color: ${props => props.theme.colors.primary.main};
+    background-color: ${(props) => props.theme.colors.primary.main};
   }
 `;
 
@@ -84,7 +84,7 @@ export const MenuItemUl = styled.ul<{ expanded: boolean }>`
     font-size: 0.929em;
   }
 
-  ${props => (props.expanded ? '' : 'display: none;')};
+  ${(props) => (props.expanded ? '' : 'display: none;')};
 `;
 
 export const MenuItemLi = styled.li<{ depth: number }>`
@@ -92,7 +92,7 @@ export const MenuItemLi = styled.li<{ depth: number }>`
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0;
-  ${props => (props.depth === 0 ? 'margin-top: 15px' : '')};
+  ${(props) => (props.depth === 0 ? 'margin-top: 15px' : '')};
 `;
 
 export const menuItemDepth = {
@@ -102,17 +102,17 @@ export const menuItemDepth = {
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
-    color: ${props => props.theme.sidebar.textColor};
+    color: ${(props) => props.theme.sidebar.textColor};
   `,
   1: css`
     font-size: 0.929em;
     text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
     &:hover {
-      color: ${props => props.theme.sidebar.activeTextColor};
+      color: ${(props) => props.theme.sidebar.activeTextColor};
     }
   `,
   2: css`
-    color: ${props => props.theme.sidebar.textColor};
+    color: ${(props) => props.theme.sidebar.textColor};
   `,
 };
 
@@ -130,22 +130,22 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }),
 }))<MenuItemLabelType>`
   cursor: pointer;
-  color: ${props =>
+  color: ${(props) =>
     props.active ? props.theme.sidebar.activeTextColor : props.theme.sidebar.textColor};
   margin: 0;
-  padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
+  padding: 12.5px ${(props) => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
   justify-content: space-between;
-  font-family: ${props => props.theme.typography.headings.fontFamily};
-  ${props => menuItemDepth[props.depth]};
-  background-color: ${props => (props.active ? menuItemActiveBg(props.depth, props) : '')};
+  font-family: ${(props) => props.theme.typography.headings.fontFamily};
+  ${(props) => menuItemDepth[props.depth]};
+  background-color: ${(props) => (props.active ? menuItemActiveBg(props.depth, props) : '')};
 
-  ${props => (props.deprecated && deprecatedCss) || ''};
+  ${(props) => (props.deprecated && deprecatedCss) || ''};
 
   &:hover {
-    background-color: ${props => menuItemActiveBg(props.depth, props)};
+    background-color: ${(props) => menuItemActiveBg(props.depth, props)};
   }
 
   ${ShelfIcon} {
@@ -160,7 +160,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
 export const MenuItemTitle = styled.span<{ width?: string }>`
   display: inline-block;
   vertical-align: middle;
-  width: ${props => (props.width ? props.width : 'auto')};
+  width: ${(props) => (props.width ? props.width : 'auto')};
   overflow: hidden;
   text-overflow: ellipsis;
 `;

@@ -144,12 +144,12 @@ export class MenuStore {
     }
     let item: IMenuItem | undefined;
 
-    item = this.flatItems.find(i => i.id === id);
+    item = this.flatItems.find((i) => i.id === id);
     if (item) {
       this.activateAndScroll(item, false);
     } else {
       if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
-        item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
+        item = this.flatItems.find((i) => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
         this.activate(item);
       }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
@@ -185,7 +185,7 @@ export class MenuStore {
   }
 
   getItemById = (id: string) => {
-    return this.flatItems.find(item => item.id === id);
+    return this.flatItems.find((item) => item.id === id);
   };
 
   /**

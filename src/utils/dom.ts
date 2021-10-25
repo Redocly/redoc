@@ -15,10 +15,10 @@ export function querySelector(selector: string): Element | null {
 export function html2Str(html: string): string {
   return html
     .split(/<[^>]+>/)
-    .map(chunk => {
+    .map((chunk) => {
       return chunk.trim();
     })
-    .filter(trimmedChunk => {
+    .filter((trimmedChunk) => {
       return trimmedChunk.length > 0;
     })
     .join(' ');
@@ -27,7 +27,7 @@ export function html2Str(html: string): string {
 // scrollIntoViewIfNeeded polyfill
 
 if (typeof Element !== 'undefined' && !(Element as any).prototype.scrollIntoViewIfNeeded) {
-  (Element as any).prototype.scrollIntoViewIfNeeded = function(centerIfNeeded) {
+  (Element as any).prototype.scrollIntoViewIfNeeded = function (centerIfNeeded) {
     centerIfNeeded = arguments.length === 0 ? true : !!centerIfNeeded;
 
     const parent = this.parentNode;

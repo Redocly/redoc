@@ -193,7 +193,10 @@ export class OpenAPIParser {
     if (keys.length === 0) {
       return resolved;
     }
-    if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
+    if (
+      mergeAsAllOf &&
+      keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')
+    ) {
       return {
         allOf: [rest, resolved],
       };

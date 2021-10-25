@@ -134,7 +134,10 @@ export class SchemaModel {
     this.maxItems = schema.maxItems;
 
     if (!!schema.nullable || schema['x-nullable']) {
-      if (Array.isArray(this.type) && !this.type.some((value) => value === null || value === 'null')) {
+      if (
+        Array.isArray(this.type) &&
+        !this.type.some((value) => value === null || value === 'null')
+      ) {
         this.type = [...this.type, 'null'];
       } else if (!Array.isArray(this.type) && (this.type !== null || this.type !== 'null')) {
         this.type = [this.type, 'null'];
@@ -142,7 +145,7 @@ export class SchemaModel {
     }
 
     this.displayType = Array.isArray(this.type)
-      ? this.type.map(item => item === null ? 'null' : item).join(' or ')
+      ? this.type.map((item) => (item === null ? 'null' : item)).join(' or ')
       : this.type;
 
     if (this.isCircular) {
@@ -194,9 +197,8 @@ export class SchemaModel {
         this.enum = this.items.enum;
       }
       if (Array.isArray(this.type)) {
-        const filteredType = this.type.filter(item => item !== 'array');
-        if (filteredType.length)
-          this.displayType += ` or ${filteredType.join(' or ')}`;
+        const filteredType = this.type.filter((item) => item !== 'array');
+        if (filteredType.length) this.displayType += ` or ${filteredType.join(' or ')}`;
       }
     }
 
@@ -215,7 +217,7 @@ export class SchemaModel {
       const title =
         isNamedDefinition(variant.$ref) && !merged.title
           ? JsonPointer.baseName(variant.$ref)
-          : `${(merged.title || '')}${(merged.const && JSON.stringify(merged.const)) || ''}`;
+          : `${merged.title || ''}${(merged.const && JSON.stringify(merged.const)) || ''}`;
 
       const schema = new SchemaModel(
         parser,

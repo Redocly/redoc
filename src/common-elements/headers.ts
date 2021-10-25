@@ -6,7 +6,7 @@ const headerFontSize = {
   3: '1.27em',
 };
 
-export const headerCommonMixin = level => css`
+export const headerCommonMixin = (level) => css`
   font-family: ${({ theme }) => theme.typography.headings.fontFamily};
   font-weight: ${({ theme }) => theme.typography.headings.fontWeight};
   font-size: ${headerFontSize[level]};

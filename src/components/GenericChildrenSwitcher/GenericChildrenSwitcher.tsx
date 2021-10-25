@@ -32,10 +32,10 @@ export class GenericChildrenSwitcher<T> extends React.Component<
     };
   }
 
-  switchItem = ({ idx }) => {
+  switchItem = ({ value }) => {
     if (this.props.items) {
       this.setState({
-        activeItemIdx: idx,
+        activeItemIdx: parseInt(value, 10),
       });
     }
   };
@@ -61,7 +61,7 @@ export class GenericChildrenSwitcher<T> extends React.Component<
       <>
         <Wrapper>
           {this.props.renderDropdown({
-            value: this.props.options[this.state.activeItemIdx].value,
+            value: this.props.options[this.state.activeItemIdx],
             options: this.props.options,
             onChange: this.switchItem,
             ariaLabel: this.props.label || 'Callback',

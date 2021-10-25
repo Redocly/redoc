@@ -12,7 +12,7 @@ import styled, { createGlobalStyle } from '../styled-components';
  * That's why the following ugly fix is required
  */
 const PerfectScrollbarConstructor =
-  PerfectScrollbarNamespace.default || ((PerfectScrollbarNamespace as any) as PerfectScrollbarType);
+  PerfectScrollbarNamespace.default || (PerfectScrollbarNamespace as any as PerfectScrollbarType);
 
 const PSStyling = createGlobalStyle`${psStyles && psStyles.toString()}`;
 
@@ -46,7 +46,7 @@ export class PerfectScrollbar extends React.Component<PerfectScrollbarProps> {
     this.inst.destroy();
   }
 
-  handleRef = ref => {
+  handleRef = (ref) => {
     this._container = ref;
   };
 
@@ -73,7 +73,7 @@ export function PerfectScrollbarWrap(
 ) {
   return (
     <OptionsContext.Consumer>
-      {options =>
+      {(options) =>
         !options.nativeScrollbars ? (
           <PerfectScrollbar {...props}>{props.children}</PerfectScrollbar>
         ) : (

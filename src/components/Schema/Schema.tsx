@@ -73,7 +73,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
-    const field = ({
+    const field = {
       schema,
       name: '',
       required: false,
@@ -82,7 +82,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       deprecated: false,
       toggle: () => null,
       expanded: false,
-    } as any) as FieldModel; // cast needed for hot-loader to not fail
+    } as any as FieldModel; // cast needed for hot-loader to not fail
 
     return (
       <div>

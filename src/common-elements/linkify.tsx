@@ -39,7 +39,7 @@ const isModifiedEvent = (event) =>
 export function Link(props: { to: string; className?: string; children?: any }) {
   const store = React.useContext(StoreContext);
   const clickHandler = React.useCallback(
-    (event:  React.MouseEvent<HTMLAnchorElement>) => {
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (!store) return;
       navigate(store.menu.history, event, props.to);
     },
