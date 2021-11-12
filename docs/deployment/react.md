@@ -28,25 +28,6 @@ npm i react react-dom mobx styled-components core-js
 import { RedocStandalone } from 'redoc';
 ```
 
-### IE polyfills
-
-If you use Redoc as a React component and you want your OpenAPI definition to render with
-IE browsers, include the following polyfills in your project:
-
-```
-import 'core-js/es6/promise';
-import 'core-js/fn/array/find';
-import 'core-js/fn/object/assign';
-import 'core-js/fn/string/ends-with';
-import 'core-js/fn/string/starts-with';
-
-import 'core-js/es6/map';
-import 'core-js/es6/symbol';
-
-import 'unfetch/polyfill/index'; // or any other fetch polyfill
-import 'url-polyfill';
-```
-
 ## Step 2 - Use the component
 
 You can either link to your OpenAPI definition with a URL, using the following format:
