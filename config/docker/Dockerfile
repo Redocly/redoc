@@ -16,7 +16,8 @@ RUN npm ci --no-optional --ignore-scripts
 
 # copy only required for the build files
 COPY src /build/src
-COPY webpack.config.ts tsconfig.json custom.d.ts /build/
+COPY webpack.config.ts tsconfig.json custom.d.ts  /build/
+COPY config/webpack-utils.ts /build/config/
 COPY typings/styled-patch.d.ts /build/typings/styled-patch.d.ts
 
 RUN npm run bundle:standalone

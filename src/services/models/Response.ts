@@ -8,6 +8,15 @@ import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
+type ResponseProps = {
+  parser: OpenAPIParser,
+  code: string,
+  defaultAsError: boolean,
+  infoOrRef: Referenced<OpenAPIResponse>,
+  options: RedocNormalizedOptions,
+  isEvent: boolean,
+}
+
 export class ResponseModel {
   @observable
   expanded: boolean = false;
@@ -19,13 +28,9 @@ export class ResponseModel {
   type: string;
   headers: FieldModel[] = [];
 
-  constructor(
-    parser: OpenAPIParser,
-    code: string,
-    defaultAsError: boolean,
-    infoOrRef: Referenced<OpenAPIResponse>,
-    options: RedocNormalizedOptions,
-  ) {
+  constructor(props: ResponseProps) {
+    const { parser, code, defaultAsError, infoOrRef, options, isEvent } = props;
+    const isRequest = isEvent ? true : false;
     makeObservable(this);
 
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
@@ -34,7 +39,7 @@ export class ResponseModel {
     parser.exitRef(infoOrRef);
     this.code = code;
     if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, false, options);
+      this.content = new MediaContentModel(parser, info.content, isRequest, options);
     }
 
     if (info['x-summary'] !== undefined) {

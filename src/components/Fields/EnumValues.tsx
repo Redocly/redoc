@@ -8,7 +8,7 @@ import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
 
 export interface EnumValuesProps {
   values: string[];
-  type: string;
+  type: string | string[];
 }
 
 export interface EnumValuesState {

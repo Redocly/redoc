@@ -211,6 +211,7 @@ export class MenuStore {
 
     this.deactivate(this.activeItem);
     if (!item) {
+      this.activeItemIdx = -1;
       this.history.replace('', rewriteHistory);
       return;
     }
