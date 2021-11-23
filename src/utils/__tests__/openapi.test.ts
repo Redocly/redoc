@@ -466,6 +466,14 @@ describe('Utils', () => {
       );
     });
 
+    it('should return correct min value', () => {
+      expect(humanizeNumberRange({ minimum: 5, exclusiveMinimum: 10 })).toEqual('> 5');
+    });
+
+    it('should return correct max value', () => {
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: 15 })).toEqual('< 15');
+    });
+
     it('should return undefined', () => {
       expect(humanizeNumberRange({})).toEqual(undefined);
     });
