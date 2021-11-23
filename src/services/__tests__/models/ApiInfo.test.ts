@@ -54,8 +54,8 @@ describe('Models', () => {
           license: {
             name: 'MIT',
             identifier: 'MIT',
-            url: 'https://opensource.org/licenses/MIT'
-          }
+            url: 'https://opensource.org/licenses/MIT',
+          },
         },
       } as any;
 

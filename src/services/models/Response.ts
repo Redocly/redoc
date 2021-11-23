@@ -9,13 +9,13 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
 type ResponseProps = {
-  parser: OpenAPIParser,
-  code: string,
-  defaultAsError: boolean,
-  infoOrRef: Referenced<OpenAPIResponse>,
-  options: RedocNormalizedOptions,
-  isEvent: boolean,
-}
+  parser: OpenAPIParser;
+  code: string;
+  defaultAsError: boolean;
+  infoOrRef: Referenced<OpenAPIResponse>;
+  options: RedocNormalizedOptions;
+  isEvent: boolean;
+};
 
 export class ResponseModel {
   @observable

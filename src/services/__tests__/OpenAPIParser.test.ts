@@ -26,6 +26,5 @@ describe('Models', () => {
 
       expect(parser.shallowDeref(schemaOrRef)).toMatchSnapshot();
     });
-
   });
 });

@@ -66,7 +66,7 @@ export const PropertyNameCell = styled(PropertyCell)`
   line-height: 20px;
   white-space: nowrap;
   font-size: 13px;
-  font-family: ${(props) => props.theme.typography.code.fontFamily};
+  font-family: ${props => props.theme.typography.code.fontFamily};
 
   &.deprecated {
     ${deprecatedCss};
@@ -80,7 +80,7 @@ export const PropertyNameCell = styled(PropertyCell)`
 export const PropertyDetailsCell = styled.td`
   border-bottom: 1px solid #9fb4be;
   padding: 10px 0;
-  width: ${(props) => props.theme.schema.defaultDetailsWidth};
+  width: ${props => props.theme.schema.defaultDetailsWidth};
   box-sizing: border-box;
 
   tr.expanded & {
@@ -90,7 +90,7 @@ export const PropertyDetailsCell = styled.td`
   ${media.lessThan('small')`
     padding: 0 20px;
     border-bottom: none;
-    border-left: 1px solid ${(props) => props.theme.schema.linesColor};
+    border-left: 1px solid ${props => props.theme.schema.linesColor};
 
     tr.last > & {
       border-left: none;

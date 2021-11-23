@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { hydrate as hydrateComponent, render } from 'react-dom';
-import { configure } from "mobx"
+import { configure } from 'mobx';
 
 import { Redoc, RedocStandalone } from './components/';
 import { AppStore, StoreState } from './services/AppStore';
@@ -8,8 +8,8 @@ import { debugTime, debugTimeEnd } from './utils/debug';
 import { querySelector } from './utils/dom';
 
 configure({
-  useProxies: 'ifavailable'
-})
+  useProxies: 'ifavailable',
+});
 
 export { Redoc, AppStore } from '.';
 

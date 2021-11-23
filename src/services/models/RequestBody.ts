@@ -9,7 +9,7 @@ type RequestBodyProps = {
   infoOrRef: Referenced<OpenAPIRequestBody>;
   options: RedocNormalizedOptions;
   isEvent: boolean;
-}
+};
 
 export class RequestBodyModel {
   description: string;
