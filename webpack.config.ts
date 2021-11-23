@@ -47,12 +47,12 @@ export default (env: { standalone?: boolean, browser?: boolean } = {}) => ({
     fallback: {
       path: require.resolve('path-browserify'),
       http: false,
-      fs: env.browser ? path.resolve(__dirname, 'src/fs.empty.js') : false,
-      os: false,
+      fs: env.browser ? path.resolve(__dirname, 'src/empty.js') : false,
+      os: path.resolve(__dirname, 'src/empty.js'),
+      tty: path.resolve(__dirname, 'src/empty.js'),
     }
   },
   performance: false,
-  // target: 'node',
   externalsPresets: env.standalone || env.browser ? {} : { node: true },
   externals: env.standalone
     ? {
