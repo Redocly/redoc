@@ -183,6 +183,7 @@ IE support for Redoc.
 For more information on Redoc's commmand-line interface, refer to
 [**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
 
+
 ## Configuration
 
 ### Security Definition location
