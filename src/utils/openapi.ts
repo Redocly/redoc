@@ -419,6 +419,39 @@ function humanizeRangeConstraint(
   return stringRange;
 }
 
+export function humanizeNumberRange(schema: OpenAPISchema): string | undefined {
+  let result;
+
+  const minimum =
+    typeof schema.exclusiveMinimum === 'number'
+      ? Math.min(schema.exclusiveMinimum, schema.minimum ?? Infinity)
+      : schema.minimum;
+  const maximum =
+    typeof schema.exclusiveMaximum === 'number'
+      ? Math.min(schema.exclusiveMaximum, schema.maximum ?? Infinity)
+      : schema.maximum;
+  const exclusiveMinimum =
+    typeof schema.exclusiveMinimum === 'number' ? true : schema.exclusiveMinimum;
+  const exclusiveMaximum =
+    typeof schema.exclusiveMaximum === 'number' ? true : schema.exclusiveMaximum;
+
+  if (minimum !== undefined && maximum !== undefined) {
+    result = exclusiveMinimum ? '( ' : '[ ';
+    result += minimum;
+    result += ' .. ';
+    result += maximum;
+    result += exclusiveMaximum ? ' )' : ' ]';
+  } else if (maximum !== undefined) {
+    result = exclusiveMaximum ? '< ' : '<= ';
+    result += maximum;
+  } else if (minimum !== undefined) {
+    result = exclusiveMinimum ? '> ' : '>= ';
+    result += minimum;
+  }
+
+  return result;
+}
+
 export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const res: string[] = [];
 
@@ -437,35 +470,7 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     res.push(multipleOfConstraint);
   }
 
-  let numberRange;
-  if (schema.minimum !== undefined && schema.maximum !== undefined) {
-    numberRange = schema.exclusiveMinimum ? '( ' : '[ ';
-    numberRange += schema.minimum;
-    numberRange += ' .. ';
-    numberRange += schema.maximum;
-    numberRange += schema.exclusiveMaximum ? ' )' : ' ]';
-  } else if (schema.maximum !== undefined) {
-    numberRange = schema.exclusiveMaximum ? '< ' : '<= ';
-    numberRange += schema.maximum;
-  } else if (schema.minimum !== undefined) {
-    numberRange = schema.exclusiveMinimum ? '> ' : '>= ';
-    numberRange += schema.minimum;
-  }
-
-  if (typeof schema.exclusiveMinimum === 'number' && typeof schema.exclusiveMaximum === 'number') {
-    numberRange = '[';
-    numberRange += schema.exclusiveMinimum;
-    numberRange += ' .. ';
-    numberRange += schema.exclusiveMaximum;
-    numberRange += ']';
-  } else if (typeof schema.exclusiveMinimum === 'number') {
-    numberRange = '> ';
-    numberRange += schema.exclusiveMinimum;
-  } else if (typeof schema.exclusiveMaximum === 'number') {
-    numberRange = '< ';
-    numberRange += schema.exclusiveMaximum;
-  }
-
+  const numberRange = humanizeNumberRange(schema);
   if (numberRange !== undefined) {
     res.push(numberRange);
   }

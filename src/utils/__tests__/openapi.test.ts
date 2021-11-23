@@ -10,6 +10,7 @@ import {
   pluralizeType,
   serializeParameterValue,
   sortByRequired,
+  humanizeNumberRange,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
@@ -103,7 +104,7 @@ describe('Utils', () => {
 
     it('Should return pathName if no summary, operationId, description', () => {
       const operation = {
-        pathName: '/sandbox/test'
+        pathName: '/sandbox/test',
       };
       expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
     });
@@ -141,9 +142,9 @@ describe('Utils', () => {
       object: ['maxProperties', 'minProperties', 'required', 'additionalProperties', 'properties'],
     };
 
-    Object.keys(tests).forEach(name => {
+    Object.keys(tests).forEach((name) => {
       it(`Should detect ${name} if ${name} properties are present`, () => {
-        tests[name].forEach(propName => {
+        tests[name].forEach((propName) => {
           expect(
             detectType({
               [propName]: 0,
@@ -174,7 +175,7 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
-    it('should return true for array contains object and schema hasn\'t properties', () => {
+    it("should return true for array contains object and schema hasn't properties", () => {
       const schema = {
         type: ['object', 'string'],
       };
@@ -231,10 +232,10 @@ describe('Utils', () => {
       const schema = {
         type: 'array',
         items: {
-            type: 'array',
-            items: {
-              type: 'string'
-            },
+          type: 'array',
+          items: {
+            type: 'string',
+          },
         },
       };
       expect(isPrimitiveType(schema)).toEqual(true);
@@ -410,12 +411,72 @@ describe('Utils', () => {
     });
   });
 
+  describe('openapi humanizeNumberRange', () => {
+    it('should return `>=` when only minimum value present or exclusiveMinimum = false', () => {
+      const expected = '>= 0';
+      expect(humanizeNumberRange({ minimum: 0 })).toEqual(expected);
+      expect(humanizeNumberRange({ minimum: 0, exclusiveMinimum: false })).toEqual(expected);
+    });
+
+    it('should return `>` when minimum value present and exclusiveMinimum set to true', () => {
+      expect(humanizeNumberRange({ minimum: 0, exclusiveMinimum: true })).toEqual('> 0');
+    });
+
+    it('should return `<=` when only maximum value present or exclusiveMinimum = false', () => {
+      const expected = '<= 10';
+      expect(humanizeNumberRange({ maximum: 10 })).toEqual(expected);
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: false })).toEqual(expected);
+    });
+
+    it('should return `<` when maximum value present and exclusiveMaximum set to true', () => {
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: true })).toEqual('< 10');
+    });
+
+    it('should return correct range for minimum and maximum values and with different exclusive set', () => {
+      expect(humanizeNumberRange({ minimum: 0, maximum: 10 })).toEqual('[ 0 .. 10 ]');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          exclusiveMinimum: true,
+          maximum: 10,
+          exclusiveMaximum: true,
+        }),
+      ).toEqual('( 0 .. 10 )');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          maximum: 10,
+          exclusiveMaximum: true,
+        }),
+      ).toEqual('[ 0 .. 10 )');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          exclusiveMinimum: true,
+          maximum: 10,
+        }),
+      ).toEqual('( 0 .. 10 ]');
+    });
+
+    it('should return correct range exclusive values only', () => {
+      expect(humanizeNumberRange({ exclusiveMinimum: 0 })).toEqual('> 0');
+      expect(humanizeNumberRange({ exclusiveMaximum: 10 })).toEqual('< 10');
+      expect(humanizeNumberRange({ exclusiveMinimum: 0, exclusiveMaximum: 10 })).toEqual(
+        '( 0 .. 10 )',
+      );
+    });
+
+    it('should return undefined', () => {
+      expect(humanizeNumberRange({})).toEqual(undefined);
+    });
+  });
+
   describe('openapi humanizeConstraints', () => {
     const itemConstraintSchema = (
       min?: number,
       max?: number,
       multipleOf?: number,
-      uniqueItems?: boolean
+      uniqueItems?: boolean,
     ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
     it('should not have a humanized constraint without schema constraints', () => {
@@ -455,9 +516,9 @@ describe('Utils', () => {
     });
 
     it('should have a humanized constraint when uniqueItems is set', () => {
-      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true))).toContain(
-        'unique',
-      );
+      expect(
+        humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true)),
+      ).toContain('unique');
     });
   });
 
@@ -656,11 +717,11 @@ describe('Utils', () => {
       },
     ];
 
-    testCases.forEach(locationTestGroup => {
+    testCases.forEach((locationTestGroup) => {
       describe(locationTestGroup.description, () => {
-        locationTestGroup.cases.forEach(valueTypeTestGroup => {
+        locationTestGroup.cases.forEach((valueTypeTestGroup) => {
           describe(valueTypeTestGroup.description, () => {
-            valueTypeTestGroup.cases.forEach(testCase => {
+            valueTypeTestGroup.cases.forEach((testCase) => {
               it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
                 const parameter: OpenAPIParameter = {
                   name: locationTestGroup.name,
