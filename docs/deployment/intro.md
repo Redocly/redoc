@@ -28,7 +28,7 @@ The following options are supported:
 
 ### OpenAPI definition
 
-You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions: 
+You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
 - OpenAPI 3.0
     - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/main/openapi/users.yaml)
     - [Swagger Petstore Sample OpenAPI Definition](https://petstore3.swagger.io/api/v3/openapi.json)
@@ -36,7 +36,8 @@ You will need an OpenAPI definition. For testing purposes, you can use one of th
     - [Thingful OpenAPI Definition](https://raw.githubusercontent.com/thingful/openapi-spec/master/spec/swagger.yaml)
     - [Fitbit Plus OpenAPI Definition](https://raw.githubusercontent.com/TwineHealth/TwineDeveloperDocs/master/spec/swagger.yaml)
 
-::: OpenAPI Specification info
+
+:::info OpenAPI specification
 For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redoc.ly/docs/resources/learning-openapi/)
 section in the documentation.
 :::
@@ -57,9 +58,7 @@ project directory and run the following command:
 openapi preview-docs openapi.yaml
 ```
 
-::: openapi.yaml
-Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition. 
-:::
+Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
 
 By default, without providing a port, the preview starts on port 8080, and can be accessed at `http://localhost:8080`.
 To exit the preview, use `control+C`.
@@ -70,9 +69,7 @@ You can alter the port if you are using 8080 already, for example:
 openapi preview-docs -p 8888 openapi.yaml
 ```
 
-::: openapi.yaml
-Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition. 
-:::
+Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
 
 For more information about the `preview-docs` command, refer to
 [OpenAPI CLI commands](https://redoc.ly/docs/cli/commands/preview-docs/#preview-docs) in the OpenAPI CLI documentation.
