@@ -44,8 +44,8 @@ replace the `spec-url` attribute with the URL or local file address to your defi
 :::attention Running Redoc locally requires an HTTP server
 Loading local OpenAPI definitions is impossible without running a web server because of issues with
 [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) and
-other security reasons. Refer to [Running Redoc locally](https://redoc.ly/docs/deployment/intro/#running_redoc_locally) for
+other security reasons. Refer to [Running Redoc locally](./deployment/intro.md#running-redoc-locally) for
 more information.
 :::
 
-For a more detailed explanation with step-by-step instructions and additional options for using Redoc, refer to the [Redoc deployment guide](/deployment/intro).
+For a more detailed explanation with step-by-step instructions and additional options for using Redoc, refer to the [Redoc deployment guide](./deployment/intro.md).
