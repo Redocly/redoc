@@ -226,7 +226,7 @@ export class MenuBuilder {
       getTags(parser, webhooks, true);
     }
 
-    if (spec.paths){
+    if (spec.paths) {
       getTags(parser, spec.paths);
     }
 

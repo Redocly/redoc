@@ -30,7 +30,7 @@ const { Provider, Consumer } = StoreContext;
 export { Provider as StoreProvider, Consumer as StoreConsumer, StoreContext };
 
 export function StoreBuilder(props: StoreBuilderProps) {
-  const {spec, specUrl, options, onLoaded, children } = props;
+  const { spec, specUrl, options, onLoaded, children } = props;
 
   const [resolvedSpec, setResolvedSpec] = React.useState<any>(null);
 
@@ -44,7 +44,7 @@ export function StoreBuilder(props: StoreBuilderProps) {
       setResolvedSpec(resolved);
     }
     load();
-  }, [spec, specUrl])
+  }, [spec, specUrl]);
 
   const store = React.useMemo(() => {
     if (!resolvedSpec) return null;
@@ -62,7 +62,7 @@ export function StoreBuilder(props: StoreBuilderProps) {
     if (store && onLoaded) {
       onLoaded();
     }
-  }, [store, onLoaded])
+  }, [store, onLoaded]);
 
   return children({
     loading: !store,

@@ -54,7 +54,9 @@
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
     "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause' --summary",
-    "docker:build": "docker build -f config/docker/Dockerfile -t redoc ."
+    "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
+    "prepare": "husky install",
+    "pre-commit": "pretty-quick --staged && npm run lint"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -112,12 +114,14 @@
     "eslint-plugin-react": "^7.24.0",
     "fork-ts-checker-webpack-plugin": "^6.2.10",
     "html-webpack-plugin": "^5.3.1",
+    "husky": "^7.0.0",
     "jest": "^27.0.3",
     "js-yaml": "^4.1.0",
     "license-checker": "^25.0.1",
     "lodash": "^4.17.21",
     "mobx": "^6.3.2",
-    "prettier": "^2.3.0",
+    "prettier": "^2.3.2",
+    "pretty-quick": "^3.0.0",
     "raf": "^3.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -207,6 +211,6 @@
     "singleQuote": true,
     "trailingComma": "all",
     "printWidth": 100,
-    "parser": "typescript"
+    "arrowParens": "avoid"
   }
 }

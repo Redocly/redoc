@@ -100,7 +100,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   setResults(results: SearchResult[], term: string) {
     this.setState({
       results,
-      noResults: results.length === 0
+      noResults: results.length === 0,
     });
     this.props.marker.mark(term);
   }

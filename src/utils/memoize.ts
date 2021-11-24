@@ -3,7 +3,7 @@ const SENTINEL = {};
 
 export function memoize<T>(target: any, name: string, descriptor: TypedPropertyDescriptor<T>) {
   if (typeof descriptor.value === 'function') {
-    return (_memoizeMethod(target, name, descriptor) as any) as TypedPropertyDescriptor<T>;
+    return _memoizeMethod(target, name, descriptor) as any as TypedPropertyDescriptor<T>;
   } else if (typeof descriptor.get === 'function') {
     return _memoizeGetter(target, name, descriptor) as TypedPropertyDescriptor<T>;
   } else {
