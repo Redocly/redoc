@@ -428,10 +428,8 @@ export function humanizeNumberRange(schema: OpenAPISchema): string | undefined {
     typeof schema.exclusiveMaximum === 'number'
       ? Math.max(schema.exclusiveMaximum, schema.maximum ?? 0)
       : schema.maximum;
-  const exclusiveMinimum =
-    typeof schema.exclusiveMinimum === 'number' ? true : schema.exclusiveMinimum;
-  const exclusiveMaximum =
-    typeof schema.exclusiveMaximum === 'number' ? true : schema.exclusiveMaximum;
+  const exclusiveMinimum = typeof schema.exclusiveMinimum === 'number' || schema.exclusiveMinimum;
+  const exclusiveMaximum = typeof schema.exclusiveMaximum === 'number' || schema.exclusiveMaximum;
 
   if (minimum !== undefined && maximum !== undefined) {
     return `${exclusiveMinimum ? '( ' : '[ '}${minimum} .. ${maximum}${
