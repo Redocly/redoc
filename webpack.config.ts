@@ -47,7 +47,7 @@ export default (env: { standalone?: boolean, browser?: boolean } = {}) => ({
     fallback: {
       path: require.resolve('path-browserify'),
       http: false,
-      fs: env.browser ? path.resolve(__dirname, 'src/empty.js') : false,
+      fs: path.resolve(__dirname, 'src/empty.js'),
       os: path.resolve(__dirname, 'src/empty.js'),
       tty: path.resolve(__dirname, 'src/empty.js'),
     }
