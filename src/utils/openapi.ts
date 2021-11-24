@@ -420,8 +420,6 @@ function humanizeRangeConstraint(
 }
 
 export function humanizeNumberRange(schema: OpenAPISchema): string | undefined {
-  let result;
-
   const minimum =
     typeof schema.exclusiveMinimum === 'number'
       ? Math.min(schema.exclusiveMinimum, schema.minimum ?? Infinity)
@@ -436,20 +434,14 @@ export function humanizeNumberRange(schema: OpenAPISchema): string | undefined {
     typeof schema.exclusiveMaximum === 'number' ? true : schema.exclusiveMaximum;
 
   if (minimum !== undefined && maximum !== undefined) {
-    result = exclusiveMinimum ? '( ' : '[ ';
-    result += minimum;
-    result += ' .. ';
-    result += maximum;
-    result += exclusiveMaximum ? ' )' : ' ]';
+    return `${exclusiveMinimum ? '( ' : '[ '}${minimum} .. ${maximum}${
+      exclusiveMaximum ? ' )' : ' ]'
+    }`;
   } else if (maximum !== undefined) {
-    result = exclusiveMaximum ? '< ' : '<= ';
-    result += maximum;
+    return `${exclusiveMaximum ? '< ' : '<= '}${maximum}`;
   } else if (minimum !== undefined) {
-    result = exclusiveMinimum ? '> ' : '>= ';
-    result += minimum;
+    return `${exclusiveMinimum ? '> ' : '>= '}${minimum}`;
   }
-
-  return result;
 }
 
 export function humanizeConstraints(schema: OpenAPISchema): string[] {
