@@ -13,9 +13,12 @@ replace the `spec-url` attribute with the URL or local file address to your defi
   <head>
     <title>Redoc</title>
     <!-- needed for adaptive design -->
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
 
     <!--
     Redoc doesn't change outer page styles
@@ -28,24 +31,23 @@ replace the `spec-url` attribute with the URL or local file address to your defi
     </style>
   </head>
   <body>
-      <!--
+    <!--
     Redoc element with link to your OpenAPI definition
     -->
-    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+    <redoc spec-url="http://petstore.swagger.io/v2/swagger.json"></redoc>
     <!--
     Link to Redoc JavaScript on CDN for rendering standalone element
     -->
-    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"></script>
   </body>
 </html>
-
 ```
 
 :::attention Running Redoc locally requires an HTTP server
 Loading local OpenAPI definitions is impossible without running a web server because of issues with
 [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) and
-other security reasons. Refer to [Running Redoc locally](https://redoc.ly/docs/deployment/intro/#running_redoc_locally) for
+other security reasons. Refer to [Running Redoc locally](./deployment/intro.md#running-redoc-locally) for
 more information.
 :::
 
-For a more detailed explanation with step-by-step instructions and additional options for using Redoc, refer to the [Redoc deployment guide](/deployment/intro).
+For a more detailed explanation with step-by-step instructions and additional options for using Redoc, refer to the [Redoc deployment guide](./deployment/intro.md).
