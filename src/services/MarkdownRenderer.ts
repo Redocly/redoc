@@ -35,6 +35,11 @@ export interface MarkdownHeading {
   description?: string;
 }
 
+export type HeadingLevelType = 1 | 2 | 3 | 4 | 5 | 6;
+export type HeadingsMap = {
+  [key in HeadingLevelType]: MarkdownHeading;
+};
+
 export function buildComponentComment(name: string) {
   return `<!-- ReDoc-Inject: <${name}> -->`;
 }
@@ -54,8 +59,8 @@ export class MarkdownRenderer {
   }
 
   headings: MarkdownHeading[] = [];
-  currentTopHeading: MarkdownHeading;
 
+  private headingsMap: HeadingsMap = {} as HeadingsMap;
   private headingEnhanceRenderer: marked.Renderer;
   private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
@@ -69,7 +74,7 @@ export class MarkdownRenderer {
 
   saveHeading(
     name: string,
-    level: number,
+    level: HeadingLevelType,
     container: MarkdownHeading[] = this.headings,
     parentId?: string,
   ): MarkdownHeading {
@@ -121,28 +126,18 @@ export class MarkdownRenderer {
       prevRegexp = regexp;
       prevPos = currentPos;
     }
-    prevHeading.description = rawText
-      .substring(prevPos)
-      .replace(prevRegexp, '')
-      .trim();
+    prevHeading.description = rawText.substring(prevPos).replace(prevRegexp, '').trim();
   }
 
-  headingRule = (
-    text: string,
-    level: 1 | 2 | 3 | 4 | 5 | 6,
-    raw: string,
-    slugger: marked.Slugger,
-  ) => {
-    if (level === 1) {
-      this.currentTopHeading = this.saveHeading(text, level);
-    } else if (level === 2) {
-      this.saveHeading(
-        text,
-        level,
-        this.currentTopHeading && this.currentTopHeading.items,
-        this.currentTopHeading && this.currentTopHeading.id,
-      );
-    }
+  headingRule = (text: string, level: HeadingLevelType, raw: string, slugger: marked.Slugger) => {
+    const prevHeading = this.headingsMap[level - 1];
+    this.headingsMap[level] = this.saveHeading(
+      text,
+      level,
+      prevHeading && prevHeading.items,
+      prevHeading && prevHeading.id,
+    );
+
     return this.originalHeadingRule(text, level, raw, slugger);
   };
 
