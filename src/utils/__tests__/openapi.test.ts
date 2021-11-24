@@ -468,10 +468,12 @@ describe('Utils', () => {
 
     it('should return correct min value', () => {
       expect(humanizeNumberRange({ minimum: 5, exclusiveMinimum: 10 })).toEqual('> 5');
+      expect(humanizeNumberRange({ minimum: -5, exclusiveMinimum: -10 })).toEqual('> -10');
     });
 
     it('should return correct max value', () => {
       expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: 15 })).toEqual('< 15');
+      expect(humanizeNumberRange({ maximum: -10, exclusiveMaximum: -15 })).toEqual('< -10');
     });
 
     it('should return undefined', () => {
