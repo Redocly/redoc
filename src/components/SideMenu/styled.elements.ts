@@ -135,7 +135,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
-    (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
+    (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * depth * 4 + 'px;') || ''}
   display: flex;
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};

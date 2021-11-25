@@ -4,9 +4,12 @@ const headerFontSize = {
   1: '1.85714em',
   2: '1.57143em',
   3: '1.27em',
+  4: '1.17em',
+  5: '1.07em',
+  6: '1em',
 };
 
-export const headerCommonMixin = level => css`
+export const headerCommonMixin = (level) => css`
   font-family: ${({ theme }) => theme.typography.headings.fontFamily};
   font-weight: ${({ theme }) => theme.typography.headings.fontWeight};
   font-size: ${headerFontSize[level]};
@@ -27,12 +30,36 @@ export const H2 = styled.h2`
   ${extensionsHook('H2')};
 `;
 
-export const H3 = styled.h2`
+export const H3 = styled.h3`
   ${headerCommonMixin(3)};
   color: black;
 
   ${extensionsHook('H3')};
 `;
+
+export const H4 = styled.h4`
+  ${headerCommonMixin(4)};
+  color: black;
+
+  ${extensionsHook('H4')};
+`;
+
+export const H5 = styled.h5`
+  ${headerCommonMixin(5)};
+  color: black;
+
+  ${extensionsHook('H5')};
+`;
+
+export const H6 = styled.h6`
+  ${headerCommonMixin(6)};
+
+  ${extensionsHook('H6')};
+`;
+
+export const headings = () => {
+  return { H1, H2, H3, H4, H5, H6 };
+};
 
 export const RightPanelHeader = styled.h3`
   color: ${({ theme }) => theme.rightPanel.textColor};

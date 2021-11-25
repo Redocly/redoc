@@ -120,7 +120,8 @@ export class MarkdownRenderer {
       prevHeading.description = rawText
         .substring(prevPos, currentPos)
         .replace(prevRegexp, '')
-        .trim();
+        .trim()
+        .replace(/#+$/gi, '');
 
       prevHeading = heading;
       prevRegexp = regexp;
@@ -130,13 +131,15 @@ export class MarkdownRenderer {
   }
 
   headingRule = (text: string, level: HeadingLevelType, raw: string, slugger: marked.Slugger) => {
-    const prevHeading = this.headingsMap[level - 1];
-    this.headingsMap[level] = this.saveHeading(
-      text,
-      level,
-      prevHeading && prevHeading.items,
-      prevHeading && prevHeading.id,
-    );
+    if (level <= 6) {
+      const prevHeading = this.headingsMap[level - 1];
+      this.headingsMap[level] = this.saveHeading(
+        text,
+        level,
+        prevHeading && prevHeading.items,
+        prevHeading && prevHeading.id,
+      );
+    }
 
     return this.originalHeadingRule(text, level, raw, slugger);
   };
@@ -144,9 +147,7 @@ export class MarkdownRenderer {
   renderMd(rawText: string, extractHeadings: boolean = false): string {
     const opts = extractHeadings ? { renderer: this.headingEnhanceRenderer } : undefined;
 
-    const res = marked(rawText.toString(), opts);
-
-    return res;
+    return marked(rawText.toString(), opts);
   }
 
   extractHeadings(rawText: string): MarkdownHeading[] {
