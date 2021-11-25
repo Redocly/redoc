@@ -53,6 +53,7 @@ export const H5 = styled.h5`
 
 export const H6 = styled.h6`
   ${headerCommonMixin(6)};
+  color: black;
 
   ${extensionsHook('H6')};
 `;
