@@ -22,7 +22,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
-  usePathInSidebar?: boolean;
+  sideNavStyle?: string | 'summary-only';
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
@@ -143,6 +143,22 @@ export class RedocNormalizedOptions {
     }
   }
 
+  static normalizeSideNavStyle(value: RedocRawOptions['sideNavStyle']): string {
+    const defaultValue = 'summary-only';
+    if (typeof value !== 'string') {
+      return defaultValue;
+    }
+
+    switch (value) {
+      case defaultValue:
+        return value;
+      case 'path-only':
+        return value;
+      default:
+        return defaultValue;
+    }
+  }
+
   static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
     if (typeof value === 'number') {
       return Math.max(0, value); // always greater or equal than 0
@@ -190,7 +206,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
-  usePathInSidebar: boolean;
+  sideNavStyle: string;
   hideSingleRequestSampleTab: boolean;
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
@@ -249,7 +265,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
-    this.usePathInSidebar = argValueToBoolean(raw.usePathInSidebar);
+    this.sideNavStyle = RedocNormalizedOptions.normalizeSideNavStyle(raw.sideNavStyle);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
