@@ -49,6 +49,7 @@ export class OperationModel implements IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  sidebarName: string;
   description?: string;
   type = 'operation' as const;
 
@@ -103,6 +104,9 @@ export class OperationModel implements IMenuItem {
     this.isEvent = this.isCallback || this.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
+
+    this.sidebarName = this.name;
+    if (options.usePathInSidebar) this.sidebarName = this.path;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
