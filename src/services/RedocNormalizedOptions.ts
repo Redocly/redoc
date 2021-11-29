@@ -5,6 +5,11 @@ import { isNumeric, mergeObjects } from '../utils/helpers';
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
 
+export enum SideNavStyleEnum {
+  SummaryOnly = 'summary-only',
+  PathOnly = 'path-only',
+}
+
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
@@ -22,7 +27,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
-  sideNavStyle?: string | 'summary-only';
+  sideNavStyle?: SideNavStyleEnum;
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
@@ -143,8 +148,8 @@ export class RedocNormalizedOptions {
     }
   }
 
-  static normalizeSideNavStyle(value: RedocRawOptions['sideNavStyle']): string {
-    const defaultValue = 'summary-only';
+  static normalizeSideNavStyle(value: RedocRawOptions['sideNavStyle']): SideNavStyleEnum {
+    const defaultValue = SideNavStyleEnum.SummaryOnly;
     if (typeof value !== 'string') {
       return defaultValue;
     }
@@ -152,8 +157,8 @@ export class RedocNormalizedOptions {
     switch (value) {
       case defaultValue:
         return value;
-      case 'path-only':
-        return value;
+      case SideNavStyleEnum.PathOnly:
+        return SideNavStyleEnum.PathOnly;
       default:
         return defaultValue;
     }
@@ -206,7 +211,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
-  sideNavStyle: string;
+  sideNavStyle: SideNavStyleEnum;
   hideSingleRequestSampleTab: boolean;
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
