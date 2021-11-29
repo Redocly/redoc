@@ -105,8 +105,7 @@ export class OperationModel implements IMenuItem {
 
     this.name = getOperationSummary(operationSpec);
 
-    this.sidebarLabel = this.name;
-    if (options.sideNavStyle === 'path-only') this.sidebarLabel = this.path;
+    this.sidebarLabel = options.sideNavStyle === 'path-only' ? this.path : this.name;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
