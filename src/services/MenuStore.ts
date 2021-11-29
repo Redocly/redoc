@@ -16,7 +16,7 @@ export interface IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
-  sidebarName: string;
+  sidebarLabel: string;
   description?: string;
   depth: number;
   active: boolean;

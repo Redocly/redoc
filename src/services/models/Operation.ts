@@ -49,7 +49,7 @@ export class OperationModel implements IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
-  sidebarName: string;
+  sidebarLabel: string;
   description?: string;
   type = 'operation' as const;
 
@@ -105,8 +105,8 @@ export class OperationModel implements IMenuItem {
 
     this.name = getOperationSummary(operationSpec);
 
-    this.sidebarName = this.name;
-    if (options.sideNavStyle === 'path-only') this.sidebarName = this.path;
+    this.sidebarLabel = this.name;
+    if (options.sideNavStyle === 'path-only') this.sidebarLabel = this.path;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
