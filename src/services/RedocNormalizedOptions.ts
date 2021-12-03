@@ -73,7 +73,7 @@ export class RedocNormalizedOptions {
     }
     if (typeof value === 'string') {
       const res = {};
-      value.split(',').forEach((code) => {
+      value.split(',').forEach(code => {
         res[code.trim()] = true;
       });
       return res;
@@ -139,7 +139,7 @@ export class RedocNormalizedOptions {
       case 'false':
         return false;
       default:
-        return value.split(',').map((ext) => ext.trim());
+        return value.split(',').map(ext => ext.trim());
     }
   }
 
@@ -277,7 +277,7 @@ export class RedocNormalizedOptions {
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
     const ignoreNamedSchemas = Array.isArray(raw.ignoreNamedSchemas)
       ? raw.ignoreNamedSchemas
-      : raw.ignoreNamedSchemas?.split(',').map((s) => s.trim());
+      : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
     this.hideSchemaPattern = argValueToBoolean(raw.hideSchemaPattern);
     this.generatedPayloadSamplesMaxDepth =

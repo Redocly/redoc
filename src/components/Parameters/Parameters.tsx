@@ -67,7 +67,10 @@ function DropdownWithinHeader(props) {
   );
 }
 
-export function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+export function BodyContent(props: {
+  content: MediaContentModel;
+  description?: string;
+}): JSX.Element {
   const { content, description } = props;
   const { isRequestType } = content;
   return (

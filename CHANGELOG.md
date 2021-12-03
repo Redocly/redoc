@@ -1,3 +1,15 @@
+# [2.0.0-rc.58](https://github.com/Redocly/redoc/compare/v2.0.0-rc.57...v2.0.0-rc.58) (2021-11-29)
+
+
+### Bug Fixes
+
+* add browser build for webpack 5 ([#1796](https://github.com/Redocly/redoc/issues/1796)) ([0e43ad3](https://github.com/Redocly/redoc/commit/0e43ad3102cfba8c4b30e59500ad4efc53f01c2d))
+* Default boolean property value not rendered [#1779](https://github.com/Redocly/redoc/issues/1779) ([#1781](https://github.com/Redocly/redoc/issues/1781)) ([734080c](https://github.com/Redocly/redoc/commit/734080c35471d16f87004f7f9a51dcdeee1278a6))
+* exclusiveMin/Max shows incorect range ([#1799](https://github.com/Redocly/redoc/issues/1799)) ([b604bd8](https://github.com/Redocly/redoc/commit/b604bd8da874f07e9e9f8b193ad10117a5f5059c))
+* mobile view in docker image ([#1795](https://github.com/Redocly/redoc/issues/1795)) ([ad652b9](https://github.com/Redocly/redoc/commit/ad652b9c7fbcd84a6e83397272de64e57213fe9a))
+
+
+
 # [2.0.0-rc.57](https://github.com/Redocly/redoc/compare/v2.0.0-rc.56...v2.0.0-rc.57) (2021-10-11)
 
 

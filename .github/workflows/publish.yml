@@ -98,5 +98,3 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: After script
-        run: cat ./coverage/lcov.info | coveralls

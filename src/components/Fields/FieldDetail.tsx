@@ -13,7 +13,7 @@ export class FieldDetail extends React.PureComponent<FieldDetailProps> {
       return null;
     }
 
-    const value = this.props.raw ? this.props.value : JSON.stringify(this.props.value);
+    const value = this.props.raw ? String(this.props.value) : JSON.stringify(this.props.value);
 
     return (
       <div>
