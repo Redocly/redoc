@@ -102,6 +102,26 @@ export class SchemaModel {
     this.activeOneOf = idx;
   }
 
+  discriminant(propName?): string {
+    if (!propName) {
+      propName = this.schema.discriminator?.propertyName;
+    }
+
+    if (!propName) {
+      return this.title;
+    }
+
+    const properties = this.schema.properties;
+
+    if (!properties) {
+      return this.title;
+    }
+
+    const prop = properties[propName] || null;
+
+    return (prop && prop.enum && prop.enum.length && prop.enum[0]) || this.title;
+  }
+
   hasType(type: string) {
     return this.type === type || (Array.isArray(this.type) && this.type.includes(type));
   }

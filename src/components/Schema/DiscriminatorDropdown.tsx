@@ -33,7 +33,7 @@ export class DiscriminatorDropdown extends React.Component<{
 
     const options = parent.oneOf.map((subSchema, idx) => {
       return {
-        value: subSchema.title,
+        value: subSchema.discriminant(parent.discriminatorProp),
         idx,
       };
     });
