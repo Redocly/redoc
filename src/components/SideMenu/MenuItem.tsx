@@ -45,8 +45,8 @@ export class MenuItem extends React.Component<MenuItemProps> {
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.name}>
-              {item.name}
+            <MenuItemTitle title={item.sidebarLabel}>
+              {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>
             {(item.depth > 0 && item.items.length > 0 && (
@@ -96,7 +96,7 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
           <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
         )}
         <MenuItemTitle width="calc(100% - 38px)">
-          {item.name}
+          {item.sidebarLabel}
           {this.props.children}
         </MenuItemTitle>
       </MenuItemLabel>

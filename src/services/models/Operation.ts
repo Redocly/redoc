@@ -25,6 +25,7 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
+import { SideNavStyleEnum } from '../RedocNormalizedOptions';
 
 export interface XPayloadSample {
   lang: 'payload';
@@ -49,6 +50,7 @@ export class OperationModel implements IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  sidebarLabel: string;
   description?: string;
   type = 'operation' as const;
 
@@ -103,6 +105,8 @@ export class OperationModel implements IMenuItem {
     this.isEvent = this.isCallback || this.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
+
+    this.sidebarLabel = options.sideNavStyle === SideNavStyleEnum.PathOnly ? this.path : this.name;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
