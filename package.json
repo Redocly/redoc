@@ -37,7 +37,7 @@
     "unit": "jest --coverage",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
-    "bundlesize": "bundlesize",
+    "bundlesize": "size-limit",
     "ts-check": "tsc --noEmit --skipLibCheck",
     "cy:open": "cypress open",
     "bundle:clean": "rimraf bundles",
@@ -75,6 +75,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@cypress/webpack-preprocessor": "^5.9.0",
     "@hot-loader/react-dom": "^17.0.1",
+    "@size-limit/preset-app": "^7.0.4",
     "@types/chai": "^4.2.18",
     "@types/dompurify": "^2.2.2",
     "@types/enzyme": "^3.10.5",
@@ -83,9 +84,9 @@
     "@types/json-pointer": "^1.0.30",
     "@types/lodash": "^4.14.170",
     "@types/lunr": "^2.3.3",
-    "@types/node": "^15.6.1",
     "@types/mark.js": "^8.11.5",
     "@types/marked": "^1.1.0",
+    "@types/node": "^15.6.1",
     "@types/prismjs": "^1.16.5",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.8",
@@ -102,7 +103,6 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
     "beautify-benchmark": "^0.2.4",
-    "bundlesize": "^0.18.1",
     "conventional-changelog-cli": "^2.0.34",
     "copy-webpack-plugin": "^9.0.0",
     "core-js": "^3.13.1",
@@ -130,6 +130,7 @@
     "react-hot-loader": "^4.13.0",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
+    "size-limit": "^7.0.4",
     "style-loader": "^2.0.0",
     "styled-components": "^5.3.0",
     "ts-jest": "^27.0.2",
@@ -177,10 +178,10 @@
     "swagger2openapi": "^7.0.6",
     "url-template": "^2.0.8"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./bundles/redoc.standalone.js",
-      "maxSize": "350 kB"
+      "limit": "350 kB"
     }
   ],
   "jest": {
