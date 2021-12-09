@@ -195,9 +195,11 @@ export interface OpenAPIResponses {
   [code: string]: OpenAPIResponse;
 }
 
-export interface OpenAPIResponse extends Omit<OpenAPIRequestBody, 'required'> {
+export interface OpenAPIResponse
+  extends Pick<OpenAPIRequestBody, 'description' | 'x-examples' | 'x-example'> {
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
   links?: { [name: string]: Referenced<OpenAPILink> };
+  content?: { [mime: string]: OpenAPIMediaType };
 }
 
 export interface OpenAPILink {
