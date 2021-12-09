@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.1",
+      "version": "0.13.2",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.58",
+        "redoc": "2.0.0-rc.59",
         "styled-components": "^5.3.0",
         "yargs": "^17.0.1"
       },
@@ -1225,11 +1225,6 @@
         "safe-buffer": "^5.1.2"
       }
     },
-    "node_modules/memoize-one": {
-      "version": "5.2.1",
-      "resolved": "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz",
-      "integrity": "sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q=="
-    },
     "node_modules/miller-rabin": {
       "version": "4.0.1",
       "resolved": "https://registry.npmjs.org/miller-rabin/-/miller-rabin-4.0.1.tgz",
@@ -1745,9 +1740,9 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.57",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.57.tgz",
-      "integrity": "sha512-f8XIqvZF1agphq6xmOU9jTDVNDFHJt3MzDq1lUgZojb/7YY4eqLyDi6er/yCWYkY9DuB+v2jHCOn5UUbMuKAfg==",
+      "version": "2.0.0-rc.59",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.59.tgz",
+      "integrity": "sha512-1Wkj/HSCv5CdtwF7FSZc5L0EeBgI0N7YpAIsatMtfiMHEon0WhuArAkc5rMQ6mQXUPRrqq5Fs6QPc4GpNp6DuA==",
       "dependencies": {
         "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.54",
@@ -1760,7 +1755,6 @@
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
         "marked": "^0.7.0",
-        "memoize-one": "^5.2.1",
         "mobx-react": "^7.2.0",
         "openapi-sampler": "^1.0.1",
         "path-browserify": "^1.0.1",
@@ -3317,11 +3311,6 @@
         "safe-buffer": "^5.1.2"
       }
     },
-    "memoize-one": {
-      "version": "5.2.1",
-      "resolved": "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz",
-      "integrity": "sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q=="
-    },
     "miller-rabin": {
       "version": "4.0.1",
       "resolved": "https://registry.npmjs.org/miller-rabin/-/miller-rabin-4.0.1.tgz",
@@ -3738,9 +3727,9 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.57",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.57.tgz",
-      "integrity": "sha512-f8XIqvZF1agphq6xmOU9jTDVNDFHJt3MzDq1lUgZojb/7YY4eqLyDi6er/yCWYkY9DuB+v2jHCOn5UUbMuKAfg==",
+      "version": "2.0.0-rc.59",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.59.tgz",
+      "integrity": "sha512-1Wkj/HSCv5CdtwF7FSZc5L0EeBgI0N7YpAIsatMtfiMHEon0WhuArAkc5rMQ6mQXUPRrqq5Fs6QPc4GpNp6DuA==",
       "requires": {
         "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.54",
@@ -3753,7 +3742,6 @@
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
         "marked": "^0.7.0",
-        "memoize-one": "^5.2.1",
         "mobx-react": "^7.2.0",
         "openapi-sampler": "^1.0.1",
         "path-browserify": "^1.0.1",
