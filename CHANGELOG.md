@@ -1,3 +1,16 @@
+# [2.0.0-rc.59](https://github.com/Redocly/redoc/compare/v2.0.0-rc.58...v2.0.0-rc.59) (2021-12-09)
+
+
+### Bug Fixes
+
+* fix scroll in example dropdown ([#1803](https://github.com/Redocly/redoc/issues/1803)) ([bc2d9a7](https://github.com/Redocly/redoc/commit/bc2d9a7d9cd530274483fecd136db290a5b46ff7))
+* x-examples for request body param does not display [#1743](https://github.com/Redocly/redoc/issues/1743) ([#1826](https://github.com/Redocly/redoc/issues/1826)) ([aaa3b32](https://github.com/Redocly/redoc/commit/aaa3b3280c8422d450e8849ae02135dde199d6d5))
+
+### Features
+
+* add option sideNavStyle ([#1805](https://github.com/Redocly/redoc/pull/1805)) ([2e4663b](https://github.com/Redocly/redoc/commit/2e4663b3b7022f25d3dc808afbcb3b3ad9483c41))
+
+
 # [2.0.0-rc.58](https://github.com/Redocly/redoc/compare/v2.0.0-rc.57...v2.0.0-rc.58) (2021-11-29)
 
 
@@ -43,7 +56,7 @@
 * improve openapi 3.1 ([#1700](https://github.com/Redocly/redoc/issues/1700)) ([cd2d6f7](https://github.com/Redocly/redoc/commit/cd2d6f76e87c8385786a9c8e51c0d11c79d9707c))
   - show contentEncoding on fields
   - crash with OpenAPI 3.1 type as array of strings in requestBody
-  - nullable label not shown 
+  - nullable label not shown
 * nullable object's fields were missing ([#1721](https://github.com/Redocly/redoc/issues/1721)) ([ddf297b](https://github.com/Redocly/redoc/commit/ddf297b11269ef515bd62771912a5609721d5e39))
 
 
