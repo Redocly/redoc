@@ -186,16 +186,17 @@ export interface OpenAPIRequestBody {
   description?: string;
   required?: boolean;
   content: { [mime: string]: OpenAPIMediaType };
+
+  'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
+  'x-example'?: { [mime: string]: any };
 }
 
 export interface OpenAPIResponses {
   [code: string]: OpenAPIResponse;
 }
 
-export interface OpenAPIResponse {
-  description?: string;
+export interface OpenAPIResponse extends Omit<OpenAPIRequestBody, 'required'> {
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  content?: { [mime: string]: OpenAPIMediaType };
   links?: { [name: string]: Referenced<OpenAPILink> };
 }
 
