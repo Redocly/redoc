@@ -7,6 +7,7 @@ import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 import { l } from '../../services/Labels';
+import { scrollIntoViewIfNeeded } from '../../utils';
 
 export interface MenuItemProps {
   item: IMenuItem;
@@ -33,7 +34,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
   scrollIntoViewIfActive() {
     if (this.props.item.active && this.ref.current) {
-      this.ref.current.scrollIntoViewIfNeeded();
+      scrollIntoViewIfNeeded(this.ref.current);
     }
   }
 
@@ -77,7 +78,7 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
 
   componentDidUpdate() {
     if (this.props.item.active && this.ref.current) {
-      this.ref.current.scrollIntoViewIfNeeded();
+      scrollIntoViewIfNeeded(this.ref.current);
     }
   }
 
