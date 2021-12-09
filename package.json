@@ -141,7 +141,7 @@
     "url-polyfill": "^1.1.12",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^4.6.0",
     "webpack-node-externals": "^3.0.0",
     "workerize-loader": "github:redocly/workerize-loader#webpack-5-dist"
   },
@@ -164,7 +164,6 @@
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
     "marked": "^0.7.0",
-    "memoize-one": "^5.2.1",
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.0.1",
     "path-browserify": "^1.0.1",

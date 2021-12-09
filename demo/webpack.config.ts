@@ -33,14 +33,14 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
   },
 
   devServer: {
-    contentBase: __dirname,
-    watchContentBase: true,
+    static: __dirname,
     port: 9090,
-    disableHostCheck: true,
-    stats: 'minimal',
     hot: true,
+    historyApiFallback: true,
   },
-
+  stats: {
+    children: true,
+  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     fallback: {
@@ -72,7 +72,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.tsx?$/,
-        use: [getBabelLoader({useBuiltIns: true, hot: true} )],
+        use: [getBabelLoader({ useBuiltIns: true, hot: true })],
         exclude: {
           and: [/node_modules/],
           not: {
