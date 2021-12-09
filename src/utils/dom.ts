@@ -24,7 +24,10 @@ export function html2Str(html: string): string {
     .join(' ');
 }
 
-// scrollIntoViewIfNeeded polyfill
+// Alternate scrollIntoViewIfNeeded implementation.
+// Used in all cases, since it seems Chrome's implementation is buggy
+// when "Experimental Web Platform Features" is enabled (at least of version 96).
+// See #1714, #1742
 
 export function scrollIntoViewIfNeeded(el: HTMLElement, centerIfNeeded = true) {
   const parent = el.parentNode as HTMLElement | null;
@@ -71,10 +74,4 @@ export function scrollIntoViewIfNeeded(el: HTMLElement, centerIfNeeded = true) {
   if ((overTop || overBottom || overLeft || overRight) && !centerIfNeeded) {
     el.scrollIntoView(alignWithTop);
   }
-}
-
-if (typeof Element !== 'undefined' && !(Element as any).prototype.scrollIntoViewIfNeeded) {
-  (Element as any).prototype.scrollIntoViewIfNeeded = function (centerIfNeeded = true) {
-    scrollIntoViewIfNeeded(this, centerIfNeeded);
-  };
 }
