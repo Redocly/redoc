@@ -3,6 +3,7 @@ import { OpenAPIRequestBody, Referenced } from '../../types';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { MediaContentModel } from './MediaContent';
+import { getContentWithLegacyExamples } from '../../utils';
 
 type RequestBodyProps = {
   parser: OpenAPIParser;
@@ -18,13 +19,15 @@ export class RequestBodyModel {
 
   constructor(props: RequestBodyProps) {
     const { parser, infoOrRef, options, isEvent } = props;
-    const isRequest = isEvent ? false : true;
+    const isRequest = !isEvent;
     const info = parser.deref(infoOrRef);
     this.description = info.description || '';
     this.required = !!info.required;
     parser.exitRef(infoOrRef);
-    if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, isRequest, options);
+
+    const mediaContent = getContentWithLegacyExamples(info);
+    if (mediaContent !== undefined) {
+      this.content = new MediaContentModel(parser, mediaContent, isRequest, options);
     }
   }
 }

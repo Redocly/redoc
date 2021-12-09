@@ -9,6 +9,8 @@ import {
   OpenAPIMediaType,
   OpenAPIParameter,
   OpenAPIParameterStyle,
+  OpenAPIRequestBody,
+  OpenAPIResponse,
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
@@ -637,4 +639,34 @@ export function pluralizeType(displayType: string): string {
     .split(' or ')
     .map(type => type.replace(/^(string|object|number|integer|array|boolean)s?( ?.*)/, '$1s$2'))
     .join(' or ');
+}
+
+export function getContentWithLegacyExamples(
+  info: OpenAPIRequestBody | OpenAPIResponse,
+): { [mime: string]: OpenAPIMediaType } | undefined {
+  let mediaContent = info.content;
+  const xExamples = info['x-examples']; // converted from OAS2 body param
+  const xExample = info['x-example']; // converted from OAS2 body param
+
+  if (xExamples) {
+    mediaContent = { ...mediaContent };
+    for (const mime of Object.keys(xExamples)) {
+      const examples = xExamples[mime];
+      mediaContent[mime] = {
+        ...mediaContent[mime],
+        examples,
+      };
+    }
+  } else if (xExample) {
+    mediaContent = { ...mediaContent };
+    for (const mime of Object.keys(xExample)) {
+      const example = xExample[mime];
+      mediaContent[mime] = {
+        ...mediaContent[mime],
+        example,
+      };
+    }
+  }
+
+  return mediaContent;
 }

@@ -11,10 +11,16 @@ import {
   serializeParameterValue,
   sortByRequired,
   humanizeNumberRange,
+  getContentWithLegacyExamples,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
-import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
+import {
+  OpenAPIMediaType,
+  OpenAPIParameter,
+  OpenAPIParameterLocation,
+  OpenAPIParameterStyle,
+} from '../../types';
 import { expandDefaultServerVariables } from '../openapi';
 
 describe('Utils', () => {
@@ -1159,6 +1165,108 @@ describe('Utils', () => {
           required: false,
         },
       ]);
+    });
+  });
+
+  describe('OpenAPI getContentWithLegacyExamples', () => {
+    it('should return undefined if no x-examples/x-example and no content', () => {
+      expect(getContentWithLegacyExamples({})).toBeUndefined();
+    });
+
+    it('should return unmodified object if no x-examples or x-example', () => {
+      const info = {
+        content: {
+          'application/json': {},
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toStrictEqual(info.content);
+    });
+
+    it('should create a new content object if no content and x-examples', () => {
+      const info = {
+        'x-examples': {
+          'application/json': {
+            name: {
+              value: 'test',
+            },
+          },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toEqual({
+        'application/json': {
+          examples: {
+            name: {
+              value: 'test',
+            },
+          },
+        },
+      });
+    });
+
+    it('should create a new content object if no content and x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toEqual({
+        'application/json': { example: 'test' },
+      });
+    });
+
+    it('should return copy of content with injected x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+        content: {
+          'application/json': {
+            schema: { type: 'string' },
+          },
+          'text/plain': { schema: { type: 'string' } },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info) as { [mime: string]: OpenAPIMediaType };
+      expect(content).toEqual({
+        'application/json': { schema: { type: 'string' }, example: 'test' },
+        'text/plain': { schema: { type: 'string' } },
+      });
+      expect(content).not.toStrictEqual(info.content);
+      expect(content['application/json']).not.toStrictEqual(info.content['application/json']);
+      expect(content['text/plain']).toStrictEqual(info.content['text/plain']);
+    });
+
+    it('should prefer x-examples over x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+        'x-examples': {
+          'application/json': { name: { value: 'test' } },
+        },
+        content: {
+          'application/json': {
+            schema: { type: 'string' },
+          },
+          'text/plain': { schema: { type: 'string' } },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info) as { [mime: string]: OpenAPIMediaType };
+      expect(content).toEqual({
+        'application/json': { schema: { type: 'string' }, examples: { name: { value: 'test' } } },
+        'text/plain': { schema: { type: 'string' } },
+      });
+      expect(content).not.toStrictEqual(info.content);
+      expect(content['application/json']).not.toStrictEqual(info.content['application/json']);
+      expect(content['text/plain']).toStrictEqual(info.content['text/plain']);
     });
   });
 });
