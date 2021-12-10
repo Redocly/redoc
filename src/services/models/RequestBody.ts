@@ -17,8 +17,7 @@ export class RequestBodyModel {
   required: boolean;
   content?: MediaContentModel;
 
-  constructor(props: RequestBodyProps) {
-    const { parser, infoOrRef, options, isEvent } = props;
+  constructor({ parser, infoOrRef, options, isEvent }: RequestBodyProps) {
     const isRequest = !isEvent;
     const info = parser.deref(infoOrRef);
     this.description = info.description || '';

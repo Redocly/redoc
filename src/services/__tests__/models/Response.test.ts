@@ -42,9 +42,16 @@ describe('Models', () => {
 
     test('ensure extensions are shown if showExtensions is true', () => {
       const options = new RedocNormalizedOptions({ showExtensions: true });
-      const resp = new ResponseModel(parser, 'default', true, { 'x-example': {a: 1} } as any, options);
+      const resp = new ResponseModel({
+        parser,
+        code: 'default',
+        defaultAsError: true,
+        infoOrRef: { 'x-example': { a: 1 } },
+        options,
+        isEvent: true,
+      });
       expect(Object.keys(resp.extensions).length).toEqual(1);
-      expect(resp.extensions['x-example']).toEqual({a: 1});
+      expect(resp.extensions['x-example']).toEqual({ a: 1 });
     });
   });
 });
