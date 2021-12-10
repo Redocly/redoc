@@ -11,14 +11,12 @@ export const StyledResponseTitle = styled(ResponseTitle)`
   border-radius: 2px;
   margin-bottom: 4px;
   line-height: 1.5em;
-  background-color: #f2f2f2;
   cursor: pointer;
 
   color: ${props => props.theme.colors.responses[props.type].color};
   background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
   &:focus {
-    outline: auto;
-    outline-color: ${props => props.theme.colors.responses[props.type].color};
+    outline: auto ${props => props.theme.colors.responses[props.type].color};
   }
   ${props =>
     (props.empty &&
