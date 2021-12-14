@@ -26,7 +26,7 @@ export const ObjectSchema = observer(
     skipReadOnly,
     skipWriteOnly,
   }: ObjectSchemaProps) => {
-    const { expandSingleSchemaField, showObjectExample } = React.useContext(OptionsContext);
+    const { expandSingleSchemaField, showObjectSchemaExamples } = React.useContext(OptionsContext);
 
     const filteredFields = React.useMemo(
       () =>
@@ -66,7 +66,7 @@ export const ObjectSchema = observer(
                     : undefined
                 }
                 className={field.expanded ? 'expanded' : undefined}
-                showExamples={showObjectExample}
+                showExamples={showObjectSchemaExamples}
                 skipReadOnly={skipReadOnly}
                 skipWriteOnly={skipWriteOnly}
                 showTitle={showTitle}

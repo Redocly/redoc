@@ -35,7 +35,7 @@ export interface RedocRawOptions {
   simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
-  showObjectExample?: boolean | string;
+  showObjectSchemaExamples?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -221,7 +221,7 @@ export class RedocNormalizedOptions {
   simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
-  showObjectExample: boolean;
+  showObjectSchemaExamples: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -283,7 +283,7 @@ export class RedocNormalizedOptions {
     this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
-    this.showObjectExample = argValueToBoolean(raw.showObjectExample);
+    this.showObjectSchemaExamples = argValueToBoolean(raw.showObjectSchemaExamples);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
