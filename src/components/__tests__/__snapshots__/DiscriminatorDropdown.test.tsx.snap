@@ -4,6 +4,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
 <styled.table>
   <tbody>
     <Field
+      expandByDefault={false}
       field={
         FieldModel {
           "const": "",
@@ -59,6 +60,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
       showExamples={false}
     />
     <Field
+      expandByDefault={false}
       field={
         FieldModel {
           "const": "",
