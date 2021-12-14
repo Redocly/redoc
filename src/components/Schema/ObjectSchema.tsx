@@ -18,7 +18,7 @@ export interface ObjectSchemaProps extends SchemaProps {
   };
 }
 
-export const ObjectSchemaComponent = observer(
+export const ObjectSchema = observer(
   ({
     schema: { fields = [], title },
     showTitle,
@@ -78,5 +78,3 @@ export const ObjectSchemaComponent = observer(
     );
   },
 );
-
-export const ObjectSchema = React.memo<ObjectSchemaProps>(ObjectSchemaComponent);

@@ -29,7 +29,7 @@ export interface FieldProps extends SchemaOptions {
 }
 
 @observer
-export class Field extends React.PureComponent<FieldProps> {
+export class Field extends React.Component<FieldProps> {
   toggle = () => {
     if (this.props.field.expanded === undefined && this.props.expandByDefault) {
       this.props.field.expanded = false;

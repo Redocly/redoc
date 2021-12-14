@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { filterPropsDeep } from '../../utils/test-utils';
 
-import { ObjectSchemaComponent, ObjectSchema, Schema } from '../';
+import { ObjectSchema, Schema } from '../';
 import { OpenAPIParser, SchemaModel } from '../../services';
 import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
 import * as simpleDiscriminatorFixture from './fixtures/simple-discriminator.json';
@@ -26,7 +26,7 @@ describe('Components', () => {
           options,
         );
         const schemaViewElement = shallow(<Schema schema={schema} />).getElement();
-        expect(schemaViewElement.type).toEqual(ObjectSchemaComponent);
+        expect(schemaViewElement.type).toEqual(ObjectSchema);
         expect(schemaViewElement.props.discriminator).toBeDefined();
         expect(schemaViewElement.props.discriminator.parentSchema).toBeDefined();
         expect(schemaViewElement.props.discriminator.fieldName).toEqual('type');
