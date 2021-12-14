@@ -5,6 +5,11 @@ import { isNumeric, mergeObjects } from '../utils/helpers';
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
 
+export enum SideNavStyleEnum {
+  SummaryOnly = 'summary-only',
+  PathOnly = 'path-only',
+}
+
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
@@ -22,6 +27,7 @@ export interface RedocRawOptions {
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
+  sideNavStyle?: SideNavStyleEnum;
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
@@ -143,6 +149,22 @@ export class RedocNormalizedOptions {
     }
   }
 
+  static normalizeSideNavStyle(value: RedocRawOptions['sideNavStyle']): SideNavStyleEnum {
+    const defaultValue = SideNavStyleEnum.SummaryOnly;
+    if (typeof value !== 'string') {
+      return defaultValue;
+    }
+
+    switch (value) {
+      case defaultValue:
+        return value;
+      case SideNavStyleEnum.PathOnly:
+        return SideNavStyleEnum.PathOnly;
+      default:
+        return defaultValue;
+    }
+  }
+
   static normalizeSectionsAtTheEnd(value: RedocRawOptions['sectionsAtTheEnd']): string[] {
     if (typeof value === 'undefined' || typeof value !== 'string') {
       return new Array(0);
@@ -198,6 +220,7 @@ export class RedocNormalizedOptions {
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
+  sideNavStyle: SideNavStyleEnum;
   hideSingleRequestSampleTab: boolean;
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
@@ -257,6 +280,7 @@ export class RedocNormalizedOptions {
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
+    this.sideNavStyle = RedocNormalizedOptions.normalizeSideNavStyle(raw.sideNavStyle);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
