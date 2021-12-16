@@ -72,7 +72,7 @@ export class ResponseModel {
   }
 
   @action
-  toggle() {
+  toggle = () => {
     this.expanded = !this.expanded;
-  }
+  };
 }
