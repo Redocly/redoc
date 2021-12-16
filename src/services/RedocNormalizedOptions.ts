@@ -298,7 +298,7 @@ export class RedocNormalizedOptions {
       typeof raw.tryLiveSandboxServerIndex === 'number'
         ? raw.tryLiveSandboxServerIndex
         : argValueToNumber(raw.tryLiveSandboxServerIndex) || 1;
-    this.tryLiveEditorTheme = raw.tryLiveAccessToken || '';
+    this.tryLiveEditorTheme = raw.tryLiveEditorTheme || '';
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
