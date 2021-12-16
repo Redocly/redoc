@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from '../../styled-components';
 
 import { DropdownProps } from '../../common-elements';
-import { MediaTypeModel } from '../../services/models';
+import { ExampleModel, MediaTypeModel } from '../../services/models';
 import { Markdown } from '../Markdown/Markdown';
 import { Example } from './Example';
 import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
@@ -11,6 +11,9 @@ import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements
 export interface PayloadSamplesProps {
   mediaType: MediaTypeModel;
   renderDropdown: (props: DropdownProps) => JSX.Element;
+  editable?: boolean;
+  value?: any;
+  onContentChange?: (value: any) => void;
 }
 
 interface MediaTypeSamplesState {
@@ -18,15 +21,32 @@ interface MediaTypeSamplesState {
 }
 
 export class MediaTypeSamples extends React.Component<PayloadSamplesProps, MediaTypeSamplesState> {
-  state = {
-    activeIdx: 0,
-  };
+  constructor(props: PayloadSamplesProps) {
+    super(props);
+
+    this.state = {
+      activeIdx: 0,
+    };
+
+    if (this.props.editable && this.props.onContentChange) {
+      this.props.onContentChange(this.getExample().value);
+    }
+  }
+
   switchMedia = ({ idx }) => {
     this.setState({
       activeIdx: idx,
     });
   };
+
+  getExample = () => {
+    const examples = this.props.mediaType.examples || {};
+    const examplesNames = Object.keys(examples);
+    return examples[examplesNames[this.state.activeIdx]];
+  };
+
   render() {
+    const { editable = false, value, onContentChange } = this.props;
     const { activeIdx } = this.state;
     const examples = this.props.mediaType.examples || {};
     const mimeType = this.props.mediaType.name;
@@ -38,7 +58,7 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
       return noSample;
     }
 
-    if (examplesNames.length > 1) {
+    if (!editable && examplesNames.length > 1) {
       const options = examplesNames.map((name, idx) => {
         return {
           value: examples[name].summary || name,
@@ -62,20 +82,51 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
           </DropdownWrapper>
           <div>
             {description && <Markdown source={description} />}
-            <Example example={example} mimeType={mimeType} />
+            {this.getExampleComponent(example, mimeType, editable, value, onContentChange)}
           </div>
         </SamplesWrapper>
       );
     } else {
       const example = examples[examplesNames[0]];
-      return (
+      return editable ? (
+        <SamplesWrapper>
+          <DropdownLabel>Request body</DropdownLabel>
+          <div
+            style={{
+              backgroundColor: 'rgba(38, 50, 56, 0.4)',
+              borderColor: 'rgba(38, 50, 56, 0.5)',
+            }}
+          >
+            <div style={{ height: 8 }}></div>
+            {this.getExampleComponent(example, mimeType, editable, value, onContentChange)}
+          </div>
+        </SamplesWrapper>
+      ) : (
         <SamplesWrapper>
           {example.description && <Markdown source={example.description} />}
-          <Example example={example} mimeType={mimeType} />
+          {this.getExampleComponent(example, mimeType, editable, value, onContentChange)}
         </SamplesWrapper>
       );
     }
   }
+
+  getExampleComponent = (
+    example: ExampleModel,
+    mimeType: string,
+    editable: boolean,
+    value: any,
+    onContentChange,
+  ) => {
+    return (
+      <Example
+        example={example}
+        mimeType={mimeType}
+        editable={editable}
+        value={value}
+        onChange={onContentChange}
+      />
+    );
+  };
 }
 
 const SamplesWrapper = styled.div`

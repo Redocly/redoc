@@ -12,7 +12,7 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
       return null;
     }
 
-    const logoHref = logoInfo.href || (info.contact && info.contact.url);
+    const logoHref = !logoInfo.disabled && (logoInfo.href || (info.contact && info.contact.url));
 
     // Use the english word logo if no alt text is provided
     const altText = logoInfo.altText ? logoInfo.altText : 'logo';

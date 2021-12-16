@@ -17,6 +17,7 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { StoreContext } from '..';
 
 const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
@@ -37,35 +38,39 @@ export class Operation extends React.Component<OperationProps> {
     return (
       <OptionsContext.Consumer>
         {options => (
-          <Row>
-            <MiddlePanel>
-              <H2>
-                <ShareLink to={operation.id} />
-                {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-                {isWebhook && <Badge type="primary"> Webhook </Badge>}
-              </H2>
-              {options.pathInMiddlePanel && !isWebhook && (
-                <Endpoint operation={operation} inverted={true} />
-              )}
-              {hasDescription && (
-                <Description>
-                  {description !== undefined && <Markdown source={description} />}
-                  {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
-                </Description>
-              )}
-              <Extensions extensions={operation.extensions} />
-              <SecurityRequirements securities={operation.security} />
-              <Parameters parameters={operation.parameters} body={operation.requestBody} />
-              <ResponsesList responses={operation.responses} />
-              <CallbacksList callbacks={operation.callbacks} />
-            </MiddlePanel>
-            <DarkRightPanel>
-              {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
-              <RequestSamples operation={operation} />
-              <ResponseSamples operation={operation} />
-              <CallbackSamples callbacks={operation.callbacks} />
-            </DarkRightPanel>
-          </Row>
+          <StoreContext.Consumer>
+            {store => (
+              <Row>
+                <MiddlePanel>
+                  <H2>
+                    <ShareLink to={operation.id} />
+                    {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+                    {isWebhook && <Badge type="primary"> Webhook </Badge>}
+                  </H2>
+                  {options.pathInMiddlePanel && !isWebhook && (
+                    <Endpoint operation={operation} inverted={true} />
+                  )}
+                  {hasDescription && (
+                    <Description>
+                      {description !== undefined && <Markdown source={description} />}
+                      {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+                    </Description>
+                  )}
+                  <Extensions extensions={operation.extensions} />
+                  <SecurityRequirements securities={operation.security} />
+                  <Parameters parameters={operation.parameters} body={operation.requestBody} />
+                  <ResponsesList responses={operation.responses} />
+                  <CallbacksList callbacks={operation.callbacks} />
+                </MiddlePanel>
+                <DarkRightPanel>
+                  {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
+                  <RequestSamples operation={operation} store={store} />
+                  <ResponseSamples operation={operation} />
+                  <CallbackSamples callbacks={operation.callbacks} />
+                </DarkRightPanel>
+              </Row>
+            )}
+          </StoreContext.Consumer>
         )}
       </OptionsContext.Consumer>
     );

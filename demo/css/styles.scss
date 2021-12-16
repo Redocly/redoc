@@ -1,0 +1,77 @@
+$editor-top-bottom-line-color: #262626;
+$editor-gutter-status-color: #171c20;
+$editor-gutter-status-text-color: grey;
+$editor-background-color: #111; // #141414
+$editor-text-color: #f8f8f8;
+
+.jsoneditor {
+  border-color: transparent;
+  border-bottom: thin solid $editor-top-bottom-line-color;
+}
+
+.ace_editor {
+  border-top: thin solid $editor-top-bottom-line-color;
+}
+
+.jsoneditor-poweredBy {
+  display: none;
+}
+
+.jsoneditor-menu {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.je-wrapper {
+  margin-top: -4px;
+}
+
+.je-ft-resize {
+  border-color: rgba(38, 50, 56, 0.8);
+}
+
+// comment everything below for defaults
+.jsoneditor-statusbar,
+.ace-twilight .ace_gutter {
+  border: none;
+}
+.jsoneditor-statusbar,
+.ace-twilight .ace_gutter {
+  background-color: $editor-gutter-status-color;
+  border-color: $editor-gutter-status-color;
+  color: $editor-gutter-status-text-color;
+}
+
+.ace-twilight {
+  background-color: $editor-background-color;
+  color: $editor-text-color;
+  font-family: Courier, monospace;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.ace-twilight .ace_variable {
+  color: #ffffff;
+}
+
+.ace-twilight .ace_string {
+  color: #a0fbaa;
+}
+
+.ace-twilight .ace_constant,
+.ace-twilight .ace_constant.ace_character,
+.ace-twilight .ace_constant.ace_character.ace_escape,
+.ace-twilight .ace_constant.ace_other,
+.ace-twilight .ace_heading,
+.ace-twilight .ace_markup.ace_heading,
+.ace-twilight .ace_support.ace_constant {
+  color: firebrick;
+}
+
+.ace-twilight .boolean {
+  color: firebrick;
+}
+
+.ace-twilight .ace_numeric {
+  color: firebrick;
+}

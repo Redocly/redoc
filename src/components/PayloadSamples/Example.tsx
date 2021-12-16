@@ -8,24 +8,42 @@ import { useExternalExample } from './exernalExampleHook';
 export interface ExampleProps {
   example: ExampleModel;
   mimeType: string;
+  editable?: boolean;
+  value?: any;
+  onChange?: (value: any) => void;
 }
 
-export function Example({ example, mimeType }: ExampleProps) {
+export function Example({ example, mimeType, editable = false, value, onChange }: ExampleProps) {
   if (example.value === undefined && example.externalValueUrl) {
-    return <ExternalExample example={example} mimeType={mimeType} />;
+    return (
+      <ExternalExample
+        example={example}
+        mimeType={mimeType}
+        editable={editable}
+        value={value}
+        onChange={onChange}
+      />
+    );
   } else {
-    return <ExampleValue value={example.value} mimeType={mimeType} />;
+    return (
+      <ExampleValue
+        value={value || example.value}
+        mimeType={mimeType}
+        editable={editable}
+        onChange={onChange}
+      />
+    );
   }
 }
 
-export function ExternalExample({ example, mimeType }: ExampleProps) {
-  const value = useExternalExample(example, mimeType);
+export function ExternalExample({ example, mimeType, editable, value, onChange }: ExampleProps) {
+  const value_ = useExternalExample(example, mimeType);
 
-  if (value === undefined) {
+  if (value_ === undefined) {
     return <span>Loading...</span>;
   }
 
-  if (value instanceof Error) {
+  if (value_ instanceof Error) {
     return (
       <StyledPre>
         Error loading external example: <br />
@@ -41,5 +59,12 @@ export function ExternalExample({ example, mimeType }: ExampleProps) {
     );
   }
 
-  return <ExampleValue value={value} mimeType={mimeType} />;
+  return (
+    <ExampleValue
+      value={value || value_}
+      mimeType={mimeType}
+      editable={editable}
+      onChange={onChange}
+    />
+  );
 }

@@ -40,6 +40,17 @@ export function isPayloadSample(
   return sample.lang === 'payload' && (sample as any).requestBodyContent;
 }
 
+export interface XTrySample {
+  lang: 'try';
+  label: string;
+  requestBodyContent: MediaContentModel;
+  source: string;
+}
+
+export function isTrySample(sample: XTrySample | OpenAPIXCodeSample): sample is XTrySample {
+  return sample.lang === 'try' && (sample as any).requestBodyContent;
+}
+
 let isCodeSamplesWarningPrinted = false;
 
 /**
@@ -189,7 +200,7 @@ export class OperationModel implements IMenuItem {
 
   @memoize
   get codeSamples() {
-    let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
+    let samples: Array<OpenAPIXCodeSample | XPayloadSample | XTrySample> =
       this.operationSpec['x-codeSamples'] || this.operationSpec['x-code-samples'] || [];
 
     if (this.operationSpec['x-code-samples'] && !isCodeSamplesWarningPrinted) {
@@ -209,11 +220,26 @@ export class OperationModel implements IMenuItem {
           source: '',
           requestBodyContent,
         },
+        {
+          lang: 'try',
+          label: 'Try',
+          source: '',
+          requestBodyContent,
+        },
         ...samples.slice(insertInx),
       ];
     }
 
     return samples;
+  }
+
+  // try live
+  get tryLiveParams() {
+    return {
+      tryLiveAccessToken: this.options.tryLiveAccessToken,
+      tryLiveSandboxServerIndex: this.options.tryLiveSandboxServerIndex,
+      tryLiveEditorTheme: this.options.tryLiveEditorTheme,
+    };
   }
 
   @memoize

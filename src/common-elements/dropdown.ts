@@ -135,6 +135,30 @@ export const SimpleDropdown = styled(StyledDropdown)`
   }
 `;
 
+export const SimpleDropdown2 = styled(SimpleDropdown)`
+  && {
+    border: 1px solid #999;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+
+    .dropdown-selector {
+      padding: 0 5px;
+    }
+    .dropdown-option {
+      padding: 5px 10px;
+    }
+    .dropdown-selector-content {
+      padding: 0;
+    }
+
+    &:hover,
+    &:focus-within {
+      border: 1px solid #32329f;
+    }
+  }
+`;
+
 export const MimeLabel = styled.span`
   margin-left: 10px;
   text-transform: none;

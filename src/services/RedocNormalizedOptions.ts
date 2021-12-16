@@ -36,6 +36,11 @@ export interface RedocRawOptions {
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
 
+  // try live
+  tryLiveAccessToken?: string;
+  tryLiveSandboxServerIndex?: number;
+  tryLiveEditorTheme?: string;
+
   unstable_ignoreMimeParameters?: boolean;
 
   allowedMdComponents?: Record<string, MDXComponentMeta>;
@@ -221,6 +226,11 @@ export class RedocNormalizedOptions {
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
 
+  // try live
+  tryLiveAccessToken: string;
+  tryLiveSandboxServerIndex: number;
+  tryLiveEditorTheme: string;
+
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
   allowedMdComponents: Record<string, MDXComponentMeta>;
@@ -281,6 +291,14 @@ export class RedocNormalizedOptions {
     this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
+
+    // try live
+    this.tryLiveAccessToken = raw.tryLiveAccessToken || '';
+    this.tryLiveSandboxServerIndex =
+      typeof raw.tryLiveSandboxServerIndex === 'number'
+        ? raw.tryLiveSandboxServerIndex
+        : argValueToNumber(raw.tryLiveSandboxServerIndex) || 1;
+    this.tryLiveEditorTheme = raw.tryLiveAccessToken || '';
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 

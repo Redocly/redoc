@@ -40,6 +40,14 @@ export const RightPanelHeader = styled.h3`
   ${extensionsHook('RightPanelHeader')};
 `;
 
+export const RightPanelHeaderDiv = styled.div`
+  color: ${({ theme }) => theme.rightPanel.textColor};
+  font-family: Roboto, sans-serif;
+  padding: 4px 0;
+
+  ${extensionsHook('RightPanelHeaderDiv')};
+`;
+
 export const UnderlinedHeader = styled.h5`
   border-bottom: 1px solid rgba(38, 50, 56, 0.3);
   margin: 1em 0 1em 0;

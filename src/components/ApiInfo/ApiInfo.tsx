@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { SimpleDropdown2 as Dropdown } from '../../common-elements/dropdown';
 
 import { AppStore } from '../../services/AppStore';
 
@@ -22,6 +23,10 @@ export interface ApiInfoProps {
 
 @observer
 export class ApiInfo extends React.Component<ApiInfoProps> {
+  handleServerSelect = option => {
+    this.props.store.spec.setSelectedServerIndex(option.idx);
+  };
+
   handleDownloadClick = e => {
     if (!e.target.href) {
       e.target.href = this.props.store.spec.info.downloadLink;
@@ -30,9 +35,8 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
 
   render() {
     const { store } = this.props;
-    const { info, externalDocs } = store.spec;
+    const { info, externalDocs, selectedServerIndex, servers } = store.spec;
     const hideDownloadButton = store.options.hideDownloadButton;
-
     const downloadFilename = info.downloadFileName;
     const downloadLink = info.downloadLink;
 
@@ -76,6 +80,11 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
 
     const version = (info.version && <span>({info.version})</span>) || null;
 
+    const serverItems = (servers || []).map((item, index) => ({
+      value: `${item.url} (${item.description})`,
+      idx: index,
+    }));
+
     return (
       <Section>
         <Row>
@@ -109,6 +118,12 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             <Markdown source={store.spec.info.summary} data-role="redoc-summary" />
             <Markdown source={store.spec.info.description} data-role="redoc-description" />
             {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+            <Markdown source="Servers" data-role="list-servers" />
+            <Dropdown
+              value={serverItems[selectedServerIndex].value}
+              options={serverItems}
+              onChange={this.handleServerSelect}
+            />
           </MiddlePanel>
         </Row>
       </Section>

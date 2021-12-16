@@ -69,7 +69,11 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   module: {
     rules: [
-      { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
+      { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.ttf$/], use: 'null-loader' },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack', 'url-loader'],
+      },
       {
         test: /\.tsx?$/,
         use: [getBabelLoader({ useBuiltIns: true, hot: true })],

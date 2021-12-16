@@ -45,6 +45,8 @@ module.exports = {
           'unfetch/**',
           'raf/polyfill',
           '**/fixtures/**', // for tests
+          'ace-builds/**',
+          'jsoneditor/**',
         ],
       },
     ],

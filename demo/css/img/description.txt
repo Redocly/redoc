@@ -1,0 +1,14 @@
+JSON Editor Icons
+
+size:             outer: 24x24 px
+                  inner: 16x16 px 
+
+blue background:  RGBA 97b0f8ff
+gray background:  RGBA 4d4d4dff
+grey background:  RGBA d3d3d3ff
+
+red foreground:   RGBA ff3300ff
+green foreground: RGBA 13ae00ff
+
+characters are based on the Arial font
+
