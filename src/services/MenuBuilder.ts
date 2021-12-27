@@ -209,6 +209,9 @@ export class MenuBuilder {
       operation.depth = depth;
       res.push(operation);
     }
+    if (options.sortOperationsAlphabetically) {
+      res.sort((a, b) => a.name.localeCompare(b.name));
+    }
     return res;
   }
 
