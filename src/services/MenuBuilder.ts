@@ -12,6 +12,7 @@ import {
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
   JsonPointer,
+  alphabeticallyByProp,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -188,9 +189,11 @@ export class MenuBuilder {
 
   /**
    * Returns array of Operation items for the tag
+   * @param parser
    * @param parent parent OperationsGroup
    * @param tag tag info returned from `getTagsWithOperations`
    * @param depth items depth
+   * @param options - normalized options
    */
   static getOperationsItems(
     parser: OpenAPIParser,
@@ -209,9 +212,11 @@ export class MenuBuilder {
       operation.depth = depth;
       res.push(operation);
     }
+
     if (options.sortOperationsAlphabetically) {
-      res.sort((a, b) => a.name.localeCompare(b.name));
+      res.sort(alphabeticallyByProp<OperationModel>('name'));
     }
+
     return res;
   }
 
