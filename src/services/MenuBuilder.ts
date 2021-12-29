@@ -131,9 +131,11 @@ export class MenuBuilder {
 
   /**
    * Returns array of OperationsGroup items for the tags of the group or for all tags
+   * @param parser
    * @param tagsMap tags info returned from `getTagsWithOperations`
    * @param parent parent item
    * @param group group which this tag belongs to. if not provided gets all tags
+   * @param options normalized options
    */
   static getTagsItems(
     parser: OpenAPIParser,
@@ -184,6 +186,11 @@ export class MenuBuilder {
 
       res.push(item);
     }
+
+    if (options.sortTagsAlphabetically) {
+      res.sort(alphabeticallyByProp<GroupModel | OperationModel>('name'));
+    }
+
     return res;
   }
 
