@@ -100,7 +100,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sideNavStyle": "summary-only",
                     "simpleOneOfTypeLabel": false,
                     "sortEnumValuesAlphabetically": false,
+                    "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortTagsAlphabetically": false,
                     "theme": Object {
                       "breakpoints": Object {
                         "large": "105rem",
@@ -337,7 +339,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sideNavStyle": "summary-only",
                     "simpleOneOfTypeLabel": false,
                     "sortEnumValuesAlphabetically": false,
+                    "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortTagsAlphabetically": false,
                     "theme": Object {
                       "breakpoints": Object {
                         "large": "105rem",
@@ -550,7 +554,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sideNavStyle": "summary-only",
               "simpleOneOfTypeLabel": false,
               "sortEnumValuesAlphabetically": false,
+              "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortTagsAlphabetically": false,
               "theme": Object {
                 "breakpoints": Object {
                   "large": "105rem",
@@ -828,7 +834,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sideNavStyle": "summary-only",
                     "simpleOneOfTypeLabel": false,
                     "sortEnumValuesAlphabetically": false,
+                    "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortTagsAlphabetically": false,
                     "theme": Object {
                       "breakpoints": Object {
                         "large": "105rem",
@@ -1065,7 +1073,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sideNavStyle": "summary-only",
                     "simpleOneOfTypeLabel": false,
                     "sortEnumValuesAlphabetically": false,
+                    "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortTagsAlphabetically": false,
                     "theme": Object {
                       "breakpoints": Object {
                         "large": "105rem",
@@ -1278,7 +1288,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sideNavStyle": "summary-only",
               "simpleOneOfTypeLabel": false,
               "sortEnumValuesAlphabetically": false,
+              "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortTagsAlphabetically": false,
               "theme": Object {
                 "breakpoints": Object {
                   "large": "105rem",
@@ -1514,7 +1526,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "sideNavStyle": "summary-only",
           "simpleOneOfTypeLabel": false,
           "sortEnumValuesAlphabetically": false,
+          "sortOperationsAlphabetically": false,
           "sortPropsAlphabetically": false,
+          "sortTagsAlphabetically": false,
           "theme": Object {
             "breakpoints": Object {
               "large": "105rem",
@@ -1788,7 +1802,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sideNavStyle": "summary-only",
               "simpleOneOfTypeLabel": false,
               "sortEnumValuesAlphabetically": false,
+              "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortTagsAlphabetically": false,
               "theme": Object {
                 "breakpoints": Object {
                   "large": "105rem",
@@ -2025,7 +2041,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sideNavStyle": "summary-only",
               "simpleOneOfTypeLabel": false,
               "sortEnumValuesAlphabetically": false,
+              "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortTagsAlphabetically": false,
               "theme": Object {
                 "breakpoints": Object {
                   "large": "105rem",
@@ -2238,7 +2256,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "sideNavStyle": "summary-only",
         "simpleOneOfTypeLabel": false,
         "sortEnumValuesAlphabetically": false,
+        "sortOperationsAlphabetically": false,
         "sortPropsAlphabetically": false,
+        "sortTagsAlphabetically": false,
         "theme": Object {
           "breakpoints": Object {
             "large": "105rem",
