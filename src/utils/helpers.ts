@@ -50,7 +50,7 @@ export function flattenByProp<T extends object, P extends keyof T>(
     for (const item of items) {
       res.push(item);
       if (item[prop]) {
-        iterate((item[prop] as any) as T[]);
+        iterate(item[prop] as any as T[]);
       }
     }
   };

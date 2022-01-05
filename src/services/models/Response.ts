@@ -2,20 +2,20 @@ import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIResponse, Referenced } from '../../types';
 
-import { getStatusCodeType } from '../../utils';
+import { getStatusCodeType, extractExtensions } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
 type ResponseProps = {
-  parser: OpenAPIParser,
-  code: string,
-  defaultAsError: boolean,
-  infoOrRef: Referenced<OpenAPIResponse>,
-  options: RedocNormalizedOptions,
-  isEvent: boolean,
-}
+  parser: OpenAPIParser;
+  code: string;
+  defaultAsError: boolean;
+  infoOrRef: Referenced<OpenAPIResponse>;
+  options: RedocNormalizedOptions;
+  isEvent: boolean;
+};
 
 export class ResponseModel {
   @observable
@@ -27,10 +27,16 @@ export class ResponseModel {
   description: string;
   type: string;
   headers: FieldModel[] = [];
+  extensions: Record<string, any>;
 
-  constructor(props: ResponseProps) {
-    const { parser, code, defaultAsError, infoOrRef, options, isEvent } = props;
-    const isRequest = isEvent ? true : false;
+  constructor({
+    parser,
+    code,
+    defaultAsError,
+    infoOrRef,
+    options,
+    isEvent: isRequest,
+  }: ResponseProps) {
     makeObservable(this);
 
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
@@ -58,6 +64,10 @@ export class ResponseModel {
         const header = headers[name];
         return new FieldModel(parser, { ...header, name }, '', options);
       });
+    }
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(info, options.showExtensions);
     }
   }
 

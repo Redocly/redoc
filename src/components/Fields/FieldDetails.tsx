@@ -45,7 +45,9 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
       } else {
         const label = l('example') + ':';
         const raw = !!field.in;
-        renderedExamples = <FieldDetail label={label} value={getSerializedValue(field, field.example)} raw={raw} />;
+        renderedExamples = (
+          <FieldDetail label={label} value={getSerializedValue(field, field.example)} raw={raw} />
+        );
       }
     }
 
@@ -64,21 +66,23 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           )}
           {schema.contentEncoding && (
             <TypeFormat>
-              {' '}&lt;
+              {' '}
+              &lt;
               {schema.contentEncoding}
               &gt;{' '}
             </TypeFormat>
           )}
           {schema.contentMediaType && (
             <TypeFormat>
-              {' '}&lt;
+              {' '}
+              &lt;
               {schema.contentMediaType}
               &gt;{' '}
             </TypeFormat>
           )}
           {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
           <ConstraintsView constraints={schema.constraints} />
-          <Pattern schema={schema}/>
+          <Pattern schema={schema} />
           {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         </div>
         {deprecated && (
@@ -87,7 +91,9 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           </div>
         )}
         <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
-        {!renderDiscriminatorSwitch && <EnumValues isArrayType={isArrayType} values={schema.enum} />}{' '}
+        {!renderDiscriminatorSwitch && (
+          <EnumValues isArrayType={isArrayType} values={schema.enum} />
+        )}{' '}
         {renderedExamples}
         {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
         <div>
@@ -97,8 +103,8 @@ export class FieldDetails extends React.PureComponent<FieldProps, { patternShown
           <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
         )}
         {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
-        {field.const && (<FieldDetail label={l('const') + ':'} value={field.const} />) || null}
-        {isArrayType && schema.items && <ArrayItemDetails schema={schema.items}/>}
+        {(field.const && <FieldDetail label={l('const') + ':'} value={field.const} />) || null}
+        {isArrayType && schema.items && <ArrayItemDetails schema={schema.items} />}
       </div>
     );
   }

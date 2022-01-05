@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.56",
+  "version": "2.0.0-rc.59",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "React.js"
   ],
   "main": "bundles/redoc.lib.js",
+  "browser": "bundles/redoc.browser.lib.js",
   "types": "typings/index.d.ts",
   "scripts": {
     "start": "webpack serve --mode=development --env playground --hot --config demo/webpack.config.ts",
@@ -36,13 +37,14 @@
     "unit": "jest --coverage",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
-    "bundlesize": "bundlesize",
+    "bundlesize": "size-limit",
     "ts-check": "tsc --noEmit --skipLibCheck",
     "cy:open": "cypress open",
     "bundle:clean": "rimraf bundles",
     "bundle:standalone": "webpack --env production --env standalone --mode=production",
     "bundle:lib": "webpack --mode=production && npm run declarations",
-    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:standalone",
+    "bundle:browser": "webpack --env production --env browser --mode=production",
+    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:browser && npm run bundle:standalone",
     "declarations": "tsc --emitDeclarationOnly -p tsconfig.lib.json && cp -R src/types typings/",
     "stats": "webpack --env production --env standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
@@ -54,7 +56,9 @@
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
     "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause' --summary",
-    "docker:build": "docker build -f config/docker/Dockerfile -t redoc ."
+    "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
+    "prepare": "husky install",
+    "pre-commit": "pretty-quick --staged && npm run lint"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -71,6 +75,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@cypress/webpack-preprocessor": "^5.9.0",
     "@hot-loader/react-dom": "^17.0.1",
+    "@size-limit/preset-app": "^7.0.4",
     "@types/chai": "^4.2.18",
     "@types/dompurify": "^2.2.2",
     "@types/enzyme": "^3.10.5",
@@ -79,9 +84,9 @@
     "@types/json-pointer": "^1.0.30",
     "@types/lodash": "^4.14.170",
     "@types/lunr": "^2.3.3",
-    "@types/node": "^15.6.1",
     "@types/mark.js": "^8.11.5",
-    "@types/marked": "^1.1.0",
+    "@types/marked": "^3.0.1",
+    "@types/node": "^15.6.1",
     "@types/prismjs": "^1.16.5",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.8",
@@ -98,7 +103,6 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
     "beautify-benchmark": "^0.2.4",
-    "bundlesize": "^0.18.1",
     "conventional-changelog-cli": "^2.0.34",
     "copy-webpack-plugin": "^9.0.0",
     "core-js": "^3.13.1",
@@ -112,18 +116,21 @@
     "eslint-plugin-react": "^7.24.0",
     "fork-ts-checker-webpack-plugin": "^6.2.10",
     "html-webpack-plugin": "^5.3.1",
+    "husky": "^7.0.0",
     "jest": "^27.0.3",
     "js-yaml": "^4.1.0",
     "license-checker": "^25.0.1",
     "lodash": "^4.17.21",
     "mobx": "^6.3.2",
-    "prettier": "^2.3.0",
+    "prettier": "^2.3.2",
+    "pretty-quick": "^3.0.0",
     "raf": "^3.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hot-loader": "^4.13.0",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
+    "size-limit": "^7.0.4",
     "style-loader": "^2.0.0",
     "styled-components": "^5.3.0",
     "ts-jest": "^27.0.2",
@@ -134,7 +141,7 @@
     "url-polyfill": "^1.1.12",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^4.6.0",
     "webpack-node-externals": "^3.0.0",
     "workerize-loader": "github:redocly/workerize-loader#webpack-5-dist"
   },
@@ -156,8 +163,7 @@
     "json-pointer": "^0.6.1",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
-    "marked": "^0.7.0",
-    "memoize-one": "^5.2.1",
+    "marked": "^3.0.4",
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.0.1",
     "path-browserify": "^1.0.1",
@@ -171,10 +177,10 @@
     "swagger2openapi": "^7.0.6",
     "url-template": "^2.0.8"
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "./bundles/redoc.standalone.js",
-      "maxSize": "350 kB"
+      "limit": "350 kB"
     }
   ],
   "jest": {
@@ -207,6 +213,6 @@
     "singleQuote": true,
     "trailingComma": "all",
     "printWidth": 100,
-    "parser": "typescript"
+    "arrowParens": "avoid"
   }
 }

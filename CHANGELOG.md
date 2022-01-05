@@ -1,3 +1,51 @@
+# [2.0.0-rc.59](https://github.com/Redocly/redoc/compare/v2.0.0-rc.58...v2.0.0-rc.59) (2021-12-09)
+
+
+### Bug Fixes
+
+* fix scroll in example dropdown ([#1803](https://github.com/Redocly/redoc/issues/1803)) ([bc2d9a7](https://github.com/Redocly/redoc/commit/bc2d9a7d9cd530274483fecd136db290a5b46ff7))
+* x-examples for request body param does not display [#1743](https://github.com/Redocly/redoc/issues/1743) ([#1826](https://github.com/Redocly/redoc/issues/1826)) ([aaa3b32](https://github.com/Redocly/redoc/commit/aaa3b3280c8422d450e8849ae02135dde199d6d5))
+
+### Features
+
+* add option sideNavStyle ([#1805](https://github.com/Redocly/redoc/pull/1805)) ([2e4663b](https://github.com/Redocly/redoc/commit/2e4663b3b7022f25d3dc808afbcb3b3ad9483c41))
+
+
+# [2.0.0-rc.58](https://github.com/Redocly/redoc/compare/v2.0.0-rc.57...v2.0.0-rc.58) (2021-11-29)
+
+
+### Bug Fixes
+
+* add browser build for webpack 5 ([#1796](https://github.com/Redocly/redoc/issues/1796)) ([0e43ad3](https://github.com/Redocly/redoc/commit/0e43ad3102cfba8c4b30e59500ad4efc53f01c2d))
+* Default boolean property value not rendered [#1779](https://github.com/Redocly/redoc/issues/1779) ([#1781](https://github.com/Redocly/redoc/issues/1781)) ([734080c](https://github.com/Redocly/redoc/commit/734080c35471d16f87004f7f9a51dcdeee1278a6))
+* exclusiveMin/Max shows incorect range ([#1799](https://github.com/Redocly/redoc/issues/1799)) ([b604bd8](https://github.com/Redocly/redoc/commit/b604bd8da874f07e9e9f8b193ad10117a5f5059c))
+* mobile view in docker image ([#1795](https://github.com/Redocly/redoc/issues/1795)) ([ad652b9](https://github.com/Redocly/redoc/commit/ad652b9c7fbcd84a6e83397272de64e57213fe9a))
+
+
+
+# [2.0.0-rc.57](https://github.com/Redocly/redoc/compare/v2.0.0-rc.56...v2.0.0-rc.57) (2021-10-11)
+
+
+### Bug Fixes
+
+* fix deref logic for oas3.1 ([#1767](https://github.com/Redocly/redoc/issues/1767)) ([4fb9c83](https://github.com/Redocly/redoc/commit/4fb9c835256b9e44bcecabde7baf0f0f3e5beb3f))
+* improve publish action scripts ([#1729](https://github.com/Redocly/redoc/issues/1729)) ([952c05c](https://github.com/Redocly/redoc/commit/952c05c6b4b95fe6082611fed9e2f0913272b904))
+* No match scenario in search ([#1667](https://github.com/Redocly/redoc/issues/1667)) ([352a851](https://github.com/Redocly/redoc/commit/352a8518576dfb6b240ec41212a64f1c7312ab67))
+* OpenAPI 3.1: Missing description when $ref used [#1727](https://github.com/Redocly/redoc/issues/1727) ([fe6909e](https://github.com/Redocly/redoc/commit/fe6909ed80dd6053b48c30f63a2460614bf957a9))
+* OpenAPI 3.1: Missing description when $ref used [#1727](https://github.com/Redocly/redoc/issues/1727) ([35f7787](https://github.com/Redocly/redoc/commit/35f77878de7d1dd250040771f17757a5a6ce85f9))
+* Redoc spelling ([c87600d](https://github.com/Redocly/redoc/commit/c87600d520f037d291169b44b5803a35af16b5a5))
+* Schema for events incorrectly omits readOnly and includes writeOnly ([#1720](https://github.com/Redocly/redoc/issues/1720) [#1540](https://github.com/Redocly/redoc/issues/1540)) ([a8e0c29](https://github.com/Redocly/redoc/commit/a8e0c296852661dec1dcad2388d7589f9e0d3609))
+* scrolling to the first item ([#1753](https://github.com/Redocly/redoc/issues/1753)) ([bccd213](https://github.com/Redocly/redoc/commit/bccd21394ef79940c2efbe24a0d866c7af103d94))
+* The number of items in the array in the array is incorrect [#1762](https://github.com/Redocly/redoc/issues/1762) ([#1763](https://github.com/Redocly/redoc/issues/1763)) ([3b8d644](https://github.com/Redocly/redoc/commit/3b8d6441bd9978b849a53021d40fd4fe150272ea))
+
+
+### Features
+
+* add q/kdb+ syntax highlighting ([#1605](https://github.com/Redocly/redoc/issues/1605)) ([43451ba](https://github.com/Redocly/redoc/commit/43451ba4cd24270b8629a967d3fd2ce2eed8912e))
+* new option generatedPayloadSamplesMaxDepth ([#1642](https://github.com/Redocly/redoc/issues/1642)) ([bd9390a](https://github.com/Redocly/redoc/commit/bd9390a5bfc5458c06121110db33968a20fcebe4))
+
+
+
 # [2.0.0-rc.56](https://github.com/Redocly/redoc/compare/v2.0.0-rc.53...v2.0.0-rc.56) (2021-08-11)
 
 
@@ -8,7 +56,7 @@
 * improve openapi 3.1 ([#1700](https://github.com/Redocly/redoc/issues/1700)) ([cd2d6f7](https://github.com/Redocly/redoc/commit/cd2d6f76e87c8385786a9c8e51c0d11c79d9707c))
   - show contentEncoding on fields
   - crash with OpenAPI 3.1 type as array of strings in requestBody
-  - nullable label not shown 
+  - nullable label not shown
 * nullable object's fields were missing ([#1721](https://github.com/Redocly/redoc/issues/1721)) ([ddf297b](https://github.com/Redocly/redoc/commit/ddf297b11269ef515bd62771912a5609721d5e39))
 
 

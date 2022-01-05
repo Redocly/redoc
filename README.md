@@ -3,19 +3,19 @@
 
   # Generate interactive API documentation from OpenAPI definitions
 
-  [![Build Status](https://travis-ci.com/Redocly/redoc.svg?branch=master)](https://travis-ci.com/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![dependencies Status](https://david-dm.org/Redocly/redoc/status.svg)](https://david-dm.org/Redocly/redoc) [![devDependencies Status](https://david-dm.org/Redocly/redoc/dev-status.svg)](https://david-dm.org/Redocly/redoc#info=devDependencies) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
+  [![Build Status](https://travis-ci.com/Redocly/redoc.svg?branch=master)](https://travis-ci.com/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
 
   [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
 </div>
 
-**This is the README for the `2.x` version of Redoc (React-based).** 
+**This is the README for the `2.x` version of Redoc (React-based).**
 **The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch**
 
 ## About Redoc
 
-Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions. 
+Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions.
 
-By default Redoc offers a three-panel, responsive layout: 
+By default Redoc offers a three-panel, responsive layout:
 
 - The left panel contains a search bar and navigation menu.
 - The central panel contains the documentation.
@@ -133,7 +133,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
-OpenAPI definition before publishing. 
+OpenAPI definition before publishing.
 
 Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
 
@@ -173,15 +173,16 @@ replace the `spec-url` attribute with the url or local file address to your defi
 ```
 
 For step-by-step instructions for how to get started using Redoc
-to render your OpenAPI definition, refer to the 
+to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
 
-See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on 
+See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on
 IE support for Redoc.
 
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
 [**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
+
 
 ## Configuration
 
@@ -239,6 +240,9 @@ You can use all of the following options with the standalone version of the <red
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
 * `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
+* `sideNavStyle` - can be specified in various ways:
+  * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
+  * **path-only**: displays a path in the sidebar navigation item.
 
 ### `<redoc>` theme object
 * `spacing`
