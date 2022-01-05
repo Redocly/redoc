@@ -5,53 +5,52 @@ on:
     branches:
       - master
 
-
 jobs:
   bundle:
-    needs: [ check-version-cli ]
+    needs: [check-version-cli]
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-        key: npm-${{ hashFiles('package-lock.json') }}
-        restore-keys: |
-          npm-${{ hashFiles('package-lock.json') }}
-          npm-
-    - run: npm ci
-    - run: npm run bundle
-    - name: Store bundle artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: bundles-cli
-        path: bundles
-        retention-days: 1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+      - run: npm ci
+      - run: npm run bundle
+      - name: Store bundle artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundles-cli
+          path: bundles
+          retention-days: 1
   unit-tests:
-    needs: [ check-version-cli ]
+    needs: [check-version-cli]
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - run: npm test
+      - uses: actions/checkout@v1
+      - run: npm ci
+      - run: npm test
   e2e-tests:
-    needs: [ bundle ]
+    needs: [bundle]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - name: Download bundled artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: bundles-cli
-        path: bundles
-    - run: npm run e2e
+      - uses: actions/checkout@v1
+      - run: npm ci
+      - name: Download bundled artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: bundles-cli
+          path: bundles
+      - run: npm run e2e
   bundle-cli:
-    needs: [ check-version-cli ]
+    needs: [check-version-cli]
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -99,7 +98,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
       - uses: actions/checkout@v2
       - name: Download cli bundled artifact

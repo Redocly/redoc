@@ -56,6 +56,7 @@ export function StoreBuilder(props: StoreBuilderProps) {
       }
       throw e;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resolvedSpec, specUrl, options]);
 
   React.useEffect(() => {

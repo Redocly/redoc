@@ -13,27 +13,12 @@
     "importHelpers": true,
     "outDir": "lib",
     "pretty": true,
-    "lib": [
-      "es2015",
-      "es2016",
-      "es2017",
-      "dom",
-      "WebWorker.ImportScripts"
-    ],
+    "lib": ["es2015", "es2016", "es2017", "dom", "WebWorker.ImportScripts"],
     "jsx": "react",
-    "types": [
-      "webpack",
-      "webpack-env",
-      "jest"
-    ]
+    "types": ["webpack", "webpack-env", "jest"]
   },
   "compileOnSave": false,
-  "exclude": [
-    "node_modules",
-    ".tmp",
-    "lib",
-    "e2e/**"
-  ],
+  "exclude": ["node_modules", ".tmp", "lib", "e2e/**"],
   "include": [
     "cli/index.ts",
     "./custom.d.ts",

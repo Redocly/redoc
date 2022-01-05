@@ -43,7 +43,7 @@ export function Link(props: { to: string; className?: string; children?: any }) 
       if (!store) return;
       navigate(store.menu.history, event, props.to);
     },
-    [store],
+    [store, props.to],
   );
 
   if (!store) return null;
