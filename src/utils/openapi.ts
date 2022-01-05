@@ -368,6 +368,15 @@ export function serializeParameterValue(
   }
 }
 
+export function getSerializedValue(field: FieldModel, example: any) {
+  if (field.in) {
+    // decode for better readability in examples: see https://github.com/Redocly/redoc/issues/1138
+    return decodeURIComponent(serializeParameterValue(field, example));
+  } else {
+    return example;
+  }
+}
+
 export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';

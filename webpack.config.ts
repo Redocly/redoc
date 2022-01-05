@@ -32,10 +32,14 @@ const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
   Version: ${VERSION}
   Repo: https://github.com/Redocly/redoc`;
 
-export default (env: { standalone?: boolean, browser?: boolean } = {}) => ({
+export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',
   output: {
-    filename: env.standalone ? 'redoc.standalone.js' : env.browser ? 'redoc.browser.lib.js' : 'redoc.lib.js',
+    filename: env.standalone
+      ? 'redoc.standalone.js'
+      : env.browser
+      ? 'redoc.browser.lib.js'
+      : 'redoc.lib.js',
     path: path.join(__dirname, '/bundles'),
     library: 'Redoc',
     libraryTarget: 'umd',
@@ -50,7 +54,7 @@ export default (env: { standalone?: boolean, browser?: boolean } = {}) => ({
       fs: path.resolve(__dirname, 'src/empty.js'),
       os: path.resolve(__dirname, 'src/empty.js'),
       tty: path.resolve(__dirname, 'src/empty.js'),
-    }
+    },
   },
   performance: false,
   externalsPresets: env.standalone || env.browser ? {} : { node: true },
@@ -74,7 +78,7 @@ export default (env: { standalone?: boolean, browser?: boolean } = {}) => ({
     rules: [
       {
         test: /\.(tsx?|[cm]?js)$/,
-        use: [getBabelLoader({useBuiltIns: !!env.standalone})],
+        use: [getBabelLoader({ useBuiltIns: !!env.standalone })],
         exclude: {
           and: [/node_modules/],
           not: {
