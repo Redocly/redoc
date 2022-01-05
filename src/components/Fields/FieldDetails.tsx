@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import {
   RecursiveLabel,
@@ -24,88 +24,89 @@ import { OptionsContext } from '../OptionsProvider';
 import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
 
-export class FieldDetails extends React.PureComponent<FieldProps, { patternShown: boolean }> {
-  static contextType = OptionsContext;
+function FieldDetailsComponent(props: FieldProps) {
+  const { enumSkipQuotes, hideSchemaTitles } = useContext(OptionsContext);
 
-  render() {
-    const { showExamples, field, renderDiscriminatorSwitch } = this.props;
-    const { enumSkipQuotes, hideSchemaTitles } = this.context;
+  const { showExamples, field, renderDiscriminatorSwitch } = props;
+  const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
+  const isArrayType = schema.type === 'array';
 
-    const { schema, description, example, deprecated, examples } = field;
-    const { type } = schema;
-    const isArrayType = type === 'array';
+  const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
 
-    const rawDefault = !!enumSkipQuotes || field.in === 'header'; // having quotes around header field default values is confusing and inappropriate
-
-    let renderedExamples: JSX.Element | null = null;
-
-    if (showExamples && (example !== undefined || examples !== undefined)) {
-      if (examples !== undefined) {
-        renderedExamples = <Examples field={field} />;
+  const renderedExamples = useMemo<JSX.Element | null>(() => {
+    if (showExamples && (field.example !== undefined || field.examples !== undefined)) {
+      if (field.examples !== undefined) {
+        return <Examples field={field} />;
       } else {
-        const label = l('example') + ':';
-        const raw = !!field.in;
-        renderedExamples = (
-          <FieldDetail label={label} value={getSerializedValue(field, field.example)} raw={raw} />
+        return (
+          <FieldDetail
+            label={l('example') + ':'}
+            value={getSerializedValue(field, field.example)}
+            raw={Boolean(field.in)}
+          />
         );
       }
     }
 
-    return (
+    return null;
+  }, [field, showExamples]);
+
+  return (
+    <div>
       <div>
-        <div>
-          <TypePrefix>{schema.typePrefix}</TypePrefix>
-          <TypeName>{schema.displayType}</TypeName>
-          {schema.displayFormat && (
-            <TypeFormat>
-              {' '}
-              &lt;
-              {schema.displayFormat}
-              &gt;{' '}
-            </TypeFormat>
-          )}
-          {schema.contentEncoding && (
-            <TypeFormat>
-              {' '}
-              &lt;
-              {schema.contentEncoding}
-              &gt;{' '}
-            </TypeFormat>
-          )}
-          {schema.contentMediaType && (
-            <TypeFormat>
-              {' '}
-              &lt;
-              {schema.contentMediaType}
-              &gt;{' '}
-            </TypeFormat>
-          )}
-          {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
-          <ConstraintsView constraints={schema.constraints} />
-          <Pattern schema={schema} />
-          {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
-        </div>
-        {deprecated && (
-          <div>
-            <Badge type="warning"> {l('deprecated')} </Badge>
-          </div>
+        <TypePrefix>{schema.typePrefix}</TypePrefix>
+        <TypeName>{schema.displayType}</TypeName>
+        {schema.displayFormat && (
+          <TypeFormat>
+            {' '}
+            &lt;
+            {schema.displayFormat}
+            &gt;{' '}
+          </TypeFormat>
         )}
-        <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
-        {!renderDiscriminatorSwitch && (
-          <EnumValues isArrayType={isArrayType} values={schema.enum} />
-        )}{' '}
-        {renderedExamples}
-        {<Extensions extensions={{ ...field.extensions, ...schema.extensions }} />}
-        <div>
-          <Markdown compact={true} source={description} />
-        </div>
-        {schema.externalDocs && (
-          <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
+        {schema.contentEncoding && (
+          <TypeFormat>
+            {' '}
+            &lt;
+            {schema.contentEncoding}
+            &gt;{' '}
+          </TypeFormat>
         )}
-        {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(this.props)) || null}
-        {(field.const && <FieldDetail label={l('const') + ':'} value={field.const} />) || null}
+        {schema.contentMediaType && (
+          <TypeFormat>
+            {' '}
+            &lt;
+            {schema.contentMediaType}
+            &gt;{' '}
+          </TypeFormat>
+        )}
+        {schema.title && !hideSchemaTitles && <TypeTitle> ({schema.title}) </TypeTitle>}
+        <ConstraintsView constraints={schema.constraints} />
+        <Pattern schema={schema} />
+        {schema.isCircular && <RecursiveLabel> {l('recursive')} </RecursiveLabel>}
         {isArrayType && schema.items && <ArrayItemDetails schema={schema.items} />}
       </div>
-    );
-  }
+      {deprecated && (
+        <div>
+          <Badge type="warning"> {l('deprecated')} </Badge>
+        </div>
+      )}
+      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
+      {!renderDiscriminatorSwitch && (
+        <EnumValues isArrayType={isArrayType} values={schema.enum} />
+      )}{' '}
+      {renderedExamples}
+      <Extensions extensions={{ ...extensions, ...schema.extensions }} />
+      <div>
+        <Markdown compact={true} source={description} />
+      </div>
+      {schema.externalDocs && (
+        <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
+      )}
+      {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(props)) || null}
+      {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
+    </div>
+  );
 }
+
+export const FieldDetails = React.memo<FieldProps>(FieldDetailsComponent);

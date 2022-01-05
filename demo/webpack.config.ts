@@ -37,6 +37,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     port: 9090,
     hot: true,
     historyApiFallback: true,
+    open: true,
   },
   stats: {
     children: true,
