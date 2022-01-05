@@ -20,8 +20,6 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
 }
 
 const Wrapper = styled(TypePrefix)`
-  display: inline-block;
   margin: 0 5px;
-
-  height: calc(${({ theme }) => theme.typography.code.fontSize} + 4px);
+  vertical-align: text-top;
 `;
