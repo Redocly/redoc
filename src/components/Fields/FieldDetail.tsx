@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ExampleValue, FieldLabel } from '../../common-elements/fields';
 
 export interface FieldDetailProps {

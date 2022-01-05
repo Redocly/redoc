@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import * as React from 'react';
 
 import {
   RecursiveLabel,
@@ -25,7 +25,7 @@ import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
 
 function FieldDetailsComponent(props: FieldProps) {
-  const { enumSkipQuotes, hideSchemaTitles } = useContext(OptionsContext);
+  const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
   const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
@@ -33,7 +33,7 @@ function FieldDetailsComponent(props: FieldProps) {
 
   const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
 
-  const renderedExamples = useMemo<JSX.Element | null>(() => {
+  const renderedExamples = React.useMemo<JSX.Element | null>(() => {
     if (showExamples && (field.example !== undefined || field.examples !== undefined)) {
       if (field.examples !== undefined) {
         return <Examples field={field} />;
