@@ -164,7 +164,7 @@
     "json-pointer": "^0.6.1",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
-    "marked": "^3.0.4",
+    "marked": "^4.0.10",
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.0.1",
     "path-browserify": "^1.0.1",
