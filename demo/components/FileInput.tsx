@@ -23,12 +23,8 @@ const Button = styled.button`
   }
 `;
 
-function GetUseRef(): RefObject<HTMLInputElement> {
-  return useRef<HTMLInputElement>(null);
-}
-
 const FileInput = props => {
-  const hiddenFileInput: RefObject<HTMLInputElement> = GetUseRef();
+  const hiddenFileInput: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
   function handleClick() {
     if (hiddenFileInput && hiddenFileInput.current) {
