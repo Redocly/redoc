@@ -1,6 +1,6 @@
 import * as yaml from 'js-yaml';
 import * as React from 'react';
-import { RefObject, useRef } from 'react';
+import { ChangeEvent, RefObject, useRef } from 'react';
 import styled from '../../src/styled-components';
 
 const Button = styled.button`
@@ -23,23 +23,23 @@ const Button = styled.button`
   }
 `;
 
-const FileInput = (props: { onUpload }) => {
+function FileInput(props: { onUpload }) {
   const hiddenFileInput: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
-  function handleClick() {
+  const handleClick = () => {
     if (hiddenFileInput && hiddenFileInput.current) {
       hiddenFileInput.current.click();
     }
-  }
+  };
 
-  function uploadFile(event) {
-    const file = event.target.files[0];
+  const uploadFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = (event.target as HTMLInputElement).files![0];
     const reader = new FileReader();
     reader.onload = () => {
       props.onUpload(yaml.load(reader.result));
     };
     reader.readAsText(file);
-  }
+  };
 
   return (
     <span>
@@ -47,6 +47,6 @@ const FileInput = (props: { onUpload }) => {
       <input type="file" style={{ display: 'none' }} onChange={uploadFile} ref={hiddenFileInput} />
     </span>
   );
-};
+}
 
 export default FileInput;
