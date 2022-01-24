@@ -23,7 +23,7 @@ const Button = styled.button`
   }
 `;
 
-const FileInput = props => {
+const FileInput = (props: { onUpload }) => {
   const hiddenFileInput: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
   function handleClick() {
