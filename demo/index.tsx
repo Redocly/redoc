@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
+import FileInput from './components/FileInput';
 
 const DEFAULT_SPEC = 'openapi.yaml';
 const NEW_VERSION_SPEC = 'openapi-3-1.yaml';
@@ -22,7 +23,7 @@ const demos = [
 
 class DemoApp extends React.Component<
   {},
-  { specUrl: string; dropdownOpen: boolean; cors: boolean }
+  { spec: object | undefined; specUrl: string; dropdownOpen: boolean; cors: boolean }
 > {
   constructor(props) {
     super(props);
@@ -40,15 +41,24 @@ class DemoApp extends React.Component<
     }
 
     this.state = {
+      spec: undefined,
       specUrl: url,
       dropdownOpen: false,
       cors,
     };
   }
 
+  handleUploadFile = (spec: object) => {
+    this.setState({
+      spec,
+      specUrl: '',
+    });
+  };
+
   handleChange = (url: string) => {
     if (url === NEW_VERSION_SPEC) {
-      this.setState({ cors: false })
+      this.setState({ cors: false });
+      0;
     }
     this.setState({
       specUrl: url,
@@ -90,6 +100,7 @@ class DemoApp extends React.Component<
             />
           </a>
           <ControlsContainer>
+            <FileInput onUpload={this.handleUploadFile} />
             <ComboBox
               placeholder={'URL to a spec to try'}
               options={demos}
@@ -110,6 +121,7 @@ class DemoApp extends React.Component<
           />
         </Heading>
         <RedocStandalone
+          spec={this.state.spec}
           specUrl={proxiedUrl}
           options={{ scrollYOffset: 'nav', untrustedSpec: true }}
         />
