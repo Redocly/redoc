@@ -19,7 +19,8 @@ export function Examples({ field }: { field: FieldModel }) {
         {Object.values(field.examples).map((example, idx) => {
           return (
             <li key={idx}>
-              <ExampleValue>{getSerializedValue(field, example.value)}</ExampleValue> - {example.summary || example.description}
+              <ExampleValue>{getSerializedValue(field, example.value)}</ExampleValue> -{' '}
+              {example.summary || example.description}
             </li>
           );
         })}

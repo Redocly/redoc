@@ -384,14 +384,15 @@ export function langFromMime(contentType: string): string {
   return 'clike';
 }
 
+const DEFINITION_NAME_REGEX = /^#\/components\/(schemas|pathItems)\/([^/]+)$/;
+
 export function isNamedDefinition(pointer?: string): boolean {
-  return /^#\/components\/(schemas|pathItems)\/[^\/]+$/.test(pointer || '');
+  return DEFINITION_NAME_REGEX.test(pointer || '');
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
-  if (!pointer) return undefined;
-  const match = pointer.match(/^#\/components\/(schemas|pathItems)\/([^\/]+)$/);
-  return match === null ? undefined : match[1];
+  const [name] = pointer?.match(DEFINITION_NAME_REGEX)?.reverse() || [];
+  return name;
 }
 
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {

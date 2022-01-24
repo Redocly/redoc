@@ -79,7 +79,12 @@ export function BodyContent(props: {
         return (
           <>
             {description !== undefined && <Markdown source={description} />}
-            <Schema skipReadOnly={isRequestType} key="schema" schema={schema} />
+            <Schema
+              skipReadOnly={isRequestType}
+              skipWriteOnly={!isRequestType}
+              key="schema"
+              schema={schema}
+            />
           </>
         );
       }}
