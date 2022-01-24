@@ -30,7 +30,7 @@ export const ResponseView = observer(({ response }: ResponseViewProps): React.Re
   return (
     <div>
       <StyledResponseTitle
-        onClick={response.toggle}
+        onClick={() => response.toggle()}
         type={type}
         empty={empty}
         title={summary || ''}
