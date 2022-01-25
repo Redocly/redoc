@@ -1,3 +1,24 @@
+# [2.0.0-rc.60](https://github.com/Redocly/redoc/compare/v2.0.0-rc.59...v2.0.0-rc.60) (2022-01-25)
+
+
+### Bug Fixes
+
+* add schema expansion level ([#1868](https://github.com/Redocly/redoc/issues/1868)) ([250d53a](https://github.com/Redocly/redoc/commit/250d53a59fb4bf881875ba466c5a7f3b55d80007))
+* attachHeadingsDescriptions match headings incorrectly ([#1845](https://github.com/Redocly/redoc/issues/1845)) ([ea8573d](https://github.com/Redocly/redoc/commit/ea8573dbd78439be50aa2b38f1c83658c16783e3))
+* definition name util ([#1865](https://github.com/Redocly/redoc/issues/1865)) ([95a7347](https://github.com/Redocly/redoc/commit/95a734793158d4749e98ee4a7e90e70713a04ced))
+* No maxLength label is displayed for arrays of items [#1701](https://github.com/Redocly/redoc/issues/1701) ([#1765](https://github.com/Redocly/redoc/issues/1765)) ([6c7685e](https://github.com/Redocly/redoc/commit/6c7685e5fa04314328a445d7077600692c49489c))
+* Response objects couldn't open ([#1867](https://github.com/Redocly/redoc/issues/1867)) ([18f943d](https://github.com/Redocly/redoc/commit/18f943d2b5668f1552d212dee1c3a2ed59054095))
+* writeOnly params displaying in webhook ([#1866](https://github.com/Redocly/redoc/issues/1866)) ([5694913](https://github.com/Redocly/redoc/commit/5694913e71f0e8c3a5d9393f1b4ae92534127841))
+
+
+### Features
+
+* **#1251:** Add file selector to demo application ([#1859](https://github.com/Redocly/redoc/issues/1859)) ([b74dcde](https://github.com/Redocly/redoc/commit/b74dcde42b45ebe5ae617f1ec3cfea2ea1aff922)), closes [#1251](https://github.com/Redocly/redoc/issues/1251) [#1251](https://github.com/Redocly/redoc/issues/1251) [#1251](https://github.com/Redocly/redoc/issues/1251)
+* redoc-cli add host option ([#1598](https://github.com/Redocly/redoc/issues/1598)) ([fb104e6](https://github.com/Redocly/redoc/commit/fb104e696618b0b81439da134887830a0f2439ea))
+* support examples in object schema ([#1832](https://github.com/Redocly/redoc/issues/1832)) ([c986f0e](https://github.com/Redocly/redoc/commit/c986f0ef1a38bc1e61cae70830d84de03b684b89))
+
+
+
 # [2.0.0-rc.59](https://github.com/Redocly/redoc/compare/v2.0.0-rc.58...v2.0.0-rc.59) (2021-12-09)
 
 
