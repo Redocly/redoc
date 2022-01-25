@@ -41,7 +41,7 @@ const DEFAULT_SERIALIZATION: Record<
  */
 export class FieldModel {
   @observable
-  expanded: boolean | undefined = false;
+  expanded: boolean | undefined;
 
   schema: SchemaModel;
   name: string;
@@ -119,5 +119,15 @@ export class FieldModel {
   @action
   toggle() {
     this.expanded = !this.expanded;
+  }
+
+  @action
+  collapse(): void {
+    this.expanded = false;
+  }
+
+  @action
+  expand(): void {
+    this.expanded = true;
   }
 }

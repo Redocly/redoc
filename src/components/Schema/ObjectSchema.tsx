@@ -25,8 +25,10 @@ export const ObjectSchema = observer(
     discriminator,
     skipReadOnly,
     skipWriteOnly,
+    level,
   }: ObjectSchemaProps) => {
-    const { expandSingleSchemaField, showObjectSchemaExamples } = React.useContext(OptionsContext);
+    const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
+      React.useContext(OptionsContext);
 
     const filteredFields = React.useMemo(
       () =>
@@ -42,7 +44,8 @@ export const ObjectSchema = observer(
       [skipReadOnly, skipWriteOnly, fields],
     );
 
-    const expandByDefault = expandSingleSchemaField && filteredFields.length === 1;
+    const expandByDefault =
+      (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
 
     return (
       <PropertiesTable>
@@ -70,6 +73,7 @@ export const ObjectSchema = observer(
                 skipReadOnly={skipReadOnly}
                 skipWriteOnly={skipWriteOnly}
                 showTitle={showTitle}
+                level={level}
               />
             );
           })}
