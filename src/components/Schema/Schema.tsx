@@ -16,6 +16,7 @@ export interface SchemaOptions {
   showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
+  level?: number;
 }
 
 export interface SchemaProps extends SchemaOptions {
@@ -25,7 +26,9 @@ export interface SchemaProps extends SchemaOptions {
 @observer
 export class Schema extends React.Component<Partial<SchemaProps>> {
   render() {
-    const { schema } = this.props;
+    const { schema, ...rest } = this.props;
+    const level = (rest.level || 0) + 1;
+
     if (!schema) {
       return <em> Schema not provided </em>;
     }
@@ -50,7 +53,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       }
       return (
         <ObjectSchema
-          {...{ ...this.props, schema: oneOf![schema.activeOneOf] }}
+          {...{ ...this.props, schema: oneOf![schema.activeOneOf], level }}
           discriminator={{
             fieldName: discriminatorProp,
             parentSchema: schema,
@@ -66,10 +69,10 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     const types = Array.isArray(type) ? type : [type];
     if (types.includes('object')) {
       if (schema.fields?.length) {
-        return <ObjectSchema {...(this.props as any)} />;
+        return <ObjectSchema {...{ ...(this.props as any), level }} />;
       }
     } else if (types.includes('array')) {
-      return <ArraySchema {...(this.props as any)} />;
+      return <ArraySchema {...{ ...(this.props as any), level }} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
