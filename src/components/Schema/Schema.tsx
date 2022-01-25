@@ -53,7 +53,9 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       }
       return (
         <ObjectSchema
-          {...{ ...this.props, schema: oneOf![schema.activeOneOf], level }}
+          {...rest}
+          level={level}
+          schema={oneOf![schema.activeOneOf]}
           discriminator={{
             fieldName: discriminatorProp,
             parentSchema: schema,
@@ -63,16 +65,16 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     }
 
     if (oneOf !== undefined) {
-      return <OneOfSchema schema={schema} {...this.props} />;
+      return <OneOfSchema schema={schema} {...rest} />;
     }
 
     const types = Array.isArray(type) ? type : [type];
     if (types.includes('object')) {
       if (schema.fields?.length) {
-        return <ObjectSchema {...{ ...(this.props as any), level }} />;
+        return <ObjectSchema {...(this.props as any)} level={level} />;
       }
     } else if (types.includes('array')) {
-      return <ArraySchema {...{ ...(this.props as any), level }} />;
+      return <ArraySchema {...(this.props as any)} level={level} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
