@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.3",
+      "version": "0.13.4",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -267,9 +267,9 @@
       }
     },
     "node_modules/@types/json-schema": {
-      "version": "7.0.7",
-      "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.7.tgz",
-      "integrity": "sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA=="
+      "version": "7.0.9",
+      "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz",
+      "integrity": "sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ=="
     },
     "node_modules/@types/mkdirp": {
       "version": "1.0.1",
@@ -921,7 +921,9 @@
       "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
       "hasInstallScript": true,
       "optional": true,
-      "os": ["darwin"],
+      "os": [
+        "darwin"
+      ],
       "engines": {
         "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
       }
@@ -1205,14 +1207,14 @@
       "integrity": "sha1-GA8fnr74sOY45BZq1S24eb6y/8U="
     },
     "node_modules/marked": {
-      "version": "0.7.0",
-      "resolved": "https://registry.npmjs.org/marked/-/marked-0.7.0.tgz",
-      "integrity": "sha512-c+yYdCZJQrsRjTPhUx7VKkApw9bwDkNbHUKo1ovgcfDjb2kc8rLuRbIFyXL5WOEUwzSSKo3IXpph2K6DqB/KZg==",
+      "version": "4.0.10",
+      "resolved": "https://registry.npmjs.org/marked/-/marked-4.0.10.tgz",
+      "integrity": "sha512-+QvuFj0nGgO970fySghXGmuw+Fd0gD2x3+MqCWLIPf5oxdv1Ka6b2q+z9RP01P/IaKPMEramy+7cNy/Lw8c3hw==",
       "bin": {
-        "marked": "bin/marked"
+        "marked": "bin/marked.js"
       },
       "engines": {
-        "node": ">=0.10.0"
+        "node": ">= 12"
       }
     },
     "node_modules/md5.js": {
@@ -1482,9 +1484,9 @@
       }
     },
     "node_modules/openapi-sampler": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/openapi-sampler/-/openapi-sampler-1.0.1.tgz",
-      "integrity": "sha512-qBjxkSLJV183zTTs4fgxtU/iWSLUUu2aH2+5ddWkNhV7p8CSe/mnAgoLkEbMfHtel6yr9NF+vjUWqfM+iiwORQ==",
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/openapi-sampler/-/openapi-sampler-1.1.1.tgz",
+      "integrity": "sha512-WAFsl5SPYuhQwaMTDFOcKhnEY1G1rmamrMiPmJdqwfl1lr81g63/befcsN9BNi0w5/R0L+hfcUj13PANEBeLgg==",
       "dependencies": {
         "@types/json-schema": "^7.0.7",
         "json-pointer": "^0.6.1"
@@ -1742,9 +1744,8 @@
     "node_modules/redoc": {
       "version": "2.0.0-rc.60",
       "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.60.tgz",
-      "integrity": "sha512-1Wkj/HSCv5CdtwF7FSZc5L0EeBgI0N7YpAIsatMtfiMHEon0WhuArAkc5rMQ6mQXUPRrqq5Fs6QPc4GpNp6DuA==",
+      "integrity": "sha512-+5jHvU6Qt24YS+a5qTiOXF8zRW5r/btfpfMXAvJAuQg1kntDWmZXXH/5/ZsP2u3ug30n4kUWB0/6ry0pWHH+dA==",
       "dependencies": {
-        "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
         "classnames": "^2.3.1",
@@ -1754,9 +1755,9 @@
         "json-pointer": "^0.6.1",
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
-        "marked": "^0.7.0",
+        "marked": "^4.0.10",
         "mobx-react": "^7.2.0",
-        "openapi-sampler": "^1.0.1",
+        "openapi-sampler": "^1.1.1",
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
@@ -2504,9 +2505,9 @@
       }
     },
     "@types/json-schema": {
-      "version": "7.0.7",
-      "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.7.tgz",
-      "integrity": "sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA=="
+      "version": "7.0.9",
+      "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz",
+      "integrity": "sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ=="
     },
     "@types/mkdirp": {
       "version": "1.0.1",
@@ -3297,9 +3298,9 @@
       "integrity": "sha1-GA8fnr74sOY45BZq1S24eb6y/8U="
     },
     "marked": {
-      "version": "0.7.0",
-      "resolved": "https://registry.npmjs.org/marked/-/marked-0.7.0.tgz",
-      "integrity": "sha512-c+yYdCZJQrsRjTPhUx7VKkApw9bwDkNbHUKo1ovgcfDjb2kc8rLuRbIFyXL5WOEUwzSSKo3IXpph2K6DqB/KZg=="
+      "version": "4.0.10",
+      "resolved": "https://registry.npmjs.org/marked/-/marked-4.0.10.tgz",
+      "integrity": "sha512-+QvuFj0nGgO970fySghXGmuw+Fd0gD2x3+MqCWLIPf5oxdv1Ka6b2q+z9RP01P/IaKPMEramy+7cNy/Lw8c3hw=="
     },
     "md5.js": {
       "version": "1.3.5",
@@ -3496,9 +3497,9 @@
       "integrity": "sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM="
     },
     "openapi-sampler": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/openapi-sampler/-/openapi-sampler-1.0.1.tgz",
-      "integrity": "sha512-qBjxkSLJV183zTTs4fgxtU/iWSLUUu2aH2+5ddWkNhV7p8CSe/mnAgoLkEbMfHtel6yr9NF+vjUWqfM+iiwORQ==",
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/openapi-sampler/-/openapi-sampler-1.1.1.tgz",
+      "integrity": "sha512-WAFsl5SPYuhQwaMTDFOcKhnEY1G1rmamrMiPmJdqwfl1lr81g63/befcsN9BNi0w5/R0L+hfcUj13PANEBeLgg==",
       "requires": {
         "@types/json-schema": "^7.0.7",
         "json-pointer": "^0.6.1"
@@ -3729,9 +3730,8 @@
     "redoc": {
       "version": "2.0.0-rc.60",
       "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.60.tgz",
-      "integrity": "sha512-1Wkj/HSCv5CdtwF7FSZc5L0EeBgI0N7YpAIsatMtfiMHEon0WhuArAkc5rMQ6mQXUPRrqq5Fs6QPc4GpNp6DuA==",
+      "integrity": "sha512-+5jHvU6Qt24YS+a5qTiOXF8zRW5r/btfpfMXAvJAuQg1kntDWmZXXH/5/ZsP2u3ug30n4kUWB0/6ry0pWHH+dA==",
       "requires": {
-        "@babel/runtime": "^7.14.0",
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
         "classnames": "^2.3.1",
@@ -3741,9 +3741,9 @@
         "json-pointer": "^0.6.1",
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
-        "marked": "^0.7.0",
+        "marked": "^4.0.10",
         "mobx-react": "^7.2.0",
-        "openapi-sampler": "^1.0.1",
+        "openapi-sampler": "^1.1.1",
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
