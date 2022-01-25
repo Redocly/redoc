@@ -2474,7 +2474,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
 exports[`Components SchemaView discriminator should correctly render discriminator dropdown 1`] = `
 <styled.table>
   <tbody>
-    <Field
+    <Memo(wrappedComponent)
       expandByDefault={false}
       field={
         FieldModel {
@@ -2529,7 +2529,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
       key="packSize"
       showExamples={false}
     />
-    <Field
+    <Memo(wrappedComponent)
       expandByDefault={false}
       field={
         FieldModel {
