@@ -28,79 +28,79 @@ export interface FieldProps extends SchemaOptions {
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
 }
 
-@observer
-export class Field extends React.Component<FieldProps> {
-  toggle = () => {
-    if (this.props.field.expanded === undefined && this.props.expandByDefault) {
-      this.props.field.collapse();
+export const Field = observer((fieldProps: FieldProps) => {
+  const {
+    className,
+    isLast,
+    field,
+    expandByDefault,
+    skipReadOnly,
+    skipWriteOnly,
+    showTitle,
+    level,
+  } = fieldProps;
+  const [expanded, setExpanded] = React.useState(
+    field.expanded === undefined ? expandByDefault : field.expanded,
+  );
+  const toggle = () => {
+    if (field.expanded === undefined && expandByDefault) {
+      field.collapse();
     } else {
-      this.props.field.toggle();
+      field.toggle();
     }
+    setExpanded(field.expanded);
   };
 
-  handleKeyPress = e => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      this.toggle();
+      toggle();
     }
   };
 
-  render() {
-    const { className, field, isLast, expandByDefault } = this.props;
-    const { name, deprecated, required, kind } = field;
-    const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
+  const { name, deprecated, required, kind } = field;
+  const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
-    const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
-
-    const paramName = withSubSchema ? (
-      <ClickablePropertyNameCell
-        className={deprecated ? 'deprecated' : ''}
-        kind={kind}
-        title={name}
-      >
-        <PropertyBullet />
-        <button
-          onClick={this.toggle}
-          onKeyPress={this.handleKeyPress}
-          aria-label="expand properties"
-        >
-          <span>{name}</span>
-          <ShelfIcon direction={expanded ? 'down' : 'right'} />
-        </button>
-        {required && <RequiredLabel> required </RequiredLabel>}
-      </ClickablePropertyNameCell>
-    ) : (
-      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-        <PropertyBullet />
+  const paramName = withSubSchema ? (
+    <ClickablePropertyNameCell className={deprecated ? 'deprecated' : ''} kind={kind} title={name}>
+      <PropertyBullet />
+      <button onClick={toggle} onKeyPress={handleKeyPress} aria-label="expand properties">
         <span>{name}</span>
-        {required && <RequiredLabel> required </RequiredLabel>}
-      </PropertyNameCell>
-    );
+        <ShelfIcon direction={expanded ? 'down' : 'right'} />
+      </button>
+      {required && <RequiredLabel> required </RequiredLabel>}
+    </ClickablePropertyNameCell>
+  ) : (
+    <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
+      <PropertyBullet />
+      <span>{name}</span>
+      {required && <RequiredLabel> required </RequiredLabel>}
+    </PropertyNameCell>
+  );
 
-    return (
-      <>
-        <tr className={isLast ? 'last ' + className : className}>
-          {paramName}
-          <PropertyDetailsCell>
-            <FieldDetails {...this.props} />
-          </PropertyDetailsCell>
+  return (
+    <>
+      <tr className={isLast ? 'last ' + className : className}>
+        {paramName}
+        <PropertyDetailsCell>
+          <FieldDetails {...fieldProps} />
+        </PropertyDetailsCell>
+      </tr>
+      {expanded && withSubSchema && (
+        <tr key={field.name + 'inner'}>
+          <PropertyCellWithInner colSpan={2}>
+            <InnerPropertiesWrap>
+              <Schema
+                schema={field.schema}
+                skipReadOnly={skipReadOnly}
+                skipWriteOnly={skipWriteOnly}
+                showTitle={showTitle}
+                level={level}
+              />
+            </InnerPropertiesWrap>
+          </PropertyCellWithInner>
         </tr>
-        {expanded && withSubSchema && (
-          <tr key={field.name + 'inner'}>
-            <PropertyCellWithInner colSpan={2}>
-              <InnerPropertiesWrap>
-                <Schema
-                  schema={field.schema}
-                  skipReadOnly={this.props.skipReadOnly}
-                  skipWriteOnly={this.props.skipWriteOnly}
-                  showTitle={this.props.showTitle}
-                  level={this.props.level}
-                />
-              </InnerPropertiesWrap>
-            </PropertyCellWithInner>
-          </tr>
-        )}
-      </>
-    );
-  }
-}
+      )}
+    </>
+  );
+});
