@@ -1,3 +1,10 @@
+# [2.0.0-rc.61](https://github.com/Redocly/redoc/compare/v2.0.0-rc.60...v2.0.0-rc.61) (2022-01-26)
+
+
+### Bug Fixes
+
+* fix crash in redoc-cli after migrating to esbuild ([#1872](https://github.com/Redocly/redoc/issues/1872))
+
 # [2.0.0-rc.60](https://github.com/Redocly/redoc/compare/v2.0.0-rc.59...v2.0.0-rc.60) (2022-01-25)
 
 

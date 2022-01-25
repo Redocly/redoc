@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.4",
+      "version": "0.13.5",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.60",
+        "redoc": "2.0.0-rc.61",
         "styled-components": "^5.3.0",
         "yargs": "^17.0.1"
       },
@@ -405,6 +405,14 @@
           "url": "https://feross.org/support"
         }
       ]
+    },
+    "node_modules/big.js": {
+      "version": "5.2.2",
+      "resolved": "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz",
+      "integrity": "sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==",
+      "engines": {
+        "node": "*"
+      }
     },
     "node_modules/binary-extensions": {
       "version": "2.2.0",
@@ -834,6 +842,14 @@
       "resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz",
       "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
     },
+    "node_modules/emojis-list": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/emojis-list/-/emojis-list-3.0.0.tgz",
+      "integrity": "sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==",
+      "engines": {
+        "node": ">= 4"
+      }
+    },
     "node_modules/es6-promise": {
       "version": "3.3.1",
       "resolved": "https://registry.npmjs.org/es6-promise/-/es6-promise-3.3.1.tgz",
@@ -921,9 +937,7 @@
       "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
       "hasInstallScript": true,
       "optional": true,
-      "os": [
-        "darwin"
-      ],
+      "os": ["darwin"],
       "engines": {
         "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
       }
@@ -1126,6 +1140,20 @@
       "resolved": "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz",
       "integrity": "sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw=="
     },
+    "node_modules/isomorphic-style-loader": {
+      "version": "5.3.2",
+      "resolved": "https://registry.npmjs.org/isomorphic-style-loader/-/isomorphic-style-loader-5.3.2.tgz",
+      "integrity": "sha512-5mwHrN2xK5zsKBxSUYF7iDhoU9Kpcpfgn0lFOP0SKk3aKwkl26zi6kh+KDrekjlLzNbYsFnn8o1yWaB3OflVXQ==",
+      "dependencies": {
+        "hoist-non-react-statics": "^3.0.0",
+        "loader-utils": "^1.2.3",
+        "prop-types": "^15.7.2"
+      },
+      "peerDependencies": {
+        "react": "^16.8.0 || ^17.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0"
+      }
+    },
     "node_modules/js-levenshtein": {
       "version": "1.1.6",
       "resolved": "https://registry.npmjs.org/js-levenshtein/-/js-levenshtein-1.1.6.tgz",
@@ -1174,6 +1202,30 @@
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz",
       "integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="
+    },
+    "node_modules/json5": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/json5/-/json5-1.0.1.tgz",
+      "integrity": "sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==",
+      "dependencies": {
+        "minimist": "^1.2.0"
+      },
+      "bin": {
+        "json5": "lib/cli.js"
+      }
+    },
+    "node_modules/loader-utils": {
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/loader-utils/-/loader-utils-1.4.0.tgz",
+      "integrity": "sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==",
+      "dependencies": {
+        "big.js": "^5.2.2",
+        "emojis-list": "^3.0.0",
+        "json5": "^1.0.1"
+      },
+      "engines": {
+        "node": ">=4.0.0"
+      }
     },
     "node_modules/lodash": {
       "version": "4.17.21",
@@ -1742,9 +1794,9 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.60",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.60.tgz",
-      "integrity": "sha512-+5jHvU6Qt24YS+a5qTiOXF8zRW5r/btfpfMXAvJAuQg1kntDWmZXXH/5/ZsP2u3ug30n4kUWB0/6ry0pWHH+dA==",
+      "version": "2.0.0-rc.61",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.61.tgz",
+      "integrity": "sha512-fZLz8JI8zAHiYcRUHbiq6R7sRlR6EgMXrFdpD9GE0Fmp5laScEC2XOQjsPp0uYQgzvhKQSOg/7WyVrZ6GHualQ==",
       "dependencies": {
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
@@ -1752,6 +1804,7 @@
         "decko": "^1.2.0",
         "dompurify": "^2.2.8",
         "eventemitter3": "^4.0.7",
+        "isomorphic-style-loader": "^5.3.2",
         "json-pointer": "^0.6.1",
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
@@ -2622,6 +2675,11 @@
       "resolved": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
       "integrity": "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA=="
     },
+    "big.js": {
+      "version": "5.2.2",
+      "resolved": "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz",
+      "integrity": "sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ=="
+    },
     "binary-extensions": {
       "version": "2.2.0",
       "resolved": "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz",
@@ -3017,6 +3075,11 @@
       "resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz",
       "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
     },
+    "emojis-list": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/emojis-list/-/emojis-list-3.0.0.tgz",
+      "integrity": "sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q=="
+    },
     "es6-promise": {
       "version": "3.3.1",
       "resolved": "https://registry.npmjs.org/es6-promise/-/es6-promise-3.3.1.tgz",
@@ -3232,6 +3295,16 @@
       "resolved": "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz",
       "integrity": "sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw=="
     },
+    "isomorphic-style-loader": {
+      "version": "5.3.2",
+      "resolved": "https://registry.npmjs.org/isomorphic-style-loader/-/isomorphic-style-loader-5.3.2.tgz",
+      "integrity": "sha512-5mwHrN2xK5zsKBxSUYF7iDhoU9Kpcpfgn0lFOP0SKk3aKwkl26zi6kh+KDrekjlLzNbYsFnn8o1yWaB3OflVXQ==",
+      "requires": {
+        "hoist-non-react-statics": "^3.0.0",
+        "loader-utils": "^1.2.3",
+        "prop-types": "^15.7.2"
+      }
+    },
     "js-levenshtein": {
       "version": "1.1.6",
       "resolved": "https://registry.npmjs.org/js-levenshtein/-/js-levenshtein-1.1.6.tgz",
@@ -3268,6 +3341,24 @@
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz",
       "integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="
+    },
+    "json5": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/json5/-/json5-1.0.1.tgz",
+      "integrity": "sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==",
+      "requires": {
+        "minimist": "^1.2.0"
+      }
+    },
+    "loader-utils": {
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/loader-utils/-/loader-utils-1.4.0.tgz",
+      "integrity": "sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==",
+      "requires": {
+        "big.js": "^5.2.2",
+        "emojis-list": "^3.0.0",
+        "json5": "^1.0.1"
+      }
     },
     "lodash": {
       "version": "4.17.21",
@@ -3728,9 +3819,9 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.60",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.60.tgz",
-      "integrity": "sha512-+5jHvU6Qt24YS+a5qTiOXF8zRW5r/btfpfMXAvJAuQg1kntDWmZXXH/5/ZsP2u3ug30n4kUWB0/6ry0pWHH+dA==",
+      "version": "2.0.0-rc.61",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.61.tgz",
+      "integrity": "sha512-fZLz8JI8zAHiYcRUHbiq6R7sRlR6EgMXrFdpD9GE0Fmp5laScEC2XOQjsPp0uYQgzvhKQSOg/7WyVrZ6GHualQ==",
       "requires": {
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
@@ -3738,6 +3829,7 @@
         "decko": "^1.2.0",
         "dompurify": "^2.2.8",
         "eventemitter3": "^4.0.7",
+        "isomorphic-style-loader": "^5.3.2",
         "json-pointer": "^0.6.1",
         "lunr": "^2.3.9",
         "mark.js": "^8.11.1",
