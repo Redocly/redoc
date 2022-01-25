@@ -2,7 +2,7 @@
 import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as webpack from 'webpack';
 import * as path from 'path';
-import { getBabelLoader, webpackIgnore } from './config/webpack-utils';
+import { webpackIgnore } from './config/webpack-utils';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in modules that need transpiling + non-js (e.g. css)
@@ -50,6 +50,7 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
     extensions: ['.ts', '.tsx', '.js', '.mjs', '.json'],
     fallback: {
       path: require.resolve('path-browserify'),
+      buffer: require.resolve('buffer'),
       http: false,
       fs: path.resolve(__dirname, 'src/empty.js'),
       os: path.resolve(__dirname, 'src/empty.js'),
@@ -78,32 +79,27 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
     rules: [
       {
         test: /\.(tsx?|[cm]?js)$/,
-        use: [getBabelLoader({ useBuiltIns: !!env.standalone })],
-        exclude: {
-          and: [/node_modules/],
-          not: {
-            or: [
-              /swagger2openapi/,
-              /reftools/,
-              /openapi-sampler/,
-              /mobx/,
-              /oas-resolver/,
-              /oas-kit-common/,
-              /oas-schema-walker/,
-              /\@redocly\/openapi-core/,
-              /colorette/,
-            ],
-          },
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          tsconfigRaw: require('./tsconfig.json'),
         },
+        exclude: [/node_modules/],
       },
       {
         test: /\.css$/,
-        use: {
-          loader: 'css-loader',
-          options: {
-            sourceMap: false,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'css',
+              minify: true,
+            },
           },
-        },
+        ],
       },
     ],
   },
@@ -117,6 +113,9 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
     }),
     new ForkTsCheckerWebpackPlugin({ logger: { infrastructure: 'silent', issues: 'console' } }),
     new webpack.BannerPlugin(BANNER),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
     webpackIgnore(/js-yaml\/dumper\.js$/),
     env.standalone ? webpackIgnore(/^\.\/SearchWorker\.worker$/) : undefined,
   ].filter(Boolean),

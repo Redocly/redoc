@@ -3,7 +3,7 @@ import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { resolve } from 'path';
 import * as webpack from 'webpack';
-import { getBabelLoader, webpackIgnore } from '../config/webpack-utils';
+import { webpackIgnore } from '../config/webpack-utils';
 
 const VERSION = JSON.stringify(require('../package.json').version);
 const REVISION = JSON.stringify(
@@ -46,6 +46,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     extensions: ['.ts', '.tsx', '.js', '.json'],
     fallback: {
       path: require.resolve('path-browserify'),
+      buffer: require.resolve('buffer'),
       http: false,
       fs: false,
       os: false,
@@ -72,33 +73,28 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     rules: [
       { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
-        test: /\.tsx?$/,
-        use: [getBabelLoader({ useBuiltIns: true, hot: true })],
-        exclude: {
-          and: [/node_modules/],
-          not: {
-            or: [
-              /swagger2openapi/,
-              /reftools/,
-              /openapi-sampler/,
-              /mobx/,
-              /oas-resolver/,
-              /oas-kit-common/,
-              /oas-schema-walker/,
-              /\@redocly\/openapi-core/,
-              /colorette/,
-            ],
-          },
+        test: /\.(tsx?|[cm]?js)$/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          tsconfigRaw: require('../tsconfig.json'),
         },
+        exclude: [/node_modules/],
       },
       {
         test: /\.css$/,
-        use: {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'css',
+              minify: true,
+            },
           },
-        },
+        ],
       },
     ],
   },
@@ -118,6 +114,9 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
         : env.bench
         ? 'benchmark/index.html'
         : 'demo/index.html',
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
     }),
     new ForkTsCheckerWebpackPlugin({ logger: { infrastructure: 'silent', issues: 'console' } }),
     webpackIgnore(/js-yaml\/dumper\.js$/),
