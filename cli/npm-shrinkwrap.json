@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.5",
+      "version": "0.13.6",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",

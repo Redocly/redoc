@@ -1,3 +1,11 @@
+# [2.0.0-rc.62](https://github.com/Redocly/redoc/compare/v2.0.0-rc.61...v2.0.0-rc.62) (2022-01-26)
+
+
+### Bug Fixes
+
+* fix field expand does not work ([#1875](https://github.com/Redocly/redoc/issues/1875))
+
+
 # [2.0.0-rc.61](https://github.com/Redocly/redoc/compare/v2.0.0-rc.60...v2.0.0-rc.61) (2022-01-26)
 
 
