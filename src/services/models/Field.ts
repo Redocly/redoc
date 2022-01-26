@@ -41,7 +41,7 @@ const DEFAULT_SERIALIZATION: Record<
  */
 export class FieldModel {
   @observable
-  expanded: boolean | undefined;
+  expanded: boolean | undefined = undefined;
 
   schema: SchemaModel;
   name: string;
