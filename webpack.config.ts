@@ -90,7 +90,7 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
       {
         test: /\.css$/,
         use: [
-          'isomorphic-style-loader',
+          'style-loader',
           'css-loader',
           {
             loader: 'esbuild-loader',
