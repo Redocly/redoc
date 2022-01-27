@@ -1,3 +1,11 @@
+# [2.0.0-rc.63](https://github.com/Redocly/redoc/compare/v2.0.0-rc.61...v2.0.0-rc.63) (2022-01-27)
+
+
+### Bug Fixes
+
+* scroll in sidebar ([b5b0d61](https://github.com/Redocly/redoc/commit/b5b0d61b3568ac2a8aaceafa96ffa6d2f86ed323))
+
+
 # [2.0.0-rc.62](https://github.com/Redocly/redoc/compare/v2.0.0-rc.61...v2.0.0-rc.62) (2022-01-26)
 
 
