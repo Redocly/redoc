@@ -85,7 +85,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       {
         test: /\.css$/,
         use: [
-          'isomorphic-style-loader',
+          'style-loader',
           'css-loader',
           {
             loader: 'esbuild-loader',
