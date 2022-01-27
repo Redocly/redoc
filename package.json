@@ -145,7 +145,6 @@
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
     "eventemitter3": "^4.0.7",
-    "style-loader": "^3.3.1",
     "json-pointer": "^0.6.1",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
@@ -160,6 +159,7 @@
     "react-tabs": "^3.2.2",
     "slugify": "~1.4.7",
     "stickyfill": "^1.1.1",
+    "style-loader": "^3.3.1",
     "swagger2openapi": "^7.0.6",
     "url-template": "^2.0.8"
   },
