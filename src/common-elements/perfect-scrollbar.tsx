@@ -12,7 +12,7 @@ import styled, { createGlobalStyle } from '../styled-components';
  * That's why the following ugly fix is required
  */
 const PerfectScrollbarConstructor =
-  PerfectScrollbarNamespace.default || ((PerfectScrollbarNamespace as any) as PerfectScrollbarType);
+  PerfectScrollbarNamespace.default || (PerfectScrollbarNamespace as any as PerfectScrollbarType);
 
 const PSStyling = createGlobalStyle`${psStyles && psStyles.toString()}`;
 

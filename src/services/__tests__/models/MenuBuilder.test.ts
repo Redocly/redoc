@@ -19,7 +19,6 @@ describe('Models', () => {
       expect(contentItems[0].id).toEqual('tag/pet');
       expect(contentItems[0].name).toEqual('pet');
       expect(contentItems[0].type).toEqual('tag');
-
     });
   });
 });

@@ -193,7 +193,10 @@ export class OpenAPIParser {
     if (keys.length === 0) {
       return resolved;
     }
-    if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
+    if (
+      mergeAsAllOf &&
+      keys.some(k => k !== 'description' && k !== 'title' && k !== 'externalDocs')
+    ) {
       return {
         allOf: [rest, resolved],
       };
@@ -244,7 +247,7 @@ export class OpenAPIParser {
     }
 
     const allOfSchemas = schema.allOf
-      .map((subSchema) => {
+      .map(subSchema => {
         if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
           return undefined;
         }
@@ -258,7 +261,7 @@ export class OpenAPIParser {
           schema: subMerged,
         };
       })
-      .filter((child) => child !== undefined) as Array<{
+      .filter(child => child !== undefined) as Array<{
       $ref: string | undefined;
       schema: MergedOpenAPISchema;
     }>;
@@ -337,7 +340,7 @@ export class OpenAPIParser {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&
-        def.allOf.find((obj) => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
+        def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
       ) {
         res['#/components/schemas/' + defName] = [def['x-discriminator-value'] || defName];
       }
@@ -363,7 +366,7 @@ export class OpenAPIParser {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {
-          oneOf: sub.oneOf.map((part) => {
+          oneOf: sub.oneOf.map(part => {
             const merged = this.mergeAllOf({
               allOf: [...beforeAllOf, part, ...afterAllOf],
             });
