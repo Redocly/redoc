@@ -7,6 +7,7 @@ export const LogoImgEl = styled.img`
   padding: ${props => props.theme.logo.gutter};
   width: 100%;
   display: block;
+  height: 150px;
 `;
 
 export const LogoWrap = styled.div`

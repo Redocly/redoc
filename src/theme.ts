@@ -14,7 +14,13 @@ const defaultTheme: ThemeInterface = {
   colors: {
     tonalOffset: 0.2,
     primary: {
-      main: '#32329f',
+      main: '#003659',
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
+      contrastText: ({ colors }) => readableColor(colors.primary.main),
+    },
+    secondary: {
+      main: '#6BA4B8',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       contrastText: ({ colors }) => readableColor(colors.primary.main),
@@ -107,11 +113,11 @@ const defaultTheme: ThemeInterface = {
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'aller, sans-serif',
     smoothing: 'antialiased',
     optimizeSpeed: true,
     headings: {
-      fontFamily: 'Montserrat, sans-serif',
+      fontFamily: 'aller, sans-serif',
       fontWeight: '400',
       lineHeight: '1.6em',
     },
@@ -235,6 +241,7 @@ export interface ResolvedThemeInterface {
   colors: {
     tonalOffset: number;
     primary: ColorSetting;
+    secondary: ColorSetting;
     success: ColorSetting;
     warning: ColorSetting;
     error: ColorSetting;

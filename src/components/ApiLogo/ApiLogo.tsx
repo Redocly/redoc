@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { OpenAPIInfo } from '../../types';
+import { MilesConstants, OpenAPIInfo } from '../../types';
 import { LinkWrap, LogoImgEl, LogoWrap } from './styled.elements';
 
 @observer
@@ -17,11 +17,19 @@ export class ApiLogo extends React.Component<{ info: OpenAPIInfo }> {
     // Use the english word logo if no alt text is provided
     const altText = logoInfo.altText ? logoInfo.altText : 'logo';
 
-    const logo = <LogoImgEl src={logoInfo.url} alt={altText} />;
-    return (
-      <LogoWrap style={{ backgroundColor: logoInfo.backgroundColor }}>
-        {logoHref ? LinkWrap(logoHref)(logo) : logo}
-      </LogoWrap>
-    );
+    // When certain query param is set we want to hide the logo
+    const hideLogo =
+      new URLSearchParams(window.location.search).get(MilesConstants.HIDE_LOGO_QUERY_PARAM) ==
+      'true';
+    if (hideLogo) {
+      return <div></div>;
+    } else {
+      const logo = <LogoImgEl src={logoInfo.url} alt={altText} />;
+      return (
+        <LogoWrap style={{ backgroundColor: logoInfo.backgroundColor }}>
+          {logoHref ? LinkWrap(logoHref)(logo) : logo}
+        </LogoWrap>
+      );
+    }
   }
 }
