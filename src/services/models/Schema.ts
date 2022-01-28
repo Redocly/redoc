@@ -1,6 +1,11 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
+import {
+  MilesConstants,
+  OpenAPIExternalDocumentation,
+  OpenAPISchema,
+  Referenced,
+} from '../../types';
 
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
@@ -388,6 +393,10 @@ function buildFields(
           ...field,
           default: field.default === undefined && defaults ? defaults[fieldName] : field.default,
         },
+        extraDescription:
+          field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
+            ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
+            : {},
       },
       $ref + '/properties/' + fieldName,
       options,
@@ -414,6 +423,7 @@ function buildFields(
           required: false,
           schema: additionalProps === true ? {} : additionalProps,
           kind: 'additionalProperties',
+          extraDescription: {},
         },
         $ref + '/additionalProperties',
         options,

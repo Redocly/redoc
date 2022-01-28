@@ -100,6 +100,7 @@ export interface OpenAPIParameter {
   content?: { [media: string]: OpenAPIMediaType };
   encoding?: Record<string, OpenAPIEncoding>;
   const?: any;
+  extraDescription: Record<string, boolean>;
 }
 
 export interface OpenAPIExample {

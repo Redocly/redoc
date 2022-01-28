@@ -1,6 +1,7 @@
 import { action, observable, makeObservable } from 'mobx';
 
 import {
+  MilesConstants,
   OpenAPIParameter,
   OpenAPIParameterLocation,
   OpenAPIParameterStyle,
@@ -58,6 +59,7 @@ export class FieldModel {
   const?: any;
 
   serializationMime?: string;
+  extraDescription: Record<string, boolean>;
 
   constructor(
     parser: OpenAPIParser,
@@ -90,6 +92,12 @@ export class FieldModel {
         info.examples,
         (example, name) => new ExampleModel(parser, example, name, info.encoding),
       );
+    }
+
+    if (info[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] == undefined) {
+      this.extraDescription = info.extraDescription;
+    } else {
+      this.extraDescription = info[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME];
     }
 
     if (serializationMime) {

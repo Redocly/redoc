@@ -12,6 +12,7 @@ import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocument
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
 import { Extensions } from './Extensions';
+import { ExtraDescription } from './ExtraDescriptions';
 import { FieldProps } from './Field';
 import { Examples } from './Examples';
 import { ConstraintsView } from './FieldContstraints';
@@ -28,7 +29,15 @@ function FieldDetailsComponent(props: FieldProps) {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
-  const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
+  const {
+    schema,
+    description,
+    deprecated,
+    extensions,
+    in: _in,
+    const: _const,
+    extraDescription,
+  } = field;
   const isArrayType = schema.type === 'array';
 
   const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
@@ -95,6 +104,7 @@ function FieldDetailsComponent(props: FieldProps) {
       {!renderDiscriminatorSwitch && (
         <EnumValues isArrayType={isArrayType} values={schema.enum} />
       )}{' '}
+      {extraDescription && <ExtraDescription extraDescriptions={extraDescription} />}
       {renderedExamples}
       <Extensions extensions={{ ...extensions, ...schema.extensions }} />
       <div>
