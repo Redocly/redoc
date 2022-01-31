@@ -140,8 +140,8 @@ export class StickyResponsiveSidebar extends React.Component<
         >
           {this.props.children}
         </StyledStickySidebar>
-        <FloatingButton onClick={this.toggleNavMenu}>
-          <AnimatedChevronButton open={open} />
+        <FloatingButton className={this.props.className + '-fab'} onClick={this.toggleNavMenu}>
+          <AnimatedChevronButton open={open} className="fab-icon" />
         </FloatingButton>
       </>
     );
