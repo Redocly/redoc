@@ -40,5 +40,13 @@ describe('Models', () => {
       expect(schema.oneOf).toHaveLength(2);
       expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
+
+    test('schemaDefinition should resolve double ref', () => {
+      const spec = require('../fixtures/3.1/schemaDefinition.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Parent, '', opts);
+      expect(schema.fields).toHaveLength(1);
+      expect(schema.pointer).toBe('#/components/schemas/Child');
+    });
   });
 });
