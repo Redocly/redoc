@@ -219,11 +219,15 @@ You can use all of the following options with the standalone version of the <red
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
-* `showObjectSchemaExamples` - show object schema exmaple in the properties, default `false`.
+* `showObjectSchemaExamples` - show object schema example in the properties, default `false`.
 * `expandSingleSchemaField` - automatically expand single field in a schema
+* `schemaExpansionLevel` - specifies whether to automatically expand schemas. Special value `"all"` expands all levels. The default value is `0`.
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value `"all"` expands all levels. The default value is `2`.
 * `hideSchemaTitles` - do not display schema `title` next to to the type
 * `simpleOneOfTypeLabel` - show only unique oneOf types in the label without titles
+* `sortEnumValuesAlphabetically` - set to true, sorts all enum values in all schemas alphabetically
+* `sortOperationsAlphabetically` - set to true, sorts operations in the navigation sidebar and in the middle panel alphabetically
+* `sortTagsAlphabetically` - set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
