@@ -26,5 +26,16 @@ describe('Models', () => {
 
       expect(parser.shallowDeref(schemaOrRef)).toMatchSnapshot();
     });
+
+    test('should correct resolve double $ref if no need sibling', () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const spec = require('./fixtures/3.1/schemaDefinition.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schemaOrRef: Referenced<OpenAPIParameter> = {
+        $ref: '#/components/schemas/Parent',
+      };
+
+      expect(parser.deref(schemaOrRef, false, true)).toMatchSnapshot();
+    });
   });
 });
