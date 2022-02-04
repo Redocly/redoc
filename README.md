@@ -219,6 +219,7 @@ You can use all of the following options with the standalone version of the <red
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
+* `showObjectSchemaExamples` - show object schema exmaple in the properties, default `false`.
 * `expandSingleSchemaField` - automatically expand single field in a schema
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value `"all"` expands all levels. The default value is `2`.
 * `hideSchemaTitles` - do not display schema `title` next to to the type
