@@ -192,9 +192,7 @@ export class OpenAPIParser {
     const keys = Object.keys(rest);
     if (keys.length === 0) {
       if (this.isRef(resolved)) {
-        const result = this.deref(resolved, false, mergeAsAllOf);
-        this.exitRef(resolved);
-        return result;
+        return this.shallowDeref(resolved);
       }
       return resolved;
     }
