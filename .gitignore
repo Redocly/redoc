@@ -1,0 +1,47 @@
+### Linux ###
+*~
+
+# KDE directory preferences
+.directory
+# OS X folder attributes
+.DS_Store
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+demo/dist/
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules
+
+lib/
+stats.json
+cypress/
+bundles/
+typings/*
+!typings/styled-patch.d.ts
+cli/index.js
+
+/benchmark/revisions
+
+/coverage
+.ghpages-tmp
+stats.json
+yarn.lock
+.idea
+.vscode
+.eslintcache
+
+
+
+
+
+
+
