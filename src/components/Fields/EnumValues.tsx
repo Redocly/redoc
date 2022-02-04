@@ -8,7 +8,7 @@ import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
 
 export interface EnumValuesProps {
   values: string[];
-  type: string | string[];
+  isArrayType: boolean;
 }
 
 export interface EnumValuesState {
@@ -27,7 +27,7 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
   }
 
   render() {
-    const { values, type } = this.props;
+    const { values, isArrayType } = this.props;
     const { collapsed } = this.state;
 
     // TODO: provide context interface in more elegant way
@@ -55,7 +55,7 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
     return (
       <div>
         <FieldLabel>
-          {type === 'array' ? l('enumArray') : ''}{' '}
+          {isArrayType ? l('enumArray') : ''}{' '}
           {values.length === 1 ? l('enumSingleValue') : l('enum')}:
         </FieldLabel>{' '}
         {displayedItems.map((value, idx) => {

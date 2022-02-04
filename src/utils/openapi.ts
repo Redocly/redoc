@@ -368,6 +368,15 @@ export function serializeParameterValue(
   }
 }
 
+export function getSerializedValue(field: FieldModel, example: any) {
+  if (field.in) {
+    // decode for better readability in examples: see https://github.com/Redocly/redoc/issues/1138
+    return decodeURIComponent(serializeParameterValue(field, example));
+  } else {
+    return example;
+  }
+}
+
 export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';
@@ -375,14 +384,15 @@ export function langFromMime(contentType: string): string {
   return 'clike';
 }
 
+const DEFINITION_NAME_REGEX = /^#\/components\/(schemas|pathItems)\/([^/]+)$/;
+
 export function isNamedDefinition(pointer?: string): boolean {
-  return /^#\/components\/(schemas|pathItems)\/[^\/]+$/.test(pointer || '');
+  return DEFINITION_NAME_REGEX.test(pointer || '');
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
-  if (!pointer) return undefined;
-  const match = pointer.match(/^#\/components\/(schemas|pathItems)\/([^\/]+)$/);
-  return match === null ? undefined : match[1];
+  const [name] = pointer?.match(DEFINITION_NAME_REGEX)?.reverse() || [];
+  return name;
 }
 
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {

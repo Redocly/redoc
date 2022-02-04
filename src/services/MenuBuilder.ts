@@ -12,6 +12,7 @@ import {
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
   JsonPointer,
+  alphabeticallyByProp,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -147,9 +148,11 @@ export class MenuBuilder {
 
   /**
    * Returns array of OperationsGroup items for the tags of the group or for all tags
+   * @param parser
    * @param tagsMap tags info returned from `getTagsWithOperations`
    * @param parent parent item
    * @param group group which this tag belongs to. if not provided gets all tags
+   * @param options normalized options
    */
   static getTagsItems(
     parser: OpenAPIParser,
@@ -200,14 +203,21 @@ export class MenuBuilder {
 
       res.push(item);
     }
+
+    if (options.sortTagsAlphabetically) {
+      res.sort(alphabeticallyByProp<GroupModel | OperationModel>('name'));
+    }
+
     return res;
   }
 
   /**
    * Returns array of Operation items for the tag
+   * @param parser
    * @param parent parent OperationsGroup
    * @param tag tag info returned from `getTagsWithOperations`
    * @param depth items depth
+   * @param options - normalized options
    */
   static getOperationsItems(
     parser: OpenAPIParser,
@@ -226,6 +236,11 @@ export class MenuBuilder {
       operation.depth = depth;
       res.push(operation);
     }
+
+    if (options.sortOperationsAlphabetically) {
+      res.sort(alphabeticallyByProp<OperationModel>('name'));
+    }
+
     return res;
   }
 

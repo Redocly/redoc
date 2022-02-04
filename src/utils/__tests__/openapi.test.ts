@@ -12,6 +12,7 @@ import {
   sortByRequired,
   humanizeNumberRange,
   getContentWithLegacyExamples,
+  getDefinitionName,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
@@ -1267,6 +1268,16 @@ describe('Utils', () => {
       expect(content).not.toStrictEqual(info.content);
       expect(content['application/json']).not.toStrictEqual(info.content['application/json']);
       expect(content['text/plain']).toStrictEqual(info.content['text/plain']);
+    });
+  });
+
+  describe('getDefinitionName', () => {
+    test('should return the name if pointer match regex', () => {
+      expect(getDefinitionName('#/components/schemas/Call')).toEqual('Call');
+    });
+    test("should return the `undefined` if pointer not match regex or it's absent", () => {
+      expect(getDefinitionName('#/test/path/Call')).toBeUndefined();
+      expect(getDefinitionName()).toBeUndefined();
     });
   });
 });

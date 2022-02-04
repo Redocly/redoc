@@ -18,6 +18,8 @@ export interface RedocRawOptions {
   requiredPropsFirst?: boolean | string;
   sortPropsAlphabetically?: boolean | string;
   sortEnumValuesAlphabetically?: boolean | string;
+  sortOperationsAlphabetically?: boolean | string;
+  sortTagsAlphabetically?: boolean | string;
   noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
@@ -35,6 +37,8 @@ export interface RedocRawOptions {
   simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
+  schemaExpansionLevel?: number | string | 'all';
+  showObjectSchemaExamples?: boolean | string;
   sectionsAtTheEnd?: string | string[];
 
   unstable_ignoreMimeParameters?: boolean;
@@ -70,6 +74,12 @@ function argValueToNumber(value: number | string | undefined): number | undefine
   if (typeof value === 'number') {
     return value;
   }
+}
+
+function argValueToExpandLevel(value?: number | string | undefined, defaultValue = 0): number {
+  if (value === 'all') return Infinity;
+
+  return argValueToNumber(value) || defaultValue;
 }
 
 export class RedocNormalizedOptions {
@@ -212,6 +222,8 @@ export class RedocNormalizedOptions {
   requiredPropsFirst: boolean;
   sortPropsAlphabetically: boolean;
   sortEnumValuesAlphabetically: boolean;
+  sortOperationsAlphabetically: boolean;
+  sortTagsAlphabetically: boolean;
   noAutoAuth: boolean;
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
@@ -229,6 +241,8 @@ export class RedocNormalizedOptions {
   simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
+  schemaExpansionLevel: number;
+  showObjectSchemaExamples: boolean;
   sectionsAtTheEnd: string[];
 
   /* tslint:disable-next-line */
@@ -272,6 +286,8 @@ export class RedocNormalizedOptions {
     this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
     this.sortPropsAlphabetically = argValueToBoolean(raw.sortPropsAlphabetically);
     this.sortEnumValuesAlphabetically = argValueToBoolean(raw.sortEnumValuesAlphabetically);
+    this.sortOperationsAlphabetically = argValueToBoolean(raw.sortOperationsAlphabetically);
+    this.sortTagsAlphabetically = argValueToBoolean(raw.sortTagsAlphabetically);
     this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
@@ -291,6 +307,8 @@ export class RedocNormalizedOptions {
     this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
+    this.schemaExpansionLevel = argValueToExpandLevel(raw.schemaExpansionLevel);
+    this.showObjectSchemaExamples = argValueToBoolean(raw.showObjectSchemaExamples);
     this.sectionsAtTheEnd = RedocNormalizedOptions.normalizeSectionsAtTheEnd(raw.sectionsAtTheEnd);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);

@@ -1,4 +1,5 @@
-import * as marked from 'marked';
+import * as React from 'react';
+import { marked } from 'marked';
 
 import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
 import { AppStore } from './AppStore';
@@ -56,10 +57,12 @@ export class MarkdownRenderer {
   headings: MarkdownHeading[] = [];
   currentTopHeading: MarkdownHeading;
 
+  public parser: marked.Parser; // required initialization, `parser` is used by `marked.Renderer` instance under the hood
   private headingEnhanceRenderer: marked.Renderer;
   private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
   constructor(public options?: RedocNormalizedOptions) {
+    this.parser = new marked.Parser();
     this.headingEnhanceRenderer = new marked.Renderer();
     this.originalHeadingRule = this.headingEnhanceRenderer.heading.bind(
       this.headingEnhanceRenderer,
@@ -98,7 +101,7 @@ export class MarkdownRenderer {
 
   attachHeadingsDescriptions(rawText: string) {
     const buildRegexp = (heading: MarkdownHeading) => {
-      return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
+      return new RegExp(`##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\s*\n`);
     };
 
     const flatHeadings = this.flattenHeadings(this.headings);
@@ -129,7 +132,7 @@ export class MarkdownRenderer {
     level: 1 | 2 | 3 | 4 | 5 | 6,
     raw: string,
     slugger: marked.Slugger,
-  ) => {
+  ): string => {
     if (level === 1) {
       this.currentTopHeading = this.saveHeading(text, level);
     } else if (level === 2) {
