@@ -46,6 +46,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     extensions: ['.ts', '.tsx', '.js', '.json'],
     fallback: {
       path: require.resolve('path-browserify'),
+      tty: require.resolve('tty-browserify'),
       buffer: require.resolve('buffer'),
       http: false,
       fs: false,
