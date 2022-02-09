@@ -42,11 +42,11 @@ For more information on the OpenAPI specification, refer to the [Learning OpenAP
 section in the documentation.
 :::
 
-### Running Redoc locally
+### How to run Redoc locally
 
 If you want to view your Redoc output locally, you can simulate an HTTP server.
 
-#### Using Redocly OpenAPI CLI
+#### Redocly OpenAPI CLI
 
 Redocly OpenAPI CLI is an open source command-line tool that includes a command
 for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
@@ -74,7 +74,7 @@ Replace `openapi.yaml` in the example command with the file path to your OpenAPI
 For more information about the `preview-docs` command, refer to
 [OpenAPI CLI commands](https://redoc.ly/docs/cli/commands/preview-docs/#preview-docs) in the OpenAPI CLI documentation.
 
-#### Using Python
+#### Python
 
 If you have [Python 3](https://www.python.org/downloads/) installed, `cd` into your
 project directory and run the following command:
@@ -93,7 +93,7 @@ python -m SimpleHTTPServer 8000
 The output after entering the command provides the local URL where the preview can be accessed.
 To exit the preview, use `control-C`.
 
-#### Using Node.js
+#### Node.js
 
 If you have [Node.js](https://nodejs.org/en/download/) installed, install `http-server`
 using the following npm command:

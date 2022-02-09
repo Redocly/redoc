@@ -1,10 +1,10 @@
 ---
-title: Using the Redoc React component
+title: Use the Redoc React component
 redirectFrom:
   - /docs/quickstart/react/
 ---
 
-# Using the Redoc React component
+# How to use the Redoc React component
 
 ## Before you start
 
@@ -44,7 +44,7 @@ Or you can pass your OpenAPI definition as an object, using the following format
 
 ## Optional - Pass options
 
-Options can be passed into the RedocStandalone component to alter how it renders. 
+Options can be passed into the RedocStandalone component to alter how it renders.
 
 For example:
 
@@ -58,7 +58,7 @@ For example:
 />
 ```
 
-For more information on configuration options, refer to the 
+For more information on configuration options, refer to the
 [Configuration options for Reference docs](https://redoc.ly/docs/api-reference-docs/configuration/)
 section of the documentation. Options available for Redoc are noted,
 "Supported in Redoc CE".
