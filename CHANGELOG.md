@@ -1,3 +1,13 @@
+# [2.0.0-rc.64](https://github.com/Redocly/redoc/compare/v2.0.0-rc.63...v2.0.0-rc.64) (2022-02-24)
+
+
+### Bug Fixes
+
+* bump json-pointer version to avoid CVE-2021-23820 ([#1910](https://github.com/Redocly/redoc/issues/1910)) ([777efdd](https://github.com/Redocly/redoc/commit/777efdde35c1c8dc79dd714e1666279e9192dddb))
+* external ref in schema definition ([#1894](https://github.com/Redocly/redoc/issues/1894)) ([57cdd9f](https://github.com/Redocly/redoc/commit/57cdd9f6da38418d6214ac3c6480c5847ecd0228))
+
+
+
 # [2.0.0-rc.63](https://github.com/Redocly/redoc/compare/v2.0.0-rc.61...v2.0.0-rc.63) (2022-01-27)
 
 
