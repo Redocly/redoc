@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TypeFormat, TypePrefix } from '../../common-elements/fields';
-import { ConstraintsView } from './FieldContstraints';
-import { Pattern } from './Pattern';
 import { SchemaModel } from '../../services';
 import styled from '../../styled-components';
+import { ConstraintsView } from './FieldContstraints';
+import { Pattern } from './Pattern';
 
 export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
   if (!schema || (schema.type === 'string' && !schema.constraints.length)) return null;
@@ -11,7 +11,7 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
   return (
     <Wrapper>
       [ items
-      {schema.displayFormat && <TypeFormat>{` &lt;${schema.displayFormat}&gt; `}</TypeFormat>}
+      {schema.displayFormat && <TypeFormat>{` <${schema.displayFormat}> `}</TypeFormat>}
       <ConstraintsView constraints={schema.constraints} />
       <Pattern schema={schema} />
       {schema.items && <ArrayItemDetails schema={schema.items} />} ]
