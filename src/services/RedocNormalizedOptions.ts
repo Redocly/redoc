@@ -8,6 +8,7 @@ import { MDXComponentMeta } from './MarkdownRenderer';
 export enum SideNavStyleEnum {
   SummaryOnly = 'summary-only',
   PathOnly = 'path-only',
+  IdOnly = 'id-only',
 }
 
 export interface RedocRawOptions {
