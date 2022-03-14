@@ -19,7 +19,7 @@ Or you can install `redoc-cli` using [npx](https://www.freecodecamp.org/news/npm
 
 ### Install Redoc CLI with yarn
 
-To install the `redoc-cli` package globally with yarn: 
+To install the `redoc-cli` package globally with yarn:
 
 ```bash
 yarn global add redoc-cli
@@ -27,7 +27,7 @@ yarn global add redoc-cli
 
 ### Install Redoc with npm
 
-To install the `redoc-cli` package globally with npm: 
+To install the `redoc-cli` package globally with npm:
 
 ```bash
 npm i -g redoc-cli
@@ -50,9 +50,9 @@ The CLI includes the following commands:
 
 - **`redoc-cli serve [spec]`:** Starts a local server with Redoc. You must include the required parameter, spec, which is
   a reference to an OpenAPI definition. Options include:
-    - `--ssr`: Implements a server-side rendering model. 
+    - `--ssr`: Implements a server-side rendering model.
     - `--watch`: Automatically reloads the server while you edit your OpenAPI definition.
-    - `--options`: Customizes your output using [Redoc options](https://redoc.ly/docs/api-reference-docs/configuration/).
+    - `--options`: Customizes your output using [Redoc options](https://redocly.com/docs/api-reference-docs/configuration/).
       To add nested options, use dot notation.
 - **`redoc-cli bundle [spec]`:** Bundles `spec` and Redoc into a zero-dependency HTML file. Options include:
     - `-t` or `--template`: Uses custom [Handlebars](https://handlebarsjs.com/) templates to render your OpenAPI definition.

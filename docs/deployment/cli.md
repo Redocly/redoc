@@ -54,7 +54,7 @@ The CLI includes the following commands:
   a reference to an OpenAPI definition. Options include:
     - `--ssr`: Implements a server-side rendering model.
     - `--watch`: Automatically reloads the server while you edit your OpenAPI definition.
-    - `--options`: Customizes your output using [Redoc options](https://redoc.ly/docs/api-reference-docs/configuration/).
+    - `--options`: Customizes your output using [Redoc options](https://redocly.com/docs/api-reference-docs/configuration/).
       To add nested options, use dot notation.
 - **`redoc-cli bundle [spec]`:** Bundles `spec` and Redoc into a zero-dependency HTML file. Options include:
     - `-t` or `--template`: Uses custom [Handlebars](https://handlebarsjs.com/) templates to render your OpenAPI definition.

@@ -38,7 +38,7 @@ You will need an OpenAPI definition. For testing purposes, you can use one of th
   - [Fitbit Plus OpenAPI Definition](https://raw.githubusercontent.com/TwineHealth/TwineDeveloperDocs/master/spec/swagger.yaml)
 
 :::info OpenAPI specification
-For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redoc.ly/docs/resources/learning-openapi/)
+For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redocly.com/docs/resources/learning-openapi/)
 section in the documentation.
 :::
 
@@ -51,7 +51,7 @@ If you want to view your Redoc output locally, you can simulate an HTTP server.
 Redocly OpenAPI CLI is an open source command-line tool that includes a command
 for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
 
-If you have [OpenAPI CLI](https://redoc.ly/docs/cli/#installation-and-usage) installed, `cd` into your
+If you have [OpenAPI CLI](https://redocly.com/docs/cli/#installation-and-usage) installed, `cd` into your
 project directory and run the following command:
 
 ```bash
@@ -72,7 +72,7 @@ openapi preview-docs -p 8888 openapi.yaml
 Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
 
 For more information about the `preview-docs` command, refer to
-[OpenAPI CLI commands](https://redoc.ly/docs/cli/commands/preview-docs/#preview-docs) in the OpenAPI CLI documentation.
+[OpenAPI CLI commands](https://redocly.com/docs/cli/commands/preview-docs/#preview-docs) in the OpenAPI CLI documentation.
 
 #### Python
 
