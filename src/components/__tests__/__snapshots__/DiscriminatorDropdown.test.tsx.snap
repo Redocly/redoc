@@ -80,6 +80,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "expandSingleSchemaField": false,
                     "generatedPayloadSamplesMaxDepth": 10,
                     "hideDownloadButton": false,
+                    "hideFab": false,
                     "hideHostname": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -186,6 +187,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
+                      "fab": Object {
+                        "backgroundColor": "#f2f2f2",
+                        "color": "#0065FB",
+                      },
                       "logo": Object {
                         "gutter": "2px",
                         "maxHeight": "260px",
@@ -320,6 +325,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "expandSingleSchemaField": false,
                     "generatedPayloadSamplesMaxDepth": 10,
                     "hideDownloadButton": false,
+                    "hideFab": false,
                     "hideHostname": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -426,6 +432,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
+                      "fab": Object {
+                        "backgroundColor": "#f2f2f2",
+                        "color": "#0065FB",
+                      },
                       "logo": Object {
                         "gutter": "2px",
                         "maxHeight": "260px",
@@ -536,6 +546,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "expandSingleSchemaField": false,
               "generatedPayloadSamplesMaxDepth": 10,
               "hideDownloadButton": false,
+              "hideFab": false,
               "hideHostname": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -642,6 +653,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
+                "fab": Object {
+                  "backgroundColor": "#f2f2f2",
+                  "color": "#0065FB",
+                },
                 "logo": Object {
                   "gutter": "2px",
                   "maxHeight": "260px",
@@ -817,6 +832,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "expandSingleSchemaField": false,
                     "generatedPayloadSamplesMaxDepth": 10,
                     "hideDownloadButton": false,
+                    "hideFab": false,
                     "hideHostname": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -923,6 +939,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
+                      "fab": Object {
+                        "backgroundColor": "#f2f2f2",
+                        "color": "#0065FB",
+                      },
                       "logo": Object {
                         "gutter": "2px",
                         "maxHeight": "260px",
@@ -1057,6 +1077,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "expandSingleSchemaField": false,
                     "generatedPayloadSamplesMaxDepth": 10,
                     "hideDownloadButton": false,
+                    "hideFab": false,
                     "hideHostname": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -1163,6 +1184,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
+                      "fab": Object {
+                        "backgroundColor": "#f2f2f2",
+                        "color": "#0065FB",
+                      },
                       "logo": Object {
                         "gutter": "2px",
                         "maxHeight": "260px",
@@ -1273,6 +1298,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "expandSingleSchemaField": false,
               "generatedPayloadSamplesMaxDepth": 10,
               "hideDownloadButton": false,
+              "hideFab": false,
               "hideHostname": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -1379,6 +1405,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
+                "fab": Object {
+                  "backgroundColor": "#f2f2f2",
+                  "color": "#0065FB",
+                },
                 "logo": Object {
                   "gutter": "2px",
                   "maxHeight": "260px",
@@ -1512,6 +1542,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "expandSingleSchemaField": false,
           "generatedPayloadSamplesMaxDepth": 10,
           "hideDownloadButton": false,
+          "hideFab": false,
           "hideHostname": false,
           "hideSchemaPattern": false,
           "hideSchemaTitles": false,
@@ -1618,6 +1649,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
             },
             "extensionsHook": undefined,
+            "fab": Object {
+              "backgroundColor": "#f2f2f2",
+              "color": "#0065FB",
+            },
             "logo": Object {
               "gutter": "2px",
               "maxHeight": "260px",
@@ -1790,6 +1825,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "expandSingleSchemaField": false,
               "generatedPayloadSamplesMaxDepth": 10,
               "hideDownloadButton": false,
+              "hideFab": false,
               "hideHostname": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -1896,6 +1932,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
+                "fab": Object {
+                  "backgroundColor": "#f2f2f2",
+                  "color": "#0065FB",
+                },
                 "logo": Object {
                   "gutter": "2px",
                   "maxHeight": "260px",
@@ -2030,6 +2070,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "expandSingleSchemaField": false,
               "generatedPayloadSamplesMaxDepth": 10,
               "hideDownloadButton": false,
+              "hideFab": false,
               "hideHostname": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -2136,6 +2177,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
+                "fab": Object {
+                  "backgroundColor": "#f2f2f2",
+                  "color": "#0065FB",
+                },
                 "logo": Object {
                   "gutter": "2px",
                   "maxHeight": "260px",
@@ -2246,6 +2291,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "expandSingleSchemaField": false,
         "generatedPayloadSamplesMaxDepth": 10,
         "hideDownloadButton": false,
+        "hideFab": false,
         "hideHostname": false,
         "hideSchemaPattern": false,
         "hideSchemaTitles": false,
@@ -2352,6 +2398,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
           },
           "extensionsHook": undefined,
+          "fab": Object {
+            "backgroundColor": "#f2f2f2",
+            "color": "#0065FB",
+          },
           "logo": Object {
             "gutter": "2px",
             "maxHeight": "260px",

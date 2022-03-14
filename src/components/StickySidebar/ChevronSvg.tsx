@@ -2,17 +2,11 @@ import * as React from 'react';
 
 import styled from '../../styled-components';
 
-export const AnimatedChevronButton = ({
-  open,
-  className,
-}: {
-  open: boolean;
-  className: string;
-}) => {
+export const AnimatedChevronButton = ({ open }: { open: boolean }) => {
   const iconOffset = open ? 8 : -4;
 
   return (
-    <ChevronContainer className={className}>
+    <ChevronContainer>
       <ChevronSvg
         size={15}
         style={{
