@@ -191,6 +191,9 @@
     "modulePathIgnorePatterns": [
       "/benchmark/"
     ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/src/empty.js"
     }
