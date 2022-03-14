@@ -217,6 +217,7 @@ You can use all of the following options with the standalone version of the <red
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
+* `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
 * `showObjectSchemaExamples` - show object schema example in the properties, default `false`.
@@ -305,6 +306,9 @@ You can use all of the following options with the standalone version of the <red
   * `backgroundColor`: '#263238'
   * `width`: '40%'
   * `textColor`: '#ffffff'
+* `fab`
+  * `backgroundColor`: '#263238'
+  * `color`: '#ffffff'
 
 -----------
 ## Development
