@@ -154,7 +154,7 @@
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "^1.5.1",
     "polished": "^4.1.3",
-    "prismjs": "^1.24.1",
+    "prismjs": "^1.27.0",
     "prop-types": "^15.7.2",
     "react-tabs": "^3.2.2",
     "slugify": "~1.4.7",
