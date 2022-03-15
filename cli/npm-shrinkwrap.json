@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.8",
+      "version": "0.13.9",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.64",
+        "redoc": "2.0.0-rc.65",
         "styled-components": "^5.3.0",
         "yargs": "^17.0.1"
       },
@@ -1273,9 +1273,7 @@
       "integrity": "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==",
       "hasInstallScript": true,
       "optional": true,
-      "os": [
-        "darwin"
-      ],
+      "os": ["darwin"],
       "engines": {
         "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
       }
@@ -2219,9 +2217,9 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.64",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.64.tgz",
-      "integrity": "sha512-zrM/vcONpbmyDUOpk7Ai7R/yZrT7W1+8ANJUB3b5kzaLQUx4VbrDoT4D6HHHquOnKx+5We4nOPPAi8fi/cqa8g==",
+      "version": "2.0.0-rc.65",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.65.tgz",
+      "integrity": "sha512-VqJbhb3krYXFP8De7ygyaWsA4jr9K5avsMo3GJUDv2xPiHTOzcprkIfOaL4ZdINn03x6JT1GOa47cWhrmb5KVA==",
       "dependencies": {
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
@@ -2238,7 +2236,7 @@
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
-        "prismjs": "^1.24.1",
+        "prismjs": "^1.27.0",
         "prop-types": "^15.7.2",
         "react-tabs": "^3.2.2",
         "slugify": "~1.4.7",
@@ -4824,9 +4822,9 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.64",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.64.tgz",
-      "integrity": "sha512-zrM/vcONpbmyDUOpk7Ai7R/yZrT7W1+8ANJUB3b5kzaLQUx4VbrDoT4D6HHHquOnKx+5We4nOPPAi8fi/cqa8g==",
+      "version": "2.0.0-rc.65",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.65.tgz",
+      "integrity": "sha512-VqJbhb3krYXFP8De7ygyaWsA4jr9K5avsMo3GJUDv2xPiHTOzcprkIfOaL4ZdINn03x6JT1GOa47cWhrmb5KVA==",
       "requires": {
         "@redocly/openapi-core": "^1.0.0-beta.54",
         "@redocly/react-dropdown-aria": "^2.0.11",
@@ -4843,7 +4841,7 @@
         "path-browserify": "^1.0.1",
         "perfect-scrollbar": "^1.5.1",
         "polished": "^4.1.3",
-        "prismjs": "^1.24.1",
+        "prismjs": "^1.27.0",
         "prop-types": "^15.7.2",
         "react-tabs": "^3.2.2",
         "slugify": "~1.4.7",
