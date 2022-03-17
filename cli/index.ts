@@ -10,6 +10,7 @@ import { dirname, join, resolve } from 'path';
 
 import * as zlib from 'zlib';
 
+// @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
