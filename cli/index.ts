@@ -10,7 +10,6 @@ import { dirname, join, resolve } from 'path';
 
 import * as zlib from 'zlib';
 
-// @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
 
 import { watch } from 'chokidar';
@@ -41,7 +40,58 @@ interface Options {
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
-/* tslint:disable-next-line */
+const builderForBuildCommand = yargs => {
+  yargs.positional('spec', {
+    describe: 'path or URL to your spec',
+  });
+
+  yargs.option('o', {
+    describe: 'Output file',
+    alias: 'output',
+    type: 'string',
+    default: 'redoc-static.html',
+  });
+
+  yargs.options('title', {
+    describe: 'Page Title',
+    type: 'string',
+  });
+
+  yargs.options('disableGoogleFont', {
+    describe: 'Disable Google Font',
+    type: 'boolean',
+    default: false,
+  });
+
+  yargs.option('cdn', {
+    describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
+    type: 'boolean',
+    default: false,
+  });
+
+  yargs.demandOption('spec');
+  return yargs;
+};
+
+const handlerForBuildCommand = async (argv: any) => {
+  const config = {
+    ssr: true,
+    output: argv.o as string,
+    cdn: argv.cdn as boolean,
+    title: argv.title as string,
+    disableGoogleFont: argv.disableGoogleFont as boolean,
+    templateFileName: argv.template as string,
+    templateOptions: argv.templateOptions || {},
+    redocOptions: getObjectOrJSON(argv.options),
+  };
+
+  try {
+    await bundle(argv.spec, config);
+  } catch (e) {
+    handleError(e);
+  }
+};
+
 YargsParser.command(
   'serve <spec>',
   'start the server',
@@ -106,58 +156,24 @@ YargsParser.command(
   },
 )
   .command(
+    'build <spec>',
+    'build definition into zero-dependency HTML-file',
+    builderForBuildCommand,
+    handlerForBuildCommand,
+  )
+  .command(
     'bundle <spec>',
-    'bundle spec into zero-dependency HTML-file',
-    yargs => {
-      yargs.positional('spec', {
-        describe: 'path or URL to your spec',
-      });
-
-      yargs.option('o', {
-        describe: 'Output file',
-        alias: 'output',
-        type: 'string',
-        default: 'redoc-static.html',
-      });
-
-      yargs.options('title', {
-        describe: 'Page Title',
-        type: 'string',
-      });
-
-      yargs.options('disableGoogleFont', {
-        describe: 'Disable Google Font',
-        type: 'boolean',
-        default: false,
-      });
-
-      yargs.option('cdn', {
-        describe: 'Do not include ReDoc source code into html page, use link to CDN instead',
-        type: 'boolean',
-        default: false,
-      });
-
-      yargs.demandOption('spec');
-      return yargs;
-    },
-    async (argv: any) => {
-      const config = {
-        ssr: true,
-        output: argv.o as string,
-        cdn: argv.cdn as boolean,
-        title: argv.title as string,
-        disableGoogleFont: argv.disableGoogleFont as boolean,
-        templateFileName: argv.template as string,
-        templateOptions: argv.templateOptions || {},
-        redocOptions: getObjectOrJSON(argv.options),
-      };
-
-      try {
-        await bundle(argv.spec, config);
-      } catch (e) {
-        handleError(e);
-      }
-    },
+    'bundle spec into zero-dependency HTML-file [deprecated]',
+    builderForBuildCommand,
+    handlerForBuildCommand,
+    [
+      res => {
+        console.log(
+          `\n⚠️ This command is deprecated. Use build command to create zero-dependency HTML-file from the definition.⚠️\n`,
+        );
+        return res;
+      },
+    ],
   )
   .demandCommand()
   .options('t', {
