@@ -55,7 +55,7 @@
     "compile:cli": "tsc custom.d.ts cli/index.ts --target es6 --module commonjs --types yargs",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
-    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0' --summary",
+    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;Python-2.0' --summary",
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
     "prepare": "husky install",
     "pre-commit": "pretty-quick --staged && npm run lint"
@@ -139,7 +139,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.54",
+    "@redocly/openapi-core": "^1.0.0-beta.88",
     "@redocly/react-dropdown-aria": "^2.0.11",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
