@@ -176,9 +176,6 @@ For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
 
-See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on
-IE support for Redoc.
-
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
 [**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
