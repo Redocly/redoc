@@ -178,7 +178,7 @@ YargsParser.command(
     [
       res => {
         console.log(
-          `\n⚠️ This command is deprecated. Use build command to create zero-dependency HTML-file from the definition.⚠️\n`,
+          `\n⚠️ This command is deprecated. Use "build" command instead.\n`,
         );
         return res;
       },
