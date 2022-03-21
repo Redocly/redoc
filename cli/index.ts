@@ -6,7 +6,7 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { compile } from 'handlebars';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { dirname, join, resolve } from 'path';
+import { dirname, join, resolve, extname as getExtName } from 'path';
 
 import * as zlib from 'zlib';
 
@@ -38,6 +38,24 @@ interface Options {
   templateOptions?: any;
   redocOptions?: any;
 }
+
+export const mimeTypes = {
+  '.html': 'text/html',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.jpg': 'image/jpg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.wav': 'audio/wav',
+  '.mp4': 'video/mp4',
+  '.woff': 'application/font-woff',
+  '.ttf': 'application/font-ttf',
+  '.eot': 'application/vnd.ms-fontobject',
+  '.otf': 'application/font-otf',
+  '.wasm': 'application/wasm',
+};
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
@@ -197,9 +215,19 @@ async function serve(host: string, port: number, pathToSpec: string, options: Op
         'Content-Type': 'application/json',
       });
     } else {
-      response.writeHead(404);
-      response.write('Not found');
-      response.end();
+      try {
+        const filePath = join(dirname(pathToSpec), request.url || '');
+        const extname = String(getExtName(filePath)).toLowerCase() as keyof typeof mimeTypes;
+
+        const contentType = mimeTypes[extname] || 'application/octet-stream';
+        respondWithGzip(createReadStream(filePath), request, response, {
+          'Content-Type': contentType,
+        });
+      } catch (e) {
+        response.writeHead(404);
+        response.write('Not found');
+        response.end();
+      }
     }
 
     console.timeEnd('GET ' + request.url);
