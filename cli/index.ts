@@ -155,6 +155,14 @@ YargsParser.command(
       handleError(e);
     }
   },
+  [
+    res => {
+      console.log(
+        `\n⚠️ This command is deprecated. Use openapi-cli for it: npx @redocly/openapi-cli preview-docs petstore.yaml⚠️\n`,
+      );
+      return res;
+    },
+  ],
 )
   .command(
     'build <spec>',
