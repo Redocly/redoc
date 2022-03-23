@@ -170,6 +170,8 @@ export class RedocNormalizedOptions {
         return value;
       case SideNavStyleEnum.PathOnly:
         return SideNavStyleEnum.PathOnly;
+      case SideNavStyleEnum.IdOnly:
+        return SideNavStyleEnum.IdOnly;
       default:
         return defaultValue;
     }
