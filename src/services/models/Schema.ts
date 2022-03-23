@@ -17,6 +17,7 @@ import {
   pluralizeType,
   sortByField,
   sortByRequired,
+  mergeObjects,
 } from '../../utils/';
 
 import { l } from '../Labels';
@@ -65,6 +66,7 @@ export class SchemaModel {
   contentMediaType?: string;
   minItems?: number;
   maxItems?: number;
+  conditionalEnum?: string[];
 
   /**
    * @param isChild if schema discriminator Child
@@ -150,6 +152,10 @@ export class SchemaModel {
 
     if (this.isCircular) {
       return;
+    }
+
+    if ((schema.if && schema.then) || (schema.if && schema.else)) {
+      this.initConditionalOperators(schema, parser);
     }
 
     if (!isChild && getDiscriminator(schema) !== undefined) {
@@ -353,6 +359,44 @@ export class SchemaModel {
       const innerSchema = new SchemaModel(parser, parser.byRef($ref)!, $ref, this.options, true);
       innerSchema.title = name;
       return innerSchema;
+    });
+  }
+
+  private initConditionalOperators(schema: OpenAPISchema, parser: OpenAPIParser) {
+    const {
+      if: ifOperator,
+      else: elseOperator = {},
+      then: thenOperator = {},
+      ...clearSchema
+    } = schema;
+    const ifOperatorTitle =
+      (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'if';
+    const elseOperatorTitle =
+      (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'else';
+    const groupedOperators = [
+      mergeObjects(
+        {},
+        clearSchema,
+        { allOf: [ifOperator, thenOperator] },
+        { title: ifOperatorTitle },
+      ),
+      mergeObjects({}, clearSchema, elseOperator, { title: elseOperatorTitle }),
+    ];
+    this.conditionalEnum = [ifOperatorTitle, elseOperatorTitle];
+
+    this.oneOf = groupedOperators.map((variant, idx) => {
+      const merged = parser.mergeAllOf(parser.deref(variant || {}), this.pointer + '/oneOf/' + idx);
+      const title = merged.title || this.title;
+      const result = new SchemaModel(
+        parser,
+        {
+          ...merged,
+          title,
+        } as OpenAPISchema,
+        this.pointer + '/oneOf/' + idx,
+        this.options,
+      );
+      return result;
     });
   }
 }

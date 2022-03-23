@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
 import {
   RecursiveLabel,
@@ -24,11 +25,15 @@ import { OptionsContext } from '../OptionsProvider';
 import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
 
-function FieldDetailsComponent(props: FieldProps) {
+export const FieldDetailsComponent = observer((props: FieldProps) => {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
-  const { showExamples, field, renderDiscriminatorSwitch } = props;
-  const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
+  const { showExamples, field, renderDiscriminatorSwitch, renderConditionalSwitch } = props;
+  const { description, deprecated, extensions, in: _in, const: _const } = field;
+  const schema =
+    field.schema?.oneOf && renderConditionalSwitch
+      ? field.schema.oneOf[field.schema?.activeOneOf]
+      : field.schema;
   const isArrayType = schema.type === 'array';
 
   const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
@@ -54,6 +59,7 @@ function FieldDetailsComponent(props: FieldProps) {
   return (
     <div>
       <div>
+        {(renderConditionalSwitch && renderConditionalSwitch(props)) || null}
         <TypePrefix>{schema.typePrefix}</TypePrefix>
         <TypeName>{schema.displayType}</TypeName>
         {schema.displayFormat && (
@@ -107,6 +113,6 @@ function FieldDetailsComponent(props: FieldProps) {
       {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
     </div>
   );
-}
+});
 
 export const FieldDetails = React.memo<FieldProps>(FieldDetailsComponent);

@@ -1934,7 +1934,10 @@ Object {
                   "aggressive",
                 ],
                 "example": "adventurous",
-                "type": "string",
+                "type": Array [
+                  "string",
+                  "boolean",
+                ],
               },
             },
             "required": Array [
@@ -2086,6 +2089,16 @@ Object {
           "friend": Object {
             "$ref": "#/components/schemas/Pet",
           },
+          "huntingSkill": Object {
+            "enum": Array [
+              0,
+              1,
+              2,
+            ],
+            "type": Array [
+              "integer",
+            ],
+          },
           "id": Object {
             "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
@@ -2105,12 +2118,28 @@ Object {
           },
           "photoUrls": Object {
             "description": "The list of URL to a cute photos featuring pet",
+            "else": Object {
+              "maxItems": 20,
+              "minItems": 1,
+              "type": Array [
+                "integer",
+                "null",
+                "array",
+              ],
+              "x-displayName": "notString",
+            },
+            "if": Object {
+              "type": "string",
+              "x-displayName": "isString",
+            },
             "items": Object {
               "format": "url",
               "type": "string",
             },
-            "maxItems": 20,
-            "minItems": 1,
+            "then": Object {
+              "maxItems": 10,
+              "minItems": 1,
+            },
             "type": Array [
               "string",
               "integer",
@@ -2173,6 +2202,19 @@ Object {
         },
       },
       "User": Object {
+        "else": Object {
+          "required": Array [],
+        },
+        "if": Object {
+          "properties": Object {
+            "userStatus": Object {
+              "enum": Array [
+                10,
+              ],
+            },
+          },
+          "title": "userStatus === 10",
+        },
         "properties": Object {
           "email": Object {
             "description": "User email address",
@@ -2237,6 +2279,11 @@ Object {
             "minLength": 4,
             "type": "string",
           },
+        },
+        "then": Object {
+          "required": Array [
+            "phone",
+          ],
         },
         "type": "object",
         "xml": Object {

@@ -93,7 +93,7 @@ paths:
     parameters:
       - name: Accept-Language
         in: header
-        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
         example: en-US
         required: false
         schema:
@@ -259,7 +259,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "Bearer <TOKEN>"
+          example: 'Bearer <TOKEN>'
         - name: petId
           in: path
           description: Pet id to delete
@@ -432,7 +432,7 @@ paths:
             application/json:
               example:
                 status: 400
-                message: "Invalid Order"
+                message: 'Invalid Order'
       requestBody:
         content:
           application/json:
@@ -894,11 +894,11 @@ paths:
                 type: string
               examples:
                 response:
-                  value:  <Message> OK </Message>
+                  value: <Message> OK </Message>
             text/plain:
               examples:
                 response:
-                  value:  OK
+                  value: OK
         '400':
           description: Invalid username/password supplied
   /user/logout:
@@ -925,7 +925,7 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: update Cat details
@@ -940,7 +940,7 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: create Cat details
@@ -962,7 +962,7 @@ components:
         - type: object
           properties:
             huntingSkill:
-              type: string
+              type: [string, boolean]
               description: The measured skill for hunting
               default: lazy
               example: adventurous
@@ -1073,8 +1073,8 @@ components:
       properties:
         id:
           externalDocs:
-            description: "Find more info here"
-            url: "https://example.com"
+            description: 'Find more info here'
+            url: 'https://example.com'
           description: Pet ID
           $ref: '#/components/schemas/Id'
         category:
@@ -1087,14 +1087,23 @@ components:
         photoUrls:
           description: The list of URL to a cute photos featuring pet
           type: [string, integer, 'null', array]
-          minItems: 1
-          maxItems: 20
           xml:
             name: photoUrl
             wrapped: true
           items:
             type: string
             format: url
+          if:
+            x-displayName: isString
+            type: string
+          then:
+            minItems: 1
+            maxItems: 10
+          else:
+            x-displayName: notString
+            type: [integer, 'null', array]
+            minItems: 1
+            maxItems: 20
         friend:
           $ref: '#/components/schemas/Pet'
         tags:
@@ -1118,6 +1127,12 @@ components:
         petType:
           description: Type of a pet
           type: string
+        huntingSkill:
+          type: [integer]
+          enum:
+            - 0
+            - 1
+            - 2
       xml:
         name: Pet
     Tag:
@@ -1185,6 +1200,15 @@ components:
           type: string
           contentEncoding: base64
           contentMediaType: image/png
+      if:
+        title: userStatus === 10
+        properties:
+          userStatus:
+            enum: [10]
+      then:
+        required: ['phone']
+      else:
+        required: []
       xml:
         name: User
   requestBodies:
@@ -1251,9 +1275,9 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pet"
+              $ref: '#/components/schemas/Pet'
       responses:
-        "200":
+        '200':
           description: Return a 200 status to indicate that the data was received successfully
   myWebhook:
     $ref: '#/components/pathItems/webhooks'

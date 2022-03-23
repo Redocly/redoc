@@ -13,9 +13,11 @@ import {
 } from '../../common-elements/fields-layout';
 
 import { ShelfIcon } from '../../common-elements/';
+import styled from '../../styled-components';
 
 import { FieldModel } from '../../services/models';
 import { Schema, SchemaOptions } from '../Schema/Schema';
+import { DiscriminatorDropdown } from '../Schema';
 
 export interface FieldProps extends SchemaOptions {
   className?: string;
@@ -26,6 +28,7 @@ export interface FieldProps extends SchemaOptions {
   expandByDefault?: boolean;
 
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
+  renderConditionalSwitch?: (opts: FieldProps) => JSX.Element | undefined;
 }
 
 @observer
@@ -77,12 +80,24 @@ export class Field extends React.Component<FieldProps> {
       </PropertyNameCell>
     );
 
+    const renderConditionalSwitch = field.schema?.oneOf
+      ? () =>
+          field.schema.conditionalEnum && (
+            <ConditionalWrapper>
+              <DiscriminatorDropdown
+                parent={field.schema}
+                enumValues={field.schema.conditionalEnum}
+              />
+            </ConditionalWrapper>
+          )
+      : undefined;
+
     return (
       <>
         <tr className={isLast ? 'last ' + className : className}>
           {paramName}
           <PropertyDetailsCell>
-            <FieldDetails {...this.props} />
+            <FieldDetails {...this.props} renderConditionalSwitch={renderConditionalSwitch} />
           </PropertyDetailsCell>
         </tr>
         {expanded && withSubSchema && (
@@ -104,3 +119,7 @@ export class Field extends React.Component<FieldProps> {
     );
   }
 }
+
+const ConditionalWrapper = styled.div`
+  display: block;
+`;
