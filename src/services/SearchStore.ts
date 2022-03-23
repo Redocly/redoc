@@ -59,7 +59,7 @@ export class SearchStore<T> {
 
   fromExternalJS(path?: string, exportName?: string) {
     if (path && exportName) {
-      this.searchWorker.fromExternalJS(path, exportName)
+      this.searchWorker.fromExternalJS(path, exportName);
     }
   }
 }

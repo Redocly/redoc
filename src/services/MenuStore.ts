@@ -16,6 +16,7 @@ export interface IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  sidebarLabel: string;
   description?: string;
   depth: number;
   active: boolean;
@@ -150,7 +151,7 @@ export class MenuStore {
     } else {
       if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
         item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
-        this.activate(item);
+        this.activateAndScroll(item, false);
       }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
     }

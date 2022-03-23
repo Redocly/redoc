@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-import { argValueToBoolean, RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormalizedOptions';
+import {
+  argValueToBoolean,
+  RedocNormalizedOptions,
+  RedocRawOptions,
+} from '../services/RedocNormalizedOptions';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Loading } from './Loading/Loading';
 import { Redoc } from './Redoc/Redoc';
@@ -40,4 +44,4 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
       </StoreBuilder>
     </ErrorBoundary>
   );
-}
+};

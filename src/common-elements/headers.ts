@@ -15,21 +15,22 @@ export const headerCommonMixin = level => css`
 
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
-  color: ${({ theme }) => theme.colors.primary.main};
+  color: ${({ theme }) => theme.colors.text.primary};
 
   ${extensionsHook('H1')};
 `;
 
 export const H2 = styled.h2`
   ${headerCommonMixin(2)};
-  color: black;
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0 0 20px;
 
   ${extensionsHook('H2')};
 `;
 
 export const H3 = styled.h2`
   ${headerCommonMixin(3)};
-  color: black;
+  color: ${({ theme }) => theme.colors.text.primary};
 
   ${extensionsHook('H3')};
 `;

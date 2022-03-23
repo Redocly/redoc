@@ -20,24 +20,38 @@ describe('Models', () => {
     });
 
     test('should calculate response type based on code', () => {
-      let resp = new ResponseModel({...props, code: '200' });
+      let resp = new ResponseModel({ ...props, code: '200' });
       expect(resp.type).toEqual('success');
-      resp = new ResponseModel({...props, code: '120' });
+      resp = new ResponseModel({ ...props, code: '120' });
       expect(resp.type).toEqual('info');
-      resp = new ResponseModel({...props, code: '301' });
+      resp = new ResponseModel({ ...props, code: '301' });
       expect(resp.type).toEqual('redirect');
-      resp = new ResponseModel({...props, code: '400' });
+      resp = new ResponseModel({ ...props, code: '400' });
       expect(resp.type).toEqual('error');
     });
 
     test('default should be successful by default', () => {
-      const resp = new ResponseModel({...props, code: 'default' });
+      const resp = new ResponseModel({ ...props, code: 'default' });
       expect(resp.type).toEqual('success');
     });
 
     test('default should be error if defaultAsError is true', () => {
-      const resp = new ResponseModel({...props, code: 'default', defaultAsError: true });
+      const resp = new ResponseModel({ ...props, code: 'default', defaultAsError: true });
       expect(resp.type).toEqual('error');
+    });
+
+    test('ensure extensions are shown if showExtensions is true', () => {
+      const options = new RedocNormalizedOptions({ showExtensions: true });
+      const resp = new ResponseModel({
+        parser,
+        code: 'default',
+        defaultAsError: true,
+        infoOrRef: { 'x-example': { a: 1 } },
+        options,
+        isEvent: true,
+      });
+      expect(Object.keys(resp.extensions).length).toEqual(1);
+      expect(resp.extensions['x-example']).toEqual({ a: 1 });
     });
   });
 });

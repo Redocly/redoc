@@ -174,16 +174,34 @@ export class OpenAPIParser {
     return obj;
   }
 
+  shallowDeref<T extends unknown>(obj: OpenAPIRef | T): T {
+    if (this.isRef(obj)) {
+      const schemaName = getDefinitionName(obj.$ref);
+      if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
+        return { type: 'object', title: schemaName } as T;
+      }
+      const resolved = this.byRef<T>(obj.$ref);
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, false) : (resolved as T);
+    }
+    return obj;
+  }
+
   mergeRefs(ref, resolved, mergeAsAllOf: boolean) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { $ref, ...rest } = ref;
     const keys = Object.keys(rest);
     if (keys.length === 0) {
+      if (this.isRef(resolved)) {
+        return this.shallowDeref(resolved);
+      }
       return resolved;
     }
-    if (mergeAsAllOf && keys.some((k) => k !== 'description' && k !== 'title' && k !== 'externalDocs')) {
+    if (
+      mergeAsAllOf &&
+      keys.some(k => k !== 'description' && k !== 'title' && k !== 'externalDocs')
+    ) {
       return {
-        allOf: [resolved, rest],
+        allOf: [rest, resolved],
       };
     } else {
       // small optimization
@@ -192,13 +210,6 @@ export class OpenAPIParser {
         ...rest,
       };
     }
-  }
-
-  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
-    if (this.isRef(obj)) {
-      return this.byRef<T>(obj.$ref)!;
-    }
-    return obj;
   }
 
   /**
@@ -239,7 +250,7 @@ export class OpenAPIParser {
     }
 
     const allOfSchemas = schema.allOf
-      .map((subSchema) => {
+      .map(subSchema => {
         if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
           return undefined;
         }
@@ -253,7 +264,7 @@ export class OpenAPIParser {
           schema: subMerged,
         };
       })
-      .filter((child) => child !== undefined) as Array<{
+      .filter(child => child !== undefined) as Array<{
       $ref: string | undefined;
       schema: MergedOpenAPISchema;
     }>;
@@ -332,7 +343,7 @@ export class OpenAPIParser {
       const def = this.deref(schemas[defName]);
       if (
         def.allOf !== undefined &&
-        def.allOf.find((obj) => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
+        def.allOf.find(obj => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1)
       ) {
         res['#/components/schemas/' + defName] = [def['x-discriminator-value'] || defName];
       }
@@ -358,7 +369,7 @@ export class OpenAPIParser {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {
-          oneOf: sub.oneOf.map((part) => {
+          oneOf: sub.oneOf.map(part => {
             const merged = this.mergeAllOf({
               allOf: [...beforeAllOf, part, ...afterAllOf],
             });
