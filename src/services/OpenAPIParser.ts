@@ -281,7 +281,19 @@ export class OpenAPIParser {
       }
 
       if (subSchema.type !== undefined) {
-        receiver.type = subSchema.type;
+        if (Array.isArray(subSchema.type) && Array.isArray(receiver.type)) {
+          receiver.type = subSchema.type.concat(...receiver.type);
+        } else {
+          receiver.type = subSchema.type;
+        }
+      }
+
+      if (subSchema.enum !== undefined) {
+        if (Array.isArray(subSchema.enum) && Array.isArray(receiver.enum)) {
+          receiver.enum = subSchema.enum.concat(...receiver.enum);
+        } else {
+          receiver.enum = subSchema.enum;
+        }
       }
 
       if (subSchema.properties !== undefined) {
