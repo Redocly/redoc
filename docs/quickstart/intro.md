@@ -25,7 +25,7 @@ The following options are supported:
 
 ## Before you start
 
-You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions: 
+You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
 - OpenAPI 3.0
     - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/main/openapi/users.yaml)
     - [Swagger Petstore Sample OpenAPI Definition](https://petstore3.swagger.io/api/v3/openapi.json)
@@ -33,7 +33,7 @@ You will need an OpenAPI definition. For testing purposes, you can use one of th
     - [Thingful OpenAPI Definition](https://raw.githubusercontent.com/thingful/openapi-spec/master/spec/swagger.yaml)
     - [Fitbit Plus OpenAPI Definition](https://raw.githubusercontent.com/TwineHealth/TwineDeveloperDocs/master/spec/swagger.yaml)
 
-For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redoc.ly/docs/resources/learning-openapi/)
+For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redocly.com/docs/resources/learning-openapi/)
 section in the documentation.
 
 ## Live demo online

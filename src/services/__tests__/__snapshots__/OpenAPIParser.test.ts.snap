@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Models Schema should correct resolve double $ref if no need sibling 1`] = `
+Object {
+  "properties": Object {
+    "test": Object {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;
+
 exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
 Object {
   "oneOf": Array [

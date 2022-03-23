@@ -11,7 +11,7 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
   return (
     <Wrapper>
       [ items
-      {schema.displayFormat && <TypeFormat>{` &lt;${schema.displayFormat}&gt; `}</TypeFormat>}
+      {schema.displayFormat && <TypeFormat> &lt;{schema.displayFormat} &gt;</TypeFormat>}
       <ConstraintsView constraints={schema.constraints} />
       <Pattern schema={schema} />
       {schema.items && <ArrayItemDetails schema={schema.items} />} ]
