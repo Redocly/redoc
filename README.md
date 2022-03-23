@@ -246,6 +246,7 @@ You can use all of the following options with the standalone version of the <red
 * `sideNavStyle` - can be specified in various ways:
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.
+  * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 
 ### `<redoc>` theme object
 * `spacing`
