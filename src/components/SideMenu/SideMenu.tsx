@@ -25,7 +25,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
       >
         <MenuItems items={store.items} onActivate={this.activate} root={true} />
         <RedocAttribution>
-          <a target="_blank" rel="noopener noreferrer" href="https://redoc.ly/redoc-vs-reference">
+          <a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">
             Documentation Powered by Redocly
           </a>
         </RedocAttribution>
