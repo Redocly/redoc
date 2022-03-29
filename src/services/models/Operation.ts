@@ -4,7 +4,12 @@ import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
 import { SecurityRequirementModel } from './SecurityRequirement';
 
-import { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
+import {
+  OpenAPIExternalDocumentation,
+  OpenAPIServer,
+  OpenAPIXCodeSample,
+  OperationCustomBadge,
+} from '../../types';
 
 import {
   extractExtensions,
@@ -72,6 +77,7 @@ export class OperationModel implements IMenuItem {
   operationId?: string;
   httpVerb: string;
   deprecated: boolean;
+  badges: OperationCustomBadge[];
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
@@ -97,7 +103,7 @@ export class OperationModel implements IMenuItem {
 
     this.deprecated = !!operationSpec.deprecated;
     this.httpVerb = operationSpec.httpVerb;
-    this.deprecated = !!operationSpec.deprecated;
+    this.badges = operationSpec['x-badges'] ? operationSpec['x-badges'] : [];
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;

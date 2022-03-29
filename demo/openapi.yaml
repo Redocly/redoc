@@ -40,7 +40,7 @@ info:
 
     <SecurityDefinitions />
 
-  version: 1.0.0
+  version: 1.0.1
   title: Swagger Petstore
   termsOfService: 'http://swagger.io/terms/'
   contact:
@@ -88,7 +88,7 @@ paths:
     parameters:
       - name: Accept-Language
         in: header
-        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
         example: en-US
         required: false
         schema:
@@ -107,6 +107,11 @@ paths:
       summary: Add a new pet to the store
       description: Add new pet to the store inventory.
       operationId: addPet
+      x-badges:
+        - name: MyBadge
+          type: primary
+        - name: Experimental
+          type: experimental
       responses:
         '405':
           description: Invalid input
@@ -254,7 +259,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "Bearer <TOKEN>"
+          example: 'Bearer <TOKEN>'
         - name: petId
           in: path
           description: Pet id to delete
@@ -429,7 +434,7 @@ paths:
             application/json:
               example:
                 status: 400
-                message: "Invalid Order"
+                message: 'Invalid Order'
       requestBody:
         content:
           application/json:
@@ -877,11 +882,11 @@ paths:
                 type: string
               examples:
                 response:
-                  value:  <Message> OK </Message>
+                  value: <Message> OK </Message>
             text/plain:
               examples:
                 response:
-                  value:  OK
+                  value: OK
         '400':
           description: Invalid username/password supplied
   /user/logout:
@@ -1027,8 +1032,8 @@ components:
       properties:
         id:
           externalDocs:
-            description: "Find more info here"
-            url: "https://example.com"
+            description: 'Find more info here'
+            url: 'https://example.com'
           description: Pet ID
           allOf:
             - $ref: '#/components/schemas/Id'
@@ -1201,7 +1206,7 @@ x-webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pet"
+              $ref: '#/components/schemas/Pet'
       responses:
-        "200":
+        '200':
           description: Return a 200 status to indicate that the data was received successfully

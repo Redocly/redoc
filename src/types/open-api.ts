@@ -61,6 +61,13 @@ export interface OpenAPIPath {
   $ref?: string;
 }
 
+export type OperationCustomBadgeType = 'primary' | 'success' | 'warning' | 'error' | 'experimental';
+
+export interface OperationCustomBadge {
+  name: string;
+  type: OperationCustomBadgeType;
+}
+
 export interface OpenAPIXCodeSample {
   lang: string;
   label?: string;
@@ -80,6 +87,7 @@ export interface OpenAPIOperation {
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
+  'x-badges'?: OperationCustomBadge[];
   'x-codeSamples'?: OpenAPIXCodeSample[];
   'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
 }
