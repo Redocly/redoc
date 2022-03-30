@@ -1,3 +1,20 @@
+# [2.0.0-rc.66](https://github.com/Redocly/redoc/compare/v2.0.0-rc.65...v2.0.0-rc.66) (2022-03-30)
+
+
+### Bug Fixes
+
+* add handle local files for serve command ([#1810](https://github.com/Redocly/redoc/issues/1810)) ([117071e](https://github.com/Redocly/redoc/commit/117071ee83a32d9b3350d8afe2bdb6365a44e2ec))
+* move comma out of code block in SecurityRequirement.tsx ([#1924](https://github.com/Redocly/redoc/issues/1924)) ([ab3e8a8](https://github.com/Redocly/redoc/commit/ab3e8a8f80f453066c5495e73ac932a8fef0830a))
+* rename bandle command and add deprecate notice ([#1935](https://github.com/Redocly/redoc/issues/1935)) ([eb096b6](https://github.com/Redocly/redoc/commit/eb096b69be52568fc581027161c7d0c4b26c56c1))
+
+
+### Features
+
+* add support for displaying operationId in the sidebar ([#1927](https://github.com/Redocly/redoc/issues/1927)) ([09786f2](https://github.com/Redocly/redoc/commit/09786f2a5ade6303ea00512483b172347721ca70))
+* add nonce support ([#1566](https://github.com/Redocly/redoc/issues/1566)) ([c75ac9c](https://github.com/Redocly/redoc/commit/c75ac9cf70012e2d539b379aab2f0974d088db07))
+
+
+
 # [2.0.0-rc.65](https://github.com/Redocly/redoc/compare/v2.0.0-rc.64...v2.0.0-rc.65) (2022-03-15)
 
 
