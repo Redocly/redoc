@@ -12,10 +12,10 @@ or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runn
 The two following commands are available:
 
 - `redoc-cli serve [spec]` - starts the server with `spec` rendered with ReDoc.
-  Supports a server-side rendering mode (`--ssr`) [deprecated] Use Use "build" command instead.
-  and can watch the spec (`--watch`) to automatically reload the page whenever it changes.
+  Supports a server-side rendering mode (`--ssr`)
+  and can watch the spec (`--watch`) to automatically reload the page whenever it changes.\
   Deprecated. Use `npx @redocly/openapi-cli preview-docs [spec]`
-- `redoc-cli bundle [spec]` - bundles `spec` and ReDoc into a **zero-dependency** HTML file.
+- `redoc-cli bundle [spec]` - bundles `spec` and ReDoc into a **zero-dependency** HTML file.\
   Deprecated. Use Use "build" command instead.
 - `redoc-cli build [spec]` - build `spec` and ReDoc into a **zero-dependency** HTML file.
 
