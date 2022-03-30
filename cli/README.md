@@ -15,9 +15,9 @@ The two following commands are available:
   Supports a server-side rendering mode (`--ssr`)
   and can watch the spec (`--watch`) to automatically reload the page whenever it changes.\
   Deprecated. Use `npx @redocly/openapi-cli preview-docs [spec]`
-- `redoc-cli bundle [spec]` - bundles `spec` and ReDoc into a **zero-dependency** HTML file.\
+- `redoc-cli bundle [spec]` - bundles `spec` and Redoc into a **zero-dependency** HTML file.\
   Deprecated. Use Use "build" command instead.
-- `redoc-cli build [spec]` - build `spec` and ReDoc into a **zero-dependency** HTML file.
+- `redoc-cli build [spec]` - build `spec` and Redoc into a **zero-dependency** HTML file.
 
 Some examples:
 
