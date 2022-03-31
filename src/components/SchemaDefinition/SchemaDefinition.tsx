@@ -75,7 +75,14 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
   }
 
   private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+    return (
+      <DropdownOrLabel
+        Label={MimeLabel}
+        Dropdown={InvertedSimpleDropdown}
+        {...props}
+        variant="dark"
+      />
+    );
   };
 }
 

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { DropdownProps } from '../../common-elements/dropdown';
+import { DropdownOption, DropdownProps } from '../../common-elements/Dropdown';
 import { MediaContentModel, MediaTypeModel, SchemaModel } from '../../services/models';
 import { DropdownLabel, DropdownWrapper } from '../PayloadSamples/styled.elements';
 
@@ -20,8 +20,8 @@ export interface MediaTypesSwitchProps {
 
 @observer
 export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
-  switchMedia = ({ idx }) => {
-    if (this.props.content) {
+  switchMedia = ({ idx }: DropdownOption) => {
+    if (this.props.content && idx !== undefined) {
       this.props.content.activate(idx);
     }
   };
