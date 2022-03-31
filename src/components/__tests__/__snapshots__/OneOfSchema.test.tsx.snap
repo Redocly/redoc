@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
+<div>
+  <span
+    class="sc-kfYoZR juYXUf"
+  >
+     One of 
+  </span>
+  <div
+    class="sc-dlMDgC EoFth"
+  >
+    <button
+      class="sc-fKgJPI iEPbLk"
+    >
+      string
+    </button>
+    <button
+      class="sc-fKgJPI bpjiHN"
+    >
+      integer
+    </button>
+  </div>
+  <div>
+    <span
+      class="sc-bqGGPW eSYQnm"
+      type="warning"
+    >
+      Deprecated
+    </span>
+  </div>
+  <div>
+    <div>
+      <div>
+        <span
+          class="sc-fbIWvP sc-FRrlG CMpTe bBFKjV"
+        />
+        <span
+          class="sc-fbIWvP sc-fXazdy CMpTe gJKPGC"
+        >
+          string
+        </span>
+      </div>
+       
+      <div>
+        <div
+          class="sc-iBzEeX sc-cOifOu dFWqin hjSJYo"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

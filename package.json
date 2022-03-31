@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.63",
+  "version": "2.0.0-rc.66",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -56,10 +56,10 @@
     "build:sofico-version": "webpack --env playground='false' bench='false' --mode=production --config demo/webpack.config.ts ",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
-    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0' --summary",
+    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;Python-2.0' --summary",
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
     "prepare": "husky install",
-    "pre-commit": "pretty-quick --staged && npm run lint"
+    "pre-commit": "pretty-quick --staged"
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.9.0",
@@ -140,22 +140,22 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.54",
+    "@redocly/openapi-core": "^1.0.0-beta.88",
     "@redocly/react-dropdown-aria": "^2.0.11",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
     "eventemitter3": "^4.0.7",
-    "json-pointer": "^0.6.1",
+    "json-pointer": "^0.6.2",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
     "marked": "^4.0.10",
     "mobx-react": "^7.2.0",
-    "openapi-sampler": "^1.1.1",
+    "openapi-sampler": "^1.2.1",
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "^1.5.1",
     "polished": "^4.1.3",
-    "prismjs": "^1.24.1",
+    "prismjs": "^1.27.0",
     "prop-types": "^15.7.2",
     "react-tabs": "^3.2.2",
     "slugify": "~1.4.7",
@@ -191,6 +191,9 @@
     ],
     "modulePathIgnorePatterns": [
       "/benchmark/"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/src/empty.js"

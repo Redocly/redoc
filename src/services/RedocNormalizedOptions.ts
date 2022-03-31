@@ -8,6 +8,7 @@ import { MDXComponentMeta } from './MarkdownRenderer';
 export enum SideNavStyleEnum {
   SummaryOnly = 'summary-only',
   PathOnly = 'path-only',
+  IdOnly = 'id-only',
 }
 
 export interface RedocRawOptions {
@@ -53,6 +54,8 @@ export interface RedocRawOptions {
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
   generatedPayloadSamplesMaxDepth?: number;
+  nonce?: string;
+  hideFab?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -169,6 +172,8 @@ export class RedocNormalizedOptions {
         return value;
       case SideNavStyleEnum.PathOnly:
         return SideNavStyleEnum.PathOnly;
+      case SideNavStyleEnum.IdOnly:
+        return SideNavStyleEnum.IdOnly;
       default:
         return defaultValue;
     }
@@ -245,6 +250,9 @@ export class RedocNormalizedOptions {
   ignoreNamedSchemas: Set<string>;
   hideSchemaPattern: boolean;
   generatedPayloadSamplesMaxDepth: number;
+  hideFab: boolean;
+
+  nonce?: string;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -315,5 +323,7 @@ export class RedocNormalizedOptions {
       RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
         raw.generatedPayloadSamplesMaxDepth,
       );
+    this.nonce = raw.nonce;
+    this.hideFab = argValueToBoolean(raw.hideFab);
   }
 }

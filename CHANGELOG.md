@@ -1,3 +1,42 @@
+# [2.0.0-rc.66](https://github.com/Redocly/redoc/compare/v2.0.0-rc.65...v2.0.0-rc.66) (2022-03-30)
+
+
+### Bug Fixes
+
+* add handle local files for serve command ([#1810](https://github.com/Redocly/redoc/issues/1810)) ([117071e](https://github.com/Redocly/redoc/commit/117071ee83a32d9b3350d8afe2bdb6365a44e2ec))
+* move comma out of code block in SecurityRequirement.tsx ([#1924](https://github.com/Redocly/redoc/issues/1924)) ([ab3e8a8](https://github.com/Redocly/redoc/commit/ab3e8a8f80f453066c5495e73ac932a8fef0830a))
+* rename bandle command and add deprecate notice ([#1935](https://github.com/Redocly/redoc/issues/1935)) ([eb096b6](https://github.com/Redocly/redoc/commit/eb096b69be52568fc581027161c7d0c4b26c56c1))
+
+
+### Features
+
+* add support for displaying operationId in the sidebar ([#1927](https://github.com/Redocly/redoc/issues/1927)) ([09786f2](https://github.com/Redocly/redoc/commit/09786f2a5ade6303ea00512483b172347721ca70))
+* add nonce support ([#1566](https://github.com/Redocly/redoc/issues/1566)) ([c75ac9c](https://github.com/Redocly/redoc/commit/c75ac9cf70012e2d539b379aab2f0974d088db07))
+
+
+
+# [2.0.0-rc.65](https://github.com/Redocly/redoc/compare/v2.0.0-rc.64...v2.0.0-rc.65) (2022-03-15)
+
+
+### Bug Fixes
+
+* auth link scroll for Firerox ([#1922](https://github.com/Redocly/redoc/issues/1922)) ([fe67e9c](https://github.com/Redocly/redoc/commit/fe67e9c332fee716582a00d60fdf34767bff22d4))
+* improve customization fab ([#1891](https://github.com/Redocly/redoc/issues/1891)) ([635f379](https://github.com/Redocly/redoc/commit/635f379eb086268c91eef715148eca8f080cfb86))
+* sanitize array of items ([#1920](https://github.com/Redocly/redoc/issues/1920)) ([059bd80](https://github.com/Redocly/redoc/commit/059bd8000e5fd65753d5ca9e0c47940394e0c79b))
+* use x-displayName in securityDefinitions [#1444](https://github.com/Redocly/redoc/pull/1444)) ([ac6fb4](https://github.com/Redocly/redoc/commit/
+
+
+
+# [2.0.0-rc.64](https://github.com/Redocly/redoc/compare/v2.0.0-rc.63...v2.0.0-rc.64) (2022-02-24)
+
+
+### Bug Fixes
+
+* bump json-pointer version to avoid CVE-2021-23820 ([#1910](https://github.com/Redocly/redoc/issues/1910)) ([777efdd](https://github.com/Redocly/redoc/commit/777efdde35c1c8dc79dd714e1666279e9192dddb))
+* external ref in schema definition ([#1894](https://github.com/Redocly/redoc/issues/1894)) ([57cdd9f](https://github.com/Redocly/redoc/commit/57cdd9f6da38418d6214ac3c6480c5847ecd0228))
+
+
+
 # [2.0.0-rc.63](https://github.com/Redocly/redoc/compare/v2.0.0-rc.61...v2.0.0-rc.63) (2022-01-27)
 
 

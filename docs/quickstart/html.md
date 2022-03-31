@@ -37,7 +37,7 @@ title: Using the Redoc HTML element
 :::attention Running Redoc locally requires an HTTP server
 Loading local OpenAPI definitions is impossible without running a web server because of issues with
 [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) and
-other security reasons. 
+other security reasons.
 :::
 
 ### Running Redoc locally
@@ -49,7 +49,7 @@ If you want to view your Redoc output locally, you can simulate an HTTP server.
 Redocly OpenAPI CLI is an open source command-line tool that includes a command
 for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
 
-If you have [OpenAPI CLI](https://redoc.ly/docs/cli/#installation-and-usage) installed, `cd` into your
+If you have [OpenAPI CLI](https://redocly.com/docs/cli/#installation-and-usage) installed, `cd` into your
 project directory and run the following command:
 
 ```bash
@@ -107,9 +107,9 @@ You can install Redoc using one of the following package managers:
 If you do not have a `package.json` file in your project directory,
 you need to add one by initializing npm or yarn in your project. Use the command `npm init` for npm,
 or `yarn init` for yarn. These initialization commands will lead you through the process
-of creating a `package.json` file in your project. 
+of creating a `package.json` file in your project.
 
-For more information, see 
+For more information, see
 [Creating a package.json file](https://docs.npmjs.com/creating-a-package-json-file)
 in the npm documentation or [Yarn init](https://classic.yarnpkg.com/en/docs/cli/init/)
 in the yarn documentation.
@@ -118,7 +118,7 @@ in the yarn documentation.
 
 ### Install Redoc with yarn
 
-After navigating to your project directory in your terminal, use the following command: 
+After navigating to your project directory in your terminal, use the following command:
 
 ```bash
 yarn add redoc
@@ -126,7 +126,7 @@ yarn add redoc
 
 ### Install Redoc with npm
 
-After navigating to your project directory in your terminal, use the following command: 
+After navigating to your project directory in your terminal, use the following command:
 
 ```bash
 npm i redoc
@@ -188,7 +188,7 @@ Redoc.init(specOrSpecUrl, options, element, callback)
 ```
 - `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a URL to the
   definition in JSON or YAML format.
-- `options`: See [options object](https://redoc.ly/docs/api-reference-docs/configuration/) reference.
+- `options`: See [options object](https://redocly.com/docs/api-reference-docs/configuration/) reference.
 - `element`: DOM element Redoc will be inserted into.
 - `callback`(optional): Callback to be called after Redoc has been fully rendered.
   It is also called on errors with `error` as the first argument.

@@ -168,6 +168,10 @@ const defaultTheme: ThemeInterface = {
   codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
   },
+  fab: {
+    backgroundColor: '#f2f2f2',
+    color: '#0065FB',
+  },
 };
 
 export default defaultTheme;
@@ -344,6 +348,10 @@ export interface ResolvedThemeInterface {
   };
   codeBlock: {
     backgroundColor: string;
+  };
+  fab: {
+    backgroundColor: string;
+    color: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

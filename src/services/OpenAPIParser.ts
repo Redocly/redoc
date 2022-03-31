@@ -191,6 +191,9 @@ export class OpenAPIParser {
     const { $ref, ...rest } = ref;
     const keys = Object.keys(rest);
     if (keys.length === 0) {
+      if (this.isRef(resolved)) {
+        return this.shallowDeref(resolved);
+      }
       return resolved;
     }
     if (

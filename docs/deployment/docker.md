@@ -1,10 +1,10 @@
 ---
-title: Using the Redoc Docker image
+title: Use the Redoc Docker image
 redirectFrom:
   - /docs/quickstart/docker/
 ---
 
-# Using the Redoc Docker image
+# How to use the Redoc Docker image
 
 Redoc is available as a pre-built Docker image in [Docker Hub](https://hub.docker.com/r/redocly/redoc/).
 
@@ -26,7 +26,7 @@ To exit the preview, use `control+C`.
 
 By default Redoc starts with a demo Swagger Petstore OpenAPI definition located at
 http://petstore.swagger.io/v2/swagger.json. You can update this URL using
-the environment variable `SPEC_URL`. 
+the environment variable `SPEC_URL`.
 
 For example:
 
@@ -34,7 +34,7 @@ For example:
 docker run -p 8080:80 -e SPEC_URL=https://api.example.com/openapi.json redocly/redoc
 ```
 
-## Using a Dockerfile
+## Create a Dockerfile
 
 You can also create a Dockerfile with some predefined environment variables. Check out
 a sample [Dockerfile](https://github.com/Redocly/redoc/blob/master/config/docker/Dockerfile)

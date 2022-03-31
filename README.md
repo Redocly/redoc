@@ -176,9 +176,6 @@ For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
 
-See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on
-IE support for Redoc.
-
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
 [**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
@@ -217,12 +214,18 @@ You can use all of the following options with the standalone version of the <red
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
+* `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.
 * `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
+* `showObjectSchemaExamples` - show object schema example in the properties, default `false`.
 * `expandSingleSchemaField` - automatically expand single field in a schema
+* `schemaExpansionLevel` - specifies whether to automatically expand schemas. Special value `"all"` expands all levels. The default value is `0`.
 * `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value `"all"` expands all levels. The default value is `2`.
 * `hideSchemaTitles` - do not display schema `title` next to to the type
 * `simpleOneOfTypeLabel` - show only unique oneOf types in the label without titles
+* `sortEnumValuesAlphabetically` - set to true, sorts all enum values in all schemas alphabetically
+* `sortOperationsAlphabetically` - set to true, sorts operations in the navigation sidebar and in the middle panel alphabetically
+* `sortTagsAlphabetically` - set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
@@ -240,9 +243,11 @@ You can use all of the following options with the standalone version of the <red
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
 * `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
+* `nonce` - if set, the provided value will be injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
 * `sideNavStyle` - can be specified in various ways:
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.
+  * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 
 ### `<redoc>` theme object
 * `spacing`
@@ -300,6 +305,9 @@ You can use all of the following options with the standalone version of the <red
   * `backgroundColor`: '#263238'
   * `width`: '40%'
   * `textColor`: '#ffffff'
+* `fab`
+  * `backgroundColor`: '#263238'
+  * `color`: '#ffffff'
 
 -----------
 ## Development
