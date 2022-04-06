@@ -297,13 +297,14 @@ You can use all of the following options with standalone version on <redoc> tag 
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
   * `textColor`: '#333333'
-  * `activeTextColor`: # COMPUTED: theme.sidebar.backgroundColor
+  * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
   * `groupItems` # Group headings
-    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
-    * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'uppercase'
   * `level1Items` # Level 1 items like tags or section 1st level items
-    * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'none'
   * `arrow` # sidebar arrow
     * `size`: '1.5em'
