@@ -125,7 +125,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
 }))<MenuItemLabelType>`
   cursor: pointer;
   color: ${props =>
-    props.active ? menuItemActive(props.depth, props, "activeTextColor") : props.theme.sidebar.textColor};
+    props.active ? menuItemActive(props.depth, props, 'activeTextColor') : props.theme.sidebar.textColor};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
