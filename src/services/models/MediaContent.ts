@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, makeObservable } from 'mobx';
 
 import { OpenAPIMediaType } from '../../types';
 import { MediaTypeModel } from './MediaType';
@@ -22,10 +22,12 @@ export class MediaContentModel {
    */
   constructor(
     parser: OpenAPIParser,
-    info: Dict<OpenAPIMediaType>,
+    info: Record<string, OpenAPIMediaType>,
     public isRequestType: boolean,
     options: RedocNormalizedOptions,
   ) {
+    makeObservable(this);
+
     if (options.unstable_ignoreMimeParameters) {
       info = mergeSimilarMediaTypes(info);
     }

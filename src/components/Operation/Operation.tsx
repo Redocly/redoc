@@ -17,15 +17,7 @@ import { RequestSamples } from '../RequestSamples/RequestSamples';
 import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-import {SECTION_ATTR} from '../../services';
-
-const OperationRow = styled(Row).attrs(props => ({
-  [SECTION_ATTR]: props.id,
-}))`
-  backface-visibility: hidden;
-  contain: content;
-  overflow: hidden;
-`;
+import { SECTION_ATTR } from '../../services';
 
 const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
@@ -40,19 +32,22 @@ export class Operation extends React.Component<OperationProps> {
   render() {
     const { operation } = this.props;
 
-    const { name: summary, description, deprecated, externalDocs } = operation;
+    const { name: summary, description, deprecated, externalDocs, isWebhook } = operation;
     const hasDescription = !!(description || externalDocs);
 
     return (
       <OptionsContext.Consumer>
         {options => (
-          <OperationRow id={operation.operationHash}>
+          <Row {...{ [SECTION_ATTR]: operation.operationHash }} id={operation.operationHash}>
             <MiddlePanel>
               <H2>
                 <ShareLink to={operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+                {isWebhook && <Badge type="primary"> Webhook </Badge>}
               </H2>
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} />}
+              {options.pathInMiddlePanel && !isWebhook && (
+                <Endpoint operation={operation} inverted={true} />
+              )}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
@@ -66,12 +61,12 @@ export class Operation extends React.Component<OperationProps> {
               <CallbacksList callbacks={operation.callbacks} />
             </MiddlePanel>
             <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
+              {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
               <RequestSamples operation={operation} />
               <ResponseSamples operation={operation} />
               <CallbackSamples callbacks={operation.callbacks} />
             </DarkRightPanel>
-          </OperationRow>
+          </Row>
         )}
       </OptionsContext.Consumer>
     );

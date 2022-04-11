@@ -16,7 +16,8 @@ RUN npm ci --no-optional --ignore-scripts
 
 # copy only required for the build files
 COPY src /build/src
-COPY webpack.config.ts tsconfig.json custom.d.ts /build/
+COPY webpack.config.ts tsconfig.json custom.d.ts  /build/
+COPY config/webpack-utils.ts /build/config/
 COPY typings/styled-patch.d.ts /build/typings/styled-patch.d.ts
 
 RUN npm run bundle:standalone
@@ -35,6 +36,18 @@ COPY config/docker/index.tpl.html /usr/share/nginx/html/index.html
 COPY demo/favicon.png /usr/share/nginx/html/
 COPY config/docker/nginx.conf /etc/nginx/
 COPY config/docker/docker-run.sh /usr/local/bin
+
+# Provide rights to the root group to write to nginx repositories (needed to run in OpenShift)
+RUN chgrp -R 0 /etc/nginx && \
+    chgrp -R 0 /usr/share/nginx/html && \
+    chgrp -R 0 /var/cache/nginx && \
+    chgrp -R 0 /var/log/nginx && \
+    chgrp -R 0 /var/run && \
+    chmod -R g+rwX /etc/nginx && \
+    chmod -R g+rwX /usr/share/nginx/html && \
+    chmod -R g+rwX /var/cache/nginx && \
+    chmod -R g+rwX /var/log/nginx && \
+    chmod -R g+rwX /var/run
 
 EXPOSE 80
 

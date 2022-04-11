@@ -65,7 +65,7 @@ export const PrismDiv = styled.div`
   }
 
   .token.boolean {
-    color: firebrick;
+    color: #e64441;
   }
 
   .token.selector,
@@ -82,9 +82,9 @@ export const PrismDiv = styled.div`
     }
   }
 
-  /* .property.token.string {
+  .token.property.string {
     color: white;
-  } */
+  }
 
   .token.operator,
   .token.entity,

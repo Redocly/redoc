@@ -1,4 +1,3 @@
-// import { observe } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
@@ -7,6 +6,8 @@ import { IMenuItem, OperationModel } from '../../services';
 import { shortenHTTPVerb } from '../../utils/openapi';
 import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
+import { l } from '../../services/Labels';
+import { scrollIntoViewIfNeeded } from '../../utils';
 
 export interface MenuItemProps {
   item: IMenuItem;
@@ -33,7 +34,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
   scrollIntoViewIfActive() {
     if (this.props.item.active && this.ref.current) {
-      this.ref.current.scrollIntoViewIfNeeded();
+      scrollIntoViewIfNeeded(this.ref.current);
     }
   }
 
@@ -45,8 +46,8 @@ export class MenuItem extends React.Component<MenuItemProps> {
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.name}>
-              {item.name}
+            <MenuItemTitle title={item.sidebarLabel}>
+              {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>
             {(item.depth > 0 && item.items.length > 0 && (
@@ -77,7 +78,7 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
 
   componentDidUpdate() {
     if (this.props.item.active && this.ref.current) {
-      this.ref.current.scrollIntoViewIfNeeded();
+      scrollIntoViewIfNeeded(this.ref.current);
     }
   }
 
@@ -90,9 +91,13 @@ export class OperationMenuItemContent extends React.Component<OperationMenuItemC
         deprecated={item.deprecated}
         ref={this.ref}
       >
-        <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+        {item.isWebhook ? (
+          <OperationBadge type="hook">{l('webhook')}</OperationBadge>
+        ) : (
+          <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+        )}
         <MenuItemTitle width="calc(100% - 38px)">
-          {item.name}
+          {item.sidebarLabel}
           {this.props.children}
         </MenuItemTitle>
       </MenuItemLabel>

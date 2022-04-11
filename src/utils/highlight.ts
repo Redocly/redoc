@@ -15,10 +15,12 @@ import 'prismjs/components/prism-objectivec.js';
 import 'prismjs/components/prism-perl.js';
 import 'prismjs/components/prism-php.js';
 import 'prismjs/components/prism-python.js';
+import 'prismjs/components/prism-q.js';
 import 'prismjs/components/prism-ruby.js';
 import 'prismjs/components/prism-scala.js';
 import 'prismjs/components/prism-sql.js';
 import 'prismjs/components/prism-swift.js';
+import 'prismjs/components/prism-yaml.js';
 
 const DEFAULT_LANG = 'clike';
 
@@ -68,11 +70,11 @@ export function mapLang(lang: string): string {
  * @param lang highlight language
  * @return highlighted source code as **html string**
  */
-export function highlight(source: string, lang: string = DEFAULT_LANG): string {
+export function highlight(source: string | number | boolean, lang: string = DEFAULT_LANG): string {
   lang = lang.toLowerCase();
   let grammar = Prism.languages[lang];
   if (!grammar) {
     grammar = Prism.languages[mapLang(lang)];
   }
-  return Prism.highlight(source, grammar, lang);
+  return Prism.highlight(source.toString(), grammar, lang);
 }

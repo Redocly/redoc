@@ -14,6 +14,7 @@ import {
   InfoSpanBox,
   InfoSpanBoxWrap,
 } from './styled.elements';
+import { l } from '../../services/Labels';
 
 export interface ApiInfoProps {
   store: AppStore;
@@ -38,7 +39,12 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
     const license =
       (info.license && (
         <InfoSpan>
-          License: <a href={info.license.url}>{info.license.name}</a>
+          License:{' '}
+          {info.license.identifier ? (
+            info.license.identifier
+          ) : (
+            <a href={info.license.url}>{info.license.name}</a>
+          )}
         </InfoSpan>
       )) ||
       null;
@@ -79,14 +85,14 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             </ApiHeader>
             {!hideDownloadButton && (
               <p>
-                Download OpenAPI specification:
+                {l('downloadSpecification')}:
                 <DownloadButton
-                  download={downloadFilename}
+                  download={downloadFilename || true}
                   target="_blank"
                   href={downloadLink}
                   onClick={this.handleDownloadClick}
                 >
-                  Download
+                  {l('download')}
                 </DownloadButton>
               </p>
             )}
@@ -100,6 +106,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               )) ||
                 null}
             </StyledMarkdownBlock>
+            <Markdown source={store.spec.info.summary} data-role="redoc-summary" />
             <Markdown source={store.spec.info.description} data-role="redoc-description" />
             {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
           </MiddlePanel>

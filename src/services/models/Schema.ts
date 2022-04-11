@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
@@ -25,7 +25,7 @@ import { l } from '../Labels';
 export class SchemaModel {
   pointer: string;
 
-  type: string;
+  type: string | string[];
   displayType: string;
   typePrefix: string = '';
   title: string;
@@ -59,7 +59,12 @@ export class SchemaModel {
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
-  extensions?: Dict<any>;
+  extensions?: Record<string, any>;
+  const: any;
+  contentEncoding?: string;
+  contentMediaType?: string;
+  minItems?: number;
+  maxItems?: number;
 
   /**
    * @param isChild if schema discriminator Child
@@ -72,8 +77,10 @@ export class SchemaModel {
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
+    makeObservable(this);
+
     this.pointer = schemaOrRef.$ref || pointer || '';
-    this.rawSchema = parser.deref(schemaOrRef);
+    this.rawSchema = parser.deref(schemaOrRef, false, true);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
 
     this.init(parser, isChild);
@@ -95,6 +102,10 @@ export class SchemaModel {
     this.activeOneOf = idx;
   }
 
+  hasType(type: string) {
+    return this.type === type || (Array.isArray(this.type) && this.type.includes(type));
+  }
+
   init(parser: OpenAPIParser, isChild: boolean) {
     const schema = this.schema;
     this.isCircular = schema['x-circular-ref'];
@@ -104,7 +115,6 @@ export class SchemaModel {
     this.description = schema.description || '';
     this.type = schema.type || detectType(schema);
     this.format = schema.format;
-    this.nullable = !!schema.nullable;
     this.enum = schema.enum || [];
     this.example = schema.example;
     this.deprecated = !!schema.deprecated;
@@ -112,12 +122,31 @@ export class SchemaModel {
     this.externalDocs = schema.externalDocs;
 
     this.constraints = humanizeConstraints(schema);
-    this.displayType = this.type;
     this.displayFormat = this.format;
     this.isPrimitive = isPrimitiveType(schema, this.type);
     this.default = schema.default;
     this.readOnly = !!schema.readOnly;
     this.writeOnly = !!schema.writeOnly;
+    this.const = schema.const || '';
+    this.contentEncoding = schema.contentEncoding;
+    this.contentMediaType = schema.contentMediaType;
+    this.minItems = schema.minItems;
+    this.maxItems = schema.maxItems;
+
+    if (!!schema.nullable || schema['x-nullable']) {
+      if (
+        Array.isArray(this.type) &&
+        !this.type.some(value => value === null || value === 'null')
+      ) {
+        this.type = [...this.type, 'null'];
+      } else if (!Array.isArray(this.type) && (this.type !== null || this.type !== 'null')) {
+        this.type = [this.type, 'null'];
+      }
+    }
+
+    this.displayType = Array.isArray(this.type)
+      ? this.type.map(item => (item === null ? 'null' : item)).join(' or ')
+      : this.type;
 
     if (this.isCircular) {
       return;
@@ -152,9 +181,9 @@ export class SchemaModel {
       return;
     }
 
-    if (this.type === 'object') {
+    if (this.hasType('object')) {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
-    } else if (this.type === 'array' && schema.items) {
+    } else if (this.hasType('array') && schema.items) {
       this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
       this.displayType = pluralizeType(this.items.displayType);
       this.displayFormat = this.items.format;
@@ -167,12 +196,20 @@ export class SchemaModel {
       if (this.items.isPrimitive) {
         this.enum = this.items.enum;
       }
+      if (Array.isArray(this.type)) {
+        const filteredType = this.type.filter(item => item !== 'array');
+        if (filteredType.length) this.displayType += ` or ${filteredType.join(' or ')}`;
+      }
+    }
+
+    if (this.enum.length && this.options.sortEnumValuesAlphabetically) {
+      this.enum.sort();
     }
   }
 
   private initOneOf(oneOf: OpenAPISchema[], parser: OpenAPIParser) {
     this.oneOf = oneOf!.map((variant, idx) => {
-      const derefVariant = parser.deref(variant);
+      const derefVariant = parser.deref(variant, false, true);
 
       const merged = parser.mergeAllOf(derefVariant, this.pointer + '/oneOf/' + idx);
 
@@ -180,7 +217,7 @@ export class SchemaModel {
       const title =
         isNamedDefinition(variant.$ref) && !merged.title
           ? JsonPointer.baseName(variant.$ref)
-          : merged.title;
+          : `${merged.title || ''}${(merged.const && JSON.stringify(merged.const)) || ''}`;
 
       const schema = new SchemaModel(
         parser,
@@ -203,17 +240,22 @@ export class SchemaModel {
       return schema;
     });
 
-    this.displayType = this.oneOf
-      .map(schema => {
-        let name =
-          schema.typePrefix +
-          (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
-        if (name.indexOf(' or ') > -1) {
-          name = `(${name})`;
-        }
-        return name;
-      })
-      .join(' or ');
+    if (this.options.simpleOneOfTypeLabel) {
+      const types = collectUniqueOneOfTypesDeep(this);
+      this.displayType = types.join(' or ');
+    } else {
+      this.displayType = this.oneOf
+        .map(schema => {
+          let name =
+            schema.typePrefix +
+            (schema.title ? `${schema.title} (${schema.displayType})` : schema.displayType);
+          if (name.indexOf(' or ') > -1) {
+            name = `(${name})`;
+          }
+          return name;
+        })
+        .join(' or ');
+    }
   }
 
   private initDiscriminator(
@@ -323,7 +365,7 @@ function buildFields(
 ): FieldModel[] {
   const props = schema.properties || {};
   const additionalProps = schema.additionalProperties;
-  const defaults = schema.default || {};
+  const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
     let field = props[fieldName];
 
@@ -344,7 +386,7 @@ function buildFields(
         required,
         schema: {
           ...field,
-          default: field.default === undefined ? defaults[fieldName] : field.default,
+          default: field.default === undefined && defaults ? defaults[fieldName] : field.default,
         },
       },
       $ref + '/properties/' + fieldName,
@@ -384,4 +426,24 @@ function buildFields(
 
 function getDiscriminator(schema: OpenAPISchema): OpenAPISchema['discriminator'] {
   return schema.discriminator || schema['x-discriminator'];
+}
+
+function collectUniqueOneOfTypesDeep(schema: SchemaModel) {
+  const uniqueTypes = new Set();
+
+  function crawl(schema: SchemaModel) {
+    for (const oneOfType of schema.oneOf || []) {
+      if (oneOfType.oneOf) {
+        crawl(oneOfType);
+        continue;
+      }
+
+      if (oneOfType.type) {
+        uniqueTypes.add(oneOfType.type);
+      }
+    }
+  }
+
+  crawl(schema);
+  return Array.from(uniqueTypes.values());
 }

@@ -24,9 +24,9 @@ export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolea
  * @param iteratee the function invoked per iteration.
  */
 export function mapValues<T, P>(
-  object: Dict<T>,
-  iteratee: (val: T, key: string, obj: Dict<T>) => P,
-): Dict<P> {
+  object: Record<string, T>,
+  iteratee: (val: T, key: string, obj: Record<string, T>) => P,
+): Record<string, P> {
   const res: { [key: string]: P } = {};
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
@@ -50,7 +50,7 @@ export function flattenByProp<T extends object, P extends keyof T>(
     for (const item of items) {
       res.push(item);
       if (item[prop]) {
-        iterate((item[prop] as any) as T[]);
+        iterate(item[prop] as any as T[]);
       }
     }
   };
@@ -196,5 +196,7 @@ function parseURL(url: string) {
 }
 
 export function unescapeHTMLChars(str: string): string {
-  return str.replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)));
+  return str
+    .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
+    .replace(/&amp;/g, '&');
 }

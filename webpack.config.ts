@@ -1,12 +1,12 @@
 /* tslint:disable:no-implicit-dependencies */
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 import * as webpack from 'webpack';
-
 import * as path from 'path';
+import { webpackIgnore } from './config/webpack-utils';
 
 const nodeExternals = require('webpack-node-externals')({
   // bundle in modules that need transpiling + non-js (e.g. css)
-  whitelist: [
+  allowlist: [
     'swagger2openapi',
     /reftools/,
     'oas-resolver',
@@ -21,10 +21,7 @@ let REVISION;
 
 try {
   REVISION = JSON.stringify(
-    require('child_process')
-      .execSync('git rev-parse --short HEAD')
-      .toString()
-      .trim(),
+    require('child_process').execSync('git rev-parse --short HEAD').toString().trim(),
   );
 } catch (e) {
   console.error('Skipping REDOC_REVISION');
@@ -35,35 +32,36 @@ const BANNER = `ReDoc - OpenAPI/Swagger-generated API Reference Documentation
   Version: ${VERSION}
   Repo: https://github.com/Redocly/redoc`;
 
-export default (env: { standalone?: boolean } = {}, { mode }) => ({
+export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
   entry: env.standalone ? ['./src/polyfills.ts', './src/standalone.tsx'] : './src/index.ts',
   output: {
-    filename: env.standalone ? 'redoc.standalone.js' : 'redoc.lib.js',
+    filename: env.standalone
+      ? 'redoc.standalone.js'
+      : env.browser
+      ? 'redoc.browser.lib.js'
+      : 'redoc.lib.js',
     path: path.join(__dirname, '/bundles'),
     library: 'Redoc',
     libraryTarget: 'umd',
     globalObject: 'this',
   },
-
   devtool: 'source-map',
-
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.mjs', '.json'],
+    fallback: {
+      path: require.resolve('path-browserify'),
+      buffer: require.resolve('buffer'),
+      http: false,
+      fs: path.resolve(__dirname, 'src/empty.js'),
+      os: path.resolve(__dirname, 'src/empty.js'),
+      tty: path.resolve(__dirname, 'src/empty.js'),
+    },
   },
-
-  node: {
-    fs: 'empty',
-  },
-
   performance: false,
-
-  optimization: {
-    minimize: !!env.standalone,
-  },
-
+  externalsPresets: env.standalone || env.browser ? {} : { node: true },
   externals: env.standalone
     ? {
-        esprima: 'esprima',
+        esprima: 'null',
         'node-fetch': 'null',
         'node-fetch-h2': 'null',
         yaml: 'null',
@@ -71,7 +69,7 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
       }
     : (context, request, callback) => {
         // ignore node-fetch dep of swagger2openapi as it is not used
-        if (/esprima|node-fetch|node-fetch-h2|yaml|safe-json-stringify$/i.test(request)) {
+        if (/esprima|node-fetch|node-fetch-h2|\/yaml|safe-json-stringify$/i.test(request)) {
           return callback(null, 'var undefined');
         }
         return nodeExternals(context, request, callback);
@@ -80,79 +78,45 @@ export default (env: { standalone?: boolean } = {}, { mode }) => ({
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              compilerOptions: {
-                module: 'es2015',
-                declaration: false,
-              },
-            },
-          },
-          {
-            loader: 'babel-loader',
-            options: {
-              generatorOpts: {
-                decoratorsBeforeExport: true,
-              },
-              plugins: [
-                ['@babel/plugin-syntax-typescript', { isTSX: true }],
-                ['@babel/plugin-syntax-decorators', { legacy: true }],
-                '@babel/plugin-syntax-jsx',
-                [
-                  'babel-plugin-styled-components',
-                  {
-                    minify: true,
-                    displayName: mode !== 'production',
-                  },
-                ],
-              ],
-            },
-          },
-        ],
+        test: /\.(tsx?|[cm]?js)$/,
+        loader: 'esbuild-loader',
+        options: {
+          loader: 'tsx',
+          target: 'es2015',
+          tsconfigRaw: require('./tsconfig.json'),
+        },
         exclude: [/node_modules/],
       },
       {
-        test: /node_modules\/(swagger2openapi|reftools|oas-resolver|oas-kit-common|oas-schema-walker)\/.*\.js$/,
-        use: {
-          loader: 'ts-loader',
-          options: {
-            instance: 'ts2js-transpiler-only',
-            transpileOnly: true,
-            compilerOptions: {
-              allowJs: true,
-              declaration: false,
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'css',
+              minify: true,
             },
           },
-        },
+        ],
       },
-      {
-        test: /\.css$/,
-        use: {
-          loader: 'css-loader',
-          options: {
-            sourceMap: false,
-          },
-        },
-      },
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
     ],
   },
   plugins: [
     new webpack.DefinePlugin({
       __REDOC_VERSION__: VERSION,
       __REDOC_REVISION__: REVISION,
+      'process.env': '{}',
+      'process.platform': '"browser"',
+      'process.stdout': 'null',
     }),
-    new ForkTsCheckerWebpackPlugin({ silent: true }),
+    new ForkTsCheckerWebpackPlugin({ logger: { infrastructure: 'silent', issues: 'console' } }),
     new webpack.BannerPlugin(BANNER),
-    ignore(/js-yaml\/dumper\.js$/),
-    ignore(/json-schema-ref-parser\/lib\/dereference\.js/),
-    env.standalone ? ignore(/^\.\/SearchWorker\.worker$/) : ignore(/$non-existing^/),
-  ],
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    webpackIgnore(/js-yaml\/dumper\.js$/),
+    env.standalone ? webpackIgnore(/^\.\/SearchWorker\.worker$/) : undefined,
+  ].filter(Boolean),
 });
-
-function ignore(regexp) {
-  return new webpack.NormalModuleReplacementPlugin(regexp, require.resolve('lodash/noop.js'));
-}

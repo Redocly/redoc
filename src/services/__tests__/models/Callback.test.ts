@@ -20,7 +20,7 @@ describe('Models', () => {
       );
       expect(callback.name).toEqual('Test.Callback');
       expect(callback.operations.length).toEqual(0);
-      expect(callback.expanded).toBeUndefined();
+      expect(callback.expanded).toBeFalsy();
     });
   });
 });

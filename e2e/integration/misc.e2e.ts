@@ -1,5 +1,5 @@
 // tslint:disable:no-implicit-dependencies
-import * as yaml from 'yaml-js';
+import * as yaml from 'js-yaml';
 
 async function loadSpec(url: string): Promise<any> {
   const spec = await (await fetch(url)).text();

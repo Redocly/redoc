@@ -32,7 +32,10 @@ export class CallbackTitle extends React.PureComponent<CallbackTitleProps> {
   }
 }
 
-const CallbackTitleWrapper = styled.div`
+const CallbackTitleWrapper = styled.button`
+  border: 0;
+  width: 100%;
+  text-align: left;
   & > * {
     vertical-align: middle;
   }
@@ -50,5 +53,5 @@ const CallbackName = styled.span<{ deprecated?: boolean }>`
 `;
 
 const OperationBadgeStyled = styled(OperationBadge)`
-  margin: 0px 5px 0px 0px;
+  margin: 0 5px 0 0;
 `;

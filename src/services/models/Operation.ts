@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { IMenuItem } from '../MenuStore';
 import { GroupModel } from './Group.model';
@@ -25,6 +25,7 @@ import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
+import { SideNavStyleEnum } from '../RedocNormalizedOptions';
 
 export interface XPayloadSample {
   lang: 'payload';
@@ -39,6 +40,8 @@ export function isPayloadSample(
   return sample.lang === 'payload' && (sample as any).requestBodyContent;
 }
 
+let isCodeSamplesWarningPrinted = false;
+
 /**
  * Operation model ready to be used by components
  */
@@ -47,8 +50,9 @@ export class OperationModel implements IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  sidebarLabel: string;
   description?: string;
-  type = 'operation' as 'operation';
+  type = 'operation' as const;
 
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
@@ -72,8 +76,10 @@ export class OperationModel implements IMenuItem {
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
-  extensions: Dict<any>;
+  extensions: Record<string, any>;
   isCallback: boolean;
+  isWebhook: boolean;
+  isEvent: boolean;
 
   constructor(
     private parser: OpenAPIParser,
@@ -82,6 +88,8 @@ export class OperationModel implements IMenuItem {
     private options: RedocNormalizedOptions,
     isCallback: boolean = false,
   ) {
+    makeObservable(this);
+
     this.pointer = operationSpec.pointer;
 
     this.description = operationSpec.description;
@@ -94,8 +102,17 @@ export class OperationModel implements IMenuItem {
     this.operationId = operationSpec.operationId;
     this.path = operationSpec.pathName;
     this.isCallback = isCallback;
+    this.isWebhook = operationSpec.isWebhook;
+    this.isEvent = this.isCallback || this.isWebhook;
 
     this.name = getOperationSummary(operationSpec);
+
+    this.sidebarLabel =
+      options.sideNavStyle === SideNavStyleEnum.IdOnly
+        ? this.operationId || this.path
+        : options.sideNavStyle === SideNavStyleEnum.PathOnly
+        ? this.path
+        : this.name;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
@@ -168,14 +185,24 @@ export class OperationModel implements IMenuItem {
   get requestBody() {
     return (
       this.operationSpec.requestBody &&
-      new RequestBodyModel(this.parser, this.operationSpec.requestBody, this.options)
+      new RequestBodyModel({
+        parser: this.parser,
+        infoOrRef: this.operationSpec.requestBody,
+        options: this.options,
+        isEvent: this.isEvent,
+      })
     );
   }
 
   @memoize
   get codeSamples() {
     let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
-      this.operationSpec['x-code-samples'] || [];
+      this.operationSpec['x-codeSamples'] || this.operationSpec['x-code-samples'] || [];
+
+    if (this.operationSpec['x-code-samples'] && !isCodeSamplesWarningPrinted) {
+      isCodeSamplesWarningPrinted = true;
+      console.warn('"x-code-samples" is deprecated. Use "x-codeSamples" instead');
+    }
 
     const requestBodyContent = this.requestBody && this.requestBody.content;
     if (requestBodyContent && requestBodyContent.hasSample) {
@@ -231,13 +258,14 @@ export class OperationModel implements IMenuItem {
         return isStatusCode(code);
       }) // filter out other props (e.g. x-props)
       .map(code => {
-        return new ResponseModel(
-          this.parser,
+        return new ResponseModel({
+          parser: this.parser,
           code,
-          hasSuccessResponses,
-          this.operationSpec.responses[code],
-          this.options,
-        );
+          defaultAsError: hasSuccessResponses,
+          infoOrRef: this.operationSpec.responses[code],
+          options: this.options,
+          isEvent: this.isEvent,
+        });
       });
   }
 

@@ -114,7 +114,7 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
-      x-code-samples:
+      x-codeSamples:
         - lang: 'C#'
           source: |
             PetStore.v1.Pet pet = new PetStore.v1.Pet();
@@ -162,7 +162,7 @@ paths:
         - petstore_auth:
             - 'write:pets'
             - 'read:pets'
-      x-code-samples:
+      x-codeSamples:
         - lang: PHP
           source: |
             $form = new \PetStore\Entities\Pet();
@@ -377,7 +377,9 @@ paths:
             application/xml:
               schema:
                 type: array
+                maxItems: 999
                 items:
+                  maxItems: 111
                   $ref: '#/components/schemas/Pet'
         '400':
           description: Invalid tag value
@@ -587,7 +589,7 @@ paths:
                   description: Response for cancelling subscription
                 '500':
                   description: Callback processing failed and retries will be performed
-              x-code-samples:
+              x-codeSamples:
                 - lang: 'C#'
                   source: |
                     PetStore.v1.Pet pet = new PetStore.v1.Pet();
@@ -1187,3 +1189,19 @@ components:
         shipDate: '2018-10-19T16:46:45Z'
         status: placed
         complete: false
+x-webhooks:
+  newPet:
+    post:
+      summary: New pet
+      description: Information about a new pet in the systems
+      operationId: newPet
+      tags:
+        - pet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pet"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully

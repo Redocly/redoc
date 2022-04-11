@@ -62,11 +62,12 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 style={{ marginRight: '-25px' }}
               />
             </EndpointInfo>
-            <ServersOverlay expanded={expanded}>
+            <ServersOverlay expanded={expanded} aria-hidden={!expanded}>
               {operation.servers.map(server => {
                 const normalizedUrl = options.expandDefaultServerVariables
                   ? expandDefaultServerVariables(server.url, server.variables)
                   : server.url;
+                const basePath = getBasePath(normalizedUrl);
                 return (
                   <ServerItem key={normalizedUrl}>
                     <Markdown source={server.description || ''} compact={true} />
@@ -74,7 +75,9 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                       <ServerUrl>
                         <span>
                           {hideHostname || options.hideHostname
-                            ? getBasePath(normalizedUrl)
+                            ? basePath === '/'
+                              ? ''
+                              : basePath
                             : normalizedUrl}
                         </span>
                         {operation.path}

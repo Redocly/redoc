@@ -8,11 +8,11 @@ const defaultTheme: ThemeInterface = {
   },
   breakpoints: {
     small: '50rem',
-    medium: '85rem',
+    medium: '75rem',
     large: '105rem',
   },
   colors: {
-    tonalOffset: 0.3,
+    tonalOffset: 0.2,
     primary: {
       main: '#32329f',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
@@ -20,7 +20,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.primary.main),
     },
     success: {
-      main: '#37d247',
+      main: '#1d8127',
       light: ({ colors }) => lighten(colors.tonalOffset * 2, colors.success.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.success.main),
       contrastText: ({ colors }) => readableColor(colors.success.main),
@@ -32,7 +32,7 @@ const defaultTheme: ThemeInterface = {
       contrastText: '#ffffff',
     },
     error: {
-      main: '#e53935',
+      main: '#d41f1c',
       light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
@@ -52,31 +52,35 @@ const defaultTheme: ThemeInterface = {
     responses: {
       success: {
         color: ({ colors }) => colors.success.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.success.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.success.main),
+        tabTextColor: ({ colors }) => colors.responses.success.color,
       },
       error: {
         color: ({ colors }) => colors.error.main,
-        backgroundColor: ({ colors }) => transparentize(0.9, colors.error.main),
+        backgroundColor: ({ colors }) => transparentize(0.93, colors.error.main),
+        tabTextColor: ({ colors }) => colors.responses.error.color,
       },
       redirect: {
         color: ({ colors }) => colors.warning.main,
         backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.redirect.color),
+        tabTextColor: ({ colors }) => colors.responses.redirect.color,
       },
       info: {
         color: '#87ceeb',
         backgroundColor: ({ colors }) => transparentize(0.9, colors.responses.info.color),
+        tabTextColor: ({ colors }) => colors.responses.info.color,
       },
     },
     http: {
-      get: '#6bbd5b',
-      post: '#248fb2',
-      put: '#9b708b',
-      options: '#d3ca12',
-      patch: '#e09d43',
-      delete: '#e27a7a',
-      basic: '#999',
-      link: '#31bbb6',
-      head: '#c167e4',
+      get: '#2F8132',
+      post: '#186FAF',
+      put: '#95507c',
+      options: '#947014',
+      patch: '#bf581d',
+      delete: '#cc3333',
+      basic: '#707070',
+      link: '#07818F',
+      head: '#A23DAD',
     },
   },
   schema: {
@@ -135,9 +139,13 @@ const defaultTheme: ThemeInterface = {
         ? theme.sidebar.textColor
         : theme.colors.primary.main,
     groupItems: {
-      textTransform: 'uppercase',
+      activeBackgroundColor: theme => darken(0.1, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
+      textTransform: 'uppercase'
     },
     level1Items: {
+      activeBackgroundColor: theme => darken(0.05, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'none',
     },
     arrow: {
@@ -146,8 +154,8 @@ const defaultTheme: ThemeInterface = {
     },
   },
   logo: {
-    maxHeight: ({ sidebar: menu }) => menu.width,
-    maxWidth: ({ sidebar: menu }) => menu.width,
+    maxHeight: ({ sidebar }) => sidebar.width,
+    maxWidth: ({ sidebar }) => sidebar.width,
     gutter: '2px',
   },
   rightPanel: {
@@ -157,6 +165,10 @@ const defaultTheme: ThemeInterface = {
   },
   codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
+  },
+  fab: {
+    backgroundColor: '#f2f2f2',
+    color: '#0065FB',
   },
 };
 
@@ -206,6 +218,7 @@ export interface ColorSetting {
 export interface HTTPResponseColos {
   color: string;
   backgroundColor: string;
+  tabTextColor: string;
 }
 
 export interface FontSettings {
@@ -310,9 +323,13 @@ export interface ResolvedThemeInterface {
     textColor: string;
     activeTextColor: string;
     groupItems: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     level1Items: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     arrow: {
@@ -332,6 +349,10 @@ export interface ResolvedThemeInterface {
   };
   codeBlock: {
     backgroundColor: string;
+  };
+  fab: {
+    backgroundColor: string;
+    color: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

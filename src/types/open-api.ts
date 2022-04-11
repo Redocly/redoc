@@ -9,6 +9,8 @@ export interface OpenAPISpec {
   security?: OpenAPISecurityRequirement[];
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
+  'x-webhooks'?: OpenAPIPaths;
+  webhooks?: OpenAPIPaths;
 }
 
 export interface OpenAPIInfo {
@@ -16,6 +18,7 @@ export interface OpenAPIInfo {
   version: string;
 
   description?: string;
+  summary?: string;
   termsOfService?: string;
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
@@ -55,6 +58,7 @@ export interface OpenAPIPath {
   trace?: OpenAPIOperation;
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
+  $ref?: string;
 }
 
 export interface OpenAPIXCodeSample {
@@ -76,7 +80,8 @@ export interface OpenAPIOperation {
   deprecated?: boolean;
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
-  'x-code-samples'?: OpenAPIXCodeSample[];
+  'x-codeSamples'?: OpenAPIXCodeSample[];
+  'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
 }
 
 export interface OpenAPIParameter {
@@ -93,6 +98,8 @@ export interface OpenAPIParameter {
   example?: any;
   examples?: { [media: string]: Referenced<OpenAPIExample> };
   content?: { [media: string]: OpenAPIMediaType };
+  encoding?: Record<string, OpenAPIEncoding>;
+  const?: any;
 }
 
 export interface OpenAPIExample {
@@ -104,7 +111,7 @@ export interface OpenAPIExample {
 
 export interface OpenAPISchema {
   $ref?: string;
-  type?: string;
+  type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
   description?: string;
@@ -126,9 +133,9 @@ export interface OpenAPISchema {
   title?: string;
   multipleOf?: number;
   maximum?: number;
-  exclusiveMaximum?: boolean;
+  exclusiveMaximum?: boolean | number;
   minimum?: number;
-  exclusiveMinimum?: boolean;
+  exclusiveMinimum?: boolean | number;
   maxLength?: number;
   minLength?: number;
   pattern?: string;
@@ -139,6 +146,9 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
+  const?: string;
+  contentEncoding?: string;
+  contentMediaType?: string;
 }
 
 export interface OpenAPIDiscriminator {
@@ -176,17 +186,20 @@ export interface OpenAPIRequestBody {
   description?: string;
   required?: boolean;
   content: { [mime: string]: OpenAPIMediaType };
+
+  'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
+  'x-example'?: { [mime: string]: any };
 }
 
 export interface OpenAPIResponses {
-  [code: string]: OpenAPIResponse;
+  [code: string]: Referenced<OpenAPIResponse>;
 }
 
-export interface OpenAPIResponse {
-  description?: string;
+export interface OpenAPIResponse
+  extends Pick<OpenAPIRequestBody, 'description' | 'x-examples' | 'x-example'> {
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  content?: { [mime: string]: OpenAPIMediaType };
   links?: { [name: string]: Referenced<OpenAPILink> };
+  content?: { [mime: string]: OpenAPIMediaType };
 }
 
 export interface OpenAPILink {
@@ -225,22 +238,22 @@ export interface OpenAPISecurityScheme {
   flows: {
     implicit?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       authorizationUrl: string;
     };
     password?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     clientCredentials?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
     authorizationCode?: {
       refreshUrl?: string;
-      scopes: Dict<string>;
+      scopes: Record<string, string>;
       tokenUrl: string;
     };
   };
@@ -268,4 +281,5 @@ export interface OpenAPIContact {
 export interface OpenAPILicense {
   name: string;
   url?: string;
+  identifier?: string;
 }

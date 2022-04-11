@@ -1,8 +1,9 @@
 import { css } from '../../styled-components';
 
 export const jsonStyles = css`
-  .redoc-json > .collapser {
+  .redoc-json code > .collapser {
     display: none;
+    pointer-events: none;
   }
 
   font-family: ${props => props.theme.typography.code.fontFamily};
@@ -47,8 +48,32 @@ export const jsonStyles = css`
   }
 
   .collapser {
+    background-color: transparent;
+    border: 0;
+    color: #fff;
+    font-family: ${props => props.theme.typography.code.fontFamily};
+    font-size: ${props => props.theme.typography.code.fontSize};
     padding-right: 6px;
     padding-left: 6px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 4px;
+    left: -1.5em;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    padding: 2px;
+    &:focus {
+      outline-color: #fff;
+      outline-style: dotted;
+      outline-width: 1px;
+    }
   }
 
   ul {
@@ -82,14 +107,5 @@ export const jsonStyles = css`
 
   .collapsed > .ellipsis {
     display: inherit;
-  }
-
-  .collapser {
-    position: absolute;
-    top: 1px;
-    left: -1.5em;
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
   }
 `;

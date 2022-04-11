@@ -1,4 +1,4 @@
-import * as classnames from 'classnames';
+import { default as classnames } from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
@@ -7,7 +7,7 @@ import styled, { css, ResolvedThemeInterface } from '../../styled-components';
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
 }))<{ type: string }>`
-  width: 32px;
+  width: 9ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
@@ -16,7 +16,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   background-repeat: no-repeat;
   background-position: 6px 4px;
   font-size: 7px;
-  font-family: Verdana; // web-safe
+  font-family: Verdana, sans-serif; // web-safe
   color: white;
   text-transform: uppercase;
   text-align: center;
@@ -60,13 +60,18 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   &.head {
     background-color: ${props => props.theme.colors.http.head};
   }
+
+  &.hook {
+    background-color: ${props => props.theme.colors.primary.main};
+  }
 `;
 
-function menuItemActiveBg(depth, { theme }: { theme: ResolvedThemeInterface }): string {
+
+function menuItemActive(depth, { theme }: { theme: ResolvedThemeInterface }, option: string): string {
   if (depth > 1) {
-    return darken(0.1, theme.sidebar.backgroundColor);
+    return theme.sidebar.level1Items[option];
   } else if (depth === 1) {
-    return darken(0.05, theme.sidebar.backgroundColor);
+    return theme.sidebar.groupItems[option];
   } else {
     return '';
   }
@@ -98,17 +103,10 @@ export const menuItemDepth = {
     font-size: 0.8em;
     padding-bottom: 0;
     cursor: default;
-    color: ${props => props.theme.sidebar.textColor};
   `,
   1: css`
     font-size: 0.929em;
     text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
-    &:hover {
-      color: ${props => props.theme.sidebar.activeTextColor};
-    }
-  `,
-  2: css`
-    color: ${props => props.theme.sidebar.textColor};
   `,
 };
 
@@ -127,7 +125,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
 }))<MenuItemLabelType>`
   cursor: pointer;
   color: ${props =>
-    props.active ? props.theme.sidebar.activeTextColor : props.theme.sidebar.textColor};
+    props.active ? menuItemActive(props.depth, props, 'activeTextColor') : props.theme.sidebar.textColor};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ depth, type, theme }) =>
@@ -136,12 +134,14 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   ${props => menuItemDepth[props.depth]};
-  background-color: ${props => (props.active ? menuItemActiveBg(props.depth, props) : '')};
+  background-color: ${props =>
+    props.active ? menuItemActive(props.depth, props, 'activeBackgroundColor') : props.theme.sidebar.backgroundColor};
 
   ${props => (props.deprecated && deprecatedCss) || ''};
 
   &:hover {
-    background-color: ${props => menuItemActiveBg(props.depth, props)};
+    color: ${props => menuItemActive(props.depth, props, 'activeTextColor')};
+    background-color: ${props => menuItemActive(props.depth, props, 'activeBackgroundColor')};
   }
 
   ${ShelfIcon} {
