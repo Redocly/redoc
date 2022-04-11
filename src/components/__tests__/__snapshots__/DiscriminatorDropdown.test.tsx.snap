@@ -224,9 +224,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "backgroundColor": "#fafafa",
                         "groupItems": Object {
+                          "activeBackgroundColor": "#e1e1e1",
+                          "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
                         "level1Items": Object {
+                          "activeBackgroundColor": "#ededed",
+                          "activeTextColor": "#32329f",
                           "textTransform": "none",
                         },
                         "textColor": "#333333",
@@ -470,9 +474,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "backgroundColor": "#fafafa",
                         "groupItems": Object {
+                          "activeBackgroundColor": "#e1e1e1",
+                          "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
                         "level1Items": Object {
+                          "activeBackgroundColor": "#ededed",
+                          "activeTextColor": "#32329f",
                           "textTransform": "none",
                         },
                         "textColor": "#333333",
@@ -692,9 +700,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "backgroundColor": "#fafafa",
                   "groupItems": Object {
+                    "activeBackgroundColor": "#e1e1e1",
+                    "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
                   "level1Items": Object {
+                    "activeBackgroundColor": "#ededed",
+                    "activeTextColor": "#32329f",
                     "textTransform": "none",
                   },
                   "textColor": "#333333",
@@ -979,9 +991,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "backgroundColor": "#fafafa",
                         "groupItems": Object {
+                          "activeBackgroundColor": "#e1e1e1",
+                          "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
                         "level1Items": Object {
+                          "activeBackgroundColor": "#ededed",
+                          "activeTextColor": "#32329f",
                           "textTransform": "none",
                         },
                         "textColor": "#333333",
@@ -1225,9 +1241,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "backgroundColor": "#fafafa",
                         "groupItems": Object {
+                          "activeBackgroundColor": "#e1e1e1",
+                          "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
                         "level1Items": Object {
+                          "activeBackgroundColor": "#ededed",
+                          "activeTextColor": "#32329f",
                           "textTransform": "none",
                         },
                         "textColor": "#333333",
@@ -1447,9 +1467,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "backgroundColor": "#fafafa",
                   "groupItems": Object {
+                    "activeBackgroundColor": "#e1e1e1",
+                    "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
                   "level1Items": Object {
+                    "activeBackgroundColor": "#ededed",
+                    "activeTextColor": "#32329f",
                     "textTransform": "none",
                   },
                   "textColor": "#333333",
@@ -1692,9 +1716,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
               "backgroundColor": "#fafafa",
               "groupItems": Object {
+                "activeBackgroundColor": "#e1e1e1",
+                "activeTextColor": "#32329f",
                 "textTransform": "uppercase",
               },
               "level1Items": Object {
+                "activeBackgroundColor": "#ededed",
+                "activeTextColor": "#32329f",
                 "textTransform": "none",
               },
               "textColor": "#333333",
@@ -1976,9 +2004,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "backgroundColor": "#fafafa",
                   "groupItems": Object {
+                    "activeBackgroundColor": "#e1e1e1",
+                    "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
                   "level1Items": Object {
+                    "activeBackgroundColor": "#ededed",
+                    "activeTextColor": "#32329f",
                     "textTransform": "none",
                   },
                   "textColor": "#333333",
@@ -2222,9 +2254,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "backgroundColor": "#fafafa",
                   "groupItems": Object {
+                    "activeBackgroundColor": "#e1e1e1",
+                    "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
                   "level1Items": Object {
+                    "activeBackgroundColor": "#ededed",
+                    "activeTextColor": "#32329f",
                     "textTransform": "none",
                   },
                   "textColor": "#333333",
@@ -2444,9 +2480,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
             "backgroundColor": "#fafafa",
             "groupItems": Object {
+              "activeBackgroundColor": "#e1e1e1",
+              "activeTextColor": "#32329f",
               "textTransform": "uppercase",
             },
             "level1Items": Object {
+              "activeBackgroundColor": "#ededed",
+              "activeTextColor": "#32329f",
               "textTransform": "none",
             },
             "textColor": "#333333",
