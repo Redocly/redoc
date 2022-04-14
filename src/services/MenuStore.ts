@@ -222,7 +222,7 @@ export class MenuStore {
 
     this.activeItemIdx = item.absoluteIdx!;
     if (updateLocation) {
-      this.history.replace(item.id, rewriteHistory);
+      this.history.replace(encodeURI(item.id), rewriteHistory);
     }
 
     item.activate();
@@ -279,7 +279,7 @@ export class MenuStore {
     if (typeof str != 'undefined') {
       str = str.replace(/["\\]/g, '\\$&');
     }
-  
+
     return str;
   }
 }

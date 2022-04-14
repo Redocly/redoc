@@ -44,7 +44,7 @@ export class Link extends React.Component<{ to: string; className?: string; chil
       !isModifiedEvent(event) // ignore clicks with modifier keys
     ) {
       event.preventDefault();
-      history.replace(this.props.to);
+      history.replace(encodeURI(this.props.to));
     }
   };
 
