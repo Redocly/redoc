@@ -44,7 +44,14 @@ export class Operation extends React.Component<OperationProps> {
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
                 {isWebhook && <Badge type="primary"> Webhook </Badge>}
                 {badges.map(badge => {
-                  return badge && <Badge type={badge.type}> {badge.name} </Badge>;
+                  return (
+                    badge && (
+                      <Badge type={badge.type} key={badge.name}>
+                        {' '}
+                        {badge.name}{' '}
+                      </Badge>
+                    )
+                  );
                 })}
               </H2>
               {options.pathInMiddlePanel && !isWebhook && (
