@@ -37,3 +37,4 @@ stats.json
 yarn.lock
 .idea
 .vscode
+.eslintcache

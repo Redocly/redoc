@@ -61,11 +61,6 @@ export const RecursiveLabel = styled(FieldLabel)`
   font-size: 13px;
 `;
 
-export const NullableLabel = styled(FieldLabel)`
-  color: #0e7c86;
-  font-size: 13px;
-`;
-
 export const PatternLabel = styled(FieldLabel)`
   color: #0e7c86;
   &::before,
@@ -101,7 +96,6 @@ export const ConstraintItem = styled(FieldLabel)`
     margin: 0 ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.primary.main)};
-    font-family: ${theme.typography.code.fontFamily};
 }`};
   & + & {
     margin-left: 0;

@@ -14,6 +14,7 @@ export class MediaTypeModel {
   name: string;
   isRequestType: boolean;
   onlyRequiredInSamples: boolean;
+  generatedPayloadSamplesMaxDepth: number;
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
@@ -29,6 +30,7 @@ export class MediaTypeModel {
     this.isRequestType = isRequestType;
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
+    this.generatedPayloadSamplesMaxDepth = options.generatedPayloadSamplesMaxDepth;
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
@@ -38,7 +40,7 @@ export class MediaTypeModel {
       this.examples = {
         default: new ExampleModel(
           parser,
-          { value: parser.shalowDeref(info.example) },
+          { value: parser.shallowDeref(info.example) },
           name,
           info.encoding,
         ),
@@ -51,14 +53,14 @@ export class MediaTypeModel {
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
     const samplerOptions = {
       skipReadOnly: this.isRequestType,
-      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
       skipWriteOnly: !this.isRequestType,
-      maxSampleDepth: 10,
+      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
+      maxSampleDepth: this.generatedPayloadSamplesMaxDepth,
     };
     if (this.schema && this.schema.oneOf) {
       this.examples = {};
       for (const subSchema of this.schema.oneOf) {
-        const sample = Sampler.sample(subSchema.rawSchema, samplerOptions, parser.spec);
+        const sample = Sampler.sample(subSchema.rawSchema as any, samplerOptions, parser.spec);
 
         if (this.schema.discriminatorProp && typeof sample === 'object' && sample) {
           sample[this.schema.discriminatorProp] = subSchema.title;
@@ -78,7 +80,7 @@ export class MediaTypeModel {
         default: new ExampleModel(
           parser,
           {
-            value: Sampler.sample(info.schema, samplerOptions, parser.spec),
+            value: Sampler.sample(info.schema as any, samplerOptions, parser.spec),
           },
           this.name,
           info.encoding,

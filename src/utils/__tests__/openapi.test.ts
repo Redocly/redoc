@@ -10,10 +10,18 @@ import {
   pluralizeType,
   serializeParameterValue,
   sortByRequired,
+  humanizeNumberRange,
+  getContentWithLegacyExamples,
+  getDefinitionName,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
-import { OpenAPIParameter, OpenAPIParameterLocation, OpenAPIParameterStyle } from '../../types';
+import {
+  OpenAPIMediaType,
+  OpenAPIParameter,
+  OpenAPIParameterLocation,
+  OpenAPIParameterStyle,
+} from '../../types';
 import { expandDefaultServerVariables } from '../openapi';
 
 describe('Utils', () => {
@@ -101,6 +109,13 @@ describe('Utils', () => {
       expect(getOperationSummary(operation as any).length).toBe(50);
     });
 
+    it('Should return pathName if no summary, operationId, description', () => {
+      const operation = {
+        pathName: '/sandbox/test',
+      };
+      expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
+    });
+
     it('Should return <no summary> if no info', () => {
       const operation = {
         description: undefined,
@@ -165,6 +180,79 @@ describe('Utils', () => {
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it("should return true for array contains object and schema hasn't properties", () => {
+      const schema = {
+        type: ['object', 'string'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('should return false for array contains object and schema has properties', () => {
+      const schema = {
+        type: ['object', 'string'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains array type and schema has items', () => {
+      const schema = {
+        type: ['array'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has items', () => {
+      const schema = {
+        type: ['array', 'object'],
+        items: {
+          type: 'object',
+          additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has properties', () => {
+      const schema = {
+        type: ['array', 'object'],
+        properties: {
+          a: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return true for array contains array of strings', () => {
+      const schema = {
+        type: 'array',
+        items: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
+    });
+
+    it('Should return false for array of string which include the null value', () => {
+      const schema = {
+        type: ['object', 'string', 'null'],
+      };
+      expect(isPrimitiveType(schema)).toEqual(true);
     });
 
     it('Should return false for array with non-empty objects', () => {
@@ -330,11 +418,81 @@ describe('Utils', () => {
     });
   });
 
+  describe('openapi humanizeNumberRange', () => {
+    it('should return `>=` when only minimum value present or exclusiveMinimum = false', () => {
+      const expected = '>= 0';
+      expect(humanizeNumberRange({ minimum: 0 })).toEqual(expected);
+      expect(humanizeNumberRange({ minimum: 0, exclusiveMinimum: false })).toEqual(expected);
+    });
+
+    it('should return `>` when minimum value present and exclusiveMinimum set to true', () => {
+      expect(humanizeNumberRange({ minimum: 0, exclusiveMinimum: true })).toEqual('> 0');
+    });
+
+    it('should return `<=` when only maximum value present or exclusiveMinimum = false', () => {
+      const expected = '<= 10';
+      expect(humanizeNumberRange({ maximum: 10 })).toEqual(expected);
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: false })).toEqual(expected);
+    });
+
+    it('should return `<` when maximum value present and exclusiveMaximum set to true', () => {
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: true })).toEqual('< 10');
+    });
+
+    it('should return correct range for minimum and maximum values and with different exclusive set', () => {
+      expect(humanizeNumberRange({ minimum: 0, maximum: 10 })).toEqual('[ 0 .. 10 ]');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          exclusiveMinimum: true,
+          maximum: 10,
+          exclusiveMaximum: true,
+        }),
+      ).toEqual('( 0 .. 10 )');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          maximum: 10,
+          exclusiveMaximum: true,
+        }),
+      ).toEqual('[ 0 .. 10 )');
+      expect(
+        humanizeNumberRange({
+          minimum: 0,
+          exclusiveMinimum: true,
+          maximum: 10,
+        }),
+      ).toEqual('( 0 .. 10 ]');
+    });
+
+    it('should return correct range exclusive values only', () => {
+      expect(humanizeNumberRange({ exclusiveMinimum: 0 })).toEqual('> 0');
+      expect(humanizeNumberRange({ exclusiveMaximum: 10 })).toEqual('< 10');
+      expect(humanizeNumberRange({ exclusiveMinimum: 0, exclusiveMaximum: 10 })).toEqual(
+        '( 0 .. 10 )',
+      );
+    });
+
+    it('should return correct min value', () => {
+      expect(humanizeNumberRange({ minimum: 5, exclusiveMinimum: 10 })).toEqual('> 5');
+      expect(humanizeNumberRange({ minimum: -5, exclusiveMinimum: -10 })).toEqual('> -10');
+    });
+
+    it('should return correct max value', () => {
+      expect(humanizeNumberRange({ maximum: 10, exclusiveMaximum: 15 })).toEqual('< 15');
+      expect(humanizeNumberRange({ maximum: -10, exclusiveMaximum: -15 })).toEqual('< -10');
+    });
+
+    it('should return undefined', () => {
+      expect(humanizeNumberRange({})).toEqual(undefined);
+    });
+  });
+
   describe('openapi humanizeConstraints', () => {
     const itemConstraintSchema = (
-      min: number | undefined = undefined,
-      max: number | undefined = undefined,
-      multipleOf: number | undefined = undefined,
+      min?: number,
+      max?: number,
+      multipleOf?: number,
       uniqueItems?: boolean,
     ) => ({ type: 'array', minItems: min, maxItems: max, multipleOf, uniqueItems });
 
@@ -375,9 +533,9 @@ describe('Utils', () => {
     });
 
     it('should have a humanized constraint when uniqueItems is set', () => {
-      expect(humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true))).toContain(
-        'unique',
-      );
+      expect(
+        humanizeConstraints(itemConstraintSchema(undefined, undefined, undefined, true)),
+      ).toContain('unique');
     });
   });
 
@@ -1008,6 +1166,118 @@ describe('Utils', () => {
           required: false,
         },
       ]);
+    });
+  });
+
+  describe('OpenAPI getContentWithLegacyExamples', () => {
+    it('should return undefined if no x-examples/x-example and no content', () => {
+      expect(getContentWithLegacyExamples({})).toBeUndefined();
+    });
+
+    it('should return unmodified object if no x-examples or x-example', () => {
+      const info = {
+        content: {
+          'application/json': {},
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toStrictEqual(info.content);
+    });
+
+    it('should create a new content object if no content and x-examples', () => {
+      const info = {
+        'x-examples': {
+          'application/json': {
+            name: {
+              value: 'test',
+            },
+          },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toEqual({
+        'application/json': {
+          examples: {
+            name: {
+              value: 'test',
+            },
+          },
+        },
+      });
+    });
+
+    it('should create a new content object if no content and x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info);
+      expect(content).toEqual({
+        'application/json': { example: 'test' },
+      });
+    });
+
+    it('should return copy of content with injected x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+        content: {
+          'application/json': {
+            schema: { type: 'string' },
+          },
+          'text/plain': { schema: { type: 'string' } },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info) as { [mime: string]: OpenAPIMediaType };
+      expect(content).toEqual({
+        'application/json': { schema: { type: 'string' }, example: 'test' },
+        'text/plain': { schema: { type: 'string' } },
+      });
+      expect(content).not.toStrictEqual(info.content);
+      expect(content['application/json']).not.toStrictEqual(info.content['application/json']);
+      expect(content['text/plain']).toStrictEqual(info.content['text/plain']);
+    });
+
+    it('should prefer x-examples over x-example', () => {
+      const info = {
+        'x-example': {
+          'application/json': 'test',
+        },
+        'x-examples': {
+          'application/json': { name: { value: 'test' } },
+        },
+        content: {
+          'application/json': {
+            schema: { type: 'string' },
+          },
+          'text/plain': { schema: { type: 'string' } },
+        },
+      };
+
+      const content = getContentWithLegacyExamples(info) as { [mime: string]: OpenAPIMediaType };
+      expect(content).toEqual({
+        'application/json': { schema: { type: 'string' }, examples: { name: { value: 'test' } } },
+        'text/plain': { schema: { type: 'string' } },
+      });
+      expect(content).not.toStrictEqual(info.content);
+      expect(content['application/json']).not.toStrictEqual(info.content['application/json']);
+      expect(content['text/plain']).toStrictEqual(info.content['text/plain']);
+    });
+  });
+
+  describe('getDefinitionName', () => {
+    test('should return the name if pointer match regex', () => {
+      expect(getDefinitionName('#/components/schemas/Call')).toEqual('Call');
+    });
+    test("should return the `undefined` if pointer not match regex or it's absent", () => {
+      expect(getDefinitionName('#/test/path/Call')).toBeUndefined();
+      expect(getDefinitionName()).toBeUndefined();
     });
   });
 });

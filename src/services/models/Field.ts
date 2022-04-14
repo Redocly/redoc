@@ -41,7 +41,7 @@ const DEFAULT_SERIALIZATION: Record<
  */
 export class FieldModel {
   @observable
-  expanded: boolean | undefined = false;
+  expanded: boolean | undefined = undefined;
 
   schema: SchemaModel;
   name: string;
@@ -55,6 +55,7 @@ export class FieldModel {
   extensions?: Record<string, any>;
   explode: boolean;
   style?: OpenAPIParameterStyle;
+  const?: any;
 
   serializationMime?: string;
 
@@ -111,10 +112,22 @@ export class FieldModel {
     if (options.showExtensions) {
       this.extensions = extractExtensions(info, options.showExtensions);
     }
+
+    this.const = this.schema?.const || info?.const || '';
   }
 
   @action
   toggle() {
     this.expanded = !this.expanded;
+  }
+
+  @action
+  collapse(): void {
+    this.expanded = false;
+  }
+
+  @action
+  expand(): void {
+    this.expanded = true;
   }
 }
