@@ -11,7 +11,7 @@ import { dirname, join, resolve, extname as getExtName } from 'path';
 import * as zlib from 'zlib';
 
 // @ts-ignore
-import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
+import { createStore, loadAndBundleSpec, Redoc } from '@mm-gmbd/redoc';
 
 import { watch } from 'chokidar';
 import {
