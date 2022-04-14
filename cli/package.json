@@ -1,5 +1,5 @@
 {
-  "name": "@mm-gmbd/redoc",
+  "name": "redoc-etn",
   "version": "0.13.9",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
@@ -21,7 +21,7 @@
     "node-libs-browser": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "@mm-gmbd/redoc": "2.0.0-rc.66",
+    "redoc-etn": "2.0.0-rc.66",
     "styled-components": "^5.3.0",
     "yargs": "^17.3.1"
   },
