@@ -1,5 +1,5 @@
 {
-  "name": "redoc-etn",
+  "name": "redoc-cli-etn",
   "version": "0.13.9",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
