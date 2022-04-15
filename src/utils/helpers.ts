@@ -195,7 +195,7 @@ function parseURL(url: string) {
   }
 }
 
-export function escapeChars(str: string): string {
+export function escapeHTMLAttrChars(str: string): string {
   return str.replace(/["\\]/g, '\\$&');
 }
 
