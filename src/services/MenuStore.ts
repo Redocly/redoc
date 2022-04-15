@@ -5,7 +5,7 @@ import { SpecStore } from './models';
 import { history as historyInst, HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
-import { flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
+import { escapeChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
@@ -47,7 +47,7 @@ export class MenuStore {
     if (!id) {
       return;
     }
-    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${MenuStore.escapeQuotes(id)}"]`);
+    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeChars(id)}"]`);
   }
 
   /**
@@ -153,7 +153,7 @@ export class MenuStore {
         item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
         this.activateAndScroll(item, false);
       }
-      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${MenuStore.escapeQuotes(id)}"]`);
+      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeChars(id)}"]`);
     }
   };
 
@@ -163,7 +163,7 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
-    return (item && querySelector(`[${SECTION_ATTR}="${MenuStore.escapeQuotes(item.id)}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -175,7 +175,7 @@ export class MenuStore {
     if (item && item.type === 'group') {
       item = item.items[0];
     }
-    return (item && querySelector(`[${SECTION_ATTR}="${MenuStore.escapeQuotes(item.id)}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -275,9 +275,5 @@ export class MenuStore {
   dispose() {
     this._unsubscribe();
     this._hashUnsubscribe();
-  }
-
-  private static escapeQuotes(str: string) : string {
-    return str.replace(/["\\]/g, '\\$&');
   }
 }
