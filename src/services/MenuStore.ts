@@ -278,10 +278,6 @@ export class MenuStore {
   }
 
   private static escapeQuotes(str: string) : string {
-    if (typeof str != 'undefined') {
-      str = str.replace(/["\\]/g, '\\$&');
-    }
-
-    return str;
+    return str.replace(/["\\]/g, '\\$&');
   }
 }
