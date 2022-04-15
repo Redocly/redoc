@@ -76,4 +76,20 @@ describe('Menu', () => {
       .then($h5 => $h5[0].firstChild!.nodeValue!.trim())
       .should('eq', 'Response Schema:');
   });
+
+  it('should be able to open the operation details when the operation IDs have quotes', () => {
+    cy.visit('e2e/standalone-3-1.html');
+    cy.get('label span[title="pet"]').click({ multiple: true, force: true });
+    cy.get('li').contains('OperationId with quotes').click({ multiple: true, force: true });
+    cy.get('h2').contains('OperationId with quotes').should('be.visible');
+    cy.url().should('include', 'deletePetBy%22Id');
+  });
+
+  it.only('should encode URL when the operation IDs have backslashes', () => {
+    cy.visit('e2e/standalone-3-1.html');
+    cy.get('label span[title="pet"]').click({ multiple: true, force: true });
+    cy.get('li').contains('OperationId with backslash').click({ multiple: true, force: true });
+    cy.get('h2').contains('OperationId with backslash').should('be.visible');
+    cy.url().should('include', 'delete%5CPetById');
+  });
 });
