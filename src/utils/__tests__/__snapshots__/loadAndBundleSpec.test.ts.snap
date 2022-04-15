@@ -2330,6 +2330,20 @@ and standard method from web, mobile and desktop applications.
   "openapi": "3.1.0",
   "paths": Object {
     "/pet": Object {
+      "delete": Object {
+        "operationId": "deletePetBy\\"Id",
+        "summary": "OperationId with quotes",
+        "tags": Array [
+          "pet",
+        ],
+      },
+      "get": Object {
+        "operationId": "delete\\\\PetById",
+        "summary": "OperationId with backslash",
+        "tags": Array [
+          "pet",
+        ],
+      },
       "parameters": Array [
         Object {
           "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
