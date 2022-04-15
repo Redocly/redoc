@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli-etn",
-  "version": "0.13.12",
+  "version": "0.13.17",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli-etn",
-      "version": "0.13.12",
+      "version": "0.13.17",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc-etn": "2.0.0-rc.65",
+        "redoc-etn": "2.0.0-rc.67",
         "styled-components": "^5.3.0",
         "yargs": "^17.3.1"
       },
@@ -2229,9 +2229,9 @@
       }
     },
     "node_modules/redoc-etn": {
-      "version": "2.0.0-rc.65",
-      "resolved": "https://registry.npmjs.org/redoc-etn/-/redoc-etn-2.0.0-rc.65.tgz",
-      "integrity": "sha512-PiLFMXqJsVgakUBBfPsCWRkNsy+svqzoMNgOgCnTSubxWou2HwOGmSq2UjY828V1LjkEjVS45UELICcps/I1kQ==",
+      "version": "2.0.0-rc.67",
+      "resolved": "https://registry.npmjs.org/redoc-etn/-/redoc-etn-2.0.0-rc.67.tgz",
+      "integrity": "sha512-CyXlweWVd5X6HEleyRFbkCa3qOQkMC8Iq66TIaskaLcvieDQJRrC+DPBhNVjxyeooBVYJyX4xYpdYwzJGIlujg==",
       "dependencies": {
         "@redocly/openapi-core": "^1.0.0-beta.88",
         "@redocly/react-dropdown-aria": "^2.0.11",
@@ -4827,9 +4827,9 @@
       }
     },
     "redoc-etn": {
-      "version": "2.0.0-rc.65",
-      "resolved": "https://registry.npmjs.org/redoc-etn/-/redoc-etn-2.0.0-rc.65.tgz",
-      "integrity": "sha512-PiLFMXqJsVgakUBBfPsCWRkNsy+svqzoMNgOgCnTSubxWou2HwOGmSq2UjY828V1LjkEjVS45UELICcps/I1kQ==",
+      "version": "2.0.0-rc.67",
+      "resolved": "https://registry.npmjs.org/redoc-etn/-/redoc-etn-2.0.0-rc.67.tgz",
+      "integrity": "sha512-CyXlweWVd5X6HEleyRFbkCa3qOQkMC8Iq66TIaskaLcvieDQJRrC+DPBhNVjxyeooBVYJyX4xYpdYwzJGIlujg==",
       "requires": {
         "@redocly/openapi-core": "^1.0.0-beta.88",
         "@redocly/react-dropdown-aria": "^2.0.11",
