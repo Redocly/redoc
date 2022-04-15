@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli-etn",
-  "version": "0.13.17",
+  "version": "0.13.18",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli-etn",
-      "version": "0.13.17",
+      "version": "0.13.18",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
