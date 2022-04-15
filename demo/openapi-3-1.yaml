@@ -93,7 +93,7 @@ paths:
     parameters:
       - name: Accept-Language
         in: header
-        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
         example: en-US
         required: false
         schema:
@@ -182,6 +182,16 @@ paths:
             }
       requestBody:
         $ref: '#/components/requestBodies/Pet'
+    delete:
+      tags:
+        - pet
+      summary: OperationId with quotes
+      operationId: deletePetBy"Id
+    get:
+      tags:
+        - pet
+      summary: OperationId with backslash
+      operationId: delete\PetById
   '/pet/{petId}':
     get:
       tags:
@@ -259,7 +269,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "Bearer <TOKEN>"
+          example: 'Bearer <TOKEN>'
         - name: petId
           in: path
           description: Pet id to delete
@@ -432,7 +442,7 @@ paths:
             application/json:
               example:
                 status: 400
-                message: "Invalid Order"
+                message: 'Invalid Order'
       requestBody:
         content:
           application/json:
@@ -894,11 +904,11 @@ paths:
                 type: string
               examples:
                 response:
-                  value:  <Message> OK </Message>
+                  value: <Message> OK </Message>
             text/plain:
               examples:
                 response:
-                  value:  OK
+                  value: OK
         '400':
           description: Invalid username/password supplied
   /user/logout:
@@ -925,7 +935,7 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: update Cat details
@@ -940,7 +950,7 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: create Cat details
@@ -1073,8 +1083,8 @@ components:
       properties:
         id:
           externalDocs:
-            description: "Find more info here"
-            url: "https://example.com"
+            description: 'Find more info here'
+            url: 'https://example.com'
           description: Pet ID
           $ref: '#/components/schemas/Id'
         category:
@@ -1251,9 +1261,9 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pet"
+              $ref: '#/components/schemas/Pet'
       responses:
-        "200":
+        '200':
           description: Return a 200 status to indicate that the data was received successfully
   myWebhook:
     $ref: '#/components/pathItems/webhooks'
