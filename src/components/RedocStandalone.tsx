@@ -26,9 +26,10 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
   const normalizedOpts = new RedocNormalizedOptions(options);
 
   if (normalizedOpts.nonce !== undefined) {
-      try {
-        __webpack_nonce__ = normalizedOpts.nonce;
-      } catch { } // If we have exception, Webpack was not used to run this.
+    try {
+      // eslint-disable-next-line  @typescript-eslint/no-unused-vars
+      __webpack_nonce__ = normalizedOpts.nonce;
+    } catch {} // If we have exception, Webpack was not used to run this.
   }
 
   return (

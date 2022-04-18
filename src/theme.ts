@@ -141,7 +141,7 @@ const defaultTheme: ThemeInterface = {
     groupItems: {
       activeBackgroundColor: theme => darken(0.1, theme.sidebar.backgroundColor),
       activeTextColor: theme => theme.sidebar.activeTextColor,
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
     },
     level1Items: {
       activeBackgroundColor: theme => darken(0.05, theme.sidebar.backgroundColor),
