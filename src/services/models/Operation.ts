@@ -124,7 +124,7 @@ export class OperationModel implements IMenuItem {
       // TODO: update getting pathInfo for overriding servers on path level
       this.servers = normalizeServers('', operationSpec.servers || operationSpec.pathServers || []);
     } else {
-      this.operationHash = operationSpec.operationId && 'operation/' + operationSpec.operationId
+      this.operationHash = operationSpec.operationId && 'operation/' + operationSpec.operationId;
       this.id =
         operationSpec.operationId !== undefined
           ? (parent ? parent.id + '/' : '') + this.operationHash
