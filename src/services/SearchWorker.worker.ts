@@ -1,12 +1,5 @@
 import * as lunr from 'lunr';
 
-try {
-  // tslint:disable-next-line
-  require('core-js/es/promise'); // bundle into worker
-} catch (_) {
-  // nope
-}
-
 /* just for better typings */
 export default class Worker {
   add: typeof add = add;
@@ -15,6 +8,7 @@ export default class Worker {
   toJS = toJS;
   load = load;
   dispose = dispose;
+  fromExternalJS = fromExternalJS;
 }
 
 export interface SearchDocument {
@@ -72,6 +66,19 @@ export async function toJS() {
   };
 }
 
+export async function fromExternalJS(path: string, exportName: string) {
+  try {
+    importScripts(path);
+    if (!self[exportName]) {
+      throw new Error('Broken index file format');
+    }
+
+    load(self[exportName]);
+  } catch (e) {
+    console.error('Failed to load search index: ' + e.message);
+  }
+}
+
 export async function load(state: any) {
   store = state.store;
   resolveIndex(lunr.Index.load(state.index));
@@ -95,6 +102,7 @@ export async function search<Meta = string>(
       .toLowerCase()
       .split(/\s+/)
       .forEach(term => {
+        if (term.length === 1) return;
         const exp = expandTerm(term);
         t.term(exp, {});
       });

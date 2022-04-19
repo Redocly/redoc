@@ -1,6 +1,4 @@
-// import { transparentize } from 'polished';
-
-import styled, { extensionsHook } from '../styled-components';
+import styled, { extensionsHook, media } from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
@@ -15,6 +13,11 @@ export const PropertyCell = styled.td<{ kind?: string }>`
   box-sizing: border-box;
   position: relative;
   padding: 10px 10px 10px 0;
+
+  ${media.lessThan('small')`
+    display: block;
+    overflow: hidden;
+  `}
 
   tr:first-of-type > &,
   tr.last > & {
@@ -83,6 +86,18 @@ export const PropertyDetailsCell = styled.td`
   tr.expanded & {
     border-bottom: none;
   }
+
+  ${media.lessThan('small')`
+    padding: 0 20px;
+    border-bottom: none;
+    border-left: 1px solid ${props => props.theme.schema.linesColor};
+
+    tr.last > & {
+      border-left: none;
+    }
+  `}
+
+  ${extensionsHook('PropertyDetailsCell')};
 `;
 
 export const PropertyBullet = styled.span`
@@ -124,6 +139,20 @@ export const PropertiesTable = styled.table`
   > tr {
     vertical-align: middle;
   }
+
+  ${media.lessThan('small')`
+    display: block;
+    > tr, > tbody > tr {
+      display: block;
+    }
+  `}
+
+  ${media.lessThan('small', false, ' and (-ms-high-contrast:none)')`
+    td {
+      float: left;
+      width: 100%;
+    }
+  `}
 
   &
     ${InnerPropertiesWrap},

@@ -1,14 +1,12 @@
 import { renderToString } from 'react-dom/server';
 import * as React from 'react';
 import { ServerStyleSheet } from 'styled-components';
-// @ts-ignore
 import { Redoc, createStore } from '../../';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-const yaml = require('yaml-js');
+const yaml = require('js-yaml');
 const http = require('http');
-const url = require('url');
 const fs = require('fs');
 
 const PORT = 9999;
@@ -18,8 +16,8 @@ const server = http.createServer(async (request, response) => {
   if (request.url === '/redoc.standalone.js') {
     fs.createReadStream('bundles/redoc.standalone.js', 'utf8').pipe(response);
   } else if (request.url === '/') {
-    const spec = yaml.load(readFileSync(resolve(__dirname, '../openapi.yaml')));
-    let store = await createStore(spec, 'path/to/spec.yaml');
+    const spec = yaml.load(readFileSync(resolve(__dirname, '../openapi.yaml'), 'utf-8'));
+    const store = await createStore(spec, 'path/to/spec.yaml');
 
     const sheet = new ServerStyleSheet();
 

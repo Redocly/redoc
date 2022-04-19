@@ -32,7 +32,7 @@ export interface FieldProps extends SchemaOptions {
 export class Field extends React.Component<FieldProps> {
   toggle = () => {
     if (this.props.field.expanded === undefined && this.props.expandByDefault) {
-      this.props.field.expanded = false;
+      this.props.field.collapse();
     } else {
       this.props.field.toggle();
     }
@@ -64,7 +64,7 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          {name}
+          <span>{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
         {required && <RequiredLabel> required </RequiredLabel>}
@@ -72,7 +72,7 @@ export class Field extends React.Component<FieldProps> {
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
-        {name}
+        <span>{name}</span>
         {required && <RequiredLabel> required </RequiredLabel>}
       </PropertyNameCell>
     );
@@ -94,6 +94,7 @@ export class Field extends React.Component<FieldProps> {
                   skipReadOnly={this.props.skipReadOnly}
                   skipWriteOnly={this.props.skipWriteOnly}
                   showTitle={this.props.showTitle}
+                  level={this.props.level}
                 />
               </InnerPropertiesWrap>
             </PropertyCellWithInner>

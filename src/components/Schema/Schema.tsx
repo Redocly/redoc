@@ -16,6 +16,7 @@ export interface SchemaOptions {
   showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
+  level?: number;
 }
 
 export interface SchemaProps extends SchemaOptions {
@@ -25,7 +26,9 @@ export interface SchemaProps extends SchemaOptions {
 @observer
 export class Schema extends React.Component<Partial<SchemaProps>> {
   render() {
-    const { schema } = this.props;
+    const { schema, ...rest } = this.props;
+    const level = (rest.level || 0) + 1;
+
     if (!schema) {
       return <em> Schema not provided </em>;
     }
@@ -50,7 +53,9 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       }
       return (
         <ObjectSchema
-          {...{ ...this.props, schema: oneOf![schema.activeOneOf] }}
+          {...rest}
+          level={level}
+          schema={oneOf![schema.activeOneOf]}
           discriminator={{
             fieldName: discriminatorProp,
             parentSchema: schema,
@@ -60,18 +65,20 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     }
 
     if (oneOf !== undefined) {
-      return <OneOfSchema schema={schema} {...this.props} />;
+      return <OneOfSchema schema={schema} {...rest} />;
     }
 
-    switch (type) {
-      case 'object':
-        return <ObjectSchema {...(this.props as any)} />;
-      case 'array':
-        return <ArraySchema {...(this.props as any)} />;
+    const types = Array.isArray(type) ? type : [type];
+    if (types.includes('object')) {
+      if (schema.fields?.length) {
+        return <ObjectSchema {...(this.props as any)} level={level} />;
+      }
+    } else if (types.includes('array')) {
+      return <ArraySchema {...(this.props as any)} level={level} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
-    const field = ({
+    const field = {
       schema,
       name: '',
       required: false,
@@ -80,7 +87,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       deprecated: false,
       toggle: () => null,
       expanded: false,
-    } as any) as FieldModel; // cast needed for hot-loader to not fail
+    } as any as FieldModel; // cast needed for hot-loader to not fail
 
     return (
       <div>
