@@ -35,14 +35,12 @@ class Json extends React.PureComponent<JsonProps> {
       <JsonViewerWrap>
         <SampleControls>
           {renderCopyButton()}
-          <button
-            onClick={this.expandAll}
-            style={{ display: showFoldingButtons ? 'inline-block' : 'none' }}
-          > Expand all </button>
-          <button
-            onClick={this.collapseAll}
-            style={{ display: showFoldingButtons ? 'inline-block' : 'none' }}
-          > Collapse all </button>
+          {showFoldingButtons &&
+            <>
+              <button onClick={this.expandAll}> Expand all </button>
+              <button onClick={this.collapseAll}> Collapse all </button>
+            </>
+          }
         </SampleControls>
         <OptionsContext.Consumer>
           {(options) => (

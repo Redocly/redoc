@@ -47,11 +47,8 @@ describe('Components', () => {
       const flatData = { a: 1, b: '2', c: null };
       const flatDataComponent = mount(withTheme(<JsonViewer data={flatData} />));
 
-      const expandButton = flatDataComponent.find('div > button[children=" Expand all "]');
-      expect(expandButton.html()).toContain('display: none');
-
-      const collapseButton = flatDataComponent.find('div > button[children=" Collapse all "]');
-      expect(collapseButton.html()).toContain('display: none');
+      expect(flatDataComponent.html()).not.toContain('Expand all');
+      expect(flatDataComponent.html()).not.toContain('Collapse all');
     });
   });
 });
