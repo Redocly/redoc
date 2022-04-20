@@ -34,7 +34,7 @@ export const FieldLabel = styled.span`
 `;
 
 export const TypePrefix = styled(FieldLabel)`
-  color: ${props => transparentize(0.2, props.theme.schema.typeNameColor)};
+  color: ${props => transparentize(0.1, props.theme.schema.typeNameColor)};
 `;
 
 export const TypeName = styled(FieldLabel)`
@@ -61,13 +61,8 @@ export const RecursiveLabel = styled(FieldLabel)`
   font-size: 13px;
 `;
 
-export const NullableLabel = styled(FieldLabel)`
-  color: #3195a6;
-  font-size: 13px;
-`;
-
 export const PatternLabel = styled(FieldLabel)`
-  color: #3195a6;
+  color: #0e7c86;
   &::before,
   &::after {
     font-weight: bold;
@@ -101,7 +96,6 @@ export const ConstraintItem = styled(FieldLabel)`
     margin: 0 ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
     border: 1px solid ${transparentize(0.9, theme.colors.primary.main)};
-    font-family: ${theme.typography.code.fontFamily};
 }`};
   & + & {
     margin-left: 0;

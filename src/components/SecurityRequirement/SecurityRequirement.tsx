@@ -1,4 +1,3 @@
-// import { transparentize } from 'polished';
 import * as React from 'react';
 
 import styled, { media } from '../../styled-components';
@@ -6,6 +5,23 @@ import styled, { media } from '../../styled-components';
 import { Link, UnderlinedHeader } from '../../common-elements/';
 import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
 import { linksCss } from '../Markdown/styled.elements';
+
+const ScopeNameList = styled.ul`
+  display: inline;
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: inherit;
+
+    &:after {
+      content: ',';
+    }
+    &:last-child:after {
+      content: none;
+    }
+  }
+`;
 
 const ScopeName = styled.code`
   font-size: ${props => props.theme.typography.code.fontSize};
@@ -15,13 +31,6 @@ const ScopeName = styled.code`
   padding: 0.2em;
   display: inline-block;
   line-height: 1;
-
-  &:after {
-    content: ',';
-  }
-  &:last-child:after {
-    content: none;
-  }
 `;
 
 const SecurityRequirementAndWrap = styled.span`
@@ -67,18 +76,26 @@ export class SecurityRequirement extends React.PureComponent<SecurityRequirement
     const security = this.props.security;
     return (
       <SecurityRequirementOrWrap>
-        {security.schemes.map(scheme => {
-          return (
-            <SecurityRequirementAndWrap key={scheme.id}>
-              <Link to={scheme.sectionId}>{scheme.id}</Link>
-              {scheme.scopes.length > 0 && ' ('}
-              {scheme.scopes.map(scope => (
-                <ScopeName key={scope}>{scope}</ScopeName>
-              ))}
-              {scheme.scopes.length > 0 && ') '}
-            </SecurityRequirementAndWrap>
-          );
-        })}
+        {security.schemes.length ? (
+          security.schemes.map(scheme => {
+            return (
+              <SecurityRequirementAndWrap key={scheme.id}>
+                <Link to={scheme.sectionId}>{scheme.displayName}</Link>
+                {scheme.scopes.length > 0 && ' ('}
+                <ScopeNameList>
+                  {scheme.scopes.map(scope => (
+                    <li key={scope}>
+                      <ScopeName>{scope}</ScopeName>
+                    </li>
+                  ))}
+                </ScopeNameList>
+                {scheme.scopes.length > 0 && ') '}
+              </SecurityRequirementAndWrap>
+            );
+          })
+        ) : (
+          <SecurityRequirementAndWrap>None</SecurityRequirementAndWrap>
+        )}
       </SecurityRequirementOrWrap>
     );
   }

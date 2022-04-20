@@ -12,6 +12,7 @@ import {
   SECURITY_DEFINITIONS_COMPONENT_NAME,
   setSecuritySchemePrefix,
   JsonPointer,
+  alphabeticallyByProp,
 } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -53,7 +54,7 @@ export class MenuBuilder {
     const spec = parser.spec;
 
     const items: ContentItemModel[] = [];
-    const tagsMap = MenuBuilder.getTagsWithOperations(spec);
+    const tagsMap = MenuBuilder.getTagsWithOperations(parser, spec);
     items.push(...MenuBuilder.addMarkdownItems(spec.info.description || '', undefined, 1, options));
     if (spec['x-tagGroups'] && spec['x-tagGroups'].length > 0) {
       items.push(
@@ -130,9 +131,11 @@ export class MenuBuilder {
 
   /**
    * Returns array of OperationsGroup items for the tags of the group or for all tags
+   * @param parser
    * @param tagsMap tags info returned from `getTagsWithOperations`
    * @param parent parent item
    * @param group group which this tag belongs to. if not provided gets all tags
+   * @param options normalized options
    */
   static getTagsItems(
     parser: OpenAPIParser,
@@ -183,14 +186,21 @@ export class MenuBuilder {
 
       res.push(item);
     }
+
+    if (options.sortTagsAlphabetically) {
+      res.sort(alphabeticallyByProp<GroupModel | OperationModel>('name'));
+    }
+
     return res;
   }
 
   /**
    * Returns array of Operation items for the tag
+   * @param parser
    * @param parent parent OperationsGroup
    * @param tag tag info returned from `getTagsWithOperations`
    * @param depth items depth
+   * @param options - normalized options
    */
   static getOperationsItems(
     parser: OpenAPIParser,
@@ -209,30 +219,44 @@ export class MenuBuilder {
       operation.depth = depth;
       res.push(operation);
     }
+
+    if (options.sortOperationsAlphabetically) {
+      res.sort(alphabeticallyByProp<OperationModel>('name'));
+    }
+
     return res;
   }
 
   /**
    * collects tags and maps each tag to list of operations belonging to this tag
    */
-  static getTagsWithOperations(spec: OpenAPISpec): TagsInfoMap {
+  static getTagsWithOperations(parser: OpenAPIParser, spec: OpenAPISpec): TagsInfoMap {
     const tags: TagsInfoMap = {};
+    const webhooks = spec['x-webhooks'] || spec.webhooks;
     for (const tag of spec.tags || []) {
       tags[tag.name] = { ...tag, operations: [] };
     }
 
-    getTags(spec.paths);
-    if (spec['x-webhooks']) {
-      getTags(spec['x-webhooks'], true);
+    if (webhooks) {
+      getTags(parser, webhooks, true);
     }
 
-    function getTags(paths: OpenAPIPaths, isWebhook?: boolean) {
+    if (spec.paths) {
+      getTags(parser, spec.paths);
+    }
+
+    function getTags(parser: OpenAPIParser, paths: OpenAPIPaths, isWebhook?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
         const operations = Object.keys(path).filter(isOperationName);
         for (const operationName of operations) {
           const operationInfo = path[operationName];
-          let operationTags = operationInfo.tags;
+          if (path.$ref) {
+            const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+            getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
+            continue;
+          }
+          let operationTags = operationInfo?.tags;
 
           if (!operationTags || !operationTags.length) {
             // empty tag

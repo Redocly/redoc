@@ -26,7 +26,7 @@ describe('Components', () => {
           options,
         );
         const schemaViewElement = shallow(<Schema schema={schema} />).getElement();
-        expect(schemaViewElement.type).toEqual(ObjectSchema);
+        expect(schemaViewElement).toMatchSnapshot();
         expect(schemaViewElement.props.discriminator).toBeDefined();
         expect(schemaViewElement.props.discriminator.parentSchema).toBeDefined();
         expect(schemaViewElement.props.discriminator.fieldName).toEqual('type');

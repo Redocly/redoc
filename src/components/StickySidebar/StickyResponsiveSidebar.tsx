@@ -56,7 +56,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
 const FloatingButton = styled.div`
   outline: none;
   user-select: none;
-  background-color: #f2f2f2;
+  background-color: ${({ theme }) => theme.fab.backgroundColor};
   color: ${props => props.theme.colors.primary.main};
   display: none;
   cursor: pointer;
@@ -74,6 +74,9 @@ const FloatingButton = styled.div`
   width: 60px;
   height: 60px;
   padding: 0 20px;
+  svg {
+    color: ${({ theme }) => theme.fab.color};
+  }
 
   @media print {
     display: none;
@@ -140,9 +143,11 @@ export class StickyResponsiveSidebar extends React.Component<
         >
           {this.props.children}
         </StyledStickySidebar>
-        <FloatingButton onClick={this.toggleNavMenu}>
-          <AnimatedChevronButton open={open} />
-        </FloatingButton>
+        {!this.context.hideFab && (
+          <FloatingButton onClick={this.toggleNavMenu}>
+            <AnimatedChevronButton open={open} />
+          </FloatingButton>
+        )}
       </>
     );
   }

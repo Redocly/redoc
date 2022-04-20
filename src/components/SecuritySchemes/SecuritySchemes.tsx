@@ -12,7 +12,7 @@ const AUTH_TYPES = {
   oauth2: 'OAuth2',
   apiKey: 'API Key',
   http: 'HTTP',
-  openIdConnect: 'Open ID Connect',
+  openIdConnect: 'OpenID Connect',
 };
 
 export interface OAuthFlowProps {
@@ -73,7 +73,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
           <MiddlePanel>
             <H2>
               <ShareLink to={scheme.sectionId} />
-              {scheme.id}
+              {scheme.displayName}
             </H2>
             <Markdown source={scheme.description || ''} />
             <StyledMarkdownBlock>

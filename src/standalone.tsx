@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { hydrate as hydrateComponent, render } from 'react-dom';
-import { configure } from "mobx"
+import { configure } from 'mobx';
 
 import { Redoc, RedocStandalone } from './components/';
 import { AppStore, StoreState } from './services/AppStore';
@@ -8,8 +8,8 @@ import { debugTime, debugTimeEnd } from './utils/debug';
 import { querySelector } from './utils/dom';
 
 configure({
-  useProxies: 'ifavailable'
-})
+  useProxies: 'ifavailable',
+});
 
 export { Redoc, AppStore } from '.';
 
@@ -32,7 +32,8 @@ function parseOptionsFromElement(element: Element) {
   const res = {};
   for (const attrName in attrMap) {
     const optionName = attrName.replace(/-(.)/g, (_, $1) => $1.toUpperCase());
-    res[optionName] = attrMap[attrName];
+    const optionValue = attrMap[attrName];
+    res[optionName] = attrName === 'theme' ? JSON.parse(optionValue) : optionValue;
     // TODO: normalize options
   }
   return res;
