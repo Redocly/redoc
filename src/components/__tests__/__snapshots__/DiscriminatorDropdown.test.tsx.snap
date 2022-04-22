@@ -74,6 +74,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadFileName": "openapi.json",
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -324,6 +325,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadFileName": "openapi.json",
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -550,6 +552,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadFileName": "openapi.json",
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -841,6 +844,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadFileName": "openapi.json",
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -1091,6 +1095,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadFileName": "openapi.json",
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -1317,6 +1322,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadFileName": "openapi.json",
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -1566,6 +1572,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "options": RedocNormalizedOptions {
           "allowedMdComponents": Object {},
           "disableSearch": false,
+          "downloadFileName": "openapi.json",
           "enumSkipQuotes": false,
           "expandDefaultServerVariables": false,
           "expandResponses": Object {},
@@ -1854,6 +1861,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadFileName": "openapi.json",
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -2104,6 +2112,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadFileName": "openapi.json",
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -2330,6 +2339,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "options": RedocNormalizedOptions {
         "allowedMdComponents": Object {},
         "disableSearch": false,
+        "downloadFileName": "openapi.json",
         "enumSkipQuotes": false,
         "expandDefaultServerVariables": false,
         "expandResponses": Object {},
