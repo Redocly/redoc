@@ -7,18 +7,18 @@ export interface FieldDetailProps {
   raw?: boolean;
 }
 
-export class FieldDetail extends React.PureComponent<FieldDetailProps> {
-  render() {
-    if (this.props.value === undefined) {
-      return null;
-    }
-
-    const value = this.props.raw ? this.props.value : JSON.stringify(this.props.value);
-
-    return (
-      <div>
-        <FieldLabel> {this.props.label} </FieldLabel> <ExampleValue>{value}</ExampleValue>
-      </div>
-    );
+function FieldDetailComponent({ value, label, raw }: FieldDetailProps) {
+  if (value === undefined) {
+    return null;
   }
+
+  const stringifyValue = raw ? String(value) : JSON.stringify(value);
+
+  return (
+    <div>
+      <FieldLabel> {label} </FieldLabel> <ExampleValue>{stringifyValue}</ExampleValue>
+    </div>
+  );
 }
+
+export const FieldDetail = React.memo<FieldDetailProps>(FieldDetailComponent);

@@ -34,11 +34,11 @@ class Json extends React.PureComponent<JsonProps> {
         <button onClick={this.collapseAll}> Collapse all </button>
       </SampleControls>
       <OptionsContext.Consumer>
-        {(options) => (
+        {options => (
           <PrismDiv
             className={this.props.className}
             // tslint:disable-next-line
-            ref={(node) => (this.node = node!)}
+            ref={node => (this.node = node!)}
             dangerouslySetInnerHTML={{
               __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
             }}

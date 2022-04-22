@@ -1,4 +1,4 @@
-# ReDoc vendor extensions
+# Redoc vendor extensions
 
 You can use the following [vendor extensions](https://swagger.io/specification/#specificationExtensions) with Redoc.
 
@@ -194,8 +194,8 @@ Extends the OpenAPI [Operation Object](http://swagger.io/specification/#operatio
 | :------------- | :------: | :---------- |
 | x-codeSamples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
 
-###### How to use with ReDoc
-`x-codeSamples` are rendered on the right panel in ReDoc.
+###### How to use with Redoc
+`x-codeSamples` are rendered on the right panel in Redoc.
 
 #### <a name="codeSampleObject"></a>Code Sample Object
 Operation code sample
@@ -230,8 +230,8 @@ Extends the OpenAPI [Parameter Object](http://swagger.io/specification/#paramete
 | :------------- | :------: | :---------- |
 | x-examples | [Example Object](http://swagger.io/specification/#exampleObject)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
 
-###### How to use with ReDoc
-`x-examples` are rendered in the JSON tab on the right panel in ReDoc.
+###### How to use with Redoc
+`x-examples` are rendered in the JSON tab on the right panel in Redoc.
 
 ### Response Object vendor extensions
 Extends the OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
@@ -241,7 +241,7 @@ Extends the OpenAPI [Response Object](https://swagger.io/specification/#response
 | :------------- | :------: | :---------- |
 | x-summary      | string   | a short summary of the response |
 
-###### How to use with ReDoc
+###### How to use with Redoc
 If specified, you can use `x-summary` as the response button text, with description rendered under the button.
 
 ### Schema Object
@@ -252,21 +252,21 @@ Extends the OpenAPI [Schema Object](http://swagger.io/specification/#schemaObjec
 | :------------- | :------: | :---------- |
 | x-nullable | boolean | marks schema as a nullable |
 
-###### How to use with ReDoc
-Schemas marked as `x-nullable` are marked in ReDoc with the label Nullable
+###### How to use with Redoc
+Schemas marked as `x-nullable` are marked in Redoc with the label Nullable
 
 #### x-extendedDiscriminator
-**ATTENTION**: This is a ReDoc-specific vendor extension, and is not supported by other tools.
+**ATTENTION**: This is a Redoc-specific vendor extension, and is not supported by other tools.
 
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
 | x-extendedDiscriminator | string | specifies extended discriminator |
 
-###### How to use with ReDoc
-ReDoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
+###### How to use with Redoc
+Redoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
 Value of this field specifies the field which will be used as a extended discriminator.
-ReDoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
-ReDoc displays the definition derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
+Redoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
+Redoc displays the definition derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
 
 ###### x-extendedDiscriminator example
 
@@ -309,7 +309,7 @@ PayPalPayment:
 In the example above, the names of definitions (`PayPalPayment`) are named differently than names in the payload (`paypal`) which is not supported by default `discriminator`.
 
 #### x-additionalPropertiesName
-**ATTENTION**: This is a ReDoc-specific vendor extension, and is not supported by other tools.
+**ATTENTION**: This is a Redoc-specific vendor extension, and is not supported by other tools.
 
 Extends the `additionalProperties` property of the schema object.
 
@@ -317,8 +317,8 @@ Extends the `additionalProperties` property of the schema object.
 | :------------- | :------: | :---------- |
 | x-additionalPropertiesName | string | descriptive name of additional properties keys  |
 
-###### How to use with ReDoc
-ReDoc uses this extension to display a more descriptive property name in objects with `additionalProperties` when viewing the property list with an `object`.
+###### How to use with Redoc
+Redoc uses this extension to display a more descriptive property name in objects with `additionalProperties` when viewing the property list with an `object`.
 
 ###### x-additionalPropertiesName example
 
@@ -337,7 +337,7 @@ Player:
 ```
 
 #### x-explicitMappingOnly
-**ATTENTION**: This is ReDoc-specific vendor extension, and is not supported by other tools.
+**ATTENTION**: This is Redoc-specific vendor extension, and is not supported by other tools.
 
 Extends the `discriminator` property of the schema object.
 
@@ -345,8 +345,8 @@ Extends the `discriminator` property of the schema object.
 | :------------- | :------: | :---------- |
 | x-explicitMappingOnly | boolean | limit the discriminator selectpicker to the explicit mappings only |
 
-###### How to use with ReDoc
-ReDoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
+###### How to use with Redoc
+Redoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
 When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`, the default behavior is kept, i.e. explicit and implicit mappings will be shown.
 
 ###### x-explicitMappingOnly example

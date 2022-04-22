@@ -10,6 +10,7 @@ export interface LabelsConfig {
   arrayOf: string;
   webhook: string;
   const: string;
+  noResultsFound: string;
   download: string;
   downloadSpecification: string;
   responses: string;
@@ -32,6 +33,7 @@ const labels: LabelsConfig = {
   arrayOf: 'Array of ',
   webhook: 'Event',
   const: 'Value',
+  noResultsFound: 'No results found',
   download: 'Download',
   downloadSpecification: 'Download OpenAPI specification',
   responses: 'Responses',

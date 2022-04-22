@@ -50,7 +50,7 @@ export function flattenByProp<T extends object, P extends keyof T>(
     for (const item of items) {
       res.push(item);
       if (item[prop]) {
-        iterate((item[prop] as any) as T[]);
+        iterate(item[prop] as any as T[]);
       }
     }
   };
@@ -195,8 +195,13 @@ function parseURL(url: string) {
   }
 }
 
+export function escapeHTMLAttrChars(str: string): string {
+  return str.replace(/["\\]/g, '\\$&');
+}
+
 export function unescapeHTMLChars(str: string): string {
   return str
     .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
-    .replace(/&amp;/g, '&');
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"');
 }

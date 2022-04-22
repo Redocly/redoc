@@ -11,7 +11,9 @@ describe('#loadAndBundleSpec', () => {
   });
 
   it('should load And Bundle Spec demo/openapi-3-1.yaml', async () => {
-    const spec = yaml.load(readFileSync(resolve(__dirname, '../../../demo/openapi-3-1.yaml'), 'utf-8'));
+    const spec = yaml.load(
+      readFileSync(resolve(__dirname, '../../../demo/openapi-3-1.yaml'), 'utf-8'),
+    );
     const bundledSpec = await loadAndBundleSpec(spec);
     expect(bundledSpec).toMatchSnapshot();
   });

@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-import { RedocNormalizedOptions, RedocRawOptions } from '../services/RedocNormalizedOptions';
+import {
+  argValueToBoolean,
+  RedocNormalizedOptions,
+  RedocRawOptions,
+} from '../services/RedocNormalizedOptions';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Loading } from './Loading/Loading';
 import { Redoc } from './Redoc/Redoc';
@@ -13,11 +17,20 @@ export interface RedocStandaloneProps {
   onLoaded?: (e?: Error) => any;
 }
 
+declare let __webpack_nonce__: string;
+
 export const RedocStandalone = function (props: RedocStandaloneProps) {
   const { spec, specUrl, options = {}, onLoaded } = props;
-  const hideLoading = options.hideLoading !== undefined;
+  const hideLoading = argValueToBoolean(options.hideLoading, false);
 
   const normalizedOpts = new RedocNormalizedOptions(options);
+
+  if (normalizedOpts.nonce !== undefined) {
+    try {
+      // eslint-disable-next-line  @typescript-eslint/no-unused-vars
+      __webpack_nonce__ = normalizedOpts.nonce;
+    } catch {} // If we have exception, Webpack was not used to run this.
+  }
 
   return (
     <ErrorBoundary>
@@ -32,4 +45,4 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
       </StoreBuilder>
     </ErrorBoundary>
   );
-}
+};
