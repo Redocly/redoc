@@ -232,7 +232,7 @@ You can use all of the following options with standalone version on <redoc> tag 
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
-* `downloadFileName` - set file name of downloaded spec file, e.g. `swagger.json`, default `openapi.json`. Spec file in `JSON` format. (only `redoc-cli`)
+* `downloadFileName` - set a custom file name for the downloaded API definition file. The file is always in JSON format regardless of the file extension you set with this option. The default file name is `openapi.json`. **This option is supported only in redoc-cli**.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideSchemaPattern` - if set, the pattern is not shown in the schema.
