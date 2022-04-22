@@ -1,5 +1,3 @@
-import * as path from 'path';
-import * as yaml from 'js-yaml';
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -41,13 +39,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     }
 
     if (IS_BROWSER && window.Blob && window.URL && window.URL.createObjectURL) {
-      let specString: string;
-      if (path.extname(this.options.downloadFileName) === '.yaml') {
-        specString = yaml.dump(this.parser.spec);
-      } else {
-        specString = JSON.stringify(this.parser.spec, null, 2);
-      }
-      const blob = new Blob([specString], {
+      const blob = new Blob([JSON.stringify(this.parser.spec, null, 2)], {
         type: 'application/json',
       });
       return window.URL.createObjectURL(blob);

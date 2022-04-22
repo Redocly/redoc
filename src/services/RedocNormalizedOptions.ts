@@ -1,4 +1,3 @@
-import * as path from 'path';
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isNumeric, mergeObjects } from '../utils/helpers';
@@ -155,20 +154,6 @@ export class RedocNormalizedOptions {
     return 0;
   }
 
-  static normalizeDownloadFileName(value: RedocRawOptions['downloadFileName']): string {
-    if (value) {
-      const extname = path.extname(value);
-      if (extname === '.json' || extname === '.yaml') {
-        return value;
-      } else {
-        console.warn(`downloadFileName must be a JSON or YAML file.`);
-      }
-    }
-
-    // Default value
-    return 'openapi.json';
-  }
-
   private static normalizeJsonSampleExpandLevel(level?: number | string | 'all'): number {
     if (level === 'all') {
       return +Infinity;
@@ -249,7 +234,7 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
-    this.downloadFileName = RedocNormalizedOptions.normalizeDownloadFileName(raw.downloadFileName);
+    this.downloadFileName = raw.downloadFileName || 'openapi.json';
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
