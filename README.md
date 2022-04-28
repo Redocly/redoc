@@ -207,6 +207,7 @@ Redoc uses the following [specification extensions](https://swagger.io/specifica
 You can use all of the following options with the standalone version of the <redoc> tag by kebab-casing them. For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
 
 * `disableSearch` - disable search indexing and search box.
+* `minCharacterLengthToInitSearch` - set minimal characters length to init search, default `3`, minimal `1`.
 * `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.

@@ -8,8 +8,6 @@ import { MarkerService } from '../../services/MarkerService';
 import { SearchResult } from '../../services/SearchWorker.worker';
 
 import { OptionsContext } from '../OptionsProvider';
-import { RedocRawOptions } from '../../services/RedocNormalizedOptions';
-
 import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import {
@@ -113,13 +111,13 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   @bind
   @debounce(400)
   searchCallback(searchTerm: string) {
-    this.props.search.search(searchTerm).then((res) => {
+    this.props.search.search(searchTerm).then(res => {
       this.setResults(res, searchTerm);
     });
   }
 
   search = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { minCharacterLengthToInitSearch = 3 } = this.context as RedocRawOptions;
+    const { minCharacterLengthToInitSearch } = this.context;
     const q = event.target.value;
     if (q.length < minCharacterLengthToInitSearch) {
       this.clearResults(q);
@@ -136,7 +134,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
   render() {
     const { activeItemIdx } = this.state;
-    const results = this.state.results.map((res) => ({
+    const results = this.state.results.map(res => ({
       item: this.props.getItemById(res.meta)!,
       score: res.score,
     }));
