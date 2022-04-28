@@ -42,5 +42,13 @@ describe('Components', () => {
 
       expect(ClipboardService.copySelected as jest.Mock).toHaveBeenCalled();
     });
+
+    test('Expand/Collapse buttons disappears for flat structures', () => {
+      const flatData = { a: 1, b: '2', c: null };
+      const flatDataComponent = mount(withTheme(<JsonViewer data={flatData} />));
+
+      expect(flatDataComponent.html()).not.toContain('Expand all');
+      expect(flatDataComponent.html()).not.toContain('Collapse all');
+    });
   });
 });

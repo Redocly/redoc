@@ -1,5 +1,6 @@
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { OpenAPIParameter, Referenced } from '../../types';
 
 const opts = new RedocNormalizedOptions({});
 
@@ -12,6 +13,29 @@ describe('Models', () => {
       const spec = require('./fixtures/oneOfHoist.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       expect(parser.mergeAllOf(spec.components.schemas.test)).toMatchSnapshot();
+    });
+
+    test('should override description from $ref of the referenced component, when sibling description exists ', () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const spec = require('./fixtures/siblingRefDescription.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schemaOrRef: Referenced<OpenAPIParameter> = {
+        $ref: '#/components/schemas/Test',
+        description: 'Overriden description',
+      };
+
+      expect(parser.shallowDeref(schemaOrRef)).toMatchSnapshot();
+    });
+
+    test('should correct resolve double $ref if no need sibling', () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const spec = require('./fixtures/3.1/schemaDefinition.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schemaOrRef: Referenced<OpenAPIParameter> = {
+        $ref: '#/components/schemas/Parent',
+      };
+
+      expect(parser.deref(schemaOrRef, false, true)).toMatchSnapshot();
     });
   });
 });

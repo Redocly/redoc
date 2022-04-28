@@ -1,16 +1,25 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 
 import { OpenAPIResponse, Referenced } from '../../types';
 
-import { getStatusCodeType } from '../../utils';
+import { getStatusCodeType, extractExtensions } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
+type ResponseProps = {
+  parser: OpenAPIParser;
+  code: string;
+  defaultAsError: boolean;
+  infoOrRef: Referenced<OpenAPIResponse>;
+  options: RedocNormalizedOptions;
+  isEvent: boolean;
+};
+
 export class ResponseModel {
   @observable
-  expanded: boolean;
+  expanded: boolean = false;
 
   content?: MediaContentModel;
   code: string;
@@ -18,21 +27,25 @@ export class ResponseModel {
   description: string;
   type: string;
   headers: FieldModel[] = [];
+  extensions: Record<string, any>;
 
-  constructor(
-    parser: OpenAPIParser,
-    code: string,
-    defaultAsError: boolean,
-    infoOrRef: Referenced<OpenAPIResponse>,
-    options: RedocNormalizedOptions,
-  ) {
+  constructor({
+    parser,
+    code,
+    defaultAsError,
+    infoOrRef,
+    options,
+    isEvent: isRequest,
+  }: ResponseProps) {
+    makeObservable(this);
+
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
 
     const info = parser.deref(infoOrRef);
     parser.exitRef(infoOrRef);
     this.code = code;
     if (info.content !== undefined) {
-      this.content = new MediaContentModel(parser, info.content, false, options);
+      this.content = new MediaContentModel(parser, info.content, isRequest, options);
     }
 
     if (info['x-summary'] !== undefined) {
@@ -51,6 +64,10 @@ export class ResponseModel {
         const header = headers[name];
         return new FieldModel(parser, { ...header, name }, '', options);
       });
+    }
+
+    if (options.showExtensions) {
+      this.extensions = extractExtensions(info, options.showExtensions);
     }
   }
 

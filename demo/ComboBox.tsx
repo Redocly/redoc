@@ -31,7 +31,7 @@ const DropDownList = styled.ul`
   list-style: none;
   margin: 4px 0 0 0;
   padding: 5px 0;
-  font-family: 'Lato';
+  font-family: Roboto,sans-serif;
   overflow: hidden;
 `;
 
@@ -211,6 +211,7 @@ export default class ComboBox extends React.Component<ComboBoxProps, ComboBoxSta
           onFocus={this.open}
           onBlur={this.handleBlur}
           onKeyDown={this.handleKeyPress}
+          aria-label="URL to an OpenAPI definition to try"
         />
         <Button onClick={this.handleTryItClick}> TRY IT </Button>
         {open && <DropDownList>{options.map(this.renderOption)}</DropDownList>}

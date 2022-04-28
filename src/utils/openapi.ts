@@ -1,14 +1,16 @@
 import { dirname } from 'path';
 import * as URLtemplate from 'url-template';
 
+import { ExtendedOpenAPIOperation } from '../services';
 import { FieldModel } from '../services/models';
 import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIEncoding,
   OpenAPIMediaType,
-  OpenAPIOperation,
   OpenAPIParameter,
   OpenAPIParameterStyle,
+  OpenAPIRequestBody,
+  OpenAPIResponse,
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
@@ -56,17 +58,19 @@ const operationNames = {
   patch: true,
   delete: true,
   options: true,
+  $ref: true,
 };
 
 export function isOperationName(key: string): boolean {
   return key in operationNames;
 }
 
-export function getOperationSummary(operation: OpenAPIOperation): string {
+export function getOperationSummary(operation: ExtendedOpenAPIOperation): string {
   return (
     operation.summary ||
     operation.operationId ||
     (operation.description && operation.description.substring(0, 50)) ||
+    operation.pathName ||
     '<no summary>'
   );
 }
@@ -81,6 +85,8 @@ const schemaKeywordTypes = {
   maxLength: 'string',
   minLength: 'string',
   pattern: 'string',
+  contentEncoding: 'string',
+  contentMediaType: 'string',
 
   items: 'array',
   maxItems: 'array',
@@ -95,7 +101,7 @@ const schemaKeywordTypes = {
 };
 
 export function detectType(schema: OpenAPISchema): string {
-  if (schema.type !== undefined) {
+  if (schema.type !== undefined && !Array.isArray(schema.type)) {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
@@ -109,25 +115,29 @@ export function detectType(schema: OpenAPISchema): string {
   return 'any';
 }
 
-export function isPrimitiveType(schema: OpenAPISchema, type: string | undefined = schema.type) {
+export function isPrimitiveType(
+  schema: OpenAPISchema,
+  type: string | string[] | undefined = schema.type,
+) {
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
 
-  if (type === 'object') {
-    return schema.properties !== undefined
-      ? Object.keys(schema.properties).length === 0
-      : schema.additionalProperties === undefined;
+  let isPrimitive = true;
+  const isArray = Array.isArray(type);
+
+  if (type === 'object' || (isArray && type?.includes('object'))) {
+    isPrimitive =
+      schema.properties !== undefined
+        ? Object.keys(schema.properties).length === 0
+        : schema.additionalProperties === undefined;
   }
 
-  if (type === 'array') {
-    if (schema.items === undefined) {
-      return true;
-    }
-    return false;
+  if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
+    isPrimitive = isPrimitiveType(schema.items, schema.items.type);
   }
 
-  return true;
+  return isPrimitive;
 }
 
 export function isJsonLike(contentType: string): boolean {
@@ -358,6 +368,15 @@ export function serializeParameterValue(
   }
 }
 
+export function getSerializedValue(field: FieldModel, example: any) {
+  if (field.in) {
+    // decode for better readability in examples: see https://github.com/Redocly/redoc/issues/1138
+    return decodeURIComponent(serializeParameterValue(field, example));
+  } else {
+    return example;
+  }
+}
+
 export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';
@@ -365,14 +384,15 @@ export function langFromMime(contentType: string): string {
   return 'clike';
 }
 
+const DEFINITION_NAME_REGEX = /^#\/components\/(schemas|pathItems)\/([^/]+)$/;
+
 export function isNamedDefinition(pointer?: string): boolean {
-  return /^#\/components\/schemas\/[^\/]+$/.test(pointer || '');
+  return DEFINITION_NAME_REGEX.test(pointer || '');
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
-  if (!pointer) return undefined;
-  const match = pointer.match(/^#\/components\/schemas\/([^\/]+)$/);
-  return match === null ? undefined : match[1]
+  const [name] = pointer?.match(DEFINITION_NAME_REGEX)?.reverse() || [];
+  return name;
 }
 
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
@@ -411,6 +431,29 @@ function humanizeRangeConstraint(
   return stringRange;
 }
 
+export function humanizeNumberRange(schema: OpenAPISchema): string | undefined {
+  const minimum =
+    typeof schema.exclusiveMinimum === 'number'
+      ? Math.min(schema.exclusiveMinimum, schema.minimum ?? Infinity)
+      : schema.minimum;
+  const maximum =
+    typeof schema.exclusiveMaximum === 'number'
+      ? Math.max(schema.exclusiveMaximum, schema.maximum ?? -Infinity)
+      : schema.maximum;
+  const exclusiveMinimum = typeof schema.exclusiveMinimum === 'number' || schema.exclusiveMinimum;
+  const exclusiveMaximum = typeof schema.exclusiveMaximum === 'number' || schema.exclusiveMaximum;
+
+  if (minimum !== undefined && maximum !== undefined) {
+    return `${exclusiveMinimum ? '( ' : '[ '}${minimum} .. ${maximum}${
+      exclusiveMaximum ? ' )' : ' ]'
+    }`;
+  } else if (maximum !== undefined) {
+    return `${exclusiveMaximum ? '< ' : '<= '}${maximum}`;
+  } else if (minimum !== undefined) {
+    return `${exclusiveMinimum ? '> ' : '>= '}${minimum}`;
+  }
+}
+
 export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const res: string[] = [];
 
@@ -429,23 +472,13 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
     res.push(multipleOfConstraint);
   }
 
-  let numberRange;
-  if (schema.minimum !== undefined && schema.maximum !== undefined) {
-    numberRange = schema.exclusiveMinimum ? '( ' : '[ ';
-    numberRange += schema.minimum;
-    numberRange += ' .. ';
-    numberRange += schema.maximum;
-    numberRange += schema.exclusiveMaximum ? ' )' : ' ]';
-  } else if (schema.maximum !== undefined) {
-    numberRange = schema.exclusiveMaximum ? '< ' : '<= ';
-    numberRange += schema.maximum;
-  } else if (schema.minimum !== undefined) {
-    numberRange = schema.exclusiveMinimum ? '> ' : '>= ';
-    numberRange += schema.minimum;
-  }
-
+  const numberRange = humanizeNumberRange(schema);
   if (numberRange !== undefined) {
     res.push(numberRange);
+  }
+
+  if (schema.uniqueItems) {
+    res.push('unique');
   }
 
   return res;
@@ -485,13 +518,13 @@ export function mergeParams(
 ): Array<Referenced<OpenAPIParameter>> {
   const operationParamNames = {};
   operationParams.forEach(param => {
-    param = parser.shalowDeref(param);
+    param = parser.shallowDeref(param);
     operationParamNames[param.name + '_' + param.in] = true;
   });
 
   // filter out path params overridden by operation ones with the same name
   pathParams = pathParams.filter(param => {
-    param = parser.shalowDeref(param);
+    param = parser.shallowDeref(param);
     return !operationParamNames[param.name + '_' + param.in];
   });
 
@@ -616,4 +649,34 @@ export function pluralizeType(displayType: string): string {
     .split(' or ')
     .map(type => type.replace(/^(string|object|number|integer|array|boolean)s?( ?.*)/, '$1s$2'))
     .join(' or ');
+}
+
+export function getContentWithLegacyExamples(
+  info: OpenAPIRequestBody | OpenAPIResponse,
+): { [mime: string]: OpenAPIMediaType } | undefined {
+  let mediaContent = info.content;
+  const xExamples = info['x-examples']; // converted from OAS2 body param
+  const xExample = info['x-example']; // converted from OAS2 body param
+
+  if (xExamples) {
+    mediaContent = { ...mediaContent };
+    for (const mime of Object.keys(xExamples)) {
+      const examples = xExamples[mime];
+      mediaContent[mime] = {
+        ...mediaContent[mime],
+        examples,
+      };
+    }
+  } else if (xExample) {
+    mediaContent = { ...mediaContent };
+    for (const mime of Object.keys(xExample)) {
+      const example = xExample[mime];
+      mediaContent[mime] = {
+        ...mediaContent[mime],
+        example,
+      };
+    }
+  }
+
+  return mediaContent;
 }

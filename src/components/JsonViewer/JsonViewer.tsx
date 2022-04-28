@@ -26,32 +26,44 @@ class Json extends React.PureComponent<JsonProps> {
     return <CopyButtonWrapper data={this.props.data}>{this.renderInner}</CopyButtonWrapper>;
   }
 
-  renderInner = ({ renderCopyButton }) => (
-    <JsonViewerWrap>
-      <SampleControls>
-        {renderCopyButton()}
-        <button onClick={this.expandAll}> Expand all </button>
-        <button onClick={this.collapseAll}> Collapse all </button>
-      </SampleControls>
-      <OptionsContext.Consumer>
-        {options => (
-          <PrismDiv
-            className={this.props.className}
-            // tslint:disable-next-line
-            ref={node => (this.node = node!)}
-            dangerouslySetInnerHTML={{
-              __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
-            }}
-          />
-        )}
-      </OptionsContext.Consumer>
-    </JsonViewerWrap>
-  );
+  renderInner = ({ renderCopyButton }) => {
+    const showFoldingButtons = this.props.data && Object.values(this.props.data).some(
+      (value) => typeof value === 'object' && value !== null,
+    );
+
+    return (
+      <JsonViewerWrap>
+        <SampleControls>
+          {renderCopyButton()}
+          {showFoldingButtons &&
+            <>
+              <button onClick={this.expandAll}> Expand all </button>
+              <button onClick={this.collapseAll}> Collapse all </button>
+            </>
+          }
+        </SampleControls>
+        <OptionsContext.Consumer>
+          {options => (
+            <PrismDiv
+              className={this.props.className}
+              // tslint:disable-next-line
+              ref={node => (this.node = node!)}
+              dangerouslySetInnerHTML={{
+                __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
+              }}
+            />
+          )}
+        </OptionsContext.Consumer>
+      </JsonViewerWrap>
+    );
+  };
 
   expandAll = () => {
     const elements = this.node.getElementsByClassName('collapsible');
     for (const collapsed of Array.prototype.slice.call(elements)) {
-      (collapsed.parentNode as Element)!.classList.remove('collapsed');
+      const parentNode = collapsed.parentNode as Element;
+      parentNode.classList.remove('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'collapse');
     }
   };
 
@@ -61,29 +73,44 @@ class Json extends React.PureComponent<JsonProps> {
     const elementsArr = Array.prototype.slice.call(elements, 1);
 
     for (const expanded of elementsArr) {
-      (expanded.parentNode as Element)!.classList.add('collapsed');
+      const parentNode = expanded.parentNode as Element;
+      parentNode.classList.add('collapsed');
+      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'expand');
     }
   };
 
-  clickListener = (event: MouseEvent) => {
+  collapseElement = (target: HTMLElement) => {
     let collapsed;
-    const target = event.target as HTMLElement;
     if (target.className === 'collapser') {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
       if (collapsed.parentElement.classList.contains('collapsed')) {
         collapsed.parentElement.classList.remove('collapsed');
+        target.setAttribute('aria-label', 'collapse');
       } else {
         collapsed.parentElement.classList.add('collapsed');
+        target.setAttribute('aria-label', 'expand');
       }
+    }
+  };
+
+  clickListener = (event: MouseEvent) => {
+    this.collapseElement(event.target as HTMLElement);
+  };
+
+  focusListener = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.collapseElement(event.target as HTMLElement);
     }
   };
 
   componentDidMount() {
     this.node!.addEventListener('click', this.clickListener);
+    this.node!.addEventListener('focus', this.focusListener);
   }
 
   componentWillUnmount() {
     this.node!.removeEventListener('click', this.clickListener);
+    this.node!.removeEventListener('focus', this.focusListener);
   }
 }
 

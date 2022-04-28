@@ -16,7 +16,7 @@ export class SourceCode extends React.PureComponent<SourceCodeProps> {
   }
 }
 
-export class SourceCodeWithCopy extends React.PureComponent<SourceCodeProps> {
+export class SourceCodeWithCopy extends React.Component<SourceCodeProps> {
   render() {
     return (
       <CopyButtonWrapper data={this.props.source}>

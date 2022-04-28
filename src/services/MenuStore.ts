@@ -1,11 +1,11 @@
-import { action, observable } from 'mobx';
+import { action, observable, makeObservable } from 'mobx';
 import { querySelector } from '../utils/dom';
 import { SpecStore } from './models';
 
 import { history as historyInst, HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
-import { flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
+import { escapeHTMLAttrChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
@@ -16,6 +16,7 @@ export interface IMenuItem {
   id: string;
   absoluteIdx?: number;
   name: string;
+  sidebarLabel: string;
   description?: string;
   depth: number;
   active: boolean;
@@ -46,7 +47,7 @@ export class MenuStore {
     if (!id) {
       return;
     }
-    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
+    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
   }
 
   /**
@@ -76,6 +77,8 @@ export class MenuStore {
    * @param scroll scroll service instance used by this menu
    */
   constructor(spec: SpecStore, public scroll: ScrollService, public history: HistoryService) {
+    makeObservable(this);
+
     this.items = spec.contentItems;
 
     this.flatItems = flattenByProp(this.items || [], 'items');
@@ -148,9 +151,9 @@ export class MenuStore {
     } else {
       if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
         item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
-        this.activate(item);
+        this.activateAndScroll(item, false);
       }
-      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
+      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
     }
   };
 
@@ -160,7 +163,7 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -172,7 +175,7 @@ export class MenuStore {
     if (item && item.type === 'group') {
       item = item.items[0];
     }
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -208,6 +211,7 @@ export class MenuStore {
 
     this.deactivate(this.activeItem);
     if (!item) {
+      this.activeItemIdx = -1;
       this.history.replace('', rewriteHistory);
       return;
     }
@@ -220,7 +224,7 @@ export class MenuStore {
 
     this.activeItemIdx = item.absoluteIdx!;
     if (updateLocation) {
-      this.history.replace(item.id, rewriteHistory);
+      this.history.replace(encodeURI(item.id), rewriteHistory);
     }
 
     item.activate();

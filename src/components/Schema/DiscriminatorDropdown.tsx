@@ -43,7 +43,12 @@ export class DiscriminatorDropdown extends React.Component<{
     this.sortOptions(options, enumValues);
 
     return (
-      <StyledDropdown value={activeValue} options={options} onChange={this.changeActiveChild} />
+      <StyledDropdown
+        value={activeValue}
+        options={options}
+        onChange={this.changeActiveChild}
+        ariaLabel="Example"
+      />
     );
   }
 

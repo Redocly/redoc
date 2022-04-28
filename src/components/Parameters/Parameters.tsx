@@ -67,15 +67,24 @@ function DropdownWithinHeader(props) {
   );
 }
 
-export function BodyContent(props: { content: MediaContentModel; description?: string }): JSX.Element {
+export function BodyContent(props: {
+  content: MediaContentModel;
+  description?: string;
+}): JSX.Element {
   const { content, description } = props;
+  const { isRequestType } = content;
   return (
     <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>
       {({ schema }) => {
         return (
           <>
             {description !== undefined && <Markdown source={description} />}
-            <Schema skipReadOnly={true} key="schema" schema={schema} />
+            <Schema
+              skipReadOnly={isRequestType}
+              skipWriteOnly={!isRequestType}
+              key="schema"
+              schema={schema}
+            />
           </>
         );
       }}
