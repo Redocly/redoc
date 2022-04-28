@@ -71,6 +71,7 @@ export const PatternLabel = styled(FieldLabel)`
 
 export const ExampleValue = styled(FieldLabel)`
   border-radius: 2px;
+  word-break: break-word;
   ${({ theme }) => `
     background-color: ${transparentize(0.95, theme.colors.text.primary)};
     color: ${transparentize(0.1, theme.colors.text.primary)};
