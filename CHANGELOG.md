@@ -1,3 +1,22 @@
+# [2.0.0-rc.67](https://github.com/Redocly/redoc/compare/v2.0.0-rc.66...v2.0.0-rc.67) (2022-04-28)
+
+
+### Bug Fixes
+
+* Expand/Collapse all buttons disappears for flat structures ([#1424](https://github.com/Redocly/redoc/issues/1424)) ([2ca8e08](https://github.com/Redocly/redoc/commit/2ca8e081baea6996eb01b5df27b8cd88331d5c96))
+* improve markdown render with CRLF ([#1953](https://github.com/Redocly/redoc/issues/1953)) ([aba2d1a](https://github.com/Redocly/redoc/commit/aba2d1ad2d8dda9f52055c36ebde1323457dfd3e))
+* issue with navigation when operationId contains backslash or quotes ([#1513](https://github.com/Redocly/redoc/issues/1513)) ([8f7e56c](https://github.com/Redocly/redoc/commit/8f7e56c747d88be5c5eb5c4bbaee0ff69e9cb2ec))
+* prefix operation ids with parent id ([#1245](https://github.com/Redocly/redoc/issues/1245)) ([fd8917e](https://github.com/Redocly/redoc/commit/fd8917e5c109840c1bfa4c2c0902b6dcec200286))
+* update snapshot ([#1956](https://github.com/Redocly/redoc/issues/1956)) ([1e80dd6](https://github.com/Redocly/redoc/commit/1e80dd69a3687d2f97d070104126d17950222ff8))
+
+
+### Features
+
+* add optional BASE_PATH to Docker config ([#1378](https://github.com/Redocly/redoc/issues/1378)) ([90f71c0](https://github.com/Redocly/redoc/commit/90f71c0d77719871910cfba883a32ad131bef059))
+* theme add sidebar activeBackgroundColor and activeTextColor ([#1600](https://github.com/Redocly/redoc/issues/1600)) ([6716b08](https://github.com/Redocly/redoc/commit/6716b08e8871d95880e9f5a6c5491038002754e8))
+
+
+
 # [2.0.0-rc.66](https://github.com/Redocly/redoc/compare/v2.0.0-rc.65...v2.0.0-rc.66) (2022-03-30)
 
 
