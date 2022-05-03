@@ -31,6 +31,5 @@ export function Examples({ field }: { field: FieldModel }) {
 
 const ExamplesList = styled.ul`
   margin-top: 1em;
-  padding-left: 0;
-  list-style-position: inside;
+  list-style-position: outside;
 `;
