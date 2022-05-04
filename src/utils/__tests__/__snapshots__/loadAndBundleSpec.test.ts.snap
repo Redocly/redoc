@@ -2776,6 +2776,10 @@ try {
               "application/json": Object {
                 "schema": Object {
                   "$ref": "#/components/schemas/ApiResponse",
+                  "unevaluatedProperties": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
                 },
               },
             },
