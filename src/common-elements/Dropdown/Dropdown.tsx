@@ -46,7 +46,7 @@ const DropdownComponent = (props: DropdownProps): JSX.Element => {
   };
 
   return (
-    <div className={className + ' dropdown-wrapper'}>
+    <div className={className}>
       <ArrowIcon variant={variant} />
       <select onChange={handleOnChange} value={value} className="dropdown-select">
         {placeholder && (
@@ -55,7 +55,7 @@ const DropdownComponent = (props: DropdownProps): JSX.Element => {
           </option>
         )}
         {options.map(({ idx, value, title }: DropdownOption, index) => (
-          <option key={idx || value + index} value={value} className="dropdown-option">
+          <option key={idx || value + index} value={value}>
             {title || value}
           </option>
         ))}
