@@ -33,6 +33,10 @@ export function StoreBuilder(props: StoreBuilderProps) {
   const { spec, specUrl, options, onLoaded, children } = props;
 
   const [resolvedSpec, setResolvedSpec] = React.useState<any>(null);
+  const [error, setError] = React.useState<Error | null>(null);
+  if (error) {
+    throw error;
+  }
 
   React.useEffect(() => {
     async function load() {
@@ -40,8 +44,13 @@ export function StoreBuilder(props: StoreBuilderProps) {
         return undefined;
       }
       setResolvedSpec(null);
-      const resolved = await loadAndBundleSpec(spec || specUrl!);
-      setResolvedSpec(resolved);
+      try {
+        const resolved = await loadAndBundleSpec(spec || specUrl!);
+        setResolvedSpec(resolved);
+      } catch (e) {
+        setError(e);
+        throw e;
+      }
     }
     load();
   }, [spec, specUrl]);
