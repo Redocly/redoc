@@ -8,8 +8,10 @@ describe('build', () => {
     });
 
     const out = r.stdout.toString('utf-8');
-    expect(out).toContain('Found .redocly.yaml and use option from features.openapi');
-    expect(out).toContain('bundled successfully');
+    const err = r.stderr.toString('utf-8');
+    const result = `${out}\n${err}`;
+    expect(result).toContain('Found .redocly.yaml and use option from features.openapi');
+    expect(result).toContain('bundled successfully');
   });
 
   it('should use inline options and ignore .redocly.yaml', () => {
@@ -28,7 +30,9 @@ describe('build', () => {
     );
 
     const out = r.stdout.toString('utf-8');
-    expect(out).not.toContain('Found .redocly.yaml and use option from features.openapi');
-    expect(out).toContain('bundled successfully');
+    const err = r.stderr.toString('utf-8');
+    const result = `${out}\n${err}`;
+    expect(result).not.toContain('Found .redocly.yaml and use option from features.openapi');
+    expect(result).toContain('bundled successfully');
   });
 });
