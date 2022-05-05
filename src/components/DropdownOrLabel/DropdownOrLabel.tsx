@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { DropdownProps, MimeLabel, SimpleDropdown } from '../../common-elements/dropdown';
+import { DropdownProps, MimeLabel, SimpleDropdown } from '../../common-elements/Dropdown';
 
 export interface DropdownOrLabelProps extends DropdownProps {
   Label?: React.ComponentClass;
@@ -12,5 +12,5 @@ export function DropdownOrLabel(props: DropdownOrLabelProps): JSX.Element {
   if (props.options.length === 1) {
     return <Label>{props.options[0].value}</Label>;
   }
-  return <Dropdown {...props} searchable={false} />;
+  return <Dropdown {...props} />;
 }

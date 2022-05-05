@@ -7,8 +7,7 @@
     "url": "git://github.com/Redocly/redoc"
   },
   "browserslist": [
-    "defaults",
-    "ie 11"
+    "defaults"
   ],
   "engines": {
     "node": ">=6.9",
@@ -140,7 +139,6 @@
   },
   "dependencies": {
     "@redocly/openapi-core": "^1.0.0-beta.88",
-    "@redocly/react-dropdown-aria": "^2.0.11",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
