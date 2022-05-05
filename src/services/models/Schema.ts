@@ -364,7 +364,7 @@ function buildFields(
   options: RedocNormalizedOptions,
 ): FieldModel[] {
   const props = schema.properties || {};
-  const additionalProps = schema.additionalProperties;
+  const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
   const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
     let field = props[fieldName];

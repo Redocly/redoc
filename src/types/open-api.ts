@@ -114,6 +114,7 @@ export interface OpenAPISchema {
   type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
+  unevaluatedProperties?: boolean | OpenAPISchema;
   description?: string;
   default?: any;
   items?: OpenAPISchema;

@@ -305,6 +305,9 @@ paths:
           content:
             application/json:
               schema:
+                unevaluatedProperties:
+                  type: integer
+                  format: int32
                 $ref: '#/components/schemas/ApiResponse'
       security:
         - petstore_auth:

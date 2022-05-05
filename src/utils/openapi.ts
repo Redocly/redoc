@@ -97,6 +97,7 @@ const schemaKeywordTypes = {
   minProperties: 'object',
   required: 'object',
   additionalProperties: 'object',
+  unevaluatedProperties: 'object',
   properties: 'object',
 };
 
@@ -130,7 +131,7 @@ export function isPrimitiveType(
     isPrimitive =
       schema.properties !== undefined
         ? Object.keys(schema.properties).length === 0
-        : schema.additionalProperties === undefined;
+        : schema.additionalProperties === undefined && schema.unevaluatedProperties === undefined;
   }
 
   if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
