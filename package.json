@@ -43,7 +43,7 @@
     "bundle:standalone": "webpack --env production --env standalone --mode=production",
     "bundle:lib": "webpack --mode=production && npm run declarations",
     "bundle:browser": "webpack --env production --env browser --mode=production",
-    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:browser && npm run bundle:standalone",
+    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:browser && npm run bundle:standalone && npm run compile:cli",
     "declarations": "tsc --emitDeclarationOnly -p tsconfig.lib.json && cp -R src/types typings/",
     "stats": "webpack --env production --env standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
