@@ -147,6 +147,7 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
+  examples?: any[];
   const?: string;
   contentEncoding?: string;
   contentMediaType?: string;
