@@ -112,7 +112,7 @@ const isObject = (item: any): boolean => {
 };
 
 const isMergebleObject = (item): boolean => {
-  return isObject(item) && !Array.isArray(item);
+  return isObject(item) && !isArray(item);
 };
 
 /**
@@ -208,4 +208,8 @@ export function unescapeHTMLChars(str: string): string {
     .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"');
+}
+
+export function isArray(value: unknown): value is Array<any> {
+  return Array.isArray(value);
 }

@@ -1,6 +1,6 @@
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
-import { isNumeric, mergeObjects } from '../utils/helpers';
+import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
 
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
@@ -316,7 +316,7 @@ export class RedocNormalizedOptions {
 
     this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
-    const ignoreNamedSchemas = Array.isArray(raw.ignoreNamedSchemas)
+    const ignoreNamedSchemas = isArray(raw.ignoreNamedSchemas)
       ? raw.ignoreNamedSchemas
       : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
