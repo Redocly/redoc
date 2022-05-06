@@ -16,7 +16,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, removeQueryString, resolveUrl } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, isArray } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -102,7 +102,7 @@ const schemaKeywordTypes = {
 };
 
 export function detectType(schema: OpenAPISchema): string {
-  if (schema.type !== undefined && !Array.isArray(schema.type)) {
+  if (schema.type !== undefined && !isArray(schema.type)) {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
@@ -125,16 +125,19 @@ export function isPrimitiveType(
   }
 
   let isPrimitive = true;
-  const isArray = Array.isArray(type);
+  const isArrayType = isArray(type);
 
-  if (type === 'object' || (isArray && type?.includes('object'))) {
+  if (type === 'object' || (isArrayType && type?.includes('object'))) {
     isPrimitive =
       schema.properties !== undefined
         ? Object.keys(schema.properties).length === 0
         : schema.additionalProperties === undefined && schema.unevaluatedProperties === undefined;
   }
 
-  if (schema.items !== undefined && (type === 'array' || (isArray && type?.includes('array')))) {
+  if (
+    schema.items !== undefined &&
+    (type === 'array' || (isArrayType && type?.includes('array')))
+  ) {
     isPrimitive = isPrimitiveType(schema.items, schema.items.type);
   }
 
@@ -150,7 +153,7 @@ export function isFormUrlEncoded(contentType: string): boolean {
 }
 
 function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: string): string {
-  if (Array.isArray(fieldVal)) {
+  if (isArray(fieldVal)) {
     return fieldVal.map(v => v.toString()).join(delimiter);
   } else if (typeof fieldVal === 'object') {
     return Object.keys(fieldVal)
@@ -162,7 +165,7 @@ function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: strin
 }
 
 function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
-  if (Array.isArray(fieldVal)) {
+  if (isArray(fieldVal)) {
     console.warn('deepObject style cannot be used with array value:' + fieldVal.toString());
     return '';
   } else if (typeof fieldVal === 'object') {
@@ -195,7 +198,7 @@ export function urlFormEncodePayload(
   payload: object,
   encoding: { [field: string]: OpenAPIEncoding } = {},
 ) {
-  if (Array.isArray(payload)) {
+  if (isArray(payload)) {
     throw new Error('Payload must have fields: ' + payload.toString());
   } else {
     return Object.keys(payload)
@@ -254,7 +257,7 @@ function serializeQueryParameter(
     case 'form':
       return serializeFormValue(name, explode, value);
     case 'spaceDelimited':
-      if (!Array.isArray(value)) {
+      if (!isArray(value)) {
         console.warn('The style spaceDelimited is only applicable to arrays');
         return '';
       }
@@ -264,7 +267,7 @@ function serializeQueryParameter(
 
       return `${name}=${value.join('%20')}`;
     case 'pipeDelimited':
-      if (!Array.isArray(value)) {
+      if (!isArray(value)) {
         console.warn('The style pipeDelimited is only applicable to arrays');
         return '';
       }
@@ -274,7 +277,7 @@ function serializeQueryParameter(
 
       return `${name}=${value.join('|')}`;
     case 'deepObject':
-      if (!explode || Array.isArray(value) || typeof value !== 'object') {
+      if (!explode || isArray(value) || typeof value !== 'object') {
         console.warn('The style deepObject is only applicable for objects with explode=true');
         return '';
       }
@@ -330,7 +333,7 @@ export function serializeParameterValueWithMime(value: any, mime: string): strin
 }
 
 export function serializeParameterValue(
-  parameter: OpenAPIParameter & { serializationMime?: string },
+  parameter: (OpenAPIParameter & { serializationMime?: string }) | FieldModel,
   value: any,
 ): string {
   const { name, style, explode = false, serializationMime } = parameter;
