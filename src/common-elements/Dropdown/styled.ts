@@ -15,7 +15,7 @@ export const Dropdown = styled(DropdownComponent)<{
     vertical-align: bottom;
     width: ${({ fullWidth }) => (fullWidth ? '100%' : 'auto')};
     text-transform: none;
-    padding: 0 8px 0 4px;
+    padding: 0 22px 0 4px;
 
     font-size: 0.929em;
     line-height: 1.5em;

@@ -37,7 +37,7 @@ export const InvertedSimpleDropdown = styled(Dropdown)`
     text-transform: none;
     border: none;
   }
-  margin: 0 0 10px 10px;
+  margin: 0 0 10px 0;
   display: block;
   background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
   border: none;
