@@ -42,6 +42,7 @@ export class SchemaModel {
   deprecated: boolean;
   pattern?: string;
   example?: any;
+  examples?: any[];
   enum: any[];
   default?: any;
   readOnly: boolean;
@@ -118,6 +119,7 @@ export class SchemaModel {
     this.format = schema.format;
     this.enum = schema.enum || [];
     this.example = schema.example;
+    this.examples = schema.examples;
     this.deprecated = !!schema.deprecated;
     this.pattern = schema.pattern;
     this.externalDocs = schema.externalDocs;

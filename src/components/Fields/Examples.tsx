@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { FieldLabel, ExampleValue } from '../../common-elements/fields';
-import { getSerializedValue } from '../../utils';
+import { getSerializedValue, isArray } from '../../utils';
 
 import { l } from '../../services/Labels';
 import { FieldModel } from '../../services';
@@ -15,16 +15,26 @@ export function Examples({ field }: { field: FieldModel }) {
   return (
     <>
       <FieldLabel> {l('examples')}: </FieldLabel>
-      <ExamplesList>
-        {Object.values(field.examples).map((example, idx) => {
+      {isArray(field.examples) ? (
+        field.examples.map((example, idx) => {
+          const value = getSerializedValue(field, example);
+          const stringifyValue = field.in ? String(value) : JSON.stringify(value);
           return (
-            <li key={idx}>
+            <React.Fragment key={idx}>
+              <ExampleValue>{stringifyValue}</ExampleValue>{' '}
+            </React.Fragment>
+          );
+        })
+      ) : (
+        <ExamplesList>
+          {Object.values(field.examples).map((example, idx) => (
+            <li key={idx + example.value}>
               <ExampleValue>{getSerializedValue(field, example.value)}</ExampleValue> -{' '}
               {example.summary || example.description}
             </li>
-          );
-        })}
-      </ExamplesList>
+          ))}
+        </ExamplesList>
+      )}
     </>
   );
 }
