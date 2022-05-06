@@ -71,7 +71,7 @@
     "@types/json-pointer": "^1.0.30",
     "@types/lunr": "^2.3.3",
     "@types/mark.js": "^8.11.5",
-    "@types/marked": "^4.0.1",
+    "@types/marked": "^4.0.3",
     "@types/node": "^15.6.1",
     "@types/prismjs": "^1.16.5",
     "@types/prop-types": "^15.7.3",
@@ -138,7 +138,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.88",
+    "@redocly/openapi-core": "^1.0.0-beta.95",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -146,7 +146,7 @@
     "json-pointer": "^0.6.2",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
-    "marked": "^4.0.10",
+    "marked": "^4.0.15",
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.2.1",
     "path-browserify": "^1.0.1",

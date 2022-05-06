@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
-import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 import FileInput from './components/FileInput';
@@ -87,7 +86,7 @@ class DemoApp extends React.Component<
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
-        ? '\\\\cors.redoc.ly/' + urlResolve(window.location.href, specUrl)
+        ? '\\\\cors.redoc.ly/' + new URL(specUrl, window.location.href).href
         : specUrl;
     }
     return (

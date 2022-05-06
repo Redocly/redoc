@@ -1,5 +1,4 @@
 import slugify from 'slugify';
-import { format, parse } from 'url';
 
 /**
  * Maps over array passing `isLast` bool to iterator as the second argument
@@ -146,18 +145,23 @@ export function isAbsoluteUrl(url: string) {
 export function resolveUrl(url: string, to: string) {
   let res;
   if (to.startsWith('//')) {
-    const { protocol: specProtocol } = parse(url);
-    res = `${specProtocol || 'https:'}${to}`;
+    try {
+      res = `${new URL(url).protocol || 'https:'}${to}`;
+    } catch {
+      res = `https:${to}`;
+    }
   } else if (isAbsoluteUrl(to)) {
     res = to;
   } else if (!to.startsWith('/')) {
     res = stripTrailingSlash(url) + '/' + to;
   } else {
-    const urlObj = parse(url);
-    res = format({
-      ...urlObj,
-      pathname: to,
-    });
+    try {
+      const urlObj = new URL(url);
+      urlObj.pathname = to;
+      res = urlObj.href;
+    } catch {
+      res = to;
+    }
   }
   return stripTrailingSlash(res);
 }
