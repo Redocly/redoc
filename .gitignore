@@ -28,7 +28,7 @@ bundles/
 typings/*
 !typings/styled-patch.d.ts
 cli/index.js
-cli/__test__/*/**/redoc-static.html
+cli/__test__/*/**/*.html
 
 /benchmark/revisions
 
