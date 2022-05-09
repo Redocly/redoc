@@ -131,11 +131,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ## Lint OpenAPI definitions
 
-Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
+Redocly's CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
 OpenAPI definition before publishing.
 
-Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
+Refer to [Redocly configuration](https://redocly.com/docs/cli/configuration/) in the OpenAPI documentation for more information.
 
 ## Deployment
 
@@ -174,11 +174,11 @@ replace the `spec-url` attribute with the url or local file address to your defi
 
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
-[**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
+[**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
+[**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
 ## Configuration
@@ -188,7 +188,7 @@ You can inject the Security Definitions widget into any place in your definition
 For more information, refer to [Security definitions injection](docs/security-definitions-injection.md).
 
 ### OpenAPI specification extensions
-Redoc uses the following [specification extensions](https://swagger.io/specification/#specificationExtensions):
+Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
