@@ -77,6 +77,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadDefinitionUrl": undefined,
+                    "downloadFileName": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -329,6 +331,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadDefinitionUrl": undefined,
+                    "downloadFileName": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -556,6 +560,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadDefinitionUrl": undefined,
+              "downloadFileName": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -850,6 +856,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadDefinitionUrl": undefined,
+                    "downloadFileName": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -1102,6 +1110,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
                     "disableSearch": false,
+                    "downloadDefinitionUrl": undefined,
+                    "downloadFileName": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
                     "expandResponses": Object {},
@@ -1329,6 +1339,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadDefinitionUrl": undefined,
+              "downloadFileName": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -1579,6 +1591,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "options": RedocNormalizedOptions {
           "allowedMdComponents": Object {},
           "disableSearch": false,
+          "downloadDefinitionUrl": undefined,
+          "downloadFileName": undefined,
           "enumSkipQuotes": false,
           "expandDefaultServerVariables": false,
           "expandResponses": Object {},
@@ -1870,6 +1884,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadDefinitionUrl": undefined,
+              "downloadFileName": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -2122,6 +2138,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
               "disableSearch": false,
+              "downloadDefinitionUrl": undefined,
+              "downloadFileName": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
               "expandResponses": Object {},
@@ -2349,6 +2367,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "options": RedocNormalizedOptions {
         "allowedMdComponents": Object {},
         "disableSearch": false,
+        "downloadDefinitionUrl": undefined,
+        "downloadFileName": undefined,
         "enumSkipQuotes": false,
         "expandDefaultServerVariables": false,
         "expandResponses": Object {},

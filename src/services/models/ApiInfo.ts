@@ -1,6 +1,7 @@
 import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
 import { OpenAPIParser } from '../OpenAPIParser';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;
@@ -15,7 +16,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   downloadLink?: string;
   downloadFileName?: string;
 
-  constructor(private parser: OpenAPIParser) {
+  constructor(
+    private parser: OpenAPIParser,
+    private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
+  ) {
     Object.assign(this, parser.spec.info);
     this.description = parser.spec.info.description || '';
     this.summary = parser.spec.info.summary || '';
@@ -30,6 +34,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   private getDownloadLink(): string | undefined {
+    if (this.options.downloadDefinitionUrl) {
+      return this.options.downloadDefinitionUrl;
+    }
+
     if (this.parser.specUrl) {
       return this.parser.specUrl;
     }
@@ -43,9 +51,9 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   private getDownloadFileName(): string | undefined {
-    if (!this.parser.specUrl) {
-      return 'swagger.json';
+    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl) {
+      return this.options.downloadFileName || 'openapi.json';
     }
-    return undefined;
+    return this.options.downloadFileName;
   }
 }

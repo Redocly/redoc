@@ -213,6 +213,8 @@ You can use all of the following options with the standalone version of the <red
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
+* `downloadFileName` - set a custom file name for the downloaded API definition file.
+* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here will open when that button is selected. Provide it as an absolute URL with the full URI scheme.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
