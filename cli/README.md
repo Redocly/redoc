@@ -31,7 +31,7 @@ Some examples:
 - Bundle using a custom template and add custom `templateOptions`:<br/>
   `$ redoc-cli build [spec] -t custom.hbs --templateOptions.metaDescription "Page meta description"`
 
-#### With `.redocly.yaml` file ([more info](https://redocly.com/docs/cli/configuration/#redocly-configuration-file)):
+#### With a Redocly configuration file ([more info](https://redocly.com/docs/cli/configuration/#redocly-configuration-file)):
 
 1. Go to folder with your Redocly configuration file (`.redocly.yaml` or `redocly.yaml`) and your OpenAPI definition file.
 2. Build the site using the `build` command (options from the Redocly configuration file will be automatically fetched):  
