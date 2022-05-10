@@ -1,3 +1,22 @@
+# [2.0.0-rc.68](https://github.com/Redocly/redoc/compare/v2.0.0-rc.67...v2.0.0-rc.68) (2022-05-10)
+
+
+### Bug Fixes
+
+* examples in json schema object([5b9aa27](https://github.com/Redocly/redoc/commit/5b9aa27af03a1c4616f7e0195afeba47d1deeaa0))
+* handle error when definition load fails ([#1979](https://github.com/Redocly/redoc/issues/1979)) ([508ebd5](https://github.com/Redocly/redoc/commit/508ebd58a3d66f2337e9641852322458a1bd9e6b))
+* large text in examples value ([#1974](https://github.com/Redocly/redoc/issues/1974)) ([60bc603](https://github.com/Redocly/redoc/commit/60bc603e9bb85a0c9c7ac38f7014876d397f0191))
+* not show scopes if keys empty or not exist ([#1975](https://github.com/Redocly/redoc/issues/1975)) ([4e793f0](https://github.com/Redocly/redoc/commit/4e793f07a81fa8bcd4ad384d1f87b3e6c290edb7))
+* remove dropdown-aria and use native select ([#1954](https://github.com/Redocly/redoc/issues/1954)) ([186f5a9](https://github.com/Redocly/redoc/commit/186f5a98bd466b1820121aadb865291bef8c6755))
+* make Redoc lib compatible with Webpack 5 ([#1982](https://github.com/Redocly/redoc/issues/1982)) ([867861](https://github.com/Redocly/redoc/commit/8678615a0e19c9484b4cd495d70293b542d196a5))
+
+### Features
+
+* implement configurable minimum characer length to init search ([#1402](https://github.com/Redocly/redoc/issues/1402)) ([0fa08fa](https://github.com/Redocly/redoc/commit/0fa08faab1c176a4bfc5a553e8e8f8b07aca659f))
+* support OAS 3.1 unevaluatedProperties ([#1978](https://github.com/Redocly/redoc/issues/1978)) ([0755ac6](https://github.com/Redocly/redoc/commit/0755ac6f04514eb0c08f90afceeda7858206b435))
+* publish dockerhub ([#1971](https://github.com/Redocly/redoc/issues/1971)) ([7e01a0](https://github.com/Redocly/redoc/commit/7e01a0cfe2ad8d06075bfc66ef3860edbef033f8)) 
+
+
 # [2.0.0-rc.67](https://github.com/Redocly/redoc/compare/v2.0.0-rc.66...v2.0.0-rc.67) (2022-04-28)
 
 
