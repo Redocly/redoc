@@ -455,7 +455,7 @@ function getObjectOrJSON(options) {
     default:
       const configFile = findConfig();
       if (configFile) {
-        console.log(`Found ${configFile} and use options from features.openapi`);
+        console.log(`Found ${configFile} and using features.openapi options`);
         try {
           const config = parseYaml(readFileSync(configFile, 'utf-8')) as Config;
 
