@@ -12,7 +12,7 @@ RUN apk update && apk add --no-cache git
 # Install dependencies
 WORKDIR /build
 COPY package.json package-lock.json /build/
-RUN npm ci --no-optional --ignore-scripts
+RUN npm ci --no-optional --ignore-scripts --force
 
 # copy only required for the build files
 COPY src /build/src
