@@ -20,7 +20,7 @@ describe('build with inline options', () => {
     const out = r.stdout.toString('utf-8');
     const err = r.stderr.toString('utf-8');
     const result = `${out}\n${err}`;
-    expect(result).not.toContain('Found .redocly.yaml and use options from features.openapi');
+    expect(result).not.toContain('Found .redocly.yaml and using features.openapi options');
     expect(result).toContain('bundled successfully');
 
     try {

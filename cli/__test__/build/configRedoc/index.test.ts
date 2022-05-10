@@ -24,7 +24,7 @@ describe('build', () => {
       expect(err.toString()).toContain('{"options":{"disableSearch":"true"}');
     }
 
-    expect(result).toContain('Found .redocly.yaml and use options from features.openapi');
+    expect(result).toContain('Found .redocly.yaml and using features.openapi options');
     expect(result).toContain('bundled successfully');
   });
 });
