@@ -1,5 +1,3 @@
-import { resolve as urlResolve } from 'url';
-
 import { OpenAPIEncoding, OpenAPIExample, Referenced } from '../../types';
 import { isFormUrlEncoded, isJsonLike, urlFormEncodePayload } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -23,7 +21,7 @@ export class ExampleModel {
     this.summary = example.summary;
     this.description = example.description;
     if (example.externalValue) {
-      this.externalValueUrl = urlResolve(parser.specUrl || '', example.externalValue);
+      this.externalValueUrl = new URL(example.externalValue, parser.specUrl || '').href;
     }
     parser.exitRef(infoOrRef);
 

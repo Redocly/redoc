@@ -1,5 +1,3 @@
-import { resolve as urlResolve } from 'url';
-
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
 import { appendToMdHeading, IS_BROWSER } from '../utils/';
@@ -62,7 +60,7 @@ export class OpenAPIParser {
 
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
-      this.specUrl = urlResolve(href, specUrl);
+      this.specUrl = new URL(specUrl, href).href;
     }
   }
 
