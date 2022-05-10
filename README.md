@@ -212,7 +212,6 @@ You can use all of the following options with the standalone version of the <red
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
-* `downloadFileName` - set a custom file name for the downloaded API definition file. The file is always in JSON format regardless of the file extension you set with this option. The default file name is `openapi.json`. **This option is supported only in redoc-cli**.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.

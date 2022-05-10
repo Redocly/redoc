@@ -34,6 +34,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   private getDownloadLink(): string | undefined {
+    if (this.options.downloadDefinitionUrl) {
+      return this.options.downloadDefinitionUrl;
+    }
+
     if (this.parser.specUrl) {
       return this.parser.specUrl;
     }
@@ -47,8 +51,8 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   private getDownloadFileName(): string | undefined {
-    if (!this.parser.specUrl) {
-      return this.options.downloadFileName;
+    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl) {
+      return 'openapi.json';
     }
     return undefined;
   }

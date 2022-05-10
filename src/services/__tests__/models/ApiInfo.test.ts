@@ -83,9 +83,11 @@ describe('Models', () => {
         },
       } as any;
 
-      const opts = new RedocNormalizedOptions({ downloadFileName: 'filename.json' });
+      const opts = new RedocNormalizedOptions({
+        downloadDefinitionUrl: 'https:test.com/filename.yaml',
+      });
       const info = new ApiInfoModel(parser, opts);
-      expect(info.downloadFileName).toEqual('filename.json');
+      expect(info.downloadFileName).toEqual(undefined);
     });
   });
 });
