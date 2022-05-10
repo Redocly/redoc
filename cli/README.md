@@ -33,7 +33,7 @@ Some examples:
 
 #### With `.redocly.yaml` file ([more info](https://redocly.com/docs/cli/configuration/#redocly-configuration-file)):
 
-1. Go to folder with `.redocly.yaml` and your definition file
+1. Go to folder with your Redocly configuration file (`.redocly.yaml` or `redocly.yaml`) and your OpenAPI definition file.
 2. Build site using command (options from `.redocly.yaml` file will be automatically fetched):  
    `redoc build openapi.yaml`
 
