@@ -31,7 +31,7 @@ Some examples:
 - Bundle using a custom template and add custom `templateOptions`:<br/>
   `$ redoc-cli build [spec] -t custom.hbs --templateOptions.metaDescription "Page meta description"`
 
-#### With `.redocly.yaml` file ([more info](https://redoc.ly/docs/api-reference-docs/on-premise/cli-usage/#example-with-try-it-console-enabled)):
+#### With `.redocly.yaml` file ([more info](https://redocly.com/docs/cli/configuration/#redocly-configuration-file)):
 
 1. Go to folder with `.redocly.yaml` and your definition file
 2. Build site using command (options from `.redocly.yaml` file will be automatically fetched):  
