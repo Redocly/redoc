@@ -18,7 +18,6 @@ import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 import { SECTION_ATTR } from '../../services';
-import { titleize } from '../../utils/helpers';
 
 const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
@@ -43,7 +42,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
               {isWebhook && (
                 <Badge type="primary">
                   {' '}
-                  Webhook {showWebhookVerb && '| ' + titleize(httpVerb)}
+                  Webhook {showWebhookVerb && httpVerb && '| ' + httpVerb.toUpperCase()}
                 </Badge>
               )}
             </H2>
