@@ -58,7 +58,7 @@ export class OpenAPIParser {
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
 
-    const href = IS_BROWSER ? window.location.href : '';
+    const href = IS_BROWSER ? window.location.href : undefined;
     if (typeof specUrl === 'string') {
       this.specUrl = new URL(specUrl, href).href;
     }
