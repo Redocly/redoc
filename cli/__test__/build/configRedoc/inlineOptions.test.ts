@@ -4,9 +4,9 @@ import { readFileSync } from 'fs';
 describe('build with inline options', () => {
   it('should use inline options and ignore .redocly.yaml', () => {
     const r = spawnSync(
-      'node',
+      'ts-node',
       [
-        '../../../index.js',
+        '../../../index.ts',
         'build',
         ' ../../../../demo/openapi.yaml',
         '--options.disableSearch="false" ',

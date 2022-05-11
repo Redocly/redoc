@@ -4,8 +4,8 @@ import { readFileSync } from 'fs';
 describe('build', () => {
   it('should use .redocly.yaml', () => {
     const r = spawnSync(
-      'node',
-      ['../../../index.js', 'build', ' ../../../../demo/openapi.yaml', '--output=redocTest.html'],
+      'ts-node',
+      ['../../../index.ts', 'build', ' ../../../../demo/openapi.yaml', '--output=redocTest.html'],
       {
         cwd: __dirname,
         shell: true,
