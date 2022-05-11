@@ -8,11 +8,13 @@ import { MenuItems } from './MenuItems';
 import { MenuItemLabel, MenuItemLi, MenuItemTitle, OperationBadge } from './styled.elements';
 import { l } from '../../services/Labels';
 import { scrollIntoViewIfNeeded } from '../../utils';
+import { OptionsContext } from '../OptionsProvider';
 
 export interface MenuItemProps {
   item: IMenuItem;
   onActivate?: (item: IMenuItem) => void;
   withoutChildren?: boolean;
+  children?: React.ReactChild;
 }
 
 @observer
@@ -70,37 +72,33 @@ export class MenuItem extends React.Component<MenuItemProps> {
 
 export interface OperationMenuItemContentProps {
   item: OperationModel;
+  children?: React.ReactChild;
 }
 
-@observer
-export class OperationMenuItemContent extends React.Component<OperationMenuItemContentProps> {
-  ref = React.createRef<HTMLLabelElement>();
+export const OperationMenuItemContent = observer((props: OperationMenuItemContentProps) => {
+  const { item } = props;
+  const ref = React.createRef<HTMLLabelElement>();
+  const { showWebhookVerb } = React.useContext(OptionsContext);
 
-  componentDidUpdate() {
-    if (this.props.item.active && this.ref.current) {
-      scrollIntoViewIfNeeded(this.ref.current);
+  React.useEffect(() => {
+    if (props.item.active && ref.current) {
+      scrollIntoViewIfNeeded(ref.current);
     }
-  }
+  }, [props.item.active, ref]);
 
-  render() {
-    const { item } = this.props;
-    return (
-      <MenuItemLabel
-        depth={item.depth}
-        active={item.active}
-        deprecated={item.deprecated}
-        ref={this.ref}
-      >
-        {item.isWebhook ? (
-          <OperationBadge type="hook">{l('webhook')}</OperationBadge>
-        ) : (
-          <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
-        )}
-        <MenuItemTitle width="calc(100% - 38px)">
-          {item.sidebarLabel}
-          {this.props.children}
-        </MenuItemTitle>
-      </MenuItemLabel>
-    );
-  }
-}
+  return (
+    <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated} ref={ref}>
+      {item.isWebhook ? (
+        <OperationBadge type="hook">
+          {showWebhookVerb ? item.httpVerb : l('webhook')}
+        </OperationBadge>
+      ) : (
+        <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+      )}
+      <MenuItemTitle width="calc(100% - 38px)">
+        {item.sidebarLabel}
+        {props.children}
+      </MenuItemTitle>
+    </MenuItemLabel>
+  );
+});
