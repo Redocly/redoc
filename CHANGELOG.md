@@ -1,3 +1,19 @@
+# [2.0.0-rc.69](https://github.com/Redocly/redoc/compare/v2.0.0-rc.68.1...v2.0.0-rc.69) (2022-05-12)
+
+
+### Bug Fixes
+
+* wrong base url format causing error when constructing new URL ([#1996](https://github.com/Redocly/redoc/issues/1996)) ([d2cdaa1](https://github.com/Redocly/redoc/commit/d2cdaa1221b6a5e7b5da2418414bce1586069deb))
+
+
+### Features
+
+* add download file option ([#1699](https://github.com/Redocly/redoc/issues/1699)) ([b601c9a](https://github.com/Redocly/redoc/commit/b601c9ae9e3288286f28e06854bd93cb3507706e))
+* add option to display verb in webhooks ([#1994](https://github.com/Redocly/redoc/issues/1994)) ([311d2ce](https://github.com/Redocly/redoc/commit/311d2ce64dcf1e68c2563a276b34dda0e08b709c))
+* support .redocly.yaml for options for redoc-cli ([#1981](https://github.com/Redocly/redoc/issues/1981)) ([1f417d6](https://github.com/Redocly/redoc/commit/1f417d67c6b2e0b49e41c713958c100d8e1ad19d))
+
+
+
 # [2.0.0-rc.68](https://github.com/Redocly/redoc/compare/v2.0.0-rc.67...v2.0.0-rc.68) (2022-05-10)
 
 
