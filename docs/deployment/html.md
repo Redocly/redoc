@@ -1,7 +1,7 @@
 ---
 title: Use the Redoc HTML element
 redirectFrom:
-  - /docs/quickstart/html/
+  - /docs/redoc/quickstart/html/
 ---
 
 # How to use the Redoc HTML element

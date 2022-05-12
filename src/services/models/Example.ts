@@ -21,7 +21,7 @@ export class ExampleModel {
     this.summary = example.summary;
     this.description = example.description;
     if (example.externalValue) {
-      this.externalValueUrl = new URL(example.externalValue, parser.specUrl || '').href;
+      this.externalValueUrl = new URL(example.externalValue, parser.specUrl).href;
     }
     parser.exitRef(infoOrRef);
 

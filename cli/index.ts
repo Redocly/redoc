@@ -25,6 +25,12 @@ import {
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { findConfig } from '@redocly/openapi-core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { parseYaml } from '@redocly/openapi-core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Config } from '@redocly/openapi-core';
 
 interface Options {
   ssr?: boolean;
@@ -447,6 +453,17 @@ function getObjectOrJSON(options) {
         handleError(e);
       }
     default:
+      const configFile = findConfig();
+      if (configFile) {
+        console.log(`Found ${configFile} and using features.openapi options`);
+        try {
+          const config = parseYaml(readFileSync(configFile, 'utf-8')) as Config;
+
+          return config['features.openapi'];
+        } catch (e) {
+          console.warn(`Found ${configFile} but failed to parse: ${e.message}`);
+        }
+      }
       return {};
   }
 }

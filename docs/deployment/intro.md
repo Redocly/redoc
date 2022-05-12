@@ -1,7 +1,7 @@
 ---
 title: Redoc deployment guide
 redirectFrom:
-  - /docs/quickstart/intro/
+  - /docs/redoc/quickstart/intro/
 ---
 
 # Redoc deployment guide

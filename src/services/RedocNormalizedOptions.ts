@@ -27,6 +27,8 @@ export interface RedocRawOptions {
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
+  downloadFileName?: string;
+  downloadDefinitionUrl?: string;
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
@@ -58,6 +60,7 @@ export interface RedocRawOptions {
   nonce?: string;
   hideFab?: boolean;
   minCharacterLengthToInitSearch?: number;
+  showWebhookVerb?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -235,6 +238,8 @@ export class RedocNormalizedOptions {
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
+  downloadFileName?: string;
+  downloadDefinitionUrl?: string;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
@@ -263,6 +268,7 @@ export class RedocNormalizedOptions {
   generatedPayloadSamplesMaxDepth: number;
   hideFab: boolean;
   minCharacterLengthToInitSearch: number;
+  showWebhookVerb: boolean;
 
   nonce?: string;
 
@@ -303,6 +309,8 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+    this.downloadFileName = raw.downloadFileName;
+    this.downloadDefinitionUrl = raw.downloadDefinitionUrl;
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
@@ -339,5 +347,6 @@ export class RedocNormalizedOptions {
     this.nonce = raw.nonce;
     this.hideFab = argValueToBoolean(raw.hideFab);
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
+    this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
   }
 }

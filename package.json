@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.68",
+  "version": "2.0.0-rc.69",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "bundle:standalone": "webpack --env production --env standalone --mode=production",
     "bundle:lib": "webpack --mode=production && npm run declarations",
     "bundle:browser": "webpack --env production --env browser --mode=production",
-    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:browser && npm run bundle:standalone",
+    "bundle": "npm run bundle:clean && npm run bundle:lib && npm run bundle:browser && npm run bundle:standalone && npm run compile:cli",
     "declarations": "tsc --emitDeclarationOnly -p tsconfig.lib.json && cp -R src/types typings/",
     "stats": "webpack --env production --env standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
@@ -138,7 +138,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.95",
+    "@redocly/openapi-core": "^1.0.0-beta.97",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -148,7 +148,7 @@
     "mark.js": "^8.11.1",
     "marked": "^4.0.15",
     "mobx-react": "^7.2.0",
-    "openapi-sampler": "^1.2.1",
+    "openapi-sampler": "^1.2.3",
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "^1.5.1",
     "polished": "^4.1.3",
