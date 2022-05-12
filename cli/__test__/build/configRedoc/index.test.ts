@@ -5,7 +5,7 @@ describe('build', () => {
   it('should use .redocly.yaml', () => {
     const r = spawnSync(
       'ts-node',
-      ['../../../index.ts', 'build', ' ../../../../demo/openapi.yaml', '--output=redocTest.html'],
+      ['../../../index.ts', 'build', ' ../../../../demo/openapi.yaml', '--output=redoc-test.html'],
       {
         cwd: __dirname,
         shell: true,
@@ -17,7 +17,7 @@ describe('build', () => {
     const result = `${out}\n${err}`;
 
     try {
-      const redocStaticFile = readFileSync(`${__dirname}/redocTest.html`, 'utf8');
+      const redocStaticFile = readFileSync(`${__dirname}/redoc-test.html`, 'utf8');
       expect(redocStaticFile).toContain('"options":{"disableSearch":true}');
       expect(redocStaticFile).not.toContain('role="search"');
     } catch (err) {
