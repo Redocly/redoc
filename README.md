@@ -131,11 +131,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ## Lint OpenAPI definitions
 
-Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
+Redocly's CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
 OpenAPI definition before publishing.
 
-Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
+Refer to [Redocly configuration](https://redocly.com/docs/cli/configuration/) in the OpenAPI documentation for more information.
 
 ## Deployment
 
@@ -174,14 +174,11 @@ replace the `spec-url` attribute with the url or local file address to your defi
 
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
-[**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
-
-See [**IE11 Support Notes**](docs/usage-with-ie11.md) for information on
-IE support for Redoc.
+[**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
+[**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
 ## Configuration
@@ -191,7 +188,7 @@ You can inject the Security Definitions widget into any place in your definition
 For more information, refer to [Security definitions injection](docs/security-definitions-injection.md).
 
 ### OpenAPI specification extensions
-Redoc uses the following [specification extensions](https://swagger.io/specification/#specificationExtensions):
+Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
@@ -210,6 +207,7 @@ Redoc uses the following [specification extensions](https://swagger.io/specifica
 You can use all of the following options with the standalone version of the <redoc> tag by kebab-casing them. For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
 
 * `disableSearch` - disable search indexing and search box.
+* `minCharacterLengthToInitSearch` - set minimal characters length to init search, default `3`, minimal `1`.
 * `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
@@ -246,9 +244,11 @@ You can use all of the following options with the standalone version of the <red
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
 * `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
+* `nonce` - if set, the provided value will be injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
 * `sideNavStyle` - can be specified in various ways:
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.
+  * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 
 ### `<redoc>` theme object
 * `spacing`
@@ -286,21 +286,25 @@ You can use all of the following options with the standalone version of the <red
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
     * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
-* `menu`
+* `sidebar`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
   * `textColor`: '#333333'
-  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main
+  * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
   * `groupItems` # Group headings
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'uppercase'
   * `level1Items` # Level 1 items like tags or section 1st level items
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'none'
-  * `arrow` # menu arrow
+  * `arrow` # sidebar arrow
     * `size`: '1.5em'
-    * `color`: # COMPUTED: theme.menu.textColor
+    * `color`: # COMPUTED: theme.sidebar.textColor
 * `logo`
-  * `maxHeight`: # COMPUTED: menu.width
-  * `maxWidth`: # COMPUTED: menu.width
+  * `maxHeight`: # COMPUTED: sidebar.width
+  * `maxWidth`: # COMPUTED: sidebar.width
   * `gutter`: '2px' # logo image padding
 * `rightPanel`
   * `backgroundColor`: '#263238'

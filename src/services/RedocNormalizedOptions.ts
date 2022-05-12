@@ -1,6 +1,6 @@
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
-import { isNumeric, mergeObjects } from '../utils/helpers';
+import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
 
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
@@ -8,6 +8,7 @@ import { MDXComponentMeta } from './MarkdownRenderer';
 export enum SideNavStyleEnum {
   SummaryOnly = 'summary-only',
   PathOnly = 'path-only',
+  IdOnly = 'id-only',
 }
 
 export interface RedocRawOptions {
@@ -54,7 +55,9 @@ export interface RedocRawOptions {
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
   generatedPayloadSamplesMaxDepth?: number;
+  nonce?: string;
   hideFab?: boolean;
+  minCharacterLengthToInitSearch?: number;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -171,6 +174,8 @@ export class RedocNormalizedOptions {
         return value;
       case SideNavStyleEnum.PathOnly:
         return SideNavStyleEnum.PathOnly;
+      case SideNavStyleEnum.IdOnly:
+        return SideNavStyleEnum.IdOnly;
       default:
         return defaultValue;
     }
@@ -257,6 +262,9 @@ export class RedocNormalizedOptions {
   hideSchemaPattern: boolean;
   generatedPayloadSamplesMaxDepth: number;
   hideFab: boolean;
+  minCharacterLengthToInitSearch: number;
+
+  nonce?: string;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -319,7 +327,7 @@ export class RedocNormalizedOptions {
 
     this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
-    const ignoreNamedSchemas = Array.isArray(raw.ignoreNamedSchemas)
+    const ignoreNamedSchemas = isArray(raw.ignoreNamedSchemas)
       ? raw.ignoreNamedSchemas
       : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
@@ -328,6 +336,8 @@ export class RedocNormalizedOptions {
       RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
         raw.generatedPayloadSamplesMaxDepth,
       );
+    this.nonce = raw.nonce;
     this.hideFab = argValueToBoolean(raw.hideFab);
+    this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
   }
 }

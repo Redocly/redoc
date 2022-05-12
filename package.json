@@ -1,14 +1,13 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.65",
+  "version": "2.0.0-rc.68",
   "description": "ReDoc",
   "repository": {
     "type": "git",
     "url": "git://github.com/Redocly/redoc"
   },
   "browserslist": [
-    "defaults",
-    "ie 11"
+    "defaults"
   ],
   "engines": {
     "node": ">=6.9",
@@ -33,7 +32,7 @@
     "start": "webpack serve --mode=development --env playground --hot --config demo/webpack.config.ts",
     "start:prod": "webpack serve --env playground --mode=production --config demo/webpack.config.ts",
     "start:benchmark": "webpack serve --mode=production --env.bench --config demo/webpack.config.ts",
-    "test": "npm run lint && npm run unit && npm run license-check",
+    "test": "npm run unit && npm run license-check",
     "unit": "jest --coverage",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
@@ -49,13 +48,13 @@
     "stats": "webpack --env production --env standalone --json --profile --mode=production > stats.json",
     "prettier": "prettier --write \"cli/index.ts\" \"src/**/*.{ts,tsx}\"",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
-    "lint": "eslint 'src/**/*.{js,ts,tsx}' --cache",
+    "lint": "eslint --fix 'src/**/*.{js,ts,tsx}' --cache",
     "benchmark": "node ./benchmark/benchmark.js",
     "start:demo": "webpack serve --hot --config demo/webpack.config.ts --mode=development",
     "compile:cli": "tsc custom.d.ts cli/index.ts --target es6 --module commonjs --types yargs",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
-    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0' --summary",
+    "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;Python-2.0' --summary",
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
     "prepare": "husky install",
     "pre-commit": "pretty-quick --staged && npm run lint"
@@ -72,7 +71,7 @@
     "@types/json-pointer": "^1.0.30",
     "@types/lunr": "^2.3.3",
     "@types/mark.js": "^8.11.5",
-    "@types/marked": "^4.0.1",
+    "@types/marked": "^4.0.3",
     "@types/node": "^15.6.1",
     "@types/prismjs": "^1.16.5",
     "@types/prop-types": "^15.7.3",
@@ -139,8 +138,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.54",
-    "@redocly/react-dropdown-aria": "^2.0.11",
+    "@redocly/openapi-core": "^1.0.0-beta.95",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -148,7 +146,7 @@
     "json-pointer": "^0.6.2",
     "lunr": "^2.3.9",
     "mark.js": "^8.11.1",
-    "marked": "^4.0.10",
+    "marked": "^4.0.15",
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.2.1",
     "path-browserify": "^1.0.1",

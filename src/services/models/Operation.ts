@@ -70,6 +70,7 @@ export class OperationModel implements IMenuItem {
 
   pointer: string;
   operationId?: string;
+  operationHash?: string;
   httpVerb: string;
   deprecated: boolean;
   path: string;
@@ -107,7 +108,12 @@ export class OperationModel implements IMenuItem {
 
     this.name = getOperationSummary(operationSpec);
 
-    this.sidebarLabel = options.sideNavStyle === SideNavStyleEnum.PathOnly ? this.path : this.name;
+    this.sidebarLabel =
+      options.sideNavStyle === SideNavStyleEnum.IdOnly
+        ? this.operationId || this.path
+        : options.sideNavStyle === SideNavStyleEnum.PathOnly
+        ? this.path
+        : this.name;
 
     if (this.isCallback) {
       // NOTE: Callbacks by default should not inherit the specification's global `security` definition.
@@ -119,9 +125,10 @@ export class OperationModel implements IMenuItem {
       // TODO: update getting pathInfo for overriding servers on path level
       this.servers = normalizeServers('', operationSpec.servers || operationSpec.pathServers || []);
     } else {
+      this.operationHash = operationSpec.operationId && 'operation/' + operationSpec.operationId;
       this.id =
         operationSpec.operationId !== undefined
-          ? 'operation/' + operationSpec.operationId
+          ? (parent ? parent.id + '/' : '') + this.operationHash
           : parent !== undefined
           ? parent.id + this.pointer
           : this.pointer;

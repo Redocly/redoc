@@ -44,12 +44,12 @@ other security reasons.
 
 If you want to view your Redoc output locally, you can simulate an HTTP server.
 
-#### Using Redocly OpenAPI CLI
+#### Using Redocly CLI
 
-Redocly OpenAPI CLI is an open source command-line tool that includes a command
+Redocly CLI is an open source command-line tool that includes a command
 for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
 
-If you have [OpenAPI CLI](https://redocly.com/docs/cli/#installation-and-usage) installed, `cd` into your
+If you have [Redocly CLI](https://redocly.com/docs/cli/#installation-and-usage) installed, `cd` into your
 project directory and run the following command:
 
 ```bash

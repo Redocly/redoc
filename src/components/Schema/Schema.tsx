@@ -11,6 +11,7 @@ import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
 import { l } from '../../services/Labels';
+import { isArray } from '../../utils/helpers';
 
 export interface SchemaOptions {
   showTitle?: boolean;
@@ -68,7 +69,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
       return <OneOfSchema schema={schema} {...rest} />;
     }
 
-    const types = Array.isArray(type) ? type : [type];
+    const types = isArray(type) ? type : [type];
     if (types.includes('object')) {
       if (schema.fields?.length) {
         return <ObjectSchema {...(this.props as any)} level={level} />;
