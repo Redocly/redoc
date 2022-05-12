@@ -6,7 +6,7 @@ describe('build with url', () => {
     const r = spawnSync(
       'ts-node',
       [
-        '../../../index.js',
+        '../../../index.ts',
         'build',
         'http://petstore.swagger.io/v2/swagger.json',
         '--output=url-test.html',
