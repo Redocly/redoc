@@ -1,8 +1,7 @@
 import { spawnSync } from 'child_process';
 
 describe('build with url', () => {
-  // FIXME: remove skip after release
-  it.skip('should not fail on resolving url', () => {
+  it('should not fail on resolving url', () => {
     const r = spawnSync(
       'ts-node',
       [
