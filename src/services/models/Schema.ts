@@ -364,6 +364,7 @@ function buildFields(
   options: RedocNormalizedOptions,
 ): FieldModel[] {
   const props = schema.properties || {};
+  const patternProps = schema.patternProperties || {};
   const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
   const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
@@ -401,6 +402,31 @@ function buildFields(
     // if not sort alphabetically sort in the order from required keyword
     fields = sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
+
+  fields.push(
+    ...Object.keys(patternProps).map(fieldName => {
+      let field = patternProps[fieldName];
+
+      if (!field) {
+        console.warn(
+          `Field "${fieldName}" is invalid, skipping.\n Field must be an object but got ${typeof field} at "${$ref}"`,
+        );
+        field = {};
+      }
+
+      return new FieldModel(
+        parser,
+        {
+          name: fieldName,
+          required: false,
+          schema: field,
+          kind: 'patternProperties',
+        },
+        `${$ref}/patternProperties/${fieldName}`,
+        options,
+      );
+    }),
+  );
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
     fields.push(
