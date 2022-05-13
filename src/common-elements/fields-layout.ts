@@ -1,4 +1,4 @@
-import styled, { extensionsHook, media } from '../styled-components';
+import styled, { extensionsHook, media, css } from '../styled-components';
 import { deprecatedCss } from './mixins';
 
 export const PropertiesTableCaption = styled.caption`
@@ -72,7 +72,26 @@ export const PropertyNameCell = styled(PropertyCell)`
     ${deprecatedCss};
   }
 
-  ${({ kind }) => (kind !== 'field' ? 'font-style: italic' : '')};
+  ${({ kind }) =>
+    kind === 'patternProperties' &&
+    css`
+      > span.property-name {
+        display: inline-table;
+        white-space: break-spaces;
+        margin-right: 20px;
+
+        ::before,
+        ::after {
+          content: '/';
+          filter: opacity(0.2);
+        }
+      }
+    `}
+
+  ${({ kind = '' }) =>
+    ['field', 'additionalProperties', 'patternProperties'].includes(kind)
+      ? ''
+      : 'font-style: italic'};
 
   ${extensionsHook('PropertyNameCell')};
 `;

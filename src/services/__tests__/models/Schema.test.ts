@@ -76,5 +76,16 @@ describe('Models', () => {
       expect(schema.fields![1].kind).toEqual('additionalProperties');
       expect(schema.fields![1].schema.type).toEqual('boolean');
     });
+
+    test('schemaDefinition should resolve patternProperties', () => {
+      const spec = require('../fixtures/3.1/patternProperties.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Patterns, '', opts);
+      expect(schema.fields).toHaveLength(2);
+      expect(schema.fields![0].kind).toEqual('patternProperties');
+      expect(schema.fields![0].schema.type).toEqual('string');
+      expect(schema.fields![1].kind).toEqual('patternProperties');
+      expect(schema.fields![1].schema.type).toEqual('object');
+    });
   });
 });

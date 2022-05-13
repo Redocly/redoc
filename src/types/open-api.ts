@@ -113,6 +113,7 @@ export interface OpenAPISchema {
   $ref?: string;
   type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
+  patternProperties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
   unevaluatedProperties?: boolean | OpenAPISchema;
   description?: string;
