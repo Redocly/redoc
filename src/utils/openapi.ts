@@ -99,6 +99,7 @@ const schemaKeywordTypes = {
   additionalProperties: 'object',
   unevaluatedProperties: 'object',
   properties: 'object',
+  patternProperties: 'object',
 };
 
 export function detectType(schema: OpenAPISchema): string {

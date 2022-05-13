@@ -37,6 +37,7 @@ class IntShelfIcon extends React.PureComponent<{
 export const ShelfIcon = styled(IntShelfIcon)`
   height: ${props => props.size || '18px'};
   width: ${props => props.size || '18px'};
+  min-width: ${props => props.size || '18px'};
   vertical-align: middle;
   float: ${props => props.float || ''};
   transition: transform 0.2s ease-out;
