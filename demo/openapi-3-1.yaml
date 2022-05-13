@@ -960,6 +960,33 @@ components:
   schemas:
     ApiResponse:
       type: object
+      patternProperties:
+        ^S_\\w+\\.[1-9]{2,4}$:
+          description: The measured skill for hunting
+          if:
+            x-displayName: fieldName === 'status'
+          else:
+            minLength: 1
+            maxLength: 10
+          then:
+            format: url
+            type: string
+            enum:
+              - success
+              - failed
+        ^O_\\w+\\.[1-9]{2,4}$:
+          type: object
+          properties:
+            nestedProperty:
+              type: [string, boolean]
+              description: The measured skill for hunting
+              default: lazy
+              example: adventurous
+              enum:
+                - clueless
+                - lazy
+                - adventurous
+                - aggressive
       properties:
         code:
           type: integer

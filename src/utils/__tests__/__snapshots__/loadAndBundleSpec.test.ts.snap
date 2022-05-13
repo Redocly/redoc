@@ -1903,6 +1903,46 @@ Object {
     },
     "schemas": Object {
       "ApiResponse": Object {
+        "patternProperties": Object {
+          "^O_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
+            "properties": Object {
+              "nestedProperty": Object {
+                "default": "lazy",
+                "description": "The measured skill for hunting",
+                "enum": Array [
+                  "clueless",
+                  "lazy",
+                  "adventurous",
+                  "aggressive",
+                ],
+                "example": "adventurous",
+                "type": Array [
+                  "string",
+                  "boolean",
+                ],
+              },
+            },
+            "type": "object",
+          },
+          "^S_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
+            "description": "The measured skill for hunting",
+            "else": Object {
+              "maxLength": 10,
+              "minLength": 1,
+            },
+            "if": Object {
+              "x-displayName": "fieldName === 'status'",
+            },
+            "then": Object {
+              "enum": Array [
+                "success",
+                "failed",
+              ],
+              "format": "url",
+              "type": "string",
+            },
+          },
+        },
         "properties": Object {
           "code": Object {
             "format": "int32",
