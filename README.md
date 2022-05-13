@@ -292,10 +292,9 @@ You can use all of the following options with standalone version on <redoc> tag 
   * `links`
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
-    * `hover`:
-      * `color` # COMPUTED: lighten(0.2 typography.links.color)
-      * `textDecoration`: 'none'
+    * `hover`:  # COMPUTED: lighten(0.2 typography.links.color)
     * `textDecoration`: 'none'
+    * `hoverTextDecoration`: 'none'
 * `menu`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'

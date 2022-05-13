@@ -127,11 +127,9 @@ const defaultTheme: ThemeInterface = {
     links: {
       color: ({ colors }) => colors.primary.main,
       visited: ({ typography }) => typography.links.color,
-      hover: {
-        color: ({ typography }) => lighten(0.2, typography.links.color),
-        textDecoration: ({ typography }) => typography.links.textDecoration,
-      },
-      textDecoration: 'none'
+      hover: ({ typography }) => lighten(0.2, typography.links.color),
+      textDecoration: 'none',
+      hoverTextDecoration: 'none'
     },
   },
   sidebar: {
@@ -310,11 +308,9 @@ export interface ResolvedThemeInterface {
     links: {
       color: string;
       visited: string;
-      hover: {
-        color: string;
-        textDecoration: string;
-      };
+      hover: string;
       textDecoration: string;
+      hoverTextDecoration: string;
     };
   };
   sidebar: {

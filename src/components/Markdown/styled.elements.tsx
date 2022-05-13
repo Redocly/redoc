@@ -14,8 +14,8 @@ export const linksCss = css`
     }
 
     &:hover {
-      color: ${props => props.theme.typography.links.hover.color};
-      text-decoration: ${props => props.theme.typography.links.hover.textDecoration};
+      color: ${props => props.theme.typography.links.hoverTextDecoration};
+      text-decoration: ${props => props.theme.typography.links.hoverTextDecoration};
     }
   }
 `;
