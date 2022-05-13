@@ -1,8 +1,6 @@
-import { resolve as urlResolve } from 'url';
-
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, IS_BROWSER } from '../utils/';
+import { appendToMdHeading, isArray, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import {
   getDefinitionName,
@@ -60,9 +58,9 @@ export class OpenAPIParser {
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
 
-    const href = IS_BROWSER ? window.location.href : '';
+    const href = IS_BROWSER ? window.location.href : undefined;
     if (typeof specUrl === 'string') {
-      this.specUrl = urlResolve(href, specUrl);
+      this.specUrl = new URL(specUrl, href).href;
     }
   }
 
@@ -377,7 +375,7 @@ export class OpenAPIParser {
     const allOf = schema.allOf;
     for (let i = 0; i < allOf.length; i++) {
       const sub = allOf[i];
-      if (Array.isArray(sub.oneOf)) {
+      if (isArray(sub.oneOf)) {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {

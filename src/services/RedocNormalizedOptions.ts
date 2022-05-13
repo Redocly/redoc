@@ -1,6 +1,6 @@
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
-import { isNumeric, mergeObjects } from '../utils/helpers';
+import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
 
 import { LabelsConfigRaw, setRedocLabels } from './Labels';
 import { MDXComponentMeta } from './MarkdownRenderer';
@@ -27,6 +27,8 @@ export interface RedocRawOptions {
   untrustedSpec?: boolean | string;
   hideLoading?: boolean | string;
   hideDownloadButton?: boolean | string;
+  downloadFileName?: string;
+  downloadDefinitionUrl?: string;
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
@@ -56,6 +58,8 @@ export interface RedocRawOptions {
   generatedPayloadSamplesMaxDepth?: number;
   nonce?: string;
   hideFab?: boolean;
+  minCharacterLengthToInitSearch?: number;
+  showWebhookVerb?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -225,6 +229,8 @@ export class RedocNormalizedOptions {
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
   hideDownloadButton: boolean;
+  downloadFileName?: string;
+  downloadDefinitionUrl?: string;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
@@ -251,6 +257,8 @@ export class RedocNormalizedOptions {
   hideSchemaPattern: boolean;
   generatedPayloadSamplesMaxDepth: number;
   hideFab: boolean;
+  minCharacterLengthToInitSearch: number;
+  showWebhookVerb: boolean;
 
   nonce?: string;
 
@@ -291,6 +299,8 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
     this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+    this.downloadFileName = raw.downloadFileName;
+    this.downloadDefinitionUrl = raw.downloadDefinitionUrl;
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
@@ -314,7 +324,7 @@ export class RedocNormalizedOptions {
 
     this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
-    const ignoreNamedSchemas = Array.isArray(raw.ignoreNamedSchemas)
+    const ignoreNamedSchemas = isArray(raw.ignoreNamedSchemas)
       ? raw.ignoreNamedSchemas
       : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
@@ -325,5 +335,7 @@ export class RedocNormalizedOptions {
       );
     this.nonce = raw.nonce;
     this.hideFab = argValueToBoolean(raw.hideFab);
+    this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
+    this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
   }
 }

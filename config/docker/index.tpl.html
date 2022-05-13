@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>%PAGE_TITLE%</title>
-    <link rel="icon" href="%PAGE_FAVICON%" />
+    <link rel="icon" href="%BASE_PATH%%PAGE_FAVICON%" />
     <style>
       body {
         margin: 0;
@@ -23,6 +23,6 @@
 
   <body>
     <redoc spec-url="%SPEC_URL%" %REDOC_OPTIONS%></redoc>
-    <script src="redoc.standalone.js"></script>
+    <script src="%BASE_PATH%redoc.standalone.js"></script>
   </body>
 </html>

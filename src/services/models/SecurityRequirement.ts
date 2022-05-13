@@ -25,7 +25,7 @@ export class SecurityRequirementModel {
           return undefined;
         }
         const displayName = scheme['x-displayName'] || id;
-               
+
         return {
           ...scheme,
           id,

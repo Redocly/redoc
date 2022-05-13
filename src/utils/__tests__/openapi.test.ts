@@ -146,7 +146,14 @@ describe('Utils', () => {
       string: ['pattern', 'minLength', 'maxLength'],
 
       array: ['items', 'maxItems', 'minItems', 'uniqueItems'],
-      object: ['maxProperties', 'minProperties', 'required', 'additionalProperties', 'properties'],
+      object: [
+        'maxProperties',
+        'minProperties',
+        'required',
+        'additionalProperties',
+        'unevaluatedProperties',
+        'properties',
+      ],
     };
 
     Object.keys(tests).forEach(name => {
@@ -212,12 +219,34 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
+    it('should return false for array contains array type and schema has items (unevaluatedProperties)', () => {
+      const schema = {
+        type: ['array'],
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
     it('should return false for array contains object and array types and schema has items', () => {
       const schema = {
         type: ['array', 'object'],
         items: {
           type: 'object',
           additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has items (unevaluatedProperties)', () => {
+      const schema = {
+        type: ['array', 'object'],
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
@@ -276,6 +305,17 @@ describe('Utils', () => {
         items: {
           type: 'object',
           additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for object with unevaluatedProperties', () => {
+      const schema = {
+        type: 'array',
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);

@@ -7,6 +7,7 @@ import { MenuItem } from '../SideMenu/MenuItem';
 import { MarkerService } from '../../services/MarkerService';
 import { SearchResult } from '../../services/SearchWorker.worker';
 
+import { OptionsContext } from '../OptionsProvider';
 import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
 import {
@@ -36,6 +37,8 @@ export interface SearchBoxState {
 
 export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxState> {
   activeItemRef: MenuItem | null = null;
+
+  static contextType = OptionsContext;
 
   constructor(props) {
     super(props);
@@ -114,8 +117,9 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   }
 
   search = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { minCharacterLengthToInitSearch } = this.context;
     const q = event.target.value;
-    if (q.length < 3) {
+    if (q.length < minCharacterLengthToInitSearch) {
       this.clearResults(q);
       return;
     }

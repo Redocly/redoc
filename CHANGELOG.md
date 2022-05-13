@@ -1,3 +1,74 @@
+# [2.0.0-rc.69](https://github.com/Redocly/redoc/compare/v2.0.0-rc.68.1...v2.0.0-rc.69) (2022-05-12)
+
+
+### Bug Fixes
+
+* wrong base url format causing error when constructing new URL ([#1996](https://github.com/Redocly/redoc/issues/1996)) ([d2cdaa1](https://github.com/Redocly/redoc/commit/d2cdaa1221b6a5e7b5da2418414bce1586069deb))
+
+
+### Features
+
+* add download file option ([#1699](https://github.com/Redocly/redoc/issues/1699)) ([b601c9a](https://github.com/Redocly/redoc/commit/b601c9ae9e3288286f28e06854bd93cb3507706e))
+* add option to display verb in webhooks ([#1994](https://github.com/Redocly/redoc/issues/1994)) ([311d2ce](https://github.com/Redocly/redoc/commit/311d2ce64dcf1e68c2563a276b34dda0e08b709c))
+* support .redocly.yaml for options for redoc-cli ([#1981](https://github.com/Redocly/redoc/issues/1981)) ([1f417d6](https://github.com/Redocly/redoc/commit/1f417d67c6b2e0b49e41c713958c100d8e1ad19d))
+
+
+
+# [2.0.0-rc.68](https://github.com/Redocly/redoc/compare/v2.0.0-rc.67...v2.0.0-rc.68) (2022-05-10)
+
+
+### Bug Fixes
+
+* examples in json schema object([5b9aa27](https://github.com/Redocly/redoc/commit/5b9aa27af03a1c4616f7e0195afeba47d1deeaa0))
+* handle error when definition load fails ([#1979](https://github.com/Redocly/redoc/issues/1979)) ([508ebd5](https://github.com/Redocly/redoc/commit/508ebd58a3d66f2337e9641852322458a1bd9e6b))
+* large text in examples value ([#1974](https://github.com/Redocly/redoc/issues/1974)) ([60bc603](https://github.com/Redocly/redoc/commit/60bc603e9bb85a0c9c7ac38f7014876d397f0191))
+* not show scopes if keys empty or not exist ([#1975](https://github.com/Redocly/redoc/issues/1975)) ([4e793f0](https://github.com/Redocly/redoc/commit/4e793f07a81fa8bcd4ad384d1f87b3e6c290edb7))
+* remove dropdown-aria and use native select ([#1954](https://github.com/Redocly/redoc/issues/1954)) ([186f5a9](https://github.com/Redocly/redoc/commit/186f5a98bd466b1820121aadb865291bef8c6755))
+* make Redoc lib compatible with Webpack 5 ([#1982](https://github.com/Redocly/redoc/issues/1982)) ([867861](https://github.com/Redocly/redoc/commit/8678615a0e19c9484b4cd495d70293b542d196a5))
+
+### Features
+
+* implement configurable minimum characer length to init search ([#1402](https://github.com/Redocly/redoc/issues/1402)) ([0fa08fa](https://github.com/Redocly/redoc/commit/0fa08faab1c176a4bfc5a553e8e8f8b07aca659f))
+* support OAS 3.1 unevaluatedProperties ([#1978](https://github.com/Redocly/redoc/issues/1978)) ([0755ac6](https://github.com/Redocly/redoc/commit/0755ac6f04514eb0c08f90afceeda7858206b435))
+* publish dockerhub ([#1971](https://github.com/Redocly/redoc/issues/1971)) ([7e01a0](https://github.com/Redocly/redoc/commit/7e01a0cfe2ad8d06075bfc66ef3860edbef033f8)) 
+
+
+# [2.0.0-rc.67](https://github.com/Redocly/redoc/compare/v2.0.0-rc.66...v2.0.0-rc.67) (2022-04-28)
+
+
+### Bug Fixes
+
+* Expand/Collapse all buttons disappears for flat structures ([#1424](https://github.com/Redocly/redoc/issues/1424)) ([2ca8e08](https://github.com/Redocly/redoc/commit/2ca8e081baea6996eb01b5df27b8cd88331d5c96))
+* improve markdown render with CRLF ([#1953](https://github.com/Redocly/redoc/issues/1953)) ([aba2d1a](https://github.com/Redocly/redoc/commit/aba2d1ad2d8dda9f52055c36ebde1323457dfd3e))
+* issue with navigation when operationId contains backslash or quotes ([#1513](https://github.com/Redocly/redoc/issues/1513)) ([8f7e56c](https://github.com/Redocly/redoc/commit/8f7e56c747d88be5c5eb5c4bbaee0ff69e9cb2ec))
+* prefix operation ids with parent id ([#1245](https://github.com/Redocly/redoc/issues/1245)) ([fd8917e](https://github.com/Redocly/redoc/commit/fd8917e5c109840c1bfa4c2c0902b6dcec200286))
+
+
+### Features
+
+* add optional BASE_PATH to Docker config ([#1378](https://github.com/Redocly/redoc/issues/1378)) ([90f71c0](https://github.com/Redocly/redoc/commit/90f71c0d77719871910cfba883a32ad131bef059))
+* theme add sidebar activeBackgroundColor and activeTextColor ([#1600](https://github.com/Redocly/redoc/issues/1600)) ([6716b08](https://github.com/Redocly/redoc/commit/6716b08e8871d95880e9f5a6c5491038002754e8))
+
+
+
+# [2.0.0-rc.66](https://github.com/Redocly/redoc/compare/v2.0.0-rc.65...v2.0.0-rc.66) (2022-03-30)
+
+
+### Bug Fixes
+
+* add handle local files for serve command ([#1810](https://github.com/Redocly/redoc/issues/1810)) ([117071e](https://github.com/Redocly/redoc/commit/117071ee83a32d9b3350d8afe2bdb6365a44e2ec))
+* move comma out of code block in SecurityRequirement.tsx ([#1924](https://github.com/Redocly/redoc/issues/1924)) ([ab3e8a8](https://github.com/Redocly/redoc/commit/ab3e8a8f80f453066c5495e73ac932a8fef0830a))
+* rename bandle command and add deprecate notice ([#1935](https://github.com/Redocly/redoc/issues/1935)) ([eb096b6](https://github.com/Redocly/redoc/commit/eb096b69be52568fc581027161c7d0c4b26c56c1))
+
+
+### Features
+
+* add support for displaying operationId in the sidebar ([#1927](https://github.com/Redocly/redoc/issues/1927)) ([09786f2](https://github.com/Redocly/redoc/commit/09786f2a5ade6303ea00512483b172347721ca70))
+* add nonce support ([#1566](https://github.com/Redocly/redoc/issues/1566)) ([c75ac9c](https://github.com/Redocly/redoc/commit/c75ac9cf70012e2d539b379aab2f0974d088db07))
+* h2 set color form theme.colors.text.primary ([#1491](https://github.com/Redocly/redoc/pull/1491)) ([25be93](https://github.com/Redocly/redoc/commit/25be934bb184d7b2b6b47d004b3c83ce4d16a2c6))
+
+
+
 # [2.0.0-rc.65](https://github.com/Redocly/redoc/compare/v2.0.0-rc.64...v2.0.0-rc.65) (2022-03-15)
 
 
@@ -6,7 +77,8 @@
 * auth link scroll for Firerox ([#1922](https://github.com/Redocly/redoc/issues/1922)) ([fe67e9c](https://github.com/Redocly/redoc/commit/fe67e9c332fee716582a00d60fdf34767bff22d4))
 * improve customization fab ([#1891](https://github.com/Redocly/redoc/issues/1891)) ([635f379](https://github.com/Redocly/redoc/commit/635f379eb086268c91eef715148eca8f080cfb86))
 * sanitize array of items ([#1920](https://github.com/Redocly/redoc/issues/1920)) ([059bd80](https://github.com/Redocly/redoc/commit/059bd8000e5fd65753d5ca9e0c47940394e0c79b))
-* use x-displayName in securityDefinitions [#1444](https://github.com/Redocly/redoc/pull/1444)) ([ac6fb4](https://github.com/Redocly/redoc/commit/
+* use x-displayName in securityDefinitions ([#1444](https://github.com/Redocly/redoc/pull/1444)) ([ac6fb4](https://github.com/Redocly/redoc/commit/ac6fb458a4eee8d0da4b63f9bafc7669adc8af03))
+* deprecated badge on one of any of buttons ([#1930](https://github.com/Redocly/redoc/pull/1930)) ([f60b47](https://github.com/Redocly/redoc/commit/f60b4758330dd756d670309827da60d3465b672a))
 
 
 

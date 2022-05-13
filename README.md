@@ -131,11 +131,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ## Lint OpenAPI definitions
 
-Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
+Redocly's CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
 OpenAPI definition before publishing.
 
-Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
+Refer to [Redocly configuration](https://redocly.com/docs/cli/configuration/) in the OpenAPI documentation for more information.
 
 ## Deployment
 
@@ -174,11 +174,11 @@ replace the `spec-url` attribute with the url or local file address to your defi
 
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
-[**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
+[**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
+[**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
 ## Configuration
@@ -188,7 +188,7 @@ You can inject the Security Definitions widget into any place in your definition
 For more information, refer to [Security definitions injection](docs/security-definitions-injection.md).
 
 ### OpenAPI specification extensions
-Redoc uses the following [specification extensions](https://swagger.io/specification/#specificationExtensions):
+Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
@@ -207,11 +207,14 @@ Redoc uses the following [specification extensions](https://swagger.io/specifica
 You can use all of the following options with the standalone version of the <redoc> tag by kebab-casing them. For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
 
 * `disableSearch` - disable search indexing and search box.
+* `minCharacterLengthToInitSearch` - set minimal characters length to init search, default `3`, minimal `1`.
 * `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
+* `downloadFileName` - set a custom file name for the downloaded API definition file.
+* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here will open when that button is selected. Provide it as an absolute URL with the full URI scheme.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
@@ -248,6 +251,7 @@ You can use all of the following options with the standalone version of the <red
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.
   * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
+* `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
 
 ### `<redoc>` theme object
 * `spacing`
@@ -285,21 +289,25 @@ You can use all of the following options with the standalone version of the <red
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
     * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
-* `menu`
+* `sidebar`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
   * `textColor`: '#333333'
-  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main
+  * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
   * `groupItems` # Group headings
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'uppercase'
   * `level1Items` # Level 1 items like tags or section 1st level items
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'none'
-  * `arrow` # menu arrow
+  * `arrow` # sidebar arrow
     * `size`: '1.5em'
-    * `color`: # COMPUTED: theme.menu.textColor
+    * `color`: # COMPUTED: theme.sidebar.textColor
 * `logo`
-  * `maxHeight`: # COMPUTED: menu.width
-  * `maxWidth`: # COMPUTED: menu.width
+  * `maxHeight`: # COMPUTED: sidebar.width
+  * `maxWidth`: # COMPUTED: sidebar.width
   * `gutter`: '2px' # logo image padding
 * `rightPanel`
   * `backgroundColor`: '#263238'

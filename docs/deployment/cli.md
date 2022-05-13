@@ -1,7 +1,7 @@
 ---
 title: Use the Redoc CLI
 redirectFrom:
-  - /docs/quickstart/cli/
+  - /docs/redoc/quickstart/cli/
 ---
 
 # How to use the Redoc CLI
@@ -56,7 +56,7 @@ The CLI includes the following commands:
     - `--watch`: Automatically reloads the server while you edit your OpenAPI definition.
     - `--options`: Customizes your output using [Redoc options](https://redocly.com/docs/api-reference-docs/configuration/).
       To add nested options, use dot notation.
-- **`redoc-cli bundle [spec]`:** Bundles `spec` and Redoc into a zero-dependency HTML file. Options include:
+- **`redoc-cli build [spec]`:** Builds `spec` and Redoc into a zero-dependency HTML file. Options include:
     - `-t` or `--template`: Uses custom [Handlebars](https://handlebarsjs.com/) templates to render your OpenAPI definition.
     - `--templateOptions`: Adds template options you want to pass to your
       custom Handlebars template. To add options, use dot notation.
@@ -70,13 +70,13 @@ The CLI includes the following commands:
 Bundle with the main color changed to `orange`:
 
 ```bash
-redoc-cli bundle openapi.yaml --options.theme.colors.primary.main=orange
+redoc-cli build openapi.yaml --options.theme.colors.primary.main=orange
 ```
 
 Bundle using a custom Handlebars template and add custom `templateOptions`:
 
 ```bash
-redoc-cli bundle http://petstore.swagger.io/v2/swagger.json -t custom.hbs --templateOptions.metaDescription "Page meta description"
+redoc-cli build http://petstore.swagger.io/v2/swagger.json -t custom.hbs --templateOptions.metaDescription "Page meta description"
 ```
 
 Sample Handlebars template:

@@ -1,4 +1,6 @@
 import type { Source, Document } from '@redocly/openapi-core';
+// eslint-disable-next-line import/no-internal-modules
+import type { ResolvedConfig } from '@redocly/openapi-core/lib/config';
 
 // eslint-disable-next-line import/no-internal-modules
 import { bundle } from '@redocly/openapi-core/lib/bundle';
@@ -11,7 +13,7 @@ import { OpenAPISpec } from '../types';
 import { IS_BROWSER } from './dom';
 
 export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const config = new Config({});
+  const config = new Config({} as ResolvedConfig);
   const bundleOpts = {
     config,
     base: IS_BROWSER ? window.location.href : process.cwd(),

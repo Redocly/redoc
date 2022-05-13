@@ -11,6 +11,7 @@ import {
   detectType,
   extractExtensions,
   humanizeConstraints,
+  isArray,
   isNamedDefinition,
   isPrimitiveType,
   JsonPointer,
@@ -42,6 +43,7 @@ export class SchemaModel {
   deprecated: boolean;
   pattern?: string;
   example?: any;
+  examples?: any[];
   enum: any[];
   default?: any;
   readOnly: boolean;
@@ -105,7 +107,7 @@ export class SchemaModel {
   }
 
   hasType(type: string) {
-    return this.type === type || (Array.isArray(this.type) && this.type.includes(type));
+    return this.type === type || (isArray(this.type) && this.type.includes(type));
   }
 
   init(parser: OpenAPIParser, isChild: boolean) {
@@ -119,6 +121,7 @@ export class SchemaModel {
     this.format = schema.format;
     this.enum = schema.enum || [];
     this.example = schema.example;
+    this.examples = schema.examples;
     this.deprecated = !!schema.deprecated;
     this.pattern = schema.pattern;
     this.externalDocs = schema.externalDocs;
@@ -136,17 +139,14 @@ export class SchemaModel {
     this.maxItems = schema.maxItems;
 
     if (!!schema.nullable || schema['x-nullable']) {
-      if (
-        Array.isArray(this.type) &&
-        !this.type.some(value => value === null || value === 'null')
-      ) {
+      if (isArray(this.type) && !this.type.some(value => value === null || value === 'null')) {
         this.type = [...this.type, 'null'];
-      } else if (!Array.isArray(this.type) && (this.type !== null || this.type !== 'null')) {
+      } else if (!isArray(this.type) && (this.type !== null || this.type !== 'null')) {
         this.type = [this.type, 'null'];
       }
     }
 
-    this.displayType = Array.isArray(this.type)
+    this.displayType = isArray(this.type)
       ? this.type.map(item => (item === null ? 'null' : item)).join(' or ')
       : this.type;
 
@@ -163,7 +163,7 @@ export class SchemaModel {
       return;
     } else if (
       isChild &&
-      Array.isArray(schema.oneOf) &&
+      isArray(schema.oneOf) &&
       schema.oneOf.find(s => s.$ref === this.pointer)
     ) {
       // we hit allOf of the schema with the parent discriminator
@@ -202,7 +202,7 @@ export class SchemaModel {
       if (this.items.isPrimitive) {
         this.enum = this.items.enum;
       }
-      if (Array.isArray(this.type)) {
+      if (isArray(this.type)) {
         const filteredType = this.type.filter(item => item !== 'array');
         if (filteredType.length) this.displayType += ` or ${filteredType.join(' or ')}`;
       }
@@ -301,7 +301,7 @@ export class SchemaModel {
     for (const name in mapping) {
       const $ref = mapping[name];
 
-      if (Array.isArray(explicitInversedMapping[$ref])) {
+      if (isArray(explicitInversedMapping[$ref])) {
         explicitInversedMapping[$ref].push(name);
       } else {
         // overrides implicit mapping here
@@ -317,7 +317,7 @@ export class SchemaModel {
 
     for (const $ref of Object.keys(inversedMapping)) {
       const names = inversedMapping[$ref];
-      if (Array.isArray(names)) {
+      if (isArray(names)) {
         for (const name of names) {
           refs.push({ $ref, name });
         }
@@ -408,7 +408,7 @@ function buildFields(
   options: RedocNormalizedOptions,
 ): FieldModel[] {
   const props = schema.properties || {};
-  const additionalProps = schema.additionalProperties;
+  const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
   const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
     let field = props[fieldName];

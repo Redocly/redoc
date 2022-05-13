@@ -33,10 +33,10 @@ exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
     <div>
       <div>
         <span
-          class="sc-fbIWvP sc-FRrlG CMpTe bBFKjV"
+          class="sc-laZMeE sc-iNiQyp jWaWWE jrLlAa"
         />
         <span
-          class="sc-fbIWvP sc-fXazdy CMpTe gJKPGC"
+          class="sc-laZMeE sc-jffHpj jWaWWE cThoNa"
         >
           string
         </span>
@@ -44,7 +44,7 @@ exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
        
       <div>
         <div
-          class="sc-iBzEeX sc-cOifOu dFWqin hjSJYo"
+          class="sc-iJCRrE sc-ciSkZP jCdxGr emlfPd"
         />
       </div>
     </div>

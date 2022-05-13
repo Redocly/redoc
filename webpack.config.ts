@@ -8,6 +8,7 @@ const nodeExternals = require('webpack-node-externals')({
   // bundle in modules that need transpiling + non-js (e.g. css)
   allowlist: [
     'swagger2openapi',
+    'marked',
     /reftools/,
     'oas-resolver',
     'oas-kit-common',
@@ -65,11 +66,12 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
         'node-fetch': 'null',
         'node-fetch-h2': 'null',
         yaml: 'null',
+        url: 'null',
         'safe-json-stringify': 'null',
       }
     : (context, request, callback) => {
         // ignore node-fetch dep of swagger2openapi as it is not used
-        if (/esprima|node-fetch|node-fetch-h2|\/yaml|safe-json-stringify$/i.test(request)) {
+        if (/esprima|node-fetch|node-fetch-h2|\/yaml|safe-json-stringify|url$/i.test(request)) {
           return callback(null, 'var undefined');
         }
         return nodeExternals(context, request, callback);
