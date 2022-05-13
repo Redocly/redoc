@@ -213,3 +213,6 @@ export function unescapeHTMLChars(str: string): string {
 export function isArray(value: unknown): value is Array<any> {
   return Array.isArray(value);
 }
+
+// get location hash without #
+export const getLocationHash = () => decodeURI(location.hash).substr(1);

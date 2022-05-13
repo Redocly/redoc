@@ -8,7 +8,7 @@ import { Field } from '../Fields/Field';
 import { DiscriminatorDropdown } from './DiscriminatorDropdown';
 import { SchemaProps } from './Schema';
 
-import { mapWithLast } from '../../utils';
+import { getLocationHash, mapWithLast } from '../../utils';
 import { OptionsContext } from '../OptionsProvider';
 
 export interface ObjectSchemaProps extends SchemaProps {
@@ -16,6 +16,7 @@ export interface ObjectSchemaProps extends SchemaProps {
     fieldName: string;
     parentSchema: SchemaModel;
   };
+  operationHash?: string;
 }
 
 export const ObjectSchema = observer(
@@ -26,9 +27,15 @@ export const ObjectSchema = observer(
     skipReadOnly,
     skipWriteOnly,
     level,
+    operationHash,
   }: ObjectSchemaProps) => {
     const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
       React.useContext(OptionsContext);
+
+    const locationHash = getLocationHash();
+
+    const isChildrenChosen =
+      operationHash && operationHash !== locationHash && locationHash.includes(operationHash);
 
     const filteredFields = React.useMemo(
       () =>
@@ -45,7 +52,9 @@ export const ObjectSchema = observer(
     );
 
     const expandByDefault =
-      (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
+      isChildrenChosen ||
+      (expandSingleSchemaField && filteredFields.length === 1) ||
+      schemaExpansionLevel >= level!;
 
     return (
       <PropertiesTable>
@@ -74,6 +83,7 @@ export const ObjectSchema = observer(
                 skipWriteOnly={skipWriteOnly}
                 showTitle={showTitle}
                 level={level}
+                operationHash={operationHash}
               />
             );
           })}

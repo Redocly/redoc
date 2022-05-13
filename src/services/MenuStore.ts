@@ -5,7 +5,12 @@ import { SpecStore } from './models';
 import { history as historyInst, HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
-import { escapeHTMLAttrChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
+import {
+  escapeHTMLAttrChars,
+  flattenByProp,
+  getLocationHash,
+  SECURITY_SCHEMES_SECTION_PREFIX,
+} from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
@@ -201,6 +206,10 @@ export class MenuStore {
     updateLocation: boolean = true,
     rewriteHistory: boolean = false,
   ) {
+    const locationId = getLocationHash();
+    // clear from `|property`
+    const locationIdWithoutProperty = locationId.split('|')[0];
+
     if ((this.activeItem && this.activeItem.id) === (item && item.id)) {
       return;
     }
@@ -223,7 +232,7 @@ export class MenuStore {
     }
 
     this.activeItemIdx = item.absoluteIdx!;
-    if (updateLocation) {
+    if (updateLocation && locationIdWithoutProperty !== this.activeItem?.id) {
       this.history.replace(encodeURI(item.id), rewriteHistory);
     }
 

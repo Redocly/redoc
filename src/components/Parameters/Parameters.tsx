@@ -20,6 +20,7 @@ function safePush(obj, prop, item) {
 
 export interface ParametersProps {
   parameters?: FieldModel[];
+  operationHash?: string;
   body?: RequestBodyModel;
 }
 
@@ -35,7 +36,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
   }
 
   render() {
-    const { body, parameters = [] } = this.props;
+    const { body, parameters = [], operationHash } = this.props;
     if (body === undefined && parameters === undefined) {
       return null;
     }
@@ -51,9 +52,20 @@ export class Parameters extends React.PureComponent<ParametersProps> {
     return (
       <>
         {paramsPlaces.map(place => (
-          <ParametersGroup key={place} place={place} parameters={paramsMap[place]} />
+          <ParametersGroup
+            key={place}
+            place={place}
+            parameters={paramsMap[place]}
+            operationHash={operationHash}
+          />
         ))}
-        {bodyContent && <BodyContent content={bodyContent} description={bodyDescription} />}
+        {bodyContent && (
+          <BodyContent
+            content={bodyContent}
+            description={bodyDescription}
+            operationHash={operationHash}
+          />
+        )}
       </>
     );
   }
@@ -70,8 +82,9 @@ function DropdownWithinHeader(props) {
 export function BodyContent(props: {
   content: MediaContentModel;
   description?: string;
+  operationHash?: string;
 }): JSX.Element {
-  const { content, description } = props;
+  const { content, description, operationHash } = props;
   const { isRequestType } = content;
   return (
     <MediaTypesSwitch content={content} renderDropdown={DropdownWithinHeader}>
@@ -84,6 +97,7 @@ export function BodyContent(props: {
               skipWriteOnly={!isRequestType}
               key="schema"
               schema={schema}
+              operationHash={operationHash}
             />
           </>
         );

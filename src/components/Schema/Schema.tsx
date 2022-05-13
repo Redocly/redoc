@@ -18,6 +18,7 @@ export interface SchemaOptions {
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
   level?: number;
+  operationHash?: string;
 }
 
 export interface SchemaProps extends SchemaOptions {

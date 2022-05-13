@@ -57,7 +57,11 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
             )}
             <Extensions extensions={operation.extensions} />
             <SecurityRequirements securities={operation.security} />
-            <Parameters parameters={operation.parameters} body={operation.requestBody} />
+            <Parameters
+              parameters={operation.parameters}
+              body={operation.requestBody}
+              operationHash={operation.id}
+            />
             <ResponsesList responses={operation.responses} />
             <CallbacksList callbacks={operation.callbacks} />
           </MiddlePanel>

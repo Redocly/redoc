@@ -11,11 +11,12 @@ import { mapWithLast } from '../../utils';
 export interface ParametersGroupProps {
   place: string;
   parameters: FieldModel[];
+  operationHash?: string;
 }
 
 export class ParametersGroup extends React.PureComponent<ParametersGroupProps, any> {
   render() {
-    const { place, parameters } = this.props;
+    const { place, parameters, operationHash } = this.props;
     if (!parameters || !parameters.length) {
       return null;
     }
@@ -26,7 +27,13 @@ export class ParametersGroup extends React.PureComponent<ParametersGroupProps, a
         <PropertiesTable>
           <tbody>
             {mapWithLast(parameters, (field, isLast) => (
-              <Field key={field.name} isLast={isLast} field={field} showExamples={true} />
+              <Field
+                key={field.name}
+                isLast={isLast}
+                field={field}
+                showExamples={true}
+                operationHash={operationHash}
+              />
             ))}
           </tbody>
         </PropertiesTable>
