@@ -31,7 +31,7 @@ const DropDownList = styled.ul`
   list-style: none;
   margin: 4px 0 0 0;
   padding: 5px 0;
-  font-family: 'Lato';
+  font-family: Roboto,sans-serif;
   overflow: hidden;
 `;
 

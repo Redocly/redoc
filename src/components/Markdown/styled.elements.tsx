@@ -27,7 +27,6 @@ export const StyledMarkdownBlock = styled(
     { compact?: boolean; inline?: boolean }
   >,
 )`
-
   font-family: ${props => props.theme.typography.fontFamily};
   font-weight: ${props => props.theme.typography.fontWeightRegular};
   line-height: ${props => props.theme.typography.lineHeight};
@@ -82,7 +81,7 @@ export const StyledMarkdownBlock = styled(
 
   pre {
     font-family: ${props => props.theme.typography.code.fontFamily};
-    white-space:${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
+    white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
     background-color: ${({ theme }) => theme.codeBlock.backgroundColor};
     color: white;
     padding: ${props => props.theme.spacing.unit * 4}px;
@@ -122,7 +121,8 @@ export const StyledMarkdownBlock = styled(
     margin: 0;
     margin-bottom: 1em;
 
-    ul, ol {
+    ul,
+    ol {
       margin-bottom: 0;
       margin-top: 0;
     }

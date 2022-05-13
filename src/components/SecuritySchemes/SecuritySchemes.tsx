@@ -23,6 +23,7 @@ export interface OAuthFlowProps {
 export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
   render() {
     const { type, flow } = this.props;
+    const scopesNames = Object.keys(flow?.scopes || {});
     return (
       <tr>
         <th> {type} OAuth Flow </th>
@@ -45,16 +46,21 @@ export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
               {flow!.refreshUrl}
             </div>
           )}
-          <div>
-            <strong> Scopes: </strong>
-          </div>
-          <ul>
-            {Object.keys(flow!.scopes || {}).map(scope => (
-              <li key={scope}>
-                <code>{scope}</code> - <Markdown inline={true} source={flow!.scopes[scope] || ''} />
-              </li>
-            ))}
-          </ul>
+          {!!scopesNames.length && (
+            <>
+              <div>
+                <strong> Scopes: </strong>
+              </div>
+              <ul>
+                {scopesNames.map(scope => (
+                  <li key={scope}>
+                    <code>{scope}</code> -{' '}
+                    <Markdown inline={true} source={flow!.scopes[scope] || ''} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </td>
       </tr>
     );
@@ -73,7 +79,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
           <MiddlePanel>
             <H2>
               <ShareLink to={scheme.sectionId} />
-              {scheme.id}
+              {scheme.displayName}
             </H2>
             <Markdown source={scheme.description || ''} />
             <StyledMarkdownBlock>

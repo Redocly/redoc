@@ -1,0 +1,12 @@
+name: Tests e2e
+
+on: [push]
+
+jobs:
+  build-and-e2e:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run bundle
+    - run: npm run e2e

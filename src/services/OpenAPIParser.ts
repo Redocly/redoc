@@ -1,8 +1,6 @@
-import { resolve as urlResolve } from 'url';
-
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, IS_BROWSER } from '../utils/';
+import { appendToMdHeading, isArray, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import {
   getDefinitionName,
@@ -45,9 +43,9 @@ class RefCounter {
 export class OpenAPIParser {
   specUrl?: string;
   spec: OpenAPISpec;
-  mergeRefs: Set<string>;
 
   private _refCounter: RefCounter = new RefCounter();
+  private allowMergeRefs: boolean = false;
 
   constructor(
     spec: OpenAPISpec,
@@ -58,12 +56,11 @@ export class OpenAPIParser {
     this.preprocess(spec);
 
     this.spec = spec;
+    this.allowMergeRefs = spec.openapi.startsWith('3.1');
 
-    this.mergeRefs = new Set();
-
-    const href = IS_BROWSER ? window.location.href : '';
+    const href = IS_BROWSER ? window.location.href : undefined;
     if (typeof specUrl === 'string') {
-      this.specUrl = urlResolve(href, specUrl);
+      this.specUrl = new URL(specUrl, href).href;
     }
   }
 
@@ -149,7 +146,7 @@ export class OpenAPIParser {
    * @param obj object to dereference
    * @param forceCircular whether to dereference even if it is circular ref
    */
-  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false): T {
+  deref<T extends object>(obj: OpenAPIRef | T, forceCircular = false, mergeAsAllOf = false): T {
     if (this.isRef(obj)) {
       const schemaName = getDefinitionName(obj.$ref);
       if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
@@ -165,21 +162,52 @@ export class OpenAPIParser {
         return Object.assign({}, resolved, { 'x-circular-ref': true });
       }
       // deref again in case one more $ref is here
+      let result = resolved;
       if (this.isRef(resolved)) {
-        const res = this.deref(resolved);
+        result = this.deref(resolved, false, mergeAsAllOf);
         this.exitRef(resolved);
-        return res;
       }
-      return resolved;
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, mergeAsAllOf) : result;
     }
     return obj;
   }
 
-  shalowDeref<T extends object>(obj: OpenAPIRef | T): T {
+  shallowDeref<T extends unknown>(obj: OpenAPIRef | T): T {
     if (this.isRef(obj)) {
-      return this.byRef<T>(obj.$ref)!;
+      const schemaName = getDefinitionName(obj.$ref);
+      if (schemaName && this.options.ignoreNamedSchemas.has(schemaName)) {
+        return { type: 'object', title: schemaName } as T;
+      }
+      const resolved = this.byRef<T>(obj.$ref);
+      return this.allowMergeRefs ? this.mergeRefs(obj, resolved, false) : (resolved as T);
     }
     return obj;
+  }
+
+  mergeRefs(ref, resolved, mergeAsAllOf: boolean) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { $ref, ...rest } = ref;
+    const keys = Object.keys(rest);
+    if (keys.length === 0) {
+      if (this.isRef(resolved)) {
+        return this.shallowDeref(resolved);
+      }
+      return resolved;
+    }
+    if (
+      mergeAsAllOf &&
+      keys.some(k => k !== 'description' && k !== 'title' && k !== 'externalDocs')
+    ) {
+      return {
+        allOf: [rest, resolved],
+      };
+    } else {
+      // small optimization
+      return {
+        ...resolved,
+        ...rest,
+      };
+    }
   }
 
   /**
@@ -220,12 +248,12 @@ export class OpenAPIParser {
     }
 
     const allOfSchemas = schema.allOf
-      .map((subSchema) => {
+      .map(subSchema => {
         if (subSchema && subSchema.$ref && used$Refs.has(subSchema.$ref)) {
           return undefined;
         }
 
-        const resolved = this.deref(subSchema, forceCircular);
+        const resolved = this.deref(subSchema, forceCircular, true);
         const subRef = subSchema.$ref || undefined;
         const subMerged = this.mergeAllOf(resolved, subRef, forceCircular, used$Refs);
         receiver.parentRefs!.push(...(subMerged.parentRefs || []));
@@ -265,7 +293,7 @@ export class OpenAPIParser {
               { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
               $ref + '/properties/' + prop,
             );
-            receiver.properties[prop] = mergedProp
+            receiver.properties[prop] = mergedProp;
             this.exitParents(mergedProp); // every prop resolution should have separate recursive stack
           }
         }
@@ -335,7 +363,7 @@ export class OpenAPIParser {
     const allOf = schema.allOf;
     for (let i = 0; i < allOf.length; i++) {
       const sub = allOf[i];
-      if (Array.isArray(sub.oneOf)) {
+      if (isArray(sub.oneOf)) {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
         return {

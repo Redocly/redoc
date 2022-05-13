@@ -1,8 +1,8 @@
 import * as styledComponents from 'styled-components';
 
-import { ResolvedThemeInterface } from './theme';
+import type { ResolvedThemeInterface } from './theme';
 
-export { ResolvedThemeInterface };
+export type { ResolvedThemeInterface };
 
 const {
   default: styled,
@@ -10,13 +10,13 @@ const {
   createGlobalStyle,
   keyframes,
   ThemeProvider,
-} = styledComponents as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
+} = styledComponents as unknown as styledComponents.ThemedStyledComponentsModule<ResolvedThemeInterface>;
 
 export const media = {
   lessThan(breakpoint, print?: boolean, extra?: string) {
     return (...args) => css`
       @media ${print ? 'print, ' : ''} screen and (max-width: ${props =>
-          props.theme.breakpoints[breakpoint]})${extra || ''} {
+          props.theme.breakpoints[breakpoint]}) ${extra || ''} {
         ${(css as any)(...args)};
       }
     `;

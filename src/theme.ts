@@ -141,9 +141,13 @@ const defaultTheme: ThemeInterface = {
         ? theme.sidebar.textColor
         : theme.colors.primary.main,
     groupItems: {
+      activeBackgroundColor: theme => darken(0.1, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'uppercase',
     },
     level1Items: {
+      activeBackgroundColor: theme => darken(0.05, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'none',
     },
     arrow: {
@@ -163,6 +167,10 @@ const defaultTheme: ThemeInterface = {
   },
   codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
+  },
+  fab: {
+    backgroundColor: '#f2f2f2',
+    color: '#0065FB',
   },
 };
 
@@ -319,9 +327,13 @@ export interface ResolvedThemeInterface {
     textColor: string;
     activeTextColor: string;
     groupItems: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     level1Items: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     arrow: {
@@ -341,6 +353,10 @@ export interface ResolvedThemeInterface {
   };
   codeBlock: {
     backgroundColor: string;
+  };
+  fab: {
+    backgroundColor: string;
+    color: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

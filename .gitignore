@@ -28,6 +28,7 @@ bundles/
 typings/*
 !typings/styled-patch.d.ts
 cli/index.js
+cli/__test__/*/**/*.html
 
 /benchmark/revisions
 
@@ -37,3 +38,4 @@ stats.json
 yarn.lock
 .idea
 .vscode
+.eslintcache
