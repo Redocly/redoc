@@ -11,7 +11,7 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
       - name: Cache node modules
         uses: actions/cache@v2
@@ -34,14 +34,14 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm test
   e2e-tests:
     needs: [bundle]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: npm ci
       - name: Download bundled artifact
         uses: actions/download-artifact@v2
@@ -54,7 +54,7 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
       - name: Cache node modules
         uses: actions/cache@v2
@@ -81,7 +81,7 @@ jobs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node.js
         uses: actions/setup-node@v2
       - name: Check if version has been updated
@@ -100,7 +100,7 @@ jobs:
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download cli bundled artifact
         uses: actions/download-artifact@v2
         with:
