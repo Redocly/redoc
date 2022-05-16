@@ -22,7 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run bundle
       - name: Store bundle artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bundles
           path: bundles
