@@ -125,6 +125,10 @@ export function isPrimitiveType(
     return false;
   }
 
+  if (schema.if || schema.then || schema.else) {
+    return false;
+  }
+
   let isPrimitive = true;
   const isArrayType = isArray(type);
 

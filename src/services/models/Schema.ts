@@ -18,7 +18,6 @@ import {
   pluralizeType,
   sortByField,
   sortByRequired,
-  mergeObjects,
 } from '../../utils/';
 
 import { l } from '../Labels';
@@ -68,7 +67,6 @@ export class SchemaModel {
   contentMediaType?: string;
   minItems?: number;
   maxItems?: number;
-  conditionalEnum?: string[];
 
   /**
    * @param isChild if schema discriminator Child
@@ -156,6 +154,7 @@ export class SchemaModel {
 
     if ((schema.if && schema.then) || (schema.if && schema.else)) {
       this.initConditionalOperators(schema, parser);
+      return;
     }
 
     if (!isChild && getDiscriminator(schema) !== undefined) {
@@ -367,37 +366,30 @@ export class SchemaModel {
       if: ifOperator,
       else: elseOperator = {},
       then: thenOperator = {},
-      ...clearSchema
+      ...restSchema
     } = schema;
-    const ifOperatorTitle =
-      (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'if';
-    const elseOperatorTitle =
-      (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'else';
     const groupedOperators = [
-      mergeObjects(
-        {},
-        clearSchema,
-        { allOf: [ifOperator, thenOperator] },
-        { title: ifOperatorTitle },
-      ),
-      mergeObjects({}, clearSchema, elseOperator, { title: elseOperatorTitle }),
+      {
+        allOf: [restSchema, thenOperator, ifOperator],
+        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'if',
+      },
+      {
+        allOf: [restSchema, elseOperator],
+        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'else',
+      },
     ];
-    this.conditionalEnum = [ifOperatorTitle, elseOperatorTitle];
 
-    this.oneOf = groupedOperators.map((variant, idx) => {
-      const merged = parser.mergeAllOf(parser.deref(variant || {}), this.pointer + '/oneOf/' + idx);
-      const title = merged.title || this.title;
-      const result = new SchemaModel(
-        parser,
-        {
-          ...merged,
-          title,
-        } as OpenAPISchema,
-        this.pointer + '/oneOf/' + idx,
-        this.options,
-      );
-      return result;
-    });
+    this.oneOf = groupedOperators.map(
+      (variant, idx) =>
+        new SchemaModel(
+          parser,
+          {
+            ...variant,
+          } as OpenAPISchema,
+          this.pointer + '/oneOf/' + idx,
+          this.options,
+        ),
+    );
   }
 }
 
