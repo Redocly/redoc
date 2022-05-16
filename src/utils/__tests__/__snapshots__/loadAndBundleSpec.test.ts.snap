@@ -2164,7 +2164,6 @@ Object {
               "type": Array [
                 "integer",
                 "null",
-                "array",
               ],
               "x-displayName": "notString",
             },
@@ -2176,15 +2175,16 @@ Object {
               "format": "url",
               "type": "string",
             },
+            "maxItems": 10,
+            "minItems": 1,
             "then": Object {
-              "maxItems": 10,
+              "maxItems": 15,
               "minItems": 1,
             },
             "type": Array [
               "string",
               "integer",
               "null",
-              "array",
             ],
             "xml": Object {
               "name": "photoUrl",

@@ -11,7 +11,7 @@
         "properties": {
           "test": {
             "description": "The list of URL to a cute photos featuring pet",
-            "type": ["string", "integer", "null", "array"],
+            "type": ["string", "integer", "null"],
             "minItems": 1,
             "maxItems": 20,
             "items": {

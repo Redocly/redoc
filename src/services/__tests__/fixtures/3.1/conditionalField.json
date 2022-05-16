@@ -10,7 +10,7 @@
         "type": "object",
         "properties": {
           "test": {
-            "type": ["string", "integer", "null", "array"],
+            "type": ["string", "integer", "null"],
             "minItems": 1,
             "maxItems": 20,
             "items": {

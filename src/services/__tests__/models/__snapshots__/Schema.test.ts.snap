@@ -5,7 +5,10 @@ Object {
   "allOf": undefined,
   "default": undefined,
   "items": Object {
+    "allOf": undefined,
     "format": "url",
+    "parentRefs": Array [],
+    "title": undefined,
     "type": "string",
   },
   "maxItems": 20,
@@ -19,20 +22,24 @@ Object {
 
 exports[`Models Schema schemaDefinition should resolve field with conditional operators 2`] = `
 Object {
+  "allOf": undefined,
   "default": undefined,
   "items": Object {
+    "allOf": undefined,
     "format": "url",
+    "parentRefs": Array [],
+    "title": undefined,
     "type": "string",
   },
   "maxItems": 10,
   "minItems": 1,
+  "parentRefs": Array [],
   "pattern": "\\\\d+",
   "title": "notString",
   "type": Array [
     "string",
     "integer",
     "null",
-    "array",
   ],
   "x-displayName": "notString",
 }
@@ -65,7 +72,6 @@ Object {
         "string",
         "integer",
         "null",
-        "array",
       ],
     },
   },
@@ -76,7 +82,9 @@ Object {
 
 exports[`Models Schema schemaDefinition should resolve schema with conditional operators 2`] = `
 Object {
+  "allOf": undefined,
   "maxItems": 20,
+  "parentRefs": Array [],
   "properties": Object {
     "test": Object {
       "description": "The list of URL to a cute photos featuring pet",
@@ -90,7 +98,6 @@ Object {
         "string",
         "integer",
         "null",
-        "array",
       ],
     },
   },

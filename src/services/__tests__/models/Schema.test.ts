@@ -53,7 +53,6 @@ describe('Models', () => {
       const spec = require('../fixtures/3.1/conditionalSchema.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = new SchemaModel(parser, spec.components.schemas.Test, '', opts);
-      expect(schema.conditionalEnum).toHaveLength(2);
       expect(schema.oneOf).toHaveLength(2);
 
       expect(schema.oneOf![0].schema.title).toBe('=== 10');

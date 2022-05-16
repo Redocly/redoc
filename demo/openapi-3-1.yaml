@@ -1126,7 +1126,9 @@ components:
           example: Guru
         photoUrls:
           description: The list of URL to a cute photos featuring pet
-          type: [string, integer, 'null', array]
+          type: [string, integer, 'null']
+          minItems: 1
+          maxItems: 10
           xml:
             name: photoUrl
             wrapped: true
@@ -1138,10 +1140,10 @@ components:
             type: string
           then:
             minItems: 1
-            maxItems: 10
+            maxItems: 15
           else:
             x-displayName: notString
-            type: [integer, 'null', array]
+            type: [integer, 'null']
             minItems: 1
             maxItems: 20
         friend:
