@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: npm-${{ hashFiles('package-lock.json') }}
@@ -85,7 +85,7 @@ jobs:
           name: bundles
           path: bundles
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: npm-${{ hashFiles('package-lock.json') }}
