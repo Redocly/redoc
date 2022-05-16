@@ -11,10 +11,10 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: npm-${{ hashFiles('package-lock.json') }}
@@ -24,7 +24,7 @@ jobs:
       - run: npm ci
       - run: npm run bundle
       - name: Store bundle artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bundles-cli
           path: bundles
@@ -34,17 +34,17 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm test
   e2e-tests:
     needs: [bundle]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: npm ci
       - name: Download bundled artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: bundles-cli
           path: bundles
@@ -54,10 +54,10 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
@@ -69,7 +69,7 @@ jobs:
       - name: Bundle
         run: npm run compile:cli
       - name: Store bundle artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: cli
           path: cli
@@ -81,9 +81,9 @@ jobs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
       - name: Check if version has been updated
         id: check
         uses: EndBug/version-check@v2.0.1
@@ -96,18 +96,18 @@ jobs:
     if: needs.check-version-cli.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download cli bundled artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: cli
           path: cli
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
           key: npm-${{ hashFiles('package-lock.json') }}
