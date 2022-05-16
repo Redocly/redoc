@@ -289,8 +289,8 @@ You can use all of the following options with the standalone version of the <red
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
     * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
-    * `textDecoration`: 'none'
-    * `hoverTextDecoration`: 'none'
+    * `textDecoration`: 'auto'
+    * `hoverTextDecoration`: 'auto'
 * `sidebar`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
