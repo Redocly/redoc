@@ -34,6 +34,7 @@
     "start:benchmark": "webpack serve --mode=production --env.bench --config demo/webpack.config.ts",
     "test": "npm run unit && npm run license-check",
     "unit": "jest --coverage",
+    "test:update-snapshot": "jest --updateSnapshot",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
     "bundlesize": "size-limit",

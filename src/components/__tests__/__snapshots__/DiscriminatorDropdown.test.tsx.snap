@@ -272,6 +272,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": Object {
                           "color": "#32329f",
                           "hover": "#6868cf",
+                          "hoverTextDecoration": "auto",
+                          "textDecoration": "auto",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -527,6 +529,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": Object {
                           "color": "#32329f",
                           "hover": "#6868cf",
+                          "hoverTextDecoration": "auto",
+                          "textDecoration": "auto",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -757,6 +761,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": Object {
                     "color": "#32329f",
                     "hover": "#6868cf",
+                    "hoverTextDecoration": "auto",
+                    "textDecoration": "auto",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -1054,6 +1060,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": Object {
                           "color": "#32329f",
                           "hover": "#6868cf",
+                          "hoverTextDecoration": "auto",
+                          "textDecoration": "auto",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -1309,6 +1317,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": Object {
                           "color": "#32329f",
                           "hover": "#6868cf",
+                          "hoverTextDecoration": "auto",
+                          "textDecoration": "auto",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -1539,6 +1549,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": Object {
                     "color": "#32329f",
                     "hover": "#6868cf",
+                    "hoverTextDecoration": "auto",
+                    "textDecoration": "auto",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -1792,6 +1804,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "links": Object {
                 "color": "#32329f",
                 "hover": "#6868cf",
+                "hoverTextDecoration": "auto",
+                "textDecoration": "auto",
                 "visited": "#32329f",
               },
               "optimizeSpeed": true,
@@ -2086,6 +2100,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": Object {
                     "color": "#32329f",
                     "hover": "#6868cf",
+                    "hoverTextDecoration": "auto",
+                    "textDecoration": "auto",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -2341,6 +2357,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": Object {
                     "color": "#32329f",
                     "hover": "#6868cf",
+                    "hoverTextDecoration": "auto",
+                    "textDecoration": "auto",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -2571,6 +2589,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "links": Object {
               "color": "#32329f",
               "hover": "#6868cf",
+              "hoverTextDecoration": "auto",
+              "textDecoration": "auto",
               "visited": "#32329f",
             },
             "optimizeSpeed": true,
