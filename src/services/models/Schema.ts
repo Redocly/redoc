@@ -371,11 +371,11 @@ export class SchemaModel {
     const groupedOperators = [
       {
         allOf: [restSchema, thenOperator, ifOperator],
-        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'if',
+        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'case 1',
       },
       {
         allOf: [restSchema, elseOperator],
-        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'else',
+        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'case 2',
       },
     ];
 
@@ -390,6 +390,7 @@ export class SchemaModel {
           this.options,
         ),
     );
+    this.oneOfType = 'One of';
   }
 }
 

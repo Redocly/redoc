@@ -56,7 +56,7 @@ describe('Models', () => {
       expect(schema.oneOf).toHaveLength(2);
 
       expect(schema.oneOf![0].schema.title).toBe('=== 10');
-      expect(schema.oneOf![1].schema.title).toBe('else');
+      expect(schema.oneOf![1].schema.title).toBe('case 2');
 
       expect(schema.oneOf![0].schema).toMatchSnapshot();
       expect(schema.oneOf![1].schema).toMatchSnapshot();
