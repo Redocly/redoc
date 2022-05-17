@@ -9,6 +9,7 @@ import { StoreConsumer } from '../StoreBuilder';
 
 export interface AdvancedMarkdownProps extends BaseMarkdownProps {
   htmlWrap?: (part: JSX.Element) => JSX.Element;
+  operationHash?: string;
 }
 
 export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
@@ -23,7 +24,7 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
   }
 
   renderWithOptionsAndStore(options: RedocNormalizedOptions, store?: AppStore) {
-    const { source, htmlWrap = i => i } = this.props;
+    const { source, htmlWrap = i => i, operationHash } = this.props;
     if (!store) {
       throw new Error('When using components in markdown, store prop must be provided');
     }
@@ -42,7 +43,13 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
           { key: idx },
         );
       }
-      return <part.component key={idx} {...{ ...part.props, ...part.propsSelector(store) }} />;
+      return (
+        <part.component
+          key={idx}
+          operationHash={operationHash}
+          {...{ ...part.props, ...part.propsSelector(store) }}
+        />
+      );
     });
   }
 }

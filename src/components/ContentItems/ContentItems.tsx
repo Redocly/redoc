@@ -79,7 +79,11 @@ export class SectionItem extends React.Component<ContentItemProps> {
             </Header>
           </MiddlePanel>
         </Row>
-        <AdvancedMarkdown source={description || ''} htmlWrap={middlePanelWrap} />
+        <AdvancedMarkdown
+          source={description || ''}
+          htmlWrap={middlePanelWrap}
+          operationHash={this.props.item.id}
+        />
         {externalDocs && (
           <Row>
             <MiddlePanel>
