@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { getLocationHash } from '../../utils/helpers';
-import { SECTION_ATTR } from '../../services';
+import { StoreContext } from '../../components/StoreBuilder';
+import { AppStore, SECTION_ATTR } from '../../services';
 
 import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
 import { FieldDetails } from './FieldDetails';
@@ -53,9 +53,11 @@ export class Field extends React.Component<FieldProps> {
     const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
+    const appStore: AppStore = this.context;
+
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
     const propertyHref = `${operationHash}|${name}`;
-    const isActiveProperty = getLocationHash() === propertyHref;
+    const isActiveProperty = appStore.menu.activeItemHash === propertyHref;
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
@@ -118,3 +120,4 @@ export class Field extends React.Component<FieldProps> {
     );
   }
 }
+Field.contextType = StoreContext;

@@ -61,6 +61,9 @@ export class MenuStore {
   @observable
   activeItemIdx: number = -1;
 
+  @observable
+  activeItemHash: string = '';
+
   /**
    * whether sidebar with menu is opened or not
    */
@@ -145,6 +148,7 @@ export class MenuStore {
    * @param id current hash
    */
   updateOnHistory = (id: string = this.history.currentId) => {
+    this.activeItemHash = id;
     if (!id) {
       return;
     }

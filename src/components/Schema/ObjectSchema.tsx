@@ -34,9 +34,6 @@ export const ObjectSchema = observer(
 
     const locationHash = getLocationHash();
 
-    const isChildrenChosen =
-      operationHash && operationHash !== locationHash && locationHash.includes(operationHash);
-
     const filteredFields = React.useMemo(
       () =>
         skipReadOnly || skipWriteOnly
@@ -52,21 +49,25 @@ export const ObjectSchema = observer(
     );
 
     const expandByDefault =
-      isChildrenChosen ||
-      (expandSingleSchemaField && filteredFields.length === 1) ||
-      schemaExpansionLevel >= level!;
+      (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
 
     return (
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
         <tbody>
           {mapWithLast(filteredFields, (field, isLast) => {
+            const childrenOperationHash = `${operationHash}|${field.name}`;
+            const isChildrenChosen =
+              operationHash &&
+              childrenOperationHash !== locationHash &&
+              locationHash.includes(childrenOperationHash);
+
             return (
               <Field
                 key={field.name}
                 isLast={isLast}
                 field={field}
-                expandByDefault={expandByDefault}
+                expandByDefault={isChildrenChosen || expandByDefault}
                 renderDiscriminatorSwitch={
                   discriminator?.fieldName === field.name
                     ? () => (
