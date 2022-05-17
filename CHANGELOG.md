@@ -1,3 +1,14 @@
+# [2.0.0-rc.70](https://github.com/Redocly/redoc/compare/2.0.0-rc.69...2.0.0-rc.70) (2022-05-17)
+
+
+### Features
+
+* display patternProperties ([#2008](https://github.com/Redocly/redoc/issues/2008)) ([660cc85](https://github.com/Redocly/redoc/commit/660cc857bc86787e16237b407fe5f5d7a493bb48))
+* support conditional operators ([#1939](https://github.com/Redocly/redoc/issues/1939)) ([291b62a](https://github.com/Redocly/redoc/commit/291b62a206b68f8b4d98e4b74b71c0cad20a8b9b))
+* theme add links textDecoration options ([#1599](https://github.com/Redocly/redoc/issues/1599)) ([ba06485](https://github.com/Redocly/redoc/commit/ba06485ece27acbb6b846500817f4bff3e4997ba))
+
+
+
 # [2.0.0-rc.69](https://github.com/Redocly/redoc/compare/v2.0.0-rc.68.1...v2.0.0-rc.69) (2022-05-12)
 
 
