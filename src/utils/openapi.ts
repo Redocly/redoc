@@ -125,7 +125,7 @@ export function isPrimitiveType(
     return false;
   }
 
-  if (schema.if || schema.then || schema.else) {
+  if ((schema.if && schema.then) || (schema.if && schema.else)) {
     return false;
   }
 
