@@ -152,6 +152,11 @@ export class SchemaModel {
       return;
     }
 
+    if ((schema.if && schema.then) || (schema.if && schema.else)) {
+      this.initConditionalOperators(schema, parser);
+      return;
+    }
+
     if (!isChild && getDiscriminator(schema) !== undefined) {
       this.initDiscriminator(schema, parser);
       return;
@@ -354,6 +359,38 @@ export class SchemaModel {
       innerSchema.title = name;
       return innerSchema;
     });
+  }
+
+  private initConditionalOperators(schema: OpenAPISchema, parser: OpenAPIParser) {
+    const {
+      if: ifOperator,
+      else: elseOperator = {},
+      then: thenOperator = {},
+      ...restSchema
+    } = schema;
+    const groupedOperators = [
+      {
+        allOf: [restSchema, thenOperator, ifOperator],
+        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'case 1',
+      },
+      {
+        allOf: [restSchema, elseOperator],
+        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'case 2',
+      },
+    ];
+
+    this.oneOf = groupedOperators.map(
+      (variant, idx) =>
+        new SchemaModel(
+          parser,
+          {
+            ...variant,
+          } as OpenAPISchema,
+          this.pointer + '/oneOf/' + idx,
+          this.options,
+        ),
+    );
+    this.oneOfType = 'One of';
   }
 }
 

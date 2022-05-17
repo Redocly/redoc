@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Models Schema schemaDefinition should resolve field with conditional operators 1`] = `
+Object {
+  "allOf": undefined,
+  "default": undefined,
+  "items": Object {
+    "allOf": undefined,
+    "format": "url",
+    "parentRefs": Array [],
+    "title": undefined,
+    "type": "string",
+  },
+  "maxItems": 20,
+  "minItems": 1,
+  "parentRefs": Array [],
+  "title": "isString",
+  "type": "string",
+  "x-displayName": "isString",
+}
+`;
+
+exports[`Models Schema schemaDefinition should resolve field with conditional operators 2`] = `
+Object {
+  "allOf": undefined,
+  "default": undefined,
+  "items": Object {
+    "allOf": undefined,
+    "format": "url",
+    "parentRefs": Array [],
+    "title": undefined,
+    "type": "string",
+  },
+  "maxItems": 10,
+  "minItems": 1,
+  "parentRefs": Array [],
+  "pattern": "\\\\d+",
+  "title": "notString",
+  "type": Array [
+    "string",
+    "integer",
+    "null",
+  ],
+  "x-displayName": "notString",
+}
+`;
+
+exports[`Models Schema schemaDefinition should resolve schema with conditional operators 1`] = `
+Object {
+  "allOf": undefined,
+  "maxItems": 2,
+  "parentRefs": Array [],
+  "properties": Object {
+    "test": Object {
+      "allOf": undefined,
+      "description": "The list of URL to a cute photos featuring pet",
+      "enum": Array [
+        10,
+      ],
+      "items": Object {
+        "allOf": undefined,
+        "format": "url",
+        "parentRefs": Array [],
+        "title": undefined,
+        "type": "string",
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "parentRefs": Array [],
+      "title": undefined,
+      "type": Array [
+        "string",
+        "integer",
+        "null",
+      ],
+    },
+  },
+  "title": "=== 10",
+  "type": "object",
+}
+`;
+
+exports[`Models Schema schemaDefinition should resolve schema with conditional operators 2`] = `
+Object {
+  "allOf": undefined,
+  "maxItems": 20,
+  "parentRefs": Array [],
+  "properties": Object {
+    "test": Object {
+      "description": "The list of URL to a cute photos featuring pet",
+      "items": Object {
+        "format": "url",
+        "type": "string",
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "type": Array [
+        "string",
+        "integer",
+        "null",
+      ],
+    },
+  },
+  "title": "case 2",
+  "type": "object",
+}
+`;

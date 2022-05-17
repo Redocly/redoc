@@ -49,6 +49,32 @@ describe('Models', () => {
       expect(schema.pointer).toBe('#/components/schemas/Child');
     });
 
+    test('schemaDefinition should resolve schema with conditional operators', () => {
+      const spec = require('../fixtures/3.1/conditionalSchema.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Test, '', opts);
+      expect(schema.oneOf).toHaveLength(2);
+
+      expect(schema.oneOf![0].schema.title).toBe('=== 10');
+      expect(schema.oneOf![1].schema.title).toBe('case 2');
+
+      expect(schema.oneOf![0].schema).toMatchSnapshot();
+      expect(schema.oneOf![1].schema).toMatchSnapshot();
+    });
+
+    test('schemaDefinition should resolve field with conditional operators', () => {
+      const spec = require('../fixtures/3.1/conditionalField.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Test, '', opts);
+      expect(schema.fields).toHaveLength(1);
+      expect(schema.fields && schema.fields[0].schema.oneOf).toHaveLength(2);
+      expect(schema.fields && schema.fields[0].schema.oneOf![0].schema.title).toBe('isString');
+      expect(schema.fields && schema.fields[0].schema.oneOf![1].schema.title).toBe('notString');
+
+      expect(schema.fields && schema.fields[0].schema.oneOf![0].schema).toMatchSnapshot();
+      expect(schema.fields && schema.fields[0].schema.oneOf![1].schema).toMatchSnapshot();
+    });
+
     test('schemaDefinition should resolve unevaluatedProperties in properties', () => {
       const spec = require('../fixtures/3.1/unevaluatedProperties.json');
       parser = new OpenAPIParser(spec, undefined, opts);

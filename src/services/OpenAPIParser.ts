@@ -268,29 +268,44 @@ export class OpenAPIParser {
     }>;
 
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
-      if (
-        receiver.type !== subSchema.type &&
-        receiver.type !== undefined &&
-        subSchema.type !== undefined
-      ) {
-        console.warn(
-          `Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${subSchema.type}"`,
-        );
+      const {
+        type,
+        enum: enumProperty,
+        properties,
+        items,
+        required,
+        ...otherConstraints
+      } = subSchema;
+
+      if (receiver.type !== type && receiver.type !== undefined && type !== undefined) {
+        console.warn(`Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${type}"`);
       }
 
-      if (subSchema.type !== undefined) {
-        receiver.type = subSchema.type;
+      if (type !== undefined) {
+        if (Array.isArray(type) && Array.isArray(receiver.type)) {
+          receiver.type = [...type, ...receiver.type];
+        } else {
+          receiver.type = type;
+        }
       }
 
-      if (subSchema.properties !== undefined) {
+      if (enumProperty !== undefined) {
+        if (Array.isArray(enumProperty) && Array.isArray(receiver.enum)) {
+          receiver.enum = [...enumProperty, ...receiver.enum];
+        } else {
+          receiver.enum = enumProperty;
+        }
+      }
+
+      if (properties !== undefined) {
         receiver.properties = receiver.properties || {};
-        for (const prop in subSchema.properties) {
+        for (const prop in properties) {
           if (!receiver.properties[prop]) {
-            receiver.properties[prop] = subSchema.properties[prop];
+            receiver.properties[prop] = properties[prop];
           } else {
             // merge inner properties
             const mergedProp = this.mergeAllOf(
-              { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
+              { allOf: [receiver.properties[prop], properties[prop]] },
               $ref + '/properties/' + prop,
             );
             receiver.properties[prop] = mergedProp;
@@ -299,22 +314,19 @@ export class OpenAPIParser {
         }
       }
 
-      if (subSchema.items !== undefined) {
+      if (items !== undefined) {
         receiver.items = receiver.items || {};
         // merge inner properties
-        receiver.items = this.mergeAllOf(
-          { allOf: [receiver.items, subSchema.items] },
-          $ref + '/items',
-        );
+        receiver.items = this.mergeAllOf({ allOf: [receiver.items, items] }, $ref + '/items');
       }
 
-      if (subSchema.required !== undefined) {
-        receiver.required = (receiver.required || []).concat(subSchema.required);
+      if (required !== undefined) {
+        receiver.required = (receiver.required || []).concat(required);
       }
 
       // merge rest of constraints
       // TODO: do more intelligent merge
-      receiver = { ...subSchema, ...receiver };
+      receiver = { ...receiver, ...otherConstraints };
 
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);

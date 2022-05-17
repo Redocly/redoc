@@ -16,6 +16,7 @@ import {
 } from '../../common-elements/fields-layout';
 import { ShelfIcon } from '../../common-elements/';
 import { Schema } from '../Schema/Schema';
+
 import type { SchemaOptions } from '../Schema/Schema';
 import type { FieldModel } from '../../services/models';
 
@@ -48,7 +49,7 @@ export class Field extends React.Component<FieldProps> {
   };
 
   render() {
-    const { className, field, isLast, expandByDefault } = this.props;
+    const { className = '', field, isLast, expandByDefault } = this.props;
     const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 

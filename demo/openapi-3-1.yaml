@@ -960,6 +960,33 @@ components:
   schemas:
     ApiResponse:
       type: object
+      patternProperties:
+        ^S_\\w+\\.[1-9]{2,4}$:
+          description: The measured skill for hunting
+          if:
+            x-displayName: fieldName === 'status'
+          else:
+            minLength: 1
+            maxLength: 10
+          then:
+            format: url
+            type: string
+            enum:
+              - success
+              - failed
+        ^O_\\w+\\.[1-9]{2,4}$:
+          type: object
+          properties:
+            nestedProperty:
+              type: [string, boolean]
+              description: The measured skill for hunting
+              default: lazy
+              example: adventurous
+              enum:
+                - clueless
+                - lazy
+                - adventurous
+                - aggressive
       properties:
         code:
           type: integer
@@ -975,7 +1002,7 @@ components:
         - type: object
           properties:
             huntingSkill:
-              type: string
+              type: [string, boolean]
               description: The measured skill for hunting
               default: lazy
               example: adventurous
@@ -1099,15 +1126,26 @@ components:
           example: Guru
         photoUrls:
           description: The list of URL to a cute photos featuring pet
-          type: [string, integer, 'null', array]
+          type: [string, integer, 'null']
           minItems: 1
-          maxItems: 20
+          maxItems: 10
           xml:
             name: photoUrl
             wrapped: true
           items:
             type: string
             format: url
+          if:
+            x-displayName: isString
+            type: string
+          then:
+            minItems: 1
+            maxItems: 15
+          else:
+            x-displayName: notString
+            type: [integer, 'null']
+            minItems: 1
+            maxItems: 20
         friend:
           $ref: '#/components/schemas/Pet'
         tags:
@@ -1131,6 +1169,12 @@ components:
         petType:
           description: Type of a pet
           type: string
+        huntingSkill:
+          type: [integer]
+          enum:
+            - 0
+            - 1
+            - 2
       xml:
         name: Pet
     Tag:
@@ -1198,6 +1242,15 @@ components:
           type: string
           contentEncoding: base64
           contentMediaType: image/png
+      if:
+        title: userStatus === 10
+        properties:
+          userStatus:
+            enum: [10]
+      then:
+        required: ['phone']
+      else:
+        required: []
       xml:
         name: User
   requestBodies:
