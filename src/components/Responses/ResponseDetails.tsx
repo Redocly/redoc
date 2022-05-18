@@ -10,6 +10,7 @@ import { Schema } from '../Schema';
 import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
+import { ConstraintsView } from '../Fields/FieldContstraints';
 
 export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
   render() {
@@ -21,7 +22,12 @@ export class ResponseDetails extends React.PureComponent<{ response: ResponseMod
         <ResponseHeaders headers={headers} />
         <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>
           {({ schema }) => {
-            return <Schema skipWriteOnly={true} key="schema" schema={schema} />;
+            return (
+              <>
+                <ConstraintsView constraints={schema?.constraints || []} />
+                <Schema skipWriteOnly={true} key="schema" schema={schema} />
+              </>
+            );
           }}
         </MediaTypesSwitch>
       </>

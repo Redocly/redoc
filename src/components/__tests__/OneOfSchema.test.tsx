@@ -10,7 +10,7 @@ import { withTheme } from '../testProviders';
 
 const options = new RedocNormalizedOptions({});
 describe('Components', () => {
-  describe('SchemaView', () => {
+  describe('SchemaView OneOf', () => {
     const parser = new OpenAPIParser(
       { openapi: '3.0', info: { title: 'test', version: '0' }, paths: {} },
       undefined,
@@ -52,6 +52,32 @@ describe('Components', () => {
         const component = shallow(withTheme(<Schema schema={schema} />));
         expect(component.render()).toMatchSnapshot();
       });
+    });
+
+    describe('Show minProperties/maxProperties constraints oneOf', () => {
+      const schema = new SchemaModel(
+        parser,
+        {
+          oneOf: [
+            {
+              type: 'object',
+              description: 'Test description',
+              minProperties: 1,
+              maxProperties: 1,
+              additionalProperties: {
+                type: 'string',
+                description: 'The name and value o',
+              },
+            },
+          ],
+        },
+        '',
+        options,
+      );
+
+      const component = shallow(withTheme(<Schema schema={schema} />));
+      console.log(component.html());
+      expect(component.html().includes('= 1 properties')).toBe(true);
     });
   });
 });
