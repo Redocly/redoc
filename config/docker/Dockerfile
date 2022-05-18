@@ -5,14 +5,14 @@
 # npm i -g http-server
 # http-server -p 8000 --cors
 
-FROM node:alpine
+FROM node:12-alpine
 
 RUN apk update && apk add --no-cache git
 
 # Install dependencies
 WORKDIR /build
 COPY package.json package-lock.json /build/
-RUN npm ci --no-optional --ignore-scripts --force
+RUN npm ci --no-optional --ignore-scripts
 
 # copy only required for the build files
 COPY src /build/src

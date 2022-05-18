@@ -99,6 +99,7 @@ const schemaKeywordTypes = {
   additionalProperties: 'object',
   unevaluatedProperties: 'object',
   properties: 'object',
+  patternProperties: 'object',
 };
 
 export function detectType(schema: OpenAPISchema): string {
@@ -121,6 +122,10 @@ export function isPrimitiveType(
   type: string | string[] | undefined = schema.type,
 ) {
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
+    return false;
+  }
+
+  if ((schema.if && schema.then) || (schema.if && schema.else)) {
     return false;
   }
 

@@ -1903,6 +1903,46 @@ Object {
     },
     "schemas": Object {
       "ApiResponse": Object {
+        "patternProperties": Object {
+          "^O_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
+            "properties": Object {
+              "nestedProperty": Object {
+                "default": "lazy",
+                "description": "The measured skill for hunting",
+                "enum": Array [
+                  "clueless",
+                  "lazy",
+                  "adventurous",
+                  "aggressive",
+                ],
+                "example": "adventurous",
+                "type": Array [
+                  "string",
+                  "boolean",
+                ],
+              },
+            },
+            "type": "object",
+          },
+          "^S_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
+            "description": "The measured skill for hunting",
+            "else": Object {
+              "maxLength": 10,
+              "minLength": 1,
+            },
+            "if": Object {
+              "x-displayName": "fieldName === 'status'",
+            },
+            "then": Object {
+              "enum": Array [
+                "success",
+                "failed",
+              ],
+              "format": "url",
+              "type": "string",
+            },
+          },
+        },
         "properties": Object {
           "code": Object {
             "format": "int32",
@@ -1934,7 +1974,10 @@ Object {
                   "aggressive",
                 ],
                 "example": "adventurous",
-                "type": "string",
+                "type": Array [
+                  "string",
+                  "boolean",
+                ],
               },
             },
             "required": Array [
@@ -2086,6 +2129,16 @@ Object {
           "friend": Object {
             "$ref": "#/components/schemas/Pet",
           },
+          "huntingSkill": Object {
+            "enum": Array [
+              0,
+              1,
+              2,
+            ],
+            "type": Array [
+              "integer",
+            ],
+          },
           "id": Object {
             "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
@@ -2105,17 +2158,33 @@ Object {
           },
           "photoUrls": Object {
             "description": "The list of URL to a cute photos featuring pet",
+            "else": Object {
+              "maxItems": 20,
+              "minItems": 1,
+              "type": Array [
+                "integer",
+                "null",
+              ],
+              "x-displayName": "notString",
+            },
+            "if": Object {
+              "type": "string",
+              "x-displayName": "isString",
+            },
             "items": Object {
               "format": "url",
               "type": "string",
             },
-            "maxItems": 20,
+            "maxItems": 10,
             "minItems": 1,
+            "then": Object {
+              "maxItems": 15,
+              "minItems": 1,
+            },
             "type": Array [
               "string",
               "integer",
               "null",
-              "array",
             ],
             "xml": Object {
               "name": "photoUrl",
@@ -2173,6 +2242,19 @@ Object {
         },
       },
       "User": Object {
+        "else": Object {
+          "required": Array [],
+        },
+        "if": Object {
+          "properties": Object {
+            "userStatus": Object {
+              "enum": Array [
+                10,
+              ],
+            },
+          },
+          "title": "userStatus === 10",
+        },
         "properties": Object {
           "email": Object {
             "description": "User email address",
@@ -2237,6 +2319,11 @@ Object {
             "minLength": 4,
             "type": "string",
           },
+        },
+        "then": Object {
+          "required": Array [
+            "phone",
+          ],
         },
         "type": "object",
         "xml": Object {

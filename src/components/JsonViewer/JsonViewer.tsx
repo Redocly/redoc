@@ -27,20 +27,20 @@ class Json extends React.PureComponent<JsonProps> {
   }
 
   renderInner = ({ renderCopyButton }) => {
-    const showFoldingButtons = this.props.data && Object.values(this.props.data).some(
-      (value) => typeof value === 'object' && value !== null,
-    );
+    const showFoldingButtons =
+      this.props.data &&
+      Object.values(this.props.data).some(value => typeof value === 'object' && value !== null);
 
     return (
       <JsonViewerWrap>
         <SampleControls>
           {renderCopyButton()}
-          {showFoldingButtons &&
+          {showFoldingButtons && (
             <>
               <button onClick={this.expandAll}> Expand all </button>
               <button onClick={this.collapseAll}> Collapse all </button>
             </>
-          }
+          )}
         </SampleControls>
         <OptionsContext.Consumer>
           {options => (

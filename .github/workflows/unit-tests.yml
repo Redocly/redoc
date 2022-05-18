@@ -6,8 +6,7 @@ jobs:
   build-and-unit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - run: npm ci
-      - run: npm ci --prefix cli
+      - uses: actions/checkout@v3
+      - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
       - run: npm test

@@ -113,6 +113,7 @@ export interface OpenAPISchema {
   $ref?: string;
   type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
+  patternProperties?: { [name: string]: OpenAPISchema };
   additionalProperties?: boolean | OpenAPISchema;
   unevaluatedProperties?: boolean | OpenAPISchema;
   description?: string;
@@ -147,6 +148,10 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
+
+  if?: OpenAPISchema;
+  else?: OpenAPISchema;
+  then?: OpenAPISchema;
   examples?: any[];
   const?: string;
   contentEncoding?: string;

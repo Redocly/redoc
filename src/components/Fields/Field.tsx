@@ -3,9 +3,12 @@ import * as React from 'react';
 import { StoreContext } from '../../components/StoreBuilder';
 import { AppStore, SECTION_ATTR } from '../../services';
 
-import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
+import {
+  ClickablePropertyNameCell,
+  PropertyLabel,
+  RequiredLabel,
+} from '../../common-elements/fields';
 import { FieldDetails } from './FieldDetails';
-
 import {
   InnerPropertiesWrap,
   PropertyBullet,
@@ -49,7 +52,7 @@ export class Field extends React.Component<FieldProps> {
   };
 
   render() {
-    const { className, field, isLast, expandByDefault, operationHash } = this.props;
+    const { className = '', field, isLast, expandByDefault, operationHash } = this.props;
     const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
@@ -58,6 +61,14 @@ export class Field extends React.Component<FieldProps> {
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
     const propertyHref = `${operationHash}|${name}`;
     const isActiveProperty = appStore.menu.activeItemHash === propertyHref;
+
+    const labels = (
+      <>
+        {kind === 'additionalProperties' && <PropertyLabel>additional property</PropertyLabel>}
+        {kind === 'patternProperties' && <PropertyLabel>pattern property</PropertyLabel>}
+        {required && <RequiredLabel>required</RequiredLabel>}
+      </>
+    );
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
@@ -72,17 +83,17 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          <span>{name}</span>
+          <span className="property-name">{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
-        {required && <RequiredLabel> required </RequiredLabel>}
+        {labels}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <ShareLink to={propertyHref} />
         <PropertyBullet />
-        <span>{name}</span>
-        {required && <RequiredLabel> required </RequiredLabel>}
+        <span className="property-name">{name}</span>
+        {labels}
       </PropertyNameCell>
     );
 

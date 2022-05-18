@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
 import {
   RecursiveLabel,
@@ -24,7 +25,7 @@ import { OptionsContext } from '../OptionsProvider';
 import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
 
-function FieldDetailsComponent(props: FieldProps) {
+export const FieldDetailsComponent = observer((props: FieldProps) => {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
@@ -107,6 +108,6 @@ function FieldDetailsComponent(props: FieldProps) {
       {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
     </div>
   );
-}
+});
 
 export const FieldDetails = React.memo<FieldProps>(FieldDetailsComponent);

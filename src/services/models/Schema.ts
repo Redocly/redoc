@@ -152,6 +152,11 @@ export class SchemaModel {
       return;
     }
 
+    if ((schema.if && schema.then) || (schema.if && schema.else)) {
+      this.initConditionalOperators(schema, parser);
+      return;
+    }
+
     if (!isChild && getDiscriminator(schema) !== undefined) {
       this.initDiscriminator(schema, parser);
       return;
@@ -355,6 +360,38 @@ export class SchemaModel {
       return innerSchema;
     });
   }
+
+  private initConditionalOperators(schema: OpenAPISchema, parser: OpenAPIParser) {
+    const {
+      if: ifOperator,
+      else: elseOperator = {},
+      then: thenOperator = {},
+      ...restSchema
+    } = schema;
+    const groupedOperators = [
+      {
+        allOf: [restSchema, thenOperator, ifOperator],
+        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'case 1',
+      },
+      {
+        allOf: [restSchema, elseOperator],
+        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'case 2',
+      },
+    ];
+
+    this.oneOf = groupedOperators.map(
+      (variant, idx) =>
+        new SchemaModel(
+          parser,
+          {
+            ...variant,
+          } as OpenAPISchema,
+          this.pointer + '/oneOf/' + idx,
+          this.options,
+        ),
+    );
+    this.oneOfType = 'One of';
+  }
 }
 
 function buildFields(
@@ -364,6 +401,7 @@ function buildFields(
   options: RedocNormalizedOptions,
 ): FieldModel[] {
   const props = schema.properties || {};
+  const patternProps = schema.patternProperties || {};
   const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
   const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
@@ -401,6 +439,31 @@ function buildFields(
     // if not sort alphabetically sort in the order from required keyword
     fields = sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
+
+  fields.push(
+    ...Object.keys(patternProps).map(fieldName => {
+      let field = patternProps[fieldName];
+
+      if (!field) {
+        console.warn(
+          `Field "${fieldName}" is invalid, skipping.\n Field must be an object but got ${typeof field} at "${$ref}"`,
+        );
+        field = {};
+      }
+
+      return new FieldModel(
+        parser,
+        {
+          name: fieldName,
+          required: false,
+          schema: field,
+          kind: 'patternProperties',
+        },
+        `${$ref}/patternProperties/${fieldName}`,
+        options,
+      );
+    }),
+  );
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
     fields.push(
