@@ -33,7 +33,6 @@
     "start:prod": "webpack serve --env playground --mode=production --config demo/webpack.config.ts",
     "start:benchmark": "webpack serve --mode=production --env.bench --config demo/webpack.config.ts",
     "test": "npm run unit && npm run license-check",
-    "test:update-snapshot": "jest --updateSnapshot",
     "unit": "jest --coverage",
     "test:update-snapshot": "jest --updateSnapshot",
     "e2e": "cypress run",

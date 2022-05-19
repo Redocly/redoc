@@ -76,7 +76,6 @@ describe('Components', () => {
       );
 
       const component = shallow(withTheme(<Schema schema={schema} />));
-      console.log(component.html());
       expect(component.html().includes('= 1 properties')).toBe(true);
     });
   });
