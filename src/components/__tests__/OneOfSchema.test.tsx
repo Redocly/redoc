@@ -10,7 +10,7 @@ import { withTheme } from '../testProviders';
 
 const options = new RedocNormalizedOptions({});
 describe('Components', () => {
-  describe('SchemaView OneOf', () => {
+  describe('SchemaView', () => {
     const parser = new OpenAPIParser(
       { openapi: '3.0', info: { title: 'test', version: '0' }, paths: {} },
       undefined,

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Components SchemaView OneOf OneOf deprecated should match snapshot 1`] = `
+exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
 <div>
   <span
     class="sc-kfYoZR juYXUf"
