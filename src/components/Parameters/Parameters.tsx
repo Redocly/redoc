@@ -10,6 +10,7 @@ import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
 
 import { Markdown } from '../Markdown/Markdown';
+import { ConstraintsView } from '../Fields/FieldContstraints';
 
 function safePush(obj, prop, item) {
   if (!obj[prop]) {
@@ -79,6 +80,7 @@ export function BodyContent(props: {
         return (
           <>
             {description !== undefined && <Markdown source={description} />}
+            <ConstraintsView constraints={schema?.constraints || []} />
             <Schema
               skipReadOnly={isRequestType}
               skipWriteOnly={!isRequestType}

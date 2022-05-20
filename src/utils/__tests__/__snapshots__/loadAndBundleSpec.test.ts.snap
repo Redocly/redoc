@@ -966,6 +966,7 @@ try {
                     "format": "int32",
                     "type": "integer",
                   },
+                  "minProperties": 2,
                   "type": "object",
                 },
               },

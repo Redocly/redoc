@@ -423,7 +423,7 @@ function humanizeRangeConstraint(
   let stringRange;
   if (min !== undefined && max !== undefined) {
     if (min === max) {
-      stringRange = `${min} ${description}`;
+      stringRange = `= ${min} ${description}`;
     } else {
       stringRange = `[ ${min} .. ${max} ] ${description}`;
     }
@@ -474,6 +474,15 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const arrayRange = humanizeRangeConstraint('items', schema.minItems, schema.maxItems);
   if (arrayRange !== undefined) {
     res.push(arrayRange);
+  }
+
+  const propertiesRange = humanizeRangeConstraint(
+    'properties',
+    schema.minProperties,
+    schema.maxProperties,
+  );
+  if (propertiesRange !== undefined) {
+    res.push(propertiesRange);
   }
 
   const multipleOfConstraint = humanizeMultipleOfConstraint(schema.multipleOf);
