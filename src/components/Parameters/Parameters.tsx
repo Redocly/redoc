@@ -80,7 +80,9 @@ export function BodyContent(props: {
         return (
           <>
             {description !== undefined && <Markdown source={description} />}
-            <ConstraintsView constraints={schema?.constraints || []} />
+            {schema?.type === 'object' && (
+              <ConstraintsView constraints={schema?.constraints || []} />
+            )}
             <Schema
               skipReadOnly={isRequestType}
               skipWriteOnly={!isRequestType}
