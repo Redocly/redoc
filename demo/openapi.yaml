@@ -1135,6 +1135,26 @@ components:
           description: User status
           type: integer
           format: int32
+        addresses:
+          type: array
+          minItems: 0
+          maxLength: 10
+          items:
+            - type: object
+              properties:
+                city:
+                  type: string
+                  minLength: 0
+                country:
+                  type: string
+                  minLength: 0
+                street:
+                  description: includes build/apartment number
+                  type: string
+                  minLength: 0
+            - type: number
+          additionalItems:
+            type: string
       xml:
         name: User
   requestBodies:

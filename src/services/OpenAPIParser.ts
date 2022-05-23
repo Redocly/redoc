@@ -1,6 +1,6 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, isArray, IS_BROWSER } from '../utils/';
+import { appendToMdHeading, isArray, isBoolean, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import {
   getDefinitionName,
@@ -318,9 +318,19 @@ export class OpenAPIParser {
       }
 
       if (items !== undefined) {
-        receiver.items = receiver.items || {};
+        const receiverItems = isBoolean(receiver.items)
+          ? { items: receiver.items }
+          : receiver.items
+          ? (Object.assign({}, receiver.items) as OpenAPISchema)
+          : {};
+        const subSchemaItems = isBoolean(items)
+          ? { items }
+          : (Object.assign({}, items) as OpenAPISchema);
         // merge inner properties
-        receiver.items = this.mergeAllOf({ allOf: [receiver.items, items] }, $ref + '/items');
+        receiver.items = this.mergeAllOf(
+          { allOf: [receiverItems, subSchemaItems] },
+          $ref + '/items',
+        );
       }
 
       if (required !== undefined) {
