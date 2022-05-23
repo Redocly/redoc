@@ -16,7 +16,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, removeQueryString, resolveUrl, isArray } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, isArray, isBoolean } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -139,8 +139,13 @@ export function isPrimitiveType(
         : schema.additionalProperties === undefined && schema.unevaluatedProperties === undefined;
   }
 
+  if (isArray(schema.items) || isArray(schema.prefixItems)) {
+    return false;
+  }
+
   if (
     schema.items !== undefined &&
+    !isBoolean(schema.items) &&
     (type === 'array' || (isArrayType && type?.includes('array')))
   ) {
     isPrimitive = isPrimitiveType(schema.items, schema.items.type);

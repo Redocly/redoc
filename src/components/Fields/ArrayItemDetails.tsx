@@ -14,7 +14,7 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
     ((!schema?.pattern || hideSchemaPattern) &&
       !schema.items &&
       !schema.displayFormat &&
-      !schema.constraints.length)
+      !schema.constraints.length) // return null for cases where all constraints are empty
   ) {
     return null;
   }
