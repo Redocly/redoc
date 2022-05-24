@@ -553,7 +553,7 @@ describe('Utils', () => {
     });
 
     it('should have a humanized constraint when minItems and maxItems are the same', () => {
-      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
+      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('= 7 items');
     });
 
     it('should have a humanized constraint when justMinItems is set, and it is equal to 1', () => {
