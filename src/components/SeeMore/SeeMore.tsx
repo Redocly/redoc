@@ -13,7 +13,7 @@ export function SeeMore({ children, height }: SeeMoreProps): JSX.Element {
   const [showMore, setShowMore] = React.useState(false);
   const [showLink, setShowLink] = React.useState(false);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (ref.current && ref.current.clientHeight + TOLERANCE_PX < ref.current.scrollHeight) {
       setShowLink(true);
     }

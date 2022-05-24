@@ -1,0 +1,1277 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SecurityRequirement should render SecurityDefs 1`] = `
+Array [
+  <div
+    class="sc-eCApnc jlMQbh"
+    data-section-id="section/Authentication/petstore_auth"
+    id="section/Authentication/petstore_auth"
+  >
+    <div
+      class="sc-iCoGMd gLxhOh"
+    >
+      <div
+        class="sc-hKFxyN juinod"
+      >
+        <h2
+          class="sc-pNWdM eftmgB"
+        >
+          petstore_auth
+        </h2>
+        <div
+          class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+        >
+          <p>
+            Get access to data while protecting your account credentials.
+OAuth2 is also a safer and more secure way to give you access.
+          </p>
+          
+
+        </div>
+        <div
+          class="sc-EZqKI aOkZE"
+        >
+          <div
+            class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+          >
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                Flow type: 
+              </b>
+              <code>
+                implicit 
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <strong>
+                 Authorization URL: 
+              </strong>
+              <code>
+                <a
+                  href="http://petstore.swagger.io/api/oauth/dialog"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  http://petstore.swagger.io/api/oauth/dialog
+                </a>
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                 Scopes: 
+              </b>
+            </div>
+            <div
+              class="sc-jXcxbT blWOKY container"
+              style="height: 4em;"
+            >
+              <ul>
+                <li>
+                  <code>
+                    write:pets
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      modify pets in your account
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read:pets
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      read your pets
+                    </p>
+                    
+
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="sc-eEVmNe gbLbHj"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="sc-eCApnc jlMQbh"
+    data-section-id="section/Authentication/GitLab_PersonalAccessToken"
+    id="section/Authentication/GitLab_PersonalAccessToken"
+  >
+    <div
+      class="sc-iCoGMd gLxhOh"
+    >
+      <div
+        class="sc-hKFxyN juinod"
+      >
+        <h2
+          class="sc-pNWdM eftmgB"
+        >
+          GitLab_PersonalAccessToken
+        </h2>
+        <div
+          class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+        >
+          <p>
+            GitLab Personal Access Token description
+          </p>
+          
+
+        </div>
+        <div
+          class="sc-EZqKI aOkZE"
+        >
+          <div
+            class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+          >
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                Header parameter name: 
+              </b>
+              <code>
+                PRIVATE-TOKEN
+              </code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="sc-eCApnc jlMQbh"
+    data-section-id="section/Authentication/GitLab_OAuth2Implicit"
+    id="section/Authentication/GitLab_OAuth2Implicit"
+  >
+    <div
+      class="sc-iCoGMd gLxhOh"
+    >
+      <div
+        class="sc-hKFxyN juinod"
+      >
+        <h2
+          class="sc-pNWdM eftmgB"
+        >
+          GitLab_OAuth2Implicit
+        </h2>
+        <div
+          class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+        >
+          <p>
+            OAuth2 Implicit description
+          </p>
+          
+
+        </div>
+        <div
+          class="sc-EZqKI aOkZE"
+        >
+          <div
+            class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+          >
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                Flow type: 
+              </b>
+              <code>
+                implicit 
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <strong>
+                 Authorization URL: 
+              </strong>
+              <code>
+                <a
+                  href="https://gitlab.com/oauth/authorize"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  https://gitlab.com/oauth/authorize
+                </a>
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                 Scopes: 
+              </b>
+            </div>
+            <div
+              class="sc-jXcxbT blWOKY container"
+              style="height: 4em;"
+            >
+              <ul>
+                <li>
+                  <code>
+                    api
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read_user
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read_api
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants read access to the API, including all groups and projects, the container registry, and the package registry.
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read_repository
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants read-only access to repositories on private projects using Git-over-HTTP or the Repository Files API.
+                    </p>
+                    
+
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="sc-eEVmNe gbLbHj"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="sc-eCApnc jlMQbh"
+    data-section-id="section/Authentication/GitLab_OAuth2AuthorizationCode"
+    id="section/Authentication/GitLab_OAuth2AuthorizationCode"
+  >
+    <div
+      class="sc-iCoGMd gLxhOh"
+    >
+      <div
+        class="sc-hKFxyN juinod"
+      >
+        <h2
+          class="sc-pNWdM eftmgB"
+        >
+          GitLab_OAuth2AuthorizationCode
+        </h2>
+        <div
+          class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+        >
+          <p>
+            OAuth2 Authorization Code description
+          </p>
+          
+
+        </div>
+        <div
+          class="sc-EZqKI aOkZE"
+        >
+          <div
+            class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+          >
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                Flow type: 
+              </b>
+              <code>
+                authorizationCode 
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <strong>
+                 Authorization URL: 
+              </strong>
+              <code>
+                <a
+                  rel="noopener noreferrer"
+                  target="_blank"
+                />
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                 Token URL: 
+              </b>
+              <code>
+                https://gitlab.com/oauth/token
+              </code>
+            </div>
+            <div
+              class="sc-fXgAZx gZCyoW"
+            >
+              <b>
+                 Scopes: 
+              </b>
+            </div>
+            <div
+              class="sc-jXcxbT blWOKY container"
+              style="height: 4em;"
+            >
+              <ul>
+                <li>
+                  <code>
+                    api
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read_user
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.
+                    </p>
+                    
+
+                  </span>
+                </li>
+                <li>
+                  <code>
+                    read_api
+                  </code>
+                   - 
+                  <span
+                    class="sc-carFqZ bmTzxo redoc-markdown"
+                  >
+                    <p>
+                      Grants read access to the API, including all groups and projects, the container registry, and the package registry.
+                    </p>
+                    
+
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="sc-eEVmNe gbLbHj"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`SecurityRequirement should render authDefinition 1`] = `
+Array [
+  <div
+    class="sc-bQCEYZ eDdCgW"
+  >
+    <div
+      class="sc-xGAEC femyTb"
+    >
+      <h5
+        class="sc-iqAclL sc-jHcXXw eONCmm keQLTh"
+      >
+        Authorizations:
+      </h5>
+      <svg
+        aria-hidden="true"
+        class="sc-dIsUp iPqByX"
+        version="1.1"
+        viewBox="0 0 24 24"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "
+        />
+      </svg>
+    </div>
+    <div
+      class="sc-dWBRfb kJFNCL"
+    >
+      <span
+        class="sc-kYPZxB bzoiBL"
+      >
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            petstore_auth
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>,
+  ",",
+]
+`;
+
+exports[`SecurityRequirement should render authDefinition 2`] = `
+Array [
+  <div
+    class="sc-bQCEYZ dSwEDq"
+  >
+    <div
+      class="sc-xGAEC femyTb"
+    >
+      <h5
+        class="sc-iqAclL sc-jHcXXw eONCmm keQLTh"
+      >
+        Authorizations:
+      </h5>
+      <svg
+        aria-hidden="true"
+        class="sc-dIsUp fVWtGJ"
+        version="1.1"
+        viewBox="0 0 24 24"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "
+        />
+      </svg>
+    </div>
+    <div
+      class="sc-dWBRfb ekRdav"
+    >
+      <span
+        class="sc-kYPZxB dXdTrs"
+      >
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            petstore_auth
+          </b>
+           (
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            write:pets
+          </code>
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            read:pets
+          </code>
+          ) 
+        </span>
+      </span>
+    </div>
+  </div>,
+  <div
+    class="sc-EZqKI aOkZE"
+  >
+    <h5>
+      <svg
+        height="11"
+        viewBox="0 0 24 24"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z"
+          fill="currentColor"
+        />
+      </svg>
+       OAuth2: petstore_auth
+    </h5>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <p>
+        Get access to data while protecting your account credentials.
+OAuth2 is also a safer and more secure way to give you access.
+      </p>
+      
+
+    </div>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+          Flow type: 
+        </b>
+        <code>
+          implicit 
+        </code>
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <strong>
+           Authorization URL: 
+        </strong>
+        <code>
+          <a
+            href="http://petstore.swagger.io/api/oauth/dialog"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            http://petstore.swagger.io/api/oauth/dialog
+          </a>
+        </code>
+      </div>
+      <div>
+        <b>
+          Required scopes: 
+        </b>
+        <code>
+          write:pets
+        </code>
+         
+        <code>
+          read:pets
+        </code>
+         
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+           Scopes: 
+        </b>
+      </div>
+      <div
+        class="sc-jXcxbT blWOKY container"
+        style="height: 4em;"
+      >
+        <ul>
+          <li>
+            <code>
+              write:pets
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                modify pets in your account
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read:pets
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                read your pets
+              </p>
+              
+
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="sc-eEVmNe gbLbHj"
+      />
+    </div>
+  </div>,
+  ",",
+]
+`;
+
+exports[`SecurityRequirement should render authDefinition 3`] = `
+Array [
+  <div
+    class="sc-bQCEYZ eDdCgW"
+  >
+    <div
+      class="sc-xGAEC femyTb"
+    >
+      <h5
+        class="sc-iqAclL sc-jHcXXw eONCmm keQLTh"
+      >
+        Authorizations:
+      </h5>
+      <svg
+        aria-hidden="true"
+        class="sc-dIsUp iPqByX"
+        version="1.1"
+        viewBox="0 0 24 24"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "
+        />
+      </svg>
+    </div>
+    <div
+      class="sc-dWBRfb kJFNCL"
+    >
+      <span
+        class="sc-kYPZxB bzoiBL"
+      >
+        (
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          API Key: 
+          <b>
+            GitLab_PersonalAccessToken
+          </b>
+        </span>
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            GitLab_OAuth2Implicit
+          </b>
+        </span>
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            GitLab_OAuth2AuthorizationCode
+          </b>
+        </span>
+        ) 
+      </span>
+      <span
+        class="sc-kYPZxB bzoiBL"
+      >
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            petstore_auth
+          </b>
+        </span>
+      </span>
+    </div>
+  </div>,
+  ",",
+]
+`;
+
+exports[`SecurityRequirement should render authDefinition 4`] = `
+Array [
+  <div
+    class="sc-bQCEYZ dSwEDq"
+  >
+    <div
+      class="sc-xGAEC femyTb"
+    >
+      <h5
+        class="sc-iqAclL sc-jHcXXw eONCmm keQLTh"
+      >
+        Authorizations:
+      </h5>
+      <svg
+        aria-hidden="true"
+        class="sc-dIsUp fVWtGJ"
+        version="1.1"
+        viewBox="0 0 24 24"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "
+        />
+      </svg>
+    </div>
+    <div
+      class="sc-dWBRfb ekRdav"
+    >
+      <span
+        class="sc-kYPZxB dXdTrs"
+      >
+        (
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          API Key: 
+          <b>
+            GitLab_PersonalAccessToken
+          </b>
+        </span>
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            GitLab_OAuth2Implicit
+          </b>
+           (
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            api
+          </code>
+          ) 
+        </span>
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            GitLab_OAuth2AuthorizationCode
+          </b>
+           (
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            api
+          </code>
+          ) 
+        </span>
+        ) 
+      </span>
+      <span
+        class="sc-kYPZxB dXdTrs"
+      >
+        <span
+          class="sc-hzUIXc gcouO"
+        >
+          OAuth2: 
+          <b>
+            petstore_auth
+          </b>
+           (
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            write:pets
+          </code>
+          <code
+            class="sc-eHEENL fwFTyL"
+          >
+            read:pets
+          </code>
+          ) 
+        </span>
+      </span>
+    </div>
+  </div>,
+  <div
+    class="sc-EZqKI aOkZE"
+  >
+    <h5>
+      <svg
+        height="11"
+        viewBox="0 0 24 24"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z"
+          fill="currentColor"
+        />
+      </svg>
+       OAuth2: petstore_auth
+    </h5>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <p>
+        Get access to data while protecting your account credentials.
+OAuth2 is also a safer and more secure way to give you access.
+      </p>
+      
+
+    </div>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+          Flow type: 
+        </b>
+        <code>
+          implicit 
+        </code>
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <strong>
+           Authorization URL: 
+        </strong>
+        <code>
+          <a
+            href="http://petstore.swagger.io/api/oauth/dialog"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            http://petstore.swagger.io/api/oauth/dialog
+          </a>
+        </code>
+      </div>
+      <div>
+        <b>
+          Required scopes: 
+        </b>
+        <code>
+          write:pets
+        </code>
+         
+        <code>
+          read:pets
+        </code>
+         
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+           Scopes: 
+        </b>
+      </div>
+      <div
+        class="sc-jXcxbT blWOKY container"
+        style="height: 4em;"
+      >
+        <ul>
+          <li>
+            <code>
+              write:pets
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                modify pets in your account
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read:pets
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                read your pets
+              </p>
+              
+
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="sc-eEVmNe gbLbHj"
+      />
+    </div>
+  </div>,
+  <div
+    class="sc-EZqKI aOkZE"
+  >
+    <h5>
+      <svg
+        height="11"
+        viewBox="0 0 24 24"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z"
+          fill="currentColor"
+        />
+      </svg>
+       API Key: GitLab_PersonalAccessToken
+    </h5>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <p>
+        GitLab Personal Access Token description
+      </p>
+      
+
+    </div>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+          Header parameter name: 
+        </b>
+        <code>
+          PRIVATE-TOKEN
+        </code>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="sc-EZqKI aOkZE"
+  >
+    <h5>
+      <svg
+        height="11"
+        viewBox="0 0 24 24"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z"
+          fill="currentColor"
+        />
+      </svg>
+       OAuth2: GitLab_OAuth2Implicit
+    </h5>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <p>
+        OAuth2 Implicit description
+      </p>
+      
+
+    </div>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+          Flow type: 
+        </b>
+        <code>
+          implicit 
+        </code>
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <strong>
+           Authorization URL: 
+        </strong>
+        <code>
+          <a
+            href="https://gitlab.com/oauth/authorize"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            https://gitlab.com/oauth/authorize
+          </a>
+        </code>
+      </div>
+      <div>
+        <b>
+          Required scopes: 
+        </b>
+        <code>
+          api
+        </code>
+         
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+           Scopes: 
+        </b>
+      </div>
+      <div
+        class="sc-jXcxbT blWOKY container"
+        style="height: 4em;"
+      >
+        <ul>
+          <li>
+            <code>
+              api
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read_user
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read_api
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants read access to the API, including all groups and projects, the container registry, and the package registry.
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read_repository
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants read-only access to repositories on private projects using Git-over-HTTP or the Repository Files API.
+              </p>
+              
+
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="sc-eEVmNe gbLbHj"
+      />
+    </div>
+  </div>,
+  <div
+    class="sc-EZqKI aOkZE"
+  >
+    <h5>
+      <svg
+        height="11"
+        viewBox="0 0 24 24"
+        width="11"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z"
+          fill="currentColor"
+        />
+      </svg>
+       OAuth2: GitLab_OAuth2AuthorizationCode
+    </h5>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <p>
+        OAuth2 Authorization Code description
+      </p>
+      
+
+    </div>
+    <div
+      class="sc-iJCRrE sc-ciSkZP jCdxGr QGruV"
+    >
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+          Flow type: 
+        </b>
+        <code>
+          authorizationCode 
+        </code>
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <strong>
+           Authorization URL: 
+        </strong>
+        <code>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        </code>
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+           Token URL: 
+        </b>
+        <code>
+          https://gitlab.com/oauth/token
+        </code>
+      </div>
+      <div>
+        <b>
+          Required scopes: 
+        </b>
+        <code>
+          api
+        </code>
+         
+      </div>
+      <div
+        class="sc-fXgAZx gZCyoW"
+      >
+        <b>
+           Scopes: 
+        </b>
+      </div>
+      <div
+        class="sc-jXcxbT blWOKY container"
+        style="height: 4em;"
+      >
+        <ul>
+          <li>
+            <code>
+              api
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read_user
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.
+              </p>
+              
+
+            </span>
+          </li>
+          <li>
+            <code>
+              read_api
+            </code>
+             - 
+            <span
+              class="sc-carFqZ bmTzxo redoc-markdown"
+            >
+              <p>
+                Grants read access to the API, including all groups and projects, the container registry, and the package registry.
+              </p>
+              
+
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="sc-eEVmNe gbLbHj"
+      />
+    </div>
+  </div>,
+  ",",
+]
+`;
