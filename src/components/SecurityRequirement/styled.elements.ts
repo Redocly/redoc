@@ -55,7 +55,7 @@ export const SecurityRequirementAndWrap = styled.span`
   ${linksCss};
 `;
 
-export const SecurityRequirementOrWrap = styled.span<{ expanded?: boolean; grouping?: boolean }>`
+export const SecurityRequirementOrWrap = styled.span<{ expanded?: boolean }>`
   ${p => !p.expanded && `white-space: nowrap;`}
   &:after {
     content: ' or ';
@@ -76,6 +76,7 @@ export const SecurityRequirementOrWrap = styled.span<{ expanded?: boolean; group
 
 export const AuthHeaderColumn = styled.div`
   flex: 1 1 auto;
+  cursor: pointer;
 `;
 
 export const SecuritiesColumn = styled.div<{ expanded?: boolean }>`
@@ -101,7 +102,6 @@ export const AuthHeader = styled(UnderlinedHeader)`
 `;
 
 export const Wrap = styled.div<{ expanded?: boolean }>`
-  cursor: pointer;
   width: 100%;
   display: flex;
   margin: 1em 0;

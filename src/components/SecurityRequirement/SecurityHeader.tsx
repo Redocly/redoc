@@ -18,7 +18,7 @@ export function SecurityHeader(props: SecurityRequirementProps) {
 
   const grouping = security.schemes.length > 1;
   return (
-    <SecurityRequirementOrWrap expanded={expanded} grouping={security.schemes.length > 1}>
+    <SecurityRequirementOrWrap expanded={expanded}>
       {grouping && '('}
       {security.schemes.map(scheme => {
         return (
