@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
@@ -78,4 +78,8 @@ export function StoreBuilder(props: StoreBuilderProps) {
     loading: !store,
     store,
   });
+}
+
+export function useStore(): AppStore | undefined {
+  return useContext(StoreContext);
 }
