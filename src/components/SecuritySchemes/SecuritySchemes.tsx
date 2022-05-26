@@ -4,7 +4,7 @@ import { SecuritySchemesModel } from '../../services';
 import { H2, Row, ShareLink, MiddlePanel, Section } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 import { SecurityDetails } from '../SecurityRequirement/SecurityDetails';
-import { SecurityDetailsStyle } from '../SecurityRequirement/styled.elements';
+import { SecurityDetailsStyle, SecurityRow } from '../SecurityRequirement/styled.elements';
 
 export const AUTH_TYPES = {
   oauth2: 'OAuth2',
@@ -29,6 +29,10 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
             </H2>
             <Markdown source={scheme.description || ''} />
             <SecurityDetailsStyle>
+              <SecurityRow>
+                <b>Security Scheme Type: </b>
+                <span>{AUTH_TYPES[scheme.type] || scheme.type}</span>
+              </SecurityRow>
               <SecurityDetails scheme={scheme} />
             </SecurityDetailsStyle>
           </MiddlePanel>
