@@ -1,5 +1,4 @@
 import { OpenAPISecurityScheme, Referenced } from '../../types';
-import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils/openapi';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecuritySchemeModel {
@@ -26,7 +25,7 @@ export class SecuritySchemeModel {
   constructor(parser: OpenAPIParser, id: string, scheme: Referenced<OpenAPISecurityScheme>) {
     const info = parser.deref(scheme);
     this.id = id;
-    this.sectionId = SECURITY_SCHEMES_SECTION_PREFIX + id;
+    this.sectionId = id;
     this.type = info.type;
     this.displayName = info['x-displayName'] || id;
     this.description = info.description || '';

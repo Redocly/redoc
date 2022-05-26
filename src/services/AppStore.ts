@@ -12,11 +12,7 @@ import { SearchStore } from './SearchStore';
 
 import { SchemaDefinition } from '../components/SchemaDefinition/SchemaDefinition';
 import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
-import {
-  SCHEMA_DEFINITION_JSX_NAME,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  SECURITY_DEFINITIONS_JSX_NAME,
-} from '../utils/openapi';
+import { SCHEMA_DEFINITION_JSX_NAME, SECURITY_DEFINITIONS_JSX_NAME } from '../utils/openapi';
 
 import { IS_BROWSER } from '../utils';
 
@@ -158,12 +154,6 @@ export class AppStore {
 
 const DEFAULT_OPTIONS: RedocRawOptions = {
   allowedMdComponents: {
-    [SECURITY_DEFINITIONS_COMPONENT_NAME]: {
-      component: SecurityDefs,
-      propsSelector: (store: AppStore) => ({
-        securitySchemes: store.spec.securitySchemes,
-      }),
-    },
     [SECURITY_DEFINITIONS_JSX_NAME]: {
       component: SecurityDefs,
       propsSelector: (store: AppStore) => ({

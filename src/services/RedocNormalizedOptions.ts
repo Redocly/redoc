@@ -21,7 +21,6 @@ export interface RedocRawOptions {
   sortEnumValuesAlphabetically?: boolean | string;
   sortOperationsAlphabetically?: boolean | string;
   sortTagsAlphabetically?: boolean | string;
-  noAutoAuth?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
   untrustedSpec?: boolean | string;
@@ -225,7 +224,6 @@ export class RedocNormalizedOptions {
   sortEnumValuesAlphabetically: boolean;
   sortOperationsAlphabetically: boolean;
   sortTagsAlphabetically: boolean;
-  noAutoAuth: boolean;
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
   untrustedSpec: boolean;
@@ -296,7 +294,6 @@ export class RedocNormalizedOptions {
     this.sortEnumValuesAlphabetically = argValueToBoolean(raw.sortEnumValuesAlphabetically);
     this.sortOperationsAlphabetically = argValueToBoolean(raw.sortOperationsAlphabetically);
     this.sortTagsAlphabetically = argValueToBoolean(raw.sortTagsAlphabetically);
-    this.noAutoAuth = argValueToBoolean(raw.noAutoAuth);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
