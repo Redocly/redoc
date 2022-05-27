@@ -24,10 +24,8 @@ jobs:
       - name: Store bundle artifact
         uses: actions/upload-artifact@v3
         with:
-          name: publish
-          path: |
-            bundles
-            typings
+          name: bundles
+          path: bundles
           retention-days: 1
   unit-tests:
     runs-on: ubuntu-latest
@@ -44,7 +42,7 @@ jobs:
       - name: Download bundled artifact
         uses: actions/download-artifact@v3
         with:
-          name: publish
+          name: bundles
           path: bundles
       - run: npm run e2e
   # disable this for now
@@ -85,7 +83,7 @@ jobs:
       - name: Download bundled artifacts
         uses: actions/download-artifact@v3
         with:
-          name: publish
+          name: bundles
           path: bundles
       - name: Cache node modules
         uses: actions/cache@v3

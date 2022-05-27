@@ -6,7 +6,15 @@ set -e   # exit on error
 
 VERSION=$(node scripts/version.js)
 VERSION_TAG=v${VERSION:0:1}.x
-echo $@
+
+copy_to_s3 () {
+  aws s3 cp bundles "s3://redocly-cdn/redoc/$1/bundles" --recursive "$2"
+  aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/$1/CHANGELOG.md" "$2"
+  aws s3 cp LICENSE "s3://redocly-cdn/redoc/$1/LICENSE" "$2"
+  aws s3 cp package.json "s3://redocly-cdn/redoc/$1/package.json" "$2"
+  aws s3 cp README.md "s3://redocly-cdn/redoc/$1/README.md" "$2"
+}
+
 if aws s3 ls "redocly-cdn/redoc/v$VERSION/" "$@"; then
   echo "Version $VERSION already exists"
   exit 1
@@ -14,29 +22,14 @@ else
   echo Releasing $VERSION
 
   echo Uploading to S3 $VERSION
-  aws s3 cp bundles "s3://redocly-cdn/redoc/v$VERSION/bundles" --recursive "$@"
-  aws s3 cp typings "s3://redocly-cdn/redoc/v$VERSION/typings" --recursive "$@"
-  aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/v$VERSION/CHANGELOG.md" "$@"
-  aws s3 cp LICENSE "s3://redocly-cdn/redoc/v$VERSION/LICENSE" "$@"
-  aws s3 cp package.json "s3://redocly-cdn/redoc/v$VERSION/package.json" "$@"
-  aws s3 cp README.md "s3://redocly-cdn/redoc/v$VERSION/README.md" "$@"
+  copy_to_s3 "v$VERSION" $@
 
   echo Uploading to S3 $VERSION_TAG
-  aws s3 cp bundles "s3://redocly-cdn/redoc/v$VERSION_TAG/bundles" --recursive "$@"
-  aws s3 cp typings "s3://redocly-cdn/redoc/v$VERSION_TAG/typings" --recursive "$@"
-  aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/v$VERSION_TAG/CHANGELOG.md" "$@"
-  aws s3 cp LICENSE "s3://redocly-cdn/redoc/v$VERSION_TAG/LICENSE" "$@"
-  aws s3 cp package.json "s3://redocly-cdn/redoc/v$VERSION_TAG/package.json" "$@"
-  aws s3 cp README.md "s3://redocly-cdn/redoc/v$VERSION_TAG/README.md" "$@"
+  copy_to_s3 "$VERSION_TAG" $@
 
   if [[ "$VERSION_TAG" == "v2.x" ]]; then
     echo Uploading to S3 latest
-    aws s3 cp bundles "s3://redocly-cdn/redoc/latest/bundles" --recursive "$@"
-    aws s3 cp typings "s3://redocly-cdn/redoc/latest/typings" --recursive "$@"
-    aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/latest/CHANGELOG.md" "$@"
-    aws s3 cp LICENSE "s3://redocly-cdn/redoc/latest/LICENSE" "$@"
-    aws s3 cp package.json "s3://redocly-cdn/redoc/latest/package.json" "$@"
-    aws s3 cp README.md "s3://redocly-cdn/redoc/latest/README.md" "$@"
+    copy_to_s3 latest $@
   fi
 
   echo
