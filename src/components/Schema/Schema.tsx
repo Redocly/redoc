@@ -105,7 +105,14 @@ export class Schema extends React.Component<Partial<SchemaProps>, { discriminato
     }
 
     if (oneOf !== undefined) {
-      return <OneOfSchema schema={schema} {...rest} />;
+      return (
+        <OneOfSchema
+          discriminatorValue={this.state.discriminator}
+          onChangeDiscriminator={this.setDiscriminator.bind(this)}
+          schema={schema}
+          {...rest}
+        />
+      );
     }
 
     const types = isArray(type) ? type : [type];

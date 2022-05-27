@@ -1,5 +1,3 @@
-import { action, observable, makeObservable } from 'mobx';
-
 import { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
 import { OpenAPIParser } from '../OpenAPIParser';
@@ -56,11 +54,6 @@ export class SchemaModel {
   oneOf?: SchemaModel[];
   oneOfType: string;
   discriminatorProp: string;
-  @observable
-  /**
-   * @deprecated use state in Schema.tsx
-   */
-  activeOneOf: number = 0;
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;
@@ -82,8 +75,6 @@ export class SchemaModel {
     private options: RedocNormalizedOptions,
     isChild: boolean = false,
   ) {
-    makeObservable(this);
-
     this.pointer = schemaOrRef.$ref || pointer || '';
     this.rawSchema = parser.deref(schemaOrRef, false, true);
     this.schema = parser.mergeAllOf(this.rawSchema, this.pointer, isChild);
@@ -96,15 +87,6 @@ export class SchemaModel {
     if (options.showExtensions) {
       this.extensions = extractExtensions(this.schema, options.showExtensions);
     }
-  }
-
-  /**
-   * Set specified alternative schema as active
-   * @param idx oneOf index
-   */
-  @action
-  activateOneOf(idx: number) {
-    this.activeOneOf = idx;
   }
 
   hasType(type: string) {

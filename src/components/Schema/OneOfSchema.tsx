@@ -11,7 +11,12 @@ import { SchemaModel } from '../../services/models';
 import { ConstraintsView } from '../Fields/FieldContstraints';
 import { Schema, SchemaProps } from './Schema';
 
-export interface OneOfButtonProps {
+interface DiscriminatorProps {
+  discriminatorValue: number;
+  onChangeDiscriminator(nextDiscriminatorValue: number): void;
+}
+
+export interface OneOfButtonProps extends DiscriminatorProps {
   subSchema: SchemaModel;
   idx: number;
   schema: SchemaModel;
@@ -20,11 +25,11 @@ export interface OneOfButtonProps {
 @observer
 export class OneOfButton extends React.Component<OneOfButtonProps> {
   render() {
-    const { idx, schema, subSchema } = this.props;
+    const { idx, discriminatorValue, subSchema } = this.props;
     return (
       <StyledOneOfButton
         deprecated={subSchema.deprecated}
-        active={idx === schema.activeOneOf}
+        active={idx === discriminatorValue}
         onClick={this.activateOneOf}
       >
         {subSchema.title || subSchema.typePrefix + subSchema.displayType}
@@ -33,34 +38,42 @@ export class OneOfButton extends React.Component<OneOfButtonProps> {
   }
 
   activateOneOf = () => {
-    this.props.schema.activateOneOf(this.props.idx);
+    this.props.onChangeDiscriminator(this.props.idx);
   };
 }
 
-// TODO: add discriminator
 @observer
-export class OneOfSchema extends React.Component<SchemaProps> {
+export class OneOfSchema extends React.Component<SchemaProps & DiscriminatorProps> {
   render() {
     const {
       schema: { oneOf },
       schema,
+      discriminatorValue,
+      onChangeDiscriminator,
     } = this.props;
 
     if (oneOf === undefined) {
       return null;
     }
-    const activeSchema = oneOf[schema.activeOneOf];
+    const activeSchema = oneOf[discriminatorValue];
 
     return (
       <div>
         <OneOfLabel> {schema.oneOfType} </OneOfLabel>
         <OneOfList>
           {oneOf.map((subSchema, idx) => (
-            <OneOfButton key={subSchema.pointer} schema={schema} subSchema={subSchema} idx={idx} />
+            <OneOfButton
+              key={subSchema.pointer}
+              schema={schema}
+              subSchema={subSchema}
+              idx={idx}
+              discriminatorValue={discriminatorValue}
+              onChangeDiscriminator={onChangeDiscriminator}
+            />
           ))}
         </OneOfList>
         <div>
-          {oneOf[schema.activeOneOf].deprecated && <Badge type="warning">Deprecated</Badge>}
+          {oneOf[discriminatorValue].deprecated && <Badge type="warning">Deprecated</Badge>}
         </div>
         <ConstraintsView constraints={activeSchema.constraints} />
         <Schema {...this.props} schema={activeSchema} />
