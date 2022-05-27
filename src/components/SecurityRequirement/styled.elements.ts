@@ -68,9 +68,6 @@ export const SecurityRequirementOrWrap = styled.span<{ expanded?: boolean }>`
     content: none;
   }
 
-  span {
-    font-weight: ${p => !p.expanded && 'bold'};
-  }
   ${linksCss};
 `;
 

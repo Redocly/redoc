@@ -24,7 +24,7 @@ export function SecurityHeader(props: SecurityRequirementProps) {
         return (
           <SecurityRequirementAndWrap key={scheme.id}>
             {showSecuritySchemeType && `${AUTH_TYPES[scheme.type] || scheme.type}: `}
-            <b>{scheme.displayName}</b>
+            <i>{scheme.displayName}</i>
             {expanded && scheme.scopes.length
               ? [
                   ' (',
