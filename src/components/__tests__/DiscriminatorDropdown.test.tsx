@@ -48,6 +48,9 @@ describe('Components', () => {
               fieldName: schema.discriminatorProp,
               parentSchema: schema,
             }}
+            discriminatorValue={0}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onChangeDiscriminator={() => {}}
           />,
         );
         expect(filterPropsDeep(toJson(schemaView), ['field.schema.options'])).toMatchSnapshot();

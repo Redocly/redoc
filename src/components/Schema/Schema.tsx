@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { DISCRIMINATOR_SEPARATOR, PROPERTY_SEPARATOR } from '../../constants';
 
 import { RecursiveLabel, TypeName, TypeTitle } from '../../common-elements/fields';
 import { FieldDetails } from '../Fields/FieldDetails';
@@ -11,7 +12,7 @@ import { ObjectSchema } from './ObjectSchema';
 import { OneOfSchema } from './OneOfSchema';
 
 import { l } from '../../services/Labels';
-import { isArray } from '../../utils/helpers';
+import { getLocationHash, isArray } from '../../utils/helpers';
 
 export interface SchemaOptions {
   showTitle?: boolean;
@@ -26,10 +27,44 @@ export interface SchemaProps extends SchemaOptions {
 }
 
 @observer
-export class Schema extends React.Component<Partial<SchemaProps>> {
+export class Schema extends React.Component<Partial<SchemaProps>, { discriminator: number }> {
+  /**
+   * Set specified alternative schema as active
+   * @param idx oneOf index
+   */
+  setDiscriminator(idx: number) {
+    this.setState({
+      discriminator: idx,
+    });
+  }
+
+  constructor(props) {
+    super(props);
+
+    const { operationHash } = props;
+    const locationHash = getLocationHash();
+    let discriminator = 0;
+    // search for discriminator for current operation
+    if (operationHash && locationHash.indexOf(`${operationHash}${DISCRIMINATOR_SEPARATOR}`) === 0) {
+      // cut off operationHash
+      const discriminatorWithProps = locationHash.slice(
+        `${operationHash}${DISCRIMINATOR_SEPARATOR}`.length,
+      );
+      discriminator = +discriminatorWithProps.split(PROPERTY_SEPARATOR)[0];
+    }
+
+    this.state = {
+      discriminator,
+    };
+  }
+
   render() {
-    const { schema, ...rest } = this.props;
+    const { schema, operationHash, ...rest } = this.props;
     const level = (rest.level || 0) + 1;
+    let operationHashWithDiscriminator = operationHash;
+    if (this.state.discriminator > 0) {
+      operationHashWithDiscriminator += `${DISCRIMINATOR_SEPARATOR}${this.state.discriminator}`;
+    }
 
     if (!schema) {
       return <em> Schema not provided </em>;
@@ -57,11 +92,14 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
         <ObjectSchema
           {...rest}
           level={level}
-          schema={oneOf![schema.activeOneOf]}
+          schema={oneOf![this.state.discriminator]}
           discriminator={{
             fieldName: discriminatorProp,
             parentSchema: schema,
           }}
+          operationHash={operationHashWithDiscriminator}
+          discriminatorValue={this.state.discriminator}
+          onChangeDiscriminator={this.setDiscriminator.bind(this)}
         />
       );
     }
@@ -73,10 +111,24 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     const types = isArray(type) ? type : [type];
     if (types.includes('object')) {
       if (schema.fields?.length) {
-        return <ObjectSchema {...(this.props as any)} level={level} />;
+        return (
+          <ObjectSchema
+            {...(this.props as any)}
+            operationHash={operationHashWithDiscriminator}
+            level={level}
+            discriminatorValue={this.state.discriminator}
+            onChangeDiscriminator={this.setDiscriminator}
+          />
+        );
       }
     } else if (types.includes('array')) {
-      return <ArraySchema {...(this.props as any)} level={level} />;
+      return (
+        <ArraySchema
+          {...(this.props as any)}
+          level={level}
+          operationHash={operationHashWithDiscriminator}
+        />
+      );
     }
 
     // TODO: maybe adjust FieldDetails to accept schema

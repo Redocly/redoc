@@ -57,6 +57,9 @@ export class SchemaModel {
   oneOfType: string;
   discriminatorProp: string;
   @observable
+  /**
+   * @deprecated use state in Schema.tsx
+   */
   activeOneOf: number = 0;
 
   rawSchema: OpenAPISchema;

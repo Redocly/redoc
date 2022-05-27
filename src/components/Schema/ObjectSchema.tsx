@@ -17,6 +17,8 @@ export interface ObjectSchemaProps extends SchemaProps {
     parentSchema: SchemaModel;
   };
   operationHash?: string;
+  discriminatorValue: number;
+  onChangeDiscriminator(nextDiscriminatorValue: number): void;
 }
 
 export const ObjectSchema = observer(
@@ -28,6 +30,8 @@ export const ObjectSchema = observer(
     skipWriteOnly,
     level,
     operationHash,
+    discriminatorValue,
+    onChangeDiscriminator,
   }: ObjectSchemaProps) => {
     const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
       React.useContext(OptionsContext);
@@ -56,11 +60,12 @@ export const ObjectSchema = observer(
         {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
         <tbody>
           {mapWithLast(filteredFields, (field, isLast) => {
-            const childrenOperationHash = `${operationHash}|${field.name}`;
+            const fieldOperationHash = `${operationHash}|${field.name}`;
+
             const isChildrenChosen =
               operationHash &&
-              childrenOperationHash !== locationHash &&
-              locationHash.includes(childrenOperationHash);
+              fieldOperationHash !== locationHash &&
+              locationHash.includes(fieldOperationHash);
 
             return (
               <Field
@@ -74,6 +79,8 @@ export const ObjectSchema = observer(
                         <DiscriminatorDropdown
                           parent={discriminator!.parentSchema}
                           enumValues={field.schema.enum}
+                          discriminatorValue={discriminatorValue}
+                          onChangeDiscriminator={onChangeDiscriminator}
                         />
                       )
                     : undefined

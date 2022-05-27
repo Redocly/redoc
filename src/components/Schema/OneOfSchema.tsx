@@ -37,6 +37,7 @@ export class OneOfButton extends React.Component<OneOfButtonProps> {
   };
 }
 
+// TODO: add discriminator
 @observer
 export class OneOfSchema extends React.Component<SchemaProps> {
   render() {

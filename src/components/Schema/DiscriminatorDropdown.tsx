@@ -8,6 +8,8 @@ import { SchemaModel } from '../../services/models';
 export class DiscriminatorDropdown extends React.Component<{
   parent: SchemaModel;
   enumValues: string[];
+  discriminatorValue: number;
+  onChangeDiscriminator(nextDiscriminatorValue: number): void;
 }> {
   sortOptions(options: DropdownOption[], enumValues: string[]): void {
     if (enumValues.length === 0) {
@@ -26,7 +28,7 @@ export class DiscriminatorDropdown extends React.Component<{
   }
 
   render() {
-    const { parent, enumValues } = this.props;
+    const { parent, enumValues, discriminatorValue } = this.props;
     if (parent.oneOf === undefined) {
       return null;
     }
@@ -38,7 +40,7 @@ export class DiscriminatorDropdown extends React.Component<{
       };
     });
 
-    const activeValue = options[parent.activeOneOf].value;
+    const activeValue = options[discriminatorValue].value;
 
     this.sortOptions(options, enumValues);
 
@@ -54,7 +56,7 @@ export class DiscriminatorDropdown extends React.Component<{
 
   changeActiveChild = (option: DropdownOption) => {
     if (option.idx !== undefined) {
-      this.props.parent.activateOneOf(option.idx);
+      this.props.onChangeDiscriminator(option.idx);
     }
   };
 }

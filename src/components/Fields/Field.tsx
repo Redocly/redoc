@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { PROPERTY_SEPARATOR } from '../../constants';
 import { StoreContext } from '../../components/StoreBuilder';
 import { AppStore, SECTION_ATTR } from '../../services';
 
@@ -59,7 +60,7 @@ export class Field extends React.Component<FieldProps> {
     const appStore: AppStore = this.context;
 
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
-    const propertyHref = `${operationHash}|${name}`;
+    const propertyHref = `${operationHash}${PROPERTY_SEPARATOR}${name}`;
     const isActiveProperty = appStore.menu.activeItemHash === propertyHref;
 
     const labels = (

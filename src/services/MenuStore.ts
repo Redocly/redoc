@@ -1,4 +1,5 @@
 import { action, observable, makeObservable } from 'mobx';
+import { DISCRIMINATOR_SEPARATOR, PROPERTY_SEPARATOR } from '../constants';
 import { querySelector } from '../utils/dom';
 import { SpecStore } from './models';
 
@@ -211,8 +212,10 @@ export class MenuStore {
     rewriteHistory: boolean = false,
   ) {
     const locationId = getLocationHash();
-    // clear from `|property`
-    const locationIdWithoutProperty = locationId.split('|')[0];
+    // remove `|${property}`
+    const locationIdWithoutProperty = locationId.split(PROPERTY_SEPARATOR)[0];
+    // remove `#${discriminator}`
+    const clearLocationId = locationIdWithoutProperty.split(DISCRIMINATOR_SEPARATOR)[0];
 
     if ((this.activeItem && this.activeItem.id) === (item && item.id)) {
       return;
@@ -236,7 +239,8 @@ export class MenuStore {
     }
 
     this.activeItemIdx = item.absoluteIdx!;
-    if (updateLocation && locationIdWithoutProperty !== this.activeItem?.id) {
+    const isSameLocation = clearLocationId === this.activeItem?.id;
+    if (updateLocation && !isSameLocation) {
       this.history.replace(encodeURI(item.id), rewriteHistory);
     }
 
