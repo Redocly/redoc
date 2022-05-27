@@ -24,8 +24,10 @@ jobs:
       - name: Store bundle artifact
         uses: actions/upload-artifact@v3
         with:
-          name: bundles
-          path: bundles
+          name: publish
+          path: |
+            bundles
+            typings
           retention-days: 1
   unit-tests:
     runs-on: ubuntu-latest
@@ -42,7 +44,7 @@ jobs:
       - name: Download bundled artifact
         uses: actions/download-artifact@v3
         with:
-          name: bundles
+          name: publish
           path: bundles
       - run: npm run e2e
   # disable this for now
@@ -71,6 +73,7 @@ jobs:
   #     - name: Invalidate
   #       run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"
   publish:
+    name: Publish to NPM
     needs: [bundle, unit-tests, e2e-tests]
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +85,7 @@ jobs:
       - name: Download bundled artifacts
         uses: actions/download-artifact@v3
         with:
-          name: bundles
+          name: publish
           path: bundles
       - name: Cache node modules
         uses: actions/cache@v3
@@ -98,3 +101,21 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-cdn:
+    name: Publish to CDN
+    needs: [bundle, unit-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Download all artifact
+        uses: actions/download-artifact@v3
+      - name: Publish to S3
+        run: npm run publish-cdn
