@@ -5,7 +5,7 @@ import { SpecStore } from './models';
 import { history as historyInst, HistoryService } from './HistoryService';
 import { ScrollService } from './ScrollService';
 
-import { escapeHTMLAttrChars, flattenByProp } from '../utils';
+import { escapeHTMLAttrChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 export type MenuItemGroupType = 'group' | 'tag' | 'section';
@@ -143,12 +143,17 @@ export class MenuStore {
     if (!id) {
       return;
     }
+    let item: IMenuItem | undefined;
 
-    const item: IMenuItem | undefined = this.flatItems.find(i => i.id === id);
+    item = this.flatItems.find(i => i.id === id);
 
     if (item) {
       this.activateAndScroll(item, false);
     } else {
+      if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
+        item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
+        this.activateAndScroll(item, false);
+      }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
     }
   };

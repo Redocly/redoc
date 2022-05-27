@@ -613,6 +613,11 @@ export function normalizeServers(
 export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
 export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
 
+export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
+export function setSecuritySchemePrefix(prefix: string) {
+  SECURITY_SCHEMES_SECTION_PREFIX = prefix;
+}
+
 export const shortenHTTPVerb = verb =>
   ({
     delete: 'del',
