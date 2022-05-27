@@ -47,7 +47,6 @@ export class OpenAPIParser {
     private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
-    // this.preprocess(spec);
 
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
