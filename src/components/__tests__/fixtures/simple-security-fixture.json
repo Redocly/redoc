@@ -6,21 +6,6 @@
   },
   "paths": {
     "/pet": {
-      "post": {
-        "summary": "Add a new pet to the store",
-        "description": "Add new pet to the store inventory.",
-        "operationId": "addPet",
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": ["write:pets", "read:pets"]
-          }
-        ]
-      },
       "put": {
         "summary": "Add a new pet to the store",
         "description": "Add new pet to the store inventory.",
@@ -33,8 +18,8 @@
         "security": [
           {
             "GitLab_PersonalAccessToken": [],
-            "GitLab_OAuth2Implicit": ["api"],
-            "GitLab_OAuth2AuthorizationCode": ["api"]
+            "GitLab_OpenIdConnect": [],
+            "basicAuth": []
           },
           {
             "petstore_auth": ["write:pets", "read:pets"]
@@ -67,36 +52,15 @@
         "bearerFormat": "",
         "flows": {}
       },
-      "GitLab_OAuth2Implicit": {
-        "description": "OAuth2 Implicit description",
+      "GitLab_OpenIdConnect": {
+        "description": "GitLab OpenIdConnect description",
         "bearerFormat": "",
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://gitlab.com/oauth/authorize",
-            "scopes": {
-              "api": "Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.",
-              "read_user": "Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.",
-              "read_api": "Grants read access to the API, including all groups and projects, the container registry, and the package registry.",
-              "read_repository": "Grants read-only access to repositories on private projects using Git-over-HTTP or the Repository Files API."
-            }
-          }
-        }
+        "type": "openIdConnect",
+        "openIdConnectUrl": "https://gitlab.com/.well-known/openid-configuration"
       },
-      "GitLab_OAuth2AuthorizationCode": {
-        "description": "OAuth2 Authorization Code description",
-        "type": "oauth2",
-        "bearerFormat": "",
-        "flows": {
-          "authorizationCode": {
-            "tokenUrl": "https://gitlab.com/oauth/token",
-            "scopes": {
-              "api": "Grants complete read/write access to the API, including all groups and projects, the container registry, and the package registry.",
-              "read_user": "Grants read-only access to the authenticated user's profile through the /user API endpoint, which includes username, public email, and full name. Also grants access to read-only API endpoints under /users.",
-              "read_api": "Grants read access to the API, including all groups and projects, the container registry, and the package registry."
-            }
-          }
-        }
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }

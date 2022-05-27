@@ -29,10 +29,10 @@ describe('SecurityRequirement', () => {
             </StoreProvider>,
           ),
         );
-        expect(component.render()).toMatchSnapshot();
+        expect(component.html()).toMatchSnapshot();
         component.find('svg').simulate('click');
         //Security expanded
-        expect(component.render()).toMatchSnapshot();
+        expect(component.html()).toMatchSnapshot();
       }
     });
   });
@@ -47,6 +47,6 @@ describe('SecurityRequirement', () => {
     const component = mount(
       withTheme(<SecurityDefs securitySchemes={new SecuritySchemesModel(parser)} />),
     );
-    expect(component.render()).toMatchSnapshot();
+    expect(component.html()).toMatchSnapshot();
   });
 });
