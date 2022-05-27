@@ -29,33 +29,7 @@ else
   aws s3 cp package.json "s3://redocly-cdn/redoc/v$VERSION_TAG/package.json" "$@"
   aws s3 cp README.md "s3://redocly-cdn/redoc/v$VERSION_TAG/README.md" "$@"
 
-  if [[ "$VERSION_TAG" == "v1.x" ]]; then
-    echo Uploading to S3 next
-    aws s3 cp bundles "s3://redocly-cdn/redoc/next/bundles" --recursive "$@"
-    aws s3 cp typings "s3://redocly-cdn/redoc/next/typings" --recursive "$@"
-    aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/next/CHANGELOG.md" "$@"
-    aws s3 cp LICENSE "s3://redocly-cdn/redoc/next/LICENSE" "$@"
-    aws s3 cp package.json "s3://redocly-cdn/redoc/next/package.json" "$@"
-    aws s3 cp README.md "s3://redocly-cdn/redoc/next/README.md" "$@"
-
-    echo Uploading to S3 latest
-    aws s3 cp bundles "s3://redocly-cdn/redoc/latest/bundles" --recursive "$@"
-    aws s3 cp typings "s3://redocly-cdn/redoc/latest/typings" --recursive "$@"
-    aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/latest/CHANGELOG.md" "$@"
-    aws s3 cp LICENSE "s3://redocly-cdn/redoc/latest/LICENSE" "$@"
-    aws s3 cp package.json "s3://redocly-cdn/redoc/latest/package.json" "$@"
-    aws s3 cp README.md "s3://redocly-cdn/redoc/latest/README.md" "$@"
-  fi
-
   if [[ "$VERSION_TAG" == "v2.x" ]]; then
-    echo Uploading to S3 next
-    aws s3 cp bundles "s3://redocly-cdn/redoc/next/bundles" --recursive "$@"
-    aws s3 cp typings "s3://redocly-cdn/redoc/next/typings" --recursive "$@"
-    aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/next/CHANGELOG.md" "$@"
-    aws s3 cp LICENSE "s3://redocly-cdn/redoc/next/LICENSE" "$@"
-    aws s3 cp package.json "s3://redocly-cdn/redoc/next/package.json" "$@"
-    aws s3 cp README.md "s3://redocly-cdn/redoc/next/README.md" "$@"
-
     echo Uploading to S3 latest
     aws s3 cp bundles "s3://redocly-cdn/redoc/latest/bundles" --recursive "$@"
     aws s3 cp typings "s3://redocly-cdn/redoc/latest/typings" --recursive "$@"
