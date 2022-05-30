@@ -615,7 +615,6 @@ export function normalizeServers(
   });
 }
 
-export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
 export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
 export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
 

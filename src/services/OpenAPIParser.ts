@@ -1,14 +1,8 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, isArray, isBoolean, IS_BROWSER } from '../utils/';
+import { isArray, isBoolean, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import {
-  getDefinitionName,
-  isNamedDefinition,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  SECURITY_DEFINITIONS_JSX_NAME,
-} from '../utils/openapi';
-import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
+import { getDefinitionName, isNamedDefinition } from '../utils/openapi';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
@@ -53,7 +47,6 @@ export class OpenAPIParser {
     private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
-    this.preprocess(spec);
 
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
@@ -67,25 +60,6 @@ export class OpenAPIParser {
   validate(spec: any) {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
-    }
-  }
-
-  preprocess(spec: OpenAPISpec) {
-    if (
-      !this.options.noAutoAuth &&
-      spec.info &&
-      spec.components &&
-      spec.components.securitySchemes
-    ) {
-      // Automatically inject Authentication section with SecurityDefinitions component
-      const description = spec.info.description || '';
-      if (
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME) &&
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_JSX_NAME)
-      ) {
-        const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
-        spec.info.description = appendToMdHeading(description, 'Authentication', comment);
-      }
     }
   }
 

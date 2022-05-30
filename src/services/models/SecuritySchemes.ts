@@ -1,5 +1,5 @@
 import { OpenAPISecurityScheme, Referenced } from '../../types';
-import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils/openapi';
+import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils';
 import { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecuritySchemeModel {

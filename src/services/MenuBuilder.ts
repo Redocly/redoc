@@ -7,13 +7,7 @@ import {
   OpenAPIServer,
   OpenAPIPaths,
 } from '../types';
-import {
-  isOperationName,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  setSecuritySchemePrefix,
-  JsonPointer,
-  alphabeticallyByProp,
-} from '../utils';
+import { isOperationName, JsonPointer, alphabeticallyByProp } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
 import { OpenAPIParser } from './OpenAPIParser';
@@ -93,14 +87,7 @@ export class MenuBuilder {
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
         }
-        if (
-          MarkdownRenderer.containsComponent(
-            group.description || '',
-            SECURITY_DEFINITIONS_COMPONENT_NAME,
-          )
-        ) {
-          setSecuritySchemePrefix(group.id + '/');
-        }
+
         return group;
       });
 

@@ -1,28 +1,52 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
-import { OpenAPIParser } from '../../services';
-import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
-import { SecurityRequirement } from '../SecurityRequirement/SecurityRequirement';
-import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
+import {
+  createStore,
+  OpenAPIParser,
+  OperationModel,
+  RedocNormalizedOptions,
+  SecuritySchemesModel,
+} from '../../services';
+import { StoreProvider } from '../StoreBuilder';
+import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { withTheme } from '../testProviders';
+import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
+import * as simpleSecurityFixture from './fixtures/simple-security-fixture.json';
 
-const options = new RedocNormalizedOptions({});
-describe('Components', () => {
-  describe('SecurityRequirement', () => {
-    describe('SecurityRequirement', () => {
-      it("should render 'None' when empty object in security open api", () => {
-        const parser = new OpenAPIParser(
-          { openapi: '3.0', info: { title: 'test', version: '0' }, paths: {} },
-          undefined,
-          options,
-        );
-        const securityRequirement = new SecurityRequirementModel({}, parser);
-        const securityElement = shallow(
-          <SecurityRequirement key={1} security={securityRequirement} />,
-        ).getElement();
-        expect(securityElement.props.children.type.target).toEqual('span');
-        expect(securityElement.props.children.props.children).toEqual('None');
-      });
+describe('SecurityRequirement', () => {
+  it('should render authDefinition', async () => {
+    const store = await createStore(simpleSecurityFixture, undefined, {
+      showSecuritySchemeType: true,
     });
+
+    store.spec.contentItems.forEach((item: OperationModel) => {
+      if (item.security) {
+        const component = mount(
+          withTheme(
+            <StoreProvider value={store}>
+              <SecurityRequirements securities={item.security} />,
+            </StoreProvider>,
+          ),
+        );
+        expect(component.html()).toMatchSnapshot();
+        component.find('svg').simulate('click');
+        //Security expanded
+        expect(component.html()).toMatchSnapshot();
+      }
+    });
+  });
+
+  it('should render SecurityDefs', async () => {
+    const parser = new OpenAPIParser(
+      simpleSecurityFixture,
+      undefined,
+      new RedocNormalizedOptions({}),
+    );
+
+    const component = mount(
+      withTheme(<SecurityDefs securitySchemes={new SecuritySchemesModel(parser)} />),
+    );
+    expect(component.html()).toMatchSnapshot();
   });
 });
