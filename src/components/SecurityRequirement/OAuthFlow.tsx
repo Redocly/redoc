@@ -10,61 +10,59 @@ export interface OAuthFlowProps {
   RequiredScopes?: JSX.Element;
 }
 
-export class OAuthFlow extends React.PureComponent<OAuthFlowProps> {
-  render() {
-    const { type, flow, RequiredScopes } = this.props;
-    const scopesNames = Object.keys(flow?.scopes || {});
-    return (
-      <>
+export function OAuthFlow(props: OAuthFlowProps) {
+  const { type, flow, RequiredScopes } = props;
+  const scopesNames = Object.keys(flow?.scopes || {});
+  return (
+    <>
+      <SecurityRow>
+        <b>Flow type: </b>
+        <code>{type} </code>
+      </SecurityRow>
+      {(type === 'implicit' || type === 'authorizationCode') && (
         <SecurityRow>
-          <b>Flow type: </b>
-          <code>{type} </code>
+          <strong> Authorization URL: </strong>
+          <code>
+            <a target="_blank" rel="noopener noreferrer" href={(flow as any).authorizationUrl}>
+              {(flow as any).authorizationUrl}
+            </a>
+          </code>
         </SecurityRow>
-        {(type === 'implicit' || type === 'authorizationCode') && (
+      )}
+      {(type === 'password' || type === 'clientCredentials' || type === 'authorizationCode') && (
+        <SecurityRow>
+          <b> Token URL: </b>
+          <code>{(flow as any).tokenUrl}</code>
+        </SecurityRow>
+      )}
+      {flow!.refreshUrl && (
+        <SecurityRow>
+          <strong> Refresh URL: </strong>
+          {flow!.refreshUrl}
+        </SecurityRow>
+      )}
+      {!!scopesNames.length && (
+        <>
+          {RequiredScopes || null}
           <SecurityRow>
-            <strong> Authorization URL: </strong>
-            <code>
-              <a target="_blank" rel="noopener noreferrer" href={(flow as any).authorizationUrl}>
-                {(flow as any).authorizationUrl}
-              </a>
-            </code>
+            <b> Scopes: </b>
           </SecurityRow>
-        )}
-        {(type === 'password' || type === 'clientCredentials' || type === 'authorizationCode') && (
-          <SecurityRow>
-            <b> Token URL: </b>
-            <code>{(flow as any).tokenUrl}</code>
-          </SecurityRow>
-        )}
-        {flow!.refreshUrl && (
-          <SecurityRow>
-            <strong> Refresh URL: </strong>
-            {flow!.refreshUrl}
-          </SecurityRow>
-        )}
-        {!!scopesNames.length && (
-          <>
-            {RequiredScopes || null}
-            <SecurityRow>
-              <b> Scopes: </b>
-            </SecurityRow>
-            <SeeMore height="4em">
-              <ul>
-                {scopesNames.map(scope => (
-                  <li key={scope}>
-                    <code>{scope}</code> -{' '}
-                    <Markdown
-                      className={'redoc-markdown'}
-                      inline={true}
-                      source={flow!.scopes[scope] || ''}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </SeeMore>
-          </>
-        )}
-      </>
-    );
-  }
+          <SeeMore height="4em">
+            <ul>
+              {scopesNames.map(scope => (
+                <li key={scope}>
+                  <code>{scope}</code> -{' '}
+                  <Markdown
+                    className={'redoc-markdown'}
+                    inline={true}
+                    source={flow!.scopes[scope] || ''}
+                  />
+                </li>
+              ))}
+            </ul>
+          </SeeMore>
+        </>
+      )}
+    </>
+  );
 }
