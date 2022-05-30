@@ -1,6 +1,6 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { isArray, IS_BROWSER } from '../utils/';
+import { isArray, isBoolean, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 import { getDefinitionName, isNamedDefinition } from '../utils/openapi';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
@@ -248,6 +248,9 @@ export class OpenAPIParser {
         properties,
         items,
         required,
+        oneOf,
+        anyOf,
+        title,
         ...otherConstraints
       } = subSchema;
 
@@ -289,18 +292,36 @@ export class OpenAPIParser {
       }
 
       if (items !== undefined) {
-        receiver.items = receiver.items || {};
+        const receiverItems = isBoolean(receiver.items)
+          ? { items: receiver.items }
+          : receiver.items
+          ? (Object.assign({}, receiver.items) as OpenAPISchema)
+          : {};
+        const subSchemaItems = isBoolean(items)
+          ? { items }
+          : (Object.assign({}, items) as OpenAPISchema);
         // merge inner properties
-        receiver.items = this.mergeAllOf({ allOf: [receiver.items, items] }, $ref + '/items');
+        receiver.items = this.mergeAllOf(
+          { allOf: [receiverItems, subSchemaItems] },
+          $ref + '/items',
+        );
       }
 
       if (required !== undefined) {
         receiver.required = (receiver.required || []).concat(required);
       }
 
+      if (oneOf !== undefined) {
+        receiver.oneOf = oneOf;
+      }
+
+      if (anyOf !== undefined) {
+        receiver.anyOf = anyOf;
+      }
+
       // merge rest of constraints
       // TODO: do more intelligent merge
-      receiver = { ...receiver, ...otherConstraints };
+      receiver = { ...receiver, title: receiver.title || title, ...otherConstraints };
 
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);

@@ -107,7 +107,7 @@ export const mergeObjects = (target: any, ...sources: any[]): any => {
   return mergeObjects(target, ...sources);
 };
 
-const isObject = (item: any): boolean => {
+export const isObject = (item: unknown): item is Record<string, unknown> => {
   return item !== null && typeof item === 'object';
 };
 
@@ -210,6 +210,10 @@ export function unescapeHTMLChars(str: string): string {
     .replace(/&quot;/g, '"');
 }
 
-export function isArray(value: unknown): value is Array<any> {
+export function isArray(value: unknown): value is any[] {
   return Array.isArray(value);
+}
+
+export function isBoolean(value: unknown): value is boolean {
+  return typeof value === 'boolean';
 }

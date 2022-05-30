@@ -5,7 +5,7 @@
 
   [![Build Status](https://travis-ci.com/Redocly/redoc.svg?branch=master)](https://travis-ci.com/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
 
-  [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
+  [![bundle size](http://img.badgesize.io/https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
 </div>
 
 **This is the README for the `2.x` version of Redoc (React-based).**
@@ -102,9 +102,9 @@ Refer to the Redocly's documentation for more information on these products:
   ![](docs/images/code-samples-demo.gif)
 
 ## Releases
-**Important:** all the 2.x releases are deployed to npm and can be used with jsdeliver:
-- particular release, for example, `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
-- `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
+**Important:** all the 2.x releases are deployed to npm and can be used with Redocly-cdn:
+- particular release, for example, `v2.0.0-rc.70`: https://cdn.redoc.ly/redoc/v2.0.0-rc.70/bundles/redoc.standalone.js
+- `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
 - particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
@@ -166,7 +166,7 @@ replace the `spec-url` attribute with the url or local file address to your defi
   </head>
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
 
