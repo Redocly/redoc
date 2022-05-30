@@ -1,5 +1,5 @@
 import { action, observable, makeObservable } from 'mobx';
-import { DISCRIMINATOR_SEPARATOR, PROPERTY_SEPARATOR } from '../constants';
+import { DISCRIMINATOR_SEPARATOR, PROPERTY_SEPARATOR, RESPONSE_POSTFIX } from '../constants';
 import { querySelector } from '../utils/dom';
 import { SpecStore } from './models';
 
@@ -239,7 +239,9 @@ export class MenuStore {
     }
 
     this.activeItemIdx = item.absoluteIdx!;
-    const isSameLocation = clearLocationId === this.activeItem?.id;
+    const itemIdResponse = `${this.activeItem?.id}${RESPONSE_POSTFIX}`;
+    const isSameLocation =
+      clearLocationId === this.activeItem?.id || clearLocationId === itemIdResponse;
     if (updateLocation && !isSameLocation) {
       this.history.replace(encodeURI(item.id), rewriteHistory);
     }

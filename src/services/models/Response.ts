@@ -19,7 +19,7 @@ type ResponseProps = {
 
 export class ResponseModel {
   @observable
-  expanded: boolean = false;
+  expanded?: boolean = undefined;
 
   content?: MediaContentModel;
   code: string;
@@ -72,7 +72,7 @@ export class ResponseModel {
   }
 
   @action
-  toggle() {
-    this.expanded = !this.expanded;
+  setExpanded(expanded: boolean) {
+    this.expanded = expanded;
   }
 }

@@ -62,7 +62,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
               body={operation.requestBody}
               operationHash={operation.id}
             />
-            <ResponsesList responses={operation.responses} />
+            <ResponsesList responses={operation.responses} operationHash={operation.id} />
             <CallbacksList callbacks={operation.callbacks} />
           </MiddlePanel>
           <DarkRightPanel>

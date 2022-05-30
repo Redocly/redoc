@@ -15,11 +15,12 @@ const ResponsesHeader = styled.h3`
 export interface ResponseListProps {
   responses: ResponseModel[];
   isCallback?: boolean;
+  operationHash?: string;
 }
 
 export class ResponsesList extends React.PureComponent<ResponseListProps> {
   render() {
-    const { responses, isCallback } = this.props;
+    const { responses, isCallback, operationHash } = this.props;
 
     if (!responses || responses.length === 0) {
       return null;
@@ -29,7 +30,9 @@ export class ResponsesList extends React.PureComponent<ResponseListProps> {
       <div>
         <ResponsesHeader>{isCallback ? l('callbackResponses') : l('responses')}</ResponsesHeader>
         {responses.map(response => {
-          return <ResponseView key={response.code} response={response} />;
+          return (
+            <ResponseView key={response.code} response={response} operationHash={operationHash} />
+          );
         })}
       </div>
     );

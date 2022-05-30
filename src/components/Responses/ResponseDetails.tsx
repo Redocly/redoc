@@ -12,7 +12,10 @@ import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
 import { ConstraintsView } from '../Fields/FieldContstraints';
 
-export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
+export class ResponseDetails extends React.PureComponent<{
+  response: ResponseModel;
+  operationHash?: string;
+}> {
   render() {
     const { description, extensions, headers, content } = this.props.response;
     return (
@@ -25,7 +28,12 @@ export class ResponseDetails extends React.PureComponent<{ response: ResponseMod
             return (
               <>
                 <ConstraintsView constraints={schema?.constraints || []} />
-                <Schema skipWriteOnly={true} key="schema" schema={schema} />
+                <Schema
+                  skipWriteOnly={true}
+                  key="schema"
+                  schema={schema}
+                  operationHash={this.props.operationHash}
+                />
               </>
             );
           }}
