@@ -10,9 +10,10 @@ export interface OAuthFlowProps {
   RequiredScopes?: JSX.Element;
 }
 
-export function OAuthFlow(props: OAuthFlowProps) {
+export function OAuthFlowComponent(props: OAuthFlowProps) {
   const { type, flow, RequiredScopes } = props;
   const scopesNames = Object.keys(flow?.scopes || {});
+  console.log('rended');
   return (
     <>
       <SecurityRow>
@@ -66,3 +67,5 @@ export function OAuthFlow(props: OAuthFlowProps) {
     </>
   );
 }
+
+export const OAuthFlow = React.memo<OAuthFlowProps>(OAuthFlowComponent);
