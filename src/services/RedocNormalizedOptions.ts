@@ -42,6 +42,7 @@ export interface RedocRawOptions {
   schemaExpansionLevel?: number | string | 'all';
   showObjectSchemaExamples?: boolean | string;
   showSecuritySchemeType?: boolean;
+  hideSecuritySection?: boolean;
 
   unstable_ignoreMimeParameters?: boolean;
 
@@ -245,6 +246,7 @@ export class RedocNormalizedOptions {
   schemaExpansionLevel: number;
   showObjectSchemaExamples: boolean;
   showSecuritySchemeType?: boolean;
+  hideSecuritySection?: boolean;
 
   /* tslint:disable-next-line */
   unstable_ignoreMimeParameters: boolean;
@@ -317,6 +319,7 @@ export class RedocNormalizedOptions {
     this.schemaExpansionLevel = argValueToExpandLevel(raw.schemaExpansionLevel);
     this.showObjectSchemaExamples = argValueToBoolean(raw.showObjectSchemaExamples);
     this.showSecuritySchemeType = argValueToBoolean(raw.showSecuritySchemeType);
+    this.hideSecuritySection = argValueToBoolean(raw.hideSecuritySection);
 
     this.unstable_ignoreMimeParameters = argValueToBoolean(raw.unstable_ignoreMimeParameters);
 
