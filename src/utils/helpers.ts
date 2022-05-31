@@ -219,4 +219,11 @@ export function isBoolean(value: unknown): value is boolean {
 }
 
 // get location hash without #
-export const getLocationHash = () => decodeURI(location.hash).substr(1);
+export const getLocationHash = (): string => {
+  // crash with redoc-cli
+  try {
+    return decodeURI(window.location.hash).substr(1);
+  } catch (e) {
+    return '';
+  }
+};
