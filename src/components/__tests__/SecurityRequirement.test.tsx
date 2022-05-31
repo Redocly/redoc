@@ -49,4 +49,24 @@ describe('SecurityRequirement', () => {
     );
     expect(component.html()).toMatchSnapshot();
   });
+
+  it('should hide authDefinition', async () => {
+    const store = await createStore(simpleSecurityFixture, undefined, {
+      hideSecuritySection: true,
+    });
+
+    store.spec.contentItems.forEach((item: OperationModel) => {
+      if (item.security) {
+        const component = mount(
+          withTheme(
+            <StoreProvider value={store}>
+              <SecurityRequirements securities={item.security} />,
+            </StoreProvider>,
+          ),
+        );
+        expect(component.html().includes('Authorizations')).toBe(false);
+        expect(component.html().includes('svg')).toBe(false);
+      }
+    });
+  });
 });

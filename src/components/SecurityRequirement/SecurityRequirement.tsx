@@ -27,7 +27,7 @@ export function SecurityRequirements(props: SecurityRequirementsProps) {
 
   const { securities } = props;
 
-  if (!securities?.length) {
+  if (!securities?.length || store?.options.hideSecuritySection) {
     return null;
   }
 
