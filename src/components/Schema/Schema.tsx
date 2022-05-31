@@ -50,7 +50,9 @@ export class Schema extends React.Component<Partial<SchemaProps>, { discriminato
       const discriminatorWithProps = locationHash.slice(
         `${operationHash}${DISCRIMINATOR_SEPARATOR}`.length,
       );
-      discriminator = +discriminatorWithProps.split(PROPERTY_SEPARATOR)[0];
+      // e.g. #0#1
+      const discriminators = discriminatorWithProps.split(PROPERTY_SEPARATOR)[0];
+      discriminator = +discriminators.split(DISCRIMINATOR_SEPARATOR)[0];
     }
 
     this.state = {
@@ -61,15 +63,16 @@ export class Schema extends React.Component<Partial<SchemaProps>, { discriminato
   render() {
     const { schema, operationHash, ...rest } = this.props;
     const level = (rest.level || 0) + 1;
-    let operationHashWithDiscriminator = operationHash;
-    if (this.state.discriminator > 0) {
-      operationHashWithDiscriminator += `${DISCRIMINATOR_SEPARATOR}${this.state.discriminator}`;
-    }
 
     if (!schema) {
       return <em> Schema not provided </em>;
     }
     const { type, oneOf, discriminatorProp, isCircular } = schema;
+    // add discriminator value to link
+    let operationHashWithDiscriminator = operationHash;
+    if (discriminatorProp !== undefined || oneOf !== undefined) {
+      operationHashWithDiscriminator += `${DISCRIMINATOR_SEPARATOR}${this.state.discriminator}`;
+    }
 
     if (isCircular) {
       return (
@@ -111,6 +114,7 @@ export class Schema extends React.Component<Partial<SchemaProps>, { discriminato
           onChangeDiscriminator={this.setDiscriminator.bind(this)}
           schema={schema}
           {...rest}
+          operationHash={operationHashWithDiscriminator}
         />
       );
     }
@@ -129,13 +133,7 @@ export class Schema extends React.Component<Partial<SchemaProps>, { discriminato
         );
       }
     } else if (types.includes('array')) {
-      return (
-        <ArraySchema
-          {...(this.props as any)}
-          level={level}
-          operationHash={operationHashWithDiscriminator}
-        />
-      );
+      return <ArraySchema {...(this.props as any)} level={level} operationHash={operationHash} />;
     }
 
     // TODO: maybe adjust FieldDetails to accept schema
