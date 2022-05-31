@@ -59,8 +59,8 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
   position: absolute;
   width: 100%;
   z-index: 100;
-  background: ${props => props.theme.sidebar.backgroundColor};
-  color: ${props => props.theme.colors.primary.main};
+  background: ${props => props.theme.rightPanel.servers.overlay.backgroundColor};
+  color: ${props => props.theme.rightPanel.servers.overlay.textColor};
   box-sizing: border-box;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.33);
   overflow: hidden;
@@ -78,7 +78,7 @@ export const ServerItem = styled.div`
 export const ServerUrl = styled.div`
   padding: 5px;
   border: 1px solid #ccc;
-  background: ${props => props.theme.sidebar.backgroundColor};
+  background: ${props => props.theme.rightPanel.servers.url.backgroundColor};
   word-break: break-all;
   color: ${props => props.theme.colors.primary.main};
   > span {
