@@ -61,7 +61,9 @@ export class Field extends React.Component<FieldProps> {
 
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
     const propertyHref = `${operationHash}${PROPERTY_SEPARATOR}${name}`;
-    const isActiveProperty = appStore.menu.activeItemHash === propertyHref;
+    const isActiveProperty = appStore.menu.highlightedItemHash === propertyHref;
+
+    const handleLinkClick = () => appStore.menu.setHighlightedItemHash(propertyHref);
 
     const labels = (
       <>
@@ -77,7 +79,7 @@ export class Field extends React.Component<FieldProps> {
         kind={kind}
         title={name}
       >
-        <ShareLink to={propertyHref} />
+        <ShareLink to={propertyHref} onClick={handleLinkClick} />
         <PropertyBullet />
         <button
           onClick={this.toggle}
@@ -91,7 +93,7 @@ export class Field extends React.Component<FieldProps> {
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-        <ShareLink to={propertyHref} />
+        <ShareLink to={propertyHref} onClick={handleLinkClick} />
         <PropertyBullet />
         <span className="property-name">{name}</span>
         {labels}

@@ -36,14 +36,22 @@ export const linkifyMixin = className => css`
 const isModifiedEvent = event =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
-export function Link(props: { to: string; className?: string; children?: any }) {
+export function Link(props: {
+  to: string;
+  className?: string;
+  children?: any;
+  onClick?: () => void;
+}) {
   const store = React.useContext(StoreContext);
   const clickHandler = React.useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (!store) return;
       navigate(store.menu.history, event, props.to);
+      props.onClick && props.onClick();
     },
-    [store, props.to],
+    // eslint tells to use unnecessary properties
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [store, props.to, props.onClick],
   );
 
   if (!store) return null;
@@ -75,6 +83,6 @@ const StyledShareLink = styled(Link)`
   ${linkifyMixin('&')};
 `;
 
-export function ShareLink(props: { to: string }) {
-  return <StyledShareLink to={props.to} />;
+export function ShareLink(props: { to: string; onClick?: () => void }) {
+  return <StyledShareLink to={props.to} onClick={props.onClick} />;
 }

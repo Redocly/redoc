@@ -63,7 +63,7 @@ export class MenuStore {
   activeItemIdx: number = -1;
 
   @observable
-  activeItemHash: string = '';
+  highlightedItemHash: string = '';
 
   /**
    * whether sidebar with menu is opened or not
@@ -94,6 +94,8 @@ export class MenuStore {
     this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
 
     this.subscribe();
+
+    this.highlightedItemHash = getLocationHash();
   }
 
   subscribe() {
@@ -149,7 +151,6 @@ export class MenuStore {
    * @param id current hash
    */
   updateOnHistory = (id: string = this.history.currentId) => {
-    this.activeItemHash = id;
     if (!id) {
       return;
     }
@@ -294,5 +295,10 @@ export class MenuStore {
   dispose() {
     this._unsubscribe();
     this._hashUnsubscribe();
+  }
+
+  @action
+  setHighlightedItemHash(hash: string) {
+    this.highlightedItemHash = hash;
   }
 }
