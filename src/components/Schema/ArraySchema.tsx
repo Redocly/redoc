@@ -6,6 +6,7 @@ import { ArrayClosingLabel, ArrayOpenningLabel } from '../../common-elements';
 import styled from '../../styled-components';
 import { humanizeConstraints } from '../../utils';
 import { TypeName } from '../../common-elements/fields';
+import { ObjectSchema } from './ObjectSchema';
 
 const PaddedSchema = styled.div`
   padding-left: ${({ theme }) => theme.spacing.unit * 2}px;
@@ -21,6 +22,9 @@ export class ArraySchema extends React.PureComponent<SchemaProps> {
         ? ''
         : `(${humanizeConstraints(schema)})`;
 
+    if (schema.fields) {
+      return <ObjectSchema {...(this.props as any)} level={this.props.level} />;
+    }
     if (schema.displayType && !itemsSchema && !minMaxItems.length) {
       return (
         <div>

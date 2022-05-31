@@ -27,7 +27,9 @@ export class ResponseDetails extends React.PureComponent<{
           {({ schema }) => {
             return (
               <>
-                <ConstraintsView constraints={schema?.constraints || []} />
+                {schema?.type === 'object' && (
+                  <ConstraintsView constraints={schema?.constraints || []} />
+                )}
                 <Schema
                   skipWriteOnly={true}
                   key="schema"

@@ -1242,6 +1242,26 @@ components:
           type: string
           contentEncoding: base64
           contentMediaType: image/png
+        addresses:
+          type: array
+          minItems: 0
+          maxLength: 10
+          prefixItems:
+            - type: object
+              properties:
+                city:
+                  type: string
+                  minLength: 0
+                country:
+                  type: string
+                  minLength: 0
+                street:
+                  description: includes build/apartment number
+                  type: string
+                  minLength: 0
+            - type: number
+          items:
+            type: string
       if:
         title: userStatus === 10
         properties:

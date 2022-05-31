@@ -71,6 +71,7 @@ jobs:
   #     - name: Invalidate
   #       run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DEMO_DISTRIBUTION_ID }} --paths "/*"
   publish:
+    name: Publish to NPM
     needs: [bundle, unit-tests, e2e-tests]
     runs-on: ubuntu-latest
     steps:
@@ -98,3 +99,21 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-cdn:
+    name: Publish to CDN
+    needs: [bundle, unit-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Download all artifact
+        uses: actions/download-artifact@v3
+      - name: Publish to S3
+        run: npm run publish-cdn

@@ -113,5 +113,105 @@ describe('Models', () => {
       expect(schema.fields![1].kind).toEqual('patternProperties');
       expect(schema.fields![1].schema.type).toEqual('object');
     });
+
+    describe('type array', () => {
+      function testImmutablePart(schema: SchemaModel) {
+        expect(schema.minItems).toEqual(1);
+        expect(schema.maxItems).toEqual(10);
+        expect(schema.fields![0].schema.type).toEqual('string');
+        expect(schema.fields![1].schema.type).toEqual('number');
+      }
+      const eachArray = ['../fixtures/3.1/prefixItems.json', '../fixtures/arrayItems.json'];
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems without additional items',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case1, '', opts);
+
+          testImmutablePart(schema);
+
+          expect(schema.fields).toHaveLength(3);
+          expect(schema.fields![2].name).toEqual('[2]');
+          expect(schema.fields![2].schema.pointer).toEqual('#/components/schemas/Cat');
+          expect(schema.fields![2].schema.type).toEqual('object');
+        },
+      );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems with additional items',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case2, '', opts);
+
+          testImmutablePart(schema);
+
+          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields![3].name).toEqual('[3...]');
+          expect(schema.fields![2].schema.type).toEqual('object');
+          expect(schema.fields![2].schema.pointer).toEqual('#/components/schemas/Cat');
+          expect(schema.fields![3].schema.type).toEqual('any');
+        },
+      );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems with additional items with $ref',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case3, '', opts);
+
+          testImmutablePart(schema);
+
+          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields![3].name).toEqual('[3...]');
+          expect(schema.fields![2].schema.type).toEqual('object');
+          expect(schema.fields![2].schema.pointer).toEqual('#/components/schemas/Cat');
+          expect(schema.fields![3].schema.type).toEqual('object');
+          expect(schema.fields![3].schema.pointer).toEqual('#/components/schemas/Dog');
+        },
+      );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems with additional schema items',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case4, '', opts);
+
+          testImmutablePart(schema);
+
+          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields![3].name).toEqual('[3...]');
+          expect(schema.fields![2].schema.type).toEqual('object');
+          expect(schema.fields![2].schema.pointer).toEqual('#/components/schemas/Cat');
+          expect(schema.fields![3].schema.type).toEqual('object');
+        },
+      );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems with additional array items',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case5, '', opts);
+
+          testImmutablePart(schema);
+
+          expect(schema.fields).toHaveLength(4);
+          expect(schema.fields![3].name).toEqual('[3...]');
+          expect(schema.fields![2].schema.type).toEqual('object');
+          expect(schema.fields![2].schema.pointer).toEqual('#/components/schemas/Cat');
+          expect(schema.fields![3].schema.type).toEqual('array');
+          expect(schema.fields![3].schema.fields).toHaveLength(1);
+          expect(schema.fields![3].schema.fields![0].schema.type).toEqual('string');
+          expect(schema.fields![3].schema.fields![0].schema.constraints).toEqual([
+            '>= 0 characters',
+          ]);
+        },
+      );
+    });
   });
 });

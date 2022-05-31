@@ -1,14 +1,8 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, isArray, IS_BROWSER } from '../utils/';
+import { isArray, isBoolean, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import {
-  getDefinitionName,
-  isNamedDefinition,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  SECURITY_DEFINITIONS_JSX_NAME,
-} from '../utils/openapi';
-import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
+import { getDefinitionName, isNamedDefinition } from '../utils/openapi';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
@@ -53,7 +47,6 @@ export class OpenAPIParser {
     private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
-    this.preprocess(spec);
 
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
@@ -67,25 +60,6 @@ export class OpenAPIParser {
   validate(spec: any) {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
-    }
-  }
-
-  preprocess(spec: OpenAPISpec) {
-    if (
-      !this.options.noAutoAuth &&
-      spec.info &&
-      spec.components &&
-      spec.components.securitySchemes
-    ) {
-      // Automatically inject Authentication section with SecurityDefinitions component
-      const description = spec.info.description || '';
-      if (
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME) &&
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_JSX_NAME)
-      ) {
-        const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
-        spec.info.description = appendToMdHeading(description, 'Authentication', comment);
-      }
     }
   }
 
@@ -274,6 +248,9 @@ export class OpenAPIParser {
         properties,
         items,
         required,
+        oneOf,
+        anyOf,
+        title,
         ...otherConstraints
       } = subSchema;
 
@@ -315,18 +292,36 @@ export class OpenAPIParser {
       }
 
       if (items !== undefined) {
-        receiver.items = receiver.items || {};
+        const receiverItems = isBoolean(receiver.items)
+          ? { items: receiver.items }
+          : receiver.items
+          ? (Object.assign({}, receiver.items) as OpenAPISchema)
+          : {};
+        const subSchemaItems = isBoolean(items)
+          ? { items }
+          : (Object.assign({}, items) as OpenAPISchema);
         // merge inner properties
-        receiver.items = this.mergeAllOf({ allOf: [receiver.items, items] }, $ref + '/items');
+        receiver.items = this.mergeAllOf(
+          { allOf: [receiverItems, subSchemaItems] },
+          $ref + '/items',
+        );
       }
 
       if (required !== undefined) {
         receiver.required = (receiver.required || []).concat(required);
       }
 
+      if (oneOf !== undefined) {
+        receiver.oneOf = oneOf;
+      }
+
+      if (anyOf !== undefined) {
+        receiver.anyOf = anyOf;
+      }
+
       // merge rest of constraints
       // TODO: do more intelligent merge
-      receiver = { ...receiver, ...otherConstraints };
+      receiver = { ...receiver, title: receiver.title || title, ...otherConstraints };
 
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);
