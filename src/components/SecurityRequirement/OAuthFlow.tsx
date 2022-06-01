@@ -13,7 +13,7 @@ export interface OAuthFlowProps {
 export function OAuthFlowComponent(props: OAuthFlowProps) {
   const { type, flow, RequiredScopes } = props;
   const scopesNames = Object.keys(flow?.scopes || {});
-  console.log('rended');
+
   return (
     <>
       <SecurityRow>

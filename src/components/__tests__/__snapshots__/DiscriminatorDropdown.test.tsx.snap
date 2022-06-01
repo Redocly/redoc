@@ -207,6 +207,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -465,6 +474,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -698,6 +716,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -998,6 +1025,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -1256,6 +1292,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -1489,6 +1534,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -1745,6 +1799,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
             "rightPanel": Object {
               "backgroundColor": "#263238",
+              "servers": Object {
+                "overlay": Object {
+                  "backgroundColor": "#fafafa",
+                  "textColor": "#263238",
+                },
+                "url": Object {
+                  "backgroundColor": "#fff",
+                },
+              },
               "textColor": "#ffffff",
               "width": "40%",
             },
@@ -2042,6 +2105,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -2300,6 +2372,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -2533,6 +2614,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           },
           "rightPanel": Object {
             "backgroundColor": "#263238",
+            "servers": Object {
+              "overlay": Object {
+                "backgroundColor": "#fafafa",
+                "textColor": "#263238",
+              },
+              "url": Object {
+                "backgroundColor": "#fff",
+              },
+            },
             "textColor": "#ffffff",
             "width": "40%",
           },

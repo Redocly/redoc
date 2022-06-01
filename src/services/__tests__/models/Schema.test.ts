@@ -212,6 +212,22 @@ describe('Models', () => {
           ]);
         },
       );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve prefixItems with additional array items',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case6, '', opts);
+          expect(schema.type).toBe('array');
+          expect(schema.typePrefix).toBe('Array of ');
+          expect(schema.items?.fields).toHaveLength(2);
+          expect(schema.items?.pointer).toEqual('#/components/schemas/Tag');
+          expect(schema.isPrimitive).toBe(false);
+          expect(schema.items?.isPrimitive).toBe(false);
+          expect(schema.minItems).toBe(1);
+        },
+      );
     });
   });
 });
