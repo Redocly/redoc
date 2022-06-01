@@ -209,7 +209,8 @@ export class SchemaModel {
       this.displayFormat = this.items?.format || '';
       this.typePrefix = this.items?.typePrefix || '' + l('arrayOf');
       this.title = this.title || this.items?.title || '';
-      this.isPrimitive = this.items?.isPrimitive || this.isPrimitive;
+      this.isPrimitive =
+        this.items?.isPrimitive !== undefined ? this.items?.isPrimitive : this.isPrimitive;
 
       if (this.example === undefined && this.items?.example !== undefined) {
         this.example = [this.items.example];
