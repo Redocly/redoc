@@ -147,6 +147,7 @@ export class MenuStore {
     let item: IMenuItem | undefined;
 
     item = this.flatItems.find(i => i.id === id);
+
     if (item) {
       this.activateAndScroll(item, false);
     } else {

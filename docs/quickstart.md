@@ -38,7 +38,7 @@ replace the `spec-url` attribute with the URL or local file address to your defi
     <!--
     Link to Redoc JavaScript on CDN for rendering standalone element
     -->
-    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"></script>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
   </body>
 </html>
 ```

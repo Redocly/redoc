@@ -16,7 +16,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, removeQueryString, resolveUrl, isArray } from './helpers';
+import { isNumeric, removeQueryString, resolveUrl, isArray, isBoolean } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -99,6 +99,7 @@ const schemaKeywordTypes = {
   additionalProperties: 'object',
   unevaluatedProperties: 'object',
   properties: 'object',
+  patternProperties: 'object',
 };
 
 export function detectType(schema: OpenAPISchema): string {
@@ -124,6 +125,10 @@ export function isPrimitiveType(
     return false;
   }
 
+  if ((schema.if && schema.then) || (schema.if && schema.else)) {
+    return false;
+  }
+
   let isPrimitive = true;
   const isArrayType = isArray(type);
 
@@ -134,8 +139,13 @@ export function isPrimitiveType(
         : schema.additionalProperties === undefined && schema.unevaluatedProperties === undefined;
   }
 
+  if (isArray(schema.items) || isArray(schema.prefixItems)) {
+    return false;
+  }
+
   if (
     schema.items !== undefined &&
+    !isBoolean(schema.items) &&
     (type === 'array' || (isArrayType && type?.includes('array')))
   ) {
     isPrimitive = isPrimitiveType(schema.items, schema.items.type);
@@ -418,7 +428,7 @@ function humanizeRangeConstraint(
   let stringRange;
   if (min !== undefined && max !== undefined) {
     if (min === max) {
-      stringRange = `${min} ${description}`;
+      stringRange = `= ${min} ${description}`;
     } else {
       stringRange = `[ ${min} .. ${max} ] ${description}`;
     }
@@ -469,6 +479,15 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   const arrayRange = humanizeRangeConstraint('items', schema.minItems, schema.maxItems);
   if (arrayRange !== undefined) {
     res.push(arrayRange);
+  }
+
+  const propertiesRange = humanizeRangeConstraint(
+    'properties',
+    schema.minProperties,
+    schema.maxProperties,
+  );
+  if (propertiesRange !== undefined) {
+    res.push(propertiesRange);
   }
 
   const multipleOfConstraint = humanizeMultipleOfConstraint(schema.multipleOf);
@@ -596,7 +615,6 @@ export function normalizeServers(
   });
 }
 
-export const SECURITY_DEFINITIONS_COMPONENT_NAME = 'security-definitions';
 export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
 export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
 

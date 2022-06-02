@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.69",
+  "version": "2.0.0-rc.71",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "start:benchmark": "webpack serve --mode=production --env.bench --config demo/webpack.config.ts",
     "test": "npm run unit && npm run license-check",
     "unit": "jest --coverage",
+    "test:update-snapshot": "jest --updateSnapshot",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
     "bundlesize": "size-limit",
@@ -53,6 +54,7 @@
     "start:demo": "webpack serve --hot --config demo/webpack.config.ts --mode=development",
     "compile:cli": "tsc custom.d.ts cli/index.ts --target es6 --module commonjs --types yargs",
     "build:demo": "webpack --mode=production --config demo/webpack.config.ts",
+    "publish-cdn": "scripts/publish-cdn.sh",
     "deploy:demo": "aws s3 sync demo/dist s3://production-redoc-demo --acl=public-read",
     "license-check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;Python-2.0' --summary",
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
@@ -148,7 +150,7 @@
     "mark.js": "^8.11.1",
     "marked": "^4.0.15",
     "mobx-react": "^7.2.0",
-    "openapi-sampler": "^1.2.3",
+    "openapi-sampler": "^1.3.0",
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "^1.5.1",
     "polished": "^4.1.3",

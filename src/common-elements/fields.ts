@@ -1,6 +1,6 @@
 import { transparentize } from 'polished';
 
-import styled, { extensionsHook } from '../styled-components';
+import styled, { extensionsHook, css } from '../styled-components';
 import { PropertyNameCell } from './fields-layout';
 import { ShelfIcon } from './shelfs';
 
@@ -17,6 +17,27 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
     &:focus {
       font-weight: ${({ theme }) => theme.typography.fontWeightBold};
     }
+    ${({ kind }) =>
+      kind === 'patternProperties' &&
+      css`
+        display: inline-flex;
+        margin-right: 20px;
+
+        > span.property-name {
+          white-space: break-spaces;
+          text-align: left;
+
+          ::before,
+          ::after {
+            content: '/';
+            filter: opacity(0.2);
+          }
+        }
+
+        > svg {
+          align-self: center;
+        }
+      `}
   }
   ${ShelfIcon} {
     height: ${({ theme }) => theme.schema.arrow.size};
@@ -54,6 +75,10 @@ export const RequiredLabel = styled(FieldLabel.withComponent('div'))`
   font-weight: normal;
   margin-left: 20px;
   line-height: 1;
+`;
+
+export const PropertyLabel = styled(RequiredLabel)`
+  color: ${props => props.theme.colors.primary.light};
 `;
 
 export const RecursiveLabel = styled(FieldLabel)`

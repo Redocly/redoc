@@ -12,7 +12,9 @@ import {
   extractExtensions,
   humanizeConstraints,
   isArray,
+  isBoolean,
   isNamedDefinition,
+  isObject,
   isPrimitiveType,
   JsonPointer,
   pluralizeType,
@@ -152,6 +154,11 @@ export class SchemaModel {
       return;
     }
 
+    if ((schema.if && schema.then) || (schema.if && schema.else)) {
+      this.initConditionalOperators(schema, parser);
+      return;
+    }
+
     if (!isChild && getDiscriminator(schema) !== undefined) {
       this.initDiscriminator(schema, parser);
       return;
@@ -183,17 +190,31 @@ export class SchemaModel {
 
     if (this.hasType('object')) {
       this.fields = buildFields(parser, schema, this.pointer, this.options);
-    } else if (this.hasType('array') && schema.items) {
-      this.items = new SchemaModel(parser, schema.items, this.pointer + '/items', this.options);
-      this.displayType = pluralizeType(this.items.displayType);
-      this.displayFormat = this.items.format;
-      this.typePrefix = this.items.typePrefix + l('arrayOf');
-      this.title = this.title || this.items.title;
-      this.isPrimitive = this.items.isPrimitive;
-      if (this.example === undefined && this.items.example !== undefined) {
+    } else if (this.hasType('array')) {
+      if (isArray(schema.items) || isArray(schema.prefixItems)) {
+        this.fields = buildFields(parser, schema, this.pointer, this.options);
+      } else if (isObject(schema.items)) {
+        this.items = new SchemaModel(
+          parser,
+          schema.items as OpenAPISchema,
+          this.pointer + '/items',
+          this.options,
+        );
+      }
+
+      this.displayType =
+        schema.prefixItems || isArray(schema.items)
+          ? 'items'
+          : pluralizeType(this.items?.displayType || this.displayType);
+      this.displayFormat = this.items?.format || '';
+      this.typePrefix = this.items?.typePrefix || '' + l('arrayOf');
+      this.title = this.title || this.items?.title || '';
+      this.isPrimitive = this.items?.isPrimitive || this.isPrimitive;
+
+      if (this.example === undefined && this.items?.example !== undefined) {
         this.example = [this.items.example];
       }
-      if (this.items.isPrimitive) {
+      if (this.items?.isPrimitive) {
         this.enum = this.items.enum;
       }
       if (isArray(this.type)) {
@@ -355,6 +376,38 @@ export class SchemaModel {
       return innerSchema;
     });
   }
+
+  private initConditionalOperators(schema: OpenAPISchema, parser: OpenAPIParser) {
+    const {
+      if: ifOperator,
+      else: elseOperator = {},
+      then: thenOperator = {},
+      ...restSchema
+    } = schema;
+    const groupedOperators = [
+      {
+        allOf: [restSchema, thenOperator, ifOperator],
+        title: (ifOperator && ifOperator['x-displayName']) || ifOperator?.title || 'case 1',
+      },
+      {
+        allOf: [restSchema, elseOperator],
+        title: (elseOperator && elseOperator['x-displayName']) || elseOperator?.title || 'case 2',
+      },
+    ];
+
+    this.oneOf = groupedOperators.map(
+      (variant, idx) =>
+        new SchemaModel(
+          parser,
+          {
+            ...variant,
+          } as OpenAPISchema,
+          this.pointer + '/oneOf/' + idx,
+          this.options,
+        ),
+    );
+    this.oneOfType = 'One of';
+  }
 }
 
 function buildFields(
@@ -363,8 +416,10 @@ function buildFields(
   $ref: string,
   options: RedocNormalizedOptions,
 ): FieldModel[] {
-  const props = schema.properties || {};
+  const props = schema.properties || schema.prefixItems || schema.items || {};
+  const patternProps = schema.patternProperties || {};
   const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
+  const itemsProps = schema.prefixItems ? schema.items : schema.additionalItems;
   const defaults = schema.default;
   let fields = Object.keys(props || []).map(fieldName => {
     let field = props[fieldName];
@@ -382,7 +437,7 @@ function buildFields(
     return new FieldModel(
       parser,
       {
-        name: fieldName,
+        name: schema.properties ? fieldName : `[${fieldName}]`,
         required,
         schema: {
           ...field,
@@ -401,6 +456,31 @@ function buildFields(
     // if not sort alphabetically sort in the order from required keyword
     fields = sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }
+
+  fields.push(
+    ...Object.keys(patternProps).map(fieldName => {
+      let field = patternProps[fieldName];
+
+      if (!field) {
+        console.warn(
+          `Field "${fieldName}" is invalid, skipping.\n Field must be an object but got ${typeof field} at "${$ref}"`,
+        );
+        field = {};
+      }
+
+      return new FieldModel(
+        parser,
+        {
+          name: fieldName,
+          required: false,
+          schema: field,
+          kind: 'patternProperties',
+        },
+        `${$ref}/patternProperties/${fieldName}`,
+        options,
+      );
+    }),
+  );
 
   if (typeof additionalProps === 'object' || additionalProps === true) {
     fields.push(
@@ -421,7 +501,80 @@ function buildFields(
     );
   }
 
+  fields.push(
+    ...buildAdditionalItems({
+      parser,
+      schema: itemsProps,
+      fieldsCount: fields.length,
+      $ref,
+      options,
+    }),
+  );
+
   return fields;
+}
+
+function buildAdditionalItems({
+  parser,
+  schema = false,
+  fieldsCount,
+  $ref,
+  options,
+}: {
+  parser: OpenAPIParser;
+  schema?: OpenAPISchema | OpenAPISchema[] | boolean;
+  fieldsCount: number;
+  $ref: string;
+  options: RedocNormalizedOptions;
+}) {
+  if (isBoolean(schema)) {
+    return schema
+      ? [
+          new FieldModel(
+            parser,
+            {
+              name: `[${fieldsCount}...]`,
+              schema: {},
+            },
+            `${$ref}/additionalItems`,
+            options,
+          ),
+        ]
+      : [];
+  }
+
+  if (isArray(schema)) {
+    return [
+      ...schema.map(
+        (field, idx) =>
+          new FieldModel(
+            parser,
+            {
+              name: `[${fieldsCount + idx}]`,
+              schema: field,
+            },
+            `${$ref}/additionalItems`,
+            options,
+          ),
+      ),
+    ];
+  }
+
+  if (isObject(schema)) {
+    return [
+      new FieldModel(
+        parser,
+        {
+          name: `[${fieldsCount}...]`,
+          schema: schema,
+        },
+        `${$ref}/additionalItems`,
+        options,
+      ),
+    ];
+  }
+
+  return [];
 }
 
 function getDiscriminator(schema: OpenAPISchema): OpenAPISchema['discriminator'] {

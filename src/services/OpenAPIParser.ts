@@ -1,14 +1,8 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { appendToMdHeading, isArray, IS_BROWSER } from '../utils/';
+import { isArray, isBoolean, IS_BROWSER } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
-import {
-  getDefinitionName,
-  isNamedDefinition,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  SECURITY_DEFINITIONS_JSX_NAME,
-} from '../utils/openapi';
-import { buildComponentComment, MarkdownRenderer } from './MarkdownRenderer';
+import { getDefinitionName, isNamedDefinition } from '../utils/openapi';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 export type MergedOpenAPISchema = OpenAPISchema & { parentRefs?: string[] };
@@ -53,7 +47,6 @@ export class OpenAPIParser {
     private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
   ) {
     this.validate(spec);
-    this.preprocess(spec);
 
     this.spec = spec;
     this.allowMergeRefs = spec.openapi.startsWith('3.1');
@@ -67,25 +60,6 @@ export class OpenAPIParser {
   validate(spec: any) {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
-    }
-  }
-
-  preprocess(spec: OpenAPISpec) {
-    if (
-      !this.options.noAutoAuth &&
-      spec.info &&
-      spec.components &&
-      spec.components.securitySchemes
-    ) {
-      // Automatically inject Authentication section with SecurityDefinitions component
-      const description = spec.info.description || '';
-      if (
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_COMPONENT_NAME) &&
-        !MarkdownRenderer.containsComponent(description, SECURITY_DEFINITIONS_JSX_NAME)
-      ) {
-        const comment = buildComponentComment(SECURITY_DEFINITIONS_COMPONENT_NAME);
-        spec.info.description = appendToMdHeading(description, 'Authentication', comment);
-      }
     }
   }
 
@@ -268,29 +242,47 @@ export class OpenAPIParser {
     }>;
 
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
-      if (
-        receiver.type !== subSchema.type &&
-        receiver.type !== undefined &&
-        subSchema.type !== undefined
-      ) {
-        console.warn(
-          `Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${subSchema.type}"`,
-        );
+      const {
+        type,
+        enum: enumProperty,
+        properties,
+        items,
+        required,
+        oneOf,
+        anyOf,
+        title,
+        ...otherConstraints
+      } = subSchema;
+
+      if (receiver.type !== type && receiver.type !== undefined && type !== undefined) {
+        console.warn(`Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${type}"`);
       }
 
-      if (subSchema.type !== undefined) {
-        receiver.type = subSchema.type;
+      if (type !== undefined) {
+        if (Array.isArray(type) && Array.isArray(receiver.type)) {
+          receiver.type = [...type, ...receiver.type];
+        } else {
+          receiver.type = type;
+        }
       }
 
-      if (subSchema.properties !== undefined) {
+      if (enumProperty !== undefined) {
+        if (Array.isArray(enumProperty) && Array.isArray(receiver.enum)) {
+          receiver.enum = [...enumProperty, ...receiver.enum];
+        } else {
+          receiver.enum = enumProperty;
+        }
+      }
+
+      if (properties !== undefined) {
         receiver.properties = receiver.properties || {};
-        for (const prop in subSchema.properties) {
+        for (const prop in properties) {
           if (!receiver.properties[prop]) {
-            receiver.properties[prop] = subSchema.properties[prop];
+            receiver.properties[prop] = properties[prop];
           } else {
             // merge inner properties
             const mergedProp = this.mergeAllOf(
-              { allOf: [receiver.properties[prop], subSchema.properties[prop]] },
+              { allOf: [receiver.properties[prop], properties[prop]] },
               $ref + '/properties/' + prop,
             );
             receiver.properties[prop] = mergedProp;
@@ -299,22 +291,37 @@ export class OpenAPIParser {
         }
       }
 
-      if (subSchema.items !== undefined) {
-        receiver.items = receiver.items || {};
+      if (items !== undefined) {
+        const receiverItems = isBoolean(receiver.items)
+          ? { items: receiver.items }
+          : receiver.items
+          ? (Object.assign({}, receiver.items) as OpenAPISchema)
+          : {};
+        const subSchemaItems = isBoolean(items)
+          ? { items }
+          : (Object.assign({}, items) as OpenAPISchema);
         // merge inner properties
         receiver.items = this.mergeAllOf(
-          { allOf: [receiver.items, subSchema.items] },
+          { allOf: [receiverItems, subSchemaItems] },
           $ref + '/items',
         );
       }
 
-      if (subSchema.required !== undefined) {
-        receiver.required = (receiver.required || []).concat(subSchema.required);
+      if (required !== undefined) {
+        receiver.required = (receiver.required || []).concat(required);
+      }
+
+      if (oneOf !== undefined) {
+        receiver.oneOf = oneOf;
+      }
+
+      if (anyOf !== undefined) {
+        receiver.anyOf = anyOf;
       }
 
       // merge rest of constraints
       // TODO: do more intelligent merge
-      receiver = { ...subSchema, ...receiver };
+      receiver = { ...receiver, title: receiver.title || title, ...otherConstraints };
 
       if (subSchemaRef) {
         receiver.parentRefs!.push(subSchemaRef);
