@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.15",
+  "version": "0.13.16",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.15",
+      "version": "0.13.16",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.71",
+        "redoc": "2.0.0-rc.72",
         "styled-components": "^5.3.0",
         "yargs": "^17.3.1"
       },
@@ -2201,9 +2201,9 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.71",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.71.tgz",
-      "integrity": "sha512-QVZq9irDKh/DqnxTWUrxxUy+kO0LYl3nKePsVxcCDGXsX5GOx8y8SMcQ8qxW8prUmwhcDtq2AGF96r3MsljiJQ==",
+      "version": "2.0.0-rc.72",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.72.tgz",
+      "integrity": "sha512-IX/WvVh4N3zwo4sAjnQFz6ffIUd6G47hcflxPtrpxblJaeOy0MBSzzY8f179WjssWPYcSmmndP5v0hgEXFiimg==",
       "dependencies": {
         "@redocly/openapi-core": "^1.0.0-beta.97",
         "classnames": "^2.3.1",
@@ -4793,9 +4793,9 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.71",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.71.tgz",
-      "integrity": "sha512-QVZq9irDKh/DqnxTWUrxxUy+kO0LYl3nKePsVxcCDGXsX5GOx8y8SMcQ8qxW8prUmwhcDtq2AGF96r3MsljiJQ==",
+      "version": "2.0.0-rc.72",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.72.tgz",
+      "integrity": "sha512-IX/WvVh4N3zwo4sAjnQFz6ffIUd6G47hcflxPtrpxblJaeOy0MBSzzY8f179WjssWPYcSmmndP5v0hgEXFiimg==",
       "requires": {
         "@redocly/openapi-core": "^1.0.0-beta.97",
         "classnames": "^2.3.1",
