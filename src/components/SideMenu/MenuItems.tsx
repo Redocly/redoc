@@ -26,7 +26,7 @@ export class MenuItems extends React.Component<MenuItemsProps> {
         className={className}
         style={this.props.style}
         expanded={expanded}
-        {...(root ? { role: 'navigation' } : {})}
+        {...(root ? { role: 'menu' } : {})}
       >
         {items.map((item, idx) => (
           <MenuItem key={idx} item={item} onActivate={this.props.onActivate} />
