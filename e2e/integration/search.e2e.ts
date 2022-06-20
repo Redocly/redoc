@@ -45,7 +45,7 @@ describe('Search', () => {
 
     getSearchInput().type('{enter}', { force: true });
 
-    cy.contains('[role=navigation] [role=menuitem]', 'Introduction').should('have.class', 'active');
+    cy.contains('[role=menu] [role=menuitem]', 'Introduction').should('have.class', 'active');
   });
 
   it('should mark search results', () => {
