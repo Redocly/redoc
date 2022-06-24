@@ -4,6 +4,7 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 Object {
   "allOf": undefined,
   "default": undefined,
+  "format": undefined,
   "items": Object {
     "allOf": undefined,
     "format": "url",
@@ -24,6 +25,7 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 Object {
   "allOf": undefined,
   "default": undefined,
+  "format": undefined,
   "items": Object {
     "allOf": undefined,
     "format": "url",
@@ -48,6 +50,7 @@ Object {
 exports[`Models Schema schemaDefinition should resolve schema with conditional operators 1`] = `
 Object {
   "allOf": undefined,
+  "format": undefined,
   "maxItems": 2,
   "parentRefs": Array [],
   "properties": Object {
@@ -57,6 +60,7 @@ Object {
       "enum": Array [
         10,
       ],
+      "format": undefined,
       "items": Object {
         "allOf": undefined,
         "format": "url",
@@ -83,6 +87,7 @@ Object {
 exports[`Models Schema schemaDefinition should resolve schema with conditional operators 2`] = `
 Object {
   "allOf": undefined,
+  "format": undefined,
   "maxItems": 20,
   "parentRefs": Array [],
   "properties": Object {

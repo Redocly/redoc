@@ -1181,6 +1181,7 @@ components:
       type: object
       properties:
         id:
+          type: number
           description: Tag ID
           $ref: '#/components/schemas/Id'
         name:

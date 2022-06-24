@@ -1,6 +1,6 @@
 import { OpenAPIRef, OpenAPISchema, OpenAPISpec, Referenced } from '../types';
 
-import { isArray, isBoolean, IS_BROWSER } from '../utils/';
+import { isArray, isBoolean, IS_BROWSER } from '../utils';
 import { JsonPointer } from '../utils/JsonPointer';
 import { getDefinitionName, isNamedDefinition } from '../utils/openapi';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
@@ -173,7 +173,7 @@ export class OpenAPIParser {
       keys.some(k => k !== 'description' && k !== 'title' && k !== 'externalDocs')
     ) {
       return {
-        allOf: [rest, resolved],
+        allOf: [resolved, rest],
       };
     } else {
       // small optimization
@@ -244,6 +244,7 @@ export class OpenAPIParser {
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       const {
         type,
+        format,
         enum: enumProperty,
         properties,
         items,
@@ -263,6 +264,7 @@ export class OpenAPIParser {
           receiver.type = [...type, ...receiver.type];
         } else {
           receiver.type = type;
+          receiver.format = format;
         }
       }
 
