@@ -241,6 +241,7 @@ export class OpenAPIParser {
       schema: MergedOpenAPISchema;
     }>;
 
+    const subSchemaTitles: string[] = [];
     for (const { $ref: subSchemaRef, schema: subSchema } of allOfSchemas) {
       const {
         type,
@@ -331,6 +332,14 @@ export class OpenAPIParser {
           // receiver.title = JsonPointer.baseName(subSchemaRef);
         }
       }
+
+      if (subSchema.title !== undefined) {
+        subSchemaTitles.push(subSchema.title);
+      }
+    }
+
+    if (receiver.title === undefined && subSchemaTitles.length) {
+      receiver.title = subSchemaTitles.join('+');
     }
 
     return receiver;
