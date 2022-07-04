@@ -395,6 +395,15 @@ export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';
   }
+
+  if (contentType.search(/csv/i) !== -1) {
+    return 'csv';
+  }
+
+  if (contentType.search(/plain/i) !== -1) {
+    return 'tex';
+  }
+
   return 'clike';
 }
 
