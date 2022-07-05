@@ -823,6 +823,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "discriminator": Object {
                 "propertyName": "type",
               },
+              "format": undefined,
               "parentRefs": Array [
                 "#/components/schemas/Pet",
               ],
@@ -1643,6 +1644,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "discriminator": Object {
                 "propertyName": "type",
               },
+              "format": undefined,
               "parentRefs": Array [
                 "#/components/schemas/Pet",
               ],
@@ -2721,6 +2723,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "discriminator": Object {
           "propertyName": "type",
         },
+        "format": undefined,
         "parentRefs": Array [
           "#/components/schemas/Pet",
         ],
