@@ -418,7 +418,7 @@ function buildFields(
   options: RedocNormalizedOptions,
 ): FieldModel[] {
   const props = schema.properties || schema.prefixItems || schema.items || {};
-  const patternProps = schema.patternProperties || {};
+  let patternProps = schema.patternProperties || {};
   const additionalProps = schema.additionalProperties || schema.unevaluatedProperties;
   const itemsProps = schema.prefixItems ? schema.items : schema.additionalItems;
   const defaults = schema.default;
@@ -430,6 +430,10 @@ function buildFields(
         `Field "${fieldName}" is invalid, skipping.\n Field must be an object but got ${typeof field} at "${$ref}"`,
       );
       field = {};
+    }
+
+    if (field.patternProperties) {
+      patternProps = { ...patternProps, ...field.patternProperties };
     }
 
     const required =
