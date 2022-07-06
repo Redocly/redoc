@@ -2,14 +2,9 @@ import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } fr
 import { querySelector } from '../utils/dom';
 import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
 
-import { LabelsConfigRaw, setRedocLabels } from './Labels';
-import { MDXComponentMeta } from './MarkdownRenderer';
-
-export enum SideNavStyleEnum {
-  SummaryOnly = 'summary-only',
-  PathOnly = 'path-only',
-  IdOnly = 'id-only',
-}
+import { setRedocLabels } from './Labels';
+import { SideNavStyleEnum } from './types';
+import type { LabelsConfigRaw, MDXComponentMeta } from './types';
 
 export interface RedocRawOptions {
   theme?: ThemeInterface;

@@ -1,12 +1,13 @@
 import { Lambda, observe } from 'mobx';
 
-import { OpenAPISpec } from '../types';
+import type { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
 import { history } from './HistoryService';
 import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
-import { RedocNormalizedOptions, RedocRawOptions } from './RedocNormalizedOptions';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { RedocRawOptions } from './RedocNormalizedOptions';
 import { ScrollService } from './ScrollService';
 import { SearchStore } from './SearchStore';
 
@@ -15,18 +16,7 @@ import { SecurityDefs } from '../components/SecuritySchemes/SecuritySchemes';
 import { SCHEMA_DEFINITION_JSX_NAME, SECURITY_DEFINITIONS_JSX_NAME } from '../utils/openapi';
 
 import { IS_BROWSER } from '../utils';
-
-export interface StoreState {
-  menu: {
-    activeItemIdx: number;
-  };
-  spec: {
-    url?: string;
-    data: any;
-  };
-  searchIndex: any;
-  options: RedocRawOptions;
-}
+import type { StoreState } from './types';
 
 export async function createStore(
   spec: object,

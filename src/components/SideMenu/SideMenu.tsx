@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { IMenuItem, MenuStore } from '../../services/MenuStore';
+import { MenuStore } from '../../services';
+import type { IMenuItem } from '../../services';
 import { OptionsContext } from '../OptionsProvider';
 import { MenuItems } from './MenuItems';
 
