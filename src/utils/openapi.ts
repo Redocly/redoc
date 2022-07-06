@@ -636,6 +636,8 @@ export const shortenHTTPVerb = verb =>
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
     'x-circular-ref': true,
+    'x-parentRefs': true,
+    'x-refsStack': true,
     'x-code-samples': true, // deprecated
     'x-codeSamples': true,
     'x-displayName': true,

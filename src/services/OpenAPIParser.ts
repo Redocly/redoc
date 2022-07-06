@@ -21,7 +21,6 @@ export class OpenAPIParser {
   specUrl?: string;
   spec: OpenAPISpec;
 
-  // private _refCounter: RefCounter = new RefCounter();
   private readonly allowMergeRefs: boolean = false;
 
   constructor(
