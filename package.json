@@ -125,7 +125,6 @@
     "ts-node": "^10.0.0",
     "typescript": "~4.1.0",
     "unfetch": "^4.2.0",
-    "url-polyfill": "^1.1.12",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.6.0",
@@ -167,6 +166,14 @@
     {
       "path": "./bundles/redoc.standalone.js",
       "limit": "350 kB"
+    },
+    {
+      "path": "./bundles/redoc.lib.js",
+      "limit": "100 kB"
+    },
+    {
+      "path": "./bundles/redoc.browser.lib.js",
+      "limit": "100 kB"
     }
   ],
   "jest": {
