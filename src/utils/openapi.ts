@@ -136,7 +136,9 @@ export function isPrimitiveType(
     isPrimitive =
       schema.properties !== undefined
         ? Object.keys(schema.properties).length === 0
-        : schema.additionalProperties === undefined && schema.unevaluatedProperties === undefined;
+        : schema.additionalProperties === undefined &&
+          schema.unevaluatedProperties === undefined &&
+          schema.patternProperties === undefined;
   }
 
   if (isArray(schema.items) || isArray(schema.prefixItems)) {

@@ -25,6 +25,26 @@
               }
             }
           }
+        },
+        "properties": {
+          "nestedObjectProp": {
+            "type": "object",
+            "patternProperties": {
+              ".*": {
+                "type": "integer"
+              }
+            }
+          },
+          "nestedArrayProp": {
+            "type": "array",
+            "items": {
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
       }
     }

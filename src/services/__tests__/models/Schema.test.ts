@@ -107,11 +107,22 @@ describe('Models', () => {
       const spec = require('../fixtures/3.1/patternProperties.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = new SchemaModel(parser, spec.components.schemas.Patterns, '', opts);
-      expect(schema.fields).toHaveLength(2);
-      expect(schema.fields![0].kind).toEqual('patternProperties');
-      expect(schema.fields![0].schema.type).toEqual('string');
-      expect(schema.fields![1].kind).toEqual('patternProperties');
-      expect(schema.fields![1].schema.type).toEqual('object');
+
+      expect(schema.fields).toHaveLength(4);
+      expect(schema.fields![0].kind).toEqual('field');
+      expect(schema.fields![0].name).toEqual('nestedObjectProp');
+      expect(schema.fields![0].schema.type).toEqual('object');
+      expect(schema.fields![0].schema.fields![0].kind).toEqual('patternProperties');
+
+      expect(schema.fields).toHaveLength(4);
+      expect(schema.fields![1].kind).toEqual('field');
+      expect(schema.fields![1].name).toEqual('nestedArrayProp');
+      expect(schema.fields![1].schema.items!.fields![0].kind).toEqual('patternProperties');
+
+      expect(schema.fields![2].kind).toEqual('patternProperties');
+      expect(schema.fields![2].schema.type).toEqual('string');
+      expect(schema.fields![3].kind).toEqual('patternProperties');
+      expect(schema.fields![3].schema.type).toEqual('object');
     });
 
     describe('type array', () => {
