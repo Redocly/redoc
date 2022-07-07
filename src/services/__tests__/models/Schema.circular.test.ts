@@ -482,5 +482,78 @@ describe('Models', () => {
         ]
       `);
     });
+
+    test('should detect and recursion with discriminator and oneOf', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          User:
+            type: object
+            properties:
+              pet:
+                oneOf:
+                  - $ref: '#/components/schemas/Pet'
+          Pet:
+            type: object
+            required: [ petType ]
+            discriminator:
+              propertyName: petType
+              mapping:
+                cat: '#/components/schemas/Cat'
+                dog: '#/components/schemas/Dog'
+            properties:
+              category: { $ref: '#/components/schemas/Category' }
+              status: { type: string }
+              friend:
+                allOf: [{ $ref: '#/components/schemas/Pet' }]
+              petType: { type: string }
+          Cat:
+            description: A representation of a cat
+            allOf:
+              - $ref: '#/components/schemas/Pet'
+              - type: object
+                properties:
+                  huntingSkill: { type: string }
+          Dog:
+            description: A representation of a dog
+            allOf:
+              - $ref: '#/components/schemas/Pet'
+              - type: object
+                properties:
+                  packSize: { type: integer }
+          Category:
+            type: object
+            properties:
+              name: { type: string }
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.User,
+        '#/components/schemas/User',
+        opts,
+      );
+
+      expect(printSchema(schema, circularDetailsPrinter)).toMatchInlineSnapshot(`
+      pet: oneOf
+          Pet -> oneOf
+              cat ->
+                category:
+                  name: <string>
+                status: <string>
+                friend: <object> !circular
+                petType*: <string>
+                huntingSkill: <string>
+              dog ->
+                category:
+                  name: <string>
+                status: <string>
+                friend: <object> !circular
+                petType*: <string>
+                packSize: <integer>
+      `);
+    });
   });
 });
