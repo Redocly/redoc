@@ -513,7 +513,7 @@ Petstore offers two forms of authentication:
 OAuth2 - an open protocol to allow secure authorization in a simple
 and standard method from web, mobile and desktop applications.
 
-<SecurityDefinitions />
+<!-- ReDoc-Inject: <security-definitions> -->
 ",
     "license": Object {
       "name": "Apache 2.0",
