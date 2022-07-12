@@ -128,6 +128,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 - [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [BoxKnight](https://www.docs.boxknight.com/)
+- [simPRO](https://developer.simprogroup.com/apidoc/)
 
 ## Lint OpenAPI definitions
 
