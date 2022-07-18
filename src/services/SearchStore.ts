@@ -1,6 +1,6 @@
 import { IS_BROWSER } from '../utils/';
-import { IMenuItem } from './MenuStore';
-import { OperationModel } from './models';
+import type { IMenuItem } from './types';
+import type { OperationModel } from './models';
 
 import Worker from './SearchWorker.worker';
 

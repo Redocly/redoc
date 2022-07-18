@@ -1,15 +1,15 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import {
+import type {
   OpenAPIParameter,
   OpenAPIParameterLocation,
   OpenAPIParameterStyle,
   Referenced,
 } from '../../types';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 import { extractExtensions } from '../../utils/openapi';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
 import { ExampleModel } from './Example';
 import { isArray, mapValues } from '../../utils/helpers';
@@ -64,10 +64,11 @@ export class FieldModel {
     infoOrRef: Referenced<OpenAPIParameter> & { name?: string; kind?: string },
     pointer: string,
     options: RedocNormalizedOptions,
+    refsStack?: string[],
   ) {
     makeObservable(this);
 
-    const info = parser.deref<OpenAPIParameter>(infoOrRef);
+    const { resolved: info } = parser.deref<OpenAPIParameter>(infoOrRef);
     this.kind = infoOrRef.kind || 'field';
     this.name = infoOrRef.name || info.name;
     this.in = info.in;
@@ -80,7 +81,7 @@ export class FieldModel {
       fieldSchema = info.content[serializationMime] && info.content[serializationMime].schema;
     }
 
-    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options);
+    this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options, false, refsStack);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
     this.example = info.example || this.schema.example;
@@ -110,7 +111,6 @@ export class FieldModel {
     }
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
-    parser.exitRef(infoOrRef);
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(info, options.showExtensions);

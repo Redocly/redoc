@@ -121,6 +121,10 @@ export function isPrimitiveType(
   schema: OpenAPISchema,
   type: string | string[] | undefined = schema.type,
 ) {
+  if (schema['x-circular-ref']) {
+    return true;
+  }
+
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
@@ -552,13 +556,13 @@ export function mergeParams(
 ): Array<Referenced<OpenAPIParameter>> {
   const operationParamNames = {};
   operationParams.forEach(param => {
-    param = parser.shallowDeref(param);
+    ({ resolved: param } = parser.deref(param));
     operationParamNames[param.name + '_' + param.in] = true;
   });
 
   // filter out path params overridden by operation ones with the same name
   pathParams = pathParams.filter(param => {
-    param = parser.shallowDeref(param);
+    ({ resolved: param } = parser.deref(param));
     return !operationParamNames[param.name + '_' + param.in];
   });
 
@@ -643,6 +647,8 @@ export const shortenHTTPVerb = verb =>
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
     'x-circular-ref': true,
+    'x-parentRefs': true,
+    'x-refsStack': true,
     'x-code-samples': true, // deprecated
     'x-codeSamples': true,
     'x-displayName': true,

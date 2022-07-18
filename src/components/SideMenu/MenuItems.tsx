@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { IMenuItem } from '../../services';
+import type { IMenuItem } from '../../services';
 
 import { MenuItem } from './MenuItem';
 import { MenuItemUl } from './styled.elements';

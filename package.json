@@ -110,6 +110,7 @@
     "license-checker": "^25.0.1",
     "lodash.noop": "^3.0.1",
     "mobx": "^6.3.2",
+    "outdent": "^0.8.0",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.0.0",
     "raf": "^3.4.1",
@@ -193,10 +194,12 @@
     "coveragePathIgnorePatterns": [
       "\\.d\\.ts$",
       "/benchmark/",
-      "/node_modules/"
+      "/node_modules/",
+      "src/services/__tests__/models/helpers.ts"
     ],
     "modulePathIgnorePatterns": [
-      "/benchmark/"
+      "/benchmark/",
+      "src/services/__tests__/models/helpers.ts"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

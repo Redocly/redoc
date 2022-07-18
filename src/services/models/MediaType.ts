@@ -1,11 +1,11 @@
 import * as Sampler from 'openapi-sampler';
 
-import { OpenAPIMediaType } from '../../types';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import type { OpenAPIMediaType } from '../../types';
+import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { SchemaModel } from './Schema';
 
 import { isJsonLike, mapValues } from '../../utils';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIParser } from '../OpenAPIParser';
 import { ExampleModel } from './Example';
 
 export class MediaTypeModel {
@@ -40,7 +40,7 @@ export class MediaTypeModel {
       this.examples = {
         default: new ExampleModel(
           parser,
-          { value: parser.shallowDeref(info.example) },
+          { value: parser.deref(info.example).resolved },
           name,
           info.encoding,
         ),

@@ -1,12 +1,10 @@
 import * as React from 'react';
 
-import { IMenuItem } from '../../services/MenuStore';
-import { SearchStore } from '../../services/SearchStore';
+import type { IMenuItem, SearchResult } from '../../services/types';
+import type { SearchStore } from '../../services/SearchStore';
+import type { MarkerService } from '../../services/MarkerService';
+
 import { MenuItem } from '../SideMenu/MenuItem';
-
-import { MarkerService } from '../../services/MarkerService';
-import { SearchResult } from '../../services/SearchWorker.worker';
-
 import { OptionsContext } from '../OptionsProvider';
 import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';

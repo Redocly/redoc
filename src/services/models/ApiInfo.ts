@@ -1,6 +1,6 @@
-import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
+import type { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {

@@ -1,4 +1,5 @@
 import * as lunr from 'lunr';
+import type { SearchResult } from './types';
 
 /* just for better typings */
 export default class Worker {
@@ -9,17 +10,6 @@ export default class Worker {
   load = load;
   dispose = dispose;
   fromExternalJS = fromExternalJS;
-}
-
-export interface SearchDocument {
-  title: string;
-  description: string;
-  id: string;
-}
-
-export interface SearchResult<T = string> {
-  meta: T;
-  score: number;
 }
 
 let store: any[] = [];

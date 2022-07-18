@@ -1,4 +1,5 @@
-import { MarkdownRenderer, MDXComponentMeta } from '../MarkdownRenderer';
+import type { MDXComponentMeta } from '../types';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 const TestComponent = () => null;

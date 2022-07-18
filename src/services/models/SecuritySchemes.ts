@@ -1,6 +1,6 @@
-import { OpenAPISecurityScheme, Referenced } from '../../types';
+import type { OpenAPISecurityScheme, Referenced } from '../../types';
 import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIParser } from '../OpenAPIParser';
 
 export class SecuritySchemeModel {
   id: string;
@@ -24,7 +24,7 @@ export class SecuritySchemeModel {
   };
 
   constructor(parser: OpenAPIParser, id: string, scheme: Referenced<OpenAPISecurityScheme>) {
-    const info = parser.deref(scheme);
+    const { resolved: info } = parser.deref(scheme);
     this.id = id;
     this.sectionId = SECURITY_SCHEMES_SECTION_PREFIX + id;
     this.type = info.type;
