@@ -843,6 +843,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             ],
             "schema": Object {
               "allOf": undefined,
+              "description": undefined,
               "discriminator": Object {
                 "propertyName": "type",
               },
@@ -858,11 +859,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   ],
                 },
               },
+              "readOnly": undefined,
               "required": Array [
                 "type",
               ],
               "title": "Dog",
               "type": "object",
+              "writeOnly": undefined,
               "x-circular-ref": undefined,
               "x-parentRefs": Array [
                 "#/components/schemas/Pet",
@@ -1699,6 +1702,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             ],
             "schema": Object {
               "allOf": undefined,
+              "description": undefined,
               "discriminator": Object {
                 "propertyName": "type",
               },
@@ -1717,11 +1721,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   ],
                 },
               },
+              "readOnly": undefined,
               "required": Array [
                 "type",
               ],
               "title": "Cat",
               "type": "object",
+              "writeOnly": undefined,
               "x-circular-ref": undefined,
               "x-parentRefs": Array [
                 "#/components/schemas/Pet",
@@ -2811,6 +2817,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       ],
       "schema": Object {
         "allOf": undefined,
+        "description": undefined,
         "discriminator": Object {
           "propertyName": "type",
         },
@@ -2826,11 +2833,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             ],
           },
         },
+        "readOnly": undefined,
         "required": Array [
           "type",
         ],
         "title": "Dog",
         "type": "object",
+        "writeOnly": undefined,
         "x-circular-ref": undefined,
         "x-parentRefs": Array [
           "#/components/schemas/Pet",
