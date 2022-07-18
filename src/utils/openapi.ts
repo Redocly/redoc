@@ -631,6 +631,7 @@ export function normalizeServers(
 }
 
 export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
+export const OLD_SECURITY_DEFINITIONS_JSX_NAME = 'security-definitions';
 export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
 
 export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';

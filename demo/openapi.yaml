@@ -38,7 +38,7 @@ info:
     OAuth2 - an open protocol to allow secure authorization in a simple
     and standard method from web, mobile and desktop applications.
 
-    <SecurityDefinitions />
+    <!-- ReDoc-Inject: <security-definitions> -->
 
   version: 1.0.0
   title: Swagger Petstore
