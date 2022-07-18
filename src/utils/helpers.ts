@@ -179,10 +179,11 @@ export function titleize(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export function removeQueryString(serverUrl: string): string {
+export function removeQueryStringAndHash(serverUrl: string): string {
   try {
     const url = parseURL(serverUrl);
     url.search = '';
+    url.hash = '';
     return url.toString();
   } catch (e) {
     // when using with redoc-cli serverUrl can be empty resulting in crash
