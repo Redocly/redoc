@@ -100,10 +100,12 @@ const Json = (props: JsonProps) => {
   }, []);
 
   React.useEffect(() => {
-    if (node) {
-      node?.addEventListener('click', clickListener);
-      node?.addEventListener('focus', focusListener);
-    }
+    node?.addEventListener('click', clickListener);
+    node?.addEventListener('focus', focusListener);
+    return () => {
+      node?.removeEventListener('click', clickListener);
+      node?.removeEventListener('focus', focusListener);
+    };
   }, [clickListener, focusListener, node]);
 
   return <CopyButtonWrapper data={props.data}>{renderInner}</CopyButtonWrapper>;
