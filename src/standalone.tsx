@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { hydrate as hydrateComponent, render } from 'react-dom';
+import { hydrate as hydrateComponent, render, unmountComponentAtNode } from 'react-dom';
 import { configure } from 'mobx';
 
 import { Redoc, RedocStandalone } from './components/';
@@ -72,6 +72,12 @@ export function init(
     ),
     element,
   );
+}
+
+export function destroy(element: Element | null = querySelector('redoc')): void {
+  if (element) {
+    unmountComponentAtNode(element);
+  }
 }
 
 export function hydrate(
