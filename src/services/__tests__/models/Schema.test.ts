@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { parseYaml } from '@redocly/openapi-core';
+import { outdent } from 'outdent';
 import { SchemaModel } from '../../models/Schema';
 import { OpenAPIParser } from '../../OpenAPIParser';
 import { RedocNormalizedOptions } from '../../RedocNormalizedOptions';
+import { printSchema } from './helpers';
 
 const opts = new RedocNormalizedOptions({});
 
@@ -239,6 +242,46 @@ describe('Models', () => {
           expect(schema.minItems).toBe(1);
         },
       );
+    });
+
+    test('should get correct fields data if it includes allOf', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          User:
+            allOf:
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    description: correct description name
+                    readOnly: false
+                    writeOnly: false
+                  allOf:
+                    - '#/components/schemas/NameField'
+          NameField:
+            type: object
+            description: name description
+            readOnly: true
+            writeOnly: false
+
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.User,
+        '#/components/schemas/User',
+        opts,
+      );
+      const fieldSchema = schema.fields?.[0].schema;
+      expect(fieldSchema?.readOnly).toBe(false);
+      expect(fieldSchema?.writeOnly).toBe(false);
+      expect(printSchema(schema)).toMatchInlineSnapshot(`
+        "name: <string> (correct description name)
+        allOf: <any>"
+      `);
     });
   });
 });

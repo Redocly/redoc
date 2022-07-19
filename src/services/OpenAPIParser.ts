@@ -217,6 +217,9 @@ export class OpenAPIParser {
         items,
         required,
         title,
+        description,
+        readOnly,
+        writeOnly,
         oneOf,
         anyOf,
         'x-circular-ref': isCircular,
@@ -305,6 +308,9 @@ export class OpenAPIParser {
       receiver = {
         ...receiver,
         title: receiver.title || title,
+        description: receiver.description || description,
+        readOnly: receiver.readOnly !== undefined ? receiver.readOnly : readOnly,
+        writeOnly: receiver.writeOnly !== undefined ? receiver.writeOnly : writeOnly,
         'x-circular-ref': receiver['x-circular-ref'] || isCircular,
         ...otherConstraints,
       };
