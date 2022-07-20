@@ -126,7 +126,7 @@
     "ts-node": "^10.0.0",
     "typescript": "~4.1.0",
     "unfetch": "^4.2.0",
-    "webpack": "^5.38.1",
+    "webpack": "^5.50.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.6.0",
     "webpack-node-externals": "^3.0.0",
@@ -140,7 +140,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.97",
+    "@redocly/openapi-core": "^1.0.0-beta.104",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",

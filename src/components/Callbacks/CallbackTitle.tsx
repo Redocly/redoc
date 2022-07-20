@@ -17,20 +17,18 @@ export interface CallbackTitleProps {
   onClick?: () => void;
 }
 
-export class CallbackTitle extends React.PureComponent<CallbackTitleProps> {
-  render() {
-    const { name, opened, className, onClick, httpVerb, deprecated } = this.props;
+export const CallbackTitle = (props: CallbackTitleProps) => {
+  const { name, opened, className, onClick, httpVerb, deprecated } = props;
 
-    return (
-      <CallbackTitleWrapper className={className} onClick={onClick || undefined}>
-        <OperationBadgeStyled type={httpVerb}>{shortenHTTPVerb(httpVerb)}</OperationBadgeStyled>
-        <ShelfIcon size={'1.5em'} direction={opened ? 'down' : 'right'} float={'left'} />
-        <CallbackName deprecated={deprecated}>{name}</CallbackName>
-        {deprecated ? <Badge type="warning"> {l('deprecated')} </Badge> : null}
-      </CallbackTitleWrapper>
-    );
-  }
-}
+  return (
+    <CallbackTitleWrapper className={className} onClick={onClick || undefined}>
+      <OperationBadgeStyled type={httpVerb}>{shortenHTTPVerb(httpVerb)}</OperationBadgeStyled>
+      <ShelfIcon size={'1.5em'} direction={opened ? 'down' : 'right'} float={'left'} />
+      <CallbackName deprecated={deprecated}>{name}</CallbackName>
+      {deprecated ? <Badge type="warning"> {l('deprecated')} </Badge> : null}
+    </CallbackTitleWrapper>
+  );
+};
 
 const CallbackTitleWrapper = styled.button`
   border: 0;
