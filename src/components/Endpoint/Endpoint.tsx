@@ -68,18 +68,18 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                   ? expandDefaultServerVariables(server.url, server.variables)
                   : server.url;
                 const basePath = getBasePath(normalizedUrl);
+                const serverBaseUrl =
+                  hideHostname || options.hideHostname
+                    ? basePath === '/'
+                      ? ''
+                      : basePath
+                    : normalizedUrl;
                 return (
                   <ServerItem key={normalizedUrl}>
                     <Markdown source={server.description || ''} compact={true} />
                     <SelectOnClick>
                       <ServerUrl>
-                        <span>
-                          {hideHostname || options.hideHostname
-                            ? basePath === '/'
-                              ? ''
-                              : basePath
-                            : normalizedUrl}
-                        </span>
+                        <span>{serverBaseUrl}</span>
                         {operation.path}
                       </ServerUrl>
                     </SelectOnClick>
