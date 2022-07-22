@@ -425,6 +425,24 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
     });
 
+    it('should remove query string and hash from url', () => {
+      const originalWindow = { ...window };
+      const windowSpy: jest.SpyInstance = jest.spyOn(global, 'window', 'get');
+      windowSpy.mockImplementation(() => ({
+        ...originalWindow,
+        location: {
+          ...originalWindow.location,
+          href: 'https://base.com/subpath/?param=value#tag',
+        },
+      }));
+      const res = normalizeServers(undefined, [
+        {
+          url: 'sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://base.com/subpath/sandbox/test', description: '' }]);
+    });
+
     it('should expand variables', () => {
       const servers = normalizeServers('', [
         {
