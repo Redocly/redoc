@@ -12,6 +12,10 @@ export function circularDetailsPrinter(schema: SchemaModel): string {
   return schema.isCircular ? ' !circular' : '';
 }
 
+export function enumDetailsPrinter(schema: SchemaModel): string {
+  return schema.enum ? `enum: [${schema.enum.toString()}]` : '';
+}
+
 export function printSchema(
   schema: SchemaModel,
   detailsPrinter: (schema: SchemaModel) => string = () => '',
