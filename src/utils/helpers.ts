@@ -175,15 +175,6 @@ export function getBasePath(serverUrl: string): string {
   }
 }
 
-export function getBaseUrl(serverUrl: string): string {
-  try {
-    return parseURL(serverUrl).origin;
-  } catch (e) {
-    // when using with redoc-cli serverUrl can be empty resulting in crash
-    return serverUrl;
-  }
-}
-
 export function titleize(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
