@@ -16,7 +16,7 @@ import {
   Referenced,
 } from '../types';
 import { IS_BROWSER } from './dom';
-import { isNumeric, removeQueryString, resolveUrl, isArray, isBoolean } from './helpers';
+import { isNumeric, resolveUrl, isArray, isBoolean, getBaseUrl } from './helpers';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
@@ -606,8 +606,7 @@ export function normalizeServers(
     return href.endsWith('.html') ? dirname(href) : href;
   };
 
-  const baseUrl = specUrl === undefined ? removeQueryString(getHref()) : dirname(specUrl);
-
+  const baseUrl = specUrl === undefined ? getBaseUrl(getHref()) : dirname(specUrl);
   if (servers.length === 0) {
     // Behaviour defined in OpenAPI spec: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#openapi-object
     servers = [
