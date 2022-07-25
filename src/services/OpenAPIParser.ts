@@ -240,7 +240,7 @@ export class OpenAPIParser {
 
       if (enumProperty !== undefined) {
         if (Array.isArray(enumProperty) && Array.isArray(receiver.enum)) {
-          receiver.enum = [...enumProperty, ...receiver.enum];
+          receiver.enum = Array.from(new Set([...enumProperty, ...receiver.enum]));
         } else {
           receiver.enum = enumProperty;
         }

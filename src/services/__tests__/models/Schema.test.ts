@@ -4,7 +4,7 @@ import { outdent } from 'outdent';
 import { SchemaModel } from '../../models/Schema';
 import { OpenAPIParser } from '../../OpenAPIParser';
 import { RedocNormalizedOptions } from '../../RedocNormalizedOptions';
-import { printSchema } from './helpers';
+import { enumDetailsPrinter, printSchema } from './helpers';
 
 const opts = new RedocNormalizedOptions({});
 
@@ -282,6 +282,189 @@ describe('Models', () => {
         "name: <string> (correct description name)
         allOf: <any>"
       `);
+    });
+    describe('enum values', () => {
+      test('should get correct fields enum fields without duplication', () => {
+        const spec = parseYaml(outdent`
+          openapi: 3.0.0
+          components:
+            schemas:
+              StringField: { type: string, title: StringField, enum: [A, B, C] }
+              FieldA: { type: string, title: FieldA, enum: [A1, A2, A3] }
+              FieldB: { type: string, title: FieldB, enum: [B1, B2, B3] }
+              FieldC: { type: string, title: FieldC, enum: [C1, C2, C3] }
+              ObjectWithAllOf:
+                title: StringFilter
+                type: object
+                allOf:
+                  - properties:
+                      type: { type: string, enum: [STRING] }
+                      field: { $ref: '#/components/schemas/StringField' }
+                    required: [type, field, values]
+                  - oneOf:
+                      - properties:
+                          field: { type: string, enum: [A] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                      - properties:
+                          field: { type: string, enum: [B] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                      - properties:
+                          field: { type: string, enum: [C] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+              ObjectWithOneOf:
+                title: StringFilter
+                type: object
+                properties:
+                  type: { type: string, enum: [STRING] }
+                  field: { $ref: '#/components/schemas/StringField' }
+                required: [type, field, values]
+                oneOf:
+                  - properties:
+                      field: { type: string, enum: [A] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                  - properties:
+                      field: { type: string, enum: [B] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                  - properties:
+                      field: { type: string, enum: [C] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+        `) as any;
+
+        parser = new OpenAPIParser(spec, undefined, opts);
+        const schemaWithOneOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithOneOf,
+          '#/components/schemas/ObjectWithOneOf',
+          opts,
+        );
+        expect(printSchema(schemaWithOneOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [A1,A2,A3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [B1,B2,B3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [C1,C2,C3]]
+              type*: <string>enum: [STRING]"
+        `);
+
+        const schemaWithAllOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithAllOf,
+          '#/components/schemas/ObjectWithAllOf',
+          opts,
+        );
+        expect(printSchema(schemaWithAllOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [A1,A2,A3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [B,A,C]
+              values*: [<string>enum: [B1,B2,B3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [C,A,B]
+              values*: [<string>enum: [C1,C2,C3]]"
+        `);
+      });
+
+      test('should get correct fields enum limits', () => {
+        const spec = parseYaml(outdent`
+          openapi: 3.0.0
+          components:
+            schemas:
+              StringField: { type: string, title: StringField, enum: [A, B, C] }
+              FieldA: { type: string, title: FieldA, enum: [A1, A2, A3] }
+              FieldB: { type: string, title: FieldB, enum: [B1, B2, B3] }
+              FieldC: { type: string, title: FieldC, enum: [C1, C2, C3] }
+              ObjectWithAllOf:
+                title: StringFilter
+                type: object
+                allOf:
+                  - properties:
+                      type: { type: string, enum: [STRING] }
+                    required: [type, field, values]
+                  - oneOf:
+                      - properties:
+                          field: { type: string, enum: [A] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                      - properties:
+                          field: { type: string, enum: [B] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                      - properties:
+                          field: { type: string, enum: [C] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+              ObjectWithOneOf:
+                title: StringFilter
+                type: object
+                properties:
+                  type: { type: string, enum: [STRING] }
+                required: [type, field, values]
+                oneOf:
+                  - properties:
+                      field: { type: string, enum: [A] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                  - properties:
+                      field: { type: string, enum: [B] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                  - properties:
+                      field: { type: string, enum: [C] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+        `) as any;
+
+        parser = new OpenAPIParser(spec, undefined, opts);
+        const schemaWithOneOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithOneOf,
+          '#/components/schemas/ObjectWithOneOf',
+          opts,
+        );
+        expect(printSchema(schemaWithOneOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            StringFilter ->
+              field*: <string>enum: [A]
+              values*: [<string>enum: [A1,A2,A3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [B]
+              values*: [<string>enum: [B1,B2,B3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [C]
+              values*: [<string>enum: [C1,C2,C3]]
+              type*: <string>enum: [STRING]"
+        `);
+
+        const schemaWithAllOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithAllOf,
+          '#/components/schemas/ObjectWithAllOf',
+          opts,
+        );
+        expect(printSchema(schemaWithAllOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [A]
+              values*: [<string>enum: [A1,A2,A3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [B]
+              values*: [<string>enum: [B1,B2,B3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [C]
+              values*: [<string>enum: [C1,C2,C3]]"
+        `);
+      });
     });
   });
 });
