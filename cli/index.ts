@@ -182,7 +182,7 @@ YargsParser.command(
   [
     res => {
       console.log(
-        `\n⚠️ This command is deprecated. Use "npx @redocly/openapi-cli preview-docs petstore.yaml"\n`,
+        `\n⚠️ This command is deprecated. Use "npx @redocly/cli preview-docs petstore.yaml"\n`,
       );
       return res;
     },
