@@ -2,7 +2,7 @@ import { default as classnames } from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css, ResolvedThemeInterface } from '../../styled-components';
+import styled, { css, media, ResolvedThemeInterface } from '../../styled-components';
 
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
@@ -172,18 +172,30 @@ export const RedocAttribution = styled.div`
   ${({ theme }) => `
   font-size: 0.8em;
   margin-top: ${theme.spacing.unit * 2}px;
-  padding: 0 ${theme.spacing.unit * 4}px;
-  text-align: left;
-
-  opacity: 0.7;
-
+  text-align: center;
+  position: fixed;
+  width: ${theme.sidebar.width};
+  bottom: 0px;
+  background: ${theme.sidebar.backgroundColor};
+ 
   a,
   a:visited,
   a:hover {
     color: ${theme.sidebar.textColor} !important;
-    border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
     padding: ${theme.spacing.unit}px 0;
-    display: block;
+    border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `};
+  img {
+    width: 15px;
+    margin-right: 5px;
+  }
+
+  ${media.lessThan('small')`
+    width: 100%;
+  `};
 `;
