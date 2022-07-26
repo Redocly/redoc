@@ -195,7 +195,7 @@ export class SchemaModel {
     } else if (this.hasType('array')) {
       if (isArray(schema.items) || isArray(schema.prefixItems)) {
         this.fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
-      } else if (isObject(schema.items)) {
+      } else if (schema.items) {
         this.items = new SchemaModel(
           parser,
           schema.items as OpenAPISchema,

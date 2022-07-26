@@ -140,6 +140,14 @@
           "$ref": "#/components/schemas/Tag"
         }
       },
+      "Case7": {
+        "type": "object",
+        "properties": {
+          "array_field": {
+            "$ref": "#/components/schemas/AnyArray"
+          }
+        }
+      },
       "Cat": {
         "type": "object",
         "properties": {
@@ -178,6 +186,10 @@
         "type": "integer",
         "format": "int64",
         "readOnly": true
+      },
+      "AnyArray": {
+        "type": "array",
+        "items": true
       }
     }
   }

@@ -242,6 +242,21 @@ describe('Models', () => {
           expect(schema.minItems).toBe(1);
         },
       );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve items with boolean type',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case7, '', opts);
+          expect(schema.fields?.[0].schema?.type).toBe('array');
+          expect(schema.fields?.[0].schema?.typePrefix).toBe('Array of ');
+          expect(schema.fields?.[0].schema.items?.displayType).toBe('any');
+          expect(schema?.fields).toHaveLength(1);
+          expect(schema.fields?.[0].schema.pointer).toEqual('#/components/schemas/AnyArray');
+          expect(schema.fields?.[0].schema.isPrimitive).toBe(true);
+        },
+      );
     });
 
     test('should get correct fields data if it includes allOf', () => {

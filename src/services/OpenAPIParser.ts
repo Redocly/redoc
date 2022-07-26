@@ -271,16 +271,13 @@ export class OpenAPIParser {
       }
 
       if (items !== undefined && !isCircular) {
-        // FIXME: this is invalid here, we need to fix it in separate PR
         const receiverItems =
           typeof receiver.items === 'boolean'
-            ? { items: receiver.items }
-            : receiver.items
-            ? (Object.assign({}, receiver.items) as OpenAPISchema)
-            : {};
+            ? {}
+            : (Object.assign({}, receiver.items) as OpenAPISchema);
         const subSchemaItems =
           typeof subSchema.items === 'boolean'
-            ? { items: subSchema.items }
+            ? {}
             : (Object.assign({}, subSchema.items) as OpenAPISchema);
         // merge inner properties
         receiver.items = this.mergeAllOf(
