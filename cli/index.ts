@@ -368,7 +368,7 @@ async function getPageHTML(
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          ? '<script src="https://unpkg.com/redoc@latest/bundles/redoc.standalone.js"></script>'
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title: title || spec.info.title || 'ReDoc documentation',
