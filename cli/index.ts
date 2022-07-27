@@ -479,5 +479,8 @@ function notifyUpdateCliVersion() {
     updateCheckInterval: 0,
     shouldNotifyInNpmScript: true,
   });
-  notifier.notify();
+  notifier.notify({
+    message:
+      'Run `{updateCommand}` to update.\nChangelog: https://github.com/Redocly/redoc/releases/tag/{latestVersion}',
+  });
 }
