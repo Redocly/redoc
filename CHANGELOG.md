@@ -1,3 +1,12 @@
+# [2.0.0-rc.74](https://github.com/Redocly/redoc/compare/v2.0.0-rc.73...v2.0.0-rc.74) (2022-07-28)
+
+
+### Bug Fixes
+
+* invalid url when href is empty ([#2105](https://github.com/Redocly/redoc/issues/2105)) ([e5f0235](https://github.com/Redocly/redoc/commit/e5f02359851a3797283ee513d734ab8e27266b92))
+
+
+
 # [2.0.0-rc.73](https://github.com/Redocly/redoc/compare/v2.0.0-rc.72...v2.0.0-rc.73) (2022-07-28)
 
 
