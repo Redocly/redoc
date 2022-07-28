@@ -17,6 +17,9 @@
 * restore old variant security injections ([#2075](https://github.com/Redocly/redoc/issues/2075)) ([1a1bc26](https://github.com/Redocly/redoc/commit/1a1bc26503c06b6a7022289e5b9353bd59e48a9a))
 * rewrite recursive checks ([#2072](https://github.com/Redocly/redoc/issues/2072)) ([2970f95](https://github.com/Redocly/redoc/commit/2970f959cfa31cb4d5288ca23ca05cd34357dcec))
 * Scrolling keeps rewriting url after a Redoc element was removed [#2051](https://github.com/Redocly/redoc/issues/2051) ([#2085](https://github.com/Redocly/redoc/issues/2085)) ([0045be0](https://github.com/Redocly/redoc/commit/0045be0b753b8fb7d8d58a4e511783a6ba858444))
+* mis-nesting of aria roles on sidebar navigation ([#2050](https://github.com/Redocly/redoc/issues/2050)) ([7ca10da](https://github.com/Redocly/redoc/commit/7ca10daf12f2cac9fecf559b11f0f0c8bd21ae43))
+* 404 on the documentation page ([#2092](https://github.com/Redocly/redoc/issues/2050)) ([17bb08](https://github.com/Redocly/redoc/commit/17bb08909a1734e6e59c83ce29f31ae7cf6fc784))
+
 
 
 
