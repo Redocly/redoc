@@ -35,7 +35,7 @@ export class OpenAPIParser {
 
     const href = IS_BROWSER ? window.location.href : '';
     if (typeof specUrl === 'string') {
-      this.specUrl = new URL(specUrl, href).href;
+      this.specUrl = href ? new URL(specUrl, href).href : specUrl;
     }
   }
 
