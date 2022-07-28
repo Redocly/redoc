@@ -1,12 +1,12 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.16",
+  "version": "0.13.17",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "redoc-cli",
-      "version": "0.13.16",
+      "version": "0.13.17",
       "license": "MIT",
       "dependencies": {
         "chokidar": "^3.5.1",
@@ -17,7 +17,7 @@
         "node-libs-browser": "^2.2.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "redoc": "2.0.0-rc.72",
+        "redoc": "2.0.0-rc.74",
         "styled-components": "^5.3.0",
         "yargs": "^17.3.1"
       },
@@ -216,9 +216,9 @@
       }
     },
     "node_modules/@redocly/openapi-core": {
-      "version": "1.0.0-beta.97",
-      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.97.tgz",
-      "integrity": "sha512-3WW9/6flosJuRtU3GI0Vw39OYFZqqXMDCp5TLa3EjXOb7Nm6AZTWRb3Y+I/+UdNJ/NTszVJkQczoa1t476ekiQ==",
+      "version": "1.0.0-beta.105",
+      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.105.tgz",
+      "integrity": "sha512-8uYDMcqBOPhFgjRlg5uetW/E2uTVVRpk+YsJhaH78ZNuzBkQP5Waw5s8P8ym6myvHs5me8l5AdniY/ePLMT5xg==",
       "dependencies": {
         "@redocly/ajv": "^8.6.4",
         "@types/node": "^14.11.8",
@@ -236,9 +236,9 @@
       }
     },
     "node_modules/@redocly/openapi-core/node_modules/@types/node": {
-      "version": "14.18.17",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-14.18.17.tgz",
-      "integrity": "sha512-oajWz4kOajqpKJMPgnCvBajPq8QAvl2xIWoFjlAJPKGu6n7pjov5SxGE45a+0RxHDoo4ycOMoZw1SCOWtDERbw=="
+      "version": "14.18.22",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-14.18.22.tgz",
+      "integrity": "sha512-qzaYbXVzin6EPjghf/hTdIbnVW1ErMx8rPzwRNJhlbyJhu2SyqlvjGOY/tbUt6VFyzg56lROcOeSQRInpt63Yw=="
     },
     "node_modules/@types/chokidar": {
       "version": "2.1.3",
@@ -1581,7 +1581,7 @@
     "node_modules/lodash.isequal": {
       "version": "4.5.0",
       "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz",
-      "integrity": "sha1-QVxEePK8wwEgwizhDtMib30+GOA="
+      "integrity": "sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ=="
     },
     "node_modules/loose-envify": {
       "version": "1.4.0",
@@ -1680,9 +1680,9 @@
       "integrity": "sha1-9sAMHAsIIkblxNmd+4x8CDsrWCo="
     },
     "node_modules/minimatch": {
-      "version": "5.0.1",
-      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-5.0.1.tgz",
-      "integrity": "sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==",
+      "version": "5.1.0",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-5.1.0.tgz",
+      "integrity": "sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==",
       "dependencies": {
         "brace-expansion": "^2.0.1"
       },
@@ -2201,11 +2201,11 @@
       }
     },
     "node_modules/redoc": {
-      "version": "2.0.0-rc.72",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.72.tgz",
-      "integrity": "sha512-IX/WvVh4N3zwo4sAjnQFz6ffIUd6G47hcflxPtrpxblJaeOy0MBSzzY8f179WjssWPYcSmmndP5v0hgEXFiimg==",
+      "version": "2.0.0-rc.74",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.74.tgz",
+      "integrity": "sha512-OeOWGcbmVdfVgN//7ispiRX0fhD7Gk3tWcERugyFfP8QX/1Pttw3jRYSXmiB0i+H48zFn20K1cMppBp/qzm5xQ==",
       "dependencies": {
-        "@redocly/openapi-core": "^1.0.0-beta.97",
+        "@redocly/openapi-core": "^1.0.0-beta.104",
         "classnames": "^2.3.1",
         "decko": "^1.2.0",
         "dompurify": "^2.2.8",
@@ -3129,9 +3129,9 @@
       }
     },
     "@redocly/openapi-core": {
-      "version": "1.0.0-beta.97",
-      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.97.tgz",
-      "integrity": "sha512-3WW9/6flosJuRtU3GI0Vw39OYFZqqXMDCp5TLa3EjXOb7Nm6AZTWRb3Y+I/+UdNJ/NTszVJkQczoa1t476ekiQ==",
+      "version": "1.0.0-beta.105",
+      "resolved": "https://registry.npmjs.org/@redocly/openapi-core/-/openapi-core-1.0.0-beta.105.tgz",
+      "integrity": "sha512-8uYDMcqBOPhFgjRlg5uetW/E2uTVVRpk+YsJhaH78ZNuzBkQP5Waw5s8P8ym6myvHs5me8l5AdniY/ePLMT5xg==",
       "requires": {
         "@redocly/ajv": "^8.6.4",
         "@types/node": "^14.11.8",
@@ -3146,9 +3146,9 @@
       },
       "dependencies": {
         "@types/node": {
-          "version": "14.18.17",
-          "resolved": "https://registry.npmjs.org/@types/node/-/node-14.18.17.tgz",
-          "integrity": "sha512-oajWz4kOajqpKJMPgnCvBajPq8QAvl2xIWoFjlAJPKGu6n7pjov5SxGE45a+0RxHDoo4ycOMoZw1SCOWtDERbw=="
+          "version": "14.18.22",
+          "resolved": "https://registry.npmjs.org/@types/node/-/node-14.18.22.tgz",
+          "integrity": "sha512-qzaYbXVzin6EPjghf/hTdIbnVW1ErMx8rPzwRNJhlbyJhu2SyqlvjGOY/tbUt6VFyzg56lROcOeSQRInpt63Yw=="
         }
       }
     },
@@ -4301,7 +4301,7 @@
     "lodash.isequal": {
       "version": "4.5.0",
       "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz",
-      "integrity": "sha1-QVxEePK8wwEgwizhDtMib30+GOA="
+      "integrity": "sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ=="
     },
     "loose-envify": {
       "version": "1.4.0",
@@ -4384,9 +4384,9 @@
       "integrity": "sha1-9sAMHAsIIkblxNmd+4x8CDsrWCo="
     },
     "minimatch": {
-      "version": "5.0.1",
-      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-5.0.1.tgz",
-      "integrity": "sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==",
+      "version": "5.1.0",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-5.1.0.tgz",
+      "integrity": "sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==",
       "requires": {
         "brace-expansion": "^2.0.1"
       }
@@ -4793,11 +4793,11 @@
       }
     },
     "redoc": {
-      "version": "2.0.0-rc.72",
-      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.72.tgz",
-      "integrity": "sha512-IX/WvVh4N3zwo4sAjnQFz6ffIUd6G47hcflxPtrpxblJaeOy0MBSzzY8f179WjssWPYcSmmndP5v0hgEXFiimg==",
+      "version": "2.0.0-rc.74",
+      "resolved": "https://registry.npmjs.org/redoc/-/redoc-2.0.0-rc.74.tgz",
+      "integrity": "sha512-OeOWGcbmVdfVgN//7ispiRX0fhD7Gk3tWcERugyFfP8QX/1Pttw3jRYSXmiB0i+H48zFn20K1cMppBp/qzm5xQ==",
       "requires": {
-        "@redocly/openapi-core": "^1.0.0-beta.97",
+        "@redocly/openapi-core": "^1.0.0-beta.104",
         "classnames": "^2.3.1",
         "decko": "^1.2.0",
         "dompurify": "^2.2.8",
