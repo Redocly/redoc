@@ -190,9 +190,6 @@ export const RedocAttribution = styled.div`
     justify-content: center;
   }
 `};
-  picture {
-    display: flex;
-  }
   img {
     width: 15px;
     margin-right: 5px;

@@ -27,10 +27,10 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
         <MenuItems items={store.items} onActivate={this.activate} root={true} />
         <RedocAttribution>
           <a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">
-            <picture>
-              <source srcSet={'./logo-mini.svg'} type="image/svg+xml" />
-              <img src={'https://cdn.redoc.ly/redoc/logo-mini.svg'} alt={'redocly logo'} />
-            </picture>
+            <img
+              src={'https://cdn.redoc.ly/redoc/logo-mini.svg'}
+              onError={event => event.currentTarget.remove()}
+            />
             API docs by Redocly
           </a>
         </RedocAttribution>
