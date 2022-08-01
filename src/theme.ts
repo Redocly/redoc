@@ -209,7 +209,7 @@ export function resolveTheme(theme: ThemeInterface): ResolvedThemeInterface {
           },
           enumerable: true,
         });
-      } else if (typeof val === 'object') {
+      } else if (typeof val === 'object' && val !== null) {
         setProxy(val, currentPath);
       }
     });
