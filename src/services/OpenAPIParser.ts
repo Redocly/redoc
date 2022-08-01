@@ -132,11 +132,21 @@ export class OpenAPIParser {
     if (
       mergeAsAllOf &&
       keys.some(
-        k => !['description', 'title', 'externalDocs', 'x-refsStack', 'x-parentRefs'].includes(k),
+        k =>
+          ![
+            'description',
+            'title',
+            'externalDocs',
+            'x-refsStack',
+            'x-parentRefs',
+            'readOnly',
+            'writeOnly',
+          ].includes(k),
       )
     ) {
+      const { description, title, readOnly, writeOnly, ...restSchema } = rest as OpenAPISchema;
       return {
-        allOf: [resolved, rest],
+        allOf: [{ description, title, readOnly, writeOnly }, resolved, restSchema],
       } as T;
     } else {
       // small optimization
