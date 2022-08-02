@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { parseYaml } from '@redocly/openapi-core';
 import { outdent } from 'outdent';
+import { MediaTypeModel } from '../../models';
 import { SchemaModel } from '../../models/Schema';
 import { OpenAPIParser } from '../../OpenAPIParser';
 import { RedocNormalizedOptions } from '../../RedocNormalizedOptions';
@@ -480,6 +481,86 @@ describe('Models', () => {
               values*: [<string>enum: [C1,C2,C3]]"
         `);
       });
+    });
+
+    test('should get correct sibling inside schema type for openapi 3.1', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.1.0
+        paths:
+          /test:
+            get:
+              operationId: test
+              responses:
+                '200':
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          testAttr:
+                            description: Overridden description
+                            type: string
+                            $ref: '#/components/schemas/Test'
+        components:
+          schemas:
+            Test:
+              type: object
+              description: Refed description
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const name = 'application/json';
+      const mediaType = new MediaTypeModel(
+        parser,
+        name,
+        true,
+        spec.paths['/test'].get.responses['200'].content[name],
+        opts,
+      );
+
+      expect(printSchema(mediaType?.schema as any)).toMatchInlineSnapshot(
+        `"testAttr: <string> (Overridden description)"`,
+      );
+    });
+
+    test('should not override schema in openapi 3.0', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.0.0
+        paths:
+          /test:
+            get:
+              operationId: test
+              responses:
+                '200':
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          testAttr:
+                            type: string
+                            description: Overridden description
+                            $ref: '#/components/schemas/Test'
+        components:
+          schemas:
+            Test:
+              type: object
+              description: Refed description
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const name = 'application/json';
+      const mediaType = new MediaTypeModel(
+        parser,
+        name,
+        true,
+        spec.paths['/test'].get.responses['200'].content[name],
+        opts,
+      );
+
+      expect(printSchema(mediaType?.schema as any)).toMatchInlineSnapshot(
+        `"testAttr: <object> (Refed description)"`,
+      );
     });
   });
 });
