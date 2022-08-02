@@ -92,7 +92,7 @@ function getRequiredScopes(id: string, securities: SecurityRequirementModel[]): 
     let schemesLength = security.schemes.length;
     while (schemesLength--) {
       const scheme = security.schemes[schemesLength];
-      if (scheme.id === id) {
+      if (scheme.id === id && Array.isArray(scheme.scopes)) {
         allScopes.push(...scheme.scopes);
       }
     }
