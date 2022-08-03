@@ -132,12 +132,13 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
   render() {
     const { activeItemIdx } = this.state;
-    const results = this.state.results.map(res => ({
-      item: this.props.getItemById(res.meta)!,
-      score: res.score,
-    }));
-
-    results.sort((a, b) => b.score - a.score);
+    const results = this.state.results
+      .filter(res => this.props.getItemById(res.meta))
+      .map(res => ({
+        item: this.props.getItemById(res.meta)!,
+        score: res.score,
+      }))
+      .sort((a, b) => b.score - a.score);
 
     return (
       <SearchWrap role="search">
