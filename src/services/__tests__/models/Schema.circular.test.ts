@@ -555,5 +555,45 @@ describe('Models', () => {
                 packSize: <integer>
       `);
     });
+
+    test('should detect and recursion with nested oneOf', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          Tag:
+            type: object
+            properties:
+              name:
+                description: Tag name
+                type: string
+                minLength: 1
+              items:
+                oneOf:
+                  - $ref: "#/components/schemas/Tag"
+          User:
+            type: object
+            properties:
+              pet:
+                oneOf:
+                  - $ref: '#/components/schemas/Tag'
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.User,
+        '#/components/schemas/User',
+        opts,
+      );
+
+      expect(printSchema(schema, circularDetailsPrinter)).toMatchInlineSnapshot(`
+      pet: oneOf
+          Tag ->
+            name: <string> (Tag name)
+            items: oneOf
+                Tag -> <object> !circular
+      `);
+    });
   });
 });
