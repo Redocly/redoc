@@ -254,10 +254,10 @@ export class SchemaModel {
           title,
           allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
         } as OpenAPISchema,
-        this.pointer + '/oneOf/' + idx,
+        variant.$ref || this.pointer + '/oneOf/' + idx,
         this.options,
         false,
-        this.refsStack,
+        refsStack,
       );
 
       return schema;
