@@ -62,7 +62,7 @@ export class MarkdownRenderer {
     parentId?: string,
   ): MarkdownHeading {
     name = unescapeHTMLChars(name);
-    const item = {
+    const item: MarkdownHeading = {
       id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
       name,
       level,
@@ -87,7 +87,7 @@ export class MarkdownRenderer {
   attachHeadingsDescriptions(rawText: string) {
     const buildRegexp = (heading: MarkdownHeading) => {
       return new RegExp(
-        `##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\s*(\n|\r\n)`,
+        `##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\s*(\n|\r\n|$|\s*)`,
       );
     };
 

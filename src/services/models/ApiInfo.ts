@@ -24,7 +24,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     this.description = parser.spec.info.description || '';
     this.summary = parser.spec.info.summary || '';
 
-    const firstHeadingLinePos = this.description.search(/^##?\s+/m);
+    const firstHeadingLinePos = this.description.search(/^\s*##?\s+/m);
     if (firstHeadingLinePos > -1) {
       this.description = this.description.substring(0, firstHeadingLinePos);
     }
