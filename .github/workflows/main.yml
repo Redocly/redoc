@@ -42,7 +42,7 @@ jobs:
         with:
           context: ./cli
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.prep.outputs.tags }},latest
+          tags: ${{ steps.prep.outputs.tags }}
   dockerhub:
     name: Publish redoc image to DockerHub
     runs-on: ubuntu-latest
