@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* tslint:disable:no-implicit-dependencies */
 import * as React from 'react';
+import * as updateNotifier from 'update-notifier';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -111,6 +112,7 @@ const handlerForBuildCommand = async (argv: any) => {
   };
 
   try {
+    notifyUpdateCliVersion();
     await bundle(argv.spec, config);
   } catch (e) {
     handleError(e);
@@ -174,6 +176,7 @@ YargsParser.command(
     };
 
     try {
+      notifyUpdateCliVersion();
       await serve(argv.host as string, argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
@@ -467,4 +470,17 @@ function getObjectOrJSON(options) {
       }
       return {};
   }
+}
+
+function notifyUpdateCliVersion() {
+  const pkg = require('./package.json');
+  const notifier = updateNotifier({
+    pkg,
+    updateCheckInterval: 0,
+    shouldNotifyInNpmScript: true,
+  });
+  notifier.notify({
+    message:
+      'Run `{updateCommand}` to update.\nChangelog: https://github.com/Redocly/redoc/releases/tag/{latestVersion}',
+  });
 }

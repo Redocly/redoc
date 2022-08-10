@@ -21,6 +21,7 @@
     "react-dom": "^17.0.1",
     "redoc": "2.0.0-rc.74",
     "styled-components": "^5.3.0",
+    "update-notifier": "^5.0.1",
     "yargs": "^17.3.1"
   },
   "publishConfig": {
