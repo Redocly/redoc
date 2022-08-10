@@ -19,7 +19,7 @@ jobs:
           restore-keys: |
             npm-${{ hashFiles('package-lock.json') }}
             npm-
-      - run: npm ci
+      - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
       - name: Store bundle artifact
         uses: actions/upload-artifact@v3
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci
+      - run: npm ci npm ci --prefix cli
       - name: Download bundled artifact
         uses: actions/download-artifact@v3
         with:
