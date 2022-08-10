@@ -1,3 +1,22 @@
+# [2.0.0-rc.75](https://github.com/Redocly/redoc/compare/v2.0.0-rc.74...v2.0.0-rc.75) (2022-08-10)
+
+
+### Bug Fixes
+
+* duplication of title ([#2119](https://github.com/Redocly/redoc/issues/2119)) ([40ebfd2](https://github.com/Redocly/redoc/commit/40ebfd2d63758b37665e2e4447732f671811e2a5))
+* handle error if security scopes is invalid ([#2113](https://github.com/Redocly/redoc/issues/2113)) ([428fd69](https://github.com/Redocly/redoc/commit/428fd6983dc257f524121d98aeb1c58b39cf81f7))
+* publishing docker image to github packages ([#2115](https://github.com/Redocly/redoc/issues/2115)) ([250f6d1](https://github.com/Redocly/redoc/commit/250f6d12b2d31d2166990bd9cb83ca1c63509686))
+* Redocly logo ([#2109](https://github.com/Redocly/redoc/issues/2109)) ([a35bb3f](https://github.com/Redocly/redoc/commit/a35bb3ff26bf10b0e54383222df283800d6ee2c8))
+* search and navigate error ([cfd810f](https://github.com/Redocly/redoc/commit/cfd810fdf9d37862e07458fa1c3c04046e22f315))
+* sibling for openapi 3.1 ([#2112](https://github.com/Redocly/redoc/issues/2112)) ([0b1a790](https://github.com/Redocly/redoc/commit/0b1a79009010f0640a3030093b7c0dcf8caa49e4))
+
+
+### Features
+
+* add notification about new version available ([#2100](https://github.com/Redocly/redoc/issues/2100)) ([d6ca8cc](https://github.com/Redocly/redoc/commit/d6ca8cc53b9667f09ce8fef88dfac1039c562b78))
+
+
+
 # [2.0.0-rc.74](https://github.com/Redocly/redoc/compare/v2.0.0-rc.73...v2.0.0-rc.74) (2022-07-28)
 
 
