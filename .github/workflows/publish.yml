@@ -92,3 +92,22 @@ jobs:
         uses: actions/download-artifact@v3
       - name: Publish to S3
         run: npm run publish-cdn
+
+  clearing-cache:
+    name: Clear cache
+    runs-on: ubuntu-latest
+    needs: [check-version, publish-npm, publish-cli-s3, publish-cdn]
+    if: needs.check-version.outputs.changed == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Clearing cache
+        run: npm run clear-cache
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          PATHS: '/redoc/*'
+          AWS_REGION: 'us-east-1'
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
