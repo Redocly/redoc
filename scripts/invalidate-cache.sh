@@ -2,7 +2,7 @@
 
 set -e                                      # exit on error
 
-echo Clearing cache
+echo jsdelivr clearing cache
 curl -i -X POST https://purge.jsdelivr.net/ \
  -H 'cache-control: no-cache' \
  -H 'content-type: application/json' \
@@ -15,6 +15,10 @@ curl -i -X POST https://purge.jsdelivr.net/ \
     }'
 
 echo
+echo start invalidate cloudfront
+
+aws cloudfront create-invalidation --distribution-id $DISTRIBUTION --paths "/redoc/*"
+
 echo Cache cleared successfully
 
 exit 0
