@@ -84,6 +84,10 @@ export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
 
+  &:first-child {
+    padding-bottom: 32px;
+  }
+
   & & {
     font-size: 0.929em;
   }
@@ -169,27 +173,27 @@ export const MenuItemTitle = styled.span<{ width?: string }>`
 `;
 
 export const RedocAttribution = styled.div`
-  ${({ theme }) => `
-  font-size: 0.8em;
-  margin-top: ${theme.spacing.unit * 2}px;
-  text-align: center;
-  position: fixed;
-  width: ${theme.sidebar.width};
-  bottom: 0px;
-  background: ${theme.sidebar.backgroundColor};
- 
-  a,
-  a:visited,
-  a:hover {
-    color: ${theme.sidebar.textColor} !important;
-    padding: ${theme.spacing.unit}px 0;
-    border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`};
+  ${({ theme }) => css`
+    font-size: 0.8em;
+    margin-top: ${theme.spacing.unit * 2}px;
+    text-align: center;
+    position: fixed;
+    width: ${theme.sidebar.width};
+    bottom: 0;
+    background: ${theme.sidebar.backgroundColor};
+
+    a,
+    a:visited,
+    a:hover {
+      color: ${theme.sidebar.textColor} !important;
+      padding: ${theme.spacing.unit}px 0;
+      border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  `};
   img {
     width: 15px;
     margin-right: 5px;
