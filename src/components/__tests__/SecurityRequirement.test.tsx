@@ -9,6 +9,7 @@ import {
   SecuritySchemesModel,
 } from '../../services';
 import { StoreProvider } from '../StoreBuilder';
+import { SecurityRequirementModel } from '../../services/models/SecurityRequirement';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 import { withTheme } from '../testProviders';
 import { SecurityDefs } from '../SecuritySchemes/SecuritySchemes';
@@ -48,6 +49,20 @@ describe('SecurityRequirement', () => {
       withTheme(<SecurityDefs securitySchemes={new SecuritySchemesModel(parser)} />),
     );
     expect(component.html()).toMatchSnapshot();
+  });
+
+  it("should render 'None' when empty object in security open api", () => {
+    const options = new RedocNormalizedOptions({});
+    const parser = new OpenAPIParser(
+      { openapi: '3.0', info: { title: 'test', version: '0' }, paths: {} },
+      undefined,
+      options,
+    );
+    const securityRequirement = [new SecurityRequirementModel({}, parser)];
+    const component = mount(
+      withTheme(<SecurityRequirements securities={securityRequirement} key={1} />),
+    );
+    expect(component.find('span').at(0).text()).toEqual('None');
   });
 
   it('should hide authDefinition', async () => {
