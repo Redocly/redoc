@@ -1,3 +1,19 @@
+# [2.0.0-rc.76](https://github.com/Redocly/redoc/compare/v2.0.0-rc.75...v2.0.0-rc.76) (2022-08-18)
+
+
+### Bug Fixes
+
+* "API Docs By Redocly" overlapping last element in sidebar ([#2132](https://github.com/Redocly/redoc/issues/2132)) ([c60c6f5](https://github.com/Redocly/redoc/commit/c60c6f58917563d57c0eef650b9dfcece2e15049))
+* encoding issue in CDN responses ([#2130](https://github.com/Redocly/redoc/issues/2130)) ([7816902](https://github.com/Redocly/redoc/commit/781690284a45b2b8af9eb525757632d0d19ef453))
+* Optional authentication not rendered properly ([#2117](https://github.com/Redocly/redoc/issues/2117)) ([#2134](https://github.com/Redocly/redoc/issues/2134)) ([efd5e09](https://github.com/Redocly/redoc/commit/efd5e09c907b36a3999f4c9c3165b6b2bdc1d536))
+
+
+### Features
+
+* add clear cache for publish action ([#2129](https://github.com/Redocly/redoc/issues/2129)) ([d8093e3](https://github.com/Redocly/redoc/commit/d8093e3e2086874242eac82ddd202f35d5b8d558))
+
+
+
 # [2.0.0-rc.75](https://github.com/Redocly/redoc/compare/v2.0.0-rc.74...v2.0.0-rc.75) (2022-08-10)
 
 
