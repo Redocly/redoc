@@ -96,8 +96,7 @@ jobs:
   invalidate-cache:
     name: Clear cache
     runs-on: ubuntu-latest
-    needs: [check-version, publish-npm, publish-cli-s3, publish-cdn]
-    if: needs.check-version.outputs.changed == 'true'
+    needs: [publish, publish-cdn]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
