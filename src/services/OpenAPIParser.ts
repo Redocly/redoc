@@ -173,7 +173,7 @@ export class OpenAPIParser {
       return schema;
     }
 
-    schema = this.hoistOneOfs(schema);
+    schema = this.hoistOneOfs(schema, refsStack);
 
     if (schema.allOf === undefined) {
       return schema;
@@ -194,30 +194,34 @@ export class OpenAPIParser {
       receiver.items = { ...receiver.items };
     }
 
-    const allOfSchemas = schema.allOf
-      .map((subSchema: OpenAPISchema) => {
-        const { resolved, refsStack: subRefsStack } = this.deref(subSchema, refsStack, true);
+    const allOfSchemas = uniqByPropIncludeMissing(
+      schema.allOf
+        .map((subSchema: OpenAPISchema) => {
+          const { resolved, refsStack: subRefsStack } = this.deref(subSchema, refsStack, true);
 
-        const subRef = subSchema.$ref || undefined;
-        const subMerged = this.mergeAllOf(resolved, subRef, subRefsStack);
-        if (subMerged['x-circular-ref'] && subMerged.allOf) {
-          // if mergeAllOf is circular and still contains allOf, we should ignore it
-          return undefined;
-        }
-        if (subRef) {
-          // collect information for implicit descriminator lookup
-          receiver['x-parentRefs']?.push(...(subMerged['x-parentRefs'] || []), subRef);
-        }
-        return {
-          $ref: subRef,
-          refsStack: pushRef(subRefsStack, subRef),
-          schema: subMerged,
-        };
-      })
-      .filter(child => child !== undefined) as Array<{
-      schema: MergedOpenAPISchema;
-      refsStack: string[];
-    }>;
+          const subRef = subSchema.$ref || undefined;
+          const subMerged = this.mergeAllOf(resolved, subRef, subRefsStack);
+          if (subMerged['x-circular-ref'] && subMerged.allOf) {
+            // if mergeAllOf is circular and still contains allOf, we should ignore it
+            return undefined;
+          }
+          if (subRef) {
+            // collect information for implicit descriminator lookup
+            receiver['x-parentRefs']?.push(...(subMerged['x-parentRefs'] || []), subRef);
+          }
+          return {
+            $ref: subRef,
+            refsStack: pushRef(subRefsStack, subRef),
+            schema: subMerged,
+          };
+        })
+        .filter(child => child !== undefined) as Array<{
+        schema: MergedOpenAPISchema;
+        refsStack: string[];
+        $ref?: string;
+      }>,
+      '$ref',
+    );
 
     for (const { schema: subSchema, refsStack: subRefsStack } of allOfSchemas) {
       const {
@@ -269,7 +273,10 @@ export class OpenAPIParser {
             // merge inner properties
             const mergedProp = this.mergeAllOf(
               {
-                allOf: [receiver.properties[prop], properties[prop]],
+                allOf: [
+                  receiver.properties[prop],
+                  { ...properties[prop], 'x-refsStack': propRefsStack } as any,
+                ],
                 'x-refsStack': propRefsStack,
               },
               $ref + '/properties/' + prop,
@@ -348,7 +355,7 @@ export class OpenAPIParser {
     return res;
   }
 
-  private hoistOneOfs(schema: OpenAPISchema) {
+  private hoistOneOfs(schema: OpenAPISchema, refsStack: string[]) {
     if (schema.allOf === undefined) {
       return schema;
     }
@@ -363,6 +370,7 @@ export class OpenAPIParser {
           oneOf: sub.oneOf.map((part: OpenAPISchema) => {
             return {
               allOf: [...beforeAllOf, part, ...afterAllOf],
+              'x-refsStack': refsStack,
             };
           }),
         };
@@ -371,4 +379,16 @@ export class OpenAPIParser {
 
     return schema;
   }
+}
+
+/**
+ * Unique array by property, missing properties are included
+ */
+function uniqByPropIncludeMissing<T extends object>(arr: T[], prop: keyof T): T[] {
+  const seen = new Set();
+  return arr.filter(item => {
+    const k = item[prop];
+    if (!k) return true;
+    return k && !seen.has(k) && seen.add(k);
+  });
 }
