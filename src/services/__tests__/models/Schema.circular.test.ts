@@ -655,5 +655,76 @@ describe('Models', () => {
                   type: <string>
         `);
     });
+
+    test('should detect and recursion with nested oneOf case same schema', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          Test:
+            allOf:
+              - type: object
+                required:
+                  - "@relations"
+                properties:
+                  "@relations":
+                    type: object
+                    properties:
+                      A:
+                        $ref: "#/components/schemas/A"
+              - type: object
+                required:
+                  - "@relations"
+                properties:
+                  "@relations":
+                    type: object
+                    properties:
+                      A:
+                        $ref: "#/components/schemas/A"
+          A:
+            type: object
+            description: Description
+            properties:
+              B:
+                type: array
+                items:
+                  oneOf:
+                    - type: object
+                    - title: tableLookup
+                      type: object
+                      properties:
+                        fallback:
+                          type: array
+                          default: []
+                          items:
+                            $ref: "#/components/schemas/A/properties/B"
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.Test,
+        '#/components/schemas/Test',
+        opts,
+      );
+
+      expect(printSchema(schema, circularDetailsPrinter)).toMatchInlineSnapshot(`
+        @relations*:
+          A:
+            B: [
+              oneOf
+                object -> <object>
+                tableLookup ->
+                  fallback: [
+                    [
+                    oneOf
+                      object -> <object>
+                      tableLookup ->
+                        fallback: [<array> !circular]
+                    ]
+                  ]
+            ]
+        `);
+    });
   });
 });

@@ -57,6 +57,7 @@ Object {
           ],
         },
       ],
+      "x-refsStack": undefined,
     },
     Object {
       "allOf": Array [
@@ -96,6 +97,7 @@ Object {
           ],
         },
       ],
+      "x-refsStack": undefined,
     },
   ],
 }
