@@ -1,9 +1,45 @@
-name: Tests e2e
-
-on: [push]
+name: E2E Tests
+on: 
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+  workflow_dispatch:
 
 jobs:
-  build-and-e2e:
+  cypress-record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci && npm ci --prefix cli
+      - run: npm run bundle
+      - run: RECORD_ALL_CONTENT=1 RECORD_REPLAY_METADATA_FILE=$(mktemp) npx cypress run --browser "Replay Chromium"
+        env:
+          RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
+          RECORD_REPLAY_TEST_METRICS: 1
+          RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+      - name: Upload replays
+        if: ${{ always() }}
+        uses: replayio/action-upload@v0.4.3
+        with:
+          api-key: rwk_CMx7Nd43nfKU5j6pDboS16IHDykYDIfIBMoejo6GofG
+          public: true
+  cypress-no-record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci && npm ci --prefix cli
+      - run: npm run bundle
+      - run: RECORD_ALL_CONTENT=1 RECORD_REPLAY_METADATA_FILE=$(mktemp) npx cypress run --browser "Replay Chromium"
+        env:
+          RECORD_ALL_CONTENT: 1
+          RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
+          RECORD_REPLAY_DRIVER: /tmp/not-here
+          RECORD_REPLAY_TEST_METRICS: 1
+          RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+      - run: npx @replayio/replay ls
+        if: ${{ always() }}
+  cypress-original:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
