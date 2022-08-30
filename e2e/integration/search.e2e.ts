@@ -20,6 +20,12 @@ describe('Search', () => {
       .first()
       .should('contain', 'Introduction');
 
+    getSearchInput().clear().type('uploadImage', { force: true });
+    cy.get('[role=search] [role=menuitem]')
+      .should('have.length', 1)
+      .first()
+      .should('contain', 'uploads an image');
+
     getSearchInput().type('{esc}', { force: true });
     getSearchResults().should('not.exist');
   });

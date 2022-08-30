@@ -26,7 +26,7 @@ export class SearchStore<T> {
     const recurse = items => {
       items.forEach(group => {
         if (group.type !== 'group') {
-          this.add(group.name, group.description || '', group.id);
+          this.add(group.name, (group.description || '').concat(' ', group.path || ''), group.id);
         }
         recurse(group.items);
       });
