@@ -37,7 +37,10 @@ function initEmpty() {
 
 initEmpty();
 
-const expandTerm = term => '*' + lunr.stemmer(new lunr.Token(term, {})) + '*';
+const expandTerm = term => {
+  const token = lunr.trimmer(new lunr.Token(term, {}));
+  return '*' + lunr.stemmer(token) + '*';
+};
 
 export function add<T>(title: string, description: string, meta?: T) {
   const ref = store.push(meta) - 1;
