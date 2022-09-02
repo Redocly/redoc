@@ -1,5 +1,5 @@
 name: E2E Tests
-on: 
+on:
   schedule:
     - cron: '0 0 * * *'
   push:
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
-      - run: RECORD_ALL_CONTENT=1 RECORD_REPLAY_METADATA_FILE=$(mktemp) npx cypress run --browser "Replay Chromium"
+      - run: npm run e2e-replay
         env:
           RECORD_ALL_CONTENT: 1
           RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
-      - run: RECORD_ALL_CONTENT=1 RECORD_REPLAY_METADATA_FILE=$(mktemp) npx cypress run --browser "Replay Chromium"
+      - run: npm run e2e-replay
         env:
           RECORD_ALL_CONTENT: 1
           RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata

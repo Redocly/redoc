@@ -37,6 +37,7 @@
     "test:update-snapshot": "jest --updateSnapshot",
     "e2e": "cypress run",
     "e2e-ci": "cypress run --record",
+    "e2e-replay": "RECORD_ALL_CONTENT=1 RECORD_REPLAY_METADATA_FILE=$(mktemp) npx cypress run --browser \"Replay Chromium\"",
     "bundlesize": "size-limit",
     "ts-check": "tsc --noEmit --skipLibCheck",
     "cy:open": "cypress open",
