@@ -253,6 +253,8 @@ export class SchemaModel {
           ...merged,
           title,
           allOf: [{ ...this.schema, oneOf: undefined, anyOf: undefined }],
+          // if specific child schemas are listed in oneOf/anyOf, they are not supposed to be discriminated
+          discriminator: derefVariant.allOf ? undefined : merged.discriminator,
         } as OpenAPISchema,
         variant.$ref || this.pointer + '/oneOf/' + idx,
         this.options,
