@@ -595,5 +595,65 @@ describe('Models', () => {
                 Tag -> <object> !circular
       `);
     });
+
+    test('should not use discriminator for direct schemas refs in oneOf/anyOf', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          Parent:
+            type: object
+            discriminator:
+              propertyName: type
+              mapping:
+                foo: '#/components/schemas/Foo'
+                bar: '#/components/schemas/Bar'
+                baz: '#/components/schemas/Baz'
+            properties:
+              type:
+                type: string
+          Foo:
+            allOf:
+              - $ref: '#/components/schemas/Parent'
+              - type: object
+          Bar:
+            allOf:
+            - $ref: '#/components/schemas/Parent'
+            - type: object
+          Baz:
+            allOf:
+            - $ref: '#/components/schemas/Parent'
+            - type: object
+              properties:
+                nested:
+                  anyOf:
+                    - $ref: '#/components/schemas/Foo'
+                    - $ref: '#/components/schemas/Bar'
+
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.Parent,
+        '#/components/schemas/Parent',
+        opts,
+      );
+
+      expect(printSchema(schema, circularDetailsPrinter)).toMatchInlineSnapshot(`
+        oneOf
+          foo ->
+            type: <string>
+          bar ->
+            type: <string>
+          baz ->
+            type: <string>
+            nested: oneOf
+                Foo ->
+                  type: <string>
+                Bar ->
+                  type: <string>
+        `);
+    });
   });
 });
