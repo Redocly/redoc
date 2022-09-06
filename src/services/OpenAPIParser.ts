@@ -5,6 +5,8 @@ import { JsonPointer } from '../utils/JsonPointer';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 import type { MergedOpenAPISchema } from './types';
 
+const MAX_DEREF_DEPTH = 999; // prevent circular detection crashes by adding hard limit on deref depth
+
 /**
  * Loads and keeps spec. Provides raw spec operations
  */
@@ -103,7 +105,7 @@ export class OpenAPIParser {
       }
 
       let refsStack = baseRefsStack;
-      if (baseRefsStack.includes(obj.$ref)) {
+      if (baseRefsStack.includes(obj.$ref) || baseRefsStack.length > MAX_DEREF_DEPTH) {
         resolved = Object.assign({}, resolved, { 'x-circular-ref': true });
       } else if (this.isRef(resolved)) {
         const res = this.deref(resolved, baseRefsStack, mergeAsAllOf);
