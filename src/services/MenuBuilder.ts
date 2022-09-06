@@ -41,7 +41,7 @@ export class MenuBuilder {
     initialDepth: number,
     options: RedocNormalizedOptions,
   ): ContentItemModel[] {
-    const renderer = new MarkdownRenderer(options);
+    const renderer = new MarkdownRenderer(options, parent?.id);
     const headings = renderer.extractHeadings(description || '');
 
     if (headings.length && parent && parent.description) {

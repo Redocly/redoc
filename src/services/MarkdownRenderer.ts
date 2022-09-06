@@ -46,7 +46,8 @@ export class MarkdownRenderer {
   private headingEnhanceRenderer: marked.Renderer;
   private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
-  constructor(public options?: RedocNormalizedOptions) {
+  constructor(public options?: RedocNormalizedOptions, public parentId?: string) {
+    this.parentId = parentId;
     this.parser = new marked.Parser();
     this.headingEnhanceRenderer = new marked.Renderer();
     this.originalHeadingRule = this.headingEnhanceRenderer.heading.bind(
@@ -63,7 +64,9 @@ export class MarkdownRenderer {
   ): MarkdownHeading {
     name = unescapeHTMLChars(name);
     const item: MarkdownHeading = {
-      id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
+      id: parentId
+        ? `${parentId}/${safeSlugify(name)}`
+        : `${this.parentId || 'section'}/${safeSlugify(name)}`,
       name,
       level,
       items: [],
