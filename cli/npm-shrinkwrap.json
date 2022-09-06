@@ -26,8 +26,6 @@
         "redoc-cli": "index.js"
       },
       "devDependencies": {
-        "@types/chokidar": "^2.1.3",
-        "@types/handlebars": "^4.1.0",
         "@types/mkdirp": "^1.0.1"
       },
       "engines": {
@@ -3354,8 +3352,7 @@
       }
     },
     "@types/chokidar": {
-      "version": "2.1.3",
-      "resolved": "https://registry.npmjs.org/@types/chokidar/-/chokidar-2.1.3.tgz",
+      "version": "https://registry.npmjs.org/@types/chokidar/-/chokidar-2.1.3.tgz",
       "integrity": "sha512-6qK3xoLLAhQVTucQGHTySwOVA1crHRXnJeLwqK6KIFkkKa2aoMFXh+WEi8PotxDtvN6MQJLyYN9ag9P6NLV81w==",
       "dev": true,
       "requires": {
@@ -3363,8 +3360,7 @@
       }
     },
     "@types/handlebars": {
-      "version": "4.1.0",
-      "resolved": "https://registry.npmjs.org/@types/handlebars/-/handlebars-4.1.0.tgz",
+      "version": "https://registry.npmjs.org/@types/handlebars/-/handlebars-4.1.0.tgz",
       "integrity": "sha512-gq9YweFKNNB1uFK71eRqsd4niVkXrxHugqWFQkeLRJvGjnxsLr16bYtcsG4tOFwmYi0Bax+wCkbf1reUfdl4kA==",
       "dev": true,
       "requires": {
