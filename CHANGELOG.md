@@ -1,3 +1,19 @@
+# [2.0.0-rc.77](https://github.com/Redocly/redoc/compare/v2.0.0-rc.76...v2.0.0-rc.77) (2022-09-06)
+
+
+### Bug Fixes
+
+* add hard limit on deref depth to prevent crashes ([ddde105](https://github.com/Redocly/redoc/commit/ddde105acaf0a77b0bb5d13df5fd6180bc8169e9))
+* do not use discriminator when specific schema was referenced in oneOf or anyOf ([#2153](https://github.com/Redocly/redoc/issues/2153)) ([6ac1e1e](https://github.com/Redocly/redoc/commit/6ac1e1eb183e97e2cd67ad14d8a39fac8289ebcc))
+* hoistOneOf missing refs stack and improve allOf for same $ref ([bb325d0](https://github.com/Redocly/redoc/commit/bb325d0d285c4cf4ee7c6d70878d2dd0dc9c6ed7))
+* latest docker cli tag ([#2140](https://github.com/Redocly/redoc/issues/2140)) ([8dc03eb](https://github.com/Redocly/redoc/commit/8dc03eb7ed262d6b1d460425ce43990710470845))
+* markdown parent name ([#2062](https://github.com/Redocly/redoc/issues/2062)) ([da9ed0b](https://github.com/Redocly/redoc/commit/da9ed0b4d1a4070d326ecb472459f0ff916c6036))
+
+### Features
+
+* feet: search feature to support path ([#2145](https://github.com/Redocly/redoc/issues/2145)) ([c52ee83f](https://github.com/Redocly/redoc/commit/c52ee83f77ccfc79137c85deafe8d93e68465d45))
+
+
 # [2.0.0-rc.76](https://github.com/Redocly/redoc/compare/v2.0.0-rc.75...v2.0.0-rc.76) (2022-08-18)
 
 
