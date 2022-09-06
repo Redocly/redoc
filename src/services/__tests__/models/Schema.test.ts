@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { parseYaml } from '@redocly/openapi-core';
+import { outdent } from 'outdent';
+import { MediaTypeModel } from '../../models';
 import { SchemaModel } from '../../models/Schema';
 import { OpenAPIParser } from '../../OpenAPIParser';
 import { RedocNormalizedOptions } from '../../RedocNormalizedOptions';
+import { enumDetailsPrinter, printSchema } from './helpers';
 
 const opts = new RedocNormalizedOptions({});
 
@@ -107,11 +111,22 @@ describe('Models', () => {
       const spec = require('../fixtures/3.1/patternProperties.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = new SchemaModel(parser, spec.components.schemas.Patterns, '', opts);
-      expect(schema.fields).toHaveLength(2);
-      expect(schema.fields![0].kind).toEqual('patternProperties');
-      expect(schema.fields![0].schema.type).toEqual('string');
-      expect(schema.fields![1].kind).toEqual('patternProperties');
-      expect(schema.fields![1].schema.type).toEqual('object');
+
+      expect(schema.fields).toHaveLength(4);
+      expect(schema.fields![0].kind).toEqual('field');
+      expect(schema.fields![0].name).toEqual('nestedObjectProp');
+      expect(schema.fields![0].schema.type).toEqual('object');
+      expect(schema.fields![0].schema.fields![0].kind).toEqual('patternProperties');
+
+      expect(schema.fields).toHaveLength(4);
+      expect(schema.fields![1].kind).toEqual('field');
+      expect(schema.fields![1].name).toEqual('nestedArrayProp');
+      expect(schema.fields![1].schema.items!.fields![0].kind).toEqual('patternProperties');
+
+      expect(schema.fields![2].kind).toEqual('patternProperties');
+      expect(schema.fields![2].schema.type).toEqual('string');
+      expect(schema.fields![3].kind).toEqual('patternProperties');
+      expect(schema.fields![3].schema.type).toEqual('object');
     });
 
     describe('type array', () => {
@@ -227,6 +242,324 @@ describe('Models', () => {
           expect(schema.items?.isPrimitive).toBe(false);
           expect(schema.minItems).toBe(1);
         },
+      );
+
+      test.each(eachArray)(
+        'schemaDefinition should resolve items with boolean type',
+        specFixture => {
+          const spec = require(specFixture);
+          const parser = new OpenAPIParser(spec, undefined, opts);
+          const schema = new SchemaModel(parser, spec.components.schemas.Case7, '', opts);
+          expect(schema.fields?.[0].schema?.type).toBe('array');
+          expect(schema.fields?.[0].schema?.typePrefix).toBe('Array of ');
+          expect(schema.fields?.[0].schema.items?.displayType).toBe('any');
+          expect(schema?.fields).toHaveLength(1);
+          expect(schema.fields?.[0].schema.pointer).toEqual('#/components/schemas/AnyArray');
+          expect(schema.fields?.[0].schema.isPrimitive).toBe(true);
+        },
+      );
+    });
+
+    test('should get correct fields data if it includes allOf', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.0.0
+      components:
+        schemas:
+          User:
+            allOf:
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    description: correct description name
+                    readOnly: false
+                    writeOnly: false
+                  allOf:
+                    - '#/components/schemas/NameField'
+          NameField:
+            type: object
+            description: name description
+            readOnly: true
+            writeOnly: false
+
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(
+        parser,
+        spec.components.schemas.User,
+        '#/components/schemas/User',
+        opts,
+      );
+      const fieldSchema = schema.fields?.[0].schema;
+      expect(fieldSchema?.readOnly).toBe(false);
+      expect(fieldSchema?.writeOnly).toBe(false);
+      expect(printSchema(schema)).toMatchInlineSnapshot(`
+        "name: <string> (correct description name)
+        allOf: <any>"
+      `);
+    });
+    describe('enum values', () => {
+      test('should get correct fields enum fields without duplication', () => {
+        const spec = parseYaml(outdent`
+          openapi: 3.0.0
+          components:
+            schemas:
+              StringField: { type: string, title: StringField, enum: [A, B, C] }
+              FieldA: { type: string, title: FieldA, enum: [A1, A2, A3] }
+              FieldB: { type: string, title: FieldB, enum: [B1, B2, B3] }
+              FieldC: { type: string, title: FieldC, enum: [C1, C2, C3] }
+              ObjectWithAllOf:
+                title: StringFilter
+                type: object
+                allOf:
+                  - properties:
+                      type: { type: string, enum: [STRING] }
+                      field: { $ref: '#/components/schemas/StringField' }
+                    required: [type, field, values]
+                  - oneOf:
+                      - properties:
+                          field: { type: string, enum: [A] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                      - properties:
+                          field: { type: string, enum: [B] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                      - properties:
+                          field: { type: string, enum: [C] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+              ObjectWithOneOf:
+                title: StringFilter
+                type: object
+                properties:
+                  type: { type: string, enum: [STRING] }
+                  field: { $ref: '#/components/schemas/StringField' }
+                required: [type, field, values]
+                oneOf:
+                  - properties:
+                      field: { type: string, enum: [A] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                  - properties:
+                      field: { type: string, enum: [B] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                  - properties:
+                      field: { type: string, enum: [C] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+        `) as any;
+
+        parser = new OpenAPIParser(spec, undefined, opts);
+        const schemaWithOneOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithOneOf,
+          '#/components/schemas/ObjectWithOneOf',
+          opts,
+        );
+        expect(printSchema(schemaWithOneOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [A1,A2,A3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [B1,B2,B3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [C1,C2,C3]]
+              type*: <string>enum: [STRING]"
+        `);
+
+        const schemaWithAllOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithAllOf,
+          '#/components/schemas/ObjectWithAllOf',
+          opts,
+        );
+        expect(printSchema(schemaWithAllOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [A,B,C]
+              values*: [<string>enum: [A1,A2,A3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [B,A,C]
+              values*: [<string>enum: [B1,B2,B3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [C,A,B]
+              values*: [<string>enum: [C1,C2,C3]]"
+        `);
+      });
+
+      test('should get correct fields enum limits', () => {
+        const spec = parseYaml(outdent`
+          openapi: 3.0.0
+          components:
+            schemas:
+              StringField: { type: string, title: StringField, enum: [A, B, C] }
+              FieldA: { type: string, title: FieldA, enum: [A1, A2, A3] }
+              FieldB: { type: string, title: FieldB, enum: [B1, B2, B3] }
+              FieldC: { type: string, title: FieldC, enum: [C1, C2, C3] }
+              ObjectWithAllOf:
+                title: StringFilter
+                type: object
+                allOf:
+                  - properties:
+                      type: { type: string, enum: [STRING] }
+                    required: [type, field, values]
+                  - oneOf:
+                      - properties:
+                          field: { type: string, enum: [A] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                      - properties:
+                          field: { type: string, enum: [B] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                      - properties:
+                          field: { type: string, enum: [C] }
+                          values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+              ObjectWithOneOf:
+                title: StringFilter
+                type: object
+                properties:
+                  type: { type: string, enum: [STRING] }
+                required: [type, field, values]
+                oneOf:
+                  - properties:
+                      field: { type: string, enum: [A] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldA' } }
+                  - properties:
+                      field: { type: string, enum: [B] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldB' } }
+                  - properties:
+                      field: { type: string, enum: [C] }
+                      values: { type: array, items: { $ref: '#/components/schemas/FieldC' } }
+        `) as any;
+
+        parser = new OpenAPIParser(spec, undefined, opts);
+        const schemaWithOneOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithOneOf,
+          '#/components/schemas/ObjectWithOneOf',
+          opts,
+        );
+        expect(printSchema(schemaWithOneOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            StringFilter ->
+              field*: <string>enum: [A]
+              values*: [<string>enum: [A1,A2,A3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [B]
+              values*: [<string>enum: [B1,B2,B3]]
+              type*: <string>enum: [STRING]
+            StringFilter ->
+              field*: <string>enum: [C]
+              values*: [<string>enum: [C1,C2,C3]]
+              type*: <string>enum: [STRING]"
+        `);
+
+        const schemaWithAllOf = new SchemaModel(
+          parser,
+          spec.components.schemas.ObjectWithAllOf,
+          '#/components/schemas/ObjectWithAllOf',
+          opts,
+        );
+        expect(printSchema(schemaWithAllOf, enumDetailsPrinter)).toMatchInlineSnapshot(`
+          "oneOf
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [A]
+              values*: [<string>enum: [A1,A2,A3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [B]
+              values*: [<string>enum: [B1,B2,B3]]
+            object ->
+              type*: <string>enum: [STRING]
+              field*: <string>enum: [C]
+              values*: [<string>enum: [C1,C2,C3]]"
+        `);
+      });
+    });
+
+    test('should get correct sibling inside schema type for openapi 3.1', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.1.0
+        paths:
+          /test:
+            get:
+              operationId: test
+              responses:
+                '200':
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          testAttr:
+                            description: Overridden description
+                            type: string
+                            $ref: '#/components/schemas/Test'
+        components:
+          schemas:
+            Test:
+              type: object
+              description: Refed description
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const name = 'application/json';
+      const mediaType = new MediaTypeModel(
+        parser,
+        name,
+        true,
+        spec.paths['/test'].get.responses['200'].content[name],
+        opts,
+      );
+
+      expect(printSchema(mediaType?.schema as any)).toMatchInlineSnapshot(
+        `"testAttr: <string> (Overridden description)"`,
+      );
+    });
+
+    test('should not override schema in openapi 3.0', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.0.0
+        paths:
+          /test:
+            get:
+              operationId: test
+              responses:
+                '200':
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          testAttr:
+                            type: string
+                            description: Overridden description
+                            $ref: '#/components/schemas/Test'
+        components:
+          schemas:
+            Test:
+              type: object
+              description: Refed description
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const name = 'application/json';
+      const mediaType = new MediaTypeModel(
+        parser,
+        name,
+        true,
+        spec.paths['/test'].get.responses['200'].content[name],
+        opts,
+      );
+
+      expect(printSchema(mediaType?.schema as any)).toMatchInlineSnapshot(
+        `"testAttr: <object> (Refed description)"`,
       );
     });
   });

@@ -1,7 +1,7 @@
-import { OpenAPIPath, Referenced } from '../../types';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIPath, Referenced } from '../../types';
+import type { OpenAPIParser } from '../OpenAPIParser';
 import { OperationModel } from './Operation';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { isOperationName } from '../..';
 
 export class WebhookModel {
@@ -12,8 +12,7 @@ export class WebhookModel {
     options: RedocNormalizedOptions,
     infoOrRef?: Referenced<OpenAPIPath>,
   ) {
-    const webhooks = parser.deref<OpenAPIPath>(infoOrRef || {});
-    parser.exitRef(infoOrRef);
+    const { resolved: webhooks } = parser.deref<OpenAPIPath>(infoOrRef || {});
     this.initWebhooks(parser, webhooks, options);
   }
 

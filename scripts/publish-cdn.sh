@@ -8,7 +8,9 @@ VERSION=$(node scripts/version.js)
 VERSION_TAG=v${VERSION:0:1}.x
 
 copy_to_s3 () {
-  aws s3 cp bundles "s3://redocly-cdn/redoc/$1/bundles" --recursive
+  aws s3 cp --exclude "*" --include "*.js" --content-type "application/javascript; charset=utf-8" bundles "s3://redocly-cdn/redoc/$1/bundles" --recursive
+  aws s3 cp --exclude "*" --include "*.map" --content-type "application/json" bundles "s3://redocly-cdn/redoc/$1/bundles" --recursive
+  aws s3 cp --exclude "*" --include "*.txt" bundles "s3://redocly-cdn/redoc/$1/bundles" --recursive
   aws s3 cp CHANGELOG.md "s3://redocly-cdn/redoc/$1/CHANGELOG.md"
   aws s3 cp LICENSE "s3://redocly-cdn/redoc/$1/LICENSE"
   aws s3 cp package.json "s3://redocly-cdn/redoc/$1/package.json"

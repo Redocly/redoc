@@ -4,19 +4,27 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 Object {
   "allOf": undefined,
   "default": undefined,
+  "description": undefined,
   "items": Object {
     "allOf": undefined,
+    "description": undefined,
     "format": "url",
-    "parentRefs": Array [],
+    "readOnly": undefined,
     "title": undefined,
     "type": "string",
+    "writeOnly": undefined,
+    "x-circular-ref": undefined,
+    "x-parentRefs": Array [],
   },
   "maxItems": 20,
   "minItems": 1,
-  "parentRefs": Array [],
+  "readOnly": undefined,
   "title": "isString",
   "type": "string",
+  "writeOnly": undefined,
+  "x-circular-ref": undefined,
   "x-displayName": "isString",
+  "x-parentRefs": Array [],
 }
 `;
 
@@ -24,32 +32,40 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 Object {
   "allOf": undefined,
   "default": undefined,
+  "description": undefined,
   "items": Object {
     "allOf": undefined,
+    "description": undefined,
     "format": "url",
-    "parentRefs": Array [],
+    "readOnly": undefined,
     "title": undefined,
     "type": "string",
+    "writeOnly": undefined,
+    "x-circular-ref": undefined,
+    "x-parentRefs": Array [],
   },
   "maxItems": 10,
   "minItems": 1,
-  "parentRefs": Array [],
   "pattern": "\\\\d+",
+  "readOnly": undefined,
   "title": "notString",
   "type": Array [
     "string",
     "integer",
     "null",
   ],
+  "writeOnly": undefined,
+  "x-circular-ref": undefined,
   "x-displayName": "notString",
+  "x-parentRefs": Array [],
 }
 `;
 
 exports[`Models Schema schemaDefinition should resolve schema with conditional operators 1`] = `
 Object {
   "allOf": undefined,
+  "description": undefined,
   "maxItems": 2,
-  "parentRefs": Array [],
   "properties": Object {
     "test": Object {
       "allOf": undefined,
@@ -59,32 +75,46 @@ Object {
       ],
       "items": Object {
         "allOf": undefined,
+        "description": undefined,
         "format": "url",
-        "parentRefs": Array [],
+        "readOnly": undefined,
         "title": undefined,
         "type": "string",
+        "writeOnly": undefined,
+        "x-circular-ref": undefined,
+        "x-parentRefs": Array [],
       },
       "maxItems": 20,
       "minItems": 1,
-      "parentRefs": Array [],
+      "readOnly": undefined,
       "title": undefined,
       "type": Array [
         "string",
         "integer",
         "null",
       ],
+      "writeOnly": undefined,
+      "x-circular-ref": undefined,
+      "x-parentRefs": Array [],
+      "x-refsStack": Array [
+        "/oneOf/0",
+      ],
     },
   },
+  "readOnly": undefined,
   "title": "=== 10",
   "type": "object",
+  "writeOnly": undefined,
+  "x-circular-ref": undefined,
+  "x-parentRefs": Array [],
 }
 `;
 
 exports[`Models Schema schemaDefinition should resolve schema with conditional operators 2`] = `
 Object {
   "allOf": undefined,
+  "description": undefined,
   "maxItems": 20,
-  "parentRefs": Array [],
   "properties": Object {
     "test": Object {
       "description": "The list of URL to a cute photos featuring pet",
@@ -99,9 +129,16 @@ Object {
         "integer",
         "null",
       ],
+      "x-refsStack": Array [
+        "/oneOf/1",
+      ],
     },
   },
+  "readOnly": undefined,
   "title": "case 2",
   "type": "object",
+  "writeOnly": undefined,
+  "x-circular-ref": undefined,
+  "x-parentRefs": Array [],
 }
 `;

@@ -1,25 +1,4 @@
-export interface LabelsConfig {
-  enum: string;
-  enumSingleValue: string;
-  enumArray: string;
-  default: string;
-  deprecated: string;
-  example: string;
-  examples: string;
-  recursive: string;
-  arrayOf: string;
-  webhook: string;
-  const: string;
-  noResultsFound: string;
-  download: string;
-  downloadSpecification: string;
-  responses: string;
-  callbackResponses: string;
-  requestSamples: string;
-  responseSamples: string;
-}
-
-export type LabelsConfigRaw = Partial<LabelsConfig>;
+import type { LabelsConfig, LabelsConfigRaw } from './types';
 
 const labels: LabelsConfig = {
   enum: 'Enum',

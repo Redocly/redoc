@@ -1,41 +1,12 @@
-import {
-  OpenAPIOperation,
-  OpenAPIParameter,
-  OpenAPISpec,
-  OpenAPITag,
-  Referenced,
-  OpenAPIServer,
-  OpenAPIPaths,
-} from '../types';
+import type { OpenAPISpec, OpenAPIPaths } from '../types';
 import { isOperationName, JsonPointer, alphabeticallyByProp } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
-import { OpenAPIParser } from './OpenAPIParser';
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-
-export type TagInfo = OpenAPITag & {
-  operations: ExtendedOpenAPIOperation[];
-  used?: boolean;
-};
-
-export type ExtendedOpenAPIOperation = {
-  pointer: string;
-  pathName: string;
-  httpVerb: string;
-  pathParameters: Array<Referenced<OpenAPIParameter>>;
-  pathServers: Array<OpenAPIServer> | undefined;
-  isWebhook: boolean;
-} & OpenAPIOperation;
-
-export type TagsInfoMap = Record<string, TagInfo>;
-
-export interface TagGroup {
-  name: string;
-  tags: string[];
-}
+import type { OpenAPIParser } from './OpenAPIParser';
+import type { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { ContentItemModel, TagGroup, TagInfo, TagsInfoMap } from './types';
 
 export const GROUP_DEPTH = 0;
-export type ContentItemModel = GroupModel | OperationModel;
 
 export class MenuBuilder {
   /**
@@ -239,7 +210,7 @@ export class MenuBuilder {
         for (const operationName of operations) {
           const operationInfo = path[operationName];
           if (path.$ref) {
-            const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+            const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
             getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
             continue;
           }

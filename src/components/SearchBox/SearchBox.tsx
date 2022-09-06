@@ -1,12 +1,10 @@
 import * as React from 'react';
 
-import { IMenuItem } from '../../services/MenuStore';
-import { SearchStore } from '../../services/SearchStore';
+import type { IMenuItem, SearchResult } from '../../services/types';
+import type { SearchStore } from '../../services/SearchStore';
+import type { MarkerService } from '../../services/MarkerService';
+
 import { MenuItem } from '../SideMenu/MenuItem';
-
-import { MarkerService } from '../../services/MarkerService';
-import { SearchResult } from '../../services/SearchWorker.worker';
-
 import { OptionsContext } from '../OptionsProvider';
 import { bind, debounce } from 'decko';
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
@@ -134,12 +132,13 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
   render() {
     const { activeItemIdx } = this.state;
-    const results = this.state.results.map(res => ({
-      item: this.props.getItemById(res.meta)!,
-      score: res.score,
-    }));
-
-    results.sort((a, b) => b.score - a.score);
+    const results = this.state.results
+      .filter(res => this.props.getItemById(res.meta))
+      .map(res => ({
+        item: this.props.getItemById(res.meta)!,
+        score: res.score,
+      }))
+      .sort((a, b) => b.score - a.score);
 
     return (
       <SearchWrap role="search">

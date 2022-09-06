@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "2.0.0-rc.72",
+  "version": "2.0.0-rc.76",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -62,8 +62,8 @@
     "pre-commit": "pretty-quick --staged && npm run lint"
   },
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^5.9.0",
-    "@hot-loader/react-dom": "^17.0.1",
+    "@cypress/webpack-preprocessor": "^5.12.0",
+    "@hot-loader/react-dom": "^17.0.2",
     "@size-limit/preset-app": "^7.0.4",
     "@types/chai": "^4.2.18",
     "@types/dompurify": "^2.2.2",
@@ -110,6 +110,7 @@
     "license-checker": "^25.0.1",
     "lodash.noop": "^3.0.1",
     "mobx": "^6.3.2",
+    "outdent": "^0.8.0",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.0.0",
     "raf": "^3.4.1",
@@ -123,10 +124,10 @@
     "ts-jest": "^27.0.2",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.0.0",
+    "tslib": "^2.4.0",
     "typescript": "~4.1.0",
     "unfetch": "^4.2.0",
-    "url-polyfill": "^1.1.12",
-    "webpack": "^5.38.1",
+    "webpack": "^5.50.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^4.6.0",
     "webpack-node-externals": "^3.0.0",
@@ -140,7 +141,7 @@
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
-    "@redocly/openapi-core": "^1.0.0-beta.97",
+    "@redocly/openapi-core": "^1.0.0-beta.104",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -152,7 +153,7 @@
     "mobx-react": "^7.2.0",
     "openapi-sampler": "^1.3.0",
     "path-browserify": "^1.0.1",
-    "perfect-scrollbar": "^1.5.1",
+    "perfect-scrollbar": "^1.5.5",
     "polished": "^4.1.3",
     "prismjs": "^1.27.0",
     "prop-types": "^15.7.2",
@@ -167,6 +168,14 @@
     {
       "path": "./bundles/redoc.standalone.js",
       "limit": "350 kB"
+    },
+    {
+      "path": "./bundles/redoc.lib.js",
+      "limit": "100 kB"
+    },
+    {
+      "path": "./bundles/redoc.browser.lib.js",
+      "limit": "100 kB"
     }
   ],
   "jest": {
@@ -186,10 +195,12 @@
     "coveragePathIgnorePatterns": [
       "\\.d\\.ts$",
       "/benchmark/",
-      "/node_modules/"
+      "/node_modules/",
+      "src/services/__tests__/models/helpers.ts"
     ],
     "modulePathIgnorePatterns": [
-      "/benchmark/"
+      "/benchmark/",
+      "src/services/__tests__/models/helpers.ts"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

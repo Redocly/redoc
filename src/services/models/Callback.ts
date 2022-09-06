@@ -1,10 +1,10 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import { OpenAPICallback, Referenced } from '../../types';
 import { isOperationName, JsonPointer } from '../../utils';
-import { OpenAPIParser } from '../OpenAPIParser';
 import { OperationModel } from './Operation';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import type { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPICallback, Referenced } from '../../types';
+import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class CallbackModel {
   @observable
@@ -23,8 +23,7 @@ export class CallbackModel {
     makeObservable(this);
 
     this.name = name;
-    const paths = parser.deref<OpenAPICallback>(infoOrRef);
-    parser.exitRef(infoOrRef);
+    const { resolved: paths } = parser.deref<OpenAPICallback>(infoOrRef);
 
     for (const pathName of Object.keys(paths)) {
       const path = paths[pathName];

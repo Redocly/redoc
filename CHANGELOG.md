@@ -1,3 +1,72 @@
+# [2.0.0-rc.76](https://github.com/Redocly/redoc/compare/v2.0.0-rc.75...v2.0.0-rc.76) (2022-08-18)
+
+
+### Bug Fixes
+
+* "API Docs By Redocly" overlapping last element in sidebar ([#2132](https://github.com/Redocly/redoc/issues/2132)) ([c60c6f5](https://github.com/Redocly/redoc/commit/c60c6f58917563d57c0eef650b9dfcece2e15049))
+* encoding issue in CDN responses ([#2130](https://github.com/Redocly/redoc/issues/2130)) ([7816902](https://github.com/Redocly/redoc/commit/781690284a45b2b8af9eb525757632d0d19ef453))
+* Optional authentication not rendered properly ([#2117](https://github.com/Redocly/redoc/issues/2117)) ([#2134](https://github.com/Redocly/redoc/issues/2134)) ([efd5e09](https://github.com/Redocly/redoc/commit/efd5e09c907b36a3999f4c9c3165b6b2bdc1d536))
+
+
+### Features
+
+* add clear cache for publish action ([#2129](https://github.com/Redocly/redoc/issues/2129)) ([d8093e3](https://github.com/Redocly/redoc/commit/d8093e3e2086874242eac82ddd202f35d5b8d558))
+
+
+
+# [2.0.0-rc.75](https://github.com/Redocly/redoc/compare/v2.0.0-rc.74...v2.0.0-rc.75) (2022-08-10)
+
+
+### Bug Fixes
+
+* duplication of title ([#2119](https://github.com/Redocly/redoc/issues/2119)) ([40ebfd2](https://github.com/Redocly/redoc/commit/40ebfd2d63758b37665e2e4447732f671811e2a5))
+* handle error if security scopes is invalid ([#2113](https://github.com/Redocly/redoc/issues/2113)) ([428fd69](https://github.com/Redocly/redoc/commit/428fd6983dc257f524121d98aeb1c58b39cf81f7))
+* publishing docker image to github packages ([#2115](https://github.com/Redocly/redoc/issues/2115)) ([250f6d1](https://github.com/Redocly/redoc/commit/250f6d12b2d31d2166990bd9cb83ca1c63509686))
+* Redocly logo ([#2109](https://github.com/Redocly/redoc/issues/2109)) ([a35bb3f](https://github.com/Redocly/redoc/commit/a35bb3ff26bf10b0e54383222df283800d6ee2c8))
+* search and navigate error ([cfd810f](https://github.com/Redocly/redoc/commit/cfd810fdf9d37862e07458fa1c3c04046e22f315))
+* sibling for openapi 3.1 ([#2112](https://github.com/Redocly/redoc/issues/2112)) ([0b1a790](https://github.com/Redocly/redoc/commit/0b1a79009010f0640a3030093b7c0dcf8caa49e4))
+
+
+### Features
+
+* add notification about new version available ([#2100](https://github.com/Redocly/redoc/issues/2100)) ([d6ca8cc](https://github.com/Redocly/redoc/commit/d6ca8cc53b9667f09ce8fef88dfac1039c562b78))
+
+
+
+# [2.0.0-rc.74](https://github.com/Redocly/redoc/compare/v2.0.0-rc.73...v2.0.0-rc.74) (2022-07-28)
+
+
+### Bug Fixes
+
+* invalid url when href is empty ([#2105](https://github.com/Redocly/redoc/issues/2105)) ([e5f0235](https://github.com/Redocly/redoc/commit/e5f02359851a3797283ee513d734ab8e27266b92))
+
+
+
+# [2.0.0-rc.73](https://github.com/Redocly/redoc/compare/v2.0.0-rc.72...v2.0.0-rc.73) (2022-07-28)
+
+
+### Bug Fixes
+
+* add label API docs by Redocly ([#2099](https://github.com/Redocly/redoc/issues/2099)) ([dcdab83](https://github.com/Redocly/redoc/commit/dcdab838903a5d923c5e327d07d7743214769a61))
+* add the latest tag for the CLI docker image ([#2087](https://github.com/Redocly/redoc/issues/2087)) ([80ecd0f](https://github.com/Redocly/redoc/commit/80ecd0f19746379b056bfb1b11950693f3dc3724))
+* correct URLs of OperationModel servers for static site generation ([#2081](https://github.com/Redocly/redoc/issues/2081)) ([b1afd08](https://github.com/Redocly/redoc/commit/b1afd08bcf83770b537ed1eb9c90341de0162a1c))
+* enum duplication values when schema uses a specific combination of oneOf and allOf([#2088](https://github.com/Redocly/redoc/issues/2088)) ([e411847](https://github.com/Redocly/redoc/commit/e4118479f69209c5dd09a2be0e978834dcd9eb8f))
+* highlight text syntax ([#2069](https://github.com/Redocly/redoc/issues/2069)) ([4fc6aa0](https://github.com/Redocly/redoc/commit/4fc6aa0859c94e25fd30c4a4250455e44cc76488))
+* merge reference for openapi 3.1 ([#2063](https://github.com/Redocly/redoc/issues/2063)) ([87541e4](https://github.com/Redocly/redoc/commit/87541e45dc2526696deb32a6350a14a44a709b54))
+* nested patternProperties ([#2073](https://github.com/Redocly/redoc/issues/2073)) ([9920991](https://github.com/Redocly/redoc/commit/99209910806b85289a89fb3131049ed79118bc72))
+* operation url in static page ([#2093](https://github.com/Redocly/redoc/issues/2093)) ([98eec19](https://github.com/Redocly/redoc/commit/98eec19647b63f3598ec30fdeb428f614cf93ad4))
+* property with nested allOf ([#2083](https://github.com/Redocly/redoc/issues/2083)) ([7cc0500](https://github.com/Redocly/redoc/commit/7cc0500f3c1ddd1da17ee31278468207093f9281))
+* recursion for boolean items ([#2097](https://github.com/Redocly/redoc/issues/2097)) ([a5804db](https://github.com/Redocly/redoc/commit/a5804db1ce60ee6d90db8a3b54138eb1ca420c6f))
+* resolve dependency conflict in installing ([#2060](https://github.com/Redocly/redoc/issues/2060)) ([e26c8b2](https://github.com/Redocly/redoc/commit/e26c8b23d9b36abd5572bd0fe350d74a5cf65afb))
+* restore old variant security injections ([#2075](https://github.com/Redocly/redoc/issues/2075)) ([1a1bc26](https://github.com/Redocly/redoc/commit/1a1bc26503c06b6a7022289e5b9353bd59e48a9a))
+* rewrite recursive checks ([#2072](https://github.com/Redocly/redoc/issues/2072)) ([2970f95](https://github.com/Redocly/redoc/commit/2970f959cfa31cb4d5288ca23ca05cd34357dcec))
+* Scrolling keeps rewriting url after a Redoc element was removed [#2051](https://github.com/Redocly/redoc/issues/2051) ([#2085](https://github.com/Redocly/redoc/issues/2085)) ([0045be0](https://github.com/Redocly/redoc/commit/0045be0b753b8fb7d8d58a4e511783a6ba858444))
+* mis-nesting of aria roles on sidebar navigation ([#2050](https://github.com/Redocly/redoc/issues/2050)) ([7ca10da](https://github.com/Redocly/redoc/commit/7ca10daf12f2cac9fecf559b11f0f0c8bd21ae43))
+* 404 on the documentation page ([#2092](https://github.com/Redocly/redoc/issues/2050)) ([17bb08](https://github.com/Redocly/redoc/commit/17bb08909a1734e6e59c83ce29f31ae7cf6fc784))
+
+
+
+
 # [2.0.0-rc.72](https://github.com/Redocly/redoc/compare/v2.0.0-rc.71...v2.0.0-rc.72) (2022-06-02)
 
 
