@@ -59,4 +59,20 @@ describe('Search', () => {
     getSearchInput().type('xzss', { force: true });
     getSearchResults().should('exist').should('contain', 'No results found');
   });
+
+  it('should allow search by path or keywords in path', () => {
+    getSearchInput().clear().type('uploadImage', { force: true });
+    cy.get('[role=search] [role=menuitem]')
+      .should('have.length', 1)
+      .first()
+      .should('contain', 'uploads an image');
+
+    getSearchInput()
+      .clear()
+      .type('/pet/{petId}/uploadImage', { force: true, parseSpecialCharSequences: false });
+    cy.get('[role=search] [role=menuitem]')
+      .should('have.length', 1)
+      .first()
+      .should('contain', 'uploads an image');
+  });
 });
