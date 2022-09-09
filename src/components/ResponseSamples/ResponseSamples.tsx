@@ -23,7 +23,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
 
     return (
       (responses.length > 0 && (
-        <div>
+        <div className="operation-response-samples">
           <RightPanelHeader> {l('responseSamples')} </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
@@ -36,7 +36,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
             </TabList>
             {responses.map(response => (
               <TabPanel key={response.code}>
-                <div>
+                <div className="response-sample">
                   <PayloadSamples content={response.content!} />
                 </div>
               </TabPanel>

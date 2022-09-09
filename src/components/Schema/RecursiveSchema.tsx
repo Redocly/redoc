@@ -7,7 +7,7 @@ import type { SchemaProps } from '.';
 
 export const RecursiveSchema = observer(({ schema }: SchemaProps) => {
   return (
-    <div>
+    <div className="recursive-schema">
       <TypeName>{schema.displayType}</TypeName>
       {schema.title && <TypeTitle> {schema.title} </TypeTitle>}
       <RecursiveLabel> {l('recursive')} </RecursiveLabel>

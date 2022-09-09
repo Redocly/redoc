@@ -56,7 +56,7 @@ export class CallbackSamples extends React.Component<CallbackSamplesProps> {
     });
 
     return (
-      <div>
+      <div className="operation-callback-samples">
         <RightPanelHeader> Callback payload samples </RightPanelHeader>
 
         <SamplesWrapper>

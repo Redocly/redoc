@@ -19,7 +19,7 @@ export const SourceCodeWithCopy = (props: SourceCodeProps) => {
   return (
     <CopyButtonWrapper data={source}>
       {({ renderCopyButton }) => (
-        <SampleControlsWrap>
+        <SampleControlsWrap className="request-code-sample">
           <SampleControls>{renderCopyButton()}</SampleControls>
           <SourceCode lang={lang} source={source} />
         </SampleControlsWrap>

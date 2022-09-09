@@ -55,8 +55,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
                 {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
               </Description>
             )}
-            <Extensions extensions={operation.extensions} />{' '}
-            {/*TODO: className="operation-extensions"*/}
+            <Extensions extensions={operation.extensions} />
             <SecurityRequirements securities={operation.security} />
             <Parameters parameters={operation.parameters} body={operation.requestBody} />
             <ResponsesList responses={operation.responses} />

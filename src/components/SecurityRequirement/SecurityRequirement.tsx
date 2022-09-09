@@ -56,7 +56,7 @@ export function SecurityRequirements(props: SecurityRequirementsProps) {
       {expanded &&
         operationSecuritySchemes?.length &&
         operationSecuritySchemes.map((scheme, idx) => (
-          <SecurityDetailsStyle key={idx}>
+          <SecurityDetailsStyle key={idx} className="security-details">
             <h5>
               <LockIcon /> {AUTH_TYPES[scheme.type] || scheme.type}: {scheme.id}
             </h5>

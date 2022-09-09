@@ -87,7 +87,7 @@ export class Schema extends React.Component<Partial<SchemaProps>> {
     } as any as FieldModel; // cast needed for hot-loader to not fail
 
     return (
-      <div>
+      <div className="field-details">
         <FieldDetails field={field} />
       </div>
     );
