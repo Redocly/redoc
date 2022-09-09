@@ -17,7 +17,7 @@ export class CallbacksList extends React.PureComponent<CallbacksListProps> {
     }
 
     return (
-      <div>
+      <div className="operation-callbacks">
         <CallbacksHeader> Callbacks </CallbacksHeader>
         {callbacks.map(callback => {
           return callback.operations.map((operation, index) => {
