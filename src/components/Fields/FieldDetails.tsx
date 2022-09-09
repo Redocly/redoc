@@ -53,7 +53,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
   }, [field, showExamples]);
 
   return (
-    <div>
+    <div className="field-details">
       <div>
         <TypePrefix>{schema.typePrefix}</TypePrefix>
         <TypeName>{schema.displayType}</TypeName>
@@ -88,7 +88,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
         {isArrayType && schema.items && <ArrayItemDetails schema={schema.items} />}
       </div>
       {deprecated && (
-        <div>
+        <div className="field-deprecated">
           <Badge type="warning"> {l('deprecated')} </Badge>
         </div>
       )}

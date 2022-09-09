@@ -18,7 +18,7 @@ export function Pattern(props: { schema: SchemaModel }) {
 
   return (
     <>
-      <PatternLabel>
+      <PatternLabel className="field-pattern">
         {isPatternShown || pattern.length < MAX_PATTERN_LENGTH
           ? pattern
           : `${pattern.substr(0, MAX_PATTERN_LENGTH)}...`}
