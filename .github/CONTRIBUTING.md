@@ -14,7 +14,7 @@ Hi! We're really excited that you are interested in contributing to ReDoc. Befor
 ## Pull Request Guidelines
 Before submitting a pull request, please make sure the following is done:
 
-1. Fork the repository and create your branch from master.
+1. Fork the repository and create your branch from main.
 2. Run `npm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
 4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.

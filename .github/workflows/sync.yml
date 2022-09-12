@@ -2,7 +2,7 @@ name: Sync Files
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 jobs:
   sync:
@@ -11,8 +11,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
       - name: Run GitHub File Sync
-        uses: Redocly/repo-file-sync-action@master
+        uses: Redocly/repo-file-sync-action@main
         with:
           GH_PAT: ${{ secrets.GH_PAT }}
-          COMMIT_PREFIX: "sync:"
+          COMMIT_PREFIX: 'sync:'
           SKIP_PR: true

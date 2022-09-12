@@ -37,5 +37,5 @@ docker run -p 8080:80 -e SPEC_URL=https://api.example.com/openapi.json redocly/r
 ## Create a Dockerfile
 
 You can also create a Dockerfile with some predefined environment variables. Check out
-a sample [Dockerfile](https://github.com/Redocly/redoc/blob/master/config/docker/Dockerfile)
+a sample [Dockerfile](https://github.com/Redocly/redoc/blob/main/config/docker/Dockerfile)
 in our code repo.

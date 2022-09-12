@@ -3,7 +3,7 @@ name: Publish cli
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   bundle:
