@@ -21,7 +21,7 @@ const demos = [
 ];
 
 class DemoApp extends React.Component<
-  {},
+  Record<string, unknown>,
   { spec: object | undefined; specUrl: string; dropdownOpen: boolean; cors: boolean }
 > {
   constructor(props) {
@@ -94,7 +94,7 @@ class DemoApp extends React.Component<
         <Heading>
           <a href=".">
             <Logo
-              src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png"
+              src="https://github.com/Redocly/redoc/raw/main/docs/images/redoc-logo.png"
               alt="Redoc logo"
             />
           </a>

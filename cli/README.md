@@ -26,7 +26,7 @@ Some examples:
 - Serve with the `nativeScrollbars` option set to true:<br/>
   `$ redoc-cli serve [spec] --options.nativeScrollbars`
 - Bundle using a custom [Handlebars](https://handlebarsjs.com/) template
-  (check the [default template](https://github.com/Redocly/redoc/blob/master/cli/template.hbs) for an example):<br/>
+  (check the [default template](https://github.com/Redocly/redoc/blob/main/cli/template.hbs) for an example):<br/>
   `$ redoc-cli build [spec] -t custom.hbs`
 - Bundle using a custom template and add custom `templateOptions`:<br/>
   `$ redoc-cli build [spec] -t custom.hbs --templateOptions.metaDescription "Page meta description"`
