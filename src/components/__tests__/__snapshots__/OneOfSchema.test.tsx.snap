@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
-<div>
+<div
+  class="oneOf-schema"
+>
   <span
     class="sc-kfYoZR juYXUf"
   >
@@ -29,8 +31,12 @@ exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
       Deprecated
     </span>
   </div>
-  <div>
-    <div>
+  <div
+    class="field-details"
+  >
+    <div
+      class="field-details"
+    >
       <div>
         <span
           class="sc-laZMeE sc-iNiQyp jWaWWE jrLlAa"
