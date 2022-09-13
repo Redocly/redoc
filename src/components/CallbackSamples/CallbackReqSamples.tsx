@@ -23,7 +23,7 @@ export class CallbackPayloadSample extends React.Component<PayloadSampleProps> {
     }
 
     return (
-      <PayloadSampleWrapper>
+      <PayloadSampleWrapper className="callback-sample">
         <PayloadSamples content={payloadSample.requestBodyContent} />
       </PayloadSampleWrapper>
     );

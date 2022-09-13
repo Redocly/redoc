@@ -24,7 +24,7 @@ export class CallbackDetails extends React.Component<CallbackDetailsProps> {
     const hasDescription = !!(description || externalDocs);
 
     return (
-      <CallbackDetailsWrap>
+      <CallbackDetailsWrap className="callback">
         {hasDescription && (
           <Description>
             {description !== undefined && <Markdown source={description} />}

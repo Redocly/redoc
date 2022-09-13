@@ -35,7 +35,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
     <OptionsContext.Consumer>
       {options => (
         <Row {...{ [SECTION_ATTR]: operation.operationHash }} id={operation.operationHash}>
-          <MiddlePanel>
+          <MiddlePanel className="middle-panel">
             <H2 className="operation-header">
               <ShareLink to={operation.id} />
               {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
@@ -61,7 +61,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
             <ResponsesList responses={operation.responses} />
             <CallbacksList callbacks={operation.callbacks} />
           </MiddlePanel>
-          <DarkRightPanel>
+          <DarkRightPanel className="right-panel">
             {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
             <RequestSamples operation={operation} />
             <ResponseSamples operation={operation} />
