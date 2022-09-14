@@ -9,7 +9,7 @@
 </div>
 
 **This is the README for the `2.x` version of Redoc (React-based).**
-**The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch**
+**The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch.**
 
 ## About Redoc
 
@@ -103,7 +103,7 @@ Refer to the Redocly's documentation for more information on these products:
 
 ## Releases
 **Important:** all the 2.x releases are deployed to npm and can be used with Redocly-cdn:
-- particular release, for example, `v2.0.0-rc.70`: https://cdn.redoc.ly/redoc/v2.0.0-rc.70/bundles/redoc.standalone.js
+- particular release, for example, `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
 - `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
@@ -240,10 +240,10 @@ You can use all of the following options with the standalone version of the <red
   * **number**: A fixed number of pixels to be used as offset.
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
   * **function**: A getter function. Must return a number representing the offset (in pixels).
-* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
+* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by Redoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
 * `sortPropsAlphabetically` - sort properties alphabetically.
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
-* `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
+* `theme` - Redoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 * `nonce` - if set, the provided value will be injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
 * `sideNavStyle` - can be specified in various ways:
