@@ -31,9 +31,7 @@ exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
       Deprecated
     </span>
   </div>
-  <div
-    class="field-details"
-  >
+  <div>
     <div
       class="field-details"
     >
