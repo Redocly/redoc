@@ -13,6 +13,7 @@ import {
   PropertyCellWithInner,
   PropertyDetailsCell,
   PropertyNameCell,
+  WrappedShelfIcon,
 } from '../../common-elements/fields-layout';
 import { ShelfIcon } from '../../common-elements/';
 import { Schema } from '../Schema/Schema';
@@ -76,7 +77,9 @@ export class Field extends React.Component<FieldProps> {
           aria-label="expand properties"
         >
           <span className="property-name">{name}</span>
-          <ShelfIcon direction={expanded ? 'down' : 'right'} />
+          <WrappedShelfIcon>
+            <ShelfIcon direction={expanded ? 'down' : 'right'} />
+          </WrappedShelfIcon>
         </button>
         {labels}
       </ClickablePropertyNameCell>

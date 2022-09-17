@@ -70,6 +70,7 @@ export const Tabs = styled(ReactTabs)`
 
     & > div > pre {
       padding: 0;
+      direction: ltr;
     }
   }
 `;

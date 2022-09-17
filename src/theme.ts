@@ -107,17 +107,17 @@ const defaultTheme: ThemeInterface = {
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Roboto, sans-serif, Vazir',
     smoothing: 'antialiased',
     optimizeSpeed: true,
     headings: {
-      fontFamily: 'Montserrat, sans-serif',
+      fontFamily: 'Montserrat, sans-serif, Vazir',
       fontWeight: '400',
       lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
-      fontFamily: 'Courier, monospace',
+      fontFamily: 'Montserrat, sans-serif, Vazir',
       lineHeight: ({ typography }) => typography.lineHeight,
       fontWeight: ({ typography }) => typography.fontWeightRegular,
       color: '#e53935',
@@ -318,7 +318,7 @@ export interface ResolvedThemeInterface {
     fontWeightRegular: string;
     fontWeightBold: string;
     fontFamily: string;
-
+    direction?: 'ltr' | 'rtl';
     smoothing: string;
     optimizeSpeed: boolean;
 

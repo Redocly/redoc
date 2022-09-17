@@ -29,6 +29,7 @@ export const SearchInput = styled.input.attrs(() => ({
   color: ${props => props.theme.sidebar.textColor};
   background-color: transparent;
   outline: none;
+  text-align: ${({ theme }) => (theme.typography.direction === 'rtl' ? 'center' : 'inherit')};
 `;
 
 export const SearchIcon = styled((props: { className?: string }) => (
@@ -66,7 +67,7 @@ export const SearchResultsBox = styled.div`
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
-  
+
   li {
     background-color: inherit;
   }
