@@ -103,7 +103,7 @@ Refer to the Redocly's documentation for more information on these products:
 
 ## Releases
 **Important:** all the 2.x releases are deployed to npm and can be used with Redocly-cdn:
-- particular release, for example, `v2.0.0-rc.70`: https://cdn.redoc.ly/redoc/v2.0.0-rc.70/bundles/redoc.standalone.js
+- particular release, for example, `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
 - `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
@@ -114,6 +114,7 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 ## Version Guidance
 | Redoc Release | OpenAPI Specification |
 |:--------------|:----------------------|
+| 2.0.x         | 3.1, 3.0.x, 2.0       |
 | 2.0.0-alpha.54| 3.1, 3.0.x, 2.0       |
 | 2.0.0-alpha.x | 3.0, 2.0              |
 | 1.19.x        | 2.0                   |
