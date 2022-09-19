@@ -88,6 +88,8 @@ x-tagGroups:
     tags:
       - pet_model
       - store_model
+security:
+  - {}
 paths:
   /pet:
     parameters:
