@@ -94,7 +94,7 @@ class DemoApp extends React.Component<
         <Heading>
           <a href=".">
             <Logo
-              src="https://github.com/Redocly/redoc/raw/main/docs/images/redoc-logo.png"
+              src="https://github.com/Redocly/redoc/raw/main/docs/images/redoc.png"
               alt="Redoc logo"
             />
           </a>
