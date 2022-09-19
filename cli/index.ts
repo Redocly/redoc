@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* tslint:disable:no-implicit-dependencies */
-import * as React from 'react';
-import * as updateNotifier from 'update-notifier';
+import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -10,6 +9,7 @@ import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { dirname, join, resolve, extname as getExtName } from 'path';
 
 import * as zlib from 'zlib';
+import * as boxen from 'boxen';
 
 // @ts-ignore
 import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
@@ -112,7 +112,6 @@ const handlerForBuildCommand = async (argv: any) => {
   };
 
   try {
-    notifyUpdateCliVersion();
     await bundle(argv.spec, config);
   } catch (e) {
     handleError(e);
@@ -121,7 +120,7 @@ const handlerForBuildCommand = async (argv: any) => {
 
 YargsParser.command(
   'serve <spec>',
-  'start the server',
+  'start the server [deprecated]',
   yargs => {
     yargs.positional('spec', {
       describe: 'path or URL to your spec',
@@ -176,7 +175,6 @@ YargsParser.command(
     };
 
     try {
-      notifyUpdateCliVersion();
       await serve(argv.host as string, argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
@@ -184,30 +182,37 @@ YargsParser.command(
   },
   [
     res => {
-      console.log(
-        `\n⚠️ This command is deprecated. Use "npx @redocly/cli preview-docs petstore.yaml"\n`,
-      );
+      console.log(`
+        ${boxen(
+          'This package is deprecated now.\n\nPlease use `@redocly/cli preview-docs <api>` instead.',
+          {
+            title: 'DEPRECATED',
+            titleAlignment: 'center',
+            padding: 1,
+            margin: 1,
+            borderColor: 'red',
+          },
+        )}`);
       return res;
     },
   ],
+  true,
 )
   .command(
     'build <spec>',
-    'build definition into zero-dependency HTML-file',
+    'build definition into zero-dependency HTML-file [deprecated]',
     builderForBuildCommand,
     handlerForBuildCommand,
+    [notifyDeprecation],
+    true,
   )
   .command(
     'bundle <spec>',
     'bundle spec into zero-dependency HTML-file [deprecated]',
     builderForBuildCommand,
     handlerForBuildCommand,
-    [
-      res => {
-        console.log(`\n⚠️ This command is deprecated. Use "build" command instead.\n`);
-        return res;
-      },
-    ],
+    [notifyDeprecation],
+    true,
   )
   .demandCommand()
   .options('t', {
@@ -344,7 +349,7 @@ async function getPageHTML(
     const store = await createStore(spec, specUrl, redocOptions);
     const sheet = new ServerStyleSheet();
     // @ts-ignore
-    html = renderToString(sheet.collectStyles(React.createElement(Redoc, { store })));
+    html = renderToString(sheet.collectStyles(createElement(Redoc, { store })));
     css = sheet.getStyleTags();
     state = await store.toJS();
 
@@ -472,15 +477,18 @@ function getObjectOrJSON(options) {
   }
 }
 
-function notifyUpdateCliVersion() {
-  const pkg = require('./package.json');
-  const notifier = updateNotifier({
-    pkg,
-    updateCheckInterval: 0,
-    shouldNotifyInNpmScript: true,
-  });
-  notifier.notify({
-    message:
-      'Run `{updateCommand}` to update.\nChangelog: https://github.com/Redocly/redoc/releases/tag/{latestVersion}',
-  });
+function notifyDeprecation(res: YargsParser.Arguments): YargsParser.Arguments {
+  console.log(
+    boxen(
+      'This package is deprecated now.\n\nPlease use `@redocly/cli build-docs <api>` instead.',
+      {
+        title: 'DEPRECATED',
+        titleAlignment: 'center',
+        padding: 1,
+        margin: 1,
+        borderColor: 'red',
+      },
+    ),
+  );
+  return res;
 }
