@@ -66,6 +66,14 @@ export const mimeTypes = {
 
 const BUNDLES_DIR = dirname(require.resolve('redoc'));
 
+const boxenOptions = {
+  title: 'DEPRECATED',
+  titleAlignment: 'center',
+  padding: 1,
+  margin: 1,
+  borderColor: 'red',
+} as boxen.Options;
+
 const builderForBuildCommand = yargs => {
   yargs.positional('spec', {
     describe: 'path or URL to your spec',
@@ -185,13 +193,7 @@ YargsParser.command(
       console.log(`
         ${boxen(
           'This package is deprecated now.\n\nPlease use `@redocly/cli preview-docs <api>` instead.',
-          {
-            title: 'DEPRECATED',
-            titleAlignment: 'center',
-            padding: 1,
-            margin: 1,
-            borderColor: 'red',
-          },
+          boxenOptions,
         )}`);
       return res;
     },
@@ -481,13 +483,7 @@ function notifyDeprecation(res: YargsParser.Arguments): YargsParser.Arguments {
   console.log(
     boxen(
       'This package is deprecated now.\n\nPlease use `@redocly/cli build-docs <api>` instead.',
-      {
-        title: 'DEPRECATED',
-        titleAlignment: 'center',
-        padding: 1,
-        margin: 1,
-        borderColor: 'red',
-      },
+      boxenOptions,
     ),
   );
   return res;
