@@ -131,4 +131,5 @@ const RequiredBody = styled(RequiredLabel)`
 const OptionalBody = styled('div')`
   ${commonStyles}
   color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: ${props => props.theme.schema.labelsTextSize};
 `;
