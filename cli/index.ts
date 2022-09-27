@@ -482,7 +482,7 @@ function getObjectOrJSON(options) {
 function notifyDeprecation(res: YargsParser.Arguments): YargsParser.Arguments {
   console.log(
     boxen(
-      'This package is deprecated now.\n\nPlease use `@redocly/cli build-docs <api>` instead.',
+      'This package is deprecated.\n\nUse `@redocly/cli build-docs <api>` instead.',
       boxenOptions,
     ),
   );
