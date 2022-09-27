@@ -171,7 +171,7 @@ export class OpenAPIParser {
     $ref: string | undefined,
     refsStack: string[],
   ): MergedOpenAPISchema {
-    if (schema['x-circular-ref']) {
+    if (schema?.hasOwnProperty('x-circular-ref')) {
       return schema;
     }
 
