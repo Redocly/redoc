@@ -177,7 +177,7 @@ export class OpenAPIParser {
 
     schema = this.hoistOneOfs(schema, refsStack);
 
-    if (schema.allOf === undefined) {
+    if (schema.allOf === null || schema.allOf === undefined) {
       return schema;
     }
 
@@ -358,7 +358,7 @@ export class OpenAPIParser {
   }
 
   private hoistOneOfs(schema: OpenAPISchema, refsStack: string[]) {
-    if (schema.allOf === undefined) {
+    if (schema.allOf === null || schema.allOf === undefined) {
       return schema;
     }
 
