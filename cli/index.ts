@@ -192,7 +192,7 @@ YargsParser.command(
     res => {
       console.log(`
         ${boxen(
-          'This package is deprecated now.\n\nPlease use `@redocly/cli preview-docs <api>` instead.',
+          'This package is deprecated.\n\nUse `@redocly/cli preview-docs <api>` instead.',
           boxenOptions,
         )}`);
       return res;
