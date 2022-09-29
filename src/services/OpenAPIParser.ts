@@ -41,7 +41,7 @@ export class OpenAPIParser {
     }
   }
 
-  validate(spec: GenericObject): void {
+  validate(spec: Record<string, any>): void {
     if (spec.openapi === undefined) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
     }
@@ -153,7 +153,7 @@ export class OpenAPIParser {
     } else {
       // small optimization
       return {
-        ...(resolved as GenericObject),
+        ...(resolved as object),
         ...rest,
       } as T;
     }
