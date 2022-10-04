@@ -23,3 +23,5 @@ declare var reactHotLoaderGlobal: any;
 interface Element {
   scrollIntoViewIfNeeded(centerIfNeeded?: boolean): void;
 }
+
+type GenericObject = Record<string, any>;
