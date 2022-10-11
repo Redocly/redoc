@@ -48,6 +48,9 @@ export function StoreBuilder(props: StoreBuilderProps) {
         const resolved = await loadAndBundleSpec(spec || specUrl!);
         setResolvedSpec(resolved);
       } catch (e) {
+        if (onLoaded) {
+          onLoaded(e);
+        }
         setError(e);
         throw e;
       }
