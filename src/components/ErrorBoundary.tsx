@@ -37,6 +37,6 @@ export class ErrorBoundary extends React.Component<
         </ErrorWrapper>
       );
     }
-    return React.Children.only(this.props.children);
+    return <React.Fragment>{React.Children.only(this.props.children)}</React.Fragment>;
   }
 }

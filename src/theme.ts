@@ -164,6 +164,15 @@ const defaultTheme: ThemeInterface = {
     backgroundColor: '#263238',
     width: '40%',
     textColor: '#ffffff',
+    servers: {
+      overlay: {
+        backgroundColor: '#fafafa',
+        textColor: '#263238',
+      },
+      url: {
+        backgroundColor: '#fff',
+      },
+    },
   },
   codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
@@ -229,6 +238,16 @@ export interface FontSettings {
   fontFamily: string;
   lineHeight: string;
   color: string;
+}
+
+export interface Servers {
+  overlay: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  url: {
+    backgroundColor: string;
+  };
 }
 
 export interface ResolvedThemeInterface {
@@ -350,6 +369,7 @@ export interface ResolvedThemeInterface {
     backgroundColor: string;
     textColor: string;
     width: string;
+    servers: Servers;
   };
   codeBlock: {
     backgroundColor: string;

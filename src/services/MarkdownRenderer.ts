@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { marked } from 'marked';
 
 import { highlight, safeSlugify, unescapeHTMLChars } from '../utils';
-import { AppStore } from './AppStore';
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { MarkdownHeading, MDXComponentMeta } from './types';
 
 const renderer = new marked.Renderer();
 
@@ -21,20 +20,6 @@ export const MDX_COMPONENT_REGEXP = '(?:^ {0,3}<({component})([\\s\\S]*?)>([\\s\
   + '|^ {0,3}<({component})([\\s\\S]*?)(?:/>|\\n{2,}))'; // self-closing
 
 export const COMPONENT_REGEXP = '(?:' + LEGACY_REGEXP + '|' + MDX_COMPONENT_REGEXP + ')';
-
-export interface MDXComponentMeta {
-  component: React.ComponentType;
-  propsSelector: (store?: AppStore) => any;
-  props?: object;
-}
-
-export interface MarkdownHeading {
-  id: string;
-  name: string;
-  level: number;
-  items?: MarkdownHeading[];
-  description?: string;
-}
 
 export function buildComponentComment(name: string) {
   return `<!-- ReDoc-Inject: <${name}> -->`;
@@ -61,7 +46,8 @@ export class MarkdownRenderer {
   private headingEnhanceRenderer: marked.Renderer;
   private originalHeadingRule: typeof marked.Renderer.prototype.heading;
 
-  constructor(public options?: RedocNormalizedOptions) {
+  constructor(public options?: RedocNormalizedOptions, public parentId?: string) {
+    this.parentId = parentId;
     this.parser = new marked.Parser();
     this.headingEnhanceRenderer = new marked.Renderer();
     this.originalHeadingRule = this.headingEnhanceRenderer.heading.bind(
@@ -77,8 +63,10 @@ export class MarkdownRenderer {
     parentId?: string,
   ): MarkdownHeading {
     name = unescapeHTMLChars(name);
-    const item = {
-      id: parentId ? `${parentId}/${safeSlugify(name)}` : `section/${safeSlugify(name)}`,
+    const item: MarkdownHeading = {
+      id: parentId
+        ? `${parentId}/${safeSlugify(name)}`
+        : `${this.parentId || 'section'}/${safeSlugify(name)}`,
       name,
       level,
       items: [],
@@ -102,7 +90,7 @@ export class MarkdownRenderer {
   attachHeadingsDescriptions(rawText: string) {
     const buildRegexp = (heading: MarkdownHeading) => {
       return new RegExp(
-        `##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\s*(\n|\r\n)`,
+        `##?\\s+${heading.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\s*(\n|\r\n|$|\s*)`,
       );
     };
 

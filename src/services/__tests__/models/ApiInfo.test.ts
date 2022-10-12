@@ -47,6 +47,30 @@ describe('Models', () => {
       expect(info.summary).toEqual('Test summary\nsome text\n## Heading\n test');
     });
 
+    test('should correctly populate description when 2nd line is started by white space', () => {
+      parser.spec = {
+        openapi: '3.0.0',
+        info: {
+          description: 'text before\n  # Test',
+        },
+      } as any;
+
+      const info = new ApiInfoModel(parser);
+      expect(info.description).toEqual('text before\n');
+    });
+
+    test('should correctly populate description when 2nd line is only white space', () => {
+      parser.spec = {
+        openapi: '3.0.0',
+        info: {
+          description: 'text before\n \n # Test',
+        },
+      } as any;
+
+      const info = new ApiInfoModel(parser);
+      expect(info.description).toEqual('text before\n');
+    });
+
     test('should correctly populate license identifier', () => {
       parser.spec = {
         openapi: '3.1.0',

@@ -41,14 +41,14 @@ describe('Models', () => {
       expect(schema.title).toEqual('Foo');
     });
 
-    test('should merge oneOff to inside allOff', () => {
+    test('should merge oneOf to inside allOff', () => {
       // TODO: should hoist
       const spec = require('./fixtures/mergeAllOf.json');
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = parser.mergeAllOf(spec.components.schemas.Case4);
       expect(schema.title).toEqual('Foo');
-      expect(schema.parentRefs).toHaveLength(1);
-      expect(schema.parentRefs[0]).toEqual('#/components/schemas/Ref');
+      expect(schema['x-parentRefs']).toHaveLength(1);
+      expect(schema['x-parentRefs'][0]).toEqual('#/components/schemas/Ref');
       expect(schema.oneOf).toEqual([{ title: 'Bar' }, { title: 'Baz' }]);
     });
 
@@ -60,7 +60,7 @@ describe('Models', () => {
         description: 'Overriden description',
       };
 
-      expect(parser.shallowDeref(schemaOrRef)).toMatchSnapshot();
+      expect(parser.deref(schemaOrRef)).toMatchSnapshot();
     });
 
     test('should correct resolve double $ref if no need sibling', () => {
@@ -70,7 +70,7 @@ describe('Models', () => {
         $ref: '#/components/schemas/Parent',
       };
 
-      expect(parser.deref(schemaOrRef, false, true)).toMatchSnapshot();
+      expect(parser.deref(schemaOrRef, [], true)).toMatchSnapshot();
     });
   });
 });

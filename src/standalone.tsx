@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { hydrate as hydrateComponent, render } from 'react-dom';
+import { hydrate as hydrateComponent, render, unmountComponentAtNode } from 'react-dom';
 import { configure } from 'mobx';
 
 import { Redoc, RedocStandalone } from './components/';
-import { AppStore, StoreState } from './services/AppStore';
+import { AppStore } from './services/AppStore';
 import { debugTime, debugTimeEnd } from './utils/debug';
 import { querySelector } from './utils/dom';
+import type { StoreState } from './services';
 
 configure({
   useProxies: 'ifavailable',
@@ -71,6 +72,12 @@ export function init(
     ),
     element,
   );
+}
+
+export function destroy(element: Element | null = querySelector('redoc')): void {
+  if (element) {
+    unmountComponentAtNode(element);
+  }
 }
 
 export function hydrate(

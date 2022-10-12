@@ -13,6 +13,7 @@ import {
   humanizeNumberRange,
   getContentWithLegacyExamples,
   getDefinitionName,
+  langFromMime,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
@@ -422,6 +423,24 @@ describe('Utils', () => {
         },
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
+    });
+
+    it('should remove query string and hash from url', () => {
+      const originalWindow = { ...window };
+      const windowSpy: jest.SpyInstance = jest.spyOn(global, 'window', 'get');
+      windowSpy.mockImplementation(() => ({
+        ...originalWindow,
+        location: {
+          ...originalWindow.location,
+          href: 'https://base.com/subpath/?param=value#tag',
+        },
+      }));
+      const res = normalizeServers(undefined, [
+        {
+          url: 'sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://base.com/subpath/sandbox/test', description: '' }]);
     });
 
     it('should expand variables', () => {
@@ -1318,6 +1337,20 @@ describe('Utils', () => {
     test("should return the `undefined` if pointer not match regex or it's absent", () => {
       expect(getDefinitionName('#/test/path/Call')).toBeUndefined();
       expect(getDefinitionName()).toBeUndefined();
+    });
+  });
+
+  describe('langFromMime', () => {
+    test('should return correct lang name from content type', () => {
+      expect(langFromMime('application/xml')).toEqual('xml');
+      expect(langFromMime('application/x-xml')).toEqual('xml');
+      expect(langFromMime('application/csv')).toEqual('csv');
+      expect(langFromMime('application/x-csv')).toEqual('csv');
+      expect(langFromMime('text/plain')).toEqual('tex');
+      expect(langFromMime('text/x-plain')).toEqual('tex');
+      expect(langFromMime('application/plain')).toEqual('tex');
+
+      expect(langFromMime('text/some-type')).toEqual('clike');
     });
   });
 });

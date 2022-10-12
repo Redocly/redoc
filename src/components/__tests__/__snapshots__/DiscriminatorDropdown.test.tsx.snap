@@ -22,7 +22,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "examples": undefined,
         "externalDocs": undefined,
         "format": undefined,
-        "isCircular": undefined,
+        "isCircular": false,
         "isPrimitive": false,
         "maxItems": undefined,
         "minItems": undefined,
@@ -70,7 +70,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "examples": undefined,
                   "externalDocs": undefined,
                   "format": undefined,
-                  "isCircular": undefined,
+                  "isCircular": false,
                   "isPrimitive": true,
                   "maxItems": undefined,
                   "minItems": undefined,
@@ -208,6 +208,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -292,6 +301,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "type": "number",
                   },
                   "readOnly": false,
+                  "refsStack": Array [
+                    "#/components/schemas/Dog",
+                    "#/components/schemas/Dog/properties/packSize",
+                  ],
                   "schema": Object {
                     "default": undefined,
                     "type": "number",
@@ -329,7 +342,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "examples": undefined,
                   "externalDocs": undefined,
                   "format": undefined,
-                  "isCircular": undefined,
+                  "isCircular": false,
                   "isPrimitive": true,
                   "maxItems": undefined,
                   "minItems": undefined,
@@ -467,6 +480,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -549,11 +571,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "rawSchema": Object {
                     "default": undefined,
                     "type": "string",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Dog",
+                      "#/components/schemas/Pet",
+                    ],
                   },
                   "readOnly": false,
+                  "refsStack": Array [
+                    "#/components/schemas/Dog",
+                    "#/components/schemas/Dog",
+                    "#/components/schemas/Pet",
+                    "#/components/schemas/Dog",
+                    "#/components/schemas/Pet",
+                    "#/components/schemas/Dog/properties/type",
+                  ],
                   "schema": Object {
                     "default": undefined,
                     "type": "string",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Dog",
+                      "#/components/schemas/Pet",
+                    ],
                   },
                   "title": "",
                   "type": "string",
@@ -563,7 +601,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
             ],
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": false,
             "maxItems": undefined,
             "minItems": undefined,
@@ -701,6 +739,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -794,27 +841,38 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "type": "object",
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Dog",
+            ],
             "schema": Object {
               "allOf": undefined,
+              "description": undefined,
               "discriminator": Object {
                 "propertyName": "type",
               },
-              "parentRefs": Array [
-                "#/components/schemas/Pet",
-              ],
               "properties": Object {
                 "packSize": Object {
                   "type": "number",
                 },
                 "type": Object {
                   "type": "string",
+                  "x-refsStack": Array [
+                    "#/components/schemas/Dog",
+                    "#/components/schemas/Pet",
+                  ],
                 },
               },
+              "readOnly": undefined,
               "required": Array [
                 "type",
               ],
               "title": "Dog",
               "type": "object",
+              "writeOnly": undefined,
+              "x-circular-ref": undefined,
+              "x-parentRefs": Array [
+                "#/components/schemas/Pet",
+              ],
             },
             "title": "Dog",
             "type": "object",
@@ -864,7 +922,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "examples": undefined,
                   "externalDocs": undefined,
                   "format": undefined,
-                  "isCircular": undefined,
+                  "isCircular": false,
                   "isPrimitive": true,
                   "maxItems": undefined,
                   "minItems": undefined,
@@ -1002,6 +1060,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -1084,11 +1151,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "rawSchema": Object {
                     "default": undefined,
                     "type": "string",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Cat",
+                      "#/components/schemas/Pet",
+                    ],
                   },
                   "readOnly": false,
+                  "refsStack": Array [
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Pet",
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Pet",
+                    "#/components/schemas/Cat/properties/type",
+                  ],
                   "schema": Object {
                     "default": undefined,
                     "type": "string",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Cat",
+                      "#/components/schemas/Pet",
+                    ],
                   },
                   "title": "",
                   "type": "string",
@@ -1123,7 +1206,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "examples": undefined,
                   "externalDocs": undefined,
                   "format": undefined,
-                  "isCircular": undefined,
+                  "isCircular": false,
                   "isPrimitive": true,
                   "maxItems": undefined,
                   "minItems": undefined,
@@ -1261,6 +1344,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                       "rightPanel": Object {
                         "backgroundColor": "#263238",
+                        "servers": Object {
+                          "overlay": Object {
+                            "backgroundColor": "#fafafa",
+                            "textColor": "#263238",
+                          },
+                          "url": Object {
+                            "backgroundColor": "#fff",
+                          },
+                        },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
@@ -1343,11 +1435,23 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "rawSchema": Object {
                     "default": undefined,
                     "type": "number",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Cat",
+                    ],
                   },
                   "readOnly": false,
+                  "refsStack": Array [
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Cat/properties/packSize",
+                  ],
                   "schema": Object {
                     "default": undefined,
                     "type": "number",
+                    "x-refsStack": Array [
+                      "#/components/schemas/Cat",
+                    ],
                   },
                   "title": "",
                   "type": "number",
@@ -1357,7 +1461,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
             ],
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": false,
             "maxItems": undefined,
             "minItems": undefined,
@@ -1495,6 +1599,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -1590,27 +1703,41 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "type": "object",
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Cat",
+            ],
             "schema": Object {
               "allOf": undefined,
+              "description": undefined,
               "discriminator": Object {
                 "propertyName": "type",
               },
-              "parentRefs": Array [
-                "#/components/schemas/Pet",
-              ],
               "properties": Object {
                 "packSize": Object {
                   "type": "number",
+                  "x-refsStack": Array [
+                    "#/components/schemas/Cat",
+                  ],
                 },
                 "type": Object {
                   "type": "string",
+                  "x-refsStack": Array [
+                    "#/components/schemas/Cat",
+                    "#/components/schemas/Pet",
+                  ],
                 },
               },
+              "readOnly": undefined,
               "required": Array [
                 "type",
               ],
               "title": "Cat",
               "type": "object",
+              "writeOnly": undefined,
+              "x-circular-ref": undefined,
+              "x-parentRefs": Array [
+                "#/components/schemas/Pet",
+              ],
             },
             "title": "Cat",
             "type": "object",
@@ -1752,6 +1879,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
             "rightPanel": Object {
               "backgroundColor": "#263238",
+              "servers": Object {
+                "overlay": Object {
+                  "backgroundColor": "#fafafa",
+                  "textColor": "#263238",
+                },
+                "url": Object {
+                  "backgroundColor": "#fff",
+                },
+              },
               "textColor": "#ffffff",
               "width": "40%",
             },
@@ -1846,6 +1982,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "type": "object",
         },
         "readOnly": false,
+        "refsStack": Array [
+          "#/components/schemas/Pet",
+        ],
         "schema": Object {
           "discriminator": Object {
             "propertyName": "type",
@@ -1912,7 +2051,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "examples": undefined,
             "externalDocs": undefined,
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": true,
             "maxItems": undefined,
             "minItems": undefined,
@@ -2050,6 +2189,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -2134,6 +2282,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "type": "number",
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Dog",
+              "#/components/schemas/Dog/properties/packSize",
+            ],
             "schema": Object {
               "default": undefined,
               "type": "number",
@@ -2171,7 +2323,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "examples": undefined,
             "externalDocs": undefined,
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": true,
             "maxItems": undefined,
             "minItems": undefined,
@@ -2309,6 +2461,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
                 "rightPanel": Object {
                   "backgroundColor": "#263238",
+                  "servers": Object {
+                    "overlay": Object {
+                      "backgroundColor": "#fafafa",
+                      "textColor": "#263238",
+                    },
+                    "url": Object {
+                      "backgroundColor": "#fff",
+                    },
+                  },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
@@ -2391,11 +2552,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "rawSchema": Object {
               "default": undefined,
               "type": "string",
+              "x-refsStack": Array [
+                "#/components/schemas/Dog",
+                "#/components/schemas/Pet",
+              ],
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Dog",
+              "#/components/schemas/Dog",
+              "#/components/schemas/Pet",
+              "#/components/schemas/Dog",
+              "#/components/schemas/Pet",
+              "#/components/schemas/Dog/properties/type",
+            ],
             "schema": Object {
               "default": undefined,
               "type": "string",
+              "x-refsStack": Array [
+                "#/components/schemas/Dog",
+                "#/components/schemas/Pet",
+              ],
             },
             "title": "",
             "type": "string",
@@ -2405,7 +2582,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         },
       ],
       "format": undefined,
-      "isCircular": undefined,
+      "isCircular": false,
       "isPrimitive": false,
       "maxItems": undefined,
       "minItems": undefined,
@@ -2543,6 +2720,15 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           },
           "rightPanel": Object {
             "backgroundColor": "#263238",
+            "servers": Object {
+              "overlay": Object {
+                "backgroundColor": "#fafafa",
+                "textColor": "#263238",
+              },
+              "url": Object {
+                "backgroundColor": "#fff",
+              },
+            },
             "textColor": "#ffffff",
             "width": "40%",
           },
@@ -2636,27 +2822,38 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "type": "object",
       },
       "readOnly": false,
+      "refsStack": Array [
+        "#/components/schemas/Dog",
+      ],
       "schema": Object {
         "allOf": undefined,
+        "description": undefined,
         "discriminator": Object {
           "propertyName": "type",
         },
-        "parentRefs": Array [
-          "#/components/schemas/Pet",
-        ],
         "properties": Object {
           "packSize": Object {
             "type": "number",
           },
           "type": Object {
             "type": "string",
+            "x-refsStack": Array [
+              "#/components/schemas/Dog",
+              "#/components/schemas/Pet",
+            ],
           },
         },
+        "readOnly": undefined,
         "required": Array [
           "type",
         ],
         "title": "Dog",
         "type": "object",
+        "writeOnly": undefined,
+        "x-circular-ref": undefined,
+        "x-parentRefs": Array [
+          "#/components/schemas/Pet",
+        ],
       },
       "title": "Dog",
       "type": "object",
@@ -2700,7 +2897,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "examples": undefined,
             "externalDocs": undefined,
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": true,
             "maxItems": undefined,
             "minItems": undefined,
@@ -2712,6 +2909,10 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "type": "number",
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Dog",
+              "#/components/schemas/Dog/properties/packSize",
+            ],
             "schema": Object {
               "default": undefined,
               "type": "number",
@@ -2757,7 +2958,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "examples": undefined,
             "externalDocs": undefined,
             "format": undefined,
-            "isCircular": undefined,
+            "isCircular": false,
             "isPrimitive": true,
             "maxItems": undefined,
             "minItems": undefined,
@@ -2767,11 +2968,27 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "rawSchema": Object {
               "default": undefined,
               "type": "string",
+              "x-refsStack": Array [
+                "#/components/schemas/Dog",
+                "#/components/schemas/Pet",
+              ],
             },
             "readOnly": false,
+            "refsStack": Array [
+              "#/components/schemas/Dog",
+              "#/components/schemas/Dog",
+              "#/components/schemas/Pet",
+              "#/components/schemas/Dog",
+              "#/components/schemas/Pet",
+              "#/components/schemas/Dog/properties/type",
+            ],
             "schema": Object {
               "default": undefined,
               "type": "string",
+              "x-refsStack": Array [
+                "#/components/schemas/Dog",
+                "#/components/schemas/Pet",
+              ],
             },
             "title": "",
             "type": "string",

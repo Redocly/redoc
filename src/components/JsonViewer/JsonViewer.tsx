@@ -19,17 +19,13 @@ const JsonViewerWrap = styled.div`
   }
 `;
 
-class Json extends React.PureComponent<JsonProps> {
-  node: HTMLDivElement;
+const Json = (props: JsonProps) => {
+  const [node, setNode] = React.useState<HTMLDivElement>();
 
-  render() {
-    return <CopyButtonWrapper data={this.props.data}>{this.renderInner}</CopyButtonWrapper>;
-  }
-
-  renderInner = ({ renderCopyButton }) => {
+  const renderInner = ({ renderCopyButton }) => {
     const showFoldingButtons =
-      this.props.data &&
-      Object.values(this.props.data).some(value => typeof value === 'object' && value !== null);
+      props.data &&
+      Object.values(props.data).some(value => typeof value === 'object' && value !== null);
 
     return (
       <JsonViewerWrap>
@@ -37,19 +33,19 @@ class Json extends React.PureComponent<JsonProps> {
           {renderCopyButton()}
           {showFoldingButtons && (
             <>
-              <button onClick={this.expandAll}> Expand all </button>
-              <button onClick={this.collapseAll}> Collapse all </button>
+              <button onClick={expandAll}> Expand all </button>
+              <button onClick={collapseAll}> Collapse all </button>
             </>
           )}
         </SampleControls>
         <OptionsContext.Consumer>
           {options => (
             <PrismDiv
-              className={this.props.className}
+              className={props.className}
               // tslint:disable-next-line
-              ref={node => (this.node = node!)}
+              ref={node => setNode(node!)}
               dangerouslySetInnerHTML={{
-                __html: jsonToHTML(this.props.data, options.jsonSampleExpandLevel),
+                __html: jsonToHTML(props.data, options.jsonSampleExpandLevel),
               }}
             />
           )}
@@ -58,8 +54,8 @@ class Json extends React.PureComponent<JsonProps> {
     );
   };
 
-  expandAll = () => {
-    const elements = this.node.getElementsByClassName('collapsible');
+  const expandAll = () => {
+    const elements = node?.getElementsByClassName('collapsible');
     for (const collapsed of Array.prototype.slice.call(elements)) {
       const parentNode = collapsed.parentNode as Element;
       parentNode.classList.remove('collapsed');
@@ -67,8 +63,8 @@ class Json extends React.PureComponent<JsonProps> {
     }
   };
 
-  collapseAll = () => {
-    const elements = this.node.getElementsByClassName('collapsible');
+  const collapseAll = () => {
+    const elements = node?.getElementsByClassName('collapsible');
     // skip first item to avoid collapsing whole object/array
     const elementsArr = Array.prototype.slice.call(elements, 1);
 
@@ -79,7 +75,7 @@ class Json extends React.PureComponent<JsonProps> {
     }
   };
 
-  collapseElement = (target: HTMLElement) => {
+  const collapseElement = (target: HTMLElement) => {
     let collapsed;
     if (target.className === 'collapser') {
       collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
@@ -93,26 +89,27 @@ class Json extends React.PureComponent<JsonProps> {
     }
   };
 
-  clickListener = (event: MouseEvent) => {
-    this.collapseElement(event.target as HTMLElement);
-  };
+  const clickListener = React.useCallback((event: MouseEvent) => {
+    collapseElement(event.target as HTMLElement);
+  }, []);
 
-  focusListener = (event: KeyboardEvent) => {
+  const focusListener = React.useCallback((event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-      this.collapseElement(event.target as HTMLElement);
+      collapseElement(event.target as HTMLElement);
     }
-  };
+  }, []);
 
-  componentDidMount() {
-    this.node!.addEventListener('click', this.clickListener);
-    this.node!.addEventListener('focus', this.focusListener);
-  }
+  React.useEffect(() => {
+    node?.addEventListener('click', clickListener);
+    node?.addEventListener('focus', focusListener);
+    return () => {
+      node?.removeEventListener('click', clickListener);
+      node?.removeEventListener('focus', focusListener);
+    };
+  }, [clickListener, focusListener, node]);
 
-  componentWillUnmount() {
-    this.node!.removeEventListener('click', this.clickListener);
-    this.node!.removeEventListener('focus', this.focusListener);
-  }
-}
+  return <CopyButtonWrapper data={props.data}>{renderInner}</CopyButtonWrapper>;
+};
 
 export const JsonViewer = styled(Json)`
   ${jsonStyles};

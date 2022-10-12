@@ -8,36 +8,24 @@ export interface CopyButtonWrapperProps {
   children: (props: { renderCopyButton: () => React.ReactNode }) => React.ReactNode;
 }
 
-export class CopyButtonWrapper extends React.PureComponent<
-  CopyButtonWrapperProps,
-  { tooltipShown: boolean }
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tooltipShown: false,
-    };
-  }
+export const CopyButtonWrapper = (
+  props: CopyButtonWrapperProps & { tooltipShown?: boolean },
+): JSX.Element => {
+  const [tooltipShown, setTooltipShown] = React.useState(false);
 
-  render() {
-    return this.props.children({ renderCopyButton: this.renderCopyButton });
-  }
-
-  copy = () => {
+  const copy = () => {
     const content =
-      typeof this.props.data === 'string'
-        ? this.props.data
-        : JSON.stringify(this.props.data, null, 2);
+      typeof props.data === 'string' ? props.data : JSON.stringify(props.data, null, 2);
     ClipboardService.copyCustom(content);
-    this.showTooltip();
+    showTooltip();
   };
 
-  renderCopyButton = () => {
+  const renderCopyButton = () => {
     return (
-      <button onClick={this.copy}>
+      <button onClick={copy}>
         <Tooltip
           title={ClipboardService.isSupported() ? 'Copied' : 'Not supported in your browser'}
-          open={this.state.tooltipShown}
+          open={tooltipShown}
         >
           Copy
         </Tooltip>
@@ -45,15 +33,12 @@ export class CopyButtonWrapper extends React.PureComponent<
     );
   };
 
-  showTooltip() {
-    this.setState({
-      tooltipShown: true,
-    });
+  const showTooltip = () => {
+    setTooltipShown(true);
 
     setTimeout(() => {
-      this.setState({
-        tooltipShown: false,
-      });
+      setTooltipShown(false);
     }, 1500);
-  }
-}
+  };
+  return props.children({ renderCopyButton: renderCopyButton }) as JSX.Element;
+};

@@ -1,6 +1,6 @@
-import { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
+import type { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {
@@ -24,7 +24,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     this.description = parser.spec.info.description || '';
     this.summary = parser.spec.info.summary || '';
 
-    const firstHeadingLinePos = this.description.search(/^##?\s+/m);
+    const firstHeadingLinePos = this.description.search(/^\s*##?\s+/m);
     if (firstHeadingLinePos > -1) {
       this.description = this.description.substring(0, firstHeadingLinePos);
     }

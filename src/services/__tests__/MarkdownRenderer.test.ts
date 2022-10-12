@@ -1,4 +1,5 @@
-import { MarkdownRenderer, MDXComponentMeta } from '../MarkdownRenderer';
+import type { MDXComponentMeta } from '../types';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 const TestComponent = () => null;
@@ -95,5 +96,23 @@ describe('Markdown renderer', () => {
     const part = parts[0] as MDXComponentMeta;
     expect(part.component).toBe(TestComponent);
     expect(part.props).toEqual({ children: ' Test Test ' });
+  });
+
+  test('should properly extract title from text', () => {
+    const rawTexts = ['text before\n# Test', 'text before\n  # Test', 'text before\n# Test\n'];
+    rawTexts.forEach(text => {
+      const headings = renderer.extractHeadings(text);
+      expect(headings).toHaveLength(1);
+      expect(headings[0].name).toEqual('Test');
+      expect(headings[0].description).toEqual('');
+    });
+
+    const rawTexts2 = ['# Test \n text after', '# Test \ntext after'];
+    rawTexts2.forEach(text => {
+      const headings = renderer.extractHeadings(text);
+      expect(headings).toHaveLength(1);
+      expect(headings[0].name).toEqual('Test');
+      expect(headings[0].description).toEqual('text after');
+    });
   });
 });

@@ -314,6 +314,12 @@ You can use all of the following options with the standalone version of the <red
   * `backgroundColor`: '#263238'
   * `width`: '40%'
   * `textColor`: '#ffffff'
+  * `servers`
+    * `overlay`
+      * `backgroundColor`: '#fafafa'
+      * `textColor`: '#263238'
+    * `url`
+      * `backgroundColor`: '#fff'
 * `fab`
   * `backgroundColor`: '#263238'
   * `color`: '#ffffff'

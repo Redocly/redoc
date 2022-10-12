@@ -2,7 +2,7 @@ import { default as classnames } from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
-import styled, { css, ResolvedThemeInterface } from '../../styled-components';
+import styled, { css, media, ResolvedThemeInterface } from '../../styled-components';
 
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
@@ -83,6 +83,10 @@ function menuItemActive(
 export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
+
+  &:first-child {
+    padding-bottom: 32px;
+  }
 
   & & {
     font-size: 0.929em;
@@ -169,21 +173,33 @@ export const MenuItemTitle = styled.span<{ width?: string }>`
 `;
 
 export const RedocAttribution = styled.div`
-  ${({ theme }) => `
-  font-size: 0.8em;
-  margin-top: ${theme.spacing.unit * 2}px;
-  padding: 0 ${theme.spacing.unit * 4}px;
-  text-align: left;
+  ${({ theme }) => css`
+    font-size: 0.8em;
+    margin-top: ${theme.spacing.unit * 2}px;
+    text-align: center;
+    position: fixed;
+    width: ${theme.sidebar.width};
+    bottom: 0;
+    background: ${theme.sidebar.backgroundColor};
 
-  opacity: 0.7;
-
-  a,
-  a:visited,
-  a:hover {
-    color: ${theme.sidebar.textColor} !important;
-    border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
-    padding: ${theme.spacing.unit}px 0;
-    display: block;
+    a,
+    a:visited,
+    a:hover {
+      color: ${theme.sidebar.textColor} !important;
+      padding: ${theme.spacing.unit}px 0;
+      border-top: 1px solid ${darken(0.1, theme.sidebar.backgroundColor)};
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  `};
+  img {
+    width: 15px;
+    margin-right: 5px;
   }
-`};
+
+  ${media.lessThan('small')`
+    width: 100%;
+  `};
 `;

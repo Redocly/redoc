@@ -45,7 +45,7 @@ describe('Search', () => {
 
     getSearchInput().type('{enter}', { force: true });
 
-    cy.contains('[role=navigation] [role=menuitem]', 'Introduction').should('have.class', 'active');
+    cy.contains('[role=menu] [role=menuitem]', 'Introduction').should('have.class', 'active');
   });
 
   it('should mark search results', () => {
@@ -58,5 +58,21 @@ describe('Search', () => {
     getSearchResults().should('not.exist');
     getSearchInput().type('xzss', { force: true });
     getSearchResults().should('exist').should('contain', 'No results found');
+  });
+
+  it('should allow search by path or keywords in path', () => {
+    getSearchInput().clear().type('uploadImage', { force: true });
+    cy.get('[role=search] [role=menuitem]')
+      .should('have.length', 1)
+      .first()
+      .should('contain', 'uploads an image');
+
+    getSearchInput()
+      .clear()
+      .type('/pet/{petId}/uploadImage', { force: true, parseSpecialCharSequences: false });
+    cy.get('[role=search] [role=menuitem]')
+      .should('have.length', 1)
+      .first()
+      .should('contain', 'uploads an image');
   });
 });

@@ -1,11 +1,12 @@
-import { OpenAPIExternalDocumentation, OpenAPIPath, OpenAPISpec, Referenced } from '../types';
+import type { OpenAPIExternalDocumentation, OpenAPIPath, OpenAPISpec, Referenced } from '../types';
 
-import { ContentItemModel, MenuBuilder } from './MenuBuilder';
+import { MenuBuilder } from './MenuBuilder';
 import { ApiInfoModel } from './models/ApiInfo';
 import { WebhookModel } from './models/Webhook';
 import { SecuritySchemesModel } from './models/SecuritySchemes';
 import { OpenAPIParser } from './OpenAPIParser';
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { ContentItemModel } from './types';
 /**
  * Store that contains all the specification related information in the form of tree
  */
