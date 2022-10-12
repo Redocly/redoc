@@ -72,16 +72,16 @@ Checkout the following feature comparison of Redocly's premium products versus R
 
 Refer to the Redocly's documentation for more information on these products:
 
-- [Portals](https://redoc.ly/docs/developer-portal/introduction/)
-- [Reference](https://redoc.ly/docs/api-reference-docs/getting-started/)
-- [Redoc](https://redoc.ly/docs/redoc/quickstart/intro/)
+- [Portals](https://redocly.com/docs/developer-portal/introduction/)
+- [Reference](https://redocly.com/docs/api-reference-docs/getting-started/)
+- [Redoc](https://redocly.com/docs/redoc/quickstart/intro/)
 
 ## Features
 - Responsive three-panel design with menu/scrolling synchronization
-- [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
-- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
+- [Multiple deployment options](https://redocly.com/docs/redoc/quickstart/intro/)
+- [Server-side rendering (SSR) ready](https://redocly.com/docs/redoc/quickstart/cli/#redoc-cli-commands)
 - Ability to integrate your API introduction into the side menu
-- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
+- [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 
   [Example repo](https://github.com/APIs-guru/create-react-app-redoc)
 - [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
@@ -89,9 +89,9 @@ Refer to the Redocly's documentation for more information on these products:
   ![](docs/images/nested-demo.gif)
 
 ## Customization options
-[<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
-- High-level grouping in side-menu with the [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
-- Branding/customizations using the [`theme` option](https://redoc.ly/docs/api-reference-docs/configuration/theming/)
+[<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redocly.com/#services)
+- High-level grouping in side-menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
+- Branding/customizations using the [`theme` option](https://redocly.com/docs/api-reference-docs/configuration/theming/)
 
 ## Support
 - OpenAPI v3.0 support
