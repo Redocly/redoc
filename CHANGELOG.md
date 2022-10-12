@@ -1,3 +1,7 @@
+# [2.0.0](https://github.com/Redocly/redoc/compare/v2.0.0-rc.77...v2.0.0) (2022-09-12)
+
+
+
 # [2.0.0-rc.77](https://github.com/Redocly/redoc/compare/v2.0.0-rc.76...v2.0.0-rc.77) (2022-09-06)
 
 
