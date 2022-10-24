@@ -16,6 +16,7 @@ jobs:
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
       - name: Set test start
+        if: always()
         id: recordStart
         run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - run: npm run e2e-replay
@@ -25,6 +26,7 @@ jobs:
           RECORD_REPLAY_TEST_METRICS: 1
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
       - name: Set upload start
+        if: always()
         id: uploadStart
         run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - name: Upload replays
@@ -34,6 +36,7 @@ jobs:
           api-key: rwk_CMx7Nd43nfKU5j6pDboS16IHDykYDIfIBMoejo6GofG
           public: true
       - name: Set duration in output
+        if: always()
         id: end
         run: |
           echo "recordDuration=$((${{ steps.uploadStart.outputs.time }} - ${{ steps.recordStart.outputs.time }}))" >> $GITHUB_OUTPUT
@@ -62,10 +65,12 @@ jobs:
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
       - name: Set test start
+        if: always()
         id: start
         run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - run: npm run e2e
       - name: Set duration in output
+        if: always()
         id: end
         run: echo "duration=$((`date +%s` - ${{ steps.start.outputs.time }}))" >> $GITHUB_OUTPUT
   upload-benchmarks:
