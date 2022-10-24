@@ -6,25 +6,39 @@ on:
   workflow_dispatch:
 
 jobs:
-  cypress-record:
+  record:
     runs-on: ubuntu-latest
+    outputs:
+      recordDuration: ${{steps.end.outputs.recordDuration}}
+      uploadDuration: ${{steps.end.outputs.uploadDuration}}
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
+      - name: Set test start
+        id: recordStart
+        run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - run: npm run e2e-replay
         env:
           RECORD_ALL_CONTENT: 1
           RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
           RECORD_REPLAY_TEST_METRICS: 1
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+      - name: Set upload start
+        id: uploadStart
+        run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - name: Upload replays
         if: ${{ always() }}
         uses: replayio/action-upload@v0.4.3
         with:
           api-key: rwk_CMx7Nd43nfKU5j6pDboS16IHDykYDIfIBMoejo6GofG
           public: true
-  cypress-no-record:
+      - name: Set duration in output
+        id: end
+        run: |
+          echo "recordDuration=$((${{ steps.uploadStart.outputs.time }} - ${{ steps.recordStart.outputs.time }}))" >> $GITHUB_OUTPUT
+          echo "uploadDuration=$((`date +%s` - ${{ steps.uploadStart.outputs.time }}))" >> $GITHUB_OUTPUT
+  no-record:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,10 +53,32 @@ jobs:
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
       - run: npx @replayio/replay ls
         if: ${{ always() }}
-  cypress-original:
+  original:
     runs-on: ubuntu-latest
+    outputs:
+      duration: ${{steps.end.outputs.duration}}
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli
       - run: npm run bundle
+      - name: Set test start
+        id: start
+        run: echo "time=`date +%s`" >> $GITHUB_OUTPUT
       - run: npm run e2e
+      - name: Set duration in output
+        id: end
+        run: echo "duration=$((`date +%s` - ${{ steps.start.outputs.time }}))" >> $GITHUB_OUTPUT
+  upload-benchmarks:
+    name: Upload benchmarks
+    runs-on: ubuntu-latest
+    needs: [record, original]
+    steps:
+      - run: |
+          echo "Original Duration: ${{ needs.original.outputs.duration }}"
+          echo "Record Duration: ${{ needs.record.outputs.recordDuration }}"
+          echo "Upload Duration: ${{ needs.record.outputs.uploadDuration }}"
+      - name: Fetch API Data 📦
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: 'https://telemetry.replay.io'
+          configuration: '{ "method": "POST", "body": {"event": "Webhook", "source": "metrics", "name": "action-finished", "project": "redoc", "originalDuration": "${{ needs.original.outputs.duration }}", "recordDuration": "${{ needs.record.outputs.recordDuration }}", "uploadDuration": "${{ needs.record.outputs.uploadDuration }}"} }'
