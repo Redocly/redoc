@@ -25,6 +25,10 @@ jobs:
           RECORD_REPLAY_METADATA_FILE: /tmp/replay-metadata
           RECORD_REPLAY_TEST_METRICS: 1
           RECORD_REPLAY_WEBHOOK_URL: ${{ secrets.RECORD_REPLAY_WEBHOOK_URL }}
+          # delete this once it's enabled by default
+          RECORD_REPLAY_DISABLE_ASSERTS: 1
+          # delete this once it's enabled by default
+          REPLAY_DISABLE_SOURCEMAP_COLLECTION: 1
       - name: Set upload start
         if: always()
         id: uploadStart
