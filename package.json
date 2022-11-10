@@ -1,10 +1,10 @@
 {
-  "name": "redoc",
-  "version": "2.0.0",
-  "description": "ReDoc",
+  "name": "bandwidth-redoc",
+  "version": "1.0.0-beta.1",
+  "description": "Bandwidth ReDoc Fork",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Redocly/redoc"
+    "url": "git://github.com/Bandwidth/redoc"
   },
   "browserslist": [
     "defaults"
@@ -13,7 +13,7 @@
     "node": ">=6.9",
     "npm": ">=3.0.0"
   },
-  "author": "Roman Hotsiy <gotsijroman@gmail.com>",
+  "author": "Bandwidth Developer Experience Team",
   "license": "MIT",
   "keywords": [
     "OpenAPI",
