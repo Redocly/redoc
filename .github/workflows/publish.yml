@@ -7,6 +7,7 @@ on:
 
 jobs:
   bundle:
+    name: Bundle
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,6 +39,7 @@ jobs:
           retention-days: 1
   
   unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -50,6 +52,7 @@ jobs:
         run: npm test
   
   e2e-tests:
+    name: E2E Tests
     needs: [bundle]
     runs-on: ubuntu-latest
     steps:
@@ -70,6 +73,7 @@ jobs:
   
   publish:
     name: Publish
+    needs: [unit-tests, e2e-tests]
     runs-on: ubuntu-latest
     if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'main' }}
     steps:
@@ -112,6 +116,7 @@ jobs:
   
   publish-beta:
     name: Publish Beta to NPM
+    needs: [unit-tests, e2e-tests]
     runs-on: ubuntu-latest
     if: ${{ github.event.release.prerelease }}
     steps:
