@@ -28,7 +28,7 @@ export const ResponseView = observer(({ response }: ResponseViewProps): React.Re
   );
 
   return (
-    <div>
+    <div className="response">
       <StyledResponseTitle
         onClick={() => response.toggle()}
         type={type}

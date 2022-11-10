@@ -11,7 +11,7 @@ export class ConstraintsView extends React.PureComponent<ConstraintsViewProps> {
       return null;
     }
     return (
-      <span>
+      <span className="field-constraints">
         {' '}
         {this.props.constraints.map(constraint => (
           <ConstraintItem key={constraint}> {constraint} </ConstraintItem>

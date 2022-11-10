@@ -26,7 +26,7 @@ export class ResponsesList extends React.PureComponent<ResponseListProps> {
     }
 
     return (
-      <div>
+      <div className="operation-responses">
         <ResponsesHeader>{isCallback ? l('callbackResponses') : l('responses')}</ResponsesHeader>
         {responses.map(response => {
           return <ResponseView key={response.code} response={response} />;
