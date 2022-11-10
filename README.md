@@ -1,7 +1,5 @@
-<div style="color:yellow;font-size:40px;font-weight:bold;">
-  This is a fork of the <a href="https://github.com/Redocly/redoc">Redocly/redoc></a> project. It will be supported for the Bandwidth Organization only!
-  If you would like to contribute or have any issues with the project, please contribute to the parent project and <b>NOT</b> this repository.
-</div>
+# This is a fork of the [Redocly/redoc](https://github.com/Redocly/redoc) project. It will be supported for the Bandwidth Organization only! If you would like to contribute or have any issues with the project, please contribute to the parent project and **NOT** this repository.
+
 
 
 <div align="center">
