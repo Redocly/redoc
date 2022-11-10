@@ -48,8 +48,8 @@ jobs:
       - name: CI
         run: npm ci && npm ci --prefix cli
 
-      - name: Unit Test
-        run: npm test
+      # - name: Unit Test
+      #   run: npm test
   
   e2e-tests:
     name: E2E Tests
@@ -68,8 +68,8 @@ jobs:
           name: bundles
           path: bundles
 
-      - name: E2E Test
-        run: npm run e2e
+      # - name: E2E Test
+      #   run: npm run e2e
   
   publish:
     name: Publish
