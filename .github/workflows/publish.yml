@@ -1,16 +1,20 @@
-name: Publish
+name: Publish package to NPM on Release
 
 on:
-  push:
-    tags:
-      - v[0-9]*.[0-9]*.[0-9]*
+  release:
+    types:
+      - published
 
 jobs:
   bundle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -19,47 +23,74 @@ jobs:
           restore-keys: |
             npm-${{ hashFiles('package-lock.json') }}
             npm-
-      - run: npm ci && npm ci --prefix cli
-      - run: npm run bundle
+
+      - name: CI
+        run: npm ci && npm ci --prefix cli
+
+      - name: Bundle
+        run: npm run bundle
+
       - name: Store bundle artifact
         uses: actions/upload-artifact@v3
         with:
           name: bundles
           path: bundles
           retention-days: 1
+  
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci && npm ci --prefix cli
-      - run: npm test
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: CI
+        run: npm ci && npm ci --prefix cli
+
+      - name: Unit Test
+        run: npm test
+  
   e2e-tests:
     needs: [bundle]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci && npm ci --prefix cli
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: CI
+        run: npm ci && npm ci --prefix cli
+
       - name: Download bundled artifact
         uses: actions/download-artifact@v3
         with:
           name: bundles
           path: bundles
-      - run: npm run e2e
+
+      - name: E2e Test
+        run: npm run e2e
+  
   publish:
-    name: Publish to NPM
-    needs: [bundle, unit-tests, e2e-tests]
+    name: Publish
     runs-on: ubuntu-latest
+    if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'main' }}
     steps:
-      - uses: actions/setup-node@v3
+      - name: Set Release Version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - uses: actions/checkout@v3
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Download bundled artifacts
         uses: actions/download-artifact@v3
         with:
           name: bundles
           path: bundles
+
       - name: Cache node modules
         uses: actions/cache@v3
         with:
@@ -68,46 +99,13 @@ jobs:
           restore-keys: |
             npm-${{ hashFiles('package-lock.json') }}
             npm-
+
       - name: Before deploy
         run: npm ci && npm run declarations
-      - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-cdn:
-    name: Publish to CDN
-    needs: [bundle, unit-tests, e2e-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Download all artifact
-        uses: actions/download-artifact@v3
-      - name: Publish to S3
-        run: npm run publish-cdn
-
-  invalidate-cache:
-    name: Clear cache
-    runs-on: ubuntu-latest
-    needs: [publish, publish-cdn]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Invalidate cache
-        run: ./scripts/invalidate-cache.sh
-        shell: bash
+      - name: Publish npm Package
+        run: |
+              npm version $RELEASE_VERSION --no-git-tag-version
+              npm publish --access public
         env:
-          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
