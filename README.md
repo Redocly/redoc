@@ -3,7 +3,7 @@
 
 
 <div align="center">
-  <img alt="Bandwidth Logo" src="https://raw.githubusercontent.com/Bandwidth/redoc/main//docs/images/bw-icon.svg" width="120px" />
+  <img alt="Bandwidth Logo" src="https://raw.githubusercontent.com/Bandwidth/redoc/main//docs/images/bw-icon.svg" width="150px" />
   <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
 
   # Generate interactive API documentation from OpenAPI definitions
