@@ -111,7 +111,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
   
   publish-beta:
-    name: Publish Beta
+    name: Publish Beta to NPM
     runs-on: ubuntu-latest
     if: ${{ github.event.release.prerelease }}
     steps:
@@ -164,7 +164,7 @@ jobs:
 
       - name: Before deploy
         run: npm ci && npm run declarations
-        
+
       - name: Publish npm Package #TODO: remove dry-run when ready
         run: |
               npm version $RELEASE_VERSION --no-git-tag-version
