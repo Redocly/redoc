@@ -1,4 +1,4 @@
-name: Publish package to NPM on Release
+name: Publish Package to NPM on Release
 
 on:
   release:
@@ -103,9 +103,71 @@ jobs:
       - name: Before deploy
         run: npm ci && npm run declarations
 
-      - name: Publish npm Package
+      - name: Publish npm Package #TODO: remove dry-run when ready
         run: |
               npm version $RELEASE_VERSION --no-git-tag-version
-              npm publish --access public
+              npm publish --access public --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  
+  publish-beta:
+    name: Publish Beta
+    runs-on: ubuntu-latest
+    if: ${{ github.event.release.prerelease }}
+    steps:
+      - name: Check Branch Name Format
+        run: |
+          re=v[0-9]+\.[0-9]+\.[0-9]+-beta\.[0-9]+
+          if ! [[ ${{ github.event.release.target_commitish }} =~ $re ]]; then
+            echo "Target branch does not match expected regex pattern for beta releases ($re)."
+            echo "${{ github.event.release.target_commitish }}"
+            echo "Please update your branch name to match the expected regex pattern."
+            exit 1
+          fi
+
+      - name: Set Release Version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
+
+      - name: Check Release Version Format
+        run: |
+          re=[0-9]+\.[0-9]+\.[0-9]+-beta\.[0-9]+
+          if ! [[ $RELEASE_VERSION =~ $re ]]; then
+            echo "Tag does not match expected regex pattern for beta releases (v$re)."
+            echo $RELEASE_VERSION
+            echo "Please update your tag to match the expected regex pattern."
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download bundled artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: bundles
+          path: bundles
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ hashFiles('package-lock.json') }}
+            npm-
+
+      - name: Before deploy
+        run: npm ci && npm run declarations
+        
+      - name: Publish npm Package #TODO: remove dry-run when ready
+        run: |
+              npm version $RELEASE_VERSION --no-git-tag-version
+              npm publish --access public --tag beta --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
