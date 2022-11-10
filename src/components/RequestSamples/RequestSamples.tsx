@@ -26,7 +26,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     const hideTabList = samples.length === 1 ? this.context.hideSingleRequestSampleTab : false;
     return (
       (hasSamples && (
-        <div>
+        <div className="operation-request-samples">
           <RightPanelHeader> {l('requestSamples')} </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
@@ -40,7 +40,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             {samples.map(sample => (
               <TabPanel key={sample.lang + '_' + (sample.label || '')}>
                 {isPayloadSample(sample) ? (
-                  <div>
+                  <div className="request-payload">
                     <PayloadSamples content={sample.requestBodyContent} />
                   </div>
                 ) : (

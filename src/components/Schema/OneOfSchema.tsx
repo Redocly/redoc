@@ -51,7 +51,7 @@ export class OneOfSchema extends React.Component<SchemaProps> {
     const activeSchema = oneOf[schema.activeOneOf];
 
     return (
-      <div>
+      <div className="oneOf-schema">
         <OneOfLabel> {schema.oneOfType} </OneOfLabel>
         <OneOfList>
           {oneOf.map((subSchema, idx) => (

@@ -48,7 +48,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
     return (
       <OptionsContext.Consumer>
         {options => (
-          <OperationEndpointWrap>
+          <OperationEndpointWrap className="endpoint">
             <EndpointInfo onClick={this.toggle} expanded={expanded} inverted={inverted}>
               <HttpVerb type={operation.httpVerb} compact={this.props.compact}>
                 {operation.httpVerb}

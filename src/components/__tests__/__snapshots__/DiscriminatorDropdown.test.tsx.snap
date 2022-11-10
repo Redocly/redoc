@@ -2856,7 +2856,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
 
 exports[`Components SchemaView discriminator should correctly render discriminator dropdown 1`] = `
 <styled.table>
-  <tbody>
+  <tbody
+    className="object-schema"
+  >
     <Field
       expandByDefault={false}
       field={
