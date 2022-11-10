@@ -65,7 +65,7 @@ jobs:
           name: bundles
           path: bundles
 
-      - name: E2e Test
+      - name: E2E Test
         run: npm run e2e
   
   publish:
