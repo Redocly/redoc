@@ -1,6 +1,24 @@
 # ReDoc Contributing Guide
 
-Hi! We're really excited that you are interested in contributing to ReDoc. This is the wrong place to do that if you don't work at Bandwidth :). Please contribute to [Redocly/redoc](https://github.com/Redocly/redoc) instead.
+Hi! We're really excited that you are interested in contributing to ReDoc. his is the wrong place to do that if you don't work at Bandwidth :). Please contribute to [Redocly/redoc](https://github.com/Redocly/redoc) instead. If you are from Bandwidth, before submitting your contribution, please make sure to take a moment and read through the following guidelines.
+
+- [Issue Reporting Guidelines](#issue-reporting-guidelines)
+- [Pull Request Guidelines](#pull-request-guidelines)
+- [Development Setup](#development-setup)
+- [Project Structure](#project-structure)
+
+## Issue Reporting Guidelines
+- Before filing a new issue, try to make sure your problem doesn’t already exist.
+- The best way to get your bug fixed is to provide a reduced test case.
+
+## Pull Request Guidelines
+Before submitting a pull request, please make sure the following is done:
+
+1. Fork the repository and create your branch from main.
+2. Run `npm install` in the repository root.
+3. If you’ve fixed a bug or added code that should be tested, add tests!
+4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
+5. Format your code with prettier (`npm run prettier`).
 
 ## Development Setup
 
