@@ -107,10 +107,10 @@ jobs:
       - name: Before deploy
         run: npm ci && npm run declarations
 
-      - name: Publish npm Package #TODO: remove dry-run when ready
+      - name: Publish npm Package
         run: |
               npm version $RELEASE_VERSION --no-git-tag-version
-              npm publish --access public --dry-run
+              npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
   
@@ -170,9 +170,9 @@ jobs:
       - name: Before deploy
         run: npm ci && npm run declarations
 
-      - name: Publish npm Package #TODO: remove dry-run when ready
+      - name: Publish npm Package
         run: |
               npm version $RELEASE_VERSION --no-git-tag-version
-              npm publish --access public --tag beta --dry-run
+              npm publish --access public --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
