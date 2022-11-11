@@ -147,7 +147,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
         <SearchInput
           value={this.state.term}
           onKeyDown={this.handleKeyDown}
-          placeholder="Search..."
+          placeholder="Search API paths..."
           aria-label="Search"
           type="text"
           onChange={this.search}
