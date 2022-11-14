@@ -1,5 +1,2411 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`#loadAndBundleSpec should load And Bundle Spec demo/openapi.yaml 1`] = `
+Object {
+  "components": Object {
+    "examples": Object {
+      "Order": Object {
+        "value": Object {
+          "complete": false,
+          "quantity": 1,
+          "shipDate": "2018-10-19T16:46:45Z",
+          "status": "placed",
+        },
+      },
+    },
+    "requestBodies": Object {
+      "Pet": Object {
+        "content": Object {
+          "application/json": Object {
+            "schema": Object {
+              "allOf": Array [
+                Object {
+                  "description": "My Pet",
+                  "title": "Pettie",
+                },
+                Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+              ],
+            },
+          },
+          "application/xml": Object {
+            "schema": Object {
+              "properties": Object {
+                "name": Object {
+                  "description": "hooray",
+                  "type": "string",
+                },
+              },
+              "type": "object",
+            },
+          },
+        },
+        "description": "Pet object that needs to be added to the store",
+        "required": true,
+      },
+      "UserArray": Object {
+        "content": Object {
+          "application/json": Object {
+            "schema": Object {
+              "items": Object {
+                "$ref": "#/components/schemas/User",
+              },
+              "type": "array",
+            },
+          },
+        },
+        "description": "List of user object",
+        "required": true,
+      },
+    },
+    "schemas": Object {
+      "ApiResponse": Object {
+        "properties": Object {
+          "code": Object {
+            "format": "int32",
+            "type": "integer",
+          },
+          "message": Object {
+            "type": "string",
+          },
+          "type": Object {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+      "Cat": Object {
+        "allOf": Array [
+          Object {
+            "$ref": "#/components/schemas/Pet",
+          },
+          Object {
+            "properties": Object {
+              "huntingSkill": Object {
+                "default": "lazy",
+                "description": "The measured skill for hunting",
+                "enum": Array [
+                  "clueless",
+                  "lazy",
+                  "adventurous",
+                  "aggressive",
+                ],
+                "example": "adventurous",
+                "type": "string",
+              },
+            },
+            "required": Array [
+              "huntingSkill",
+            ],
+            "type": "object",
+          },
+        ],
+        "description": "A representation of a cat",
+      },
+      "Category": Object {
+        "properties": Object {
+          "id": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Id",
+              },
+            ],
+            "description": "Category ID",
+          },
+          "name": Object {
+            "description": "Category name",
+            "minLength": 1,
+            "type": "string",
+          },
+          "sub": Object {
+            "description": "Test Sub Category",
+            "properties": Object {
+              "prop1": Object {
+                "description": "Dumb Property",
+                "type": "string",
+              },
+            },
+            "type": "object",
+          },
+        },
+        "type": "object",
+        "xml": Object {
+          "name": "Category",
+        },
+      },
+      "Dog": Object {
+        "allOf": Array [
+          Object {
+            "$ref": "#/components/schemas/Pet",
+          },
+          Object {
+            "properties": Object {
+              "packSize": Object {
+                "default": 1,
+                "description": "The size of the pack the dog is from",
+                "format": "int32",
+                "minimum": 1,
+                "type": "integer",
+              },
+            },
+            "required": Array [
+              "packSize",
+            ],
+            "type": "object",
+          },
+        ],
+        "description": "A representation of a dog",
+      },
+      "HoneyBee": Object {
+        "allOf": Array [
+          Object {
+            "$ref": "#/components/schemas/Pet",
+          },
+          Object {
+            "properties": Object {
+              "honeyPerDay": Object {
+                "description": "Average amount of honey produced per day in ounces",
+                "example": 3.14,
+                "multipleOf": 0.01,
+                "type": "number",
+              },
+            },
+            "required": Array [
+              "honeyPerDay",
+            ],
+            "type": "object",
+          },
+        ],
+        "description": "A representation of a honey bee",
+      },
+      "Id": Object {
+        "format": "int64",
+        "readOnly": true,
+        "type": "integer",
+      },
+      "Order": Object {
+        "properties": Object {
+          "complete": Object {
+            "default": false,
+            "description": "Indicates whenever order was completed or not",
+            "readOnly": true,
+            "type": "boolean",
+          },
+          "id": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Id",
+              },
+            ],
+            "description": "Order ID",
+          },
+          "petId": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Id",
+              },
+            ],
+            "description": "Pet ID",
+          },
+          "quantity": Object {
+            "default": 1,
+            "format": "int32",
+            "minimum": 1,
+            "type": "integer",
+          },
+          "requestId": Object {
+            "description": "Unique Request Id",
+            "type": "string",
+            "writeOnly": true,
+          },
+          "shipDate": Object {
+            "description": "Estimated ship date",
+            "format": "date-time",
+            "type": "string",
+          },
+          "status": Object {
+            "description": "Order Status",
+            "enum": Array [
+              "placed",
+              "approved",
+              "delivered",
+            ],
+            "type": "string",
+          },
+        },
+        "type": "object",
+        "xml": Object {
+          "name": "Order",
+        },
+      },
+      "Pet": Object {
+        "discriminator": Object {
+          "mapping": Object {
+            "bee": "#/components/schemas/HoneyBee",
+            "cat": "#/components/schemas/Cat",
+            "dog": "#/components/schemas/Dog",
+          },
+          "propertyName": "petType",
+        },
+        "properties": Object {
+          "category": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Category",
+              },
+            ],
+            "description": "Categories this pet belongs to",
+          },
+          "friend": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Pet",
+              },
+            ],
+          },
+          "id": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Id",
+              },
+            ],
+            "description": "Pet ID",
+            "externalDocs": Object {
+              "description": "Find more info here",
+              "url": "https://example.com",
+            },
+          },
+          "name": Object {
+            "description": "The name given to a pet",
+            "example": "Guru",
+            "type": "string",
+          },
+          "petType": Object {
+            "description": "Type of a pet",
+            "type": "string",
+          },
+          "photoUrls": Object {
+            "description": "The list of URL to a cute photos featuring pet",
+            "items": Object {
+              "format": "url",
+              "type": "string",
+            },
+            "maxItems": 20,
+            "type": "array",
+            "xml": Object {
+              "name": "photoUrl",
+              "wrapped": true,
+            },
+          },
+          "status": Object {
+            "description": "Pet status in the store",
+            "enum": Array [
+              "available",
+              "pending",
+              "sold",
+            ],
+            "type": "string",
+          },
+          "tags": Object {
+            "description": "Tags attached to the pet",
+            "items": Object {
+              "$ref": "#/components/schemas/Tag",
+            },
+            "minItems": 1,
+            "type": "array",
+            "xml": Object {
+              "name": "tag",
+              "wrapped": true,
+            },
+          },
+        },
+        "required": Array [
+          "name",
+          "photoUrls",
+        ],
+        "type": "object",
+        "xml": Object {
+          "name": "Pet",
+        },
+      },
+      "Tag": Object {
+        "properties": Object {
+          "id": Object {
+            "allOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Id",
+              },
+            ],
+            "description": "Tag ID",
+          },
+          "name": Object {
+            "description": "Tag name",
+            "minLength": 1,
+            "type": "string",
+          },
+        },
+        "type": "object",
+        "xml": Object {
+          "name": "Tag",
+        },
+      },
+      "User": Object {
+        "properties": Object {
+          "addresses": Object {
+            "additionalItems": Object {
+              "type": "string",
+            },
+            "items": Array [
+              Object {
+                "properties": Object {
+                  "city": Object {
+                    "minLength": 0,
+                    "type": "string",
+                  },
+                  "country": Object {
+                    "minLength": 0,
+                    "type": "string",
+                  },
+                  "street": Object {
+                    "description": "includes build/apartment number",
+                    "minLength": 0,
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              Object {
+                "type": "number",
+              },
+            ],
+            "maxLength": 10,
+            "minItems": 0,
+            "type": "array",
+          },
+          "email": Object {
+            "description": "User email address",
+            "example": "john.smith@example.com",
+            "format": "email",
+            "type": "string",
+          },
+          "firstName": Object {
+            "description": "User first name",
+            "example": "John",
+            "minLength": 1,
+            "type": "string",
+          },
+          "id": Object {
+            "$ref": "#/components/schemas/Id",
+          },
+          "lastName": Object {
+            "description": "User last name",
+            "example": "Smith",
+            "minLength": 1,
+            "type": "string",
+          },
+          "password": Object {
+            "description": "User password, MUST contain a mix of upper and lower case letters, as well as digits",
+            "example": "drowssaP123",
+            "format": "password",
+            "minLength": 8,
+            "pattern": "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/",
+            "type": "string",
+          },
+          "pet": Object {
+            "oneOf": Array [
+              Object {
+                "$ref": "#/components/schemas/Pet",
+              },
+              Object {
+                "$ref": "#/components/schemas/Tag",
+              },
+            ],
+          },
+          "phone": Object {
+            "description": "User phone number in international format",
+            "example": "+1-202-555-0192",
+            "pattern": "/^\\\\+(?:[0-9]-?){6,14}[0-9]$/",
+            "type": "string",
+          },
+          "userStatus": Object {
+            "description": "User status",
+            "format": "int32",
+            "type": "integer",
+          },
+          "username": Object {
+            "description": "User supplied username",
+            "example": "John78",
+            "minLength": 4,
+            "type": "string",
+          },
+        },
+        "type": "object",
+        "xml": Object {
+          "name": "User",
+        },
+      },
+    },
+    "securitySchemes": Object {
+      "api_key": Object {
+        "description": "For this sample, you can use the api key \`special-key\` to test the authorization filters.
+",
+        "in": "header",
+        "name": "api_key",
+        "type": "apiKey",
+      },
+      "petstore_auth": Object {
+        "description": "Get access to data while protecting your account credentials.
+OAuth2 is also a safer and more secure way to give you access.
+",
+        "flows": Object {
+          "implicit": Object {
+            "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
+            "scopes": Object {
+              "read:pets": "read your pets",
+              "write:pets": "modify pets in your account",
+            },
+          },
+        },
+        "type": "oauth2",
+      },
+    },
+  },
+  "externalDocs": Object {
+    "description": "Find out how to create Github repo for your OpenAPI spec.",
+    "url": "https://github.com/Rebilly/generator-openapi-repo",
+  },
+  "info": Object {
+    "contact": Object {
+      "email": "apiteam@swagger.io",
+      "name": "API Support",
+      "url": "https://github.com/Redocly/redoc",
+    },
+    "description": "This is a sample server Petstore server.
+You can find out more about Swagger at
+[http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).
+For this sample, you can use the api key \`special-key\` to test the authorization filters.
+
+# Introduction
+This API is documented in **OpenAPI format** and is based on
+[Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
+
+# OpenAPI Specification
+This API is documented in **OpenAPI format** and is based on
+[Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
+
+# Cross-Origin Resource Sharing
+This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+And that allows cross-domain communication from the browser.
+All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+
+# Authentication
+
+Petstore offers two forms of authentication:
+  - API Key
+  - OAuth2
+OAuth2 - an open protocol to allow secure authorization in a simple
+and standard method from web, mobile and desktop applications.
+
+<!-- ReDoc-Inject: <security-definitions> -->
+",
+    "license": Object {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html",
+    },
+    "termsOfService": "http://swagger.io/terms/",
+    "title": "Swagger Petstore",
+    "version": "1.1.0",
+    "x-logo": Object {
+      "altText": "Petstore logo",
+      "url": "https://redocly.github.io/redoc/petstore-logo.png",
+    },
+  },
+  "openapi": "3.0.0",
+  "paths": Object {
+    "/accounts/{accountId}/tnoptions": Object {
+      "get": Object {
+        "description": "Retrieve a list of the TN Option orders that are associated with the account. A maximum of 1,000 orders can be retrieved per request. If no date range or specific query parameter (marked by <b>*</b> below) is provided, the order results will be limited to the last two years.",
+        "operationId": "GetTnOptionOrders",
+        "parameters": Array [
+          Object {
+            "description": "The status of the TN Option order being searched for.",
+            "example": "PROCESSING",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": Object {
+              "items": Object {
+                "type": "string",
+              },
+              "type": "array",
+            },
+          },
+          Object {
+            "description": "<b>*</b> A Telephone Number (TN) that is referenced in the order.",
+            "example": "9199918388",
+            "in": "query",
+            "name": "tn",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "<b>*</b> The Customer Order ID is an ID assigned by the account owner to provide a reference number for the TN Option order.",
+            "example": "ABCCorp12345",
+            "in": "query",
+            "name": "customerOrderId",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "For Date-based searches, the starting date of a date range (inclusive) that will be used to find TN Option Orders that were modified within the date range. It is in the form yyyy-MM-dd.",
+            "example": "2013-10-22",
+            "in": "query",
+            "name": "modifiedDateFrom",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "For Date-based searches, the ending date of a date range (inclusive) that will be used to find TN Option Orders that were modified within the date range.  It is in the form yyyy-MM-dd.",
+            "example": "2013-10-25",
+            "in": "query",
+            "name": "modifiedDateTo",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "Checks the order's creation date against this value. Orders that have a creation date after this date will be included. Format is yyyy-MM-dd.",
+            "example": "2013-10-22",
+            "in": "query",
+            "name": "createdDateFrom",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "Checks the order's creation date against this value. Orders that have a creation date before this date will be included. Format is yyyy-MM-dd.",
+            "example": "2013-10-25",
+            "in": "query",
+            "name": "createdDateTo",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "Checks the order's last modified date against this value. Orders that have a modification date after this date will be included. Format is yyyy-MM-dd.",
+            "example": "2013-10-25",
+            "in": "query",
+            "name": "lastModifiedAfter",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "This is the user-name of the user that last modified the TN Option Order.",
+            "example": "smckinnon",
+            "in": "query",
+            "name": "lastModifiedBy",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "<b>*</b> This search parameter represents the internal Bandwidth Dashboard API ID that has been assigned to the TN Option Order. This parameter is the first few characters of the internal ID - the entire ID does not need to be specified.",
+            "example": "ed1c0bed-e2",
+            "in": "query",
+            "name": "orderIdFragment",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "If set to true, a list of order details will be displayed instead the summary information.",
+            "in": "query",
+            "name": "orderDetails",
+            "required": false,
+            "schema": Object {
+              "type": "boolean",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrderReportResponse>
+   <TnOptionOrders>
+      <TotalCount>2</TotalCount>
+      <TnOptionOrderSummary>
+         <accountId>14</accountId>
+         <CountOfTNs>2</CountOfTNs>
+         <userId>jbm</userId>
+         <lastModifiedDate>2016-01-15T12:01:14.363Z</lastModifiedDate>
+         <OrderDate>2016-01-15T12:01:14.324Z</OrderDate>
+         <OrderType>tn_option</OrderType>
+         <OrderStatus>FAILED</OrderStatus>
+         <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+      </TnOptionOrderSummary>
+      <TnOptionOrderSummary>
+         <accountId>14</accountId>
+         <CountOfTNs>3</CountOfTNs>
+         <userId>jbm</userId>
+         <lastModifiedDate>2016-01-15T11:22:58.969Z</lastModifiedDate>
+         <OrderDate>2016-01-15T11:22:58.789Z</OrderDate>
+         <OrderType>tn_option</OrderType>
+         <OrderStatus>COMPLETE</OrderStatus>
+         <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+      </TnOptionOrderSummary>
+   </TnOptionOrders>
+   <!-- OR -->
+   <TnOptionOrders>
+      <TotalCount>2</TotalCount>
+      <TnOptionOrder>
+         <OrderCreateDate>2016-01-15T12:01:14.324Z</OrderCreateDate>
+         <AccountId>14</AccountId>
+         <CreatedByUser>jbm</CreatedByUser>
+         <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+         <LastModifiedDate>2016-01-15T12:01:14.363Z</LastModifiedDate>
+         <ProcessingStatus>FAILED</ProcessingStatus>
+         <TnOptionGroups>
+            <TnOptionGroup>
+               <NumberFormat>10digit</NumberFormat>
+               <RPIDFormat>10digit</RPIDFormat>
+               <RewriteUser>testUser1</RewriteUser>
+               <CallForward>6042661720</CallForward>
+               <CallingNameDisplay>on</CallingNameDisplay>
+               <Protected>true</Protected>
+               <Sms>on</Sms>
+               <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+               <TelephoneNumbers>
+                  <TelephoneNumber>2018551020</TelephoneNumber>
+               </TelephoneNumbers>
+            </TnOptionGroup>
+            <TnOptionGroup>
+               <CallingNameDisplay>off</CallingNameDisplay>
+               <Protected>false</Protected>
+               <Sms>off</Sms>
+               <TelephoneNumbers>
+                  <TelephoneNumber>2018551025</TelephoneNumber>
+               </TelephoneNumbers>
+            </TnOptionGroup>
+         </TnOptionGroups>
+         <ErrorList>
+            <Error>
+               <Code>5076</Code>
+               <Description>Telephone number is not available.</Description>
+               <TelephoneNumber>2018551025</TelephoneNumber>
+            </Error>
+            <Error>
+               <Code>5076</Code>
+               <Description>Telephone number is not available.</Description>
+               <TelephoneNumber>2018551020</TelephoneNumber>
+            </Error>
+         </ErrorList>
+      </TnOptionOrder>
+      <TnOptionOrder>
+         <OrderCreateDate>2016-01-15T11:22:58.789Z</OrderCreateDate>
+         <AccountId>14</AccountId>
+         <CreatedByUser>jbm</CreatedByUser>
+         <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+         <LastModifiedDate>2016-01-15T11:22:58.969Z</LastModifiedDate>
+         <ProcessingStatus>COMPLETE</ProcessingStatus>
+         <TnOptionGroups>
+            <TnOptionGroup>
+               <CallingNameDisplay>on</CallingNameDisplay>
+               <TelephoneNumbers>
+                  <TelephoneNumber>2174101601</TelephoneNumber>
+               </TelephoneNumbers>
+            </TnOptionGroup>
+            <TnOptionGroup>
+               <CallingNameDisplay>off</CallingNameDisplay>
+               <TelephoneNumbers>
+                  <TelephoneNumber>2174101602</TelephoneNumber>
+               </TelephoneNumbers>
+            </TnOptionGroup>
+            <TnOptionGroup>
+               <CallingNameDisplay>systemdefault</CallingNameDisplay>
+               <TelephoneNumbers>
+                  <TelephoneNumber>2174101603</TelephoneNumber>
+               </TelephoneNumbers>
+            </TnOptionGroup>
+         </TnOptionGroups>
+         <ErrorList/>
+      </TnOptionOrder>
+   </TnOptionOrders>
+</TnOptionOrderReportResponse>",
+                  },
+                },
+              },
+            },
+            "description": "The descriptive payload for the TN Option Orders query provides a broad range of information about the TN Option Orders found by the query, including the data associated with the order, the state of the order, and details about the order if it was successful.",
+          },
+          "404": Object {
+            "content": Object {
+              "application/xml": Object {},
+            },
+            "description": "Not Found.  If any errors are found in the processing of the query string a 404 will be returned.  Note that parameters that are not recognized are not considered errors, and are just ignored.
+",
+          },
+        },
+        "summary": "Retrieve list TN Option orders",
+        "tags": Array [
+          "Tn Option",
+        ],
+      },
+      "post": Object {
+        "description": "Create TN Option order to assign line features to the telephone number.<br><br>Attribute description:<ul><li>for A2pSettings attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Number attribute</th><th>Action value</th><th>Description of action</th></tr><tr><td>LongCode</td><td><i>systemDefault</i></td><td>Removes the per-TN A2P attributes, and it reverts to the Location/SIP Peer characteristics. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>asSpecified</i></td><td>Sets the message class and campaign ID - this is the default if unspecified</td></tr><tr><td>LongCode</td><td><i>off</i></td><td>Will set the TN as a 'P' TN. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>delete</i></td><td>Will delete the campaign ID from TN. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>unchanged</i></td><td>Do nothing with respect to A2P</td></tr><tr><td>TollFree</td><td><i>systemDefault</i></td><td>Removes the per-TN A2P attributes, and it reverts to the Location/SIP Peer characteristics. Any values for Class or Campaign ID are not valid</td></tr><tr><td>TollFree</td><td><i>asSpecified</i></td><td>Sets the message class and campaign ID - this is the default if unspecified</td></tr><tr><td>TollFree</td><td><i>off</i></td><td>If the Togglz value is set to 'on' this is invalid for Toll Free telephone numbers. Any values for Class or Campaign ID in the payload are invalid. If the Togglz value is set to off this behaves like and A2P TN, where the characteristics of the TNs is set to 'P'</td></tr><tr><td>TollFree</td><td><i>unchanged</i></td><td>Do nothing with respect to A2P</td></tr></tbody></table><li>for Origination Route plan attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Action value</th><th>Description of action</th></tr><tr><td>asSpecified</td><td>Creates/updates the origination route plan for the TN with route plan details provided in the request </td></tr><tr><td>off</td><td>Removes the origination route plan for the TN. Route list is the request must be empty</td></tr><tr><td>unchanged</td><td>Doesn't update/create the origination route plan, even when route plan details exist in the request</td></tr></tbody></table><ul><li> Origination route plan is validated against CallForward and RewriteUser</li><ul><li type=\\"square\\">Route plan and CallForward cannot co-exist. Order is accepted but will respond with error messages on GET.</li><li type=\\"square\\">Route plan and RewriteUser cannot co-exist. Order is accepted but will respond with error messages on GET.</li></ul></ul><li>for Pindrop Enabled attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Action value</th><th>Description of action</th></tr><tr><td>true</td><td>Enables Pindrop integration on each phone number in the option group</td></tr><tr><td>false</td><td>Explicitly disables Pindrop integration on each phone number in the option group</td></tr></tbody></table><li>for other attribute</li><ul><li type=\\"square\\"> <i>systemDefault</i> - implies that the element profile value should be removed so that the TN changes back to the default system behavior;</li><li type=\\"square\\"> <i>unchanged</i> - the value should remain unchanged - implies a read before write model.</li><li type=\\"square\\"><u>Leaving the element out of the payload is equivalent to <i>unchanged</i>.</u></li></ul></ul>",
+        "operationId": "CreateTnOptionOrder",
+        "requestBody": Object {
+          "content": Object {
+            "application/xml": Object {
+              "examples": Object {
+                "example": Object {
+                  "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrder>
+  <CustomerOrderId>TnOptionOrder1</CustomerOrderId>
+  <TnOptionGroups>
+    <TnOptionGroup>
+      <NumberFormat>10digit</NumberFormat>
+      <RPIDFormat>10digit</RPIDFormat>
+      <RewriteUser>testUser1</RewriteUser>
+      <CallForward>6042661720</CallForward>
+      <CallingNameDisplay>on</CallingNameDisplay>
+      <PortOutPasscode>a1b2c3</PortOutPasscode>
+      <Protected>true</Protected>
+      <Sms>on</Sms>
+      <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+      <A2pSettings>
+        <MessageClass>M</MessageClass>
+        <CampaignId>campaignId010</CampaignId>
+        <Action>asSpecified</Action>
+      </A2pSettings>
+      <TelephoneNumbers>
+        <TelephoneNumber>2018551020</TelephoneNumber>
+      </TelephoneNumbers>
+    </TnOptionGroup>
+    <TnOptionGroup>
+      <CallingNameDisplay>off</CallingNameDisplay>
+      <Protected>false</Protected>
+      <Sms>off</Sms>
+      <OriginationRoutePlan>
+        <Route>
+          <Endpoint>6105552502</Endpoint>
+          <Priority>1</Priority>
+          <Weight>100</Weight>
+        </Route>
+        <Route>
+          <Endpoint>sip:clarkkent@dailyplanet.com</Endpoint>
+          <Priority>2</Priority>
+          <Weight>100</Weight>
+        </Route>
+        <Route>
+          <Endpoint>192.168.20.21</Endpoint>
+          <Priority>3</Priority>
+          <Weight>50</Weight>
+        </Route>
+        <Route>
+          <Endpoint>7075552509</Endpoint>
+          <Priority>3</Priority>
+          <Weight>50</Weight>
+        </Route>
+        <Route>
+          <Endpoint>myhost.bandwidth.example</Endpoint>
+          <Priority>4</Priority>
+          <Weight>100</Weight>
+        </Route>
+        <Action>asSpecified</Action>
+      </OriginationRoutePlan>
+      <TelephoneNumbers>
+        <TelephoneNumber>2018551025</TelephoneNumber>
+      </TelephoneNumbers>
+    </TnOptionGroup>
+    <TnOptionGroup>
+      <PindropEnabled>true</PindropEnabled>
+      <TelephoneNumbers>
+        <TelephoneNumber>2018551026</TelephoneNumber>
+      </TelephoneNumbers>
+    </TnOptionGroup>
+  </TnOptionGroups>
+</TnOptionOrder>",
+                },
+              },
+            },
+          },
+        },
+        "responses": Object {
+          "201": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrderResponse>
+  <TnOptionOrder>
+    <OrderCreateDate>2016-01-15T12:01:14.324Z</OrderCreateDate>
+    <AccountId>14</AccountId>
+    <CreatedByUser>jbm</CreatedByUser>
+    <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+    <LastModifiedDate>2016-01-15T12:01:14.324Z</LastModifiedDate>
+    <ProcessingStatus>RECEIVED</ProcessingStatus>
+    <TnOptionGroups>
+      <TnOptionGroup>
+        <NumberFormat>10digit</NumberFormat>
+        <RPIDFormat>10digit</RPIDFormat>
+        <RewriteUser>testUser1</RewriteUser>
+        <CallForward>6042661720</CallForward>
+        <CallingNameDisplay>on</CallingNameDisplay>
+        <Protected>true</Protected>
+        <Sms>on</Sms>
+        <TelephoneNumbers>
+          <TelephoneNumber>2018551020</TelephoneNumber>
+        </TelephoneNumbers>
+      </TnOptionGroup>
+      <TnOptionGroup>
+        <CallingNameDisplay>off</CallingNameDisplay>
+        <Protected>false</Protected>
+        <Sms>off</Sms>
+        <TelephoneNumbers>
+          <TelephoneNumber>2018551025</TelephoneNumber>
+        </TelephoneNumbers>
+      </TnOptionGroup>
+    </TnOptionGroups>
+    <ErrorList/>
+  </TnOptionOrder>
+</TnOptionOrderResponse>",
+                  },
+                },
+              },
+            },
+            "description": "Created",
+          },
+          "400": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrderResponse>
+  <ResponseStatus>
+    <ErrorCode>5081</ErrorCode>
+    <Description>Number Format 'wrong' is invalid.</Description>
+  </ResponseStatus>
+</TnOptionOrderResponse>",
+                  },
+                },
+              },
+            },
+            "description": "Bad Request A 400 response Indicates that the order could not be created. Error text and an error code will be provided in the ErrorList element.",
+          },
+          "409": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrderResponse>
+  <ResponseStatus>
+    <ErrorCode>5200</ErrorCode>
+    <Description>Origination route plan is not enabled for the account.</Description>
+  </ResponseStatus>
+</TnOptionOrderResponse>",
+                  },
+                },
+              },
+            },
+            "description": "Conflict. Error text and an error code will be provided in the ErrorList element.",
+          },
+        },
+        "summary": "Create TN Option order",
+        "tags": Array [
+          "Tn Option",
+        ],
+      },
+    },
+    "/accounts/{accountId}/tnoptions/{orderid}": Object {
+      "get": Object {
+        "description": "Retrieve information about a TN Option Order with specified ID.",
+        "operationId": "GetTnOptionOrder",
+        "parameters": Array [
+          Object {
+            "description": "",
+            "in": "path",
+            "name": "orderid",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrder>
+  <OrderCreateDate>2016-01-15T11:22:58.789Z</OrderCreateDate>
+  <AccountId>14</AccountId>
+  <CreatedByUser>jbm</CreatedByUser>
+  <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+  <LastModifiedDate>2016-01-15T11:22:58.969Z</LastModifiedDate>
+  <ProcessingStatus>COMPLETE</ProcessingStatus>
+  <TnOptionGroups>
+    <TnOptionGroup>
+      <CallingNameDisplay>on</CallingNameDisplay>
+      <Sms>on</Sms>
+      <TelephoneNumbers>
+        <TelephoneNumber>2174101601</TelephoneNumber>
+      </TelephoneNumbers>
+    </TnOptionGroup>
+    <TnOptionGroup>
+      <CallingNameDisplay>off</CallingNameDisplay>
+      <TelephoneNumbers>
+        <TelephoneNumber>2174101602</TelephoneNumber>
+      </TelephoneNumbers>
+      </TnOptionGroup>
+    <TnOptionGroup>
+      <CallingNameDisplay>systemdefault</CallingNameDisplay>
+      <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+      <TelephoneNumbers>
+        <TelephoneNumber>2174101603</TelephoneNumber>
+      </TelephoneNumbers>
+    </TnOptionGroup>
+  </TnOptionGroups>
+  <ErrorList/>
+  <Warnings>
+    <Warning>
+      <TelephoneNumber>2174101601</TelephoneNumber>
+      <Description>SMS is already Enabled or number is in processing.</Description>
+    </Warning>
+  </Warnings>
+</TnOptionOrder>",
+                  },
+                },
+              },
+            },
+            "description": "The descriptive payload for the TN Option Orders query provides a broad range of information about the TN Option Order identified in the URL.  Included amongst the information is: <ul><li>ErrorList - the errors discovered with codes and explanations</li><li>Warnings - the warnings discovered with explanations</li><li>ProcessingStatus(RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED) - the overall status of the order</li></ul>",
+          },
+          "404": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "example": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<TnOptionOrderReportResponse>
+  <ResponseStatus>
+    <Description>The resource does not exist</Description>
+  </ResponseStatus>
+</TnOptionOrderReportResponse>",
+                  },
+                },
+              },
+            },
+            "description": "Not found. The order id does not exist in the system.",
+          },
+        },
+        "summary": "Retrieve TN Option order",
+        "tags": Array [
+          "Tn Option",
+        ],
+      },
+    },
+    "/accounts/{accountId}/tnoptions/{orderid}/history": Object {
+      "get": Object {
+        "description": "Retrieve the history information associated with an order.",
+        "operationId": "GetOrderHistory",
+        "parameters": Array [
+          Object {
+            "description": "",
+            "in": "path",
+            "name": "orderid",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/xml": Object {
+                "examples": Object {
+                  "application/xml": Object {
+                    "value": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\" standalone=\\"yes\\"?>
+<OrderHistoryWrapper>
+   <OrderHistory>
+      <OrderDate>2020-09-17T08:56:39.607Z</OrderDate>
+      <Note>Order has been received by the system.</Note>
+      <Author>admin</Author>
+      <Status>received</Status>
+   </OrderHistory>
+   <OrderHistory>
+      <OrderDate>2020-09-17T08:56:39.743Z</OrderDate>
+      <Note>Order processing has started.</Note>
+      <Author>admin</Author>
+      <Status>processing</Status>
+   </OrderHistory>
+   <OrderHistory>
+      <OrderDate>2020-09-17T08:56:39.820Z</OrderDate>
+      <Note>Order is complete.</Note>
+      <Author>admin</Author>
+      <Status>complete</Status>
+   </OrderHistory>
+</OrderHistoryWrapper>",
+                  },
+                },
+              },
+            },
+            "description": "The history payload is a set of history records, each of which contains: <table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"2\\">
+        <tbody>
+            <tr>
+                <td>OrderDate</td>
+                <td>The date that the order history event happened</td></tr><tr><td>Status</td><td>The new state of the TN Option order - RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED</td></tr><tr><td>Note</td><td>A Note or additional information included with the state change</td></tr><tr><td>Author</td><td>The user id that implemented the state change</td></tr></tbody></table></p>",
+          },
+          "404": Object {
+            "content": Object {
+              "application/xml": Object {},
+            },
+            "description": "Not found. The order id does not exist in the system.",
+          },
+        },
+        "summary": "Retrieve TN Option order history",
+        "tags": Array [
+          "Tn Option",
+        ],
+      },
+    },
+    "/pet": Object {
+      "parameters": Array [
+        Object {
+          "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
+          "example": "en-US",
+          "in": "header",
+          "name": "Accept-Language",
+          "required": false,
+          "schema": Object {
+            "default": "en-AU",
+            "type": "string",
+          },
+        },
+        Object {
+          "description": "Some cookie",
+          "in": "cookie",
+          "name": "cookieParam",
+          "required": true,
+          "schema": Object {
+            "format": "int64",
+            "type": "integer",
+          },
+        },
+      ],
+      "post": Object {
+        "description": "Add new pet to the store inventory.",
+        "operationId": "addPet",
+        "requestBody": Object {
+          "$ref": "#/components/requestBodies/Pet",
+        },
+        "responses": Object {
+          "405": Object {
+            "description": "Invalid input",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Add a new pet to the store",
+        "tags": Array [
+          "pet",
+        ],
+        "x-codeSamples": Array [
+          Object {
+            "lang": "C#",
+            "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
+pet.setApiKey(\\"your api key\\");
+pet.petType = PetStore.v1.Pet.TYPE_DOG;
+pet.name = \\"Rex\\";
+// set other fields
+PetStoreResponse response = pet.create();
+if (response.statusCode == HttpStatusCode.Created)
+{
+  // Successfully created
+}
+else
+{
+  // Something wrong -- check response for errors
+  Console.WriteLine(response.getRawResponse());
+}
+",
+          },
+          Object {
+            "lang": "PHP",
+            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+$form->setPetType(\\"Dog\\");
+$form->setName(\\"Rex\\");
+// set other fields
+try {
+    $pet = $client->pets()->create($form);
+} catch (UnprocessableEntityException $e) {
+    var_dump($e->getErrors());
+}
+",
+          },
+        ],
+      },
+      "put": Object {
+        "description": "",
+        "operationId": "updatePet",
+        "requestBody": Object {
+          "$ref": "#/components/requestBodies/Pet",
+        },
+        "responses": Object {
+          "400": Object {
+            "description": "Invalid ID supplied",
+          },
+          "404": Object {
+            "description": "Pet not found",
+          },
+          "405": Object {
+            "description": "Validation exception",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Update an existing pet",
+        "tags": Array [
+          "pet",
+        ],
+        "x-codeSamples": Array [
+          Object {
+            "lang": "PHP",
+            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+$form->setPetId(1);
+$form->setPetType(\\"Dog\\");
+$form->setName(\\"Rex\\");
+// set other fields
+try {
+    $pet = $client->pets()->update($form);
+} catch (UnprocessableEntityException $e) {
+    var_dump($e->getErrors());
+}
+",
+          },
+        ],
+      },
+    },
+    "/pet/findByStatus": Object {
+      "get": Object {
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "findPetsByStatus",
+        "parameters": Array [
+          Object {
+            "description": "Status values that need to be considered for filter",
+            "in": "query",
+            "name": "status",
+            "required": true,
+            "schema": Object {
+              "items": Object {
+                "default": "available",
+                "enum": Array [
+                  "available",
+                  "pending",
+                  "sold",
+                ],
+                "type": "string",
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "type": "array",
+            },
+            "style": "form",
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "items": Object {
+                    "$ref": "#/components/schemas/Pet",
+                  },
+                  "type": "array",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "items": Object {
+                    "$ref": "#/components/schemas/Pet",
+                  },
+                  "type": "array",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "description": "Invalid status value",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Finds Pets by status",
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+    "/pet/findByTags": Object {
+      "get": Object {
+        "deprecated": true,
+        "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
+        "operationId": "findPetsByTags",
+        "parameters": Array [
+          Object {
+            "description": "Tags to filter by",
+            "in": "query",
+            "name": "tags",
+            "required": true,
+            "schema": Object {
+              "items": Object {
+                "type": "string",
+              },
+              "type": "array",
+            },
+            "style": "form",
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "items": Object {
+                    "$ref": "#/components/schemas/Pet",
+                  },
+                  "type": "array",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "items": Object {
+                    "$ref": "#/components/schemas/Pet",
+                    "maxItems": 111,
+                  },
+                  "maxItems": 999,
+                  "type": "array",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "description": "Invalid tag value",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Finds Pets by tags",
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+    "/pet/{petId}": Object {
+      "delete": Object {
+        "description": "",
+        "operationId": "deletePet",
+        "parameters": Array [
+          Object {
+            "example": "Bearer <TOKEN>",
+            "in": "header",
+            "name": "api_key",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "Pet id to delete",
+            "in": "path",
+            "name": "petId",
+            "required": true,
+            "schema": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": Object {
+          "400": Object {
+            "description": "Invalid pet value",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Deletes a pet",
+        "tags": Array [
+          "pet",
+        ],
+      },
+      "get": Object {
+        "description": "Returns a single pet",
+        "operationId": "getPetById",
+        "parameters": Array [
+          Object {
+            "deprecated": true,
+            "description": "ID of pet to return",
+            "in": "path",
+            "name": "petId",
+            "required": true,
+            "schema": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Pet",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "description": "Invalid ID supplied",
+          },
+          "404": Object {
+            "description": "Pet not found",
+          },
+        },
+        "security": Array [
+          Object {
+            "api_key": Array [],
+          },
+        ],
+        "summary": "Find pet by ID",
+        "tags": Array [
+          "pet",
+        ],
+      },
+      "post": Object {
+        "description": "",
+        "operationId": "updatePetWithForm",
+        "parameters": Array [
+          Object {
+            "description": "ID of pet that needs to be updated",
+            "in": "path",
+            "name": "petId",
+            "required": true,
+            "schema": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/x-www-form-urlencoded": Object {
+              "schema": Object {
+                "properties": Object {
+                  "name": Object {
+                    "description": "Updated name of the pet",
+                    "type": "string",
+                  },
+                  "status": Object {
+                    "description": "Updated status of the pet",
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": Object {
+          "405": Object {
+            "description": "Invalid input",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "Updates a pet in the store with form data",
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+    "/pet/{petId}/uploadImage": Object {
+      "post": Object {
+        "description": "",
+        "operationId": "uploadFile",
+        "parameters": Array [
+          Object {
+            "description": "ID of pet to update",
+            "in": "path",
+            "name": "petId",
+            "required": true,
+            "schema": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/octet-stream": Object {
+              "schema": Object {
+                "format": "binary",
+                "type": "string",
+              },
+            },
+          },
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/ApiResponse",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+        },
+        "security": Array [
+          Object {
+            "petstore_auth": Array [
+              "write:pets",
+              "read:pets",
+            ],
+          },
+        ],
+        "summary": "uploads an image",
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+    "/store/inventory": Object {
+      "get": Object {
+        "description": "Returns a map of status codes to quantities",
+        "operationId": "getInventory",
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "additionalProperties": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "minProperties": 2,
+                  "type": "object",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+        },
+        "security": Array [
+          Object {
+            "api_key": Array [],
+          },
+        ],
+        "summary": "Returns pet inventories by status",
+        "tags": Array [
+          "store",
+        ],
+      },
+    },
+    "/store/order": Object {
+      "post": Object {
+        "description": "",
+        "operationId": "placeOrder",
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/Order",
+              },
+            },
+          },
+          "description": "order placed for purchasing the pet",
+          "required": true,
+        },
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Order",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Order",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "content": Object {
+              "application/json": Object {
+                "example": Object {
+                  "message": "Invalid Order",
+                  "status": 400,
+                },
+              },
+            },
+            "description": "Invalid Order",
+          },
+        },
+        "summary": "Place an order for a pet",
+        "tags": Array [
+          "store",
+        ],
+      },
+    },
+    "/store/order/{orderId}": Object {
+      "delete": Object {
+        "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
+        "operationId": "deleteOrder",
+        "parameters": Array [
+          Object {
+            "description": "ID of the order that needs to be deleted",
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": Object {
+              "minimum": 1,
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "400": Object {
+            "description": "Invalid ID supplied",
+          },
+          "404": Object {
+            "description": "Order not found",
+          },
+        },
+        "summary": "Delete purchase order by ID",
+        "tags": Array [
+          "store",
+        ],
+      },
+      "get": Object {
+        "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
+        "operationId": "getOrderById",
+        "parameters": Array [
+          Object {
+            "description": "ID of pet that needs to be fetched",
+            "in": "path",
+            "name": "orderId",
+            "required": true,
+            "schema": Object {
+              "format": "int64",
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Order",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/Order",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "description": "Invalid ID supplied",
+          },
+          "404": Object {
+            "description": "Order not found",
+          },
+        },
+        "summary": "Find purchase order by ID",
+        "tags": Array [
+          "store",
+        ],
+      },
+    },
+    "/store/subscribe": Object {
+      "post": Object {
+        "callbacks": Object {
+          "orderDelivered": Object {
+            "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}": Object {
+              "post": Object {
+                "deprecated": true,
+                "description": "A callback triggered every time an Order is delivered to the recipient",
+                "requestBody": Object {
+                  "content": Object {
+                    "application/json": Object {
+                      "schema": Object {
+                        "properties": Object {
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                          "timestamp": Object {
+                            "example": "2018-10-19T16:46:45Z",
+                            "format": "date-time",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                  },
+                },
+                "responses": Object {
+                  "200": Object {
+                    "description": "Callback successfully processed and no retries will be performed",
+                  },
+                },
+                "summary": "Order delivered",
+              },
+            },
+          },
+          "orderInProgress": Object {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
+              "post": Object {
+                "description": "A callback triggered every time an Order is updated status to \\"inProgress\\" (Description)",
+                "externalDocs": Object {
+                  "description": "Find out more",
+                  "url": "https://more-details.com/demo",
+                },
+                "requestBody": Object {
+                  "content": Object {
+                    "application/json": Object {
+                      "schema": Object {
+                        "properties": Object {
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                          "status": Object {
+                            "example": "inProgress",
+                            "type": "string",
+                          },
+                          "timestamp": Object {
+                            "example": "2018-10-19T16:46:45Z",
+                            "format": "date-time",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                    "application/xml": Object {
+                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <orderId>123</orderId>
+  <status>inProgress</status>
+  <timestamp>2018-10-19T16:46:45Z</timestamp>
+</root>
+",
+                      "schema": Object {
+                        "properties": Object {
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                  },
+                },
+                "responses": Object {
+                  "200": Object {
+                    "content": Object {
+                      "application/json": Object {
+                        "schema": Object {
+                          "properties": Object {
+                            "someProp": Object {
+                              "example": "123",
+                              "type": "string",
+                            },
+                          },
+                          "type": "object",
+                        },
+                      },
+                    },
+                    "description": "Callback successfully processed and no retries will be performed",
+                  },
+                  "299": Object {
+                    "description": "Response for cancelling subscription",
+                  },
+                  "500": Object {
+                    "description": "Callback processing failed and retries will be performed",
+                  },
+                },
+                "summary": "Order in Progress (Summary)",
+                "x-codeSamples": Array [
+                  Object {
+                    "lang": "C#",
+                    "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
+pet.setApiKey(\\"your api key\\");
+pet.petType = PetStore.v1.Pet.TYPE_DOG;
+pet.name = \\"Rex\\";
+// set other fields
+PetStoreResponse response = pet.create();
+if (response.statusCode == HttpStatusCode.Created)
+{
+  // Successfully created
+}
+else
+{
+  // Something wrong -- check response for errors
+  Console.WriteLine(response.getRawResponse());
+}
+",
+                  },
+                  Object {
+                    "lang": "PHP",
+                    "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+$form->setPetType(\\"Dog\\");
+$form->setName(\\"Rex\\");
+// set other fields
+try {
+    $pet = $client->pets()->create($form);
+} catch (UnprocessableEntityException $e) {
+    var_dump($e->getErrors());
+}
+",
+                  },
+                ],
+              },
+              "put": Object {
+                "description": "Order in Progress (Only Description)",
+                "requestBody": Object {
+                  "content": Object {
+                    "application/json": Object {
+                      "schema": Object {
+                        "properties": Object {
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                          "status": Object {
+                            "example": "inProgress",
+                            "type": "string",
+                          },
+                          "timestamp": Object {
+                            "example": "2018-10-19T16:46:45Z",
+                            "format": "date-time",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                    "application/xml": Object {
+                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <orderId>123</orderId>
+  <status>inProgress</status>
+  <timestamp>2018-10-19T16:46:45Z</timestamp>
+</root>
+",
+                      "schema": Object {
+                        "properties": Object {
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                  },
+                },
+                "responses": Object {
+                  "200": Object {
+                    "content": Object {
+                      "application/json": Object {
+                        "schema": Object {
+                          "properties": Object {
+                            "someProp": Object {
+                              "example": "123",
+                              "type": "string",
+                            },
+                          },
+                          "type": "object",
+                        },
+                      },
+                    },
+                    "description": "Callback successfully processed and no retries will be performed",
+                  },
+                },
+                "servers": Array [
+                  Object {
+                    "description": "Operation level server 1 (Operation override)",
+                    "url": "//callback-url.operation-level/v1",
+                  },
+                  Object {
+                    "description": "Operation level server 2 (Operation override)",
+                    "url": "//callback-url.operation-level/v2",
+                  },
+                ],
+              },
+              "servers": Array [
+                Object {
+                  "description": "Path level server 1",
+                  "url": "//callback-url.path-level/v1",
+                },
+                Object {
+                  "description": "Path level server 2",
+                  "url": "//callback-url.path-level/v2",
+                },
+              ],
+            },
+          },
+          "orderShipped": Object {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
+              "post": Object {
+                "description": "Very long description
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+",
+                "requestBody": Object {
+                  "content": Object {
+                    "application/json": Object {
+                      "schema": Object {
+                        "properties": Object {
+                          "estimatedDeliveryDate": Object {
+                            "example": "2018-11-11T16:00:00Z",
+                            "format": "date-time",
+                            "type": "string",
+                          },
+                          "orderId": Object {
+                            "example": "123",
+                            "type": "string",
+                          },
+                          "timestamp": Object {
+                            "example": "2018-10-19T16:46:45Z",
+                            "format": "date-time",
+                            "type": "string",
+                          },
+                        },
+                        "type": "object",
+                      },
+                    },
+                  },
+                },
+                "responses": Object {
+                  "200": Object {
+                    "description": "Callback successfully processed and no retries will be performed",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "description": "Add subscription for a store events",
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "properties": Object {
+                  "callbackUrl": Object {
+                    "description": "This URL will be called by the server when the desired event will occur",
+                    "example": "https://myserver.com/send/callback/here",
+                    "format": "uri",
+                    "type": "string",
+                  },
+                  "eventName": Object {
+                    "description": "Event name for the subscription",
+                    "enum": Array [
+                      "orderInProgress",
+                      "orderShipped",
+                      "orderDelivered",
+                    ],
+                    "example": "orderInProgress",
+                    "type": "string",
+                  },
+                },
+                "required": Array [
+                  "callbackUrl",
+                  "eventName",
+                ],
+                "type": "object",
+              },
+            },
+          },
+        },
+        "responses": Object {
+          "201": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "subscriptionId": Object {
+                      "example": "AAA-123-BBB-456",
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Subscription added",
+          },
+        },
+        "summary": "Subscribe to the Store events",
+        "tags": Array [
+          "store",
+        ],
+      },
+    },
+    "/user": Object {
+      "post": Object {
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/User",
+              },
+            },
+          },
+          "description": "Created user object",
+          "required": true,
+        },
+        "responses": Object {
+          "default": Object {
+            "description": "successful operation",
+          },
+        },
+        "summary": "Create user",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+    "/user/createWithArray": Object {
+      "post": Object {
+        "description": "",
+        "operationId": "createUsersWithArrayInput",
+        "requestBody": Object {
+          "$ref": "#/components/requestBodies/UserArray",
+        },
+        "responses": Object {
+          "default": Object {
+            "description": "successful operation",
+          },
+        },
+        "summary": "Creates list of users with given input array",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+    "/user/createWithList": Object {
+      "post": Object {
+        "description": "",
+        "operationId": "createUsersWithListInput",
+        "requestBody": Object {
+          "$ref": "#/components/requestBodies/UserArray",
+        },
+        "responses": Object {
+          "default": Object {
+            "description": "successful operation",
+          },
+        },
+        "summary": "Creates list of users with given input array",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+    "/user/login": Object {
+      "get": Object {
+        "description": "",
+        "operationId": "loginUser",
+        "parameters": Array [
+          Object {
+            "description": "The user name for login",
+            "in": "query",
+            "name": "username",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+          Object {
+            "description": "The password for login in clear text",
+            "in": "query",
+            "name": "password",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "examples": Object {
+                  "response": Object {
+                    "value": "OK",
+                  },
+                },
+                "schema": Object {
+                  "type": "string",
+                },
+              },
+              "application/xml": Object {
+                "examples": Object {
+                  "response": Object {
+                    "value": "<Message> OK </Message>",
+                  },
+                },
+                "schema": Object {
+                  "type": "string",
+                },
+              },
+              "text/plain": Object {
+                "examples": Object {
+                  "response": Object {
+                    "value": "OK",
+                  },
+                },
+              },
+            },
+            "description": "successful operation",
+            "headers": Object {
+              "X-Expires-After": Object {
+                "description": "date in UTC when token expires",
+                "schema": Object {
+                  "format": "date-time",
+                  "type": "string",
+                },
+              },
+              "X-Rate-Limit": Object {
+                "description": "calls per hour allowed by the user",
+                "schema": Object {
+                  "format": "int32",
+                  "type": "integer",
+                },
+              },
+            },
+          },
+          "400": Object {
+            "description": "Invalid username/password supplied",
+          },
+        },
+        "summary": "Logs user into the system",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+    "/user/logout": Object {
+      "get": Object {
+        "description": "",
+        "operationId": "logoutUser",
+        "responses": Object {
+          "default": Object {
+            "description": "successful operation",
+          },
+        },
+        "summary": "Logs out current logged in user session",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+    "/user/{username}": Object {
+      "delete": Object {
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "parameters": Array [
+          Object {
+            "description": "The name that needs to be deleted",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "400": Object {
+            "description": "Invalid username supplied",
+          },
+          "404": Object {
+            "description": "User not found",
+          },
+        },
+        "summary": "Delete user",
+        "tags": Array [
+          "user",
+        ],
+      },
+      "get": Object {
+        "description": "",
+        "operationId": "getUserByName",
+        "parameters": Array [
+          Object {
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+              "application/xml": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+            "description": "successful operation",
+          },
+          "400": Object {
+            "description": "Invalid username supplied",
+          },
+          "404": Object {
+            "description": "User not found",
+          },
+        },
+        "summary": "Get user by user name",
+        "tags": Array [
+          "user",
+        ],
+      },
+      "put": Object {
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "parameters": Array [
+          Object {
+            "description": "name that need to be deleted",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/User",
+              },
+            },
+          },
+          "description": "Updated user object",
+          "required": true,
+        },
+        "responses": Object {
+          "400": Object {
+            "description": "Invalid user supplied",
+          },
+          "404": Object {
+            "description": "User not found",
+          },
+        },
+        "summary": "Updated user",
+        "tags": Array [
+          "user",
+        ],
+      },
+    },
+  },
+  "security": Array [
+    Object {},
+  ],
+  "servers": Array [
+    Object {
+      "description": "Default server",
+      "url": "//petstore.swagger.io/v2",
+    },
+    Object {
+      "description": "Sandbox server",
+      "url": "//petstore.swagger.io/sandbox",
+    },
+  ],
+  "tags": Array [
+    Object {
+      "description": "Everything about your Pets",
+      "name": "pet",
+    },
+    Object {
+      "description": "Everything about your TN Options",
+      "name": "Tn Option",
+    },
+    Object {
+      "description": "Access to Petstore orders",
+      "name": "store",
+    },
+    Object {
+      "description": "Operations about user",
+      "name": "user",
+    },
+    Object {
+      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Pet\\" />
+",
+      "name": "pet_model",
+      "x-displayName": "The Pet Model",
+    },
+    Object {
+      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Order\\" exampleRef=\\"#/components/examples/Order\\" showReadOnly={true} showWriteOnly={true} />
+",
+      "name": "store_model",
+      "x-displayName": "The Order Model",
+    },
+  ],
+  "x-tagGroups": Array [
+    Object {
+      "name": "General",
+      "tags": Array [
+        "pet",
+        "store",
+        "Tn Option",
+      ],
+    },
+    Object {
+      "name": "User Management",
+      "tags": Array [
+        "user",
+      ],
+    },
+    Object {
+      "name": "Models",
+      "tags": Array [
+        "pet_model",
+        "store_model",
+      ],
+    },
+  ],
+  "x-webhooks": Object {
+    "newPet": Object {
+      "post": Object {
+        "description": "Information about a new pet in the systems",
+        "operationId": "newPet",
+        "requestBody": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/Pet",
+              },
+            },
+          },
+        },
+        "responses": Object {
+          "200": Object {
+            "description": "Return a 200 status to indicate that the data was received successfully",
+          },
+        },
+        "summary": "New pet",
+        "tags": Array [
+          "pet",
+        ],
+      },
+    },
+  },
+}
+`;
+
 exports[`#loadAndBundleSpec should load And Bundle Spec demo/openapi-3-1.yaml 1`] = `
 Object {
   "components": Object {
