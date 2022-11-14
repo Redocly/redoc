@@ -16,9 +16,9 @@ describe('Search', () => {
 
     getSearchInput().type('t', { force: true });
     cy.get('[role=search] [role=menuitem]')
-      .should('have.length', 3)
+      .should('have.length', 4)
       .first()
-      .should('contain', 'Introduction');
+      .should('contain', 'Delete purchase order');
 
     getSearchInput().type('{esc}', { force: true });
     getSearchResults().should('not.exist');
@@ -40,8 +40,8 @@ describe('Search', () => {
     getResult(1).should('not.have.class', 'active');
     getResult(0).should('have.class', 'active');
 
-    getSearchInput().type('{uparrow}', { force: true });
-    getResult(0).should('have.class', 'active');
+    getSearchInput().type('{downarrow}', { force: true });
+    getResult(1).should('have.class', 'active');
 
     getSearchInput().type('{enter}', { force: true });
 
@@ -74,5 +74,8 @@ describe('Search', () => {
       .should('have.length', 1)
       .first()
       .should('contain', 'uploads an image');
+
+    getSearchInput().clear().type('/tnoptions', { force: true, parseSpecialCharSequences: false });
+    cy.get('[role=search] [role=menuitem]').should('have.length', 5);
   });
 });
