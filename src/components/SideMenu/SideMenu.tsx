@@ -7,8 +7,6 @@ import { OptionsContext } from '../OptionsProvider';
 import { MenuItems } from './MenuItems';
 
 import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
-import { RedocAttribution } from './styled.elements';
-import RedoclyLogo from './Logo';
 
 @observer
 export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
