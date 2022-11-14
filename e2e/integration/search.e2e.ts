@@ -76,6 +76,6 @@ describe('Search', () => {
       .should('contain', 'uploads an image');
 
     getSearchInput().clear().type('/tnoptions', { force: true, parseSpecialCharSequences: false });
-    cy.get('[role=search] [role=menuitem]').should('have.length', 5);
+    cy.get('[role=search] [role=menuitem]').should('have.length', 4);
   });
 });
