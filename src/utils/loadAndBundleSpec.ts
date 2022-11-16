@@ -41,7 +41,7 @@ export async function loadAndBundleSpec(specUrlOrObject: object | string): Promi
 export function convertSwagger2OpenAPI(spec: any): Promise<OpenAPISpec> {
   console.warn('[ReDoc Compatibility mode]: Converting OpenAPI 2.0 to OpenAPI 3.0');
   return new Promise<OpenAPISpec>((resolve, reject) =>
-    convertObj(spec, { patch: true, warnOnly: true, text: '{}', anchors: true }, (err, res) => {
+    convertObj(spec, { patch: true, warnOnly: true, text: '{}', anchors: true, refSiblings: 'preserve' }, (err, res) => {
       // TODO: log any warnings
       if (err) {
         return reject(err);

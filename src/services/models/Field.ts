@@ -84,6 +84,48 @@ export class FieldModel {
     this.schema = new SchemaModel(parser, fieldSchema || {}, pointer, options, false, refsStack);
     this.description =
       info.description === undefined ? this.schema.description || '' : info.description;
+
+    /*
+    Merge the description on the field/property itself, with the description of the model/schema - this
+    helps where a model is reused more than once, and each field gives added context to its use.
+
+    It requires `refSiblings: "preserve"` when parsing swagger using `convertSwagger2OpenAPI`.
+
+    There is a similar test in `src\utils\loadAndBundleSpec.ts` called
+    "should override description from $ref of the referenced component, when sibling description exists"
+    which tests a similar behaviour from the `src\services\__tests__\fixtures\siblingRefDescription.json` file.
+    However, that test is for open-api 3.1.0, where is this applies to the process of converting swagger 2.0
+    file to open-api.
+    */
+    if (fieldSchema?.description) {
+      /*
+      2 options here, either:
+        a) Use the `fieldSchema.description` verbatim if it's defined, or
+        b) Concatenate the field description with the schema description.
+           However, option b might be considered unintended behaviour.
+
+      Should this be an option in `RedocNormalizedOptions`?
+      */
+
+      // option a)
+      this.description = fieldSchema.description;
+
+      /*
+      // option b)
+      if (this.description.includes(fieldSchema.description)) {
+        // already found inside the current description, so avoid a duplication of content - no change.
+      } else if (!this.description || fieldSchema.description.includes(this.description)) {
+        // the current description already contains the fields description, so prefer the field version only.
+        this.description = fieldSchema.description;
+      } else {
+        // otherwise, concatenate them - either "\r\n\r\n" for a markdown paragraph, or "  \r\n" for a
+        // markdown line break. Safest approach is just add a bit of whitespace, as we can't be sure of what
+        // other formatting might be in place in either description.
+        this.description = fieldSchema.description + '\r\n\r\n' + this.description;
+      }
+      */
+    }
+
     this.example = info.example || this.schema.example;
 
     if (info.examples !== undefined || this.schema.examples !== undefined) {
