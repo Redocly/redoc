@@ -1,7 +1,7 @@
 import defaultTheme, { ResolvedThemeInterface, resolveTheme, ThemeInterface } from '../theme';
 import { querySelector } from '../utils/dom';
 import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
-
+import { ExtensionComponentMeta } from '../components/Fields/Extensions';
 import { setRedocLabels } from './Labels';
 import { SideNavStyleEnum } from './types';
 import type { LabelsConfigRaw, MDXComponentMeta } from './types';
@@ -30,6 +30,7 @@ export interface RedocRawOptions {
   hideSingleRequestSampleTab?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all';
+  extensionsComponents?: Record<string, ExtensionComponentMeta>;
   hideSchemaTitles?: boolean | string;
   simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
@@ -234,6 +235,7 @@ export class RedocNormalizedOptions {
   menuToggle: boolean;
   jsonSampleExpandLevel: number;
   enumSkipQuotes: boolean;
+  extensionsComponents: Record<string, ExtensionComponentMeta>;
   hideSchemaTitles: boolean;
   simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
@@ -321,6 +323,7 @@ export class RedocNormalizedOptions {
     this.allowedMdComponents = raw.allowedMdComponents || {};
 
     this.expandDefaultServerVariables = argValueToBoolean(raw.expandDefaultServerVariables);
+    this.extensionsComponents = raw.extensionsComponents || {};
     this.maxDisplayedEnumValues = argValueToNumber(raw.maxDisplayedEnumValues);
     const ignoreNamedSchemas = isArray(raw.ignoreNamedSchemas)
       ? raw.ignoreNamedSchemas
