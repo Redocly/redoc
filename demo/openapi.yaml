@@ -40,7 +40,7 @@ info:
 
     <!-- ReDoc-Inject: <security-definitions> -->
 
-  version: 1.0.0
+  version: 1.1.0
   title: Swagger Petstore
   termsOfService: 'http://swagger.io/terms/'
   contact:
@@ -59,6 +59,8 @@ externalDocs:
 tags:
   - name: pet
     description: Everything about your Pets
+  - name: Tn Option
+    description: Everything about your TN Options
   - name: store
     description: Access to Petstore orders
   - name: user
@@ -76,6 +78,7 @@ x-tagGroups:
     tags:
       - pet
       - store
+      - Tn Option
   - name: User Management
     tags:
       - user
@@ -179,6 +182,588 @@ paths:
             }
       requestBody:
         $ref: '#/components/requestBodies/Pet'
+  '/accounts/{accountId}/tnoptions/{orderid}/history':
+    get:
+      description: Retrieve the history information associated with an order.
+      operationId: GetOrderHistory
+      parameters:
+        - description: ''
+          in: path
+          name: orderid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/xml:
+              examples:
+                application/xml:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <OrderHistoryWrapper>
+                       <OrderHistory>
+                          <OrderDate>2020-09-17T08:56:39.607Z</OrderDate>
+                          <Note>Order has been received by the system.</Note>
+                          <Author>admin</Author>
+                          <Status>received</Status>
+                       </OrderHistory>
+                       <OrderHistory>
+                          <OrderDate>2020-09-17T08:56:39.743Z</OrderDate>
+                          <Note>Order processing has started.</Note>
+                          <Author>admin</Author>
+                          <Status>processing</Status>
+                       </OrderHistory>
+                       <OrderHistory>
+                          <OrderDate>2020-09-17T08:56:39.820Z</OrderDate>
+                          <Note>Order is complete.</Note>
+                          <Author>admin</Author>
+                          <Status>complete</Status>
+                       </OrderHistory>
+                    </OrderHistoryWrapper>
+          description: >-
+            The history payload is a set of history records, each of which
+            contains: <table style="text-align: left; width: 80%;" border="1"
+            cellpadding="2" cellspacing="2">
+                    <tbody>
+                        <tr>
+                            <td>OrderDate</td>
+                            <td>The date that the order history event happened</td></tr><tr><td>Status</td><td>The new state of the TN Option order - RECEIVED, PROCESSING, COMPLETE, PARTIAL, FAILED</td></tr><tr><td>Note</td><td>A Note or additional information included with the state change</td></tr><tr><td>Author</td><td>The user id that implemented the state change</td></tr></tbody></table></p>
+        '404':
+          content:
+            application/xml: {}
+          description: Not found. The order id does not exist in the system.
+      summary: Retrieve TN Option order history
+      tags:
+        - Tn Option
+  '/accounts/{accountId}/tnoptions':
+    get:
+      description: >-
+        Retrieve a list of the TN Option orders that are associated with the
+        account. A maximum of 1,000 orders can be retrieved per request. If no
+        date range or specific query parameter (marked by <b>*</b> below) is
+        provided, the order results will be limited to the last two years.
+      operationId: GetTnOptionOrders
+      parameters:
+        - description: The status of the TN Option order being searched for.
+          example: PROCESSING
+          in: query
+          name: status
+          required: false
+          schema:
+            items:
+              type: string
+            type: array
+        - description: <b>*</b> A Telephone Number (TN) that is referenced in the order.
+          example: '9199918388'
+          in: query
+          name: tn
+          required: false
+          schema:
+            type: string
+        - description: >-
+            <b>*</b> The Customer Order ID is an ID assigned by the account
+            owner to provide a reference number for the TN Option order.
+          example: ABCCorp12345
+          in: query
+          name: customerOrderId
+          required: false
+          schema:
+            type: string
+        - description: >-
+            For Date-based searches, the starting date of a date range
+            (inclusive) that will be used to find TN Option Orders that were
+            modified within the date range. It is in the form yyyy-MM-dd.
+          example: '2013-10-22'
+          in: query
+          name: modifiedDateFrom
+          required: false
+          schema:
+            type: string
+        - description: >-
+            For Date-based searches, the ending date of a date range (inclusive)
+            that will be used to find TN Option Orders that were modified within
+            the date range.  It is in the form yyyy-MM-dd.
+          example: '2013-10-25'
+          in: query
+          name: modifiedDateTo
+          required: false
+          schema:
+            type: string
+        - description: >-
+            Checks the order's creation date against this value. Orders that
+            have a creation date after this date will be included. Format is
+            yyyy-MM-dd.
+          example: '2013-10-22'
+          in: query
+          name: createdDateFrom
+          required: false
+          schema:
+            type: string
+        - description: >-
+            Checks the order's creation date against this value. Orders that
+            have a creation date before this date will be included. Format is
+            yyyy-MM-dd.
+          example: '2013-10-25'
+          in: query
+          name: createdDateTo
+          required: false
+          schema:
+            type: string
+        - description: >-
+            Checks the order's last modified date against this value. Orders
+            that have a modification date after this date will be included.
+            Format is yyyy-MM-dd.
+          example: '2013-10-25'
+          in: query
+          name: lastModifiedAfter
+          required: false
+          schema:
+            type: string
+        - description: >-
+            This is the user-name of the user that last modified the TN Option
+            Order.
+          example: smckinnon
+          in: query
+          name: lastModifiedBy
+          required: false
+          schema:
+            type: string
+        - description: >-
+            <b>*</b> This search parameter represents the internal Bandwidth
+            Dashboard API ID that has been assigned to the TN Option Order. This
+            parameter is the first few characters of the internal ID - the
+            entire ID does not need to be specified.
+          example: ed1c0bed-e2
+          in: query
+          name: orderIdFragment
+          required: false
+          schema:
+            type: string
+        - description: >-
+            If set to true, a list of order details will be displayed instead
+            the summary information.
+          in: query
+          name: orderDetails
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrderReportResponse>
+                       <TnOptionOrders>
+                          <TotalCount>2</TotalCount>
+                          <TnOptionOrderSummary>
+                             <accountId>14</accountId>
+                             <CountOfTNs>2</CountOfTNs>
+                             <userId>jbm</userId>
+                             <lastModifiedDate>2016-01-15T12:01:14.363Z</lastModifiedDate>
+                             <OrderDate>2016-01-15T12:01:14.324Z</OrderDate>
+                             <OrderType>tn_option</OrderType>
+                             <OrderStatus>FAILED</OrderStatus>
+                             <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+                          </TnOptionOrderSummary>
+                          <TnOptionOrderSummary>
+                             <accountId>14</accountId>
+                             <CountOfTNs>3</CountOfTNs>
+                             <userId>jbm</userId>
+                             <lastModifiedDate>2016-01-15T11:22:58.969Z</lastModifiedDate>
+                             <OrderDate>2016-01-15T11:22:58.789Z</OrderDate>
+                             <OrderType>tn_option</OrderType>
+                             <OrderStatus>COMPLETE</OrderStatus>
+                             <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+                          </TnOptionOrderSummary>
+                       </TnOptionOrders>
+                       <!-- OR -->
+                       <TnOptionOrders>
+                          <TotalCount>2</TotalCount>
+                          <TnOptionOrder>
+                             <OrderCreateDate>2016-01-15T12:01:14.324Z</OrderCreateDate>
+                             <AccountId>14</AccountId>
+                             <CreatedByUser>jbm</CreatedByUser>
+                             <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+                             <LastModifiedDate>2016-01-15T12:01:14.363Z</LastModifiedDate>
+                             <ProcessingStatus>FAILED</ProcessingStatus>
+                             <TnOptionGroups>
+                                <TnOptionGroup>
+                                   <NumberFormat>10digit</NumberFormat>
+                                   <RPIDFormat>10digit</RPIDFormat>
+                                   <RewriteUser>testUser1</RewriteUser>
+                                   <CallForward>6042661720</CallForward>
+                                   <CallingNameDisplay>on</CallingNameDisplay>
+                                   <Protected>true</Protected>
+                                   <Sms>on</Sms>
+                                   <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+                                   <TelephoneNumbers>
+                                      <TelephoneNumber>2018551020</TelephoneNumber>
+                                   </TelephoneNumbers>
+                                </TnOptionGroup>
+                                <TnOptionGroup>
+                                   <CallingNameDisplay>off</CallingNameDisplay>
+                                   <Protected>false</Protected>
+                                   <Sms>off</Sms>
+                                   <TelephoneNumbers>
+                                      <TelephoneNumber>2018551025</TelephoneNumber>
+                                   </TelephoneNumbers>
+                                </TnOptionGroup>
+                             </TnOptionGroups>
+                             <ErrorList>
+                                <Error>
+                                   <Code>5076</Code>
+                                   <Description>Telephone number is not available.</Description>
+                                   <TelephoneNumber>2018551025</TelephoneNumber>
+                                </Error>
+                                <Error>
+                                   <Code>5076</Code>
+                                   <Description>Telephone number is not available.</Description>
+                                   <TelephoneNumber>2018551020</TelephoneNumber>
+                                </Error>
+                             </ErrorList>
+                          </TnOptionOrder>
+                          <TnOptionOrder>
+                             <OrderCreateDate>2016-01-15T11:22:58.789Z</OrderCreateDate>
+                             <AccountId>14</AccountId>
+                             <CreatedByUser>jbm</CreatedByUser>
+                             <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+                             <LastModifiedDate>2016-01-15T11:22:58.969Z</LastModifiedDate>
+                             <ProcessingStatus>COMPLETE</ProcessingStatus>
+                             <TnOptionGroups>
+                                <TnOptionGroup>
+                                   <CallingNameDisplay>on</CallingNameDisplay>
+                                   <TelephoneNumbers>
+                                      <TelephoneNumber>2174101601</TelephoneNumber>
+                                   </TelephoneNumbers>
+                                </TnOptionGroup>
+                                <TnOptionGroup>
+                                   <CallingNameDisplay>off</CallingNameDisplay>
+                                   <TelephoneNumbers>
+                                      <TelephoneNumber>2174101602</TelephoneNumber>
+                                   </TelephoneNumbers>
+                                </TnOptionGroup>
+                                <TnOptionGroup>
+                                   <CallingNameDisplay>systemdefault</CallingNameDisplay>
+                                   <TelephoneNumbers>
+                                      <TelephoneNumber>2174101603</TelephoneNumber>
+                                   </TelephoneNumbers>
+                                </TnOptionGroup>
+                             </TnOptionGroups>
+                             <ErrorList/>
+                          </TnOptionOrder>
+                       </TnOptionOrders>
+                    </TnOptionOrderReportResponse>
+          description: >-
+            The descriptive payload for the TN Option Orders query provides a
+            broad range of information about the TN Option Orders found by the
+            query, including the data associated with the order, the state of
+            the order, and details about the order if it was successful.
+        '404':
+          content:
+            application/xml: {}
+          description: >
+            Not Found.  If any errors are found in the processing of the query
+            string a 404 will be returned.  Note that parameters that are not
+            recognized are not considered errors, and are just ignored.
+      summary: Retrieve list TN Option orders
+      tags:
+        - Tn Option
+    post:
+      description: >-
+        Create TN Option order to assign line features to the telephone
+        number.<br><br>Attribute description:<ul><li>for A2pSettings
+        attribute</li><table style="text-align: left; width: 80%;" border="1"
+        cellpadding="2" cellspacing="0"><tbody><tr><th>Number
+        attribute</th><th>Action value</th><th>Description of
+        action</th></tr><tr><td>LongCode</td><td><i>systemDefault</i></td><td>Removes
+        the per-TN A2P attributes, and it reverts to the Location/SIP Peer
+        characteristics. Any values for Class or Campaign ID are not
+        valid</td></tr><tr><td>LongCode</td><td><i>asSpecified</i></td><td>Sets
+        the message class and campaign ID - this is the default if
+        unspecified</td></tr><tr><td>LongCode</td><td><i>off</i></td><td>Will
+        set the TN as a 'P' TN. Any values for Class or Campaign ID are not
+        valid</td></tr><tr><td>LongCode</td><td><i>delete</i></td><td>Will
+        delete the campaign ID from TN. Any values for Class or Campaign ID are
+        not valid</td></tr><tr><td>LongCode</td><td><i>unchanged</i></td><td>Do
+        nothing with respect to
+        A2P</td></tr><tr><td>TollFree</td><td><i>systemDefault</i></td><td>Removes
+        the per-TN A2P attributes, and it reverts to the Location/SIP Peer
+        characteristics. Any values for Class or Campaign ID are not
+        valid</td></tr><tr><td>TollFree</td><td><i>asSpecified</i></td><td>Sets
+        the message class and campaign ID - this is the default if
+        unspecified</td></tr><tr><td>TollFree</td><td><i>off</i></td><td>If the
+        Togglz value is set to 'on' this is invalid for Toll Free telephone
+        numbers. Any values for Class or Campaign ID in the payload are invalid.
+        If the Togglz value is set to off this behaves like and A2P TN, where
+        the characteristics of the TNs is set to
+        'P'</td></tr><tr><td>TollFree</td><td><i>unchanged</i></td><td>Do
+        nothing with respect to A2P</td></tr></tbody></table><li>for Origination
+        Route plan attribute</li><table style="text-align: left; width: 80%;"
+        border="1" cellpadding="2" cellspacing="0"><tbody><tr><th>Action
+        value</th><th>Description of
+        action</th></tr><tr><td>asSpecified</td><td>Creates/updates the
+        origination route plan for the TN with route plan details provided in
+        the request </td></tr><tr><td>off</td><td>Removes the origination route
+        plan for the TN. Route list is the request must be
+        empty</td></tr><tr><td>unchanged</td><td>Doesn't update/create the
+        origination route plan, even when route plan details exist in the
+        request</td></tr></tbody></table><ul><li> Origination route plan is
+        validated against CallForward and RewriteUser</li><ul><li
+        type="square">Route plan and CallForward cannot co-exist. Order is
+        accepted but will respond with error messages on GET.</li><li
+        type="square">Route plan and RewriteUser cannot co-exist. Order is
+        accepted but will respond with error messages on
+        GET.</li></ul></ul><li>for Pindrop Enabled attribute</li><table
+        style="text-align: left; width: 80%;" border="1" cellpadding="2"
+        cellspacing="0"><tbody><tr><th>Action value</th><th>Description of
+        action</th></tr><tr><td>true</td><td>Enables Pindrop integration on each
+        phone number in the option
+        group</td></tr><tr><td>false</td><td>Explicitly disables Pindrop
+        integration on each phone number in the option
+        group</td></tr></tbody></table><li>for other attribute</li><ul><li
+        type="square"> <i>systemDefault</i> - implies that the element profile
+        value should be removed so that the TN changes back to the default
+        system behavior;</li><li type="square"> <i>unchanged</i> - the value
+        should remain unchanged - implies a read before write model.</li><li
+        type="square"><u>Leaving the element out of the payload is equivalent to
+        <i>unchanged</i>.</u></li></ul></ul>
+      operationId: CreateTnOptionOrder
+      requestBody:
+        content:
+          application/xml:
+            examples:
+              example:
+                value: |-
+                  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                  <TnOptionOrder>
+                    <CustomerOrderId>TnOptionOrder1</CustomerOrderId>
+                    <TnOptionGroups>
+                      <TnOptionGroup>
+                        <NumberFormat>10digit</NumberFormat>
+                        <RPIDFormat>10digit</RPIDFormat>
+                        <RewriteUser>testUser1</RewriteUser>
+                        <CallForward>6042661720</CallForward>
+                        <CallingNameDisplay>on</CallingNameDisplay>
+                        <PortOutPasscode>a1b2c3</PortOutPasscode>
+                        <Protected>true</Protected>
+                        <Sms>on</Sms>
+                        <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+                        <A2pSettings>
+                          <MessageClass>M</MessageClass>
+                          <CampaignId>campaignId010</CampaignId>
+                          <Action>asSpecified</Action>
+                        </A2pSettings>
+                        <TelephoneNumbers>
+                          <TelephoneNumber>2018551020</TelephoneNumber>
+                        </TelephoneNumbers>
+                      </TnOptionGroup>
+                      <TnOptionGroup>
+                        <CallingNameDisplay>off</CallingNameDisplay>
+                        <Protected>false</Protected>
+                        <Sms>off</Sms>
+                        <OriginationRoutePlan>
+                          <Route>
+                            <Endpoint>6105552502</Endpoint>
+                            <Priority>1</Priority>
+                            <Weight>100</Weight>
+                          </Route>
+                          <Route>
+                            <Endpoint>sip:clarkkent@dailyplanet.com</Endpoint>
+                            <Priority>2</Priority>
+                            <Weight>100</Weight>
+                          </Route>
+                          <Route>
+                            <Endpoint>192.168.20.21</Endpoint>
+                            <Priority>3</Priority>
+                            <Weight>50</Weight>
+                          </Route>
+                          <Route>
+                            <Endpoint>7075552509</Endpoint>
+                            <Priority>3</Priority>
+                            <Weight>50</Weight>
+                          </Route>
+                          <Route>
+                            <Endpoint>myhost.bandwidth.example</Endpoint>
+                            <Priority>4</Priority>
+                            <Weight>100</Weight>
+                          </Route>
+                          <Action>asSpecified</Action>
+                        </OriginationRoutePlan>
+                        <TelephoneNumbers>
+                          <TelephoneNumber>2018551025</TelephoneNumber>
+                        </TelephoneNumbers>
+                      </TnOptionGroup>
+                      <TnOptionGroup>
+                        <PindropEnabled>true</PindropEnabled>
+                        <TelephoneNumbers>
+                          <TelephoneNumber>2018551026</TelephoneNumber>
+                        </TelephoneNumbers>
+                      </TnOptionGroup>
+                    </TnOptionGroups>
+                  </TnOptionOrder>
+      responses:
+        '201':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrderResponse>
+                      <TnOptionOrder>
+                        <OrderCreateDate>2016-01-15T12:01:14.324Z</OrderCreateDate>
+                        <AccountId>14</AccountId>
+                        <CreatedByUser>jbm</CreatedByUser>
+                        <OrderId>ddbdc72e-dc27-490c-904e-d0c11291b095</OrderId>
+                        <LastModifiedDate>2016-01-15T12:01:14.324Z</LastModifiedDate>
+                        <ProcessingStatus>RECEIVED</ProcessingStatus>
+                        <TnOptionGroups>
+                          <TnOptionGroup>
+                            <NumberFormat>10digit</NumberFormat>
+                            <RPIDFormat>10digit</RPIDFormat>
+                            <RewriteUser>testUser1</RewriteUser>
+                            <CallForward>6042661720</CallForward>
+                            <CallingNameDisplay>on</CallingNameDisplay>
+                            <Protected>true</Protected>
+                            <Sms>on</Sms>
+                            <TelephoneNumbers>
+                              <TelephoneNumber>2018551020</TelephoneNumber>
+                            </TelephoneNumbers>
+                          </TnOptionGroup>
+                          <TnOptionGroup>
+                            <CallingNameDisplay>off</CallingNameDisplay>
+                            <Protected>false</Protected>
+                            <Sms>off</Sms>
+                            <TelephoneNumbers>
+                              <TelephoneNumber>2018551025</TelephoneNumber>
+                            </TelephoneNumbers>
+                          </TnOptionGroup>
+                        </TnOptionGroups>
+                        <ErrorList/>
+                      </TnOptionOrder>
+                    </TnOptionOrderResponse>
+          description: Created
+        '400':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrderResponse>
+                      <ResponseStatus>
+                        <ErrorCode>5081</ErrorCode>
+                        <Description>Number Format 'wrong' is invalid.</Description>
+                      </ResponseStatus>
+                    </TnOptionOrderResponse>
+          description: >-
+            Bad Request A 400 response Indicates that the order could not be
+            created. Error text and an error code will be provided in the
+            ErrorList element.
+        '409':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrderResponse>
+                      <ResponseStatus>
+                        <ErrorCode>5200</ErrorCode>
+                        <Description>Origination route plan is not enabled for the account.</Description>
+                      </ResponseStatus>
+                    </TnOptionOrderResponse>
+          description: >-
+            Conflict. Error text and an error code will be provided in the
+            ErrorList element.
+      summary: Create TN Option order
+      tags:
+        - Tn Option
+  '/accounts/{accountId}/tnoptions/{orderid}':
+    get:
+      description: Retrieve information about a TN Option Order with specified ID.
+      operationId: GetTnOptionOrder
+      parameters:
+        - description: ''
+          in: path
+          name: orderid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrder>
+                      <OrderCreateDate>2016-01-15T11:22:58.789Z</OrderCreateDate>
+                      <AccountId>14</AccountId>
+                      <CreatedByUser>jbm</CreatedByUser>
+                      <OrderId>409033ee-88ec-43e3-85f3-538f30733963</OrderId>
+                      <LastModifiedDate>2016-01-15T11:22:58.969Z</LastModifiedDate>
+                      <ProcessingStatus>COMPLETE</ProcessingStatus>
+                      <TnOptionGroups>
+                        <TnOptionGroup>
+                          <CallingNameDisplay>on</CallingNameDisplay>
+                          <Sms>on</Sms>
+                          <TelephoneNumbers>
+                            <TelephoneNumber>2174101601</TelephoneNumber>
+                          </TelephoneNumbers>
+                        </TnOptionGroup>
+                        <TnOptionGroup>
+                          <CallingNameDisplay>off</CallingNameDisplay>
+                          <TelephoneNumbers>
+                            <TelephoneNumber>2174101602</TelephoneNumber>
+                          </TelephoneNumbers>
+                          </TnOptionGroup>
+                        <TnOptionGroup>
+                          <CallingNameDisplay>systemdefault</CallingNameDisplay>
+                          <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>
+                          <TelephoneNumbers>
+                            <TelephoneNumber>2174101603</TelephoneNumber>
+                          </TelephoneNumbers>
+                        </TnOptionGroup>
+                      </TnOptionGroups>
+                      <ErrorList/>
+                      <Warnings>
+                        <Warning>
+                          <TelephoneNumber>2174101601</TelephoneNumber>
+                          <Description>SMS is already Enabled or number is in processing.</Description>
+                        </Warning>
+                      </Warnings>
+                    </TnOptionOrder>
+          description: >-
+            The descriptive payload for the TN Option Orders query provides a
+            broad range of information about the TN Option Order identified in
+            the URL.  Included amongst the information is: <ul><li>ErrorList -
+            the errors discovered with codes and explanations</li><li>Warnings -
+            the warnings discovered with
+            explanations</li><li>ProcessingStatus(RECEIVED, PROCESSING,
+            COMPLETE, PARTIAL, FAILED) - the overall status of the
+            order</li></ul>
+        '404':
+          content:
+            application/xml:
+              examples:
+                example:
+                  value: |-
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <TnOptionOrderReportResponse>
+                      <ResponseStatus>
+                        <Description>The resource does not exist</Description>
+                      </ResponseStatus>
+                    </TnOptionOrderReportResponse>
+          description: Not found. The order id does not exist in the system.
+      summary: Retrieve TN Option order
+      tags:
+        - Tn Option
   '/pet/{petId}':
     get:
       tags:
