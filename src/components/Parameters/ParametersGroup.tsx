@@ -24,7 +24,7 @@ export class ParametersGroup extends React.PureComponent<ParametersGroupProps, a
       <div key={place} className="operation-parameters">
         <UnderlinedHeader>{place} Parameters</UnderlinedHeader>
         <PropertiesTable>
-          <tbody>
+          <tbody className="parameters-schema">
             {mapWithLast(parameters, (field, isLast) => (
               <Field key={field.name} isLast={isLast} field={field} showExamples={true} />
             ))}
