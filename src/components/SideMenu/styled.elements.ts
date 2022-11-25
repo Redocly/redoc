@@ -1,4 +1,4 @@
-import { default as classnames } from 'classnames';
+import classnames = require('classnames');
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
