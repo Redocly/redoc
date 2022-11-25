@@ -1,10 +1,10 @@
 {
-  "name": "redoc",
+  "name": "tf-seyna-redoc",
   "version": "2.0.0",
   "description": "ReDoc",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Redocly/redoc"
+    "url": "git://github.com/ThomasFlorelli/redoc"
   },
   "browserslist": [
     "defaults"
@@ -13,7 +13,7 @@
     "node": ">=6.9",
     "npm": ">=3.0.0"
   },
-  "author": "Roman Hotsiy <gotsijroman@gmail.com>",
+  "author": "ThomasFlorelli (original author: Roman Hotsiy <gotsijroman@gmail.com>)",
   "license": "MIT",
   "keywords": [
     "OpenAPI",
