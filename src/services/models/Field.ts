@@ -1,7 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 
 import type {
-  MilesConstants,
   OpenAPIParameter,
   OpenAPIParameterLocation,
   OpenAPIParameterStyle,
@@ -14,6 +13,7 @@ import type { OpenAPIParser } from '../OpenAPIParser';
 import { SchemaModel } from './Schema';
 import { ExampleModel } from './Example';
 import { isArray, mapValues } from '../../utils/helpers';
+import { MilesConstants } from '../../types';
 
 const DEFAULT_SERIALIZATION: Record<
   OpenAPIParameterLocation,

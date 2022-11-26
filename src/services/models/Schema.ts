@@ -1,11 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import type {
-  MilesConstants,
-  OpenAPIExternalDocumentation,
-  OpenAPISchema,
-  Referenced,
-} from '../../types';
+import type { OpenAPIExternalDocumentation, OpenAPISchema, Referenced } from '../../types';
 
 import type { OpenAPIParser } from '../OpenAPIParser';
 import { pushRef } from '../OpenAPIParser';
@@ -29,6 +24,7 @@ import {
 } from '../../utils/';
 
 import { l } from '../Labels';
+import { MilesConstants } from '../../types';
 
 // TODO: refactor this model, maybe use getters instead of copying all the values
 export class SchemaModel {
