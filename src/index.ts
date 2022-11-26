@@ -4,7 +4,7 @@ export {
   Row,
   RightPanel,
   Section,
-  StyledDropdown,
+  Dropdown,
   SimpleDropdown,
 } from './common-elements/';
 export type { DropdownOption } from './common-elements';

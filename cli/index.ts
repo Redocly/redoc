@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* tslint:disable:no-implicit-dependencies */
 import * as React from 'react';
+import * as updateNotifier from 'update-notifier';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -25,6 +26,12 @@ import {
 import * as mkdirp from 'mkdirp';
 
 import * as YargsParser from 'yargs';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { findConfig } from '@redocly/openapi-core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { parseYaml } from '@redocly/openapi-core';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Config } from '@redocly/openapi-core';
 
 interface Options {
   ssr?: boolean;
@@ -105,6 +112,7 @@ const handlerForBuildCommand = async (argv: any) => {
   };
 
   try {
+    notifyUpdateCliVersion();
     await bundle(argv.spec, config);
   } catch (e) {
     handleError(e);
@@ -168,6 +176,7 @@ YargsParser.command(
     };
 
     try {
+      notifyUpdateCliVersion();
       await serve(argv.host as string, argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
@@ -176,7 +185,7 @@ YargsParser.command(
   [
     res => {
       console.log(
-        `\n⚠️ This command is deprecated. Use "npx @redocly/openapi-cli preview-docs petstore.yaml"\n`,
+        `\n⚠️ This command is deprecated. Use "npx @redocly/cli preview-docs petstore.yaml"\n`,
       );
       return res;
     },
@@ -334,6 +343,7 @@ async function getPageHTML(
     const specUrl = redocOptions.specUrl || (isURL(pathToSpec) ? pathToSpec : undefined);
     const store = await createStore(spec, specUrl, redocOptions);
     const sheet = new ServerStyleSheet();
+    // @ts-ignore
     html = renderToString(sheet.collectStyles(React.createElement(Redoc, { store })));
     css = sheet.getStyleTags();
     state = await store.toJS();
@@ -361,7 +371,7 @@ async function getPageHTML(
     </script>`,
     redocHead: ssr
       ? (cdn
-          ? '<script src="https://unpkg.com/redoc@next/bundles/redoc.standalone.js"></script>'
+          ? '<script src="https://unpkg.com/redoc@latest/bundles/redoc.standalone.js"></script>'
           : `<script>${redocStandaloneSrc}</script>`) + css
       : '<script src="redoc.standalone.js"></script>',
     title: title || spec.info.title || 'ReDoc documentation',
@@ -447,6 +457,30 @@ function getObjectOrJSON(options) {
         handleError(e);
       }
     default:
+      const configFile = findConfig();
+      if (configFile) {
+        console.log(`Found ${configFile} and using features.openapi options`);
+        try {
+          const config = parseYaml(readFileSync(configFile, 'utf-8')) as Config;
+
+          return config['features.openapi'];
+        } catch (e) {
+          console.warn(`Found ${configFile} but failed to parse: ${e.message}`);
+        }
+      }
       return {};
   }
+}
+
+function notifyUpdateCliVersion() {
+  const pkg = require('./package.json');
+  const notifier = updateNotifier({
+    pkg,
+    updateCheckInterval: 0,
+    shouldNotifyInNpmScript: true,
+  });
+  notifier.notify({
+    message:
+      'Run `{updateCommand}` to update.\nChangelog: https://github.com/Redocly/redoc/releases/tag/{latestVersion}',
+  });
 }

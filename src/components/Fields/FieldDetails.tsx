@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
 import {
   RecursiveLabel,
@@ -7,7 +8,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
-import { getSerializedValue } from '../../utils';
+import { getSerializedValue, isObject } from '../../utils';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
@@ -25,7 +26,7 @@ import { OptionsContext } from '../OptionsProvider';
 import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
 
-function FieldDetailsComponent(props: FieldProps) {
+export const FieldDetailsComponent = observer((props: FieldProps) => {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
@@ -59,6 +60,10 @@ function FieldDetailsComponent(props: FieldProps) {
 
     return null;
   }, [field, showExamples]);
+
+  const defaultValue = isObject(schema.default)
+    ? getSerializedValue(field, schema.default).replace(`${field.name}=`, '')
+    : schema.default;
 
   return (
     <div>
@@ -100,7 +105,7 @@ function FieldDetailsComponent(props: FieldProps) {
           <Badge type="warning"> {l('deprecated')} </Badge>
         </div>
       )}
-      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
+      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />
       {!renderDiscriminatorSwitch && (
         <EnumValues isArrayType={isArrayType} values={schema.enum} />
       )}{' '}
@@ -117,6 +122,6 @@ function FieldDetailsComponent(props: FieldProps) {
       {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
     </div>
   );
-}
+});
 
 export const FieldDetails = React.memo<FieldProps>(FieldDetailsComponent);

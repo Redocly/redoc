@@ -1,11 +1,12 @@
-import { OpenAPIExternalDocumentation, OpenAPIPath, OpenAPISpec, Referenced } from '../types';
+import type { OpenAPIExternalDocumentation, OpenAPIPath, OpenAPISpec, Referenced } from '../types';
 
-import { ContentItemModel, MenuBuilder } from './MenuBuilder';
+import { MenuBuilder } from './MenuBuilder';
 import { ApiInfoModel } from './models/ApiInfo';
 import { WebhookModel } from './models/Webhook';
 import { SecuritySchemesModel } from './models/SecuritySchemes';
 import { OpenAPIParser } from './OpenAPIParser';
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { ContentItemModel } from './types';
 /**
  * Store that contains all the specification related information in the form of tree
  */
@@ -24,7 +25,7 @@ export class SpecStore {
     private options: RedocNormalizedOptions,
   ) {
     this.parser = new OpenAPIParser(spec, specUrl, options);
-    this.info = new ApiInfoModel(this.parser);
+    this.info = new ApiInfoModel(this.parser, this.options);
     this.externalDocs = this.parser.spec.externalDocs;
     this.contentItems = MenuBuilder.buildStructure(this.parser, this.options);
     this.securitySchemes = new SecuritySchemesModel(this.parser);

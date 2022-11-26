@@ -9,6 +9,7 @@ import { StoreConsumer } from '../StoreBuilder';
 
 export interface AdvancedMarkdownProps extends BaseMarkdownProps {
   htmlWrap?: (part: JSX.Element) => JSX.Element;
+  parentId?: string;
 }
 
 export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
@@ -28,7 +29,7 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
       throw new Error('When using components in markdown, store prop must be provided');
     }
 
-    const renderer = new MarkdownRenderer(options);
+    const renderer = new MarkdownRenderer(options, this.props.parentId);
     const parts = renderer.renderMdWithComponents(source);
 
     if (!parts.length) {
@@ -42,7 +43,8 @@ export class AdvancedMarkdown extends React.Component<AdvancedMarkdownProps> {
           { key: idx },
         );
       }
-      return <part.component key={idx} {...{ ...part.props, ...part.propsSelector(store) }} />;
+      const PartComponent = part.component as React.FunctionComponent;
+      return <PartComponent key={idx} {...{ ...part.props, ...part.propsSelector(store) }} />;
     });
   }
 }

@@ -1,6 +1,5 @@
-import { OpenAPISecurityRequirement, OpenAPISecurityScheme } from '../../types';
-import { SECURITY_SCHEMES_SECTION_PREFIX } from '../../utils/openapi';
-import { OpenAPIParser } from '../OpenAPIParser';
+import type { OpenAPISecurityRequirement, OpenAPISecurityScheme } from '../../types';
+import type { OpenAPIParser } from '../OpenAPIParser';
 
 export interface SecurityScheme extends OpenAPISecurityScheme {
   id: string;
@@ -17,7 +16,7 @@ export class SecurityRequirementModel {
 
     this.schemes = Object.keys(requirement || {})
       .map(id => {
-        const scheme = parser.deref(schemes[id]);
+        const { resolved: scheme } = parser.deref(schemes[id]);
         const scopes = requirement[id] || [];
 
         if (!scheme) {
@@ -29,7 +28,7 @@ export class SecurityRequirementModel {
         return {
           ...scheme,
           id,
-          sectionId: SECURITY_SCHEMES_SECTION_PREFIX + id,
+          sectionId: id,
           displayName,
           scopes,
         };

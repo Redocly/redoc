@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { AppStore } from '../services/';
 import { RedocRawOptions } from '../services/RedocNormalizedOptions';
@@ -33,6 +33,10 @@ export function StoreBuilder(props: StoreBuilderProps) {
   const { spec, specUrl, options, onLoaded, children } = props;
 
   const [resolvedSpec, setResolvedSpec] = React.useState<any>(null);
+  const [error, setError] = React.useState<Error | null>(null);
+  if (error) {
+    throw error;
+  }
 
   React.useEffect(() => {
     async function load() {
@@ -40,8 +44,16 @@ export function StoreBuilder(props: StoreBuilderProps) {
         return undefined;
       }
       setResolvedSpec(null);
-      const resolved = await loadAndBundleSpec(spec || specUrl!);
-      setResolvedSpec(resolved);
+      try {
+        const resolved = await loadAndBundleSpec(spec || specUrl!);
+        setResolvedSpec(resolved);
+      } catch (e) {
+        if (onLoaded) {
+          onLoaded(e);
+        }
+        setError(e);
+        throw e;
+      }
     }
     load();
   }, [spec, specUrl]);
@@ -69,4 +81,8 @@ export function StoreBuilder(props: StoreBuilderProps) {
     loading: !store,
     store,
   });
+}
+
+export function useStore(): AppStore | undefined {
+  return useContext(StoreContext);
 }

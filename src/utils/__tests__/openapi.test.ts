@@ -13,6 +13,7 @@ import {
   humanizeNumberRange,
   getContentWithLegacyExamples,
   getDefinitionName,
+  langFromMime,
 } from '../';
 
 import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
@@ -146,7 +147,14 @@ describe('Utils', () => {
       string: ['pattern', 'minLength', 'maxLength'],
 
       array: ['items', 'maxItems', 'minItems', 'uniqueItems'],
-      object: ['maxProperties', 'minProperties', 'required', 'additionalProperties', 'properties'],
+      object: [
+        'maxProperties',
+        'minProperties',
+        'required',
+        'additionalProperties',
+        'unevaluatedProperties',
+        'properties',
+      ],
     };
 
     Object.keys(tests).forEach(name => {
@@ -212,12 +220,34 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
+    it('should return false for array contains array type and schema has items (unevaluatedProperties)', () => {
+      const schema = {
+        type: ['array'],
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
     it('should return false for array contains object and array types and schema has items', () => {
       const schema = {
         type: ['array', 'object'],
         items: {
           type: 'object',
           additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for array contains object and array types and schema has items (unevaluatedProperties)', () => {
+      const schema = {
+        type: ['array', 'object'],
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
@@ -248,7 +278,7 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(true);
     });
 
-    it('Should return false for array of string which include the null value', () => {
+    it('Should return true for array of string which include the null value', () => {
       const schema = {
         type: ['object', 'string', 'null'],
       };
@@ -276,6 +306,17 @@ describe('Utils', () => {
         items: {
           type: 'object',
           additionalProperties: true,
+        },
+      };
+      expect(isPrimitiveType(schema)).toEqual(false);
+    });
+
+    it('should return false for object with unevaluatedProperties', () => {
+      const schema = {
+        type: 'array',
+        items: {
+          type: 'object',
+          unevaluatedProperties: true,
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
@@ -382,6 +423,24 @@ describe('Utils', () => {
         },
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
+    });
+
+    it('should remove query string and hash from url', () => {
+      const originalWindow = { ...window };
+      const windowSpy: jest.SpyInstance = jest.spyOn(global, 'window', 'get');
+      windowSpy.mockImplementation(() => ({
+        ...originalWindow,
+        location: {
+          ...originalWindow.location,
+          href: 'https://base.com/subpath/?param=value#tag',
+        },
+      }));
+      const res = normalizeServers(undefined, [
+        {
+          url: 'sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://base.com/subpath/sandbox/test', description: '' }]);
     });
 
     it('should expand variables', () => {
@@ -513,7 +572,7 @@ describe('Utils', () => {
     });
 
     it('should have a humanized constraint when minItems and maxItems are the same', () => {
-      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('7 items');
+      expect(humanizeConstraints(itemConstraintSchema(7, 7))).toContain('= 7 items');
     });
 
     it('should have a humanized constraint when justMinItems is set, and it is equal to 1', () => {
@@ -1278,6 +1337,20 @@ describe('Utils', () => {
     test("should return the `undefined` if pointer not match regex or it's absent", () => {
       expect(getDefinitionName('#/test/path/Call')).toBeUndefined();
       expect(getDefinitionName()).toBeUndefined();
+    });
+  });
+
+  describe('langFromMime', () => {
+    test('should return correct lang name from content type', () => {
+      expect(langFromMime('application/xml')).toEqual('xml');
+      expect(langFromMime('application/x-xml')).toEqual('xml');
+      expect(langFromMime('application/csv')).toEqual('csv');
+      expect(langFromMime('application/x-csv')).toEqual('csv');
+      expect(langFromMime('text/plain')).toEqual('tex');
+      expect(langFromMime('text/x-plain')).toEqual('tex');
+      expect(langFromMime('application/plain')).toEqual('tex');
+
+      expect(langFromMime('text/some-type')).toEqual('clike');
     });
   });
 });

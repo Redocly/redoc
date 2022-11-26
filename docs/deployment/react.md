@@ -1,7 +1,7 @@
 ---
 title: Use the Redoc React component
 redirectFrom:
-  - /docs/quickstart/react/
+  - /docs/redoc/quickstart/react/
 ---
 
 # How to use the Redoc React component
@@ -59,7 +59,7 @@ For example:
 ```
 
 For more information on configuration options, refer to the
-[Configuration options for Reference docs](https://redocly.com/docs/api-reference-docs/configuration/)
+[Configuration options for Reference docs](https://redocly.com/docs/api-reference-docs/configuration/functionality/)
 section of the documentation. Options available for Redoc are noted,
 "Supported in Redoc CE".
 

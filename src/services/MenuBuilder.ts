@@ -1,47 +1,12 @@
-import {
-  OpenAPIOperation,
-  OpenAPIParameter,
-  OpenAPISpec,
-  OpenAPITag,
-  Referenced,
-  OpenAPIServer,
-  OpenAPIPaths,
-} from '../types';
-import {
-  isOperationName,
-  SECURITY_DEFINITIONS_COMPONENT_NAME,
-  setSecuritySchemePrefix,
-  JsonPointer,
-  alphabeticallyByProp,
-} from '../utils';
+import type { OpenAPISpec, OpenAPIPaths } from '../types';
+import { isOperationName, JsonPointer, alphabeticallyByProp } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
-import { OpenAPIParser } from './OpenAPIParser';
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-
-export type TagInfo = OpenAPITag & {
-  operations: ExtendedOpenAPIOperation[];
-  used?: boolean;
-};
-
-export type ExtendedOpenAPIOperation = {
-  pointer: string;
-  pathName: string;
-  httpVerb: string;
-  pathParameters: Array<Referenced<OpenAPIParameter>>;
-  pathServers: Array<OpenAPIServer> | undefined;
-  isWebhook: boolean;
-} & OpenAPIOperation;
-
-export type TagsInfoMap = Record<string, TagInfo>;
-
-export interface TagGroup {
-  name: string;
-  tags: string[];
-}
+import type { OpenAPIParser } from './OpenAPIParser';
+import type { RedocNormalizedOptions } from './RedocNormalizedOptions';
+import type { ContentItemModel, TagGroup, TagInfo, TagsInfoMap } from './types';
 
 export const GROUP_DEPTH = 0;
-export type ContentItemModel = GroupModel | OperationModel;
 
 export class MenuBuilder {
   /**
@@ -76,7 +41,7 @@ export class MenuBuilder {
     initialDepth: number,
     options: RedocNormalizedOptions,
   ): ContentItemModel[] {
-    const renderer = new MarkdownRenderer(options);
+    const renderer = new MarkdownRenderer(options, parent?.id);
     const headings = renderer.extractHeadings(description || '');
 
     if (headings.length && parent && parent.description) {
@@ -93,14 +58,7 @@ export class MenuBuilder {
         if (heading.items) {
           group.items = mapHeadingsDeep(group, heading.items, depth + 1);
         }
-        if (
-          MarkdownRenderer.containsComponent(
-            group.description || '',
-            SECURITY_DEFINITIONS_COMPONENT_NAME,
-          )
-        ) {
-          setSecuritySchemePrefix(group.id + '/');
-        }
+
         return group;
       });
 
@@ -252,7 +210,7 @@ export class MenuBuilder {
         for (const operationName of operations) {
           const operationInfo = path[operationName];
           if (path.$ref) {
-            const resolvedPaths = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+            const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
             getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
             continue;
           }

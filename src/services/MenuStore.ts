@@ -1,37 +1,15 @@
 import { action, observable, makeObservable } from 'mobx';
 import { querySelector } from '../utils/dom';
-import { SpecStore } from './models';
+import { escapeHTMLAttrChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 
 import { history as historyInst, HistoryService } from './HistoryService';
-import { ScrollService } from './ScrollService';
-
-import { flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 import { GROUP_DEPTH } from './MenuBuilder';
 
-export type MenuItemGroupType = 'group' | 'tag' | 'section';
-export type MenuItemType = MenuItemGroupType | 'operation';
+import type { SpecStore } from './models';
+import type { ScrollService } from './ScrollService';
+import type { IMenuItem } from './types';
 
 /** Generic interface for MenuItems */
-export interface IMenuItem {
-  id: string;
-  absoluteIdx?: number;
-  name: string;
-  sidebarLabel: string;
-  description?: string;
-  depth: number;
-  active: boolean;
-  expanded: boolean;
-  items: IMenuItem[];
-  parent?: IMenuItem;
-  deprecated?: boolean;
-  type: MenuItemType;
-
-  deactivate(): void;
-  activate(): void;
-
-  collapse(): void;
-  expand(): void;
-}
 
 export const SECTION_ATTR = 'data-section-id';
 
@@ -47,7 +25,7 @@ export class MenuStore {
     if (!id) {
       return;
     }
-    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
+    scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
   }
 
   /**
@@ -146,6 +124,7 @@ export class MenuStore {
     let item: IMenuItem | undefined;
 
     item = this.flatItems.find(i => i.id === id);
+
     if (item) {
       this.activateAndScroll(item, false);
     } else {
@@ -153,7 +132,7 @@ export class MenuStore {
         item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
         this.activateAndScroll(item, false);
       }
-      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${id}"]`);
+      this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
     }
   };
 
@@ -163,7 +142,7 @@ export class MenuStore {
    */
   getElementAt(idx: number): Element | null {
     const item = this.flatItems[idx];
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -175,7 +154,7 @@ export class MenuStore {
     if (item && item.type === 'group') {
       item = item.items[0];
     }
-    return (item && querySelector(`[${SECTION_ATTR}="${item.id}"]`)) || null;
+    return (item && querySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(item.id)}"]`)) || null;
   }
 
   /**
@@ -224,7 +203,7 @@ export class MenuStore {
 
     this.activeItemIdx = item.absoluteIdx!;
     if (updateLocation) {
-      this.history.replace(item.id, rewriteHistory);
+      this.history.replace(encodeURI(item.id), rewriteHistory);
     }
 
     item.activate();

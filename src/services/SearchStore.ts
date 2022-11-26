@@ -1,6 +1,6 @@
 import { IS_BROWSER } from '../utils/';
-import { IMenuItem } from './MenuStore';
-import { OperationModel } from './models';
+import type { IMenuItem } from './types';
+import type { OperationModel } from './models';
 
 import Worker from './SearchWorker.worker';
 
@@ -26,7 +26,7 @@ export class SearchStore<T> {
     const recurse = items => {
       items.forEach(group => {
         if (group.type !== 'group') {
-          this.add(group.name, group.description || '', group.id);
+          this.add(group.name, (group.description || '').concat(' ', group.path || ''), group.id);
         }
         recurse(group.items);
       });

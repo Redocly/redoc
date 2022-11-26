@@ -1,3 +1,185 @@
+# [2.0.0](https://github.com/Redocly/redoc/compare/v2.0.0-rc.77...v2.0.0) (2022-09-12)
+
+
+
+# [2.0.0-rc.77](https://github.com/Redocly/redoc/compare/v2.0.0-rc.76...v2.0.0-rc.77) (2022-09-06)
+
+
+### Bug Fixes
+
+* add hard limit on deref depth to prevent crashes ([ddde105](https://github.com/Redocly/redoc/commit/ddde105acaf0a77b0bb5d13df5fd6180bc8169e9))
+* do not use discriminator when specific schema was referenced in oneOf or anyOf ([#2153](https://github.com/Redocly/redoc/issues/2153)) ([6ac1e1e](https://github.com/Redocly/redoc/commit/6ac1e1eb183e97e2cd67ad14d8a39fac8289ebcc))
+* hoistOneOf missing refs stack and improve allOf for same $ref ([bb325d0](https://github.com/Redocly/redoc/commit/bb325d0d285c4cf4ee7c6d70878d2dd0dc9c6ed7))
+* latest docker cli tag ([#2140](https://github.com/Redocly/redoc/issues/2140)) ([8dc03eb](https://github.com/Redocly/redoc/commit/8dc03eb7ed262d6b1d460425ce43990710470845))
+* markdown parent name ([#2062](https://github.com/Redocly/redoc/issues/2062)) ([da9ed0b](https://github.com/Redocly/redoc/commit/da9ed0b4d1a4070d326ecb472459f0ff916c6036))
+
+### Features
+
+* feet: search feature to support path ([#2145](https://github.com/Redocly/redoc/issues/2145)) ([c52ee83f](https://github.com/Redocly/redoc/commit/c52ee83f77ccfc79137c85deafe8d93e68465d45))
+
+
+# [2.0.0-rc.76](https://github.com/Redocly/redoc/compare/v2.0.0-rc.75...v2.0.0-rc.76) (2022-08-18)
+
+
+### Bug Fixes
+
+* "API Docs By Redocly" overlapping last element in sidebar ([#2132](https://github.com/Redocly/redoc/issues/2132)) ([c60c6f5](https://github.com/Redocly/redoc/commit/c60c6f58917563d57c0eef650b9dfcece2e15049))
+* encoding issue in CDN responses ([#2130](https://github.com/Redocly/redoc/issues/2130)) ([7816902](https://github.com/Redocly/redoc/commit/781690284a45b2b8af9eb525757632d0d19ef453))
+* Optional authentication not rendered properly ([#2117](https://github.com/Redocly/redoc/issues/2117)) ([#2134](https://github.com/Redocly/redoc/issues/2134)) ([efd5e09](https://github.com/Redocly/redoc/commit/efd5e09c907b36a3999f4c9c3165b6b2bdc1d536))
+
+
+### Features
+
+* add clear cache for publish action ([#2129](https://github.com/Redocly/redoc/issues/2129)) ([d8093e3](https://github.com/Redocly/redoc/commit/d8093e3e2086874242eac82ddd202f35d5b8d558))
+
+
+
+# [2.0.0-rc.75](https://github.com/Redocly/redoc/compare/v2.0.0-rc.74...v2.0.0-rc.75) (2022-08-10)
+
+
+### Bug Fixes
+
+* duplication of title ([#2119](https://github.com/Redocly/redoc/issues/2119)) ([40ebfd2](https://github.com/Redocly/redoc/commit/40ebfd2d63758b37665e2e4447732f671811e2a5))
+* handle error if security scopes is invalid ([#2113](https://github.com/Redocly/redoc/issues/2113)) ([428fd69](https://github.com/Redocly/redoc/commit/428fd6983dc257f524121d98aeb1c58b39cf81f7))
+* publishing docker image to github packages ([#2115](https://github.com/Redocly/redoc/issues/2115)) ([250f6d1](https://github.com/Redocly/redoc/commit/250f6d12b2d31d2166990bd9cb83ca1c63509686))
+* Redocly logo ([#2109](https://github.com/Redocly/redoc/issues/2109)) ([a35bb3f](https://github.com/Redocly/redoc/commit/a35bb3ff26bf10b0e54383222df283800d6ee2c8))
+* search and navigate error ([cfd810f](https://github.com/Redocly/redoc/commit/cfd810fdf9d37862e07458fa1c3c04046e22f315))
+* sibling for openapi 3.1 ([#2112](https://github.com/Redocly/redoc/issues/2112)) ([0b1a790](https://github.com/Redocly/redoc/commit/0b1a79009010f0640a3030093b7c0dcf8caa49e4))
+
+
+### Features
+
+* add notification about new version available ([#2100](https://github.com/Redocly/redoc/issues/2100)) ([d6ca8cc](https://github.com/Redocly/redoc/commit/d6ca8cc53b9667f09ce8fef88dfac1039c562b78))
+
+
+
+# [2.0.0-rc.74](https://github.com/Redocly/redoc/compare/v2.0.0-rc.73...v2.0.0-rc.74) (2022-07-28)
+
+
+### Bug Fixes
+
+* invalid url when href is empty ([#2105](https://github.com/Redocly/redoc/issues/2105)) ([e5f0235](https://github.com/Redocly/redoc/commit/e5f02359851a3797283ee513d734ab8e27266b92))
+
+
+
+# [2.0.0-rc.73](https://github.com/Redocly/redoc/compare/v2.0.0-rc.72...v2.0.0-rc.73) (2022-07-28)
+
+
+### Bug Fixes
+
+* add label API docs by Redocly ([#2099](https://github.com/Redocly/redoc/issues/2099)) ([dcdab83](https://github.com/Redocly/redoc/commit/dcdab838903a5d923c5e327d07d7743214769a61))
+* add the latest tag for the CLI docker image ([#2087](https://github.com/Redocly/redoc/issues/2087)) ([80ecd0f](https://github.com/Redocly/redoc/commit/80ecd0f19746379b056bfb1b11950693f3dc3724))
+* correct URLs of OperationModel servers for static site generation ([#2081](https://github.com/Redocly/redoc/issues/2081)) ([b1afd08](https://github.com/Redocly/redoc/commit/b1afd08bcf83770b537ed1eb9c90341de0162a1c))
+* enum duplication values when schema uses a specific combination of oneOf and allOf([#2088](https://github.com/Redocly/redoc/issues/2088)) ([e411847](https://github.com/Redocly/redoc/commit/e4118479f69209c5dd09a2be0e978834dcd9eb8f))
+* highlight text syntax ([#2069](https://github.com/Redocly/redoc/issues/2069)) ([4fc6aa0](https://github.com/Redocly/redoc/commit/4fc6aa0859c94e25fd30c4a4250455e44cc76488))
+* merge reference for openapi 3.1 ([#2063](https://github.com/Redocly/redoc/issues/2063)) ([87541e4](https://github.com/Redocly/redoc/commit/87541e45dc2526696deb32a6350a14a44a709b54))
+* nested patternProperties ([#2073](https://github.com/Redocly/redoc/issues/2073)) ([9920991](https://github.com/Redocly/redoc/commit/99209910806b85289a89fb3131049ed79118bc72))
+* operation url in static page ([#2093](https://github.com/Redocly/redoc/issues/2093)) ([98eec19](https://github.com/Redocly/redoc/commit/98eec19647b63f3598ec30fdeb428f614cf93ad4))
+* property with nested allOf ([#2083](https://github.com/Redocly/redoc/issues/2083)) ([7cc0500](https://github.com/Redocly/redoc/commit/7cc0500f3c1ddd1da17ee31278468207093f9281))
+* recursion for boolean items ([#2097](https://github.com/Redocly/redoc/issues/2097)) ([a5804db](https://github.com/Redocly/redoc/commit/a5804db1ce60ee6d90db8a3b54138eb1ca420c6f))
+* resolve dependency conflict in installing ([#2060](https://github.com/Redocly/redoc/issues/2060)) ([e26c8b2](https://github.com/Redocly/redoc/commit/e26c8b23d9b36abd5572bd0fe350d74a5cf65afb))
+* restore old variant security injections ([#2075](https://github.com/Redocly/redoc/issues/2075)) ([1a1bc26](https://github.com/Redocly/redoc/commit/1a1bc26503c06b6a7022289e5b9353bd59e48a9a))
+* rewrite recursive checks ([#2072](https://github.com/Redocly/redoc/issues/2072)) ([2970f95](https://github.com/Redocly/redoc/commit/2970f959cfa31cb4d5288ca23ca05cd34357dcec))
+* Scrolling keeps rewriting url after a Redoc element was removed [#2051](https://github.com/Redocly/redoc/issues/2051) ([#2085](https://github.com/Redocly/redoc/issues/2085)) ([0045be0](https://github.com/Redocly/redoc/commit/0045be0b753b8fb7d8d58a4e511783a6ba858444))
+* mis-nesting of aria roles on sidebar navigation ([#2050](https://github.com/Redocly/redoc/issues/2050)) ([7ca10da](https://github.com/Redocly/redoc/commit/7ca10daf12f2cac9fecf559b11f0f0c8bd21ae43))
+* 404 on the documentation page ([#2092](https://github.com/Redocly/redoc/issues/2050)) ([17bb08](https://github.com/Redocly/redoc/commit/17bb08909a1734e6e59c83ce29f31ae7cf6fc784))
+
+
+
+
+# [2.0.0-rc.72](https://github.com/Redocly/redoc/compare/v2.0.0-rc.71...v2.0.0-rc.72) (2022-06-02)
+
+
+### Bug Fixes
+
+* handled style change in ServerUrl and ServersOverlay dynamically ([#1989](https://github.com/Redocly/redoc/issues/1989)) ([a366de4](https://github.com/Redocly/redoc/commit/a366de4cf67fb94baa33b7b5c311cc1f54a63e53))
+* nested items with refs ([#2035](https://github.com/Redocly/redoc/issues/2035)) ([51127aa](https://github.com/Redocly/redoc/commit/51127aadc3e6b0f8e4066afb1c3b2ea6db453da2))
+
+
+
+# [2.0.0-rc.71](https://github.com/Redocly/redoc/compare/v2.0.0-rc.70...v2.0.0-rc.71) (2022-05-31)
+
+
+### Bug Fixes
+
+* constraints label details ([eb0917d](https://github.com/Redocly/redoc/commit/eb0917d002e57353027fee9c8f07605de8f1ff6f))
+* merge allOf in correct order ([#2020](https://github.com/Redocly/redoc/issues/2020)) ([1e4ea03](https://github.com/Redocly/redoc/commit/1e4ea03d4a9b7eddf3e4cc7cbdbd4d913583e837))
+
+
+### Features
+
+* add hideSecuritySection option allowing to disable the Security panel ([#2027](https://github.com/Redocly/redoc/issues/2027)) ([49cc11d](https://github.com/Redocly/redoc/commit/49cc11d91795653ca870e9276a1e0cd617964e25))
+* add Redoc to Redocly CDN ([#2026](https://github.com/Redocly/redoc/issues/2026)) ([77104d6](https://github.com/Redocly/redoc/commit/77104d6c0d6f457aa08a158e93b52a45877be84e))
+* add support prefix items ([27a9dba](https://github.com/Redocly/redoc/commit/27a9dbaf46aded01a6512645dab27870a85cc73b))
+* remove auth section ([#2022](https://github.com/Redocly/redoc/issues/2022)) ([a863302](https://github.com/Redocly/redoc/commit/a863302cc803bdf27187c613157ba90af1040fc4))
+* show minProperties maxProperties ([#2015](https://github.com/Redocly/redoc/issues/2015)) ([82712c5](https://github.com/Redocly/redoc/commit/82712c5b408dc6bc142307d45fb962de2a43ffba))
+
+
+
+# [2.0.0-rc.70](https://github.com/Redocly/redoc/compare/2.0.0-rc.69...2.0.0-rc.70) (2022-05-17)
+
+
+### Features
+
+* display patternProperties ([#2008](https://github.com/Redocly/redoc/issues/2008)) ([660cc85](https://github.com/Redocly/redoc/commit/660cc857bc86787e16237b407fe5f5d7a493bb48))
+* support conditional operators ([#1939](https://github.com/Redocly/redoc/issues/1939)) ([291b62a](https://github.com/Redocly/redoc/commit/291b62a206b68f8b4d98e4b74b71c0cad20a8b9b))
+* theme add links textDecoration options ([#1599](https://github.com/Redocly/redoc/issues/1599)) ([ba06485](https://github.com/Redocly/redoc/commit/ba06485ece27acbb6b846500817f4bff3e4997ba))
+
+
+
+# [2.0.0-rc.69](https://github.com/Redocly/redoc/compare/v2.0.0-rc.68.1...v2.0.0-rc.69) (2022-05-12)
+
+
+### Bug Fixes
+
+* wrong base url format causing error when constructing new URL ([#1996](https://github.com/Redocly/redoc/issues/1996)) ([d2cdaa1](https://github.com/Redocly/redoc/commit/d2cdaa1221b6a5e7b5da2418414bce1586069deb))
+
+
+### Features
+
+* add download file option ([#1699](https://github.com/Redocly/redoc/issues/1699)) ([b601c9a](https://github.com/Redocly/redoc/commit/b601c9ae9e3288286f28e06854bd93cb3507706e))
+* add option to display verb in webhooks ([#1994](https://github.com/Redocly/redoc/issues/1994)) ([311d2ce](https://github.com/Redocly/redoc/commit/311d2ce64dcf1e68c2563a276b34dda0e08b709c))
+* support .redocly.yaml for options for redoc-cli ([#1981](https://github.com/Redocly/redoc/issues/1981)) ([1f417d6](https://github.com/Redocly/redoc/commit/1f417d67c6b2e0b49e41c713958c100d8e1ad19d))
+
+
+
+# [2.0.0-rc.68](https://github.com/Redocly/redoc/compare/v2.0.0-rc.67...v2.0.0-rc.68) (2022-05-10)
+
+
+### Bug Fixes
+
+* examples in json schema object([5b9aa27](https://github.com/Redocly/redoc/commit/5b9aa27af03a1c4616f7e0195afeba47d1deeaa0))
+* handle error when definition load fails ([#1979](https://github.com/Redocly/redoc/issues/1979)) ([508ebd5](https://github.com/Redocly/redoc/commit/508ebd58a3d66f2337e9641852322458a1bd9e6b))
+* large text in examples value ([#1974](https://github.com/Redocly/redoc/issues/1974)) ([60bc603](https://github.com/Redocly/redoc/commit/60bc603e9bb85a0c9c7ac38f7014876d397f0191))
+* not show scopes if keys empty or not exist ([#1975](https://github.com/Redocly/redoc/issues/1975)) ([4e793f0](https://github.com/Redocly/redoc/commit/4e793f07a81fa8bcd4ad384d1f87b3e6c290edb7))
+* remove dropdown-aria and use native select ([#1954](https://github.com/Redocly/redoc/issues/1954)) ([186f5a9](https://github.com/Redocly/redoc/commit/186f5a98bd466b1820121aadb865291bef8c6755))
+* make Redoc lib compatible with Webpack 5 ([#1982](https://github.com/Redocly/redoc/issues/1982)) ([867861](https://github.com/Redocly/redoc/commit/8678615a0e19c9484b4cd495d70293b542d196a5))
+
+### Features
+
+* implement configurable minimum characer length to init search ([#1402](https://github.com/Redocly/redoc/issues/1402)) ([0fa08fa](https://github.com/Redocly/redoc/commit/0fa08faab1c176a4bfc5a553e8e8f8b07aca659f))
+* support OAS 3.1 unevaluatedProperties ([#1978](https://github.com/Redocly/redoc/issues/1978)) ([0755ac6](https://github.com/Redocly/redoc/commit/0755ac6f04514eb0c08f90afceeda7858206b435))
+* publish dockerhub ([#1971](https://github.com/Redocly/redoc/issues/1971)) ([7e01a0](https://github.com/Redocly/redoc/commit/7e01a0cfe2ad8d06075bfc66ef3860edbef033f8)) 
+
+
+# [2.0.0-rc.67](https://github.com/Redocly/redoc/compare/v2.0.0-rc.66...v2.0.0-rc.67) (2022-04-28)
+
+
+### Bug Fixes
+
+* Expand/Collapse all buttons disappears for flat structures ([#1424](https://github.com/Redocly/redoc/issues/1424)) ([2ca8e08](https://github.com/Redocly/redoc/commit/2ca8e081baea6996eb01b5df27b8cd88331d5c96))
+* improve markdown render with CRLF ([#1953](https://github.com/Redocly/redoc/issues/1953)) ([aba2d1a](https://github.com/Redocly/redoc/commit/aba2d1ad2d8dda9f52055c36ebde1323457dfd3e))
+* issue with navigation when operationId contains backslash or quotes ([#1513](https://github.com/Redocly/redoc/issues/1513)) ([8f7e56c](https://github.com/Redocly/redoc/commit/8f7e56c747d88be5c5eb5c4bbaee0ff69e9cb2ec))
+* prefix operation ids with parent id ([#1245](https://github.com/Redocly/redoc/issues/1245)) ([fd8917e](https://github.com/Redocly/redoc/commit/fd8917e5c109840c1bfa4c2c0902b6dcec200286))
+
+
+### Features
+
+* add optional BASE_PATH to Docker config ([#1378](https://github.com/Redocly/redoc/issues/1378)) ([90f71c0](https://github.com/Redocly/redoc/commit/90f71c0d77719871910cfba883a32ad131bef059))
+* theme add sidebar activeBackgroundColor and activeTextColor ([#1600](https://github.com/Redocly/redoc/issues/1600)) ([6716b08](https://github.com/Redocly/redoc/commit/6716b08e8871d95880e9f5a6c5491038002754e8))
+
+
+
 # [2.0.0-rc.66](https://github.com/Redocly/redoc/compare/v2.0.0-rc.65...v2.0.0-rc.66) (2022-03-30)
 
 
@@ -12,6 +194,7 @@
 
 * add support for displaying operationId in the sidebar ([#1927](https://github.com/Redocly/redoc/issues/1927)) ([09786f2](https://github.com/Redocly/redoc/commit/09786f2a5ade6303ea00512483b172347721ca70))
 * add nonce support ([#1566](https://github.com/Redocly/redoc/issues/1566)) ([c75ac9c](https://github.com/Redocly/redoc/commit/c75ac9cf70012e2d539b379aab2f0974d088db07))
+* h2 set color form theme.colors.text.primary ([#1491](https://github.com/Redocly/redoc/pull/1491)) ([25be93](https://github.com/Redocly/redoc/commit/25be934bb184d7b2b6b47d004b3c83ce4d16a2c6))
 
 
 
@@ -23,7 +206,8 @@
 * auth link scroll for Firerox ([#1922](https://github.com/Redocly/redoc/issues/1922)) ([fe67e9c](https://github.com/Redocly/redoc/commit/fe67e9c332fee716582a00d60fdf34767bff22d4))
 * improve customization fab ([#1891](https://github.com/Redocly/redoc/issues/1891)) ([635f379](https://github.com/Redocly/redoc/commit/635f379eb086268c91eef715148eca8f080cfb86))
 * sanitize array of items ([#1920](https://github.com/Redocly/redoc/issues/1920)) ([059bd80](https://github.com/Redocly/redoc/commit/059bd8000e5fd65753d5ca9e0c47940394e0c79b))
-* use x-displayName in securityDefinitions [#1444](https://github.com/Redocly/redoc/pull/1444)) ([ac6fb4](https://github.com/Redocly/redoc/commit/
+* use x-displayName in securityDefinitions ([#1444](https://github.com/Redocly/redoc/pull/1444)) ([ac6fb4](https://github.com/Redocly/redoc/commit/ac6fb458a4eee8d0da4b63f9bafc7669adc8af03))
+* deprecated badge on one of any of buttons ([#1930](https://github.com/Redocly/redoc/pull/1930)) ([f60b47](https://github.com/Redocly/redoc/commit/f60b4758330dd756d670309827da60d3465b672a))
 
 
 

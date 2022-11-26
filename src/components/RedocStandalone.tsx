@@ -27,13 +27,19 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
 
   if (normalizedOpts.nonce !== undefined) {
     try {
+      // eslint-disable-next-line  @typescript-eslint/no-unused-vars
       __webpack_nonce__ = normalizedOpts.nonce;
     } catch {} // If we have exception, Webpack was not used to run this.
   }
 
   return (
     <ErrorBoundary>
-      <StoreBuilder spec={spec} specUrl={specUrl} options={options} onLoaded={onLoaded}>
+      <StoreBuilder
+        spec={spec ? { ...spec } : undefined}
+        specUrl={specUrl}
+        options={options}
+        onLoaded={onLoaded}
+      >
         {({ loading, store }) =>
           !loading ? (
             <Redoc store={store!} />

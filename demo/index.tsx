@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
-import { resolve as urlResolve } from 'url';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 import FileInput from './components/FileInput';
@@ -22,7 +21,7 @@ const demos = [
 ];
 
 class DemoApp extends React.Component<
-  {},
+  Record<string, unknown>,
   { spec: object | undefined; specUrl: string; dropdownOpen: boolean; cors: boolean }
 > {
   constructor(props) {
@@ -87,7 +86,7 @@ class DemoApp extends React.Component<
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
-        ? '\\\\cors.redoc.ly/' + urlResolve(window.location.href, specUrl)
+        ? '\\\\cors.redoc.ly/' + new URL(specUrl, window.location.href).href
         : specUrl;
     }
     return (
@@ -95,7 +94,7 @@ class DemoApp extends React.Component<
         <Heading>
           <a href=".">
             <Logo
-              src="https://github.com/Redocly/redoc/raw/master/docs/images/redoc-logo.png"
+              src="https://github.com/Redocly/redoc/raw/main/docs/images/redoc.png"
               alt="Redoc logo"
             />
           </a>

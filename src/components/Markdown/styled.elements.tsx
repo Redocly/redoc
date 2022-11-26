@@ -6,7 +6,7 @@ import { StyledComponent } from 'styled-components';
 
 export const linksCss = css`
   a {
-    text-decoration: none;
+    text-decoration: ${props => props.theme.typography.links.textDecoration};
     color: ${props => props.theme.typography.links.color};
 
     &:visited {
@@ -15,6 +15,7 @@ export const linksCss = css`
 
     &:hover {
       color: ${props => props.theme.typography.links.hover};
+      text-decoration: ${props => props.theme.typography.links.hoverTextDecoration};
     }
   }
 `;

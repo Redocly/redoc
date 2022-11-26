@@ -1,15 +1,15 @@
 <div align="center">
-  <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master//docs/images/redoc.png" width="400px" />
+  <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
 
   # Generate interactive API documentation from OpenAPI definitions
 
-  [![Build Status](https://travis-ci.com/Redocly/redoc.svg?branch=master)](https://travis-ci.com/Redocly/redoc) [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/redoc?branch=master) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/master/LICENSE)
+  [![Coverage Status](https://coveralls.io/repos/Redocly/redoc/badge.svg?branch=main&service=github)](https://coveralls.io/github/Redocly/redoc?branch=main) [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/main/LICENSE)
 
-  [![bundle size](http://img.badgesize.io/https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
+  [![bundle size](http://img.badgesize.io/https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc) [![Docker Build Status](https://img.shields.io/docker/build/redocly/redoc.svg)](https://hub.docker.com/r/redocly/redoc/)
 </div>
 
 **This is the README for the `2.x` version of Redoc (React-based).**
-**The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch**
+**The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch.**
 
 ## About Redoc
 
@@ -21,7 +21,7 @@ By default Redoc offers a three-panel, responsive layout:
 - The central panel contains the documentation.
 - The right panel contains request and response examples.
 
-![Redoc demo](https://raw.githubusercontent.com/Redocly/redoc/master/demo/redoc-demo.png)
+![Redoc demo](https://raw.githubusercontent.com/Redocly/redoc/main/demo/redoc-demo.png)
 
 ## Live demo
 
@@ -72,16 +72,16 @@ Checkout the following feature comparison of Redocly's premium products versus R
 
 Refer to the Redocly's documentation for more information on these products:
 
-- [Portals](https://redoc.ly/docs/developer-portal/introduction/)
-- [Reference](https://redoc.ly/docs/api-reference-docs/getting-started/)
-- [Redoc](https://redoc.ly/docs/redoc/quickstart/intro/)
+- [Portals](https://redocly.com/docs/developer-portal/introduction/)
+- [Reference](https://redocly.com/docs/api-reference-docs/getting-started/)
+- [Redoc](https://redocly.com/docs/redoc/quickstart/intro/)
 
 ## Features
 - Responsive three-panel design with menu/scrolling synchronization
-- [Multiple deployment options](https://redoc.ly/docs/redoc/quickstart/intro/)
-- [Server-side rendering (SSR) ready](https://redoc.ly/docs/redoc/quickstart/cli/#redoc-cli-commands)
+- [Multiple deployment options](https://redocly.com/docs/redoc/quickstart/intro/)
+- [Server-side rendering (SSR) ready](https://redocly.com/docs/redoc/quickstart/cli/#redoc-cli-commands)
 - Ability to integrate your API introduction into the side menu
-- [Simple integration with `create-react-app`](https://redoc.ly/docs/redoc/quickstart/react/)
+- [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 
   [Example repo](https://github.com/APIs-guru/create-react-app-redoc)
 - [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
@@ -89,9 +89,9 @@ Refer to the Redocly's documentation for more information on these products:
   ![](docs/images/nested-demo.gif)
 
 ## Customization options
-[<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redoc.ly/#services)
-- High-level grouping in side-menu with the [`x-tagGroups`](https://redoc.ly/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
-- Branding/customizations using the [`theme` option](https://redoc.ly/docs/api-reference-docs/configuration/theming/)
+[<img alt="Customization services" src="http://i.imgur.com/c4sUF7M.png" height="60px">](https://redocly.com/#services)
+- High-level grouping in side-menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
+- Branding/customizations using the [`theme` option](https://redocly.com/docs/api-reference-docs/configuration/theming/)
 
 ## Support
 - OpenAPI v3.0 support
@@ -102,9 +102,9 @@ Refer to the Redocly's documentation for more information on these products:
   ![](docs/images/code-samples-demo.gif)
 
 ## Releases
-**Important:** all the 2.x releases are deployed to npm and can be used with jsdeliver:
-- particular release, for example, `v2.0.0-alpha.15`: https://cdn.jsdelivr.net/npm/redoc@2.0.0-alpha.17/bundles/redoc.standalone.js
-- `next` release: https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js
+**Important:** all the 2.x releases are deployed to npm and can be used with Redocly-cdn:
+- particular release, for example, `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
+- `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
 - particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
@@ -131,11 +131,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ## Lint OpenAPI definitions
 
-Redocly's OpenAPI CLI is an open source command-line tool that you can use to lint
+Redocly's CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
 OpenAPI definition before publishing.
 
-Refer to [Lint configuration](https://redoc.ly/docs/cli/guides/lint/) in the OpenAPI documentation for more information.
+Refer to [Redocly configuration](https://redocly.com/docs/cli/configuration/) in the OpenAPI documentation for more information.
 
 ## Deployment
 
@@ -166,7 +166,7 @@ replace the `spec-url` attribute with the url or local file address to your defi
   </head>
   <body>
     <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
   </body>
 </html>
 
@@ -174,11 +174,11 @@ replace the `spec-url` attribute with the url or local file address to your defi
 
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
-[**Redoc quickstart guide**](https://redoc.ly/docs/redoc/quickstart/intro/).
+[**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
 For more information on Redoc's commmand-line interface, refer to
-[**Using the Redoc CLI**](https://redoc.ly/docs/redoc/quickstart/cli/).
+[**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
 ## Configuration
@@ -188,7 +188,7 @@ You can inject the Security Definitions widget into any place in your definition
 For more information, refer to [Security definitions injection](docs/security-definitions-injection.md).
 
 ### OpenAPI specification extensions
-Redoc uses the following [specification extensions](https://swagger.io/specification/#specificationExtensions):
+Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
@@ -207,11 +207,14 @@ Redoc uses the following [specification extensions](https://swagger.io/specifica
 You can use all of the following options with the standalone version of the <redoc> tag by kebab-casing them. For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
 
 * `disableSearch` - disable search indexing and search box.
+* `minCharacterLengthToInitSearch` - set minimal characters length to init search, default `3`, minimal `1`.
 * `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
 * `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
 * `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
+* `downloadFileName` - set a custom file name for the downloaded API definition file.
+* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here will open when that button is selected. Provide it as an absolute URL with the full URI scheme.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
@@ -229,7 +232,6 @@ You can use all of the following options with the standalone version of the <red
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
-* `noAutoAuth` - do not inject Authentication section automatically.
 * `onlyRequiredInSamples` - shows only required fields in request samples.
 * `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one.
 * `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
@@ -238,16 +240,17 @@ You can use all of the following options with the standalone version of the <red
   * **number**: A fixed number of pixels to be used as offset.
   * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
   * **function**: A getter function. Must return a number representing the offset (in pixels).
-* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by ReDoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
+* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by Redoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
 * `sortPropsAlphabetically` - sort properties alphabetically.
 * `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
-* `theme` - ReDoc theme. For details check [theme docs](#redoc-theme-object).
+* `theme` - Redoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
 * `nonce` - if set, the provided value will be injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
 * `sideNavStyle` - can be specified in various ways:
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.
   * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
+* `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
 
 ### `<redoc>` theme object
 * `spacing`
@@ -285,26 +288,38 @@ You can use all of the following options with the standalone version of the <red
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
     * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
-* `menu`
+    * `textDecoration`: 'auto'
+    * `hoverTextDecoration`: 'auto'
+* `sidebar`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
   * `textColor`: '#333333'
-  * `activeTextColor`: # COMPUTED: theme.menu.textColor (if set by user) or theme.colors.primary.main
+  * `activeTextColor`: # COMPUTED: theme.sidebar.textColor (if set by user) or theme.colors.primary.main
   * `groupItems` # Group headings
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'uppercase'
   * `level1Items` # Level 1 items like tags or section 1st level items
+    * `activeBackgroundColor`: # COMPUTED: theme.sidebar.backgroundColor
+    * `activeTextColor`: # COMPUTED: theme.sidebar.activeTextColor
     * `textTransform`: 'none'
-  * `arrow` # menu arrow
+  * `arrow` # sidebar arrow
     * `size`: '1.5em'
-    * `color`: # COMPUTED: theme.menu.textColor
+    * `color`: # COMPUTED: theme.sidebar.textColor
 * `logo`
-  * `maxHeight`: # COMPUTED: menu.width
-  * `maxWidth`: # COMPUTED: menu.width
+  * `maxHeight`: # COMPUTED: sidebar.width
+  * `maxWidth`: # COMPUTED: sidebar.width
   * `gutter`: '2px' # logo image padding
 * `rightPanel`
   * `backgroundColor`: '#263238'
   * `width`: '40%'
   * `textColor`: '#ffffff'
+  * `servers`
+    * `overlay`
+      * `backgroundColor`: '#fafafa'
+      * `textColor`: '#263238'
+    * `url`
+      * `backgroundColor`: '#fff'
 * `fab`
   * `backgroundColor`: '#263238'
   * `color`: '#ffffff'

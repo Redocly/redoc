@@ -134,6 +134,8 @@ const defaultTheme: ThemeInterface = {
       color: ({ colors }) => colors.primary.main,
       visited: ({ typography }) => typography.links.color,
       hover: ({ typography }) => lighten(0.2, typography.links.color),
+      textDecoration: 'auto',
+      hoverTextDecoration: 'auto',
     },
   },
   sidebar: {
@@ -145,9 +147,13 @@ const defaultTheme: ThemeInterface = {
         ? theme.sidebar.textColor
         : theme.colors.primary.main,
     groupItems: {
+      activeBackgroundColor: theme => darken(0.1, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'uppercase',
     },
     level1Items: {
+      activeBackgroundColor: theme => darken(0.05, theme.sidebar.backgroundColor),
+      activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'none',
     },
     arrow: {
@@ -164,6 +170,15 @@ const defaultTheme: ThemeInterface = {
     backgroundColor: '#263238',
     width: '40%',
     textColor: '#ffffff',
+    servers: {
+      overlay: {
+        backgroundColor: '#fafafa',
+        textColor: '#263238',
+      },
+      url: {
+        backgroundColor: '#fff',
+      },
+    },
   },
   codeBlock: {
     backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
@@ -229,6 +244,16 @@ export interface FontSettings {
   fontFamily: string;
   lineHeight: string;
   color: string;
+}
+
+export interface Servers {
+  overlay: {
+    backgroundColor: string;
+    textColor: string;
+  };
+  url: {
+    backgroundColor: string;
+  };
 }
 
 export interface ResolvedThemeInterface {
@@ -318,6 +343,8 @@ export interface ResolvedThemeInterface {
       color: string;
       visited: string;
       hover: string;
+      textDecoration: string;
+      hoverTextDecoration: string;
     };
   };
   sidebar: {
@@ -326,9 +353,13 @@ export interface ResolvedThemeInterface {
     textColor: string;
     activeTextColor: string;
     groupItems: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     level1Items: {
+      activeBackgroundColor: string;
+      activeTextColor: string;
       textTransform: string;
     };
     arrow: {
@@ -345,6 +376,7 @@ export interface ResolvedThemeInterface {
     backgroundColor: string;
     textColor: string;
     width: string;
+    servers: Servers;
   };
   codeBlock: {
     backgroundColor: string;

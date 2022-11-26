@@ -1,5 +1,4 @@
 import slugify from 'slugify';
-import { format, parse } from 'url';
 
 /**
  * Maps over array passing `isLast` bool to iterator as the second argument
@@ -108,12 +107,12 @@ export const mergeObjects = (target: any, ...sources: any[]): any => {
   return mergeObjects(target, ...sources);
 };
 
-const isObject = (item: any): boolean => {
+export const isObject = (item: unknown): item is Record<string, unknown> => {
   return item !== null && typeof item === 'object';
 };
 
 const isMergebleObject = (item): boolean => {
-  return isObject(item) && !Array.isArray(item);
+  return isObject(item) && !isArray(item);
 };
 
 /**
@@ -146,18 +145,23 @@ export function isAbsoluteUrl(url: string) {
 export function resolveUrl(url: string, to: string) {
   let res;
   if (to.startsWith('//')) {
-    const { protocol: specProtocol } = parse(url);
-    res = `${specProtocol || 'https:'}${to}`;
+    try {
+      res = `${new URL(url).protocol || 'https:'}${to}`;
+    } catch {
+      res = `https:${to}`;
+    }
   } else if (isAbsoluteUrl(to)) {
     res = to;
   } else if (!to.startsWith('/')) {
     res = stripTrailingSlash(url) + '/' + to;
   } else {
-    const urlObj = parse(url);
-    res = format({
-      ...urlObj,
-      pathname: to,
-    });
+    try {
+      const urlObj = new URL(url);
+      urlObj.pathname = to;
+      res = urlObj.href;
+    } catch {
+      res = to;
+    }
   }
   return stripTrailingSlash(res);
 }
@@ -175,10 +179,11 @@ export function titleize(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export function removeQueryString(serverUrl: string): string {
+export function removeQueryStringAndHash(serverUrl: string): string {
   try {
     const url = parseURL(serverUrl);
     url.search = '';
+    url.hash = '';
     return url.toString();
   } catch (e) {
     // when using with redoc-cli serverUrl can be empty resulting in crash
@@ -195,8 +200,21 @@ function parseURL(url: string) {
   }
 }
 
+export function escapeHTMLAttrChars(str: string): string {
+  return str.replace(/["\\]/g, '\\$&');
+}
+
 export function unescapeHTMLChars(str: string): string {
   return str
     .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
-    .replace(/&amp;/g, '&');
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"');
+}
+
+export function isArray(value: unknown): value is any[] {
+  return Array.isArray(value);
+}
+
+export function isBoolean(value: unknown): value is boolean {
+  return typeof value === 'boolean';
 }

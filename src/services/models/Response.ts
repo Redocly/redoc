@@ -1,10 +1,10 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import { OpenAPIResponse, Referenced } from '../../types';
+import type { OpenAPIResponse, Referenced } from '../../types';
 
 import { getStatusCodeType, extractExtensions } from '../../utils';
-import { OpenAPIParser } from '../OpenAPIParser';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import type { OpenAPIParser } from '../OpenAPIParser';
+import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { FieldModel } from './Field';
 import { MediaContentModel } from './MediaContent';
 
@@ -41,8 +41,7 @@ export class ResponseModel {
 
     this.expanded = options.expandResponses === 'all' || options.expandResponses[code];
 
-    const info = parser.deref(infoOrRef);
-    parser.exitRef(infoOrRef);
+    const { resolved: info } = parser.deref(infoOrRef);
     this.code = code;
     if (info.content !== undefined) {
       this.content = new MediaContentModel(parser, info.content, isRequest, options);

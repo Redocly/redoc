@@ -67,7 +67,7 @@ function navigate(history: HistoryService, event: React.MouseEvent<HTMLAnchorEle
     !isModifiedEvent(event) // ignore clicks with modifier keys
   ) {
     event.preventDefault();
-    history.replace(to);
+    history.replace(encodeURI(to));
   }
 }
 

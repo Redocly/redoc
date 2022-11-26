@@ -1,7 +1,7 @@
 ---
 title: Use the Redoc HTML element
 redirectFrom:
-  - /docs/quickstart/html/
+  - /docs/redoc/quickstart/html/
 ---
 
 # How to use the Redoc HTML element
@@ -51,7 +51,7 @@ or the files located in your `node modules` folder.
 To reference the Redoc script with a CDN link:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"> </script>
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
 ```
 
 ### Node modules link
@@ -97,7 +97,7 @@ Redoc.init(specOrSpecUrl, options, element, callback)
 ```
 - `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a URL to the
   definition in JSON or YAML format.
-- `options`: See [options object](https://redocly.com/docs/api-reference-docs/configuration/) reference.
+- `options`: See [features.openapi object](/docs/api-reference-docs/configuration/functionality.mdx) reference.
 - `element`: DOM element Redoc will be inserted into.
 - `callback`(optional): Callback to be called after Redoc has been fully rendered.
   It is also called on errors with `error` as the first argument.

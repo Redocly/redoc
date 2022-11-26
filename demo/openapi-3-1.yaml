@@ -16,14 +16,14 @@ info:
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
     tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
 
     # OpenAPI Specification
     This API is documented in **OpenAPI format** and is based on
     [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
     It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
     tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
-    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md).
 
     # Cross-Origin Resource Sharing
     This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
@@ -88,12 +88,14 @@ x-tagGroups:
     tags:
       - pet_model
       - store_model
+security:
+  - {}
 paths:
   /pet:
     parameters:
       - name: Accept-Language
         in: header
-        description: "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US"
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
         example: en-US
         required: false
         schema:
@@ -182,6 +184,16 @@ paths:
             }
       requestBody:
         $ref: '#/components/requestBodies/Pet'
+    delete:
+      tags:
+        - pet
+      summary: OperationId with quotes
+      operationId: deletePetBy"Id
+    get:
+      tags:
+        - pet
+      summary: OperationId with backslash
+      operationId: delete\PetById
   '/pet/{petId}':
     get:
       tags:
@@ -259,7 +271,7 @@ paths:
           required: false
           schema:
             type: string
-          example: "Bearer <TOKEN>"
+          example: 'Bearer <TOKEN>'
         - name: petId
           in: path
           description: Pet id to delete
@@ -295,6 +307,9 @@ paths:
           content:
             application/json:
               schema:
+                unevaluatedProperties:
+                  type: integer
+                  format: int32
                 $ref: '#/components/schemas/ApiResponse'
       security:
         - petstore_auth:
@@ -432,7 +447,7 @@ paths:
             application/json:
               example:
                 status: 400
-                message: "Invalid Order"
+                message: 'Invalid Order'
       requestBody:
         content:
           application/json:
@@ -894,11 +909,11 @@ paths:
                 type: string
               examples:
                 response:
-                  value:  <Message> OK </Message>
+                  value: <Message> OK </Message>
             text/plain:
               examples:
                 response:
-                  value:  OK
+                  value: OK
         '400':
           description: Invalid username/password supplied
   /user/logout:
@@ -925,7 +940,7 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: update Cat details
@@ -940,13 +955,40 @@ components:
           content:
             multipart/form-data:
               schema:
-                $ref: "#/components/schemas/Cat"
+                $ref: '#/components/schemas/Cat'
         responses:
           '200':
             description: create Cat details
   schemas:
     ApiResponse:
       type: object
+      patternProperties:
+        ^S_\\w+\\.[1-9]{2,4}$:
+          description: The measured skill for hunting
+          if:
+            x-displayName: fieldName === 'status'
+          else:
+            minLength: 1
+            maxLength: 10
+          then:
+            format: url
+            type: string
+            enum:
+              - success
+              - failed
+        ^O_\\w+\\.[1-9]{2,4}$:
+          type: object
+          properties:
+            nestedProperty:
+              type: [string, boolean]
+              description: The measured skill for hunting
+              default: lazy
+              example: adventurous
+              enum:
+                - clueless
+                - lazy
+                - adventurous
+                - aggressive
       properties:
         code:
           type: integer
@@ -962,7 +1004,7 @@ components:
         - type: object
           properties:
             huntingSkill:
-              type: string
+              type: [string, boolean]
               description: The measured skill for hunting
               default: lazy
               example: adventurous
@@ -1073,8 +1115,8 @@ components:
       properties:
         id:
           externalDocs:
-            description: "Find more info here"
-            url: "https://example.com"
+            description: 'Find more info here'
+            url: 'https://example.com'
           description: Pet ID
           $ref: '#/components/schemas/Id'
         category:
@@ -1086,15 +1128,26 @@ components:
           example: Guru
         photoUrls:
           description: The list of URL to a cute photos featuring pet
-          type: [string, integer, 'null', array]
+          type: [string, integer, 'null']
           minItems: 1
-          maxItems: 20
+          maxItems: 10
           xml:
             name: photoUrl
             wrapped: true
           items:
             type: string
             format: url
+          if:
+            x-displayName: isString
+            type: string
+          then:
+            minItems: 1
+            maxItems: 15
+          else:
+            x-displayName: notString
+            type: [integer, 'null']
+            minItems: 1
+            maxItems: 20
         friend:
           $ref: '#/components/schemas/Pet'
         tags:
@@ -1118,12 +1171,19 @@ components:
         petType:
           description: Type of a pet
           type: string
+        huntingSkill:
+          type: [integer]
+          enum:
+            - 0
+            - 1
+            - 2
       xml:
         name: Pet
     Tag:
       type: object
       properties:
         id:
+          type: number
           description: Tag ID
           $ref: '#/components/schemas/Id'
         name:
@@ -1185,6 +1245,35 @@ components:
           type: string
           contentEncoding: base64
           contentMediaType: image/png
+        addresses:
+          type: array
+          minItems: 0
+          maxLength: 10
+          prefixItems:
+            - type: object
+              properties:
+                city:
+                  type: string
+                  minLength: 0
+                country:
+                  type: string
+                  minLength: 0
+                street:
+                  description: includes build/apartment number
+                  type: string
+                  minLength: 0
+            - type: number
+          items:
+            type: string
+      if:
+        title: userStatus === 10
+        properties:
+          userStatus:
+            enum: [10]
+      then:
+        required: ['phone']
+      else:
+        required: []
       xml:
         name: User
   requestBodies:
@@ -1251,9 +1340,9 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Pet"
+              $ref: '#/components/schemas/Pet'
       responses:
-        "200":
+        '200':
           description: Return a 200 status to indicate that the data was received successfully
   myWebhook:
     $ref: '#/components/pathItems/webhooks'

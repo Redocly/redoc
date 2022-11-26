@@ -1,9 +1,12 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { ClickablePropertyNameCell, RequiredLabel } from '../../common-elements/fields';
+import {
+  ClickablePropertyNameCell,
+  PropertyLabel,
+  RequiredLabel,
+} from '../../common-elements/fields';
 import { FieldDetails } from './FieldDetails';
-
 import {
   InnerPropertiesWrap,
   PropertyBullet,
@@ -11,11 +14,11 @@ import {
   PropertyDetailsCell,
   PropertyNameCell,
 } from '../../common-elements/fields-layout';
-
 import { ShelfIcon } from '../../common-elements/';
+import { Schema } from '../Schema/Schema';
 
-import { FieldModel } from '../../services/models';
-import { Schema, SchemaOptions } from '../Schema/Schema';
+import type { SchemaOptions } from '../Schema/Schema';
+import type { FieldModel } from '../../services/models';
 
 export interface FieldProps extends SchemaOptions {
   className?: string;
@@ -46,11 +49,19 @@ export class Field extends React.Component<FieldProps> {
   };
 
   render() {
-    const { className, field, isLast, expandByDefault } = this.props;
+    const { className = '', field, isLast, expandByDefault } = this.props;
     const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
+
+    const labels = (
+      <>
+        {kind === 'additionalProperties' && <PropertyLabel>additional property</PropertyLabel>}
+        {kind === 'patternProperties' && <PropertyLabel>pattern property</PropertyLabel>}
+        {required && <RequiredLabel>required</RequiredLabel>}
+      </>
+    );
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
@@ -64,16 +75,16 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label="expand properties"
         >
-          <span>{name}</span>
+          <span className="property-name">{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
-        {required && <RequiredLabel> required </RequiredLabel>}
+        {labels}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
-        <span>{name}</span>
-        {required && <RequiredLabel> required </RequiredLabel>}
+        <span className="property-name">{name}</span>
+        {labels}
       </PropertyNameCell>
     );
 
