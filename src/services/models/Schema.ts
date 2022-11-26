@@ -490,6 +490,10 @@ function buildFields(
           required: false,
           schema: field,
           kind: 'patternProperties',
+          extraDescription:
+            field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
+              ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
+              : {},
         },
         `${$ref}/patternProperties/${fieldName}`,
         options,
@@ -556,6 +560,7 @@ function buildAdditionalItems({
             {
               name: `[${fieldsCount}...]`,
               schema: {},
+              extraDescription: {},
             },
             `${$ref}/additionalItems`,
             options,
@@ -574,6 +579,7 @@ function buildAdditionalItems({
             {
               name: `[${fieldsCount + idx}]`,
               schema: field,
+              extraDescription: {},
             },
             `${$ref}/additionalItems`,
             options,
@@ -590,6 +596,7 @@ function buildAdditionalItems({
         {
           name: `[${fieldsCount}...]`,
           schema: schema,
+          extraDescription: {},
         },
         `${$ref}/additionalItems`,
         options,
