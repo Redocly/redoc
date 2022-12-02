@@ -123,6 +123,11 @@ export class MenuStore {
     }
     let item: IMenuItem | undefined;
 
+    const baseURL = this.history.baseURL;
+    if (baseURL && id.startsWith(baseURL + '/')) {
+      id = id.substring(baseURL.length + 1);
+    }
+
     item = this.flatItems.find(i => i.id === id);
 
     if (item) {

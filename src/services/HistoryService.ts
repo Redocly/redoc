@@ -6,10 +6,19 @@ const EVENT = 'hashchange';
 
 export class HistoryService {
   private _emiter;
+  private _baseURL: string | undefined;
 
   constructor() {
     this._emiter = new EventEmitter();
     this.bind();
+  }
+
+  setBaseURL(baseURL: string) {
+    this._baseURL = baseURL;
+  }
+
+  get baseURL(): string | undefined {
+    return this._baseURL;
   }
 
   get currentId(): string {
@@ -17,10 +26,15 @@ export class HistoryService {
   }
 
   linkForId(id: string) {
-    if (!id) {
-      return '';
+    const links: string[] = [];
+    if (this._baseURL) {
+      links.push(this._baseURL);
     }
-    return '#' + id;
+    if (id) {
+      links.push(id);
+    }
+    const link = links.join('/');
+    return link === '' ? '' : '#' + link;
   }
 
   subscribe(cb): () => void {

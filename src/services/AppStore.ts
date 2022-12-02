@@ -70,6 +70,10 @@ export class AppStore {
     // update position statically based on hash (in case of SSR)
     MenuStore.updateOnHistory(history.currentId, this.scroll);
 
+    if (options.baseURL) {
+      history.setBaseURL(options.baseURL);
+    }
+
     this.spec = new SpecStore(spec, specUrl, this.options);
     this.menu = new MenuStore(this.spec, this.scroll, history);
 
