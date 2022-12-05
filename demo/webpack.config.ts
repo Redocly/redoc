@@ -71,7 +71,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
 
   module: {
     rules: [
-      { test: [/\.eot$/, /\.gif$/, /\.woff$/, /\.svg$/, /\.ttf$/], use: 'null-loader' },
       {
         test: /\.(tsx?|[cm]?js)$/,
         loader: 'esbuild-loader',
