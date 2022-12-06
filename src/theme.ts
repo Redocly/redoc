@@ -128,8 +128,8 @@ const defaultTheme: ThemeInterface = {
       color: ({ colors }) => colors.primary.main,
       visited: ({ typography }) => typography.links.color,
       hover: ({ typography }) => lighten(0.2, typography.links.color),
-      textDecoration: 'auto',
-      hoverTextDecoration: 'auto',
+      textDecoration: 'underline',
+      hoverTextDecoration: 'underline',
     },
   },
   sidebar: {
