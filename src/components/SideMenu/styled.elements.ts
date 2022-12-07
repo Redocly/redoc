@@ -1,8 +1,10 @@
+import { palette } from '@leafygreen-ui/palette';
 import { default as classnames } from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
 import styled, { css, media, ResolvedThemeInterface } from '../../styled-components';
+import { getBadgeStyles } from '../../utils/styling';
 
 export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   className: `operation-type ${props.type}`,
@@ -12,11 +14,12 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
   background-color: #333;
-  border-radius: 3px;
+  border: ${props => props.theme.badges.border};
+  border-radius: ${props => props.theme.badges.borderRadius};
   background-repeat: no-repeat;
   background-position: 6px 4px;
   font-size: 7px;
-  font-family: Verdana, sans-serif; // web-safe
+  font-family: ${props => props.theme.typography.fontFamily};
   color: white;
   text-transform: uppercase;
   text-align: center;
@@ -25,45 +28,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   margin-right: 6px;
   margin-top: 2px;
 
-  &.get {
-    background-color: ${props => props.theme.colors.http.get};
-  }
-
-  &.post {
-    background-color: ${props => props.theme.colors.http.post};
-  }
-
-  &.put {
-    background-color: ${props => props.theme.colors.http.put};
-  }
-
-  &.options {
-    background-color: ${props => props.theme.colors.http.options};
-  }
-
-  &.patch {
-    background-color: ${props => props.theme.colors.http.patch};
-  }
-
-  &.delete {
-    background-color: ${props => props.theme.colors.http.delete};
-  }
-
-  &.basic {
-    background-color: ${props => props.theme.colors.http.basic};
-  }
-
-  &.link {
-    background-color: ${props => props.theme.colors.http.link};
-  }
-
-  &.head {
-    background-color: ${props => props.theme.colors.http.head};
-  }
-
-  &.hook {
-    background-color: ${props => props.theme.colors.primary.main};
-  }
+  ${props => getBadgeStyles(props.theme.colors.http[props.type], 'light')}
 `;
 
 function menuItemActive(
@@ -84,10 +49,6 @@ export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
 
-  &:first-child {
-    padding-bottom: 32px;
-  }
-
   & & {
     font-size: 0.929em;
   }
@@ -107,12 +68,12 @@ export const menuItemDepth = {
   0: css`
     opacity: 0.7;
     text-transform: ${({ theme }) => theme.sidebar.groupItems.textTransform};
-    font-size: 0.8em;
+    font-size: 13px;
     padding-bottom: 0;
     cursor: default;
   `,
   1: css`
-    font-size: 0.929em;
+    font-size: 13px;
     text-transform: ${({ theme }) => theme.sidebar.level1Items.textTransform};
   `,
 };
@@ -152,7 +113,7 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
 
   &:hover {
     color: ${props => menuItemActive(props.depth, props, 'activeTextColor')};
-    background-color: ${props => menuItemActive(props.depth, props, 'activeBackgroundColor')};
+    background-color: ${palette.gray.light2};
   }
 
   ${ShelfIcon} {
@@ -170,6 +131,7 @@ export const MenuItemTitle = styled.span<{ width?: string }>`
   width: ${props => (props.width ? props.width : 'auto')};
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 13px;
 `;
 
 export const RedocAttribution = styled.div`
@@ -177,7 +139,7 @@ export const RedocAttribution = styled.div`
     font-size: 0.8em;
     margin-top: ${theme.spacing.unit * 2}px;
     text-align: center;
-    position: fixed;
+    position: sticky;
     width: ${theme.sidebar.width};
     bottom: 0;
     background: ${theme.sidebar.backgroundColor};

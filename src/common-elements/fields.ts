@@ -1,4 +1,5 @@
 import { transparentize } from 'polished';
+import { palette } from '@leafygreen-ui/palette';
 
 import styled, { extensionsHook, css } from '../styled-components';
 import { PropertyNameCell } from './fields-layout';
@@ -87,7 +88,7 @@ export const RecursiveLabel = styled(FieldLabel)`
 `;
 
 export const PatternLabel = styled(FieldLabel)`
-  color: #0e7c86;
+  color: ${palette.gray.dark3};
   &::before,
   &::after {
     font-weight: bold;
@@ -98,11 +99,11 @@ export const ExampleValue = styled(FieldLabel)`
   border-radius: 2px;
   word-break: break-word;
   ${({ theme }) => `
-    background-color: ${transparentize(0.95, theme.colors.text.primary)};
-    color: ${transparentize(0.1, theme.colors.text.primary)};
+    background-color: ${palette.gray.light3};
+    color: ${palette.gray.dark3};
 
     padding: 0 ${theme.spacing.unit}px;
-    border: 1px solid ${transparentize(0.9, theme.colors.text.primary)};
+    border: 1px solid ${palette.gray.light2};
     font-family: ${theme.typography.code.fontFamily};
 }`};
   & + & {
@@ -116,12 +117,12 @@ export const ExtensionValue = styled(ExampleValue)``;
 export const ConstraintItem = styled(FieldLabel)`
   border-radius: 2px;
   ${({ theme }) => `
-    background-color: ${transparentize(0.95, theme.colors.primary.light)};
-    color: ${transparentize(0.1, theme.colors.primary.main)};
+    background-color: ${palette.blue.light3};
+    color: ${palette.blue.base};
 
     margin: 0 ${theme.spacing.unit}px;
     padding: 0 ${theme.spacing.unit}px;
-    border: 1px solid ${transparentize(0.9, theme.colors.primary.main)};
+    border: 1px solid ${palette.blue.light2};
 }`};
   & + & {
     margin-left: 0;

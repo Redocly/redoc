@@ -1,20 +1,25 @@
-import { darken, desaturate, lighten, readableColor, transparentize } from 'polished';
+import { darken, lighten, readableColor, transparentize } from 'polished';
+import { palette } from '@leafygreen-ui/palette';
+
+const textFontFamily =
+  '"Euclid Circular A", Akzidenz, "Helvetica Neue", Helvetica, Arial, sans-serif';
+const codeFontFamily = 'Source Code Pro';
 
 const defaultTheme: ThemeInterface = {
   spacing: {
-    unit: 5,
+    unit: 4,
     sectionHorizontal: ({ spacing }) => spacing.unit * 8,
-    sectionVertical: ({ spacing }) => spacing.unit * 8,
+    sectionVertical: 16,
   },
   breakpoints: {
-    small: '50rem',
-    medium: '75rem',
-    large: '105rem',
+    small: '768px',
+    medium: '1024px',
+    large: '1200px',
   },
   colors: {
     tonalOffset: 0.2,
     primary: {
-      main: '#32329f',
+      main: palette.black,
       light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
       contrastText: ({ colors }) => readableColor(colors.primary.main),
@@ -26,13 +31,13 @@ const defaultTheme: ThemeInterface = {
       contrastText: ({ colors }) => readableColor(colors.success.main),
     },
     warning: {
-      main: '#ffa500',
+      main: palette.gray.light1,
       light: ({ colors }) => lighten(colors.tonalOffset, colors.warning.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.warning.main),
-      contrastText: '#ffffff',
+      contrastText: palette.gray.dark1,
     },
     error: {
-      main: '#d41f1c',
+      main: palette.red.base,
       light: ({ colors }) => lighten(colors.tonalOffset, colors.error.main),
       dark: ({ colors }) => darken(colors.tonalOffset, colors.error.main),
       contrastText: ({ colors }) => readableColor(colors.error.main),
@@ -42,7 +47,7 @@ const defaultTheme: ThemeInterface = {
       100: '#F5F5F5',
     },
     text: {
-      primary: '#333333',
+      primary: palette.gray.dark3,
       secondary: ({ colors }) => lighten(colors.tonalOffset, colors.text.primary),
     },
     border: {
@@ -51,14 +56,14 @@ const defaultTheme: ThemeInterface = {
     },
     responses: {
       success: {
-        color: ({ colors }) => colors.success.main,
-        backgroundColor: ({ colors }) => transparentize(0.93, colors.success.main),
-        tabTextColor: ({ colors }) => colors.responses.success.color,
+        color: palette.green.dark2,
+        backgroundColor: palette.green.light3,
+        tabTextColor: palette.green.base,
       },
       error: {
-        color: ({ colors }) => colors.error.main,
-        backgroundColor: ({ colors }) => transparentize(0.93, colors.error.main),
-        tabTextColor: ({ colors }) => colors.responses.error.color,
+        color: palette.red.base,
+        backgroundColor: palette.red.light3,
+        tabTextColor: palette.red.base,
       },
       redirect: {
         color: ({ colors }) => colors.warning.main,
@@ -72,27 +77,78 @@ const defaultTheme: ThemeInterface = {
       },
     },
     http: {
-      get: '#2F8132',
-      post: '#186FAF',
-      put: '#95507c',
+      get: {
+        light: {
+          backgroundColor: palette.blue.light3,
+          borderColor: palette.blue.light2,
+          color: palette.blue.dark1,
+        },
+        dark: {
+          backgroundColor: palette.blue.dark2,
+          borderColor: palette.blue.dark1,
+          color: palette.blue.light2,
+        },
+      },
+      post: {
+        light: {
+          backgroundColor: palette.green.light3,
+          borderColor: palette.green.light2,
+          color: palette.green.dark2,
+        },
+        dark: {
+          backgroundColor: palette.green.dark3,
+          borderColor: palette.green.dark2,
+          color: palette.green.base,
+        },
+      },
+      put: {
+        light: {
+          backgroundColor: palette.yellow.light3,
+          borderColor: palette.yellow.light2,
+          color: palette.yellow.dark2,
+        },
+        dark: {
+          backgroundColor: palette.yellow.dark3,
+          borderColor: palette.yellow.dark2,
+          color: palette.yellow.light2,
+        },
+      },
       options: '#947014',
-      patch: '#bf581d',
-      delete: '#cc3333',
+      patch: {
+        light: {
+          backgroundColor: palette.yellow.light3,
+          borderColor: palette.yellow.light2,
+          color: palette.yellow.dark2,
+        },
+        dark: {
+          backgroundColor: palette.yellow.dark3,
+          borderColor: palette.yellow.dark2,
+          color: palette.yellow.light2,
+        },
+      },
+      delete: {
+        light: {
+          backgroundColor: palette.red.light3,
+          borderColor: palette.red.light2,
+          color: palette.red.dark2,
+        },
+        dark: {
+          backgroundColor: palette.red.dark3,
+          borderColor: palette.red.dark2,
+          color: palette.red.light2,
+        },
+      },
       basic: '#707070',
       link: '#07818F',
       head: '#A23DAD',
     },
   },
   schema: {
-    linesColor: theme =>
-      lighten(
-        theme.colors.tonalOffset,
-        desaturate(theme.colors.tonalOffset, theme.colors.primary.main),
-      ),
+    linesColor: palette.black,
     defaultDetailsWidth: '75%',
-    typeNameColor: theme => theme.colors.text.secondary,
+    typeNameColor: palette.gray.dark3,
     typeTitleColor: theme => theme.schema.typeNameColor,
-    requireLabelColor: theme => theme.colors.error.main,
+    requireLabelColor: palette.red.base,
     labelsTextSize: '0.9em',
     nestingSpacing: '1em',
     nestedBackground: '#fafafa',
@@ -102,51 +158,48 @@ const defaultTheme: ThemeInterface = {
     },
   },
   typography: {
-    fontSize: '14px',
+    fontSize: '16px',
     lineHeight: '1.5em',
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: textFontFamily,
     smoothing: 'antialiased',
     optimizeSpeed: true,
     headings: {
-      fontFamily: 'Montserrat, sans-serif',
+      fontFamily: textFontFamily,
       fontWeight: '400',
       lineHeight: '1.6em',
     },
     code: {
       fontSize: '13px',
-      fontFamily: 'Courier, monospace',
+      fontFamily: codeFontFamily,
       lineHeight: ({ typography }) => typography.lineHeight,
       fontWeight: ({ typography }) => typography.fontWeightRegular,
-      color: '#e53935',
-      backgroundColor: 'rgba(38, 50, 56, 0.05)',
+      color: palette.gray.dark3,
+      backgroundColor: palette.gray.light3,
       wrap: false,
     },
     links: {
-      color: ({ colors }) => colors.primary.main,
-      visited: ({ typography }) => typography.links.color,
-      hover: ({ typography }) => lighten(0.2, typography.links.color),
+      color: palette.blue.base,
+      visited: palette.blue.base,
+      hover: palette.blue.base,
       textDecoration: 'auto',
       hoverTextDecoration: 'auto',
     },
   },
   sidebar: {
-    width: '260px',
-    backgroundColor: '#fafafa',
-    textColor: '#333333',
-    activeTextColor: theme =>
-      theme.sidebar.textColor !== defaultTheme.sidebar!.textColor
-        ? theme.sidebar.textColor
-        : theme.colors.primary.main,
+    width: '268px',
+    backgroundColor: palette.gray.light3,
+    textColor: palette.black,
+    activeTextColor: palette.green.dark3,
     groupItems: {
-      activeBackgroundColor: theme => darken(0.1, theme.sidebar.backgroundColor),
+      activeBackgroundColor: palette.green.light3,
       activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'uppercase',
     },
     level1Items: {
-      activeBackgroundColor: theme => darken(0.05, theme.sidebar.backgroundColor),
+      activeBackgroundColor: palette.green.light3,
       activeTextColor: theme => theme.sidebar.activeTextColor,
       textTransform: 'none',
     },
@@ -161,25 +214,29 @@ const defaultTheme: ThemeInterface = {
     gutter: '2px',
   },
   rightPanel: {
-    backgroundColor: '#263238',
+    backgroundColor: palette.black,
     width: '40%',
     textColor: '#ffffff',
     servers: {
       overlay: {
-        backgroundColor: '#fafafa',
-        textColor: '#263238',
+        backgroundColor: palette.gray.dark3,
+        textColor: palette.white,
       },
       url: {
-        backgroundColor: '#fff',
+        backgroundColor: palette.gray.dark3,
       },
     },
   },
   codeBlock: {
-    backgroundColor: ({ rightPanel }) => darken(0.1, rightPanel.backgroundColor),
+    backgroundColor: palette.gray.dark3,
   },
   fab: {
     backgroundColor: '#f2f2f2',
     color: '#0065FB',
+  },
+  badges: {
+    border: '1px solid',
+    borderRadius: '5px',
   },
 };
 
@@ -230,6 +287,17 @@ export interface HTTPResponseColos {
   color: string;
   backgroundColor: string;
   tabTextColor: string;
+}
+
+export interface HTTPBadgeOptions {
+  backgroundColor: string;
+  borderColor: string;
+  color: string;
+}
+
+export interface HTTPBadgeColors {
+  light: HTTPBadgeOptions;
+  dark: HTTPBadgeOptions;
 }
 
 export interface FontSettings {
@@ -286,12 +354,12 @@ export interface ResolvedThemeInterface {
       info: HTTPResponseColos;
     };
     http: {
-      get: string;
-      post: string;
-      put: string;
+      get: HTTPBadgeColors;
+      post: HTTPBadgeColors;
+      put: HTTPBadgeColors;
       options: string;
-      patch: string;
-      delete: string;
+      patch: HTTPBadgeColors;
+      delete: HTTPBadgeColors;
       basic: string;
       link: string;
       head: string;
@@ -377,6 +445,10 @@ export interface ResolvedThemeInterface {
   fab: {
     backgroundColor: string;
     color: string;
+  };
+  badges: {
+    border: string;
+    borderRadius: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

@@ -57,8 +57,9 @@ export const Badge = styled.span<{ type: string }>`
   vertical-align: middle;
   line-height: 1.6;
   border-radius: 4px;
-  font-weight: ${({ theme }) => theme.typography.fontWeightBold};
-  font-size: 12px;
+  font-weight: ${({ theme, type }) =>
+    type === 'warning' ? 'normal' : theme.typography.fontWeightBold};
+  font-size: 13px;
   + span[type] {
     margin-left: 4px;
   }

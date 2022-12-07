@@ -1,5 +1,18 @@
 import styled, { media } from '../../styled-components';
 
+export const StyledHeader = styled.header`
+  position: relative;
+  width: 100%;
+  z-index: 99;
+`;
+
+export const SideMenuTitle = styled.div`
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 20px;
+  margin: 24px 16px;
+`;
+
 export const RedocWrap = styled.div`
   ${({ theme }) => `
   font-family: ${theme.typography.fontFamily};

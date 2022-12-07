@@ -1,3 +1,4 @@
+import { palette } from '@leafygreen-ui/palette';
 import styled from 'styled-components';
 
 import { Dropdown as DropdownComponent } from './Dropdown';
@@ -38,6 +39,11 @@ export const Dropdown = styled(DropdownComponent)<{
     color: ${({ theme }) => theme.colors.text.primary};
     line-height: inherit;
     font-family: inherit;
+    background-color: ${palette.gray.dark2};
+
+    :hover {
+      background-color: ${palette.gray.dark2};
+    }
   }
   box-sizing: border-box;
   min-width: 100px;

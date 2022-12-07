@@ -1,13 +1,7 @@
-## What/Why/How?
+### Stories/Links:
 
-## Reference
+DOP-NNNN
 
-## Testing
+### Screenshots (optional):
 
-## Screenshots (optional)
-
-## Check yourself
-
-- [ ] Code is linted
-- [ ] Tested
-- [ ] All new/updated code is covered with tests
+### Notes:

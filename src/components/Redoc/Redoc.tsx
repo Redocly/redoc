@@ -1,5 +1,6 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import { UnifiedFooter, UnifiedNav } from '@mdb/consistent-nav';
 
 import { ThemeProvider } from '../../styled-components';
 import { OptionsProvider } from '../OptionsProvider';
@@ -10,7 +11,13 @@ import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { SideMenu } from '../SideMenu/SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
-import { ApiContentWrap, BackgroundStub, RedocWrap } from './styled.elements';
+import {
+  ApiContentWrap,
+  BackgroundStub,
+  RedocWrap,
+  SideMenuTitle,
+  StyledHeader,
+} from './styled.elements';
 
 import { SearchBox } from '../SearchBox/SearchBox';
 import { StoreProvider } from '../StoreBuilder';
@@ -37,13 +44,18 @@ export class Redoc extends React.Component<RedocProps> {
       store: { spec, menu, options, search, marker },
     } = this.props;
     const store = this.props.store;
+
     return (
       <ThemeProvider theme={options.theme}>
         <StoreProvider value={store}>
           <OptionsProvider value={options}>
+            <StyledHeader>
+              <UnifiedNav position="relative" property={{ name: 'DOCS', searchParams: [] }} />
+            </StyledHeader>
             <RedocWrap className="redoc-wrap">
               <StickyResponsiveSidebar menu={menu} className="menu-content">
                 <ApiLogo info={spec.info} />
+                <SideMenuTitle>{store.spec.info.title}</SideMenuTitle>
                 {(!options.disableSearch && (
                   <SearchBox
                     search={search!}
@@ -61,6 +73,7 @@ export class Redoc extends React.Component<RedocProps> {
               </ApiContentWrap>
               <BackgroundStub />
             </RedocWrap>
+            <UnifiedFooter hideLocale={true} />
           </OptionsProvider>
         </StoreProvider>
       </ThemeProvider>

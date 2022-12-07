@@ -1,10 +1,11 @@
 import { transparentize } from 'polished';
 import styled from '../../styled-components';
 import { Dropdown } from '../../common-elements/Dropdown';
+import { palette } from '@leafygreen-ui/palette';
 
 export const MimeLabel = styled.div`
   padding: 0.9em;
-  background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
+  background-color: ${palette.gray.dark2};
   margin: 0 0 10px 0;
   display: block;
   font-family: ${({ theme }) => theme.typography.headings.fontFamily};
@@ -24,7 +25,13 @@ export const DropdownLabel = styled.span`
 `;
 
 export const DropdownWrapper = styled.div`
+  background-color: ${palette.gray.dark2};
   position: relative;
+  font-size: 13px;
+
+  :hover {
+    background-color: ${palette.gray.dark2};
+  }
 `;
 
 export const InvertedSimpleDropdown = styled(Dropdown)`
@@ -39,7 +46,7 @@ export const InvertedSimpleDropdown = styled(Dropdown)`
   }
   margin: 0 0 10px 0;
   display: block;
-  background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
+  background-color: ${palette.gray.dark2};
   border: none;
   padding: 0.9em 1.6em 0.9em 0.9em;
   box-shadow: none;
@@ -47,7 +54,7 @@ export const InvertedSimpleDropdown = styled(Dropdown)`
   &:focus-within {
     border: none;
     box-shadow: none;
-    background-color: ${({ theme }) => transparentize(0.3, theme.rightPanel.backgroundColor)};
+    background-color: ${palette.gray.dark2};
   }
 `;
 

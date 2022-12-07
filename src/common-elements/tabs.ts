@@ -1,3 +1,4 @@
+import { palette } from '@leafygreen-ui/palette';
 import { darken } from 'polished';
 import { Tabs as ReactTabs } from 'react-tabs';
 
@@ -16,25 +17,38 @@ export const Tabs = styled(ReactTabs)`
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: ${({ theme }) => theme.codeBlock.backgroundColor};
+      background-color: ${palette.gray.dark3};
       border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       cursor: pointer;
       text-align: center;
       outline: none;
-      color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
+      color: ${palette.gray.base};
       margin: 0
         ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
-      border: 1px solid ${({ theme }) => darken(0.05, theme.codeBlock.backgroundColor)};
+      border: none;
       border-radius: 5px;
       min-width: 60px;
-      font-size: 0.9em;
+      font-size: 13px;
       font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: ${props => props.theme.colors.text.primary};
-        background: ${({ theme }) => theme.rightPanel.textColor};
+        color: ${palette.white};
+        background-color: ${palette.gray.dark2};
+        border: 1px solid ${palette.gray.base};
         &:focus {
           outline: auto;
+        }
+
+        &.tab-error {
+          background-color: ${palette.gray.dark2};
+          border: none;
+          color: ${palette.red.light1};
+        }
+
+        &.tab-success {
+          background-color: ${palette.gray.dark2};
+          border: none;
+          color: ${palette.green.light1};
         }
       }
 
@@ -43,20 +57,12 @@ export const Tabs = styled(ReactTabs)`
         min-width: 100px;
       }
 
-      &.tab-success {
-        color: ${props => props.theme.colors.responses.success.tabTextColor};
-      }
-
       &.tab-redirect {
         color: ${props => props.theme.colors.responses.redirect.tabTextColor};
       }
 
       &.tab-info {
         color: ${props => props.theme.colors.responses.info.tabTextColor};
-      }
-
-      &.tab-error {
-        color: ${props => props.theme.colors.responses.error.tabTextColor};
       }
     }
   }

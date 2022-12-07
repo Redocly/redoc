@@ -141,7 +141,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
       .sort((a, b) => b.score - a.score);
 
     return (
-      <SearchWrap role="search">
+      <SearchWrap role="search" data-role="redoc-search">
         {this.state.term && <ClearIcon onClick={this.clear}>×</ClearIcon>}
         <SearchIcon />
         <SearchInput

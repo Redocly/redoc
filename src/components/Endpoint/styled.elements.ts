@@ -1,4 +1,6 @@
+import { palette } from '@leafygreen-ui/palette';
 import styled from '../../styled-components';
+import { getBadgeStyles } from '../../utils/styling';
 
 export const OperationEndpointWrap = styled.div`
   cursor: pointer;
@@ -22,8 +24,7 @@ export const EndpointInfo = styled.button<{ expanded?: boolean; inverted?: boole
   cursor: pointer;
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
   border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props =>
-    props.inverted ? 'transparent' : props.theme.codeBlock.backgroundColor};
+  background-color: ${palette.gray.dark3};
   display: flex;
   white-space: nowrap;
   align-items: center;
@@ -47,12 +48,15 @@ export const HttpVerb = styled.span.attrs((props: { type: string; compact?: bool
 }))<{ type: string; compact?: boolean }>`
   font-size: ${props => (props.compact ? '0.8em' : '0.929em')};
   line-height: ${props => (props.compact ? '18px' : '20px')};
-  background-color: ${props => props.theme.colors.http[props.type] || '#999999'};
   color: #ffffff;
   padding: ${props => (props.compact ? '2px 8px' : '3px 10px')};
   text-transform: uppercase;
   font-family: ${props => props.theme.typography.headings.fontFamily};
+  font-weight: bold;
   margin: 0;
+  border: ${props => props.theme.badges.border};
+  border-radius: ${props => props.theme.badges.borderRadius};
+  ${props => getBadgeStyles(props.theme.colors.http[props.type], 'dark')}
 `;
 
 export const ServersOverlay = styled.div<{ expanded: boolean }>`
@@ -61,6 +65,7 @@ export const ServersOverlay = styled.div<{ expanded: boolean }>`
   z-index: 100;
   background: ${props => props.theme.rightPanel.servers.overlay.backgroundColor};
   color: ${props => props.theme.rightPanel.servers.overlay.textColor};
+  font-size: 13px;
   box-sizing: border-box;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.33);
   overflow: hidden;
@@ -77,11 +82,13 @@ export const ServerItem = styled.div`
 
 export const ServerUrl = styled.div`
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid ${palette.gray.dark2};
   background: ${props => props.theme.rightPanel.servers.url.backgroundColor};
+  font-family: 'Source Code Pro';
+  font-size: 13px;
   word-break: break-all;
-  color: ${props => props.theme.colors.primary.main};
+  color: ${palette.white};
   > span {
-    color: ${props => props.theme.colors.text.primary};
+    color: ${palette.white};
   }
 `;

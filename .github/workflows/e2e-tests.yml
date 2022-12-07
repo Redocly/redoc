@@ -5,6 +5,9 @@ on: [push]
 jobs:
   build-and-e2e:
     runs-on: ubuntu-latest
+    env:
+      NPM_BASE_64_AUTH: ${{ secrets.NPM_BASE_64_AUTH }}
+      NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm ci --prefix cli

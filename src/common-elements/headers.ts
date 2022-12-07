@@ -16,6 +16,9 @@ export const headerCommonMixin = level => css`
 export const H1 = styled.h1`
   ${headerCommonMixin(1)};
   color: ${({ theme }) => theme.colors.text.primary};
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
 
   ${extensionsHook('H1')};
 `;
@@ -24,6 +27,9 @@ export const H2 = styled.h2`
   ${headerCommonMixin(2)};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0 0 20px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
 
   ${extensionsHook('H2')};
 `;

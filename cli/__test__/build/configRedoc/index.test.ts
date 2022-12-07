@@ -19,7 +19,7 @@ describe('build', () => {
     try {
       const redocStaticFile = readFileSync(`${__dirname}/redoc-test.html`, 'utf8');
       expect(redocStaticFile).toContain('"options":{"disableSearch":true}');
-      expect(redocStaticFile).not.toContain('role="search"');
+      expect(redocStaticFile).not.toContain('data-role="redoc-search"');
     } catch (err) {
       expect(err.toString()).toContain('{"options":{"disableSearch":"true"}');
     }

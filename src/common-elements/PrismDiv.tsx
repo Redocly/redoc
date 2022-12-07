@@ -1,3 +1,4 @@
+import { palette } from '@leafygreen-ui/palette';
 import styled, { extensionsHook } from '../styled-components';
 
 export const PrismDiv = styled.div`
@@ -50,6 +51,7 @@ export const PrismDiv = styled.div`
 
   .token.punctuation {
     opacity: 0.7;
+    color: ${palette.white};
   }
 
   .namespace {
@@ -61,11 +63,11 @@ export const PrismDiv = styled.div`
   .token.number,
   .token.constant,
   .token.symbol {
-    color: #4a8bb3;
+    color: #2dc4ff;
   }
 
   .token.boolean {
-    color: #e64441;
+    color: #ff6f44;
   }
 
   .token.selector,
@@ -90,13 +92,13 @@ export const PrismDiv = styled.div`
   .token.entity,
   .token.url,
   .token.variable {
-    color: hsl(40, 90%, 60%);
+    color: #edb210;
   }
 
   .token.atrule,
   .token.attr-value,
   .token.keyword {
-    color: hsl(350, 40%, 70%);
+    color: #ff7dc3;
   }
 
   .token.regex,
@@ -118,6 +120,14 @@ export const PrismDiv = styled.div`
 
   .token.deleted {
     color: red;
+  }
+
+  .token.string:not(.property) {
+    color: #35de7b;
+  }
+
+  .token.string-property {
+    color: #2dc4ff;
   }
 
   ${extensionsHook('Prism')};

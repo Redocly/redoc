@@ -1,5 +1,5 @@
 describe('Search', () => {
-  const getSearchInput = () => cy.get('[role="search"] input');
+  const getSearchInput = () => cy.get('[data-role="redoc-search"] input');
   const getSearchResults = () => cy.get('[data-role="search:results"]');
   const getResult = i => cy.get('[role=search] [role=menuitem]').eq(i);
 

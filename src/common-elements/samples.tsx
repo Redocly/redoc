@@ -14,7 +14,7 @@ export const SampleControls = styled.div`
     color: inherit;
     padding: 2px 10px;
     font-family: ${({ theme }) => theme.typography.fontFamily};
-    font-size: ${({ theme }) => theme.typography.fontSize};
+    font-size: 13px;
     line-height: ${({ theme }) => theme.typography.lineHeight};
     cursor: pointer;
     outline: 0;
