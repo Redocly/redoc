@@ -10,7 +10,7 @@ export const SideMenuTitle = styled.div`
   font-size: 13px;
   font-weight: bold;
   line-height: 20px;
-  margin: 24px 16px;
+  margin: 0 16px 24px;
 `;
 
 export const RedocWrap = styled.div`

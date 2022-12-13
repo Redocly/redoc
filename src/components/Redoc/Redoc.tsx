@@ -9,7 +9,7 @@ import { AppStore } from '../../services';
 import { ApiInfo } from '../ApiInfo/';
 import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
-import { SideMenu } from '../SideMenu/SideMenu';
+import { SideMenu, SideMenuBackButton } from '../SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
 import {
   ApiContentWrap,
@@ -55,6 +55,10 @@ export class Redoc extends React.Component<RedocProps> {
             <RedocWrap className="redoc-wrap">
               <StickyResponsiveSidebar menu={menu} className="menu-content">
                 <ApiLogo info={spec.info} />
+                <SideMenuBackButton
+                  backNavigationPath={options.customOptions?.backNavigationPath}
+                  siteTitle={options.customOptions?.siteTitle}
+                />
                 <SideMenuTitle>{store.spec.info.title}</SideMenuTitle>
                 {(!options.disableSearch && (
                   <SearchBox

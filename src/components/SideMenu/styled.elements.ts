@@ -45,6 +45,15 @@ function menuItemActive(
   }
 }
 
+// The back button and currently active labels maintain a different colors
+function selectMenuLabelColor(
+  props: MenuItemLabelType & { theme: ResolvedThemeInterface },
+): string {
+  const { active, depth, isBackButton, theme } = props;
+  if (isBackButton) return palette.gray.dark1;
+  return active ? menuItemActive(depth, props, 'activeTextColor') : theme.sidebar.textColor;
+}
+
 export const MenuItemUl = styled.ul<{ expanded: boolean }>`
   margin: 0;
   padding: 0;
@@ -62,6 +71,10 @@ export const MenuItemLi = styled.li<{ depth: number }>`
   text-overflow: ellipsis;
   padding: 0;
   ${props => (props.depth === 0 ? 'margin-top: 15px' : '')};
+`;
+
+export const MenuLink = styled.a`
+  text-decoration: none;
 `;
 
 export const menuItemDepth = {
@@ -82,6 +95,7 @@ export interface MenuItemLabelType {
   depth: number;
   active: boolean;
   deprecated?: boolean;
+  isBackButton?: boolean;
   type?: string;
 }
 
@@ -92,12 +106,10 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   }),
 }))<MenuItemLabelType>`
   cursor: pointer;
-  color: ${props =>
-    props.active
-      ? menuItemActive(props.depth, props, 'activeTextColor')
-      : props.theme.sidebar.textColor};
+  color: ${props => selectMenuLabelColor(props)};
   margin: 0;
-  padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
+  ${props => props.isBackButton && 'margin-top: 16px;'}
+  padding: 6px 16px;
   ${({ depth, type, theme }) =>
     (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
@@ -112,7 +124,10 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
   ${props => (props.deprecated && deprecatedCss) || ''};
 
   &:hover {
-    color: ${props => menuItemActive(props.depth, props, 'activeTextColor')};
+    color: ${props =>
+      props.isBackButton
+        ? palette.gray.dark1
+        : menuItemActive(props.depth, props, 'activeTextColor')};
     background-color: ${palette.gray.light2};
   }
 
@@ -123,6 +138,13 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
       fill: ${({ theme }) => theme.sidebar.arrow.color};
     }
   }
+`;
+
+export const MenuBreak = styled.hr`
+  border: unset;
+  border-bottom: 1px solid ${palette.gray.light2};
+  margin: 16px 0;
+  width: 100%;
 `;
 
 export const MenuItemTitle = styled.span<{ width?: string }>`

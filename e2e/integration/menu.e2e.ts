@@ -4,7 +4,13 @@ describe('Menu', () => {
   });
 
   it('should have valid items count', () => {
-    cy.get('.menu-content').find('li').should('have.length', 34);
+    cy.get('.menu-content').find('li').should('have.length', 35);
+  });
+
+  it('should have a back button', () => {
+    cy.contains('a', 'Back to Docs')
+      .should('have.attr', 'href')
+      .and('contain', 'https://mongodb.com/docs/');
   });
 
   it('should sync active menu items while scroll', () => {
@@ -17,6 +23,7 @@ describe('Menu', () => {
       .scrollIntoView()
       .wait(100)
       .get('[role=menuitem].active')
+      .scrollIntoView()
       .children()
       .last()
       .should('have.text', 'Add a new pet to the store')
@@ -28,6 +35,7 @@ describe('Menu', () => {
       .scrollIntoView()
       .wait(100)
       .get('[role=menuitem].active')
+      .scrollIntoView()
       .children()
       .last()
       .should('have.text', 'Add a new pet to the store')
@@ -85,7 +93,7 @@ describe('Menu', () => {
     cy.url().should('include', 'deletePetBy%22Id');
   });
 
-  it.only('should encode URL when the operation IDs have backslashes', () => {
+  it('should encode URL when the operation IDs have backslashes', () => {
     cy.visit('e2e/standalone-3-1.html');
     cy.get('label span[title="pet"]').click({ multiple: true, force: true });
     cy.get('li').contains('OperationId with backslash').click({ multiple: true, force: true });

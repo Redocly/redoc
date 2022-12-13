@@ -76,6 +76,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
+                    "customOptions": Object {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
@@ -406,6 +407,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
+                    "customOptions": Object {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
@@ -723,6 +725,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "minItems": undefined,
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
+              "customOptions": Object {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
@@ -1102,6 +1105,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
+                    "customOptions": Object {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
@@ -1444,6 +1448,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
                     "allowedMdComponents": Object {},
+                    "customOptions": Object {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
@@ -1757,6 +1762,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "minItems": undefined,
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
+              "customOptions": Object {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
@@ -2095,6 +2101,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         ],
         "options": RedocNormalizedOptions {
           "allowedMdComponents": Object {},
+          "customOptions": Object {},
           "disableSearch": false,
           "downloadDefinitionUrl": undefined,
           "downloadFileName": undefined,
@@ -2463,6 +2470,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "minItems": undefined,
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
+              "customOptions": Object {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
@@ -2793,6 +2801,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "minItems": undefined,
             "options": RedocNormalizedOptions {
               "allowedMdComponents": Object {},
+              "customOptions": Object {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
@@ -3110,6 +3119,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "minItems": undefined,
       "options": RedocNormalizedOptions {
         "allowedMdComponents": Object {},
+        "customOptions": Object {},
         "disableSearch": false,
         "downloadDefinitionUrl": undefined,
         "downloadFileName": undefined,

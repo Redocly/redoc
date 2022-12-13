@@ -13,7 +13,8 @@ describe('Supporting both operation/* and parent/*/operation* urls', () => {
   it('should supporting parent/*/operation url', () => {
     cy.url().then(loc => {
       cy.visit(loc + '#tag/pet/operation/addPet');
-      cy.get('li[data-item-id="tag/pet/operation/addPet"]').should('be.visible');
+
+      cy.get('li[data-item-id="tag/pet/operation/addPet"]').scrollIntoView().should('be.visible');
     });
   });
 });
