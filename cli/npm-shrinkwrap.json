@@ -11,7 +11,6 @@
       "dependencies": {
         "chokidar": "^3.5.1",
         "handlebars": "^4.7.7",
-        "isarray": "^2.0.5",
         "mkdirp": "^1.0.4",
         "mobx": "^6.3.2",
         "node-libs-browser": "^2.2.1",
@@ -932,8 +931,7 @@
       "integrity": "sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==",
       "dependencies": {
         "base64-js": "^1.0.2",
-        "ieee754": "^1.1.4",
-        "isarray": "^1.0.0"
+        "ieee754": "^1.1.4"
       }
     },
     "node_modules/buffer-from": {
@@ -946,11 +944,6 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/buffer-xor/-/buffer-xor-1.0.3.tgz",
       "integrity": "sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk="
-    },
-    "node_modules/buffer/node_modules/isarray": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
-      "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
     },
     "node_modules/builtin-status-codes": {
       "version": "3.0.0",
@@ -1929,11 +1922,6 @@
       "resolved": "https://registry.npmjs.org/is-yarn-global/-/is-yarn-global-0.3.0.tgz",
       "integrity": "sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw=="
     },
-    "node_modules/isarray": {
-      "version": "2.0.5",
-      "resolved": "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz",
-      "integrity": "sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw=="
-    },
     "node_modules/jest-worker": {
       "version": "27.5.1",
       "resolved": "https://registry.npmjs.org/jest-worker/-/jest-worker-27.5.1.tgz",
@@ -2793,17 +2781,11 @@
       "dependencies": {
         "core-util-is": "~1.0.0",
         "inherits": "~2.0.3",
-        "isarray": "~1.0.0",
         "process-nextick-args": "~2.0.0",
         "safe-buffer": "~5.1.1",
         "string_decoder": "~1.1.1",
         "util-deprecate": "~1.0.1"
       }
-    },
-    "node_modules/readable-stream/node_modules/isarray": {
-      "version": "1.0.0",
-      "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
-      "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
     },
     "node_modules/readable-stream/node_modules/safe-buffer": {
       "version": "5.1.2",
@@ -4643,16 +4625,9 @@
       "integrity": "sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==",
       "requires": {
         "base64-js": "^1.0.2",
-        "ieee754": "^1.1.4",
-        "isarray": "^1.0.0"
+        "ieee754": "^1.1.4"
       },
-      "dependencies": {
-        "isarray": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
-          "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
-        }
-      }
+      "dependencies": {}
     },
     "buffer-from": {
       "version": "1.1.2",
@@ -5432,11 +5407,6 @@
       "resolved": "https://registry.npmjs.org/is-yarn-global/-/is-yarn-global-0.3.0.tgz",
       "integrity": "sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw=="
     },
-    "isarray": {
-      "version": "2.0.5",
-      "resolved": "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz",
-      "integrity": "sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw=="
-    },
     "jest-worker": {
       "version": "27.5.1",
       "resolved": "https://registry.npmjs.org/jest-worker/-/jest-worker-27.5.1.tgz",
@@ -6107,18 +6077,12 @@
       "requires": {
         "core-util-is": "~1.0.0",
         "inherits": "~2.0.3",
-        "isarray": "~1.0.0",
         "process-nextick-args": "~2.0.0",
         "safe-buffer": "~5.1.1",
         "string_decoder": "~1.1.1",
         "util-deprecate": "~1.0.1"
       },
       "dependencies": {
-        "isarray": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
-          "integrity": "sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE="
-        },
         "safe-buffer": {
           "version": "5.1.2",
           "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
