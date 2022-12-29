@@ -125,7 +125,6 @@ export interface MenuItemLabelType {
 }
 
 export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
-  role: 'menuitem',
   className: classnames('-depth' + props.depth, {
     active: props.active,
   }),
