@@ -73,7 +73,7 @@ export class Field extends React.Component<FieldProps> {
         <button
           onClick={this.toggle}
           onKeyPress={this.handleKeyPress}
-          aria-label="expand properties"
+          aria-label={`expand ${name}`}
         >
           <span className="property-name">{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
