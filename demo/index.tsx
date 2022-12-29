@@ -86,7 +86,7 @@ class DemoApp extends React.Component<
     let proxiedUrl = specUrl;
     if (specUrl !== DEFAULT_SPEC) {
       proxiedUrl = cors
-        ? '\\\\cors.redoc.ly/' + new URL(specUrl, window.location.href).href
+        ? 'https://cors.redoc.ly/' + new URL(specUrl, window.location.href).href
         : specUrl;
     }
     return (
