@@ -42,6 +42,7 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
   ${ShelfIcon} {
     height: ${({ theme }) => theme.schema.arrow.size};
     width: ${({ theme }) => theme.schema.arrow.size};
+    margin-top: -2px;
     polygon {
       fill: ${({ theme }) => theme.schema.arrow.color};
     }

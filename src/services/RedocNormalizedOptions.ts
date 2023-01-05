@@ -78,7 +78,7 @@ function argValueToNumber(value: number | string | undefined): number | undefine
   }
 }
 
-function argValueToExpandLevel(value?: number | string | undefined, defaultValue = 0): number {
+function argValueToExpandLevel(value?: number | string | undefined, defaultValue = 1): number {
   if (value === 'all') return Infinity;
 
   return argValueToNumber(value) || defaultValue;
