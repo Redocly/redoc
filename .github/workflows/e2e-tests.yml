@@ -1,6 +1,6 @@
 name: Tests e2e
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build-and-e2e:
