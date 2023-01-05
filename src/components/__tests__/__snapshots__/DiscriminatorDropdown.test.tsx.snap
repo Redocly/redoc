@@ -102,7 +102,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
                     "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "schemaExpansionLevel": 1,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -222,7 +222,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "schema": Object {
                         "arrow": Object {
                           "color": "#666",
-                          "size": "1.1em",
+                          "size": "1.3em",
                         },
                         "defaultDetailsWidth": "75%",
                         "labelsTextSize": "0.9em",
@@ -373,7 +373,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
                     "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "schemaExpansionLevel": 1,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -493,7 +493,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "schema": Object {
                         "arrow": Object {
                           "color": "#666",
-                          "size": "1.1em",
+                          "size": "1.3em",
                         },
                         "defaultDetailsWidth": "75%",
                         "labelsTextSize": "0.9em",
@@ -631,7 +631,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
               "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "schemaExpansionLevel": 1,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -751,7 +751,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": Object {
                   "arrow": Object {
                     "color": "#666",
-                    "size": "1.1em",
+                    "size": "1.3em",
                   },
                   "defaultDetailsWidth": "75%",
                   "labelsTextSize": "0.9em",
@@ -951,7 +951,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
                     "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "schemaExpansionLevel": 1,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -1071,7 +1071,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "schema": Object {
                         "arrow": Object {
                           "color": "#666",
-                          "size": "1.1em",
+                          "size": "1.3em",
                         },
                         "defaultDetailsWidth": "75%",
                         "labelsTextSize": "0.9em",
@@ -1234,7 +1234,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
                     "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "schemaExpansionLevel": 1,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -1354,7 +1354,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "schema": Object {
                         "arrow": Object {
                           "color": "#666",
-                          "size": "1.1em",
+                          "size": "1.3em",
                         },
                         "defaultDetailsWidth": "75%",
                         "labelsTextSize": "0.9em",
@@ -1488,7 +1488,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
               "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "schemaExpansionLevel": 1,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -1608,7 +1608,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": Object {
                   "arrow": Object {
                     "color": "#666",
-                    "size": "1.1em",
+                    "size": "1.3em",
                   },
                   "defaultDetailsWidth": "75%",
                   "labelsTextSize": "0.9em",
@@ -1767,7 +1767,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "pathInMiddlePanel": false,
           "payloadSampleIdx": 0,
           "requiredPropsFirst": false,
-          "schemaExpansionLevel": 0,
+          "schemaExpansionLevel": 1,
           "scrollYOffset": [Function],
           "showExtensions": false,
           "showObjectSchemaExamples": false,
@@ -1887,7 +1887,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "schema": Object {
               "arrow": Object {
                 "color": "#666",
-                "size": "1.1em",
+                "size": "1.3em",
               },
               "defaultDetailsWidth": "75%",
               "labelsTextSize": "0.9em",
@@ -2076,7 +2076,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
               "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "schemaExpansionLevel": 1,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -2196,7 +2196,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": Object {
                   "arrow": Object {
                     "color": "#666",
-                    "size": "1.1em",
+                    "size": "1.3em",
                   },
                   "defaultDetailsWidth": "75%",
                   "labelsTextSize": "0.9em",
@@ -2347,7 +2347,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
               "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "schemaExpansionLevel": 1,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -2467,7 +2467,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": Object {
                   "arrow": Object {
                     "color": "#666",
-                    "size": "1.1em",
+                    "size": "1.3em",
                   },
                   "defaultDetailsWidth": "75%",
                   "labelsTextSize": "0.9em",
@@ -2605,7 +2605,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "pathInMiddlePanel": false,
         "payloadSampleIdx": 0,
         "requiredPropsFirst": false,
-        "schemaExpansionLevel": 0,
+        "schemaExpansionLevel": 1,
         "scrollYOffset": [Function],
         "showExtensions": false,
         "showObjectSchemaExamples": false,
@@ -2725,7 +2725,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "schema": Object {
             "arrow": Object {
               "color": "#666",
-              "size": "1.1em",
+              "size": "1.3em",
             },
             "defaultDetailsWidth": "75%",
             "labelsTextSize": "0.9em",
