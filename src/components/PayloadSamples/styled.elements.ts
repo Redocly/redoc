@@ -15,11 +15,7 @@ export const MimeLabel = styled.div`
 
 export const DropdownLabel = styled.span`
   font-family: ${({ theme }) => theme.typography.headings.fontFamily};
-  font-size: 12px;
-  position: absolute;
-  z-index: 1;
-  top: -11px;
-  left: 12px;
+  font-size: 13px;
   font-weight: ${({ theme }) => theme.typography.fontWeightBold};
   color: ${({ theme }) => transparentize(0.3, theme.rightPanel.textColor)};
 `;

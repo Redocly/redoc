@@ -50,3 +50,7 @@ export const HeadersCaption = styled(UnderlinedHeader.withComponent('caption'))`
 export const Code = styled.strong`
   vertical-align: top;
 `;
+
+export const ResponseButton = styled.button`
+  font-size: ${props => props.theme.typography.fontSize};
+`;

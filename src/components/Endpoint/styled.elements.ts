@@ -10,6 +10,7 @@ export const OperationEndpointWrap = styled.div`
 
 export const ServerRelativeURL = styled.span`
   font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: ${props => props.theme.typography.code.fontSize};
   margin-left: 10px;
   flex: 1;
   overflow-x: hidden;
@@ -46,7 +47,7 @@ export const EndpointInfo = styled.button<{ expanded?: boolean; inverted?: boole
 export const HttpVerb = styled.span.attrs((props: { type: string; compact?: boolean }) => ({
   className: `http-verb ${props.type}`,
 }))<{ type: string; compact?: boolean }>`
-  font-size: ${props => (props.compact ? '0.8em' : '0.929em')};
+  font-size: 12px;
   line-height: ${props => (props.compact ? '18px' : '20px')};
   color: #ffffff;
   padding: ${props => (props.compact ? '2px 8px' : '3px 10px')};

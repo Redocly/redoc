@@ -159,7 +159,7 @@ const defaultTheme: ThemeInterface = {
   },
   typography: {
     fontSize: '16px',
-    lineHeight: '1.5em',
+    lineHeight: '24px',
     fontWeightRegular: '400',
     fontWeightBold: '600',
     fontWeightLight: '300',

@@ -53,8 +53,8 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
 
       return (
         <SamplesWrapper>
+          <DropdownLabel>Example</DropdownLabel>
           <DropdownWrapper>
-            <DropdownLabel>Example</DropdownLabel>
             {this.props.renderDropdown({
               value: options[activeIdx].value,
               options,

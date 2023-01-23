@@ -49,10 +49,10 @@ export class GenericChildrenSwitcher<T> extends React.Component<
 
     const Wrapper = ({ children }) =>
       this.props.label ? (
-        <DropdownWrapper>
+        <>
           <DropdownLabel>{this.props.label}</DropdownLabel>
-          {children}
-        </DropdownWrapper>
+          <DropdownWrapper>{children}</DropdownWrapper>
+        </>
       ) : (
         children
       );

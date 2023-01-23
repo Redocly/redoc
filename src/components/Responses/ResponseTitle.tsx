@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Code } from './styled.elements';
+import { Code, ResponseButton } from './styled.elements';
 import { ShelfIcon } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 
@@ -24,7 +24,7 @@ function ResponseTitleComponent({
   onClick,
 }: ResponseTitleProps): React.ReactElement {
   return (
-    <button
+    <ResponseButton
       className={className}
       onClick={(!empty && onClick) || undefined}
       aria-expanded={opened}
@@ -40,7 +40,7 @@ function ResponseTitleComponent({
       )}
       <Code>{code} </Code>
       <Markdown compact={true} inline={true} source={title} />
-    </button>
+    </ResponseButton>
   );
 }
 
