@@ -56,8 +56,8 @@ export class Redoc extends React.Component<RedocProps> {
               <StickyResponsiveSidebar menu={menu} className="menu-content">
                 <ApiLogo info={spec.info} />
                 <SideMenuBackButton
-                  backNavigationPath={options.customOptions?.backNavigationPath}
-                  siteTitle={options.customOptions?.siteTitle}
+                  backNavigationPath={options.backNavigationPath}
+                  siteTitle={options.siteTitle}
                 />
                 <SideMenuTitle>{store.spec.info.title}</SideMenuTitle>
                 {(!options.disableSearch && (

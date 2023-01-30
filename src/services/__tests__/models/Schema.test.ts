@@ -45,6 +45,32 @@ describe('Models', () => {
       expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
 
+    describe('incompatible type warnings', () => {
+      const spec = require('../fixtures/oneOfIncompatibleTypes.json');
+      let consoleWarnMock: jest.SpyInstance;
+
+      beforeEach(() => {
+        consoleWarnMock = jest.spyOn(global.console, 'warn').mockImplementation();
+      });
+
+      afterEach(() => {
+        consoleWarnMock.mockClear();
+      });
+
+      test('warnings are displayed in the console', () => {
+        parser = new OpenAPIParser(spec, undefined, opts);
+        new SchemaModel(parser, spec.components.schemas.Schema1, '', opts);
+        expect(consoleWarnMock).toBeCalled();
+      });
+
+      test('warnings are suppressed', () => {
+        const opts = new RedocNormalizedOptions({ ignoreIncompatibleTypes: true });
+        parser = new OpenAPIParser(spec, undefined, opts);
+        new SchemaModel(parser, spec.components.schemas.Schema1, '', opts);
+        expect(consoleWarnMock).not.toBeCalled();
+      });
+    });
+
     test('schemaDefinition should resolve double ref', () => {
       const spec = require('../fixtures/3.1/schemaDefinition.json');
       parser = new OpenAPIParser(spec, undefined, opts);

@@ -1,0 +1,46 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "This schema should invoke a warning because of incompatible types.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Schema1"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Schema1": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "object",
+            "oneOf": [
+              {
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

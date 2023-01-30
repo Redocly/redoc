@@ -6,12 +6,6 @@ import { setRedocLabels } from './Labels';
 import { SideNavStyleEnum } from './types';
 import type { LabelsConfigRaw, MDXComponentMeta } from './types';
 
-// Custom options needed by DOP. Add any custom options here.
-interface CustomOptions {
-  backNavigationPath?: string;
-  siteTitle?: string;
-}
-
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
@@ -63,8 +57,10 @@ export interface RedocRawOptions {
   minCharacterLengthToInitSearch?: number;
   showWebhookVerb?: boolean;
 
-  // Custom options specific to DOP's use case
-  customOptions?: CustomOptions;
+  // Custom options specific to DOP's use case. Options expected by the CLI should be added here.
+  backNavigationPath?: string;
+  ignoreIncompatibleTypes?: boolean | string;
+  siteTitle?: string;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -268,7 +264,11 @@ export class RedocNormalizedOptions {
 
   nonce?: string;
 
-  customOptions?: CustomOptions;
+  // Normalized custom options for DOP. Add custom options here if they are expected to
+  // be used by the component elsewhere.
+  backNavigationPath?: string;
+  ignoreIncompatibleTypes: boolean;
+  siteTitle?: string;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -347,7 +347,9 @@ export class RedocNormalizedOptions {
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
     this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
 
-    // No normalization needed for custom options at the moment. Expand if needed
-    this.customOptions = raw.customOptions || {};
+    // Normalization of custom DOP options
+    this.backNavigationPath = raw.backNavigationPath;
+    this.ignoreIncompatibleTypes = argValueToBoolean(raw.ignoreIncompatibleTypes);
+    this.siteTitle = raw.siteTitle;
   }
 }
