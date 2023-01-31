@@ -96,6 +96,7 @@ const defaultTheme: ThemeInterface = {
     labelsTextSize: '0.9em',
     nestingSpacing: '1em',
     nestedBackground: '#fafafa',
+    nestedPropertiesBackground: '#ffffff',
     arrow: {
       size: '1.1em',
       color: theme => theme.colors.text.secondary,
@@ -306,6 +307,7 @@ export interface ResolvedThemeInterface {
     labelsTextSize: string;
     nestingSpacing: string;
     nestedBackground: string;
+    nestedPropertiesBackground: string;
     arrow: {
       size: string;
       color: string;

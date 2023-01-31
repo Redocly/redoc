@@ -205,6 +205,6 @@ export const PropertiesTable = styled.table`
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap}
     ${InnerPropertiesWrap} {
-    background: #ffffff;
+    background: ${({ theme }) => theme.schema.nestedPropertiesBackground};
   }
 `;
