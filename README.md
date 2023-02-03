@@ -40,6 +40,37 @@ With `node` installed, run by doing the following:
 node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options=<path/to/options.json> --output=<path/to/custom/output/file/name.html>
 ```
 
+### Releasing
+
+The Redoc React component and the Redoc CLI have 2 separate release processes. Because the Redoc CLI pulls its version of Redoc from GitHub, build artifacts are included in the version tag being installed.
+
+See the sections below for release steps for each component. A release commit will be pushed to the `main` branch of `mongodb-forks/redoc` after following the steps, which will trigger a GitHub workflow. The workflow is responsible for testing, building artifacts (for the Redoc component, if applicable), and creating a tag.
+
+:warning: Note: Ensure that your local clone of the `mongodb-forks/redoc` repo is clean and up-to-date with the `main` branch. Please check your remotes to ensure that the `upstream` remote is set to the `mongodb-forks/redoc` repo. Example:
+
+```
+$ git remote -v
+upstream	https://github.com/mongodb-forks/redoc.git (fetch)
+upstream	https://github.com/mongodb-forks/redoc.git (push)
+```
+
+#### Redoc
+
+Releasing the Redoc React component can be done by:
+
+1) Go to your local clone of the `mongodb-forks/redoc` repo and ensure you are on the latest iteration of the `main` branch.
+2) Run `npm version [major | minor | patch | prerelease --preid=rc]`.
+
+#### Redoc CLI
+
+Releasing the Redoc CLI can be done by:
+
+1) Go to your local clone of the `mongodb-forks/redoc` repo and ensure you are on the latest iteration of the `main` branch.
+2) Go to the `cli/` directory.
+3) Run `npm install https://github.com/mongodb-forks/redoc.git#{VERSION_TAG}` to update the version of Redoc that the CLI uses.
+   - Example: `npm install https://github.com/mongodb-forks/redoc.git#v1.0.0`. You should see the version set in the CLI's `package.json`.
+4) Run `npm version [major | minor | patch | prerelease --preid=rc]`.
+
 ## About Redoc
 
 Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions.

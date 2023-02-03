@@ -1,14 +1,17 @@
 {
-  "name": "redoc-cli",
-  "version": "0.13.20",
+  "name": "@dop/redoc-cli",
+  "version": "0.0.0",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
-  "repository": "https://github.com/Redocly/redoc",
-  "author": "Roman Hotsiy <gotsijroman@gmail.com>",
+  "repository": "https://github.com/mongodb-forks/redoc",
   "license": "MIT",
   "engines": {
     "node": ">=12.0.0"
+  },
+  "scripts": {
+    "version": "git add -u . && git commit -m \"[RELEASE] - @dop/redoc-cli@$npm_package_version\"",
+    "postversion": "git push upstream main"
   },
   "dependencies": {
     "chokidar": "^3.5.1",

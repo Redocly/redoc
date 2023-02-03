@@ -39,3 +39,6 @@ yarn.lock
 .idea
 .vscode
 .eslintcache
+
+# Test output from redoc-cli
+redoc-*.html

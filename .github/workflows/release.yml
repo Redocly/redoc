@@ -1,0 +1,71 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'cli/package.json'
+jobs:
+  release-redoc:
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, '[RELEASE] - v') }}
+    env:
+      NPM_BASE_64_AUTH: ${{ secrets.NPM_BASE_64_AUTH }}
+      NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm ci && npm ci --prefix cli
+      - name: Create bundles
+        run: npm run bundle
+      - name: Run unit tests
+        run: npm run test
+      - name: Run e2e tests
+        run: npm run e2e
+      - name: Split commit message
+        uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ github.event.head_commit.message }}
+          separator: ' - '
+      - name: Push build artifacts and create tag
+        # Use build artifacts in current branch, but only push it to new tag.
+        # Build artifacts are needed by redoc-cli since the dependency is pulled from a GitHub branch/tag.
+        run: |
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add -f bundles/ typings/
+          git commit --no-verify -m 'Add build artifacts'
+          git tag ${{ steps.split.outputs._1 }}
+          git push --tags
+  release-redoc-cli:
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, '[RELEASE] - @dop/redoc-cli') }}
+    env:
+      NPM_BASE_64_AUTH: ${{ secrets.NPM_BASE_64_AUTH }}
+      NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm ci && npm ci --prefix cli
+      - name: Create bundles
+        run: npm run bundle
+      - name: Run unit tests
+        run: npm run test
+      - name: Run e2e tests
+        run: npm run e2e
+      - name: Split commit message
+        uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ github.event.head_commit.message }}
+          separator: ' - '
+      - name: Push build artifacts and create tag
+        run: |
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git tag ${{ steps.split.outputs._1 }}
+          git push --tags
