@@ -10,8 +10,8 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "version": "git add -u . && git commit -m \"[RELEASE] - @dop/redoc-cli@$npm_package_version\"",
-    "postversion": "git push upstream main"
+    "version": "git add -u . && git checkout -b releases/@dop/redoc-cli@$npm_package_version && git commit -m \"[RELEASE] - @dop/redoc-cli@$npm_package_version\"",
+    "postversion": "git push upstream releases/@dop/redoc-cli@$npm_package_version && git checkout - && git branch -D releases/@dop/redoc-cli@$npm_package_version"
   },
   "dependencies": {
     "chokidar": "^3.5.1",

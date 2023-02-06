@@ -1,0 +1,28 @@
+name: Create Release PR
+on:
+  push:
+    branches:
+      - 'releases/**'
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create PR
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: 'main'
+          pr_title: ${{ github.event.head_commit.message }}
+          pr_body: |
+            This is an automated PR.
+
+            Please double-check that:
+
+            - The correct component's version was updated.
+            - The version was updated as intended.
+            - The PR title is in the format "[RELEASE] - "
+            - The PR will be squashed and merged with the same PR title format.
+            - The PR commit description is empty prior to squash merging (i.e. remove "co-authored by" text, if exists).
+
+            For more information, please see the [release](https://github.com/mongodb-forks/redoc/blob/main/.github/workflows/release.yml) workflow.
+          pr_label: 'release'

@@ -1,6 +1,6 @@
 {
   "name": "@dop/redoc",
-  "version": "0.0.0",
+  "version": "0.0.1-dop-3460.0",
   "description": "ReDoc",
   "repository": {
     "type": "git",
@@ -60,8 +60,8 @@
     "docker:build": "docker build -f config/docker/Dockerfile -t redoc .",
     "prepare": "husky install",
     "pre-commit": "pretty-quick --staged && npm run lint",
-    "version": "git add -u . && git commit -m \"[RELEASE] - v$npm_package_version\"",
-    "postversion": "git push upstream main"
+    "version": "git add -u . && git checkout -b releases/v$npm_package_version && git commit -m \"[RELEASE] - v$npm_package_version\"",
+    "postversion": "git push upstream releases/v$npm_package_version && git checkout - && git branch -D releases/v$npm_package_version"
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.12.0",
