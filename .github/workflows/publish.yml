@@ -1,9 +1,6 @@
 name: Publish
 
-on:
-  push:
-    tags:
-      - v[0-9]*.[0-9]*.[0-9]*
+on: [workflow_dispatch]
 
 jobs:
   bundle:
@@ -27,27 +24,27 @@ jobs:
           name: bundles
           path: bundles
           retention-days: 1
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm ci && npm ci --prefix cli
-      - run: npm test
-  e2e-tests:
-    needs: [bundle]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm ci && npm ci --prefix cli
-      - name: Download bundled artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: bundles
-          path: bundles
-      - run: npm run e2e
+  #  unit-tests:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v3
+  #      - run: npm ci && npm ci --prefix cli
+  #      - run: npm test
+  #  e2e-tests:
+  #    needs: [bundle]
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v3
+  #      - run: npm ci && npm ci --prefix cli
+  #      - name: Download bundled artifact
+  #        uses: actions/download-artifact@v3
+  #        with:
+  #          name: bundles
+  #          path: bundles
+  #      - run: npm run e2e
   publish:
     name: Publish to NPM
-    needs: [bundle, unit-tests, e2e-tests]
+    needs: [bundle]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
@@ -71,27 +68,27 @@ jobs:
       - name: Before deploy
         run: npm ci && npm run declarations
       - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: ls
+  #        env:
+  #          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-cdn:
-    name: Publish to CDN
-    needs: [bundle, unit-tests, e2e-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Download all artifact
-        uses: actions/download-artifact@v3
-      - name: Publish to S3
-        run: npm run publish-cdn
+  #  publish-cdn:
+  #    name: Publish to CDN
+  #    needs: [bundle, unit-tests, e2e-tests]
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout repository
+  #        uses: actions/checkout@v3
+  #      - name: Configure AWS
+  #        uses: aws-actions/configure-aws-credentials@v1
+  #        with:
+  #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #          aws-region: us-east-1
+  #      - name: Download all artifact
+  #        uses: actions/download-artifact@v3
+  #      - name: Publish to S3
+  #        run: npm run publish-cdn
 
   invalidate-cache:
     name: Clear cache
