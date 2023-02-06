@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* tslint:disable:no-implicit-dependencies */
 import * as React from 'react';
-import * as updateNotifier from 'update-notifier';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -12,7 +11,7 @@ import { dirname, join, resolve, extname as getExtName } from 'path';
 import * as zlib from 'zlib';
 
 // @ts-ignore
-import { createStore, loadAndBundleSpec, Redoc } from 'redoc';
+import { createStore, loadAndBundleSpec, Redoc } from '@dop/redoc';
 
 import { watch } from 'chokidar';
 import {
@@ -64,7 +63,7 @@ export const mimeTypes = {
   '.wasm': 'application/wasm',
 };
 
-const BUNDLES_DIR = dirname(require.resolve('redoc'));
+const BUNDLES_DIR = dirname(require.resolve('@dop/redoc'));
 
 const builderForBuildCommand = yargs => {
   yargs.positional('spec', {
@@ -112,7 +111,6 @@ const handlerForBuildCommand = async (argv: any) => {
   };
 
   try {
-    notifyUpdateCliVersion();
     await bundle(argv.spec, config);
   } catch (e) {
     handleError(e);
@@ -176,7 +174,6 @@ YargsParser.command(
     };
 
     try {
-      notifyUpdateCliVersion();
       await serve(argv.host as string, argv.port as number, argv.spec as string, config);
     } catch (e) {
       handleError(e);
@@ -470,17 +467,4 @@ function getObjectOrJSON(options) {
       }
       return {};
   }
-}
-
-function notifyUpdateCliVersion() {
-  const pkg = require('./package.json');
-  const notifier = updateNotifier({
-    pkg,
-    updateCheckInterval: 0,
-    shouldNotifyInNpmScript: true,
-  });
-  notifier.notify({
-    message:
-      'Run `{updateCommand}` to update.\nChangelog: https://github.com/Redocly/redoc/releases/tag/{latestVersion}',
-  });
 }

@@ -70,8 +70,9 @@ Releasing the Redoc CLI can be done by:
 
 1) Go to your local clone of the `mongodb-forks/redoc` repo and ensure you are on the latest iteration of the `main` branch.
 2) Go to the `cli/` directory.
-3) Run `npm install https://github.com/mongodb-forks/redoc.git#{VERSION_TAG}` to update the version of Redoc that the CLI uses.
-   - Example: `npm install https://github.com/mongodb-forks/redoc.git#v1.0.0`. You should see the version set in the CLI's `package.json`.
+3) Run `npm install git+https://git@github.com/mongodb-forks/redoc#{VERSION_TAG}` to update the version of Redoc that the CLI uses.
+   - Example: `npm install git+https://git@github.com/mongodb-forks/redoc#v1.0.0`. You should see the version set in the CLI's `package.json`.
+   - The module should be installed through https. Otherwise, it may be installed via ssh, causing an error during the Autobuilder's image build.
 4) Run `npm version [major | minor | patch | prerelease --preid=rc]`.
    - A commit should have been pushed to a new `releases/@dop/redoc-cli@X.Y.Z` branch.
    - The creation of the new branch should create a new pull request.
