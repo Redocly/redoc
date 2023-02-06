@@ -1,12 +1,12 @@
 {
   "name": "@dop/redoc-cli",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "@dop/redoc-cli",
-      "version": "0.0.0",
+      "version": "1.0.0",
       "license": "MIT",
       "dependencies": {
         "@dop/redoc": "git+https://git@github.com/mongodb-forks/redoc.git#v1.0.0",
