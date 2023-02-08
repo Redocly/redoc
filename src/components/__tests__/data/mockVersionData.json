@@ -1,0 +1,8 @@
+{
+  "active": {
+    "apiVersion": "2.0",
+    "resourceVersion": "2023-01-01"
+  },
+  "rootUrl": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2",
+  "resourceVersions": ["2021-09-09", "2022-10-18", "2023-01-01"]
+}

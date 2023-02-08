@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VersionSelector should correctly render VersionSelector 1`] = `
+<div
+  class="sc-gtsrHT hgSzEu"
+>
+  <div
+    class="sc-dlnjwi kBpWeg"
+  >
+    <label
+      class="sc-eCApnc kkTJUz"
+    >
+      Version Selector: v2.0
+    </label>
+    <button
+      aria-labelledby="View a different version of documentation."
+      class="sc-hKFxyN hYrDYQ"
+    >
+      <div
+        class="sc-iCoGMd fgtoGu"
+      >
+        <div>
+          <div>
+            2023-01-01
+          </div>
+        </div>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline
+            points="6 9 12 15 18 9"
+          />
+        </svg>
+      </div>
+    </button>
+  </div>
+  <div
+    aria-labelledby="View a different version of documentation."
+    class="sc-jrsJWt ofjNY"
+    role="listbox"
+    tabindex="-1"
+  >
+    <div>
+      <ul
+        class="sc-gKAaRy iQghMf"
+      >
+        <li
+          aria-selected="false"
+          class="sc-fujyAs iIVhNL"
+          role="option"
+          tabindex="0"
+        >
+          <span
+            class="sc-kEqXSa cBTyJc"
+          />
+          <span
+            class="sc-pNWdM irvinq"
+          >
+            2021-09-09
+          </span>
+        </li>
+        <li
+          aria-selected="false"
+          class="sc-fujyAs iIVhNL"
+          role="option"
+          tabindex="0"
+        >
+          <span
+            class="sc-kEqXSa cBTyJc"
+          />
+          <span
+            class="sc-pNWdM irvinq"
+          >
+            2022-10-18
+          </span>
+        </li>
+        <li
+          aria-selected="true"
+          class="sc-fujyAs Ywdfd"
+          role="option"
+          selected=""
+          tabindex="0"
+        >
+          <svg
+            aria-label="Checkmark Icon"
+            class="sc-iqAclL ejyrfD"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M6.30583 9.05037L11.7611 3.59509C12.1516 3.20457 12.7848 3.20457 13.1753 3.59509L13.8824 4.3022C14.273 4.69273 14.273 5.32589 13.8824 5.71642L6.81525 12.7836C6.38819 13.2106 5.68292 13.1646 5.31505 12.6856L2.26638 8.71605C1.92998 8.27804 2.01235 7.65025 2.45036 7.31385L3.04518 6.85702C3.59269 6.43652 4.37742 6.53949 4.79792 7.087L6.30583 9.05037Z"
+              fill="currentColor"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <span
+            class="sc-pNWdM irvinq"
+          >
+            2023-01-01
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
