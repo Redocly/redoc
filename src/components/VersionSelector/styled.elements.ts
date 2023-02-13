@@ -129,13 +129,15 @@ export const enabledOptionStyle = css`
   }
 `;
 
-export const StyledLi = styled.li.attrs<{ selected: boolean; disabled?: boolean }>(
-  ({ selected }) => ({
-    role: 'option',
-    'aria-selected': selected,
-    tabIndex: '0',
-  }),
-)<{ selected: boolean; disabled?: boolean }>`
+export const StyledLi = styled.li.attrs<{
+  selected: boolean;
+  hovered?: boolean;
+  disabled?: boolean;
+}>(({ selected }) => ({
+  role: 'option',
+  'aria-selected': selected,
+  tabIndex: '0',
+}))<{ selected: boolean; hovered?: boolean; disabled?: boolean }>`
   display: flex;
   width: 100%;
   outline: none;
@@ -147,20 +149,24 @@ export const StyledLi = styled.li.attrs<{ selected: boolean; disabled?: boolean 
   color: ${palette.gray.dark3};
 
   font-weight: ${props => (props.selected ? `bold` : `normal`)};
-
-  &:before {
-    content: '';
-    position: absolute;
-    transform: scaleY(0.3);
-    top: 7px;
-    bottom: 7px;
-    left: 0;
-    right: 0;
-    width: 4px;
-    border-radius: 0px 4px 4px 0px;
-    opacity: 0;
-    transition: all ${transitionDuration.default}ms ease-in-out;
-  }
+  ${props =>
+    props.hovered &&
+    ` 
+      color: #083C90; 
+      backgroundColor: #E1F7FF  
+      &:before {
+      content: '';
+      position: absolute;
+      transform: scaleY(0.3);
+      top: 7px;
+      bottom: 7px;
+      left: 0;
+      right: 0;
+      width: 4px;
+      border-radius: 0px 4px 4px 0px;
+      opacity: 0;
+      transition: all ${transitionDuration.default}ms ease-in-out;
+    }`}
 
   ${props => (props.disabled ? disabledOptionStyle : enabledOptionStyle)}
 `;
