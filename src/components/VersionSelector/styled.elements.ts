@@ -117,7 +117,7 @@ export const enabledOptionStyle = css`
     background-color: ${palette.gray.light2};
   }
 
-  &:focus-visible {
+  &:focus {
     color: ${palette.blue.dark2};
     background-color: ${palette.blue.light3};
 
@@ -131,13 +131,13 @@ export const enabledOptionStyle = css`
 
 export const StyledLi = styled.li.attrs<{
   selected: boolean;
-  hovered?: boolean;
   disabled?: boolean;
+  focused?: boolean;
 }>(({ selected }) => ({
   role: 'option',
   'aria-selected': selected,
   tabIndex: '0',
-}))<{ selected: boolean; hovered?: boolean; disabled?: boolean }>`
+}))<{ selected: boolean; disabled?: boolean }>`
   display: flex;
   width: 100%;
   outline: none;
@@ -149,24 +149,20 @@ export const StyledLi = styled.li.attrs<{
   color: ${palette.gray.dark3};
 
   font-weight: ${props => (props.selected ? `bold` : `normal`)};
-  ${props =>
-    props.hovered &&
-    ` 
-      color: #083C90; 
-      backgroundColor: #E1F7FF  
-      &:before {
-      content: '';
-      position: absolute;
-      transform: scaleY(0.3);
-      top: 7px;
-      bottom: 7px;
-      left: 0;
-      right: 0;
-      width: 4px;
-      border-radius: 0px 4px 4px 0px;
-      opacity: 0;
-      transition: all ${transitionDuration.default}ms ease-in-out;
-    }`}
+
+  &:before {
+    content: '';
+    position: absolute;
+    transform: scaleY(0.3);
+    top: 7px;
+    bottom: 7px;
+    left: 0;
+    right: 0;
+    width: 4px;
+    border-radius: 0px 4px 4px 0px;
+    opacity: 0;
+    transition: all ${transitionDuration.default}ms ease-in-out;
+  }
 
   ${props => (props.disabled ? disabledOptionStyle : enabledOptionStyle)}
 `;
