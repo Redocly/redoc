@@ -40,6 +40,35 @@ With `node` installed, run by doing the following:
 node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options=<path/to/options.json> --output=<path/to/custom/output/file/name.html>
 ```
 
+#### Versioned Options in the CLI
+
+If wanting to add versioning support in your build, you must create a JSON file with the following data structure (replace example values with any mock values):
+
+```
+{
+  "active": {
+    "apiVersion": "2.0",
+    "resourceVersion": "2023-02-14"
+  },
+  "rootUrl": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2",
+  "resourceVersions": ["2022-09-09", "2022-10-18", "2023-02-14"]
+}
+```
+
+After doing so, run the build much the same as above but with the following option added:
+Note: the path to the version data option JSON file should be referenced in relation to the `redoc/cli` directory
+
+```
+--options.versionData=<path/to/mock/data/file.json/from/cli/directory>
+```
+
+Such as: 
+Note: this is referencing a JSON file in the root directory
+
+```
+node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options.versionData=../version-data.json
+```
+
 ### Releasing
 
 The Redoc React component and the Redoc CLI have 2 separate release processes. Because the Redoc CLI pulls its version of Redoc from GitHub, build artifacts are included in the version tag being installed.

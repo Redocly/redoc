@@ -9,6 +9,7 @@ import {
   StyledMenuList,
   StyledDisplay,
   StyledDropdown,
+  StyledSelected,
 } from './styled.elements';
 import { Option } from './Option';
 import { VersionSelectorProps } from './types';
@@ -42,9 +43,7 @@ const VersionSelectorComponent = ({
         {description && <StyledDescription>{description}</StyledDescription>}
         <StyledButton onClick={() => setOpen(!open)}>
           <StyledDisplay>
-            <div>
-              <div>{resourceVersions[selectedIdx]}</div>
-            </div>
+            <StyledSelected>{resourceVersions[selectedIdx]}</StyledSelected>
             <ArrowIcon open={open} />
           </StyledDisplay>
         </StyledButton>

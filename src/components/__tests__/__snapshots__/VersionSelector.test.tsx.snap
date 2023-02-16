@@ -17,12 +17,12 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
       class="sc-hKFxyN hYrDYQ"
     >
       <div
-        class="sc-iCoGMd fgtoGu"
+        class="sc-iCoGMd gojxeT"
       >
-        <div>
-          <div>
-            2023-01-01
-          </div>
+        <div
+          class="sc-fujyAs hQJiDC"
+        >
+          2023-01-01
         </div>
         <svg
           fill="none"
@@ -44,7 +44,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
   </div>
   <div
     aria-labelledby="View a different version of documentation."
-    class="sc-jrsJWt ofjNY"
+    class="sc-kEqXSa litKaz"
     role="listbox"
     tabindex="-1"
   >
@@ -54,44 +54,44 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
       >
         <li
           aria-selected="false"
-          class="sc-fujyAs iIVhNL"
+          class="sc-pNWdM glxGCd"
           role="option"
           tabindex="0"
         >
           <span
-            class="sc-kEqXSa cBTyJc"
+            class="sc-iqAclL dXUzZL"
           />
           <span
-            class="sc-pNWdM irvinq"
+            class="sc-jrsJWt hDLwjI"
           >
             2021-09-09
           </span>
         </li>
         <li
           aria-selected="false"
-          class="sc-fujyAs iIVhNL"
+          class="sc-pNWdM glxGCd"
           role="option"
           tabindex="0"
         >
           <span
-            class="sc-kEqXSa cBTyJc"
+            class="sc-iqAclL dXUzZL"
           />
           <span
-            class="sc-pNWdM irvinq"
+            class="sc-jrsJWt hDLwjI"
           >
             2022-10-18
           </span>
         </li>
         <li
           aria-selected="true"
-          class="sc-fujyAs Ywdfd"
+          class="sc-pNWdM jlRKTH"
           role="option"
           selected=""
           tabindex="0"
         >
           <svg
             aria-label="Checkmark Icon"
-            class="sc-iqAclL ejyrfD"
+            class="sc-crzoAE gdYtkZ"
             height="16"
             role="img"
             viewBox="0 0 16 16"
@@ -105,7 +105,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
             />
           </svg>
           <span
-            class="sc-pNWdM irvinq"
+            class="sc-jrsJWt hDLwjI"
           >
             2023-01-01
           </span>

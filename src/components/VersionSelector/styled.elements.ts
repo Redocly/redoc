@@ -10,7 +10,7 @@ const transitionDuration = {
   slower: 300,
 } as const;
 
-export const ArrowIcon = styled(ArrowSvg)`
+export const ArrowIcon = styled(ArrowSvg)<{ open: boolean }>`
   position: absolute;
   pointer-events: none;
   z-index: 1;
@@ -101,10 +101,15 @@ export const StyledMenuList = styled.ul`
 `;
 
 export const StyledDisplay = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 16px;
   gap: 6px;
   padding: 0 4px 0 12px;
+`;
+
+export const StyledSelected = styled.div`
+  display: flex;
 `;
 
 export const disabledOptionStyle = css`

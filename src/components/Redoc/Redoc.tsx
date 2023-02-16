@@ -21,6 +21,7 @@ import {
 
 import { SearchBox } from '../SearchBox/SearchBox';
 import { StoreProvider } from '../StoreBuilder';
+import { VersionSelector } from '../VersionSelector';
 
 export interface RedocProps {
   store: AppStore;
@@ -69,6 +70,9 @@ export class Redoc extends React.Component<RedocProps> {
                   />
                 )) ||
                   null}
+                {options.versionData && typeof options.versionData == 'object' && (
+                  <VersionSelector {...options.versionData} />
+                )}
                 <SideMenu menu={menu} />
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">

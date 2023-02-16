@@ -4,7 +4,7 @@ describe('Menu', () => {
   });
 
   it('should have valid items count', () => {
-    cy.get('.menu-content').find('li').should('have.length', 35);
+    cy.get('.menu-content').find('li').not('[role="option"]').should('have.length', 35);
   });
 
   it('should have a back button', () => {
