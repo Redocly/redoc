@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 14
       - name: Install dependencies
         run: npm ci && npm ci --prefix cli
       - name: Create bundles
@@ -48,6 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+        with:
+          node-version: 14
       - name: Install dependencies
         run: npm ci && npm ci --prefix cli
       - name: Create bundles
