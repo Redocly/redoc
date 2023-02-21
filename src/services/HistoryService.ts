@@ -94,6 +94,6 @@ export class HistoryService {
   }
 
   private getHrefSplitCharacter(): string {
-    return this.shouldQueryParamNavigationBeUsed() ? '?redoc' : '#';
+    return this.shouldQueryParamNavigationBeUsed() ? '?redoc=' : '#';
   }
 }
