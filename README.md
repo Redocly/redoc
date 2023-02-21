@@ -251,6 +251,7 @@ You can use all of the following options with the standalone version of the <red
   * **path-only**: displays a path in the sidebar navigation item.
   * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 * `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
+* `userQueryParamToNavigate` - when set to `true`, the navigation in the URL will now use query param instead with the key `redoc`
 
 ### `<redoc>` theme object
 * `spacing`
