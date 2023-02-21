@@ -94,14 +94,6 @@ export class HistoryService {
   }
 
   private getHrefSplitCharacter(): string {
-    return this.shouldQueryParamNavigationBeUsed() ? '#' : '?redoc';
+    return this.shouldQueryParamNavigationBeUsed() ? '?redoc' : '#';
   }
-}
-
-export const history = new HistoryService();
-
-if (module.hot) {
-  module.hot.dispose(() => {
-    history.dispose();
-  });
 }

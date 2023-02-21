@@ -2,7 +2,7 @@ import { action, observable, makeObservable } from 'mobx';
 import { querySelector } from '../utils/dom';
 import { escapeHTMLAttrChars, flattenByProp, SECURITY_SCHEMES_SECTION_PREFIX } from '../utils';
 
-import { history as historyInst, HistoryService } from './HistoryService';
+import { HistoryService } from './HistoryService';
 import { GROUP_DEPTH } from './MenuBuilder';
 
 import type { SpecStore } from './models';
@@ -21,7 +21,7 @@ export class MenuStore {
    * Statically try update scroll position
    * Used before hydrating from server-side rendered html to scroll page faster
    */
-  static updateOnHistory(id: string = historyInst.currentId, scroll: ScrollService) {
+  static updateOnHistory(id: string, scroll: ScrollService) {
     if (!id) {
       return;
     }
