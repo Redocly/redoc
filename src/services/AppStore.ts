@@ -2,7 +2,7 @@ import { Lambda, observe } from 'mobx';
 
 import type { OpenAPISpec } from '../types';
 import { loadAndBundleSpec } from '../utils/loadAndBundleSpec';
-import { history } from './HistoryService';
+import { HistoryService } from './HistoryService';
 import { MarkerService } from './MarkerService';
 import { MenuStore } from './MenuStore';
 import { SpecStore } from './models';
@@ -53,6 +53,7 @@ export class AppStore {
   options: RedocNormalizedOptions;
   search?: SearchStore<string>;
   marker = new MarkerService();
+  history;
 
   private scroll: ScrollService;
   private disposer: Lambda | null = null;
@@ -65,16 +66,17 @@ export class AppStore {
   ) {
     this.rawOptions = options;
     this.options = new RedocNormalizedOptions(options, DEFAULT_OPTIONS);
+    this.history = new HistoryService(this.options);
     this.scroll = new ScrollService(this.options);
 
     // update position statically based on hash (in case of SSR)
-    MenuStore.updateOnHistory(history.currentId, this.scroll);
+    MenuStore.updateOnHistory(this.history.currentId, this.scroll);
 
     // override the openApi standard to version 3.1.0
     // TODO remove when fully supporting open API 3.1.0
     spec.openapi = "3.1.0";
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll, history);
+    this.menu = new MenuStore(this.spec, this.scroll, this.history);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
