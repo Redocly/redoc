@@ -177,7 +177,7 @@ to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
-For more information on Redoc's commmand-line interface, refer to
+For more information on Redoc's command-line interface, refer to
 [**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
