@@ -1,5 +1,7 @@
 # redoc-cli
 
+**DEPRECATED: this package is deprecated. Use `npx @redocly/cli build-docs <api>` instead.**
+
 **[ReDoc](https://github.com/Redocly/redoc)'s Command Line Interface**
 
 ## Installation

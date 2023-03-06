@@ -1,7 +1,7 @@
 describe('Search', () => {
   const getSearchInput = () => cy.get('[role="search"] input');
   const getSearchResults = () => cy.get('[data-role="search:results"]');
-  const getResult = i => cy.get('[role=search] [role=menuitem]').eq(i);
+  const getResult = i => cy.get('[role=search] label').eq(i);
 
   beforeEach(() => {
     cy.visit('e2e/standalone.html');
