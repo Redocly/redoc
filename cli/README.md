@@ -18,7 +18,7 @@ The two following commands are available:
   and can watch the spec (`--watch`) to automatically reload the page whenever it changes.\
   Deprecated. Use `npx @redocly/cli preview-docs [spec]`
 - `redoc-cli bundle [spec]` - bundles `spec` and Redoc into a **zero-dependency** HTML file.\
-  Deprecated. Use Use "build" command instead.
+  Deprecated. Use "build" command instead.
 - `redoc-cli build [spec]` - build `spec` and Redoc into a **zero-dependency** HTML file.
 
 Some examples:
