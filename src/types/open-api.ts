@@ -1,4 +1,4 @@
-import { Omit } from './index';
+import type { Omit } from './index';
 
 export interface OpenAPISpec {
   openapi: string;

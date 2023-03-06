@@ -1743,6 +1743,9 @@ culpa qui officia deserunt mollit anim id est laborum.
       },
     },
   },
+  "security": Array [
+    Object {},
+  ],
   "servers": Array [
     Object {
       "description": "Default server",
@@ -3729,6 +3732,9 @@ culpa qui officia deserunt mollit anim id est laborum.
       },
     },
   },
+  "security": Array [
+    Object {},
+  ],
   "servers": Array [
     Object {
       "description": "Default server",

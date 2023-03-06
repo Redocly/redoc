@@ -8,7 +8,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
-import { getSerializedValue } from '../../utils';
+import { getSerializedValue, isObject } from '../../utils';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
@@ -52,6 +52,10 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
     return null;
   }, [field, showExamples]);
 
+  const defaultValue = isObject(schema.default)
+    ? getSerializedValue(field, schema.default).replace(`${field.name}=`, '')
+    : schema.default;
+
   return (
     <div>
       <div>
@@ -92,7 +96,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
           <Badge type="warning"> {l('deprecated')} </Badge>
         </div>
       )}
-      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={schema.default} />
+      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />
       {!renderDiscriminatorSwitch && (
         <EnumValues isArrayType={isArrayType} values={schema.enum} />
       )}{' '}

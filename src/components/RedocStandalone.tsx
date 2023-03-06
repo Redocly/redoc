@@ -34,7 +34,12 @@ export const RedocStandalone = function (props: RedocStandaloneProps) {
 
   return (
     <ErrorBoundary>
-      <StoreBuilder spec={spec} specUrl={specUrl} options={options} onLoaded={onLoaded}>
+      <StoreBuilder
+        spec={spec ? { ...spec } : undefined}
+        specUrl={specUrl}
+        options={options}
+        onLoaded={onLoaded}
+      >
         {({ loading, store }) =>
           !loading ? (
             <Redoc store={store!} />
