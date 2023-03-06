@@ -805,11 +805,17 @@ paths:
       parameters:
         - name: username
           in: path
-          description: name that need to be deleted
+          description: name that need to be updated
           required: true
           schema:
             type: string
       responses:
+        '200':
+          description: User is updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         '400':
           description: Invalid user supplied
         '404':
@@ -835,6 +841,8 @@ paths:
           schema:
             type: string
       responses:
+        '204':
+          description: User is deleted
         '400':
           description: Invalid username supplied
         '404':
