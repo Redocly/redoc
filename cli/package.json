@@ -1,6 +1,6 @@
 {
   "name": "redoc-cli",
-  "version": "0.13.20",
+  "version": "0.13.21",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
@@ -11,6 +11,7 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
+    "boxen": "5.1.2",
     "chokidar": "^3.5.1",
     "handlebars": "^4.7.7",
     "mkdirp": "^1.0.4",
@@ -18,9 +19,8 @@
     "node-libs-browser": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "redoc": "2.0.0-rc.77",
+    "redoc": "2.0.0",
     "styled-components": "^5.3.0",
-    "update-notifier": "^5.0.1",
     "yargs": "^17.3.1"
   },
   "publishConfig": {
