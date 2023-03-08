@@ -30,7 +30,11 @@ export class HistoryService {
     if (!id) {
       return '';
     }
-    return this.getHrefSplitCharacter() + id;
+    if (this.shouldQueryParamNavigationBeUsed()) {
+      return this.getFullUrl(id);
+    } else {
+      return '#' + id;
+    }
   }
 
   subscribe(cb): () => void {
@@ -65,19 +69,23 @@ export class HistoryService {
       return;
     }
     if (rewriteHistory) {
-      window.history.replaceState(
-        null,
-        '',
-        window.location.href.split(this.getHrefSplitCharacter())[0] + this.linkForId(id),
-      );
+      if (this.shouldQueryParamNavigationBeUsed()) {
+        window.history.replaceState(null, '', this.getFullUrl(id));
+      } else {
+        window.history.replaceState(
+          null,
+          '',
+          window.location.href.split('#')[0] + this.linkForId(id),
+        );
+      }
 
       return;
     }
-    window.history.pushState(
-      null,
-      '',
-      window.location.href.split(this.getHrefSplitCharacter())[0] + this.linkForId(id),
-    );
+    if (this.shouldQueryParamNavigationBeUsed()) {
+      window.history.pushState(null, '', this.getFullUrl(id));
+    } else {
+      window.history.pushState(null, '', window.location.href.split('#')[0] + this.linkForId(id));
+    }
     this.emit();
   }
 
@@ -93,7 +101,19 @@ export class HistoryService {
     return '';
   }
 
-  private getHrefSplitCharacter(): string {
-    return this.shouldQueryParamNavigationBeUsed() ? '?redoc=' : '#';
+  private getFullUrl(id: string): string {
+    const url = this.getUrl();
+    url.searchParams.set('redoc', id);
+    return url.toString();
   }
+
+  private getUrl(): URL {
+    return new URL(window.location.href);
+  }
+
+  // private getQueryParamKey(): void {
+  //   let searchParams = new URLSearchParams(window.location.search);
+  //   searchParams.get('redoc')
+  //
+  // }
 }
