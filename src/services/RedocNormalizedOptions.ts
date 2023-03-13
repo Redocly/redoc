@@ -61,7 +61,7 @@ export interface RedocRawOptions {
   backNavigationPath?: string;
   ignoreIncompatibleTypes?: boolean | string;
   siteTitle?: string;
-  versionData?: string;
+  versionData?: VersionData;
 }
 
 export interface VersionData {
@@ -279,7 +279,7 @@ export class RedocNormalizedOptions {
   backNavigationPath?: string;
   ignoreIncompatibleTypes: boolean;
   siteTitle?: string;
-  versionData?: string | VersionData;
+  versionData?: VersionData;
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };

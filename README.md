@@ -37,12 +37,20 @@ Make sure to run `npm run bundle` on the root folder of this repo before running
 With `node` installed, run by doing the following:
 
 ```
-node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options=<path/to/options.json> --output=<path/to/custom/output/file/name.html>
+node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options <path/to/options.json> --output=<path/to/custom/output/file/name.html>
 ```
 
-#### Versioned Options in the CLI
+#### Options Available to include
 
-If wanting to add versioning support in your build, you must create a JSON file with the following data structure (replace example values with any mock values):
+Custom DOP options are available to include within a local JSON file.
+
+Within your `options.json` in the root directory, specify the `siteTitle`, `backNavigationPath`, `versionData`, and/or `ignoreIncompatibleTypes` flag. 
+
+The `siteTitle` and `backNavigationPath` properties are used to personalize the `SideMenuBackButton` UI and navigation.
+
+The `ignoreIncompatibleTypes` flag will silence only "Incompatible Types" errors in the build process.
+
+The `versionData` property enables and populates the `VersionSelector` dropdown for versioned OpenAPI specs. The structure is as follows:
 
 ```
 {
@@ -55,18 +63,10 @@ If wanting to add versioning support in your build, you must create a JSON file 
 }
 ```
 
-After doing so, run the build much the same as above but with the following option added:
-Note: the path to the version data option JSON file should be referenced in relation to the `redoc/cli` directory
+After specifying all options, run the build:
 
 ```
---options.versionData=<path/to/mock/data/file.json/from/cli/directory>
-```
-
-Such as: 
-Note: this is referencing a JSON file in the root directory
-
-```
-node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options.versionData=../version-data.json
+node <path/to/redoc/cli/index.js> build <path/to/spec/file/or/url> --options options.json
 ```
 
 ### Releasing

@@ -439,22 +439,6 @@ function handleError(error: Error) {
 function getObjectOrJSON(options) {
   switch (typeof options) {
     case 'object':
-      if (options?.versionData) {
-        const { versionData: versionPath } = options;
-        const versionFilePath = resolve(__dirname, versionPath);
-        try {
-          if (existsSync(versionFilePath) && lstatSync(versionFilePath).isFile()) {
-            const versionData = JSON.parse(readFileSync(versionFilePath, 'utf-8'));
-            options.versionData = versionData;
-            console.log(`Found ${versionPath} and using version data.`);
-          }
-        } catch (e) {
-          console.log(
-            `Encountered error:\n\n${versionPath}\n\nis not a file with a valid JSON object.`,
-          );
-          handleError(e);
-        }
-      }
       return options;
     case 'string':
       try {

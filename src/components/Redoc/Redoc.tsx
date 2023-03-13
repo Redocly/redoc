@@ -70,9 +70,7 @@ export class Redoc extends React.Component<RedocProps> {
                   />
                 )) ||
                   null}
-                {options.versionData && typeof options.versionData == 'object' && (
-                  <VersionSelector {...options.versionData} />
-                )}
+                {options.versionData && <VersionSelector {...options.versionData} />}
                 <SideMenu menu={menu} />
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">
