@@ -21,19 +21,22 @@ import { useOutsideClick } from './use-outside-click';
 const VersionSelectorComponent = ({
   resourceVersions,
   active,
+  rootUrl,
   description,
 }: VersionSelectorProps): JSX.Element => {
-  const initialSelectedIdx = resourceVersions.indexOf(active.resourceVersion);
+  const selectedIdx = resourceVersions.indexOf(active.resourceVersion);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [selectedIdx, setSelectedIdx] = React.useState<number>(initialSelectedIdx);
   const menuListRef = React.useRef(null);
   useOutsideClick(menuListRef, () => {
     if (open) setOpen(false);
   });
 
-  const handleClick = (idx: number) => {
-    setSelectedIdx(idx);
-    setOpen(false);
+  const handleClick = (idx: number, resourceVersion: string) => {
+    if (idx === selectedIdx) return setOpen(false);
+
+    // navigate to resource version spec
+    const selectedResourceVersionUrl = `${rootUrl}/${resourceVersion}`;
+    window.location.href = selectedResourceVersionUrl;
   };
 
   return (
@@ -57,7 +60,7 @@ const VersionSelectorComponent = ({
                 key={`option-${i}`}
                 selected={i === selectedIdx}
                 option={option}
-                onClick={() => handleClick(i)}
+                onClick={option => handleClick(i, option)}
               />
             ))}
           </StyledMenuList>

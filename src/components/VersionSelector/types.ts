@@ -12,7 +12,7 @@ export interface VersionSelectorProps {
 export interface OptionProps {
   option: string;
   selected: boolean;
-  onClick: () => void;
+  onClick: (option: string) => void;
 }
 
 export interface ArrowIconProps {

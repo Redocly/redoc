@@ -9,12 +9,12 @@ export const Option = ({ option, selected, onClick }: OptionProps) => {
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === KEY_ENTER || event.key === KEY_SPACE) {
-      onClick();
+      onClick(option);
     }
   };
 
   return (
-    <StyledLi onClick={onClick} onKeyPress={handleKeyPress} selected={selected}>
+    <StyledLi onClick={() => onClick(option)} onKeyPress={handleKeyPress} selected={selected}>
       {selected ? <Checkmark /> : <StyledPlaceholder />}
       <StyledOptionText>{option}</StyledOptionText>
     </StyledLi>
