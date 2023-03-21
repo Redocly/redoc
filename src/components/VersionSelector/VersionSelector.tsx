@@ -59,7 +59,8 @@ const VersionSelectorComponent = ({
               <Option
                 key={`option-${i}`}
                 selected={i === selectedIdx}
-                option={option}
+                value={option}
+                option={`${option}${i === resourceVersions.length - 1 ? ' (latest)' : ''}`}
                 onClick={option => handleClick(i, option)}
               />
             ))}

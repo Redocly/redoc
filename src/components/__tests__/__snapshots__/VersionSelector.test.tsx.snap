@@ -107,7 +107,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
           <span
             class="sc-jrsJWt hDLwjI"
           >
-            2023-01-01
+            2023-01-01 (latest)
           </span>
         </li>
       </ul>

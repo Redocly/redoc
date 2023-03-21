@@ -11,6 +11,7 @@ export interface VersionSelectorProps {
 
 export interface OptionProps {
   option: string;
+  value: string;
   selected: boolean;
   onClick: (option: string) => void;
 }
