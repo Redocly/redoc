@@ -4211,6 +4211,9 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         ],
         "responses": Object {
+          "204": Object {
+            "description": "User is deleted",
+          },
           "400": Object {
             "description": "Invalid username supplied",
           },
@@ -4270,7 +4273,7 @@ culpa qui officia deserunt mollit anim id est laborum.
         "operationId": "updateUser",
         "parameters": Array [
           Object {
-            "description": "name that need to be deleted",
+            "description": "name that need to be updated",
             "in": "path",
             "name": "username",
             "required": true,
@@ -4291,6 +4294,16 @@ culpa qui officia deserunt mollit anim id est laborum.
           "required": true,
         },
         "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+            "description": "User is updated successfully",
+          },
           "400": Object {
             "description": "Invalid user supplied",
           },
