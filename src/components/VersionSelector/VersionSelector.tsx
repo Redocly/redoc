@@ -24,7 +24,9 @@ const VersionSelectorComponent = ({
   rootUrl,
   description,
 }: VersionSelectorProps): JSX.Element => {
-  const selectedIdx = resourceVersions.indexOf(active.resourceVersion);
+  const [selectedIdx, setSelectedIdx] = React.useState(
+    resourceVersions.indexOf(active.resourceVersion),
+  );
   const [open, setOpen] = React.useState<boolean>(false);
   const menuListRef = React.useRef(null);
   useOutsideClick(menuListRef, () => {
@@ -37,6 +39,8 @@ const VersionSelectorComponent = ({
     // navigate to resource version spec
     const selectedResourceVersionUrl = `${rootUrl}/${resourceVersion}`;
     window.location.href = selectedResourceVersionUrl;
+    setSelectedIdx(idx);
+    return setOpen(false);
   };
 
   return (
