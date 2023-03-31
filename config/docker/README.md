@@ -49,6 +49,7 @@ Another issue with OpenShift is that the default exposed port `80` cannot be use
 - `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) - URL to spec
 - `PORT` (default `80`) - nginx port
 - `REDOC_OPTIONS` (optional) - [`<redoc>` tag attributes](https://github.com/Redocly/redoc#redoc-tag-attributes)
+- `FONT_FAMILY_URL` (default `"https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"`) - URL to font family
 
 ## Build
 

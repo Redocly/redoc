@@ -30,6 +30,7 @@ ENV BASE_PATH=
 ENV SPEC_URL="http://petstore.swagger.io/v2/swagger.json"
 ENV PORT=80
 ENV REDOC_OPTIONS=
+ENV FONT_FAMILY_URL="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
 
 # copy files to the nginx folder
 COPY --from=0 build/bundles /usr/share/nginx/html
