@@ -24,8 +24,23 @@ const VersionSelectorComponent = ({
 }: VersionSelectorProps): JSX.Element => {
   const initialSelectedIdx = resourceVersions.indexOf(active.resourceVersion);
   const [open, setOpen] = React.useState<boolean>(false);
+  const [focusedIdx, setFocusedIdx] = React.useState<number | null>(null);
   const [selectedIdx, setSelectedIdx] = React.useState<number>(initialSelectedIdx);
+
   const menuListRef = React.useRef(null);
+
+  const options = resourceVersions.map((option, i) => {
+    return (
+      <Option
+        key={`option-${i}`}
+        selected={i === selectedIdx}
+        focused={i === focusedIdx && focusedIdx !== selectedIdx}
+        option={option}
+        onClick={() => handleClick(i)}
+      />
+    );
+  });
+
   useOutsideClick(menuListRef, () => {
     if (open) setOpen(false);
   });
@@ -33,6 +48,10 @@ const VersionSelectorComponent = ({
   const handleClick = (idx: number) => {
     setSelectedIdx(idx);
     setOpen(false);
+  };
+
+  const handleFocusChange = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    console.log(event.key);
   };
 
   return (
@@ -50,18 +69,9 @@ const VersionSelectorComponent = ({
         </StyledButton>
       </StyledSelectWrapper>
 
-      <StyledDropdown open={open}>
+      <StyledDropdown open={open} onKeyDown={handleFocusChange}>
         <div>
-          <StyledMenuList>
-            {resourceVersions.map((option, i) => (
-              <Option
-                key={`option-${i}`}
-                selected={i === selectedIdx}
-                option={option}
-                onClick={() => handleClick(i)}
-              />
-            ))}
-          </StyledMenuList>
+          <StyledMenuList>{options}</StyledMenuList>
         </div>
       </StyledDropdown>
     </StyledWrapper>

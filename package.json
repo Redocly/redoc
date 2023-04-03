@@ -32,6 +32,7 @@
     "start": "webpack serve --mode=development --env playground --hot --config demo/webpack.config.ts",
     "start:prod": "webpack serve --env playground --mode=production --config demo/webpack.config.ts",
     "start:benchmark": "webpack serve --mode=production --env.bench --config demo/webpack.config.ts",
+    "dev:vite": "vite",
     "test": "npm run unit && npm run license-check",
     "unit": "jest --coverage",
     "test:update-snapshot": "jest --updateSnapshot",
@@ -76,7 +77,7 @@
     "@types/lunr": "^2.3.3",
     "@types/mark.js": "^8.11.5",
     "@types/marked": "^4.0.3",
-    "@types/node": "^15.6.1",
+    "@types/node": "^15.14.9",
     "@types/prismjs": "^1.16.5",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.8",
@@ -151,6 +152,7 @@
     "@mdb/flora": "^0.20.5",
     "@mdx-js/react": "^1.6.22",
     "@redocly/openapi-core": "^1.0.0-beta.104",
+    "@vitejs/plugin-react": "^3.1.0",
     "classnames": "^2.3.1",
     "decko": "^1.2.0",
     "dompurify": "^2.2.8",
@@ -172,7 +174,8 @@
     "style-loader": "^3.3.1",
     "swagger2openapi": "^7.0.6",
     "theme-ui": "^0.13.1",
-    "url-template": "^2.0.8"
+    "url-template": "^2.0.8",
+    "vite": "^4.1.1"
   },
   "size-limit": [
     {
