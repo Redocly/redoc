@@ -53,9 +53,10 @@ const VersionSelectorComponent = ({
   const handleFocusChange = (event: React.KeyboardEvent<HTMLDivElement>) => {
     console.log(event.key);
   };
+  // const handleArrowKeys = () => {};
 
   return (
-    <StyledWrapper ref={menuListRef}>
+    <StyledWrapper ref={menuListRef} onKeyDown={event => console.log(event.currentTarget)}>
       <StyledSelectWrapper>
         <StyledLabel>Version Selector: v{active.apiVersion}</StyledLabel>
         {description && <StyledDescription>{description}</StyledDescription>}
