@@ -8,7 +8,6 @@ export const Option = ({ option, selected, onClick, focused }: OptionProps) => {
   const KEY_SPACE = 'SPACE';
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
-    console.log(event.key);
     if (event.key === KEY_ENTER || event.key === KEY_SPACE) {
       onClick();
     }

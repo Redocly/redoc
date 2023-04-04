@@ -116,17 +116,6 @@ export const enabledOptionStyle = css`
   &:hover {
     background-color: ${palette.gray.light2};
   }
-
-  &:focus {
-    color: ${palette.blue.dark2};
-    background-color: ${palette.blue.light3};
-
-    &:before {
-      opacity: 1;
-      transform: scaleY(1);
-      background-color: ${palette.blue.base};
-    }
-  }
 `;
 
 export const StyledLi = styled.li.attrs<{

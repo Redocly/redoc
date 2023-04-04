@@ -54,7 +54,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
       >
         <li
           aria-selected="false"
-          class="sc-fujyAs iIVhNL"
+          class="sc-fujyAs ecmaOM"
           role="option"
           tabindex="0"
         >
@@ -69,7 +69,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
         </li>
         <li
           aria-selected="false"
-          class="sc-fujyAs iIVhNL"
+          class="sc-fujyAs ecmaOM"
           role="option"
           tabindex="0"
         >
@@ -84,7 +84,7 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
         </li>
         <li
           aria-selected="true"
-          class="sc-fujyAs Ywdfd"
+          class="sc-fujyAs iplZXm"
           role="option"
           selected=""
           tabindex="0"

@@ -14,6 +14,8 @@ import { Option } from './Option';
 import { VersionSelectorProps } from './types';
 import { useOutsideClick } from './use-outside-click';
 
+type SelectorState = number | 'Before' | 'After';
+
 /**
  * Version Selector Dropdown component based structurally and stylistically off LG Select
  */
@@ -24,7 +26,7 @@ const VersionSelectorComponent = ({
 }: VersionSelectorProps): JSX.Element => {
   const initialSelectedIdx = resourceVersions.indexOf(active.resourceVersion);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [focusedIdx, setFocusedIdx] = React.useState<number | null>(null);
+  const [focusedIdx, setFocusedIdx] = React.useState<SelectorState>('Before');
   const [selectedIdx, setSelectedIdx] = React.useState<number>(initialSelectedIdx);
 
   const menuListRef = React.useRef(null);
@@ -34,7 +36,7 @@ const VersionSelectorComponent = ({
       <Option
         key={`option-${i}`}
         selected={i === selectedIdx}
-        focused={i === focusedIdx && focusedIdx !== selectedIdx}
+        focused={i === focusedIdx}
         option={option}
         onClick={() => handleClick(i)}
       />
@@ -42,7 +44,9 @@ const VersionSelectorComponent = ({
   });
 
   useOutsideClick(menuListRef, () => {
+    console.log('outside click');
     if (open) setOpen(false);
+    setFocusedIdx(0);
   });
 
   const handleClick = (idx: number) => {
@@ -51,12 +55,42 @@ const VersionSelectorComponent = ({
   };
 
   const handleFocusChange = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(event.key);
+    const { key, shiftKey } = event;
+
+    console.log(key);
+    console.log(focusedIdx);
+
+    if (key === 'ArrowDown' || (key === 'Tab' && !shiftKey)) {
+      // if we go down when we are already past the end, don't do anything
+      if (focusedIdx === 'After') return;
+
+      if (focusedIdx === 'Before') {
+        setOpen(true);
+        setFocusedIdx(0);
+      } else if (focusedIdx === resourceVersions.length - 1) {
+        setOpen(false);
+        setFocusedIdx('After');
+      } else {
+        setFocusedIdx(focusedIdx + 1);
+      }
+    } else if (key === 'ArrowUp' || (key === 'Tab' && shiftKey)) {
+      // if we go down when we are already past the end, don't do anything
+      if (focusedIdx === 'Before') return;
+
+      if (focusedIdx === 'After') {
+        setOpen(true);
+        setFocusedIdx(resourceVersions.length - 1);
+      } else if (0) {
+        setOpen(false);
+        setFocusedIdx('Before');
+      } else {
+        setFocusedIdx(focusedIdx - 1);
+      }
+    }
   };
-  // const handleArrowKeys = () => {};
 
   return (
-    <StyledWrapper ref={menuListRef} onKeyDown={event => console.log(event.currentTarget)}>
+    <StyledWrapper onKeyDown={handleFocusChange} ref={menuListRef}>
       <StyledSelectWrapper>
         <StyledLabel>Version Selector: v{active.apiVersion}</StyledLabel>
         {description && <StyledDescription>{description}</StyledDescription>}
@@ -70,7 +104,7 @@ const VersionSelectorComponent = ({
         </StyledButton>
       </StyledSelectWrapper>
 
-      <StyledDropdown open={open} onKeyDown={handleFocusChange}>
+      <StyledDropdown open={open}>
         <div>
           <StyledMenuList>{options}</StyledMenuList>
         </div>
