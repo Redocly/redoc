@@ -14,8 +14,6 @@ import { Option } from './Option';
 import { VersionSelectorProps } from './types';
 import { useOutsideClick } from './use-outside-click';
 
-type SelectorState = number | 'Before' | 'After';
-
 /**
  * Version Selector Dropdown component based structurally and stylistically off LG Select
  */
@@ -26,7 +24,7 @@ const VersionSelectorComponent = ({
 }: VersionSelectorProps): JSX.Element => {
   const initialSelectedIdx = resourceVersions.indexOf(active.resourceVersion);
   const [open, setOpen] = React.useState<boolean>(false);
-  const [focusedIdx, setFocusedIdx] = React.useState<SelectorState>('Before');
+  const [focusedIdx, setFocusedIdx] = React.useState<number>(-1);
   const [selectedIdx, setSelectedIdx] = React.useState<number>(initialSelectedIdx);
 
   const menuListRef = React.useRef(null);
@@ -57,35 +55,35 @@ const VersionSelectorComponent = ({
   const handleFocusChange = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key, shiftKey } = event;
 
-    console.log(key);
-    console.log(focusedIdx);
-
     if (key === 'ArrowDown' || (key === 'Tab' && !shiftKey)) {
       // if we go down when we are already past the end, don't do anything
-      if (focusedIdx === 'After') return;
+      if (focusedIdx === resourceVersions.length) return;
 
-      if (focusedIdx === 'Before') {
+      if (focusedIdx === -1) {
+        // when first entering the dropdown via the down arrow key or tab,
+        // we want to open the modal
         setOpen(true);
-        setFocusedIdx(0);
       } else if (focusedIdx === resourceVersions.length - 1) {
+        // if we are at the last element of the dropdown, and attempt to go
+        // down again, we want to close the dropdown
         setOpen(false);
-        setFocusedIdx('After');
-      } else {
-        setFocusedIdx(focusedIdx + 1);
       }
+      setFocusedIdx(focusedIdx + 1);
     } else if (key === 'ArrowUp' || (key === 'Tab' && shiftKey)) {
       // if we go down when we are already past the end, don't do anything
-      if (focusedIdx === 'Before') return;
+      if (focusedIdx === -1) return;
 
-      if (focusedIdx === 'After') {
+      if (focusedIdx === resourceVersions.length) {
+        // in this scenario, we are entering the dropdown from below
+        // we open the dropdown and start from the bottom
         setOpen(true);
-        setFocusedIdx(resourceVersions.length - 1);
-      } else if (0) {
+      } else if (focusedIdx === 0) {
+        // if we reach the first element in the drop down, and we attempt to go up again,
+        // we want to close the dropdown
         setOpen(false);
-        setFocusedIdx('Before');
-      } else {
-        setFocusedIdx(focusedIdx - 1);
       }
+
+      setFocusedIdx(focusedIdx - 1);
     }
   };
 
