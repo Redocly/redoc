@@ -22,9 +22,7 @@ describe('VersionSelector', () => {
   it('should correctly render VersionSelector', () => {
     const wrapper = render(<VersionSelector {...versionData} />);
     expect(wrapper).toMatchSnapshot();
-    expect(wrapper.find('label').text()).toBe(
-      `Version Selector: v${versionData.active.apiVersion}`,
-    );
+    expect(wrapper.find('label').text()).toBe(`Resource Version:`);
     expect(wrapper.find('button').text()).toBe(versionData.resourceVersions.slice(-1)[0]);
   });
 

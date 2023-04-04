@@ -46,7 +46,7 @@ const VersionSelectorComponent = ({
   return (
     <StyledWrapper ref={menuListRef}>
       <StyledSelectWrapper>
-        <StyledLabel>Version Selector: v{active.apiVersion}</StyledLabel>
+        <StyledLabel>Resource Version:</StyledLabel>
         {description && <StyledDescription>{description}</StyledDescription>}
         <StyledButton onClick={() => setOpen(!open)}>
           <StyledDisplay>

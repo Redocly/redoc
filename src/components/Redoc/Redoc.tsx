@@ -60,7 +60,10 @@ export class Redoc extends React.Component<RedocProps> {
                   backNavigationPath={options.backNavigationPath}
                   siteTitle={options.siteTitle}
                 />
-                <SideMenuTitle>{store.spec.info.title}</SideMenuTitle>
+                <SideMenuTitle>
+                  {store.spec.info.title}
+                  {options.versionData && ` ${options.versionData.active.apiVersion}`}
+                </SideMenuTitle>
                 {(!options.disableSearch && (
                   <SearchBox
                     search={search!}
