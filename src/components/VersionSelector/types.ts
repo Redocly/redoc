@@ -10,6 +10,7 @@ export interface VersionSelectorProps {
 }
 
 export interface OptionProps {
+  focused: boolean;
   option: string;
   value: string;
   selected: boolean;

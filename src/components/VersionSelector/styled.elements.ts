@@ -121,26 +121,17 @@ export const enabledOptionStyle = css`
   &:hover {
     background-color: ${palette.gray.light2};
   }
-
-  &:focus-visible {
-    color: ${palette.blue.dark2};
-    background-color: ${palette.blue.light3};
-
-    &:before {
-      opacity: 1;
-      transform: scaleY(1);
-      background-color: ${palette.blue.base};
-    }
-  }
 `;
 
-export const StyledLi = styled.li.attrs<{ selected: boolean; disabled?: boolean }>(
-  ({ selected }) => ({
-    role: 'option',
-    'aria-selected': selected,
-    tabIndex: '0',
-  }),
-)<{ selected: boolean; disabled?: boolean }>`
+export const StyledLi = styled.li.attrs<{
+  selected: boolean;
+  disabled?: boolean;
+  focused?: boolean;
+}>(({ selected }) => ({
+  role: 'option',
+  'aria-selected': selected,
+  tabIndex: '0',
+}))<{ selected: boolean; disabled?: boolean; focused?: boolean }>`
   display: flex;
   width: 100%;
   outline: none;
@@ -150,9 +141,11 @@ export const StyledLi = styled.li.attrs<{ selected: boolean; disabled?: boolean 
   padding: 8px 12px;
   cursor: pointer;
   color: ${palette.gray.dark3};
-
+  ${props =>
+    props.focused &&
+    `color: ${palette.blue.dark2};
+    background-color: ${palette.blue.light3};`}
   font-weight: ${props => (props.selected ? `bold` : `normal`)};
-
   &:before {
     content: '';
     position: absolute;
@@ -165,8 +158,14 @@ export const StyledLi = styled.li.attrs<{ selected: boolean; disabled?: boolean 
     border-radius: 0px 4px 4px 0px;
     opacity: 0;
     transition: all ${transitionDuration.default}ms ease-in-out;
+    ${props =>
+      props.focused &&
+      `
+      opacity: 1;
+      transform: scaleY(1);
+      background-color: ${palette.blue.base};
+      `}
   }
-
   ${props => (props.disabled ? disabledOptionStyle : enabledOptionStyle)}
 `;
 
