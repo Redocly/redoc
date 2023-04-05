@@ -1,6 +1,6 @@
 {
   "name": "@dop/redoc-cli",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "ReDoc's Command Line Interface",
   "main": "index.js",
   "bin": "index.js",
@@ -14,7 +14,7 @@
     "postversion": "git push upstream releases/@dop/redoc-cli@$npm_package_version && git checkout - && git branch -D releases/@dop/redoc-cli@$npm_package_version"
   },
   "dependencies": {
-    "@dop/redoc": "git+https://git@github.com/mongodb-forks/redoc.git#v1.1.3",
+    "@dop/redoc": "git+https://git@github.com/mongodb-forks/redoc.git#v1.1.4",
     "chokidar": "^3.5.1",
     "handlebars": "^4.7.7",
     "isarray": "^2.0.5",
