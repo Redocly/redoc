@@ -18,6 +18,13 @@ export const ApiHeader = styled(H1)`
   ${extensionsHook('ApiHeader')};
 `;
 
+export const ResourceVersionPill = styled.p`
+  width: fit-content;
+  padding: 1px 10px;
+  background-color: ${palette.gray.light2};
+  border-radius: 0.5rem;
+`;
+
 export const DownloadButton = styled.a`
   border: 1px solid ${props => props.theme.colors.primary.main};
   color: ${props => props.theme.colors.primary.main};

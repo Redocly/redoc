@@ -13,11 +13,13 @@ import {
   InfoSpan,
   InfoSpanBox,
   InfoSpanBoxWrap,
+  ResourceVersionPill,
 } from './styled.elements';
 import { l } from '../../services/Labels';
 
 export interface ApiInfoProps {
   store: AppStore;
+  resourceVersion?: string;
 }
 
 @observer
@@ -29,7 +31,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
   };
 
   render() {
-    const { store } = this.props;
+    const { store, resourceVersion } = this.props;
     const { info, externalDocs } = store.spec;
     const hideDownloadButton = store.options.hideDownloadButton;
 
@@ -83,6 +85,9 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             <ApiHeader>
               {info.title} {version}
             </ApiHeader>
+            {resourceVersion && (
+              <ResourceVersionPill>Resource Version {resourceVersion}</ResourceVersionPill>
+            )}
             {!hideDownloadButton && (
               <p>
                 {l('downloadSpecification')}:
