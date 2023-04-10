@@ -188,7 +188,7 @@ export const openDropdownStyle = css`
 export const StyledDropdown = styled.div.attrs<{ open: boolean }>({
   role: 'listbox',
   'aria-labelledby': 'View a different version of documentation.',
-  tabIndex: '-1',
+  tabIndex: '0',
 })<{ open: boolean }>`
   ${props => (props.open ? openDropdownStyle : `display: none;`)}
 `;

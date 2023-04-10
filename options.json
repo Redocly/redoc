@@ -5,7 +5,20 @@
       "resourceVersion": "2023-02-14"
     },
     "rootUrl": "https://mongodb.com/docs/atlas/reference/api-resources-spec/v2",
-    "resourceVersions": ["2022-09-09", "2022-10-18", "2023-02-14"]
+    "resourceVersions": [
+      "2022-01-01",
+      "2022-01-18",
+      "2022-02-01",
+      "2022-03-09",
+      "2022-04-18",
+      "2022-05-14",
+      "2022-06-09",
+      "2022-07-18",
+      "2022-08-14",
+      "2022-09-09",
+      "2022-10-18",
+      "2023-02-14"
+    ]
   },
   "backNavigationPath": "https://www.mongodb.com/docs/atlas/",
   "siteTitle": "MongoDB Atlas",

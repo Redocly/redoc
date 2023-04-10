@@ -46,42 +46,12 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
     aria-labelledby="View a different version of documentation."
     class="sc-kEqXSa litKaz"
     role="listbox"
-    tabindex="-1"
+    tabindex="0"
   >
     <div>
       <ul
         class="sc-gKAaRy iQghMf"
       >
-        <li
-          aria-selected="false"
-          class="sc-pNWdM kSTcTW"
-          role="option"
-          tabindex="0"
-        >
-          <span
-            class="sc-iqAclL dXUzZL"
-          />
-          <span
-            class="sc-jrsJWt hDLwjI"
-          >
-            2021-09-09
-          </span>
-        </li>
-        <li
-          aria-selected="false"
-          class="sc-pNWdM kSTcTW"
-          role="option"
-          tabindex="0"
-        >
-          <span
-            class="sc-iqAclL dXUzZL"
-          />
-          <span
-            class="sc-jrsJWt hDLwjI"
-          >
-            2022-10-18
-          </span>
-        </li>
         <li
           aria-selected="true"
           class="sc-pNWdM derVNM"
@@ -108,6 +78,36 @@ exports[`VersionSelector should correctly render VersionSelector 1`] = `
             class="sc-jrsJWt hDLwjI"
           >
             2023-01-01 (latest)
+          </span>
+        </li>
+        <li
+          aria-selected="false"
+          class="sc-pNWdM kSTcTW"
+          role="option"
+          tabindex="0"
+        >
+          <span
+            class="sc-iqAclL dXUzZL"
+          />
+          <span
+            class="sc-jrsJWt hDLwjI"
+          >
+            2022-10-18
+          </span>
+        </li>
+        <li
+          aria-selected="false"
+          class="sc-pNWdM kSTcTW"
+          role="option"
+          tabindex="0"
+        >
+          <span
+            class="sc-iqAclL dXUzZL"
+          />
+          <span
+            class="sc-jrsJWt hDLwjI"
+          >
+            2021-09-09
           </span>
         </li>
       </ul>

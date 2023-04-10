@@ -31,9 +31,9 @@ describe('VersionSelector', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper.find('li')).toHaveLength(3);
 
-    wrapper.find('li').at(0).simulate('click');
+    wrapper.find('li').at(1).simulate('click');
     expect(JSON.stringify(window.location)).toBe(
-      JSON.stringify(`${versionData.rootUrl}/${versionData.resourceVersions[0]}`),
+      JSON.stringify(`${versionData.rootUrl}/${versionData.resourceVersions[1]}`),
     );
   });
 
@@ -42,7 +42,7 @@ describe('VersionSelector', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper.find('li')).toHaveLength(3);
 
-    wrapper.find('li').at(2).simulate('click');
+    wrapper.find('li').at(0).simulate('click');
     expect(JSON.stringify(window.location)).not.toBe(
       JSON.stringify(`${versionData.rootUrl}/${versionData.resourceVersions[2]}`),
     );
