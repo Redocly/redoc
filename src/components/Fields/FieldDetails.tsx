@@ -13,7 +13,7 @@ import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocument
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
 import { Extensions } from './Extensions';
-import { ExtraDescription } from './ExtraDescriptions';
+import { ExtraDescription } from '../Custom/ExtraDescriptions';
 import { FieldProps } from './Field';
 import { Examples } from './Examples';
 import { ConstraintsView } from './FieldContstraints';
@@ -25,6 +25,7 @@ import { l } from '../../services/Labels';
 import { OptionsContext } from '../OptionsProvider';
 import { Pattern } from './Pattern';
 import { ArrayItemDetails } from './ArrayItemDetails';
+import { ExtraOperationInformation } from '../Custom/ExtraOperationInformation';
 
 export const FieldDetailsComponent = observer((props: FieldProps) => {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
@@ -38,6 +39,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
     in: _in,
     const: _const,
     extraDescription,
+    extraApiReferenceForValidation,
   } = field;
   const isArrayType = schema.type === 'array';
 
@@ -109,6 +111,13 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       {!renderDiscriminatorSwitch && (
         <EnumValues isArrayType={isArrayType} values={schema.enum} />
       )}{' '}
+      {!!extraApiReferenceForValidation && (
+        <ExtraOperationInformation
+          httpVerb={extraApiReferenceForValidation.httpVerb}
+          label={extraApiReferenceForValidation.label}
+          description={extraApiReferenceForValidation.description}
+        />
+      )}
       {extraDescription && <ExtraDescription extraDescriptions={extraDescription} />}
       {renderedExamples}
       <Extensions extensions={{ ...extensions, ...schema.extensions }} />
