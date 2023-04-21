@@ -457,6 +457,14 @@ function buildFields(
           field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
             ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
             : {},
+        [MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]:
+          field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
+            ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
+            : {},
+        [MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]:
+          field[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME] != null
+            ? field[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]
+            : {},
       },
       $ref + '/properties/' + fieldName,
       options,
@@ -493,6 +501,14 @@ function buildFields(
           extraDescription:
             field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
               ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
+              : {},
+          [MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]:
+            field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] != null
+              ? field[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME]
+              : {},
+          [MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]:
+            field[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME] != null
+              ? field[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]
               : {},
         },
         `${$ref}/patternProperties/${fieldName}`,
