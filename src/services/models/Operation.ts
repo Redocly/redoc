@@ -25,6 +25,7 @@ import type { OpenAPIParser } from '../OpenAPIParser';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import type { MediaContentModel } from './MediaContent';
 import type { ContentItemModel, ExtendedOpenAPIOperation, IMenuItem } from '../types';
+import { MilesConstants } from '../../types';
 
 export interface XPayloadSample {
   lang: 'payload';
@@ -80,6 +81,8 @@ export class OperationModel implements IMenuItem {
   isWebhook: boolean;
   isEvent: boolean;
 
+  extraDescription: Record<string, boolean>;
+
   constructor(
     private parser: OpenAPIParser,
     private operationSpec: ExtendedOpenAPIOperation,
@@ -134,6 +137,12 @@ export class OperationModel implements IMenuItem {
       this.security = (operationSpec.security || parser.spec.security || []).map(
         security => new SecurityRequirementModel(security, parser),
       );
+
+      if (operationSpec[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME] == undefined) {
+        this.extraDescription = operationSpec.extraDescription;
+      } else {
+        this.extraDescription = operationSpec[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME];
+      }
 
       this.servers = normalizeServers(
         parser.specUrl,
