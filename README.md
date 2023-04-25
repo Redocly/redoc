@@ -84,7 +84,7 @@ Refer to the Redocly's documentation for more information on these products:
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 
   [Example repo](https://github.com/APIs-guru/create-react-app-redoc)
-- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
+- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redocly.com/docs/cli/commands/build-docs/)
 - Neat **interactive** documentation for nested objects <br>
   ![](docs/images/nested-demo.gif)
 
@@ -177,7 +177,7 @@ to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
 
 ## Redoc CLI
-For more information on Redoc's commmand-line interface, refer to
+For more information on Redoc's command-line interface, refer to
 [**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 

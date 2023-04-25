@@ -21,8 +21,8 @@ The following options are supported:
   Using the React component is an option for users with a React-based application.
 - **[Docker image](./docker.md):**
   Using the Docker image works in a container-based deployment.
-- **[CLI](./cli.md):**
-  Using the CLI is an option for users who prefer to use a command-line interface.
+- **[Redocly CLI](./cli.md):**
+  Using the Redocly CLI is an option for users who prefer to use a command-line interface.
 
 ## Before you start
 
