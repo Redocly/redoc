@@ -73,7 +73,7 @@ export class AppStore {
     MenuStore.updateOnHistory(this.history.currentId, this.scroll);
 
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll, this.history);
+    this.menu = new MenuStore(this.spec, this.scroll, this.history, this.options);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
