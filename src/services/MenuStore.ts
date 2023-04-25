@@ -8,6 +8,7 @@ import { GROUP_DEPTH } from './MenuBuilder';
 import type { SpecStore } from './models';
 import type { ScrollService } from './ScrollService';
 import type { IMenuItem } from './types';
+import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 
 /** Generic interface for MenuItems */
 
@@ -42,6 +43,7 @@ export class MenuStore {
 
   items: IMenuItem[];
   flatItems: IMenuItem[];
+  private options: RedocNormalizedOptions;
 
   /**
    * cached flattened menu items to support absolute indexing
@@ -53,11 +55,19 @@ export class MenuStore {
    *
    * @param spec [SpecStore](#SpecStore) which contains page content structure
    * @param scroll scroll service instance used by this menu
+   * @param history the history service
+   * @param options the RedocNormalizedOptions that can be used to retrieve the config options
    */
-  constructor(spec: SpecStore, public scroll: ScrollService, public history: HistoryService) {
+  constructor(
+    spec: SpecStore,
+    public scroll: ScrollService,
+    public history: HistoryService,
+    options: RedocNormalizedOptions,
+  ) {
     makeObservable(this);
 
     this.items = spec.contentItems;
+    this.options = options;
 
     this.flatItems = flattenByProp(this.items || [], 'items');
     this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
@@ -126,15 +136,27 @@ export class MenuStore {
     item = this.flatItems.find(i => i.id === id);
 
     if (item) {
-      this.activateAndScroll(item, false);
+      this.activateAndScrollWithNavigationStrategy(item);
     } else {
       if (id.startsWith(SECURITY_SCHEMES_SECTION_PREFIX)) {
         item = this.flatItems.find(i => SECURITY_SCHEMES_SECTION_PREFIX.startsWith(i.id));
-        this.activateAndScroll(item, false);
+        this.activateAndScrollWithNavigationStrategy(item);
       }
       this.scroll.scrollIntoViewBySelector(`[${SECTION_ATTR}="${escapeHTMLAttrChars(id)}"]`);
     }
   };
+
+  private activateAndScrollWithNavigationStrategy(item: IMenuItem | undefined): void {
+    if (this.shouldQueryParamNavigationBeUsed()) {
+      this.activateAndScroll(item, true, true);
+    } else {
+      this.activateAndScroll(item, false);
+    }
+  }
+
+  private shouldQueryParamNavigationBeUsed(): boolean {
+    return this.options?.userQueryParamToNavigate;
+  }
 
   /**
    * get section/operation DOM Node related to the item or null if it doesn't exist
@@ -237,6 +259,7 @@ export class MenuStore {
   ) {
     // item here can be a copy from search results so find corresponding item from menu
     const menuItem = (item && this.getItemById(item.id)) || item;
+    console.log('activateAndScroll', menuItem?.id, updateLocation, rewriteHistory);
     this.activate(menuItem, updateLocation, rewriteHistory);
     this.scrollToActive();
     if (!menuItem || !menuItem.items.length) {

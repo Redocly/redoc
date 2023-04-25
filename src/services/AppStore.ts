@@ -74,9 +74,9 @@ export class AppStore {
 
     // override the openApi standard to version 3.1.0
     // TODO remove when fully supporting open API 3.1.0
-    spec.openapi = "3.1.0";
+    spec.openapi = '3.1.0';
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll, this.history);
+    this.menu = new MenuStore(this.spec, this.scroll, this.history, this.options);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
