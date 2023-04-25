@@ -72,11 +72,14 @@ export class AppStore {
     // update position statically based on hash (in case of SSR)
     MenuStore.updateOnHistory(this.history.currentId, this.scroll);
 
+    // Listen for external event to update
+    window.addEventListener('redocUpdatePosition', this.updateOnEvent);
+
     // override the openApi standard to version 3.1.0
     // TODO remove when fully supporting open API 3.1.0
-    spec.openapi = "3.1.0";
+    spec.openapi = '3.1.0';
     this.spec = new SpecStore(spec, specUrl, this.options);
-    this.menu = new MenuStore(this.spec, this.scroll, this.history);
+    this.menu = new MenuStore(this.spec, this.scroll, this.history, this.options);
 
     if (!this.options.disableSearch) {
       this.search = new SearchStore();
@@ -98,6 +101,7 @@ export class AppStore {
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
+    window.removeEventListener('redocUpdatePosition', this.updateOnEvent);
     if (this.search) {
       this.search.dispose();
     }
@@ -123,6 +127,10 @@ export class AppStore {
       searchIndex: this.search ? await this.search.toJS() : undefined,
       options: this.rawOptions,
     };
+  }
+
+  private updateOnEvent(): void {
+    MenuStore.updateOnHistory(this.history.currentId, this.scroll);
   }
 
   private updateMarkOnMenu(idx: number) {
