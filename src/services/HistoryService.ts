@@ -18,7 +18,13 @@ export class HistoryService {
   get currentId(): string {
     if (IS_BROWSER) {
       if (this.shouldQueryParamNavigationBeUsed()) {
-        return this.getQueryParams(window.location.search);
+        // When the window.location.hash is not empty this means that we have clicked on
+        // router that's for example stored in the description via markdown
+        if (window.location.hash == '') {
+          return this.getQueryParams(window.location.search);
+        } else {
+          return decodeURIComponent(window.location.hash.substring(1));
+        }
       } else {
         return decodeURIComponent(window.location.hash.substring(1));
       }
@@ -65,7 +71,13 @@ export class HistoryService {
       return;
     }
 
-    if (id == null || id === this.currentId) {
+    // If there currentId and the ID are equal but there is still
+    // a hash left when using query param navigation
+    // that means that the URL hasn't been overridden
+    if (
+      id == null ||
+      (id === this.currentId && this.checkIfThereIsHashLeftWhenQueryParamNavigationShouldBeUsed())
+    ) {
       return;
     }
     if (rewriteHistory) {
@@ -103,6 +115,8 @@ export class HistoryService {
 
   private getFullUrl(id: string): string {
     const url = this.getUrl();
+    // Override the hash so it's removed when using query param navigation
+    url.hash = '';
     url.searchParams.set('redoc', id);
     return url.toString();
   }
@@ -111,9 +125,7 @@ export class HistoryService {
     return new URL(window.location.href);
   }
 
-  // private getQueryParamKey(): void {
-  //   let searchParams = new URLSearchParams(window.location.search);
-  //   searchParams.get('redoc')
-  //
-  // }
+  private checkIfThereIsHashLeftWhenQueryParamNavigationShouldBeUsed(): boolean {
+    return !(this.shouldQueryParamNavigationBeUsed() && window.location.hash != '');
+  }
 }
