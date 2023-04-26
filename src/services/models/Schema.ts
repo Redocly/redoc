@@ -44,6 +44,7 @@ export class SchemaModel {
   displayFormat?: string;
   nullable: boolean;
   deprecated: boolean;
+  m2m: boolean;
   pattern?: string;
   example?: any;
   examples?: any[];
@@ -126,6 +127,9 @@ export class SchemaModel {
     this.example = schema.example;
     this.examples = schema.examples;
     this.deprecated = !!schema.deprecated;
+    this.m2m = !!extractExtensions(this.schema, [MilesConstants.MILES_M2M])?.[
+      MilesConstants.MILES_M2M
+    ];
     this.pattern = schema.pattern;
     this.externalDocs = schema.externalDocs;
 
