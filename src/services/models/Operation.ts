@@ -25,6 +25,7 @@ import type { OpenAPIParser } from '../OpenAPIParser';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import type { MediaContentModel } from './MediaContent';
 import type { ContentItemModel, ExtendedOpenAPIOperation, IMenuItem } from '../types';
+import { MilesConstants } from '../../types';
 
 export interface XPayloadSample {
   lang: 'payload';
@@ -72,6 +73,7 @@ export class OperationModel implements IMenuItem {
   operationHash?: string;
   httpVerb: string;
   deprecated: boolean;
+  m2m: boolean;
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
@@ -96,6 +98,9 @@ export class OperationModel implements IMenuItem {
     this.externalDocs = operationSpec.externalDocs;
 
     this.deprecated = !!operationSpec.deprecated;
+    this.m2m = !!extractExtensions(operationSpec, [MilesConstants.MILES_M2M])?.[
+      MilesConstants.MILES_M2M
+    ];
     this.httpVerb = operationSpec.httpVerb;
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;

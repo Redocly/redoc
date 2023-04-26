@@ -93,6 +93,7 @@ export interface OpenAPIParameter {
   description?: string;
   required?: boolean;
   deprecated?: boolean;
+  m2m?: boolean;
   allowEmptyValue?: boolean;
   style?: OpenAPIParameterStyle;
   explode?: boolean;

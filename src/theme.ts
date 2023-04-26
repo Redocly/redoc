@@ -21,9 +21,15 @@ const defaultTheme: ThemeInterface = {
     },
     secondary: {
       main: '#D47D17',
-      light: ({ colors }) => lighten(colors.tonalOffset, colors.primary.main),
-      dark: ({ colors }) => darken(colors.tonalOffset, colors.primary.main),
-      contrastText: ({ colors }) => readableColor(colors.primary.main),
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.secondary.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.secondary.main),
+      contrastText: ({ colors }) => readableColor(colors.secondary.main),
+    },
+    m2m: {
+      main: '#343A40',
+      light: ({ colors }) => lighten(colors.tonalOffset, colors.m2m.main),
+      dark: ({ colors }) => darken(colors.tonalOffset, colors.m2m.main),
+      contrastText: ({ colors }) => readableColor(colors.m2m.main),
     },
     success: {
       main: '#1d8127',
@@ -271,6 +277,7 @@ export interface ResolvedThemeInterface {
     tonalOffset: number;
     primary: ColorSetting;
     secondary: ColorSetting;
+    m2m: ColorSetting;
     success: ColorSetting;
     warning: ColorSetting;
     error: ColorSetting;
