@@ -58,6 +58,8 @@ export class AppStore {
   private scroll: ScrollService;
   private disposer: Lambda | null = null;
 
+  private readonly listener: EventListenerOrEventListenerObject = this.updateOnEvent.bind(this);
+
   constructor(
     spec: OpenAPISpec,
     specUrl?: string,
@@ -73,7 +75,7 @@ export class AppStore {
     MenuStore.updateOnHistory(this.history.currentId, this.scroll);
 
     // Listen for external event to update
-    window.addEventListener('redocUpdatePosition', this.updateOnEvent);
+    window.addEventListener('redocUpdatePosition', this.listener);
 
     // override the openApi standard to version 3.1.0
     // TODO remove when fully supporting open API 3.1.0
@@ -101,7 +103,7 @@ export class AppStore {
   dispose() {
     this.scroll.dispose();
     this.menu.dispose();
-    window.removeEventListener('redocUpdatePosition', this.updateOnEvent);
+    window.removeEventListener('redocUpdatePosition', this.listener);
     if (this.search) {
       this.search.dispose();
     }
@@ -129,10 +131,6 @@ export class AppStore {
     };
   }
 
-  private updateOnEvent(): void {
-    MenuStore.updateOnHistory(this.history.currentId, this.scroll);
-  }
-
   private updateMarkOnMenu(idx: number) {
     const start = Math.max(0, idx);
     const end = Math.min(this.menu.flatItems.length, start + 5);
@@ -156,6 +154,10 @@ export class AppStore {
 
     this.marker.addOnly(elements);
     this.marker.mark();
+  }
+
+  private updateOnEvent(): void {
+    MenuStore.updateOnHistory(this.history.currentId, this.scroll);
   }
 }
 
