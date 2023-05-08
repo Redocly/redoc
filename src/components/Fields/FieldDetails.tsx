@@ -111,13 +111,6 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       {!renderDiscriminatorSwitch && (
         <EnumValues isArrayType={isArrayType} values={schema.enum} />
       )}{' '}
-      {!!extraApiReferenceForValidation && (
-        <ExtraOperationInformation
-          httpVerb={extraApiReferenceForValidation.httpVerb}
-          label={extraApiReferenceForValidation.label}
-          description={extraApiReferenceForValidation.description}
-        />
-      )}
       {extraDescription && <ExtraDescription extraDescriptions={extraDescription} />}
       {renderedExamples}
       <Extensions extensions={{ ...extensions, ...schema.extensions }} />
@@ -129,6 +122,13 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       )}
       {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(props)) || null}
       {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
+      {!!extraApiReferenceForValidation && (
+        <ExtraOperationInformation
+          httpVerb={extraApiReferenceForValidation.httpVerb}
+          label={extraApiReferenceForValidation.label}
+          description={extraApiReferenceForValidation.description}
+        />
+      )}
     </div>
   );
 });
