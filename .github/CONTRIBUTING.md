@@ -30,13 +30,6 @@ After cloning the repo, run:
 $ npm install # or npm
 ```
 
-To run the dev server, you will also need to install the cli's dependencies:
-
-```bash
-$ cd cli
-$ npm install # or npm
-```
-
 ### Commonly used NPM scripts
 
 ``` bash
