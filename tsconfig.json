@@ -20,7 +20,6 @@
   "compileOnSave": false,
   "exclude": ["node_modules", ".tmp", "lib", "e2e/**"],
   "include": [
-    "cli/index.ts",
     "./custom.d.ts",
     "./demo/playground/hmr-playground.tsx",
     "./src/**/*.ts?",
