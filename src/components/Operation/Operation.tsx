@@ -28,7 +28,15 @@ export interface OperationProps {
 }
 
 export const Operation = observer(({ operation }: OperationProps): JSX.Element => {
-  const { name: summary, description, deprecated, externalDocs, isWebhook, httpVerb } = operation;
+  const {
+    name: summary,
+    description,
+    deprecated,
+    badges,
+    externalDocs,
+    isWebhook,
+    httpVerb,
+  } = operation;
   const hasDescription = !!(description || externalDocs);
   const { showWebhookVerb } = React.useContext(OptionsContext);
   return (
@@ -45,6 +53,16 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
                   Webhook {showWebhookVerb && httpVerb && '| ' + httpVerb.toUpperCase()}
                 </Badge>
               )}
+              {badges.map(badge => {
+                return (
+                  badge && (
+                    <Badge type={badge.type} key={badge.name}>
+                      {' '}
+                      {badge.name}{' '}
+                    </Badge>
+                  )
+                );
+              })}
             </H2>
             {options.pathInMiddlePanel && !isWebhook && (
               <Endpoint operation={operation} inverted={true} />
