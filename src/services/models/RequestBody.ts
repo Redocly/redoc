@@ -14,14 +14,14 @@ type RequestBodyProps = {
 
 export class RequestBodyModel {
   description: string;
-  required: boolean;
+  required?: boolean;
   content?: MediaContentModel;
 
   constructor({ parser, infoOrRef, options, isEvent }: RequestBodyProps) {
     const isRequest = !isEvent;
     const { resolved: info } = parser.deref(infoOrRef);
     this.description = info.description || '';
-    this.required = !!info.required;
+    this.required = info.required;
 
     const mediaContent = getContentWithLegacyExamples(info);
     if (mediaContent !== undefined) {

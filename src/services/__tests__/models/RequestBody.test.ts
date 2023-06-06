@@ -23,6 +23,14 @@ describe('Models', () => {
       const consoleError = jest.spyOn(global.console, 'error');
       const req = new RequestBodyModel(props);
       expect(consoleError).not.toHaveBeenCalled();
+      expect(req).toEqual({ description: '', required: undefined });
+    });
+
+    test('should work with set required', () => {
+      const consoleError = jest.spyOn(global.console, 'error');
+      props.infoOrRef.required = false;
+      const req = new RequestBodyModel(props);
+      expect(consoleError).not.toHaveBeenCalled();
       expect(req).toEqual({ description: '', required: false });
     });
 

@@ -21,8 +21,8 @@ The following options are supported:
   Using the React component is an option for users with a React-based application.
 - **[Docker image](./docker.md):**
   Using the Docker image works in a container-based deployment.
-- **[CLI](./cli.md):**
-  Using the CLI is an option for users who prefer to use a command-line interface.
+- **[Redocly CLI](./cli.md):**
+  Using the Redocly CLI is an option for users who prefer to use a command-line interface.
 
 ## Before you start
 
@@ -55,7 +55,7 @@ If you have [Redocly CLI](https://redocly.com/docs/cli/#installation-and-usage) 
 project directory and run the following command:
 
 ```bash
-openapi preview-docs openapi.yaml
+redocly preview-docs openapi.yaml
 ```
 
 Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
@@ -66,7 +66,7 @@ To exit the preview, use `control+C`.
 You can alter the port if you are using 8080 already, for example:
 
 ```bash
-openapi preview-docs -p 8888 openapi.yaml
+redocly preview-docs -p 8888 openapi.yaml
 ```
 
 Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
