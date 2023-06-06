@@ -89,7 +89,7 @@ Refer to the Redocly's documentation for more information on these products:
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 
   [Example repo](https://github.com/APIs-guru/create-react-app-redoc)
-- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redocly.com/docs/cli/commands/build-docs/)
+- [Command-line interface to bundle your docs into a **zero-dependency** HTML file](https://redoc.ly/docs/redoc/quickstart/cli/)
 - Neat **interactive** documentation for nested objects <br>
   ![](docs/images/nested-demo.gif)
 
