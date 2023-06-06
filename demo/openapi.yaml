@@ -253,6 +253,11 @@ paths:
         date range or specific query parameter (marked by <b>*</b> below) is
         provided, the order results will be limited to the last two years.
       operationId: GetTnOptionOrders
+      x-badges:
+        - name: 1st Badge
+          type: warning
+        - name: 2nd Badge
+          type: experimental
       parameters:
         - description: The status of the TN Option order being searched for.
           example: PROCESSING
