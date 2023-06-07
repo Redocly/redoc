@@ -35,6 +35,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
     schema,
     description,
     deprecated,
+    m2m,
     extensions,
     in: _in,
     const: _const,
@@ -105,6 +106,11 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       {deprecated && (
         <div>
           <Badge type="warning"> {l('deprecated')} </Badge>
+        </div>
+      )}
+      {m2m && (
+        <div>
+          <Badge type="m2m"> M2M </Badge>
         </div>
       )}
       <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />

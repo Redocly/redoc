@@ -51,6 +51,7 @@ export class FieldModel {
   example?: string;
   examples?: Record<string, ExampleModel> | any[];
   deprecated: boolean;
+  m2m: boolean;
   in?: OpenAPIParameterLocation;
   kind: string;
   extensions?: Record<string, any>;
@@ -135,6 +136,7 @@ export class FieldModel {
     }
 
     this.deprecated = info.deprecated === undefined ? !!this.schema.deprecated : info.deprecated;
+    this.m2m = info.m2m === undefined ? !!this.schema.m2m : info.m2m;
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(info, options.showExtensions);

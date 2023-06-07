@@ -28,7 +28,15 @@ export interface OperationProps {
 }
 
 export const Operation = observer(({ operation }: OperationProps): JSX.Element => {
-  const { name: summary, description, deprecated, externalDocs, isWebhook, httpVerb } = operation;
+  const {
+    name: summary,
+    description,
+    deprecated,
+    externalDocs,
+    isWebhook,
+    httpVerb,
+    m2m,
+  } = operation;
   const hasDescription = !!(description || externalDocs);
   const { showWebhookVerb } = React.useContext(OptionsContext);
   return (
@@ -39,6 +47,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
             <H2>
               <ShareLink to={operation.id} />
               {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
+              {m2m && <Badge type="m2m"> M2M </Badge>}
               {isWebhook && (
                 <Badge type="primary">
                   {' '}
