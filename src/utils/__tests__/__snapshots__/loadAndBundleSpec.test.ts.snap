@@ -773,6 +773,16 @@ and standard method from web, mobile and desktop applications.
         "tags": Array [
           "Tn Option",
         ],
+        "x-badges": Array [
+          Object {
+            "name": "1st Badge",
+            "type": "warning",
+          },
+          Object {
+            "name": "2nd Badge",
+            "type": "experimental",
+          },
+        ],
       },
       "post": Object {
         "description": "Create TN Option order to assign line features to the telephone number.<br><br>Attribute description:<ul><li>for A2pSettings attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Number attribute</th><th>Action value</th><th>Description of action</th></tr><tr><td>LongCode</td><td><i>systemDefault</i></td><td>Removes the per-TN A2P attributes, and it reverts to the Location/SIP Peer characteristics. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>asSpecified</i></td><td>Sets the message class and campaign ID - this is the default if unspecified</td></tr><tr><td>LongCode</td><td><i>off</i></td><td>Will set the TN as a 'P' TN. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>delete</i></td><td>Will delete the campaign ID from TN. Any values for Class or Campaign ID are not valid</td></tr><tr><td>LongCode</td><td><i>unchanged</i></td><td>Do nothing with respect to A2P</td></tr><tr><td>TollFree</td><td><i>systemDefault</i></td><td>Removes the per-TN A2P attributes, and it reverts to the Location/SIP Peer characteristics. Any values for Class or Campaign ID are not valid</td></tr><tr><td>TollFree</td><td><i>asSpecified</i></td><td>Sets the message class and campaign ID - this is the default if unspecified</td></tr><tr><td>TollFree</td><td><i>off</i></td><td>If the Togglz value is set to 'on' this is invalid for Toll Free telephone numbers. Any values for Class or Campaign ID in the payload are invalid. If the Togglz value is set to off this behaves like and A2P TN, where the characteristics of the TNs is set to 'P'</td></tr><tr><td>TollFree</td><td><i>unchanged</i></td><td>Do nothing with respect to A2P</td></tr></tbody></table><li>for Origination Route plan attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Action value</th><th>Description of action</th></tr><tr><td>asSpecified</td><td>Creates/updates the origination route plan for the TN with route plan details provided in the request </td></tr><tr><td>off</td><td>Removes the origination route plan for the TN. Route list is the request must be empty</td></tr><tr><td>unchanged</td><td>Doesn't update/create the origination route plan, even when route plan details exist in the request</td></tr></tbody></table><ul><li> Origination route plan is validated against CallForward and RewriteUser</li><ul><li type=\\"square\\">Route plan and CallForward cannot co-exist. Order is accepted but will respond with error messages on GET.</li><li type=\\"square\\">Route plan and RewriteUser cannot co-exist. Order is accepted but will respond with error messages on GET.</li></ul></ul><li>for Pindrop Enabled attribute</li><table style=\\"text-align: left; width: 80%;\\" border=\\"1\\" cellpadding=\\"2\\" cellspacing=\\"0\\"><tbody><tr><th>Action value</th><th>Description of action</th></tr><tr><td>true</td><td>Enables Pindrop integration on each phone number in the option group</td></tr><tr><td>false</td><td>Explicitly disables Pindrop integration on each phone number in the option group</td></tr></tbody></table><li>for other attribute</li><ul><li type=\\"square\\"> <i>systemDefault</i> - implies that the element profile value should be removed so that the TN changes back to the default system behavior;</li><li type=\\"square\\"> <i>unchanged</i> - the value should remain unchanged - implies a read before write model.</li><li type=\\"square\\"><u>Leaving the element out of the payload is equivalent to <i>unchanged</i>.</u></li></ul></ul>",
@@ -1095,6 +1105,12 @@ and standard method from web, mobile and desktop applications.
         "tags": Array [
           "Tn Option",
         ],
+        "x-badges": Array [
+          Object {
+            "name": "Success",
+            "type": "success",
+          },
+        ],
       },
     },
     "/pet": Object {
@@ -1143,6 +1159,12 @@ and standard method from web, mobile and desktop applications.
         "summary": "Add a new pet to the store",
         "tags": Array [
           "pet",
+        ],
+        "x-badges": Array [
+          Object {
+            "name": "Global",
+            "type": "global",
+          },
         ],
         "x-codeSamples": Array [
           Object {
@@ -1207,6 +1229,12 @@ try {
         "summary": "Update an existing pet",
         "tags": Array [
           "pet",
+        ],
+        "x-badges": Array [
+          Object {
+            "name": "US Only",
+            "type": "usonly",
+          },
         ],
         "x-codeSamples": Array [
           Object {

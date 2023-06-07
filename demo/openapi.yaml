@@ -112,6 +112,9 @@ paths:
       summary: Add a new pet to the store
       description: Add new pet to the store inventory.
       operationId: addPet
+      x-badges:
+        - name: Global
+          type: global
       responses:
         '405':
           description: Invalid input
@@ -156,6 +159,9 @@ paths:
       summary: Update an existing pet
       description: ''
       operationId: updatePet
+      x-badges:
+        - name: US Only
+          type: usonly
       responses:
         '400':
           description: Invalid ID supplied
@@ -186,6 +192,9 @@ paths:
     get:
       description: Retrieve the history information associated with an order.
       operationId: GetOrderHistory
+      x-badges:
+        - name: Success
+          type: success
       parameters:
         - description: ''
           in: path
@@ -244,6 +253,11 @@ paths:
         date range or specific query parameter (marked by <b>*</b> below) is
         provided, the order results will be limited to the last two years.
       operationId: GetTnOptionOrders
+      x-badges:
+        - name: 1st Badge
+          type: warning
+        - name: 2nd Badge
+          type: experimental
       parameters:
         - description: The status of the TN Option order being searched for.
           example: PROCESSING

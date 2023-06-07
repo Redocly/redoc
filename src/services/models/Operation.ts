@@ -20,7 +20,12 @@ import { RequestBodyModel } from './RequestBody';
 import { ResponseModel } from './Response';
 import { SideNavStyleEnum } from '../types';
 
-import type { OpenAPIExternalDocumentation, OpenAPIServer, OpenAPIXCodeSample } from '../../types';
+import type {
+  OpenAPIExternalDocumentation,
+  OpenAPIServer,
+  OpenAPIXCodeSample,
+  OperationCustomBadge,
+} from '../../types';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import type { MediaContentModel } from './MediaContent';
@@ -72,6 +77,7 @@ export class OperationModel implements IMenuItem {
   operationHash?: string;
   httpVerb: string;
   deprecated: boolean;
+  badges: OperationCustomBadge[];
   path: string;
   servers: OpenAPIServer[];
   security: SecurityRequirementModel[];
@@ -96,6 +102,7 @@ export class OperationModel implements IMenuItem {
     this.externalDocs = operationSpec.externalDocs;
 
     this.deprecated = !!operationSpec.deprecated;
+    this.badges = operationSpec['x-badges'] ? operationSpec['x-badges'] : [];
     this.httpVerb = operationSpec.httpVerb;
     this.deprecated = !!operationSpec.deprecated;
     this.operationId = operationSpec.operationId;
