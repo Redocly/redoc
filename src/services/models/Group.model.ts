@@ -56,9 +56,9 @@ export class GroupModel implements IMenuItem {
     this.parent = parent;
     this.externalDocs = (tagOrGroup as OpenAPITag).externalDocs;
 
-    // groups are active (expanded) by default
+    // groups are active but not expanded by default
     if (this.type === 'group') {
-      this.expanded = true;
+      this.activate();
     }
   }
 
@@ -77,10 +77,6 @@ export class GroupModel implements IMenuItem {
 
   @action
   collapse() {
-    // disallow collapsing groups
-    if (this.type === 'group') {
-      return;
-    }
     this.expanded = false;
   }
 

@@ -53,7 +53,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
               {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>
-            {(item.depth > 0 && item.items.length > 0 && (
+            {(item.items.length > 0 && (
               <ShelfIcon float={'right'} direction={item.expanded ? 'down' : 'right'} />
             )) ||
               null}
