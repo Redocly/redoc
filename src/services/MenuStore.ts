@@ -259,7 +259,6 @@ export class MenuStore {
   ) {
     // item here can be a copy from search results so find corresponding item from menu
     const menuItem = (item && this.getItemById(item.id)) || item;
-    console.log('activateAndScroll', menuItem?.id, updateLocation, rewriteHistory);
     this.activate(menuItem, updateLocation, rewriteHistory);
     this.scrollToActive();
     if (!menuItem || !menuItem.items.length) {
