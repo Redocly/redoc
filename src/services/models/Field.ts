@@ -61,6 +61,11 @@ export class FieldModel {
 
   serializationMime?: string;
   extraDescription: Record<string, boolean>;
+  extraApiReferenceForValidation: {
+    httpVerb: string;
+    label: string;
+    description: string;
+  };
 
   constructor(
     parser: OpenAPIParser,
@@ -103,6 +108,17 @@ export class FieldModel {
       this.extraDescription = info.extraDescription;
     } else {
       this.extraDescription = info[MilesConstants.MILES_EXTRA_DESCRIPTION_PROPERTY_NAME];
+    }
+
+    if (
+      info[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME] !== undefined &&
+      info[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]?.label
+    ) {
+      this.extraApiReferenceForValidation = {
+        label: info[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]?.label,
+        httpVerb: info[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]?.httpVerb,
+        description: info[MilesConstants.MILES_VALIDATION_MODEL_PROPERTY_NAME]?.description,
+      };
     }
 
     if (serializationMime) {
