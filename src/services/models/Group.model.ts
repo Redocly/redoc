@@ -58,7 +58,7 @@ export class GroupModel implements IMenuItem {
 
     // groups are active but not expanded by default
     if (this.type === 'group') {
-      this.activate();
+      this.active = true;
     }
   }
 
