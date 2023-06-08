@@ -8,6 +8,7 @@ export interface ResponseTitleProps {
   code: string;
   title: string;
   type: string;
+  descriptionClass?: string;
   empty?: boolean;
   opened?: boolean;
   className?: string;
@@ -19,6 +20,7 @@ function ResponseTitleComponent({
   type,
   empty,
   code,
+  descriptionClass,
   opened,
   className,
   onClick,
@@ -39,7 +41,9 @@ function ResponseTitleComponent({
         />
       )}
       <Code>{code} </Code>
-      <Markdown compact={true} inline={true} source={title} />
+      <div className={descriptionClass + ' ResponseTitleComponent__Markdown'}>
+        <Markdown compact={true} inline={true} source={title} />
+      </div>
     </button>
   );
 }

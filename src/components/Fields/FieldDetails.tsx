@@ -29,7 +29,15 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
   const { enumSkipQuotes, hideSchemaTitles } = React.useContext(OptionsContext);
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
-  const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
+  const {
+    schema,
+    description,
+    descriptionClass,
+    deprecated,
+    extensions,
+    in: _in,
+    const: _const,
+  } = field;
   const isArrayType = schema.type === 'array';
 
   const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
@@ -57,10 +65,10 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
     : schema.default;
 
   return (
-    <div>
-      <div>
+    <div className="FieldDetailsDiv">
+      <div className="FieldDetailsDiv__childDiv1">
         <TypePrefix>{schema.typePrefix}</TypePrefix>
-        <TypeName>{schema.displayType}</TypeName>
+        <TypeName className="sar-TypeName">{schema.displayType}</TypeName>
         {schema.displayFormat && (
           <TypeFormat>
             {' '}
@@ -96,20 +104,29 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
           <Badge type="warning"> {l('deprecated')} </Badge>
         </div>
       )}
-      <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />
-      {!renderDiscriminatorSwitch && (
-        <EnumValues isArrayType={isArrayType} values={schema.enum} />
-      )}{' '}
-      {renderedExamples}
-      <Extensions extensions={{ ...extensions, ...schema.extensions }} />
-      <div>
+      <div className="FieldDetailsDiv__childDiv2">
+        <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />
+      </div>
+
+      <div className="FieldDetailsDiv__childDiv3">
+        {!renderDiscriminatorSwitch && (
+          <EnumValues isArrayType={isArrayType} values={schema.enum} />
+        )}{' '}
+        {renderedExamples}
+      </div>
+      <div className="FieldDetailsDiv__childDiv4">
+        <Extensions extensions={{ ...extensions, ...schema.extensions }} />
+      </div>
+      <div className={descriptionClass + ' FieldDetailsDiv__description'}>
         <Markdown compact={true} source={description} />
       </div>
-      {schema.externalDocs && (
-        <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
-      )}
-      {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(props)) || null}
-      {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
+      <div className="FieldDetailsDiv__childDiv6">
+        {schema.externalDocs && (
+          <ExternalDocumentation externalDocs={schema.externalDocs} compact={true} />
+        )}
+        {(renderDiscriminatorSwitch && renderDiscriminatorSwitch(props)) || null}
+        {(_const && <FieldDetail label={l('const') + ':'} value={_const} />) || null}
+      </div>
     </div>
   );
 });

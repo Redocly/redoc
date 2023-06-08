@@ -4,9 +4,7 @@
     "schemas": {
       "Pet": {
         "type": "object",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "discriminator": {
           "propertyName": "type"
         },

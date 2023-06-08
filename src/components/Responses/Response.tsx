@@ -10,7 +10,17 @@ export interface ResponseViewProps {
 }
 
 export const ResponseView = observer(({ response }: ResponseViewProps): React.ReactElement => {
-  const { extensions, headers, type, summary, description, code, expanded, content } = response;
+  const {
+    extensions,
+    headers,
+    type,
+    summary,
+    description,
+    descriptionClass,
+    code,
+    expanded,
+    content,
+  } = response;
 
   const mimes = React.useMemo<MediaTypeModel[]>(
     () =>
@@ -29,14 +39,17 @@ export const ResponseView = observer(({ response }: ResponseViewProps): React.Re
 
   return (
     <div>
-      <StyledResponseTitle
-        onClick={() => response.toggle()}
-        type={type}
-        empty={empty}
-        title={summary || ''}
-        code={code}
-        opened={expanded}
-      />
+      <span className="StyledResponseTitle">
+        <StyledResponseTitle
+          onClick={() => response.toggle()}
+          type={type}
+          empty={empty}
+          title={summary || ''}
+          descriptionClass={descriptionClass}
+          code={code}
+          opened={expanded}
+        />
+      </span>
       {expanded && !empty && (
         <ResponseDetailsWrap>
           <ResponseDetails response={response} />

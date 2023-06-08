@@ -14,10 +14,12 @@ import { ConstraintsView } from '../Fields/FieldContstraints';
 
 export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
   render() {
-    const { description, extensions, headers, content } = this.props.response;
+    const { description, descriptionClass, extensions, headers, content } = this.props.response;
     return (
       <>
-        {description && <Markdown source={description} />}
+        <span className={descriptionClass + ' ResponseDetails__description'}>
+          {description && <Markdown source={description} />}
+        </span>
         <Extensions extensions={extensions} />
         <ResponseHeaders headers={headers} />
         <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>

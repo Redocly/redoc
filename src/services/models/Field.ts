@@ -47,6 +47,7 @@ export class FieldModel {
   name: string;
   required: boolean;
   description: string;
+  descriptionClass: string;
   example?: string;
   examples?: Record<string, ExampleModel> | any[];
   deprecated: boolean;
@@ -117,6 +118,8 @@ export class FieldModel {
     }
 
     this.const = this.schema?.const || info?.const || '';
+
+    this.descriptionClass = info.descriptionClass || '';
   }
 
   @action

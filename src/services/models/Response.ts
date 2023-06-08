@@ -25,6 +25,7 @@ export class ResponseModel {
   code: string;
   summary: string;
   description: string;
+  descriptionClass?: string;
   type: string;
   headers: FieldModel[] = [];
   extensions: Record<string, any>;
@@ -68,6 +69,8 @@ export class ResponseModel {
     if (options.showExtensions) {
       this.extensions = extractExtensions(info, options.showExtensions);
     }
+
+    this.descriptionClass = info.descriptionClass || '';
   }
 
   @action

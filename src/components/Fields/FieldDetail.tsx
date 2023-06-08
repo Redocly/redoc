@@ -16,7 +16,8 @@ function FieldDetailComponent({ value, label, raw }: FieldDetailProps) {
 
   return (
     <div>
-      <FieldLabel> {label} </FieldLabel> <ExampleValue>{stringifyValue}</ExampleValue>
+      <FieldLabel> {label} </FieldLabel>{' '}
+      <ExampleValue className="sar-ExampleValue">{stringifyValue}</ExampleValue>
     </div>
   );
 }

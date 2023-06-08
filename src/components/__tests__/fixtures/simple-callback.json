@@ -22,21 +22,14 @@
                       "type": {
                         "type": "string",
                         "description": "The type of response.",
-                        "enum": [
-                          "TestResponse.Complete"
-                        ]
+                        "enum": ["TestResponse.Complete"]
                       },
                       "status": {
                         "type": "string",
-                        "enum": [
-                          "FAILURE",
-                          "SUCCESS"
-                        ]
+                        "enum": ["FAILURE", "SUCCESS"]
                       }
                     },
-                    "required": [
-                      "status"
-                    ]
+                    "required": ["status"]
                   }
                 }
               }

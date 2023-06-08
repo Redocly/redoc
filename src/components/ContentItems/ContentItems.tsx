@@ -73,7 +73,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
       <>
         <Row>
           <MiddlePanel compact={false}>
-            <Header>
+            <Header className="sar-header">
               <ShareLink to={this.props.item.id} />
               {name}
             </Header>

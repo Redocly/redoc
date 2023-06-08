@@ -65,7 +65,9 @@ export class Field extends React.Component<FieldProps> {
 
     const paramName = withSubSchema ? (
       <ClickablePropertyNameCell
-        className={deprecated ? 'deprecated' : ''}
+        className={
+          deprecated ? 'deprecated ClickablePropertyNameCell' : 'ClickablePropertyNameCell'
+        }
         kind={kind}
         title={name}
       >
@@ -92,12 +94,12 @@ export class Field extends React.Component<FieldProps> {
       <>
         <tr className={isLast ? 'last ' + className : className}>
           {paramName}
-          <PropertyDetailsCell>
-            <FieldDetails {...this.props} />
+          <PropertyDetailsCell className={'PropertyDetailsCell ' + field.name}>
+            <FieldDetails {...this.props} className="FieldDetails" />
           </PropertyDetailsCell>
         </tr>
         {expanded && withSubSchema && (
-          <tr key={field.name + 'inner'}>
+          <tr key={field.name + 'inner'} className="sar-tr">
             <PropertyCellWithInner colSpan={2}>
               <InnerPropertiesWrap>
                 <Schema

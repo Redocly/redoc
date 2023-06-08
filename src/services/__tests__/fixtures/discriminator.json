@@ -28,9 +28,7 @@
       "JsonApiResource": {
         "type": "object",
         "description": "A related resource.",
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "discriminator": {
           "propertyName": "type"
         },
@@ -43,9 +41,7 @@
       },
       "FooTopLevel": {
         "type": "object",
-        "required": [
-          "data"
-        ],
+        "required": ["data"],
         "properties": {
           "data": {
             "$ref": "#/components/schemas/Foo"

@@ -91,6 +91,7 @@ export interface OpenAPIParameter {
   name: string;
   in?: OpenAPIParameterLocation;
   description?: string;
+  descriptionClass?: string;
   required?: boolean;
   deprecated?: boolean;
   allowEmptyValue?: boolean;
@@ -196,6 +197,7 @@ export type OpenAPIParameterStyle =
 
 export interface OpenAPIRequestBody {
   description?: string;
+  descriptionClass?: string;
   required?: boolean;
   content: { [mime: string]: OpenAPIMediaType };
 
@@ -208,7 +210,10 @@ export interface OpenAPIResponses {
 }
 
 export interface OpenAPIResponse
-  extends Pick<OpenAPIRequestBody, 'description' | 'x-examples' | 'x-example'> {
+  extends Pick<
+    OpenAPIRequestBody,
+    'description' | 'descriptionClass' | 'x-examples' | 'x-example'
+  > {
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
   links?: { [name: string]: Referenced<OpenAPILink> };
   content?: { [mime: string]: OpenAPIMediaType };

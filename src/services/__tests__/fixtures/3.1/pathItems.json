@@ -18,9 +18,7 @@
           "summary": "Get a cat details after update",
           "description": "Get a cat details after update",
           "operationId": "updatedCat",
-          "tags": [
-            "pet"
-          ],
+          "tags": ["pet"],
           "requestBody": {
             "description": "Information about cat in the system",
             "content": {
@@ -41,9 +39,7 @@
           "summary": "Create new cat",
           "description": "Info about new cat",
           "operationId": "createdCat",
-          "tags": [
-            "pet"
-          ],
+          "tags": ["pet"],
           "requestBody": {
             "description": "Information about cat in the system",
             "content": {

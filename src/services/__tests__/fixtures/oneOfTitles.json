@@ -58,21 +58,24 @@
         }
       },
       "WithArray": {
-        "oneOf": [{
-          "type" : "array",
-          "items": {
-            "oneOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              }
-            ]
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          },
+          {
+            "type": "string"
           }
-        }, {
-          "type": "string"
-        }]
+        ]
       }
     }
   }
