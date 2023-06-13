@@ -72,5 +72,35 @@ describe('Models', () => {
 
       expect(parser.deref(schemaOrRef, [], true)).toMatchSnapshot();
     });
+
+    test('should deref the properties of a schema', () => {
+      const spec = require('./fixtures/properties.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const example = {
+        id: 0,
+        category: {
+          id: 0,
+          name: 'string',
+          sub: {
+            prop1: 'string',
+          },
+        },
+        name: 'Guru',
+        photoUrls: ['string'],
+        friend: {},
+        tags: [
+          {
+            id: 0,
+            name: 'string',
+          },
+        ],
+        status: 'available',
+        petType: 'string',
+      };
+
+      expect(
+        parser.derefSchemaWithExample(spec.components.schemas.test, example),
+      ).toMatchSnapshot();
+    });
   });
 });

@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "schemas": {
+      "test": {
+        "type": "object",
+        "required": ["name", "photoUrls"],
+        "discriminator": {
+          "propertyName": "petType",
+          "mapping": {
+            "cat": "#/components/schemas/Cat",
+            "dog": "#/components/schemas/Dog",
+            "bee": "#/components/schemas/HoneyBee"
+          }
+        },
+        "properties": {
+          "id": {
+            "externalDocs": {
+              "description": "Find more info here",
+              "url": "https://example.com"
+            },
+            "description": "Pet ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "category": {
+            "description": "Categories this pet belongs to",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Category"
+              }
+            ]
+          },
+          "name": {
+            "description": "The name given to a pet",
+            "type": "string",
+            "example": "Guru"
+          },
+          "photoUrls": {
+            "description": "The list of URL to a cute photos featuring pet",
+            "type": "array",
+            "maxItems": 20,
+            "xml": {
+              "name": "photoUrl",
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "format": "url"
+            }
+          },
+          "friend": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Pet"
+              }
+            ]
+          },
+          "tags": {
+            "description": "Tags attached to the pet",
+            "type": "array",
+            "minItems": 1,
+            "xml": {
+              "name": "tag",
+              "wrapped": true
+            },
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Pet status in the store",
+            "enum": ["available", "pending", "sold"]
+          },
+          "petType": {
+            "description": "Type of a pet",
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Pet"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Category ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "name": {
+            "description": "Category name",
+            "type": "string",
+            "minLength": 1
+          },
+          "sub": {
+            "description": "Test Sub Category",
+            "type": "object",
+            "properties": {
+              "prop1": {
+                "type": "string",
+                "description": "Dumb Property"
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      "Id": {
+        "type": "integer",
+        "format": "int64",
+        "readOnly": true
+      },
+      "Pet": {
+        "type": "object",
+        "required": ["name", "photoUrls"],
+        "discriminator": {
+          "propertyName": "petType",
+          "mapping": {
+            "cat": "#/components/schemas/Cat",
+            "dog": "#/components/schemas/Dog",
+            "bee": "#/components/schemas/HoneyBee"
+          }
+        },
+        "properties": {
+          "id": {
+            "externalDocs": {
+              "description": "Find more info here",
+              "url": "https://example.com"
+            },
+            "description": "Pet ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "category": {
+            "description": "Categories this pet belongs to",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Category"
+              }
+            ]
+          },
+          "name": {
+            "description": "The name given to a pet",
+            "type": "string",
+            "example": "Guru"
+          },
+          "photoUrls": {
+            "description": "The list of URL to a cute photos featuring pet",
+            "type": "array",
+            "maxItems": 20,
+            "xml": {
+              "name": "photoUrl",
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "format": "url"
+            }
+          },
+          "friend": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Pet"
+              }
+            ]
+          },
+          "tags": {
+            "description": "Tags attached to the pet",
+            "type": "array",
+            "minItems": 1,
+            "xml": {
+              "name": "tag",
+              "wrapped": true
+            },
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Pet status in the store",
+            "enum": ["available", "pending", "sold"]
+          },
+          "petType": {
+            "description": "Type of a pet",
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Pet"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Tag ID",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              }
+            ]
+          },
+          "name": {
+            "description": "Tag name",
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "xml": {
+          "name": "Tag"
+        }
+      }
+    }
+  }
+}

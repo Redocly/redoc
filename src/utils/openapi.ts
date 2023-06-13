@@ -168,6 +168,10 @@ export function isFormUrlEncoded(contentType: string): boolean {
   return contentType === 'application/x-www-form-urlencoded';
 }
 
+export const isXml = (contentType: string): boolean => {
+  return contentType === 'application/xml';
+};
+
 function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: string): string {
   if (isArray(fieldVal)) {
     return fieldVal.map(v => v.toString()).join(delimiter);

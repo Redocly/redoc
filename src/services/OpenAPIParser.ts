@@ -1,9 +1,10 @@
 import type { OpenAPIRef, OpenAPISchema, OpenAPISpec } from '../types';
-import { IS_BROWSER, getDefinitionName } from '../utils/';
+import { IS_BROWSER, getDefinitionName, compact, isObject, isObjectEmpty } from '../utils/';
 import { JsonPointer } from '../utils/JsonPointer';
 
 import { RedocNormalizedOptions } from './RedocNormalizedOptions';
 import type { MergedOpenAPISchema } from './types';
+import type { OpenAPIExample } from '../types';
 
 const MAX_DEREF_DEPTH = 999; // prevent circular detection crashes by adding hard limit on deref depth
 
@@ -333,6 +334,98 @@ export class OpenAPIParser {
     }
 
     return receiver;
+  }
+
+  derefSchemaWithExample(
+    schema: MergedOpenAPISchema,
+    example: OpenAPIExample & OpenAPISchema,
+  ): OpenAPISchema {
+    const { resolved: resolvedSchema } = this.deref(schema);
+
+    const worker = (
+      currentSchema: MergedOpenAPISchema,
+      currentExample: OpenAPIExample & OpenAPISchema,
+    ) => {
+      const receiver: OpenAPISchema = {
+        ...currentSchema,
+      };
+      if (isObject(currentSchema.properties)) {
+        receiver.properties = Object.fromEntries(
+          Object.entries(currentSchema.properties).map(([key, value]) => {
+            let resolvedValue: OpenAPISchema = {};
+            const exampleForProp = currentExample?.[key];
+
+            if (Array.isArray(value.allOf) && !isObjectEmpty(exampleForProp)) {
+              resolvedValue = this.mergeAllOf(value, undefined, value['x-refsStack'] || []);
+            } else if (Array.isArray(value.oneOf) && !isObjectEmpty(exampleForProp)) {
+              resolvedValue = this.deref(value.oneOf[0]).resolved;
+            } else if (value.$ref) {
+              resolvedValue = this.deref(value).resolved;
+            } else if ((value.items as OpenAPISchema)?.$ref) {
+              resolvedValue = {
+                ...value,
+                items: this.deref(value.items as OpenAPISchema, value.items?.['x-refsStack'] || [])
+                  .resolved,
+              };
+            } else if (Array.isArray(value.items)) {
+              resolvedValue = {
+                ...value,
+                items: value.items.map((item, i) =>
+                  item.properties
+                    ? worker(item, exampleForProp[i])
+                    : this.deref(item, item['x-refsStack'] || []).resolved,
+                ),
+              };
+            } else {
+              resolvedValue = value;
+            }
+
+            if (
+              resolvedValue.properties &&
+              (!isObjectEmpty(exampleForProp) || exampleForProp.length > 0)
+            ) {
+              resolvedValue = worker(resolvedValue, exampleForProp?.[0] ?? exampleForProp);
+            }
+            if ((resolvedValue.items as OpenAPISchema)?.properties && isObject(exampleForProp[0])) {
+              resolvedValue.items = worker(resolvedValue.items as OpenAPISchema, exampleForProp[0]);
+            }
+
+            if (!isObject(exampleForProp)) {
+              resolvedValue = {
+                ...resolvedValue,
+                example: exampleForProp,
+              };
+            }
+
+            const resolved = compact({
+              const: resolvedValue.const,
+              description: resolvedValue.description,
+              deprecated: resolvedValue.deprecated,
+              enum: resolvedValue.enum,
+              example: resolvedValue.example,
+              exclusiveMinimum: resolvedValue.exclusiveMinimum,
+              format: resolvedValue.format,
+              items: resolvedValue.items,
+              maximum: resolvedValue.maximum,
+              maxLength: resolvedValue.maxLength,
+              minimum: resolvedValue.minimum,
+              minLength: resolvedValue.minLength,
+              pattern: resolvedValue.pattern,
+              properties: resolvedValue.properties,
+              readOnly: resolvedValue.readOnly,
+              type: resolvedValue.type,
+              writeOnly: resolvedValue.writeOnly,
+              xml: resolvedValue.xml,
+            });
+
+            return [key, resolved];
+          }),
+        );
+      }
+      return receiver;
+    };
+
+    return worker(resolvedSchema, example);
   }
 
   /**
