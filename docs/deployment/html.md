@@ -97,7 +97,7 @@ Redoc.init(specOrSpecUrl, options, element, callback)
 ```
 - `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a URL to the
   definition in JSON or YAML format.
-- `options`: See [features.openapi object](/docs/api-reference-docs/configuration/functionality.mdx) reference.
+- `options`: See [`theme.openapi` object](/docs/api-reference-docs/configuration/functionality.mdx) reference.
 - `element`: DOM element Redoc will be inserted into.
 - `callback`(optional): Callback to be called after Redoc has been fully rendered.
   It is also called on errors with `error` as the first argument.
