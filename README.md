@@ -251,7 +251,7 @@ You can use all of the following options with the standalone version of the <red
   * **path-only**: displays a path in the sidebar navigation item.
   * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 * `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
-* `codeSamplesLanguage` - enables code sample generation for the provided list of languages.
+* `codeSamplesLanguages` - enables code sample generation for the provided list of languages.
 
 ### `<redoc>` theme object
 * `spacing`
