@@ -35,6 +35,8 @@ export const Section = styled.div.attrs(props => ({
       `
     position: relative;
 
+    margin-bottom: 48px;
+
     &:not(:last-of-type):after {
       position: absolute;
       bottom: 0;
