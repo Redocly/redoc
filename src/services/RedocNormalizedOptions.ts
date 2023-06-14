@@ -6,6 +6,8 @@ import { setRedocLabels } from './Labels';
 import { SideNavStyleEnum } from './types';
 import type { LabelsConfigRaw, MDXComponentMeta } from './types';
 
+export type CodeSamplesLanguage = 'json' | 'xml';
+
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
@@ -56,6 +58,7 @@ export interface RedocRawOptions {
   hideFab?: boolean;
   minCharacterLengthToInitSearch?: number;
   showWebhookVerb?: boolean;
+  codeSamplesLanguages?: CodeSamplesLanguage[];
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -211,6 +214,16 @@ export class RedocNormalizedOptions {
     return 10;
   }
 
+  private static normalizeCodeSamplesLanguages(
+    value?: CodeSamplesLanguage[],
+  ): CodeSamplesLanguage[] {
+    if (isArray(value)) {
+      return value.map(lang => lang.toLowerCase()) as CodeSamplesLanguage[];
+    }
+
+    return ['json'];
+  }
+
   theme: ResolvedThemeInterface;
   scrollYOffset: () => number;
   hideHostname: boolean;
@@ -258,6 +271,7 @@ export class RedocNormalizedOptions {
   showWebhookVerb: boolean;
 
   nonce?: string;
+  codeSamplesLanguages: CodeSamplesLanguage[];
 
   constructor(raw: RedocRawOptions, defaults: RedocRawOptions = {}) {
     raw = { ...defaults, ...raw };
@@ -335,5 +349,8 @@ export class RedocNormalizedOptions {
     this.hideFab = argValueToBoolean(raw.hideFab);
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
     this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
+    this.codeSamplesLanguages = RedocNormalizedOptions.normalizeCodeSamplesLanguages(
+      raw.codeSamplesLanguages,
+    );
   }
 }

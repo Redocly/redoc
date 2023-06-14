@@ -251,6 +251,7 @@ You can use all of the following options with the standalone version of the <red
   * **path-only**: displays a path in the sidebar navigation item.
   * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
 * `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
+* `codeSamplesLanguage` - enables code sample generation for the provided list of languages.
 
 ### `<redoc>` theme object
 * `spacing`
@@ -324,6 +325,17 @@ You can use all of the following options with the standalone version of the <red
   * `backgroundColor`: '#263238'
   * `color`: '#ffffff'
 
+## Auto generated code samples
+A new parameter called `codeSamplesLanguage` was added to `options` Object to provide code sample generation. You can pass an array like this to enable all languages supported by the code generation:
+
+```javascript
+['json','xml']
+```
+
+Where `['json']` is provided by default.
+
+When the `x-codeSamples` and `x-code-samples` are not set, it will
+automatically generate the code samples based on the language(s) you set.
 -----------
 ## Development
 see [CONTRIBUTING.md](.github/CONTRIBUTING.md)

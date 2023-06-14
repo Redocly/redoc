@@ -1,5 +1,6 @@
 import { MergedOpenAPISchema } from '../services';
 import { OpenAPISchema } from '../types';
+import { json2xml } from './jsonToXml';
 
 export interface ConfigAccessOptions {
   includeReadOnly?: boolean;
@@ -21,66 +22,6 @@ export interface FinalExamples {
   exampleSummary: string;
   exampleValue: string;
 }
-
-/**
- * json2xml
- * @example
- * Schema: {
- *   'prop1' : 'one',
- *   'prop2' : 'two',
- *   'prop3' : [ 'a', 'b', 'c' ],
- *   'prop4' : {
- *     'ob1' : 'val-1',
- *     'ob2' : 'val-2'
- *   }
- * }
- * XML:
- * <root>
- *   <prop1>simple</prop1>
- *   <prop2>
- *     <0>a</0>
- *     <1>b</1>
- *     <2>c</2>
- *   </prop2>
- *   <prop3>
- *     <ob1>val-1</ob1>
- *     <ob2>val-2</ob2>
- *   </prop3>
- * </root>
- **/
-const json2xml = (obj: any, level: number = 1): string => {
-  const indent = '  '.repeat(level);
-  let xmlText = '';
-  if (level === 1 && typeof obj !== 'object') {
-    return `\n${indent}${obj.toString()}`;
-  }
-  for (const prop in obj) {
-    const tagNameOrProp = obj[prop]?.['::XML_TAG'] || prop;
-    let tagName = '';
-    if (Array.isArray(obj[prop])) {
-      tagName = tagNameOrProp[0]?.['::XML_TAG'] || `${prop}`;
-    } else {
-      tagName = tagNameOrProp;
-    }
-    if (prop.startsWith('::')) {
-      continue;
-    }
-    if (Array.isArray(obj[prop])) {
-      xmlText = `${xmlText}\n${indent}<${tagName}>${json2xml(
-        obj[prop],
-        level + 1,
-      )}\n${indent}</${tagName}>`;
-    } else if (typeof obj[prop] === 'object') {
-      xmlText = `${xmlText}\n${indent}<${tagName}>${json2xml(
-        obj[prop],
-        level + 1,
-      )}\n${indent}</${tagName}>`;
-    } else {
-      xmlText = `${xmlText}\n${indent}<${tagName}>${obj[prop].toString()}</${tagName}>`;
-    }
-  }
-  return xmlText;
-};
 
 const mergePropertyExamples = (
   obj: { [x: string]: any },
