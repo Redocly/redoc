@@ -5,8 +5,9 @@ import { isArray, isNumeric, mergeObjects } from '../utils/helpers';
 import { setRedocLabels } from './Labels';
 import { SideNavStyleEnum } from './types';
 import type { LabelsConfigRaw, MDXComponentMeta } from './types';
+import { CODE_SAMPLE_LANGUAGES } from '../constants/languages';
 
-export type CodeSamplesLanguage = 'json' | 'xml';
+export type CodeSamplesLanguage = typeof CODE_SAMPLE_LANGUAGES[keyof typeof CODE_SAMPLE_LANGUAGES];
 
 export interface RedocRawOptions {
   theme?: ThemeInterface;
