@@ -4,7 +4,7 @@ import type { OpenAPIMediaType } from '../../types';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { SchemaModel } from './Schema';
 
-import { isJsonLike, isXml, mapValues } from '../../utils';
+import { isXml, mapValues } from '../../utils';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import { ExampleModel } from './Example';
 import { ConfigAccessOptions, FinalExamples, generateXmlExample } from '../../utils/xml';
@@ -34,6 +34,9 @@ export class MediaTypeModel {
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     this.generatedPayloadSamplesMaxDepth = options.generatedPayloadSamplesMaxDepth;
+    const isCodeGenerationSupported = options.codeSamplesLanguages.some(lang =>
+      name.toLowerCase().includes(lang),
+    );
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
@@ -48,7 +51,7 @@ export class MediaTypeModel {
           info.encoding,
         ),
       };
-    } else if (isJsonLike(name) || isXml(name)) {
+    } else if (isCodeGenerationSupported) {
       this.generateExample(parser, info);
     }
   }
@@ -78,8 +81,9 @@ export class MediaTypeModel {
             this.name,
             info.encoding,
           );
-          if (isXml(this.name)) {
-            const xmlExamples = this.resolveXmlExample(parser, sample as OpenAPIExample);
+
+          const xmlExamples = this.resolveXmlExample(parser, sample as OpenAPIExample);
+          if (xmlExamples[0]) {
             this.examples[subSchema.title].value = xmlExamples[0]?.exampleValue;
           }
         }
