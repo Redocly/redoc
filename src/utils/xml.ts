@@ -93,8 +93,9 @@ const mergePropertyExamples = (
   const mergedObj = {};
   for (const exampleKey in obj) {
     for (const propExampleKey in propExamples) {
-      mergedObj[`example-${i}`] = { ...obj[exampleKey] };
-      mergedObj[`example-${i}`][propertyName] = propExamples[propExampleKey];
+      const exampleId = getExampleId(i + 1);
+      mergedObj[exampleId] = { ...obj[exampleKey] };
+      mergedObj[exampleId][propertyName] = propExamples[propExampleKey];
       i++;
       if (i >= maxCombinations) {
         break;
@@ -261,12 +262,15 @@ const getSampleValueByType = (schemaObj: OpenAPISchema) => {
   return '?';
 };
 
+const getExampleId = (id: number = 1): string => `Example ${id}`;
+
 /* For changing JSON-Schema to a Sample Object, as per the schema (to generate examples based on schema) */
 const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) => {
   let obj = {};
   if (!schema) {
     return;
   }
+  const defaultExampleId = getExampleId();
   if (schema.allOf) {
     const objWithAllProps = {};
 
@@ -340,7 +344,7 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
        *
        *    The above Schema should generate the following 2 examples
        *
-       *    Example-1
+       *    Example 1
        *    {
        *      prop1: 'string',
        *      prop2: 'AAAAAAAAAA',       <-- min-length 10
@@ -348,7 +352,7 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
        *      option1_PropB: 'string'
        *    }
        *
-       *    Example-2
+       *    Example 2
        *    {
        *      prop1: 'string',
        *      prop2: 'AAAAAAAAAA',       <-- min-length 10
@@ -360,6 +364,7 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
       for (const key in schema.oneOf) {
         const oneOfSamples = schemaToSampleObj(schema.oneOf[key], config);
         for (const sampleKey in oneOfSamples) {
+          const exampleId = getExampleId(i + 1);
           // 2. In the final example include a one-of item along with properties
           let finalExample;
           if (Object.keys(objWithSchemaProps).length > 0) {
@@ -372,8 +377,8 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
           } else {
             finalExample = oneOfSamples[sampleKey];
           }
-          obj[`example-${i}`] = finalExample;
-          addSchemaInfoToExample(schema.oneOf[key], obj[`example-${i}`]);
+          obj[exampleId] = finalExample;
+          addSchemaInfoToExample(schema.oneOf[key], obj[exampleId]);
           i++;
         }
       }
@@ -382,7 +387,7 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
     // First generate values for regular properties
     let commonObj;
     if (schema.type === 'object' || schema.properties) {
-      commonObj = { 'example-0': {} };
+      commonObj = { [defaultExampleId]: {} };
       for (const propertyName in schema.properties) {
         if (schema.example) {
           commonObj = schema;
@@ -410,22 +415,23 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
     for (const key in schema.anyOf) {
       const anyOfSamples = schemaToSampleObj(schema.anyOf[key], config);
       for (const sampleKey in anyOfSamples) {
+        const exampleId = getExampleId(i + 1);
         if (typeof commonObj !== 'undefined') {
           for (const commonKey in commonObj) {
-            obj[`example-${i}`] = { ...commonObj[commonKey], ...anyOfSamples[sampleKey] };
+            obj[exampleId] = { ...commonObj[commonKey], ...anyOfSamples[sampleKey] };
           }
         } else {
-          obj[`example-${i}`] = anyOfSamples[sampleKey];
+          obj[exampleId] = anyOfSamples[sampleKey];
         }
-        addSchemaInfoToExample(schema.anyOf[key], obj[`example-${i}`]);
+        addSchemaInfoToExample(schema.anyOf[key], obj[exampleId]);
         i++;
       }
     }
   } else if (schema.type === 'object' || schema.properties) {
-    obj['example-0'] = {};
-    addSchemaInfoToExample(schema, obj['example-0']);
+    obj[defaultExampleId] = {};
+    addSchemaInfoToExample(schema, obj[defaultExampleId]);
     if (schema.example) {
-      obj['example-0'] = schema.example;
+      obj[defaultExampleId] = schema.example;
     } else {
       for (const propertyName in schema.properties) {
         const prop = schema.properties[propertyName] as OpenAPISchema;
@@ -455,7 +461,7 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
               if (prop.xml?.wrapped) {
                 const wrappedItemSample = JSON.parse(
                   `{ "${xmlTagName}" : { "${xmlTagName}" : ${JSON.stringify(
-                    itemSamples['example-0'],
+                    itemSamples[defaultExampleId],
                   )} } }`,
                 );
                 obj = mergePropertyExamples(obj, xmlTagName, wrappedItemSample);
@@ -483,24 +489,25 @@ const schemaToSampleObj = (schema: OpenAPISchema, config: ExampleConfig = {}) =>
     const schemaItems = schema.items as OpenAPISchema;
     if (schemaItems || schema.example) {
       if (schema.example) {
-        obj['example-0'] = schema.example;
+        obj[defaultExampleId] = schema.example;
       } else if (schemaItems?.example) {
         // schemas and properties support single example but not multiple examples.
-        obj['example-0'] = [schemaItems.example];
+        obj[defaultExampleId] = [schemaItems.example];
       } else {
         const samples = schemaToSampleObj(schemaItems, config);
         let i = 0;
         for (const key in samples) {
-          obj[`example-${i}`] = [samples[key]];
-          addSchemaInfoToExample(schemaItems, obj[`example-${i}`]);
+          const exampleId = getExampleId(i + 1);
+          obj[exampleId] = [samples[key]];
+          addSchemaInfoToExample(schemaItems, obj[exampleId]);
           i++;
         }
       }
     } else {
-      obj['example-0'] = [];
+      obj[defaultExampleId] = [];
     }
   } else {
-    return { 'example-0': getSampleValueByType(schema) };
+    return { [defaultExampleId]: getSampleValueByType(schema) };
   }
   return obj;
 };

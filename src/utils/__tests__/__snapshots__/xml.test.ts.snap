@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`generateXmlExample should generate xml example with a complex list and each property has an example: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with a complex list and each property has an example: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>
@@ -14,7 +14,7 @@ exports[`generateXmlExample should generate xml example with a complex list and 
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example with a list: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with a list: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>string</foo>
@@ -22,7 +22,7 @@ exports[`generateXmlExample should generate xml example with a list: example-0 1
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example with readOnly and writeOnly: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with readOnly and writeOnly: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>string</foo>
@@ -30,7 +30,7 @@ exports[`generateXmlExample should generate xml example with readOnly and writeO
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example with readOnly: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with readOnly: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>string</foo>
@@ -38,7 +38,7 @@ exports[`generateXmlExample should generate xml example with readOnly: example-0
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example with writeOnly: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with writeOnly: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>string</foo>
@@ -46,7 +46,7 @@ exports[`generateXmlExample should generate xml example with writeOnly: example-
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example with xml attributes: example-0 1`] = `
+exports[`generateXmlExample should generate xml example with xml attributes: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <Pet>
@@ -76,7 +76,7 @@ exports[`generateXmlExample should generate xml example with xml attributes: exa
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml example: example-0 1`] = `
+exports[`generateXmlExample should generate xml example: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <root>
   <foo>string</foo>
@@ -84,7 +84,7 @@ exports[`generateXmlExample should generate xml example: example-0 1`] = `
 </root>"
 `;
 
-exports[`generateXmlExample should generate xml for schemas with an array of items: example-0 1`] = `
+exports[`generateXmlExample should generate xml for schemas with an array of items: Example 1 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <User>
   <id>0</id>
@@ -127,7 +127,7 @@ exports[`generateXmlExample should generate xml for schemas with an array of ite
 </User>"
 `;
 
-exports[`generateXmlExample should generate xml for schemas with an array of items: example-1 1`] = `
+exports[`generateXmlExample should generate xml for schemas with an array of items: Example 2 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
 <User>
   <id>0</id>
