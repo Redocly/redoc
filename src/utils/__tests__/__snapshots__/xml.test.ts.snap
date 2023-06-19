@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateXmlExample should generate xml example with a complex list and each property has an example: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>
+    <foo>this is foo</foo>
+    <bar>this is bar</bar>
+  </foo>
+  <bar>
+    <foo>this is foo2</foo>
+    <bar>this is bar2</bar>
+  </bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example with a list: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>string</foo>
+  <bar>string</bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example with readOnly and writeOnly: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>string</foo>
+  <bar>string</bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example with readOnly: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>string</foo>
+  <bar>string</bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example with writeOnly: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>string</foo>
+  <bar>string</bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example with xml attributes: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <Pet>
+    <id>0</id>
+    <Category>
+      <id>0</id>
+      <name>string</name>
+      <sub>
+        <prop1>string</prop1>
+      </sub>
+    </Category>
+    <name>Guru</name>
+    <photoUrl>
+      <photoUrl>http://example.com</photoUrl>
+    </photoUrl>
+    <friend>
+    </friend>
+    <tag>
+      <Tag>
+        <id>0</id>
+        <name>string</name>
+      </Tag>
+    </tag>
+    <status>available</status>
+    <petType>string</petType>
+  </Pet>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml example: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<root>
+  <foo>string</foo>
+  <bar>string</bar>
+</root>"
+`;
+
+exports[`generateXmlExample should generate xml for schemas with an array of items: Example 1 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<User>
+  <id>0</id>
+  <Pet>
+    <id>0</id>
+    <Category>
+      <id>0</id>
+      <name>string</name>
+      <sub>
+        <prop1>string</prop1>
+      </sub>
+    </Category>
+    <name>Guru</name>
+    <photoUrl>
+      <photoUrl>http://example.com</photoUrl>
+    </photoUrl>
+    <friend>
+    </friend>
+    <tag>
+      <Tag>
+        <id>0</id>
+        <name>string</name>
+      </Tag>
+    </tag>
+    <status>available</status>
+    <petType>string</petType>
+  </Pet>
+  <username>John78</username>
+  <firstName>John</firstName>
+  <lastName>Smith</lastName>
+  <email>john.smith@example.com</email>
+  <password>drowssaP123</password>
+  <phone>+1-202-555-0192</phone>
+  <userStatus>0</userStatus>
+  <addresses>
+    <city>string</city>
+    <country>string</country>
+    <street>string</street>
+  </addresses>
+</User>"
+`;
+
+exports[`generateXmlExample should generate xml for schemas with an array of items: Example 2 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<User>
+  <id>0</id>
+  <Pet>
+    <id>0</id>
+    <Category>
+      <id>0</id>
+      <name>string</name>
+      <sub>
+        <prop1>string</prop1>
+      </sub>
+    </Category>
+    <name>Guru</name>
+    <photoUrl>
+      <photoUrl>http://example.com</photoUrl>
+    </photoUrl>
+    <friend>
+    </friend>
+    <tag>
+      <Tag>
+        <id>0</id>
+        <name>string</name>
+      </Tag>
+    </tag>
+    <status>available</status>
+    <petType>string</petType>
+  </Pet>
+  <username>John78</username>
+  <firstName>John</firstName>
+  <lastName>Smith</lastName>
+  <email>john.smith@example.com</email>
+  <password>drowssaP123</password>
+  <phone>+1-202-555-0192</phone>
+  <userStatus>0</userStatus>
+  <addresses>0</addresses>
+</User>"
+`;
