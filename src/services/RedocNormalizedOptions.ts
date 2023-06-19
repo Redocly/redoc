@@ -222,7 +222,7 @@ export class RedocNormalizedOptions {
       return value.map(lang => lang.toLowerCase()) as CodeSamplesLanguage[];
     }
 
-    return ['json'];
+    return [CODE_SAMPLE_LANGUAGES.JSON];
   }
 
   theme: ResolvedThemeInterface;

@@ -76,26 +76,27 @@ describe('Models', () => {
     test('should deref the properties of a schema', () => {
       const spec = require('./fixtures/properties.json');
       parser = new OpenAPIParser(spec, undefined, opts);
+      const string = 'string';
       const example = {
         id: 0,
         category: {
           id: 0,
-          name: 'string',
+          name: string,
           sub: {
-            prop1: 'string',
+            prop1: string,
           },
         },
         name: 'Guru',
-        photoUrls: ['string'],
+        photoUrls: [string],
         friend: {},
         tags: [
           {
             id: 0,
-            name: 'string',
+            name: string,
           },
         ],
         status: 'available',
-        petType: 'string',
+        petType: string,
       };
 
       expect(

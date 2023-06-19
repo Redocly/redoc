@@ -84,7 +84,7 @@ export class MediaTypeModel {
 
           const xmlExamples = this.resolveXmlExample(parser, sample as OpenAPIExample);
           if (xmlExamples[0]) {
-            this.examples[subSchema.title].value = xmlExamples[0]?.exampleValue;
+            this.examples[subSchema.title].value = xmlExamples[0].exampleValue;
           }
         }
       } else {
