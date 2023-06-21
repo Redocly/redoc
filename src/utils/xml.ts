@@ -1,26 +1,20 @@
 import { MergedOpenAPISchema } from '../services';
 import { OpenAPISchema } from '../types';
 import { json2xml } from './jsonToXml';
+import { Example } from '../types/example';
 
 export interface ConfigAccessOptions {
   includeReadOnly?: boolean;
   includeWriteOnly?: boolean;
 }
 
-export interface ExampleConfig extends ConfigAccessOptions {
+interface ExampleConfig extends ConfigAccessOptions {
   includeDeprecated?: boolean;
   useXmlTagForProp?: boolean;
 }
 
-export interface GenerateExampleProps extends ConfigAccessOptions {
+interface GenerateExampleProps extends ConfigAccessOptions {
   schema: MergedOpenAPISchema | undefined;
-}
-
-export interface FinalExamples {
-  exampleDescription: string;
-  exampleId: string;
-  exampleSummary: string;
-  exampleValue: string;
 }
 
 const mergePropertyExamples = (
@@ -482,8 +476,8 @@ export const generateXmlExample = ({
   includeReadOnly = true,
   includeWriteOnly = true,
   schema,
-}: GenerateExampleProps): FinalExamples[] => {
-  const finalExamples: FinalExamples[] = [];
+}: GenerateExampleProps): Example[] => {
+  const finalExamples: Example[] = [];
 
   if (!schema) return finalExamples;
 

@@ -1,15 +1,17 @@
 import * as Sampler from 'openapi-sampler';
 
-import type { OpenAPIMediaType } from '../../types';
+import { OpenAPIExample, OpenAPIMediaType, OpenAPISchema, Referenced } from '../../types';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 import { SchemaModel } from './Schema';
 
-import { isXml, mapValues } from '../../utils';
+import { mapValues } from '../../utils';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import { ExampleModel } from './Example';
-import { ConfigAccessOptions, FinalExamples, generateXmlExample } from '../../utils/xml';
+import { ConfigAccessOptions, generateXmlExample } from '../../utils/xml';
 import { MergedOpenAPISchema } from '../types';
-import { OpenAPIExample, Referenced } from '../../types';
+import { generateCsvExample } from '../../utils/csv';
+import { CODE_SAMPLE_LANGUAGES } from '../../constants/languages';
+import { Example } from '../../types/example';
 
 export class MediaTypeModel {
   examples?: { [name: string]: ExampleModel };
@@ -18,6 +20,12 @@ export class MediaTypeModel {
   isRequestType: boolean;
   onlyRequiredInSamples: boolean;
   generatedPayloadSamplesMaxDepth: number;
+  private readonly samplerOptions: {
+    maxSampleDepth: number;
+    skipNonRequired: boolean;
+    skipReadOnly: boolean;
+    skipWriteOnly: boolean;
+  };
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
@@ -37,6 +45,12 @@ export class MediaTypeModel {
     const isCodeGenerationSupported = options.codeSamplesLanguages.some(lang =>
       name.toLowerCase().includes(lang),
     );
+    this.samplerOptions = {
+      maxSampleDepth: this.generatedPayloadSamplesMaxDepth,
+      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
+      skipReadOnly: this.isRequestType,
+      skipWriteOnly: !this.isRequestType,
+    };
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
@@ -57,17 +71,15 @@ export class MediaTypeModel {
   }
 
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
-    const samplerOptions = {
-      skipReadOnly: this.isRequestType,
-      skipWriteOnly: !this.isRequestType,
-      skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
-      maxSampleDepth: this.generatedPayloadSamplesMaxDepth,
-    };
     if (this.schema) {
       if (this.schema.oneOf) {
         this.examples = {};
         for (const subSchema of this.schema.oneOf) {
-          const sample = Sampler.sample(subSchema.rawSchema as any, samplerOptions, parser.spec);
+          const sample = Sampler.sample(
+            subSchema.rawSchema as any,
+            this.samplerOptions,
+            parser.spec,
+          );
 
           if (this.schema.discriminatorProp && typeof sample === 'object' && sample) {
             sample[this.schema.discriminatorProp] = subSchema.title;
@@ -82,24 +94,26 @@ export class MediaTypeModel {
             info.encoding,
           );
 
-          const xmlExamples = this.resolveXmlExample(parser, sample as OpenAPIExample);
-          if (xmlExamples[0]) {
-            this.examples[subSchema.title].value = xmlExamples[0].exampleValue;
+          const [generatedExample] = this.resolveGeneratedExample(parser, sample as OpenAPIExample);
+          if (generatedExample) {
+            this.examples[subSchema.title].value = generatedExample.exampleValue;
           }
         }
       } else {
-        const infoOrRef: Referenced<OpenAPIExample> = {
-          value: Sampler.sample(info.schema as any, samplerOptions, parser.spec),
+        let infoOrRef: Referenced<OpenAPIExample> = {
+          value: Sampler.sample(info.schema as any, this.samplerOptions, parser.spec),
         };
-        const xmlExamples = this.resolveXmlExample(parser, infoOrRef.value);
+        const generatedExamples = this.resolveGeneratedExample(parser, infoOrRef.value);
 
-        if (xmlExamples.length > 1) {
+        if (generatedExamples.length > 1) {
           this.examples = Object.fromEntries(
-            xmlExamples.map(item => [
+            generatedExamples.map(item => [
               item.exampleId,
               new ExampleModel(
                 parser,
                 {
+                  description: item.exampleDescription,
+                  summary: item.exampleSummary,
                   value: item.exampleValue,
                 },
                 this.name,
@@ -108,30 +122,45 @@ export class MediaTypeModel {
             ]),
           );
         } else {
+          const [generatedExample] = generatedExamples;
+          if (generatedExample) {
+            infoOrRef = {
+              description: generatedExample.exampleDescription,
+              summary: generatedExample.exampleSummary,
+              value: generatedExample.exampleValue,
+            };
+          }
           this.examples = {
-            default: new ExampleModel(
-              parser,
-              {
-                value: xmlExamples[0]?.exampleValue || infoOrRef.value,
-              },
-              this.name,
-              info.encoding,
-            ),
+            default: new ExampleModel(parser, infoOrRef, this.name, info.encoding),
           };
         }
       }
     }
   }
 
-  resolveXmlExample(parser: OpenAPIParser, sample: OpenAPIExample) {
+  private resolveGeneratedExample(parser: OpenAPIParser, sample: OpenAPIExample): Example[] {
+    const mimeType = this.name.toLowerCase();
+    switch (true) {
+      case mimeType.includes(CODE_SAMPLE_LANGUAGES.JSON):
+        return []; // Already supported
+      case mimeType.includes(CODE_SAMPLE_LANGUAGES.XML):
+        return this.resolveXmlExample(parser, sample);
+      case mimeType.includes(CODE_SAMPLE_LANGUAGES.CSV):
+        return this.resolveCsvExample(parser, sample);
+      default:
+        throw new Error(`Unsupported code sample language: ${this.name}`);
+    }
+  }
+
+  private resolveXmlExample(parser: OpenAPIParser, sample: OpenAPIExample) {
     const configAccessOptions: ConfigAccessOptions = {
       includeReadOnly: !this.isRequestType,
       includeWriteOnly: this.isRequestType,
     };
     const subSchema = this.schema?.schema;
-    let xmlExamples: FinalExamples[] = [];
-    if (subSchema && isXml(this.name)) {
-      let resolved;
+    let xmlExamples: Example[] = [];
+    if (subSchema) {
+      let resolved: OpenAPISchema;
       if (subSchema.items) {
         resolved = {
           ...subSchema,
@@ -151,5 +180,15 @@ export class MediaTypeModel {
     }
 
     return xmlExamples;
+  }
+
+  private resolveCsvExample(parser: OpenAPIParser, sample: OpenAPIExample): Example[] {
+    const subSchema = this.schema?.schema;
+    return generateCsvExample({
+      parser,
+      schema: subSchema as MergedOpenAPISchema,
+      sample,
+      samplerOptions: this.samplerOptions,
+    });
   }
 }

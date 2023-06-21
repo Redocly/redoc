@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "schemas": {
+      "test": {
+        "type": "array",
+        "items": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Category1"
+            },
+            {
+              "$ref": "#/components/schemas/Category2"
+            }
+          ]
+        }
+      },
+      "test2": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/Category1"
+            },
+            {
+              "$ref": "#/components/schemas/Category2"
+            }
+          ]
+        }
+      },
+      "test3": {
+        "$ref": "#/components/schemas/Category1"
+      },
+      "Category1": {
+        "type": "object",
+        "properties": {
+          "Competitor": {
+            "example": "google.com",
+            "type": "string"
+          },
+          "2023-02-02": {
+            "example": "0.356263",
+            "type": "string"
+          },
+          "2023-02-03": {
+            "example": "0.1251661",
+            "type": "string"
+          }
+        }
+      },
+      "Category2": {
+        "type": "object",
+        "properties": {
+          "Competitor": {
+            "example": "facebook.com",
+            "type": "string"
+          },
+          "2023-02-02": {
+            "example": "0.74324",
+            "type": "string"
+          },
+          "2023-02-03": {
+            "example": "0.73542",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

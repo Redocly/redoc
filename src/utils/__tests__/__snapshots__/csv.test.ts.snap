@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateCsvExample generates a csv example for an array of items using $ref 1`] = `
+Array [
+  Object {
+    "exampleDescription": "",
+    "exampleId": "Example 1",
+    "exampleSummary": "Example CSV",
+    "exampleValue": "Competitor,2023-02-02,2023-02-03
+google.com,0.356263,0.1251661",
+  },
+]
+`;
+
+exports[`generateCsvExample generates a csv example for an array of items using allOf 1`] = `
+Array [
+  Object {
+    "exampleDescription": "",
+    "exampleId": "Example 1",
+    "exampleSummary": "Example CSV",
+    "exampleValue": "Competitor,2023-02-02,2023-02-03
+google.com,0.356263,0.1251661
+facebook.com,0.74324,0.73542",
+  },
+]
+`;
+
+exports[`generateCsvExample generates a csv example for an array of items using oneOf 1`] = `
+Array [
+  Object {
+    "exampleDescription": "",
+    "exampleId": "Example 1",
+    "exampleSummary": "Example CSV",
+    "exampleValue": "Competitor,2023-02-02,2023-02-03
+google.com,0.356263,0.1251661",
+  },
+  Object {
+    "exampleDescription": "",
+    "exampleId": "Example 2",
+    "exampleSummary": "Example CSV",
+    "exampleValue": "Competitor,2023-02-02,2023-02-03
+facebook.com,0.74324,0.73542",
+  },
+]
+`;

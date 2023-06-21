@@ -336,6 +336,13 @@ export class OpenAPIParser {
     return receiver;
   }
 
+  /**
+   * Recursively deref the properties of a schema and attach examples
+   *
+   * @param {MergedOpenAPISchema} schema
+   * @param {OpenAPIExample & OpenAPISchema} example
+   * @returns {OpenAPISchema}
+   */
   derefSchemaWithExample(
     schema: MergedOpenAPISchema,
     example: OpenAPIExample & OpenAPISchema,
