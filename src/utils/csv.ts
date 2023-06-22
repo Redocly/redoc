@@ -12,7 +12,8 @@ interface CsvExampleProps {
   samplerOptions: object;
 }
 
-const hasSameHeaders = (headers, sample) => Object.keys(sample).every(key => headers.includes(key));
+const hasSameHeaders = (headers: string, sample: OpenAPIExample) =>
+  Object.keys(sample).every(key => headers.includes(key));
 
 const getCsvRows = (sample: OpenAPIExample): string => {
   const headers = Object.keys(sample?.[0] ?? sample).join(',');
@@ -22,10 +23,10 @@ const getCsvRows = (sample: OpenAPIExample): string => {
   );
   if (!hasValidHeaders) return '';
 
-  let values;
+  let values: string;
 
   if (Array.isArray(sample)) {
-    values = sample.map(row => Object.values(row)).join('\n');
+    values = sample.map(Object.values).join('\n');
   } else {
     values = Object.values(sample).join(',');
   }
@@ -33,7 +34,7 @@ const getCsvRows = (sample: OpenAPIExample): string => {
 };
 
 const cleanUpExamples = (examples: Example[]): Example[] =>
-  examples.filter(example => example.exampleValue !== '');
+  examples.filter(({ exampleValue }) => exampleValue);
 
 export const generateCsvExample = ({
   parser,
@@ -50,66 +51,65 @@ export const generateCsvExample = ({
     ),
   );
 
-  const processSamplesWithSchema = subSchema => {
-    if (subSchema) {
-      const subItems = subSchema.items as OpenAPISchema;
+  const processSamplesWithSchema = (subSchema: OpenAPISchema) => {
+    if (!subSchema) {
+      return;
+    }
 
-      if (subSchema.type === 'array' && subItems && depthCount < MAX_ITEM_DEPTH) {
-        depthCount++;
-        processSamplesWithSchema(subItems);
-      }
-
-      const metadata = {
-        exampleDescription: subSchema.description || schema.description || '',
-        exampleSummary: subSchema.title || schema.title || 'Example CSV',
+    const subItems = subSchema.items as OpenAPISchema;
+    if (subSchema.type === 'array' && subItems && depthCount < MAX_ITEM_DEPTH) {
+      depthCount++;
+      processSamplesWithSchema(subItems);
+    }
+    const metadata = {
+      exampleDescription: subSchema.description || schema.description || '',
+      exampleSummary: subSchema.title || schema.title || 'Example CSV',
+    };
+    if (subSchema.allOf) {
+      const resolved: OpenAPISchema = {
+        ...schema,
+        items: parser.deref(subSchema.allOf as MergedOpenAPISchema).resolved,
       };
+      const sampleData = Sampler.sample(
+        resolved as any,
+        samplerOptions,
+        parser.spec,
+      ) as OpenAPIExample;
 
-      if (subSchema.allOf) {
-        const resolved: OpenAPISchema = {
-          ...schema,
-          items: parser.deref(subSchema.allOf as MergedOpenAPISchema).resolved,
-        };
+      const csvRows = getCsvRows(sampleData);
+      examples.push({
+        exampleId: `Example ${exampleCount++}`,
+        exampleValue: csvRows,
+        ...metadata,
+      });
+    } else if (subSchema.oneOf) {
+      const oneOfExamples = subSchema.oneOf.map(oneOfSchema => {
+        const { resolved } = parser.deref(oneOfSchema as MergedOpenAPISchema);
         const sampleData = Sampler.sample(
           resolved as any,
           samplerOptions,
           parser.spec,
         ) as OpenAPIExample;
-
         const csvRows = getCsvRows(sampleData);
-        examples.push({
-          exampleId: `Example ${exampleCount++}`,
-          exampleValue: csvRows,
-          ...metadata,
-        });
-      } else if (subSchema.oneOf) {
-        const oneOfExamples = subSchema.oneOf.map(oneOfSchema => {
-          const { resolved } = parser.deref(oneOfSchema as MergedOpenAPISchema);
-          const sampleData = Sampler.sample(
-            resolved as any,
-            samplerOptions,
-            parser.spec,
-          ) as OpenAPIExample;
-          const csvRows = getCsvRows(sampleData);
-          const currentMetadata = {
-            exampleDescription: oneOfSchema.description || metadata.exampleDescription,
-            exampleSummary: oneOfSchema.title || metadata.exampleSummary,
-          };
+        const currentMetadata = {
+          exampleDescription: oneOfSchema.description || metadata.exampleDescription,
+          exampleSummary: oneOfSchema.title || metadata.exampleSummary,
+        };
 
-          return {
-            exampleId: `Example ${exampleCount++}`,
-            exampleValue: csvRows,
-            ...currentMetadata,
-          };
-        });
-        examples = [...examples, ...oneOfExamples];
-      } else if (subSchema.$ref) {
-        const csvRows = getCsvRows(sample);
-        examples.push({
+        return {
           exampleId: `Example ${exampleCount++}`,
           exampleValue: csvRows,
-          ...metadata,
-        });
-      }
+          ...currentMetadata,
+        };
+      });
+      examples = [...examples, ...oneOfExamples];
+    } else if (subSchema.$ref) {
+      const csvRows = getCsvRows(sample);
+      examples.push({
+        exampleId: `Example ${exampleCount++}`,
+        exampleValue: csvRows,
+        ...metadata,
+      });
     }
   };
 
