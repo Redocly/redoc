@@ -12,12 +12,14 @@ interface CsvExampleProps {
   samplerOptions: object;
 }
 
+const hasSameHeaders = (headers, sample) => Object.keys(sample).every(key => headers.includes(key));
+
 const getCsvRows = (sample: OpenAPIExample): string => {
   const headers = Object.keys(sample?.[0] ?? sample).join(',');
   // Ensure the schema has deterministic headers
-  const hasValidHeaders =
-    !Array.isArray(sample) ||
-    sample.every(row => Object.keys(row).every(key => headers.includes(key)));
+  const hasValidHeaders = (Array.isArray(sample) ? sample : [sample]).every(row =>
+    hasSameHeaders(headers, row),
+  );
   if (!hasValidHeaders) return '';
 
   let values;
@@ -62,7 +64,7 @@ export const generateCsvExample = ({
         exampleSummary: subSchema.title || schema.title || 'Example CSV',
       };
 
-      if (subSchema?.allOf) {
+      if (subSchema.allOf) {
         const resolved: OpenAPISchema = {
           ...schema,
           items: parser.deref(subSchema.allOf as MergedOpenAPISchema).resolved,
