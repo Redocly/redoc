@@ -330,7 +330,7 @@ You can use all of the following options with the standalone version of the <red
 A new parameter called `codeSamplesLanguages` was added to `options` Object to provide code sample generation. You can pass an array like this to enable all languages supported by the code generation:
 
 ```javascript
-['json','xml']
+['json','xml','csv']
 ```
 
 Where `['json']` is provided by default.
