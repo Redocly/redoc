@@ -1,15 +1,15 @@
 {
   "name": "@dop/redoc-cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "@dop/redoc-cli",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "license": "MIT",
       "dependencies": {
-        "@dop/redoc": "git+https://git@github.com/mongodb-forks/redoc.git#v1.2.0",
+        "@dop/redoc": "git+https://git@github.com/mongodb-forks/redoc.git#v1.2.1",
         "chokidar": "^3.5.1",
         "handlebars": "^4.7.7",
         "isarray": "^2.0.5",
@@ -437,8 +437,8 @@
       }
     },
     "node_modules/@dop/redoc": {
-      "version": "1.2.0",
-      "resolved": "git+https://git@github.com/mongodb-forks/redoc.git#fc3c6319a734c0f8fe9129891b949cb120419667",
+      "version": "1.2.1",
+      "resolved": "git+https://git@github.com/mongodb-forks/redoc.git#0f0f191160322e478a4b93f848406ec27c751bd0",
       "license": "MIT",
       "dependencies": {
         "@emotion/css": "^11.0.0",
@@ -4610,8 +4610,8 @@
       }
     },
     "@dop/redoc": {
-      "version": "git+https://git@github.com/mongodb-forks/redoc.git#fc3c6319a734c0f8fe9129891b949cb120419667",
-      "from": "@dop/redoc@git+https://git@github.com/mongodb-forks/redoc#v1.2.0",
+      "version": "git+https://git@github.com/mongodb-forks/redoc.git#0f0f191160322e478a4b93f848406ec27c751bd0",
+      "from": "@dop/redoc@git+https://git@github.com/mongodb-forks/redoc#v1.2.1",
       "requires": {
         "@emotion/css": "^11.0.0",
         "@emotion/react": "^11.10.4",
