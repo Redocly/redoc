@@ -112,7 +112,7 @@ x-tagGroups:
 
 
 ###### How to use with Redoc
-Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by ReDoc.
+Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by Redoc.
 
 ###### x-ignoredHeaderParameters example
 ```yaml

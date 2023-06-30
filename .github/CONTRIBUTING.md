@@ -1,8 +1,8 @@
-# ReDoc Contributing Guide
+# Redoc Contributing Guide
 
-Hi! We're really excited that you are interested in contributing to ReDoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
+Hi! We're really excited that you are interested in contributing to Redoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
 
-- [ReDoc Contributing Guide](#redoc-contributing-guide)
+- [Redoc Contributing Guide](#redoc-contributing-guide)
   - [Issue Reporting Guidelines](#issue-reporting-guidelines)
   - [Pull Request Guidelines](#pull-request-guidelines)
   - [Development Setup](#development-setup)
@@ -90,7 +90,7 @@ There are some other scripts available in the `scripts` section of the `package.
 
   - **`src/common-elements`**: contains common Styled elements or components used in multiple places
   - **`src/components`**: contains main visual components
-  - **`src/services`**: contains different services used by ReDoc including MobX stores
+  - **`src/services`**: contains different services used by Redoc including MobX stores
   - **`src/services/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions

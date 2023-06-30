@@ -8,11 +8,11 @@ You can inject the Security Definitions widget anywhere in your specification `d
 
 Some description
 
-<!-- ReDoc-Inject: <security-definitions> -->
+<!-- Redoc-Inject: <security-definitions> -->
 ...
 ```
 The inject instruction is wrapped in an HTML comment,
-so it is **visible only in ReDoc** and not visible, for instance, in the SwaggerUI.
+so it is **visible only in Redoc** and not visible, for instance, in the SwaggerUI.
 
 # Default behavior
 
