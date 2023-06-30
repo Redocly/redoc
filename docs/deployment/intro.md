@@ -12,7 +12,7 @@ You should select the option that best fits your needs.
 The following options are supported:
 
 - **[Live demo](https://redocly.github.io/redoc/):**
-  The live demo offers a fast way to see how your OpenAPI will render with Redoc.
+  The live demo offers a fast way to see how your OpenAPI renders with Redoc.
   A version of the Swagger Petstore API is displayed by default. To test it with your own OpenAPI definition, enter the URL for your
   definition and select **TRY IT**.
 - **[HTML element](./html.md):**
@@ -28,7 +28,7 @@ The following options are supported:
 
 ### OpenAPI definition
 
-You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
+You need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
 
 - OpenAPI 3.0
   - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/main/openapi/users.yaml)

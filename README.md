@@ -25,7 +25,7 @@ By default Redoc offers a three-panel, responsive layout:
 
 ## Live demo
 
-If you want to see how Redoc will render your OpenAPI definition,
+If you want to see how Redoc renders your OpenAPI definition,
 you can try it out online at https://redocly.github.io/redoc/.
 
 A version of the Swagger Petstore API is displayed by default.
@@ -109,7 +109,7 @@ Refer to the Redocly's documentation for more information on these products:
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
 - particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - it will point to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
+- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - points to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
 
 ## Version Guidance
 | Redoc Release | OpenAPI Specification |
@@ -214,7 +214,7 @@ You can use all of the following options with the standalone version of the <red
 * `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
 * `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
 * `downloadFileName` - set a custom file name for the downloaded API definition file.
-* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here will open when that button is selected. Provide it as an absolute URL with the full URI scheme.
+* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here opens when that button is selected. Provide it as an absolute URL with the full URI scheme.
 * `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
 * `hideLoading` - do not show loading animation. Useful for small docs.
 * `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
@@ -230,7 +230,7 @@ You can use all of the following options with the standalone version of the <red
 * `sortOperationsAlphabetically` - set to true, sorts operations in the navigation sidebar and in the middle panel alphabetically
 * `sortTagsAlphabetically` - set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically
 * `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
-* `menuToggle` - if true clicking second time on expanded menu item will collapse it, default `true`.
+* `menuToggle` - if true, clicking second time on expanded menu item collapses it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
 * `onlyRequiredInSamples` - shows only required fields in request samples.
 * `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one.
@@ -238,14 +238,14 @@ You can use all of the following options with the standalone version of the <red
 * `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
 `scrollYOffset` can be specified in various ways:
   * **number**: A fixed number of pixels to be used as offset.
-  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as offset.
+  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom is used as offset.
   * **function**: A getter function. Must return a number representing the offset (in pixels).
 * `showExtensions` - show vendor extensions ("x-" fields). Extensions used by Redoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
 * `sortPropsAlphabetically` - sort properties alphabetically.
-* `payloadSampleIdx` - if set, payload sample will be inserted at this index or last. Indexes start from 0.
+* `payloadSampleIdx` - if set, payload sample is inserted at this index or last. Indexes start from 0.
 * `theme` - Redoc theme. For details check [theme docs](#redoc-theme-object).
 * `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
-* `nonce` - if set, the provided value will be injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
+* `nonce` - if set, the provided value is injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
 * `sideNavStyle` - can be specified in various ways:
   * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
   * **path-only**: displays a path in the sidebar navigation item.

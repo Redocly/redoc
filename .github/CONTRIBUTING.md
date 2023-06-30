@@ -2,10 +2,12 @@
 
 Hi! We're really excited that you are interested in contributing to ReDoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
 
-- [Issue Reporting Guidelines](#issue-reporting-guidelines)
-- [Pull Request Guidelines](#pull-request-guidelines)
-- [Development Setup](#development-setup)
-- [Project Structure](#project-structure)
+- [ReDoc Contributing Guide](#redoc-contributing-guide)
+  - [Issue Reporting Guidelines](#issue-reporting-guidelines)
+  - [Pull Request Guidelines](#pull-request-guidelines)
+  - [Development Setup](#development-setup)
+    - [Commonly used NPM scripts](#commonly-used-npm-scripts)
+  - [Project Structure](#project-structure)
 
 ## Issue Reporting Guidelines
 - Before filing a new issue, try to make sure your problem doesn’t already exist.
@@ -22,7 +24,7 @@ Before submitting a pull request, please make sure the following is done:
 
 ## Development Setup
 
-You will need [Node.js](http://nodejs.org) at `v12.0.0+`.
+You need [Node.js](http://nodejs.org) at `v12.0.0+`.
 
 After cloning the repo, run:
 
