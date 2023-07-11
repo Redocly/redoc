@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TypeFormat, TypePrefix } from '../../common-elements/fields';
-import { ConstraintsView } from './FieldContstraints';
+import { ConstraintsView } from './FieldConstraints';
 import { Pattern } from './Pattern';
 import { SchemaModel } from '../../services';
 import styled from '../../styled-components';

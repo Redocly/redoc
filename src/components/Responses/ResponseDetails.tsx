@@ -10,7 +10,7 @@ import { Schema } from '../Schema';
 import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
-import { ConstraintsView } from '../Fields/FieldContstraints';
+import { ConstraintsView } from '../Fields/FieldConstraints';
 
 export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
   render() {
