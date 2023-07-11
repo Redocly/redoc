@@ -8,7 +8,7 @@ import {
 } from '../../common-elements/schema';
 import { Badge } from '../../common-elements/shelfs';
 import { SchemaModel } from '../../services/models';
-import { ConstraintsView } from '../Fields/FieldContstraints';
+import { ConstraintsView } from '../Fields/FieldConstraints';
 import { Schema, SchemaProps } from './Schema';
 
 export interface OneOfButtonProps {
