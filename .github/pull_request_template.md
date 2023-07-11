@@ -2,7 +2,7 @@
 
 ## Reference
 
-## Testing
+## Tests
 
 ## Screenshots (optional)
 
