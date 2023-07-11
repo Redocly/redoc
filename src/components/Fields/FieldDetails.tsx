@@ -15,7 +15,7 @@ import { EnumValues } from './EnumValues';
 import { Extensions } from './Extensions';
 import { FieldProps } from './Field';
 import { Examples } from './Examples';
-import { ConstraintsView } from './FieldContstraints';
+import { ConstraintsView } from './FieldConstraints';
 import { FieldDetail } from './FieldDetail';
 
 import { Badge } from '../../common-elements/';
