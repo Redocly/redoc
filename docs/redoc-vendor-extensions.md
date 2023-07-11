@@ -2,29 +2,52 @@
 
 You can use the following [vendor extensions](https://swagger.io/specification/#specificationExtensions) with Redoc.
 
-- [Swagger Object](#swagger-object)
-	- [x-servers](#x-servers)
-	- [x-tagGroups](#x-taggroups)
-	- [Tag Group Object](#a-nametaggroupobjectatag-group-object)
-	- [x-ignoredHeaderParameters](#x-ignoredheaderparameters)
-- [Info Object](#info-object)
-	- [x-logo](#x-logo)
-	- [Logo Object](#a-namelogoobjectalogo-object)
-- [Tag Object](#tag-object)
-	- [x-traitTag](#x-traittag)
-	- [x-displayName](#x-displayname)
-- [Operation Object](#operation-object-vendor-extensions)
-	- [x-codeSamples](#x-codesamples)
-	- [Code Sample Object](#a-namecodesampleobjectacode-sample-object)
-- [Parameter Object](#parameter-object)
-	- [x-examples](#x-examples)
-- [Response Object vendor extensions](#response-object-vendor-extensions)
-	- [x-summary](#x-summary)
-- [Schema Object](#schema-object)
-	- [x-nullable](#x-nullable)
-	- [x-extendedDiscriminator](#x-extendeddiscriminator)
-	- [x-additionalPropertiesName](#x-additionalpropertiesname)
-	- [x-explicitMappingOnly](#x-explicitmappingonly)
+- [Redoc vendor extensions](#redoc-vendor-extensions)
+    - [Swagger Object](#swagger-object)
+      - [x-servers](#x-servers)
+      - [x-tagGroups](#x-taggroups)
+          - [How to use with Redoc](#how-to-use-with-redoc)
+      - [Tag Group Object](#tag-group-object)
+          - [Fixed fields](#fixed-fields)
+          - [x-tagGroups example](#x-taggroups-example)
+      - [x-ignoredHeaderParameters](#x-ignoredheaderparameters)
+          - [How to use with Redoc](#how-to-use-with-redoc-1)
+          - [x-ignoredHeaderParameters example](#x-ignoredheaderparameters-example)
+    - [Info Object](#info-object)
+      - [x-logo](#x-logo)
+          - [How to use with Redoc](#how-to-use-with-redoc-2)
+      - [Logo Object](#logo-object)
+          - [Fixed fields](#fixed-fields-1)
+          - [x-logo example](#x-logo-example)
+    - [Tag Object](#tag-object)
+      - [x-traitTag](#x-traittag)
+          - [How to use with Redoc](#how-to-use-with-redoc-3)
+          - [x-traitTag example](#x-traittag-example)
+      - [x-displayName](#x-displayname)
+    - [Operation Object vendor extensions](#operation-object-vendor-extensions)
+      - [x-codeSamples](#x-codesamples)
+          - [How to use with Redoc](#how-to-use-with-redoc-4)
+      - [Code Sample Object](#code-sample-object)
+          - [Fixed fields](#fixed-fields-2)
+          - [Code Sample Object example](#code-sample-object-example)
+    - [Parameter Object](#parameter-object)
+      - [x-examples](#x-examples)
+          - [How to use with Redoc](#how-to-use-with-redoc-5)
+    - [Response Object vendor extensions](#response-object-vendor-extensions)
+      - [x-summary](#x-summary)
+          - [How to use with Redoc](#how-to-use-with-redoc-6)
+    - [Schema Object](#schema-object)
+      - [x-nullable](#x-nullable)
+          - [How to use with Redoc](#how-to-use-with-redoc-7)
+      - [x-extendedDiscriminator](#x-extendeddiscriminator)
+          - [How to use with Redoc](#how-to-use-with-redoc-8)
+          - [x-extendedDiscriminator example](#x-extendeddiscriminator-example)
+      - [x-additionalPropertiesName](#x-additionalpropertiesname)
+          - [How to use with Redoc](#how-to-use-with-redoc-9)
+          - [x-additionalPropertiesName example](#x-additionalpropertiesname-example)
+      - [x-explicitMappingOnly](#x-explicitmappingonly)
+          - [How to use with Redoc](#how-to-use-with-redoc-10)
+          - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
 
 ### Swagger Object
 Extends the OpenAPI root [OpenAPI Object](https://swagger.io/specification/#oasObject)
@@ -40,7 +63,7 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 
 ###### How to use with Redoc
 `x-tagGroups` is used to group tags in the side menu.
-Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a tag that is not in a group, **will not be displayed** at all!
+Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a tag that is not in a group, **is not displayed** at all!
 
 #### <a name="tagGroupObject"></a>Tag Group Object
 Information about tags group
@@ -89,7 +112,7 @@ x-tagGroups:
 
 
 ###### How to use with Redoc
-Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by ReDoc.
+Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by Redoc.
 
 ###### x-ignoredHeaderParameters example
 ```yaml
@@ -204,7 +227,7 @@ Operation code sample
 | Field Name  |	Type	   | Description  |
 | :---------- | :------: | :----------- |
 | lang        | string   | Code sample language. Value should be one of the following [list](https://github.com/github/linguist/blob/master/lib/linguist/popular.yml) |
-| label       | string?   | Code sample label e.g. `Node` or `Python2.7`, _optional_, `lang` will be used by default |
+| label       | string?   | Code sample label, for example `Node` or `Python2.7`, _optional_, `lang` is used by default |
 | source      | string   | Code sample source code |
 
 
@@ -264,7 +287,7 @@ Schemas marked as `x-nullable` are marked in Redoc with the label Nullable
 
 ###### How to use with Redoc
 Redoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
-Value of this field specifies the field which will be used as a extended discriminator.
+Value of this field specifies the field which is used as an extended discriminator.
 Redoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
 Redoc displays the definition derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
 
@@ -347,7 +370,7 @@ Extends the `discriminator` property of the schema object.
 
 ###### How to use with Redoc
 Redoc uses this extension to filter the `discriminator` mappings shown in the selectpicker.
-When set to `true`, the selectpicker will only list the the explicitly defined mappings. When `false`, the default behavior is kept, i.e. explicit and implicit mappings will be shown.
+When set to `true`, the selectpicker lists only the explicitly defined mappings. When `false`, the default behavior is kept, in other words, explicit and implicit mappings are shown.
 
 ###### x-explicitMappingOnly example
 
@@ -366,4 +389,4 @@ Pet:
       bee: "#/components/schemas/HoneyBee"
 ```
 
-Will show in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
+Shows in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
