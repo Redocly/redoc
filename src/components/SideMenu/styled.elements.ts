@@ -26,43 +26,47 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   margin-top: 2px;
 
   &.get {
-    background-color: ${props => props.theme.colors.http.get};
+    background-color: ${({ theme }) => theme.colors.http.get};
   }
 
   &.post {
-    background-color: ${props => props.theme.colors.http.post};
+    background-color: ${({ theme }) => theme.colors.http.post};
   }
 
   &.put {
-    background-color: ${props => props.theme.colors.http.put};
+    background-color: ${({ theme }) => theme.colors.http.put};
   }
 
   &.options {
-    background-color: ${props => props.theme.colors.http.options};
+    background-color: ${({ theme }) => theme.colors.http.options};
   }
 
   &.patch {
-    background-color: ${props => props.theme.colors.http.patch};
+    background-color: ${({ theme }) => theme.colors.http.patch};
   }
 
   &.delete {
-    background-color: ${props => props.theme.colors.http.delete};
+    background-color: ${({ theme }) => theme.colors.http.delete};
   }
 
   &.basic {
-    background-color: ${props => props.theme.colors.http.basic};
+    background-color: ${({ theme }) => theme.colors.http.basic};
   }
 
   &.link {
-    background-color: ${props => props.theme.colors.http.link};
+    background-color: ${({ theme }) => theme.colors.http.link};
   }
 
   &.head {
-    background-color: ${props => props.theme.colors.http.head};
+    background-color: ${({ theme }) => theme.colors.http.head};
   }
 
   &.hook {
-    background-color: ${props => props.theme.colors.primary.main};
+    background-color: ${({ theme }) => theme.colors.primary.main};
+  }
+
+  &.schema {
+    background-color: ${({ theme }) => theme.colors.http.basic};
   }
 `;
 
