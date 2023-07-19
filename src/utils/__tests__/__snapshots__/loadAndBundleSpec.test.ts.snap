@@ -102,6 +102,9 @@ Object {
           },
         ],
         "description": "A representation of a cat",
+        "x-tags": Array [
+          "pet",
+        ],
       },
       "Category": Object {
         "properties": Object {
