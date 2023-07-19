@@ -1,7 +1,7 @@
 describe('Standalone bundle test', () => {
   function baseCheck(name: string, url: string) {
     describe(name, () => {
-      before(() => {
+      beforeEach(() => {
         cy.visit(url);
       });
 
