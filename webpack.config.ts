@@ -56,6 +56,7 @@ export default (env: { standalone?: boolean; browser?: boolean } = {}) => ({
       fs: path.resolve(__dirname, 'src/empty.js'),
       os: path.resolve(__dirname, 'src/empty.js'),
       tty: path.resolve(__dirname, 'src/empty.js'),
+      url: require.resolve('url/'),
     },
   },
   performance: false,
