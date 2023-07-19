@@ -76,7 +76,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
         test: /\.(tsx?|[cm]?js)$/,
         loader: 'esbuild-loader',
         options: {
-          loader: 'tsx',
           target: 'es2015',
           tsconfigRaw: require('../tsconfig.json'),
         },
@@ -90,7 +89,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
           {
             loader: 'esbuild-loader',
             options: {
-              loader: 'css',
               minify: true,
             },
           },
