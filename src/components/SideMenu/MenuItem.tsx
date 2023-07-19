@@ -44,7 +44,13 @@ export class MenuItem extends React.Component<MenuItemProps> {
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi onClick={this.activate} depth={item.depth} data-item-id={item.id} role="menuitem">
+      <MenuItemLi
+        tabIndex={0}
+        onClick={this.activate}
+        depth={item.depth}
+        data-item-id={item.id}
+        role="menuitem"
+      >
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
@@ -96,7 +102,7 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
       ) : (
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
       )}
-      <MenuItemTitle width="calc(100% - 38px)">
+      <MenuItemTitle tabIndex={0} width="calc(100% - 38px)">
         {item.sidebarLabel}
         {props.children}
       </MenuItemTitle>
