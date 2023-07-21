@@ -1,6 +1,6 @@
 # Redoc vendor extensions
 
-You can use the following [vendor extensions](https://swagger.io/specification/#specificationExtensions) with Redoc.
+You can use the following [vendor extensions](https://redocly.com/docs/openapi-visual-reference/specification-extensions/) with Redoc.
 
 - [Redoc vendor extensions](#redoc-vendor-extensions)
     - [Swagger Object](#swagger-object)
@@ -50,7 +50,7 @@ You can use the following [vendor extensions](https://swagger.io/specification/#
           - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
 
 ### Swagger Object
-Extends the OpenAPI root [OpenAPI Object](https://swagger.io/specification/#oasObject)
+Extends the OpenAPI root [OpenAPI Object](https://redocly.com/docs/openapi-visual-reference/openapi/)
 
 #### x-servers
 Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
@@ -59,13 +59,14 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 
 | Field Name     |	Type	       | Description |
 | :------------- | :-----------: | :---------- |
-| x-tagGroups         | [ [Tag Group Object](#tagGroupObject) ] | A list of tag groups |
+| x-tagGroups         | [ [Tag Group Object](#tag-group-object) ] | A list of tag groups |
 
 ###### How to use with Redoc
 `x-tagGroups` is used to group tags in the side menu.
 Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a tag that is not in a group, **is not displayed** at all!
 
-#### <a name="tagGroupObject"></a>Tag Group Object
+<a name="tagGroupObject"></a>
+#### Tag Group Object
 Information about tags group
 ###### Fixed fields
 | Field Name  |	Type	     | Description |
@@ -127,17 +128,18 @@ x-ignoredHeaderParameters:
 ```
 
 ### Info Object
-Extends the OpenAPI [Info Object](http://swagger.io/specification/#infoObject)
+Extends the OpenAPI [Info Object](https://redocly.com/docs/openapi-visual-reference/info/)
 #### x-logo
 
 | Field Name     |	Type	       | Description |
 | :------------- | :-----------: | :---------- |
-| x-logo         | [Logo Object](#logoObject)  | The information about API logo |
+| x-logo         | [Logo Object](#logo-object)  | The information about API logo |
 
 ###### How to use with Redoc
 `x-logo` is used to specify API logo. The corresponding image is displayed just above the side-menu.
 
-#### <a name="logoObject"></a>Logo Object
+<a name="logoObject"></a>
+#### Logo Object
 The information about API logo
 
 ###### Fixed fields
@@ -176,7 +178,7 @@ info:
 ```
 
 ### Tag Object
-Extends the OpenAPI [Tag Object](http://swagger.io/specification/#tagObject)
+Extends the OpenAPI [Tag Object](https://redocly.com/docs/openapi-visual-reference/tags/)
 
 #### x-traitTag
 | Field Name     |	Type	  | Description |
@@ -210,17 +212,18 @@ x-traitTag: true
 | x-displayName  | string   | Defines the text that is used for this tag in the menu and in section headings |
 
 ### Operation Object vendor extensions
-Extends the OpenAPI [Operation Object](http://swagger.io/specification/#operationObject)
+Extends the OpenAPI [Operation Object](https://redocly.com/docs/openapi-visual-reference/operation/)
 
 #### x-codeSamples
 | Field Name     |	Type	  | Description |
 | :------------- | :------: | :---------- |
-| x-codeSamples | [ [Code Sample Object](#codeSampleObject) ]  | A list of code samples associated with operation |
+| x-codeSamples | [ [Code Sample Object](#code-sample-object) ]  | A list of code samples associated with operation |
 
 ###### How to use with Redoc
 `x-codeSamples` are rendered on the right panel in Redoc.
 
-#### <a name="codeSampleObject"></a>Code Sample Object
+<a name="codeSampleObject"></a>
+#### Code Sample Object
 Operation code sample
 
 ###### Fixed fields
@@ -246,18 +249,18 @@ source: console.log('Hello World');
 ```
 
 ### Parameter Object
-Extends the OpenAPI [Parameter Object](http://swagger.io/specification/#parameterObject)
+Extends the OpenAPI [Parameter Object](https://redocly.com/docs/openapi-visual-reference/parameter/)
 
 #### x-examples
 | Field Name     |  Type    | Description |
 | :------------- | :------: | :---------- |
-| x-examples | [Example Object](http://swagger.io/specification/#exampleObject)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
+| x-examples | [Example Object](https://redocly.com/docs/openapi-visual-reference/example/)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
 
 ###### How to use with Redoc
 `x-examples` are rendered in the JSON tab on the right panel in Redoc.
 
 ### Response Object vendor extensions
-Extends the OpenAPI [Response Object](https://swagger.io/specification/#responseObject)
+Extends the OpenAPI [Response Object](https://redocly.com/docs/openapi-visual-reference/response/).
 
 #### x-summary
 | Field Name     |	Type	  | Description |
@@ -268,7 +271,7 @@ Extends the OpenAPI [Response Object](https://swagger.io/specification/#response
 If specified, you can use `x-summary` as the response button text, with description rendered under the button.
 
 ### Schema Object
-Extends the OpenAPI [Schema Object](http://swagger.io/specification/#schemaObject)
+Extends the OpenAPI [Schema Object](https://redocly.com/docs/openapi-visual-reference/schemas/)
 
 #### x-nullable
 | Field Name     |	Type	  | Description |
@@ -276,7 +279,7 @@ Extends the OpenAPI [Schema Object](http://swagger.io/specification/#schemaObjec
 | x-nullable | boolean | marks schema as a nullable |
 
 ###### How to use with Redoc
-Schemas marked as `x-nullable` are marked in Redoc with the label Nullable
+Schemas marked as `x-nullable` are marked in Redoc with the label Nullable.
 
 #### x-extendedDiscriminator
 **ATTENTION**: This is a Redoc-specific vendor extension, and is not supported by other tools.
