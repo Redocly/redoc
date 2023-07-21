@@ -65,6 +65,7 @@ Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specifica
 `x-tagGroups` is used to group tags in the side menu.
 Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a tag that is not in a group, **is not displayed** at all!
 
+<a name="tagGroupObject"></a>
 #### Tag Group Object
 Information about tags group
 ###### Fixed fields
@@ -137,6 +138,7 @@ Extends the OpenAPI [Info Object](https://redocly.com/docs/openapi-visual-refere
 ###### How to use with Redoc
 `x-logo` is used to specify API logo. The corresponding image is displayed just above the side-menu.
 
+<a name="logoObject"></a>
 #### Logo Object
 The information about API logo
 
@@ -220,6 +222,7 @@ Extends the OpenAPI [Operation Object](https://redocly.com/docs/openapi-visual-r
 ###### How to use with Redoc
 `x-codeSamples` are rendered on the right panel in Redoc.
 
+<a name="codeSampleObject"></a>
 #### Code Sample Object
 Operation code sample
 
