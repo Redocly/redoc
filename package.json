@@ -135,8 +135,8 @@
   "peerDependencies": {
     "core-js": "^3.1.4",
     "mobx": "^6.0.4",
-    "react": "^16.8.4 || ^17.0.0",
-    "react-dom": "^16.8.4 || ^17.0.0",
+    "react": "^16.8.4 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.4 || ^17.0.0 || ^18.0.0",
     "styled-components": "^4.1.1 || ^5.1.1"
   },
   "dependencies": {
