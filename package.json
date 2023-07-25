@@ -79,7 +79,7 @@
     "@types/react": "^17.0.8",
     "@types/react-dom": "^17.0.5",
     "@types/react-tabs": "^2.3.2",
-    "@types/styled-components": "^5.1.1",
+    "@types/styled-components": "^5.1.26",
     "@types/tapable": "^2.2.2",
     "@types/webpack": "^5.28.0",
     "@types/webpack-env": "^1.18.0",
@@ -137,7 +137,7 @@
     "mobx": "^6.0.4",
     "react": "^16.8.4 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.4 || ^17.0.0 || ^18.0.0",
-    "styled-components": "^4.1.1 || ^5.1.1 || ^6.0.0"
+    "styled-components": "^4.1.1 || ^5.1.1 || ^6.0.5"
   },
   "dependencies": {
     "@redocly/openapi-core": "^1.0.0-beta.104",
