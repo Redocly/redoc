@@ -137,7 +137,7 @@
     "mobx": "^6.0.4",
     "react": "^16.8.4 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.4 || ^17.0.0 || ^18.0.0",
-    "styled-components": "^4.1.1 || ^5.1.1"
+    "styled-components": "^4.1.1 || ^5.1.1 || ^6.0.0"
   },
   "dependencies": {
     "@redocly/openapi-core": "^1.0.0-beta.104",
