@@ -83,7 +83,7 @@ export interface TagGroup {
   tags: string[];
 }
 
-export type MenuItemGroupType = 'group' | 'tag' | 'section';
+export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema';
 export type MenuItemType = MenuItemGroupType | 'operation';
 
 export interface IMenuItem {

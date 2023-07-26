@@ -55,7 +55,8 @@ export class MenuItem extends React.Component<MenuItemProps> {
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
           <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.sidebarLabel}>
+            {item.type === 'schema' && <OperationBadge type="schema">schema</OperationBadge>}
+            <MenuItemTitle width="calc(100% - 38px)" title={item.sidebarLabel}>
               {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>

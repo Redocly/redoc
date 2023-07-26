@@ -910,6 +910,7 @@ components:
         message:
           type: string
     Cat:
+      'x-tags': ['pet']
       description: A representation of a cat
       allOf:
         - $ref: '#/components/schemas/Pet'
