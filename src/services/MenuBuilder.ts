@@ -1,4 +1,4 @@
-import type { OpenAPISpec, OpenAPIPaths } from '../types';
+import type { OpenAPISpec, OpenAPIPaths, OpenAPITag, OpenAPISchema } from '../types';
 import { isOperationName, JsonPointer, alphabeticallyByProp } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
@@ -137,7 +137,14 @@ export class MenuBuilder {
         continue;
       }
 
+      const relatedSchemas = this.getTagRelatedSchema({
+        parser,
+        tag,
+        parent: item,
+      });
+
       item.items = [
+        ...relatedSchemas,
         ...MenuBuilder.addMarkdownItems(tag.description || '', item, item.depth + 1, options),
         ...this.getOperationsItems(parser, item, tag, item.depth + 1, options),
       ];
@@ -247,5 +254,34 @@ export class MenuBuilder {
       }
     }
     return tags;
+  }
+
+  static getTagRelatedSchema({
+    parser,
+    tag,
+    parent,
+  }: {
+    parser: OpenAPIParser;
+    tag: TagInfo;
+    parent: GroupModel;
+  }): GroupModel[] {
+    return Object.entries(parser.spec.components?.schemas || {})
+      .map(([schemaName, schema]) => {
+        const schemaTags = schema['x-tags'];
+        if (!schemaTags?.includes(tag.name)) return null;
+
+        const item = new GroupModel(
+          'schema',
+          {
+            name: schemaName,
+            'x-displayName': `${(schema as OpenAPISchema).title || schemaName}`,
+            description: `<SchemaDefinition showWriteOnly={true} schemaRef="#/components/schemas/${schemaName}" />`,
+          } as OpenAPITag,
+          parent,
+        );
+        item.depth = parent.depth + 1;
+        return item;
+      })
+      .filter(Boolean) as GroupModel[];
   }
 }
