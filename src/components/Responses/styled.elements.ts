@@ -42,7 +42,7 @@ export const ResponseDetailsWrap = styled.div`
 `;
 
 export const HeadersCaption = styled(UnderlinedHeader).attrs({
-  as: 'button',
+  as: 'caption',
 })`
   text-align: left;
   margin-top: 1em;
