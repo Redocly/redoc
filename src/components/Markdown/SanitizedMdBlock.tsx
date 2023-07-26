@@ -4,8 +4,11 @@ import * as React from 'react';
 import { OptionsConsumer } from '../OptionsProvider';
 import { StylingMarkdownProps } from './Markdown';
 import { StyledMarkdownBlock } from './styled.elements';
+import styled from 'styled-components';
 
-const StyledMarkdownSpan = StyledMarkdownBlock.withComponent('span');
+const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
+  display: inline;
+`;
 
 const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
 
