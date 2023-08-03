@@ -131,11 +131,11 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 
 ## Lint OpenAPI definitions
 
-Redocly's CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
+Redocly CLI is an [open source command-line tool](https://github.com/Redocly/redocly-cli) that you can use to lint
 your OpenAPI definition. Linting helps you to catch errors and inconsistencies in your
 OpenAPI definition before publishing.
 
-Refer to [Redocly configuration](https://redocly.com/docs/cli/configuration/) in the OpenAPI documentation for more information.
+Learn more about [API standards and linting](https://redocly.com/docs/cli/api-standards/) in the main Redocly documentation.
 
 ## Deployment
 
@@ -175,10 +175,6 @@ replace the `spec-url` attribute with the url or local file address to your defi
 For step-by-step instructions for how to get started using Redoc
 to render your OpenAPI definition, refer to the
 [**Redoc quickstart guide**](https://redocly.com/docs/redoc/quickstart/) and [**How to use the HTML element**](https://redocly.com/docs/redoc/deployment/html/).
-
-## Redoc CLI
-For more information on Redoc's command-line interface, refer to
-[**Using the Redoc CLI**](https://redocly.com/docs/redoc/deployment/cli/).
 
 
 ## Configuration
@@ -229,7 +225,6 @@ You can use all of the following options with the standalone version of the <red
 * `sortEnumValuesAlphabetically` - set to true, sorts all enum values in all schemas alphabetically
 * `sortOperationsAlphabetically` - set to true, sorts operations in the navigation sidebar and in the middle panel alphabetically
 * `sortTagsAlphabetically` - set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically
-* `lazyRendering` - _Not implemented yet_ ~~if set, enables lazy rendering mode in ReDoc. This mode is useful for APIs with big number of operations (e.g. > 50). In this mode ReDoc shows initial screen ASAP and then renders the rest operations asynchronously while showing progress bar on the top. Check out the [demo](\\redocly.github.io/redoc) for the example.~~
 * `menuToggle` - if true, clicking second time on expanded menu item collapses it, default `true`.
 * `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
 * `onlyRequiredInSamples` - shows only required fields in request samples.
