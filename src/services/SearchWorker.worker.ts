@@ -28,8 +28,6 @@ function initEmpty() {
   builder.field('description');
   builder.ref('ref');
 
-  builder.pipeline.add(lunr.trimmer, lunr.stopWordFilter, lunr.stemmer);
-
   index = new Promise(resolve => {
     resolveIndex = resolve;
   });
@@ -38,8 +36,7 @@ function initEmpty() {
 initEmpty();
 
 const expandTerm = term => {
-  const token = lunr.trimmer(new lunr.Token(term, {}));
-  return '*' + lunr.stemmer(token) + '*';
+  return `*${term}*`;
 };
 
 export function add<T>(title: string, description: string, meta?: T) {

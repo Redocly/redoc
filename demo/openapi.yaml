@@ -1216,7 +1216,7 @@ components:
 x-webhooks:
   newPet:
     post:
-      summary: New pet
+      summary: New pet 中文测试
       description: Information about a new pet in the systems
       operationId: newPet
       tags:
