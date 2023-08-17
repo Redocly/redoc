@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/Redocly/redoc/compare/v2.1.0...v2.1.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* hotfix, crash after 2.1 release ([0ab3428](https://github.com/Redocly/redoc/commit/0ab3428664f857ea07381686a2b4beb4c22b17c3))
+
+
+
 # [2.1.0](https://github.com/Redocly/redoc/compare/v2.0.0...v2.1.0) (2023-08-10)
 
 
