@@ -1,3 +1,31 @@
+# [2.1.0](https://github.com/Redocly/redoc/compare/v2.0.0...v2.1.0) (2023-08-10)
+
+
+### Bug Fixes
+
+* call onLoaded if specs are not found ([#2182](https://github.com/Redocly/redoc/issues/2182)) ([0753bbe](https://github.com/Redocly/redoc/commit/0753bbea4b1425bdb09225fca45effae8003dce8))
+* default value for array query parameter ([#2186](https://github.com/Redocly/redoc/issues/2186)) ([3d410b6](https://github.com/Redocly/redoc/commit/3d410b6002c656efa780254c9c45c6249f90bce1))
+* **demo:** Get CORS proxy to work in Chrome on Windows ([#2220](https://github.com/Redocly/redoc/issues/2220)) ([1597bae](https://github.com/Redocly/redoc/commit/1597bae4032b65a94211e80aad51867e5af1ceb3))
+* error with immutable object spec ([#2179](https://github.com/Redocly/redoc/issues/2179)) ([53c4f36](https://github.com/Redocly/redoc/commit/53c4f36fad3e4453a72c1d136e37929de47cd35e))
+* improve accessible label by using the property name ([#2224](https://github.com/Redocly/redoc/issues/2224)) ([12be1bc](https://github.com/Redocly/redoc/commit/12be1bc5ffa11f9092c2faacd69d787f4e899960))
+* move role to list item to meet ARIA spec ([#2228](https://github.com/Redocly/redoc/issues/2228)) ([b8f7da6](https://github.com/Redocly/redoc/commit/b8f7da6b003ca12c1e2f0f4d42f3dd6d6f86ccac))
+* remove GenericObject shim ([#2177](https://github.com/Redocly/redoc/issues/2177)) ([127ef26](https://github.com/Redocly/redoc/commit/127ef260b961e07c5f82a7494b51dd3f04294e87))
+* renames 'FieldContstraints' to 'FieldConstraints' ([#2352](https://github.com/Redocly/redoc/issues/2352)) ([7e05202](https://github.com/Redocly/redoc/commit/7e052028d965624feb72d5f4b74fdb3c2d5df21f))
+* schema oneOf title with const ([#2350](https://github.com/Redocly/redoc/issues/2350)) ([4386867](https://github.com/Redocly/redoc/commit/4386867d908eae2aed2b9fd86e9f5476aadce52b))
+* **types/open-api:** import type ([#2213](https://github.com/Redocly/redoc/issues/2213)) ([33be51a](https://github.com/Redocly/redoc/commit/33be51a7a4068f44fd914314002c058a204ba0c2))
+
+
+### Features
+
+* add deprecation label to redoc-cli ([#2172](https://github.com/Redocly/redoc/issues/2172)) ([2ae7e08](https://github.com/Redocly/redoc/commit/2ae7e08af49321cea9bf2078f309b48bacf76ad6))
+* add option to hide the example code when using the `SchemaDefinition` component ([#2157](https://github.com/Redocly/redoc/issues/2157)) ([168189b](https://github.com/Redocly/redoc/commit/168189b2fdcf3667422ce3940ace3eedd0bdf284))
+* add support of react 18 ([#2369](https://github.com/Redocly/redoc/issues/2369)) ([054f604](https://github.com/Redocly/redoc/commit/054f604195629197aa8bd0fc46e91383ca5a05af))
+* add x-tags ([#2355](https://github.com/Redocly/redoc/issues/2355)) ([0bb21c8](https://github.com/Redocly/redoc/commit/0bb21c812840999d2dd2d96da42124746440b035))
+* enable keyboard navigation ([#2361](https://github.com/Redocly/redoc/issues/2361)) ([d21af58](https://github.com/Redocly/redoc/commit/d21af5841455901f0572ab475b7dc661acb86a71))
+* indicate whether request body is required or optional ([#2175](https://github.com/Redocly/redoc/issues/2175)) ([d3ad792](https://github.com/Redocly/redoc/commit/d3ad7925cfbd90b59b502b5ef53228fcd34b8a1e))
+
+
+
 # [2.0.0](https://github.com/Redocly/redoc/compare/v2.0.0-rc.77...v2.0.0) (2022-09-12)
 
 
