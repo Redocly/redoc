@@ -393,7 +393,7 @@ export function getSerializedValue(field: FieldModel, example: any) {
     // decode for better readability in examples: see https://github.com/Redocly/redoc/issues/1138
     return decodeURIComponent(serializeParameterValue(field, example));
   } else {
-    return example;
+    return String(example);
   }
 }
 
