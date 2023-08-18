@@ -6,7 +6,7 @@ import { StylingMarkdownProps } from './Markdown';
 import { StyledMarkdownBlock } from './styled.elements';
 import styled from 'styled-components';
 
-const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
+const StyledMarkdownSpan = styled(props => <StyledMarkdownBlock {...props} />)`
   display: inline;
 `;
 
