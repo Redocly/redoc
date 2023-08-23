@@ -74,8 +74,6 @@ Add your own `spec-url` to the `<redoc>` tag, this attribute can also be a local
 
 Check out the [deployment documentation](./deploment/index/md) for more options, and detailed documentation for each.
 
-
-
 ## Redoc vs. Reference
 
 Redoc is Redocly's community-edition product. Looking for something more?
@@ -128,8 +126,6 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-summary`](docs/redoc-vendor-extensions.md#x-summary) - For Response object, use as the response button text, with description rendered under the button
 * [`x-extendedDiscriminator`](docs/redoc-vendor-extensions.md#x-extendedDiscriminator) - In Schemas, uses this to solve name-clash issues with the standard discriminator
 * [`x-explicitMappingOnly`](docs/redoc-vendor-extensions.md#x-explicitMappingOnly) - In Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
-
------------
 
 ## Releases
 
