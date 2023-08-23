@@ -15,52 +15,158 @@ For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` be
 
 ## Functional settings
 
-* `disableSearch` - disable search indexing and search box.
-* `minCharacterLengthToInitSearch` - set minimal characters length to init search, default `3`, minimal `1`.
-* `expandDefaultServerVariables` - enable expanding default server variables, default `false`.
-* `expandResponses` - specify which responses to expand by default by response codes. Values should be passed as comma-separated list without spaces e.g. `expandResponses="200,201"`. Special value `"all"` expands all responses by default. Be careful: this option can slow-down documentation rendering time.
-* `generatedPayloadSamplesMaxDepth` - set the maximum render depth for JSON payload samples (responses and request body). The default value is `10`.
-* `maxDisplayedEnumValues` - display only specified number of enum values. hide rest values under spoiler.
-* `hideDownloadButton` - do not show "Download" spec button. **THIS DOESN'T MAKE YOUR SPEC PRIVATE**, it just hides the button.
-* `downloadFileName` - set a custom file name for the downloaded API definition file.
-* `downloadDefinitionUrl` - If the 'Download' button is visible in the API reference documentation (hideDownloadButton=false), the URL configured here opens when that button is selected. Provide it as an absolute URL with the full URI scheme.
-* `hideHostname` - if set, the protocol and hostname is not shown in the operation definition.
-* `hideLoading` - do not show loading animation. Useful for small docs.
-* `hideFab` - do not show FAB in mobile view. Useful for implementing a custom floating action button.
-* `hideSchemaPattern` - if set, the pattern is not shown in the schema.
-* `hideSingleRequestSampleTab` - do not show the request sample tab for requests with only one sample.
-* `showObjectSchemaExamples` - show object schema example in the properties, default `false`.
-* `expandSingleSchemaField` - automatically expand single field in a schema
-* `schemaExpansionLevel` - specifies whether to automatically expand schemas. Special value `"all"` expands all levels. The default value is `0`.
-* `jsonSampleExpandLevel` - set the default expand level for JSON payload samples (responses and request body). Special value `"all"` expands all levels. The default value is `2`.
-* `hideSchemaTitles` - do not display schema `title` next to to the type
-* `simpleOneOfTypeLabel` - show only unique oneOf types in the label without titles
-* `sortEnumValuesAlphabetically` - set to true, sorts all enum values in all schemas alphabetically
-* `sortOperationsAlphabetically` - set to true, sorts operations in the navigation sidebar and in the middle panel alphabetically
-* `sortTagsAlphabetically` - set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically
-* `menuToggle` - if true, clicking second time on expanded menu item collapses it, default `true`.
-* `nativeScrollbars` - use native scrollbar for sidemenu instead of perfect-scroll (scrolling performance optimization for big specs).
-* `onlyRequiredInSamples` - shows only required fields in request samples.
-* `pathInMiddlePanel` - show path link and HTTP verb in the middle panel instead of the right one.
-* `requiredPropsFirst` - show required properties first ordered in the same order as in `required` array.
-* `scrollYOffset` - If set, specifies a vertical scroll-offset. This is often useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc;
-`scrollYOffset` can be specified in various ways:
-  * **number**: A fixed number of pixels to be used as offset.
-  * **selector**: selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom is used as offset.
-  * **function**: A getter function. Must return a number representing the offset (in pixels).
-* `showExtensions` - show vendor extensions ("x-" fields). Extensions used by Redoc are ignored. Can be boolean or an array of `string` with names of extensions to display.
-* `sortPropsAlphabetically` - sort properties alphabetically.
-* `payloadSampleIdx` - if set, payload sample is inserted at this index or last. Indexes start from 0.
-* `theme` - Redoc theme. For details check [theme docs](#redoc-theme-object).
-* `untrustedSpec` - if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS. **Disabled by default** for performance reasons. **Enable this option if you work with untrusted user data!**
-* `nonce` - if set, the provided value is injected in every injected HTML element in the `nonce` attribute. Useful when using CSP, see https://webpack.js.org/guides/csp/.
-* `sideNavStyle` - can be specified in various ways:
-  * **summary-only**: displays a summary in the sidebar navigation item. (**default**)
-  * **path-only**: displays a path in the sidebar navigation item.
-  * **id-only**: displays the operation id with a fallback to the path in the sidebar navigation item.
-* `showWebhookVerb` - when set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
 
-## Theme object
+### disableSearch
+
+Disables search indexing and hides the search box from the API documentation page.
+
+### minCharacterLengthToInitSearch
+
+Sets the minimum amount of characters that need to be typed into the search dialog to initiate the search.
+
+_Default: 3_
+
+### expandDefaultServerVariables
+
+Enables or disables expanding default server variables.
+
+### expandResponses
+
+Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, e.g. `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
+
+### expandSingleSchemaField
+
+Automatically expands the single field in a schema.
+
+### hideDownloadButton
+
+Hides the 'Download' button for saving the API definition source file. **This does not make the API definition private**, it just hides the button.
+
+### hideHostname
+
+If set to `true`, the protocol and hostname are not shown in the operation definition.
+
+### hideLoading
+
+Hides the loading animation. Does not apply to CLI or Workflows-rendered docs.
+
+### hideRequestPayloadSample
+
+Hides request payload examples.
+
+### hideOneOfDescription
+
+If set to `true`, the description for `oneOf`/`anyOf` object is not shown in the schema.
+
+### hideSchemaPattern
+
+If set to `true`, the pattern is not shown in the schema.
+
+### hideSchemaTitles
+
+Hides the schema title next to to the type.
+
+### hideSecuritySection
+
+Hides the Security panel section.
+
+### hideSingleRequestSampleTab
+
+Hides the request sample tab for requests with only one sample.
+
+### htmlTemplate
+
+Sets the path to the optional HTML file used to modify the layout of the reference docs page.
+
+### jsonSampleExpandLevel
+
+Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
+
+_Default: 2_
+
+### maxDisplayedEnumValues
+
+Displays only the specified number of enum values. The remaining values are hidden in an expandable area. If not set, all values are displayed.
+
+### menuToggle
+
+If set to `true`, selecting an expanded item in the sidebar twice will collapse it.
+
+_Default: true_
+
+### nativeScrollbars
+
+If set to `true`, the sidebar will use the native scrollbar instead of perfect-scroll. This is a scrolling performance optimization for big API definitions.
+
+### onlyRequiredInSamples
+
+Shows only required fields in request samples.
+
+### pathInMiddlePanel
+
+Shows the path link and HTTP verb in the middle panel instead of the right panel.
+
+### payloadSampleIdx
+
+If set, the payload sample will be inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample will be inserted last. Indexes start from 0.
+
+### requiredPropsFirst
+
+Shows required properties in schemas first, ordered in the same order as in required array.
+
+### schemaExpansionLevel
+
+Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemaExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
+
+### scrollYOffset
+
+Specifies a vertical scroll-offset.
+This is useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc.
+
+Note that you can specify the `scrollYOffset` value in any of the following ways:
+- as a number - a fixed number of pixels to be used as the offset.
+- as a CSS selector - the selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as the offset.
+- a function (advanced) - a getter function. Must return a number representing the offset (in pixels).
+
+### showExtensions
+
+Shows specification extensions ('x-' fields). Extensions used by Redoc are ignored. The value can be boolean or an array of strings with names of extensions to display. When used as boolean and set to `true`, all specification extensions are shown.
+
+### showObjectSchemaExamples
+
+Show object schema example in the properties, default false.
+
+### showWebhookVerb
+
+When set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
+
+### simpleOneOfTypeLabel
+
+Shows only unique `oneOf` types in the label without titles.
+
+### sortEnumValuesAlphabetically
+
+When set to `true`, sorts all enum values in all schemas alphabetically.
+
+### sortOperationsAlphabetically
+
+When set to `true`, sorts operations in the navigation sidebar and in the middle panel alphabetically.
+
+### sortPropsAlphabetically
+
+When set to `true`, sorts properties in all schemas alphabetically.
+
+### sortTagsAlphabetically
+
+When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags will be sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set sortOperationsAlphabetically to true.
+
+_Default: false_
+
+### untrustedDefinition
+
+If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
+
+## Theme settings
 
 * `spacing`
   * `unit`: 5 # main spacing unit used in autocomputed theme values later
