@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FieldDetailsComponent renders correctly 1`] = `
+<div>
+  <div>
+    <span
+      class="sc-kpDqfm sc-dAlyuH cGRfjn gHomYR"
+    >
+      test type prefix
+    </span>
+    <span
+      class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+    >
+      array
+    </span>
+    <span
+      class="sc-kpDqfm sc-cwHptR cGRfjn gyVIPr"
+    >
+       (test title) 
+    </span>
+    <span>
+       
+      <span
+        class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
+      >
+          
+      </span>
+    </span>
+  </div>
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Default: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      ""
+    </span>
+  </div>
+   
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Example: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      "example"
+    </span>
+  </div>
+  <div>
+    <div
+      class="sc-lcIPJg sc-hknOHE gBHqkN eigFbs"
+    >
+      <p>
+        test description
+      </p>
+      
+
+    </div>
+  </div>
+</div>
+`;
