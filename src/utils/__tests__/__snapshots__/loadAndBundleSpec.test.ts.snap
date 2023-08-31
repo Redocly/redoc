@@ -33,6 +33,7 @@ Object {
             "schema": Object {
               "properties": Object {
                 "name": Object {
+                  "default": Array [],
                   "description": "hooray",
                   "type": "string",
                 },
@@ -289,6 +290,7 @@ Object {
             "type": "string",
           },
           "photoUrls": Object {
+            "default": Array [],
             "description": "The list of URL to a cute photos featuring pet",
             "items": Object {
               "format": "url",
@@ -2195,6 +2197,7 @@ Object {
             "type": "string",
           },
           "photoUrls": Object {
+            "default": Array [],
             "description": "The list of URL to a cute photos featuring pet",
             "else": Object {
               "maxItems": 20,
@@ -4085,6 +4088,7 @@ Object {
             "type": "string",
           },
           "photoUrls": Object {
+            "default": Array [],
             "description": "The list of URL to a cute photos featuring pet",
             "items": Object {
               "format": "url",
