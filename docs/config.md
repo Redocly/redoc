@@ -90,13 +90,13 @@ Displays only the specified number of enum values. The remaining values are hidd
 
 ### menuToggle
 
-If set to `true`, selecting an expanded item in the sidebar twice will collapse it.
+If set to `true`, selecting an expanded item in the sidebar twice collapses it.
 
 _Default: true_
 
 ### nativeScrollbars
 
-If set to `true`, the sidebar will use the native scrollbar instead of perfect-scroll. This is a scrolling performance optimization for big API definitions.
+If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This is a scrolling performance optimization for big API definitions.
 
 ### onlyRequiredInSamples
 
@@ -108,7 +108,7 @@ Shows the path link and HTTP verb in the middle panel instead of the right panel
 
 ### payloadSampleIdx
 
-If set, the payload sample will be inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample will be inserted last. Indexes start from 0.
+If set, the payload sample is inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample is inserted last. Indexes start from 0.
 
 ### requiredPropsFirst
 
@@ -125,7 +125,7 @@ This is useful when there are fixed positioned elements at the top of the page, 
 
 Note that you can specify the `scrollYOffset` value in any of the following ways:
 - as a number - a fixed number of pixels to be used as the offset.
-- as a CSS selector - the selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom will be used as the offset.
+- as a CSS selector - the selector of the element to be used for specifying the offset. The distance from the top of the page to the element's bottom is used as the offset.
 - a function (advanced) - a getter function. Must return a number representing the offset (in pixels).
 
 ### showExtensions
@@ -158,7 +158,7 @@ When set to `true`, sorts properties in all schemas alphabetically.
 
 ### sortTagsAlphabetically
 
-When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags will be sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set sortOperationsAlphabetically to true.
+When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags are sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set sortOperationsAlphabetically to true.
 
 _Default: false_
 
