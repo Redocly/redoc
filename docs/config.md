@@ -2,7 +2,7 @@
 
 Getting your documentation just right is important, and Redoc comes with many configuration options to help you succeed in that mission.
 
-Each deployment type has documentation on how to options in its context. This page lists all the options you can use with Redoc.
+Each deployment type has documentation on how to configure options for that type of Redoc project. This page lists all the options you can use with Redoc.
 
 **Versions: 2.x**
 

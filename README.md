@@ -5,7 +5,7 @@
 
   [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/main/LICENSE)
 
-  [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc)
+  [![bundle size](http://img.badgesize.io/https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc)
 </div>
 
 
@@ -35,8 +35,9 @@ enter the URL for your definition and select **TRY IT**.
 - Responsive three-panel design with menu/scrolling synchronization
 - Support for OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0
 - [Multiple deployment options](https://redocly.com/docs/redoc/)
-- High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
+- Interactive interface so your users can try the API immediately
 - Ability to integrate your API introduction into the side menu
+- High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 - Code samples support (with vendor extension) <br>
   ![](docs/images/code-samples-demo.gif)
@@ -114,7 +115,7 @@ Redoc is highly configurable, see the [configuration documentation](docs/config.
 Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
 
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
-* [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
+* [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for tags that refer to non-navigation properties like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
 * [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
 * [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
@@ -123,9 +124,9 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
 * [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 * [`x-additionalPropertiesName`](docs/redoc-vendor-extensions.md#x-additionalPropertiesName) - ability to supply a descriptive name for the additional property keys
-* [`x-summary`](docs/redoc-vendor-extensions.md#x-summary) - For Response object, use as the response button text, with description rendered under the button
-* [`x-extendedDiscriminator`](docs/redoc-vendor-extensions.md#x-extendedDiscriminator) - In Schemas, uses this to solve name-clash issues with the standard discriminator
-* [`x-explicitMappingOnly`](docs/redoc-vendor-extensions.md#x-explicitMappingOnly) - In Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
+* [`x-summary`](docs/redoc-vendor-extensions.md#x-summary) - for Response object, use as the response button text, with description rendered under the button
+* [`x-extendedDiscriminator`](docs/redoc-vendor-extensions.md#x-extendedDiscriminator) - in Schemas, uses this to solve name-clash issues with the standard discriminator
+* [`x-explicitMappingOnly`](docs/redoc-vendor-extensions.md#x-explicitMappingOnly) - in Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
 
 ## Releases
 
