@@ -4,7 +4,7 @@ title: Redoc
 
 # Redoc: Open source API documentation tool
 
-Redoc is a clean and easy way to produce web-ready documentation from an OpenAPI description (Swagger is also still supported). With one command, create your documentation, and customise it to meet the needs of your users.
+Redoc is a clean and easy way to produce web-ready documentation from an OpenAPI description (Swagger is also still supported). With one command, create your documentation, and customize it to meet the needs of your users.
 
 Redoc is based around a three panel layout, with clear sections for navigation, detailed documentation, and request/response examples.
 
@@ -46,7 +46,7 @@ Create an HTML page, or edit an existing one, and add the following:
 
 Open the HTML file in your browser, and your API documentation is shown on the page.
 
-Add your own `spec-url` to the `<redoc>` tag, this attribute can also be a local file. The JavaScript library can also be installed locally using `npm` and served from your own server, see the [HTML deployment documentation](https://redocly.com/docs/redoc/deployment/html/) for more details.
+Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local file. The JavaScript library can also be installed locally using `npm` and served from your own server, see the [HTML deployment documentation](https://redocly.com/docs/redoc/deployment/html/) for more details.
 
 ### More usage options
 
@@ -57,7 +57,7 @@ Check out the [deployment documentation](./deploment/index/md) for more options,
 Redoc is highly configurable. Each deployment option accepts configuration in a way that's appropriate to that platform, but the options are the same for each. For example:
 
 * Using [Redocly CLI](../cli/index.md), configuration goes in the `redocly.yaml` file, or can be supplied as command line parameters, such as `--theme.openapi.disableSearch`.
-* Using HTML or React or react, configure by setting `option` in the tag.
+* Using HTML or React, configure by setting `option` in the tag.
 
 Here's a sample `redocly.yaml` configuration file, showing a few common settings and tweaking some of the visual theme settings:
 
@@ -92,5 +92,5 @@ There are many, many more options available. Visit the [configuration reference]
 ## Next steps
 
 * If you are new to OpenAPI, try the [OpenAPI starter project](../../cli/openapi-starter/) for a great introduction.
-* Ready to build documentation from an existing OpenAPI file? The [Redoc quickstart](./quickstart.md).
+* Ready to build documentation from an existing OpenAPI file? Go to the [Redoc quickstart](./quickstart.md) and get started.
 * Learn more about the project by visiting [Redoc on GitHub](https://github.com/Redocly/redoc).

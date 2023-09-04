@@ -30,15 +30,15 @@ A version of the Swagger Petstore API is displayed by default.
 To test it with your own OpenAPI definition,
 enter the URL for your definition and select **TRY IT**.
 
-## Redoc Features
+## Redoc features
 
 - Responsive three-panel design with menu/scrolling synchronization
-- Support for OpenAPI 3.1, OpenAPI 3.0 and Swagger 2.0
+- Support for OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0
 - [Multiple deployment options](https://redocly.com/docs/redoc/)
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - Ability to integrate your API introduction into the side menu
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
-- Code samples support (via vendor extension) <br>
+- Code samples support (with vendor extension) <br>
   ![](docs/images/code-samples-demo.gif)
 
 ## Usage
@@ -55,11 +55,11 @@ npx @redocly/cli build-docs openapi.yaml
 
 The tool outputs by default to a file named `redoc-static.html` that you can open in your browser.
 
-> [Redocly CLI](https://github.com/Redocly/redocly-cli/) does more than docs, check it out and add linting, bundling and more to your API workflow.
+> [Redocly CLI](https://github.com/Redocly/redocly-cli/) does more than docs, check it out and add linting, bundling, and more to your API workflow.
 
 ### Add an HTML element to the page
 
-Create an HTML page, or edit an existing one, and add the following:
+Create an HTML page, or edit an existing one, and add the following within the body tags:
 
 ```html
     <redoc spec-url="http://petstore.swagger.io/v2/swagger.json"></redoc>
@@ -68,7 +68,7 @@ Create an HTML page, or edit an existing one, and add the following:
 
 Open the HTML file in your browser, and your API documentation is shown on the page.
 
-Add your own `spec-url` to the `<redoc>` tag, this attribute can also be a local file. The JavaScript library can also be installed locally using `npm` and served from your own server, see the [HTML deployment documentation](https://redocly.com/docs/redoc/deployment/html/) for more details.
+Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local file. The JavaScript library can also be installed locally using `npm` and served from your own server, see the [HTML deployment documentation](https://redocly.com/docs/redoc/deployment/html/) for more details.
 
 ### More usage options
 
@@ -94,7 +94,7 @@ with additional features including:
 
 ## Showcase
 
-A sample of the organisations using Redocly tools in the wild:
+A sample of the organizations using Redocly tools in the wild:
 
 - [Rebilly](https://api-reference.rebilly.com/)
 - [Docker Engine](https://docs.docker.com/engine/api/v1.25/)

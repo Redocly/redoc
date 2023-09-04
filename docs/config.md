@@ -32,7 +32,7 @@ Enables or disables expanding default server variables.
 
 ### expandResponses
 
-Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, e.g. `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
+Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, for example `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
 
 ### expandSingleSchemaField
 
@@ -40,7 +40,7 @@ Automatically expands the single field in a schema.
 
 ### hideDownloadButton
 
-Hides the 'Download' button for saving the API definition source file. **This does not make the API definition private**, it just hides the button.
+Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
 
 ### hideHostname
 
@@ -96,7 +96,7 @@ _Default: true_
 
 ### nativeScrollbars
 
-If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This is a scrolling performance optimization for big API definitions.
+If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This setting is a scrolling performance optimization for big API definitions.
 
 ### onlyRequiredInSamples
 
@@ -112,7 +112,7 @@ If set, the payload sample is inserted at the specified index. If there are `N` 
 
 ### requiredPropsFirst
 
-Shows required properties in schemas first, ordered in the same order as in required array.
+Shows required properties in schemas first, ordered in the same order as in the required array.
 
 ### schemaExpansionLevel
 
@@ -121,7 +121,7 @@ Specifies whether to automatically expand schemas in Reference docs. Set it to `
 ### scrollYOffset
 
 Specifies a vertical scroll-offset.
-This is useful when there are fixed positioned elements at the top of the page, such as navbars, headers etc.
+This setting is useful when there are fixed positioned elements at the top of the page, such as navbars, headers, etc.
 
 Note that you can specify the `scrollYOffset` value in any of the following ways:
 - as a number - a fixed number of pixels to be used as the offset.
@@ -134,7 +134,7 @@ Shows specification extensions ('x-' fields). Extensions used by Redoc are ignor
 
 ### showObjectSchemaExamples
 
-Show object schema example in the properties, default false.
+Shows object schema example in the properties; default `false`.
 
 ### showWebhookVerb
 
@@ -158,7 +158,7 @@ When set to `true`, sorts properties in all schemas alphabetically.
 
 ### sortTagsAlphabetically
 
-When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags are sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set sortOperationsAlphabetically to true.
+When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags are sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set the `sortOperationsAlphabetically` setting to `true`.
 
 _Default: false_
 
