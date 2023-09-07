@@ -1,0 +1,71 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/MARWAAKKAS_1/WashingtonPost/1.0.0
+info:
+  title: News Article Comments API
+  version: 1.0.0
+  description: Retrieve paginated comments for a news article.
+paths:
+  /api/comments:
+    get:
+      summary: Get Paginated Comments
+      description: Retrieve a paginated list of comments for a news article.
+      parameters:
+        - name: https://www.washingtonpost.com/politics/2023/08/31/giuliani-judge-defamation/
+          in: query
+          description: The URL of the news article.
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: The page number to retrieve (default is 1).
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          description: The number of comments to return per page (default is 5).
+          required: false
+          schema:
+            type: integer
+            default: 5
+      responses:
+        '200':
+          description: A paginated list of comments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: object
+                          properties:
+                            profile_picture:
+                              type: string
+                              format: uri
+                            name:
+                              type: string
+                        comment_text:
+                          type: string
+                        date_posted:
+                          type: string
+                          format: date-time
+                  total_comments:
+                    type: integer
+                  page:
+                    type: integer
+                  per_page:
+                    type: integer
+        '400':
+          description: Bad Request. The request contains invalid or missing parameters. Please check the request and try again.
+        '404':
+          description: Resource Not Found. The requested article URL was not found or is invalid.
