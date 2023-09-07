@@ -51,7 +51,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
     return (
       <>
         {content && (
-          <Section id={item.id} underlined={item.type === 'operation'}>
+          <Section id={item.id} $underlined={item.type === 'operation'}>
             {content}
           </Section>
         )}
@@ -61,7 +61,7 @@ export class ContentItem extends React.Component<ContentItemProps> {
   }
 }
 
-const middlePanelWrap = component => <MiddlePanel compact={true}>{component}</MiddlePanel>;
+const middlePanelWrap = component => <MiddlePanel $compact={true}>{component}</MiddlePanel>;
 
 @observer
 export class SectionItem extends React.Component<ContentItemProps> {
@@ -72,7 +72,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
     return (
       <>
         <Row>
-          <MiddlePanel compact={false}>
+          <MiddlePanel $compact={false}>
             <Header>
               <ShareLink to={this.props.item.id} />
               {name}
