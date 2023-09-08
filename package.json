@@ -92,7 +92,7 @@
     "core-js": "^3.13.1",
     "coveralls": "^3.1.1",
     "css-loader": "^5.2.6",
-    "cypress": "^12.17.1",
+    "cypress": "^13.1.0",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
     "esbuild-loader": "^3.0.1",
