@@ -54,7 +54,7 @@ export class MenuItem extends React.Component<MenuItemProps> {
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
+          <MenuItemLabel $depth={item.depth} $active={item.active} $type={item.type} ref={this.ref}>
             {item.type === 'schema' && <OperationBadge type="schema">schema</OperationBadge>}
             <MenuItemTitle width="calc(100% - 38px)" title={item.sidebarLabel}>
               {item.sidebarLabel}
@@ -95,7 +95,12 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
   }, [props.item.active, ref]);
 
   return (
-    <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated} ref={ref}>
+    <MenuItemLabel
+      $depth={item.depth}
+      $active={item.active}
+      $deprecated={item.deprecated}
+      ref={ref}
+    >
       {item.isWebhook ? (
         <OperationBadge type="hook">
           {showWebhookVerb ? item.httpVerb : l('webhook')}

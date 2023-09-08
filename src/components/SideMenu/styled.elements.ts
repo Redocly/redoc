@@ -84,7 +84,7 @@ function menuItemActive(
   }
 }
 
-export const MenuItemUl = styled.ul<{ expanded: boolean }>`
+export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
   margin: 0;
   padding: 0;
 
@@ -96,7 +96,7 @@ export const MenuItemUl = styled.ul<{ expanded: boolean }>`
     font-size: 0.929em;
   }
 
-  ${props => (props.expanded ? '' : 'display: none;')};
+  ${props => (props.$expanded ? '' : 'display: none;')};
 `;
 
 export const MenuItemLi = styled.li<{ depth: number }>`
@@ -122,40 +122,40 @@ export const menuItemDepth = {
 };
 
 export interface MenuItemLabelType {
-  depth: number;
-  active: boolean;
-  deprecated?: boolean;
-  type?: string;
+  $depth: number;
+  $active: boolean;
+  $deprecated?: boolean;
+  $type?: string;
 }
 
 export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
-  className: classnames('-depth' + props.depth, {
-    active: props.active,
+  className: classnames('-depth' + props.$depth, {
+    active: props.$active,
   }),
 }))<MenuItemLabelType>`
   cursor: pointer;
   color: ${props =>
-    props.active
-      ? menuItemActive(props.depth, props, 'activeTextColor')
+    props.$active
+      ? menuItemActive(props.$depth, props, 'activeTextColor')
       : props.theme.sidebar.textColor};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
-  ${({ depth, type, theme }) =>
-    (type === 'section' && depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
+  ${({ $depth, $type, theme }) =>
+    ($type === 'section' && $depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};
-  ${props => menuItemDepth[props.depth]};
+  ${props => menuItemDepth[props.$depth]};
   background-color: ${props =>
-    props.active
-      ? menuItemActive(props.depth, props, 'activeBackgroundColor')
+    props.$active
+      ? menuItemActive(props.$depth, props, 'activeBackgroundColor')
       : props.theme.sidebar.backgroundColor};
 
-  ${props => (props.deprecated && deprecatedCss) || ''};
+  ${props => (props.$deprecated && deprecatedCss) || ''};
 
   &:hover {
-    color: ${props => menuItemActive(props.depth, props, 'activeTextColor')};
-    background-color: ${props => menuItemActive(props.depth, props, 'activeBackgroundColor')};
+    color: ${props => menuItemActive(props.$depth, props, 'activeTextColor')};
+    background-color: ${props => menuItemActive(props.$depth, props, 'activeBackgroundColor')};
   }
 
   ${ShelfIcon} {
