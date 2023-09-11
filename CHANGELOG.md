@@ -1,3 +1,13 @@
+## [2.1.2](https://github.com/Redocly/redoc/compare/v2.1.1...v2.1.2) (2023-09-11)
+
+
+### Bug Fixes
+
+* react18 cli integration ([#2404](https://github.com/Redocly/redoc/issues/2404)) ([76edc15](https://github.com/Redocly/redoc/commit/76edc159399150778b384be87ee958a93e5c491c))
+* style RefreshToken URL as <code> in the authorization section ([1d61001](https://github.com/Redocly/redoc/commit/1d6100111a0f3b609dadbd706354ce6125947df2))
+
+
+
 ## [2.1.1](https://github.com/Redocly/redoc/compare/v2.1.0...v2.1.1) (2023-08-17)
 
 
