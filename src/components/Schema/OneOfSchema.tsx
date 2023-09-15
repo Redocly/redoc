@@ -23,8 +23,8 @@ export class OneOfButton extends React.Component<OneOfButtonProps> {
     const { idx, schema, subSchema } = this.props;
     return (
       <StyledOneOfButton
-        deprecated={subSchema.deprecated}
-        active={idx === schema.activeOneOf}
+        $deprecated={subSchema.deprecated}
+        $active={idx === schema.activeOneOf}
         onClick={this.activateOneOf}
       >
         {subSchema.title || subSchema.typePrefix + subSchema.displayType}
