@@ -56,7 +56,7 @@ npx @redocly/cli build-docs openapi.yaml
 
 The tool outputs by default to a file named `redoc-static.html` that you can open in your browser.
 
-> [Redocly CLI](https://github.com/Redocly/redocly-cli/) does more than docs, check it out and add linting, bundling, and more to your API workflow.
+> [Redocly CLI](https://github.com/Redocly/redocly-cli/) does more than docs; check it out and add linting, bundling, and more to your API workflow.
 
 ### Add an HTML element to the page
 
