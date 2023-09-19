@@ -16,6 +16,131 @@ Object {
 }
 `;
 
+exports[`Models Schema should deref the properties of a schema 1`] = `
+Object {
+  "discriminator": Object {
+    "mapping": Object {
+      "bee": "#/components/schemas/HoneyBee",
+      "cat": "#/components/schemas/Cat",
+      "dog": "#/components/schemas/Dog",
+    },
+    "propertyName": "petType",
+  },
+  "properties": Object {
+    "category": Object {
+      "description": "Categories this pet belongs to",
+      "properties": Object {
+        "id": Object {
+          "description": "Category ID",
+          "example": 0,
+          "format": "int64",
+          "readOnly": true,
+          "type": "integer",
+        },
+        "name": Object {
+          "description": "Category name",
+          "example": "string",
+          "minLength": 1,
+          "type": "string",
+        },
+        "sub": Object {
+          "description": "Test Sub Category",
+          "properties": Object {
+            "prop1": Object {
+              "description": "Dumb Property",
+              "example": "string",
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+      "type": "object",
+      "xml": Object {
+        "name": "Category",
+      },
+    },
+    "friend": Object {},
+    "id": Object {
+      "description": "Pet ID",
+      "example": 0,
+      "format": "int64",
+      "readOnly": true,
+      "type": "integer",
+    },
+    "name": Object {
+      "description": "The name given to a pet",
+      "example": "Guru",
+      "type": "string",
+    },
+    "petType": Object {
+      "description": "Type of a pet",
+      "example": "string",
+      "type": "string",
+    },
+    "photoUrls": Object {
+      "description": "The list of URL to a cute photos featuring pet",
+      "items": Object {
+        "format": "url",
+        "type": "string",
+      },
+      "type": "array",
+      "xml": Object {
+        "name": "photoUrl",
+        "wrapped": true,
+      },
+    },
+    "status": Object {
+      "description": "Pet status in the store",
+      "enum": Array [
+        "available",
+        "pending",
+        "sold",
+      ],
+      "example": "available",
+      "type": "string",
+    },
+    "tags": Object {
+      "description": "Tags attached to the pet",
+      "items": Object {
+        "properties": Object {
+          "id": Object {
+            "description": "Tag ID",
+            "example": 0,
+            "format": "int64",
+            "readOnly": true,
+            "type": "integer",
+          },
+          "name": Object {
+            "description": "Tag name",
+            "example": "string",
+            "minLength": 1,
+            "type": "string",
+          },
+        },
+        "type": "object",
+        "xml": Object {
+          "name": "Tag",
+        },
+      },
+      "type": "array",
+      "xml": Object {
+        "name": "tag",
+        "wrapped": true,
+      },
+    },
+  },
+  "required": Array [
+    "name",
+    "photoUrls",
+  ],
+  "type": "object",
+  "xml": Object {
+    "name": "Pet",
+  },
+}
+`;
+
 exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
 Object {
   "oneOf": Array [

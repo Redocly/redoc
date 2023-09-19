@@ -26,3 +26,22 @@ export function objectSet(object: object, path: string | Array<string>, value: a
   const key = _path[limit];
   object[key] = value;
 }
+
+export const isObjectEmpty = (obj: object): boolean =>
+  !!obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+
+const emptyValues = new Set([undefined, 'undefined', null, 'null', NaN, 'NaN', '']);
+
+/**
+ * Filters out falsy / empty values from an object
+ */
+export const compact = (toCompact: object): object => {
+  const removeEmpty = (obj: object) =>
+    Object.fromEntries(
+      Object.entries(obj)
+        .filter(([, v]) => !emptyValues.has(v))
+        .map(([k, v]) => [k, typeof v === 'object' && !Array.isArray(v) ? removeEmpty(v) : v]),
+    );
+
+  return removeEmpty(toCompact);
+};
