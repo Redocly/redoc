@@ -5,3 +5,7 @@ level: error
 scope: heading
 tokens:
   - '^\w*ing.*'
+exceptions:
+  - expandSingleSchemaField
+  - hideLoading
+  - hideSingleRequestSampleTab
