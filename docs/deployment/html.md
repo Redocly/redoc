@@ -38,7 +38,7 @@ description.
 </html>
 ```
 
-:::Success URL or local file
+:::success URL or local file
 
 Set `spec-url` to a relative path if the file is local, e.g. `spec-url=my-api.yaml`. Use a full URL like the example above if it's hosted elsewhere.
 
