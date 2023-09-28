@@ -249,18 +249,18 @@ For more information, refer to [Security definitions injection](./security-defin
 ### OpenAPI specification extensions
 
 Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
-* [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
-* [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for handling out common things like Pagination, Rate-Limits, etc
-* [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
-* [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
-* [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
-* [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
-* [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) - group tags by categories in the side menu
-* [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
-* [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
-* [`x-additionalPropertiesName`](docs/redoc-vendor-extensions.md#x-additionalPropertiesName) - ability to supply a descriptive name for the additional property keys
-* [`x-summary`](docs/redoc-vendor-extensions.md#x-summary) - For Response object, use as the response button text, with description rendered under the button
-* [`x-extendedDiscriminator`](docs/redoc-vendor-extensions.md#x-extendedDiscriminator) - In Schemas, uses this to solve name-clash issues with the standard discriminator
-* [`x-explicitMappingOnly`](docs/redoc-vendor-extensions.md#x-explicitMappingOnly) - In Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
+* [`x-logo`](./redoc-vendor-extensions.md#x-logo) - is used to specify API logo
+* [`x-traitTag`](./redoc-vendor-extensions.md#x-traittag) - useful for handling out common things like Pagination, Rate-Limits, etc
+* [`x-codeSamples`](./redoc-vendor-extensions.md#x-codesamples) - specify operation code samples
+* [`x-examples`](./redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
+* [`x-nullable`](./redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
+* [`x-displayName`](./redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
+* [`x-tagGroups`](./redoc-vendor-extensions.md#x-taggroups) - group tags by categories in the side menu
+* [`x-servers`](./redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
+* [`x-ignoredHeaderParameters`](./redoc-vendor-extensions.md#x-ignoredheaderparameters) - ability to specify header parameter names to ignore
+* [`x-additionalPropertiesName`](./redoc-vendor-extensions.md#x-additionalpropertiesname) - ability to supply a descriptive name for the additional property keys
+* [`x-summary`](./redoc-vendor-extensions.md#x-summary) - For Response object, use as the response button text, with description rendered under the button
+* [`x-extendedDiscriminator`](./redoc-vendor-extensions.md#x-extendeddiscriminator) - In Schemas, uses this to solve name-clash issues with the standard discriminator
+* [`x-explicitMappingOnly`](./redoc-vendor-extensions.md#x-explicitmappingonly) - In Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
 
 
