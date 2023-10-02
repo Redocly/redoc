@@ -73,7 +73,7 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 ### More usage options
 
-Check out the [deployment documentation](./deploment/index/md) for more options, and detailed documentation for each.
+Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
 ## Redoc vs. Reference
 
