@@ -1,5 +1,6 @@
 ---
-title: Redoc deployment guide
+seo:
+  title: Redoc deployment guide
 redirects:
   '/docs/redoc/quickstart/intro/':
     to: '/docs/redoc/deployment/intro/'

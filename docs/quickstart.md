@@ -1,5 +1,6 @@
 ---
-title: Redoc quickstart guide
+seo:
+  title: Redoc quickstart guide
 ---
 
 # Redoc quickstart guide

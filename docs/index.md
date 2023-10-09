@@ -1,5 +1,6 @@
 ---
-title: Redoc
+seo:
+  title: Redoc
 ---
 
 # Redoc: Open source API documentation tool

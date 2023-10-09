@@ -1,5 +1,6 @@
 ---
-title: Use the Redoc CLI
+seo:
+  title: Use the Redoc CLI
 redirects:
   '/docs/redoc/quickstart/cli/':
     to: '/docs/redoc/deployment/cli/'
