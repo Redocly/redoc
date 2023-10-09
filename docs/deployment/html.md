@@ -1,8 +1,10 @@
 ---
-title: Use Redoc in HTML
-redirectFrom:
-  - /docs/redoc/quickstart/html/
-  - /docs/redoc/quickstart/
+title: Use the Redoc HTML element
+redirects:
+  '/docs/redoc/quickstart/html/':
+    to: '/docs/redoc/deployment/html/'
+  '/docs/redoc/quickstart/':
+    to: '/docs/redoc/deployment/html/'
 ---
 
 # Use Redoc in HTML
@@ -38,11 +40,9 @@ description.
 </html>
 ```
 
-:::success URL or local file
-
+{ % admonition type="success" name="URL or local file" % }
 Set `spec-url` to a relative path if the file is local, e.g. `spec-url=my-api.yaml`. Use a full URL like the example above if it's hosted elsewhere.
-
-:::
+{ % /admonition % }
 
 Open the HTML file in your browser to see the HTML documentation rendering. You may want to read the next section and add some configuration to make your documentation your own.
 

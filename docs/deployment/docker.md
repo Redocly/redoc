@@ -1,7 +1,8 @@
 ---
 title: Use the Redoc Docker image
-redirectFrom:
-  - /docs/redoc/quickstart/docker/
+redirects:
+  '/docs/redoc/quickstart/docker/':
+    to: '/docs/redoc/deployment/docker/'
 ---
 
 # How to use the Redoc Docker image
