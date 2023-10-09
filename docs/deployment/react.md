@@ -1,5 +1,6 @@
 ---
-title: Use the Redoc React component
+seo:
+  title: Use the Redoc React component
 redirects:
   '/docs/redoc/quickstart/react/':
     to: '/docs/redoc/deployment/react/'

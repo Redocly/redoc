@@ -1,5 +1,6 @@
 ---
-title: Use the Redoc HTML element
+seo:
+  title: Use the Redoc HTML element
 redirects:
   '/docs/redoc/quickstart/html/':
     to: '/docs/redoc/deployment/html/'

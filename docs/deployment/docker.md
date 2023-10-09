@@ -1,5 +1,6 @@
 ---
-title: Use the Redoc Docker image
+seo:
+  title: Use the Redoc Docker image
 redirects:
   '/docs/redoc/quickstart/docker/':
     to: '/docs/redoc/deployment/docker/'
