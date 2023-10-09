@@ -1,7 +1,8 @@
 ---
 title: Use the Redoc CLI
-redirectFrom:
-  - /docs/redoc/quickstart/cli/
+redirects:
+  '/docs/redoc/quickstart/cli/':
+    to: '/docs/redoc/deployment/cli/'
 ---
 
 # How to use the Redocly CLI

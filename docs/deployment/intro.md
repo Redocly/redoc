@@ -1,7 +1,8 @@
 ---
 title: Redoc deployment guide
-redirectFrom:
-  - /docs/redoc/quickstart/intro/
+redirects:
+  '/docs/redoc/quickstart/intro/':
+    to: '/docs/redoc/deployment/intro/'
 ---
 
 # Redoc deployment guide
@@ -37,10 +38,10 @@ You need an OpenAPI definition. For testing purposes, you can use one of the fol
   - [Thingful OpenAPI Definition](https://raw.githubusercontent.com/thingful/openapi-spec/master/spec/swagger.yaml)
   - [Fitbit Plus OpenAPI Definition](https://raw.githubusercontent.com/TwineHealth/TwineDeveloperDocs/master/spec/swagger.yaml)
 
-:::info OpenAPI specification
+{% admonition type="info" name="OpenAPI specification" %}
 For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redocly.com/docs/resources/learning-openapi/)
 section in the documentation.
-:::
+{% /admonition %}
 
 ### How to run Redoc locally
 
@@ -105,7 +106,7 @@ npm install -g http-server
 Then, `cd` into your project directory and run the following command:
 
 ```node
-http-server
+http - server;
 ```
 
 The output after entering the command provides the local URL where the preview can be accessed.

@@ -28,7 +28,7 @@ Redoc is provided as a CLI tool (also distributed as a Docker image), HTML tag, 
 If you have Node installed, quickly generate documentation using `npx`:
 
 ```
-npx @redocly/cli build-docs openapi.yaml 
+npx @redocly/cli build-docs openapi.yaml
 ```
 
 The tool outputs by default to a file named `redoc-static.html` that you can open in your browser.
@@ -56,7 +56,7 @@ Check out the [deployment documentation](./deployment/intro.md) for more options
 
 Redoc is highly configurable. Each deployment option accepts configuration in a way that's appropriate to that platform, but the options are the same for each. For example:
 
-* Using [Redocly CLI](../cli/index.mdx), configuration goes in the `redocly.yaml` file, or can be supplied as command line parameters, such as `--theme.openapi.disableSearch`.
+* Using [Redocly CLI](../cli/index.md), configuration goes in the `redocly.yaml` file, or can be supplied as command line parameters, such as `--theme.openapi.disableSearch`.
 * Using HTML or React, configure by setting `option` in the tag.
 
 Here's a sample `redocly.yaml` configuration file, showing a few common settings and tweaking some of the visual theme settings:

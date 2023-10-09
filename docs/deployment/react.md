@@ -1,7 +1,8 @@
 ---
 title: Use the Redoc React component
-redirectFrom:
-  - /docs/redoc/quickstart/react/
+redirects:
+  '/docs/redoc/quickstart/react/':
+    to: '/docs/redoc/deployment/react/'
 ---
 
 # How to use the Redoc React component
@@ -71,7 +72,7 @@ is fully rendered or when an error occurs (with an error as the first argument).
 ```js
 <RedocStandalone
   specUrl="http://petstore.swagger.io/v2/swagger.json"
-  onLoaded={error => {
+  onLoaded={(error) => {
     if (!error) {
       console.log('Yay!');
     }
