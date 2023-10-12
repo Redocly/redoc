@@ -11,7 +11,7 @@
   ],
   "engines": {
     "node": ">=6.9",
-    "npm": ">=3.0.0"
+    "npm": ">=8.0.0"
   },
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "license": "MIT",
