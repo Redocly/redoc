@@ -1,9 +1,6 @@
 ---
 seo:
   title: Redoc deployment guide
-redirects:
-  '/docs/redoc/quickstart/intro/':
-    to: '/docs/redoc/deployment/intro/'
 ---
 
 # Redoc deployment guide
