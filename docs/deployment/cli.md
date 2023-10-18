@@ -1,9 +1,6 @@
 ---
 seo:
   title: Use the Redoc CLI
-redirects:
-  '/docs/redoc/quickstart/cli/':
-    to: '/docs/redoc/deployment/cli/'
 ---
 
 # How to use the Redocly CLI

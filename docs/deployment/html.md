@@ -1,11 +1,6 @@
 ---
 seo:
   title: Use the Redoc HTML element
-redirects:
-  '/docs/redoc/quickstart/html/':
-    to: '/docs/redoc/deployment/html/'
-  '/docs/redoc/quickstart/':
-    to: '/docs/redoc/deployment/html/'
 ---
 
 # Use Redoc in HTML
