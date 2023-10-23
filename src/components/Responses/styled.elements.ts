@@ -25,7 +25,7 @@ export const StyledResponseTitle = styled(ResponseTitle)`
     (props.empty &&
       `
 cursor: default;
-&::before {
+&::after {
   content: "—";
   font-weight: bold;
   width: 1.5em;
