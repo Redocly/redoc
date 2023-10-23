@@ -9,7 +9,6 @@ import {
 import { FieldDetails } from './FieldDetails';
 import {
   InnerPropertiesWrap,
-  PropertyBullet,
   PropertyCellWithInner,
   PropertyDetailsCell,
   PropertyNameCell,
@@ -69,7 +68,6 @@ export class Field extends React.Component<FieldProps> {
         kind={kind}
         title={name}
       >
-        <PropertyBullet />
         <button
           onClick={this.toggle}
           onKeyPress={this.handleKeyPress}
@@ -82,7 +80,6 @@ export class Field extends React.Component<FieldProps> {
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-        <PropertyBullet />
         <span className="property-name">{name}</span>
         {labels}
       </PropertyNameCell>

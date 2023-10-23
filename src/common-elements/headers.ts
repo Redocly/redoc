@@ -35,17 +35,19 @@ export const H3 = styled.h2`
   ${extensionsHook('H3')};
 `;
 
-export const RightPanelHeader = styled.h3`
-  color: ${({ theme }) => theme.rightPanel.textColor};
-
+export const RightPanelHeader = styled.div`
+  color: #ffffff;
+  padding: 10px;
+  font-weight: 700;
+  border-radius: 4px 4px 0 0;
+  background: rgb(50, 63, 75);
   ${extensionsHook('RightPanelHeader')};
 `;
 
 export const UnderlinedHeader = styled.h5`
-  border-bottom: 1px solid rgba(38, 50, 56, 0.3);
   margin: 1em 0 1em 0;
-  color: rgba(38, 50, 56, 0.5);
-  font-weight: normal;
+  color: rgb(96, 106, 119);
+  font-weight: bold;
   text-transform: uppercase;
   font-size: 0.929em;
   line-height: 20px;

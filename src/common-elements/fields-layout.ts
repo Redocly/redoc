@@ -9,10 +9,10 @@ export const PropertiesTableCaption = styled.caption`
 `;
 
 export const PropertyCell = styled.td<{ kind?: string }>`
-  border-left: 1px solid ${props => props.theme.schema.linesColor};
+  border-left: 1px dashed ${props => props.theme.schema.linesColor};
   box-sizing: border-box;
   position: relative;
-  padding: 10px 10px 10px 0;
+  padding: 10px;
 
   ${media.lessThan('small')`
     display: block;
@@ -28,23 +28,29 @@ export const PropertyCell = styled.td<{ kind?: string }>`
   }
 
   tr:first-of-type > & {
-    background-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 22px,
-      ${props => props.theme.schema.linesColor} 22px,
-      ${props => props.theme.schema.linesColor} 100%
+    background-image: repeating-linear-gradient(
+      0deg,
+      ${props => props.theme.schema.linesColor},
+      ${props => props.theme.schema.linesColor} 3px,
+      transparent 3px,
+      transparent 5px,
+      ${props => props.theme.schema.linesColor} 5px
     );
+    background-position: 0 10px;
+    padding-top: 0;
   }
 
   tr.last > & {
-    background-image: linear-gradient(
-      to bottom,
-      ${props => props.theme.schema.linesColor} 0%,
-      ${props => props.theme.schema.linesColor} 22px,
-      transparent 22px,
-      transparent 100%
+    background-image: repeating-linear-gradient(
+      0deg,
+      ${props => props.theme.schema.linesColor},
+      ${props => props.theme.schema.linesColor} 3px,
+      transparent 3px,
+      transparent 5px,
+      ${props => props.theme.schema.linesColor} 5px
     );
+    background-size: 1px 22px;
+    padding-bottom: 0;
   }
 
   tr.last + tr > & {
@@ -97,7 +103,7 @@ export const PropertyNameCell = styled(PropertyCell)`
 `;
 
 export const PropertyDetailsCell = styled.td`
-  border-bottom: 1px solid #9fb4be;
+  border-bottom: 1px solid rgb(228, 231, 235);
   padding: 10px 0;
   width: ${props => props.theme.schema.defaultDetailsWidth};
   box-sizing: border-box;
@@ -109,12 +115,15 @@ export const PropertyDetailsCell = styled.td`
   ${media.lessThan('small')`
     padding: 0 20px;
     border-bottom: none;
-    border-left: 1px solid ${props => props.theme.schema.linesColor};
+    border-left: 1px dashed ${props => props.theme.schema.linesColor};
 
     tr.last > & {
       border-left: none;
     }
   `}
+  tr:first-of-type > & {
+    padding-top: 0;
+  }
 
   ${extensionsHook('PropertyDetailsCell')};
 `;
