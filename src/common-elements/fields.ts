@@ -49,7 +49,7 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
 `;
 
 export const FieldLabel = styled.span`
-  vertical-align: middle;
+  vertical-align: top;
   font-size: ${({ theme }) => theme.typography.code.fontSize};
   line-height: 20px;
 `;

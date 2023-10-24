@@ -50,7 +50,6 @@ export const PropertyCell = styled.td<{ kind?: string }>`
       ${props => props.theme.schema.linesColor} 5px
     );
     background-size: 1px 22px;
-    padding-bottom: 0;
   }
 
   tr.last + tr > & {
@@ -172,6 +171,7 @@ export const PropertiesTable = styled.table`
     display: block;
     > tr, > tbody > tr {
       display: block;
+      padding-bottom:10px;
     }
   `}
 

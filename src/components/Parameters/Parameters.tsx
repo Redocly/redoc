@@ -13,6 +13,7 @@ import { Markdown } from '../Markdown/Markdown';
 import { ConstraintsView } from '../Fields/FieldConstraints';
 import { RequiredLabel } from '../../common-elements/fields';
 import styled from '../../styled-components';
+import { ParameterDescriptionWrap } from './styled.elements';
 
 function safePush(obj, prop, item) {
   if (!obj[prop]) {
@@ -102,7 +103,9 @@ export function BodyContent(props: {
         return (
           <>
             {description !== undefined && <p></p> && (
-              <Markdown className={'description-body-request'} source={description} />
+              <ParameterDescriptionWrap>
+                <Markdown source={description} />
+              </ParameterDescriptionWrap>
             )}
             {schema?.type === 'object' && (
               <ConstraintsView constraints={schema?.constraints || []} />
