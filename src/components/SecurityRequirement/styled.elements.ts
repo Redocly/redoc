@@ -102,8 +102,7 @@ export const Wrap = styled.div<{ $expanded?: boolean }>`
   width: 100%;
   display: flex;
   margin: 1em 0;
-  padding-bottom: 1em;
-  border-bottom: 1px solid rgb(228, 231, 235);
+  padding-bottom: 0.8em;
   flex-direction: ${p => (p.$expanded ? 'column' : 'row')};
   ${media.lessThan('small')`
     flex-direction: column;

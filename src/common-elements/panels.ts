@@ -12,6 +12,12 @@ export const MiddlePanel = styled.div<{ $compact?: boolean }>`
       theme.spacing.sectionHorizontal
     }px`};
   `};
+  ${({ $compact, theme }) =>
+    media.lessThan('small', true)`
+    padding: ${`${$compact ? 0 : theme.spacing.sectionVertical / 2}px ${
+      theme.spacing.sectionHorizontal / 2
+    }px`};
+  `};
 `;
 
 export const Section = styled.div.attrs(props => ({

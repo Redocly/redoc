@@ -51,6 +51,8 @@ export const UnderlinedHeader = styled.h5`
   text-transform: uppercase;
   font-size: 0.929em;
   line-height: 20px;
+  border-bottom: 1px solid rgb(228, 231, 235);
+  padding-bottom: 0.8em;
 
   ${extensionsHook('UnderlinedHeader')};
 `;

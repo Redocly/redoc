@@ -101,7 +101,9 @@ export function BodyContent(props: {
       {({ schema }) => {
         return (
           <>
-            {description !== undefined && <Markdown source={description} />}
+            {description !== undefined && <p></p> && (
+              <Markdown className={'description-body-request'} source={description} />
+            )}
             {schema?.type === 'object' && (
               <ConstraintsView constraints={schema?.constraints || []} />
             )}
