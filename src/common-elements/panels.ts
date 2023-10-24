@@ -63,6 +63,13 @@ export const RightPanel = styled.div`
     padding: ${props =>
       `${props.theme.spacing.sectionVertical}px ${props.theme.spacing.sectionHorizontal}px`};
   `};
+  ${media.lessThan('small', true)`
+    width: 100%;
+    padding: ${props =>
+      `${props.theme.spacing.sectionVertical / 2}px ${
+        props.theme.spacing.sectionHorizontal / 2
+      }px`};
+  `};
 `;
 
 export const DarkRightPanel = styled(RightPanel)`
