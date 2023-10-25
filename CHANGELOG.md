@@ -1,3 +1,15 @@
+## [2.1.3](https://github.com/Redocly/redoc/compare/v2.1.2...v2.1.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* default value as object in request body ([#2437](https://github.com/Redocly/redoc/issues/2437)) ([b36a6e2](https://github.com/Redocly/redoc/commit/b36a6e27bb3e03d39ee74c3e71f18a504539d91b))
+* display string pattern in array items ([#2438](https://github.com/Redocly/redoc/issues/2438)) ([8ddeb6d](https://github.com/Redocly/redoc/commit/8ddeb6dfda686ec8a6948eb2d96efb99bf422429))
+* hideRequestPayloadSample ([#2436](https://github.com/Redocly/redoc/issues/2436)) ([bf96061](https://github.com/Redocly/redoc/commit/bf960612a47bfe10ff205b9d78f3040515a5467d))
+* more cases for react18 and cli integration ([#2416](https://github.com/Redocly/redoc/issues/2416)) ([26674e7](https://github.com/Redocly/redoc/commit/26674e70c66b686d0f0baa569b186292c41e5726))
+
+
+
 ## [2.1.2](https://github.com/Redocly/redoc/compare/v2.1.1...v2.1.2) (2023-09-11)
 
 
