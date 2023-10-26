@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '../styled-components';
+import styled, { extensionsHook } from '../styled-components';
 
 const directionMap = {
   left: '90deg',
@@ -45,6 +45,8 @@ export const ShelfIcon = styled(IntShelfIcon)`
     fill: ${({ color, theme }) =>
       (color && theme.colors.responses[color] && theme.colors.responses[color].color) || color};
   }
+
+  ${extensionsHook('ShelfIcon')};
 `;
 
 export const Badge = styled.span<{ type: string }>`
