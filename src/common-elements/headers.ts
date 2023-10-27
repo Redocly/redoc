@@ -41,7 +41,7 @@ export const RightPanelHeader = styled.h3`
   ${extensionsHook('RightPanelHeader')};
 `;
 
-export const UnderlinedHeader = styled.h5`
+export const UnderlinedHeader = styled.h4`
   border-bottom: 1px solid rgba(38, 50, 56, 0.3);
   margin: 1em 0 1em 0;
   color: rgba(38, 50, 56, 0.5);
