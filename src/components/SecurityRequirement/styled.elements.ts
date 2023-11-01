@@ -55,11 +55,11 @@ export const SecurityRequirementAndWrap = styled.span`
   ${linksCss};
 `;
 
-export const SecurityRequirementOrWrap = styled.span<{ expanded?: boolean }>`
-  ${p => !p.expanded && `white-space: nowrap;`}
+export const SecurityRequirementOrWrap = styled.span<{ $expanded?: boolean }>`
+  ${p => !p.$expanded && `white-space: nowrap;`}
   &:after {
     content: ' or ';
-    ${p => p.expanded && `content: ' or \\a';`}
+    ${p => p.$expanded && `content: ' or \\a';`}
     white-space: pre;
   }
 
@@ -76,13 +76,13 @@ export const AuthHeaderColumn = styled.div`
   cursor: pointer;
 `;
 
-export const SecuritiesColumn = styled.div<{ expanded?: boolean }>`
+export const SecuritiesColumn = styled.div<{ $expanded?: boolean }>`
   width: ${props => props.theme.schema.defaultDetailsWidth};
   text-overflow: ellipsis;
   border-radius: 4px;
   overflow: hidden;
   ${p =>
-    p.expanded &&
+    p.$expanded &&
     `background: ${p.theme.colors.gray['100']};
      padding: 8px 9.6px;
      margin: 20px 0;
@@ -98,11 +98,11 @@ export const AuthHeader = styled(UnderlinedHeader)`
   margin: 0;
 `;
 
-export const Wrap = styled.div<{ expanded?: boolean }>`
+export const Wrap = styled.div<{ $expanded?: boolean }>`
   width: 100%;
   display: flex;
   margin: 1em 0;
-  flex-direction: ${p => (p.expanded ? 'column' : 'row')};
+  flex-direction: ${p => (p.$expanded ? 'column' : 'row')};
   ${media.lessThan('small')`
     flex-direction: column;
   `}

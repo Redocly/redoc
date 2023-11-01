@@ -17,7 +17,6 @@ const demos = [
   },
   { value: 'https://api.apis.guru/v2/specs/slack.com/1.7.0/openapi.yaml', label: 'Slack' },
   { value: 'https://api.apis.guru/v2/specs/zoom.us/2.0.0/openapi.yaml', label: 'Zoom.us' },
-  { value: 'https://docs.graphhopper.com/openapi.json', label: 'GraphHopper' },
 ];
 
 class DemoApp extends React.Component<

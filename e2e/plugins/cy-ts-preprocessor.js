@@ -12,9 +12,9 @@ const webpackOptions = {
         exclude: [/node_modules/],
         use: [
           {
-            loader: 'ts-loader',
+            loader: 'esbuild-loader',
             options: {
-              configFile: 'e2e/tsconfig.json',
+              tsconfigRaw: require('../tsconfig.json'),
             },
           },
         ],

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TypeFormat, TypePrefix } from '../../common-elements/fields';
-import { ConstraintsView } from './FieldContstraints';
+import { ConstraintsView } from './FieldConstraints';
 import { Pattern } from './Pattern';
 import { SchemaModel } from '../../services';
 import styled from '../../styled-components';
@@ -10,13 +10,20 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
   const { hideSchemaPattern } = React.useContext(OptionsContext);
   if (
     !schema ||
-    (schema.type === 'string' && !schema.constraints.length) ||
     ((!schema?.pattern || hideSchemaPattern) &&
       !schema.items &&
       !schema.displayFormat &&
-      !schema.constraints.length) // return null for cases where all constraints are empty
+      !schema.constraints?.length) // return null for cases where all constraints are empty
   ) {
     return null;
+  }
+
+  if (schema.type === 'string' && schema.pattern) {
+    return (
+      <Wrapper>
+        [<Pattern schema={schema} />]
+      </Wrapper>
+    );
   }
 
   return (

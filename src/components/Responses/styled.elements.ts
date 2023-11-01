@@ -41,7 +41,9 @@ export const ResponseDetailsWrap = styled.div`
   padding: 10px;
 `;
 
-export const HeadersCaption = styled(UnderlinedHeader.withComponent('caption'))`
+export const HeadersCaption = styled(UnderlinedHeader).attrs({
+  as: 'caption',
+})`
   text-align: left;
   margin-top: 1em;
   caption-side: top;

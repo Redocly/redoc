@@ -44,12 +44,19 @@ export class MenuItem extends React.Component<MenuItemProps> {
   render() {
     const { item, withoutChildren } = this.props;
     return (
-      <MenuItemLi onClick={this.activate} depth={item.depth} data-item-id={item.id} role="menuitem">
+      <MenuItemLi
+        tabIndex={0}
+        onClick={this.activate}
+        depth={item.depth}
+        data-item-id={item.id}
+        role="menuitem"
+      >
         {item.type === 'operation' ? (
           <OperationMenuItemContent {...this.props} item={item as OperationModel} />
         ) : (
-          <MenuItemLabel depth={item.depth} active={item.active} type={item.type} ref={this.ref}>
-            <MenuItemTitle title={item.sidebarLabel}>
+          <MenuItemLabel $depth={item.depth} $active={item.active} $type={item.type} ref={this.ref}>
+            {item.type === 'schema' && <OperationBadge type="schema">schema</OperationBadge>}
+            <MenuItemTitle width="calc(100% - 38px)" title={item.sidebarLabel}>
               {item.sidebarLabel}
               {this.props.children}
             </MenuItemTitle>
@@ -88,7 +95,12 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
   }, [props.item.active, ref]);
 
   return (
-    <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated} ref={ref}>
+    <MenuItemLabel
+      $depth={item.depth}
+      $active={item.active}
+      $deprecated={item.deprecated}
+      ref={ref}
+    >
       {item.isWebhook ? (
         <OperationBadge type="hook">
           {showWebhookVerb ? item.httpVerb : l('webhook')}
@@ -96,7 +108,7 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
       ) : (
         <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
       )}
-      <MenuItemTitle width="calc(100% - 38px)">
+      <MenuItemTitle tabIndex={0} width="calc(100% - 38px)">
         {item.sidebarLabel}
         {props.children}
       </MenuItemTitle>
