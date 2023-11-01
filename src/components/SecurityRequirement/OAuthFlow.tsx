@@ -39,7 +39,7 @@ export function OAuthFlowComponent(props: OAuthFlowProps) {
       {flow!.refreshUrl && (
         <SecurityRow>
           <strong> Refresh URL: </strong>
-          {flow!.refreshUrl}
+          <code>{flow!.refreshUrl}</code>
         </SecurityRow>
       )}
       {!!scopesNames.length && (

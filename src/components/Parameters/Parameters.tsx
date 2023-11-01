@@ -10,7 +10,7 @@ import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
 import { Schema } from '../Schema';
 
 import { Markdown } from '../Markdown/Markdown';
-import { ConstraintsView } from '../Fields/FieldContstraints';
+import { ConstraintsView } from '../Fields/FieldConstraints';
 import { RequiredLabel } from '../../common-elements/fields';
 import styled from '../../styled-components';
 

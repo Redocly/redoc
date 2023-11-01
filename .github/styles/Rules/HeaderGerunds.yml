@@ -1,0 +1,11 @@
+extends: existence
+message: 'Do not start headings with with a gerund (ing word). Use an imperative verb instead.'
+link: https://intranet.redoc.ly/contributing/documentation-style-guide/#content-organization
+level: error
+scope: heading
+tokens:
+  - '^\w*ing.*'
+exceptions:
+  - expandSingleSchemaField
+  - hideLoading
+  - hideSingleRequestSampleTab

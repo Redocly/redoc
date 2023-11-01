@@ -1,7 +1,6 @@
 ---
-title: Redoc deployment guide
-redirectFrom:
-  - /docs/redoc/quickstart/intro/
+seo:
+  title: Redoc deployment guide
 ---
 
 # Redoc deployment guide
@@ -12,7 +11,7 @@ You should select the option that best fits your needs.
 The following options are supported:
 
 - **[Live demo](https://redocly.github.io/redoc/):**
-  The live demo offers a fast way to see how your OpenAPI will render with Redoc.
+  The live demo offers a fast way to see how your OpenAPI renders with Redoc.
   A version of the Swagger Petstore API is displayed by default. To test it with your own OpenAPI definition, enter the URL for your
   definition and select **TRY IT**.
 - **[HTML element](./html.md):**
@@ -28,7 +27,7 @@ The following options are supported:
 
 ### OpenAPI definition
 
-You will need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
+You need an OpenAPI definition. For testing purposes, you can use one of the following sample OpenAPI definitions:
 
 - OpenAPI 3.0
   - [Rebilly Users OpenAPI Definition](https://raw.githubusercontent.com/Rebilly/api-definitions/main/openapi/users.yaml)
@@ -37,10 +36,10 @@ You will need an OpenAPI definition. For testing purposes, you can use one of th
   - [Thingful OpenAPI Definition](https://raw.githubusercontent.com/thingful/openapi-spec/master/spec/swagger.yaml)
   - [Fitbit Plus OpenAPI Definition](https://raw.githubusercontent.com/TwineHealth/TwineDeveloperDocs/master/spec/swagger.yaml)
 
-:::info OpenAPI specification
+{% admonition type="info" name="OpenAPI specification" %}
 For more information on the OpenAPI specification, refer to the [Learning OpenAPI 3](https://redocly.com/docs/resources/learning-openapi/)
 section in the documentation.
-:::
+{% /admonition %}
 
 ### How to run Redoc locally
 
@@ -105,7 +104,7 @@ npm install -g http-server
 Then, `cd` into your project directory and run the following command:
 
 ```node
-http-server
+http - server;
 ```
 
 The output after entering the command provides the local URL where the preview can be accessed.
