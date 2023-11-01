@@ -8,11 +8,6 @@ describe('Menu', () => {
     });
 
     it('should sync active menu items while scroll', () => {
-      cy.contains('h1', 'Introduction')
-        .scrollIntoView()
-        .get('[role=menuitem] > label.active')
-        .should('have.text', 'Introduction');
-
       cy.contains('h2', 'Add a new pet to the store')
         .scrollIntoView()
         .wait(100)

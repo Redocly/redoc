@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FieldDetailsComponent renders correctly 1`] = `
-<div>
+<div
+  class="field-details"
+>
   <div>
     <span
       class="sc-kpDqfm sc-dAlyuH cGRfjn gHomYR"
@@ -18,7 +20,9 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
     >
        (test title) 
     </span>
-    <span>
+    <span
+      class="field-constraints"
+    >
        
       <span
         class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
@@ -35,7 +39,7 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
     </span>
      
     <span
-      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn field-example"
     >
       ""
     </span>
@@ -49,7 +53,7 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
     </span>
      
     <span
-      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn field-example"
     >
       "example"
     </span>
