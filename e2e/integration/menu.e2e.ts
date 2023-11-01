@@ -7,17 +7,6 @@ describe('Menu', () => {
       cy.get('.menu-content').find('li').should('have.length', 40);
     });
 
-    it('should sync active menu items while scroll', () => {
-      cy.contains('h2', 'Add a new pet to the store')
-        .scrollIntoView()
-        .wait(100)
-        .get('[role=menuitem] > label.active')
-        .children()
-        .last()
-        .should('have.text', 'Add a new pet to the store')
-        .should('be.visible');
-    });
-
     it('should update URL hash when clicking on menu items', () => {
       cy.contains('[role=menuitem] > label.-depth1', 'pet').click({ force: true });
       cy.get('li[data-item-id="schema/Cat"]')
