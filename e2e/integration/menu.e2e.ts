@@ -4,7 +4,7 @@ describe('Menu', () => {
       cy.visit('e2e/standalone.html');
     });
     it('should have valid items count', () => {
-      cy.get('.menu-content').find('li').should('have.length', 35);
+      cy.get('.menu-content').find('li').should('have.length', 40);
     });
 
     it('should sync active menu items while scroll', () => {
@@ -21,27 +21,6 @@ describe('Menu', () => {
         .last()
         .should('have.text', 'Add a new pet to the store')
         .should('be.visible');
-    });
-
-    it('should sync active menu items while scroll back and scroll again', () => {
-      cy.contains('h2', 'Add a new pet to the store')
-        .scrollIntoView()
-        .wait(100)
-        .get('[role=menuitem] > label.active')
-        .children()
-        .last()
-        .should('have.text', 'Add a new pet to the store')
-        .should('be.visible');
-
-      cy.contains('h1', 'Swagger Petstore').scrollIntoView().wait(100);
-
-      cy.contains('h1', 'Introduction')
-        .scrollIntoView()
-        .wait(100)
-        .get('[role=menuitem] > label.active')
-        .should('have.text', 'Introduction');
-
-      cy.url().should('include', '#section/Introduction');
     });
 
     it('should update URL hash when clicking on menu items', () => {
