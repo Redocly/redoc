@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
 
-  # Generate interactive API documentation from OpenAPI definitions
+  # Generate beautiful API documentation from OpenAPI definitions
 
   [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/main/LICENSE)
 
@@ -34,8 +34,6 @@ enter the URL for your definition and select **TRY IT**.
 
 - Responsive three-panel design with menu/scrolling synchronization
 - Support for OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0
-- [Multiple deployment options](https://redocly.com/docs/redoc/)
-- Interactive interface so your users can try the API immediately
 - Ability to integrate your API introduction into the side menu
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
@@ -75,7 +73,7 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
-## Redoc vs. Reference
+## Redoc vs. Redocly API Reference
 
 Redoc is Redocly's community-edition product. Looking for something more?
 We also offer [hosted API reference documentation](https://redocly.com/docs/api-registry/guides/api-registry-quickstart/)
