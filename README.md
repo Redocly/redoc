@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
 
-  # Generate beautiful API documentation from OpenAPI definitions
+  # Generate beautiful API documentation from OpenAPI
 
   [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/main/LICENSE)
 
