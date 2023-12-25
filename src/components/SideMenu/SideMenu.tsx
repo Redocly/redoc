@@ -13,10 +13,32 @@ import RedoclyLogo from './Logo';
 @observer
 export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
   static contextType = OptionsContext;
+
   private _updateScroll?: () => void;
 
   render() {
     const store = this.props.menu;
+    const items = store.items;
+
+    if (this.context.putDownScheme) {
+      const reorderSchema = item => {
+        if (item.type === 'tag') {
+          return item.items.sort((a, b) => {
+            return a.type === 'schema' ? -1 : b.type === 'schema' ? -1 : 0;
+          });
+        } else {
+          return item;
+        }
+      };
+
+      items.map(item => {
+        if (item.type === 'group') {
+          return item.items.map(reorderSchema);
+        }
+        return reorderSchema(item);
+      });
+    }
+
     return (
       <PerfectScrollbarWrap
         updateFn={this.saveScrollUpdate}
@@ -25,7 +47,7 @@ export class SideMenu extends React.Component<{ menu: MenuStore; className?: str
           wheelPropagation: false,
         }}
       >
-        <MenuItems items={store.items} onActivate={this.activate} root={true} />
+        <MenuItems items={items} onActivate={this.activate} root={true} />
         <RedocAttribution>
           <a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">
             <RedoclyLogo />
