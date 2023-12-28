@@ -102,6 +102,7 @@ A sample of the organizations using Redocly tools in the wild:
 - [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [BoxKnight](https://www.docs.boxknight.com/)
+- [Quaderno API](https://developers.quaderno.io/api)
 
 _Pull requests to add your own API page to the list are welcome_
 
