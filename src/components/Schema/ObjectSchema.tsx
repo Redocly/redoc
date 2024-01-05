@@ -1,9 +1,13 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
+import styled from '../../styled-components';
+import { H3 } from '../../common-elements/headers';
+import { Markdown } from '../Markdown/Markdown';
+
 import { SchemaModel } from '../../services/models';
 
-import { PropertiesTable, PropertiesTableCaption } from '../../common-elements/fields-layout';
+import { PropertiesTable } from '../../common-elements/fields-layout';
 import { Field } from '../Fields/Field';
 import { DiscriminatorDropdown } from './DiscriminatorDropdown';
 import { SchemaProps } from './Schema';
@@ -18,13 +22,26 @@ export interface ObjectSchemaProps extends SchemaProps {
   };
 }
 
+export const ObjectSchemaDetails = styled.div`
+  margin: 0 0 0.5em 0;
+`;
+
+export const ObjectSchemaTitle = styled(H3)`
+  margin: 0.5em 0 0 0;
+`;
+
+export const ObjectSchemaDescription = styled.div`
+  margin: 0.5em 0 0 0;
+`;
+
 export const ObjectSchema = observer(
   ({
-    schema: { fields = [], title },
-    showTitle,
+    schema: { fields = [], title, description },
     discriminator,
     skipReadOnly,
     skipWriteOnly,
+    hideObjectTitle,
+    hideObjectDescription,
     level,
   }: ObjectSchemaProps) => {
     const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
@@ -48,37 +65,48 @@ export const ObjectSchema = observer(
       (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
 
     return (
-      <PropertiesTable>
-        {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
-        <tbody>
-          {mapWithLast(filteredFields, (field, isLast) => {
-            return (
-              <Field
-                key={field.name}
-                isLast={isLast}
-                field={field}
-                expandByDefault={expandByDefault}
-                renderDiscriminatorSwitch={
-                  discriminator?.fieldName === field.name
-                    ? () => (
-                        <DiscriminatorDropdown
-                          parent={discriminator!.parentSchema}
-                          enumValues={field.schema.enum}
-                        />
-                      )
-                    : undefined
-                }
-                className={field.expanded ? 'expanded' : undefined}
-                showExamples={showObjectSchemaExamples}
-                skipReadOnly={skipReadOnly}
-                skipWriteOnly={skipWriteOnly}
-                showTitle={showTitle}
-                level={level}
-              />
-            );
-          })}
-        </tbody>
-      </PropertiesTable>
+      <div>
+        <ObjectSchemaDetails>
+          {!hideObjectTitle && <ObjectSchemaTitle>{title}</ObjectSchemaTitle>}
+          {!hideObjectDescription && (
+            <ObjectSchemaDescription>
+              <Markdown compact={true} source={description} />
+            </ObjectSchemaDescription>
+          )}
+        </ObjectSchemaDetails>
+
+        <PropertiesTable>
+          <tbody>
+            {mapWithLast(filteredFields, (field, isLast) => {
+              return (
+                <Field
+                  key={field.name}
+                  isLast={isLast}
+                  field={field}
+                  expandByDefault={expandByDefault}
+                  renderDiscriminatorSwitch={
+                    discriminator?.fieldName === field.name
+                      ? () => (
+                          <DiscriminatorDropdown
+                            parent={discriminator!.parentSchema}
+                            enumValues={field.schema.enum}
+                          />
+                        )
+                      : undefined
+                  }
+                  className={field.expanded ? 'expanded' : undefined}
+                  showExamples={showObjectSchemaExamples}
+                  skipReadOnly={skipReadOnly}
+                  skipWriteOnly={skipWriteOnly}
+                  hideObjectTitle={hideObjectTitle}
+                  hideObjectDescription={hideObjectDescription}
+                  level={level}
+                />
+              );
+            })}
+          </tbody>
+        </PropertiesTable>
+      </div>
     );
   },
 );

@@ -6,7 +6,7 @@ Each deployment type has documentation on how to configure options for that type
 
 **Versions: 2.x**
 
-{% admonition type="success" name="Client-side configuration" %} 
+{% admonition type="success" name="Client-side configuration" %}
 
 Using Redoc as a standalone (HTML or React) tool, these options must be presented in [kebab case](https://en.wikipedia.org/wiki/Letter_case#Kebab_case).
 For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
@@ -65,6 +65,14 @@ If set to `true`, the pattern is not shown in the schema.
 ### hideSchemaTitles
 
 Hides the schema title next to to the type.
+
+### hideObjectTitle
+
+Hides the object title in the schema.
+
+### hideObjectDescription
+
+Hides the object description in the schema.
 
 ### hideSecuritySection
 

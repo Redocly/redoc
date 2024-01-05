@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DropdownOrLabel, DropdownOrLabelProps } from '../DropdownOrLabel/DropdownOrLabel';
 import { ParametersGroup } from './ParametersGroup';
+import { OptionsContext } from '../OptionsProvider';
 
 import { UnderlinedHeader } from '../../common-elements';
 
@@ -29,6 +30,8 @@ export interface ParametersProps {
 const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
 
 export class Parameters extends React.PureComponent<ParametersProps> {
+  static contextType = OptionsContext;
+
   orderParams(params: FieldModel[]): Record<string, FieldModel[]> {
     const res = {};
     params.forEach(param => {
@@ -38,6 +41,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
   }
 
   render() {
+    const { hideObjectTitle, hideObjectDescription } = this.context;
     const { body, parameters = [] } = this.props;
     if (body === undefined && parameters === undefined) {
       return null;
@@ -63,6 +67,8 @@ export class Parameters extends React.PureComponent<ParametersProps> {
             content={bodyContent}
             description={bodyDescription}
             bodyRequired={bodyRequired}
+            hideObjectTitle={hideObjectTitle}
+            hideObjectDescription={hideObjectDescription}
           />
         )}
       </>
@@ -90,8 +96,10 @@ export function BodyContent(props: {
   content: MediaContentModel;
   description?: string;
   bodyRequired?: boolean;
+  hideObjectTitle?: boolean;
+  hideObjectDescription?: boolean;
 }): JSX.Element {
-  const { content, description, bodyRequired } = props;
+  const { content, description, bodyRequired, hideObjectTitle, hideObjectDescription } = props;
   const { isRequestType } = content;
   return (
     <MediaTypesSwitch
@@ -108,6 +116,8 @@ export function BodyContent(props: {
             <Schema
               skipReadOnly={isRequestType}
               skipWriteOnly={!isRequestType}
+              hideObjectTitle={hideObjectTitle}
+              hideObjectDescription={hideObjectDescription}
               key="schema"
               schema={schema}
             />

@@ -39,6 +39,8 @@ export interface RedocRawOptions {
   showObjectSchemaExamples?: boolean | string;
   showSecuritySchemeType?: boolean;
   hideSecuritySection?: boolean;
+  hideObjectTitle?: boolean | string;
+  hideObjectDescription?: boolean | string;
 
   unstable_ignoreMimeParameters?: boolean;
 
