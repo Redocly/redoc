@@ -50,7 +50,7 @@ You can use the following [vendor extensions](https://redocly.com/docs/openapi-v
       - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
 
 ## Swagger Object
-Extends the OpenAPI root [OpenAPI Object](https://redocly.com/docs/openapi-visual-reference/openapi/)
+Extends the OpenAPI root [OpenAPI Object](https://redocly.com/docs/openapi-visual-reference/openapi-1/)
 
 ### x-servers
 Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
