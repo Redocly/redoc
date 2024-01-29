@@ -9,10 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: articulate/actions-markdownlint@v1
+      - uses: DavidAnson/markdownlint-cli2-action@v15
         with:
           config: .markdownlint.yaml
-          files: 'README.md' 'docs/**/*.md'
+          globs: |
+            docs/**/*.md
+            README.md
 
   vale:
     name: vale action
