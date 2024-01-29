@@ -73,7 +73,7 @@ Information about tags group
 | Field Name  | Type      | Description |
 | :---------- | :--------: | :---------- |
 | name        | string     | The group name |
-| tags        | [ string ] | List of tags to include in this group
+| tags        | [ string ] | List of tags to include in this group |
 
 #### x-tagGroups example
 json
@@ -148,10 +148,10 @@ The information about API logo
 #### Fixed fields
 | Field Name      | Type    | Description |
 | :-------------- | :------: | :---------- |
-| url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL. It SHOULD be an absolute URL so your API definition is usable from any location
-| backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)
-| altText        | string   | Text to use for alt tag on the logo. Defaults to 'logo' if nothing is provided.
-| href        | string   | The URL pointing to the contact page. Default to 'info.contact.url' field of the OAS.
+| url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL. It SHOULD be an absolute URL so your API definition is usable from any location |
+| backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet) |
+| altText        | string   | Text to use for alt tag on the logo. Defaults to 'logo' if nothing is provided. |
+| href        | string   | The URL pointing to the contact page. Default to 'info.contact.url' field of the OAS. |
 
 
 #### x-logo example
