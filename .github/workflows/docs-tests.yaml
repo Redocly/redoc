@@ -25,7 +25,6 @@ jobs:
         with:
           files: '["README.md", "docs"]'
           filter_mode: file
-          version: 2.30.0
 
   linkcheck:
     runs-on: ubuntu-latest
