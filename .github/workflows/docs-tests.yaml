@@ -1,0 +1,36 @@
+name: Documentation tests
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  markdownlint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: articulate/actions-markdownlint@v1
+        with:
+          config: .markdownlint.yaml
+          files: 'README.md' 'docs/**/*.md'
+
+  vale:
+    name: vale action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: errata-ai/vale-action@reviewdog
+        with:
+          files: '["README.md", "docs"]'
+          filter_mode: file
+          version: 2.30.0
+
+  linkcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Markup Link Checker (mlc)
+        uses: becheran/mlc@v0.16.1
+        with:
+          args: ./docs
