@@ -241,6 +241,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
+                        "collapseBtn": Object {
+                          "active": false,
+                          "size": "24px",
+                          "top": "50%",
+                        },
                         "groupItems": Object {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
@@ -513,6 +518,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
+                        "collapseBtn": Object {
+                          "active": false,
+                          "size": "24px",
+                          "top": "50%",
+                        },
                         "groupItems": Object {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
@@ -772,6 +782,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
+                  "collapseBtn": Object {
+                    "active": false,
+                    "size": "24px",
+                    "top": "50%",
+                  },
                   "groupItems": Object {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
@@ -1093,6 +1108,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
+                        "collapseBtn": Object {
+                          "active": false,
+                          "size": "24px",
+                          "top": "50%",
+                        },
                         "groupItems": Object {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
@@ -1377,6 +1397,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
+                        "collapseBtn": Object {
+                          "active": false,
+                          "size": "24px",
+                          "top": "50%",
+                        },
                         "groupItems": Object {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
@@ -1632,6 +1657,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
+                  "collapseBtn": Object {
+                    "active": false,
+                    "size": "24px",
+                    "top": "50%",
+                  },
                   "groupItems": Object {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
@@ -1912,6 +1942,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "size": "1.5em",
               },
               "backgroundColor": "#fafafa",
+              "collapseBtn": Object {
+                "active": false,
+                "size": "24px",
+                "top": "50%",
+              },
               "groupItems": Object {
                 "activeBackgroundColor": "#e1e1e1",
                 "activeTextColor": "#32329f",
@@ -2222,6 +2257,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
+                  "collapseBtn": Object {
+                    "active": false,
+                    "size": "24px",
+                    "top": "50%",
+                  },
                   "groupItems": Object {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
@@ -2494,6 +2534,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
+                  "collapseBtn": Object {
+                    "active": false,
+                    "size": "24px",
+                    "top": "50%",
+                  },
                   "groupItems": Object {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
@@ -2753,6 +2798,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "size": "1.5em",
             },
             "backgroundColor": "#fafafa",
+            "collapseBtn": Object {
+              "active": false,
+              "size": "24px",
+              "top": "50%",
+            },
             "groupItems": Object {
               "activeBackgroundColor": "#e1e1e1",
               "activeTextColor": "#32329f",
