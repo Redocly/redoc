@@ -54,7 +54,7 @@ export function SecurityRequirements(props: SecurityRequirementsProps) {
         </SecuritiesColumn>
       </Wrap>
       {expanded &&
-        operationSecuritySchemes?.length &&
+        !!operationSecuritySchemes?.length &&
         operationSecuritySchemes.map((scheme, idx) => (
           <SecurityDetailsStyle key={idx}>
             <h5>
