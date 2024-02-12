@@ -11,9 +11,13 @@ import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
 import { ResponseHeaders } from './ResponseHeaders';
 import { ConstraintsView } from '../Fields/FieldConstraints';
+import { OptionsContext } from '../OptionsProvider';
 
 export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
+  static contextType = OptionsContext;
+
   render() {
+    const { hideObjectTitle, hideObjectDescription } = this.context;
     const { description, extensions, headers, content } = this.props.response;
     return (
       <>
@@ -27,7 +31,13 @@ export class ResponseDetails extends React.PureComponent<{ response: ResponseMod
                 {schema?.type === 'object' && (
                   <ConstraintsView constraints={schema?.constraints || []} />
                 )}
-                <Schema skipWriteOnly={true} key="schema" schema={schema} />
+                <Schema
+                  hideObjectTitle={hideObjectTitle}
+                  hideObjectDescription={hideObjectDescription}
+                  skipWriteOnly={true}
+                  key="schema"
+                  schema={schema}
+                />
               </>
             );
           }}

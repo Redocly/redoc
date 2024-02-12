@@ -13,9 +13,10 @@ import { RecursiveSchema } from './RecursiveSchema';
 import { isArray } from '../../utils/helpers';
 
 export interface SchemaOptions {
-  showTitle?: boolean;
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
+  hideObjectTitle?: boolean;
+  hideObjectDescription?: boolean;
   level?: number;
 }
 
