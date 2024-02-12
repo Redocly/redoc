@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
+import { Badge, DarkRightPanel, H3, MiddlePanel, Row } from '../../common-elements';
 import { ShareLink } from '../../common-elements/linkify';
 import { OperationModel } from '../../services/models';
 import styled from '../../styled-components';
@@ -36,7 +36,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
       {options => (
         <Row {...{ [SECTION_ATTR]: operation.operationHash }} id={operation.operationHash}>
           <MiddlePanel>
-            <H2>
+            <H3>
               <ShareLink to={operation.id} />
               {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               {isWebhook && (
@@ -45,7 +45,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
                   Webhook {showWebhookVerb && httpVerb && '| ' + httpVerb.toUpperCase()}
                 </Badge>
               )}
-            </H2>
+            </H3>
             {options.pathInMiddlePanel && !isWebhook && (
               <Endpoint operation={operation} inverted={true} />
             )}

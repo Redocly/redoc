@@ -13,14 +13,18 @@ export const headerCommonMixin = level => css`
   line-height: ${({ theme }) => theme.typography.headings.lineHeight};
 `;
 
-export const H1 = styled.h1`
+export const H1 = styled.h1.attrs(props => ({
+  tabIndex: props.tabIndex || '0',
+}))`
   ${headerCommonMixin(1)};
   color: ${({ theme }) => theme.colors.text.primary};
 
   ${extensionsHook('H1')};
 `;
 
-export const H2 = styled.h2`
+export const H2 = styled.h2.attrs(props => ({
+  tabIndex: props.tabIndex || '0',
+}))`
   ${headerCommonMixin(2)};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0 0 20px;
@@ -28,7 +32,9 @@ export const H2 = styled.h2`
   ${extensionsHook('H2')};
 `;
 
-export const H3 = styled.h2`
+export const H3 = styled.h2.attrs(props => ({
+  tabIndex: props.tabIndex || '0',
+}))`
   ${headerCommonMixin(3)};
   color: ${({ theme }) => theme.colors.text.primary};
 
@@ -41,7 +47,7 @@ export const RightPanelHeader = styled.h3`
   ${extensionsHook('RightPanelHeader')};
 `;
 
-export const UnderlinedHeader = styled.h5`
+export const UnderlinedHeader = styled.h4`
   border-bottom: 1px solid rgba(38, 50, 56, 0.3);
   margin: 1em 0 1em 0;
   color: rgba(38, 50, 56, 0.5);
