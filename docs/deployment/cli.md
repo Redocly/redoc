@@ -14,7 +14,7 @@ First, you need to install the `@redocly/cli` package.
 
 You can install it [globally](../../cli/installation.md#install-globally) using npm or Yarn.
 
-Or you can install it during [runtime](../../installation.md#use-npx-at-runtime) using npx or Docker.
+Or you can install it during [runtime](../../cli/installation.md#use-npx-at-runtime) using npx or Docker.
 
 ## Step 2 - Build the HTML file
 
