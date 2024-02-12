@@ -1,6 +1,0 @@
-group:
-  - files:
-      - source: docs/
-        dest: docs/redoc
-    repos: |
-      Redocly/docs
