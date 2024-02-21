@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styled, { media } from '../../styled-components';
+import styled from '../../styled-components';
 import { ResolvedThemeInterface } from '../../theme';
 
 export const SidebarCollapseButton = ({ options }: { options: ResolvedThemeInterface }) => {
@@ -40,9 +40,9 @@ const SidebarCollapseContainer = styled.div`
       cursor: pointer;
       position: fixed;
 
-      ${media.lessThan('small')`
+      @media screen and (max-width: 768px) {
         display: none;
-      `};
+      }
 
       @media print {
         display: none;
@@ -66,9 +66,9 @@ const SidebarExpandContainer = styled.div`
     position: fixed;
     display: none;
 
-    ${media.lessThan('small')`
+    @media screen and (max-width: 768px) {
       display: none;
-    `};
+    }
 
     @media print {
       display: none;
