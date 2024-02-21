@@ -10,6 +10,7 @@ import { ApiLogo } from '../ApiLogo/ApiLogo';
 import { ContentItems } from '../ContentItems/ContentItems';
 import { SideMenu } from '../SideMenu/SideMenu';
 import { StickyResponsiveSidebar } from '../StickySidebar/StickyResponsiveSidebar';
+import { SidebarCollapseButton, SidebarExpandButton } from '../StickySidebar/SidebarCollapseSvg';
 import { ApiContentWrap, BackgroundStub, RedocWrap } from './styled.elements';
 
 import { SearchBox } from '../SearchBox/SearchBox';
@@ -55,11 +56,19 @@ export class Redoc extends React.Component<RedocProps> {
                   null}
                 <SideMenu menu={menu} />
               </StickyResponsiveSidebar>
+              {(options.theme.sidebar.collapseBtn.active && (
+                <SidebarExpandButton options={options.theme} />
+              )) ||
+                null}
+              {(options.theme.sidebar.collapseBtn.active && (
+                <SidebarCollapseButton options={options.theme} />
+              )) ||
+                null}
               <ApiContentWrap className="api-content">
                 <ApiInfo store={store} />
                 <ContentItems items={menu.items as any} />
               </ApiContentWrap>
-              <BackgroundStub />
+              <BackgroundStub className="background-stub" />
             </RedocWrap>
           </OptionsProvider>
         </StoreProvider>
