@@ -6,6 +6,9 @@ info:
   contact:
     email: team@redocly.com
     url: 'https://redocly.com/docs/cli/'
+  x-logo:
+    url: 'https://redocly.github.io/redoc/museum-logo.png'
+    altText: Museum logo
   license:
     name: MIT
     url: 'https://opensource.org/license/mit/ '
