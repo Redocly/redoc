@@ -64,13 +64,25 @@ paths:
       summary: Create special event
       tags:
         - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpecialEventRequest'
+            examples:
+              default_example:
+                $ref: '#/components/examples/CreateSpecialEventRequestExample'
       responses:
         '200':
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpecialEvent'
+                $ref: '#/components/schemas/SpecialEventResponse'
+              examples:
+                default_example:
+                  $ref: '#/components/examples/CreateSpecialEventResponseExample'
         '400':
           description: Bad request
         '404':
