@@ -66,6 +66,14 @@ If set to `true`, the pattern is not shown in the schema.
 
 Hides the schema title next to to the type.
 
+### hideObjectTitle
+
+Hides the object title in the schema.
+
+### hideObjectDescription
+
+Hides the object description in the schema.
+
 ### hideSecuritySection
 
 Hides the Security panel section.

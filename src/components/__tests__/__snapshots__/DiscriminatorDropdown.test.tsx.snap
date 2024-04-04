@@ -2865,143 +2865,156 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
 `;
 
 exports[`Components SchemaView discriminator should correctly render discriminator dropdown 1`] = `
-<styled.table>
-  <tbody>
-    <Field
-      expandByDefault={false}
-      field={
-        FieldModel {
-          "const": "",
-          "deprecated": false,
-          "description": "",
-          "example": undefined,
-          "expanded": undefined,
-          "explode": false,
-          "in": undefined,
-          "kind": "field",
-          "name": "packSize",
-          "required": false,
-          "schema": SchemaModel {
-            "activeOneOf": 0,
+<div>
+  <styled.div>
+    <Styled(styled.h2)>
+      Dog
+    </Styled(styled.h2)>
+    <styled.div>
+      <Markdown
+        compact={true}
+        source=""
+      />
+    </styled.div>
+  </styled.div>
+  <styled.table>
+    <tbody>
+      <Field
+        expandByDefault={false}
+        field={
+          FieldModel {
             "const": "",
-            "constraints": Array [],
-            "contentEncoding": undefined,
-            "contentMediaType": undefined,
-            "default": undefined,
             "deprecated": false,
             "description": "",
-            "displayFormat": undefined,
-            "displayType": "number",
-            "enum": Array [],
             "example": undefined,
-            "examples": undefined,
-            "externalDocs": undefined,
-            "format": undefined,
-            "isCircular": false,
-            "isPrimitive": true,
-            "maxItems": undefined,
-            "minItems": undefined,
-            "options": "<<<filtered>>>",
-            "pattern": undefined,
-            "pointer": "#/components/schemas/Dog/properties/packSize",
-            "rawSchema": Object {
+            "expanded": undefined,
+            "explode": false,
+            "in": undefined,
+            "kind": "field",
+            "name": "packSize",
+            "required": false,
+            "schema": SchemaModel {
+              "activeOneOf": 0,
+              "const": "",
+              "constraints": Array [],
+              "contentEncoding": undefined,
+              "contentMediaType": undefined,
               "default": undefined,
+              "deprecated": false,
+              "description": "",
+              "displayFormat": undefined,
+              "displayType": "number",
+              "enum": Array [],
+              "example": undefined,
+              "examples": undefined,
+              "externalDocs": undefined,
+              "format": undefined,
+              "isCircular": false,
+              "isPrimitive": true,
+              "maxItems": undefined,
+              "minItems": undefined,
+              "options": "<<<filtered>>>",
+              "pattern": undefined,
+              "pointer": "#/components/schemas/Dog/properties/packSize",
+              "rawSchema": Object {
+                "default": undefined,
+                "type": "number",
+              },
+              "readOnly": false,
+              "refsStack": Array [
+                "#/components/schemas/Dog",
+                "#/components/schemas/Dog/properties/packSize",
+              ],
+              "schema": Object {
+                "default": undefined,
+                "type": "number",
+              },
+              "title": "",
               "type": "number",
+              "typePrefix": "",
+              "writeOnly": false,
             },
-            "readOnly": false,
-            "refsStack": Array [
-              "#/components/schemas/Dog",
-              "#/components/schemas/Dog/properties/packSize",
-            ],
-            "schema": Object {
-              "default": undefined,
-              "type": "number",
-            },
-            "title": "",
-            "type": "number",
-            "typePrefix": "",
-            "writeOnly": false,
-          },
+          }
         }
-      }
-      isLast={false}
-      key="packSize"
-      showExamples={false}
-    />
-    <Field
-      expandByDefault={false}
-      field={
-        FieldModel {
-          "const": "",
-          "deprecated": false,
-          "description": "",
-          "example": undefined,
-          "expanded": undefined,
-          "explode": false,
-          "in": undefined,
-          "kind": "field",
-          "name": "type",
-          "required": true,
-          "schema": SchemaModel {
-            "activeOneOf": 0,
+        isLast={false}
+        key="packSize"
+        showExamples={false}
+      />
+      <Field
+        expandByDefault={false}
+        field={
+          FieldModel {
             "const": "",
-            "constraints": Array [],
-            "contentEncoding": undefined,
-            "contentMediaType": undefined,
-            "default": undefined,
             "deprecated": false,
             "description": "",
-            "displayFormat": undefined,
-            "displayType": "string",
-            "enum": Array [],
             "example": undefined,
-            "examples": undefined,
-            "externalDocs": undefined,
-            "format": undefined,
-            "isCircular": false,
-            "isPrimitive": true,
-            "maxItems": undefined,
-            "minItems": undefined,
-            "options": "<<<filtered>>>",
-            "pattern": undefined,
-            "pointer": "#/components/schemas/Dog/properties/type",
-            "rawSchema": Object {
+            "expanded": undefined,
+            "explode": false,
+            "in": undefined,
+            "kind": "field",
+            "name": "type",
+            "required": true,
+            "schema": SchemaModel {
+              "activeOneOf": 0,
+              "const": "",
+              "constraints": Array [],
+              "contentEncoding": undefined,
+              "contentMediaType": undefined,
               "default": undefined,
-              "type": "string",
-              "x-refsStack": Array [
+              "deprecated": false,
+              "description": "",
+              "displayFormat": undefined,
+              "displayType": "string",
+              "enum": Array [],
+              "example": undefined,
+              "examples": undefined,
+              "externalDocs": undefined,
+              "format": undefined,
+              "isCircular": false,
+              "isPrimitive": true,
+              "maxItems": undefined,
+              "minItems": undefined,
+              "options": "<<<filtered>>>",
+              "pattern": undefined,
+              "pointer": "#/components/schemas/Dog/properties/type",
+              "rawSchema": Object {
+                "default": undefined,
+                "type": "string",
+                "x-refsStack": Array [
+                  "#/components/schemas/Dog",
+                  "#/components/schemas/Pet",
+                ],
+              },
+              "readOnly": false,
+              "refsStack": Array [
+                "#/components/schemas/Dog",
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
-              ],
-            },
-            "readOnly": false,
-            "refsStack": Array [
-              "#/components/schemas/Dog",
-              "#/components/schemas/Dog",
-              "#/components/schemas/Pet",
-              "#/components/schemas/Dog",
-              "#/components/schemas/Pet",
-              "#/components/schemas/Dog/properties/type",
-            ],
-            "schema": Object {
-              "default": undefined,
-              "type": "string",
-              "x-refsStack": Array [
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
+                "#/components/schemas/Dog/properties/type",
               ],
+              "schema": Object {
+                "default": undefined,
+                "type": "string",
+                "x-refsStack": Array [
+                  "#/components/schemas/Dog",
+                  "#/components/schemas/Pet",
+                ],
+              },
+              "title": "",
+              "type": "string",
+              "typePrefix": "",
+              "writeOnly": false,
             },
-            "title": "",
-            "type": "string",
-            "typePrefix": "",
-            "writeOnly": false,
-          },
+          }
         }
-      }
-      isLast={true}
-      key="type"
-      renderDiscriminatorSwitch={[Function]}
-      showExamples={false}
-    />
-  </tbody>
-</styled.table>
+        isLast={true}
+        key="type"
+        renderDiscriminatorSwitch={[Function]}
+        showExamples={false}
+      />
+    </tbody>
+  </styled.table>
+</div>
 `;
