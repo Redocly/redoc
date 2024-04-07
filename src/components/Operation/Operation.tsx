@@ -35,7 +35,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
     <OptionsContext.Consumer>
       {options => (
         <Row {...{ [SECTION_ATTR]: operation.operationHash }} id={operation.operationHash}>
-          <MiddlePanel>
+          <MiddlePanel className="middle-panel">
             <H2>
               <ShareLink to={operation.id} />
               {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
