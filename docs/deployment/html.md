@@ -126,7 +126,7 @@ The main example shows using the CDN:
 
 If you would instead prefer to host the depdencies yourself, first install `redoc` using `npm`:
 
-```
+```sh
 npm install redoc
 ```
 

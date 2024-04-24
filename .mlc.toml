@@ -1,0 +1,4 @@
+# Ignore these links, we can't check them from this subproject
+ignore-links=["../*", "/docs/*"]
+# Path to the root folder used to resolve all relative paths
+root-dir="./docs"
