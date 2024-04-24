@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`prism.js helpers highlight js code 1`] = `"<span class=\\"token keyword\\">const</span> t <span class=\\"token operator\\">=</span> <span class=\\"token number\\">10</span><span class=\\"token punctuation\\">;</span>"`;
+exports[`prism.js helpers highlight js code 1`] = `"<span class="token keyword">const</span> t <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>"`;
