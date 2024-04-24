@@ -1,11 +1,11 @@
 <div align="center">
   <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
 
-  # Generate interactive API documentation from OpenAPI definitions
+# Generate beautiful API documentation from OpenAPI
 
   [![npm](http://img.shields.io/npm/v/redoc.svg)](https://www.npmjs.com/package/redoc) [![License](https://img.shields.io/npm/l/redoc.svg)](https://github.com/Redocly/redoc/blob/main/LICENSE)
 
-  [![bundle size](http://img.badgesize.io/https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc)
+  [![bundle size](http://img.badgesize.io/https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js?compression=gzip&max=300000)](https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js) [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![jsDelivr status](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc)
 </div>
 
 
@@ -34,13 +34,11 @@ enter the URL for your definition and select **TRY IT**.
 
 - Responsive three-panel design with menu/scrolling synchronization
 - Support for OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0
-- [Multiple deployment options](https://redocly.com/docs/redoc/)
-- Interactive interface so your users can try the API immediately
 - Ability to integrate your API introduction into the side menu
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
 - Code samples support (with vendor extension) <br>
-  ![](docs/images/code-samples-demo.gif)
+  ![code samples in action](docs/images/code-samples-demo.gif)
 
 ## Usage
 
@@ -50,7 +48,7 @@ Redoc is provided as a CLI tool (also distributed as a Docker image), HTML tag, 
 
 If you have Node installed, quickly generate documentation using `npx`:
 
-```
+```bash
 npx @redocly/cli build-docs openapi.yaml 
 ```
 
@@ -73,9 +71,9 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 ### More usage options
 
-Check out the [deployment documentation](./deploment/index/md) for more options, and detailed documentation for each.
+Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
-## Redoc vs. Reference
+## Redoc vs. Redocly API Reference
 
 Redoc is Redocly's community-edition product. Looking for something more?
 We also offer [hosted API reference documentation](https://redocly.com/docs/api-registry/guides/api-registry-quickstart/)
@@ -104,6 +102,7 @@ A sample of the organizations using Redocly tools in the wild:
 - [Commbox](https://www.commbox.io/api/)
 - [APIs.guru](https://apis.guru/api-doc/)
 - [BoxKnight](https://www.docs.boxknight.com/)
+- [Quaderno API](https://developers.quaderno.io/api)
 
 _Pull requests to add your own API page to the list are welcome_
 

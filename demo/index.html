@@ -1,46 +1,63 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redoc Interactive Demo</title>
+    <meta
+      name="description"
+      content="Redoc Interactive Demo. OpenAPI-generated API Reference Documentation"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="UTF-8" />
-  <title>ReDoc Interactive Demo</title>
-  <meta name="description" content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Redoc Interactive Demo" />
+    <meta
+      property="og:description"
+      content="Redoc Interactive Demo. OpenAPI-generated API Reference Documentation"
+    />
+    <meta
+      property="og:image"
+      content="https://user-images.githubusercontent.com/3975738/37729752-8a9ea38a-2d46-11e8-8438-42ed26bf1751.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
 
-  <meta property="og:title" content="ReDoc Interactive Demo">
-  <meta property="og:description" content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation">
-  <meta property="og:image" content="https://user-images.githubusercontent.com/3975738/37729752-8a9ea38a-2d46-11e8-8438-42ed26bf1751.png">
-  <meta name="twitter:card" content="summary_large_image">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
+      redoc {
+        display: block;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </head>
 
-    redoc {
-      display: block;
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
-</head>
+  <body>
+    <div id="container"></div>
 
-<body>
-  <div id="container"> </div>
+    <script>
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  <script>
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date(); a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-    if (window.location.host === 'rebilly.github.io') {
-      ga('create', 'UA-81703547-1', 'auto');
-      ga('send', 'pageview');
-    }
-  </script>
-</body>
-
+      if (window.location.host === 'rebilly.github.io') {
+        ga('create', 'UA-81703547-1', 'auto');
+        ga('send', 'pageview');
+      }
+    </script>
+  </body>
 </html>

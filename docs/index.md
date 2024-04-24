@@ -28,7 +28,7 @@ Redoc is provided as a CLI tool (also distributed as a Docker image), HTML tag, 
 
 If you have Node installed, quickly generate documentation using `npx`:
 
-```
+```sh
 npx @redocly/cli build-docs openapi.yaml
 ```
 
@@ -84,7 +84,7 @@ theme:
 
 Redocly CLI detects a file named `redocly.yaml` in the same directory as you run the command and uses it. See the documentation with a command like this:
 
-```
+```sh
 redocly preview-docs openapi.yaml
 ```
 

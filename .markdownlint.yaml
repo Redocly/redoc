@@ -1,0 +1,54 @@
+---
+# Default rules: https://github.com/github/super-linter/blob/master/TEMPLATES/.markdown-lint.yml
+
+# Rules by id
+
+# Unordered list style
+MD004: false
+
+# Unordered list indentation
+MD007:
+  indent: 2
+
+MD013:
+  # TODO: Consider to decrease allowed line length
+  line_length: 800
+  tables: false
+
+## Allow same headers in siblings
+MD024:
+  siblings_only: true
+
+# Multiple top level headings in the same document
+MD025:
+  front_matter_title: ''
+
+# Trailing punctuation in heading
+MD026:
+  punctuation: '.,;:。，；:'
+
+# Ordered list item prefix
+MD029: false
+
+# Unordered lists inside of ordered lists
+MD030: false
+
+# Inline HTML
+MD033: false
+
+# No bare urls
+MD034: false
+
+# Emphasis used instead of a heading
+MD036: false
+
+# Disable "First line in file should be a top level heading"
+# We use uncommon format to add metadata.
+# TODO: Consider to use "YAML front matter".
+MD041: false
+
+# Rules by tags
+blank_lines: false
+
+MD046: false
+# code-block-style
