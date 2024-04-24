@@ -50,7 +50,6 @@ jobs:
     needs: [bundle, unit-tests, e2e-tests]
     outputs:
       changed: ${{ steps.check.outputs.changed }}
-      version: ${{ steps.check.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -65,6 +64,7 @@ jobs:
   publish:
     name: Publish to NPM
     needs: [check-version]
+    if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
@@ -95,6 +95,7 @@ jobs:
   publish-cdn:
     name: Publish to CDN
     needs: [check-version]
+    if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -113,7 +114,8 @@ jobs:
   invalidate-cache:
     name: Clear cache
     runs-on: ubuntu-latest
-    needs: [publish, publish-cdn]
+    needs: [check-version, publish, publish-cdn]
+    if: needs.check-version.outputs.changed == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
