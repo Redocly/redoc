@@ -1,3 +1,14 @@
+## [2.1.4](https://github.com/Redocly/redoc/compare/v2.1.3...v2.1.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* add deprecated css to clickable property name ([#2526](https://github.com/Redocly/redoc/issues/2526)) ([b0d03d0](https://github.com/Redocly/redoc/commit/b0d03d02069c1508447ddebc2f8a3fffa9b03ce5))
+* use h2/h3 for headings instead of h1/h2 for better seo ([#2514](https://github.com/Redocly/redoc/issues/2514)) ([2b72dc0](https://github.com/Redocly/redoc/commit/2b72dc0e90f759a8ee2e47691c844e7f05928a24))
+* security vulnerability ([#2445](https://github.com/Redocly/redoc/pull/2445)) ([1f11f5](https://github.com/Redocly/redoc/commit/1f11f597c4f10ddd601db247f5034052b6ca689f))
+
+
+
 ## [2.1.3](https://github.com/Redocly/redoc/compare/v2.1.2...v2.1.3) (2023-10-24)
 
 
