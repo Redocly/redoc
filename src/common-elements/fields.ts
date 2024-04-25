@@ -1,10 +1,17 @@
 import { transparentize } from 'polished';
 
-import styled, { extensionsHook, css } from '../styled-components';
+import styled, { css, extensionsHook } from '../styled-components';
 import { PropertyNameCell } from './fields-layout';
+import { deprecatedCss } from './mixins';
 import { ShelfIcon } from './shelfs';
 
 export const ClickablePropertyNameCell = styled(PropertyNameCell)`
+  &.deprecated {
+    span.property-name {
+      ${deprecatedCss}
+    }
+  }
+
   button {
     background-color: transparent;
     border: 0;
