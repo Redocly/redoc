@@ -1,4 +1,4 @@
-import { default as classnames } from 'classnames';
+import * as classnames from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
