@@ -25,10 +25,11 @@ export class MediaTypeModel {
     isRequestType: boolean,
     info: OpenAPIMediaType,
     options: RedocNormalizedOptions,
+    showAsChild?: boolean,
   ) {
     this.name = name;
     this.isRequestType = isRequestType;
-    this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
+    this.schema = info.schema && new SchemaModel(parser, info.schema, '', options, showAsChild);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     this.generatedPayloadSamplesMaxDepth = options.generatedPayloadSamplesMaxDepth;
     if (info.examples !== undefined) {
