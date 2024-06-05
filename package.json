@@ -111,7 +111,6 @@
     "raf": "^3.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-hot-loader": "^4.13.1",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
     "size-limit": "^8.2.6",
