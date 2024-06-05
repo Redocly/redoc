@@ -559,7 +559,6 @@ and standard method from web, mobile and desktop applications.
         },
       ],
       "post": {
-        "deprecated": true,
         "description": "Add new pet to the store inventory.",
         "operationId": "addPet",
         "requestBody": {
