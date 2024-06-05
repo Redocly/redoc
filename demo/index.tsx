@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import styled from 'styled-components';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
@@ -179,7 +179,9 @@ const Logo = styled.img`
   }
 `;
 
-render(<DemoApp />, document.getElementById('container'));
+const container = document.getElementById('container');
+const root = createRoot(container!);
+root.render(<DemoApp />);
 
 /* ====== Helpers ====== */
 function updateQueryStringParameter(uri, key, value) {

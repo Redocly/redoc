@@ -85,7 +85,7 @@ const FloatingButton = styled.div`
 
 @observer
 export class StickyResponsiveSidebar extends React.Component<
-  StickySidebarProps,
+  React.PropsWithChildren<StickySidebarProps>,
   StickySidebarState
 > {
   static contextType = OptionsContext;

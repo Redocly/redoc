@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components SchemaView discriminator should correctly render SchemaView 1`] = `
-<wrappedComponent
+<Unknown
   discriminator={
     {
       "fieldName": "type",

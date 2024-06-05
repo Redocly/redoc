@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import type { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
 import RedocStandalone from './hot';
 
@@ -9,8 +9,10 @@ const swagger = window.location.search.indexOf('swagger') > -1;
 const userUrl = window.location.search.match(/url=(.*)$/);
 
 const specUrl =
-  (userUrl && userUrl[1]) || (swagger ? 'museum.yaml' : big ? 'big-openapi.json' : 'museum.yaml');
+  (userUrl && userUrl[1]) || (swagger ? 'openapi.yaml' : big ? 'big-openapi.json' : 'openapi.yaml');
 
 const options: RedocRawOptions = { nativeScrollbars: false, maxDisplayedEnumValues: 3 };
 
-render(<RedocStandalone specUrl={specUrl} options={options} />, document.getElementById('example'));
+const container = document.getElementById('example');
+const root = createRoot(container!);
+root.render(<RedocStandalone specUrl={specUrl} options={options} />);
