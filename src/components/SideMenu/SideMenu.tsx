@@ -13,6 +13,7 @@ import RedoclyLogo from './Logo';
 @observer
 export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
   static contextType = OptionsContext;
+  declare context: React.ContextType<typeof OptionsContext>;
   private _updateScroll?: () => void;
 
   render() {

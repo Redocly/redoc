@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import type { RedocRawOptions } from '../../src/services/RedocNormalizedOptions';
-import RedocStandalone from './hot';
+import { RedocStandalone } from '../../src';
 
 const big = window.location.search.indexOf('big') > -1;
 const swagger = window.location.search.indexOf('swagger') > -1;
@@ -13,4 +13,6 @@ const specUrl =
 
 const options: RedocRawOptions = { nativeScrollbars: false, maxDisplayedEnumValues: 3 };
 
-render(<RedocStandalone specUrl={specUrl} options={options} />, document.getElementById('example'));
+const container = document.getElementById('example');
+const root = createRoot(container!);
+root.render(<RedocStandalone specUrl={specUrl} options={options} />);

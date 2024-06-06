@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ClipboardService } from '../../services';
 
-export class SelectOnClick extends React.PureComponent {
+export class SelectOnClick extends React.PureComponent<React.PropsWithChildren<any>> {
   private child: HTMLDivElement | null;
   selectElement = () => {
     ClipboardService.selectElement(this.child);

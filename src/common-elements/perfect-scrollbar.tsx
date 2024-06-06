@@ -33,7 +33,9 @@ export interface PerfectScrollbarProps {
   updateFn?: (fn) => void;
 }
 
-export class PerfectScrollbar extends React.Component<PerfectScrollbarProps> {
+export class PerfectScrollbar extends React.Component<
+  React.PropsWithChildren<PerfectScrollbarProps>
+> {
   private _container: HTMLElement;
   private inst: PerfectScrollbarType;
 
