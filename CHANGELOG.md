@@ -1,3 +1,12 @@
+## [2.1.5](https://github.com/Redocly/redoc/compare/v2.1.4...v2.1.5) (2024-06-10)
+
+
+### Bug Fixes
+
+* update react to 18 and react-tabs to 6 ([#2547](https://github.com/Redocly/redoc/issues/2547)) ([c664dd0](https://github.com/Redocly/redoc/commit/c664dd0d56571ce799b8eadd081d86a6b2cdefae))
+
+
+
 ## [2.1.4](https://github.com/Redocly/redoc/compare/v2.1.3...v2.1.4) (2024-04-25)
 
 
