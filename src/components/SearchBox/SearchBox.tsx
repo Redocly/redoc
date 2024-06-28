@@ -37,6 +37,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
   activeItemRef: MenuItem | null = null;
 
   static contextType = OptionsContext;
+  declare context: React.ContextType<typeof OptionsContext>;
 
   constructor(props) {
     super(props);

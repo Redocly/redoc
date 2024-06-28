@@ -248,8 +248,9 @@ export class SchemaModel {
       const title =
         isNamedDefinition(variant.$ref) && !merged.title
           ? JsonPointer.baseName(variant.$ref)
-          : `${merged.title || ''}${(merged.const && JSON.stringify(merged.const)) || ''}`;
-
+          : `${merged.title || ''}${
+              (typeof merged.const !== 'undefined' && JSON.stringify(merged.const)) || ''
+            }`;
       const schema = new SchemaModel(
         parser,
         // merge base schema into each of oneOf's subschemas

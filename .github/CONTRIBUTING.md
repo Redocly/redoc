@@ -1,11 +1,13 @@
-# ReDoc Contributing Guide
+# Redoc Contributing Guide
 
-Hi! We're really excited that you are interested in contributing to ReDoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
+Hi! We're really excited that you are interested in contributing to Redoc. Before submitting your contribution though, please make sure to take a moment and read through the following guidelines.
 
-- [Issue Reporting Guidelines](#issue-reporting-guidelines)
-- [Pull Request Guidelines](#pull-request-guidelines)
-- [Development Setup](#development-setup)
-- [Project Structure](#project-structure)
+- [Redoc Contributing Guide](#redoc-contributing-guide)
+  - [Issue Reporting Guidelines](#issue-reporting-guidelines)
+  - [Pull Request Guidelines](#pull-request-guidelines)
+  - [Development Setup](#development-setup)
+    - [Commonly used NPM scripts](#commonly-used-npm-scripts)
+  - [Project Structure](#project-structure)
 
 ## Issue Reporting Guidelines
 - Before filing a new issue, try to make sure your problem doesn’t already exist.
@@ -22,18 +24,11 @@ Before submitting a pull request, please make sure the following is done:
 
 ## Development Setup
 
-You will need [Node.js](http://nodejs.org) at `v12.0.0+`.
+You need [Node.js](http://nodejs.org) at `v12.0.0+`.
 
 After cloning the repo, run:
 
 ```bash
-$ npm install # or npm
-```
-
-To run the dev server, you will also need to install the cli's dependencies:
-
-```bash
-$ cd cli
 $ npm install # or npm
 ```
 
@@ -95,7 +90,7 @@ There are some other scripts available in the `scripts` section of the `package.
 
   - **`src/common-elements`**: contains common Styled elements or components used in multiple places
   - **`src/components`**: contains main visual components
-  - **`src/services`**: contains different services used by ReDoc including MobX stores
+  - **`src/services`**: contains different services used by Redoc including MobX stores
   - **`src/services/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions

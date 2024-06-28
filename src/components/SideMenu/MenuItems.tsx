@@ -25,7 +25,7 @@ export class MenuItems extends React.Component<MenuItemsProps> {
       <MenuItemUl
         className={className}
         style={this.props.style}
-        expanded={expanded}
+        $expanded={expanded}
         {...(root ? { role: 'menu' } : {})}
       >
         {items.map((item, idx) => (

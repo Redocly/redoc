@@ -1,19 +1,23 @@
 # Injection security definitions
 
-You can inject Security Definitions widget into any place of your specification `description`:
+You can inject the Security Definitions widget anywhere in your specification `description`:
 
 ```markdown
 ...
-# Authorization
+## Authorization
+
 Some description
 
-<!-- ReDoc-Inject: <security-definitions> -->
+<!-- Redoc-Inject: <security-definitions> -->
 ...
 ```
-Inject instruction is wrapped into HTML comment so it is **visible only in ReDoc**. It won't be visible e.g. in SwaggerUI.
+The inject instruction is wrapped in an HTML comment,
+so it is **visible only in Redoc** and not visible, for instance, in the SwaggerUI.
 
-# Default behavior
-If injection tag is not found in the description it will be appended to the end
-of description under `Authentication` header.
+## Default behavior
 
-If `Authentication` header is already present in the description, Security Definitions won't be inserted and rendered at all.
+If the injection tag is not found in the description, it is appended to the end
+of description under the `Authentication` header.
+
+If the `Authentication` header is already present in the description,
+Security Definitions are not inserted or rendered.

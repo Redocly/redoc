@@ -200,6 +200,7 @@ export class OperationModel implements IMenuItem {
 
   @memoize
   get codeSamples() {
+    const { payloadSampleIdx, hideRequestPayloadSample } = this.options;
     let samples: Array<OpenAPIXCodeSample | XPayloadSample> =
       this.operationSpec['x-codeSamples'] || this.operationSpec['x-code-samples'] || [];
 
@@ -209,8 +210,8 @@ export class OperationModel implements IMenuItem {
     }
 
     const requestBodyContent = this.requestBody && this.requestBody.content;
-    if (requestBodyContent && requestBodyContent.hasSample) {
-      const insertInx = Math.min(samples.length, this.options.payloadSampleIdx);
+    if (requestBodyContent && requestBodyContent.hasSample && !hideRequestPayloadSample) {
+      const insertInx = Math.min(samples.length, payloadSampleIdx);
 
       samples = [
         ...samples.slice(0, insertInx),

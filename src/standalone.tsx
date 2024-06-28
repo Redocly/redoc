@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { hydrate as hydrateComponent, render, unmountComponentAtNode } from 'react-dom';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { configure } from 'mobx';
 
 import { Redoc, RedocStandalone } from './components/';
@@ -59,7 +59,8 @@ export function init(
     spec = specOrSpecUrl;
   }
 
-  render(
+  const root = createRoot(element!);
+  root.render(
     React.createElement(
       RedocStandalone,
       {
@@ -70,13 +71,12 @@ export function init(
       },
       ['Loading...'],
     ),
-    element,
   );
 }
 
 export function destroy(element: Element | null = querySelector('redoc')): void {
   if (element) {
-    unmountComponentAtNode(element);
+    createRoot(element).unmount();
   }
 }
 
@@ -91,7 +91,7 @@ export function hydrate(
 
   setTimeout(() => {
     debugTime('Redoc hydrate');
-    hydrateComponent(<Redoc store={store} />, element, callback);
+    hydrateRoot(element!, <Redoc store={store} />, { onRecoverableError: callback });
     debugTimeEnd('Redoc hydrate');
   }, 0);
 }

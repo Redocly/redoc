@@ -49,7 +49,7 @@ const Gap = styled.div`
   bottom: -20px;
 `;
 
-export interface TooltipProps {
+export interface TooltipProps extends React.PropsWithChildren<any> {
   open: boolean;
   title: string;
 }

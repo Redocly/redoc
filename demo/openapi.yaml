@@ -910,6 +910,7 @@ components:
         message:
           type: string
     Cat:
+      'x-tags': ['pet']
       description: A representation of a cat
       allOf:
         - $ref: '#/components/schemas/Pet'
@@ -1046,6 +1047,7 @@ components:
         photoUrls:
           description: The list of URL to a cute photos featuring pet
           type: array
+          default: []
           maxItems: 20
           xml:
             name: photoUrl
@@ -1175,6 +1177,7 @@ components:
               name:
                 type: string
                 description: hooray
+                default: []
       description: Pet object that needs to be added to the store
       required: true
     UserArray:

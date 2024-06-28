@@ -32,7 +32,7 @@ export function SeeMore({ children, height }: SeeMoreProps): JSX.Element {
       >
         {children}
       </Container>
-      <ButtonContainer dimmed={!showMore}>
+      <ButtonContainer $dimmed={!showMore}>
         {showLink && (
           <ButtonLinkStyled onClick={onClickMore}>
             {showMore ? 'See less' : 'See more'}
@@ -47,11 +47,11 @@ const Container = styled.div`
   overflow-y: hidden;
 `;
 
-const ButtonContainer = styled.div<{ dimmed?: boolean }>`
+const ButtonContainer = styled.div<{ $dimmed?: boolean }>`
   text-align: center;
   line-height: 1.5em;
-  ${({ dimmed }) =>
-    dimmed &&
+  ${({ $dimmed }) =>
+    $dimmed &&
     `background-image: linear-gradient(to bottom, transparent,rgb(255 255 255));
      position: relative;
      top: -0.5em;

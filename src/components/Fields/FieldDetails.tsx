@@ -16,7 +16,7 @@ import { Extensions } from './Extensions';
 import { ExtraDescription } from '../Custom/ExtraDescriptions';
 import { FieldProps } from './Field';
 import { Examples } from './Examples';
-import { ConstraintsView } from './FieldContstraints';
+import { ConstraintsView } from './FieldConstraints';
 import { FieldDetail } from './FieldDetail';
 
 import { Badge } from '../../common-elements/';
@@ -63,10 +63,10 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
 
     return null;
   }, [field, showExamples]);
-
-  const defaultValue = isObject(schema.default)
-    ? getSerializedValue(field, schema.default).replace(`${field.name}=`, '')
-    : schema.default;
+  const defaultValue =
+    isObject(schema.default) && field.in
+      ? getSerializedValue(field, schema.default).replace(`${field.name}=`, '')
+      : schema.default;
 
   return (
     <div>

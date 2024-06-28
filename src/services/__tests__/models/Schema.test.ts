@@ -562,5 +562,59 @@ describe('Models', () => {
         `"testAttr: <object> (Refed description)"`,
       );
     });
+
+    test('should correct get title from in oneOf ->const', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.0.0
+        paths:
+          /test:
+            get:
+              operationId: test
+              responses:
+                '200':
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          data:
+                            type: object
+                            properties:
+                              response_code:
+                                type: integer
+                                description: A numeric response code
+                                oneOf:
+                                  - const: 0
+                                    description: >
+                                      Description for const 0
+                                  - const: 1
+                                    description: >
+                                      Description for const 1
+                                  - const: 2
+                                    description: >
+                                      Description for const 2
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const name = 'application/json';
+      const mediaType = new MediaTypeModel(
+        parser,
+        name,
+        true,
+        spec.paths['/test'].get.responses['200'].content[name],
+        opts,
+      );
+
+      expect(printSchema(mediaType?.schema as any)).toMatchInlineSnapshot(`
+        "data:
+          response_code: oneOf
+              0 -> <integer> (Description for const 0
+        )
+              1 -> <integer> (Description for const 1
+        )
+              2 -> <integer> (Description for const 2
+        )"
+      `);
+    });
   });
 });

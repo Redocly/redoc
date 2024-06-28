@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FieldDetailsComponent renders correctly 1`] = `
+<div>
+  <div>
+    <span
+      class="sc-kpDqfm sc-dAlyuH cGRfjn gHomYR"
+    >
+      test type prefix
+    </span>
+    <span
+      class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+    >
+      array
+    </span>
+    <span
+      class="sc-kpDqfm sc-cwHptR cGRfjn gyVIPr"
+    >
+       (test title) 
+    </span>
+    <span>
+       
+      <span
+        class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
+      >
+          
+      </span>
+    </span>
+  </div>
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Default: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      []
+    </span>
+  </div>
+   
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Example: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      "example"
+    </span>
+  </div>
+  <div>
+    <div
+      class="sc-lcIPJg sc-hknOHE gBHqkN jFBMaE"
+    >
+      <p>
+        test description
+      </p>
+      
+
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FieldDetailsComponent renders correctly when default value is object in request body 1`] = `
+<div>
+  <div>
+    <span
+      class="sc-kpDqfm sc-dAlyuH cGRfjn gHomYR"
+    />
+    <span
+      class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+    >
+      object
+    </span>
+    <span
+      class="sc-kpDqfm sc-cwHptR cGRfjn gyVIPr"
+    >
+       (test title) 
+    </span>
+    <span>
+       
+      <span
+        class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
+      >
+          
+      </span>
+    </span>
+  </div>
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Default: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      {"properties":{}}
+    </span>
+  </div>
+   
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Example: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      "example"
+    </span>
+  </div>
+  <div>
+    <div
+      class="sc-lcIPJg sc-hknOHE gBHqkN jFBMaE"
+    >
+      <p>
+        test description
+      </p>
+      
+
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FieldDetailsComponent renders correctly when field items have string type and pattern 1`] = `
+<div>
+  <div>
+    <span
+      class="sc-kpDqfm sc-dAlyuH cGRfjn gHomYR"
+    />
+    <span
+      class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+    >
+      Array of strings
+    </span>
+    <span
+      class="sc-kpDqfm sc-cwHptR cGRfjn gyVIPr"
+    >
+       (test title) 
+    </span>
+    <span>
+       
+      <span
+        class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
+      >
+          
+      </span>
+    </span>
+    <span
+      class="sc-kpDqfm sc-dAlyuH sc-dxcDKg cGRfjn gHomYR gXntsr"
+    >
+      [
+      <span
+        class="sc-kpDqfm sc-eDPEul cGRfjn erJHow"
+      >
+        ^see regex[0-9]$
+      </span>
+      ]
+    </span>
+  </div>
+   
+  <div>
+    <span
+      class="sc-kpDqfm cGRfjn"
+    >
+       Example: 
+    </span>
+     
+    <span
+      class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+    >
+      "example"
+    </span>
+  </div>
+  <div>
+    <div
+      class="sc-lcIPJg sc-hknOHE gBHqkN jFBMaE"
+    >
+      <p>
+        test description
+      </p>
+      
+
+    </div>
+  </div>
+</div>
+`;

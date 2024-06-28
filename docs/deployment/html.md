@@ -1,123 +1,140 @@
 ---
-title: Use the Redoc HTML element
-redirectFrom:
-  - /docs/redoc/quickstart/html/
+seo:
+  title: Use the Redoc HTML element
 ---
 
-# How to use the Redoc HTML element
+# Use Redoc in HTML
 
-## Step 1 - Install Redoc
+To render API documentation in an HTML page, start with the template below and
+replace the `spec-url` value with the local file path or URL of your API
+description.
 
-You can install Redoc using one of the following package managers:
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redoc</title>
+    <!-- needed for adaptive design -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
 
-- [npm](https://docs.npmjs.com/about-npm)
-- [yarn](https://classic.yarnpkg.com/en/docs/getting-started)
-
-:::attention Initialize your package manager
-If you do not have a `package.json` file in your project directory,
-you need to add one by initializing npm or yarn in your project. Use the command `npm init` for npm,
-or `yarn init` for yarn. These initialization commands will lead you through the process
-of creating a `package.json` file in your project.
-
-For more information, see
-[Creating a package.json file](https://docs.npmjs.com/creating-a-package-json-file)
-in the npm documentation or [Yarn init](https://classic.yarnpkg.com/en/docs/cli/init/)
-in the yarn documentation.
-:::
-
-### Install Redoc with yarn
-
-After navigating to your project directory in your terminal, use the following command:
-
-```bash
-yarn add redoc
+    <!--
+    Redoc doesn't change outer page styles
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'></redoc>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+  </body>
+</html>
 ```
 
-### Install Redoc with npm
+{% admonition type="success" name="URL or local file" %}
+Set `spec-url` to a relative path if the file is local, e.g. `spec-url=my-api.yaml`. Use a full URL like the example above if it's hosted elsewhere.
+{% /admonition %}
 
-After navigating to your project directory in your terminal, use the following command:
+Open the HTML file in your browser to see the HTML documentation rendering. You may want to read the next section and add some configuration to make your documentation your own.
 
-```bash
-npm i redoc
+## Configure Redoc
+
+Redoc is highly configurable, find a [full list of configuration options](../config.md) on the dedicated page.
+
+To configure Redoc in HTML, add the property names to the HTML tag. Here's an example that makes all the required properties display first in the list:
+
+```html
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json' required-props-first=true></redoc>
 ```
 
-## Step 2 - Reference the Redoc script
+Any of the individual properties can be added to the tag, as many as you need to get your API docs set up as you like them.
+
+### Theme configuration
+
+The `theme` configuration setting is more complex since it represents many nested options, you can supply these as a JSON string to the `theme` attribute. For example, to change the sidebar color you would use a tag like this:
+
+```html
+    <redoc spec-url='http://petstore.swagger.io/v2/swagger.json'
+       required-props-first=true
+       theme='{
+         "sidebar": {
+           "backgroundColor": "lightblue"
+         }
+       }'
+    ></redoc>
+```
+
+Check out the [list of options for theme configuration](../config.md#theme-settings) and build up the configuration that suits your API needs.
+
+## Advanced options
+
+### The Redoc object
+
+As an alternative to the HTML tag, you can also initialise Redoc in a web page using the Redoc object and invoking it from JavaScript. This is useful for situations where you want to create dynamic content in a page, and also provides a simple way to attach the Redoc element to an existing container.
+
+The Redoc object offers an `init` function:
+
+```js
+Redoc.init(specOrSpecUrl, options, element, callback)
+```
+- `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a file name/URL to the
+  definition in JSON or YAML format.
+- `options`: See the [configuration reference](../config.md).
+- `element`: DOM element Redoc is inserted into.
+- `callback`(optional): Callback to be called after Redoc has been fully rendered.
+  It is also called on errors with `error` as the first argument.
+
+Call `Redoc.init()` from the JavaScript on a web page to add the element to the named container. Below is an example of an HTML page with a `<div>` tag, and the JavaScript to add the Redoc object to it.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head />
+  <body>
+    <H1>Redoc in action</H1>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+    <div id="redoc-container"></div>
+
+    <script>
+      Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
+        "expandResponses": "200,400"
+      }, document.getElementById('redoc-container'))
+    </script>
+  </body>
+</html>
+```
+
+This example also sets the configuration for `expandResponses` so all 200 and 400 status responses are shown unfolded and with their details visible when the page loads.
+
+### Self-host dependencies
 
 You can reference the Redoc script using either a link to the files hosted on a CDN
-or the files located in your `node modules` folder.
+or install to your `node-modules` folder. Using the CDN is the simplest option, but
+if you need to host in a closed environment or have requirements around external
+dependencies, it may be useful to self-host.
 
-### CDN link
-
-To reference the Redoc script with a CDN link:
+The main example shows using the CDN:
 
 ```html
 <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
 ```
 
-### Node modules link
+If you would instead prefer to host the depdencies yourself, first install `redoc` using `npm`:
 
-To reference the Redoc script with a node modules link:
+```sh
+npm install redoc
+```
+
+_(Yarn users can install the `redoc` package with `yarn`)_.
+
+You can then reference the Redoc script with a node modules link:
 
 ```html
 <script src="node_modules/redoc/bundles/redoc.standalone.js"> </script>
 ```
 
-## Step 3 - Add the <redoc> element
-
-You can add the <redoc> element to your HTML page and reference your OpenAPI
-definition using the `spec-url` attribute, or you can initialize Redoc using
-a globally exposed Redoc object.
-
-### The `spec-url` attribute
-
-To add the <redoc> element with the `spec-url` attribute:
-
-```html
-<redoc spec-url="url/to/your/spec"></redoc>
-```
-
-#### Examples
-
-```html
-<redoc spec-url="http://petstore.swagger.io/v2/swagger.json"></redoc>
-```
-
-You can also use a local file (JSON or YAML) in your project, for instance:
-
-```html
-<redoc spec-url="dist.json"></redoc>
-```
-
-### The Redoc object
-
-To add the <redoc> element with a globally exposed Redoc object:
-
-```js
-Redoc.init(specOrSpecUrl, options, element, callback)
-```
-- `specOrSpecUrl`: Either a JSON object with the OpenAPI definition or a URL to the
-  definition in JSON or YAML format.
-- `options`: See [features.openapi object](/docs/api-reference-docs/configuration/functionality.mdx) reference.
-- `element`: DOM element Redoc will be inserted into.
-- `callback`(optional): Callback to be called after Redoc has been fully rendered.
-  It is also called on errors with `error` as the first argument.
-
-#### Examples
-
-```html
-<script>
-Redoc.init('http://petstore.swagger.io/v2/swagger.json', {
-  scrollYOffset: 50
-}, document.getElementById('redoc-container'))
-</script>
-```
-
-You can also use a local file (JSON or YAML) in your project, for instance:
-
-```html
-<script>
-Redoc.init('dist.yaml', {
-  scrollYOffset: 50
-}, document.getElementById('redoc-container'))
-</script>
-```

@@ -780,6 +780,7 @@ definitions:
       photoUrls:
         description: The list of URL to a cute photos featuring pet
         type: array
+        default: []
         xml:
           name: photoUrl
           wrapped: true

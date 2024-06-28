@@ -25,7 +25,7 @@ export interface StickySidebarState {
 
 const stickyfill = Stickyfill && Stickyfill();
 
-const StyledStickySidebar = styled.div<{ open?: boolean }>`
+const StyledStickySidebar = styled.div<{ $open?: boolean }>`
   width: ${props => props.theme.sidebar.width};
   background-color: ${props => props.theme.sidebar.backgroundColor};
   overflow: hidden;
@@ -45,7 +45,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
     z-index: 20;
     width: 100%;
     background: ${({ theme }) => theme.sidebar.backgroundColor};
-    display: ${props => (props.open ? 'flex' : 'none')};
+    display: ${props => (props.$open ? 'flex' : 'none')};
   `};
 
   @media print {
@@ -85,7 +85,7 @@ const FloatingButton = styled.div`
 
 @observer
 export class StickyResponsiveSidebar extends React.Component<
-  StickySidebarProps,
+  React.PropsWithChildren<StickySidebarProps>,
   StickySidebarState
 > {
   static contextType = OptionsContext;
@@ -130,7 +130,7 @@ export class StickyResponsiveSidebar extends React.Component<
     return (
       <>
         <StyledStickySidebar
-          open={open}
+          $open={open}
           className={this.props.className}
           style={{
             top,

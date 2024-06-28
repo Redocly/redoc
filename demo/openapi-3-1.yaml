@@ -1139,6 +1139,7 @@ components:
           type: [string, integer, 'null']
           minItems: 1
           maxItems: 10
+          default: []
           xml:
             name: photoUrl
             wrapped: true
