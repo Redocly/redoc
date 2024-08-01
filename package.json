@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.17.1",
-    "@size-limit/preset-app": "^11.1.4",
+    "@size-limit/file": "^11.1.4",
     "@types/chai": "^4.2.18",
     "@types/dompurify": "^2.2.2",
     "@types/enzyme": "^3.10.5",
