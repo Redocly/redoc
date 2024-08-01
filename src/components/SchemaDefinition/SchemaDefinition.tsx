@@ -15,6 +15,7 @@ export interface ObjectDescriptionProps {
   showReadOnly?: boolean;
   showWriteOnly?: boolean;
   showExample?: boolean;
+  showAsChild?: boolean;
   parser: OpenAPIParser;
   options: RedocNormalizedOptions;
 }
@@ -39,15 +40,10 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
   private _mediaModel: MediaTypeModel;
 
   private get mediaModel() {
-    const { parser, schemaRef, exampleRef, options } = this.props;
+    const { parser, schemaRef, exampleRef, options, showAsChild } = this.props;
     if (!this._mediaModel) {
-      this._mediaModel = new MediaTypeModel(
-        parser,
-        'json',
-        false,
-        SchemaDefinition.getMediaType(schemaRef, exampleRef),
-        options,
-      );
+      const info = SchemaDefinition.getMediaType(schemaRef, exampleRef);
+      this._mediaModel = new MediaTypeModel(parser, 'json', false, info, options, showAsChild);
     }
 
     return this._mediaModel;
