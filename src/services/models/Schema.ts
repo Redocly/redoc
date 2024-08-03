@@ -53,7 +53,7 @@ export class SchemaModel {
 
   constraints: string[];
 
-  fields?: FieldModel[];
+  private _fields?: FieldModel[];
   items?: SchemaModel;
 
   oneOf?: SchemaModel[];
@@ -76,7 +76,7 @@ export class SchemaModel {
    * When true forces dereferencing in allOfs even if circular
    */
   constructor(
-    parser: OpenAPIParser,
+    private parser: OpenAPIParser,
     schemaOrRef: Referenced<OpenAPISchema>,
     pointer: string,
     private options: RedocNormalizedOptions,
@@ -110,6 +110,23 @@ export class SchemaModel {
 
   hasType(type: string) {
     return this.type === type || (isArray(this.type) && this.type.includes(type));
+  }
+
+  get fields(): FieldModel[] | undefined {
+    if (this.isCircular) {
+      return undefined;
+    }
+
+    if (!this._fields && this.hasType('object')) {
+      this._fields = buildFields(
+        this.parser,
+        this.schema,
+        this.pointer,
+        this.options,
+        this.refsStack,
+      );
+    }
+    return this._fields;
   }
 
   init(parser: OpenAPIParser, isChild: boolean) {
@@ -190,11 +207,9 @@ export class SchemaModel {
       return;
     }
 
-    if (this.hasType('object')) {
-      this.fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
-    } else if (this.hasType('array')) {
+    if (this.hasType('array')) {
       if (isArray(schema.items) || isArray(schema.prefixItems)) {
-        this.fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
+        this._fields = buildFields(parser, schema, this.pointer, this.options, this.refsStack);
       } else if (schema.items) {
         this.items = new SchemaModel(
           parser,
