@@ -23,6 +23,14 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
       "allOf": [
         {
           "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
             "username": {
               "description": "The user's name",
               "type": "string",
@@ -63,8 +71,65 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
       "allOf": [
         {
           "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
             "email": {
               "description": "The user's email",
+              "type": "string",
+            },
+          },
+        },
+        {
+          "properties": {
+            "extra": {
+              "type": "string",
+            },
+          },
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "password": {
+                  "description": "The user's password",
+                  "type": "string",
+                },
+              },
+            },
+            {
+              "properties": {
+                "mobile": {
+                  "description": "The user's mobile",
+                  "type": "string",
+                },
+              },
+            },
+          ],
+        },
+      ],
+      "x-refsStack": undefined,
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "format": "uuid",
               "type": "string",
             },
           },
