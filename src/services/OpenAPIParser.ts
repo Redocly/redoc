@@ -364,14 +364,18 @@ export class OpenAPIParser {
 
     const allOf = schema.allOf;
     for (let i = 0; i < allOf.length; i++) {
-      const sub = allOf[i];
-      if (Array.isArray(sub.oneOf)) {
+      const { oneOf, ...sub } = allOf[i];
+      if (!oneOf) {
+        continue;
+      }
+      if (Array.isArray(oneOf)) {
         const beforeAllOf = allOf.slice(0, i);
         const afterAllOf = allOf.slice(i + 1);
+        const siblingValues = Object.keys(sub).length > 0 ? [sub] : [];
         return {
-          oneOf: sub.oneOf.map((part: OpenAPISchema) => {
+          oneOf: oneOf.map((part: OpenAPISchema) => {
             return {
-              allOf: [...beforeAllOf, part, ...afterAllOf],
+              allOf: [...beforeAllOf, ...siblingValues, part, ...afterAllOf],
               'x-refsStack': refsStack,
             };
           }),

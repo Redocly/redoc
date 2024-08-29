@@ -9,6 +9,12 @@
       "test": {
         "allOf": [
           {
+            "properties": {
+              "id": {
+                "description": "The user's ID",
+                "type": "integer"
+              }
+            },
             "oneOf": [
               {
                 "properties": {
@@ -23,6 +29,15 @@
                   "email": {
                     "description": "The user's email",
                     "type": "string"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "id": {
+                    "description": "The user's ID",
+                    "type": "string",
+                    "format": "uuid"
                   }
                 }
               }
