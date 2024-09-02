@@ -104,7 +104,7 @@ npm install -g http-server
 Then, `cd` into your project directory and run the following command:
 
 ```node
-http - server;
+http-server
 ```
 
 The output after entering the command provides the local URL where the preview can be accessed.
