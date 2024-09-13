@@ -6,7 +6,7 @@ seo:
 # How to use the Redocly CLI
 
 With Redocly CLI, you can bundle your OpenAPI definition and API documentation
-(made with Redoc) into a zero-dependency HTML file and render it locally.
+(made with Redoc) into an HTML file and render it locally.
 
 ## Step 1 - Install Redocly CLI
 
@@ -18,9 +18,9 @@ Or you can install it during [runtime](../../cli/installation.md#use-npx-at-runt
 
 ## Step 2 - Build the HTML file
 
-The Redocly CLI `build-docs` command builds Redoc into a zero-dependency HTML file.
+The Redocly CLI `build-docs` command builds Redoc into an HTML file.
 
-To build a zero-dependency HTML file using Redocly CLI, enter the following command,
+To build an HTML file using Redocly CLI, enter the following command,
 replacing `apis/openapi.yaml` with your API definition file's name and path:
 
 ```bash
