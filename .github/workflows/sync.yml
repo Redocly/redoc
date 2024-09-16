@@ -15,4 +15,4 @@ jobs:
         with:
           GH_PAT: ${{ secrets.GH_PAT }}
           COMMIT_PREFIX: 'sync:'
-          SKIP_PR: true
+          SKIP_PR: fail
