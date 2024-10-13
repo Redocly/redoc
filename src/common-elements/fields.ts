@@ -97,9 +97,11 @@ export const RecursiveLabel = styled(FieldLabel)`
 
 export const PatternLabel = styled(FieldLabel)`
   color: #0e7c86;
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: 12px;
   &::before,
   &::after {
-    font-weight: bold;
+    content: ' ';
   }
 `;
 

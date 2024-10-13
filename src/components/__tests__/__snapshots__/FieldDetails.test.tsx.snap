@@ -163,7 +163,7 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
     >
       [
       <span
-        class="sc-kpDqfm sc-eDPEul cGRfjn erJHow"
+        class="sc-kpDqfm sc-eDPEul cGRfjn cCKYVD"
       >
         ^see regex[0-9]$
       </span>
