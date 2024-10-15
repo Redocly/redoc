@@ -22,6 +22,10 @@ paths:
       operationId: getMuseumHours
       tags:
         - Operations
+      x-badges:
+        - name: 'Beta'
+          position: before
+          color: purple
       parameters:
         - $ref: '#/components/parameters/StartDate'
         - $ref: '#/components/parameters/PaginationPage'
@@ -64,6 +68,9 @@ paths:
       summary: Create special event
       tags:
         - Events
+      x-badges:
+        - name: 'Alpha'
+          color: purple
       requestBody:
         required: true
         content:
@@ -92,6 +99,8 @@ paths:
       description: Return a list of upcoming special events at the museum.
       security: []
       operationId: listSpecialEvents
+      x-badges:
+        - name: 'Gamma'
       tags:
         - Events
       parameters:

@@ -49,7 +49,7 @@ Redoc is provided as a CLI tool (also distributed as a Docker image), HTML tag, 
 If you have Node installed, quickly generate documentation using `npx`:
 
 ```bash
-npx @redocly/cli build-docs openapi.yaml 
+npx @redocly/cli build-docs openapi.yaml
 ```
 
 The tool outputs by default to a file named `redoc-static.html` that you can open in your browser.
@@ -116,6 +116,7 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-logo`](docs/redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for tags that refer to non-navigation properties like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
+* [`x-badges`](docs/redoc-vendor-extensions.md#x-badges) - specify operation badges
 * [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
 * [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories

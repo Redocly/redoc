@@ -581,6 +581,13 @@ and standard method from web, mobile and desktop applications.
         "tags": [
           "pet",
         ],
+        "x-badges": [
+          {
+            "color": "purple",
+            "name": "Beta",
+            "position": "before",
+          },
+        ],
         "x-codeSamples": [
           {
             "lang": "C#",
@@ -644,6 +651,12 @@ try {
         "summary": "Update an existing pet",
         "tags": [
           "pet",
+        ],
+        "x-badges": [
+          {
+            "color": "purple",
+            "name": "Alpha",
+          },
         ],
         "x-codeSamples": [
           {
@@ -882,6 +895,11 @@ try {
         "summary": "Find pet by ID",
         "tags": [
           "pet",
+        ],
+        "x-badges": [
+          {
+            "name": "Gamma",
+          },
         ],
       },
       "post": {
