@@ -53,6 +53,8 @@ describe('Menu', () => {
     });
 
     it('should contains badge schema from x-badges', () => {
+      cy.contains('h2', 'Add a new pet to the store').scrollIntoView();
+
       cy.contains('h2 > span', 'Beta')
         .scrollIntoView()
         .wait(100)
@@ -60,6 +62,7 @@ describe('Menu', () => {
         .children('span[type="badge"]')
         .should('have.text', 'Beta')
         .should('be.visible');
+
       cy.contains('h2 > span', 'Alpha')
         .scrollIntoView()
         .wait(100)
@@ -67,6 +70,7 @@ describe('Menu', () => {
         .children('span[type="badge"]')
         .should('have.text', 'Alpha')
         .should('be.visible');
+
       cy.contains('h2 > span', 'Gamma')
         .scrollIntoView()
         .wait(100)
