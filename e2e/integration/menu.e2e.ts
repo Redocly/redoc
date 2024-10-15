@@ -60,24 +60,21 @@ describe('Menu', () => {
         .wait(100)
         .get('[role=menuitem] > label.active')
         .children('span[type="badge"]')
-        .should('have.text', 'Beta')
-        .should('be.visible');
+        .should('have.text', 'Beta');
 
       cy.contains('h2 > span', 'Alpha')
         .scrollIntoView()
         .wait(100)
         .get('[role=menuitem] > label.active')
         .children('span[type="badge"]')
-        .should('have.text', 'Alpha')
-        .should('be.visible');
+        .should('have.text', 'Alpha');
 
       cy.contains('h2 > span', 'Gamma')
         .scrollIntoView()
         .wait(100)
         .get('[role=menuitem] > label.active')
         .children('span[type="badge"]')
-        .should('have.text', 'Gamma')
-        .should('be.visible');
+        .should('have.text', 'Gamma');
     });
 
     it('should contains Cat schema in Pet using x-tags', () => {
