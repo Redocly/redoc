@@ -101,6 +101,12 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
       $deprecated={item.deprecated}
       ref={ref}
     >
+      {item.badges &&
+        item.badges?.map(({ name, color }) => (
+          <OperationBadge type="badge" color={color} key={name}>
+            {name}
+          </OperationBadge>
+        ))}
       {item.isWebhook ? (
         <OperationBadge type="hook">
           {showWebhookVerb ? item.httpVerb : l('webhook')}

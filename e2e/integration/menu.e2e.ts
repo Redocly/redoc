@@ -52,6 +52,31 @@ describe('Menu', () => {
       cy.location('hash').should('equal', '#schema/Cat');
     });
 
+    it('should contains badge schema from x-badges', () => {
+      cy.contains('h2', 'Add a new pet to the store').scrollIntoView();
+
+      cy.contains('h2 > span', 'Beta')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Beta');
+
+      cy.contains('h2 > span', 'Alpha')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Alpha');
+
+      cy.contains('h2 > span', 'Gamma')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Gamma');
+    });
+
     it('should contains Cat schema in Pet using x-tags', () => {
       cy.contains('[role=menuitem] > label.-depth1', 'pet').click({ force: true });
       cy.location('hash').should('equal', '#tag/pet');

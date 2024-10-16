@@ -660,6 +660,7 @@ export function isRedocExtension(key: string): boolean {
     'x-servers': true,
     'x-tagGroups': true,
     'x-traitTag': true,
+    'x-badges': true,
     'x-additionalPropertiesName': true,
     'x-explicitMappingOnly': true,
   };
