@@ -1,3 +1,17 @@
+# [2.2.0](https://github.com/Redocly/redoc/compare/v2.1.5...v2.2.0) (2024-10-16)
+
+
+### Bug Fixes
+
+* show siblings schema with oneOf ([#2576](https://github.com/Redocly/redoc/issues/2576)) ([60d131b](https://github.com/Redocly/redoc/commit/60d131b0a9dab4710e900323c9ba81160cecf7d8))
+
+
+### Features
+
+* add support x-badges ([#2605](https://github.com/Redocly/redoc/issues/2605)) ([64f1877](https://github.com/Redocly/redoc/commit/64f18779e5fe7e03f25862463cbc5062e85c867c))
+
+
+
 ## [2.1.5](https://github.com/Redocly/redoc/compare/v2.1.4...v2.1.5) (2024-06-10)
 
 
