@@ -255,7 +255,7 @@ source: console.log('Hello World');
 ### x-badges
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
-| x-badges | [[Badge Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-badges#badge-object)] | A list of badges associated with operation |
+| x-badges | [[Badge Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-badges#badge-object)] | A list of badges associated with the operation |
 
 ## Parameter Object
 Extends the OpenAPI [Parameter Object](https://redocly.com/docs/openapi-visual-reference/parameter/)
