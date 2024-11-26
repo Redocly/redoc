@@ -9,6 +9,8 @@ type VirtualizedContentProps = {
   menu: MenuStore;
 };
 
+const ESTIMATED_EACH_API_HEIGHT_PX = 1000;
+
 /**
  * VirtualizedContent optimizes the rendering of API documentation in Redoc by virtualizing the content.
  *
@@ -21,7 +23,6 @@ type VirtualizedContentProps = {
  * by reducing the amount of content loaded into memory at any one time, thereby enhancing
  * performance and preventing potential crashes due to excessive memory usage.
  *
- * @author Audi
  */
 const VirtualizedContent = ({ store, menu }: VirtualizedContentProps) => {
   const scrollableRef = React.useRef<HTMLDivElement>(null);
@@ -34,7 +35,7 @@ const VirtualizedContent = ({ store, menu }: VirtualizedContentProps) => {
   const virtualizer = useVirtualizer({
     count: renderables.length,
     getScrollElement: () => scrollableRef.current!,
-    estimateSize: () => 1000,
+    estimateSize: () => ESTIMATED_EACH_API_HEIGHT_PX,
   });
 
   const selectedTag = useSelectedTag();
