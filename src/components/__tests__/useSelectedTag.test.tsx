@@ -46,6 +46,29 @@ describe('useSelectedTag', () => {
     expect(selectedTag).toBe('tag/product-namespace-verb');
   });
 
+  it('uri encoded tags are decoded to match the tags in the actual html id and data-section-id', async () => {
+    window.location.hash = '#tag/Notes/paths/~1notes~1%7Bid%7D/get';
+
+    let selectedTag: string | undefined;
+
+    // Hooks can only be used inside a React component.
+    // This component is just to host the hook.
+    const TestComponent = () => {
+      selectedTag = useSelectedTag();
+      return <p data-testid={selectedTag}>test</p>;
+    };
+
+    React.act(() => {
+      root.render(<TestComponent />);
+    });
+
+    await React.act(async () => {
+      jest.advanceTimersByTime(100);
+    });
+
+    expect(selectedTag).toBe('tag/Notes/paths/~1notes~1{id}/get');
+  });
+
   it('resetting a tag will also reset the selected tag from the hook', async () => {
     let selectedTag: string | undefined;
 

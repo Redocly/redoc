@@ -9,7 +9,8 @@ import * as React from 'react';
  * transforms "#tag/myendpoint" into "tag/myendpoint".
  */
 export const toRedocTag = (hash: string) => {
-  return hash.substring(1, hash.length);
+  const decodedHash = decodeURIComponent(hash);
+  return decodedHash.substring(1, decodedHash.length);
 };
 
 /**
@@ -24,6 +25,7 @@ const useSelectedTag = () => {
   React.useEffect(() => {
     const hashCheckInterval = setInterval(() => {
       const redocTag = toRedocTag(window.location.hash);
+      console.log(redocTag);
       if (redocTag !== selectedTag) {
         setSelectedTag(redocTag);
       }
