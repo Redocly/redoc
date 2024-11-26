@@ -139,6 +139,7 @@
   "dependencies": {
     "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@redocly/openapi-core": "^1.4.0",
+    "@tanstack/react-virtual": "^3.10.8",
     "classnames": "^2.3.2",
     "decko": "^1.2.0",
     "dompurify": "^3.0.6",

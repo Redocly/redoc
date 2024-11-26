@@ -166,6 +166,12 @@ _Default: false_
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
+### enableVirtualization
+
+If set to `true`, the API documentation content will use virtualization. Virtualization only renders the API content when it is currently visible in user's viewport.
+
+_Default: false_
+
 ## Theme settings
 
 * `spacing`
