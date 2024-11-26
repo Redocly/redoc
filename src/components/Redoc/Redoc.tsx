@@ -14,6 +14,8 @@ import { ApiContentWrap, BackgroundStub, RedocWrap } from './styled.elements';
 import { SearchBox } from '../SearchBox/SearchBox';
 import { StoreProvider } from '../StoreBuilder';
 import VirtualizedContent from '../Virtualization/VirtualizedContent';
+import { ApiInfo } from '../ApiInfo/ApiInfo';
+import { ContentItems } from '../ContentItems/ContentItems';
 
 export interface RedocProps {
   store: AppStore;
@@ -56,7 +58,14 @@ export class Redoc extends React.Component<RedocProps> {
                 <SideMenu menu={menu} />
               </StickyResponsiveSidebar>
               <ApiContentWrap className="api-content">
-                <VirtualizedContent store={store} menu={menu} />
+                {options.enableVirtualization ? (
+                  <VirtualizedContent store={store} menu={menu} />
+                ) : (
+                  <>
+                    <ApiInfo store={store} />
+                    <ContentItems items={menu.items as any} />
+                  </>
+                )}
               </ApiContentWrap>
               <BackgroundStub />
             </RedocWrap>
