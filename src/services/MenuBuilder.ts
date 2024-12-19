@@ -8,6 +8,15 @@ import type { ContentItemModel, TagGroup, TagInfo, TagsInfoMap } from './types';
 
 export const GROUP_DEPTH = 0;
 
+function appendChildren(parent: ContentItemModel, children: ContentItemModel[], prefix: string) {
+  for (const child of MenuBuilder.factorByPrefix(children)) {
+    if (child.sidebarLabel.startsWith(prefix)) {
+      child.sidebarLabel = '…' + child.sidebarLabel.slice(prefix.length - 1);
+    }
+    parent.items.push(child);
+  }
+}
+
 export class MenuBuilder {
   /**
    * Builds page content structure based on tags
@@ -46,12 +55,7 @@ export class MenuBuilder {
         newChildren.push(item);
       } else {
         if (newChildren.length > 0) {
-          for (const child of MenuBuilder.factorByPrefix(newChildren)) {
-            if (child.sidebarLabel.startsWith(prefix)) {
-              child.sidebarLabel = '…' + child.sidebarLabel.slice(prefix.length - 1);
-            }
-            parent!.items.push(child);
-          }
+          appendChildren(parent!, newChildren, prefix);
           newChildren = [];
         }
 
@@ -62,6 +66,7 @@ export class MenuBuilder {
         } else parent = null;
       }
     }
+    if (newChildren.length > 0) appendChildren(parent!, newChildren, prefix);
     return newItems;
   }
 
