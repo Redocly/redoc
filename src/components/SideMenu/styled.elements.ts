@@ -84,7 +84,7 @@ function menuItemActive(
   }
 }
 
-export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
+export const MenuItemUl = styled.ul<{ $expanded: boolean; root: boolean }>`
   margin: 0;
   padding: 0;
 
@@ -97,6 +97,8 @@ export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
   }
 
   ${props => (props.$expanded ? '' : 'display: none;')};
+  ${props => (props.root ? '' : 'margin-left: 8px;')};
+  ${props => (props.root ? '' : 'border-left: 1px solid lightblue;')}
 `;
 
 export const MenuItemLi = styled.li<{ depth: number }>`

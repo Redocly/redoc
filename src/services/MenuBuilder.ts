@@ -28,7 +28,41 @@ export class MenuBuilder {
     } else {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
-    return items;
+
+    if (options.sideNavLayout !== 'factored') return items;
+
+    return MenuBuilder.factorByPrefix(items);
+  }
+
+  static factorByPrefix(items: ContentItemModel[]): ContentItemModel[] {
+    const newItems: ContentItemModel[] = [];
+    let newChildren: ContentItemModel[] = [];
+    let parent: GroupModel | null = null;
+    let prefix = '';
+    for (const item of items) {
+      if (parent && item.name.startsWith(prefix)) {
+        item.parent = parent;
+        item.depth = parent.depth + 1;
+        newChildren.push(item);
+      } else {
+        if (newChildren.length > 0) {
+          for (const child of MenuBuilder.factorByPrefix(newChildren)) {
+            if (child.sidebarLabel.startsWith(prefix)) {
+              child.sidebarLabel = '…' + child.sidebarLabel.slice(prefix.length - 1);
+            }
+            parent!.items.push(child);
+          }
+          newChildren = [];
+        }
+
+        newItems.push(item);
+        if (item instanceof GroupModel) {
+          parent = item;
+          prefix = item.name + '/';
+        } else parent = null;
+      }
+    }
+    return newItems;
   }
 
   /**
