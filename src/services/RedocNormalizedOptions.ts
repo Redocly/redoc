@@ -27,6 +27,7 @@ export interface RedocRawOptions {
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
   sideNavStyle?: SideNavStyleEnum;
+  sideNavLayout?: 'default' | 'factored';
   hideSingleRequestSampleTab?: boolean | string;
   hideRequestPayloadSample?: boolean;
   menuToggle?: boolean | string;
@@ -180,6 +181,10 @@ export class RedocNormalizedOptions {
     }
   }
 
+  static normalizeSideNavLayout(value: RedocRawOptions['sideNavLayout']): 'default' | 'factored' {
+    return value === 'factored' ? value : 'default';
+  }
+
   static normalizePayloadSampleIdx(value: RedocRawOptions['payloadSampleIdx']): number {
     if (typeof value === 'number') {
       return Math.max(0, value); // always greater or equal than 0
@@ -231,6 +236,7 @@ export class RedocNormalizedOptions {
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
   sideNavStyle: SideNavStyleEnum;
+  sideNavLayout: 'default' | 'factored';
   hideSingleRequestSampleTab: boolean;
   hideRequestPayloadSample: boolean;
   menuToggle: boolean;
@@ -303,6 +309,7 @@ export class RedocNormalizedOptions {
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
     this.sideNavStyle = RedocNormalizedOptions.normalizeSideNavStyle(raw.sideNavStyle);
+    this.sideNavLayout = RedocNormalizedOptions.normalizeSideNavLayout(raw.sideNavLayout);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.hideRequestPayloadSample = argValueToBoolean(raw.hideRequestPayloadSample);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
