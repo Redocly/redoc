@@ -18,14 +18,6 @@ export function ArrayItemDetails({ schema }: { schema: SchemaModel }) {
     return null;
   }
 
-  if (schema.type === 'string' && schema.pattern) {
-    return (
-      <Wrapper>
-        [<Pattern schema={schema} />]
-      </Wrapper>
-    );
-  }
-
   return (
     <Wrapper>
       [ items
