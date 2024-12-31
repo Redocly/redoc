@@ -161,13 +161,21 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
     <span
       class="sc-kpDqfm sc-dAlyuH sc-dxcDKg cGRfjn gHomYR gXntsr"
     >
-      [
+      [ items
+      <span>
+         
+        <span
+          class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
+        >
+           &lt;= 128 characters 
+        </span>
+      </span>
       <span
         class="sc-kpDqfm sc-eDPEul cGRfjn cCKYVD"
       >
         ^see regex[0-9]$
       </span>
-      ]
+       ]
     </span>
   </div>
    

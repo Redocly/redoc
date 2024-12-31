@@ -8,7 +8,7 @@ import {
   TypePrefix,
   TypeTitle,
 } from '../../common-elements/fields';
-import { getSerializedValue, isObject } from '../../utils';
+import { getSerializedValue, isArray, isObject } from '../../utils';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Markdown } from '../Markdown/Markdown';
 import { EnumValues } from './EnumValues';
@@ -30,7 +30,8 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
 
   const { showExamples, field, renderDiscriminatorSwitch } = props;
   const { schema, description, deprecated, extensions, in: _in, const: _const } = field;
-  const isArrayType = schema.type === 'array';
+  const isArrayType =
+    schema.type === 'array' || (isArray(schema.type) && schema.type.includes('array'));
 
   const rawDefault = enumSkipQuotes || _in === 'header'; // having quotes around header field default values is confusing and inappropriate
 

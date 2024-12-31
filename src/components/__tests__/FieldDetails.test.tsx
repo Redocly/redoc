@@ -90,7 +90,7 @@ describe('FieldDetailsComponent', () => {
           items: {
             type: 'string',
             pattern: '^see regex[0-9]$',
-            constraints: [''],
+            constraints: ['<= 128 characters'],
             externalDocs: undefined,
           },
         } as any as SchemaModel,
