@@ -82,8 +82,98 @@ Shows specification extensions ('x-' fields). Extensions used by Redoc are ignor
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
-## Theme settings
+## Deprecated Functional settings
 
+### expandDefaultServerVariables
+
+Enables or disables expanding default server variables.
+
+### expandResponses
+
+Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, for example `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
+
+### expandSingleSchemaField
+
+Automatically expands the single field in a schema.
+
+### hideHostname
+
+If set to `true`, the protocol and hostname are not shown in the operation definition.
+
+### hideRequestPayloadSample
+
+Hides request payload examples.
+
+### hideOneOfDescription
+
+If set to `true`, the description for `oneOf`/`anyOf` object is not shown in the schema.
+
+### hideSchemaPattern
+
+If set to `true`, the pattern is not shown in the schema.
+
+### hideSecuritySection
+
+Hides the Security panel section.
+
+### hideSingleRequestSampleTab
+
+Hides the request sample tab for requests with only one sample.
+
+### menuToggle
+
+If set to `true`, selecting an expanded item in the sidebar twice collapses it.
+
+_Default: true_
+
+### nativeScrollbars
+
+If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This setting is a scrolling performance optimization for big API definitions.
+
+### pathInMiddlePanel
+
+Shows the path link and HTTP verb in the middle panel instead of the right panel.
+
+### payloadSampleIdx
+
+If set, the payload sample is inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample is inserted last. Indexes start from 0.
+
+### showObjectSchemaExamples
+
+Shows object schema example in the properties; default `false`.
+
+### showWebhookVerb
+
+When set to `true`, shows the HTTP request method for webhooks in operations and in the sidebar.
+
+### simpleOneOfTypeLabel
+
+Shows only unique `oneOf` types in the label without titles.
+
+### sortEnumValuesAlphabetically
+
+When set to `true`, sorts all enum values in all schemas alphabetically.
+
+### sortOperationsAlphabetically
+
+When set to `true`, sorts operations in the navigation sidebar and in the middle panel alphabetically.
+
+### sortPropsAlphabetically
+
+When set to `true`, sorts properties in all schemas alphabetically.
+
+### sortTagsAlphabetically
+
+When set to true, sorts tags in the navigation sidebar and in the middle panel alphabetically. Note that only tags are sorted alphabetically in the middle panel, not the operations associated with each tag. To sort operations alphabetically as well, you must set the `sortOperationsAlphabetically` setting to `true`.
+
+_Default: false_
+
+### untrustedDefinition
+
+If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
+
+## Theme settings
+Change styles for the API documentation page **Supported in Redoc CE 2.x **.
 * `spacing`
   * `unit`: 5 # main spacing unit used in autocomputed theme values later
   * `sectionHorizontal`: 40 # Horizontal section padding. COMPUTED: spacing.unit * 8
