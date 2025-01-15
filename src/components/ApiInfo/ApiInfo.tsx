@@ -22,20 +22,14 @@ export interface ApiInfoProps {
 
 @observer
 export class ApiInfo extends React.Component<ApiInfoProps> {
-  handleDownloadClick = e => {
-    if (!e.target.href) {
-      e.target.href = this.props.store.spec.info.downloadLink;
-    }
-  };
-
   render() {
     const { store } = this.props;
     const { info, externalDocs } = store.spec;
-    const hideDownloadButton = store.options.hideDownloadButton;
+    const hideDownloadButtons = store.options.hideDownloadButtons;
 
-    const downloadFilename = info.downloadFileName;
-    const downloadLink = info.downloadLink;
-
+    // FIXME: use downloadUrls
+    const downloadUrls = info.downloadUrls;
+    console.log(downloadUrls);
     const license =
       (info.license && (
         <InfoSpan>
@@ -83,17 +77,22 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             <ApiHeader>
               {info.title} {version}
             </ApiHeader>
-            {!hideDownloadButton && (
+            {!hideDownloadButtons && (
               <p>
                 {l('downloadSpecification')}:
-                <DownloadButton
-                  download={downloadFilename || true}
-                  target="_blank"
-                  href={downloadLink}
-                  onClick={this.handleDownloadClick}
-                >
-                  {l('download')}
-                </DownloadButton>
+                {downloadUrls?.map(({ title, url }) => {
+                  return (
+                    <DownloadButton
+                      download={title}
+                      target="_blank"
+                      href={url}
+                      rel="noreferrer"
+                      key={title}
+                    >
+                      {downloadUrls.length > 1 ? title : l('download')}
+                    </DownloadButton>
+                  );
+                })}
               </p>
             )}
             <StyledMarkdownBlock>

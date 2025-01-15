@@ -1,7 +1,7 @@
 import type { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
 import type { OpenAPIParser } from '../OpenAPIParser';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { DownloadUrlsConfig, RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;
@@ -13,8 +13,7 @@ export class ApiInfoModel implements OpenAPIInfo {
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
-  downloadLink?: string;
-  downloadFileName?: string;
+  downloadUrls?: DownloadUrlsConfig;
 
   constructor(
     private parser: OpenAPIParser,
@@ -29,13 +28,20 @@ export class ApiInfoModel implements OpenAPIInfo {
       this.description = this.description.substring(0, firstHeadingLinePos);
     }
 
-    this.downloadLink = this.getDownloadLink();
-    this.downloadFileName = this.getDownloadFileName();
+    this.downloadUrls = this.getDownloadUrls();
+  }
+  private getDownloadUrls(): DownloadUrlsConfig | undefined {
+    return this.options.downloadUrls
+      ?.map(({ title, url }) => ({
+        title: title || 'openapi.json',
+        url: this.getDownloadLink(url) || '',
+      }))
+      .filter(({ title, url }) => title && url);
   }
 
-  private getDownloadLink(): string | undefined {
-    if (this.options.downloadDefinitionUrl) {
-      return this.options.downloadDefinitionUrl;
+  private getDownloadLink(url?: string): string | undefined {
+    if (url) {
+      return url;
     }
 
     if (this.parser.specUrl) {
@@ -48,12 +54,5 @@ export class ApiInfoModel implements OpenAPIInfo {
       });
       return window.URL.createObjectURL(blob);
     }
-  }
-
-  private getDownloadFileName(): string | undefined {
-    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl) {
-      return this.options.downloadFileName || 'openapi.json';
-    }
-    return this.options.downloadFileName;
   }
 }

@@ -139,7 +139,7 @@ describe('Models', () => {
       } as any;
 
       const opts = new RedocNormalizedOptions({
-        downloadDefinitionUrl: 'https:test.com/filename.yaml',
+        downloadUrls: [{ title: 'Openapi description', url: 'https:test.com/filename.yaml' }],
       });
       const info = new ApiInfoModel(parser, opts);
       expect(info.downloadLink).toEqual('https:test.com/filename.yaml');
@@ -160,6 +160,13 @@ describe('Models', () => {
       const info = new ApiInfoModel(parser, opts);
       expect(info.downloadLink).toEqual('https:test.com/filename.yaml');
       expect(info.downloadFileName).toEqual('test.yaml');
+
+      const opts2 = new RedocNormalizedOptions({
+        downloadUrls: [{ title: 'test.yaml', url: 'https:test.com/filename.yaml' }],
+      });
+      const info2 = new ApiInfoModel(parser, opts2);
+      expect(info2.downloadLink).toEqual('https:test.com/filename.yaml');
+      expect(info2.downloadFileName).toEqual('test.yaml');
     });
   });
 });
