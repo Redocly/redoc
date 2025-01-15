@@ -142,7 +142,15 @@ describe('Models', () => {
         downloadUrls: [{ title: 'Openapi description', url: 'https:test.com/filename.yaml' }],
       });
       const info = new ApiInfoModel(parser, opts);
-      expect(info.downloadLink).toEqual('https:test.com/filename.yaml');
+      expect(info.downloadUrls).toMatchInlineSnapshot(`
+        [
+          {
+            "title": "Openapi description",
+            "url": "https:test.com/filename.yaml",
+          },
+        ]
+      `);
+      expect(info.downloadFileName).toMatchInlineSnapshot(`"openapi.json"`);
     });
 
     test('should correctly populate download link and download file name', () => {
@@ -158,15 +166,29 @@ describe('Models', () => {
         downloadFileName: 'test.yaml',
       });
       const info = new ApiInfoModel(parser, opts);
-      expect(info.downloadLink).toEqual('https:test.com/filename.yaml');
-      expect(info.downloadFileName).toEqual('test.yaml');
+      expect(info.downloadUrls).toMatchInlineSnapshot(`
+        [
+          {
+            "title": "Download",
+            "url": "https:test.com/filename.yaml",
+          },
+        ]
+      `);
+      expect(info.downloadFileName).toMatchInlineSnapshot(`"test.yaml"`);
 
       const opts2 = new RedocNormalizedOptions({
-        downloadUrls: [{ title: 'test.yaml', url: 'https:test.com/filename.yaml' }],
+        downloadUrls: [{ title: 'Download file', url: 'https:test.com/filename.yaml' }],
       });
       const info2 = new ApiInfoModel(parser, opts2);
-      expect(info2.downloadLink).toEqual('https:test.com/filename.yaml');
-      expect(info2.downloadFileName).toEqual('test.yaml');
+      expect(info2.downloadUrls).toMatchInlineSnapshot(`
+        [
+          {
+            "title": "Download file",
+            "url": "https:test.com/filename.yaml",
+          },
+        ]
+      `);
+      expect(info2.downloadFileName).toMatchInlineSnapshot(`"openapi.json"`);
     });
   });
 });

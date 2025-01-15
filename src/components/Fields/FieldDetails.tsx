@@ -99,7 +99,7 @@ export const FieldDetailsComponent = observer((props: FieldProps) => {
       )}
       <FieldDetail raw={rawDefault} label={l('default') + ':'} value={defaultValue} />
       {!renderDiscriminatorSwitch && (
-        <EnumValues isArrayType={isArrayType} values={schema.enum} />
+        <EnumValues type={schema.type} values={schema['x-enumDescriptions'] || schema.enum} />
       )}{' '}
       {renderedExamples}
       <Extensions extensions={{ ...extensions, ...schema.extensions }} />

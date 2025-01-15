@@ -13,6 +13,17 @@ describe('Models', () => {
   describe('Schema', () => {
     let parser;
 
+    test('parsing nested x-enumDescription', () => {
+      const spec = require('../fixtures/nestedEnumDescroptionSample.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const testSchema = spec.components.schemas.Test;
+      const schemaModel = new SchemaModel(parser, testSchema, '', opts);
+
+      expect(schemaModel['x-enumDescriptions']).toStrictEqual(
+        testSchema.items['x-enumDescriptions'],
+      );
+    });
+
     test('discriminator with one field', () => {
       const spec = require('../fixtures/discriminator.json');
       parser = new OpenAPIParser(spec, undefined, opts);

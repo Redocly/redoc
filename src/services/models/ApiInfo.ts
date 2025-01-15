@@ -34,7 +34,7 @@ export class ApiInfoModel implements OpenAPIInfo {
     }
 
     this.downloadUrls = this.getDownloadUrls();
-    this.downloadFileName = this.options.downloadFileName || 'openapi.json';
+    this.downloadFileName = this.getDownloadFileName();
   }
   private getDownloadUrls() {
     return (
@@ -67,5 +67,12 @@ export class ApiInfoModel implements OpenAPIInfo {
       });
       return window.URL.createObjectURL(blob);
     }
+  }
+
+  private getDownloadFileName(): string | undefined {
+    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl) {
+      return this.options.downloadFileName || 'openapi.json';
+    }
+    return this.options.downloadFileName;
   }
 }
