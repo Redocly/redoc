@@ -26,7 +26,7 @@ Sets the minimum amount of characters that need to be typed into the search dial
 
 _Default: 3_
 
-### hideDownloadButton
+### hideDownloadButtons
 
 Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
 
@@ -42,7 +42,7 @@ Hides the schema title next to to the type.
 
 Sets the path to the optional HTML file used to modify the layout of the reference docs page.
 
-### jsonSampleExpandLevel
+### jsonSamplesExpandLevel
 
 Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
 
@@ -56,13 +56,13 @@ Displays only the specified number of enum values. The remaining values are hidd
 
 Shows only required fields in request samples.
 
-### requiredPropsFirst
+### sortRequiredPropsFirst
 
 Shows required properties in schemas first, ordered in the same order as in the required array.
 
-### schemaExpansionLevel
+### schemasExpansionLevel
 
-Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemaExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
+Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemasExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
 
 ### scrollYOffset
 
@@ -82,7 +82,30 @@ Shows specification extensions ('x-' fields). Extensions used by Redoc are ignor
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
+# downloadUrls
+
+Set the URLs used to download the OpenAPI description or other documentation related files from the API documentation page.
+
 ## Deprecated Functional settings
+
+### hideDownloadButton
+
+Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
+
+### requiredPropsFirst
+
+Shows required properties in schemas first, ordered in the same order as in the required array.
+
+### jsonSampleExpandLevel
+
+Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
+
+_Default: 2_
+
+### schemaExpansionLevel
+
+Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemaExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
+
 
 ### expandDefaultServerVariables
 
@@ -168,7 +191,7 @@ When set to true, sorts tags in the navigation sidebar and in the middle panel a
 
 _Default: false_
 
-### untrustedDefinition
+### untrustedSpec
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
