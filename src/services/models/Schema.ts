@@ -463,7 +463,7 @@ function buildFields(
   if (options.sortPropsAlphabetically) {
     fields = sortByField(fields, 'name');
   }
-  if (options.requiredPropsFirst) {
+  if (options.sortRequiredPropsFirst) {
     // if not sort alphabetically sort in the order from required keyword
     fields = sortByRequired(fields, !options.sortPropsAlphabetically ? schema.required : undefined);
   }

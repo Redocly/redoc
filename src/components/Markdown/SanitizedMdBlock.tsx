@@ -10,7 +10,7 @@ const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
   display: inline;
 `;
 
-const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
+const sanitize = (sanitize, html) => (sanitize ? DOMPurify.sanitize(html) : html);
 
 export function SanitizedMarkdownHTML({
   inline,
@@ -25,7 +25,7 @@ export function SanitizedMarkdownHTML({
         <Wrap
           className={'redoc-markdown ' + (rest.className || '')}
           dangerouslySetInnerHTML={{
-            __html: sanitize(options.untrustedSpec, rest.html),
+            __html: sanitize(options.sanitize, rest.html),
           }}
           data-role={rest['data-role']}
           {...rest}

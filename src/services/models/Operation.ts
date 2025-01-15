@@ -247,7 +247,7 @@ export class OperationModel implements IMenuItem {
     if (this.options.sortPropsAlphabetically) {
       return sortByField(_parameters, 'name');
     }
-    if (this.options.requiredPropsFirst) {
+    if (this.options.sortRequiredPropsFirst) {
       return sortByRequired(_parameters);
     }
 

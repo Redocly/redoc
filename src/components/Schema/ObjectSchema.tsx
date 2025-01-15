@@ -27,7 +27,7 @@ export const ObjectSchema = observer(
     skipWriteOnly,
     level,
   }: ObjectSchemaProps) => {
-    const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
+    const { expandSingleSchemaField, showObjectSchemaExamples, schemasExpansionLevel } =
       React.useContext(OptionsContext);
 
     const filteredFields = React.useMemo(
@@ -45,7 +45,7 @@ export const ObjectSchema = observer(
     );
 
     const expandByDefault =
-      (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
+      (expandSingleSchemaField && filteredFields.length === 1) || schemasExpansionLevel >= level!;
 
     return (
       <PropertiesTable>
