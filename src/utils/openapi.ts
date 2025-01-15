@@ -654,7 +654,6 @@ export function isRedocExtension(key: string): boolean {
     'x-codeSamples': true,
     'x-displayName': true,
     'x-examples': true,
-    'x-ignoredHeaderParameters': true,
     'x-logo': true,
     'x-nullable': true,
     'x-servers': true,

@@ -122,10 +122,8 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
 * [`x-tagGroups`](docs/redoc-vendor-extensions.md#x-tagGroups) - group tags by categories in the side menu
 * [`x-servers`](docs/redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
-* [`x-ignoredHeaderParameters`](docs/redoc-vendor-extensions.md#x-ignoredHeaderParameters) - ability to specify header parameter names to ignore
 * [`x-additionalPropertiesName`](docs/redoc-vendor-extensions.md#x-additionalPropertiesName) - ability to supply a descriptive name for the additional property keys
 * [`x-summary`](docs/redoc-vendor-extensions.md#x-summary) - for Response object, use as the response button text, with description rendered under the button
-* [`x-extendedDiscriminator`](docs/redoc-vendor-extensions.md#x-extendedDiscriminator) - in Schemas, uses this to solve name-clash issues with the standard discriminator
 * [`x-explicitMappingOnly`](docs/redoc-vendor-extensions.md#x-explicitMappingOnly) - in Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
 
 ## Releases
