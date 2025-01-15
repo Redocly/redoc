@@ -92,6 +92,14 @@ Set the URLs used to download the OpenAPI description or other documentation rel
 
 Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
 
+### downloadFileName
+
+Sets the filename for the downloaded API definition source file.
+
+### downloadDefinitionUrl
+
+Sets the URL for the downloaded API definition source file.
+
 ### requiredPropsFirst
 
 Shows required properties in schemas first, ordered in the same order as in the required array.
