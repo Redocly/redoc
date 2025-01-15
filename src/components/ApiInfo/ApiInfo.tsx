@@ -27,9 +27,8 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
     const { info, externalDocs } = store.spec;
     const hideDownloadButtons = store.options.hideDownloadButtons;
 
-    // FIXME: use downloadUrls
     const downloadUrls = info.downloadUrls;
-    console.log(downloadUrls);
+    const downloadFileName = info.downloadFileName;
     const license =
       (info.license && (
         <InfoSpan>
@@ -83,11 +82,11 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                 {downloadUrls?.map(({ title, url }) => {
                   return (
                     <DownloadButton
-                      download={title}
+                      download={downloadFileName || true}
                       target="_blank"
                       href={url}
                       rel="noreferrer"
-                      key={title}
+                      key={url}
                     >
                       {downloadUrls.length > 1 ? title : l('download')}
                     </DownloadButton>

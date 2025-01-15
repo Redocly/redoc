@@ -1,7 +1,8 @@
 import type { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
+import { l } from '../Labels';
 import type { OpenAPIParser } from '../OpenAPIParser';
-import { DownloadUrlsConfig, RedocNormalizedOptions } from '../RedocNormalizedOptions';
+import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
 export class ApiInfoModel implements OpenAPIInfo {
   title: string;
@@ -13,7 +14,11 @@ export class ApiInfoModel implements OpenAPIInfo {
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
-  downloadUrls?: DownloadUrlsConfig;
+  downloadUrls: {
+    title?: string;
+    url?: string;
+  }[];
+  downloadFileName?: string;
 
   constructor(
     private parser: OpenAPIParser,
@@ -29,14 +34,22 @@ export class ApiInfoModel implements OpenAPIInfo {
     }
 
     this.downloadUrls = this.getDownloadUrls();
+    this.downloadFileName = this.options.downloadFileName || 'openapi.json';
   }
-  private getDownloadUrls(): DownloadUrlsConfig | undefined {
-    return this.options.downloadUrls
-      ?.map(({ title, url }) => ({
-        title: title || 'openapi.json',
-        url: this.getDownloadLink(url) || '',
-      }))
-      .filter(({ title, url }) => title && url);
+  private getDownloadUrls() {
+    return (
+      !this.options.downloadUrls
+        ? [
+            {
+              title: l('download'),
+              url: this.getDownloadLink(this.options.downloadDefinitionUrl),
+            },
+          ]
+        : this.options.downloadUrls.map(({ title, url }) => ({
+            title: title || 'Download OpenAPI description',
+            url: this.getDownloadLink(url),
+          }))
+    ).filter(({ title, url }) => title && url);
   }
 
   private getDownloadLink(url?: string): string | undefined {

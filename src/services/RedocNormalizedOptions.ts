@@ -236,6 +236,8 @@ export class RedocNormalizedOptions {
   pathInMiddlePanel: boolean;
   sanitize: boolean;
   hideDownloadButtons: boolean;
+  downloadFileName?: string;
+  downloadDefinitionUrl?: string;
   downloadUrls?: DownloadUrlsConfig;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
@@ -309,9 +311,9 @@ export class RedocNormalizedOptions {
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
     this.sanitize = argValueToBoolean(raw.sanitize || raw.untrustedSpec);
     this.hideDownloadButtons = argValueToBoolean(raw.hideDownloadButtons || raw.hideDownloadButton);
-    this.downloadUrls =
-      raw.downloadUrls ||
-      ([{ title: raw.downloadFileName, url: raw.downloadDefinitionUrl }] as DownloadUrlsConfig);
+    this.downloadFileName = raw.downloadFileName;
+    this.downloadDefinitionUrl = raw.downloadDefinitionUrl;
+    this.downloadUrls = raw.downloadUrls;
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
