@@ -56,6 +56,7 @@ export function StoreBuilder(props: StoreBuilderProps) {
       }
     }
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spec, specUrl]);
 
   const store = React.useMemo(() => {
