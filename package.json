@@ -61,6 +61,7 @@
     "pre-commit": "pretty-quick --staged && npm run lint"
   },
   "devDependencies": {
+    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@cypress/webpack-preprocessor": "^5.17.1",
     "@size-limit/file": "^11.1.4",
     "@types/chai": "^4.2.18",
@@ -137,7 +138,6 @@
     "styled-components": "^4.1.1 || ^5.1.1 || ^6.0.5"
   },
   "dependencies": {
-    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@redocly/openapi-core": "^1.4.0",
     "classnames": "^2.3.2",
     "decko": "^1.2.0",
