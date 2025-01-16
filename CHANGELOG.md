@@ -1,3 +1,19 @@
+# [2.3.0](https://github.com/Redocly/redoc/compare/v2.2.0...v2.3.0) (2025-01-16)
+
+
+### Bug Fixes
+
+* displaying json example when showObjectSchemaExamples enabled ([#2635](https://github.com/Redocly/redoc/issues/2635)) ([59ee73f](https://github.com/Redocly/redoc/commit/59ee73fefa8e8edb398940076bdd721fc284caa3))
+* displaying nested items with type string ([#2634](https://github.com/Redocly/redoc/issues/2634)) ([85b622f](https://github.com/Redocly/redoc/commit/85b622fc581eb96303aeb85056aef36c74ea9f9d))
+* passing inline parameters after support react 18 for response title ([#2640](https://github.com/Redocly/redoc/issues/2640)) ([d614d2d](https://github.com/Redocly/redoc/commit/d614d2d022df8bd1989cb0eaf76d087b52120d36))
+
+
+### Features
+
+* update pattern styling ([#2196](https://github.com/Redocly/redoc/issues/2196)) ([#2600](https://github.com/Redocly/redoc/issues/2600)) ([aa0879c](https://github.com/Redocly/redoc/commit/aa0879ca0235112918428fdff8f4c48d2c6c4adf))
+
+
+
 # [2.2.0](https://github.com/Redocly/redoc/compare/v2.1.5...v2.2.0) (2024-10-16)
 
 
