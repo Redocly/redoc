@@ -8,6 +8,15 @@ import type { ContentItemModel, TagGroup, TagInfo, TagsInfoMap } from './types';
 
 export const GROUP_DEPTH = 0;
 
+function appendChildren(parent: ContentItemModel, children: ContentItemModel[], prefix: string) {
+  for (const child of MenuBuilder.factorByPrefix(children)) {
+    if (child.sidebarLabel.startsWith(prefix)) {
+      child.sidebarLabel = '…' + child.sidebarLabel.slice(prefix.length - 1);
+    }
+    parent.items.push(child);
+  }
+}
+
 export class MenuBuilder {
   /**
    * Builds page content structure based on tags
@@ -28,7 +37,37 @@ export class MenuBuilder {
     } else {
       items.push(...MenuBuilder.getTagsItems(parser, tagsMap, undefined, undefined, options));
     }
-    return items;
+
+    if (options.sideNavLayout !== 'factored') return items;
+
+    return MenuBuilder.factorByPrefix(items);
+  }
+
+  static factorByPrefix(items: ContentItemModel[]): ContentItemModel[] {
+    const newItems: ContentItemModel[] = [];
+    let newChildren: ContentItemModel[] = [];
+    let parent: GroupModel | null = null;
+    let prefix = '';
+    for (const item of items) {
+      if (parent && item.name.startsWith(prefix)) {
+        item.parent = parent;
+        item.depth = parent.depth + 1;
+        newChildren.push(item);
+      } else {
+        if (newChildren.length > 0) {
+          appendChildren(parent!, newChildren, prefix);
+          newChildren = [];
+        }
+
+        newItems.push(item);
+        if (item instanceof GroupModel) {
+          parent = item;
+          prefix = item.name + '/';
+        } else parent = null;
+      }
+    }
+    if (newChildren.length > 0) appendChildren(parent!, newChildren, prefix);
+    return newItems;
   }
 
   /**
