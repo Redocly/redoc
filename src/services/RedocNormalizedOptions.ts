@@ -64,7 +64,8 @@ export interface RedocRawOptions {
   maxDisplayedEnumValues?: number;
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
-  generatedPayloadSamplesMaxDepth?: number;
+  generatedPayloadSamplesMaxDepth?: number; // remove in next major release
+  generatedSamplesMaxDepth?: number;
   nonce?: string;
   hideFab?: boolean;
   minCharacterLengthToInitSearch?: number;
@@ -268,7 +269,7 @@ export class RedocNormalizedOptions {
 
   ignoreNamedSchemas: Set<string>;
   hideSchemaPattern: boolean;
-  generatedPayloadSamplesMaxDepth: number;
+  generatedSamplesMaxDepth: number;
   hideFab: boolean;
   minCharacterLengthToInitSearch: number;
   showWebhookVerb: boolean;
@@ -350,10 +351,9 @@ export class RedocNormalizedOptions {
       : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
     this.hideSchemaPattern = argValueToBoolean(raw.hideSchemaPattern);
-    this.generatedPayloadSamplesMaxDepth =
-      RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
-        raw.generatedPayloadSamplesMaxDepth,
-      );
+    this.generatedSamplesMaxDepth = RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
+      raw.generatedSamplesMaxDepth || raw.generatedPayloadSamplesMaxDepth,
+    );
     this.nonce = raw.nonce;
     this.hideFab = argValueToBoolean(raw.hideFab);
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
