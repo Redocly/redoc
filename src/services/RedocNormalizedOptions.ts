@@ -47,6 +47,7 @@ export interface RedocRawOptions {
   expandSingleSchemaField?: boolean | string;
   schemaExpansionLevel?: number | string | 'all'; // remove in next major release
   schemasExpansionLevel?: number | string | 'all';
+  schemaDefinitionsTagName?: string;
   showObjectSchemaExamples?: boolean | string;
   showSecuritySchemeType?: boolean;
   hideSecuritySection?: boolean;
@@ -253,6 +254,7 @@ export class RedocNormalizedOptions {
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
   schemasExpansionLevel: number;
+  schemaDefinitionsTagName?: string;
   showObjectSchemaExamples: boolean;
   showSecuritySchemeType?: boolean;
   hideSecuritySection?: boolean;
@@ -332,6 +334,7 @@ export class RedocNormalizedOptions {
     this.schemasExpansionLevel = argValueToExpandLevel(
       raw.schemasExpansionLevel || raw.schemaExpansionLevel,
     );
+    this.schemaDefinitionsTagName = raw.schemaDefinitionsTagName;
     this.showObjectSchemaExamples = argValueToBoolean(raw.showObjectSchemaExamples);
     this.showSecuritySchemeType = argValueToBoolean(raw.showSecuritySchemeType);
     this.hideSecuritySection = argValueToBoolean(raw.hideSecuritySection);
