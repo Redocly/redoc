@@ -70,6 +70,7 @@ export interface RedocRawOptions {
   hideFab?: boolean;
   minCharacterLengthToInitSearch?: number;
   showWebhookVerb?: boolean;
+  hidePropertiesPrefix?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -273,6 +274,7 @@ export class RedocNormalizedOptions {
   hideFab: boolean;
   minCharacterLengthToInitSearch: number;
   showWebhookVerb: boolean;
+  hidePropertiesPrefix?: boolean;
 
   nonce?: string;
 
@@ -358,5 +360,6 @@ export class RedocNormalizedOptions {
     this.hideFab = argValueToBoolean(raw.hideFab);
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
     this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
+    this.hidePropertiesPrefix = argValueToBoolean(raw.hidePropertiesPrefix, true);
   }
 }

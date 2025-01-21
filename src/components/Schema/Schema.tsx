@@ -21,6 +21,7 @@ export interface SchemaOptions {
 
 export interface SchemaProps extends SchemaOptions {
   schema: SchemaModel;
+  fieldParentsName?: string[];
 }
 
 @observer

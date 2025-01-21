@@ -88,6 +88,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
                     "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -363,6 +364,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
                     "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -625,6 +627,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
               "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -949,6 +952,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
                     "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -1236,6 +1240,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
                     "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
@@ -1494,6 +1499,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
               "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -1777,6 +1783,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "hideDownloadButtons": false,
           "hideFab": false,
           "hideHostname": false,
+          "hidePropertiesPrefix": true,
           "hideRequestPayloadSample": false,
           "hideSchemaPattern": false,
           "hideSchemaTitles": false,
@@ -2090,6 +2097,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
               "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -2365,6 +2373,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
               "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
@@ -2627,6 +2636,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "hideDownloadButtons": false,
         "hideFab": false,
         "hideHostname": false,
+        "hidePropertiesPrefix": true,
         "hideRequestPayloadSample": false,
         "hideSchemaPattern": false,
         "hideSchemaTitles": false,
@@ -2955,6 +2965,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           },
         }
       }
+      fieldParentsName={[]}
       isLast={false}
       key="packSize"
       showExamples={false}
@@ -3029,6 +3040,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           },
         }
       }
+      fieldParentsName={[]}
       isLast={true}
       key="type"
       renderDiscriminatorSwitch={[Function]}
