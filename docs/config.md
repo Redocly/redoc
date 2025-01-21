@@ -38,10 +38,6 @@ Hides the loading animation. Does not apply to CLI or Workflows-rendered docs.
 
 Hides the schema title next to to the type.
 
-### htmlTemplate
-
-Sets the path to the optional HTML file used to modify the layout of the reference docs page.
-
 ### jsonSamplesExpandLevel
 
 Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
