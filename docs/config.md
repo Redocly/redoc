@@ -82,9 +82,23 @@ Shows specification extensions ('x-' fields). Extensions used by Redoc are ignor
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
-# downloadUrls
+### downloadUrls
 
 Set the URLs used to download the OpenAPI description or other documentation related files from the API documentation page.
+
+### schemaDefinitionsTagName
+
+If a value is set, all of the schemas are rendered with the designated tag name. The schemas then render and display in the sidebar navigation (with that associated tag name).
+
+### generatedSamplesMaxDepth
+
+The generatedSamplesMaxDepth option controls how many schema levels automatically generated for payload samples. The default is 8 which works well for most APIs, but you can adjust it if necessary for your use case.
+
+### hidePropertiesPrefix
+
+In complex data structures or object schemas where properties are nested within parent objects the hidePropertiesPrefix option enables the hiding of parent names for nested properties within the documentation.
+
+_Default: true_
 
 ## Deprecated Functional settings
 

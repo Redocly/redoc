@@ -42,12 +42,15 @@ You can use the following [vendor extensions](https://redocly.com/docs/openapi-v
     - [x-explicitMappingOnly](#x-explicitmappingonly)
       - [How to use with Redoc](#how-to-use-with-redoc-10)
       - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
+    - [x-enumDescriptions](#x-enumdescriptions)
+      - [How to use with Redoc](#how-to-use-with-redoc-11)
+      - [x-enumDescriptions example](#x-enumdescriptions-example)
 
 ## Swagger Object
 Extends the OpenAPI root [OpenAPI Object](https://redocly.com/docs/openapi-visual-reference/openapi)
 
 ### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.0.md#server-object). Currently doesn't support templates.
 
 ### x-tagGroups
 
@@ -320,3 +323,31 @@ Pet:
 ```
 
 Shows in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
+
+### x-enumDescriptions
+| Field Name     | Type   | Description |
+| :------------- | :------: | :---------- |
+| x-enumDescriptions | [[Enum Description Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-enum-descriptions#enum-description-object)] | A list of the enum values and descriptions to include in the documentation. |
+
+#### How to use with Redoc
+The enum (short for "enumeration") fields in OpenAPI allow you to restrict the value of a field to a list of allowed values. These values need to be short and machine-readable, but that can make them harder for humans to parse and work with.
+
+Add x-enumDescriptions to your OpenAPI description to show a helpful table of enum options and an explanation of what each one means. This field supports Markdown.
+
+#### x-explicitMappingOnly example
+The following example shows a schema with two short-named options, and the x-enumDescriptions entry to list all enum entries and give additional context for each:
+
+```yaml
+components:
+  schemas:
+    TicketType:
+      description: Type of ticket being purchased. Use `general` for regular museum entry and `event` for tickets to special events.
+      type: string
+      enum:
+        - event
+        - general
+      x-enumDescriptions:
+        event: Event Tickets _(timed entry)_
+        general: General Admission
+      example: event
+```
