@@ -334,7 +334,7 @@ The enum (short for "enumeration") fields in OpenAPI allow you to restrict the v
 
 Add x-enumDescriptions to your OpenAPI description to show a helpful table of enum options and an explanation of what each one means. This field supports Markdown.
 
-#### x-explicitMappingOnly example
+#### x-enumDescriptions example
 The following example shows a schema with two short-named options, and the x-enumDescriptions entry to list all enum entries and give additional context for each:
 
 ```yaml

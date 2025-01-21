@@ -218,7 +218,7 @@ _Default: false_
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
 ## Theme settings
-Change styles for the API documentation page **Supported in Redoc CE 2.x **.
+Change styles for the API documentation page **Supported in Redoc CE 2.x**.
 * `spacing`
   * `unit`: 5 # main spacing unit used in autocomputed theme values later
   * `sectionHorizontal`: 40 # Horizontal section padding. COMPUTED: spacing.unit * 8
