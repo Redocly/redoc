@@ -19,6 +19,8 @@ import { Schema } from '../Schema/Schema';
 
 import type { SchemaOptions } from '../Schema/Schema';
 import type { FieldModel } from '../../services/models';
+import { OptionsContext } from '../OptionsProvider';
+import { RedocNormalizedOptions } from '../../services/RedocNormalizedOptions';
 
 export interface FieldProps extends SchemaOptions {
   className?: string;
@@ -27,12 +29,15 @@ export interface FieldProps extends SchemaOptions {
 
   field: FieldModel;
   expandByDefault?: boolean;
-
+  fieldParentsName?: string[];
   renderDiscriminatorSwitch?: (opts: FieldProps) => JSX.Element;
 }
 
 @observer
 export class Field extends React.Component<FieldProps> {
+  static contextType = OptionsContext;
+  context: RedocNormalizedOptions;
+
   toggle = () => {
     if (this.props.field.expanded === undefined && this.props.expandByDefault) {
       this.props.field.collapse();
@@ -49,12 +54,12 @@ export class Field extends React.Component<FieldProps> {
   };
 
   render() {
-    const { className = '', field, isLast, expandByDefault } = this.props;
+    const { hidePropertiesPrefix } = this.context;
+    const { className = '', field, isLast, expandByDefault, fieldParentsName = [] } = this.props;
     const { name, deprecated, required, kind } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
-
     const labels = (
       <>
         {kind === 'additionalProperties' && <PropertyLabel>additional property</PropertyLabel>}
@@ -75,6 +80,10 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label={`expand ${name}`}
         >
+          {!hidePropertiesPrefix &&
+            fieldParentsName.map(
+              name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
+            )}
           <span className="property-name">{name}</span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
@@ -83,6 +92,10 @@ export class Field extends React.Component<FieldProps> {
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
+        {!hidePropertiesPrefix &&
+          fieldParentsName.map(
+            name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
+          )}
         <span className="property-name">{name}</span>
         {labels}
       </PropertyNameCell>
@@ -102,6 +115,7 @@ export class Field extends React.Component<FieldProps> {
               <InnerPropertiesWrap>
                 <Schema
                   schema={field.schema}
+                  fieldParentsName={[...(fieldParentsName || []), field.name]}
                   skipReadOnly={this.props.skipReadOnly}
                   skipWriteOnly={this.props.skipWriteOnly}
                   showTitle={this.props.showTitle}

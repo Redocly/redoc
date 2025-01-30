@@ -1083,6 +1083,10 @@ components:
             - available
             - pending
             - sold
+          x-enumDescriptions:
+            available: Available status
+            pending: Pending status
+            sold: Sold status
         petType:
           description: Type of a pet
           type: string

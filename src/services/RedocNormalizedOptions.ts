@@ -6,23 +6,32 @@ import { setRedocLabels } from './Labels';
 import { SideNavStyleEnum } from './types';
 import type { LabelsConfigRaw, MDXComponentMeta } from './types';
 
+export type DownloadUrlsConfig = {
+  title?: string;
+  url: string;
+}[];
+
 export interface RedocRawOptions {
   theme?: ThemeInterface;
   scrollYOffset?: number | string | (() => number);
   hideHostname?: boolean | string;
   expandResponses?: string | 'all';
-  requiredPropsFirst?: boolean | string;
+  requiredPropsFirst?: boolean | string; // remove in next major release
+  sortRequiredPropsFirst?: boolean | string;
   sortPropsAlphabetically?: boolean | string;
   sortEnumValuesAlphabetically?: boolean | string;
   sortOperationsAlphabetically?: boolean | string;
   sortTagsAlphabetically?: boolean | string;
   nativeScrollbars?: boolean | string;
   pathInMiddlePanel?: boolean | string;
-  untrustedSpec?: boolean | string;
+  untrustedSpec?: boolean | string; // remove in next major release
+  sanitize?: boolean | string;
   hideLoading?: boolean | string;
-  hideDownloadButton?: boolean | string;
+  hideDownloadButton?: boolean | string; // remove in next major release
+  hideDownloadButtons?: boolean | string;
   downloadFileName?: string;
   downloadDefinitionUrl?: string;
+  downloadUrls?: DownloadUrlsConfig;
   disableSearch?: boolean | string;
   onlyRequiredInSamples?: boolean | string;
   showExtensions?: boolean | string | string[];
@@ -30,12 +39,15 @@ export interface RedocRawOptions {
   hideSingleRequestSampleTab?: boolean | string;
   hideRequestPayloadSample?: boolean;
   menuToggle?: boolean | string;
-  jsonSampleExpandLevel?: number | string | 'all';
+  jsonSampleExpandLevel?: number | string | 'all'; // remove in next major release
+  jsonSamplesExpandLevel?: number | string | 'all';
   hideSchemaTitles?: boolean | string;
   simpleOneOfTypeLabel?: boolean | string;
   payloadSampleIdx?: number;
   expandSingleSchemaField?: boolean | string;
-  schemaExpansionLevel?: number | string | 'all';
+  schemaExpansionLevel?: number | string | 'all'; // remove in next major release
+  schemasExpansionLevel?: number | string | 'all';
+  schemaDefinitionsTagName?: string;
   showObjectSchemaExamples?: boolean | string;
   showSecuritySchemeType?: boolean;
   hideSecuritySection?: boolean;
@@ -52,11 +64,13 @@ export interface RedocRawOptions {
   maxDisplayedEnumValues?: number;
   ignoreNamedSchemas?: string[] | string;
   hideSchemaPattern?: boolean;
-  generatedPayloadSamplesMaxDepth?: number;
+  generatedPayloadSamplesMaxDepth?: number; // remove in next major release
+  generatedSamplesMaxDepth?: number;
   nonce?: string;
   hideFab?: boolean;
   minCharacterLengthToInitSearch?: number;
   showWebhookVerb?: boolean;
+  hidePropertiesPrefix?: boolean;
 }
 
 export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean): boolean {
@@ -216,17 +230,18 @@ export class RedocNormalizedOptions {
   scrollYOffset: () => number;
   hideHostname: boolean;
   expandResponses: { [code: string]: boolean } | 'all';
-  requiredPropsFirst: boolean;
+  sortRequiredPropsFirst: boolean;
   sortPropsAlphabetically: boolean;
   sortEnumValuesAlphabetically: boolean;
   sortOperationsAlphabetically: boolean;
   sortTagsAlphabetically: boolean;
   nativeScrollbars: boolean;
   pathInMiddlePanel: boolean;
-  untrustedSpec: boolean;
-  hideDownloadButton: boolean;
+  sanitize: boolean;
+  hideDownloadButtons: boolean;
   downloadFileName?: string;
   downloadDefinitionUrl?: string;
+  downloadUrls?: DownloadUrlsConfig;
   disableSearch: boolean;
   onlyRequiredInSamples: boolean;
   showExtensions: boolean | string[];
@@ -234,13 +249,14 @@ export class RedocNormalizedOptions {
   hideSingleRequestSampleTab: boolean;
   hideRequestPayloadSample: boolean;
   menuToggle: boolean;
-  jsonSampleExpandLevel: number;
+  jsonSamplesExpandLevel: number;
   enumSkipQuotes: boolean;
   hideSchemaTitles: boolean;
   simpleOneOfTypeLabel: boolean;
   payloadSampleIdx: number;
   expandSingleSchemaField: boolean;
-  schemaExpansionLevel: number;
+  schemasExpansionLevel: number;
+  schemaDefinitionsTagName?: string;
   showObjectSchemaExamples: boolean;
   showSecuritySchemeType?: boolean;
   hideSecuritySection?: boolean;
@@ -254,10 +270,11 @@ export class RedocNormalizedOptions {
 
   ignoreNamedSchemas: Set<string>;
   hideSchemaPattern: boolean;
-  generatedPayloadSamplesMaxDepth: number;
+  generatedSamplesMaxDepth: number;
   hideFab: boolean;
   minCharacterLengthToInitSearch: number;
   showWebhookVerb: boolean;
+  hidePropertiesPrefix?: boolean;
 
   nonce?: string;
 
@@ -288,17 +305,20 @@ export class RedocNormalizedOptions {
     this.scrollYOffset = RedocNormalizedOptions.normalizeScrollYOffset(raw.scrollYOffset);
     this.hideHostname = RedocNormalizedOptions.normalizeHideHostname(raw.hideHostname);
     this.expandResponses = RedocNormalizedOptions.normalizeExpandResponses(raw.expandResponses);
-    this.requiredPropsFirst = argValueToBoolean(raw.requiredPropsFirst);
+    this.sortRequiredPropsFirst = argValueToBoolean(
+      raw.sortRequiredPropsFirst || raw.requiredPropsFirst,
+    );
     this.sortPropsAlphabetically = argValueToBoolean(raw.sortPropsAlphabetically);
     this.sortEnumValuesAlphabetically = argValueToBoolean(raw.sortEnumValuesAlphabetically);
     this.sortOperationsAlphabetically = argValueToBoolean(raw.sortOperationsAlphabetically);
     this.sortTagsAlphabetically = argValueToBoolean(raw.sortTagsAlphabetically);
     this.nativeScrollbars = argValueToBoolean(raw.nativeScrollbars);
     this.pathInMiddlePanel = argValueToBoolean(raw.pathInMiddlePanel);
-    this.untrustedSpec = argValueToBoolean(raw.untrustedSpec);
-    this.hideDownloadButton = argValueToBoolean(raw.hideDownloadButton);
+    this.sanitize = argValueToBoolean(raw.sanitize || raw.untrustedSpec);
+    this.hideDownloadButtons = argValueToBoolean(raw.hideDownloadButtons || raw.hideDownloadButton);
     this.downloadFileName = raw.downloadFileName;
     this.downloadDefinitionUrl = raw.downloadDefinitionUrl;
+    this.downloadUrls = raw.downloadUrls;
     this.disableSearch = argValueToBoolean(raw.disableSearch);
     this.onlyRequiredInSamples = argValueToBoolean(raw.onlyRequiredInSamples);
     this.showExtensions = RedocNormalizedOptions.normalizeShowExtensions(raw.showExtensions);
@@ -306,15 +326,18 @@ export class RedocNormalizedOptions {
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.hideRequestPayloadSample = argValueToBoolean(raw.hideRequestPayloadSample);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
-    this.jsonSampleExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
-      raw.jsonSampleExpandLevel,
+    this.jsonSamplesExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
+      raw.jsonSamplesExpandLevel || raw.jsonSampleExpandLevel,
     );
     this.enumSkipQuotes = argValueToBoolean(raw.enumSkipQuotes);
     this.hideSchemaTitles = argValueToBoolean(raw.hideSchemaTitles);
     this.simpleOneOfTypeLabel = argValueToBoolean(raw.simpleOneOfTypeLabel);
     this.payloadSampleIdx = RedocNormalizedOptions.normalizePayloadSampleIdx(raw.payloadSampleIdx);
     this.expandSingleSchemaField = argValueToBoolean(raw.expandSingleSchemaField);
-    this.schemaExpansionLevel = argValueToExpandLevel(raw.schemaExpansionLevel);
+    this.schemasExpansionLevel = argValueToExpandLevel(
+      raw.schemasExpansionLevel || raw.schemaExpansionLevel,
+    );
+    this.schemaDefinitionsTagName = raw.schemaDefinitionsTagName;
     this.showObjectSchemaExamples = argValueToBoolean(raw.showObjectSchemaExamples);
     this.showSecuritySchemeType = argValueToBoolean(raw.showSecuritySchemeType);
     this.hideSecuritySection = argValueToBoolean(raw.hideSecuritySection);
@@ -330,13 +353,13 @@ export class RedocNormalizedOptions {
       : raw.ignoreNamedSchemas?.split(',').map(s => s.trim());
     this.ignoreNamedSchemas = new Set(ignoreNamedSchemas);
     this.hideSchemaPattern = argValueToBoolean(raw.hideSchemaPattern);
-    this.generatedPayloadSamplesMaxDepth =
-      RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
-        raw.generatedPayloadSamplesMaxDepth,
-      );
+    this.generatedSamplesMaxDepth = RedocNormalizedOptions.normalizeGeneratedPayloadSamplesMaxDepth(
+      raw.generatedSamplesMaxDepth || raw.generatedPayloadSamplesMaxDepth,
+    );
     this.nonce = raw.nonce;
     this.hideFab = argValueToBoolean(raw.hideFab);
     this.minCharacterLengthToInitSearch = argValueToNumber(raw.minCharacterLengthToInitSearch) || 3;
     this.showWebhookVerb = argValueToBoolean(raw.showWebhookVerb);
+    this.hidePropertiesPrefix = argValueToBoolean(raw.hidePropertiesPrefix, true);
   }
 }

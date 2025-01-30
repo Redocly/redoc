@@ -309,6 +309,9 @@ components:
       enum:
         - event
         - general
+      x-enumDescriptions:
+        event: Special event ticket
+        general: General museum entry ticket
       example: event
     Date:
       type: string
@@ -776,6 +779,9 @@ x-tagGroups:
   - name: Purchases
     tags:
       - Tickets
+  - name: Entities
+    tags:
+      - Schemas
 
 security:
   - MuseumPlaceholderAuth: []

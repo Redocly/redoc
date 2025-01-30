@@ -311,6 +311,11 @@ exports[`#loadAndBundleSpec should load And Bundle Spec demo/openapi.yaml 1`] = 
               "sold",
             ],
             "type": "string",
+            "x-enumDescriptions": {
+              "available": "Available status",
+              "pending": "Pending status",
+              "sold": "Sold status",
+            },
           },
           "tags": {
             "description": "Tags attached to the pet",

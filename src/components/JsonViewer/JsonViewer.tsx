@@ -45,7 +45,7 @@ const Json = (props: JsonProps) => {
               // tslint:disable-next-line
               ref={node => setNode(node!)}
               dangerouslySetInnerHTML={{
-                __html: jsonToHTML(props.data, options.jsonSampleExpandLevel),
+                __html: jsonToHTML(props.data, options.jsonSamplesExpandLevel),
               }}
             />
           )}

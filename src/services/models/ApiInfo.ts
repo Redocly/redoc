@@ -1,5 +1,6 @@
 import type { OpenAPIContact, OpenAPIInfo, OpenAPILicense } from '../../types';
 import { IS_BROWSER } from '../../utils/';
+import { l } from '../Labels';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
 
@@ -13,7 +14,10 @@ export class ApiInfoModel implements OpenAPIInfo {
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
 
-  downloadLink?: string;
+  downloadUrls: {
+    title?: string;
+    url?: string;
+  }[];
   downloadFileName?: string;
 
   constructor(
@@ -29,13 +33,28 @@ export class ApiInfoModel implements OpenAPIInfo {
       this.description = this.description.substring(0, firstHeadingLinePos);
     }
 
-    this.downloadLink = this.getDownloadLink();
+    this.downloadUrls = this.getDownloadUrls();
     this.downloadFileName = this.getDownloadFileName();
   }
+  private getDownloadUrls() {
+    return (
+      !this.options.downloadUrls
+        ? [
+            {
+              title: l('download'),
+              url: this.getDownloadLink(this.options.downloadDefinitionUrl),
+            },
+          ]
+        : this.options.downloadUrls.map(({ title, url }) => ({
+            title: title || l('download'),
+            url: this.getDownloadLink(url),
+          }))
+    ).filter(({ title, url }) => title && url);
+  }
 
-  private getDownloadLink(): string | undefined {
-    if (this.options.downloadDefinitionUrl) {
-      return this.options.downloadDefinitionUrl;
+  private getDownloadLink(url?: string): string | undefined {
+    if (url) {
+      return url;
     }
 
     if (this.parser.specUrl) {
