@@ -71,6 +71,30 @@ describe('Utils', () => {
         const obj2 = { a: ['C'], b: ['D'] };
         expect(mergeObjects({}, obj1, obj2)).toEqual({ a: ['C'], b: ['D'] });
       });
+      test('should prevent prototype pollution', () => {
+        const target = {};
+        const source = JSON.parse('{"__proto__": {"polluted": "yes"}}');
+
+        mergeObjects(target, source);
+
+        expect(({} as any).polluted).toBeUndefined();
+      });
+      test('should merge objects correctly', () => {
+        const target = { a: 1 };
+        const source = { b: 2 };
+
+        const result = mergeObjects(target, source);
+
+        expect(result).toEqual({ a: 1, b: 2 });
+      });
+      test('should handle nested objects', () => {
+        const target = { a: { b: 1 } };
+        const source = { a: { c: 2 } };
+
+        const result = mergeObjects(target, source);
+
+        expect(result).toEqual({ a: { b: 1, c: 2 } });
+      });
     });
 
     describe('titleize', () => {

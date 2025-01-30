@@ -10,9 +10,6 @@ You can use the following [vendor extensions](https://redocly.com/docs/openapi-v
     - [Tag Group Object](#tag-group-object)
       - [Fixed fields](#fixed-fields)
       - [x-tagGroups example](#x-taggroups-example)
-    - [x-ignoredHeaderParameters](#x-ignoredheaderparameters)
-      - [How to use with Redoc](#how-to-use-with-redoc-1)
-      - [x-ignoredHeaderParameters example](#x-ignoredheaderparameters-example)
   - [Info Object](#info-object)
     - [x-logo](#x-logo)
       - [How to use with Redoc](#how-to-use-with-redoc-2)
@@ -39,21 +36,21 @@ You can use the following [vendor extensions](https://redocly.com/docs/openapi-v
   - [Schema Object](#schema-object)
     - [x-nullable](#x-nullable)
       - [How to use with Redoc](#how-to-use-with-redoc-7)
-    - [x-extendedDiscriminator](#x-extendeddiscriminator)
-      - [How to use with Redoc](#how-to-use-with-redoc-8)
-      - [x-extendedDiscriminator example](#x-extendeddiscriminator-example)
     - [x-additionalPropertiesName](#x-additionalpropertiesname)
       - [How to use with Redoc](#how-to-use-with-redoc-9)
       - [x-additionalPropertiesName example](#x-additionalpropertiesname-example)
     - [x-explicitMappingOnly](#x-explicitmappingonly)
       - [How to use with Redoc](#how-to-use-with-redoc-10)
       - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
+    - [x-enumDescriptions](#x-enumdescriptions)
+      - [How to use with Redoc](#how-to-use-with-redoc-11)
+      - [x-enumDescriptions example](#x-enumdescriptions-example)
 
 ## Swagger Object
 Extends the OpenAPI root [OpenAPI Object](https://redocly.com/docs/openapi-visual-reference/openapi)
 
 ### x-servers
-Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#serverObject). Currently doesn't support templates.
+Backported from OpenAPI 3.0 [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.0.md#server-object). Currently doesn't support templates.
 
 ### x-tagGroups
 
@@ -103,29 +100,6 @@ x-tagGroups:
     tags:
       - Main Stats
       - Secondary Stats
-```
-
-### x-ignoredHeaderParameters
-
-
-| Field Name                  | Type         | Description |
-| :-------------------------- | :-----------: | :---------- |
-| x-ignoredHeaderParameters   | [ string ] | A list of ignored headers |
-
-
-#### How to use with Redoc
-Use `x-ignoredHeaderParameters` to specify header parameter names which are ignored by Redoc.
-
-#### x-ignoredHeaderParameters example
-```yaml
-swagger: '2.0'
-info:
-  ...
-tags: [...]
-x-ignoredHeaderParameters:
-  - Accept
-  - User-Agent
-  - X-Test-Header
 ```
 
 ## Info Object
@@ -290,59 +264,6 @@ Extends the OpenAPI [Schema Object](https://redocly.com/docs/openapi-visual-refe
 #### How to use with Redoc
 Schemas marked as `x-nullable` are marked in Redoc with the label Nullable.
 
-### x-extendedDiscriminator
-**ATTENTION**: This is a Redoc-specific vendor extension, and is not supported by other tools.
-
-| Field Name     | Type   | Description |
-| :------------- | :------: | :---------- |
-| x-extendedDiscriminator | string | specifies extended discriminator |
-
-#### How to use with Redoc
-Redoc uses this vendor extension to solve name-clash issues with the standard `discriminator`.
-Value of this field specifies the field which is used as an extended discriminator.
-Redoc displays definition with selectpicker using which user can select value of the `x-extendedDiscriminator`-marked field.
-Redoc displays the definition derived from the current (using `allOf`) and has `enum` with only one value which is the same as the selected value of the field specified as `x-extendedDiscriminator`.
-
-#### x-extendedDiscriminator example
-
-```yaml
-
-Payment:
-  x-extendedDiscriminator: type
-  type: object
-  required:
-    - type
-  properties:
-    type:
-      type: string
-    name:
-      type: string
-
-CashPayment:
-  allOf:
-    - $ref: "#/definitions/Payment"
-    - properties:
-        type:
-          type: string
-          enum:
-            - cash
-        currency:
-          type: string
-
-PayPalPayment:
-  allOf:
-    - $ref: "#/definitions/Payment"
-    - properties:
-        type:
-          type: string
-          enum:
-            - paypal
-        userEmail:
-          type: string
-```
-
-In the example above, the names of definitions (`PayPalPayment`) are named differently than names in the payload (`paypal`) which is not supported by default `discriminator`.
-
 ### x-additionalPropertiesName
 **Attention**: This is a Redoc-specific vendor extension, and is not supported by other tools.
 
@@ -402,3 +323,31 @@ Pet:
 ```
 
 Shows in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
+
+### x-enumDescriptions
+| Field Name     | Type   | Description |
+| :------------- | :------: | :---------- |
+| x-enumDescriptions | [[Enum Description Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-enum-descriptions#enum-description-object)] | A list of the enum values and descriptions to include in the documentation. |
+
+#### How to use with Redoc
+The enum (short for "enumeration") fields in OpenAPI allow you to restrict the value of a field to a list of allowed values. These values need to be short and machine-readable, but that can make them harder for humans to parse and work with.
+
+Add x-enumDescriptions to your OpenAPI description to show a helpful table of enum options and an explanation of what each one means. This field supports Markdown.
+
+#### x-enumDescriptions example
+The following example shows a schema with two short-named options, and the x-enumDescriptions entry to list all enum entries and give additional context for each:
+
+```yaml
+components:
+  schemas:
+    TicketType:
+      description: Type of ticket being purchased. Use `general` for regular museum entry and `event` for tickets to special events.
+      type: string
+      enum:
+        - event
+        - general
+      x-enumDescriptions:
+        event: Event Tickets _(timed entry)_
+        general: General Admission
+      example: event
+```

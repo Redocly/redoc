@@ -81,7 +81,6 @@ export function appendToMdHeading(md: string, heading: string, content: string) 
   }
 }
 
-// credits https://stackoverflow.com/a/46973278/1749888
 export const mergeObjects = (target: any, ...sources: any[]): any => {
   if (!sources.length) {
     return target;
@@ -93,13 +92,15 @@ export const mergeObjects = (target: any, ...sources: any[]): any => {
 
   if (isMergebleObject(target) && isMergebleObject(source)) {
     Object.keys(source).forEach((key: string) => {
-      if (isMergebleObject(source[key])) {
-        if (!target[key]) {
-          target[key] = {};
+      if (Object.prototype.hasOwnProperty.call(source, key) && key !== '__proto__') {
+        if (isMergebleObject(source[key])) {
+          if (!target[key]) {
+            target[key] = {};
+          }
+          mergeObjects(target[key], source[key]);
+        } else {
+          target[key] = source[key];
         }
-        mergeObjects(target[key], source[key]);
-      } else {
-        target[key] = source[key];
       }
     });
   }
