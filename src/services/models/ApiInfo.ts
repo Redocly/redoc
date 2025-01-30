@@ -46,7 +46,7 @@ export class ApiInfoModel implements OpenAPIInfo {
             },
           ]
         : this.options.downloadUrls.map(({ title, url }) => ({
-            title: title || 'Download OpenAPI description',
+            title: title || l('download'),
             url: this.getDownloadLink(url),
           }))
     ).filter(({ title, url }) => title && url);

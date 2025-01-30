@@ -88,7 +88,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
                       rel="noreferrer"
                       key={url}
                     >
-                      {downloadUrls.length > 1 ? title : l('download')}
+                      {title}
                     </DownloadButton>
                   );
                 })}

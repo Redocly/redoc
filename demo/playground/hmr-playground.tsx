@@ -11,7 +11,11 @@ const userUrl = window.location.search.match(/url=(.*)$/);
 const specUrl =
   (userUrl && userUrl[1]) || (swagger ? 'museum.yaml' : big ? 'big-openapi.json' : 'museum.yaml');
 
-const options: RedocRawOptions = { nativeScrollbars: false, maxDisplayedEnumValues: 3 };
+const options: RedocRawOptions = {
+  nativeScrollbars: false,
+  maxDisplayedEnumValues: 3,
+  schemaDefinitionsTagName: 'schemas',
+};
 
 const container = document.getElementById('example');
 const root = createRoot(container!);
