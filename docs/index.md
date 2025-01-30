@@ -67,7 +67,7 @@ theme:
   openapi:
     disableSearch: true
     expandResponses: 200,202
-    jsonSampleExpandLevel: 1
+    jsonSamplesExpandLevel: 1
 
     theme:
       sidebar:
