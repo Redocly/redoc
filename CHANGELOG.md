@@ -1,3 +1,18 @@
+# [2.4.0](https://github.com/Redocly/redoc/compare/v2.3.0...v2.4.0) (2025-02-07)
+
+
+### Bug Fixes
+
+* Prototype Pollution Vulnerability Affecting redoc <=2.2.0 ([#2638](https://github.com/Redocly/redoc/issues/2638)) ([153ec7a](https://github.com/Redocly/redoc/commit/153ec7a0b7245639f404c0b038b612ae7377c7db))
+* unify redoc config ([#2647](https://github.com/Redocly/redoc/issues/2647)) ([53a6afc](https://github.com/Redocly/redoc/commit/53a6afc59624fe4591b0a0f1f20f41c0fbb5f1cf))
+
+
+### Features
+
+* add supporting react 19 in package.json ([#2652](https://github.com/Redocly/redoc/issues/2652)) ([3a74802](https://github.com/Redocly/redoc/commit/3a748022be3a7dc7f98669e1645dd5cda72f1abc))
+
+
+
 # [2.3.0](https://github.com/Redocly/redoc/compare/v2.2.0...v2.3.0) (2025-01-16)
 
 
