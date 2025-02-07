@@ -41,6 +41,7 @@ const Json = (props: JsonProps) => {
         <OptionsContext.Consumer>
           {options => (
             <PrismDiv
+              tabIndex={0}
               className={props.className}
               // tslint:disable-next-line
               ref={node => setNode(node!)}
