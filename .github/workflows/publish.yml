@@ -21,7 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run bundle
       - name: Store bundle artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bundles
           path: bundles
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm ci
       - name: Download bundled artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bundles
           path: bundles
@@ -73,7 +73,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - uses: actions/checkout@v3
       - name: Download bundled artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bundles
           path: bundles
@@ -107,7 +107,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Download all artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Publish to S3
         run: npm run publish-cdn
 
