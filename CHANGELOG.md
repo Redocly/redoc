@@ -1,3 +1,17 @@
+# [2.5.0](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.0) (2025-04-14)
+
+
+### Bug Fixes
+
+* enhance accessibility for menu items with keyboard support ([#2655](https://github.com/Redocly/redoc/issues/2655)) ([2db293b](https://github.com/Redocly/redoc/commit/2db293bfb2973497dd33f31dc99e97f5bb90bbe8))
+
+
+### Features
+
+* add keyboard navigation support to JsonViewer component ([#2654](https://github.com/Redocly/redoc/issues/2654)) ([1b4126f](https://github.com/Redocly/redoc/commit/1b4126fde4531387f49c90f52efbd0c0e5f7b6ea))
+
+
+
 # [2.4.0](https://github.com/Redocly/redoc/compare/v2.3.0...v2.4.0) (2025-02-07)
 
 
