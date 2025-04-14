@@ -1,18 +1,14 @@
-# [2.5.0](https://github.com/Redocly/redoc/compare/v2.3.0...v2.5.0) (2025-04-14)
+# [2.5.0](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.0) (2025-04-14)
 
 
 ### Bug Fixes
 
 * enhance accessibility for menu items with keyboard support ([#2655](https://github.com/Redocly/redoc/issues/2655)) ([2db293b](https://github.com/Redocly/redoc/commit/2db293bfb2973497dd33f31dc99e97f5bb90bbe8))
-* Prototype Pollution Vulnerability Affecting redoc <=2.2.0 ([#2638](https://github.com/Redocly/redoc/issues/2638)) ([153ec7a](https://github.com/Redocly/redoc/commit/153ec7a0b7245639f404c0b038b612ae7377c7db))
-* unify redoc config ([#2647](https://github.com/Redocly/redoc/issues/2647)) ([53a6afc](https://github.com/Redocly/redoc/commit/53a6afc59624fe4591b0a0f1f20f41c0fbb5f1cf))
-* update version download/upload artifacts in cicd ([#2656](https://github.com/Redocly/redoc/issues/2656)) ([6fa5a2a](https://github.com/Redocly/redoc/commit/6fa5a2a57a9d076e793353a4cad934f88dce4624))
 
 
 ### Features
 
 * add keyboard navigation support to JsonViewer component ([#2654](https://github.com/Redocly/redoc/issues/2654)) ([1b4126f](https://github.com/Redocly/redoc/commit/1b4126fde4531387f49c90f52efbd0c0e5f7b6ea))
-* add supporting react 19 in package.json ([#2652](https://github.com/Redocly/redoc/issues/2652)) ([3a74802](https://github.com/Redocly/redoc/commit/3a748022be3a7dc7f98669e1645dd5cda72f1abc))
 
 
 
