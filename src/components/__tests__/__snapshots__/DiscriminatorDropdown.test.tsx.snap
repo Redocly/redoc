@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Components SchemaView discriminator should correctly render SchemaView 1`] = `
-<wrappedComponent
+<Unknown
   discriminator={
-    Object {
+    {
       "fieldName": "type",
       "parentSchema": SchemaModel {
         "activeOneOf": 0,
         "const": "",
-        "constraints": Array [],
+        "constraints": [],
         "contentEncoding": undefined,
         "contentMediaType": undefined,
         "default": undefined,
@@ -17,7 +17,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "discriminatorProp": "type",
         "displayFormat": undefined,
         "displayType": "object",
-        "enum": Array [],
+        "enum": [],
         "example": undefined,
         "examples": undefined,
         "externalDocs": undefined,
@@ -26,11 +26,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "isPrimitive": false,
         "maxItems": undefined,
         "minItems": undefined,
-        "oneOf": Array [
+        "oneOf": [
           SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -38,11 +38,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "description": "",
             "displayFormat": undefined,
             "displayType": "object",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
-            "fields": Array [
+            "fields": [
               FieldModel {
                 "const": "",
                 "deprecated": false,
@@ -57,7 +57,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": SchemaModel {
                   "activeOneOf": 0,
                   "const": "",
-                  "constraints": Array [],
+                  "constraints": [],
                   "contentEncoding": undefined,
                   "contentMediaType": undefined,
                   "default": undefined,
@@ -65,7 +65,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "description": "",
                   "displayFormat": undefined,
                   "displayType": "number",
-                  "enum": Array [],
+                  "enum": [],
                   "example": undefined,
                   "examples": undefined,
                   "externalDocs": undefined,
@@ -75,24 +75,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "maxItems": undefined,
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
-                    "allowedMdComponents": Object {},
+                    "allowedMdComponents": {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
+                    "downloadUrls": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
-                    "expandResponses": Object {},
+                    "expandResponses": {},
                     "expandSingleSchemaField": false,
-                    "generatedPayloadSamplesMaxDepth": 10,
-                    "hideDownloadButton": false,
+                    "generatedSamplesMaxDepth": 10,
+                    "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
+                    "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
                     "hideSecuritySection": false,
                     "hideSingleRequestSampleTab": false,
                     "ignoreNamedSchemas": Set {},
-                    "jsonSampleExpandLevel": 2,
+                    "jsonSamplesExpandLevel": 2,
                     "maxDisplayedEnumValues": undefined,
                     "menuToggle": true,
                     "minCharacterLengthToInitSearch": 3,
@@ -101,8 +104,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "onlyRequiredInSamples": false,
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
-                    "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "sanitize": false,
+                    "schemaDefinitionsTagName": undefined,
+                    "schemasExpansionLevel": 0,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -113,32 +117,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sortEnumValuesAlphabetically": false,
                     "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortRequiredPropsFirst": false,
                     "sortTagsAlphabetically": false,
-                    "theme": Object {
-                      "breakpoints": Object {
+                    "theme": {
+                      "breakpoints": {
                         "large": "105rem",
                         "medium": "75rem",
                         "small": "50rem",
                       },
-                      "codeBlock": Object {
+                      "codeBlock": {
                         "backgroundColor": "#11171a",
                       },
-                      "colors": Object {
-                        "border": Object {
+                      "colors": {
+                        "border": {
                           "dark": "rgba(0,0,0, 0.1)",
                           "light": "#ffffff",
                         },
-                        "error": Object {
+                        "error": {
                           "contrastText": "#fff",
                           "dark": "#7a1210",
                           "light": "#eb6d6b",
                           "main": "#d41f1c",
                         },
-                        "gray": Object {
+                        "gray": {
                           "100": "#F5F5F5",
                           "50": "#FAFAFA",
                         },
-                        "http": Object {
+                        "http": {
                           "basic": "#707070",
                           "delete": "#cc3333",
                           "get": "#2F8132",
@@ -149,46 +154,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "post": "#186FAF",
                           "put": "#95507c",
                         },
-                        "primary": Object {
+                        "primary": {
                           "contrastText": "#fff",
                           "dark": "#1a1a51",
                           "light": "#6868cf",
                           "main": "#32329f",
                         },
-                        "responses": Object {
-                          "error": Object {
+                        "responses": {
+                          "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
                             "tabTextColor": "#d41f1c",
                           },
-                          "info": Object {
+                          "info": {
                             "backgroundColor": "rgba(135,206,235,0.1)",
                             "color": "#87ceeb",
                             "tabTextColor": "#87ceeb",
                           },
-                          "redirect": Object {
+                          "redirect": {
                             "backgroundColor": "rgba(255,165,0,0.1)",
                             "color": "#ffa500",
                             "tabTextColor": "#ffa500",
                           },
-                          "success": Object {
+                          "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
                             "tabTextColor": "#1d8127",
                           },
                         },
-                        "success": Object {
+                        "success": {
                           "contrastText": "#fff",
                           "dark": "#0a2e0e",
                           "light": "#86e490",
                           "main": "#1d8127",
                         },
-                        "text": Object {
+                        "text": {
                           "primary": "#333333",
                           "secondary": "#666",
                         },
                         "tonalOffset": 0.2,
-                        "warning": Object {
+                        "warning": {
                           "contrastText": "#ffffff",
                           "dark": "#996300",
                           "light": "#ffc966",
@@ -196,31 +201,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
-                      "fab": Object {
+                      "fab": {
                         "backgroundColor": "#f2f2f2",
                         "color": "#0065FB",
                       },
-                      "logo": Object {
+                      "logo": {
                         "gutter": "2px",
                         "maxHeight": "260px",
                         "maxWidth": "260px",
                       },
-                      "rightPanel": Object {
+                      "rightPanel": {
                         "backgroundColor": "#263238",
-                        "servers": Object {
-                          "overlay": Object {
+                        "servers": {
+                          "overlay": {
                             "backgroundColor": "#fafafa",
                             "textColor": "#263238",
                           },
-                          "url": Object {
+                          "url": {
                             "backgroundColor": "#fff",
                           },
                         },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
-                      "schema": Object {
-                        "arrow": Object {
+                      "schema": {
+                        "arrow": {
                           "color": "#666",
                           "size": "1.1em",
                         },
@@ -233,19 +238,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "typeNameColor": "#666",
                         "typeTitleColor": "#666",
                       },
-                      "sidebar": Object {
+                      "sidebar": {
                         "activeTextColor": "#32329f",
-                        "arrow": Object {
+                        "arrow": {
                           "color": "#333333",
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
-                        "groupItems": Object {
+                        "groupItems": {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
-                        "level1Items": Object {
+                        "level1Items": {
                           "activeBackgroundColor": "#ededed",
                           "activeTextColor": "#32329f",
                           "textTransform": "none",
@@ -253,13 +258,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "textColor": "#333333",
                         "width": "260px",
                       },
-                      "spacing": Object {
+                      "spacing": {
                         "sectionHorizontal": 40,
                         "sectionVertical": 40,
                         "unit": 5,
                       },
-                      "typography": Object {
-                        "code": Object {
+                      "typography": {
+                        "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
                           "color": "#e53935",
                           "fontFamily": "Courier, monospace",
@@ -273,13 +278,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "fontWeightBold": "600",
                         "fontWeightLight": "300",
                         "fontWeightRegular": "400",
-                        "headings": Object {
+                        "headings": {
                           "fontFamily": "Montserrat, sans-serif",
                           "fontWeight": "400",
                           "lineHeight": "1.6em",
                         },
                         "lineHeight": "1.5em",
-                        "links": Object {
+                        "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
                           "hoverTextDecoration": "auto",
@@ -291,20 +296,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                     },
                     "unstable_ignoreMimeParameters": false,
-                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Dog/properties/packSize",
-                  "rawSchema": Object {
+                  "rawSchema": {
                     "default": undefined,
                     "type": "number",
                   },
                   "readOnly": false,
-                  "refsStack": Array [
+                  "refsStack": [
                     "#/components/schemas/Dog",
                     "#/components/schemas/Dog/properties/packSize",
                   ],
-                  "schema": Object {
+                  "schema": {
                     "default": undefined,
                     "type": "number",
                   },
@@ -312,6 +316,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "type": "number",
                   "typePrefix": "",
                   "writeOnly": false,
+                  "x-enumDescriptions": undefined,
                 },
               },
               FieldModel {
@@ -328,7 +333,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": SchemaModel {
                   "activeOneOf": 0,
                   "const": "",
-                  "constraints": Array [],
+                  "constraints": [],
                   "contentEncoding": undefined,
                   "contentMediaType": undefined,
                   "default": undefined,
@@ -336,7 +341,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "description": "",
                   "displayFormat": undefined,
                   "displayType": "string",
-                  "enum": Array [],
+                  "enum": [],
                   "example": undefined,
                   "examples": undefined,
                   "externalDocs": undefined,
@@ -346,24 +351,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "maxItems": undefined,
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
-                    "allowedMdComponents": Object {},
+                    "allowedMdComponents": {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
+                    "downloadUrls": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
-                    "expandResponses": Object {},
+                    "expandResponses": {},
                     "expandSingleSchemaField": false,
-                    "generatedPayloadSamplesMaxDepth": 10,
-                    "hideDownloadButton": false,
+                    "generatedSamplesMaxDepth": 10,
+                    "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
+                    "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
                     "hideSecuritySection": false,
                     "hideSingleRequestSampleTab": false,
                     "ignoreNamedSchemas": Set {},
-                    "jsonSampleExpandLevel": 2,
+                    "jsonSamplesExpandLevel": 2,
                     "maxDisplayedEnumValues": undefined,
                     "menuToggle": true,
                     "minCharacterLengthToInitSearch": 3,
@@ -372,8 +380,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "onlyRequiredInSamples": false,
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
-                    "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "sanitize": false,
+                    "schemaDefinitionsTagName": undefined,
+                    "schemasExpansionLevel": 0,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -384,32 +393,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sortEnumValuesAlphabetically": false,
                     "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortRequiredPropsFirst": false,
                     "sortTagsAlphabetically": false,
-                    "theme": Object {
-                      "breakpoints": Object {
+                    "theme": {
+                      "breakpoints": {
                         "large": "105rem",
                         "medium": "75rem",
                         "small": "50rem",
                       },
-                      "codeBlock": Object {
+                      "codeBlock": {
                         "backgroundColor": "#11171a",
                       },
-                      "colors": Object {
-                        "border": Object {
+                      "colors": {
+                        "border": {
                           "dark": "rgba(0,0,0, 0.1)",
                           "light": "#ffffff",
                         },
-                        "error": Object {
+                        "error": {
                           "contrastText": "#fff",
                           "dark": "#7a1210",
                           "light": "#eb6d6b",
                           "main": "#d41f1c",
                         },
-                        "gray": Object {
+                        "gray": {
                           "100": "#F5F5F5",
                           "50": "#FAFAFA",
                         },
-                        "http": Object {
+                        "http": {
                           "basic": "#707070",
                           "delete": "#cc3333",
                           "get": "#2F8132",
@@ -420,46 +430,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "post": "#186FAF",
                           "put": "#95507c",
                         },
-                        "primary": Object {
+                        "primary": {
                           "contrastText": "#fff",
                           "dark": "#1a1a51",
                           "light": "#6868cf",
                           "main": "#32329f",
                         },
-                        "responses": Object {
-                          "error": Object {
+                        "responses": {
+                          "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
                             "tabTextColor": "#d41f1c",
                           },
-                          "info": Object {
+                          "info": {
                             "backgroundColor": "rgba(135,206,235,0.1)",
                             "color": "#87ceeb",
                             "tabTextColor": "#87ceeb",
                           },
-                          "redirect": Object {
+                          "redirect": {
                             "backgroundColor": "rgba(255,165,0,0.1)",
                             "color": "#ffa500",
                             "tabTextColor": "#ffa500",
                           },
-                          "success": Object {
+                          "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
                             "tabTextColor": "#1d8127",
                           },
                         },
-                        "success": Object {
+                        "success": {
                           "contrastText": "#fff",
                           "dark": "#0a2e0e",
                           "light": "#86e490",
                           "main": "#1d8127",
                         },
-                        "text": Object {
+                        "text": {
                           "primary": "#333333",
                           "secondary": "#666",
                         },
                         "tonalOffset": 0.2,
-                        "warning": Object {
+                        "warning": {
                           "contrastText": "#ffffff",
                           "dark": "#996300",
                           "light": "#ffc966",
@@ -467,31 +477,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
-                      "fab": Object {
+                      "fab": {
                         "backgroundColor": "#f2f2f2",
                         "color": "#0065FB",
                       },
-                      "logo": Object {
+                      "logo": {
                         "gutter": "2px",
                         "maxHeight": "260px",
                         "maxWidth": "260px",
                       },
-                      "rightPanel": Object {
+                      "rightPanel": {
                         "backgroundColor": "#263238",
-                        "servers": Object {
-                          "overlay": Object {
+                        "servers": {
+                          "overlay": {
                             "backgroundColor": "#fafafa",
                             "textColor": "#263238",
                           },
-                          "url": Object {
+                          "url": {
                             "backgroundColor": "#fff",
                           },
                         },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
-                      "schema": Object {
-                        "arrow": Object {
+                      "schema": {
+                        "arrow": {
                           "color": "#666",
                           "size": "1.1em",
                         },
@@ -504,19 +514,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "typeNameColor": "#666",
                         "typeTitleColor": "#666",
                       },
-                      "sidebar": Object {
+                      "sidebar": {
                         "activeTextColor": "#32329f",
-                        "arrow": Object {
+                        "arrow": {
                           "color": "#333333",
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
-                        "groupItems": Object {
+                        "groupItems": {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
-                        "level1Items": Object {
+                        "level1Items": {
                           "activeBackgroundColor": "#ededed",
                           "activeTextColor": "#32329f",
                           "textTransform": "none",
@@ -524,13 +534,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "textColor": "#333333",
                         "width": "260px",
                       },
-                      "spacing": Object {
+                      "spacing": {
                         "sectionHorizontal": 40,
                         "sectionVertical": 40,
                         "unit": 5,
                       },
-                      "typography": Object {
-                        "code": Object {
+                      "typography": {
+                        "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
                           "color": "#e53935",
                           "fontFamily": "Courier, monospace",
@@ -544,13 +554,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "fontWeightBold": "600",
                         "fontWeightLight": "300",
                         "fontWeightRegular": "400",
-                        "headings": Object {
+                        "headings": {
                           "fontFamily": "Montserrat, sans-serif",
                           "fontWeight": "400",
                           "lineHeight": "1.6em",
                         },
                         "lineHeight": "1.5em",
-                        "links": Object {
+                        "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
                           "hoverTextDecoration": "auto",
@@ -562,20 +572,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                     },
                     "unstable_ignoreMimeParameters": false,
-                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Dog/properties/type",
-                  "rawSchema": Object {
+                  "rawSchema": {
                     "default": undefined,
                     "type": "string",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Dog",
                       "#/components/schemas/Pet",
                     ],
                   },
                   "readOnly": false,
-                  "refsStack": Array [
+                  "refsStack": [
                     "#/components/schemas/Dog",
                     "#/components/schemas/Dog",
                     "#/components/schemas/Pet",
@@ -583,10 +592,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Pet",
                     "#/components/schemas/Dog/properties/type",
                   ],
-                  "schema": Object {
+                  "schema": {
                     "default": undefined,
                     "type": "string",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Dog",
                       "#/components/schemas/Pet",
                     ],
@@ -595,6 +604,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "type": "string",
                   "typePrefix": "",
                   "writeOnly": false,
+                  "x-enumDescriptions": undefined,
                 },
               },
             ],
@@ -604,24 +614,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "maxItems": undefined,
             "minItems": undefined,
             "options": RedocNormalizedOptions {
-              "allowedMdComponents": Object {},
+              "allowedMdComponents": {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
+              "downloadUrls": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
-              "expandResponses": Object {},
+              "expandResponses": {},
               "expandSingleSchemaField": false,
-              "generatedPayloadSamplesMaxDepth": 10,
-              "hideDownloadButton": false,
+              "generatedSamplesMaxDepth": 10,
+              "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
+              "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
               "hideSecuritySection": false,
               "hideSingleRequestSampleTab": false,
               "ignoreNamedSchemas": Set {},
-              "jsonSampleExpandLevel": 2,
+              "jsonSamplesExpandLevel": 2,
               "maxDisplayedEnumValues": undefined,
               "menuToggle": true,
               "minCharacterLengthToInitSearch": 3,
@@ -630,8 +643,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "onlyRequiredInSamples": false,
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
-              "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "sanitize": false,
+              "schemaDefinitionsTagName": undefined,
+              "schemasExpansionLevel": 0,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -642,32 +656,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sortEnumValuesAlphabetically": false,
               "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortRequiredPropsFirst": false,
               "sortTagsAlphabetically": false,
-              "theme": Object {
-                "breakpoints": Object {
+              "theme": {
+                "breakpoints": {
                   "large": "105rem",
                   "medium": "75rem",
                   "small": "50rem",
                 },
-                "codeBlock": Object {
+                "codeBlock": {
                   "backgroundColor": "#11171a",
                 },
-                "colors": Object {
-                  "border": Object {
+                "colors": {
+                  "border": {
                     "dark": "rgba(0,0,0, 0.1)",
                     "light": "#ffffff",
                   },
-                  "error": Object {
+                  "error": {
                     "contrastText": "#fff",
                     "dark": "#7a1210",
                     "light": "#eb6d6b",
                     "main": "#d41f1c",
                   },
-                  "gray": Object {
+                  "gray": {
                     "100": "#F5F5F5",
                     "50": "#FAFAFA",
                   },
-                  "http": Object {
+                  "http": {
                     "basic": "#707070",
                     "delete": "#cc3333",
                     "get": "#2F8132",
@@ -678,46 +693,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "post": "#186FAF",
                     "put": "#95507c",
                   },
-                  "primary": Object {
+                  "primary": {
                     "contrastText": "#fff",
                     "dark": "#1a1a51",
                     "light": "#6868cf",
                     "main": "#32329f",
                   },
-                  "responses": Object {
-                    "error": Object {
+                  "responses": {
+                    "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
                       "tabTextColor": "#d41f1c",
                     },
-                    "info": Object {
+                    "info": {
                       "backgroundColor": "rgba(135,206,235,0.1)",
                       "color": "#87ceeb",
                       "tabTextColor": "#87ceeb",
                     },
-                    "redirect": Object {
+                    "redirect": {
                       "backgroundColor": "rgba(255,165,0,0.1)",
                       "color": "#ffa500",
                       "tabTextColor": "#ffa500",
                     },
-                    "success": Object {
+                    "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
                       "tabTextColor": "#1d8127",
                     },
                   },
-                  "success": Object {
+                  "success": {
                     "contrastText": "#fff",
                     "dark": "#0a2e0e",
                     "light": "#86e490",
                     "main": "#1d8127",
                   },
-                  "text": Object {
+                  "text": {
                     "primary": "#333333",
                     "secondary": "#666",
                   },
                   "tonalOffset": 0.2,
-                  "warning": Object {
+                  "warning": {
                     "contrastText": "#ffffff",
                     "dark": "#996300",
                     "light": "#ffc966",
@@ -725,31 +740,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
-                "fab": Object {
+                "fab": {
                   "backgroundColor": "#f2f2f2",
                   "color": "#0065FB",
                 },
-                "logo": Object {
+                "logo": {
                   "gutter": "2px",
                   "maxHeight": "260px",
                   "maxWidth": "260px",
                 },
-                "rightPanel": Object {
+                "rightPanel": {
                   "backgroundColor": "#263238",
-                  "servers": Object {
-                    "overlay": Object {
+                  "servers": {
+                    "overlay": {
                       "backgroundColor": "#fafafa",
                       "textColor": "#263238",
                     },
-                    "url": Object {
+                    "url": {
                       "backgroundColor": "#fff",
                     },
                   },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
-                "schema": Object {
-                  "arrow": Object {
+                "schema": {
+                  "arrow": {
                     "color": "#666",
                     "size": "1.1em",
                   },
@@ -762,19 +777,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "typeNameColor": "#666",
                   "typeTitleColor": "#666",
                 },
-                "sidebar": Object {
+                "sidebar": {
                   "activeTextColor": "#32329f",
-                  "arrow": Object {
+                  "arrow": {
                     "color": "#333333",
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
-                  "groupItems": Object {
+                  "groupItems": {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
-                  "level1Items": Object {
+                  "level1Items": {
                     "activeBackgroundColor": "#ededed",
                     "activeTextColor": "#32329f",
                     "textTransform": "none",
@@ -782,13 +797,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "textColor": "#333333",
                   "width": "260px",
                 },
-                "spacing": Object {
+                "spacing": {
                   "sectionHorizontal": 40,
                   "sectionVertical": 40,
                   "unit": 5,
                 },
-                "typography": Object {
-                  "code": Object {
+                "typography": {
+                  "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
                     "color": "#e53935",
                     "fontFamily": "Courier, monospace",
@@ -802,13 +817,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "fontWeightBold": "600",
                   "fontWeightLight": "300",
                   "fontWeightRegular": "400",
-                  "headings": Object {
+                  "headings": {
                     "fontFamily": "Montserrat, sans-serif",
                     "fontWeight": "400",
                     "lineHeight": "1.6em",
                   },
                   "lineHeight": "1.5em",
-                  "links": Object {
+                  "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
                     "hoverTextDecoration": "auto",
@@ -820,54 +835,53 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
               },
               "unstable_ignoreMimeParameters": false,
-              "untrustedSpec": false,
             },
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog",
-            "rawSchema": Object {
-              "allOf": Array [
-                Object {
+            "rawSchema": {
+              "allOf": [
+                {
                   "$ref": "#/components/schemas/Pet",
                 },
               ],
-              "properties": Object {
-                "packSize": Object {
+              "properties": {
+                "packSize": {
                   "type": "number",
                 },
               },
               "type": "object",
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Dog",
             ],
-            "schema": Object {
+            "schema": {
               "allOf": undefined,
               "description": undefined,
-              "discriminator": Object {
+              "discriminator": {
                 "propertyName": "type",
               },
-              "properties": Object {
-                "packSize": Object {
+              "properties": {
+                "packSize": {
                   "type": "number",
                 },
-                "type": Object {
+                "type": {
                   "type": "string",
-                  "x-refsStack": Array [
+                  "x-refsStack": [
                     "#/components/schemas/Dog",
                     "#/components/schemas/Pet",
                   ],
                 },
               },
               "readOnly": undefined,
-              "required": Array [
+              "required": [
                 "type",
               ],
               "title": "Dog",
               "type": "object",
               "writeOnly": undefined,
               "x-circular-ref": undefined,
-              "x-parentRefs": Array [
+              "x-parentRefs": [
                 "#/components/schemas/Pet",
               ],
             },
@@ -875,11 +889,12 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "type": "object",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
           SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -887,11 +902,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "description": "",
             "displayFormat": undefined,
             "displayType": "object",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
-            "fields": Array [
+            "fields": [
               FieldModel {
                 "const": "",
                 "deprecated": false,
@@ -906,7 +921,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": SchemaModel {
                   "activeOneOf": 0,
                   "const": "",
-                  "constraints": Array [],
+                  "constraints": [],
                   "contentEncoding": undefined,
                   "contentMediaType": undefined,
                   "default": undefined,
@@ -914,7 +929,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "description": "",
                   "displayFormat": undefined,
                   "displayType": "string",
-                  "enum": Array [],
+                  "enum": [],
                   "example": undefined,
                   "examples": undefined,
                   "externalDocs": undefined,
@@ -924,24 +939,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "maxItems": undefined,
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
-                    "allowedMdComponents": Object {},
+                    "allowedMdComponents": {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
+                    "downloadUrls": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
-                    "expandResponses": Object {},
+                    "expandResponses": {},
                     "expandSingleSchemaField": false,
-                    "generatedPayloadSamplesMaxDepth": 10,
-                    "hideDownloadButton": false,
+                    "generatedSamplesMaxDepth": 10,
+                    "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
+                    "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
                     "hideSecuritySection": false,
                     "hideSingleRequestSampleTab": false,
                     "ignoreNamedSchemas": Set {},
-                    "jsonSampleExpandLevel": 2,
+                    "jsonSamplesExpandLevel": 2,
                     "maxDisplayedEnumValues": undefined,
                     "menuToggle": true,
                     "minCharacterLengthToInitSearch": 3,
@@ -950,8 +968,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "onlyRequiredInSamples": false,
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
-                    "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "sanitize": false,
+                    "schemaDefinitionsTagName": undefined,
+                    "schemasExpansionLevel": 0,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -962,32 +981,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sortEnumValuesAlphabetically": false,
                     "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortRequiredPropsFirst": false,
                     "sortTagsAlphabetically": false,
-                    "theme": Object {
-                      "breakpoints": Object {
+                    "theme": {
+                      "breakpoints": {
                         "large": "105rem",
                         "medium": "75rem",
                         "small": "50rem",
                       },
-                      "codeBlock": Object {
+                      "codeBlock": {
                         "backgroundColor": "#11171a",
                       },
-                      "colors": Object {
-                        "border": Object {
+                      "colors": {
+                        "border": {
                           "dark": "rgba(0,0,0, 0.1)",
                           "light": "#ffffff",
                         },
-                        "error": Object {
+                        "error": {
                           "contrastText": "#fff",
                           "dark": "#7a1210",
                           "light": "#eb6d6b",
                           "main": "#d41f1c",
                         },
-                        "gray": Object {
+                        "gray": {
                           "100": "#F5F5F5",
                           "50": "#FAFAFA",
                         },
-                        "http": Object {
+                        "http": {
                           "basic": "#707070",
                           "delete": "#cc3333",
                           "get": "#2F8132",
@@ -998,46 +1018,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "post": "#186FAF",
                           "put": "#95507c",
                         },
-                        "primary": Object {
+                        "primary": {
                           "contrastText": "#fff",
                           "dark": "#1a1a51",
                           "light": "#6868cf",
                           "main": "#32329f",
                         },
-                        "responses": Object {
-                          "error": Object {
+                        "responses": {
+                          "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
                             "tabTextColor": "#d41f1c",
                           },
-                          "info": Object {
+                          "info": {
                             "backgroundColor": "rgba(135,206,235,0.1)",
                             "color": "#87ceeb",
                             "tabTextColor": "#87ceeb",
                           },
-                          "redirect": Object {
+                          "redirect": {
                             "backgroundColor": "rgba(255,165,0,0.1)",
                             "color": "#ffa500",
                             "tabTextColor": "#ffa500",
                           },
-                          "success": Object {
+                          "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
                             "tabTextColor": "#1d8127",
                           },
                         },
-                        "success": Object {
+                        "success": {
                           "contrastText": "#fff",
                           "dark": "#0a2e0e",
                           "light": "#86e490",
                           "main": "#1d8127",
                         },
-                        "text": Object {
+                        "text": {
                           "primary": "#333333",
                           "secondary": "#666",
                         },
                         "tonalOffset": 0.2,
-                        "warning": Object {
+                        "warning": {
                           "contrastText": "#ffffff",
                           "dark": "#996300",
                           "light": "#ffc966",
@@ -1045,31 +1065,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
-                      "fab": Object {
+                      "fab": {
                         "backgroundColor": "#f2f2f2",
                         "color": "#0065FB",
                       },
-                      "logo": Object {
+                      "logo": {
                         "gutter": "2px",
                         "maxHeight": "260px",
                         "maxWidth": "260px",
                       },
-                      "rightPanel": Object {
+                      "rightPanel": {
                         "backgroundColor": "#263238",
-                        "servers": Object {
-                          "overlay": Object {
+                        "servers": {
+                          "overlay": {
                             "backgroundColor": "#fafafa",
                             "textColor": "#263238",
                           },
-                          "url": Object {
+                          "url": {
                             "backgroundColor": "#fff",
                           },
                         },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
-                      "schema": Object {
-                        "arrow": Object {
+                      "schema": {
+                        "arrow": {
                           "color": "#666",
                           "size": "1.1em",
                         },
@@ -1082,19 +1102,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "typeNameColor": "#666",
                         "typeTitleColor": "#666",
                       },
-                      "sidebar": Object {
+                      "sidebar": {
                         "activeTextColor": "#32329f",
-                        "arrow": Object {
+                        "arrow": {
                           "color": "#333333",
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
-                        "groupItems": Object {
+                        "groupItems": {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
-                        "level1Items": Object {
+                        "level1Items": {
                           "activeBackgroundColor": "#ededed",
                           "activeTextColor": "#32329f",
                           "textTransform": "none",
@@ -1102,13 +1122,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "textColor": "#333333",
                         "width": "260px",
                       },
-                      "spacing": Object {
+                      "spacing": {
                         "sectionHorizontal": 40,
                         "sectionVertical": 40,
                         "unit": 5,
                       },
-                      "typography": Object {
-                        "code": Object {
+                      "typography": {
+                        "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
                           "color": "#e53935",
                           "fontFamily": "Courier, monospace",
@@ -1122,13 +1142,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "fontWeightBold": "600",
                         "fontWeightLight": "300",
                         "fontWeightRegular": "400",
-                        "headings": Object {
+                        "headings": {
                           "fontFamily": "Montserrat, sans-serif",
                           "fontWeight": "400",
                           "lineHeight": "1.6em",
                         },
                         "lineHeight": "1.5em",
-                        "links": Object {
+                        "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
                           "hoverTextDecoration": "auto",
@@ -1140,20 +1160,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                     },
                     "unstable_ignoreMimeParameters": false,
-                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Cat/properties/type",
-                  "rawSchema": Object {
+                  "rawSchema": {
                     "default": undefined,
                     "type": "string",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Cat",
                       "#/components/schemas/Pet",
                     ],
                   },
                   "readOnly": false,
-                  "refsStack": Array [
+                  "refsStack": [
                     "#/components/schemas/Cat",
                     "#/components/schemas/Cat",
                     "#/components/schemas/Pet",
@@ -1161,10 +1180,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Pet",
                     "#/components/schemas/Cat/properties/type",
                   ],
-                  "schema": Object {
+                  "schema": {
                     "default": undefined,
                     "type": "string",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Cat",
                       "#/components/schemas/Pet",
                     ],
@@ -1173,6 +1192,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "type": "string",
                   "typePrefix": "",
                   "writeOnly": false,
+                  "x-enumDescriptions": undefined,
                 },
               },
               FieldModel {
@@ -1189,7 +1209,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "schema": SchemaModel {
                   "activeOneOf": 0,
                   "const": "",
-                  "constraints": Array [],
+                  "constraints": [],
                   "contentEncoding": undefined,
                   "contentMediaType": undefined,
                   "default": undefined,
@@ -1197,7 +1217,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "description": "",
                   "displayFormat": undefined,
                   "displayType": "number",
-                  "enum": Array [],
+                  "enum": [],
                   "example": undefined,
                   "examples": undefined,
                   "externalDocs": undefined,
@@ -1207,24 +1227,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "maxItems": undefined,
                   "minItems": undefined,
                   "options": RedocNormalizedOptions {
-                    "allowedMdComponents": Object {},
+                    "allowedMdComponents": {},
                     "disableSearch": false,
                     "downloadDefinitionUrl": undefined,
                     "downloadFileName": undefined,
+                    "downloadUrls": undefined,
                     "enumSkipQuotes": false,
                     "expandDefaultServerVariables": false,
-                    "expandResponses": Object {},
+                    "expandResponses": {},
                     "expandSingleSchemaField": false,
-                    "generatedPayloadSamplesMaxDepth": 10,
-                    "hideDownloadButton": false,
+                    "generatedSamplesMaxDepth": 10,
+                    "hideDownloadButtons": false,
                     "hideFab": false,
                     "hideHostname": false,
+                    "hidePropertiesPrefix": true,
+                    "hideRequestPayloadSample": false,
                     "hideSchemaPattern": false,
                     "hideSchemaTitles": false,
                     "hideSecuritySection": false,
                     "hideSingleRequestSampleTab": false,
                     "ignoreNamedSchemas": Set {},
-                    "jsonSampleExpandLevel": 2,
+                    "jsonSamplesExpandLevel": 2,
                     "maxDisplayedEnumValues": undefined,
                     "menuToggle": true,
                     "minCharacterLengthToInitSearch": 3,
@@ -1233,8 +1256,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "onlyRequiredInSamples": false,
                     "pathInMiddlePanel": false,
                     "payloadSampleIdx": 0,
-                    "requiredPropsFirst": false,
-                    "schemaExpansionLevel": 0,
+                    "sanitize": false,
+                    "schemaDefinitionsTagName": undefined,
+                    "schemasExpansionLevel": 0,
                     "scrollYOffset": [Function],
                     "showExtensions": false,
                     "showObjectSchemaExamples": false,
@@ -1245,32 +1269,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "sortEnumValuesAlphabetically": false,
                     "sortOperationsAlphabetically": false,
                     "sortPropsAlphabetically": false,
+                    "sortRequiredPropsFirst": false,
                     "sortTagsAlphabetically": false,
-                    "theme": Object {
-                      "breakpoints": Object {
+                    "theme": {
+                      "breakpoints": {
                         "large": "105rem",
                         "medium": "75rem",
                         "small": "50rem",
                       },
-                      "codeBlock": Object {
+                      "codeBlock": {
                         "backgroundColor": "#11171a",
                       },
-                      "colors": Object {
-                        "border": Object {
+                      "colors": {
+                        "border": {
                           "dark": "rgba(0,0,0, 0.1)",
                           "light": "#ffffff",
                         },
-                        "error": Object {
+                        "error": {
                           "contrastText": "#fff",
                           "dark": "#7a1210",
                           "light": "#eb6d6b",
                           "main": "#d41f1c",
                         },
-                        "gray": Object {
+                        "gray": {
                           "100": "#F5F5F5",
                           "50": "#FAFAFA",
                         },
-                        "http": Object {
+                        "http": {
                           "basic": "#707070",
                           "delete": "#cc3333",
                           "get": "#2F8132",
@@ -1281,46 +1306,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "post": "#186FAF",
                           "put": "#95507c",
                         },
-                        "primary": Object {
+                        "primary": {
                           "contrastText": "#fff",
                           "dark": "#1a1a51",
                           "light": "#6868cf",
                           "main": "#32329f",
                         },
-                        "responses": Object {
-                          "error": Object {
+                        "responses": {
+                          "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
                             "tabTextColor": "#d41f1c",
                           },
-                          "info": Object {
+                          "info": {
                             "backgroundColor": "rgba(135,206,235,0.1)",
                             "color": "#87ceeb",
                             "tabTextColor": "#87ceeb",
                           },
-                          "redirect": Object {
+                          "redirect": {
                             "backgroundColor": "rgba(255,165,0,0.1)",
                             "color": "#ffa500",
                             "tabTextColor": "#ffa500",
                           },
-                          "success": Object {
+                          "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
                             "tabTextColor": "#1d8127",
                           },
                         },
-                        "success": Object {
+                        "success": {
                           "contrastText": "#fff",
                           "dark": "#0a2e0e",
                           "light": "#86e490",
                           "main": "#1d8127",
                         },
-                        "text": Object {
+                        "text": {
                           "primary": "#333333",
                           "secondary": "#666",
                         },
                         "tonalOffset": 0.2,
-                        "warning": Object {
+                        "warning": {
                           "contrastText": "#ffffff",
                           "dark": "#996300",
                           "light": "#ffc966",
@@ -1328,31 +1353,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                       },
                       "extensionsHook": undefined,
-                      "fab": Object {
+                      "fab": {
                         "backgroundColor": "#f2f2f2",
                         "color": "#0065FB",
                       },
-                      "logo": Object {
+                      "logo": {
                         "gutter": "2px",
                         "maxHeight": "260px",
                         "maxWidth": "260px",
                       },
-                      "rightPanel": Object {
+                      "rightPanel": {
                         "backgroundColor": "#263238",
-                        "servers": Object {
-                          "overlay": Object {
+                        "servers": {
+                          "overlay": {
                             "backgroundColor": "#fafafa",
                             "textColor": "#263238",
                           },
-                          "url": Object {
+                          "url": {
                             "backgroundColor": "#fff",
                           },
                         },
                         "textColor": "#ffffff",
                         "width": "40%",
                       },
-                      "schema": Object {
-                        "arrow": Object {
+                      "schema": {
+                        "arrow": {
                           "color": "#666",
                           "size": "1.1em",
                         },
@@ -1365,19 +1390,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "typeNameColor": "#666",
                         "typeTitleColor": "#666",
                       },
-                      "sidebar": Object {
+                      "sidebar": {
                         "activeTextColor": "#32329f",
-                        "arrow": Object {
+                        "arrow": {
                           "color": "#333333",
                           "size": "1.5em",
                         },
                         "backgroundColor": "#fafafa",
-                        "groupItems": Object {
+                        "groupItems": {
                           "activeBackgroundColor": "#e1e1e1",
                           "activeTextColor": "#32329f",
                           "textTransform": "uppercase",
                         },
-                        "level1Items": Object {
+                        "level1Items": {
                           "activeBackgroundColor": "#ededed",
                           "activeTextColor": "#32329f",
                           "textTransform": "none",
@@ -1385,13 +1410,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "textColor": "#333333",
                         "width": "260px",
                       },
-                      "spacing": Object {
+                      "spacing": {
                         "sectionHorizontal": 40,
                         "sectionVertical": 40,
                         "unit": 5,
                       },
-                      "typography": Object {
-                        "code": Object {
+                      "typography": {
+                        "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
                           "color": "#e53935",
                           "fontFamily": "Courier, monospace",
@@ -1405,13 +1430,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "fontWeightBold": "600",
                         "fontWeightLight": "300",
                         "fontWeightRegular": "400",
-                        "headings": Object {
+                        "headings": {
                           "fontFamily": "Montserrat, sans-serif",
                           "fontWeight": "400",
                           "lineHeight": "1.6em",
                         },
                         "lineHeight": "1.5em",
-                        "links": Object {
+                        "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
                           "hoverTextDecoration": "auto",
@@ -1423,28 +1448,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       },
                     },
                     "unstable_ignoreMimeParameters": false,
-                    "untrustedSpec": false,
                   },
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Cat/properties/packSize",
-                  "rawSchema": Object {
+                  "rawSchema": {
                     "default": undefined,
                     "type": "number",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Cat",
                     ],
                   },
                   "readOnly": false,
-                  "refsStack": Array [
+                  "refsStack": [
                     "#/components/schemas/Cat",
                     "#/components/schemas/Cat",
                     "#/components/schemas/Cat",
                     "#/components/schemas/Cat/properties/packSize",
                   ],
-                  "schema": Object {
+                  "schema": {
                     "default": undefined,
                     "type": "number",
-                    "x-refsStack": Array [
+                    "x-refsStack": [
                       "#/components/schemas/Cat",
                     ],
                   },
@@ -1452,6 +1476,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "type": "number",
                   "typePrefix": "",
                   "writeOnly": false,
+                  "x-enumDescriptions": undefined,
                 },
               },
             ],
@@ -1461,24 +1486,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "maxItems": undefined,
             "minItems": undefined,
             "options": RedocNormalizedOptions {
-              "allowedMdComponents": Object {},
+              "allowedMdComponents": {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
+              "downloadUrls": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
-              "expandResponses": Object {},
+              "expandResponses": {},
               "expandSingleSchemaField": false,
-              "generatedPayloadSamplesMaxDepth": 10,
-              "hideDownloadButton": false,
+              "generatedSamplesMaxDepth": 10,
+              "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
+              "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
               "hideSecuritySection": false,
               "hideSingleRequestSampleTab": false,
               "ignoreNamedSchemas": Set {},
-              "jsonSampleExpandLevel": 2,
+              "jsonSamplesExpandLevel": 2,
               "maxDisplayedEnumValues": undefined,
               "menuToggle": true,
               "minCharacterLengthToInitSearch": 3,
@@ -1487,8 +1515,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "onlyRequiredInSamples": false,
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
-              "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "sanitize": false,
+              "schemaDefinitionsTagName": undefined,
+              "schemasExpansionLevel": 0,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -1499,32 +1528,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sortEnumValuesAlphabetically": false,
               "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortRequiredPropsFirst": false,
               "sortTagsAlphabetically": false,
-              "theme": Object {
-                "breakpoints": Object {
+              "theme": {
+                "breakpoints": {
                   "large": "105rem",
                   "medium": "75rem",
                   "small": "50rem",
                 },
-                "codeBlock": Object {
+                "codeBlock": {
                   "backgroundColor": "#11171a",
                 },
-                "colors": Object {
-                  "border": Object {
+                "colors": {
+                  "border": {
                     "dark": "rgba(0,0,0, 0.1)",
                     "light": "#ffffff",
                   },
-                  "error": Object {
+                  "error": {
                     "contrastText": "#fff",
                     "dark": "#7a1210",
                     "light": "#eb6d6b",
                     "main": "#d41f1c",
                   },
-                  "gray": Object {
+                  "gray": {
                     "100": "#F5F5F5",
                     "50": "#FAFAFA",
                   },
-                  "http": Object {
+                  "http": {
                     "basic": "#707070",
                     "delete": "#cc3333",
                     "get": "#2F8132",
@@ -1535,46 +1565,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "post": "#186FAF",
                     "put": "#95507c",
                   },
-                  "primary": Object {
+                  "primary": {
                     "contrastText": "#fff",
                     "dark": "#1a1a51",
                     "light": "#6868cf",
                     "main": "#32329f",
                   },
-                  "responses": Object {
-                    "error": Object {
+                  "responses": {
+                    "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
                       "tabTextColor": "#d41f1c",
                     },
-                    "info": Object {
+                    "info": {
                       "backgroundColor": "rgba(135,206,235,0.1)",
                       "color": "#87ceeb",
                       "tabTextColor": "#87ceeb",
                     },
-                    "redirect": Object {
+                    "redirect": {
                       "backgroundColor": "rgba(255,165,0,0.1)",
                       "color": "#ffa500",
                       "tabTextColor": "#ffa500",
                     },
-                    "success": Object {
+                    "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
                       "tabTextColor": "#1d8127",
                     },
                   },
-                  "success": Object {
+                  "success": {
                     "contrastText": "#fff",
                     "dark": "#0a2e0e",
                     "light": "#86e490",
                     "main": "#1d8127",
                   },
-                  "text": Object {
+                  "text": {
                     "primary": "#333333",
                     "secondary": "#666",
                   },
                   "tonalOffset": 0.2,
-                  "warning": Object {
+                  "warning": {
                     "contrastText": "#ffffff",
                     "dark": "#996300",
                     "light": "#ffc966",
@@ -1582,31 +1612,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
-                "fab": Object {
+                "fab": {
                   "backgroundColor": "#f2f2f2",
                   "color": "#0065FB",
                 },
-                "logo": Object {
+                "logo": {
                   "gutter": "2px",
                   "maxHeight": "260px",
                   "maxWidth": "260px",
                 },
-                "rightPanel": Object {
+                "rightPanel": {
                   "backgroundColor": "#263238",
-                  "servers": Object {
-                    "overlay": Object {
+                  "servers": {
+                    "overlay": {
                       "backgroundColor": "#fafafa",
                       "textColor": "#263238",
                     },
-                    "url": Object {
+                    "url": {
                       "backgroundColor": "#fff",
                     },
                   },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
-                "schema": Object {
-                  "arrow": Object {
+                "schema": {
+                  "arrow": {
                     "color": "#666",
                     "size": "1.1em",
                   },
@@ -1619,19 +1649,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "typeNameColor": "#666",
                   "typeTitleColor": "#666",
                 },
-                "sidebar": Object {
+                "sidebar": {
                   "activeTextColor": "#32329f",
-                  "arrow": Object {
+                  "arrow": {
                     "color": "#333333",
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
-                  "groupItems": Object {
+                  "groupItems": {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
-                  "level1Items": Object {
+                  "level1Items": {
                     "activeBackgroundColor": "#ededed",
                     "activeTextColor": "#32329f",
                     "textTransform": "none",
@@ -1639,13 +1669,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "textColor": "#333333",
                   "width": "260px",
                 },
-                "spacing": Object {
+                "spacing": {
                   "sectionHorizontal": 40,
                   "sectionVertical": 40,
                   "unit": 5,
                 },
-                "typography": Object {
-                  "code": Object {
+                "typography": {
+                  "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
                     "color": "#e53935",
                     "fontFamily": "Courier, monospace",
@@ -1659,13 +1689,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "fontWeightBold": "600",
                   "fontWeightLight": "300",
                   "fontWeightRegular": "400",
-                  "headings": Object {
+                  "headings": {
                     "fontFamily": "Montserrat, sans-serif",
                     "fontWeight": "400",
                     "lineHeight": "1.6em",
                   },
                   "lineHeight": "1.5em",
-                  "links": Object {
+                  "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
                     "hoverTextDecoration": "auto",
@@ -1677,18 +1707,17 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
               },
               "unstable_ignoreMimeParameters": false,
-              "untrustedSpec": false,
             },
             "pattern": undefined,
             "pointer": "#/components/schemas/Cat",
-            "rawSchema": Object {
-              "allOf": Array [
-                Object {
+            "rawSchema": {
+              "allOf": [
+                {
                   "$ref": "#/components/schemas/Pet",
                 },
-                Object {
-                  "properties": Object {
-                    "packSize": Object {
+                {
+                  "properties": {
+                    "packSize": {
                       "type": "number",
                     },
                   },
@@ -1697,39 +1726,39 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "type": "object",
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Cat",
             ],
-            "schema": Object {
+            "schema": {
               "allOf": undefined,
               "description": undefined,
-              "discriminator": Object {
+              "discriminator": {
                 "propertyName": "type",
               },
-              "properties": Object {
-                "packSize": Object {
+              "properties": {
+                "packSize": {
                   "type": "number",
-                  "x-refsStack": Array [
+                  "x-refsStack": [
                     "#/components/schemas/Cat",
                   ],
                 },
-                "type": Object {
+                "type": {
                   "type": "string",
-                  "x-refsStack": Array [
+                  "x-refsStack": [
                     "#/components/schemas/Cat",
                     "#/components/schemas/Pet",
                   ],
                 },
               },
               "readOnly": undefined,
-              "required": Array [
+              "required": [
                 "type",
               ],
               "title": "Cat",
               "type": "object",
               "writeOnly": undefined,
               "x-circular-ref": undefined,
-              "x-parentRefs": Array [
+              "x-parentRefs": [
                 "#/components/schemas/Pet",
               ],
             },
@@ -1737,27 +1766,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "type": "object",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
         ],
         "options": RedocNormalizedOptions {
-          "allowedMdComponents": Object {},
+          "allowedMdComponents": {},
           "disableSearch": false,
           "downloadDefinitionUrl": undefined,
           "downloadFileName": undefined,
+          "downloadUrls": undefined,
           "enumSkipQuotes": false,
           "expandDefaultServerVariables": false,
-          "expandResponses": Object {},
+          "expandResponses": {},
           "expandSingleSchemaField": false,
-          "generatedPayloadSamplesMaxDepth": 10,
-          "hideDownloadButton": false,
+          "generatedSamplesMaxDepth": 10,
+          "hideDownloadButtons": false,
           "hideFab": false,
           "hideHostname": false,
+          "hidePropertiesPrefix": true,
+          "hideRequestPayloadSample": false,
           "hideSchemaPattern": false,
           "hideSchemaTitles": false,
           "hideSecuritySection": false,
           "hideSingleRequestSampleTab": false,
           "ignoreNamedSchemas": Set {},
-          "jsonSampleExpandLevel": 2,
+          "jsonSamplesExpandLevel": 2,
           "maxDisplayedEnumValues": undefined,
           "menuToggle": true,
           "minCharacterLengthToInitSearch": 3,
@@ -1766,8 +1799,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "onlyRequiredInSamples": false,
           "pathInMiddlePanel": false,
           "payloadSampleIdx": 0,
-          "requiredPropsFirst": false,
-          "schemaExpansionLevel": 0,
+          "sanitize": false,
+          "schemaDefinitionsTagName": undefined,
+          "schemasExpansionLevel": 0,
           "scrollYOffset": [Function],
           "showExtensions": false,
           "showObjectSchemaExamples": false,
@@ -1778,32 +1812,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "sortEnumValuesAlphabetically": false,
           "sortOperationsAlphabetically": false,
           "sortPropsAlphabetically": false,
+          "sortRequiredPropsFirst": false,
           "sortTagsAlphabetically": false,
-          "theme": Object {
-            "breakpoints": Object {
+          "theme": {
+            "breakpoints": {
               "large": "105rem",
               "medium": "75rem",
               "small": "50rem",
             },
-            "codeBlock": Object {
+            "codeBlock": {
               "backgroundColor": "#11171a",
             },
-            "colors": Object {
-              "border": Object {
+            "colors": {
+              "border": {
                 "dark": "rgba(0,0,0, 0.1)",
                 "light": "#ffffff",
               },
-              "error": Object {
+              "error": {
                 "contrastText": "#fff",
                 "dark": "#7a1210",
                 "light": "#eb6d6b",
                 "main": "#d41f1c",
               },
-              "gray": Object {
+              "gray": {
                 "100": "#F5F5F5",
                 "50": "#FAFAFA",
               },
-              "http": Object {
+              "http": {
                 "basic": "#707070",
                 "delete": "#cc3333",
                 "get": "#2F8132",
@@ -1814,46 +1849,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "post": "#186FAF",
                 "put": "#95507c",
               },
-              "primary": Object {
+              "primary": {
                 "contrastText": "#fff",
                 "dark": "#1a1a51",
                 "light": "#6868cf",
                 "main": "#32329f",
               },
-              "responses": Object {
-                "error": Object {
+              "responses": {
+                "error": {
                   "backgroundColor": "rgba(212,31,28,0.07)",
                   "color": "#d41f1c",
                   "tabTextColor": "#d41f1c",
                 },
-                "info": Object {
+                "info": {
                   "backgroundColor": "rgba(135,206,235,0.1)",
                   "color": "#87ceeb",
                   "tabTextColor": "#87ceeb",
                 },
-                "redirect": Object {
+                "redirect": {
                   "backgroundColor": "rgba(255,165,0,0.1)",
                   "color": "#ffa500",
                   "tabTextColor": "#ffa500",
                 },
-                "success": Object {
+                "success": {
                   "backgroundColor": "rgba(29,129,39,0.07)",
                   "color": "#1d8127",
                   "tabTextColor": "#1d8127",
                 },
               },
-              "success": Object {
+              "success": {
                 "contrastText": "#fff",
                 "dark": "#0a2e0e",
                 "light": "#86e490",
                 "main": "#1d8127",
               },
-              "text": Object {
+              "text": {
                 "primary": "#333333",
                 "secondary": "#666",
               },
               "tonalOffset": 0.2,
-              "warning": Object {
+              "warning": {
                 "contrastText": "#ffffff",
                 "dark": "#996300",
                 "light": "#ffc966",
@@ -1861,31 +1896,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
             },
             "extensionsHook": undefined,
-            "fab": Object {
+            "fab": {
               "backgroundColor": "#f2f2f2",
               "color": "#0065FB",
             },
-            "logo": Object {
+            "logo": {
               "gutter": "2px",
               "maxHeight": "260px",
               "maxWidth": "260px",
             },
-            "rightPanel": Object {
+            "rightPanel": {
               "backgroundColor": "#263238",
-              "servers": Object {
-                "overlay": Object {
+              "servers": {
+                "overlay": {
                   "backgroundColor": "#fafafa",
                   "textColor": "#263238",
                 },
-                "url": Object {
+                "url": {
                   "backgroundColor": "#fff",
                 },
               },
               "textColor": "#ffffff",
               "width": "40%",
             },
-            "schema": Object {
-              "arrow": Object {
+            "schema": {
+              "arrow": {
                 "color": "#666",
                 "size": "1.1em",
               },
@@ -1898,19 +1933,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "typeNameColor": "#666",
               "typeTitleColor": "#666",
             },
-            "sidebar": Object {
+            "sidebar": {
               "activeTextColor": "#32329f",
-              "arrow": Object {
+              "arrow": {
                 "color": "#333333",
                 "size": "1.5em",
               },
               "backgroundColor": "#fafafa",
-              "groupItems": Object {
+              "groupItems": {
                 "activeBackgroundColor": "#e1e1e1",
                 "activeTextColor": "#32329f",
                 "textTransform": "uppercase",
               },
-              "level1Items": Object {
+              "level1Items": {
                 "activeBackgroundColor": "#ededed",
                 "activeTextColor": "#32329f",
                 "textTransform": "none",
@@ -1918,13 +1953,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "textColor": "#333333",
               "width": "260px",
             },
-            "spacing": Object {
+            "spacing": {
               "sectionHorizontal": 40,
               "sectionVertical": 40,
               "unit": 5,
             },
-            "typography": Object {
-              "code": Object {
+            "typography": {
+              "code": {
                 "backgroundColor": "rgba(38, 50, 56, 0.05)",
                 "color": "#e53935",
                 "fontFamily": "Courier, monospace",
@@ -1938,13 +1973,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "fontWeightBold": "600",
               "fontWeightLight": "300",
               "fontWeightRegular": "400",
-              "headings": Object {
+              "headings": {
                 "fontFamily": "Montserrat, sans-serif",
                 "fontWeight": "400",
                 "lineHeight": "1.6em",
               },
               "lineHeight": "1.5em",
-              "links": Object {
+              "links": {
                 "color": "#32329f",
                 "hover": "#6868cf",
                 "hoverTextDecoration": "auto",
@@ -1956,38 +1991,37 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
           },
           "unstable_ignoreMimeParameters": false,
-          "untrustedSpec": false,
         },
         "pattern": undefined,
         "pointer": "#/components/schemas/Pet",
-        "rawSchema": Object {
-          "discriminator": Object {
+        "rawSchema": {
+          "discriminator": {
             "propertyName": "type",
           },
-          "properties": Object {
-            "type": Object {
+          "properties": {
+            "type": {
               "type": "string",
             },
           },
-          "required": Array [
+          "required": [
             "type",
           ],
           "type": "object",
         },
         "readOnly": false,
-        "refsStack": Array [
+        "refsStack": [
           "#/components/schemas/Pet",
         ],
-        "schema": Object {
-          "discriminator": Object {
+        "schema": {
+          "discriminator": {
             "propertyName": "type",
           },
-          "properties": Object {
-            "type": Object {
+          "properties": {
+            "type": {
               "type": "string",
             },
           },
-          "required": Array [
+          "required": [
             "type",
           ],
           "type": "object",
@@ -1996,6 +2030,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "type": "object",
         "typePrefix": "",
         "writeOnly": false,
+        "x-enumDescriptions": undefined,
       },
     }
   }
@@ -2004,7 +2039,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
     SchemaModel {
       "activeOneOf": 0,
       "const": "",
-      "constraints": Array [],
+      "constraints": [],
       "contentEncoding": undefined,
       "contentMediaType": undefined,
       "default": undefined,
@@ -2012,11 +2047,11 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "description": "",
       "displayFormat": undefined,
       "displayType": "object",
-      "enum": Array [],
+      "enum": [],
       "example": undefined,
       "examples": undefined,
       "externalDocs": undefined,
-      "fields": Array [
+      "fields": [
         FieldModel {
           "const": "",
           "deprecated": false,
@@ -2031,7 +2066,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "schema": SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -2039,7 +2074,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "description": "",
             "displayFormat": undefined,
             "displayType": "number",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
@@ -2049,24 +2084,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "maxItems": undefined,
             "minItems": undefined,
             "options": RedocNormalizedOptions {
-              "allowedMdComponents": Object {},
+              "allowedMdComponents": {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
+              "downloadUrls": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
-              "expandResponses": Object {},
+              "expandResponses": {},
               "expandSingleSchemaField": false,
-              "generatedPayloadSamplesMaxDepth": 10,
-              "hideDownloadButton": false,
+              "generatedSamplesMaxDepth": 10,
+              "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
+              "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
               "hideSecuritySection": false,
               "hideSingleRequestSampleTab": false,
               "ignoreNamedSchemas": Set {},
-              "jsonSampleExpandLevel": 2,
+              "jsonSamplesExpandLevel": 2,
               "maxDisplayedEnumValues": undefined,
               "menuToggle": true,
               "minCharacterLengthToInitSearch": 3,
@@ -2075,8 +2113,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "onlyRequiredInSamples": false,
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
-              "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "sanitize": false,
+              "schemaDefinitionsTagName": undefined,
+              "schemasExpansionLevel": 0,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -2087,32 +2126,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sortEnumValuesAlphabetically": false,
               "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortRequiredPropsFirst": false,
               "sortTagsAlphabetically": false,
-              "theme": Object {
-                "breakpoints": Object {
+              "theme": {
+                "breakpoints": {
                   "large": "105rem",
                   "medium": "75rem",
                   "small": "50rem",
                 },
-                "codeBlock": Object {
+                "codeBlock": {
                   "backgroundColor": "#11171a",
                 },
-                "colors": Object {
-                  "border": Object {
+                "colors": {
+                  "border": {
                     "dark": "rgba(0,0,0, 0.1)",
                     "light": "#ffffff",
                   },
-                  "error": Object {
+                  "error": {
                     "contrastText": "#fff",
                     "dark": "#7a1210",
                     "light": "#eb6d6b",
                     "main": "#d41f1c",
                   },
-                  "gray": Object {
+                  "gray": {
                     "100": "#F5F5F5",
                     "50": "#FAFAFA",
                   },
-                  "http": Object {
+                  "http": {
                     "basic": "#707070",
                     "delete": "#cc3333",
                     "get": "#2F8132",
@@ -2123,46 +2163,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "post": "#186FAF",
                     "put": "#95507c",
                   },
-                  "primary": Object {
+                  "primary": {
                     "contrastText": "#fff",
                     "dark": "#1a1a51",
                     "light": "#6868cf",
                     "main": "#32329f",
                   },
-                  "responses": Object {
-                    "error": Object {
+                  "responses": {
+                    "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
                       "tabTextColor": "#d41f1c",
                     },
-                    "info": Object {
+                    "info": {
                       "backgroundColor": "rgba(135,206,235,0.1)",
                       "color": "#87ceeb",
                       "tabTextColor": "#87ceeb",
                     },
-                    "redirect": Object {
+                    "redirect": {
                       "backgroundColor": "rgba(255,165,0,0.1)",
                       "color": "#ffa500",
                       "tabTextColor": "#ffa500",
                     },
-                    "success": Object {
+                    "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
                       "tabTextColor": "#1d8127",
                     },
                   },
-                  "success": Object {
+                  "success": {
                     "contrastText": "#fff",
                     "dark": "#0a2e0e",
                     "light": "#86e490",
                     "main": "#1d8127",
                   },
-                  "text": Object {
+                  "text": {
                     "primary": "#333333",
                     "secondary": "#666",
                   },
                   "tonalOffset": 0.2,
-                  "warning": Object {
+                  "warning": {
                     "contrastText": "#ffffff",
                     "dark": "#996300",
                     "light": "#ffc966",
@@ -2170,31 +2210,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
-                "fab": Object {
+                "fab": {
                   "backgroundColor": "#f2f2f2",
                   "color": "#0065FB",
                 },
-                "logo": Object {
+                "logo": {
                   "gutter": "2px",
                   "maxHeight": "260px",
                   "maxWidth": "260px",
                 },
-                "rightPanel": Object {
+                "rightPanel": {
                   "backgroundColor": "#263238",
-                  "servers": Object {
-                    "overlay": Object {
+                  "servers": {
+                    "overlay": {
                       "backgroundColor": "#fafafa",
                       "textColor": "#263238",
                     },
-                    "url": Object {
+                    "url": {
                       "backgroundColor": "#fff",
                     },
                   },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
-                "schema": Object {
-                  "arrow": Object {
+                "schema": {
+                  "arrow": {
                     "color": "#666",
                     "size": "1.1em",
                   },
@@ -2207,19 +2247,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "typeNameColor": "#666",
                   "typeTitleColor": "#666",
                 },
-                "sidebar": Object {
+                "sidebar": {
                   "activeTextColor": "#32329f",
-                  "arrow": Object {
+                  "arrow": {
                     "color": "#333333",
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
-                  "groupItems": Object {
+                  "groupItems": {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
-                  "level1Items": Object {
+                  "level1Items": {
                     "activeBackgroundColor": "#ededed",
                     "activeTextColor": "#32329f",
                     "textTransform": "none",
@@ -2227,13 +2267,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "textColor": "#333333",
                   "width": "260px",
                 },
-                "spacing": Object {
+                "spacing": {
                   "sectionHorizontal": 40,
                   "sectionVertical": 40,
                   "unit": 5,
                 },
-                "typography": Object {
-                  "code": Object {
+                "typography": {
+                  "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
                     "color": "#e53935",
                     "fontFamily": "Courier, monospace",
@@ -2247,13 +2287,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "fontWeightBold": "600",
                   "fontWeightLight": "300",
                   "fontWeightRegular": "400",
-                  "headings": Object {
+                  "headings": {
                     "fontFamily": "Montserrat, sans-serif",
                     "fontWeight": "400",
                     "lineHeight": "1.6em",
                   },
                   "lineHeight": "1.5em",
-                  "links": Object {
+                  "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
                     "hoverTextDecoration": "auto",
@@ -2265,20 +2305,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
               },
               "unstable_ignoreMimeParameters": false,
-              "untrustedSpec": false,
             },
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/packSize",
-            "rawSchema": Object {
+            "rawSchema": {
               "default": undefined,
               "type": "number",
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Dog",
               "#/components/schemas/Dog/properties/packSize",
             ],
-            "schema": Object {
+            "schema": {
               "default": undefined,
               "type": "number",
             },
@@ -2286,6 +2325,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "type": "number",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
         },
         FieldModel {
@@ -2302,7 +2342,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "schema": SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -2310,7 +2350,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "description": "",
             "displayFormat": undefined,
             "displayType": "string",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
@@ -2320,24 +2360,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "maxItems": undefined,
             "minItems": undefined,
             "options": RedocNormalizedOptions {
-              "allowedMdComponents": Object {},
+              "allowedMdComponents": {},
               "disableSearch": false,
               "downloadDefinitionUrl": undefined,
               "downloadFileName": undefined,
+              "downloadUrls": undefined,
               "enumSkipQuotes": false,
               "expandDefaultServerVariables": false,
-              "expandResponses": Object {},
+              "expandResponses": {},
               "expandSingleSchemaField": false,
-              "generatedPayloadSamplesMaxDepth": 10,
-              "hideDownloadButton": false,
+              "generatedSamplesMaxDepth": 10,
+              "hideDownloadButtons": false,
               "hideFab": false,
               "hideHostname": false,
+              "hidePropertiesPrefix": true,
+              "hideRequestPayloadSample": false,
               "hideSchemaPattern": false,
               "hideSchemaTitles": false,
               "hideSecuritySection": false,
               "hideSingleRequestSampleTab": false,
               "ignoreNamedSchemas": Set {},
-              "jsonSampleExpandLevel": 2,
+              "jsonSamplesExpandLevel": 2,
               "maxDisplayedEnumValues": undefined,
               "menuToggle": true,
               "minCharacterLengthToInitSearch": 3,
@@ -2346,8 +2389,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "onlyRequiredInSamples": false,
               "pathInMiddlePanel": false,
               "payloadSampleIdx": 0,
-              "requiredPropsFirst": false,
-              "schemaExpansionLevel": 0,
+              "sanitize": false,
+              "schemaDefinitionsTagName": undefined,
+              "schemasExpansionLevel": 0,
               "scrollYOffset": [Function],
               "showExtensions": false,
               "showObjectSchemaExamples": false,
@@ -2358,32 +2402,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "sortEnumValuesAlphabetically": false,
               "sortOperationsAlphabetically": false,
               "sortPropsAlphabetically": false,
+              "sortRequiredPropsFirst": false,
               "sortTagsAlphabetically": false,
-              "theme": Object {
-                "breakpoints": Object {
+              "theme": {
+                "breakpoints": {
                   "large": "105rem",
                   "medium": "75rem",
                   "small": "50rem",
                 },
-                "codeBlock": Object {
+                "codeBlock": {
                   "backgroundColor": "#11171a",
                 },
-                "colors": Object {
-                  "border": Object {
+                "colors": {
+                  "border": {
                     "dark": "rgba(0,0,0, 0.1)",
                     "light": "#ffffff",
                   },
-                  "error": Object {
+                  "error": {
                     "contrastText": "#fff",
                     "dark": "#7a1210",
                     "light": "#eb6d6b",
                     "main": "#d41f1c",
                   },
-                  "gray": Object {
+                  "gray": {
                     "100": "#F5F5F5",
                     "50": "#FAFAFA",
                   },
-                  "http": Object {
+                  "http": {
                     "basic": "#707070",
                     "delete": "#cc3333",
                     "get": "#2F8132",
@@ -2394,46 +2439,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "post": "#186FAF",
                     "put": "#95507c",
                   },
-                  "primary": Object {
+                  "primary": {
                     "contrastText": "#fff",
                     "dark": "#1a1a51",
                     "light": "#6868cf",
                     "main": "#32329f",
                   },
-                  "responses": Object {
-                    "error": Object {
+                  "responses": {
+                    "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
                       "tabTextColor": "#d41f1c",
                     },
-                    "info": Object {
+                    "info": {
                       "backgroundColor": "rgba(135,206,235,0.1)",
                       "color": "#87ceeb",
                       "tabTextColor": "#87ceeb",
                     },
-                    "redirect": Object {
+                    "redirect": {
                       "backgroundColor": "rgba(255,165,0,0.1)",
                       "color": "#ffa500",
                       "tabTextColor": "#ffa500",
                     },
-                    "success": Object {
+                    "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
                       "tabTextColor": "#1d8127",
                     },
                   },
-                  "success": Object {
+                  "success": {
                     "contrastText": "#fff",
                     "dark": "#0a2e0e",
                     "light": "#86e490",
                     "main": "#1d8127",
                   },
-                  "text": Object {
+                  "text": {
                     "primary": "#333333",
                     "secondary": "#666",
                   },
                   "tonalOffset": 0.2,
-                  "warning": Object {
+                  "warning": {
                     "contrastText": "#ffffff",
                     "dark": "#996300",
                     "light": "#ffc966",
@@ -2441,31 +2486,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                 },
                 "extensionsHook": undefined,
-                "fab": Object {
+                "fab": {
                   "backgroundColor": "#f2f2f2",
                   "color": "#0065FB",
                 },
-                "logo": Object {
+                "logo": {
                   "gutter": "2px",
                   "maxHeight": "260px",
                   "maxWidth": "260px",
                 },
-                "rightPanel": Object {
+                "rightPanel": {
                   "backgroundColor": "#263238",
-                  "servers": Object {
-                    "overlay": Object {
+                  "servers": {
+                    "overlay": {
                       "backgroundColor": "#fafafa",
                       "textColor": "#263238",
                     },
-                    "url": Object {
+                    "url": {
                       "backgroundColor": "#fff",
                     },
                   },
                   "textColor": "#ffffff",
                   "width": "40%",
                 },
-                "schema": Object {
-                  "arrow": Object {
+                "schema": {
+                  "arrow": {
                     "color": "#666",
                     "size": "1.1em",
                   },
@@ -2478,19 +2523,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "typeNameColor": "#666",
                   "typeTitleColor": "#666",
                 },
-                "sidebar": Object {
+                "sidebar": {
                   "activeTextColor": "#32329f",
-                  "arrow": Object {
+                  "arrow": {
                     "color": "#333333",
                     "size": "1.5em",
                   },
                   "backgroundColor": "#fafafa",
-                  "groupItems": Object {
+                  "groupItems": {
                     "activeBackgroundColor": "#e1e1e1",
                     "activeTextColor": "#32329f",
                     "textTransform": "uppercase",
                   },
-                  "level1Items": Object {
+                  "level1Items": {
                     "activeBackgroundColor": "#ededed",
                     "activeTextColor": "#32329f",
                     "textTransform": "none",
@@ -2498,13 +2543,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "textColor": "#333333",
                   "width": "260px",
                 },
-                "spacing": Object {
+                "spacing": {
                   "sectionHorizontal": 40,
                   "sectionVertical": 40,
                   "unit": 5,
                 },
-                "typography": Object {
-                  "code": Object {
+                "typography": {
+                  "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
                     "color": "#e53935",
                     "fontFamily": "Courier, monospace",
@@ -2518,13 +2563,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "fontWeightBold": "600",
                   "fontWeightLight": "300",
                   "fontWeightRegular": "400",
-                  "headings": Object {
+                  "headings": {
                     "fontFamily": "Montserrat, sans-serif",
                     "fontWeight": "400",
                     "lineHeight": "1.6em",
                   },
                   "lineHeight": "1.5em",
-                  "links": Object {
+                  "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
                     "hoverTextDecoration": "auto",
@@ -2536,20 +2581,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 },
               },
               "unstable_ignoreMimeParameters": false,
-              "untrustedSpec": false,
             },
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/type",
-            "rawSchema": Object {
+            "rawSchema": {
               "default": undefined,
               "type": "string",
-              "x-refsStack": Array [
+              "x-refsStack": [
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
               ],
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Dog",
               "#/components/schemas/Dog",
               "#/components/schemas/Pet",
@@ -2557,10 +2601,10 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "#/components/schemas/Pet",
               "#/components/schemas/Dog/properties/type",
             ],
-            "schema": Object {
+            "schema": {
               "default": undefined,
               "type": "string",
-              "x-refsStack": Array [
+              "x-refsStack": [
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
               ],
@@ -2569,6 +2613,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "type": "string",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
         },
       ],
@@ -2578,24 +2623,27 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "maxItems": undefined,
       "minItems": undefined,
       "options": RedocNormalizedOptions {
-        "allowedMdComponents": Object {},
+        "allowedMdComponents": {},
         "disableSearch": false,
         "downloadDefinitionUrl": undefined,
         "downloadFileName": undefined,
+        "downloadUrls": undefined,
         "enumSkipQuotes": false,
         "expandDefaultServerVariables": false,
-        "expandResponses": Object {},
+        "expandResponses": {},
         "expandSingleSchemaField": false,
-        "generatedPayloadSamplesMaxDepth": 10,
-        "hideDownloadButton": false,
+        "generatedSamplesMaxDepth": 10,
+        "hideDownloadButtons": false,
         "hideFab": false,
         "hideHostname": false,
+        "hidePropertiesPrefix": true,
+        "hideRequestPayloadSample": false,
         "hideSchemaPattern": false,
         "hideSchemaTitles": false,
         "hideSecuritySection": false,
         "hideSingleRequestSampleTab": false,
         "ignoreNamedSchemas": Set {},
-        "jsonSampleExpandLevel": 2,
+        "jsonSamplesExpandLevel": 2,
         "maxDisplayedEnumValues": undefined,
         "menuToggle": true,
         "minCharacterLengthToInitSearch": 3,
@@ -2604,8 +2652,9 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "onlyRequiredInSamples": false,
         "pathInMiddlePanel": false,
         "payloadSampleIdx": 0,
-        "requiredPropsFirst": false,
-        "schemaExpansionLevel": 0,
+        "sanitize": false,
+        "schemaDefinitionsTagName": undefined,
+        "schemasExpansionLevel": 0,
         "scrollYOffset": [Function],
         "showExtensions": false,
         "showObjectSchemaExamples": false,
@@ -2616,32 +2665,33 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
         "sortEnumValuesAlphabetically": false,
         "sortOperationsAlphabetically": false,
         "sortPropsAlphabetically": false,
+        "sortRequiredPropsFirst": false,
         "sortTagsAlphabetically": false,
-        "theme": Object {
-          "breakpoints": Object {
+        "theme": {
+          "breakpoints": {
             "large": "105rem",
             "medium": "75rem",
             "small": "50rem",
           },
-          "codeBlock": Object {
+          "codeBlock": {
             "backgroundColor": "#11171a",
           },
-          "colors": Object {
-            "border": Object {
+          "colors": {
+            "border": {
               "dark": "rgba(0,0,0, 0.1)",
               "light": "#ffffff",
             },
-            "error": Object {
+            "error": {
               "contrastText": "#fff",
               "dark": "#7a1210",
               "light": "#eb6d6b",
               "main": "#d41f1c",
             },
-            "gray": Object {
+            "gray": {
               "100": "#F5F5F5",
               "50": "#FAFAFA",
             },
-            "http": Object {
+            "http": {
               "basic": "#707070",
               "delete": "#cc3333",
               "get": "#2F8132",
@@ -2652,46 +2702,46 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "post": "#186FAF",
               "put": "#95507c",
             },
-            "primary": Object {
+            "primary": {
               "contrastText": "#fff",
               "dark": "#1a1a51",
               "light": "#6868cf",
               "main": "#32329f",
             },
-            "responses": Object {
-              "error": Object {
+            "responses": {
+              "error": {
                 "backgroundColor": "rgba(212,31,28,0.07)",
                 "color": "#d41f1c",
                 "tabTextColor": "#d41f1c",
               },
-              "info": Object {
+              "info": {
                 "backgroundColor": "rgba(135,206,235,0.1)",
                 "color": "#87ceeb",
                 "tabTextColor": "#87ceeb",
               },
-              "redirect": Object {
+              "redirect": {
                 "backgroundColor": "rgba(255,165,0,0.1)",
                 "color": "#ffa500",
                 "tabTextColor": "#ffa500",
               },
-              "success": Object {
+              "success": {
                 "backgroundColor": "rgba(29,129,39,0.07)",
                 "color": "#1d8127",
                 "tabTextColor": "#1d8127",
               },
             },
-            "success": Object {
+            "success": {
               "contrastText": "#fff",
               "dark": "#0a2e0e",
               "light": "#86e490",
               "main": "#1d8127",
             },
-            "text": Object {
+            "text": {
               "primary": "#333333",
               "secondary": "#666",
             },
             "tonalOffset": 0.2,
-            "warning": Object {
+            "warning": {
               "contrastText": "#ffffff",
               "dark": "#996300",
               "light": "#ffc966",
@@ -2699,31 +2749,31 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
           },
           "extensionsHook": undefined,
-          "fab": Object {
+          "fab": {
             "backgroundColor": "#f2f2f2",
             "color": "#0065FB",
           },
-          "logo": Object {
+          "logo": {
             "gutter": "2px",
             "maxHeight": "260px",
             "maxWidth": "260px",
           },
-          "rightPanel": Object {
+          "rightPanel": {
             "backgroundColor": "#263238",
-            "servers": Object {
-              "overlay": Object {
+            "servers": {
+              "overlay": {
                 "backgroundColor": "#fafafa",
                 "textColor": "#263238",
               },
-              "url": Object {
+              "url": {
                 "backgroundColor": "#fff",
               },
             },
             "textColor": "#ffffff",
             "width": "40%",
           },
-          "schema": Object {
-            "arrow": Object {
+          "schema": {
+            "arrow": {
               "color": "#666",
               "size": "1.1em",
             },
@@ -2736,19 +2786,19 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "typeNameColor": "#666",
             "typeTitleColor": "#666",
           },
-          "sidebar": Object {
+          "sidebar": {
             "activeTextColor": "#32329f",
-            "arrow": Object {
+            "arrow": {
               "color": "#333333",
               "size": "1.5em",
             },
             "backgroundColor": "#fafafa",
-            "groupItems": Object {
+            "groupItems": {
               "activeBackgroundColor": "#e1e1e1",
               "activeTextColor": "#32329f",
               "textTransform": "uppercase",
             },
-            "level1Items": Object {
+            "level1Items": {
               "activeBackgroundColor": "#ededed",
               "activeTextColor": "#32329f",
               "textTransform": "none",
@@ -2756,13 +2806,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "textColor": "#333333",
             "width": "260px",
           },
-          "spacing": Object {
+          "spacing": {
             "sectionHorizontal": 40,
             "sectionVertical": 40,
             "unit": 5,
           },
-          "typography": Object {
-            "code": Object {
+          "typography": {
+            "code": {
               "backgroundColor": "rgba(38, 50, 56, 0.05)",
               "color": "#e53935",
               "fontFamily": "Courier, monospace",
@@ -2776,13 +2826,13 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "fontWeightBold": "600",
             "fontWeightLight": "300",
             "fontWeightRegular": "400",
-            "headings": Object {
+            "headings": {
               "fontFamily": "Montserrat, sans-serif",
               "fontWeight": "400",
               "lineHeight": "1.6em",
             },
             "lineHeight": "1.5em",
-            "links": Object {
+            "links": {
               "color": "#32329f",
               "hover": "#6868cf",
               "hoverTextDecoration": "auto",
@@ -2794,54 +2844,53 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           },
         },
         "unstable_ignoreMimeParameters": false,
-        "untrustedSpec": false,
       },
       "pattern": undefined,
       "pointer": "#/components/schemas/Dog",
-      "rawSchema": Object {
-        "allOf": Array [
-          Object {
+      "rawSchema": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
         ],
-        "properties": Object {
-          "packSize": Object {
+        "properties": {
+          "packSize": {
             "type": "number",
           },
         },
         "type": "object",
       },
       "readOnly": false,
-      "refsStack": Array [
+      "refsStack": [
         "#/components/schemas/Dog",
       ],
-      "schema": Object {
+      "schema": {
         "allOf": undefined,
         "description": undefined,
-        "discriminator": Object {
+        "discriminator": {
           "propertyName": "type",
         },
-        "properties": Object {
-          "packSize": Object {
+        "properties": {
+          "packSize": {
             "type": "number",
           },
-          "type": Object {
+          "type": {
             "type": "string",
-            "x-refsStack": Array [
+            "x-refsStack": [
               "#/components/schemas/Dog",
               "#/components/schemas/Pet",
             ],
           },
         },
         "readOnly": undefined,
-        "required": Array [
+        "required": [
           "type",
         ],
         "title": "Dog",
         "type": "object",
         "writeOnly": undefined,
         "x-circular-ref": undefined,
-        "x-parentRefs": Array [
+        "x-parentRefs": [
           "#/components/schemas/Pet",
         ],
       },
@@ -2849,6 +2898,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
       "type": "object",
       "typePrefix": "",
       "writeOnly": false,
+      "x-enumDescriptions": undefined,
     }
   }
 />
@@ -2874,7 +2924,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "schema": SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -2882,7 +2932,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "description": "",
             "displayFormat": undefined,
             "displayType": "number",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
@@ -2894,16 +2944,16 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": "<<<filtered>>>",
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/packSize",
-            "rawSchema": Object {
+            "rawSchema": {
               "default": undefined,
               "type": "number",
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Dog",
               "#/components/schemas/Dog/properties/packSize",
             ],
-            "schema": Object {
+            "schema": {
               "default": undefined,
               "type": "number",
             },
@@ -2911,9 +2961,11 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "type": "number",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
         }
       }
+      fieldParentsName={[]}
       isLast={false}
       key="packSize"
       showExamples={false}
@@ -2935,7 +2987,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
           "schema": SchemaModel {
             "activeOneOf": 0,
             "const": "",
-            "constraints": Array [],
+            "constraints": [],
             "contentEncoding": undefined,
             "contentMediaType": undefined,
             "default": undefined,
@@ -2943,7 +2995,7 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "description": "",
             "displayFormat": undefined,
             "displayType": "string",
-            "enum": Array [],
+            "enum": [],
             "example": undefined,
             "examples": undefined,
             "externalDocs": undefined,
@@ -2955,16 +3007,16 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "options": "<<<filtered>>>",
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/type",
-            "rawSchema": Object {
+            "rawSchema": {
               "default": undefined,
               "type": "string",
-              "x-refsStack": Array [
+              "x-refsStack": [
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
               ],
             },
             "readOnly": false,
-            "refsStack": Array [
+            "refsStack": [
               "#/components/schemas/Dog",
               "#/components/schemas/Dog",
               "#/components/schemas/Pet",
@@ -2972,10 +3024,10 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "#/components/schemas/Pet",
               "#/components/schemas/Dog/properties/type",
             ],
-            "schema": Object {
+            "schema": {
               "default": undefined,
               "type": "string",
-              "x-refsStack": Array [
+              "x-refsStack": [
                 "#/components/schemas/Dog",
                 "#/components/schemas/Pet",
               ],
@@ -2984,9 +3036,11 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "type": "string",
             "typePrefix": "",
             "writeOnly": false,
+            "x-enumDescriptions": undefined,
           },
         }
       }
+      fieldParentsName={[]}
       isLast={true}
       key="type"
       renderDiscriminatorSwitch={[Function]}

@@ -6,11 +6,14 @@ import { StylingMarkdownProps } from './Markdown';
 import { StyledMarkdownBlock } from './styled.elements';
 import styled from 'styled-components';
 
-const StyledMarkdownSpan = styled(props => <StyledMarkdownBlock {...props} />)`
+// Workaround for DOMPurify type issues (https://github.com/cure53/DOMPurify/issues/1034)
+const dompurify = DOMPurify['default'] as DOMPurify.DOMPurify;
+
+const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
   display: inline;
 `;
 
-const sanitize = (untrustedSpec, html) => (untrustedSpec ? DOMPurify.sanitize(html) : html);
+const sanitize = (sanitize, html) => (sanitize ? dompurify.sanitize(html) : html);
 
 export function SanitizedMarkdownHTML({
   inline,
@@ -25,7 +28,7 @@ export function SanitizedMarkdownHTML({
         <Wrap
           className={'redoc-markdown ' + (rest.className || '')}
           dangerouslySetInnerHTML={{
-            __html: sanitize(options.untrustedSpec, rest.html),
+            __html: sanitize(options.sanitize, rest.html),
           }}
           data-role={rest['data-role']}
           {...rest}

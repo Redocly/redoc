@@ -5,7 +5,7 @@
 # npm i -g http-server
 # http-server -p 8000 --cors
 
-FROM node:12-alpine
+FROM node:18-alpine
 
 RUN apk update && apk add --no-cache git
 
@@ -13,6 +13,7 @@ RUN apk update && apk add --no-cache git
 WORKDIR /build
 COPY package.json package-lock.json /build/
 RUN npm ci --no-optional --ignore-scripts
+RUN npm explore esbuild -- npm run postinstall
 
 # copy only required for the build files
 COPY src /build/src

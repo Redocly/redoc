@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Test"
+  },
+  "components": {
+    "schemas": {
+      "Test": {
+        "type": "array",
+        "description": "test description",
+        "items": {
+          "type": "string",
+          "description": "test description",
+          "enum": ["authorize", "do-nothing"],
+          "x-enumDescriptions": {
+            "authorize-and-void": "Will create an authorize transaction in the amount/currency of the request, followed by a void",
+            "do-nothing": "Will do nothing, and return an approved `setup` transaction. This is the default behavior."
+          }
+        }
+      }
+    }
+  }
+}

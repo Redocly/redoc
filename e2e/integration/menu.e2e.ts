@@ -8,7 +8,7 @@ describe('Menu', () => {
     });
 
     it('should sync active menu items while scroll', () => {
-      cy.contains('h1', 'Introduction')
+      cy.contains('h2', 'Introduction')
         .scrollIntoView()
         .get('[role=menuitem] > label.active')
         .should('have.text', 'Introduction');
@@ -35,7 +35,7 @@ describe('Menu', () => {
 
       cy.contains('h1', 'Swagger Petstore').scrollIntoView().wait(100);
 
-      cy.contains('h1', 'Introduction')
+      cy.contains('h2', 'Introduction')
         .scrollIntoView()
         .wait(100)
         .get('[role=menuitem] > label.active')
@@ -50,6 +50,31 @@ describe('Menu', () => {
         .should('have.text', 'schemaCat')
         .click({ force: true });
       cy.location('hash').should('equal', '#schema/Cat');
+    });
+
+    it('should contains badge schema from x-badges', () => {
+      cy.contains('h2', 'Add a new pet to the store').scrollIntoView();
+
+      cy.contains('h2 > span', 'Beta')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Beta');
+
+      cy.contains('h2 > span', 'Alpha')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Alpha');
+
+      cy.contains('h2 > span', 'Gamma')
+        .scrollIntoView()
+        .wait(100)
+        .get('[role=menuitem] > label.active')
+        .children('span[type="badge"]')
+        .should('have.text', 'Gamma');
     });
 
     it('should contains Cat schema in Pet using x-tags', () => {

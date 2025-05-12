@@ -1,17 +1,17 @@
-import { default as classnames } from 'classnames';
+import * as classnames from 'classnames';
 import { darken } from 'polished';
 
 import { deprecatedCss, ShelfIcon } from '../../common-elements';
 import styled, { css, media, ResolvedThemeInterface } from '../../styled-components';
 
-export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
+export const OperationBadge = styled.span.attrs((props: { type: string; color?: string }) => ({
   className: `operation-type ${props.type}`,
-}))<{ type: string }>`
+}))<{ type: string; color?: string }>`
   width: 9ex;
   display: inline-block;
   height: ${props => props.theme.typography.code.fontSize};
   line-height: ${props => props.theme.typography.code.fontSize};
-  background-color: #333;
+  background-color: ${props => props.color || '#333'};
   border-radius: 3px;
   background-repeat: no-repeat;
   background-position: 6px 4px;

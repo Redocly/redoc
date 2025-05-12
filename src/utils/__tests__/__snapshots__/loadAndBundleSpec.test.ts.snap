@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`#loadAndBundleSpec should load And Bundle Spec demo/openapi.yaml 1`] = `
-Object {
-  "components": Object {
-    "examples": Object {
-      "Order": Object {
-        "value": Object {
+{
+  "components": {
+    "examples": {
+      "Order": {
+        "value": {
           "complete": false,
           "quantity": 1,
           "shipDate": "2018-10-19T16:46:45Z",
@@ -13,27 +13,27 @@ Object {
         },
       },
     },
-    "requestBodies": Object {
-      "Pet": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
-              "allOf": Array [
-                Object {
+    "requestBodies": {
+      "Pet": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                {
                   "description": "My Pet",
                   "title": "Pettie",
                 },
-                Object {
+                {
                   "$ref": "#/components/schemas/Pet",
                 },
               ],
             },
           },
-          "application/xml": Object {
-            "schema": Object {
-              "properties": Object {
-                "name": Object {
-                  "default": Array [],
+          "application/xml": {
+            "schema": {
+              "properties": {
+                "name": {
+                  "default": [],
                   "description": "hooray",
                   "type": "string",
                 },
@@ -45,11 +45,11 @@ Object {
         "description": "Pet object that needs to be added to the store",
         "required": true,
       },
-      "UserArray": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
-              "items": Object {
+      "UserArray": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "items": {
                 "$ref": "#/components/schemas/User",
               },
               "type": "array",
@@ -60,33 +60,33 @@ Object {
         "required": true,
       },
     },
-    "schemas": Object {
-      "ApiResponse": Object {
-        "properties": Object {
-          "code": Object {
+    "schemas": {
+      "ApiResponse": {
+        "properties": {
+          "code": {
             "format": "int32",
             "type": "integer",
           },
-          "message": Object {
+          "message": {
             "type": "string",
           },
-          "type": Object {
+          "type": {
             "type": "string",
           },
         },
         "type": "object",
       },
-      "Cat": Object {
-        "allOf": Array [
-          Object {
+      "Cat": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "huntingSkill": Object {
+          {
+            "properties": {
+              "huntingSkill": {
                 "default": "lazy",
                 "description": "The measured skill for hunting",
-                "enum": Array [
+                "enum": [
                   "clueless",
                   "lazy",
                   "adventurous",
@@ -96,36 +96,36 @@ Object {
                 "type": "string",
               },
             },
-            "required": Array [
+            "required": [
               "huntingSkill",
             ],
             "type": "object",
           },
         ],
         "description": "A representation of a cat",
-        "x-tags": Array [
+        "x-tags": [
           "pet",
         ],
       },
-      "Category": Object {
-        "properties": Object {
-          "id": Object {
-            "allOf": Array [
-              Object {
+      "Category": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Category ID",
           },
-          "name": Object {
+          "name": {
             "description": "Category name",
             "minLength": 1,
             "type": "string",
           },
-          "sub": Object {
+          "sub": {
             "description": "Test Sub Category",
-            "properties": Object {
-              "prop1": Object {
+            "properties": {
+              "prop1": {
                 "description": "Dumb Property",
                 "type": "string",
               },
@@ -134,18 +134,18 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Category",
         },
       },
-      "Dog": Object {
-        "allOf": Array [
-          Object {
+      "Dog": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "packSize": Object {
+          {
+            "properties": {
+              "packSize": {
                 "default": 1,
                 "description": "The size of the pack the dog is from",
                 "format": "int32",
@@ -153,7 +153,7 @@ Object {
                 "type": "integer",
               },
             },
-            "required": Array [
+            "required": [
               "packSize",
             ],
             "type": "object",
@@ -161,21 +161,21 @@ Object {
         ],
         "description": "A representation of a dog",
       },
-      "HoneyBee": Object {
-        "allOf": Array [
-          Object {
+      "HoneyBee": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "honeyPerDay": Object {
+          {
+            "properties": {
+              "honeyPerDay": {
                 "description": "Average amount of honey produced per day in ounces",
                 "example": 3.14,
                 "multipleOf": 0.01,
                 "type": "number",
               },
             },
-            "required": Array [
+            "required": [
               "honeyPerDay",
             ],
             "type": "object",
@@ -183,54 +183,54 @@ Object {
         ],
         "description": "A representation of a honey bee",
       },
-      "Id": Object {
+      "Id": {
         "format": "int64",
         "readOnly": true,
         "type": "integer",
       },
-      "Order": Object {
-        "properties": Object {
-          "complete": Object {
+      "Order": {
+        "properties": {
+          "complete": {
             "default": false,
             "description": "Indicates whenever order was completed or not",
             "readOnly": true,
             "type": "boolean",
           },
-          "id": Object {
-            "allOf": Array [
-              Object {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Order ID",
           },
-          "petId": Object {
-            "allOf": Array [
-              Object {
+          "petId": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Pet ID",
           },
-          "quantity": Object {
+          "quantity": {
             "default": 1,
             "format": "int32",
             "minimum": 1,
             "type": "integer",
           },
-          "requestId": Object {
+          "requestId": {
             "description": "Unique Request Id",
             "type": "string",
             "writeOnly": true,
           },
-          "shipDate": Object {
+          "shipDate": {
             "description": "Estimated ship date",
             "format": "date-time",
             "type": "string",
           },
-          "status": Object {
+          "status": {
             "description": "Order Status",
-            "enum": Array [
+            "enum": [
               "placed",
               "approved",
               "delivered",
@@ -239,140 +239,145 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Order",
         },
       },
-      "Pet": Object {
-        "discriminator": Object {
-          "mapping": Object {
+      "Pet": {
+        "discriminator": {
+          "mapping": {
             "bee": "#/components/schemas/HoneyBee",
             "cat": "#/components/schemas/Cat",
             "dog": "#/components/schemas/Dog",
           },
           "propertyName": "petType",
         },
-        "properties": Object {
-          "category": Object {
-            "allOf": Array [
-              Object {
+        "properties": {
+          "category": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Category",
               },
             ],
             "description": "Categories this pet belongs to",
           },
-          "friend": Object {
-            "allOf": Array [
-              Object {
+          "friend": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Pet",
               },
             ],
           },
-          "id": Object {
-            "allOf": Array [
-              Object {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Pet ID",
-            "externalDocs": Object {
+            "externalDocs": {
               "description": "Find more info here",
               "url": "https://example.com",
             },
           },
-          "name": Object {
+          "name": {
             "description": "The name given to a pet",
             "example": "Guru",
             "type": "string",
           },
-          "petType": Object {
+          "petType": {
             "description": "Type of a pet",
             "type": "string",
           },
-          "photoUrls": Object {
-            "default": Array [],
+          "photoUrls": {
+            "default": [],
             "description": "The list of URL to a cute photos featuring pet",
-            "items": Object {
+            "items": {
               "format": "url",
               "type": "string",
             },
             "maxItems": 20,
             "type": "array",
-            "xml": Object {
+            "xml": {
               "name": "photoUrl",
               "wrapped": true,
             },
           },
-          "status": Object {
+          "status": {
             "description": "Pet status in the store",
-            "enum": Array [
+            "enum": [
               "available",
               "pending",
               "sold",
             ],
             "type": "string",
+            "x-enumDescriptions": {
+              "available": "Available status",
+              "pending": "Pending status",
+              "sold": "Sold status",
+            },
           },
-          "tags": Object {
+          "tags": {
             "description": "Tags attached to the pet",
-            "items": Object {
+            "items": {
               "$ref": "#/components/schemas/Tag",
             },
             "minItems": 1,
             "type": "array",
-            "xml": Object {
+            "xml": {
               "name": "tag",
               "wrapped": true,
             },
           },
         },
-        "required": Array [
+        "required": [
           "name",
           "photoUrls",
         ],
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Pet",
         },
       },
-      "Tag": Object {
-        "properties": Object {
-          "id": Object {
-            "allOf": Array [
-              Object {
+      "Tag": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Tag ID",
           },
-          "name": Object {
+          "name": {
             "description": "Tag name",
             "minLength": 1,
             "type": "string",
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Tag",
         },
       },
-      "User": Object {
-        "properties": Object {
-          "addresses": Object {
-            "additionalItems": Object {
+      "User": {
+        "properties": {
+          "addresses": {
+            "additionalItems": {
               "type": "string",
             },
-            "items": Array [
-              Object {
-                "properties": Object {
-                  "city": Object {
+            "items": [
+              {
+                "properties": {
+                  "city": {
                     "minLength": 0,
                     "type": "string",
                   },
-                  "country": Object {
+                  "country": {
                     "minLength": 0,
                     "type": "string",
                   },
-                  "street": Object {
+                  "street": {
                     "description": "includes build/apartment number",
                     "minLength": 0,
                     "type": "string",
@@ -380,7 +385,7 @@ Object {
                 },
                 "type": "object",
               },
-              Object {
+              {
                 "type": "number",
               },
             ],
@@ -388,28 +393,28 @@ Object {
             "minItems": 0,
             "type": "array",
           },
-          "email": Object {
+          "email": {
             "description": "User email address",
             "example": "john.smith@example.com",
             "format": "email",
             "type": "string",
           },
-          "firstName": Object {
+          "firstName": {
             "description": "User first name",
             "example": "John",
             "minLength": 1,
             "type": "string",
           },
-          "id": Object {
+          "id": {
             "$ref": "#/components/schemas/Id",
           },
-          "lastName": Object {
+          "lastName": {
             "description": "User last name",
             "example": "Smith",
             "minLength": 1,
             "type": "string",
           },
-          "password": Object {
+          "password": {
             "description": "User password, MUST contain a mix of upper and lower case letters, as well as digits",
             "example": "drowssaP123",
             "format": "password",
@@ -417,28 +422,28 @@ Object {
             "pattern": "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/",
             "type": "string",
           },
-          "pet": Object {
-            "oneOf": Array [
-              Object {
+          "pet": {
+            "oneOf": [
+              {
                 "$ref": "#/components/schemas/Pet",
               },
-              Object {
+              {
                 "$ref": "#/components/schemas/Tag",
               },
             ],
           },
-          "phone": Object {
+          "phone": {
             "description": "User phone number in international format",
             "example": "+1-202-555-0192",
-            "pattern": "/^\\\\+(?:[0-9]-?){6,14}[0-9]$/",
+            "pattern": "/^\\+(?:[0-9]-?){6,14}[0-9]$/",
             "type": "string",
           },
-          "userStatus": Object {
+          "userStatus": {
             "description": "User status",
             "format": "int32",
             "type": "integer",
           },
-          "username": Object {
+          "username": {
             "description": "User supplied username",
             "example": "John78",
             "minLength": 4,
@@ -446,27 +451,27 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "User",
         },
       },
     },
-    "securitySchemes": Object {
-      "api_key": Object {
+    "securitySchemes": {
+      "api_key": {
         "description": "For this sample, you can use the api key \`special-key\` to test the authorization filters.
 ",
         "in": "header",
         "name": "api_key",
         "type": "apiKey",
       },
-      "petstore_auth": Object {
+      "petstore_auth": {
         "description": "Get access to data while protecting your account credentials.
 OAuth2 is also a safer and more secure way to give you access.
 ",
-        "flows": Object {
-          "implicit": Object {
+        "flows": {
+          "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
-            "scopes": Object {
+            "scopes": {
               "read:pets": "read your pets",
               "write:pets": "modify pets in your account",
             },
@@ -476,12 +481,12 @@ OAuth2 is also a safer and more secure way to give you access.
       },
     },
   },
-  "externalDocs": Object {
+  "externalDocs": {
     "description": "Find out how to create Github repo for your OpenAPI spec.",
     "url": "https://github.com/Rebilly/generator-openapi-repo",
   },
-  "info": Object {
-    "contact": Object {
+  "info": {
+    "contact": {
       "email": "apiteam@swagger.io",
       "name": "API Support",
       "url": "https://github.com/Redocly/redoc",
@@ -520,74 +525,81 @@ and standard method from web, mobile and desktop applications.
 
 <!-- ReDoc-Inject: <security-definitions> -->
 ",
-    "license": Object {
+    "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html",
     },
     "termsOfService": "http://swagger.io/terms/",
     "title": "Swagger Petstore",
     "version": "1.0.0",
-    "x-logo": Object {
+    "x-logo": {
       "altText": "Petstore logo",
       "url": "https://redocly.github.io/redoc/petstore-logo.png",
     },
   },
   "openapi": "3.0.0",
-  "paths": Object {
-    "/pet": Object {
-      "parameters": Array [
-        Object {
+  "paths": {
+    "/pet": {
+      "parameters": [
+        {
           "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
           "example": "en-US",
           "in": "header",
           "name": "Accept-Language",
           "required": false,
-          "schema": Object {
+          "schema": {
             "default": "en-AU",
             "type": "string",
           },
         },
-        Object {
+        {
           "description": "Some cookie",
           "in": "cookie",
           "name": "cookieParam",
           "required": true,
-          "schema": Object {
+          "schema": {
             "format": "int64",
             "type": "integer",
           },
         },
       ],
-      "post": Object {
+      "post": {
         "description": "Add new pet to the store inventory.",
         "operationId": "addPet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Add a new pet to the store",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-codeSamples": Array [
-          Object {
+        "x-badges": [
+          {
+            "color": "purple",
+            "name": "Beta",
+            "position": "before",
+          },
+        ],
+        "x-codeSamples": [
+          {
             "lang": "C#",
             "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
-pet.setApiKey(\\"your api key\\");
+pet.setApiKey("your api key");
 pet.petType = PetStore.v1.Pet.TYPE_DOG;
-pet.name = \\"Rex\\";
+pet.name = "Rex";
 // set other fields
 PetStoreResponse response = pet.create();
 if (response.statusCode == HttpStatusCode.Created)
@@ -601,11 +613,11 @@ else
 }
 ",
           },
-          Object {
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+            "source": "$form = new \\PetStore\\Entities\\Pet();
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->create($form);
@@ -616,42 +628,48 @@ try {
           },
         ],
       },
-      "put": Object {
+      "put": {
         "description": "",
         "operationId": "updatePet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
-          "405": Object {
+          "405": {
             "description": "Validation exception",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Update an existing pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-codeSamples": Array [
-          Object {
+        "x-badges": [
+          {
+            "color": "purple",
+            "name": "Alpha",
+          },
+        ],
+        "x-codeSamples": [
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+            "source": "$form = new \\PetStore\\Entities\\Pet();
 $form->setPetId(1);
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->update($form);
@@ -663,20 +681,20 @@ try {
         ],
       },
     },
-    "/pet/findByStatus": Object {
-      "get": Object {
+    "/pet/findByStatus": {
+      "get": {
         "description": "Multiple status values can be provided with comma separated strings",
         "operationId": "findPetsByStatus",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Status values that need to be considered for filter",
             "in": "query",
             "name": "status",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "default": "available",
-                "enum": Array [
+                "enum": [
                   "available",
                   "pending",
                   "sold",
@@ -690,20 +708,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
@@ -712,37 +730,37 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid status value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by status",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/findByTags": Object {
-      "get": Object {
+    "/pet/findByTags": {
+      "get": {
         "deprecated": true,
         "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
         "operationId": "findPetsByTags",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Tags to filter by",
             "in": "query",
             "name": "tags",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "type": "string",
               },
               "type": "array",
@@ -750,20 +768,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                     "maxItems": 111,
                   },
@@ -774,141 +792,146 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid tag value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by tags",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}": Object {
-      "delete": Object {
+    "/pet/{petId}": {
+      "delete": {
         "description": "",
         "operationId": "deletePet",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "example": "Bearer <TOKEN>",
             "in": "header",
             "name": "api_key",
             "required": false,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "Pet id to delete",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid pet value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Deletes a pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "Returns a single pet",
         "operationId": "getPetById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "deprecated": true,
             "description": "ID of pet to return",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Find pet by ID",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
+        "x-badges": [
+          {
+            "name": "Gamma",
+          },
+        ],
       },
-      "post": Object {
+      "post": {
         "description": "",
         "operationId": "updatePetWithForm",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be updated",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/x-www-form-urlencoded": Object {
-              "schema": Object {
-                "properties": Object {
-                  "name": Object {
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "name": {
                     "description": "Updated name of the pet",
                     "type": "string",
                   },
-                  "status": Object {
+                  "status": {
                     "description": "Updated status of the pet",
                     "type": "string",
                   },
@@ -918,56 +941,56 @@ try {
             },
           },
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Updates a pet in the store with form data",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}/uploadImage": Object {
-      "post": Object {
+    "/pet/{petId}/uploadImage": {
+      "post": {
         "description": "",
         "operationId": "uploadFile",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet to update",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/octet-stream": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
                 "format": "binary",
                 "type": "string",
               },
             },
           },
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/ApiResponse",
                 },
               },
@@ -975,30 +998,30 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "uploads an image",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/store/inventory": Object {
-      "get": Object {
+    "/store/inventory": {
+      "get": {
         "description": "Returns a map of status codes to quantities",
         "operationId": "getInventory",
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "additionalProperties": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
                     "format": "int32",
                     "type": "integer",
                   },
@@ -1010,25 +1033,25 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Returns pet inventories by status",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order": Object {
-      "post": Object {
+    "/store/order": {
+      "post": {
         "description": "",
         "operationId": "placeOrder",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/Order",
               },
             },
@@ -1036,26 +1059,26 @@ try {
           "description": "order placed for purchasing the pet",
           "required": true,
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
-            "content": Object {
-              "application/json": Object {
-                "example": Object {
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
                   "message": "Invalid Order",
                   "status": 400,
                 },
@@ -1065,50 +1088,50 @@ try {
           },
         },
         "summary": "Place an order for a pet",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order/{orderId}": Object {
-      "delete": Object {
+    "/store/order/{orderId}": {
+      "delete": {
         "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
         "operationId": "deleteOrder",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of the order that needs to be deleted",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "minimum": 1,
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Delete purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
         "operationId": "getOrderById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be fetched",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "maximum": 5,
               "minimum": 1,
@@ -1116,53 +1139,53 @@ try {
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Find purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/subscribe": Object {
-      "post": Object {
-        "callbacks": Object {
-          "orderDelivered": Object {
-            "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}": Object {
-              "post": Object {
+    "/store/subscribe": {
+      "post": {
+        "callbacks": {
+          "orderDelivered": {
+            "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}": {
+              "post": {
                 "deprecated": true,
                 "description": "A callback triggered every time an Order is delivered to the recipient",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -1173,8 +1196,8 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
+                "responses": {
+                  "200": {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
@@ -1182,28 +1205,28 @@ try {
               },
             },
           },
-          "orderInProgress": Object {
-            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
-              "post": Object {
-                "description": "A callback triggered every time an Order is updated status to \\"inProgress\\" (Description)",
-                "externalDocs": Object {
+          "orderInProgress": {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": {
+              "post": {
+                "description": "A callback triggered every time an Order is updated status to "inProgress" (Description)",
+                "externalDocs": {
                   "description": "Find out more",
                   "url": "https://more-details.com/demo",
                 },
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "status": Object {
+                          "status": {
                             "example": "inProgress",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -1212,17 +1235,17 @@ try {
                         "type": "object",
                       },
                     },
-                    "application/xml": Object {
-                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+                    "application/xml": {
+                      "example": "<?xml version="1.0" encoding="UTF-8"?>
 <root>
   <orderId>123</orderId>
   <status>inProgress</status>
   <timestamp>2018-10-19T16:46:45Z</timestamp>
 </root>
 ",
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
@@ -1232,13 +1255,13 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "properties": Object {
-                            "someProp": Object {
+                "responses": {
+                  "200": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "properties": {
+                            "someProp": {
                               "example": "123",
                               "type": "string",
                             },
@@ -1249,21 +1272,21 @@ try {
                     },
                     "description": "Callback successfully processed and no retries will be performed",
                   },
-                  "299": Object {
+                  "299": {
                     "description": "Response for cancelling subscription",
                   },
-                  "500": Object {
+                  "500": {
                     "description": "Callback processing failed and retries will be performed",
                   },
                 },
                 "summary": "Order in Progress (Summary)",
-                "x-codeSamples": Array [
-                  Object {
+                "x-codeSamples": [
+                  {
                     "lang": "C#",
                     "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
-pet.setApiKey(\\"your api key\\");
+pet.setApiKey("your api key");
 pet.petType = PetStore.v1.Pet.TYPE_DOG;
-pet.name = \\"Rex\\";
+pet.name = "Rex";
 // set other fields
 PetStoreResponse response = pet.create();
 if (response.statusCode == HttpStatusCode.Created)
@@ -1277,11 +1300,11 @@ else
 }
 ",
                   },
-                  Object {
+                  {
                     "lang": "PHP",
-                    "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+                    "source": "$form = new \\PetStore\\Entities\\Pet();
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->create($form);
@@ -1292,22 +1315,22 @@ try {
                   },
                 ],
               },
-              "put": Object {
+              "put": {
                 "description": "Order in Progress (Only Description)",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "status": Object {
+                          "status": {
                             "example": "inProgress",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -1316,17 +1339,17 @@ try {
                         "type": "object",
                       },
                     },
-                    "application/xml": Object {
-                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+                    "application/xml": {
+                      "example": "<?xml version="1.0" encoding="UTF-8"?>
 <root>
   <orderId>123</orderId>
   <status>inProgress</status>
   <timestamp>2018-10-19T16:46:45Z</timestamp>
 </root>
 ",
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
@@ -1336,13 +1359,13 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "properties": Object {
-                            "someProp": Object {
+                "responses": {
+                  "200": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "properties": {
+                            "someProp": {
                               "example": "123",
                               "type": "string",
                             },
@@ -1354,32 +1377,32 @@ try {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
-                "servers": Array [
-                  Object {
+                "servers": [
+                  {
                     "description": "Operation level server 1 (Operation override)",
                     "url": "//callback-url.operation-level/v1",
                   },
-                  Object {
+                  {
                     "description": "Operation level server 2 (Operation override)",
                     "url": "//callback-url.operation-level/v2",
                   },
                 ],
               },
-              "servers": Array [
-                Object {
+              "servers": [
+                {
                   "description": "Path level server 1",
                   "url": "//callback-url.path-level/v1",
                 },
-                Object {
+                {
                   "description": "Path level server 2",
                   "url": "//callback-url.path-level/v2",
                 },
               ],
             },
           },
-          "orderShipped": Object {
-            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
-              "post": Object {
+          "orderShipped": {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": {
+              "post": {
                 "description": "Very long description
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
@@ -1388,21 +1411,21 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
 fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 culpa qui officia deserunt mollit anim id est laborum.
 ",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "estimatedDeliveryDate": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "estimatedDeliveryDate": {
                             "example": "2018-11-11T16:00:00Z",
                             "format": "date-time",
                             "type": "string",
                           },
-                          "orderId": Object {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -1413,8 +1436,8 @@ culpa qui officia deserunt mollit anim id est laborum.
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
+                "responses": {
+                  "200": {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
@@ -1423,20 +1446,20 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         },
         "description": "Add subscription for a store events",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
-                "properties": Object {
-                  "callbackUrl": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "callbackUrl": {
                     "description": "This URL will be called by the server when the desired event will occur",
                     "example": "https://myserver.com/send/callback/here",
                     "format": "uri",
                     "type": "string",
                   },
-                  "eventName": Object {
+                  "eventName": {
                     "description": "Event name for the subscription",
-                    "enum": Array [
+                    "enum": [
                       "orderInProgress",
                       "orderShipped",
                       "orderDelivered",
@@ -1445,7 +1468,7 @@ culpa qui officia deserunt mollit anim id est laborum.
                     "type": "string",
                   },
                 },
-                "required": Array [
+                "required": [
                   "callbackUrl",
                   "eventName",
                 ],
@@ -1454,13 +1477,13 @@ culpa qui officia deserunt mollit anim id est laborum.
             },
           },
         },
-        "responses": Object {
-          "201": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "properties": Object {
-                    "subscriptionId": Object {
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "subscriptionId": {
                       "example": "AAA-123-BBB-456",
                       "type": "string",
                     },
@@ -1473,19 +1496,19 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         },
         "summary": "Subscribe to the Store events",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/user": Object {
-      "post": Object {
+    "/user": {
+      "post": {
         "description": "This can only be done by the logged in user.",
         "operationId": "createUser",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -1493,239 +1516,239 @@ culpa qui officia deserunt mollit anim id est laborum.
           "description": "Created user object",
           "required": true,
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Create user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithArray": Object {
-      "post": Object {
+    "/user/createWithArray": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithArrayInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithList": Object {
-      "post": Object {
+    "/user/createWithList": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithListInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/login": Object {
-      "get": Object {
+    "/user/login": {
+      "get": {
         "description": "",
         "operationId": "loginUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The user name for login",
             "in": "query",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "The password for login in clear text",
             "in": "query",
             "name": "password",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "examples": Object {
-                  "response": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "application/xml": Object {
-                "examples": Object {
-                  "response": Object {
+              "application/xml": {
+                "examples": {
+                  "response": {
                     "value": "<Message> OK </Message>",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "text/plain": Object {
-                "examples": Object {
-                  "response": Object {
+              "text/plain": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
               },
             },
             "description": "successful operation",
-            "headers": Object {
-              "X-Expires-After": Object {
+            "headers": {
+              "X-Expires-After": {
                 "description": "date in UTC when token expires",
-                "schema": Object {
+                "schema": {
                   "format": "date-time",
                   "type": "string",
                 },
               },
-              "X-Rate-Limit": Object {
+              "X-Rate-Limit": {
                 "description": "calls per hour allowed by the user",
-                "schema": Object {
+                "schema": {
                   "format": "int32",
                   "type": "integer",
                 },
               },
             },
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username/password supplied",
           },
         },
         "summary": "Logs user into the system",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/logout": Object {
-      "get": Object {
+    "/user/logout": {
+      "get": {
         "description": "",
         "operationId": "logoutUser",
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Logs out current logged in user session",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/{username}": Object {
-      "delete": Object {
+    "/user/{username}": {
+      "delete": {
         "description": "This can only be done by the logged in user.",
         "operationId": "deleteUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be deleted",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Delete user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "",
         "operationId": "getUserByName",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be fetched. Use user1 for testing. ",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Get user by user name",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "put": Object {
+      "put": {
         "description": "This can only be done by the logged in user.",
         "operationId": "updateUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "name that need to be deleted",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -1733,103 +1756,103 @@ culpa qui officia deserunt mollit anim id est laborum.
           "description": "Updated user object",
           "required": true,
         },
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid user supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Updated user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
   },
-  "security": Array [
-    Object {},
+  "security": [
+    {},
   ],
-  "servers": Array [
-    Object {
+  "servers": [
+    {
       "description": "Default server",
       "url": "//petstore.swagger.io/v2",
     },
-    Object {
+    {
       "description": "Sandbox server",
       "url": "//petstore.swagger.io/sandbox",
     },
   ],
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "description": "Everything about your Pets",
       "name": "pet",
     },
-    Object {
+    {
       "description": "Access to Petstore orders",
       "name": "store",
     },
-    Object {
+    {
       "description": "Operations about user",
       "name": "user",
     },
-    Object {
-      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Pet\\" />
+    {
+      "description": "<SchemaDefinition schemaRef="#/components/schemas/Pet" />
 ",
       "name": "pet_model",
       "x-displayName": "The Pet Model",
     },
-    Object {
-      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Order\\" exampleRef=\\"#/components/examples/Order\\" showReadOnly={true} showWriteOnly={true} />
+    {
+      "description": "<SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 ",
       "name": "store_model",
       "x-displayName": "The Order Model",
     },
   ],
-  "x-tagGroups": Array [
-    Object {
+  "x-tagGroups": [
+    {
       "name": "General",
-      "tags": Array [
+      "tags": [
         "pet",
         "store",
       ],
     },
-    Object {
+    {
       "name": "User Management",
-      "tags": Array [
+      "tags": [
         "user",
       ],
     },
-    Object {
+    {
       "name": "Models",
-      "tags": Array [
+      "tags": [
         "pet_model",
         "store_model",
       ],
     },
   ],
-  "x-webhooks": Object {
-    "newPet": Object {
-      "post": Object {
+  "x-webhooks": {
+    "newPet": {
+      "post": {
         "description": "Information about a new pet in the systems",
         "operationId": "newPet",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/Pet",
               },
             },
           },
         },
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Return a 200 status to indicate that the data was received successfully",
           },
         },
         "summary": "New pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
@@ -1839,11 +1862,11 @@ culpa qui officia deserunt mollit anim id est laborum.
 `;
 
 exports[`#loadAndBundleSpec should load And Bundle Spec demo/openapi-3-1.yaml 1`] = `
-Object {
-  "components": Object {
-    "examples": Object {
-      "Order": Object {
-        "value": Object {
+{
+  "components": {
+    "examples": {
+      "Order": {
+        "value": {
           "complete": false,
           "quantity": 1,
           "shipDate": "2018-10-19T16:46:45Z",
@@ -1851,70 +1874,70 @@ Object {
         },
       },
     },
-    "pathItems": Object {
-      "webhooks": Object {
-        "post": Object {
+    "pathItems": {
+      "webhooks": {
+        "post": {
           "description": "Info about new cat",
           "operationId": "createdCat",
-          "requestBody": Object {
-            "content": Object {
-              "multipart/form-data": Object {
-                "schema": Object {
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
                   "$ref": "#/components/schemas/Cat",
                 },
               },
             },
             "description": "Information about cat in the system",
           },
-          "responses": Object {
-            "200": Object {
+          "responses": {
+            "200": {
               "description": "create Cat details",
             },
           },
           "summary": "Create new cat",
-          "tags": Array [
+          "tags": [
             "webhooks",
           ],
         },
-        "put": Object {
+        "put": {
           "description": "Get a cat details after update",
           "operationId": "updatedCat",
-          "requestBody": Object {
-            "content": Object {
-              "multipart/form-data": Object {
-                "schema": Object {
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
                   "$ref": "#/components/schemas/Cat",
                 },
               },
             },
             "description": "Information about cat in the system",
           },
-          "responses": Object {
-            "200": Object {
+          "responses": {
+            "200": {
               "description": "update Cat details",
             },
           },
           "summary": "Get a cat details after update",
-          "tags": Array [
+          "tags": [
             "webhooks",
           ],
         },
       },
     },
-    "requestBodies": Object {
-      "Pet": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
+    "requestBodies": {
+      "Pet": {
+        "content": {
+          "application/json": {
+            "schema": {
               "$ref": "#/components/schemas/Pet",
               "description": "My Pet",
               "title": "Pettie",
             },
           },
-          "application/xml": Object {
-            "schema": Object {
-              "properties": Object {
-                "name": Object {
+          "application/xml": {
+            "schema": {
+              "properties": {
+                "name": {
                   "description": "hooray",
                   "type": "string",
                 },
@@ -1926,11 +1949,11 @@ Object {
         "description": "Pet object that needs to be added to the store",
         "required": true,
       },
-      "UserArray": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
-              "items": Object {
+      "UserArray": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "items": {
                 "$ref": "#/components/schemas/User",
               },
               "type": "array",
@@ -1941,22 +1964,22 @@ Object {
         "required": true,
       },
     },
-    "schemas": Object {
-      "ApiResponse": Object {
-        "patternProperties": Object {
-          "^O_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
-            "properties": Object {
-              "nestedProperty": Object {
+    "schemas": {
+      "ApiResponse": {
+        "patternProperties": {
+          "^O_\\\\w+\\\\.[1-9]{2,4}$": {
+            "properties": {
+              "nestedProperty": {
                 "default": "lazy",
                 "description": "The measured skill for hunting",
-                "enum": Array [
+                "enum": [
                   "clueless",
                   "lazy",
                   "adventurous",
                   "aggressive",
                 ],
                 "example": "adventurous",
-                "type": Array [
+                "type": [
                   "string",
                   "boolean",
                 ],
@@ -1964,17 +1987,17 @@ Object {
             },
             "type": "object",
           },
-          "^S_\\\\\\\\w+\\\\\\\\.[1-9]{2,4}$": Object {
+          "^S_\\\\w+\\\\.[1-9]{2,4}$": {
             "description": "The measured skill for hunting",
-            "else": Object {
+            "else": {
               "maxLength": 10,
               "minLength": 1,
             },
-            "if": Object {
+            "if": {
               "x-displayName": "fieldName === 'status'",
             },
-            "then": Object {
-              "enum": Array [
+            "then": {
+              "enum": [
                 "success",
                 "failed",
               ],
@@ -1983,44 +2006,44 @@ Object {
             },
           },
         },
-        "properties": Object {
-          "code": Object {
+        "properties": {
+          "code": {
             "format": "int32",
             "type": "integer",
           },
-          "message": Object {
+          "message": {
             "type": "string",
           },
-          "type": Object {
+          "type": {
             "type": "string",
           },
         },
         "type": "object",
       },
-      "Cat": Object {
-        "allOf": Array [
-          Object {
+      "Cat": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "huntingSkill": Object {
+          {
+            "properties": {
+              "huntingSkill": {
                 "default": "lazy",
                 "description": "The measured skill for hunting",
-                "enum": Array [
+                "enum": [
                   "clueless",
                   "lazy",
                   "adventurous",
                   "aggressive",
                 ],
                 "example": "adventurous",
-                "type": Array [
+                "type": [
                   "string",
                   "boolean",
                 ],
               },
             },
-            "required": Array [
+            "required": [
               "huntingSkill",
             ],
             "type": "object",
@@ -2028,21 +2051,21 @@ Object {
         ],
         "description": "A representation of a cat",
       },
-      "Category": Object {
-        "properties": Object {
-          "id": Object {
+      "Category": {
+        "properties": {
+          "id": {
             "$ref": "#/components/schemas/Id",
             "description": "Category ID",
           },
-          "name": Object {
+          "name": {
             "description": "Category name",
             "minLength": 1,
             "type": "string",
           },
-          "sub": Object {
+          "sub": {
             "description": "Test Sub Category",
-            "properties": Object {
-              "prop1": Object {
+            "properties": {
+              "prop1": {
                 "description": "Dumb Property",
                 "type": "string",
               },
@@ -2051,18 +2074,18 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Category",
         },
       },
-      "Dog": Object {
-        "allOf": Array [
-          Object {
+      "Dog": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "packSize": Object {
+          {
+            "properties": {
+              "packSize": {
                 "default": 1,
                 "description": "The size of the pack the dog is from",
                 "format": "int32",
@@ -2070,7 +2093,7 @@ Object {
                 "type": "integer",
               },
             },
-            "required": Array [
+            "required": [
               "packSize",
             ],
             "type": "object",
@@ -2078,21 +2101,21 @@ Object {
         ],
         "description": "A representation of a dog",
       },
-      "HoneyBee": Object {
-        "allOf": Array [
-          Object {
+      "HoneyBee": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "honeyPerDay": Object {
+          {
+            "properties": {
+              "honeyPerDay": {
                 "description": "Average amount of honey produced per day in ounces",
                 "example": 3.14,
                 "multipleOf": 0.01,
                 "type": "number",
               },
             },
-            "required": Array [
+            "required": [
               "honeyPerDay",
             ],
             "type": "object",
@@ -2100,46 +2123,46 @@ Object {
         ],
         "description": "A representation of a honey bee",
       },
-      "Id": Object {
+      "Id": {
         "format": "int64",
         "readOnly": true,
         "type": "integer",
       },
-      "Order": Object {
-        "properties": Object {
-          "complete": Object {
+      "Order": {
+        "properties": {
+          "complete": {
             "default": false,
             "description": "Indicates whenever order was completed or not",
             "readOnly": true,
             "type": "boolean",
           },
-          "id": Object {
+          "id": {
             "$ref": "#/components/schemas/Id",
             "description": "Order ID",
           },
-          "petId": Object {
+          "petId": {
             "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
           },
-          "quantity": Object {
+          "quantity": {
             "default": 1,
             "format": "int32",
             "minimum": 1,
             "type": "integer",
           },
-          "requestId": Object {
+          "requestId": {
             "description": "Unique Request Id",
             "type": "string",
             "writeOnly": true,
           },
-          "shipDate": Object {
+          "shipDate": {
             "description": "Estimated ship date",
             "format": "date-time",
             "type": "string",
           },
-          "status": Object {
+          "status": {
             "description": "Order Status",
-            "enum": Array [
+            "enum": [
               "placed",
               "approved",
               "delivered",
@@ -2148,174 +2171,174 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Order",
         },
       },
-      "Pet": Object {
-        "discriminator": Object {
-          "mapping": Object {
+      "Pet": {
+        "discriminator": {
+          "mapping": {
             "bee": "#/components/schemas/HoneyBee",
             "cat": "#/components/schemas/Cat",
             "dog": "#/components/schemas/Dog",
           },
           "propertyName": "petType",
         },
-        "properties": Object {
-          "category": Object {
+        "properties": {
+          "category": {
             "$ref": "#/components/schemas/Category",
             "description": "Categories this pet belongs to",
           },
-          "friend": Object {
+          "friend": {
             "$ref": "#/components/schemas/Pet",
           },
-          "huntingSkill": Object {
-            "enum": Array [
+          "huntingSkill": {
+            "enum": [
               0,
               1,
               2,
             ],
-            "type": Array [
+            "type": [
               "integer",
             ],
           },
-          "id": Object {
+          "id": {
             "$ref": "#/components/schemas/Id",
             "description": "Pet ID",
-            "externalDocs": Object {
+            "externalDocs": {
               "description": "Find more info here",
               "url": "https://example.com",
             },
           },
-          "name": Object {
+          "name": {
             "description": "The name given to a pet",
             "example": "Guru",
             "type": "string",
           },
-          "petType": Object {
+          "petType": {
             "description": "Type of a pet",
             "type": "string",
           },
-          "photoUrls": Object {
-            "default": Array [],
+          "photoUrls": {
+            "default": [],
             "description": "The list of URL to a cute photos featuring pet",
-            "else": Object {
+            "else": {
               "maxItems": 20,
               "minItems": 1,
-              "type": Array [
+              "type": [
                 "integer",
                 "null",
               ],
               "x-displayName": "notString",
             },
-            "if": Object {
+            "if": {
               "type": "string",
               "x-displayName": "isString",
             },
-            "items": Object {
+            "items": {
               "format": "url",
               "type": "string",
             },
             "maxItems": 10,
             "minItems": 1,
-            "then": Object {
+            "then": {
               "maxItems": 15,
               "minItems": 1,
             },
-            "type": Array [
+            "type": [
               "string",
               "integer",
               "null",
             ],
-            "xml": Object {
+            "xml": {
               "name": "photoUrl",
               "wrapped": true,
             },
           },
-          "status": Object {
+          "status": {
             "default": "pending",
             "description": "Pet status in the store",
-            "enum": Array [
+            "enum": [
               "available",
               "pending",
               "sold",
             ],
             "type": "string",
           },
-          "tags": Object {
+          "tags": {
             "description": "Tags attached to the pet",
             "exclusiveMaximum": 100,
             "exclusiveMinimum": 0,
-            "items": Object {
+            "items": {
               "$ref": "#/components/schemas/Tag",
             },
             "type": "array",
-            "xml": Object {
+            "xml": {
               "name": "tag",
               "wrapped": true,
             },
           },
         },
-        "required": Array [
+        "required": [
           "name",
           "photoUrls",
         ],
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Pet",
         },
       },
-      "Tag": Object {
-        "properties": Object {
-          "id": Object {
+      "Tag": {
+        "properties": {
+          "id": {
             "$ref": "#/components/schemas/Id",
             "description": "Tag ID",
             "type": "number",
           },
-          "name": Object {
+          "name": {
             "description": "Tag name",
             "minLength": 1,
             "type": "string",
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Tag",
         },
       },
-      "User": Object {
-        "else": Object {
-          "required": Array [],
+      "User": {
+        "else": {
+          "required": [],
         },
-        "if": Object {
-          "properties": Object {
-            "userStatus": Object {
-              "enum": Array [
+        "if": {
+          "properties": {
+            "userStatus": {
+              "enum": [
                 10,
               ],
             },
           },
           "title": "userStatus === 10",
         },
-        "properties": Object {
-          "addresses": Object {
-            "items": Object {
+        "properties": {
+          "addresses": {
+            "items": {
               "type": "string",
             },
             "maxLength": 10,
             "minItems": 0,
-            "prefixItems": Array [
-              Object {
-                "properties": Object {
-                  "city": Object {
+            "prefixItems": [
+              {
+                "properties": {
+                  "city": {
                     "minLength": 0,
                     "type": "string",
                   },
-                  "country": Object {
+                  "country": {
                     "minLength": 0,
                     "type": "string",
                   },
-                  "street": Object {
+                  "street": {
                     "description": "includes build/apartment number",
                     "minLength": 0,
                     "type": "string",
@@ -2323,40 +2346,40 @@ Object {
                 },
                 "type": "object",
               },
-              Object {
+              {
                 "type": "number",
               },
             ],
             "type": "array",
           },
-          "email": Object {
+          "email": {
             "description": "User email address",
             "example": "john.smith@example.com",
             "format": "email",
             "type": "string",
           },
-          "firstName": Object {
+          "firstName": {
             "description": "User first name",
             "example": "John",
             "minLength": 1,
             "type": "string",
           },
-          "id": Object {
+          "id": {
             "$ref": "#/components/schemas/Id",
           },
-          "image": Object {
+          "image": {
             "contentEncoding": "base64",
             "contentMediaType": "image/png",
             "description": "User image",
             "type": "string",
           },
-          "lastName": Object {
+          "lastName": {
             "description": "User last name",
             "example": "Smith",
             "minLength": 1,
             "type": "string",
           },
-          "password": Object {
+          "password": {
             "description": "User password, MUST contain a mix of upper and lower case letters, as well as digits",
             "example": "drowssaP123",
             "format": "password",
@@ -2364,62 +2387,62 @@ Object {
             "pattern": "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/",
             "type": "string",
           },
-          "pet": Object {
-            "oneOf": Array [
-              Object {
+          "pet": {
+            "oneOf": [
+              {
                 "$ref": "#/components/schemas/Pet",
                 "title": "Pettie",
               },
-              Object {
+              {
                 "$ref": "#/components/schemas/Tag",
               },
             ],
           },
-          "phone": Object {
+          "phone": {
             "description": "User phone number in international format",
             "example": "+1-202-555-0192",
-            "pattern": "/^\\\\+(?:[0-9]-?){6,14}[0-9]$/",
+            "pattern": "/^\\+(?:[0-9]-?){6,14}[0-9]$/",
             "type": "string",
           },
-          "userStatus": Object {
+          "userStatus": {
             "description": "User status",
             "format": "int32",
             "type": "integer",
           },
-          "username": Object {
+          "username": {
             "description": "User supplied username",
             "example": "John78",
             "minLength": 4,
             "type": "string",
           },
         },
-        "then": Object {
-          "required": Array [
+        "then": {
+          "required": [
             "phone",
           ],
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "User",
         },
       },
     },
-    "securitySchemes": Object {
-      "api_key": Object {
+    "securitySchemes": {
+      "api_key": {
         "description": "For this sample, you can use the api key \`special-key\` to test the authorization filters.
 ",
         "in": "header",
         "name": "api_key",
         "type": "apiKey",
       },
-      "petstore_auth": Object {
+      "petstore_auth": {
         "description": "Get access to data while protecting your account credentials.
 OAuth2 is also a safer and more secure way to give you access.
 ",
-        "flows": Object {
-          "implicit": Object {
+        "flows": {
+          "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
-            "scopes": Object {
+            "scopes": {
               "read:pets": "read your pets",
               "write:pets": "modify pets in your account",
             },
@@ -2429,12 +2452,12 @@ OAuth2 is also a safer and more secure way to give you access.
       },
     },
   },
-  "externalDocs": Object {
+  "externalDocs": {
     "description": "Find out how to create Github repo for your OpenAPI spec.",
     "url": "https://github.com/Rebilly/generator-openapi-repo",
   },
-  "info": Object {
-    "contact": Object {
+  "info": {
+    "contact": {
       "email": "apiteam@swagger.io",
       "name": "API Support",
       "url": "https://github.com/Redocly/redoc",
@@ -2473,7 +2496,7 @@ and standard method from web, mobile and desktop applications.
 
 <SecurityDefinitions />
 ",
-    "license": Object {
+    "license": {
       "identifier": "Apache 2.0",
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html",
@@ -2482,81 +2505,81 @@ and standard method from web, mobile and desktop applications.
     "termsOfService": "http://swagger.io/terms/",
     "title": "Swagger Petstore",
     "version": "1.0.0",
-    "x-logo": Object {
+    "x-logo": {
       "altText": "Petstore logo",
       "url": "https://redocly.github.io/redoc/petstore-logo.png",
     },
   },
   "openapi": "3.1.0",
-  "paths": Object {
-    "/pet": Object {
-      "delete": Object {
-        "operationId": "deletePetBy\\"Id",
+  "paths": {
+    "/pet": {
+      "delete": {
+        "operationId": "deletePetBy"Id",
         "summary": "OperationId with quotes",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "get": Object {
-        "operationId": "delete\\\\PetById",
+      "get": {
+        "operationId": "delete\\PetById",
         "summary": "OperationId with backslash",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "parameters": Array [
-        Object {
+      "parameters": [
+        {
           "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
           "example": "en-US",
           "in": "header",
           "name": "Accept-Language",
           "required": false,
-          "schema": Object {
+          "schema": {
             "default": "en-AU",
             "type": "string",
           },
         },
-        Object {
+        {
           "description": "Some cookie",
           "in": "cookie",
           "name": "cookieParam",
           "required": true,
-          "schema": Object {
+          "schema": {
             "format": "int64",
             "type": "integer",
           },
         },
       ],
-      "post": Object {
+      "post": {
         "description": "Add new pet to the store inventory.",
         "operationId": "addPet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Add a new pet to the store",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-codeSamples": Array [
-          Object {
+        "x-codeSamples": [
+          {
             "lang": "C#",
             "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
-pet.setApiKey(\\"your api key\\");
+pet.setApiKey("your api key");
 pet.petType = PetStore.v1.Pet.TYPE_DOG;
-pet.name = \\"Rex\\";
+pet.name = "Rex";
 // set other fields
 PetStoreResponse response = pet.create();
 if (response.statusCode == HttpStatusCode.Created)
@@ -2570,11 +2593,11 @@ else
 }
 ",
           },
-          Object {
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+            "source": "$form = new \\PetStore\\Entities\\Pet();
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->create($form);
@@ -2585,42 +2608,42 @@ try {
           },
         ],
       },
-      "put": Object {
+      "put": {
         "description": "",
         "operationId": "updatePet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
-          "405": Object {
+          "405": {
             "description": "Validation exception",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Update an existing pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-codeSamples": Array [
-          Object {
+        "x-codeSamples": [
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+            "source": "$form = new \\PetStore\\Entities\\Pet();
 $form->setPetId(1);
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->update($form);
@@ -2632,20 +2655,20 @@ try {
         ],
       },
     },
-    "/pet/findByStatus": Object {
-      "get": Object {
+    "/pet/findByStatus": {
+      "get": {
         "description": "Multiple status values can be provided with comma separated strings",
         "operationId": "findPetsByStatus",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Status values that need to be considered for filter",
             "in": "query",
             "name": "status",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "default": "available",
-                "enum": Array [
+                "enum": [
                   "available",
                   "pending",
                   "sold",
@@ -2659,20 +2682,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
@@ -2681,37 +2704,37 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid status value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by status",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/findByTags": Object {
-      "get": Object {
+    "/pet/findByTags": {
+      "get": {
         "deprecated": true,
         "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
         "operationId": "findPetsByTags",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Tags to filter by",
             "in": "query",
             "name": "tags",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "type": "string",
               },
               "type": "array",
@@ -2719,20 +2742,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
@@ -2741,141 +2764,141 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid tag value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by tags",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}": Object {
-      "delete": Object {
+    "/pet/{petId}": {
+      "delete": {
         "description": "",
         "operationId": "deletePet",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "example": "Bearer <TOKEN>",
             "in": "header",
             "name": "api_key",
             "required": false,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "Pet id to delete",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid pet value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Deletes a pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "Returns a single pet",
         "operationId": "getPetById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "deprecated": true,
             "description": "ID of pet to return",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Find pet by ID",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "post": Object {
+      "post": {
         "description": "",
         "operationId": "updatePetWithForm",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be updated",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/x-www-form-urlencoded": Object {
-              "schema": Object {
-                "properties": Object {
-                  "name": Object {
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "name": {
                     "description": "Updated name of the pet",
                     "type": "string",
                   },
-                  "status": Object {
+                  "status": {
                     "description": "Updated status of the pet",
                     "type": "string",
                   },
@@ -2885,58 +2908,58 @@ try {
             },
           },
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Updates a pet in the store with form data",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}/uploadImage": Object {
-      "post": Object {
+    "/pet/{petId}/uploadImage": {
+      "post": {
         "description": "",
         "operationId": "uploadFile",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet to update",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/octet-stream": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
                 "format": "binary",
                 "type": "string",
               },
             },
           },
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/ApiResponse",
-                  "unevaluatedProperties": Object {
+                  "unevaluatedProperties": {
                     "format": "int32",
                     "type": "integer",
                   },
@@ -2946,30 +2969,30 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "uploads an image",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/store/inventory": Object {
-      "get": Object {
+    "/store/inventory": {
+      "get": {
         "description": "Returns a map of status codes to quantities",
         "operationId": "getInventory",
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "additionalProperties": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
                     "format": "int32",
                     "type": "integer",
                   },
@@ -2980,25 +3003,25 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Returns pet inventories by status",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order": Object {
-      "post": Object {
+    "/store/order": {
+      "post": {
         "description": "",
         "operationId": "placeOrder",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/Order",
               },
             },
@@ -3006,26 +3029,26 @@ try {
           "description": "order placed for purchasing the pet",
           "required": true,
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
-            "content": Object {
-              "application/json": Object {
-                "example": Object {
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
                   "message": "Invalid Order",
                   "status": 400,
                 },
@@ -3035,50 +3058,50 @@ try {
           },
         },
         "summary": "Place an order for a pet",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order/{orderId}": Object {
-      "delete": Object {
+    "/store/order/{orderId}": {
+      "delete": {
         "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
         "operationId": "deleteOrder",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of the order that needs to be deleted",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "minimum": 1,
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Delete purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
         "operationId": "getOrderById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be fetched",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "maximum": 5,
               "minimum": 1,
@@ -3086,53 +3109,53 @@ try {
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Find purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/subscribe": Object {
-      "post": Object {
-        "callbacks": Object {
-          "orderDelivered": Object {
-            "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}": Object {
-              "post": Object {
+    "/store/subscribe": {
+      "post": {
+        "callbacks": {
+          "orderDelivered": {
+            "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}": {
+              "post": {
                 "deprecated": true,
                 "description": "A callback triggered every time an Order is delivered to the recipient",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -3143,8 +3166,8 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
+                "responses": {
+                  "200": {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
@@ -3152,28 +3175,28 @@ try {
               },
             },
           },
-          "orderInProgress": Object {
-            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
-              "post": Object {
-                "description": "A callback triggered every time an Order is updated status to \\"inProgress\\" (Description)",
-                "externalDocs": Object {
+          "orderInProgress": {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": {
+              "post": {
+                "description": "A callback triggered every time an Order is updated status to "inProgress" (Description)",
+                "externalDocs": {
                   "description": "Find out more",
                   "url": "https://more-details.com/demo",
                 },
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "status": Object {
+                          "status": {
                             "example": "inProgress",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -3182,17 +3205,17 @@ try {
                         "type": "object",
                       },
                     },
-                    "application/xml": Object {
-                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+                    "application/xml": {
+                      "example": "<?xml version="1.0" encoding="UTF-8"?>
 <root>
   <orderId>123</orderId>
   <status>inProgress</status>
   <timestamp>2018-10-19T16:46:45Z</timestamp>
 </root>
 ",
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
@@ -3202,13 +3225,13 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "properties": Object {
-                            "someProp": Object {
+                "responses": {
+                  "200": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "properties": {
+                            "someProp": {
                               "example": "123",
                               "type": "string",
                             },
@@ -3219,21 +3242,21 @@ try {
                     },
                     "description": "Callback successfully processed and no retries will be performed",
                   },
-                  "299": Object {
+                  "299": {
                     "description": "Response for cancelling subscription",
                   },
-                  "500": Object {
+                  "500": {
                     "description": "Callback processing failed and retries will be performed",
                   },
                 },
                 "summary": "Order in Progress (Summary)",
-                "x-codeSamples": Array [
-                  Object {
+                "x-codeSamples": [
+                  {
                     "lang": "C#",
                     "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
-pet.setApiKey(\\"your api key\\");
+pet.setApiKey("your api key");
 pet.petType = PetStore.v1.Pet.TYPE_DOG;
-pet.name = \\"Rex\\";
+pet.name = "Rex";
 // set other fields
 PetStoreResponse response = pet.create();
 if (response.statusCode == HttpStatusCode.Created)
@@ -3247,11 +3270,11 @@ else
 }
 ",
                   },
-                  Object {
+                  {
                     "lang": "PHP",
-                    "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+                    "source": "$form = new \\PetStore\\Entities\\Pet();
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->create($form);
@@ -3262,22 +3285,22 @@ try {
                   },
                 ],
               },
-              "put": Object {
+              "put": {
                 "description": "Order in Progress (Only Description)",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "status": Object {
+                          "status": {
                             "example": "inProgress",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -3286,17 +3309,17 @@ try {
                         "type": "object",
                       },
                     },
-                    "application/xml": Object {
-                      "example": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+                    "application/xml": {
+                      "example": "<?xml version="1.0" encoding="UTF-8"?>
 <root>
   <orderId>123</orderId>
   <status>inProgress</status>
   <timestamp>2018-10-19T16:46:45Z</timestamp>
 </root>
 ",
-                      "schema": Object {
-                        "properties": Object {
-                          "orderId": Object {
+                      "schema": {
+                        "properties": {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
@@ -3306,13 +3329,13 @@ try {
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "properties": Object {
-                            "someProp": Object {
+                "responses": {
+                  "200": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "properties": {
+                            "someProp": {
                               "example": "123",
                               "type": "string",
                             },
@@ -3324,32 +3347,32 @@ try {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
-                "servers": Array [
-                  Object {
+                "servers": [
+                  {
                     "description": "Operation level server 1 (Operation override)",
                     "url": "//callback-url.operation-level/v1",
                   },
-                  Object {
+                  {
                     "description": "Operation level server 2 (Operation override)",
                     "url": "//callback-url.operation-level/v2",
                   },
                 ],
               },
-              "servers": Array [
-                Object {
+              "servers": [
+                {
                   "description": "Path level server 1",
                   "url": "//callback-url.path-level/v1",
                 },
-                Object {
+                {
                   "description": "Path level server 2",
                   "url": "//callback-url.path-level/v2",
                 },
               ],
             },
           },
-          "orderShipped": Object {
-            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": Object {
-              "post": Object {
+          "orderShipped": {
+            "{$request.body#/callbackUrl}?event={$request.body#/eventName}": {
+              "post": {
                 "description": "Very long description
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
@@ -3358,21 +3381,21 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
 fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 culpa qui officia deserunt mollit anim id est laborum.
 ",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "properties": Object {
-                          "estimatedDeliveryDate": Object {
+                "requestBody": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "properties": {
+                          "estimatedDeliveryDate": {
                             "example": "2018-11-11T16:00:00Z",
                             "format": "date-time",
                             "type": "string",
                           },
-                          "orderId": Object {
+                          "orderId": {
                             "example": "123",
                             "type": "string",
                           },
-                          "timestamp": Object {
+                          "timestamp": {
                             "example": "2018-10-19T16:46:45Z",
                             "format": "date-time",
                             "type": "string",
@@ -3383,8 +3406,8 @@ culpa qui officia deserunt mollit anim id est laborum.
                     },
                   },
                 },
-                "responses": Object {
-                  "200": Object {
+                "responses": {
+                  "200": {
                     "description": "Callback successfully processed and no retries will be performed",
                   },
                 },
@@ -3393,20 +3416,20 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         },
         "description": "Add subscription for a store events",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
-                "properties": Object {
-                  "callbackUrl": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "callbackUrl": {
                     "description": "This URL will be called by the server when the desired event will occur",
                     "example": "https://myserver.com/send/callback/here",
                     "format": "uri",
                     "type": "string",
                   },
-                  "eventName": Object {
+                  "eventName": {
                     "description": "Event name for the subscription",
-                    "enum": Array [
+                    "enum": [
                       "orderInProgress",
                       "orderShipped",
                       "orderDelivered",
@@ -3415,7 +3438,7 @@ culpa qui officia deserunt mollit anim id est laborum.
                     "type": "string",
                   },
                 },
-                "required": Array [
+                "required": [
                   "callbackUrl",
                   "eventName",
                 ],
@@ -3424,13 +3447,13 @@ culpa qui officia deserunt mollit anim id est laborum.
             },
           },
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
-                    "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "items": {
                       "type": "number",
                     },
                     "maxItems": 777,
@@ -3445,12 +3468,12 @@ culpa qui officia deserunt mollit anim id est laborum.
             },
             "description": "Successful operation",
           },
-          "201": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "properties": Object {
-                    "subscriptionId": Object {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "subscriptionId": {
                       "example": "AAA-123-BBB-456",
                       "type": "string",
                     },
@@ -3463,19 +3486,19 @@ culpa qui officia deserunt mollit anim id est laborum.
           },
         },
         "summary": "Subscribe to the Store events",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/user": Object {
-      "post": Object {
+    "/user": {
+      "post": {
         "description": "This can only be done by the logged in user.",
         "operationId": "createUser",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -3483,242 +3506,242 @@ culpa qui officia deserunt mollit anim id est laborum.
           "description": "Created user object",
           "required": true,
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Create user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithArray": Object {
-      "post": Object {
+    "/user/createWithArray": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithArrayInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithList": Object {
-      "post": Object {
+    "/user/createWithList": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithListInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/login": Object {
-      "get": Object {
+    "/user/login": {
+      "get": {
         "description": "",
         "operationId": "loginUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The user name for login",
             "in": "query",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "The password for login in clear text",
             "in": "query",
             "name": "password",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "examples": Object {
-                  "response": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "application/xml": Object {
-                "examples": Object {
-                  "response": Object {
+              "application/xml": {
+                "examples": {
+                  "response": {
                     "value": "<Message> OK </Message>",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "text/plain": Object {
-                "examples": Object {
-                  "response": Object {
+              "text/plain": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
               },
             },
             "description": "successful operation",
-            "headers": Object {
-              "X-Expires-After": Object {
+            "headers": {
+              "X-Expires-After": {
                 "description": "date in UTC when token expires",
-                "schema": Object {
+                "schema": {
                   "format": "date-time",
                   "type": "string",
                 },
               },
-              "X-Rate-Limit": Object {
+              "X-Rate-Limit": {
                 "description": "calls per hour allowed by the user",
-                "schema": Object {
+                "schema": {
                   "format": "int32",
                   "type": "integer",
                 },
               },
             },
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username/password supplied",
           },
         },
         "summary": "Logs user into the system",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/logout": Object {
-      "get": Object {
+    "/user/logout": {
+      "get": {
         "description": "",
         "operationId": "logoutUser",
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Logs out current logged in user session",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/{username}": Object {
-      "delete": Object {
+    "/user/{username}": {
+      "delete": {
         "description": "This can only be done by the logged in user.",
         "operationId": "deleteUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be deleted",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "204": Object {
+        "responses": {
+          "204": {
             "description": "User is deleted",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Delete user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "",
         "operationId": "getUserByName",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be fetched. Use user1 for testing. ",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Get user by user name",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "put": Object {
+      "put": {
         "description": "This can only be done by the logged in user.",
         "operationId": "updateUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "name that need to be updated",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -3726,123 +3749,123 @@ culpa qui officia deserunt mollit anim id est laborum.
           "description": "Updated user object",
           "required": true,
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
             "description": "User is updated successfully",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid user supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Updated user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
   },
-  "security": Array [
-    Object {},
+  "security": [
+    {},
   ],
-  "servers": Array [
-    Object {
+  "servers": [
+    {
       "description": "Default server",
       "url": "//petstore.swagger.io/v2",
     },
-    Object {
+    {
       "description": "Sandbox server",
       "url": "//petstore.swagger.io/sandbox",
     },
   ],
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "description": "Everything about your Pets",
       "name": "pet",
     },
-    Object {
+    {
       "description": "Access to Petstore orders",
       "name": "store",
     },
-    Object {
+    {
       "description": "Operations about user",
       "name": "user",
     },
-    Object {
+    {
       "description": "Everything about your Webhooks",
       "name": "webhooks",
     },
-    Object {
-      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Pet\\" />
+    {
+      "description": "<SchemaDefinition schemaRef="#/components/schemas/Pet" />
 ",
       "name": "pet_model",
       "x-displayName": "The Pet Model",
     },
-    Object {
-      "description": "<SchemaDefinition schemaRef=\\"#/components/schemas/Order\\" exampleRef=\\"#/components/examples/Order\\" showReadOnly={true} showWriteOnly={true} />
+    {
+      "description": "<SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
 ",
       "name": "store_model",
       "x-displayName": "The Order Model",
     },
   ],
-  "webhooks": Object {
-    "myWebhook": Object {
+  "webhooks": {
+    "myWebhook": {
       "$ref": "#/components/pathItems/webhooks",
       "description": "Overriding description",
       "summary": "Overriding summary",
     },
-    "newPet": Object {
-      "post": Object {
+    "newPet": {
+      "post": {
         "description": "Information about a new pet in the systems",
         "operationId": "newPet",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/Pet",
               },
             },
           },
         },
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Return a 200 status to indicate that the data was received successfully",
           },
         },
         "summary": "New pet",
-        "tags": Array [
+        "tags": [
           "webhooks",
         ],
       },
     },
   },
-  "x-tagGroups": Array [
-    Object {
+  "x-tagGroups": [
+    {
       "name": "General",
-      "tags": Array [
+      "tags": [
         "pet",
         "store",
         "webhooks",
       ],
     },
-    Object {
+    {
       "name": "User Management",
-      "tags": Array [
+      "tags": [
         "user",
       ],
     },
-    Object {
+    {
       "name": "Models",
-      "tags": Array [
+      "tags": [
         "pet_model",
         "store_model",
       ],
@@ -3852,18 +3875,18 @@ culpa qui officia deserunt mollit anim id est laborum.
 `;
 
 exports[`#loadAndBundleSpec should load And Bundle Spec demo/swagger.yaml 1`] = `
-Object {
-  "components": Object {
-    "requestBodies": Object {
-      "Pet": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
+{
+  "components": {
+    "requestBodies": {
+      "Pet": {
+        "content": {
+          "application/json": {
+            "schema": {
               "$ref": "#/components/schemas/Pet",
             },
           },
-          "application/xml": Object {
-            "schema": Object {
+          "application/xml": {
+            "schema": {
               "$ref": "#/components/schemas/Pet",
             },
           },
@@ -3871,11 +3894,11 @@ Object {
         "description": "Pet object that needs to be added to the store",
         "required": true,
       },
-      "UserArray": Object {
-        "content": Object {
-          "application/json": Object {
-            "schema": Object {
-              "items": Object {
+      "UserArray": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "items": {
                 "$ref": "#/components/schemas/User",
               },
               "type": "array",
@@ -3886,33 +3909,33 @@ Object {
         "required": true,
       },
     },
-    "schemas": Object {
-      "ApiResponse": Object {
-        "properties": Object {
-          "code": Object {
+    "schemas": {
+      "ApiResponse": {
+        "properties": {
+          "code": {
             "format": "int32",
             "type": "integer",
           },
-          "message": Object {
+          "message": {
             "type": "string",
           },
-          "type": Object {
+          "type": {
             "type": "string",
           },
         },
         "type": "object",
       },
-      "Cat": Object {
-        "allOf": Array [
-          Object {
+      "Cat": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "huntingSkill": Object {
+          {
+            "properties": {
+              "huntingSkill": {
                 "default": "lazy",
                 "description": "The measured skill for hunting",
-                "enum": Array [
+                "enum": [
                   "clueless",
                   "lazy",
                   "adventurous",
@@ -3921,7 +3944,7 @@ Object {
                 "type": "string",
               },
             },
-            "required": Array [
+            "required": [
               "huntingSkill",
             ],
             "type": "object",
@@ -3929,25 +3952,25 @@ Object {
         ],
         "description": "A representation of a cat",
       },
-      "Category": Object {
-        "properties": Object {
-          "id": Object {
-            "allOf": Array [
-              Object {
+      "Category": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Category ID",
           },
-          "name": Object {
+          "name": {
             "description": "Category name",
             "minLength": 1,
             "type": "string",
           },
-          "sub": Object {
+          "sub": {
             "description": "Test Sub Category",
-            "properties": Object {
-              "prop1": Object {
+            "properties": {
+              "prop1": {
                 "description": "Dumb Property",
                 "type": "string",
               },
@@ -3956,18 +3979,18 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Category",
         },
       },
-      "Dog": Object {
-        "allOf": Array [
-          Object {
+      "Dog": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "packSize": Object {
+          {
+            "properties": {
+              "packSize": {
                 "default": 1,
                 "description": "The size of the pack the dog is from",
                 "format": "int32",
@@ -3975,7 +3998,7 @@ Object {
                 "type": "integer",
               },
             },
-            "required": Array [
+            "required": [
               "packSize",
             ],
             "type": "object",
@@ -3983,20 +4006,20 @@ Object {
         ],
         "description": "A representation of a dog",
       },
-      "HoneyBee": Object {
-        "allOf": Array [
-          Object {
+      "HoneyBee": {
+        "allOf": [
+          {
             "$ref": "#/components/schemas/Pet",
           },
-          Object {
-            "properties": Object {
-              "honeyPerDay": Object {
+          {
+            "properties": {
+              "honeyPerDay": {
                 "description": "Average amount of honey produced per day in ounces",
                 "example": 3.14,
                 "type": "number",
               },
             },
-            "required": Array [
+            "required": [
               "honeyPerDay",
             ],
             "type": "object",
@@ -4004,47 +4027,47 @@ Object {
         ],
         "description": "A representation of a honey bee",
       },
-      "Id": Object {
+      "Id": {
         "format": "int64",
         "type": "integer",
       },
-      "Order": Object {
-        "properties": Object {
-          "complete": Object {
+      "Order": {
+        "properties": {
+          "complete": {
             "default": false,
             "description": "Indicates whenever order was completed or not",
             "type": "boolean",
           },
-          "id": Object {
-            "allOf": Array [
-              Object {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Order ID",
           },
-          "petId": Object {
-            "allOf": Array [
-              Object {
+          "petId": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Pet ID",
           },
-          "quantity": Object {
+          "quantity": {
             "default": 1,
             "format": "int32",
             "minimum": 1,
             "type": "integer",
           },
-          "shipDate": Object {
+          "shipDate": {
             "description": "Estimated ship date",
             "format": "date-time",
             "type": "string",
           },
-          "status": Object {
+          "status": {
             "description": "Order Status",
-            "enum": Array [
+            "enum": [
               "placed",
               "approved",
               "delivered",
@@ -4053,128 +4076,128 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Order",
         },
       },
-      "Pet": Object {
-        "discriminator": Object {
+      "Pet": {
+        "discriminator": {
           "propertyName": "petType",
         },
-        "properties": Object {
-          "category": Object {
-            "allOf": Array [
-              Object {
+        "properties": {
+          "category": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Category",
               },
             ],
             "description": "Categories this pet belongs to",
           },
-          "id": Object {
-            "allOf": Array [
-              Object {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Pet ID",
           },
-          "name": Object {
+          "name": {
             "description": "The name given to a pet",
             "example": "Guru",
             "type": "string",
           },
-          "petType": Object {
+          "petType": {
             "description": "Type of a pet",
             "type": "string",
           },
-          "photoUrls": Object {
-            "default": Array [],
+          "photoUrls": {
+            "default": [],
             "description": "The list of URL to a cute photos featuring pet",
-            "items": Object {
+            "items": {
               "format": "url",
               "type": "string",
             },
             "type": "array",
-            "xml": Object {
+            "xml": {
               "name": "photoUrl",
               "wrapped": true,
             },
           },
-          "status": Object {
+          "status": {
             "description": "Pet status in the store",
-            "enum": Array [
+            "enum": [
               "available",
               "pending",
               "sold",
             ],
             "type": "string",
           },
-          "tags": Object {
+          "tags": {
             "description": "Tags attached to the pet",
-            "items": Object {
+            "items": {
               "$ref": "#/components/schemas/Tag",
             },
             "type": "array",
-            "xml": Object {
+            "xml": {
               "name": "tag",
               "wrapped": true,
             },
           },
         },
-        "required": Array [
+        "required": [
           "name",
           "photoUrls",
         ],
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Pet",
         },
       },
-      "Tag": Object {
-        "properties": Object {
-          "id": Object {
-            "allOf": Array [
-              Object {
+      "Tag": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/Id",
               },
             ],
             "description": "Tag ID",
           },
-          "name": Object {
+          "name": {
             "description": "Tag name",
             "minLength": 1,
             "type": "string",
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "Tag",
         },
       },
-      "User": Object {
-        "properties": Object {
-          "email": Object {
+      "User": {
+        "properties": {
+          "email": {
             "description": "User email address",
             "example": "john.smith@example.com",
             "format": "email",
             "type": "string",
           },
-          "firstName": Object {
+          "firstName": {
             "description": "User first name",
             "example": "John",
             "minLength": 1,
             "type": "string",
           },
-          "id": Object {
+          "id": {
             "$ref": "#/components/schemas/Id",
           },
-          "lastName": Object {
+          "lastName": {
             "description": "User last name",
             "example": "Smith",
             "minLength": 1,
             "type": "string",
           },
-          "password": Object {
+          "password": {
             "description": "User password, MUST contain a mix of upper and lower case letters, as well as digits",
             "example": "drowssaP123",
             "format": "password",
@@ -4182,19 +4205,19 @@ Object {
             "pattern": "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])",
             "type": "string",
           },
-          "phone": Object {
+          "phone": {
             "description": "User phone number in international format",
             "example": "+1-202-555-0192",
             "nullable": true,
-            "pattern": "^\\\\+(?:[0-9]-?){6,14}[0-9]$",
+            "pattern": "^\\+(?:[0-9]-?){6,14}[0-9]$",
             "type": "string",
           },
-          "userStatus": Object {
+          "userStatus": {
             "description": "User status",
             "format": "int32",
             "type": "integer",
           },
-          "username": Object {
+          "username": {
             "description": "User supplied username",
             "example": "John78",
             "minLength": 4,
@@ -4202,27 +4225,27 @@ Object {
           },
         },
         "type": "object",
-        "xml": Object {
+        "xml": {
           "name": "User",
         },
       },
     },
-    "securitySchemes": Object {
-      "api_key": Object {
+    "securitySchemes": {
+      "api_key": {
         "description": "For this sample, you can use the api key \`special-key\` to test the authorization filters.
 ",
         "in": "header",
         "name": "api_key",
         "type": "apiKey",
       },
-      "petstore_auth": Object {
+      "petstore_auth": {
         "description": "Get access to data while protecting your account credentials.
 OAuth2 is also a safer and more secure way to give you access.
 ",
-        "flows": Object {
-          "implicit": Object {
+        "flows": {
+          "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
-            "scopes": Object {
+            "scopes": {
               "read:pets": "read your pets",
               "write:pets": "modify pets in your account",
             },
@@ -4232,12 +4255,12 @@ OAuth2 is also a safer and more secure way to give you access.
       },
     },
   },
-  "externalDocs": Object {
+  "externalDocs": {
     "description": "Find out how to create Github repo for your OpenAPI spec.",
     "url": "https://github.com/Rebilly/generator-openapi-repo",
   },
-  "info": Object {
-    "contact": Object {
+  "info": {
+    "contact": {
       "email": "apiteam@swagger.io",
       "url": "https://github.com/Redocly/redoc",
     },
@@ -4270,51 +4293,51 @@ OAuth2 - an open protocol to allow secure authorization in a simple
 and standard method from web, mobile and desktop applications.
 <!-- ReDoc-Inject: <security-definitions> -->
 ",
-    "license": Object {
+    "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html",
     },
     "termsOfService": "http://swagger.io/terms/",
     "title": "Swagger Petstore",
     "version": "1.0.0",
-    "x-logo": Object {
+    "x-logo": {
       "altText": "Petstore logo",
       "url": "https://redocly.github.io/redoc/petstore-logo.png",
     },
   },
   "openapi": "3.0.0",
-  "paths": Object {
-    "/pet": Object {
-      "post": Object {
+  "paths": {
+    "/pet": {
+      "post": {
         "description": "Add new pet to the store inventory.",
         "operationId": "addPet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Add a new pet to the store",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-code-samples": Array [
-          Object {
+        "x-code-samples": [
+          {
             "lang": "C#",
             "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();
-pet.setApiKey(\\"your api key\\");
+pet.setApiKey("your api key");
 pet.petType = PetStore.v1.Pet.TYPE_DOG;
-pet.name = \\"Rex\\";
+pet.name = "Rex";
 // set other fields
 PetStoreResponse response = pet.create();
 if (response.statusCode == HttpStatusCode.Created)
@@ -4328,11 +4351,11 @@ else
 }
 ",
           },
-          Object {
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+            "source": "$form = new \\PetStore\\Entities\\Pet();
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->create($form);
@@ -4343,42 +4366,42 @@ try {
           },
         ],
       },
-      "put": Object {
+      "put": {
         "description": "",
         "operationId": "updatePet",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/Pet",
         },
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
-          "405": Object {
+          "405": {
             "description": "Validation exception",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Update an existing pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
-        "x-code-samples": Array [
-          Object {
+        "x-code-samples": [
+          {
             "lang": "PHP",
-            "source": "$form = new \\\\PetStore\\\\Entities\\\\Pet();
+            "source": "$form = new \\PetStore\\Entities\\Pet();
 $form->setPetId(1);
-$form->setPetType(\\"Dog\\");
-$form->setName(\\"Rex\\");
+$form->setPetType("Dog");
+$form->setName("Rex");
 // set other fields
 try {
     $pet = $client->pets()->update($form);
@@ -4390,21 +4413,21 @@ try {
         ],
       },
     },
-    "/pet/findByStatus": Object {
-      "get": Object {
+    "/pet/findByStatus": {
+      "get": {
         "description": "Multiple status values can be provided with comma separated strings",
         "operationId": "findPetsByStatus",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Status values that need to be considered for filter",
             "explode": false,
             "in": "query",
             "name": "status",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "default": "available",
-                "enum": Array [
+                "enum": [
                   "available",
                   "pending",
                   "sold",
@@ -4416,20 +4439,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
@@ -4438,38 +4461,38 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid status value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by status",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/findByTags": Object {
-      "get": Object {
+    "/pet/findByTags": {
+      "get": {
         "deprecated": true,
         "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
         "operationId": "findPetsByTags",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "Tags to filter by",
             "explode": false,
             "in": "query",
             "name": "tags",
             "required": true,
-            "schema": Object {
-              "items": Object {
+            "schema": {
+              "items": {
                 "type": "string",
               },
               "type": "array",
@@ -4477,20 +4500,20 @@ try {
             "style": "form",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "items": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
-                  "items": Object {
+              "application/xml": {
+                "schema": {
+                  "items": {
                     "$ref": "#/components/schemas/Pet",
                   },
                   "type": "array",
@@ -4499,140 +4522,140 @@ try {
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid tag value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Finds Pets by tags",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}": Object {
-      "delete": Object {
+    "/pet/{petId}": {
+      "delete": {
         "description": "",
         "operationId": "deletePet",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "example": "Bearer <TOKEN>",
             "in": "header",
             "name": "api_key",
             "required": false,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "Pet id to delete",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid pet value",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Deletes a pet",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "Returns a single pet",
         "operationId": "getPetById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet to return",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Pet",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Pet not found",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Find pet by ID",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
-      "post": Object {
+      "post": {
         "description": "",
         "operationId": "updatePetWithForm",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be updated",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/x-www-form-urlencoded": Object {
-              "schema": Object {
-                "properties": Object {
-                  "name": Object {
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "name": {
                     "description": "Updated name of the pet",
                     "type": "string",
                   },
-                  "status": Object {
+                  "status": {
                     "description": "Updated status of the pet",
                     "type": "string",
                   },
@@ -4642,51 +4665,51 @@ try {
             },
           },
         },
-        "responses": Object {
-          "405": Object {
+        "responses": {
+          "405": {
             "description": "Invalid input",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "Updates a pet in the store with form data",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/pet/{petId}/uploadImage": Object {
-      "post": Object {
+    "/pet/{petId}/uploadImage": {
+      "post": {
         "description": "",
         "operationId": "uploadFile",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet to update",
             "in": "path",
             "name": "petId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "type": "integer",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "multipart/form-data": Object {
-              "schema": Object {
-                "properties": Object {
-                  "additionalMetadata": Object {
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "additionalMetadata": {
                     "description": "Additional data to pass to server",
                     "type": "string",
                   },
-                  "file": Object {
+                  "file": {
                     "description": "file to upload",
                     "format": "binary",
                     "type": "string",
@@ -4697,11 +4720,11 @@ try {
             },
           },
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/ApiResponse",
                 },
               },
@@ -4709,30 +4732,30 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "petstore_auth": Array [
+        "security": [
+          {
+            "petstore_auth": [
               "write:pets",
               "read:pets",
             ],
           },
         ],
         "summary": "uploads an image",
-        "tags": Array [
+        "tags": [
           "pet",
         ],
       },
     },
-    "/store/inventory": Object {
-      "get": Object {
+    "/store/inventory": {
+      "get": {
         "description": "Returns a map of status codes to quantities",
         "operationId": "getInventory",
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
-                  "additionalProperties": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
                     "format": "int32",
                     "type": "integer",
                   },
@@ -4743,25 +4766,25 @@ try {
             "description": "successful operation",
           },
         },
-        "security": Array [
-          Object {
-            "api_key": Array [],
+        "security": [
+          {
+            "api_key": [],
           },
         ],
         "summary": "Returns pet inventories by status",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order": Object {
-      "post": Object {
+    "/store/order": {
+      "post": {
         "description": "",
         "operationId": "placeOrder",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/Order",
               },
             },
@@ -4769,71 +4792,71 @@ try {
           "description": "order placed for purchasing the pet",
           "required": true,
         },
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid Order",
           },
         },
         "summary": "Place an order for a pet",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/store/order/{orderId}": Object {
-      "delete": Object {
+    "/store/order/{orderId}": {
+      "delete": {
         "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
         "operationId": "deleteOrder",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of the order that needs to be deleted",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "minimum": 1,
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Delete purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
         "operationId": "getOrderById",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "ID of pet that needs to be fetched",
             "in": "path",
             "name": "orderId",
             "required": true,
-            "schema": Object {
+            "schema": {
               "format": "int64",
               "maximum": 5,
               "minimum": 1,
@@ -4841,43 +4864,43 @@ try {
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/Order",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid ID supplied",
           },
-          "404": Object {
+          "404": {
             "description": "Order not found",
           },
         },
         "summary": "Find purchase order by ID",
-        "tags": Array [
+        "tags": [
           "store",
         ],
       },
     },
-    "/user": Object {
-      "post": Object {
+    "/user": {
+      "post": {
         "description": "This can only be done by the logged in user.",
         "operationId": "createUser",
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -4885,239 +4908,239 @@ try {
           "description": "Created user object",
           "required": true,
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Create user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithArray": Object {
-      "post": Object {
+    "/user/createWithArray": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithArrayInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/createWithList": Object {
-      "post": Object {
+    "/user/createWithList": {
+      "post": {
         "description": "",
         "operationId": "createUsersWithListInput",
-        "requestBody": Object {
+        "requestBody": {
           "$ref": "#/components/requestBodies/UserArray",
         },
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Creates list of users with given input array",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/login": Object {
-      "get": Object {
+    "/user/login": {
+      "get": {
         "description": "",
         "operationId": "loginUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The user name for login",
             "in": "query",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
-          Object {
+          {
             "description": "The password for login in clear text",
             "in": "query",
             "name": "password",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "examples": Object {
-                  "response": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "application/xml": Object {
-                "examples": Object {
-                  "response": Object {
+              "application/xml": {
+                "examples": {
+                  "response": {
                     "value": "<message> OK </message>",
                   },
                 },
-                "schema": Object {
+                "schema": {
                   "type": "string",
                 },
               },
-              "text/plain": Object {
-                "examples": Object {
-                  "response": Object {
+              "text/plain": {
+                "examples": {
+                  "response": {
                     "value": "OK",
                   },
                 },
               },
             },
             "description": "successful operation",
-            "headers": Object {
-              "X-Expires-After": Object {
+            "headers": {
+              "X-Expires-After": {
                 "description": "date in UTC when token expires",
-                "schema": Object {
+                "schema": {
                   "format": "date-time",
                   "type": "string",
                 },
               },
-              "X-Rate-Limit": Object {
+              "X-Rate-Limit": {
                 "description": "calls per hour allowed by the user",
-                "schema": Object {
+                "schema": {
                   "format": "int32",
                   "type": "integer",
                 },
               },
             },
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username/password supplied",
           },
         },
         "summary": "Logs user into the system",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/logout": Object {
-      "get": Object {
+    "/user/logout": {
+      "get": {
         "description": "",
         "operationId": "logoutUser",
-        "responses": Object {
-          "default": Object {
+        "responses": {
+          "default": {
             "description": "successful operation",
           },
         },
         "summary": "Logs out current logged in user session",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
-    "/user/{username}": Object {
-      "delete": Object {
+    "/user/{username}": {
+      "delete": {
         "description": "This can only be done by the logged in user.",
         "operationId": "deleteUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be deleted",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Delete user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "get": Object {
+      "get": {
         "description": "",
         "operationId": "getUserByName",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "The name that needs to be fetched. Use user1 for testing. ",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
-              "application/xml": Object {
-                "schema": Object {
+              "application/xml": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
             "description": "successful operation",
           },
-          "400": Object {
+          "400": {
             "description": "Invalid username supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Get user by user name",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
-      "put": Object {
+      "put": {
         "description": "This can only be done by the logged in user.",
         "operationId": "updateUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "description": "name that need to be deleted",
             "in": "path",
             "name": "username",
             "required": true,
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "requestBody": Object {
-          "content": Object {
-            "application/json": Object {
-              "schema": Object {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
                 "$ref": "#/components/schemas/User",
               },
             },
@@ -5125,56 +5148,56 @@ try {
           "description": "Updated user object",
           "required": true,
         },
-        "responses": Object {
-          "400": Object {
+        "responses": {
+          "400": {
             "description": "Invalid user supplied",
           },
-          "404": Object {
+          "404": {
             "description": "User not found",
           },
         },
         "summary": "Updated user",
-        "tags": Array [
+        "tags": [
           "user",
         ],
       },
     },
   },
-  "servers": Array [
-    Object {
+  "servers": [
+    {
       "description": "Default server",
       "url": "//petstore.swagger.io/v2",
     },
-    Object {
+    {
       "description": "Sandbox server",
       "url": "//petstore.swagger.io/sandbox",
     },
   ],
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "description": "Everything about your Pets",
       "name": "pet",
     },
-    Object {
+    {
       "description": "Access to Petstore orders",
       "name": "store",
     },
-    Object {
+    {
       "description": "Operations about user",
       "name": "user",
     },
   ],
-  "x-tagGroups": Array [
-    Object {
+  "x-tagGroups": [
+    {
       "name": "General",
-      "tags": Array [
+      "tags": [
         "pet",
         "store",
       ],
     },
-    Object {
+    {
       "name": "User Management",
-      "tags": Array [
+      "tags": [
         "user",
       ],
     },

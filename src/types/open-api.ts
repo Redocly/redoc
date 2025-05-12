@@ -70,6 +70,12 @@ export interface OpenAPIXCodeSample {
   source: string;
 }
 
+export interface OpenAPIXBadges {
+  name: string;
+  color?: string;
+  position?: 'before' | 'after';
+}
+
 export interface OpenAPIOperation {
   tags?: string[];
   summary?: string;
@@ -85,6 +91,7 @@ export interface OpenAPIOperation {
   servers?: OpenAPIServer[];
   'x-codeSamples'?: OpenAPIXCodeSample[];
   'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
+  'x-badges'?: OpenAPIXBadges[];
 }
 
 export interface OpenAPIParameter {

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { AdvancedMarkdown } from '../Markdown/AdvancedMarkdown';
-import { H1, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
+import { H2, H3, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 import type { ContentItemModel } from '../../services';
 import type { GroupModel, OperationModel } from '../../services/models';
 import { Operation } from '../Operation/Operation';
@@ -68,7 +68,7 @@ export class SectionItem extends React.Component<ContentItemProps> {
   render() {
     const { name, description, externalDocs, level } = this.props.item as GroupModel;
 
-    const Header = level === 2 ? H2 : H1;
+    const Header = level === 2 ? H3 : H2;
     return (
       <>
         <Row>

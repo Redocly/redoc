@@ -1,3 +1,94 @@
+# [2.5.0](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.0) (2025-04-14)
+
+
+### Bug Fixes
+
+* enhance accessibility for menu items with keyboard support ([#2655](https://github.com/Redocly/redoc/issues/2655)) ([2db293b](https://github.com/Redocly/redoc/commit/2db293bfb2973497dd33f31dc99e97f5bb90bbe8))
+
+
+### Features
+
+* add keyboard navigation support to JsonViewer component ([#2654](https://github.com/Redocly/redoc/issues/2654)) ([1b4126f](https://github.com/Redocly/redoc/commit/1b4126fde4531387f49c90f52efbd0c0e5f7b6ea))
+
+
+
+# [2.4.0](https://github.com/Redocly/redoc/compare/v2.3.0...v2.4.0) (2025-02-07)
+
+
+### Bug Fixes
+
+* Prototype Pollution Vulnerability Affecting redoc <=2.2.0 ([#2638](https://github.com/Redocly/redoc/issues/2638)) ([153ec7a](https://github.com/Redocly/redoc/commit/153ec7a0b7245639f404c0b038b612ae7377c7db))
+* unify redoc config ([#2647](https://github.com/Redocly/redoc/issues/2647)) ([53a6afc](https://github.com/Redocly/redoc/commit/53a6afc59624fe4591b0a0f1f20f41c0fbb5f1cf))
+
+
+### Features
+
+* add supporting react 19 in package.json ([#2652](https://github.com/Redocly/redoc/issues/2652)) ([3a74802](https://github.com/Redocly/redoc/commit/3a748022be3a7dc7f98669e1645dd5cda72f1abc))
+
+
+
+# [2.3.0](https://github.com/Redocly/redoc/compare/v2.2.0...v2.3.0) (2025-01-16)
+
+
+### Bug Fixes
+
+* displaying json example when showObjectSchemaExamples enabled ([#2635](https://github.com/Redocly/redoc/issues/2635)) ([59ee73f](https://github.com/Redocly/redoc/commit/59ee73fefa8e8edb398940076bdd721fc284caa3))
+* displaying nested items with type string ([#2634](https://github.com/Redocly/redoc/issues/2634)) ([85b622f](https://github.com/Redocly/redoc/commit/85b622fc581eb96303aeb85056aef36c74ea9f9d))
+* passing inline parameters after support react 18 for response title ([#2640](https://github.com/Redocly/redoc/issues/2640)) ([d614d2d](https://github.com/Redocly/redoc/commit/d614d2d022df8bd1989cb0eaf76d087b52120d36))
+
+
+### Features
+
+* update pattern styling ([#2196](https://github.com/Redocly/redoc/issues/2196)) ([#2600](https://github.com/Redocly/redoc/issues/2600)) ([aa0879c](https://github.com/Redocly/redoc/commit/aa0879ca0235112918428fdff8f4c48d2c6c4adf))
+
+
+
+# [2.2.0](https://github.com/Redocly/redoc/compare/v2.1.5...v2.2.0) (2024-10-16)
+
+
+### Bug Fixes
+
+* show siblings schema with oneOf ([#2576](https://github.com/Redocly/redoc/issues/2576)) ([60d131b](https://github.com/Redocly/redoc/commit/60d131b0a9dab4710e900323c9ba81160cecf7d8))
+
+
+### Features
+
+* add support x-badges ([#2605](https://github.com/Redocly/redoc/issues/2605)) ([64f1877](https://github.com/Redocly/redoc/commit/64f18779e5fe7e03f25862463cbc5062e85c867c))
+
+
+
+## [2.1.5](https://github.com/Redocly/redoc/compare/v2.1.4...v2.1.5) (2024-06-10)
+
+
+### Bug Fixes
+
+* update react to 18 and react-tabs to 6 ([#2547](https://github.com/Redocly/redoc/issues/2547)) ([c664dd0](https://github.com/Redocly/redoc/commit/c664dd0d56571ce799b8eadd081d86a6b2cdefae))
+
+
+
+## [2.1.4](https://github.com/Redocly/redoc/compare/v2.1.3...v2.1.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* add deprecated css to clickable property name ([#2526](https://github.com/Redocly/redoc/issues/2526)) ([b0d03d0](https://github.com/Redocly/redoc/commit/b0d03d02069c1508447ddebc2f8a3fffa9b03ce5))
+* use h2/h3 for headings instead of h1/h2 for better seo ([#2514](https://github.com/Redocly/redoc/issues/2514)) ([2b72dc0](https://github.com/Redocly/redoc/commit/2b72dc0e90f759a8ee2e47691c844e7f05928a24))
+* security vulnerability ([#2445](https://github.com/Redocly/redoc/pull/2445)) ([1f11f5](https://github.com/Redocly/redoc/commit/1f11f597c4f10ddd601db247f5034052b6ca689f))
+
+
+
+## [2.1.3](https://github.com/Redocly/redoc/compare/v2.1.2...v2.1.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* default value as object in request body ([#2437](https://github.com/Redocly/redoc/issues/2437)) ([b36a6e2](https://github.com/Redocly/redoc/commit/b36a6e27bb3e03d39ee74c3e71f18a504539d91b))
+* display string pattern in array items ([#2438](https://github.com/Redocly/redoc/issues/2438)) ([8ddeb6d](https://github.com/Redocly/redoc/commit/8ddeb6dfda686ec8a6948eb2d96efb99bf422429))
+* hideRequestPayloadSample ([#2436](https://github.com/Redocly/redoc/issues/2436)) ([bf96061](https://github.com/Redocly/redoc/commit/bf960612a47bfe10ff205b9d78f3040515a5467d))
+* more cases for react18 and cli integration ([#2416](https://github.com/Redocly/redoc/issues/2416)) ([26674e7](https://github.com/Redocly/redoc/commit/26674e70c66b686d0f0baa569b186292c41e5726))
+
+
+
 ## [2.1.2](https://github.com/Redocly/redoc/compare/v2.1.1...v2.1.2) (2023-09-11)
 
 

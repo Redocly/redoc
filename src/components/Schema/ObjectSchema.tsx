@@ -16,6 +16,7 @@ export interface ObjectSchemaProps extends SchemaProps {
     fieldName: string;
     parentSchema: SchemaModel;
   };
+  fieldParentsName?: string[];
 }
 
 export const ObjectSchema = observer(
@@ -26,8 +27,9 @@ export const ObjectSchema = observer(
     skipReadOnly,
     skipWriteOnly,
     level,
+    fieldParentsName,
   }: ObjectSchemaProps) => {
-    const { expandSingleSchemaField, showObjectSchemaExamples, schemaExpansionLevel } =
+    const { expandSingleSchemaField, showObjectSchemaExamples, schemasExpansionLevel } =
       React.useContext(OptionsContext);
 
     const filteredFields = React.useMemo(
@@ -45,7 +47,7 @@ export const ObjectSchema = observer(
     );
 
     const expandByDefault =
-      (expandSingleSchemaField && filteredFields.length === 1) || schemaExpansionLevel >= level!;
+      (expandSingleSchemaField && filteredFields.length === 1) || schemasExpansionLevel >= level!;
 
     return (
       <PropertiesTable>
@@ -58,6 +60,7 @@ export const ObjectSchema = observer(
                 isLast={isLast}
                 field={field}
                 expandByDefault={expandByDefault}
+                fieldParentsName={Number(level) > 1 ? fieldParentsName : []}
                 renderDiscriminatorSwitch={
                   discriminator?.fieldName === field.name
                     ? () => (

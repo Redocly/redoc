@@ -36,9 +36,9 @@ description.
 </html>
 ```
 
-{ % admonition type="success" name="URL or local file" % }
+{% admonition type="success" name="URL or local file" %}
 Set `spec-url` to a relative path if the file is local, e.g. `spec-url=my-api.yaml`. Use a full URL like the example above if it's hosted elsewhere.
-{ % /admonition % }
+{% /admonition %}
 
 Open the HTML file in your browser to see the HTML documentation rendering. You may want to read the next section and add some configuration to make your documentation your own.
 
@@ -126,7 +126,7 @@ The main example shows using the CDN:
 
 If you would instead prefer to host the depdencies yourself, first install `redoc` using `npm`:
 
-```
+```sh
 npm install redoc
 ```
 

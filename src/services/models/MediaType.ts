@@ -14,7 +14,7 @@ export class MediaTypeModel {
   name: string;
   isRequestType: boolean;
   onlyRequiredInSamples: boolean;
-  generatedPayloadSamplesMaxDepth: number;
+  generatedSamplesMaxDepth: number;
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
@@ -30,7 +30,7 @@ export class MediaTypeModel {
     this.isRequestType = isRequestType;
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
-    this.generatedPayloadSamplesMaxDepth = options.generatedPayloadSamplesMaxDepth;
+    this.generatedSamplesMaxDepth = options.generatedSamplesMaxDepth;
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
@@ -55,7 +55,7 @@ export class MediaTypeModel {
       skipReadOnly: this.isRequestType,
       skipWriteOnly: !this.isRequestType,
       skipNonRequired: this.isRequestType && this.onlyRequiredInSamples,
-      maxSampleDepth: this.generatedPayloadSamplesMaxDepth,
+      maxSampleDepth: this.generatedSamplesMaxDepth,
     };
     if (this.schema && this.schema.oneOf) {
       this.examples = {};

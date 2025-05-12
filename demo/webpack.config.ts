@@ -14,7 +14,7 @@ function root(filename) {
   return resolve(__dirname + '/' + filename);
 }
 
-export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) => ({
+export default (env: { playground?: boolean; bench?: boolean } = {}) => ({
   entry: [
     root('../src/polyfills.ts'),
     root(
@@ -51,12 +51,6 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
       fs: false,
       os: false,
     },
-    alias:
-      mode !== 'production'
-        ? {
-            'react-dom': '@hot-loader/react-dom',
-          }
-        : {},
   },
 
   performance: false,
@@ -121,7 +115,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}, { mode }) =
     webpackIgnore(/json-schema-ref-parser\/lib\/dereference\.js/),
     webpackIgnore(/^\.\/SearchWorker\.worker$/),
     new CopyWebpackPlugin({
-      patterns: ['demo/openapi.yaml'],
+      patterns: ['demo/museum.yaml'],
     }),
   ],
 });

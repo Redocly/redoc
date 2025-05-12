@@ -6,12 +6,12 @@ Each deployment type has documentation on how to configure options for that type
 
 **Versions: 2.x**
 
-:::success Client-side configuration
+{% admonition type="success" name="Client-side configuration" %}
 
-Using Redoc as a standalone (HTML or React) tool, these options must be presented in [kebab case](https://en.wikipedia.org/wiki/Letter_case#Kebab_case). 
+Using Redoc as a standalone (HTML or React) tool, these options must be presented in [kebab case](https://en.wikipedia.org/wiki/Letter_case#Kebab_case).
 For example, `scrollYOffset` becomes `scroll-y-offset`, and `expandResponses` becomes `expand-responses`.
 
-:::
+{% /admonition %}
 
 ## Functional settings
 
@@ -26,59 +26,19 @@ Sets the minimum amount of characters that need to be typed into the search dial
 
 _Default: 3_
 
-### expandDefaultServerVariables
-
-Enables or disables expanding default server variables.
-
-### expandResponses
-
-Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, for example `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
-
-### expandSingleSchemaField
-
-Automatically expands the single field in a schema.
-
-### hideDownloadButton
+### hideDownloadButtons
 
 Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
-
-### hideHostname
-
-If set to `true`, the protocol and hostname are not shown in the operation definition.
 
 ### hideLoading
 
 Hides the loading animation. Does not apply to CLI or Workflows-rendered docs.
 
-### hideRequestPayloadSample
-
-Hides request payload examples.
-
-### hideOneOfDescription
-
-If set to `true`, the description for `oneOf`/`anyOf` object is not shown in the schema.
-
-### hideSchemaPattern
-
-If set to `true`, the pattern is not shown in the schema.
-
 ### hideSchemaTitles
 
 Hides the schema title next to to the type.
 
-### hideSecuritySection
-
-Hides the Security panel section.
-
-### hideSingleRequestSampleTab
-
-Hides the request sample tab for requests with only one sample.
-
-### htmlTemplate
-
-Sets the path to the optional HTML file used to modify the layout of the reference docs page.
-
-### jsonSampleExpandLevel
+### jsonSamplesExpandLevel
 
 Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
 
@@ -88,35 +48,17 @@ _Default: 2_
 
 Displays only the specified number of enum values. The remaining values are hidden in an expandable area. If not set, all values are displayed.
 
-### menuToggle
-
-If set to `true`, selecting an expanded item in the sidebar twice collapses it.
-
-_Default: true_
-
-### nativeScrollbars
-
-If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This setting is a scrolling performance optimization for big API definitions.
-
 ### onlyRequiredInSamples
 
 Shows only required fields in request samples.
 
-### pathInMiddlePanel
-
-Shows the path link and HTTP verb in the middle panel instead of the right panel.
-
-### payloadSampleIdx
-
-If set, the payload sample is inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample is inserted last. Indexes start from 0.
-
-### requiredPropsFirst
+### sortRequiredPropsFirst
 
 Shows required properties in schemas first, ordered in the same order as in the required array.
 
-### schemaExpansionLevel
+### schemasExpansionLevel
 
-Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemaExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
+Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemasExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
 
 ### scrollYOffset
 
@@ -131,6 +73,111 @@ Note that you can specify the `scrollYOffset` value in any of the following ways
 ### showExtensions
 
 Shows specification extensions ('x-' fields). Extensions used by Redoc are ignored. The value can be boolean or an array of strings with names of extensions to display. When used as boolean and set to `true`, all specification extensions are shown.
+
+### sanitize
+
+If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
+
+### downloadUrls
+
+Set the URLs used to download the OpenAPI description or other documentation related files from the API documentation page.
+
+### schemaDefinitionsTagName
+
+If a value is set, all of the schemas are rendered with the designated tag name. The schemas then render and display in the sidebar navigation (with that associated tag name).
+
+### generatedSamplesMaxDepth
+
+The generatedSamplesMaxDepth option controls how many schema levels automatically generated for payload samples. The default is 8 which works well for most APIs, but you can adjust it if necessary for your use case.
+
+### hidePropertiesPrefix
+
+In complex data structures or object schemas where properties are nested within parent objects the hidePropertiesPrefix option enables the hiding of parent names for nested properties within the documentation.
+
+_Default: true_
+
+## Deprecated Functional settings
+
+### hideDownloadButton
+
+Hides the 'Download' button for saving the API definition source file. **This setting does not make the API definition private**; it just hides the button.
+
+### downloadFileName
+
+Sets the filename for the downloaded API definition source file.
+
+### downloadDefinitionUrl
+
+Sets the URL for the downloaded API definition source file.
+
+### requiredPropsFirst
+
+Shows required properties in schemas first, ordered in the same order as in the required array.
+
+### jsonSampleExpandLevel
+
+Sets the default expand level for JSON payload samples (response and request body). The default value is 2, and the maximum supported value is '+Infinity'. It can also be configured as a string with the special value `all` that expands all levels.
+
+_Default: 2_
+
+### schemaExpansionLevel
+
+Specifies whether to automatically expand schemas in Reference docs. Set it to `all` to expand all schemas regardless of their level, or set it to a number to expand schemas up to the specified level. For example, `schemaExpansionLevel: 3` expands schemas up to three levels deep. The default value is `0`, meaning no schemas are expanded automatically.
+
+
+### expandDefaultServerVariables
+
+Enables or disables expanding default server variables.
+
+### expandResponses
+
+Controls which responses to expand by default. Specify one or more responses by providing their response codes as a comma-separated list without spaces, for example `expandResponses='200,201'`. Special value 'all' expands all responses by default. Be careful: this option can slow down documentation rendering time.
+
+### expandSingleSchemaField
+
+Automatically expands the single field in a schema.
+
+### hideHostname
+
+If set to `true`, the protocol and hostname are not shown in the operation definition.
+
+### hideRequestPayloadSample
+
+Hides request payload examples.
+
+### hideOneOfDescription
+
+If set to `true`, the description for `oneOf`/`anyOf` object is not shown in the schema.
+
+### hideSchemaPattern
+
+If set to `true`, the pattern is not shown in the schema.
+
+### hideSecuritySection
+
+Hides the Security panel section.
+
+### hideSingleRequestSampleTab
+
+Hides the request sample tab for requests with only one sample.
+
+### menuToggle
+
+If set to `true`, selecting an expanded item in the sidebar twice collapses it.
+
+_Default: true_
+
+### nativeScrollbars
+
+If set to `true`, the sidebar uses the native scrollbar instead of perfect-scroll. This setting is a scrolling performance optimization for big API definitions.
+
+### pathInMiddlePanel
+
+Shows the path link and HTTP verb in the middle panel instead of the right panel.
+
+### payloadSampleIdx
+
+If set, the payload sample is inserted at the specified index. If there are `N` payload samples and the value configured here is bigger than `N`, the payload sample is inserted last. Indexes start from 0.
 
 ### showObjectSchemaExamples
 
@@ -162,12 +209,12 @@ When set to true, sorts tags in the navigation sidebar and in the middle panel a
 
 _Default: false_
 
-### untrustedDefinition
+### untrustedSpec
 
 If set to `true`, the API definition is considered untrusted and all HTML/Markdown is sanitized to prevent XSS.
 
 ## Theme settings
-
+Change styles for the API documentation page. **Supported in Redoc CE 2.x**.
 * `spacing`
   * `unit`: 5 # main spacing unit used in autocomputed theme values later
   * `sectionHorizontal`: 40 # Horizontal section padding. COMPUTED: spacing.unit * 8
@@ -248,7 +295,7 @@ For more information, refer to [Security definitions injection](./security-defin
 
 ### OpenAPI specification extensions
 
-Redoc uses the following [specification extensions](https://redocly.com/docs/api-reference-docs/spec-extensions/):
+Redoc uses the following [specification extensions](https://redocly.com/docs-legacy/api-reference-docs/spec-extensions/):
 * [`x-logo`](./redoc-vendor-extensions.md#x-logo) - is used to specify API logo
 * [`x-traitTag`](./redoc-vendor-extensions.md#x-traittag) - useful for handling out common things like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](./redoc-vendor-extensions.md#x-codesamples) - specify operation code samples
@@ -257,10 +304,8 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-displayName`](./redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
 * [`x-tagGroups`](./redoc-vendor-extensions.md#x-taggroups) - group tags by categories in the side menu
 * [`x-servers`](./redoc-vendor-extensions.md#x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
-* [`x-ignoredHeaderParameters`](./redoc-vendor-extensions.md#x-ignoredheaderparameters) - ability to specify header parameter names to ignore
 * [`x-additionalPropertiesName`](./redoc-vendor-extensions.md#x-additionalpropertiesname) - ability to supply a descriptive name for the additional property keys
 * [`x-summary`](./redoc-vendor-extensions.md#x-summary) - For Response object, use as the response button text, with description rendered under the button
-* [`x-extendedDiscriminator`](./redoc-vendor-extensions.md#x-extendeddiscriminator) - In Schemas, uses this to solve name-clash issues with the standard discriminator
 * [`x-explicitMappingOnly`](./redoc-vendor-extensions.md#x-explicitmappingonly) - In Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
 
 

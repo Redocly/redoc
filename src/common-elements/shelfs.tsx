@@ -47,11 +47,11 @@ export const ShelfIcon = styled(IntShelfIcon)`
   }
 `;
 
-export const Badge = styled.span<{ type: string }>`
+export const Badge = styled.span<{ type: string; color?: string }>`
   display: inline-block;
   padding: 2px 8px;
   margin: 0;
-  background-color: ${props => props.theme.colors[props.type].main};
+  background-color: ${props => props.color || props.theme.colors[props.type].main};
   color: ${props => props.theme.colors[props.type].contrastText};
   font-size: ${props => props.theme.typography.code.fontSize};
   vertical-align: middle;

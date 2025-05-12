@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Models Schema should correct resolve double $ref if no need sibling 1`] = `
-Object {
-  "refsStack": Array [
+{
+  "refsStack": [
     "#/components/schemas/Parent",
   ],
-  "resolved": Object {
-    "properties": Object {
-      "test": Object {
+  "resolved": {
+    "properties": {
+      "test": {
         "type": "string",
       },
     },
@@ -17,38 +17,46 @@ Object {
 `;
 
 exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
-Object {
-  "oneOf": Array [
-    Object {
-      "allOf": Array [
-        Object {
-          "properties": Object {
-            "username": Object {
+{
+  "oneOf": [
+    {
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
+            "username": {
               "description": "The user's name",
               "type": "string",
             },
           },
         },
-        Object {
-          "properties": Object {
-            "extra": Object {
+        {
+          "properties": {
+            "extra": {
               "type": "string",
             },
           },
         },
-        Object {
-          "oneOf": Array [
-            Object {
-              "properties": Object {
-                "password": Object {
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "password": {
                   "description": "The user's password",
                   "type": "string",
                 },
               },
             },
-            Object {
-              "properties": Object {
-                "mobile": Object {
+            {
+              "properties": {
+                "mobile": {
                   "description": "The user's mobile",
                   "type": "string",
                 },
@@ -59,36 +67,93 @@ Object {
       ],
       "x-refsStack": undefined,
     },
-    Object {
-      "allOf": Array [
-        Object {
-          "properties": Object {
-            "email": Object {
+    {
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
+            "email": {
               "description": "The user's email",
               "type": "string",
             },
           },
         },
-        Object {
-          "properties": Object {
-            "extra": Object {
+        {
+          "properties": {
+            "extra": {
               "type": "string",
             },
           },
         },
-        Object {
-          "oneOf": Array [
-            Object {
-              "properties": Object {
-                "password": Object {
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "password": {
                   "description": "The user's password",
                   "type": "string",
                 },
               },
             },
-            Object {
-              "properties": Object {
-                "mobile": Object {
+            {
+              "properties": {
+                "mobile": {
+                  "description": "The user's mobile",
+                  "type": "string",
+                },
+              },
+            },
+          ],
+        },
+      ],
+      "x-refsStack": undefined,
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "type": "integer",
+            },
+          },
+        },
+        {
+          "properties": {
+            "id": {
+              "description": "The user's ID",
+              "format": "uuid",
+              "type": "string",
+            },
+          },
+        },
+        {
+          "properties": {
+            "extra": {
+              "type": "string",
+            },
+          },
+        },
+        {
+          "oneOf": [
+            {
+              "properties": {
+                "password": {
+                  "description": "The user's password",
+                  "type": "string",
+                },
+              },
+            },
+            {
+              "properties": {
+                "mobile": {
                   "description": "The user's mobile",
                   "type": "string",
                 },
@@ -104,11 +169,11 @@ Object {
 `;
 
 exports[`Models Schema should override description from $ref of the referenced component, when sibling description exists  1`] = `
-Object {
-  "refsStack": Array [
+{
+  "refsStack": [
     "#/components/schemas/Test",
   ],
-  "resolved": Object {
+  "resolved": {
     "description": "Overriden description",
     "type": "object",
   },

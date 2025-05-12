@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import styled from 'styled-components';
 import { RedocStandalone } from '../src';
 import ComboBox from './ComboBox';
 import FileInput from './components/FileInput';
 
-const DEFAULT_SPEC = 'openapi.yaml';
-const NEW_VERSION_SPEC = 'openapi-3-1.yaml';
+const DEFAULT_SPEC = 'museum.yaml';
+const NEW_VERSION_PETSTORE = 'openapi-3-1.yaml';
 
 const demos = [
-  { value: NEW_VERSION_SPEC, label: 'Petstore OpenAPI 3.1' },
+  { value: DEFAULT_SPEC, label: 'Museum API' },
+  { value: NEW_VERSION_PETSTORE, label: 'Petstore OpenAPI 3.1' },
   { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram' },
   {
     value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml',
@@ -54,7 +55,7 @@ class DemoApp extends React.Component<
   };
 
   handleChange = (url: string) => {
-    if (url === NEW_VERSION_SPEC) {
+    if (url === NEW_VERSION_PETSTORE) {
       this.setState({ cors: false });
       0;
     }
@@ -121,7 +122,7 @@ class DemoApp extends React.Component<
         <RedocStandalone
           spec={this.state.spec}
           specUrl={proxiedUrl}
-          options={{ scrollYOffset: 'nav', untrustedSpec: true }}
+          options={{ scrollYOffset: 'nav', sanitize: true }}
         />
       </>
     );
@@ -178,7 +179,9 @@ const Logo = styled.img`
   }
 `;
 
-render(<DemoApp />, document.getElementById('container'));
+const container = document.getElementById('container');
+const root = createRoot(container!);
+root.render(<DemoApp />);
 
 /* ====== Helpers ====== */
 function updateQueryStringParameter(uri, key, value) {
