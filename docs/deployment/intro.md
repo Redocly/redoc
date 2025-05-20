@@ -45,34 +45,6 @@ section in the documentation.
 
 If you want to view your Redoc output locally, you can simulate an HTTP server.
 
-#### Redocly CLI
-
-Redocly CLI is an open source command-line tool that includes a command
-for simulating an HTTP server to provide a preview of your OpenAPI definition locally.
-
-If you have [Redocly CLI](https://redocly.com/docs/cli/#installation-and-usage) installed, `cd` into your
-project directory and run the following command:
-
-```bash
-redocly preview-docs openapi.yaml
-```
-
-Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
-
-By default, without providing a port, the preview starts on port 8080, and can be accessed at `http://localhost:8080`.
-To exit the preview, use `control+C`.
-
-You can alter the port if you are using 8080 already, for example:
-
-```bash
-redocly preview-docs -p 8888 openapi.yaml
-```
-
-Replace `openapi.yaml` in the example command with the file path to your OpenAPI definition.
-
-For more information about the `preview-docs` command, refer to
-[Redocly CLI commands](https://redocly.com/docs/cli/commands/preview-docs/#preview-docs) in the Redocly CLI documentation.
-
 #### Python
 
 If you have [Python 3](https://www.python.org/downloads/) installed, `cd` into your
