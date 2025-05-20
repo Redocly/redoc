@@ -85,7 +85,7 @@ theme:
 Redocly CLI detects a file named `redocly.yaml` in the same directory as you run the command and uses it. See the documentation with a command like this:
 
 ```sh
-redocly preview-docs openapi.yaml
+redocly build-docs openapi.yaml
 ```
 
 There are many, many more options available. Visit the [configuration reference](./config.md) for a complete list.
