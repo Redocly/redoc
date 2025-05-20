@@ -12,7 +12,7 @@ With Redocly CLI, you can bundle your OpenAPI definition and API documentation
 
 First, you need to install the `@redocly/cli` package.
 
-You can install it [globally](../../cli/installation#install-globally) using npm or Yarn.
+You can install it [globally](../../cli/installation#install-globally) using npm.
 
 Or you can install it during [runtime](../../cli/installation#use-npx-at-runtime) using npx or Docker.
 
