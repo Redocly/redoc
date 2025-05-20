@@ -57,7 +57,7 @@ Check out the [deployment documentation](./deployment/intro.md) for more options
 
 Redoc is highly configurable. Each deployment option accepts configuration in a way that's appropriate to that platform, but the options are the same for each. For example:
 
-* Using [Redocly CLI](../cli/index.md), configuration goes in the `redocly.yaml` file, or can be supplied as command line parameters, such as `--theme.openapi.disableSearch`.
+* Using [Redocly CLI](../cli), configuration goes in the `redocly.yaml` file, or can be supplied as command line parameters, such as `--theme.openapi.disableSearch`.
 * Using HTML or React, configure by setting `option` in the tag.
 
 Here's a sample `redocly.yaml` configuration file, showing a few common settings and tweaking some of the visual theme settings:
@@ -92,6 +92,6 @@ There are many, many more options available. Visit the [configuration reference]
 
 ## Next steps
 
-* If you are new to OpenAPI, try the [OpenAPI starter project](../cli/openapi-starter.md) for a great introduction.
+* If you are new to OpenAPI, try the [OpenAPI starter project](../cli/openapi-starter) for a great introduction.
 * Ready to build documentation from an existing OpenAPI file? Go to the [Redoc quickstart](./quickstart.md) and get started.
 * Learn more about the project by visiting [Redoc on GitHub](https://github.com/Redocly/redoc).
