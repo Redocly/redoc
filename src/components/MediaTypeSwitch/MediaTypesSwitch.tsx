@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { DropdownOption, DropdownProps } from '../../common-elements/Dropdown';
 import { MediaContentModel, MediaTypeModel, SchemaModel } from '../../services/models';
-import { DropdownLabel, DropdownWrapper } from '../PayloadSamples/styled.elements';
+import { DropdownWrapper } from '../PayloadSamples/styled.elements';
 
 export interface MediaTypeChildProps {
   schema: SchemaModel;
@@ -41,14 +41,7 @@ export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
     });
 
     const Wrapper = ({ children }) =>
-      this.props.withLabel ? (
-        <DropdownWrapper>
-          <DropdownLabel>Content type</DropdownLabel>
-          {children}
-        </DropdownWrapper>
-      ) : (
-        children
-      );
+      this.props.withLabel ? <DropdownWrapper>{children}</DropdownWrapper> : children;
 
     return (
       <>
