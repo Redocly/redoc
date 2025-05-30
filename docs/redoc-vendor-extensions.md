@@ -12,38 +12,39 @@ You can use the following [vendor extensions](https://redocly.com/docs/openapi-v
       - [x-tagGroups example](#x-taggroups-example)
   - [Info Object](#info-object)
     - [x-logo](#x-logo)
-      - [How to use with Redoc](#how-to-use-with-redoc-2)
+      - [How to use with Redoc](#how-to-use-with-redoc-1)
     - [Logo Object](#logo-object)
       - [Fixed fields](#fixed-fields-1)
       - [x-logo example](#x-logo-example)
   - [Tag Object](#tag-object)
     - [x-traitTag](#x-traittag)
-      - [How to use with Redoc](#how-to-use-with-redoc-3)
+      - [How to use with Redoc](#how-to-use-with-redoc-2)
       - [x-traitTag example](#x-traittag-example)
     - [x-displayName](#x-displayname)
   - [Operation Object vendor extensions](#operation-object-vendor-extensions)
     - [x-codeSamples](#x-codesamples)
-      - [How to use with Redoc](#how-to-use-with-redoc-4)
+      - [How to use with Redoc](#how-to-use-with-redoc-3)
     - [Code Sample Object](#code-sample-object)
       - [Fixed fields](#fixed-fields-2)
       - [Code Sample Object example](#code-sample-object-example)
+    - [x-badges](#x-badges)
   - [Parameter Object](#parameter-object)
     - [x-examples](#x-examples)
-      - [How to use with Redoc](#how-to-use-with-redoc-5)
+      - [How to use with Redoc](#how-to-use-with-redoc-4)
   - [Response Object vendor extensions](#response-object-vendor-extensions)
     - [x-summary](#x-summary)
-      - [How to use with Redoc](#how-to-use-with-redoc-6)
+      - [How to use with Redoc](#how-to-use-with-redoc-5)
   - [Schema Object](#schema-object)
     - [x-nullable](#x-nullable)
-      - [How to use with Redoc](#how-to-use-with-redoc-7)
+      - [How to use with Redoc](#how-to-use-with-redoc-6)
     - [x-additionalPropertiesName](#x-additionalpropertiesname)
-      - [How to use with Redoc](#how-to-use-with-redoc-9)
+      - [How to use with Redoc](#how-to-use-with-redoc-7)
       - [x-additionalPropertiesName example](#x-additionalpropertiesname-example)
     - [x-explicitMappingOnly](#x-explicitmappingonly)
-      - [How to use with Redoc](#how-to-use-with-redoc-10)
+      - [How to use with Redoc](#how-to-use-with-redoc-8)
       - [x-explicitMappingOnly example](#x-explicitmappingonly-example)
     - [x-enumDescriptions](#x-enumdescriptions)
-      - [How to use with Redoc](#how-to-use-with-redoc-11)
+      - [How to use with Redoc](#how-to-use-with-redoc-9)
       - [x-enumDescriptions example](#x-enumdescriptions-example)
 
 ## Swagger Object
@@ -67,6 +68,7 @@ Before you use `x-tagGroups`, make sure you **add all tags to a group**, since a
 #### Tag Group Object
 Information about tags group
 ##### Fixed fields
+
 | Field Name  | Type      | Description |
 | :---------- | :--------: | :---------- |
 | name        | string     | The group name |
@@ -120,8 +122,8 @@ Extends the OpenAPI [Info Object](https://redocly.com/docs/openapi-visual-refere
 The information about API logo
 
 #### Fixed fields
-| Field Name      | Type    | Description                                                                                                                                        |
-| :-------------- | :------: |:---------------------------------------------------------------------------------------------------------------------------------------------------|
+| Field Name      | Type    | Description |
+| :-------------- | :------: | :---------- |
 | url             | string   | The URL pointing to the spec logo. MUST be in the format of a URL. It SHOULD be an absolute URL so your API definition is usable from any location |
 | backgroundColor | string   | background color to be used. MUST be RGB color in [hexadecimal format] (https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)                      |
 | altText        | string   | Text to use for alt tag on the logo. Defaults to 'logo' if nothing is provided.                                                                    |
@@ -159,6 +161,7 @@ info:
 Extends the OpenAPI [Tag Object](https://redocly.com/docs/openapi-visual-reference/tags/)
 
 ### x-traitTag
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-traitTag     | boolean  | In Swagger two operations can have multiple tags. This property distinguishes between tags that are used to group operations (default) from tags that are used to mark operation with certain trait (`true` value) |
@@ -193,6 +196,7 @@ x-traitTag: true
 Extends the OpenAPI [Operation Object](https://redocly.com/docs/openapi-visual-reference/operation/)
 
 ### x-codeSamples
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-codeSamples | [ [Code Sample Object](#code-sample-object) ]  | A list of code samples associated with operation |
@@ -206,6 +210,7 @@ Extends the OpenAPI [Operation Object](https://redocly.com/docs/openapi-visual-r
 Operation code sample
 
 #### Fixed fields
+
 | Field Name  | Type    | Description  |
 | :---------- | :------: | :----------- |
 | lang        | string   | Code sample language. Value should be one of the following [list](https://github.com/github/linguist/blob/master/lib/linguist/popular.yml) |
@@ -228,6 +233,7 @@ source: console.log('Hello World');
 ```
 
 ### x-badges
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-badges | [[Badge Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-badges#badge-object)] | A list of badges associated with the operation |
@@ -236,6 +242,7 @@ source: console.log('Hello World');
 Extends the OpenAPI [Parameter Object](https://redocly.com/docs/openapi-visual-reference/parameter/)
 
 ### x-examples
+
 | Field Name     |  Type    | Description |
 | :------------- | :------: | :---------- |
 | x-examples | [Example Object](https://redocly.com/docs/openapi-visual-reference/example/)  | Object that contains examples for the request. Applies when `in` is `body` and mime-type is `application/json` |
@@ -247,6 +254,7 @@ Extends the OpenAPI [Parameter Object](https://redocly.com/docs/openapi-visual-r
 Extends the OpenAPI [Response Object](https://redocly.com/docs/openapi-visual-reference/response/).
 
 ### x-summary
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-summary      | string   | a short summary of the response |
@@ -258,6 +266,7 @@ If specified, you can use `x-summary` as the response button text, with descript
 Extends the OpenAPI [Schema Object](https://redocly.com/docs/openapi-visual-reference/schemas/)
 
 ### x-nullable
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-nullable | boolean | marks schema as a nullable |
@@ -326,6 +335,7 @@ Pet:
 Shows in the selectpicker only the items `cat` and `bee`, even though the `Dog` class inherits from the `Pet` class.
 
 ### x-enumDescriptions
+
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
 | x-enumDescriptions | [[Enum Description Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-enum-descriptions#enum-description-object)] | A list of the enum values and descriptions to include in the documentation. |
