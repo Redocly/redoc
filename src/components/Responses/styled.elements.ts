@@ -3,26 +3,24 @@ import styled from '../../styled-components';
 import { ResponseTitle } from './ResponseTitle';
 
 export const StyledResponseTitle = styled(ResponseTitle)`
-  display: block;
-  border: 0;
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  align-items: center;
+  white-space: normal;
   width: 100%;
   text-align: left;
-  padding: 10px;
-  border-radius: 2px;
-  margin-bottom: 4px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  background: none;
+  border: none;
   line-height: 1.5em;
   cursor: pointer;
-
-  color: ${props => props.theme.colors.responses[props.type].color};
-  background-color: ${props => props.theme.colors.responses[props.type].backgroundColor};
-  &:focus {
-    outline: auto ${props => props.theme.colors.responses[props.type].color};
-  }
   ${props =>
     (props.empty &&
       `
 cursor: default;
-&::before {
+&::after {
   content: "—";
   font-weight: bold;
   width: 1.5em;
@@ -38,7 +36,10 @@ cursor: default;
 `;
 
 export const ResponseDetailsWrap = styled.div`
-  padding: 10px;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0 0 4px 4px;
+  overflow-x: auto;
 `;
 
 export const HeadersCaption = styled(UnderlinedHeader).attrs({
@@ -51,4 +52,16 @@ export const HeadersCaption = styled(UnderlinedHeader).attrs({
 
 export const Code = styled.strong`
   vertical-align: top;
+`;
+export const ResponseTitleWrap = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+`;
+
+export const ResponseWrap = styled.div<{ $type: string }>`
+  border: 1px solid ${props => props.theme.colors.responses[props.$type].color};
+  background-color: ${props => props.theme.colors.responses[props.$type].backgroundColor};
+  border-radius: 4px;
+  margin-bottom: 10px;
 `;
