@@ -31,7 +31,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps> {
             <SecurityDetailsStyle>
               <SecurityRow>
                 <b>Security Scheme Type: </b>
-                <span>{AUTH_TYPES[scheme.type] || scheme.type}</span>
+                <span translate="no">{AUTH_TYPES[scheme.type] || scheme.type}</span>
               </SecurityRow>
               <SecurityDetails scheme={scheme} />
             </SecurityDetailsStyle>
