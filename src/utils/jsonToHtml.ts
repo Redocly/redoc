@@ -27,11 +27,11 @@ function stringifyStringLiteral(str: string) {
 }
 
 function decorateWithSpan(value, className) {
-  return '<span class="' + className + '">' + htmlEncode(value) + '</span>';
+  return '<span class="' + className + '" translate="no">' + htmlEncode(value) + '</span>';
 }
 
 function punctuation(val) {
-  return '<span class="token punctuation">' + val + '</span>';
+  return '<span class="token punctuation" translate="no">' + val + '</span>';
 }
 
 function valueToHTML(value, maxExpandLevel: number) {
@@ -106,7 +106,7 @@ function objectToHTML(json, maxExpandLevel: number) {
     const key = keys[i];
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += '<span class="property token string">"' + htmlEncode(key) + '"</span>: ';
+    output += '<span class="property token string" translate="no">"' + htmlEncode(key) + '"</span>: ';
     output += valueToHTML(json[key], maxExpandLevel);
     if (i < length - 1) {
       output += punctuation(',');
