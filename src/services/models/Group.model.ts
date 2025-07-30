@@ -1,4 +1,5 @@
 import { action, observable, makeObservable } from 'mobx';
+import { nanoid } from 'nanoid';
 
 import type { OpenAPIExternalDocumentation, OpenAPITag } from '../../types';
 import { safeSlugify } from '../../utils';
@@ -37,8 +38,11 @@ export class GroupModel implements IMenuItem {
   ) {
     makeObservable(this);
 
+    const safeGroupName = safeSlugify(tagOrGroup.name);
+    const groupId = [type, '/', safeGroupName, `_${nanoid(8)}`].join('');
+
     // markdown headings already have ids calculated as they are needed for heading anchors
-    this.id = (tagOrGroup as MarkdownHeading).id || type + '/' + safeSlugify(tagOrGroup.name);
+    this.id = (tagOrGroup as MarkdownHeading).id || groupId;
     this.type = type;
     this.name = tagOrGroup['x-displayName'] || tagOrGroup.name;
     this.level = (tagOrGroup as MarkdownHeading).level || 1;
