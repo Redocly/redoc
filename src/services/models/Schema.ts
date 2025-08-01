@@ -97,6 +97,13 @@ export class SchemaModel {
 
     if (options.showExtensions) {
       this.extensions = extractExtensions(this.schema, options.showExtensions);
+
+      if (typeof this.schema.items === 'object') {
+        this.extensions = {
+          ...this.extensions,
+          ...extractExtensions(this.schema.items, options.showExtensions),
+        };
+      }
     }
   }
 
@@ -462,7 +469,6 @@ function buildFields(
       refsStack,
     );
   });
-
   if (options.sortPropsAlphabetically) {
     fields = sortByField(fields, 'name');
   }
