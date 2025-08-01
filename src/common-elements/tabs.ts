@@ -6,70 +6,59 @@ import styled from '../styled-components';
 export { Tab, TabList, TabPanel } from 'react-tabs';
 
 export const Tabs = styled(ReactTabs)`
+  padding: 10px 20px 20px;
+  color: rgb(245, 247, 250);
+  border-radius: 0 0 4px 4px;
+  background-color: rgb(82, 96, 109);
+
   > ul {
     list-style: none;
     padding: 0;
-    margin: 0;
-    margin: 0 -5px;
-
+    margin: 0 0 10px;
+    border-bottom: 4px solid rgb(97, 110, 124);
     > li {
       padding: 5px 10px;
       display: inline-block;
 
-      background-color: ${({ theme }) => theme.codeBlock.backgroundColor};
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      background-color: rgb(82, 96, 109);
       cursor: pointer;
       text-align: center;
       outline: none;
       color: ${({ theme }) => darken(theme.colors.tonalOffset, theme.rightPanel.textColor)};
-      margin: 0
-        ${({ theme }) => `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit}px`};
-      border: 1px solid ${({ theme }) => darken(0.05, theme.codeBlock.backgroundColor)};
-      border-radius: 5px;
       min-width: 60px;
       font-size: 0.9em;
       font-weight: bold;
 
       &.react-tabs__tab--selected {
-        color: ${props => props.theme.colors.text.primary};
-        background: ${({ theme }) => theme.rightPanel.textColor};
-        &:focus {
-          outline: auto;
-        }
+        color: white;
+        background: rgb(50, 63, 75);
+        border-bottom: 4px solid rgb(89, 195, 255);
+        margin-bottom: -4px;
       }
 
       &:only-child {
         flex: none;
         min-width: 100px;
       }
+    }
 
-      &.tab-success {
-        color: ${props => props.theme.colors.responses.success.tabTextColor};
-      }
+    > li:first-of-type {
+      border-top-left-radius: 4px;
+    }
 
-      &.tab-redirect {
-        color: ${props => props.theme.colors.responses.redirect.tabTextColor};
-      }
-
-      &.tab-info {
-        color: ${props => props.theme.colors.responses.info.tabTextColor};
-      }
-
-      &.tab-error {
-        color: ${props => props.theme.colors.responses.error.tabTextColor};
-      }
+    > li:last-of-type {
+      border-top-right-radius: 4px;
     }
   }
   > .react-tabs__tab-panel {
     background: ${({ theme }) => theme.codeBlock.backgroundColor};
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 4}px;
-      margin: 0;
+      margin-top: 10px;
     }
 
     & > div > pre {
-      padding: 0;
+      padding: 10px;
     }
   }
 `;
@@ -101,7 +90,7 @@ export const SmallTabs = styled(Tabs)`
   > .react-tabs__tab-panel {
     & > div,
     & > pre {
-      padding: ${props => props.theme.spacing.unit * 2}px 0;
+      padding: ${props => props.theme.spacing.unit * 2}px 10px;
     }
   }
 `;
