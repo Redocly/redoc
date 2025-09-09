@@ -13,7 +13,7 @@ jobs:
       with:
         node-version: 16.x
 
-    - name: Instal
+    - name: Install
       run: npm install
 
     - name: Build
@@ -22,5 +22,5 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         path: |
-          ./dist
+          ./bundles
         retention-days: 1
