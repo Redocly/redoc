@@ -17,7 +17,7 @@ jobs:
       run: npm install
 
     - name: Build
-      run: npm run bundle:standalone
+      run: npm run bundle
 
     - uses: actions/upload-artifact@v4
       with:
