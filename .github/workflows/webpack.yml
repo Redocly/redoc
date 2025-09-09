@@ -13,10 +13,11 @@ jobs:
       with:
         node-version: 18.x
 
+    - name: Instal
+      run: npm install
+
     - name: Build
-      run: |
-        npm install
-        npm run bundle:standalone
+      run: npm run bundle:standalone
 
     - uses: actions/upload-artifact@v4
       with:
