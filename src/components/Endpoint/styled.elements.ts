@@ -16,15 +16,20 @@ export const ServerRelativeURL = styled.span`
 
 export const EndpointInfo = styled.div<{ expanded?: boolean; inverted?: boolean }>`
   padding: 10px 30px 10px ${props => (props.inverted ? '10px' : '20px')};
-  border-radius: ${props => (props.inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props =>
-    props.inverted ? 'transparent' : props.theme.codeSample.backgroundColor};
+  border-radius: 4px;
+  background-color: ${props => props.theme.codeSample.endpointBackgroundColor || props.theme.codeSample.backgroundColor};
   display: flex;
   white-space: nowrap;
   align-items: center;
   border: ${props => (props.inverted ? '0' : '1px solid transparent')};
   border-bottom: ${props => (props.inverted ? '1px solid #ccc' : '0')};
   transition: border-color 0.25s ease;
+  font-family: Courier, monospace;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  flex: 1 1 0;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 
   ${props =>
     (props.expanded && !props.inverted && `border-color: ${props.theme.colors.border.dark};`) || ''}
@@ -45,6 +50,7 @@ export const HttpVerb = styled.span.attrs((props: { type: string }) => ({
   text-transform: uppercase;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   margin: 0;
+  border-radius: 4px;
 `;
 
 export const ServersOverlay = styled.div<{ expanded: boolean }>`

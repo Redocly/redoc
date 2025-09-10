@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import { darken } from 'polished';
 import styled from '../../styled-components';
 import { MenuItemLabel } from '../SideMenu/styled.elements';
 
 export const SearchWrap = styled.div`
   padding: 5px 0;
+  margin: 0 20px;
+  border-radius: 4px;
+  border: 1px solid rgb(243, 243, 243);
 `;
 
 export const SearchInput = styled.input.attrs(() => ({
@@ -17,7 +19,6 @@ export const SearchInput = styled.input.attrs(() => ({
   padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
     ${props => props.theme.spacing.unit * 4}px;
   border: 0;
-  border-bottom: 1px solid ${({ theme }) => darken(0.1, theme.menu.backgroundColor)};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-weight: bold;
   font-size: 13px;
@@ -41,7 +42,7 @@ export const SearchIcon = styled((props: { className?: string }) => (
   className: 'search-icon',
 })`
   position: absolute;
-  left: ${props => props.theme.spacing.unit * 4}px;
+  left: 30px;
   height: 1.8em;
   width: 0.9em;
 

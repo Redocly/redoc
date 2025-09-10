@@ -319,6 +319,7 @@ export interface ResolvedThemeInterface {
   };
   codeSample: {
     backgroundColor: string;
+    endpointBackgroundColor: string;
   };
 
   extensionsHook?: (name: string, props: any) => string;

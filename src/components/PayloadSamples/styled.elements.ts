@@ -25,7 +25,8 @@ export const DropdownLabel = styled.span`
 `;
 
 export const DropdownWrapper = styled.div`
-  position: relative;
+  visibility: hidden;
+  margin-bottom: -60px;
 `;
 
 export const InvertedSimpleDropdown = styled(StyledDropdown)`

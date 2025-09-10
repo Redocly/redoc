@@ -35,19 +35,21 @@ export const H3 = styled.h2`
 `;
 
 export const RightPanelHeader = styled.h3`
-  color: ${({ theme }) => theme.rightPanel.textColor};
+  color: #697386;
+  font-size: 14px;
+  font-weight: 600;
 
   ${extensionsHook('RightPanelHeader')};
 `;
 
 export const UnderlinedHeader = styled.h5`
-  border-bottom: 1px solid rgba(38, 50, 56, 0.3);
-  margin: 1em 0 1em 0;
-  color: rgba(38, 50, 56, 0.5);
-  font-weight: normal;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
   text-transform: uppercase;
   font-size: 0.929em;
   line-height: 20px;
+  display: inline-block;
+  margin: 0;
 
   ${extensionsHook('UnderlinedHeader')};
 `;

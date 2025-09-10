@@ -78,5 +78,4 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
 }
 
 const SamplesWrapper = styled.div`
-  margin-top: 15px;
 `;

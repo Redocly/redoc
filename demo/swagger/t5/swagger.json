@@ -1,0 +1,2528 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "What If Web API Specification",
+    "description": "Note: the maximum length of the query string is limited to 2048 characters by default. The limit can be increased by changing maxQueryString and maxQueryStringLength options in the configuration file.\r\n\r\n## Errors Logging\r\n\r\nError logs can be accessed at the following URL: [/GetErrors](../GetErrors)\r\n\r\n### Supported Parameters:\r\n\r\n- [/GetErrors](../GetErrors) provides error logs for the last 7 days.\r\n\r\n- [/GetErrors/24](../GetErrors/24) provides error logs for the last 24 hours. If the number is greater than 168, error logs for the last week will be retrieved.\r\n\r\n- [/GetErrors/id1027](../GetErrors/id1027) provides error log details where the ID is equal to 1027.\r\n\r\n- [/GetErrors/idAfter1027](../GetErrors/idAfter1027) provides error log details where the ID is greater than 1027 but within the last week.\r\n\r\n- [/GetErrors/m30](../GetErrors/m30) provides error logs for the last 30 minutes. If the number is greater than 10080, error logs for the last week will be retrieved.\r\n\r\n- [/GetErrors/d15-07-2024](../GetErrors/d15-07-2024) provides error logs created on a specific date (15-07-2024, day-month-year format).\r\n\r\n### Optional Parameter: `environment`\r\n\r\nThe `environment` parameter can be used to filter error logs specific to a particular environment. This parameter helps in tracking and analyzing errors based on the environment but is optional for retrieving error logs. Setting this parameter will only show error logs originating from the given envrionment.\n\n Supported values include:\r\n\r\n- **Web**\r\n- **WebMaster**\r\n- **BackgroundWorker**\r\n- **InsightPlusSyncService**\r\n\r\n### Example Request with `environment` Parameter:\r\n```http\r\nGET /GetErrors?environment=BackgroundWorker\r\n```",
+    "version": "1.0.0",
+    "x-logo": {
+      "url": "../assets/plugins/redoc/assets/logo.svg"
+    }
+  },
+  "servers": [
+    {
+      "url": "/qa/next/normal"
+    }
+  ],
+  "paths": {
+    "/api/t5/v1/Changes/Entities": {
+      "get": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "List Entities",
+        "description": "Gets list of projects, resources, tasks according to changes made in model. These entities reflect the date, inclusion, exclusion changes made to the model.",
+        "parameters": [
+          {
+            "name": "modelId",
+            "in": "query",
+            "description": "Id of the model.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "timeUnit",
+            "in": "query",
+            "description": "Time unit.",
+            "schema": {
+              "$ref": "#/components/schemas/T5.Api.Model.TimeUnit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelEntities"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelEntities"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelEntities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/t5/v1/Changes/Reset": {
+      "put": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Reset Changes",
+        "description": "Clear all changes for the given model.",
+        "requestBody": {
+          "description": "Id of the model.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "PUT /api/tempus/v1/changes/reset?modelId=1"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ChangesClient.Reset(1).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/Remove": {
+      "put": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Remove Change",
+        "description": "Remove change for the given model.",
+        "requestBody": {
+          "description": "Id of the change.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "PUT /api/tempus/v1/changes/remove?changeId=65"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ChangesClient.Remove(1).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/AddGenericResources": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Add Generic Resources",
+        "description": "Create a generic resource for the given resource aggregation.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddGenericResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddGenericResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddGenericResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddGenericResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/AddGenericResources\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"customFieldId\": 67,\r\n            \"customFieldValues\": [\"Developer\", \"SQL Specialist\"],\r\n            \"startDate\": \"2020-01-01T00:00:00\",\r\n            \"endDate\": \"2021-01-01T00:00:00\",\r\n            \"capacitiesPercentage\": 50.0\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<AddGenericResourceChange>\r\n            {\r\n                new AddGenericResourceChange\r\n                {\r\n\t\t\tStartDate = model.StartDate,\r\n                        EndDate = model.EndDate,\r\n                        CustomFieldId = 20,\r\n                        CapacitiesPercentage = 50,\r\n                        CustomFieldValues = new[] { \"Developer\", \"Work\" },\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.AddGenericResources(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/AddNamedResources": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Add Named Resources",
+        "description": "Create a named resource for the given resource aggregation.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddNamedResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddNamedResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddNamedResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddNamedResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/AddNamedResources\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"customFieldId\": 67,\r\n            \"customFieldValues\": [\r\n                \"Developer\",\r\n                \"SQL Specialist\"\r\n            ],\r\n            \"startDate\": \"2020-01-01T00:00:00\",\r\n            \"endDate\": \"2020-12-31T00:00:00\",\r\n            \"capacityPerDay\": 6.0\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<AddNamedResourceChange>\r\n            {\r\n                new AddNamedResourceChange\r\n                {\r\n\t\t\tStartDate = model.StartDate,\r\n                        EndDate = model.EndDate,\r\n                        CustomFieldId = 20,\r\n                        CapacityPerDay = 6,\r\n                        CustomFieldValues = new[] { \"Developer\", \"Work\" },\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.AddNamedResources(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/CloneProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Clone Projects",
+        "description": "Clone the given project.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/CloneProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 5,\r\n            \"startDate\": \"2019-01-01T00:00:00\",\r\n            \"name\": \"cloned name\",\r\n            \"durationPercentage\": 100.0,\r\n            \"allocationChangePercentage\": null\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<CloneProjectChange>\r\n            {\r\n                new CloneProjectChange\r\n                {\r\n\t\t    ProjectId = 5,\r\n                    Name = $\"cloned\",\r\n                    StartDate = new DateTime(2020, 1, 1),\r\n                    DurationPercentage = 100,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.CloneProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/SplitProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Split Projects",
+        "description": "Split the given project.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.SplitProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.SplitProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.SplitProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.SplitProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/SplitProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 1,\r\n            \"name\": \"split project name\",\r\n            \"startDate\": \"2023-6-10\",\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<SplitProjectChange>\r\n            {\r\n                new SplitProjectChange\r\n                {\r\n\t\t    ProjectId = 4,\r\n\t\t    Name = \"split project name\",\r\n\t\t    StartDate = new DateTime(2023, 6, 10),\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.SplitProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/EditAllocations": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Edit Allocations",
+        "description": "Edit assignment allocation.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.EditAllocationsChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.EditAllocationsChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.EditAllocationsChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.EditAllocationsChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/EditAllocations\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"assignmentId\": 16,\r\n            \"startDate\": \"2018-06-01T00:00:00Z\",\r\n            \"allocations\": [10.0, 40.0, 50.0, 20],\r\n            \"timeUnit\": \"Month\"\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<EditAllocationsChange>\r\n            {\r\n                new EditAllocationsChange\r\n                {\r\n\t\t    AssignmentId = 4,\r\n                    StartDate = new DateTime(202, 1, 1),\r\n                    TimeUnit = TimeUnit.Month,\r\n                    Allocations = new[] { 60.0, 80.0, 45.0 },\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.EditAllocations(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ExcludeProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Exclude Projects",
+        "description": "Exclude given project.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ExcludeProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 1\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ExcludeProjectChange>\r\n            {\r\n                new ExcludeProjectChange\r\n                {\r\n\t\t    ProjectId = 4,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ExcludeProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ExcludeTasks": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Exclude Tasks",
+        "description": "Exclude given task.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ExcludeTasks\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"taskId\": 1\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ExcludeTaskChange>\r\n            {\r\n                new ExcludeTaskChange\r\n                {\r\n\t\t    TaskId = 4,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ExcludeTasks(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ExpandContractProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Expand Contract Projects",
+        "description": "Expand or contract given project by number of working days.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ExpandContractProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 1,\r\n            \"delta\": 30,\r\n            \"allocationChangePercentage\": 80.0,\r\n            \"edge\": \"Left\"\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ExpandContractProjectChange>\r\n            {\r\n                new ExpandContractProjectChange\r\n                {\r\n\t\t    ProjectId = 4,\r\n\t\t    Delta = rand.Next(20, 60),\r\n                    Edge = Edge.Left,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ExpandContractProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/IncludeProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Include Projects",
+        "description": "Include given project.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/IncludeProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 1\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<IncludeProjectChange>\r\n            {\r\n                new IncludeProjectChange\r\n                {\r\n\t\t    ProjectId = 4,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.IncludeProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/IncludeTasks": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Include Tasks",
+        "description": "Include given task.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/IncludeTasks\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"taskId\": 1\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<IncludeTaskChange>\r\n            {\r\n                new IncludeTaskChange\r\n                {\r\n\t\t    TaskId = 4,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.IncludeTasks(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/RemoveResources": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Remove Resources",
+        "description": "Remove capacity of given resource.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.RemoveResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.RemoveResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.RemoveResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.RemoveResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/RemoveResources\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"resourceId\": 7\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<RemoveResourceChange>\r\n            {\r\n                new RemoveResourceChange\r\n                {\r\n\t\t    ResourceId = 4,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.RemoveResources(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ReplaceResources": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Replace Resources",
+        "description": "Replace resource for given assignment with other resources.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ReplaceResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ReplaceResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ReplaceResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ReplaceResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ReplaceResources\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"assignmentId\": 4,\r\n            \"distributionType\": \"Linear\",\r\n            \"replacements\": [\r\n                {\r\n                    \"resourceId\": 61,\r\n                    \"totalAllocation\": 126.0,\r\n                    \"startDay\": 0,\r\n                    \"endDay\": 63\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<RemoveResourceChange>\r\n            {\r\n                new ReplaceResourceChange\r\n                {\r\n                    AssignmentId = 5,\r\n                    DistributionType = DistributionType.Linear,\r\n                    Replacements = new List<ReplacementInfo>\r\n                    {\r\n                        new ReplacementInfo\r\n                        {\r\n                            ResourceId = 6,\r\n                            StartDay = 0,\r\n                            EndDay = 10,\r\n                            TotalAllocation = 60,\r\n                        },\r\n                    },\r\n                },\r\n            };\r\n\r\nt5Client.ChangesClient.ReplaceResources(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ShiftProjects": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Shift Projects",
+        "description": "Shift given project by number of working days.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ShiftProjects\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"projectId\": 1,\r\n            \"delta\": 30\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ShiftProjectChange>\r\n            {\r\n                new ShiftProjectChange\r\n                {\r\n\t\t    ProjectId = 4,\r\n\t\t    Delta = rand.Next(20, 60),\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ShiftProjects(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ShiftTasks": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Shift Tasks",
+        "description": "Shift given task by number of working days.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ShiftTasks\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"taskId\": 1,\r\n            \"delta\": 30\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ShiftTaskChange>\r\n            {\r\n                new ShiftTaskChange\r\n                {\r\n\t\t    TaskId = 4,\r\n\t\t    Delta = rand.Next(20, 60),\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ShiftTasks(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/ExpandContractTasks": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Expand or Contract Tasks",
+        "description": "Expand or Contract given task by number of working days.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/ExpandContractTasks\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"taskId\": 1,\r\n            \"delta\": 30,\r\n            \"allocationChangePercentage\": 80.0,\r\n            \"edge\": \"Left\"\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<ExpandContractTaskChange>\r\n            {\r\n                new ExpandContractTaskChange\r\n                {\r\n\t\t    TaskId = 4,\r\n\t\t    Delta = rand.Next(20, 60),\r\n                    Edge = Edge.Left,\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.ExpandContractTasks(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Changes/CloneTasks": {
+      "post": {
+        "tags": [
+          "Changes"
+        ],
+        "summary": "Clone Tasks",
+        "description": "Clone given task.",
+        "requestBody": {
+          "description": "Changes to apply.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "POST /api/tempus/v1/changes/CloneTasks\r\n\r\n{\r\n    \"modelId\": 2,\r\n    \"changes\": [\r\n        {\r\n            \"taskId\": 5,\r\n            \"name\": \"cloned name\",\r\n        }\r\n    ]\r\n}"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\n\r\nvar changes = new List<CloneTaskChange>\r\n            {\r\n                new CloneTaskChange\r\n                {\r\n\t\t    TaskId = 5,\r\n                    Name = $\"cloned\",\r\n                }\r\n            };\r\n\r\nt5Client.ChangesClient.CloneTasks(1, changes).Wait();"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Models": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Models",
+        "description": "Gets the list of models that the user has access to in ascending order by Id.",
+        "parameters": [
+          {
+            "name": "sharingType",
+            "in": "query",
+            "description": "Accessibility of model.",
+            "schema": {
+              "$ref": "#/components/schemas/T5.Api.Model.ModelSharingType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Model"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Model"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Model"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/t5/v1/Models/{id}": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "Get Model",
+        "description": "Gets the requested model.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the model.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Model"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Model"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/T5.Api.Model.Model"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/1"
+          },
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/1"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetModel(2).Result;"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetModel(2).Result;"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Models/Changes": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Model Changes",
+        "description": "Gets the list of changes for requested models.",
+        "parameters": [
+          {
+            "name": "modelIds",
+            "in": "query",
+            "description": "List of model ids separated by comma.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "consolidate",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.ChangeHistory"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.ChangeHistory"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.ChangeHistory"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/Changes?modelIds=2,3,4"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetChanges(new List<int>{2,3}, false).Result;"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Models/Resources": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Resources",
+        "description": "Gets list of resources involved in model changes.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Resource"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Resource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Resource"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/Resources"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetResources().Result;"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Models/Projects": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Projects",
+        "description": "Gets list of projects involved in model changes.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Project"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Project"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Project"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/Projects"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetProjects().Result;"
+          }
+        ]
+      }
+    },
+    "/api/t5/v1/Models/Tasks": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Tasks",
+        "description": "Gets list of tasks involved in model changes.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Task"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Task"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/T5.Api.Model.Task"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "JSON",
+            "source": "GET /api/tempus/v1/Models/Tasks"
+          },
+          {
+            "lang": "C#",
+            "source": "var t5Client = new TempusRestClient(sgUrl, token);\r\nt5Client.ModelsClient.GetTasks().Result;"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "T5.Api.Model.Aggregation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the aggregation field. Same as SuperGrid resource custom field Id.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of aggregation field. Can be null if the field do not exist.",
+            "nullable": true
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Aggregation members.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Aggregation."
+      },
+      "T5.Api.Model.ChangeHistory": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Change"
+            },
+            "description": "List of changes made to the model.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model change details."
+      },
+      "T5.Api.Model.Changes.Change": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the change.",
+            "format": "int32"
+          },
+          "type": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.ChangeType"
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Timestamp when change was created.",
+            "format": "date-time"
+          },
+          "createdByUserId": {
+            "type": "integer",
+            "description": "Resource who created the change.",
+            "format": "int32"
+          },
+          "canRemove": {
+            "type": "boolean",
+            "description": "Set if the change can be removed."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model change details."
+      },
+      "T5.Api.Model.Changes.ChangeType": {
+        "enum": [
+          "shift",
+          "expandContract",
+          "exclude",
+          "include",
+          "excludeTask",
+          "includeTask",
+          "link",
+          "replaceResource",
+          "editAllocations",
+          "addNamedResource",
+          "addGenericResource",
+          "removeResource",
+          "cloneProject",
+          "splitProject",
+          "shiftTask",
+          "expandContractTask",
+          "cloneTask",
+          "splitTask"
+        ],
+        "type": "string",
+        "description": "Type of changes."
+      },
+      "T5.Api.Model.Changes.DistributionType": {
+        "enum": [
+          "linear",
+          "current"
+        ],
+        "type": "string",
+        "description": "Distribution type."
+      },
+      "T5.Api.Model.Changes.Edge": {
+        "enum": [
+          "left",
+          "right"
+        ],
+        "type": "string",
+        "description": "Edge type."
+      },
+      "T5.Api.Model.Changes.ModelAssignment": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Task Id.",
+            "format": "int32"
+          },
+          "resourceId": {
+            "type": "integer",
+            "description": "Resource Id.",
+            "format": "int32"
+          },
+          "assignmentId": {
+            "type": "integer",
+            "description": "Id of the assignment.",
+            "format": "int64",
+            "nullable": true
+          },
+          "allocations": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "Assignment allocations in requested unit. By default same as dominant unit.",
+            "nullable": true
+          },
+          "totalAllocation": {
+            "type": "number",
+            "description": "Assignment total allocation in requested unit. By default same as dominant unit.",
+            "format": "double"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of allocation. First day of period for requested time unit.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of allocation. First day of period for requested time unit.",
+            "format": "date-time"
+          },
+          "days": {
+            "type": "integer",
+            "description": "Number of working days counting from 0.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model Assignment."
+      },
+      "T5.Api.Model.Changes.ModelEntities": {
+        "type": "object",
+        "properties": {
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelResource"
+            },
+            "description": "Resources.",
+            "nullable": true
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelProject"
+            },
+            "description": "Projects.",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelTask"
+            },
+            "description": "Tasks.",
+            "nullable": true
+          },
+          "assignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.ModelAssignment"
+            },
+            "description": "Assignments.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model Entities."
+      },
+      "T5.Api.Model.Changes.ModelProject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the project.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the project.",
+            "nullable": true
+          },
+          "isObfuscated": {
+            "type": "boolean",
+            "description": "Is the project name Obfuscated."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of project.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of project.",
+            "format": "date-time"
+          },
+          "isPartial": {
+            "type": "boolean",
+            "description": "Set if the project is partially belong ot the model date range."
+          },
+          "projectKind": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.ProjectKind"
+          },
+          "addedOrUpdatedByChangeId": {
+            "type": "integer",
+            "description": "Id of the last change action which added or updated the project.",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model project details."
+      },
+      "T5.Api.Model.Changes.ModelResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the resource.",
+            "nullable": true
+          },
+          "addedOrUpdatedByChangeId": {
+            "type": "integer",
+            "description": "Id of the last change action which added or updated the resource.",
+            "format": "int32",
+            "nullable": true
+          },
+          "defaultRate": {
+            "type": "number",
+            "description": "Rate of the resource.",
+            "format": "double",
+            "nullable": true
+          },
+          "resourceKind": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.ResourceKind"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of capacity.  First day of period for requested time unit.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of capacity. First day of period for requested time unit.",
+            "format": "date-time"
+          },
+          "capacities": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "Resource capacities in requested unit. By default same as dominant unit.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model Resource details."
+      },
+      "T5.Api.Model.Changes.ModelTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the task.",
+            "format": "int32"
+          },
+          "projectId": {
+            "type": "integer",
+            "description": "Id of the project which task belongs to.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the task.",
+            "nullable": true
+          },
+          "isObfuscated": {
+            "type": "boolean",
+            "description": "Is the task name Obfuscated."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of the task.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of the task.",
+            "format": "date-time"
+          },
+          "addedOrUpdatedByChangeId": {
+            "type": "integer",
+            "description": "Id of the last change action which added or updated the task.",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model Task details."
+      },
+      "T5.Api.Model.Changes.ProjectKind": {
+        "enum": [
+          "real",
+          "other",
+          "excluded",
+          "virtual",
+          "virtualExcluded",
+          "proposal",
+          "included"
+        ],
+        "type": "string",
+        "description": "Project Types."
+      },
+      "T5.Api.Model.Changes.Requests.AddGenericResourceChange": {
+        "type": "object",
+        "properties": {
+          "customFieldId": {
+            "type": "integer",
+            "description": "Custom field Id of the lowest resource aggregation level.",
+            "format": "int32"
+          },
+          "customFieldValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Custom field values of the aggregation level where to add. Must be same as number of aggregation levels.",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of resource capacity.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of resource capacity.",
+            "format": "date-time"
+          },
+          "capacitiesPercentage": {
+            "type": "number",
+            "description": "Capacity percentage to increase.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Add Generic Resource Change."
+      },
+      "T5.Api.Model.Changes.Requests.AddNamedResourceChange": {
+        "type": "object",
+        "properties": {
+          "customFieldId": {
+            "type": "integer",
+            "description": "Custom field Id of the lowest resource aggregation level.",
+            "format": "int32"
+          },
+          "customFieldValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Custom field values of the aggregation level where to add. Must be same as number of aggregation levels.",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start day of resource's capacity.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End day of resource's capacity.",
+            "format": "date-time"
+          },
+          "capacityPerDay": {
+            "type": "number",
+            "description": "Capacity per day during the period.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Add Named Resource Change."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddGenericResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.AddGenericResourceChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.AddNamedResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.AddNamedResourceChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.CloneProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.CloneTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.CloneTaskChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.EditAllocationsChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.EditAllocationsChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ExcludeProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExcludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ExcludeTaskChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ExpandContractProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ExpandContractTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ExpandContractTaskChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.IncludeProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.IncludeTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.IncludeTaskChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.RemoveResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.RemoveResourceChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ReplaceResourceChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ReplaceResourceChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ShiftProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.ShiftTaskChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ShiftTaskChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.Change`1[[T5.Api.Model.Changes.Requests.SplitProjectChange, T5.Api.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.SplitProjectChange"
+            },
+            "description": "Changes to be applied.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Change object."
+      },
+      "T5.Api.Model.Changes.Requests.CloneProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of the project that was cloned.",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of new project.",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of new project.",
+            "nullable": true
+          },
+          "durationPercentage": {
+            "type": "integer",
+            "description": "Duration change by percentage.",
+            "format": "int32"
+          },
+          "allocationChangePercentage": {
+            "type": "number",
+            "description": "Allocation change by percentage.",
+            "format": "float",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Clone Project Change."
+      },
+      "T5.Api.Model.Changes.Requests.CloneTaskChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of the task that was cloned.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of new task.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Clone task change."
+      },
+      "T5.Api.Model.Changes.Requests.EditAllocationsChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of the task.",
+            "format": "int32"
+          },
+          "resourceId": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          },
+          "assignmentId": {
+            "type": "integer",
+            "description": "Id of the assignment.",
+            "format": "int64",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "description": "New start date.",
+            "format": "date-time"
+          },
+          "allocations": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "Allocation by days from start to end date excluding weekends.",
+            "nullable": true
+          },
+          "timeUnit": {
+            "$ref": "#/components/schemas/T5.Api.Model.TimeUnit"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Edit Allocations Change."
+      },
+      "T5.Api.Model.Changes.Requests.ExcludeProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of project.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Exclude Change."
+      },
+      "T5.Api.Model.Changes.Requests.ExcludeTaskChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of task.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Exclude Task Change."
+      },
+      "T5.Api.Model.Changes.Requests.ExpandContractProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of project.",
+            "format": "int32"
+          },
+          "delta": {
+            "type": "integer",
+            "description": "Number of working days to shift. Positive number to expand and negative number to contract.",
+            "format": "int32"
+          },
+          "allocationChangePercentage": {
+            "type": "number",
+            "description": "Allocation change by percentage.",
+            "format": "float",
+            "nullable": true
+          },
+          "edge": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.Edge"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Expand Contract Change."
+      },
+      "T5.Api.Model.Changes.Requests.ExpandContractTaskChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of task.",
+            "format": "int32"
+          },
+          "delta": {
+            "type": "integer",
+            "description": "Number of working days to shift. Positive number to expand and negative number to contract.",
+            "format": "int32"
+          },
+          "allocationChangePercentage": {
+            "type": "number",
+            "description": "Allocation change by percentage.",
+            "format": "float",
+            "nullable": true
+          },
+          "edge": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.Edge"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Expand Contract task change."
+      },
+      "T5.Api.Model.Changes.Requests.IncludeProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of project.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Include Change."
+      },
+      "T5.Api.Model.Changes.Requests.IncludeTaskChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of task.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Include Task Change."
+      },
+      "T5.Api.Model.Changes.Requests.RemoveResourceChange": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Remove Resource Change."
+      },
+      "T5.Api.Model.Changes.Requests.ReplaceResourceChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of the task.",
+            "format": "int32"
+          },
+          "resourceId": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          },
+          "assignmentId": {
+            "type": "integer",
+            "description": "Id of the assignment.",
+            "format": "int64",
+            "nullable": true
+          },
+          "distributionType": {
+            "$ref": "#/components/schemas/T5.Api.Model.Changes.DistributionType"
+          },
+          "replacements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Changes.Requests.ReplacementInfo"
+            },
+            "description": "Replacements for the resource.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Replace Resource Change."
+      },
+      "T5.Api.Model.Changes.Requests.ReplacementInfo": {
+        "type": "object",
+        "properties": {
+          "resourceId": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          },
+          "totalAllocation": {
+            "type": "number",
+            "description": "Total allocation of the replacement in Dominant Unit.",
+            "format": "double"
+          },
+          "startDay": {
+            "type": "integer",
+            "description": "Start day of replacement. Number of working days starting from the first day of allocation. Calculated from 0.",
+            "format": "int32"
+          },
+          "endDay": {
+            "type": "integer",
+            "description": "End day of replacement. Number of working days starting from the first day of allocation. Calculated from 0.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Replacement info detail."
+      },
+      "T5.Api.Model.Changes.Requests.ShiftProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of project.",
+            "format": "int32"
+          },
+          "delta": {
+            "type": "integer",
+            "description": "Number of working days to shift. Positive number to shift forward and negative number to shift backward.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shift Change."
+      },
+      "T5.Api.Model.Changes.Requests.ShiftTaskChange": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Id of task.",
+            "format": "int32"
+          },
+          "delta": {
+            "type": "integer",
+            "description": "Number of working days to shift. Positive number to shift forward and negative number to shift backward.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shift task change."
+      },
+      "T5.Api.Model.Changes.Requests.SplitProjectChange": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "description": "Id of the project that was split.",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of new project.",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of new project.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Split Project Change."
+      },
+      "T5.Api.Model.Changes.ResourceKind": {
+        "enum": [
+          "real",
+          "realEmpty",
+          "realRemoved",
+          "virtualGenericIncrease",
+          "virtualGenericDecrease",
+          "virtualGenericMixed",
+          "virtualNamed",
+          "virtualNamedRemoved"
+        ],
+        "type": "string",
+        "description": "Resource Kind types."
+      },
+      "T5.Api.Model.Model": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the model.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the model.",
+            "nullable": true
+          },
+          "sharingType": {
+            "$ref": "#/components/schemas/T5.Api.Model.ModelSharingType"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of the model.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of the model.",
+            "format": "date-time"
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Create date of the model.",
+            "format": "date-time"
+          },
+          "ownerId": {
+            "type": "integer",
+            "description": "User id of the model's creator.",
+            "format": "int32"
+          },
+          "aggregations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/T5.Api.Model.Aggregation"
+            },
+            "description": "Aggregation ordered by level.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model details."
+      },
+      "T5.Api.Model.ModelSharingType": {
+        "enum": [
+          "private",
+          "shared",
+          "sharedWithData"
+        ],
+        "type": "string",
+        "description": "Model assess types."
+      },
+      "T5.Api.Model.Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the project.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the project.",
+            "nullable": true
+          },
+          "isObfuscated": {
+            "type": "boolean",
+            "description": "Is the project name Obfuscated."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Project details."
+      },
+      "T5.Api.Model.Resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the resource.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the resource.",
+            "nullable": true
+          },
+          "isObfuscated": {
+            "type": "boolean",
+            "description": "Is the resource name Obfuscated."
+          },
+          "isTeamResource": {
+            "type": "boolean",
+            "description": "Is the resource a team resource."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Resource details."
+      },
+      "T5.Api.Model.Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the task.",
+            "format": "int32"
+          },
+          "projectId": {
+            "type": "integer",
+            "description": "Id of the project which task belongs to.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the task.",
+            "nullable": true
+          },
+          "isObfuscated": {
+            "type": "boolean",
+            "description": "Is the task name Obfuscated."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of the task.",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of the task.",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Task details."
+      },
+      "T5.Api.Model.TimeUnit": {
+        "enum": [
+          "day",
+          "week",
+          "month",
+          "quarter"
+        ],
+        "type": "string",
+        "description": "Supported time units."
+      }
+    },
+    "securitySchemes": {
+      "APIKey": {
+        "type": "http",
+        "description": "API authenticates an account by using the API token generated by the user account. A user with 'Use API' global role permission can request API token from profile screen. The access token must be sent in an HTTP authorization header with every API call. It's recommended to send API requests over HTTPS. API requests over HTTP are not safe and restricted by default. If you want to allow API access for HTTP - IsApiOverHttpEnabled flag must be set to 'true' in the configuration file. An api token represents a users and the users permissions. It must not be published or shared among multiple users.\n\nHeader example:\n\nAuthorization: Bearer 1-8051a5c4-3e6e-481e-9dd6-2f474d6061e3",
+        "scheme": "Bearer",
+        "bearerFormat": "token"
+      },
+      "OAuth": {
+        "type": "http",
+        "description": "API authenticates an account by using the OAuth JWT token generated by the oauth token endpoint at /oauth2/token. The access token must be sent in an HTTP authorization header with every API call. It's recommended to send API requests over HTTPS. API requests over HTTP are not safe and restricted by default. If you want to allow API access for HTTP - IsApiOverHttpEnabled flag must be set to 'true' in the configuration file. The token endpoint will never be accessible over HTTP for security reasons. An api token represents a users and the users permissions. It must not be published or shared among multiple users.\n\nHeader example:\n\nAuthorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsImtpZCI6IjMyMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJuYmYiOjE2MTUyOTY3MzEsImV4cCI6MTYxNTM4MzEzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCIsImF1ZCI6IjMyMiJ9.8Fhusr-wrtzKSscNiFJ--6ySyj6O3m8XuXpBbAuIUAY\n\nToken endpoint Curl request example:\n\ncurl --location --request POST 'https://domain.com/oauth2/token' --header 'Accept: application/json' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=password' --data-urlencode 'password=Password@1' --data-urlencode 'username=admin' --data-urlencode 'scope=SG'",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "APIKey": []
+    },
+    {
+      "OAuth": []
+    }
+  ]
+}

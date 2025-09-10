@@ -4,7 +4,7 @@ import { OperationModel, RedocNormalizedOptions } from '../../services';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 
-import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
+import { RequestSamplesTabs, RightPanelHeader, Tab, TabList, TabPanel } from '../../common-elements';
 import { OptionsContext } from '../OptionsProvider';
 
 export interface RequestSamplesProps {
@@ -33,7 +33,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
         <div>
           <RightPanelHeader> Request samples </RightPanelHeader>
 
-          <Tabs defaultIndex={0}>
+          <RequestSamplesTabs defaultIndex={0}>
             <TabList hidden={hideTabList}>
               {hasBodySample && <Tab key="payload"> Payload </Tab>}
               {samples.map(sample => (
@@ -54,7 +54,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
                 <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
               </TabPanel>
             ))}
-          </Tabs>
+          </RequestSamplesTabs>
         </div>
       )) ||
       null
