@@ -13,6 +13,9 @@
     "importHelpers": true,
     "outDir": "lib",
     "pretty": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
     "lib": [
       "es2015",
       "es2016",

@@ -32,12 +32,12 @@ export class ExampleModel {
     }
   }
 
-  getExternalValue(mimeType: string): Promise<any> {
+  async getExternalValue(mimeType: string): Promise<any> {
     if (!this.externalValueUrl) {
       return Promise.resolve(undefined);
     }
 
-    if (externalExamplesCache[this.externalValueUrl]) {
+    if (await externalExamplesCache[this.externalValueUrl]) {
       return externalExamplesCache[this.externalValueUrl];
     }
 

@@ -58,6 +58,7 @@ export const RightPanel = styled.div`
   `};
 `;
 
+// @ts-ignore
 export const DarkRightPanel = styled(RightPanel)`
   background-color: ${props => props.theme.rightPanel.backgroundColor};
 `;

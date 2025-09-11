@@ -111,11 +111,11 @@
     "style-loader": "^0.23.1",
     "styled-components": "^4.3.2",
     "ts-jest": "24.0.2",
-    "ts-loader": "6.0.4",
+    "ts-loader": "^8.4.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.5.3",
+    "typescript": "^4.9.5",
     "unfetch": "^4.1.0",
     "url-polyfill": "^1.1.7",
     "webpack": "^4.38.0",
@@ -155,7 +155,7 @@
     "slugify": "^1.3.4",
     "stickyfill": "^1.1.1",
     "swagger2openapi": "^5.3.1",
-    "tslib": "^1.10.0",
+    "tslib": "^2.3.1",
     "uri-template-lite": "^19.4.0"
   },
   "bundlesize": [
