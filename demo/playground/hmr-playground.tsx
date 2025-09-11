@@ -121,10 +121,6 @@ const RedocPlayground = () => {
 };
 
 const Header = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 200;
   text-align: right;
   height: 30px;
   padding: 19px;

@@ -32,7 +32,7 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
   contain: strict;
 
   height: 100vh;
-  position: sticky;
+  position: fixed;
   position: -webkit-sticky;
   top: 0;
   border-right: 1px solid rgb(243, 243, 243);

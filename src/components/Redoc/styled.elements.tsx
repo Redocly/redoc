@@ -29,12 +29,13 @@ export const ApiContentWrap = styled.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
-  width: calc(100% - ${props => props.theme.menu.width});
+  width: 100%;
   ${media.lessThan('small', true)`
     width: 100%;
   `};
 
   contain: layout;
+  padding-left: 260px;
 `;
 
 export const BackgroundStub = styled.div`
