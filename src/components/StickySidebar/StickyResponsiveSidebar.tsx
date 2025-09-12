@@ -35,11 +35,11 @@ const StyledStickySidebar = styled.div<{ open?: boolean }>`
   position: fixed;
   position: -webkit-sticky;
   top: 0;
+  z-index: 20;
   border-right: 1px solid rgb(243, 243, 243);
 
   ${media.lessThan('small')`
     position: fixed;
-    z-index: 20;
     width: 100%;
     background: #ffffff;
     display: ${props => (props.open ? 'flex' : 'none')};
