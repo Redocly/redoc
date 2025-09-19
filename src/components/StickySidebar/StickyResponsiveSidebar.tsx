@@ -36,13 +36,12 @@ const StyledStickySidebar = styled.div<{ $open?: boolean }>`
   /* contain: strict; TODO: breaks layout since Chrome 80*/
 
   height: 100vh;
-  position: sticky;
+  position: fixed;
   position: -webkit-sticky;
   top: 0;
+  z-index: 20;
 
   ${media.lessThan('small')`
-    position: fixed;
-    z-index: 20;
     width: 100%;
     background: ${({ theme }) => theme.sidebar.backgroundColor};
     display: ${props => (props.$open ? 'flex' : 'none')};

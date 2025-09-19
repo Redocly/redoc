@@ -222,12 +222,12 @@ export class OperationModel implements IMenuItem {
 
       samples = [
         ...samples.slice(0, insertInx),
-        {
-          lang: 'payload',
-          label: 'Payload',
-          source: '',
-          requestBodyContent,
-        },
+        // {
+        //   lang: 'payload',
+        //   label: 'Payload',
+        //   source: '',
+        //   requestBodyContent,
+        // },
         ...samples.slice(insertInx),
       ];
     }
