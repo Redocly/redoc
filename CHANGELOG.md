@@ -1,3 +1,10 @@
+# [2.5.1](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* Bumped `mobx-react` dependency to address a security vulnerability.
+
 # [2.5.0](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.0) (2025-04-14)
 
 
