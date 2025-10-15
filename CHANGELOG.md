@@ -1,3 +1,11 @@
+# [2.5.2](https://github.com/Redocly/redoc/compare/v2.5.1...v2.5.2) (2025-10-15)
+
+
+### Bug Fixes
+
+* Bumped `openapi-sampler` dependency to include the fix for `readOnly`/`writeOnly` handling in allOf.
+
+
 # [2.5.1](https://github.com/Redocly/redoc/compare/v2.4.0...v2.5.1) (2025-09-26)
 
 
