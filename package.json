@@ -148,7 +148,7 @@
     "mark.js": "^8.11.1",
     "marked": "^4.3.0",
     "mobx-react": "9.2.0",
-    "openapi-sampler": "^1.5.0",
+    "openapi-sampler": "^1.6.2",
     "path-browserify": "^1.0.1",
     "perfect-scrollbar": "^1.5.5",
     "polished": "^4.2.2",
