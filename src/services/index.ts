@@ -1,14 +1,9 @@
-export * from './AppStore';
-export * from './OpenAPIParser';
-export * from './MarkdownRenderer';
-export * from './MenuStore';
-export * from './ScrollService';
-export * from './SpecStore';
-export * from './ClipboardService';
-export * from './HistoryService';
-export * from './models';
-export * from './RedocNormalizedOptions';
-export * from './MenuBuilder';
-export * from './SearchStore';
-export * from './MarkerService';
-export * from './types';
+export * from './history/index.js';
+export * from './code-samples/index.js';
+export * from './types.js';
+
+export { OpenAPIParser } from './OpenAPIParser.js';
+export { buildContentItems } from './menu/index.js';
+export * from './types.js';
+export * from './config-options/index.js';
+export { deepClone } from './utils.js';

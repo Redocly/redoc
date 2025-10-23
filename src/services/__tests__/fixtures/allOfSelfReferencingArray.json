@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Test",
+    "version": "1.0.0",
+    "title": "Swagger Petstore"
+  },
+  "components": {
+    "schemas": {
+      "Array": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Array"
+        }
+      },
+      "Test": {
+        "allOf": [{ "$ref": "#/components/schemas/Array" }]
+      }
+    }
+  }
+}

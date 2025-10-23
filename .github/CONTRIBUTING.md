@@ -20,11 +20,11 @@ Before submitting a pull request, please make sure the following is done:
 2. Run `npm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
 4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
-5. Format your code with prettier (`npm run prettier`).
+5. Lint your code with eslint (`npm run lint`).
 
 ## Development Setup
 
-You need [Node.js](http://nodejs.org) at `v12.0.0+`.
+You need [Node.js](http://nodejs.org) at `Node LTS+`.
 
 After cloning the repo, run:
 
@@ -38,14 +38,11 @@ $ npm install # or npm
 # dev-server, watch and auto reload playground
 $ npm start
 
-# start playground app in production environment
-$ npm run start:prod
-
-# runt tslint
+# run tslint
 $ npm run lint
 
 # try autofix tslint issues
-$ npm run lint -- --fix
+$ npm run lint:fix
 
 # run unit tests
 $ npm run unit
@@ -53,46 +50,37 @@ $ npm run unit
 # run e2e tests
 $ npm run e2e
 # Make sure you have created bundle before running e2e test
-# E.g. run `npm run bundle` and wait for the finishing process.
+# E.g. run `npm run build` and wait for the finishing process.
 
-# open cypress UI to debug e2e test
-$ npm run cy:open
+# open Playwright UI to debug e2e test
+$ npm run e2e:ui
 
 # run the unit tests (includes linting and license checks)
 $ npm test
 
 # prepare bundles
-$ npm run bundle
+$ npm run build
 
-# format the code using prettier
-$ npm run prettier
-
-# auto-generate changelog
-$ npm run changelog
 ```
 
 There are some other scripts available in the `scripts` section of the `package.json` file.
 
 ## Project Structure
 
-- **`benchmark`**: contains basic perf benchmark. Not fully ready yet
+- **`examples`**: contains project demos
 
-- **`demo`**: contains project demo with demo specs and HMR playground used in development
-
-  - `demo/playground`: HMR Playground used in development
+- **`playground`**: HMR Playground used in development
 
 - **`docs`**: contains extra docs (linked from README.md)
 
-- **`e2e`**: contains e2e tests. The e2e tests are written and run with [Cypress](https://www.cypress.io/).
+- **`playwright`**: contains e2e tests. The e2e tests are written and run with [Playwright](https://playwright.dev/).
 
+- **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [Jotai](https://github.com/pmndrs/jotai)
 
-- **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [MobX](https://github.com/mobxjs/mobx)
-
-  - **`src/common-elements`**: contains common Styled elements or components used in multiple places
   - **`src/components`**: contains main visual components
-  - **`src/services`**: contains different services used by Redoc including MobX stores
-  - **`src/services/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
+  - **`src/services`**: contains different services used by Redoc including Jotai stores
+  - **`src/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions
-  - **`src/styled-components.ts`**: - reexports styled-components with proper typescript annotations using theme
-  - **`src/theme.ts`**: - default theme (colors, fonts, etc) used by all the components
+  - **`src/jotai`**: - contains Jotai store files
+  - **`src/hooks`**: - contains global react hooks for application

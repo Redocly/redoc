@@ -26,7 +26,7 @@ By default Redoc offers a three-panel, responsive layout:
 If you want to see how Redoc renders your OpenAPI definition,
 you can try it out online at https://redocly.github.io/redoc/.
 
-A version of the Swagger Petstore API is displayed by default.
+A version of the Redocly Museum API is displayed by default.
 To test it with your own OpenAPI definition,
 enter the URL for your definition and select **TRY IT**.
 
@@ -37,12 +37,12 @@ enter the URL for your definition and select **TRY IT**.
 - Ability to integrate your API introduction into the side menu
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/api-reference-docs/specification-extensions/x-tag-groups/) specification extension
 - [Simple integration with `create-react-app`](https://redocly.com/docs/redoc/quickstart/react/)
-- Code samples support (with vendor extension) <br>
-  ![code samples in action](docs/images/code-samples-demo.gif)
+- Code samples support (with the `x-codeSamples` specification extension) <br>
+  ![code samples in action](https://raw.githubusercontent.com/Redocly/redoc/main/demo/code-samples-demo.gif)
 
 ## Usage
 
-Redoc is provided as a CLI tool (also distributed as a Docker image), HTML tag, and React component.
+Redoc Community Edition is available as an HTML tag, a React component, and via the Redocly CLI (also distributed as a Docker image).
 
 ### Generate documentation from the CLI
 
@@ -73,20 +73,23 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
-## Redoc vs. Redocly API Reference
+## Redoc CE vs. Redoc
 
-Redoc is Redocly's community-edition product. Looking for something more?
-We also offer [hosted API reference documentation](https://redocly.com/docs/api-registry/guides/api-registry-quickstart/)
-with additional features including:
+Redoc CE is Redocly's community-edition product. Looking for something more?
+We also offer [Redoc](https://redocly.com/redoc)
+with support specifications like GraphQL/AsyncAPI/SOAP and additional features including:
 
-* Try-it console
+* Try-it panel(Replay)
 * Automated code samples
-* Pagination
-* Extra theme options
+* Mock server
+* Full customization
+* Lint
+
+For a detailed comparison of premium vs open source, see [Premium vs Open Source features](https://redocly.com/blog/premium-vs-open-source).
 
 ### Documentation and resources
 
-- [Reference docs](https://redocly.com/docs/api-reference-docs/getting-started/) - we take care of the hosting
+- [Realm + Reunite](https://redocly.com/docs/realm) - we take care of the hosting, which includes everything you need for documentation.
 - [Redoc](https://redocly.com/docs/redoc/) - detailed documentation for this open source project (also in the `docs/` folder)
 - [Command-line interface to bundle your docs into a web-ready HTML file](https://redocly.com/docs/cli/commands/build-docs/)
 - API linting, bundling, and much more with open source [Redocly CLI](https://redocly.com/docs/cli)
@@ -117,6 +120,7 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 * [`x-traitTag`](docs/redoc-vendor-extensions.md#x-traitTag) - useful for tags that refer to non-navigation properties like Pagination, Rate-Limits, etc
 * [`x-codeSamples`](docs/redoc-vendor-extensions.md#x-codeSamples) - specify operation code samples
 * [`x-badges`](docs/redoc-vendor-extensions.md#x-badges) - specify operation badges
+* ['x-enumDescriptions'](docs/redoc-vendor-extensions.md#x-enumDescriptions) - list of the enum values and descriptions to include in the documentation
 * [`x-examples`](docs/redoc-vendor-extensions.md#x-examples) - specify JSON example for requests
 * [`x-nullable`](docs/redoc-vendor-extensions.md#x-nullable) - mark schema param as a nullable
 * [`x-displayName`](docs/redoc-vendor-extensions.md#x-displayname) - specify human-friendly names for the menu categories
@@ -130,8 +134,12 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 
 **The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch.**
 
-All the 2.x releases are deployed to npm and can be used with Redocly-cdn:
-- particular release, for example, `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
+**The README for the `2.x` version is on the [v2.x](https://github.com/Redocly/redoc/tree/v2.x) branch.**
+
+All the 2.x and 3.x releases are deployed to npm and can be used with Redocly-cdn:
+- particular release, for example:
+- `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
+- `v3.0.0`: https://cdn.redoc.ly/redoc/v3.0.0/bundles/redoc.standalone.js
 - `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:

@@ -1,0 +1,71 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8080
+    description: Default server
+info:
+  description: info.description
+  version: 1.0.0
+  title: Swagger Petstore
+tags:
+  - name: Authentication
+    x-traitTag: true
+    description: |
+      Some useful text about Authentication
+  - name: pet
+x-tagGroups:
+  - name: General
+    tags:
+      - Authentication
+  - name: Pet
+    tags:
+      - pet
+paths:
+  /pet:
+    parameters:
+      - name: Accept-Language
+        in: header
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
+        example: en-US
+        required: false
+        schema:
+          type: string
+          enum: ['en-AU', 'uk-UA']
+          default: en-AU
+      - name: cookieParam
+        in: cookie
+        description: Some cookie
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags:
+        - pet
+      summary: Add a new pet to the store
+      description: Add new pet to the store inventory.
+      operationId: addPet
+      responses:
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - pet
+      summary: Update an existing pet
+      description: ''
+      operationId: updatePet
+      responses:
+        '100':
+          description: Test response code to have tab in Code Samples to the left of 200
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Continue
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception

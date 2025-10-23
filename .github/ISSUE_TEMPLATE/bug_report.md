@@ -15,6 +15,10 @@ A clear and concise description of what you expected to happen.
 
 **Minimal reproducible OpenAPI snippet(if possible)**
 
+
+**Version (of Redoc, Node, OS, Browser)**
+
+
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 

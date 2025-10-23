@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>ReDoc</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Source+Code+Pro:400:700"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html:root {
+        --text-color-primary: #f66;
+        --color-primary-500: red;
+        --link-color-primary: var(--color-primary-500);
+        --link-hover-text-color: var(--color-primary-100);
+        --md-content-text-color: #f66;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="redoc_container"></div>
+    <script type="module">
+      import { init } from '../bundle/redoc.standalone.js';
+
+      init(
+        '../openapi/petstore.yaml',
+        {
+          downloadUrls: [
+            {
+              url: 'http://redocly.com/definition.yaml',
+              name: 'definition.yaml',
+            },
+            {
+              url: 'http://redocly.com/definition.json',
+              name: 'definition.json',
+            },
+          ],
+        },
+        document.getElementById('redoc_container'),
+      );
+    </script>
+  </body>
+</html>

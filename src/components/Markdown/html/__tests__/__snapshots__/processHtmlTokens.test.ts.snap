@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`processHtmlTokens should process block and inline html tokens 1`] = `
+{
+  "$$typeof": Symbol(react.transitional.element),
+  "_owner": null,
+  "_store": {},
+  "key": null,
+  "props": {
+    "children": [
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": "Heading",
+        },
+        "type": "h1",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": {
+            "$$typeof": Symbol(react.transitional.element),
+            "_owner": null,
+            "_store": {},
+            "key": null,
+            "props": {
+              "children": [
+                "Inline ",
+                {
+                  "$$typeof": Symbol(react.transitional.element),
+                  "_owner": null,
+                  "_store": {},
+                  "key": null,
+                  "props": {
+                    "children": "bold",
+                  },
+                  "type": "strong",
+                },
+                " text",
+              ],
+            },
+            "type": "p",
+          },
+          "id": "22",
+        },
+        "type": "div",
+      },
+    ],
+  },
+  "type": "article",
+}
+`;
+
+exports[`processHtmlTokens should process inline html tokens 1`] = `
+{
+  "$$typeof": Symbol(react.transitional.element),
+  "_owner": null,
+  "_store": {},
+  "key": null,
+  "props": {
+    "children": [
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": [
+            "Inline ",
+            {
+              "$$typeof": Symbol(react.transitional.element),
+              "_owner": null,
+              "_store": {},
+              "key": null,
+              "props": {
+                "children": "bold",
+              },
+              "type": "strong",
+            },
+            " text",
+          ],
+        },
+        "type": "p",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": "Heading",
+        },
+        "type": "h1",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": [
+            "Inline ",
+            {
+              "$$typeof": Symbol(react.transitional.element),
+              "_owner": null,
+              "_store": {},
+              "key": null,
+              "props": {
+                "children": "bold",
+              },
+              "type": "strong",
+            },
+            " text",
+          ],
+        },
+        "type": "p",
+      },
+    ],
+  },
+  "type": "article",
+}
+`;
+
+exports[`processHtmlTokens should report unclosed errors 1`] = `
+{
+  "$$typeof": Symbol(react.transitional.element),
+  "_owner": null,
+  "_store": {},
+  "key": null,
+  "props": {
+    "children": [
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": {
+            "$$typeof": Symbol(react.transitional.element),
+            "_owner": null,
+            "_store": {},
+            "key": null,
+            "props": {
+              "children": " inline",
+            },
+            "type": "span",
+          },
+        },
+        "type": "p",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": "Heading",
+        },
+        "type": "h1",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": {
+            "$$typeof": Symbol(react.transitional.element),
+            "_owner": null,
+            "_store": {},
+            "key": null,
+            "props": {
+              "children": "bold",
+            },
+            "type": "p",
+          },
+        },
+        "type": "strong",
+      },
+    ],
+  },
+  "type": "article",
+}
+`;

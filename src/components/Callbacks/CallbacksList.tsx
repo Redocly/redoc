@@ -1,40 +1,45 @@
-import * as React from 'react';
+import { memo } from 'react';
 
-import { CallbackModel } from '../../services/models';
-import styled from '../../styled-components';
-import { CallbackOperation } from './CallbackOperation';
+import type { ReactElement } from 'react';
+import type { CallbackModel, OperationModel } from '../../models/index.js';
+
+import { CallbackOperation } from './CallbackOperation.js';
 
 export interface CallbacksListProps {
   callbacks: CallbackModel[];
+  onExpand: (a: OperationModel | null) => void;
+  selectedCallback: OperationModel | null;
 }
 
-export class CallbacksList extends React.PureComponent<CallbacksListProps> {
-  render() {
-    const { callbacks } = this.props;
-
-    if (!callbacks || callbacks.length === 0) {
-      return null;
-    }
-
-    return (
-      <div>
-        <CallbacksHeader> Callbacks </CallbacksHeader>
-        {callbacks.map(callback => {
-          return callback.operations.map((operation, index) => {
-            return (
-              <CallbackOperation key={`${callback.name}_${index}`} callbackOperation={operation} />
-            );
-          });
-        })}
-      </div>
-    );
+function CallbacksListComponent({
+  callbacks,
+  selectedCallback,
+  onExpand,
+}: CallbacksListProps): ReactElement | null {
+  if (!callbacks || callbacks.length === 0) {
+    return null;
   }
+
+  const handleSelectCallback = (callbackId) => {
+    onExpand(callbackId);
+  };
+
+  return (
+    <div>
+      {callbacks.map((callback) =>
+        callback.operations.map((operation) => {
+          return (
+            <CallbackOperation
+              key={operation.name}
+              operation={operation}
+              selectedCallback={selectedCallback}
+              onExpand={handleSelectCallback}
+            />
+          );
+        }),
+      )}
+    </div>
+  );
 }
 
-const CallbacksHeader = styled.h3`
-  font-size: 1.3em;
-  padding: 0.2em 0;
-  margin: 3em 0 1.1em;
-  color: ${({ theme }) => theme.colors.text.primary};
-  font-weight: normal;
-`;
+export const CallbacksList = memo<CallbacksListProps>(CallbacksListComponent);

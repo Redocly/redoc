@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/example": {
+      "get": {
+        "summary": "Get Example",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneOfSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OneOfSchema": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Circle"
+          },
+          {
+            "$ref": "#/components/schemas/Shape"
+          }
+        ]
+      },
+      "Shape": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of the shape - Shape"
+          }
+        },
+        "required": ["type"],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "square": "#/components/schemas/Square",
+            "triangle": "#/components/schemas/Triangle"
+          }
+        }
+      },
+      "Equilateral": {
+        "type": "object",
+        "properties": {
+          "perimeter": {
+            "type": "number",
+            "description": "Perimeter of the Equilateral"
+          }
+        }
+      },
+      "Acute": {
+        "type": "object",
+        "properties": {
+          "perimeter": {
+            "type": "number",
+            "description": "Perimeter of the Acute"
+          }
+        }
+      },
+      "Circle": {
+        "type": "object",
+        "properties": {
+          "radius": {
+            "type": "number",
+            "description": "Radius of the circle"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the shape - Circle"
+          }
+        },
+        "required": ["radius"]
+      },
+      "Square": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Shape"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "sideLength": {
+                "type": "number",
+                "description": "Length of a side of the square"
+              }
+            },
+            "required": ["sideLength"]
+          }
+        ]
+      },
+      "Triangle": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Shape"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "equilateral": {
+                "type": "boolean",
+                "description": "Whether or not the triangle is equilateral"
+              },
+              "perimeter": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Equilateral"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Acute"
+                  }
+                ]
+              }
+            },
+            "required": ["equilateral", "perimeter"]
+          }
+        ]
+      }
+    }
+  }
+}

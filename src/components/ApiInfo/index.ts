@@ -1,1 +1,1 @@
-export { ApiInfo } from './ApiInfo';
+export { ApiInfo } from './ApiInfo.js';

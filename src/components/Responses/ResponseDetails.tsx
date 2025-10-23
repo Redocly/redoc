@@ -1,46 +1,52 @@
-import * as React from 'react';
+import { memo } from 'react';
 
-import { ResponseModel } from '../../services/models';
+import type { ReactElement } from 'react';
+import type { ResponseProps } from './types.js';
 
-import { UnderlinedHeader } from '../../common-elements';
-import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
-import { MediaTypesSwitch } from '../MediaTypeSwitch/MediaTypesSwitch';
-import { Schema } from '../Schema';
+import { ResponseHeaders } from './ResponseHeaders.js';
+import { StyledDescription } from './styled.js';
+import { BodyContent } from '../common/BodyContent/index.js';
+import { makeDeepLink } from '../../services/index.js';
 
-import { Extensions } from '../Fields/Extensions';
-import { Markdown } from '../Markdown/Markdown';
-import { ResponseHeaders } from './ResponseHeaders';
-import { ConstraintsView } from '../Fields/FieldConstraints';
+function ResponseDetailsComponent({
+  response,
+  operationId,
+  callbackId,
+  disableDeepLinks,
+}: ResponseProps): ReactElement | null {
+  const { description, headers, content, summary, code } = response;
 
-export class ResponseDetails extends React.PureComponent<{ response: ResponseModel }> {
-  render() {
-    const { description, extensions, headers, content } = this.props.response;
-    return (
-      <>
-        {description && <Markdown source={description} />}
-        <Extensions extensions={extensions} />
-        <ResponseHeaders headers={headers} />
-        <MediaTypesSwitch content={content} renderDropdown={this.renderDropdown}>
-          {({ schema }) => {
-            return (
-              <>
-                {schema?.type === 'object' && (
-                  <ConstraintsView constraints={schema?.constraints || []} />
-                )}
-                <Schema skipWriteOnly={true} key="schema" schema={schema} />
-              </>
-            );
-          }}
-        </MediaTypesSwitch>
-      </>
-    );
-  }
+  return (
+    <>
+      <StyledDescription className="redoc-markdown" source={summary} />
+      <StyledDescription className="redoc-markdown" source={description} />
+      <ResponseHeaders
+        headers={headers}
+        deepLink={
+          disableDeepLinks ? undefined : generateDeepLink(operationId, callbackId, code, 'headers')
+        }
+      />
+      <BodyContent
+        content={content}
+        skipWriteOnly={true}
+        deepLink={
+          disableDeepLinks ? undefined : generateDeepLink(operationId, callbackId, code, 'body')
+        }
+      />
+    </>
+  );
+}
 
-  private renderDropdown = props => {
-    return (
-      <UnderlinedHeader key="header">
-        Response Schema: <DropdownOrLabel {...props} />
-      </UnderlinedHeader>
-    );
-  };
+export const ResponseDetails = memo<ResponseProps>(ResponseDetailsComponent);
+
+function generateDeepLink(
+  operationId: string,
+  callbackId: string = '',
+  code: string,
+  place: string,
+): string {
+  const suffix = callbackId
+    ? `${callbackId}/response&c=${code}/${place}`
+    : `response&c=${code}/${place}`;
+  return makeDeepLink(operationId, suffix);
 }

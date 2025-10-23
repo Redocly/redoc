@@ -1,4 +1,6 @@
-import { objectHas, objectSet } from './object';
+/* tslint:disable:no-implicit-dependencies */
+
+import { objectHas, objectSet } from './object.js';
 
 function traverseComponent(root, fn) {
   if (!root) {
@@ -14,8 +16,8 @@ function traverseComponent(root, fn) {
   }
 }
 
-export function filterPropsDeep<T extends object>(component: T, paths: string[]): T {
-  traverseComponent(component, comp => {
+export function filterPropsDeep<T extends GenericObject>(component: T, paths: string[]): T {
+  traverseComponent(component, (comp) => {
     if (comp.props) {
       for (const path of paths) {
         if (objectHas(comp.props, path)) {

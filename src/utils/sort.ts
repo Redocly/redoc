@@ -11,7 +11,7 @@ export function alphabeticallyByProp<T>(property: string): (a: T, b: T) => numbe
     property = property.substr(1);
   }
 
-  return (a: T, b: T) => {
+  return function (a: T, b: T) {
     if (sortOrder == -1) {
       return b[property].localeCompare(a[property]);
     } else {

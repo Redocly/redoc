@@ -1,158 +1,97 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useAtom } from 'jotai';
 
-import { MenuStore } from '../../services/MenuStore';
-import { RedocNormalizedOptions, RedocRawOptions } from '../../services/RedocNormalizedOptions';
-import styled, { media } from '../../styled-components';
-import { IS_BROWSER } from '../../utils/index';
-import { OptionsContext } from '../OptionsProvider';
-import { AnimatedChevronButton } from './ChevronSvg';
+import type { PropsWithChildren, ReactElement } from 'react';
+import type { Options } from '../../services';
 
-let Stickyfill;
-if (IS_BROWSER) {
-  Stickyfill = require('stickyfill');
-}
+import { useMount, breakpoints } from '@redocly/theme/core/openapi';
 
-export interface StickySidebarProps {
+import { isSidebarOpenedAtom } from '../../jotai/app.js';
+import { SidebarActions } from './SidebarActions.js';
+import { styled } from '../../styled-components.js';
+import { FloatingButton } from './FloatingButton.js';
+import { useLocation } from '../../hooks/useLocation.js';
+
+interface StickySidebarProps {
   className?: string;
-  scrollYOffset?: RedocRawOptions['scrollYOffset']; // passed directly or via context
-  menu: MenuStore;
+  scrollYOffset: Options['scrollYOffset']; // passed directly or via context
+  collapsedSidebar: boolean;
 }
 
-export interface StickySidebarState {
-  offsetTop?: string;
-}
-
-const stickyfill = Stickyfill && Stickyfill();
-
-const StyledStickySidebar = styled.div<{ $open?: boolean }>`
-  width: ${props => props.theme.sidebar.width};
-  background-color: ${props => props.theme.sidebar.backgroundColor};
+const StyledStickySidebar = styled.div<{
+  open?: boolean;
+  collapsedSidebar?: boolean;
+  offsetTop: string;
+}>`
   overflow: hidden;
-  display: flex;
   flex-direction: column;
-
   backface-visibility: hidden;
-  /* contain: strict; TODO: breaks layout since Chrome 80*/
-
-  height: 100vh;
-  position: sticky;
-  position: -webkit-sticky;
+  height: ${({ offsetTop }) => `calc(100vh - ${offsetTop})`};
   top: 0;
-
-  ${media.lessThan('small')`
-    position: fixed;
-    z-index: 20;
-    width: 100%;
-    background: ${({ theme }) => theme.sidebar.backgroundColor};
-    display: ${props => (props.$open ? 'flex' : 'none')};
-  `};
-
-  @media print {
-    display: none;
-  }
-`;
-
-const FloatingButton = styled.div`
-  outline: none;
-  user-select: none;
-  background-color: ${({ theme }) => theme.fab.backgroundColor};
-  color: ${props => props.theme.colors.primary.main};
-  display: none;
-  cursor: pointer;
+  flex: 0 0 auto;
   position: fixed;
-  right: 20px;
-  z-index: 100;
-  border-radius: 50%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  ${media.lessThan('small')`
+  display: ${({ open }) => (open ? 'flex' : 'none')};
+  z-index: 2;
+  width: 100%;
+  background: var(--sidebar-bg-color);
+  border-right: 1px solid var(--sidebar-border-color);
+
+  @media screen and (min-width: ${breakpoints.small}) {
+    position: sticky;
+    z-index: auto;
+    width: ${({ collapsedSidebar }) => (collapsedSidebar ? 'var(--sidebar-width)' : 'auto')};
     display: flex;
-  `};
-
-  bottom: 44px;
-
-  width: 60px;
-  height: 60px;
-  padding: 0 20px;
-  svg {
-    color: ${({ theme }) => theme.fab.color};
   }
-
   @media print {
     display: none;
   }
 `;
 
-@observer
-export class StickyResponsiveSidebar extends React.Component<
-  React.PropsWithChildren<StickySidebarProps>,
-  StickySidebarState
-> {
-  static contextType = OptionsContext;
-  context!: React.ContextType<typeof OptionsContext>;
-  state: StickySidebarState = { offsetTop: '0px' };
+function StickyResponsiveSidebarComponent({
+  scrollYOffset,
+  className,
+  children,
+  collapsedSidebar,
+}: PropsWithChildren<StickySidebarProps>): ReactElement {
+  const [offsetTop, setOffsetTop] = useState<string>('0px');
+  const stickyElement = useRef<HTMLDivElement | null>(null);
+  const location = useLocation();
 
-  stickyElement: Element;
+  const [isSidebarOpened, setIsSidebarOpened] = useAtom(isSidebarOpenedAtom);
 
-  componentDidMount() {
-    if (stickyfill) {
-      stickyfill.add(this.stickyElement);
+  useEffect(() => {
+    if (location.hash) {
+      setIsSidebarOpened(false);
     }
+  }, [location.pathname, location.hash, setIsSidebarOpened]);
 
+  useMount(() => {
+    const top = scrollYOffset();
     // rerender when hydrating from SSR
     // see https://github.com/facebook/react/issues/8017#issuecomment-256351955
-    this.setState({
-      offsetTop: this.getScrollYOffset(this.context),
-    });
-  }
+    setOffsetTop(`${top}px`);
+  });
 
-  componentWillUnmount() {
-    if (stickyfill) {
-      stickyfill.remove(this.stickyElement);
-    }
-  }
-
-  getScrollYOffset(options: RedocNormalizedOptions) {
-    let top;
-    if (this.props.scrollYOffset !== undefined) {
-      top = RedocNormalizedOptions.normalizeScrollYOffset(this.props.scrollYOffset)();
-    } else {
-      top = options.scrollYOffset();
-    }
-    return top + 'px';
-  }
-
-  render() {
-    const open = this.props.menu.sideBarOpened;
-
-    const top = this.state.offsetTop;
-
-    return (
-      <>
-        <StyledStickySidebar
-          $open={open}
-          className={this.props.className}
-          style={{
-            top,
-            height: `calc(100vh - ${top})`,
-          }}
-          // tslint:disable-next-line
-          ref={el => {
-            this.stickyElement = el as any;
-          }}
-        >
-          {this.props.children}
-        </StyledStickySidebar>
-        {!this.context.hideFab && (
-          <FloatingButton onClick={this.toggleNavMenu}>
-            <AnimatedChevronButton open={open} />
-          </FloatingButton>
-        )}
-      </>
-    );
-  }
-
-  private toggleNavMenu = () => {
-    this.props.menu.toggleSidebar();
-  };
+  return (
+    <>
+      <StyledStickySidebar
+        open={Boolean(isSidebarOpened)}
+        className={className}
+        offsetTop={offsetTop}
+        style={{
+          top: offsetTop,
+        }}
+        ref={stickyElement}
+        collapsedSidebar={Boolean(collapsedSidebar)}
+      >
+        {collapsedSidebar || isSidebarOpened ? children : null}
+        <SidebarActions />
+      </StyledStickySidebar>
+      <FloatingButton />
+    </>
+  );
 }
+
+export const StickyResponsiveSidebar = memo<PropsWithChildren<StickySidebarProps>>(
+  StickyResponsiveSidebarComponent,
+);

@@ -1,0 +1,757 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadSpecification DownloadButton renders correctly with title 1`] = `
+.c5 {
+  height: 16px;
+  width: 16px;
+}
+
+.c5 path {
+  fill: currentColor;
+}
+
+.c4 {
+  width: auto;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  margin: var(--button-margin);
+  cursor: pointer;
+  text-wrap: var(--button-text-wrap);
+  color: var(--button-color);
+  background-color: var(--button-bg-color);
+  border: var(--button-border-width) var(--button-border-style) var(--button-border-color);
+  box-shadow: var(--button-box-shadow);
+  -webkit-backdrop-filter: var(--button-backdrop-filter,none);
+  backdrop-filter: var(--button-backdrop-filter,none);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  padding: var(--button-icon-padding);
+  border-radius: var(--button-border-radius);
+}
+
+.c4 svg {
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+}
+
+.c4:hover {
+  background-color: var(--button-bg-color-hover);
+  color: var(--button-color-hover);
+  border-color: var(--button-border-color-hover);
+}
+
+.c4:active,
+.c4.active {
+  background-color: var(--button-bg-color-active);
+  border-color: var(--button-border-color-active);
+  color: var(--button-color-active);
+}
+
+.c4:focus-visible {
+  outline: 1px solid var(--button-border-color-focused);
+}
+
+.c4.button-tone-danger {
+  color: var(--button-content-color-danger);
+  border-color: var(--button-border-color-danger);
+  background-color: var(--button-bg-color-danger);
+}
+
+.c4.button-tone-danger:hover {
+  color: var(--button-content-color-danger-hover);
+  border-color: var(--button-border-color-danger-hover);
+  background-color: var(--button-bg-color-danger-hover);
+}
+
+.c4.button-tone-danger:active {
+  color: var(--button-content-color-danger-pressed);
+  border-color: var(--button-border-color-danger-pressed);
+  background-color: var(--button-bg-color-danger-pressed);
+}
+
+.c4:disabled {
+  pointer-events: none;
+  background-color: var(--button-bg-color-disabled);
+  color: var(--button-content-color-disabled);
+  border-color: var(--button-border-color-disabled);
+  border-width: var(--button-border-width-disabled);
+}
+
+.c6 {
+  height: 16px;
+  width: 16px;
+}
+
+.c6 path {
+  fill: currentColor;
+}
+
+.c3 {
+  height: 16px;
+  width: 16px;
+}
+
+.c3 path {
+  fill: currentColor;
+}
+
+.c7 {
+  height: 16px;
+  width: 16px;
+}
+
+.c7 path {
+  fill: currentColor;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--border-color-secondary);
+  padding-bottom: var(--spacing-sm);
+}
+
+.c1:last-of-type {
+  padding-bottom: 0px;
+  border-bottom: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: calc(100% - 25px);
+  gap: var(--spacing-xs);
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c2 svg {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c2 a {
+  width: 100%;
+  color: var(--text-color-primary);
+  word-break: break-word;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c3"
+          data-component-name="icons/JsonIcon/JsonIcon"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.5 5.5V10.5H14.5L13.5 7.5V10.5H12.5V5.5H13.5L14.5 8.5V5.5H15.5Z"
+          />
+          <path
+            d="M10.6667 10.5H9.33325C9.11234 10.4997 8.90054 10.4119 8.74433 10.2557C8.58812 10.0995 8.50025 9.88766 8.5 9.66675V6.33325C8.50025 6.11234 8.58812 5.90054 8.74433 5.74433C8.90054 5.58812 9.11234 5.50025 9.33325 5.5H10.6667C10.8877 5.50025 11.0995 5.58812 11.2557 5.74433C11.4119 5.90054 11.4997 6.11234 11.5 6.33325V9.66675C11.4997 9.88766 11.4119 10.0995 11.2557 10.2557C11.0995 10.4119 10.8877 10.4997 10.6667 10.5ZM9.5 9.5H10.5V6.5H9.5V9.5Z"
+          />
+          <path
+            d="M6.66675 10.5H4.5V9.5H6.5V8.5H5.5C5.23486 8.49974 4.98066 8.39429 4.79319 8.20681C4.60571 8.01934 4.50026 7.76514 4.5 7.5V6.33325C4.50025 6.11234 4.58812 5.90054 4.74433 5.74433C4.90054 5.58812 5.11234 5.50025 5.33325 5.5H7.5V6.5H5.5V7.5H6.5C6.76514 7.50026 7.01934 7.60571 7.20681 7.79319C7.39429 7.98066 7.49974 8.23486 7.5 8.5V9.66675C7.49975 9.88766 7.41188 10.0995 7.25567 10.2557C7.09946 10.4119 6.88766 10.4997 6.66675 10.5Z"
+          />
+          <path
+            d="M2.66675 10.5H1.33325C1.11234 10.4997 0.900541 10.4119 0.744331 10.2557C0.588121 10.0995 0.500251 9.88766 0.5 9.66675V8.5H1.5V9.5H2.5V5.5H3.5V9.66675C3.49975 9.88766 3.41188 10.0995 3.25567 10.2557C3.09946 10.4119 2.88766 10.4997 2.66675 10.5Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.json"
+          rel="noreferrer"
+          target="_blank"
+        >
+          OpenAPI Description json format
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.json"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c6"
+          data-component-name="icons/DocumentIcon/DocumentIcon"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.85 4.65L9.35 1.15C9.25 1.05 9.15 1 9 1H4C3.45 1 3 1.45 3 2V14C3 14.55 3.45 15 4 15H12C12.55 15 13 14.55 13 14V5C13 4.85 12.95 4.75 12.85 4.65ZM9 2.2L11.8 5H9V2.2ZM12 14H4V2H8V5C8 5.55 8.45 6 9 6H12V14Z"
+          />
+          <path
+            d="M11 11H5V12H11V11Z"
+          />
+          <path
+            d="M11 8H5V9H11V8Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.yaml"
+          rel="noreferrer"
+          target="_blank"
+        >
+          OpenAPI Description yaml format
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.yaml"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c7"
+          data-component-name="icons/FileIcon/FileIcon"
+          fill="none"
+          viewBox="0 0 10 14"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.85 3.65006L6.35 0.150055C6.30601 0.101196 6.25192 0.0624773 6.19149 0.036578C6.13106 0.0106787 6.06572 -0.00178282 6 5.53814e-05H1C0.735023 0.000833625 0.481121 0.10644 0.293753 0.293808C0.106385 0.481176 0.000778244 0.735078 0 1.00006V13.0001C0.000778244 13.265 0.106385 13.5189 0.293753 13.7063C0.481121 13.8937 0.735023 13.9993 1 14.0001H9C9.26498 13.9993 9.51888 13.8937 9.70625 13.7063C9.89362 13.5189 9.99922 13.265 10 13.0001V4.00006C10.0018 3.93433 9.98938 3.869 9.96348 3.80857C9.93758 3.74813 9.89886 3.69405 9.85 3.65006ZM6 1.20006L8.8 4.00006H6V1.20006ZM9 13.0001H1V1.00006H5V4.00006C5.00078 4.26503 5.10638 4.51893 5.29375 4.7063C5.48112 4.89367 5.73502 4.99928 6 5.00006H9V13.0001Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.txt"
+          rel="noreferrer"
+          target="_blank"
+        >
+          OpenAPI Description text format
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.txt"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DownloadSpecification DownloadButton renders correctly without title 1`] = `
+.c5 {
+  height: 16px;
+  width: 16px;
+}
+
+.c5 path {
+  fill: currentColor;
+}
+
+.c4 {
+  width: auto;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  margin: var(--button-margin);
+  cursor: pointer;
+  text-wrap: var(--button-text-wrap);
+  color: var(--button-color);
+  background-color: var(--button-bg-color);
+  border: var(--button-border-width) var(--button-border-style) var(--button-border-color);
+  box-shadow: var(--button-box-shadow);
+  -webkit-backdrop-filter: var(--button-backdrop-filter,none);
+  backdrop-filter: var(--button-backdrop-filter,none);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  padding: var(--button-icon-padding);
+  border-radius: var(--button-border-radius);
+}
+
+.c4 svg {
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+}
+
+.c4:hover {
+  background-color: var(--button-bg-color-hover);
+  color: var(--button-color-hover);
+  border-color: var(--button-border-color-hover);
+}
+
+.c4:active,
+.c4.active {
+  background-color: var(--button-bg-color-active);
+  border-color: var(--button-border-color-active);
+  color: var(--button-color-active);
+}
+
+.c4:focus-visible {
+  outline: 1px solid var(--button-border-color-focused);
+}
+
+.c4.button-tone-danger {
+  color: var(--button-content-color-danger);
+  border-color: var(--button-border-color-danger);
+  background-color: var(--button-bg-color-danger);
+}
+
+.c4.button-tone-danger:hover {
+  color: var(--button-content-color-danger-hover);
+  border-color: var(--button-border-color-danger-hover);
+  background-color: var(--button-bg-color-danger-hover);
+}
+
+.c4.button-tone-danger:active {
+  color: var(--button-content-color-danger-pressed);
+  border-color: var(--button-border-color-danger-pressed);
+  background-color: var(--button-bg-color-danger-pressed);
+}
+
+.c4:disabled {
+  pointer-events: none;
+  background-color: var(--button-bg-color-disabled);
+  color: var(--button-content-color-disabled);
+  border-color: var(--button-border-color-disabled);
+  border-width: var(--button-border-width-disabled);
+}
+
+.c6 {
+  height: 16px;
+  width: 16px;
+}
+
+.c6 path {
+  fill: currentColor;
+}
+
+.c3 {
+  height: 16px;
+  width: 16px;
+}
+
+.c3 path {
+  fill: currentColor;
+}
+
+.c7 {
+  height: 16px;
+  width: 16px;
+}
+
+.c7 path {
+  fill: currentColor;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--border-color-secondary);
+  padding-bottom: var(--spacing-sm);
+}
+
+.c1:last-of-type {
+  padding-bottom: 0px;
+  border-bottom: none;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: calc(100% - 25px);
+  gap: var(--spacing-xs);
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c2 svg {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c2 a {
+  width: 100%;
+  color: var(--text-color-primary);
+  word-break: break-word;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c3"
+          data-component-name="icons/JsonIcon/JsonIcon"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.5 5.5V10.5H14.5L13.5 7.5V10.5H12.5V5.5H13.5L14.5 8.5V5.5H15.5Z"
+          />
+          <path
+            d="M10.6667 10.5H9.33325C9.11234 10.4997 8.90054 10.4119 8.74433 10.2557C8.58812 10.0995 8.50025 9.88766 8.5 9.66675V6.33325C8.50025 6.11234 8.58812 5.90054 8.74433 5.74433C8.90054 5.58812 9.11234 5.50025 9.33325 5.5H10.6667C10.8877 5.50025 11.0995 5.58812 11.2557 5.74433C11.4119 5.90054 11.4997 6.11234 11.5 6.33325V9.66675C11.4997 9.88766 11.4119 10.0995 11.2557 10.2557C11.0995 10.4119 10.8877 10.4997 10.6667 10.5ZM9.5 9.5H10.5V6.5H9.5V9.5Z"
+          />
+          <path
+            d="M6.66675 10.5H4.5V9.5H6.5V8.5H5.5C5.23486 8.49974 4.98066 8.39429 4.79319 8.20681C4.60571 8.01934 4.50026 7.76514 4.5 7.5V6.33325C4.50025 6.11234 4.58812 5.90054 4.74433 5.74433C4.90054 5.58812 5.11234 5.50025 5.33325 5.5H7.5V6.5H5.5V7.5H6.5C6.76514 7.50026 7.01934 7.60571 7.20681 7.79319C7.39429 7.98066 7.49974 8.23486 7.5 8.5V9.66675C7.49975 9.88766 7.41188 10.0995 7.25567 10.2557C7.09946 10.4119 6.88766 10.4997 6.66675 10.5Z"
+          />
+          <path
+            d="M2.66675 10.5H1.33325C1.11234 10.4997 0.900541 10.4119 0.744331 10.2557C0.588121 10.0995 0.500251 9.88766 0.5 9.66675V8.5H1.5V9.5H2.5V5.5H3.5V9.66675C3.49975 9.88766 3.41188 10.0995 3.25567 10.2557C3.09946 10.4119 2.88766 10.4997 2.66675 10.5Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.json"
+          rel="noreferrer"
+          target="_blank"
+        >
+          downloadDefinitionUrlValue.json
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.json"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c6"
+          data-component-name="icons/DocumentIcon/DocumentIcon"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.85 4.65L9.35 1.15C9.25 1.05 9.15 1 9 1H4C3.45 1 3 1.45 3 2V14C3 14.55 3.45 15 4 15H12C12.55 15 13 14.55 13 14V5C13 4.85 12.95 4.75 12.85 4.65ZM9 2.2L11.8 5H9V2.2ZM12 14H4V2H8V5C8 5.55 8.45 6 9 6H12V14Z"
+          />
+          <path
+            d="M11 11H5V12H11V11Z"
+          />
+          <path
+            d="M11 8H5V9H11V8Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.yaml"
+          rel="noreferrer"
+          target="_blank"
+        >
+          downloadDefinitionUrlValue.yaml
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.yaml"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+    <div
+      class="c1"
+    >
+      <span
+        class="c2"
+      >
+        <svg
+          class="c7"
+          data-component-name="icons/FileIcon/FileIcon"
+          fill="none"
+          viewBox="0 0 10 14"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.85 3.65006L6.35 0.150055C6.30601 0.101196 6.25192 0.0624773 6.19149 0.036578C6.13106 0.0106787 6.06572 -0.00178282 6 5.53814e-05H1C0.735023 0.000833625 0.481121 0.10644 0.293753 0.293808C0.106385 0.481176 0.000778244 0.735078 0 1.00006V13.0001C0.000778244 13.265 0.106385 13.5189 0.293753 13.7063C0.481121 13.8937 0.735023 13.9993 1 14.0001H9C9.26498 13.9993 9.51888 13.8937 9.70625 13.7063C9.89362 13.5189 9.99922 13.265 10 13.0001V4.00006C10.0018 3.93433 9.98938 3.869 9.96348 3.80857C9.93758 3.74813 9.89886 3.69405 9.85 3.65006ZM6 1.20006L8.8 4.00006H6V1.20006ZM9 13.0001H1V1.00006H5V4.00006C5.00078 4.26503 5.10638 4.51893 5.29375 4.7063C5.48112 4.89367 5.73502 4.99928 6 5.00006H9V13.0001Z"
+          />
+        </svg>
+        <a
+          download=""
+          href="downloadDefinitionUrlValue.txt"
+          rel="noreferrer"
+          target="_blank"
+        >
+          openapi.yaml
+        </a>
+      </span>
+      <a
+        download=""
+        href="downloadDefinitionUrlValue.txt"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <button
+          class="c4 button button-tone-default button-variant-text button-size-small"
+          data-component-name="Button/Button"
+        >
+          <svg
+            class="c5"
+            data-component-name="icons/DownloadIcon/DownloadIcon"
+            fill="none"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 12V14H3V12H2V14C2 14.2652 2.10536 14.5196 2.29289 14.7071C2.48043 14.8946 2.73478 15 3 15H13C13.2652 15 13.5196 14.8946 13.7071 14.7071C13.8946 14.5196 14 14.2652 14 14V12H13Z"
+            />
+            <path
+              d="M13 7L12.295 6.295L8.5 10.085V1H7.5V10.085L3.705 6.295L3 7L8 12L13 7Z"
+            />
+          </svg>
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+`;

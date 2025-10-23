@@ -1,0 +1,38 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "//petstore.swagger.io/v2",
+      "description": "Default server"
+    }
+  ],
+  "externalDocs": {
+    "description": "Find out how to create Github repo for your OpenAPI spec.",
+    "url": "https://github.com/Rebilly/generator-openapi-repo"
+  },
+  "paths": {
+    "/pet": {
+      "post": {
+        "tags": ["pet"],
+        "summary": "Add a new pet to the store",
+        "description": "Add new pet to the store inventory.",
+        "operationId": "addPet",
+        "x-badges": [
+          {
+            "name": "Beta",
+            "position": "after",
+            "color": "#cccccc"
+          },
+          {
+            "name": "Alpha",
+            "position": "before",
+            "color": "black"
+          },
+          {
+            "name": "Gamma"
+          }
+        ]
+      }
+    }
+  }
+}

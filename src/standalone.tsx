@@ -1,21 +1,19 @@
-import * as React from 'react';
+import { createElement } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import { configure } from 'mobx';
 
-import { Redoc, RedocStandalone } from './components/';
-import { AppStore } from './services/AppStore';
-import { debugTime, debugTimeEnd } from './utils/debug';
-import { querySelector } from './utils/dom';
-import type { StoreState } from './services';
+import type { ErrorInfo } from 'react';
+import type { RedocConfig } from '@redocly/config';
+import type { OpenAPIDefinition } from './types/open-api.js';
+import type { StoreProviderProps } from './components/RedoclyOpenAPIDocs/types.js';
 
-configure({
-  useProxies: 'ifavailable',
-});
+type GenericObject = Record<string, any>;
 
-export { Redoc, AppStore } from '.';
+import { querySelector } from './utils/dom.js';
+import { RedoclyOpenAPIDocs } from './components/RedoclyOpenAPIDocs/RedoclyOpenAPIDocs.js';
+import { RedoclyOpenAPIDocsStandalone } from './components/RedoclyOpenAPIDocs/RedoclyOpenAPIDocsStandalone.js';
 
-export const version = __REDOC_VERSION__;
-export const revision = __REDOC_REVISION__;
+export { setSecurityDetails, setSecurityDetailsVariants } from './utils/security-details.js';
+export { setParameterValue } from './utils/parameters.js';
 
 function attributesMap(element: Element) {
   const res = {};
@@ -33,67 +31,70 @@ function parseOptionsFromElement(element: Element) {
   const res = {};
   for (const attrName in attrMap) {
     const optionName = attrName.replace(/-(.)/g, (_, $1) => $1.toUpperCase());
-    const optionValue = attrMap[attrName];
-    res[optionName] = attrName === 'theme' ? JSON.parse(optionValue) : optionValue;
+    res[optionName] = attrMap[attrName];
     // TODO: normalize options
   }
   return res;
 }
 
+export function hydrate(
+  store: StoreProviderProps,
+  element: Element | null = document.querySelector('redoc'),
+): void {
+  hydrateRoot(element as Element, <RedoclyOpenAPIDocs store={store} typeOfUsage="cli" />, {
+    onRecoverableError: (error: Error, errorInfo: ErrorInfo) => {
+      if (error.message.includes('Minified React error #418')) {
+        // we use memory router for ssr and hash router for client
+        return;
+      }
+      console.error(error.message, errorInfo);
+    },
+  });
+}
+
 export function init(
-  specOrSpecUrl: string | any,
-  options: any = {},
+  definitionOrDefinitionUrl: string | OpenAPIDefinition,
+  options: RedocConfig & { router?: 'hash' | 'history'; disableTelemetry?: boolean } = {},
   element: Element | null = querySelector('redoc'),
-  callback?: (e?: Error) => void,
-) {
+): void {
   if (element === null) {
     throw new Error('"element" argument is not provided and <redoc> tag is not found on the page');
   }
+  const {
+    router,
+    disableTelemetry = false,
+    typeOfUsage = 'html',
+    ...restOptions
+  } = {
+    ...options,
+    ...parseOptionsFromElement(element),
+  };
 
-  let specUrl: string | undefined;
-  let spec: object | undefined;
+  let definitionUrl: string | undefined;
+  let definition: GenericObject | undefined;
 
-  if (typeof specOrSpecUrl === 'string') {
-    specUrl = specOrSpecUrl;
-  } else if (typeof specOrSpecUrl === 'object') {
-    spec = specOrSpecUrl;
+  if (typeof definitionOrDefinitionUrl === 'string') {
+    definitionUrl = definitionOrDefinitionUrl;
+  } else if (typeof definitionOrDefinitionUrl === 'object') {
+    definition = definitionOrDefinitionUrl;
   }
 
-  const root = createRoot(element!);
+  const root = createRoot(element);
+
   root.render(
-    React.createElement(
-      RedocStandalone,
+    createElement(
+      RedoclyOpenAPIDocsStandalone,
       {
-        spec,
-        onLoaded: callback,
-        specUrl,
-        options: { ...options, ...parseOptionsFromElement(element) },
+        definition,
+        definitionUrl,
+        disableTelemetry,
+        options: restOptions,
+        router: router ?? 'hash',
+        typeOfUsage: typeOfUsage ?? 'html',
       },
       ['Loading...'],
     ),
   );
-}
-
-export function destroy(element: Element | null = querySelector('redoc')): void {
-  if (element) {
-    createRoot(element).unmount();
-  }
-}
-
-export function hydrate(
-  state: StoreState,
-  element: Element | null = querySelector('redoc'),
-  callback?: () => void,
-) {
-  debugTime('Redoc create store');
-  const store = AppStore.fromJS(state);
-  debugTimeEnd('Redoc create store');
-
-  setTimeout(() => {
-    debugTime('Redoc hydrate');
-    hydrateRoot(element!, <Redoc store={store} />, { onRecoverableError: callback });
-    debugTimeEnd('Redoc hydrate');
-  }, 0);
 }
 
 /**

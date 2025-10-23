@@ -1,0 +1,36 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "test",
+        "responses": {
+          "200": {}
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Updated name of the pet",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "Updated status of the pet",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

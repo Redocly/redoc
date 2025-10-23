@@ -1,28 +1,43 @@
 import { dirname } from 'path';
-import * as URLtemplate from 'url-template';
+import UrlTemplate from 'url-template';
 
-import { ExtendedOpenAPIOperation } from '../services';
-import { FieldModel } from '../services/models';
-import { OpenAPIParser } from '../services/OpenAPIParser';
-import {
+import type {
   OpenAPIEncoding,
   OpenAPIMediaType,
-  OpenAPIParameter,
   OpenAPIParameterStyle,
   OpenAPIRequestBody,
   OpenAPIResponse,
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
-} from '../types';
-import { IS_BROWSER } from './dom';
-import { isNumeric, removeQueryStringAndHash, resolveUrl, isArray, isBoolean } from './helpers';
+} from '../types/index.js';
+import type { ExtendedOpenAPIOperation, OpenAPIParser } from '../services/index.js';
+import type { FieldModel, GroupModel } from '../models/index.js';
+
+import { OpenAPIParameter } from '../types/index.js';
+import {
+  deleteEmptyArrayItem,
+  isArrayOfObjects,
+  isNumeric,
+  removeQueryStringAndHash,
+  resolveUrl,
+  sanitizeItemId,
+  normalizeText,
+  getValueFromMdParsedExtension,
+  isAbsoluteUrl,
+} from './helpers.js';
+import { DEFAULT_TAG_SLUG, MediaTypes } from '../constants.js';
+import { JsonPointer } from './JsonPointer.js';
+import { joinWithSeparator } from '../services/index.js';
+import { tryDecodeURIComponent } from './string.js';
+import { getUrlDirname } from './url.js';
+import { IS_BROWSER } from './dom.js';
 
 function isWildcardStatusCode(statusCode: string | number): statusCode is string {
   return typeof statusCode === 'string' && /\dxx/i.test(statusCode);
 }
 
-export function isStatusCode(statusCode: string) {
+export function isStatusCode(statusCode: string): boolean {
   return statusCode === 'default' || isNumeric(statusCode) || isWildcardStatusCode(statusCode);
 }
 
@@ -65,14 +80,41 @@ export function isOperationName(key: string): boolean {
   return key in operationNames;
 }
 
-export function getOperationSummary(operation: ExtendedOpenAPIOperation): string {
+export function getOperationName(operation: ExtendedOpenAPIOperation): string {
+  const { operationId, pathName } = operation;
+  const _description = normalizeText(getValueFromMdParsedExtension(operation, 'description'));
   return (
-    operation.summary ||
-    operation.operationId ||
-    (operation.description && operation.description.substring(0, 50)) ||
-    operation.pathName ||
+    normalizeText(getValueFromMdParsedExtension(operation, 'summary')) ||
+    operationId ||
+    (_description && _description.substring(0, 50)) ||
+    pathName ||
     '<no summary>'
   );
+}
+
+export function getOperationId(operation: ExtendedOpenAPIOperation, parent?: GroupModel): string {
+  if (parent?.id) {
+    return joinWithSeparator(
+      parent.id,
+      sanitizeItemId(
+        operation.operationId ? operation.operationId : pointerToId(operation.pointer),
+      ),
+    ).toLowerCase();
+  }
+  if (!operation.tags?.length) {
+    return sanitizeItemId(
+      operation.operationId
+        ? joinWithSeparator(DEFAULT_TAG_SLUG, operation.operationId)
+        : pointerToId(operation.pointer),
+    );
+  }
+  return sanitizeItemId(
+    operation.operationId ? operation.operationId : pointerToId(operation.pointer),
+  );
+}
+
+function pointerToId(pointer: string): string {
+  return pointer?.startsWith('/') ? pointer.slice(1, pointer.length) : pointer;
 }
 
 const schemaKeywordTypes = {
@@ -98,12 +140,12 @@ const schemaKeywordTypes = {
   required: 'object',
   additionalProperties: 'object',
   unevaluatedProperties: 'object',
-  properties: 'object',
   patternProperties: 'object',
+  properties: 'object',
 };
 
 export function detectType(schema: OpenAPISchema): string {
-  if (schema.type !== undefined && !isArray(schema.type)) {
+  if (schema.type !== undefined && !Array.isArray(schema.type)) {
     return schema.type;
   }
   const keywords = Object.keys(schemaKeywordTypes);
@@ -120,11 +162,13 @@ export function detectType(schema: OpenAPISchema): string {
 export function isPrimitiveType(
   schema: OpenAPISchema,
   type: string | string[] | undefined = schema.type,
-) {
+): boolean {
   if (schema['x-circular-ref']) {
     return true;
   }
-
+  if (schema['x-complex']) {
+    return true;
+  }
   if (schema.oneOf !== undefined || schema.anyOf !== undefined) {
     return false;
   }
@@ -134,9 +178,9 @@ export function isPrimitiveType(
   }
 
   let isPrimitive = true;
-  const isArrayType = isArray(type);
+  const isArray = Array.isArray(type);
 
-  if (type === 'object' || (isArrayType && type?.includes('object'))) {
+  if (type === 'object' || (isArray && type?.includes('object'))) {
     isPrimitive =
       schema.properties !== undefined
         ? Object.keys(schema.properties).length === 0
@@ -145,14 +189,14 @@ export function isPrimitiveType(
           schema.patternProperties === undefined;
   }
 
-  if (isArray(schema.items) || isArray(schema.prefixItems)) {
+  if (Array.isArray(schema.items) || Array.isArray(schema.prefixItems)) {
     return false;
   }
 
   if (
     schema.items !== undefined &&
-    !isBoolean(schema.items) &&
-    (type === 'array' || (isArrayType && type?.includes('array')))
+    typeof schema.items !== 'boolean' &&
+    (type === 'array' || (isArray && type?.includes('array')))
   ) {
     isPrimitive = isPrimitiveType(schema.items, schema.items.type);
   }
@@ -164,16 +208,24 @@ export function isJsonLike(contentType: string): boolean {
   return contentType.search(/json/i) !== -1;
 }
 
+export function isXmlLike(contentType: string): boolean {
+  return contentType?.search(/xml/i) !== -1;
+}
+
 export function isFormUrlEncoded(contentType: string): boolean {
-  return contentType === 'application/x-www-form-urlencoded';
+  return contentType === MediaTypes.URL_ENCODED;
+}
+
+export function isMultipartFormData(contentType: string): boolean {
+  return contentType === MediaTypes.MULTIPART;
 }
 
 function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: string): string {
-  if (isArray(fieldVal)) {
-    return fieldVal.map(v => v.toString()).join(delimiter);
+  if (Array.isArray(fieldVal)) {
+    return fieldVal.map((v) => v.toString()).join(delimiter);
   } else if (typeof fieldVal === 'object') {
     return Object.keys(fieldVal)
-      .map(k => `${k}${delimiter}${fieldVal[k]}`)
+      .map((k) => `${k}${delimiter}${fieldVal[k]}`)
       .join(delimiter);
   } else {
     return fieldName + '=' + fieldVal.toString();
@@ -181,12 +233,13 @@ function delimitedEncodeField(fieldVal: any, fieldName: string, delimiter: strin
 }
 
 function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
-  if (isArray(fieldVal)) {
+  if (Array.isArray(fieldVal)) {
     console.warn('deepObject style cannot be used with array value:' + fieldVal.toString());
     return '';
   } else if (typeof fieldVal === 'object') {
     return Object.keys(fieldVal)
-      .map(k => `${fieldName}[${k}]=${fieldVal[k]}`)
+      .map((k) => (fieldVal[k] ? `${fieldName}[${k}]=${fieldVal[k]}` : undefined))
+      .filter(Boolean)
       .join('&');
   } else {
     console.warn('deepObject style cannot be used with non-object value:' + fieldVal.toString());
@@ -194,16 +247,25 @@ function deepObjectEncodeField(fieldVal: any, fieldName: string): string {
   }
 }
 
-function serializeFormValue(name: string, explode: boolean, value: any) {
+function serializeFormValue(name: string, explode: boolean, value: unknown) {
   // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
   // e.g. URI.template doesn't parse names with hyphen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
   const suffix = explode ? '*' : '';
-  const template = URLtemplate.parse(`{?${safeName}${suffix}}`);
+  const template = UrlTemplate.parse(`{?${safeName}${suffix}}`);
   return template
     .expand({ [safeName]: value })
     .substring(1)
     .replace(/__redoc_param_name__/g, name);
+}
+
+function serializeSimpleValue(explode: boolean, value: unknown) {
+  const suffix = explode ? '*' : '';
+
+  // name is not important here, so use RFC6570 safe name ([a-zA-Z0-9_])
+  const name = '__redoc_param_name__';
+  const template = UrlTemplate.parse(`{${name}${suffix}}`);
+  return tryDecodeURIComponent(template.expand({ [name]: value }));
 }
 
 /*
@@ -211,14 +273,14 @@ function serializeFormValue(name: string, explode: boolean, value: any) {
  * To be used for parameters should be extended with other style values
  */
 export function urlFormEncodePayload(
-  payload: object,
+  payload: GenericObject,
   encoding: { [field: string]: OpenAPIEncoding } = {},
-) {
-  if (isArray(payload)) {
+): string {
+  if (Array.isArray(payload)) {
     throw new Error('Payload must have fields: ' + payload.toString());
   } else {
     return Object.keys(payload)
-      .map(fieldName => {
+      .map((fieldName) => {
         const fieldVal = payload[fieldName];
         const { style = 'form', explode = true } = encoding[fieldName] || {};
         switch (style) {
@@ -244,7 +306,7 @@ function serializePathParameter(
   name: string,
   style: OpenAPIParameterStyle,
   explode: boolean,
-  value: any,
+  value: unknown,
 ): string {
   const suffix = explode ? '*' : '';
   let prefix = '';
@@ -258,66 +320,76 @@ function serializePathParameter(
   // Use RFC6570 safe name ([a-zA-Z0-9_]) and replace with our name later
   // e.g. URI.template doesn't parse names with hyphen (-) which are valid query param names
   const safeName = '__redoc_param_name__';
-  const template = URLtemplate.parse(`{${prefix}${safeName}${suffix}}`);
+  const template = UrlTemplate.parse(`{${prefix}${safeName}${suffix}}`);
 
   return template.expand({ [safeName]: value }).replace(/__redoc_param_name__/g, name);
 }
 
-function serializeQueryParameter(
+export function serializeQueryParameter(
   name: string,
-  style: OpenAPIParameterStyle,
+  style: OpenAPIParameterStyle | undefined,
   explode: boolean,
-  value: any,
+  value: unknown,
 ): string {
-  switch (style) {
-    case 'form':
-      return serializeFormValue(name, explode, value);
-    case 'spaceDelimited':
-      if (!isArray(value)) {
-        console.warn('The style spaceDelimited is only applicable to arrays');
-        return '';
-      }
-      if (explode) {
-        return serializeFormValue(name, explode, value);
+  const serializationByStyle = (val) => {
+    switch (style) {
+      case 'form':
+        return serializeFormValue(name, explode, val);
+      case 'spaceDelimited':
+        if (!Array.isArray(val) && typeof val !== 'object') {
+          console.warn('The style spaceDelimited is applicable to arrays or objects');
+          return '';
+        }
+        if (explode) {
+          return serializeFormValue(name, explode, val);
+        }
+
+        return delimitedEncodeField(value, name, '%20');
+
+      case 'pipeDelimited':
+        if (!Array.isArray(val) && typeof val !== 'object') {
+          console.warn('The style pipeDelimited is applicable to arrays or objects');
+          return '';
+        }
+
+        if (explode) {
+          return serializeFormValue(name, explode, val);
+        }
+
+        return delimitedEncodeField(value, name, '|');
+
+      case 'deepObject':
+        if (!explode || Array.isArray(val) || typeof val !== 'object') {
+          console.warn('The style deepObject is only applicable for objects with explode=true');
+          return '';
+        }
+
+        return deepObjectEncodeField(val, name);
+      case 'simple': {
+        return serializeSimpleValue(explode, value);
       }
 
-      return `${name}=${value.join('%20')}`;
-    case 'pipeDelimited':
-      if (!isArray(value)) {
-        console.warn('The style pipeDelimited is only applicable to arrays');
+      default:
+        console.warn('Unexpected style for query: ' + style);
         return '';
-      }
-      if (explode) {
-        return serializeFormValue(name, explode, value);
-      }
+    }
+  };
 
-      return `${name}=${value.join('|')}`;
-    case 'deepObject':
-      if (!explode || isArray(value) || typeof value !== 'object') {
-        console.warn('The style deepObject is only applicable for objects with explode=true');
-        return '';
-      }
-
-      return deepObjectEncodeField(value, name);
-    default:
-      console.warn('Unexpected style for query: ' + style);
-      return '';
+  if (isArrayOfObjects(value)) {
+    value = deleteEmptyArrayItem(value).map((value) => serializationByStyle(value));
   }
+  return serializationByStyle(value);
 }
 
 function serializeHeaderParameter(
   style: OpenAPIParameterStyle,
   explode: boolean,
-  value: any,
+  value: unknown,
 ): string {
   switch (style) {
-    case 'simple':
-      const suffix = explode ? '*' : '';
-
-      // name is not important here, so use RFC6570 safe name ([a-zA-Z0-9_])
-      const name = '__redoc_param_name__';
-      const template = URLtemplate.parse(`{${name}${suffix}}`);
-      return decodeURIComponent(template.expand({ [name]: value }));
+    case 'simple': {
+      return serializeSimpleValue(explode, value);
+    }
     default:
       console.warn('Unexpected style for header: ' + style);
       return '';
@@ -328,7 +400,7 @@ function serializeCookieParameter(
   name: string,
   style: OpenAPIParameterStyle,
   explode: boolean,
-  value: any,
+  value: unknown,
 ): string {
   switch (style) {
     case 'form':
@@ -339,7 +411,7 @@ function serializeCookieParameter(
   }
 }
 
-export function serializeParameterValueWithMime(value: any, mime: string): string {
+export function serializeParameterValueWithMime(value: unknown, mime: string): string {
   if (isJsonLike(mime)) {
     return JSON.stringify(value);
   } else {
@@ -348,10 +420,7 @@ export function serializeParameterValueWithMime(value: any, mime: string): strin
   }
 }
 
-export function serializeParameterValue(
-  parameter: (OpenAPIParameter & { serializationMime?: string }) | FieldModel,
-  value: any,
-): string {
+export function serializeParameterValue(parameter: FieldModel, value: unknown): string {
   const { name, style, explode = false, serializationMime } = parameter;
 
   if (serializationMime) {
@@ -388,28 +457,10 @@ export function serializeParameterValue(
   }
 }
 
-export function getSerializedValue(field: FieldModel, example: any) {
-  if (field.in) {
-    // decode for better readability in examples: see https://github.com/Redocly/redoc/issues/1138
-    return decodeURIComponent(serializeParameterValue(field, example));
-  } else {
-    return typeof example === 'object' ? example : String(example);
-  }
-}
-
 export function langFromMime(contentType: string): string {
   if (contentType.search(/xml/i) !== -1) {
     return 'xml';
   }
-
-  if (contentType.search(/csv/i) !== -1) {
-    return 'csv';
-  }
-
-  if (contentType.search(/plain/i) !== -1) {
-    return 'tex';
-  }
-
   return 'clike';
 }
 
@@ -420,8 +471,7 @@ export function isNamedDefinition(pointer?: string): boolean {
 }
 
 export function getDefinitionName(pointer?: string): string | undefined {
-  const [name] = pointer?.match(DEFINITION_NAME_REGEX)?.reverse() || [];
-  return name;
+  return pointer?.match(DEFINITION_NAME_REGEX)?.pop();
 }
 
 function humanizeMultipleOfConstraint(multipleOf: number | undefined): string | undefined {
@@ -497,7 +547,7 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   }
 
   const propertiesRange = humanizeRangeConstraint(
-    'properties',
+    schema.minProperties === 1 && schema.maxProperties === 1 ? 'property' : 'properties',
     schema.minProperties,
     schema.maxProperties,
   );
@@ -522,14 +572,18 @@ export function humanizeConstraints(schema: OpenAPISchema): string[] {
   return res;
 }
 
-export function sortByRequired(fields: FieldModel[], order: string[] = []) {
+export function sortByRequired(fields: FieldModel[], order: string[] = []): Array<FieldModel> {
   const unrequiredFields: FieldModel[] = [];
   const orderedFields: FieldModel[] = [];
   const unorderedFields: FieldModel[] = [];
 
-  fields.forEach(field => {
+  fields.forEach((field) => {
     if (field.required) {
-      order.includes(field.name) ? orderedFields.push(field) : unorderedFields.push(field);
+      if (order.includes(field.name)) {
+        orderedFields.push(field);
+      } else {
+        unorderedFields.push(field);
+      }
     } else {
       unrequiredFields.push(field);
     }
@@ -540,58 +594,39 @@ export function sortByRequired(fields: FieldModel[], order: string[] = []) {
   return [...orderedFields, ...unorderedFields, ...unrequiredFields];
 }
 
-export function sortByField(
-  fields: FieldModel[],
-  param: keyof Pick<FieldModel, 'name' | 'description' | 'kind'>,
-) {
-  return [...fields].sort((a, b) => {
-    return a[param].localeCompare(b[param]);
-  });
+export function sortByDeprecated(fields: FieldModel[]): Array<FieldModel> {
+  return fields.sort((a, b) => Number(a.deprecated) - Number(b.deprecated));
 }
 
 export function mergeParams(
   parser: OpenAPIParser,
   pathParams: Array<Referenced<OpenAPIParameter>> = [],
   operationParams: Array<Referenced<OpenAPIParameter>> = [],
-): Array<Referenced<OpenAPIParameter>> {
+  { pathPointer, operationPointer },
+): Array<{ paramOrRef: Referenced<OpenAPIParameter>; pointer: string }> {
   const operationParamNames = {};
-  operationParams.forEach(param => {
-    ({ resolved: param } = parser.deref(param));
+  operationParams.forEach((param: OpenAPIParameter) => {
+    ({ resolved: param as OpenAPIParameter } = parser.deref(param));
     operationParamNames[param.name + '_' + param.in] = true;
   });
 
-  // filter out path params overridden by operation ones with the same name
-  pathParams = pathParams.filter(param => {
-    ({ resolved: param } = parser.deref(param));
-    return !operationParamNames[param.name + '_' + param.in];
-  });
+  const pathParamsPointer = pathParams
+    .map((paramOrRef, index) => ({
+      paramOrRef,
+      pointer: JsonPointer.join(pathPointer, ['parameters', String(index)]),
+    }))
+    // filter out path params overridden by operation ones with the same name
+    .filter(({ paramOrRef }: { paramOrRef: OpenAPIParameter; pointer: string }) => {
+      ({ resolved: paramOrRef as OpenAPIParameter } = parser.deref(paramOrRef));
+      return !operationParamNames[paramOrRef.name + '_' + paramOrRef.in];
+    });
 
-  return pathParams.concat(operationParams);
-}
+  const operationParamsPointer = operationParams.map((paramOrRef, index) => ({
+    paramOrRef,
+    pointer: JsonPointer.join(operationPointer, ['parameters', String(index)]),
+  }));
 
-export function mergeSimilarMediaTypes(
-  types: Record<string, OpenAPIMediaType>,
-): Record<string, OpenAPIMediaType> {
-  const mergedTypes = {};
-  Object.keys(types).forEach(name => {
-    const mime = types[name];
-    // ignore content type parameters (e.g. charset) and merge
-    const normalizedMimeName = name.split(';')[0].trim();
-    if (!mergedTypes[normalizedMimeName]) {
-      mergedTypes[normalizedMimeName] = mime;
-      return;
-    }
-    mergedTypes[normalizedMimeName] = { ...mergedTypes[normalizedMimeName], ...mime };
-  });
-
-  return mergedTypes;
-}
-
-export function expandDefaultServerVariables(url: string, variables: object = {}) {
-  return url.replace(
-    /(?:{)([\w-.]+)(?:})/g,
-    (match, name) => (variables[name] && variables[name].default) || match,
-  );
+  return [...pathParamsPointer, ...operationParamsPointer];
 }
 
 export function normalizeServers(
@@ -600,13 +635,18 @@ export function normalizeServers(
 ): OpenAPIServer[] {
   const getHref = () => {
     if (!IS_BROWSER) {
-      return '';
+      return (globalThis as any).SSR_HOSTNAME || '';
     }
     const href = window.location.href;
     return href.endsWith('.html') ? dirname(href) : href;
   };
 
-  const baseUrl = specUrl === undefined ? removeQueryStringAndHash(getHref()) : dirname(specUrl);
+  const baseUrl =
+    specUrl === undefined
+      ? removeQueryStringAndHash(getHref())
+      : isAbsoluteUrl(specUrl)
+        ? getUrlDirname(specUrl)
+        : dirname(specUrl);
 
   if (servers.length === 0) {
     // Behaviour defined in OpenAPI spec: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#openapi-object
@@ -617,63 +657,50 @@ export function normalizeServers(
     ];
   }
 
-  function normalizeUrl(url: string): string {
-    return resolveUrl(baseUrl, url);
-  }
-
-  return servers.map(server => {
+  return servers.map((server) => {
     return {
       ...server,
-      url: normalizeUrl(server.url),
+      url: baseUrl ? resolveUrl(baseUrl, server.url) : server.url,
       description: server.description || '',
     };
   });
 }
 
-export const SECURITY_DEFINITIONS_JSX_NAME = 'SecurityDefinitions';
-export const OLD_SECURITY_DEFINITIONS_JSX_NAME = 'security-definitions';
-export const SCHEMA_DEFINITION_JSX_NAME = 'SchemaDefinition';
-
-export let SECURITY_SCHEMES_SECTION_PREFIX = 'section/Authentication/';
-export function setSecuritySchemePrefix(prefix: string) {
-  SECURITY_SCHEMES_SECTION_PREFIX = prefix;
-}
-
-export const shortenHTTPVerb = verb =>
+export const shortenHTTPVerb = (verb: string): string =>
   ({
     delete: 'del',
     options: 'opts',
-  }[verb] || verb);
+  })[verb] || verb;
 
 export function isRedocExtension(key: string): boolean {
   const redocExtensions = {
     'x-circular-ref': true,
+    'x-complex': true,
     'x-parentRefs': true,
     'x-refsStack': true,
-    'x-code-samples': true, // deprecated
     'x-codeSamples': true,
     'x-displayName': true,
     'x-examples': true,
-    'x-enumDescriptions': true,
     'x-logo': true,
     'x-nullable': true,
     'x-servers': true,
     'x-tagGroups': true,
     'x-traitTag': true,
-    'x-badges': true,
     'x-additionalPropertiesName': true,
     'x-explicitMappingOnly': true,
+    'x-enumDescriptions': true,
+    'x-badges': true,
   };
 
-  return key in redocExtensions;
+  return key in redocExtensions || key.startsWith('x-parsed-md-');
 }
 
 export function extractExtensions(
-  obj: object,
+  obj: GenericObject,
   showExtensions: string[] | true,
-): Record<string, any> {
+): GenericObject {
   return Object.keys(obj)
-    .filter(key => {
+    .filter((key) => {
       if (showExtensions === true) {
         return key.startsWith('x-') && !isRedocExtension(key);
       }
@@ -688,7 +715,7 @@ export function extractExtensions(
 export function pluralizeType(displayType: string): string {
   return displayType
     .split(' or ')
-    .map(type => type.replace(/^(string|object|number|integer|array|boolean)s?( ?.*)/, '$1s$2'))
+    .map((type) => type.replace(/^(string|object|number|integer|array|boolean)s?( ?.*)/, '$1s$2'))
     .join(' or ');
 }
 

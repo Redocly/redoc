@@ -1,0 +1,154 @@
+{
+  "openapi": "3.0.0",
+  "info": {},
+  "tags": [
+    {
+      "name": "pet_model",
+      "x-displayName": "The Pet Model",
+      "description": "{% schemaDefinition schemaRef=\"#/components/schemas/Pet\" /%}\n"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Category name",
+            "type": "string",
+            "minLength": 1
+          },
+          "sub": {
+            "description": "Test Sub Category",
+            "type": "object",
+            "properties": {
+              "prop2": {
+                "type": "object",
+                "description": "Dumb Property 2",
+                "properties": {
+                  "prop3": {
+                    "type": "object",
+                    "description": "Dumb Property 3",
+                    "properties": {
+                      "prop4": {
+                        "type": "object",
+                        "description": "Dumb Property 4",
+                        "properties": {
+                          "prop5": {
+                            "type": "object",
+                            "description": "Dumb Property 5",
+                            "properties": {
+                              "prop6": {
+                                "type": "string",
+                                "description": "Dumb Property 6"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "xml": {
+          "name": "Category"
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "required": ["name", "photoUrls"],
+        "properties": {
+          "category": {
+            "description": "Categories this pet belongs to",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Category"
+              }
+            ]
+          }
+        },
+        "xml": {
+          "name": "Pet"
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": ["name", "photoUrls"],
+        "properties": {
+          "tags": {
+            "description": "Tags attached to the user",
+            "type": "array",
+            "minItems": 1,
+            "xml": {
+              "name": "tag",
+              "wrapped": true
+            },
+            "items": {
+              "$ref": "#/components/schemas/TagSchema"
+            }
+          }
+        },
+        "xml": {
+          "name": "User"
+        }
+      },
+      "TagSchema": {
+        "type": "object",
+        "properties": {
+          "sub": {
+            "description": "Test Sub Category",
+            "type": "object",
+            "properties": {
+              "prop1": {
+                "type": "object",
+                "description": "Dumb Property 1",
+                "properties": {
+                  "prop2": {
+                    "type": "object",
+                    "description": "Dumb Property 2",
+                    "properties": {
+                      "prop3": {
+                        "type": "string",
+                        "description": "Dumb Property 3"
+                      }
+                    }
+                  },
+                  "nestedArrProperty": {
+                    "type": "array",
+                    "description": "Dumb Property 4",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "prop1": {
+                              "type": "string",
+                              "description": "Dumb Property 1 in nested array"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "name": {
+            "description": "TagSchema name description",
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "xml": {
+          "name": "TagSchema"
+        }
+      }
+    }
+  }
+}

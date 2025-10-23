@@ -1,4 +1,4 @@
-export function objectHas(object: object, path: string | Array<string>): boolean {
+export function objectHas(object: GenericObject, path: string | Array<string>): boolean {
   let _path = <Array<string>>path;
 
   if (typeof path === 'string') {
@@ -12,7 +12,11 @@ export function objectHas(object: object, path: string | Array<string>): boolean
   });
 }
 
-export function objectSet(object: object, path: string | Array<string>, value: any): void {
+export function objectSet(
+  object: GenericObject,
+  path: string | Array<string>,
+  value: unknown,
+): void {
   let _path = <Array<string>>path;
 
   if (typeof path === 'string') {
@@ -26,3 +30,4 @@ export function objectSet(object: object, path: string | Array<string>, value: a
   const key = _path[limit];
   object[key] = value;
 }
+

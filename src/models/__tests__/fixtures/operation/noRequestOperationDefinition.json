@@ -1,0 +1,25 @@
+{
+  "summary": "Add a new pet to the store",
+  "description": "",
+  "operationId": "addPet",
+  "responses": {
+    "200": {
+      "description": "OK"
+    },
+    "405": {
+      "description": "Invalid input"
+    }
+  },
+  "security": [
+    {
+      "petstore_auth": ["write:pets", "read:pets"]
+    }
+  ],
+  "pathName": "/pet",
+  "httpVerb": "post",
+  "pointer": "/paths/~1pet/post",
+  "pathParameters": [],
+  "pathServers": null,
+  "defaultSampleName": "bee",
+  "isWebhook": false
+}

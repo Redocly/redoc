@@ -1,86 +1,67 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo } from 'react';
 
-import styled from '../../styled-components';
-import { RightPanelHeader } from '../../common-elements';
-import { RedocNormalizedOptions } from '../../services';
-import { CallbackModel } from '../../services/models';
-import { OptionsContext } from '../OptionsProvider';
-import { GenericChildrenSwitcher } from '../GenericChildrenSwitcher/GenericChildrenSwitcher';
-import { DropdownOrLabel } from '../DropdownOrLabel/DropdownOrLabel';
-import { InvertedSimpleDropdown, MimeLabel } from '../PayloadSamples/styled.elements';
-import { CallbackPayloadSample } from './CallbackReqSamples';
+import type { TFunction } from '@redocly/theme/core/openapi';
+import type { ReactElement } from 'react';
+import type { OperationModel } from '../../models';
+
+import { PanelHeader } from '@redocly/theme/components/Panel/PanelHeader';
+
+import { PayloadSamples } from '../PayloadSamples/index.js';
+import { ServerListDropdown } from '../ServerListDropdown/index.js';
+import { CodeBlockPanel } from '../common/index.js';
+import { styled } from '../../styled-components.js';
 
 export interface CallbackSamplesProps {
-  callbacks: CallbackModel[];
+  callback: OperationModel;
+  translate: TFunction;
 }
 
-@observer
-export class CallbackSamples extends React.Component<CallbackSamplesProps> {
-  static contextType = OptionsContext;
-  context: RedocNormalizedOptions;
+function CallbackSamplesComponent({
+  callback,
+  translate,
+}: CallbackSamplesProps): ReactElement | null {
+  const hasSamples = callback?.hasSamples;
 
-  private renderDropdown = props => {
+  if (!hasSamples) {
+    return null;
+  }
+
+  const renderSummary = () => {
     return (
-      <DropdownOrLabel
-        Label={MimeLabel}
-        Dropdown={InvertedSimpleDropdown}
-        {...props}
-        variant="dark"
-      />
+      <StyledPanelHeader isExpandable={false}>
+        <StyledServerListDropdown operation={callback} />
+        <PayloadTitle>{translate('openapi.payload', 'Payload')}</PayloadTitle>
+      </StyledPanelHeader>
     );
   };
 
-  render() {
-    const { callbacks } = this.props;
-
-    if (!callbacks || callbacks.length === 0) {
-      return null;
-    }
-
-    const operations = callbacks
-      .map(callback => callback.operations.map(operation => operation))
-      .reduce((a, b) => a.concat(b), []);
-
-    const hasSamples = operations.some(operation => operation.codeSamples.length > 0);
-
-    if (!hasSamples) {
-      return null;
-    }
-
-    const dropdownOptions = operations.map((callback, idx) => {
-      return {
-        value: `${callback.httpVerb.toUpperCase()}: ${callback.name}`,
-        idx,
-      };
-    });
-
-    return (
-      <div>
-        <RightPanelHeader> Callback payload samples </RightPanelHeader>
-
-        <SamplesWrapper>
-          <GenericChildrenSwitcher
-            items={operations}
-            renderDropdown={this.renderDropdown}
-            label={'Callback'}
-            options={dropdownOptions}
-          >
-            {callback => (
-              <CallbackPayloadSample
-                key="callbackPayloadSample"
-                callback={callback}
-                renderDropdown={this.renderDropdown}
-              />
-            )}
-          </GenericChildrenSwitcher>
-        </SamplesWrapper>
-      </div>
-    );
-  }
+  return (
+    <CodeBlockPanel className="panel-callback-samples" header={renderSummary} isExpandable={false}>
+      {callback?.payload?.requestBodyContent && (
+        <PayloadSamples content={callback.payload.requestBodyContent} />
+      )}
+    </CodeBlockPanel>
+  );
 }
 
-export const SamplesWrapper = styled.div`
-  background: ${({ theme }) => theme.codeBlock.backgroundColor};
-  padding: ${props => props.theme.spacing.unit * 4}px;
+export const CallbackSamples = memo<CallbackSamplesProps>(CallbackSamplesComponent);
+
+const PayloadTitle = styled.div`
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  padding: 0 var(--spacing-xs);
+  border-radius: var(--border-radius);
+  background: var(--dropdown-bg-color);
+  color: var(--dropdown-text-color);
+`;
+
+const StyledPanelHeader = styled(PanelHeader)`
+  flex-wrap: nowrap;
+`;
+
+const StyledServerListDropdown = styled(ServerListDropdown)<{ titleWidth?: number }>`
+  padding-right: var(--spacing-base);
+  min-width: 0;
 `;
