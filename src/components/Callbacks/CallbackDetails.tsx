@@ -1,46 +1,80 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo, useCallback } from 'react';
 
-import { OperationModel } from '../../services/models';
-import styled from '../../styled-components';
-import { Endpoint } from '../Endpoint/Endpoint';
-import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
-import { Extensions } from '../Fields/Extensions';
-import { Markdown } from '../Markdown/Markdown';
-import { Parameters } from '../Parameters/Parameters';
-import { ResponsesList } from '../Responses/ResponsesList';
-import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
-import { CallbackDetailsWrap } from './styled.elements';
+import type { TFunction } from '@redocly/theme/core/openapi';
+import type { ReactElement } from 'react';
+import type { OperationModel } from '../../models/index.js';
+import type { TabType } from '../../models/tab.js';
+
+import { LinkIcon } from '@redocly/theme/icons/LinkIcon/LinkIcon';
+
+import { OperationResponseList } from '../Responses/index.js';
+import { RequestDetails } from '../Request/RequestDetails.js';
+import { LinkToField } from '../common/LinkToField.js';
+import { makeDeepLink } from '../../services/index.js';
+import { styled } from '../../styled-components.js';
 
 export interface CallbackDetailsProps {
   operation: OperationModel;
+  translate: TFunction;
 }
 
-@observer
-export class CallbackDetails extends React.Component<CallbackDetailsProps> {
-  render() {
-    const { operation } = this.props;
-    const { description, externalDocs } = operation;
-    const hasDescription = !!(description || externalDocs);
+function CallbackDetailsComponent({ operation, translate }: CallbackDetailsProps): ReactElement {
+  const renderResponseTitle = useCallback(
+    (tab: TabType) => (
+      <Title>
+        <LinkToField
+          to={makeDeepLink(operation.id, `${operation.callbackId}/callback-response&c=${tab.key}`)}
+        />
+        {translate('openapi.callbackResponse', 'Callback Response')}
+      </Title>
+    ),
+    [operation.callbackId, operation.id, translate],
+  );
+  return (
+    <>
+      <RequestDetails
+        operation={operation}
+        title={
+          <>
+            <LinkToField
+              to={makeDeepLink(operation.id, `${operation.callbackId}/callback-request`)}
+            />
+            {translate('openapi.callbackRequest', 'Callback Request')}
+          </>
+        }
+      />
 
-    return (
-      <CallbackDetailsWrap>
-        {hasDescription && (
-          <Description>
-            {description !== undefined && <Markdown source={description} />}
-            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
-          </Description>
-        )}
-        <Endpoint operation={this.props.operation} inverted={true} compact={true} />
-        <Extensions extensions={operation.extensions} />
-        <SecurityRequirements securities={operation.security} />
-        <Parameters parameters={operation.parameters} body={operation.requestBody} />
-        <ResponsesList responses={operation.responses} isCallback={operation.isCallback} />
-      </CallbackDetailsWrap>
-    );
+      {operation.responses?.length ? (
+        <OperationResponseList
+          responses={operation.responses}
+          operationId={operation.id}
+          operationPointer={operation.pointer}
+          callbackId={operation.callbackId}
+          renderTitle={renderResponseTitle}
+        />
+      ) : null}
+    </>
+  );
+}
+
+export const CallbackDetails = memo<CallbackDetailsProps>(CallbackDetailsComponent);
+
+const Title = styled.h4`
+  position: relative;
+  font-size: var(--font-size-lg);
+  font-weight: var(--h4-font-weight);
+  line-height: var(--h4-line-height);
+  padding: 0;
+  color: var(--h4-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 var(--spacing-sm) 0 0;
+
+  :hover {
+    ${LinkIcon} {
+      opacity: 1;
+      visibility: visible;
+    }
   }
-}
-
-const Description = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.unit * 3}px;
 `;

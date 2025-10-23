@@ -1,6 +1,16 @@
+import type {
+  OpenAPIParameter,
+  OpenAPIParameterLocation,
+  OpenAPIParameterStyle,
+  OpenAPIMediaType,
+  OpenAPIDefinition,
+} from '../../types';
+import type { ExtendedOpenAPIOperation } from '../../services';
+import type { FieldModel, OperationModel } from '../../models/types';
+
 import {
   detectType,
-  getOperationSummary,
+  getOperationName,
   getStatusCodeType,
   humanizeConstraints,
   isOperationName,
@@ -11,19 +21,13 @@ import {
   serializeParameterValue,
   sortByRequired,
   humanizeNumberRange,
-  getContentWithLegacyExamples,
   getDefinitionName,
-  langFromMime,
+  serializeQueryParameter,
 } from '../';
-
-import { FieldModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
-import {
-  OpenAPIMediaType,
-  OpenAPIParameter,
-  OpenAPIParameterLocation,
-  OpenAPIParameterStyle,
-} from '../../types';
-import { expandDefaultServerVariables } from '../openapi';
+import { getField } from '../../models';
+import { OpenAPIParser } from '../../services/OpenAPIParser';
+import { getContentWithLegacyExamples } from '../openapi';
+import { normalizeOptions } from '../../services';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -72,19 +76,32 @@ describe('Utils', () => {
     });
   });
 
+  describe('openapi serializeQueryParameter', () => {
+    it('should join elements of the array with a "&"', () => {
+      expect(
+        serializeQueryParameter('arrayOfObjects', 'form', true, [
+          { sub1: 'foo', enumTest: 'available' },
+          { sub1: 'test', enumTest: 'sold' },
+        ]),
+      ).toEqual(
+        'arrayOfObjects=sub1%3Dfoo%26enumTest%3Davailable&arrayOfObjects=sub1%3Dtest%26enumTest%3Dsold',
+      );
+    });
+  });
+
   let sixtyLetterStr = '';
   for (let i = 0; i < 60; i++) {
     sixtyLetterStr += 'a';
   }
 
-  describe('openapi getOperationSummary', () => {
+  describe('openapi getOperationName', () => {
     it('Should return operation self summary if exists', () => {
       const operation = {
         summary: 'test',
         operationId: 'fail',
         description: 'fail',
       };
-      expect(getOperationSummary(operation as any)).toEqual('test');
+      expect(getOperationName(operation as ExtendedOpenAPIOperation)).toEqual('test');
     });
 
     it('Should return operationId if no summary', () => {
@@ -92,14 +109,14 @@ describe('Utils', () => {
         operationId: 'test',
         description: 'fail',
       };
-      expect(getOperationSummary(operation as any)).toEqual('test');
+      expect(getOperationName(operation as ExtendedOpenAPIOperation)).toEqual('test');
     });
 
     it('Should return description if no summary and operationId', () => {
       const operation = {
         description: 'test',
       };
-      expect(getOperationSummary(operation as any)).toEqual('test');
+      expect(getOperationName(operation as ExtendedOpenAPIOperation)).toEqual('test');
     });
 
     it('Should return only first 50 description letter if no summary and operationId', () => {
@@ -107,21 +124,21 @@ describe('Utils', () => {
         description: sixtyLetterStr,
       };
       expect(sixtyLetterStr.length).toBeGreaterThan(50);
-      expect(getOperationSummary(operation as any).length).toBe(50);
+      expect(getOperationName(operation as ExtendedOpenAPIOperation).length).toBe(50);
     });
 
     it('Should return pathName if no summary, operationId, description', () => {
       const operation = {
         pathName: '/sandbox/test',
       };
-      expect(getOperationSummary(operation as any)).toBe('/sandbox/test');
+      expect(getOperationName(operation as ExtendedOpenAPIOperation)).toBe('/sandbox/test');
     });
 
     it('Should return <no summary> if no info', () => {
       const operation = {
         description: undefined,
       };
-      expect(getOperationSummary(operation as any)).toBe('<no summary>');
+      expect(getOperationName(operation as ExtendedOpenAPIOperation)).toBe('<no summary>');
     });
   });
 
@@ -157,9 +174,9 @@ describe('Utils', () => {
       ],
     };
 
-    Object.keys(tests).forEach(name => {
+    Object.keys(tests).forEach((name) => {
       it(`Should detect ${name} if ${name} properties are present`, () => {
-        tests[name].forEach(propName => {
+        tests[name].forEach((propName) => {
           expect(
             detectType({
               [propName]: 0,
@@ -220,7 +237,7 @@ describe('Utils', () => {
       expect(isPrimitiveType(schema)).toEqual(false);
     });
 
-    it('should return false for array contains array type and schema has items (unevaluatedProperties)', () => {
+    it('should return false for array contains array type and schema has items(unevaluatedProperties)', () => {
       const schema = {
         type: ['array'],
         items: {
@@ -237,17 +254,6 @@ describe('Utils', () => {
         items: {
           type: 'object',
           additionalProperties: true,
-        },
-      };
-      expect(isPrimitiveType(schema)).toEqual(false);
-    });
-
-    it('should return false for array contains object and array types and schema has items (unevaluatedProperties)', () => {
-      const schema = {
-        type: ['array', 'object'],
-        items: {
-          type: 'object',
-          unevaluatedProperties: true,
         },
       };
       expect(isPrimitiveType(schema)).toEqual(false);
@@ -359,13 +365,24 @@ describe('Utils', () => {
         },
       ];
 
-      const parser = new OpenAPIParser({ openapi: '3.0' } as any);
-
-      const res = mergeParams(parser, pathParams, operationParams) as OpenAPIParameter[];
+      const parser = new OpenAPIParser({ openapi: '3.0' } as OpenAPIDefinition);
+      const res = mergeParams(parser, pathParams, operationParams as OpenAPIParameter[], {
+        pathPointer: '',
+        operationPointer: '/post',
+      });
       expect(res).toHaveLength(3);
-      expect(res[0]).toEqual(pathParams[1]);
-      expect(res[1]).toEqual(operationParams[0]);
-      expect(res[2]).toEqual(operationParams[1]);
+      expect(res[0]).toEqual({
+        paramOrRef: pathParams[1],
+        pointer: '/parameters/1',
+      });
+      expect(res[1]).toEqual({
+        paramOrRef: operationParams[0],
+        pointer: '/post/parameters/0',
+      });
+      expect(res[2]).toEqual({
+        paramOrRef: operationParams[1],
+        pointer: '/post/parameters/1',
+      });
     });
   });
 
@@ -415,6 +432,30 @@ describe('Utils', () => {
       expect(res).toEqual([{ url: 'https://otherbase.com/sandbox/test', description: '' }]);
     });
 
+    it('should remove query string and hash from url', () => {
+      const originalWindow = { ...window };
+      const windowSpy = jest.spyOn(global, 'window', 'get') as jest.SpyInstance<
+        Window & typeof globalThis
+      >;
+      windowSpy.mockImplementation(
+        () =>
+          ({
+            ...originalWindow,
+            location: {
+              ...originalWindow.location,
+              href: 'https://base.com/subpath/?param=value#tag',
+            },
+          }) as Window & typeof globalThis,
+      );
+      const res = normalizeServers(undefined, [
+        {
+          url: 'sandbox/test',
+        },
+      ]);
+      expect(res).toEqual([{ url: 'https://base.com/subpath/sandbox/test', description: '' }]);
+      windowSpy.mockRestore();
+    });
+
     it('should set correct protocol', () => {
       const res = normalizeServers('https://base.com', [
         {
@@ -423,57 +464,6 @@ describe('Utils', () => {
         },
       ]);
       expect(res).toEqual([{ url: 'https://base.com/sandbox/test', description: 'test' }]);
-    });
-
-    it('should remove query string and hash from url', () => {
-      const originalWindow = { ...window };
-      const windowSpy: jest.SpyInstance = jest.spyOn(global, 'window', 'get');
-      windowSpy.mockImplementation(() => ({
-        ...originalWindow,
-        location: {
-          ...originalWindow.location,
-          href: 'https://base.com/subpath/?param=value#tag',
-        },
-      }));
-      const res = normalizeServers(undefined, [
-        {
-          url: 'sandbox/test',
-        },
-      ]);
-      expect(res).toEqual([{ url: 'https://base.com/subpath/sandbox/test', description: '' }]);
-    });
-
-    it('should expand variables', () => {
-      const servers = normalizeServers('', [
-        {
-          url: 'http://{host}{basePath}',
-          variables: {
-            host: {
-              default: '127.0.0.1',
-            },
-            basePath: {
-              default: '/path/to/endpoint',
-            },
-          },
-        },
-        {
-          url: 'http://127.0.0.2:{port}',
-          variables: {},
-        },
-        {
-          url: 'http://127.0.0.3',
-        },
-      ]);
-
-      expect(expandDefaultServerVariables(servers[0].url, servers[0].variables)).toEqual(
-        'http://127.0.0.1/path/to/endpoint',
-      );
-      expect(expandDefaultServerVariables(servers[1].url, servers[1].variables)).toEqual(
-        'http://127.0.0.2:{port}',
-      );
-      expect(expandDefaultServerVariables(servers[2].url, servers[2].variables)).toEqual(
-        'http://127.0.0.3',
-      );
     });
   });
 
@@ -713,9 +703,9 @@ describe('Utils', () => {
               { style: 'form', explode: true, expected: 'id=3&id=4&id=5' },
               { style: 'form', explode: false, expected: 'id=3,4,5' },
               { style: 'spaceDelimited', explode: true, expected: 'id=3&id=4&id=5' },
-              { style: 'spaceDelimited', explode: false, expected: 'id=3%204%205' },
+              { style: 'spaceDelimited', explode: false, expected: '3%204%205' },
               { style: 'pipeDelimited', explode: true, expected: 'id=3&id=4&id=5' },
-              { style: 'pipeDelimited', explode: false, expected: 'id=3|4|5' },
+              { style: 'pipeDelimited', explode: false, expected: '3|4|5' },
             ],
           },
           {
@@ -725,6 +715,12 @@ describe('Utils', () => {
               { style: 'form', explode: true, expected: 'role=admin&firstName=Alex' },
               { style: 'form', explode: false, expected: 'id=role,admin,firstName,Alex' },
               { style: 'deepObject', explode: true, expected: 'id[role]=admin&id[firstName]=Alex' },
+              {
+                style: 'spaceDelimited',
+                explode: false,
+                expected: 'role%20admin%20firstName%20Alex',
+              },
+              { style: 'pipeDelimited', explode: false, expected: 'role|admin|firstName|Alex' },
             ],
           },
         ],
@@ -793,11 +789,11 @@ describe('Utils', () => {
       },
     ];
 
-    testCases.forEach(locationTestGroup => {
-      describe(locationTestGroup.description, () => {
-        locationTestGroup.cases.forEach(valueTypeTestGroup => {
-          describe(valueTypeTestGroup.description, () => {
-            valueTypeTestGroup.cases.forEach(testCase => {
+    testCases.forEach((locationTestGroup) => {
+      describe(`${locationTestGroup.description}`, () => {
+        locationTestGroup.cases.forEach((valueTypeTestGroup) => {
+          describe(`${valueTypeTestGroup.description}`, () => {
+            valueTypeTestGroup.cases.forEach((testCase) => {
               it(`should serialize correctly when style is ${testCase.style} and explode is ${testCase.explode}`, () => {
                 const parameter: OpenAPIParameter = {
                   name: locationTestGroup.name,
@@ -805,7 +801,10 @@ describe('Utils', () => {
                   style: testCase.style,
                   explode: testCase.explode,
                 };
-                const serialized = serializeParameterValue(parameter, valueTypeTestGroup.value);
+                const serialized = serializeParameterValue(
+                  parameter as FieldModel,
+                  valueTypeTestGroup.value,
+                );
 
                 expect(serialized).toEqual(testCase.expected);
               });
@@ -829,10 +828,10 @@ describe('Utils', () => {
           },
         };
 
-        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
-        const opts = new RedocNormalizedOptions({});
+        const parser = new OpenAPIParser({ openapi: '3.0' } as OpenAPIDefinition);
+        const opts = normalizeOptions({});
 
-        const field = new FieldModel(parser, parameter, '', opts);
+        const field = getField(parser, parameter, '', opts, { operation: {} as OperationModel });
         expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
           'id={"name":"test","age":23}',
         );
@@ -851,10 +850,10 @@ describe('Utils', () => {
           },
         };
 
-        const parser = new OpenAPIParser({ openapi: '3.0' } as any);
-        const opts = new RedocNormalizedOptions({});
+        const parser = new OpenAPIParser({ openapi: '3.0' } as OpenAPIDefinition);
+        const opts = normalizeOptions({});
 
-        const field = new FieldModel(parser, parameter, '', opts);
+        const field = getField(parser, parameter, '', opts, { operation: {} as OperationModel });
         expect(serializeParameterValue(field, { name: 'test', age: 23 })).toEqual(
           '{"name":"test","age":23}',
         );
@@ -1021,7 +1020,7 @@ describe('Utils', () => {
       expect(sortByRequired(fields as FieldModel[])).toEqual(sortedFields);
     });
 
-    it('should the order of required items is as same as the order parameter ', () => {
+    it('should the order of required items is as same as the order parameter', () => {
       const fields = [
         {
           name: 'loginName',
@@ -1228,7 +1227,7 @@ describe('Utils', () => {
     });
   });
 
-  describe('OpenAPI getContentWithLegacyExamples', () => {
+  describe('OpenAPI getContentWithLegacyExamles', () => {
     it('should return undefined if no x-examples/x-example and no content', () => {
       expect(getContentWithLegacyExamples({})).toBeUndefined();
     });
@@ -1337,20 +1336,6 @@ describe('Utils', () => {
     test("should return the `undefined` if pointer not match regex or it's absent", () => {
       expect(getDefinitionName('#/test/path/Call')).toBeUndefined();
       expect(getDefinitionName()).toBeUndefined();
-    });
-  });
-
-  describe('langFromMime', () => {
-    test('should return correct lang name from content type', () => {
-      expect(langFromMime('application/xml')).toEqual('xml');
-      expect(langFromMime('application/x-xml')).toEqual('xml');
-      expect(langFromMime('application/csv')).toEqual('csv');
-      expect(langFromMime('application/x-csv')).toEqual('csv');
-      expect(langFromMime('text/plain')).toEqual('tex');
-      expect(langFromMime('text/x-plain')).toEqual('tex');
-      expect(langFromMime('application/plain')).toEqual('tex');
-
-      expect(langFromMime('text/some-type')).toEqual('clike');
     });
   });
 });

@@ -1,85 +1,68 @@
-import * as React from 'react';
+import { memo } from 'react';
+import merge from 'deepmerge';
 
-import styled from '../../styled-components';
+import type { ReactElement } from 'react';
+import type { MediaTypeSamplesProps } from './types.js';
+import type { ExampleModel } from '../../models/index.js';
 
-import { DropdownOption, DropdownProps } from '../../common-elements';
-import { MediaTypeModel } from '../../services/models';
-import { Markdown } from '../Markdown/Markdown';
-import { Example } from './Example';
-import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements';
+import { Markdown } from '../Markdown/index.js';
+import { Example } from './Example.js';
+import { ExampleSwitch, useExampleKey } from '../Samples/index.js';
+import { arrayMergeStrategy } from '../../services/utils.js';
+import { StyledCodeBlock } from './styled.js';
+import { useTranslate } from '../../hooks/index.js';
+import { styled } from '../../styled-components.js';
 
-export interface PayloadSamplesProps {
-  mediaType: MediaTypeModel;
-  renderDropdown: (props: DropdownProps) => JSX.Element;
-}
+function MediaTypeSamplesComponent({
+  mediaType,
+  properties,
+  onChange,
+  onCopyClick,
+}: MediaTypeSamplesProps): ReactElement | null {
+  const examples = mediaType.examples || mediaType.formExamples || {};
+  const mimeType = mediaType.name;
+  const examplesKeys = Object.keys(examples);
+  const translate = useTranslate();
+  const { exampleKey } = useExampleKey(mediaType.operation, examples);
+  const example = examplesKeys.length === 1 ? Object.values(examples)[0] : examples[exampleKey];
 
-interface MediaTypeSamplesState {
-  activeIdx: number;
-}
-
-export class MediaTypeSamples extends React.Component<PayloadSamplesProps, MediaTypeSamplesState> {
-  state = {
-    activeIdx: 0,
-  };
-  switchMedia = ({ idx }: DropdownOption) => {
-    if (idx !== undefined) {
-      this.setState({
-        activeIdx: idx,
-      });
-    }
-  };
-  render() {
-    const { activeIdx } = this.state;
-    const examples = this.props.mediaType.examples || {};
-    const mimeType = this.props.mediaType.name;
-
-    const noSample = <NoSampleLabel>No sample</NoSampleLabel>;
-
-    const examplesNames = Object.keys(examples);
-    if (examplesNames.length === 0) {
-      return noSample;
-    }
-
-    if (examplesNames.length > 1) {
-      const options = examplesNames.map((name, idx) => {
-        return {
-          value: examples[name].summary || name,
-          idx,
-        };
-      });
-
-      const example = examples[examplesNames[activeIdx]];
-      const description = example.description;
-
-      return (
-        <SamplesWrapper>
-          <DropdownWrapper>
-            <DropdownLabel>Example</DropdownLabel>
-            {this.props.renderDropdown({
-              value: options[activeIdx].value,
-              options,
-              onChange: this.switchMedia,
-              ariaLabel: 'Example',
-            })}
-          </DropdownWrapper>
-          <div>
-            {description && <Markdown source={description} />}
-            <Example example={example} mimeType={mimeType} />
-          </div>
-        </SamplesWrapper>
-      );
-    } else {
-      const example = examples[examplesNames[0]];
-      return (
-        <SamplesWrapper>
-          {example.description && <Markdown source={example.description} />}
-          <Example example={example} mimeType={mimeType} />
-        </SamplesWrapper>
-      );
-    }
+  if (!examplesKeys.length) {
+    return (
+      <StyledCodeBlock
+        lang="clike"
+        source={translate('openapi.noResponseExample', 'No response example')}
+        header={{ controls: false }}
+      />
+    );
   }
+
+  // properties will be passed in developer portal
+  const mergedExamples = properties
+    ? ({
+        ...example,
+        value: merge(example.value, properties, {
+          arrayMerge: arrayMergeStrategy,
+        }),
+      } as ExampleModel)
+    : example;
+
+  const description = mergedExamples.description;
+
+  return (
+    <>
+      <ExampleSwitch examples={examples} exampleKey={exampleKey} onChange={onChange} />
+      {description && <StyledMarkdown source={description} />}
+      <Example
+        example={mergedExamples}
+        mimeType={mimeType}
+        onCopyClick={onCopyClick}
+      />
+    </>
+  );
 }
 
-const SamplesWrapper = styled.div`
-  margin-top: 15px;
+const StyledMarkdown = styled(Markdown)`
+  margin: 0 var(--spacing-md) var(--spacing-sm);
 `;
+
+export const MediaTypeSamples = memo<MediaTypeSamplesProps>(MediaTypeSamplesComponent);

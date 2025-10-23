@@ -1,5 +1,5 @@
 'use strict';
-import * as JsonPointerLib from 'json-pointer';
+import JsonPointerLib from 'json-pointer';
 
 const origParse = JsonPointerLib.parse;
 /**
@@ -16,7 +16,7 @@ export class JsonPointer {
    * // returns foo
    * JsonPointerHelper.baseName('/path/foo/subpath', 2)
    */
-  static baseName(pointer, level = 1) {
+  static baseName(pointer = '', level = 1): string {
     const tokens = JsonPointer.parse(pointer);
     return tokens[tokens.length - level];
   }
@@ -30,7 +30,7 @@ export class JsonPointer {
    * // returns /path
    * JsonPointerHelper.dirName('/path/foo/subpath', 2)
    */
-  static dirName(pointer, level = 1) {
+  static dirName(pointer: string, level = 1): string {
     const tokens = JsonPointer.parse(pointer);
     return JsonPointerLib.compile(tokens.slice(0, tokens.length - level));
   }
@@ -43,7 +43,7 @@ export class JsonPointer {
    * // returns ['foo', 'subpath']
    * JsonPointerHelper.relative('/path', '/path/foo/subpath')
    */
-  static relative(from, to): string[] {
+  static relative(from: string, to: string): string[] {
     const fromTokens = JsonPointer.parse(from);
     const toTokens = JsonPointer.parse(to);
     return toTokens.slice(fromTokens.length);
@@ -53,7 +53,7 @@ export class JsonPointer {
    * overridden JsonPointer original parse to take care of prefixing '#' symbol
    * that is not valid JsonPointer
    */
-  static parse(pointer) {
+  static parse(pointer = ''): string[] {
     let ptr = pointer;
     if (ptr.charAt(0) === '#') {
       ptr = ptr.substring(1);
@@ -68,22 +68,22 @@ export class JsonPointer {
    * @param {string|string[]} tokens - The token(s) to append (e.g. ["name", "first"])
    * @returns {string}
    */
-  static join(base, tokens) {
+  static join(base: string, tokens: string | string[]): string {
     // TODO: optimize
     const baseTokens = JsonPointer.parse(base);
     const resTokens = baseTokens.concat(tokens);
     return JsonPointerLib.compile(resTokens);
   }
 
-  static get(object: object, pointer: string) {
+  static get<T>(object: GenericObject, pointer: string): T {
     return JsonPointerLib.get(object, pointer);
   }
 
-  static compile(tokens: string[]) {
+  static compile(tokens: string[]): string {
     return JsonPointerLib.compile(tokens);
   }
 
-  static escape(pointer: string) {
+  static escape(pointer: string): string {
     return JsonPointerLib.escape(pointer);
   }
 }

@@ -1,0 +1,1307 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Example component render component with \`externalValue\` 1`] = `
+.c9 {
+  height: 16px;
+  width: 16px;
+}
+
+.c9 path {
+  fill: currentColor;
+}
+
+.c8 {
+  width: auto;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  margin: var(--button-margin);
+  cursor: pointer;
+  text-wrap: var(--button-text-wrap);
+  color: var(--button-color);
+  background-color: var(--button-bg-color);
+  border: var(--button-border-width) var(--button-border-style) var(--button-border-color);
+  box-shadow: var(--button-box-shadow);
+  -webkit-backdrop-filter: var(--button-backdrop-filter,none);
+  backdrop-filter: var(--button-backdrop-filter,none);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  padding: var(--button-icon-padding);
+  border-radius: var(--button-border-radius);
+}
+
+.c8 svg {
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+}
+
+.c8:hover {
+  background-color: var(--button-bg-color-hover);
+  color: var(--button-color-hover);
+  border-color: var(--button-border-color-hover);
+}
+
+.c8:active,
+.c8.active {
+  background-color: var(--button-bg-color-active);
+  border-color: var(--button-border-color-active);
+  color: var(--button-color-active);
+}
+
+.c8:focus-visible {
+  outline: 1px solid var(--button-border-color-focused);
+}
+
+.c8.button-tone-danger {
+  color: var(--button-content-color-danger);
+  border-color: var(--button-border-color-danger);
+  background-color: var(--button-bg-color-danger);
+}
+
+.c8.button-tone-danger:hover {
+  color: var(--button-content-color-danger-hover);
+  border-color: var(--button-border-color-danger-hover);
+  background-color: var(--button-bg-color-danger-hover);
+}
+
+.c8.button-tone-danger:active {
+  color: var(--button-content-color-danger-pressed);
+  border-color: var(--button-border-color-danger-pressed);
+  background-color: var(--button-bg-color-danger-pressed);
+}
+
+.c8:disabled {
+  pointer-events: none;
+  background-color: var(--button-bg-color-disabled);
+  color: var(--button-content-color-disabled);
+  border-color: var(--button-border-color-disabled);
+  border-width: var(--button-border-width-disabled);
+}
+
+.c11.c11 {
+  overflow-x: auto;
+  font-family: var(--code-block-font-family);
+  line-height: var(--code-block-line-height);
+  font-weight: var(--code-block-font-weight);
+  padding: var(--code-block-padding);
+  margin: var(--code-block-margin);
+  color: var(--code-block-text-color);
+  font-size: var(--code-block-font-size);
+  white-space: var(--code-wrap,pre);
+  max-height: var(--code-block-max-height,600px);
+  word-break: var(--code-block-word-break,initial);
+}
+
+.c11.c11 pre,
+.c11.c11 code {
+  font-family: var(--code-block-font-family);
+}
+
+.c11 .highlighted {
+  background: var(--layer-color-hover);
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+}
+
+.c11 .highlighted.error {
+  background: var(--color-raspberry-2);
+}
+
+.c11 .highlighted.warning {
+  background: var(--color-carrot-2);
+}
+
+.c11 [data-line-number]::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  min-width: 2em;
+  padding-right: 0.8em;
+  text-align: right;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c11 .has-diff > .line::before {
+  content: attr(data-line-number) '  ';
+  display: inline-block;
+  padding-right: 0.4em;
+  text-align: right;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c11 .has-diff > .line[data-line-number]::before {
+  min-width: 3em;
+}
+
+.c11 .diff {
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+}
+
+.c11 .diff.add {
+  background: var(--color-grass-2);
+}
+
+.c11 .diff.add:before {
+  content: attr(data-line-number) ' +';
+  color: var(--color-grass-7);
+}
+
+.c11 .diff.remove {
+  background: var(--color-raspberry-2);
+}
+
+.c11 .diff.remove:before {
+  content: attr(data-line-number) ' -';
+  color: var(--color-raspberry-7);
+}
+
+.c11 .highlighted-word {
+  background: var(--color-carrot-2);
+  border: 1px solid var(--color-carrot-5);
+  border-radius: 4px;
+}
+
+.c11 .has-focused .line {
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+  opacity: 0.7;
+  -webkit-filter: blur(0.095rem);
+  filter: blur(0.095rem);
+  -webkit-transition: filter 0.35s, opacity 0.35s;
+  transition: filter 0.35s, opacity 0.35s;
+}
+
+.c11 .has-focused .line.focused {
+  opacity: 1;
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}
+
+.c11 .has-focused:hover .line {
+  opacity: 1;
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}
+
+.c11 .shiki.theme {
+  display: inline-block;
+  width: 100%;
+}
+
+.c11 .shiki.theme.tree-view-root {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c11 . .line {
+  display: inline-block;
+}
+
+.c11 .tree-view-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c11 .tree-view-comment {
+  color: var(--code-block-tree-view-comment-color);
+}
+
+.c11 .tree-view-branch {
+  color: var(--code-block-tree-view-lines-color);
+}
+
+.c11 .tree-view-file {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.c11 .tree-view-file::before {
+  content: '\\ea01';
+  margin-left: 0.3rem;
+  margin-right: 0.5rem;
+  font-family: 'TreeViewIcons';
+}
+
+.c11 .tree-view-file.no-file::before {
+  content: '';
+  margin-right: 0;
+}
+
+.c11 .tree-view-file.ext-folder::before {
+  content: '\\ea02';
+}
+
+.c11 .tree-view-file.ext-img::before,
+.c11 .tree-view-file.ext-png::before,
+.c11 .tree-view-file.ext-jpg::before,
+.c11 .tree-view-file.ext-jpeg::before,
+.c11 .tree-view-file.ext-gif::before,
+.c11 .tree-view-file.ext-svg::before {
+  content: '\\ea03';
+}
+
+.c11 .tree-view-file.ext-mp2::before,
+.c11 .tree-view-file.ext-mp3::before,
+.c11 .tree-view-file.ext-wav::before,
+.c11 .tree-view-file.ext-ogg::before,
+.c11 .tree-view-file.ext-flac::before {
+  content: '\\ea04';
+}
+
+.c11 .tree-view-file.ext-mp4::before,
+.c11 .tree-view-file.ext-mkv::before,
+.c11 .tree-view-file.ext-avi::before,
+.c11 .tree-view-file.ext-mov::before,
+.c11 .tree-view-file.ext-wmv::before,
+.c11 .tree-view-file.ext-flv::before {
+  content: '\\ea05';
+}
+
+.c11 .tree-view-file.ext-txt::before,
+.c11 .tree-view-file.ext-text::before,
+.c11 .tree-view-file.ext-md::before,
+.c11 .tree-view-file.ext-markdown::before {
+  content: '\\ea06';
+}
+
+.c11 .tree-view-file.ext-js::before,
+.c11 .tree-view-file.ext-ts::before,
+.c11 .tree-view-file.ext-jsx::before,
+.c11 .tree-view-file.ext-tsx::before,
+.c11 .tree-view-file.ext-json::before,
+.c11 .tree-view-file.ext-yaml::before,
+.c11 .tree-view-file.ext-yml::before,
+.c11 .tree-view-file.ext-xml::before,
+.c11 .tree-view-file.ext-html::before,
+.c11 .tree-view-file.ext-css::before,
+.c11 .tree-view-file.ext-scss::before,
+.c11 .tree-view-file.ext-less::before,
+.c11 .tree-view-file.ext-sass::before,
+.c11 .tree-view-file.ext-java::before,
+.c11 .tree-view-file.ext-c::before,
+.c11 .tree-view-file.ext-cpp::before,
+.c11 .tree-view-file.ext-cs::before,
+.c11 .tree-view-file.ext-php::before,
+.c11 .tree-view-file.ext-py::before,
+.c11 .tree-view-file.ext-rb::before,
+.c11 .tree-view-file.ext-go::before,
+.c11 .tree-view-file.ext-swift::before,
+.c11 .tree-view-file.ext-sql::before,
+.c11 .tree-view-file.ext-perl::before,
+.c11 .tree-view-file.ext-lua::before,
+.c11 .tree-view-file.ext-scala::before,
+.c11 .tree-view-file.ext-sh::before {
+  content: '\\ea07';
+}
+
+.c11 .tree-view-file.ext-zip::before,
+.c11 .tree-view-file.ext-rar::before,
+.c11 .tree-view-file.ext-tar::before,
+.c11 .tree-view-file.ext-gz::before,
+.c11 .tree-view-file.ext-iso::before {
+  content: '\\ea08';
+}
+
+.c11 .tree-view-file.ext-pdf::before,
+.c11 .tree-view-file.ext-PDF::before {
+  content: '\\ea09';
+}
+
+.c11 .tree-view-file.ext-excel::before,
+.c11 .tree-view-file.ext-xls::before,
+.c11 .tree-view-file.ext-xlsx::before {
+  content: '\\ea0a';
+}
+
+.c11 .tree-view-file.ext-powerpoint::before,
+.c11 .tree-view-file.ext-ppt::before,
+.c11 .tree-view-file.ext-pptx::before {
+  content: '\\ea0b';
+}
+
+.c11 .tree-view-file.ext-doc::before,
+.c11 .tree-view-file.ext-docx::before,
+.c11 .tree-view-file.ext-rtf::before {
+  content: '\\ea0c';
+}
+
+pre.c10 {
+  color: var(--code-block-tokens-default-color);
+}
+
+.c11 .token.comment {
+  color: var(--code-block-tokens-comment-color);
+}
+
+.c11 .token.prolog {
+  color: var(--code-block-tokens-prolog-color);
+}
+
+.c11 .token.doctype {
+  color: var(--code-block-tokens-doctype-color);
+}
+
+.c11 .token.cdata {
+  color: var(--code-block-tokens-cdata-color);
+}
+
+.c11 .token.punctuation {
+  color: var(--code-block-tokens-punctuation-color);
+}
+
+.c11 .token.property {
+  color: var(--code-block-tokens-property-color);
+}
+
+.c11 .token.tag {
+  color: var(--code-block-tokens-tag-color);
+}
+
+.c11 .token.number {
+  color: var(--code-block-tokens-number-color);
+}
+
+.c11 .token.constant {
+  color: var(--code-block-tokens-constant-color);
+}
+
+.c11 .token.symbol {
+  color: var(--code-block-tokens-symbol-color);
+}
+
+.c11 .token.boolean {
+  color: var(--code-block-tokens-boolean-color);
+}
+
+.c11 .token.selector {
+  color: var(--code-block-tokens-selector-color);
+}
+
+.c11 .token.string {
+  color: var(--code-block-tokens-string-color);
+}
+
+.c11 .token.char {
+  color: var(--code-block-tokens-char-color);
+}
+
+.c11 .token.builtin {
+  color: var(--code-block-tokens-builtin-color);
+}
+
+.c11 .token.inserted {
+  color: var(--code-block-tokens-inserted-color);
+}
+
+.c11 .token.operator {
+  color: var(--code-block-tokens-operator-color);
+}
+
+.c11 .token.entity {
+  color: var(--code-block-tokens-entity-color);
+}
+
+.c11 .token.url {
+  color: var(--code-block-tokens-url-color);
+}
+
+.c11 .token.variable {
+  color: var(--code-block-tokens-variable-color);
+}
+
+.c11 .token.atrule {
+  color: var(--code-block-tokens-atrule-color);
+}
+
+.c11 .token.attr-value {
+  color: var(--code-block-tokens-attr-value-color);
+}
+
+.c11 .token.attr-name {
+  color: var(--code-block-tokens-attr-name-color);
+}
+
+.c11 .token.keyword {
+  color: var(--code-block-tokens-keyword-color);
+}
+
+.c11 .token.regex {
+  color: var(--code-block-tokens-regex-color);
+}
+
+.c11 .token.important {
+  color: var(--code-block-tokens-important-color);
+}
+
+.c11 .token.bold {
+  color: var(--code-block-tokens-bold-color);
+}
+
+.c11 .token.italic {
+  color: var(--code-block-tokens-italic-color);
+}
+
+.c11 .token.deleted {
+  color: var(--code-block-tokens-deleted-color);
+}
+
+.c11 .token.class-name {
+  color: var(--code-block-tokens-class-name-color);
+}
+
+.c11 .token.function {
+  color: var(--code-block-tokens-function-color);
+}
+
+.c5 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c6 {
+  display: contents;
+}
+
+.c3 {
+  display: grid;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--code-block-controls-font-size);
+  font-family: var(--code-block-controls-font-family);
+  background-color: var(--code-block-controls-bg-color);
+  padding: var(--code-block-controls-padding);
+  border-bottom: var(--code-block-controls-border);
+  line-height: var(--line-height-lg);
+  min-height: var(--control-height-base);
+  grid-template-columns: 1fr auto;
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  width: auto;
+  border: none;
+  background-color: transparent;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: right;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  -webkit-box-pack: end;
+  -webkit-justify-content: end;
+  -ms-flex-pack: end;
+  justify-content: end;
+}
+
+.c7 {
+  --button-icon-size: 16px;
+  --button-icon-padding: 3px;
+  --button-backdrop-filter: blur(8px);
+}
+
+.c2 {
+  display: grid;
+  position: relative;
+}
+
+.c1 {
+  border: 1px solid var(--border-color-secondary);
+  border-radius: var(--border-radius);
+  background-color: var(--code-block-bg-color);
+  margin: 0 0 var(--spacing-sm);
+  --md-pre-margin: 0;
+}
+
+.c12 {
+  position: relative;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c0 > div {
+  border: none;
+  margin: 0;
+}
+
+.c0 pre {
+  contain: content;
+  overflow-x: auto;
+  position: relative;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.c0 .code-block-header {
+  border-bottom: 0;
+  padding-right: var(--spacing-sm);
+}
+
+<div>
+  <div
+    class="c0"
+    data-component-name="JsonViewer/JsonViewer"
+    data-testid="json-viewer"
+  >
+    <div
+      class="c1"
+      data-component-name="CodeBlock/CodeBlock"
+    >
+      <div
+        class="c2"
+      >
+        <div
+          class="c3 code-block-header"
+          data-component-name="CodeBlock/CodeBlockControls"
+        >
+          <div
+            class="c4"
+          >
+            <div
+              class="c5 tooltip-"
+              data-component-name="Tooltip/Tooltip"
+            >
+              <div
+                class="c6"
+              >
+                <div
+                  class="c5 tooltip-copy-button c7"
+                  data-component-name="Tooltip/Tooltip"
+                >
+                  <button
+                    class="c8 button button-tone-default button-variant-text button-size-small"
+                    data-component-name="Buttons/CopyButton"
+                    data-testid="copy-button"
+                  >
+                    <svg
+                      class="c9"
+                      data-component-name="icons/CopyIcon/CopyIcon"
+                      fill="none"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M5.16667 2.66667C5.16667 2.57462 5.24129 2.5 5.33333 2.5H12C12.092 2.5 12.1667 2.57462 12.1667 2.66667V10.6667C12.1667 10.7587 12.092 10.8333 12 10.8333H10H5.33333C5.24129 10.8333 5.16667 10.7587 5.16667 10.6667V4.66667V2.66667ZM4.16667 4.16667V2.66667C4.16667 2.02233 4.689 1.5 5.33333 1.5H12C12.6443 1.5 13.1667 2.02233 13.1667 2.66667V10.6667C13.1667 11.311 12.6443 11.8333 12 11.8333H10.5V13.3333C10.5 13.6428 10.3771 13.9395 10.1583 14.1583C9.9395 14.3771 9.64275 14.5 9.33333 14.5H2.66667C2.35725 14.5 2.0605 14.3771 1.84171 14.1583C1.62292 13.9395 1.5 13.6428 1.5 13.3333V5.33333C1.5 5.02391 1.62292 4.72717 1.84171 4.50838C2.0605 4.28958 2.35725 4.16667 2.66667 4.16667H4.16667ZM9.5 11.8333V13.3333C9.5 13.3775 9.48244 13.4199 9.45118 13.4512C9.41993 13.4824 9.37754 13.5 9.33333 13.5H2.66667C2.62246 13.5 2.58007 13.4824 2.54882 13.4512C2.51756 13.4199 2.5 13.3775 2.5 13.3333V5.33333C2.5 5.28913 2.51756 5.24674 2.54882 5.21548C2.58007 5.18423 2.62246 5.16667 2.66667 5.16667H4.16667V10.6667C4.16667 11.311 4.689 11.8333 5.33333 11.8333H9.5Z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pre
+          class="c10 c11"
+          data-component-name="CodeBlock/CodeBlockContainer"
+          data-testid="source-code"
+          tabindex="0"
+        >
+          <div
+            class="c12"
+          >
+            <span
+              class="token undefined"
+            />
+          </div>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Example component render component without error when \`externalValue\` is pdf file 1`] = `
+.c9 {
+  height: 16px;
+  width: 16px;
+}
+
+.c9 path {
+  fill: currentColor;
+}
+
+.c8 {
+  width: auto;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  margin: var(--button-margin);
+  cursor: pointer;
+  text-wrap: var(--button-text-wrap);
+  color: var(--button-color);
+  background-color: var(--button-bg-color);
+  border: var(--button-border-width) var(--button-border-style) var(--button-border-color);
+  box-shadow: var(--button-box-shadow);
+  -webkit-backdrop-filter: var(--button-backdrop-filter,none);
+  backdrop-filter: var(--button-backdrop-filter,none);
+  font-weight: var(--button-font-weight);
+  font-size: var(--button-font-size);
+  line-height: var(--button-line-height);
+  padding: var(--button-icon-padding);
+  border-radius: var(--button-border-radius);
+}
+
+.c8 svg {
+  width: var(--button-icon-size);
+  height: var(--button-icon-size);
+}
+
+.c8:hover {
+  background-color: var(--button-bg-color-hover);
+  color: var(--button-color-hover);
+  border-color: var(--button-border-color-hover);
+}
+
+.c8:active,
+.c8.active {
+  background-color: var(--button-bg-color-active);
+  border-color: var(--button-border-color-active);
+  color: var(--button-color-active);
+}
+
+.c8:focus-visible {
+  outline: 1px solid var(--button-border-color-focused);
+}
+
+.c8.button-tone-danger {
+  color: var(--button-content-color-danger);
+  border-color: var(--button-border-color-danger);
+  background-color: var(--button-bg-color-danger);
+}
+
+.c8.button-tone-danger:hover {
+  color: var(--button-content-color-danger-hover);
+  border-color: var(--button-border-color-danger-hover);
+  background-color: var(--button-bg-color-danger-hover);
+}
+
+.c8.button-tone-danger:active {
+  color: var(--button-content-color-danger-pressed);
+  border-color: var(--button-border-color-danger-pressed);
+  background-color: var(--button-bg-color-danger-pressed);
+}
+
+.c8:disabled {
+  pointer-events: none;
+  background-color: var(--button-bg-color-disabled);
+  color: var(--button-content-color-disabled);
+  border-color: var(--button-border-color-disabled);
+  border-width: var(--button-border-width-disabled);
+}
+
+.c11.c11 {
+  overflow-x: auto;
+  font-family: var(--code-block-font-family);
+  line-height: var(--code-block-line-height);
+  font-weight: var(--code-block-font-weight);
+  padding: var(--code-block-padding);
+  margin: var(--code-block-margin);
+  color: var(--code-block-text-color);
+  font-size: var(--code-block-font-size);
+  white-space: var(--code-wrap,pre);
+  max-height: var(--code-block-max-height,600px);
+  word-break: var(--code-block-word-break,initial);
+}
+
+.c11.c11 pre,
+.c11.c11 code {
+  font-family: var(--code-block-font-family);
+}
+
+.c11 .highlighted {
+  background: var(--layer-color-hover);
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+}
+
+.c11 .highlighted.error {
+  background: var(--color-raspberry-2);
+}
+
+.c11 .highlighted.warning {
+  background: var(--color-carrot-2);
+}
+
+.c11 [data-line-number]::before {
+  content: attr(data-line-number);
+  display: inline-block;
+  min-width: 2em;
+  padding-right: 0.8em;
+  text-align: right;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c11 .has-diff > .line::before {
+  content: attr(data-line-number) '  ';
+  display: inline-block;
+  padding-right: 0.4em;
+  text-align: right;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c11 .has-diff > .line[data-line-number]::before {
+  min-width: 3em;
+}
+
+.c11 .diff {
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+}
+
+.c11 .diff.add {
+  background: var(--color-grass-2);
+}
+
+.c11 .diff.add:before {
+  content: attr(data-line-number) ' +';
+  color: var(--color-grass-7);
+}
+
+.c11 .diff.remove {
+  background: var(--color-raspberry-2);
+}
+
+.c11 .diff.remove:before {
+  content: attr(data-line-number) ' -';
+  color: var(--color-raspberry-7);
+}
+
+.c11 .highlighted-word {
+  background: var(--color-carrot-2);
+  border: 1px solid var(--color-carrot-5);
+  border-radius: 4px;
+}
+
+.c11 .has-focused .line {
+  margin-left: calc(var(--spacing-sm) * -1);
+  padding-left: var(--spacing-sm);
+  width: calc(100% + var(--spacing-sm));
+  display: inline-block;
+  opacity: 0.7;
+  -webkit-filter: blur(0.095rem);
+  filter: blur(0.095rem);
+  -webkit-transition: filter 0.35s, opacity 0.35s;
+  transition: filter 0.35s, opacity 0.35s;
+}
+
+.c11 .has-focused .line.focused {
+  opacity: 1;
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}
+
+.c11 .has-focused:hover .line {
+  opacity: 1;
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}
+
+.c11 .shiki.theme {
+  display: inline-block;
+  width: 100%;
+}
+
+.c11 .shiki.theme.tree-view-root {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c11 . .line {
+  display: inline-block;
+}
+
+.c11 .tree-view-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c11 .tree-view-comment {
+  color: var(--code-block-tree-view-comment-color);
+}
+
+.c11 .tree-view-branch {
+  color: var(--code-block-tree-view-lines-color);
+}
+
+.c11 .tree-view-file {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.c11 .tree-view-file::before {
+  content: '\\ea01';
+  margin-left: 0.3rem;
+  margin-right: 0.5rem;
+  font-family: 'TreeViewIcons';
+}
+
+.c11 .tree-view-file.no-file::before {
+  content: '';
+  margin-right: 0;
+}
+
+.c11 .tree-view-file.ext-folder::before {
+  content: '\\ea02';
+}
+
+.c11 .tree-view-file.ext-img::before,
+.c11 .tree-view-file.ext-png::before,
+.c11 .tree-view-file.ext-jpg::before,
+.c11 .tree-view-file.ext-jpeg::before,
+.c11 .tree-view-file.ext-gif::before,
+.c11 .tree-view-file.ext-svg::before {
+  content: '\\ea03';
+}
+
+.c11 .tree-view-file.ext-mp2::before,
+.c11 .tree-view-file.ext-mp3::before,
+.c11 .tree-view-file.ext-wav::before,
+.c11 .tree-view-file.ext-ogg::before,
+.c11 .tree-view-file.ext-flac::before {
+  content: '\\ea04';
+}
+
+.c11 .tree-view-file.ext-mp4::before,
+.c11 .tree-view-file.ext-mkv::before,
+.c11 .tree-view-file.ext-avi::before,
+.c11 .tree-view-file.ext-mov::before,
+.c11 .tree-view-file.ext-wmv::before,
+.c11 .tree-view-file.ext-flv::before {
+  content: '\\ea05';
+}
+
+.c11 .tree-view-file.ext-txt::before,
+.c11 .tree-view-file.ext-text::before,
+.c11 .tree-view-file.ext-md::before,
+.c11 .tree-view-file.ext-markdown::before {
+  content: '\\ea06';
+}
+
+.c11 .tree-view-file.ext-js::before,
+.c11 .tree-view-file.ext-ts::before,
+.c11 .tree-view-file.ext-jsx::before,
+.c11 .tree-view-file.ext-tsx::before,
+.c11 .tree-view-file.ext-json::before,
+.c11 .tree-view-file.ext-yaml::before,
+.c11 .tree-view-file.ext-yml::before,
+.c11 .tree-view-file.ext-xml::before,
+.c11 .tree-view-file.ext-html::before,
+.c11 .tree-view-file.ext-css::before,
+.c11 .tree-view-file.ext-scss::before,
+.c11 .tree-view-file.ext-less::before,
+.c11 .tree-view-file.ext-sass::before,
+.c11 .tree-view-file.ext-java::before,
+.c11 .tree-view-file.ext-c::before,
+.c11 .tree-view-file.ext-cpp::before,
+.c11 .tree-view-file.ext-cs::before,
+.c11 .tree-view-file.ext-php::before,
+.c11 .tree-view-file.ext-py::before,
+.c11 .tree-view-file.ext-rb::before,
+.c11 .tree-view-file.ext-go::before,
+.c11 .tree-view-file.ext-swift::before,
+.c11 .tree-view-file.ext-sql::before,
+.c11 .tree-view-file.ext-perl::before,
+.c11 .tree-view-file.ext-lua::before,
+.c11 .tree-view-file.ext-scala::before,
+.c11 .tree-view-file.ext-sh::before {
+  content: '\\ea07';
+}
+
+.c11 .tree-view-file.ext-zip::before,
+.c11 .tree-view-file.ext-rar::before,
+.c11 .tree-view-file.ext-tar::before,
+.c11 .tree-view-file.ext-gz::before,
+.c11 .tree-view-file.ext-iso::before {
+  content: '\\ea08';
+}
+
+.c11 .tree-view-file.ext-pdf::before,
+.c11 .tree-view-file.ext-PDF::before {
+  content: '\\ea09';
+}
+
+.c11 .tree-view-file.ext-excel::before,
+.c11 .tree-view-file.ext-xls::before,
+.c11 .tree-view-file.ext-xlsx::before {
+  content: '\\ea0a';
+}
+
+.c11 .tree-view-file.ext-powerpoint::before,
+.c11 .tree-view-file.ext-ppt::before,
+.c11 .tree-view-file.ext-pptx::before {
+  content: '\\ea0b';
+}
+
+.c11 .tree-view-file.ext-doc::before,
+.c11 .tree-view-file.ext-docx::before,
+.c11 .tree-view-file.ext-rtf::before {
+  content: '\\ea0c';
+}
+
+pre.c10 {
+  color: var(--code-block-tokens-default-color);
+}
+
+.c11 .token.comment {
+  color: var(--code-block-tokens-comment-color);
+}
+
+.c11 .token.prolog {
+  color: var(--code-block-tokens-prolog-color);
+}
+
+.c11 .token.doctype {
+  color: var(--code-block-tokens-doctype-color);
+}
+
+.c11 .token.cdata {
+  color: var(--code-block-tokens-cdata-color);
+}
+
+.c11 .token.punctuation {
+  color: var(--code-block-tokens-punctuation-color);
+}
+
+.c11 .token.property {
+  color: var(--code-block-tokens-property-color);
+}
+
+.c11 .token.tag {
+  color: var(--code-block-tokens-tag-color);
+}
+
+.c11 .token.number {
+  color: var(--code-block-tokens-number-color);
+}
+
+.c11 .token.constant {
+  color: var(--code-block-tokens-constant-color);
+}
+
+.c11 .token.symbol {
+  color: var(--code-block-tokens-symbol-color);
+}
+
+.c11 .token.boolean {
+  color: var(--code-block-tokens-boolean-color);
+}
+
+.c11 .token.selector {
+  color: var(--code-block-tokens-selector-color);
+}
+
+.c11 .token.string {
+  color: var(--code-block-tokens-string-color);
+}
+
+.c11 .token.char {
+  color: var(--code-block-tokens-char-color);
+}
+
+.c11 .token.builtin {
+  color: var(--code-block-tokens-builtin-color);
+}
+
+.c11 .token.inserted {
+  color: var(--code-block-tokens-inserted-color);
+}
+
+.c11 .token.operator {
+  color: var(--code-block-tokens-operator-color);
+}
+
+.c11 .token.entity {
+  color: var(--code-block-tokens-entity-color);
+}
+
+.c11 .token.url {
+  color: var(--code-block-tokens-url-color);
+}
+
+.c11 .token.variable {
+  color: var(--code-block-tokens-variable-color);
+}
+
+.c11 .token.atrule {
+  color: var(--code-block-tokens-atrule-color);
+}
+
+.c11 .token.attr-value {
+  color: var(--code-block-tokens-attr-value-color);
+}
+
+.c11 .token.attr-name {
+  color: var(--code-block-tokens-attr-name-color);
+}
+
+.c11 .token.keyword {
+  color: var(--code-block-tokens-keyword-color);
+}
+
+.c11 .token.regex {
+  color: var(--code-block-tokens-regex-color);
+}
+
+.c11 .token.important {
+  color: var(--code-block-tokens-important-color);
+}
+
+.c11 .token.bold {
+  color: var(--code-block-tokens-bold-color);
+}
+
+.c11 .token.italic {
+  color: var(--code-block-tokens-italic-color);
+}
+
+.c11 .token.deleted {
+  color: var(--code-block-tokens-deleted-color);
+}
+
+.c11 .token.class-name {
+  color: var(--code-block-tokens-class-name-color);
+}
+
+.c11 .token.function {
+  color: var(--code-block-tokens-function-color);
+}
+
+.c5 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c6 {
+  display: contents;
+}
+
+.c3 {
+  display: grid;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--code-block-controls-font-size);
+  font-family: var(--code-block-controls-font-family);
+  background-color: var(--code-block-controls-bg-color);
+  padding: var(--code-block-controls-padding);
+  border-bottom: var(--code-block-controls-border);
+  line-height: var(--line-height-lg);
+  min-height: var(--control-height-base);
+  grid-template-columns: 1fr auto;
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  width: auto;
+  border: none;
+  background-color: transparent;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: right;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  -webkit-box-pack: end;
+  -webkit-justify-content: end;
+  -ms-flex-pack: end;
+  justify-content: end;
+}
+
+.c7 {
+  --button-icon-size: 16px;
+  --button-icon-padding: 3px;
+  --button-backdrop-filter: blur(8px);
+}
+
+.c2 {
+  display: grid;
+  position: relative;
+}
+
+.c0 {
+  border: 1px solid var(--border-color-secondary);
+  border-radius: var(--border-radius);
+  background-color: var(--code-block-bg-color);
+  margin: 0 0 var(--spacing-sm);
+  --md-pre-margin: 0;
+}
+
+.c1 {
+  border: none;
+  margin: 0;
+}
+
+.c1 .code-block-header {
+  border-bottom: 0;
+  padding-right: var(--spacing-sm);
+}
+
+<div>
+  <div
+    class="c0 c1"
+    data-component-name="CodeBlock/CodeBlock"
+  >
+    <div
+      class="c2"
+    >
+      <div
+        class="c3 code-block-header"
+        data-component-name="CodeBlock/CodeBlockControls"
+      >
+        <div
+          class="c4"
+        >
+          <div
+            class="c5 tooltip-"
+            data-component-name="Tooltip/Tooltip"
+          >
+            <div
+              class="c6"
+            >
+              <div
+                class="c5 tooltip-copy-button c7"
+                data-component-name="Tooltip/Tooltip"
+              >
+                <button
+                  class="c8 button button-tone-default button-variant-text button-size-small"
+                  data-component-name="Buttons/CopyButton"
+                  data-testid="copy-button"
+                >
+                  <svg
+                    class="c9"
+                    data-component-name="icons/CopyIcon/CopyIcon"
+                    fill="none"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M5.16667 2.66667C5.16667 2.57462 5.24129 2.5 5.33333 2.5H12C12.092 2.5 12.1667 2.57462 12.1667 2.66667V10.6667C12.1667 10.7587 12.092 10.8333 12 10.8333H10H5.33333C5.24129 10.8333 5.16667 10.7587 5.16667 10.6667V4.66667V2.66667ZM4.16667 4.16667V2.66667C4.16667 2.02233 4.689 1.5 5.33333 1.5H12C12.6443 1.5 13.1667 2.02233 13.1667 2.66667V10.6667C13.1667 11.311 12.6443 11.8333 12 11.8333H10.5V13.3333C10.5 13.6428 10.3771 13.9395 10.1583 14.1583C9.9395 14.3771 9.64275 14.5 9.33333 14.5H2.66667C2.35725 14.5 2.0605 14.3771 1.84171 14.1583C1.62292 13.9395 1.5 13.6428 1.5 13.3333V5.33333C1.5 5.02391 1.62292 4.72717 1.84171 4.50838C2.0605 4.28958 2.35725 4.16667 2.66667 4.16667H4.16667ZM9.5 11.8333V13.3333C9.5 13.3775 9.48244 13.4199 9.45118 13.4512C9.41993 13.4824 9.37754 13.5 9.33333 13.5H2.66667C2.62246 13.5 2.58007 13.4824 2.54882 13.4512C2.51756 13.4199 2.5 13.3775 2.5 13.3333V5.33333C2.5 5.28913 2.51756 5.24674 2.54882 5.21548C2.58007 5.18423 2.62246 5.16667 2.66667 5.16667H4.16667V10.6667C4.16667 11.311 4.689 11.8333 5.33333 11.8333H9.5Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <pre
+        class="c10 c11"
+        data-component-name="CodeBlock/CodeBlockContainer"
+        data-testid="source-code"
+        tabindex="0"
+      />
+    </div>
+  </div>
+</div>
+`;

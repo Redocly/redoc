@@ -1,56 +1,120 @@
-import * as React from 'react';
+import { memo, useCallback } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { Schema, SchemaProps } from './Schema';
+import type { ReactElement } from 'react';
+import type { SchemaProps } from './types.js';
+import type { OpenAPISchema } from '../../types/index.js';
 
-import { ArrayClosingLabel, ArrayOpenningLabel } from '../../common-elements';
-import styled from '../../styled-components';
-import { humanizeConstraints } from '../../utils';
-import { TypeName } from '../../common-elements/fields';
-import { ObjectSchema } from './ObjectSchema';
+import { TypeName } from '../common/index.js';
+import { Schema } from './Schema.js';
+import { ObjectSchema } from './ObjectSchema.js';
+import { humanizeConstraints } from '../../utils/index.js';
+import { SubSchema } from './SubSchema.js';
+import { globalOptionsAtom } from '../../jotai/store.js';
+import { getExpandByDefault } from './helpers.js';
+import { ArrayLabel, LabelValue, ArrayClosingLabel } from '../common/styled.js';
 
-const PaddedSchema = styled.div`
-  padding-left: ${({ theme }) => theme.spacing.unit * 2}px;
-`;
+function ArraySchemaComponent({
+  schema,
+  schema: { minItems, maxItems, items: itemsSchema },
+  fieldParentsName,
+  ...rest
+}: SchemaProps): ReactElement {
+  const { schemasExpansionLevel } = useAtomValue(globalOptionsAtom);
 
-export class ArraySchema extends React.PureComponent<SchemaProps> {
-  render() {
-    const schema = this.props.schema;
-    const itemsSchema = schema.items;
-    const fieldParentsName = this.props.fieldParentsName;
+  const parentSchemaTypes = Array.isArray(rest.parentType) ? rest.parentType : [rest.parentType];
+  const isNestedArray = parentSchemaTypes.includes('array') && parentSchemaTypes.length === 1;
+  const level = isNestedArray ? (rest.level || 0) + 1 : rest.level;
+  const minMaxItems =
+    minItems === undefined && maxItems === undefined
+      ? ''
+      : `(${humanizeConstraints(schema as OpenAPISchema)})`;
 
-    const minMaxItems =
-      schema.minItems === undefined && schema.maxItems === undefined
-        ? ''
-        : `(${humanizeConstraints(schema)})`;
+  let updatedParentsArray = fieldParentsName
+    ? [...fieldParentsName.slice(0, -1), fieldParentsName[fieldParentsName.length - 1] + '[]']
+    : fieldParentsName;
 
-    const updatedParentsArray = fieldParentsName
-      ? [...fieldParentsName.slice(0, -1), fieldParentsName[fieldParentsName.length - 1] + '[]']
-      : fieldParentsName;
-    if (schema.fields) {
-      return (
-        <ObjectSchema
-          {...(this.props as any)}
-          level={this.props.level}
-          fieldParentsName={updatedParentsArray}
-        />
-      );
-    }
-    if (schema.displayType && !itemsSchema && !minMaxItems.length) {
-      return (
-        <div>
-          <TypeName>{schema.displayType}</TypeName>
-        </div>
-      );
-    }
+  const getFilteredFields = useCallback(
+    (items) =>
+      rest.skipReadOnly || rest.skipWriteOnly
+        ? items?.filter(
+            (item) =>
+              !(
+                (rest.skipReadOnly && item.schema.readOnly) ||
+                (rest.skipWriteOnly && item.schema.writeOnly)
+              ),
+          )
+        : items,
+    [rest.skipReadOnly, rest.skipWriteOnly],
+  );
 
+  if (schema?.fields) {
+    return (
+      <ObjectSchema
+        {...rest}
+        shouldCloseArray={isNestedArray}
+        level={level}
+        schema={schema}
+        fieldParentsName={updatedParentsArray}
+        onOneOfChange={rest.onOneOfChange}
+      />
+    );
+  }
+
+  if (schema.displayType && !itemsSchema && !minMaxItems.length) {
     return (
       <div>
-        <ArrayOpenningLabel> Array {minMaxItems}</ArrayOpenningLabel>
-        <PaddedSchema>
-          <Schema {...this.props} schema={itemsSchema} fieldParentsName={updatedParentsArray} />
-        </PaddedSchema>
-        <ArrayClosingLabel />
+        <TypeName>{schema.displayType}</TypeName>
       </div>
     );
   }
+
+  const filteredFields = getFilteredFields(itemsSchema?.fields);
+  const filteredOneOfFields = getFilteredFields(itemsSchema?.oneOf?.[0]?.fields);
+
+  const propertyLength = filteredFields?.length || filteredOneOfFields?.length;
+  const isFirstLevel = rest.level === 1;
+  const expandByDefault = getExpandByDefault({
+    level: rest.level,
+    required: rest.required,
+    schemasExpansionLevel,
+  });
+
+  return (
+    <SubSchema
+      {...rest}
+      propertyLength={propertyLength}
+      isNestedArray={isNestedArray}
+      level={level}
+      isArray
+      expandable={!isFirstLevel}
+      expandByDefault={expandByDefault}
+      operationPointer={schema.operationPointer}
+    >
+      <>
+        {isFirstLevel && (
+          <ArrayLabel>
+            <LabelValue>Array [</LabelValue>
+          </ArrayLabel>
+        )}
+        <Schema
+          {...rest}
+          parentType={!isFirstLevel ? schema.type : undefined}
+          level={level}
+          schema={itemsSchema}
+          shouldCloseArray={isNestedArray}
+          fieldParentsName={updatedParentsArray}
+          expandable={false}
+          onOneOfChange={rest.onOneOfChange}
+        />
+        {isFirstLevel && (
+          <ArrayClosingLabel className="array-closing-label">
+            <LabelValue>]</LabelValue>
+          </ArrayClosingLabel>
+        )}
+      </>
+    </SubSchema>
+  );
 }
+
+export const ArraySchema = memo<SchemaProps>(ArraySchemaComponent);

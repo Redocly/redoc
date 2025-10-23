@@ -1,12 +1,24 @@
 name: Unit Tests
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
 
 jobs:
   build-and-unit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci
-      - run: npm run bundle
-      - run: npm test
+      - name: Checkout Repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.17
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts --no-fund
+      - name: Run unit tests
+        run: npm run unit

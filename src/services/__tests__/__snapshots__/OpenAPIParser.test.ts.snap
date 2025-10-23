@@ -1,23 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Models Schema should correct resolve double $ref if no need sibling 1`] = `
-{
-  "refsStack": [
-    "#/components/schemas/Parent",
-  ],
-  "resolved": {
-    "properties": {
-      "test": {
-        "type": "string",
-      },
-    },
-    "type": "object",
-  },
-}
-`;
-
 exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
 {
+  "absolutePointer": "",
   "oneOf": [
     {
       "allOf": [
@@ -65,7 +50,6 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
           ],
         },
       ],
-      "x-refsStack": undefined,
     },
     {
       "allOf": [
@@ -113,7 +97,6 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
           ],
         },
       ],
-      "x-refsStack": undefined,
     },
     {
       "allOf": [
@@ -162,20 +145,38 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
           ],
         },
       ],
-      "x-refsStack": undefined,
     },
   ],
 }
 `;
 
-exports[`Models Schema should override description from $ref of the referenced component, when sibling description exists  1`] = `
+exports[`Models Schema should not crash on self-referencing array in allOf 1`] = `
 {
-  "refsStack": [
-    "#/components/schemas/Test",
-  ],
-  "resolved": {
-    "description": "Overriden description",
-    "type": "object",
+  "absolutePointer": "#/components/schemas/Array",
+  "allOf": undefined,
+  "description": undefined,
+  "items": {
+    "absolutePointer": "/0",
+    "allOf": undefined,
+    "description": undefined,
+    "readOnly": undefined,
+    "title": undefined,
+    "type": "array",
+    "writeOnly": undefined,
+    "x-circular-ref": true,
+    "x-complex": undefined,
+    "x-parentRefs": [
+      "#/components/schemas/Array",
+    ],
   },
+  "readOnly": undefined,
+  "title": undefined,
+  "type": "array",
+  "writeOnly": undefined,
+  "x-circular-ref": undefined,
+  "x-complex": undefined,
+  "x-parentRefs": [
+    "#/components/schemas/Array",
+  ],
 }
 `;

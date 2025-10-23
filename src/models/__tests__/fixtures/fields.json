@@ -1,0 +1,106 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "parameters": {
+      "testParam": {
+        "in": "path",
+        "name": "test_name",
+        "schema": { "type": "string" }
+      },
+      "serializationParam": {
+        "in": "query",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" },
+        "style": "form",
+        "explode": true
+      },
+      "queryParamWithNoStyle": {
+        "in": "query",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
+      },
+      "pathParamWithNoStyle": {
+        "in": "path",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
+      },
+      "cookieParamWithNoStyle": {
+        "in": "cookie",
+        "name": "serialization_test_name",
+        "schema": { "type": "array" }
+      },
+      "queryParamExample": {
+        "name": "username",
+        "in": "query",
+        "example": {
+          "id": "main example"
+        },
+        "content": {
+          "application/json": {
+            "example": {
+              "id": "content example"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/test"
+            }
+          }
+        },
+        "description": "The user name for login"
+      },
+      "queryParamWithContentExample": {
+        "name": "username",
+        "in": "query",
+        "content": {
+          "application/json": {
+            "example": {
+              "id": "content example"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/test"
+            }
+          }
+        },
+        "description": "The user name for login"
+      },
+      "queryParamSchemaExample": {
+        "name": "username",
+        "in": "query",
+        "content": {
+          "application/json": {
+            "example": {
+              "id": "content example"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/test"
+            }
+          }
+        },
+        "description": "The user name for login"
+      }
+    },
+    "headers": {
+      "testHeader": {
+        "description": "The response content language",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "test": {
+        "description": "Address identifier for location including type of identifier.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "schema example"
+          }
+        }
+      }
+    }
+  }
+}

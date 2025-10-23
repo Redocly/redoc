@@ -1,96 +1,110 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { FieldDetails } from '../Fields/FieldDetails';
+import type { ReactElement } from 'react';
+import type { FieldModel, SchemaModel } from '../../models/index.js';
+import type { SchemaProps } from './types.js';
 
-import { FieldModel, SchemaModel } from '../../services/models';
+import { ArraySchema } from './ArraySchema.js';
+import { ObjectSchema } from './ObjectSchema.js';
+import { OneOfSchema } from './OneOfSchema.js';
+import { RecursiveSchema } from './RecursiveSchema.js';
+import { operationStore } from '../../jotai/operation.js';
+import { FieldDetails } from '../PropertyDetails/index.js';
+import { pathIncludesLink } from '../../utils/index.js';
+import { styled } from '../../styled-components.js';
+import { useLocation } from '../../hooks/useLocation.js';
 
-import { ArraySchema } from './ArraySchema';
-import { ObjectSchema } from './ObjectSchema';
-import { OneOfSchema } from './OneOfSchema';
-import { RecursiveSchema } from './RecursiveSchema';
+function SchemaComponent({
+  schema,
+  onDiscriminatorChange,
+  onOneOfChange,
+  ...rest
+}: Partial<SchemaProps>): ReactElement | null {
+  const { activeOneOf } = useAtomValue(operationStore(schema?.operationPointer || ''));
+  const location = useLocation();
 
-import { isArray } from '../../utils/helpers';
+  if (!schema) {
+    return null;
+  }
 
-export interface SchemaOptions {
-  showTitle?: boolean;
-  skipReadOnly?: boolean;
-  skipWriteOnly?: boolean;
-  level?: number;
-}
+  const { type, oneOf, discriminatorProp, isCircular } = schema;
 
-export interface SchemaProps extends SchemaOptions {
-  schema: SchemaModel;
-  fieldParentsName?: string[];
-}
+  if (isCircular) {
+    return <RecursiveSchema schema={schema} />;
+  }
 
-@observer
-export class Schema extends React.Component<Partial<SchemaProps>> {
-  render() {
-    const { schema, ...rest } = this.props;
-    const level = (rest.level || 0) + 1;
-
-    if (!schema) {
-      return <em> Schema not provided </em>;
-    }
-    const { type, oneOf, discriminatorProp, isCircular } = schema;
-
-    if (isCircular) {
-      return <RecursiveSchema schema={schema} />;
-    }
-
-    if (discriminatorProp !== undefined) {
-      if (!oneOf || !oneOf.length) {
-        console.warn(
-          `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${schema.title}`,
-        );
-        return null;
-      }
-      const activeSchema = oneOf[schema.activeOneOf];
-      return activeSchema.isCircular ? (
-        <RecursiveSchema schema={activeSchema} />
-      ) : (
-        <ObjectSchema
-          {...rest}
-          level={level}
-          schema={activeSchema}
-          discriminator={{
-            fieldName: discriminatorProp,
-            parentSchema: schema,
-          }}
-        />
+  if (discriminatorProp !== undefined) {
+    if (!oneOf || !oneOf.length) {
+      console.warn(
+        `Looks like you are using discriminator wrong: you don't have any definition inherited from the ${schema.title}`,
       );
+      return null;
     }
 
-    if (oneOf !== undefined) {
-      return <OneOfSchema schema={schema} {...rest} />;
-    }
+    const locationOneOfIdx = oneOf.findIndex((_, index) =>
+      pathIncludesLink(location, `d=${index}`),
+    );
+    const activeOneOfIdx = locationOneOfIdx === -1 ? 0 : locationOneOfIdx;
+    const activeSchemaIndex =
+      activeOneOf[schema.pointer] !== undefined ? activeOneOf[schema.pointer] : activeOneOfIdx;
+    const activeSchema = oneOf[activeSchemaIndex];
 
-    const types = isArray(type) ? type : [type];
-    if (types.includes('object')) {
-      if (schema.fields?.length) {
-        return <ObjectSchema {...(this.props as any)} level={level} />;
-      }
-    } else if (types.includes('array')) {
-      return <ArraySchema {...(this.props as any)} level={level} />;
-    }
-
-    // TODO: maybe adjust FieldDetails to accept schema
-    const field = {
-      schema,
-      name: '',
-      required: false,
-      description: schema.description,
-      externalDocs: schema.externalDocs,
-      deprecated: false,
-      toggle: () => null,
-      expanded: false,
-    } as any as FieldModel; // cast needed for hot-loader to not fail
-
-    return (
-      <div>
-        <FieldDetails field={field} />
-      </div>
+    return activeSchema?.isCircular ? (
+      <RecursiveSchema schema={activeSchema} />
+    ) : (
+      <ObjectSchema
+        {...rest}
+        schema={activeSchema}
+        discriminator={{
+          fieldName: discriminatorProp,
+          parentSchema: schema,
+          activeOneOfIdx: activeOneOfIdx,
+          onChange: onDiscriminatorChange,
+        }}
+        onOneOfChange={onOneOfChange}
+      />
     );
   }
+
+  if (oneOf !== undefined && oneOf.length > 1) {
+    return (
+      <OneOfSchema
+        {...rest}
+        schema={schema as SchemaModel & { oneOf: SchemaModel[] }}
+        onChange={onOneOfChange}
+      />
+    );
+  }
+
+  const types = Array.isArray(type) ? type : [type];
+  if (types.includes('object')) {
+    if (schema.fields?.length) {
+      return <ObjectSchema {...rest} schema={schema} onOneOfChange={onOneOfChange} />;
+    }
+  } else if (types.includes('array')) {
+    return <ArraySchema {...rest} schema={schema} onOneOfChange={onOneOfChange} />;
+  }
+
+  const field = {
+    schema,
+    name: '',
+    description: schema.description,
+    required: false,
+    deprecated: false,
+  } as FieldModel;
+
+  return (
+    <Wrapper>
+      <FieldDetails field={field} fieldParentsName={rest.fieldParentsName} />
+    </Wrapper>
+  );
 }
+
+export const Schema = memo<Partial<SchemaProps>>(SchemaComponent);
+
+const Wrapper = styled.div`
+  width: 100%;
+  padding: var(--spacing-xxs) 0;
+  border-bottom: 1px solid var(--border-color-primary);
+`;

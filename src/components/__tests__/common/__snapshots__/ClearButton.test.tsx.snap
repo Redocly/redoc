@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClearButton component render component correctly 1`] = `
+.c0 {
+  z-index: 1;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  color: #89949f;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.c0:hover {
+  color: #fff;
+}
+
+<div>
+  <button
+    class="c0"
+  >
+    ✕
+  </button>
+</div>
+`;

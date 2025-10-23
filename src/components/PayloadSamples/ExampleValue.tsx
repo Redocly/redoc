@@ -1,22 +1,63 @@
-import * as React from 'react';
+import { useAtomValue } from 'jotai';
 
-import { isJsonLike, langFromMime } from '../../utils/openapi';
-import { JsonViewer } from '../JsonViewer/JsonViewer';
-import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
+import type { ExampleValueProps } from './types.js';
 
-export interface ExampleValueProps {
-  value: any;
-  mimeType: string;
-}
+import { JsonViewer } from '@redocly/theme/components/JsonViewer/JsonViewer';
 
-export function ExampleValue({ value, mimeType }: ExampleValueProps) {
+import {
+  isFormUrlEncoded,
+  isJsonLike,
+  langFromMime,
+  urlFormEncodePayload,
+} from '../../utils/index.js';
+import { globalOptionsAtom } from '../../jotai/store.js';
+import { StyledCodeBlock } from './styled.js';
+
+export function ExampleValue({
+  value,
+  mimeType,
+  encoding,
+  onCopyClick,
+}: ExampleValueProps): React.ReactNode {
+  const { jsonSamplesExpandLevel } = useAtomValue(globalOptionsAtom);
+
   if (isJsonLike(mimeType)) {
-    return <JsonViewer data={value} />;
-  } else {
-    if (typeof value === 'object') {
+    return (
+      <JsonViewer
+        data={value}
+        expandLevel={jsonSamplesExpandLevel}
+        onCopyClick={onCopyClick}
+        controls={{
+          report: {
+            hidden: true,
+          },
+        }}
+      />
+    );
+  }
+  if (typeof value === 'object') {
+    if (isFormUrlEncoded(mimeType)) {
+      value = urlFormEncodePayload(value, encoding);
+    } else {
       // just in case example was cached as json but used as non-json
       value = JSON.stringify(value, null, 2);
     }
-    return <SourceCodeWithCopy lang={langFromMime(mimeType)} source={value} />;
   }
+  return (
+    <StyledCodeBlock
+      lang={langFromMime(mimeType)}
+      source={value}
+      header={{
+        className: 'code-block-header',
+        controls: {
+          copy: {
+            onClick: onCopyClick,
+          },
+          report: {
+            hidden: true,
+          },
+        },
+      }}
+    />
+  );
 }

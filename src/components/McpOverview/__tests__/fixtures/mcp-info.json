@@ -1,0 +1,18 @@
+{
+  "protocolVersion": "1.0.0",
+  "capabilities": {
+    "tool_code_interpreter": true,
+    "tool_image_generation": false,
+    "experimental": {
+      "a": true
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/mcp"
+    }
+  ],
+  "tools": [],
+  "resources": [],
+  "prompts": []
+}

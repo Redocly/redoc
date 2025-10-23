@@ -1,0 +1,284 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select component render Select component correctly 1`] = `
+.c1 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+.c1 path {
+  fill: currentColor;
+}
+
+.c0 {
+  box-sizing: border-box;
+  outline: none;
+  display: inline-block;
+  vertical-align: bottom;
+  position: relative;
+  width: auto;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.c0 label {
+  box-sizing: border-box;
+  min-width: 90px;
+  height: 36px;
+  outline: none;
+  display: inline-block;
+  color: var(--docs-dropdown-text-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--docs-dropdown-padding);
+  vertical-align: bottom;
+  width: auto;
+  text-transform: none;
+  line-height: inherit;
+  font-size: var(--docs-dropdown-font-size);
+  font-family: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: var(--panel-samples-dropdown-bg-color);
+  border: var(--panel-samples-dropdown-border);
+  color: var(--panel-samples-dropdown-color);
+}
+
+.c0 label,
+.c0 label:hover,
+.c0 label:focus-within {
+  box-shadow: none;
+}
+
+.c0 label,
+.c0 label:hover,
+.c0 label:focus-within {
+  box-shadow: none;
+}
+
+.c0 .dropdown-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  color: var(--text-color-secondary);
+  line-height: inherit;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  padding: var(--docs-dropdown-padding);
+  background-color: var(--panel-samples-dropdown-bg-color);
+  border: var(--panel-samples-dropdown-border);
+  color: var(--panel-samples-dropdown-color);
+}
+
+.c0 .dropdown-select,
+.c0 .dropdown-select:hover,
+.c0 .dropdown-select:focus-within {
+  box-shadow: none;
+}
+
+.c2 {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+<div
+  class="c0 dropdown-wrapper"
+>
+  <svg
+    class="c1 c2"
+    data-component-name="icons/ChevronDownIcon/ChevronDownIcon"
+    fill="none"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8 10.9998L3 5.9998L3.7 5.2998L8 9.5998L12.3 5.2998L13 5.9998L8 10.9998Z"
+    />
+  </svg>
+  <select
+    aria-label="dropdown select"
+    class="dropdown-select"
+  >
+    <option
+      class="dropdown-option"
+      value="option1"
+    >
+      First option
+    </option>
+    <option
+      class="dropdown-option"
+      value="option2"
+    >
+      Second option
+    </option>
+  </select>
+  <label>
+    First option
+  </label>
+</div>
+`;
+
+exports[`Select component render SimpleSelect dark variant correctly 1`] = `
+.c2 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+.c2 path {
+  fill: currentColor;
+}
+
+.c0 {
+  box-sizing: border-box;
+  outline: none;
+  display: inline-block;
+  vertical-align: bottom;
+  position: relative;
+  width: auto;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.c0 label {
+  box-sizing: border-box;
+  min-width: 90px;
+  height: 36px;
+  outline: none;
+  display: inline-block;
+  color: var(--docs-dropdown-text-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--docs-dropdown-padding);
+  vertical-align: bottom;
+  width: auto;
+  text-transform: none;
+  line-height: inherit;
+  font-size: var(--docs-dropdown-font-size);
+  font-family: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: var(--panel-samples-dropdown-bg-color);
+  border: var(--panel-samples-dropdown-border);
+  color: var(--panel-samples-dropdown-color);
+}
+
+.c0 label,
+.c0 label:hover,
+.c0 label:focus-within {
+  box-shadow: none;
+}
+
+.c0 label,
+.c0 label:hover,
+.c0 label:focus-within {
+  box-shadow: none;
+}
+
+.c0 .dropdown-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  color: var(--text-color-secondary);
+  line-height: inherit;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  padding: var(--docs-dropdown-padding);
+  background-color: var(--panel-samples-dropdown-bg-color);
+  border: var(--panel-samples-dropdown-border);
+  color: var(--panel-samples-dropdown-color);
+}
+
+.c0 .dropdown-select,
+.c0 .dropdown-select:hover,
+.c0 .dropdown-select:focus-within {
+  box-shadow: none;
+}
+
+.c1 svg {
+  top: 60%;
+  -webkit-transform: translateY(-60%);
+  -ms-transform: translateY(-60%);
+  transform: translateY(-60%);
+}
+
+.c1 label {
+  padding: 0 26px 0 4px;
+  background: transparent;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: auto;
+}
+
+.c1 label:hover,
+.c1 label:focus-within {
+  box-shadow: none;
+}
+
+.c3 {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+<div
+  class="c0 c1 dropdown-wrapper"
+>
+  <svg
+    class="c2 c3"
+    data-component-name="icons/ChevronDownIcon/ChevronDownIcon"
+    fill="none"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8 10.9998L3 5.9998L3.7 5.2998L8 9.5998L12.3 5.2998L13 5.9998L8 10.9998Z"
+    />
+  </svg>
+  <select
+    aria-label="dropdown select"
+    class="dropdown-select"
+  >
+    <option
+      class="dropdown-option"
+      value="option1"
+    >
+      First option
+    </option>
+    <option
+      class="dropdown-option"
+      value="option2"
+    >
+      Second option
+    </option>
+  </select>
+  <label>
+    First option
+  </label>
+</div>
+`;

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div id="redoc_container"></div>
+    <script type="module">
+      import { init } from '../bundle/redoc.standalone.js';
+
+      const searchParams = new URLSearchParams(location.search);
+      const specFileName = searchParams.get('specFileName') || 'menu.yaml';
+      const schemaDefinitionsTagName = searchParams.get('schemaDefinitionsTagName');
+      const routingBasePath = searchParams.get('routingBasePath') || undefined;
+
+      init(
+        `../openapi/menu/${specFileName}`,
+        {
+          schemaDefinitionsTagName,
+          routingBasePath,
+          downloadUrls: [
+            {
+              url: 'http://redocly.com/definition.yaml',
+              name: 'definition.yaml',
+            },
+            {
+              url: 'http://redocly.com/definition.json',
+              name: 'definition.json',
+            },
+          ],
+        },
+        document.getElementById('redoc_container'),
+      );
+    </script>
+  </body>
+</html>
