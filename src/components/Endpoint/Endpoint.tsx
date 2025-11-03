@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ShelfIcon } from '../../common-elements';
 import { OperationModel } from '../../services';
-import { Markdown } from '../Markdown/Markdown';
 import { OptionsContext } from '../OptionsProvider';
 import { SelectOnClick } from '../SelectOnClick/SelectOnClick';
 
@@ -59,7 +58,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 color={inverted ? 'black' : 'white'}
                 size={'20px'}
                 direction={expanded ? 'up' : 'down'}
-                style={{ marginRight: '-25px' }}
+                style={{ marginRight: '-5px' }}
               />
             </EndpointInfo>
             <ServersOverlay $expanded={expanded} aria-hidden={!expanded}>
@@ -70,7 +69,9 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                 const basePath = getBasePath(normalizedUrl);
                 return (
                   <ServerItem key={normalizedUrl}>
-                    <Markdown source={server.description || ''} compact={true} />
+                    <p style={{ textAlign: 'left', margin:'0 0 5px 0',padding:'0' }}>
+                      {server.description || ''}
+                    </p>
                     <SelectOnClick>
                       <ServerUrl>
                         <span>

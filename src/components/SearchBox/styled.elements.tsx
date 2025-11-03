@@ -13,16 +13,18 @@ export const SearchInput = styled.input.attrs(() => ({
 }))`
   width: calc(100% - ${props => props.theme.spacing.unit * 8}px);
   box-sizing: border-box;
+  text-align: right;
+  direction: rtl;
   margin: 0 ${props => props.theme.spacing.unit * 4}px;
   padding: 5px ${props => props.theme.spacing.unit * 2}px 5px
     ${props => props.theme.spacing.unit * 4}px;
   border: 0;
   border-bottom: 1px solid
     ${({ theme }) =>
-      (getLuminance(theme.sidebar.backgroundColor) > 0.5 ? darken : lighten)(
-        0.1,
-        theme.sidebar.backgroundColor,
-      )};
+  (getLuminance(theme.sidebar.backgroundColor) > 0.5 ? darken : lighten)(
+    0.1,
+    theme.sidebar.backgroundColor,
+  )};
   font-family: ${({ theme }) => theme.typography.fontFamily};
   font-weight: bold;
   font-size: 13px;
@@ -66,7 +68,7 @@ export const SearchResultsBox = styled.div`
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
-  
+
   li {
     background-color: inherit;
   }
@@ -91,10 +93,10 @@ export const ClearIcon = styled.i`
   display: inline-block;
   width: ${props => props.theme.spacing.unit * 2}px;
   text-align: center;
-  right: ${props => props.theme.spacing.unit * 4}px;
+  left: ${props => props.theme.spacing.unit * 4}px;
   line-height: 2em;
   vertical-align: middle;
-  margin-right: 2px;
+  margin-left: 15px;
   cursor: pointer;
   font-style: normal;
   color: '#666';

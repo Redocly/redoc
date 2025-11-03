@@ -24,6 +24,7 @@ export const OperationBadge = styled.span.attrs((props: { type: string; color?: 
   vertical-align: middle;
   margin-right: 6px;
   margin-top: 2px;
+  margin-left: 6px;
 
   &.get {
     background-color: ${({ theme }) => theme.colors.http.get};
@@ -87,6 +88,8 @@ function menuItemActive(
 export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
   margin: 0;
   padding: 0;
+  direction: rtl;
+  text-align: right;
 
   &:first-child {
     padding-bottom: 32px;
@@ -135,21 +138,21 @@ export const MenuItemLabel = styled.label.attrs((props: MenuItemLabelType) => ({
 }))<MenuItemLabelType>`
   cursor: pointer;
   color: ${props =>
-    props.$active
-      ? menuItemActive(props.$depth, props, 'activeTextColor')
-      : props.theme.sidebar.textColor};
+  props.$active
+    ? menuItemActive(props.$depth, props, 'activeTextColor')
+    : props.theme.sidebar.textColor};
   margin: 0;
   padding: 12.5px ${props => props.theme.spacing.unit * 4}px;
   ${({ $depth, $type, theme }) =>
-    ($type === 'section' && $depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
+  ($type === 'section' && $depth > 1 && 'padding-left: ' + theme.spacing.unit * 8 + 'px;') || ''}
   display: flex;
   justify-content: space-between;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   ${props => menuItemDepth[props.$depth]};
   background-color: ${props =>
-    props.$active
-      ? menuItemActive(props.$depth, props, 'activeBackgroundColor')
-      : props.theme.sidebar.backgroundColor};
+  props.$active
+    ? menuItemActive(props.$depth, props, 'activeBackgroundColor')
+    : props.theme.sidebar.backgroundColor};
 
   ${props => (props.$deprecated && deprecatedCss) || ''};
 

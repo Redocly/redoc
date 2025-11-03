@@ -27,6 +27,7 @@ export const RedocWrap = styled.div`
 
 export const ApiContentWrap = styled.div`
   z-index: 1;
+  direction: rtl;
   position: relative;
   overflow: hidden;
   width: calc(100% - ${props => props.theme.sidebar.width});
@@ -35,6 +36,10 @@ export const ApiContentWrap = styled.div`
   `};
 
   contain: layout;
+
+  p {
+    text-align: right;
+  }
 `;
 
 export const BackgroundStub = styled.div`
@@ -42,15 +47,15 @@ export const BackgroundStub = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
+  left: 0;
   width: ${({ theme }) => {
-    if (theme.rightPanel.width.endsWith('%')) {
-      const percents = parseInt(theme.rightPanel.width, 10);
-      return `calc((100% - ${theme.sidebar.width}) * ${percents / 100})`;
-    } else {
-      return theme.rightPanel.width;
-    }
-  }};
+  if (theme.rightPanel.width.endsWith('%')) {
+    const percents = parseInt(theme.rightPanel.width, 10);
+    return `calc((100% - ${theme.sidebar.width}) * ${percents / 100})`;
+  } else {
+    return theme.rightPanel.width;
+  }
+}};
   ${media.lessThan('medium', true)`
     display: none;
   `};

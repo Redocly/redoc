@@ -21,8 +21,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}) => ({
       env.playground
         ? 'playground/hmr-playground.tsx'
         : env.bench
-        ? '../benchmark/index.tsx'
-        : 'index.tsx',
+          ? '../benchmark/index.tsx'
+          : 'index.tsx',
     ),
   ],
   target: 'web',
@@ -104,8 +104,8 @@ export default (env: { playground?: boolean; bench?: boolean } = {}) => ({
       template: env.playground
         ? 'demo/playground/index.html'
         : env.bench
-        ? 'benchmark/index.html'
-        : 'demo/index.html',
+          ? 'benchmark/index.html'
+          : 'demo/index.html',
     }),
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
@@ -115,7 +115,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}) => ({
     webpackIgnore(/json-schema-ref-parser\/lib\/dereference\.js/),
     webpackIgnore(/^\.\/SearchWorker\.worker$/),
     new CopyWebpackPlugin({
-      patterns: ['demo/museum.yaml'],
+      patterns: ['demo/big-openapi.json'],
     }),
   ],
 });

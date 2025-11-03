@@ -133,7 +133,7 @@ const defaultTheme: ThemeInterface = {
     },
   },
   sidebar: {
-    width: '260px',
+    width: '300px',
     backgroundColor: '#fafafa',
     textColor: '#333333',
     activeTextColor: theme =>

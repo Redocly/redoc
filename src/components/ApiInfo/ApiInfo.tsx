@@ -77,7 +77,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               {info.title} {version}
             </ApiHeader>
             {!hideDownloadButtons && (
-              <p>
+              <p style={{ 'direction' : 'ltr', 'textAlign':'left' }}>
                 {l('downloadSpecification')}:
                 {downloadUrls?.map(({ title, url }) => {
                   return (
@@ -96,12 +96,12 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
             )}
             <StyledMarkdownBlock>
               {((info.license || info.contact || info.termsOfService) && (
-                <InfoSpanBoxWrap>
-                  <InfoSpanBox>
-                    {email} {website} {license} {terms}
-                  </InfoSpanBox>
-                </InfoSpanBoxWrap>
-              )) ||
+                  <InfoSpanBoxWrap>
+                    <InfoSpanBox>
+                      {email} {website} {license} {terms}
+                    </InfoSpanBox>
+                  </InfoSpanBoxWrap>
+                )) ||
                 null}
             </StyledMarkdownBlock>
             <Markdown source={store.spec.info.summary} data-role="redoc-summary" />

@@ -24,6 +24,7 @@ export const H2 = styled.h2`
   ${headerCommonMixin(2)};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0 0 20px;
+  text-align: right;
 
   ${extensionsHook('H2')};
 `;
@@ -31,6 +32,7 @@ export const H2 = styled.h2`
 export const H3 = styled.h2`
   ${headerCommonMixin(3)};
   color: ${({ theme }) => theme.colors.text.primary};
+  text-align: right;
 
   ${extensionsHook('H3')};
 `;

@@ -28,6 +28,7 @@ export const StyledMarkdownBlock = styled(
   >,
 )`
   font-family: ${props => props.theme.typography.fontFamily};
+  direction: ltr;
   font-weight: ${props => props.theme.typography.fontWeightRegular};
   line-height: ${props => props.theme.typography.lineHeight};
 
@@ -38,8 +39,8 @@ export const StyledMarkdownBlock = styled(
   }
 
   ${({ $compact }) =>
-    $compact &&
-    `
+  $compact &&
+  `
     p:first-child {
       margin-top: 0;
     }
@@ -49,8 +50,8 @@ export const StyledMarkdownBlock = styled(
   `}
 
   ${({ $inline }) =>
-    $inline &&
-    ` p {
+  $inline &&
+  ` p {
     display: inline-block;
   }`}
 
@@ -105,9 +106,10 @@ export const StyledMarkdownBlock = styled(
   blockquote {
     margin: 0;
     margin-bottom: 1em;
-    padding: 0 15px;
+    margin-top: 1em;
+    padding: 0 0;
     color: #777;
-    border-left: 4px solid #ddd;
+    border-right: 4px solid #ddd;
   }
 
   img {
@@ -117,7 +119,8 @@ export const StyledMarkdownBlock = styled(
 
   ul,
   ol {
-    padding-left: 2em;
+    text-align: right;
+    padding-right: 2em;
     margin: 0;
     margin-bottom: 1em;
 
