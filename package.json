@@ -160,6 +160,9 @@
     "swagger2openapi": "^7.0.8",
     "url-template": "^2.0.8"
   },
+  "overrides": {
+    "tmp": ">=0.2.4"
+  },
   "size-limit": [
     {
       "path": "./bundles/redoc.standalone.js",
