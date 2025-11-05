@@ -90,7 +90,7 @@
     "copy-webpack-plugin": "^9.0.0",
     "core-js": "^3.13.1",
     "css-loader": "^5.2.6",
-    "cypress": "^15.5.0",
+    "cypress": "^13.8.1",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
     "esbuild-loader": "^4.3.0",
