@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# remove template files
-rm -f /usr/share/nginx/html/index.prefix.tpl.html /usr/share/nginx/html/index.tpl.html
-
 if [ -n "$BASE_PATH" ]; then
   rm -f /etc/nginx/conf.d/default.conf
   rm -f /usr/share/nginx/html/index.html
