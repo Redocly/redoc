@@ -1,16 +1,17 @@
 import { renderHook } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 
-import type { ContentItemModel } from '../../../models';
+import type { ContentItemModel } from '../../../models/index.js';
+import type { MockedFunction } from 'vitest';
 
-import { useIsExpanded } from '../useIsExpanded';
+import { useIsExpanded } from '../useIsExpanded.js';
 
 // Mock react-router-dom
-jest.mock('react-router-dom', () => ({
-  useLocation: jest.fn(),
+vi.mock('react-router-dom', () => ({
+  useLocation: vi.fn(),
 }));
 
-const mockUseLocation = useLocation as jest.Mock;
+const mockUseLocation = useLocation as MockedFunction<typeof useLocation>;
 
 describe('useIsExpanded', () => {
   const mockRoutingBasePath = '/docs';
@@ -20,13 +21,19 @@ describe('useIsExpanded', () => {
   });
 
   it('should return false for non-tag items', () => {
-    mockUseLocation.mockReturnValue({ pathname: '/docs/pets', hash: '' });
+    mockUseLocation.mockReturnValue({
+      pathname: '/docs/pets',
+      hash: '',
+      state: undefined,
+      key: '',
+      search: '',
+    });
 
     const item: ContentItemModel = {
       type: 'operation',
       href: '/pets',
       items: [],
-    };
+    } as unknown as ContentItemModel;
 
     const { result } = renderHook(() =>
       useIsExpanded({ item, routingBasePath: mockRoutingBasePath }),
@@ -36,13 +43,19 @@ describe('useIsExpanded', () => {
   });
 
   it('should return true when current path matches item href', () => {
-    mockUseLocation.mockReturnValue({ pathname: '/docs/pets', hash: '' });
+    mockUseLocation.mockReturnValue({
+      pathname: '/docs/pets',
+      hash: '',
+      state: undefined,
+      key: '',
+      search: '',
+    });
 
     const item: ContentItemModel = {
       type: 'tag',
       href: '/pets',
       items: [{ type: 'operation', href: '/pets/get', items: [] } as unknown as ContentItemModel],
-    };
+    } as unknown as ContentItemModel;
 
     const { result } = renderHook(() =>
       useIsExpanded({ item, routingBasePath: mockRoutingBasePath }),
@@ -55,6 +68,9 @@ describe('useIsExpanded', () => {
     mockUseLocation.mockReturnValue({
       pathname: '/docs',
       hash: '#tag/pets',
+      state: undefined,
+      key: '',
+      search: '',
     });
 
     const item: ContentItemModel = {
@@ -71,7 +87,13 @@ describe('useIsExpanded', () => {
   });
 
   it('should handle nested items', () => {
-    mockUseLocation.mockReturnValue({ pathname: '/docs/pets/create', hash: '' });
+    mockUseLocation.mockReturnValue({
+      pathname: '/docs/pets/create',
+      hash: '',
+      state: undefined,
+      key: '',
+      search: '',
+    });
 
     const item: ContentItemModel = {
       type: 'tag',
@@ -89,7 +111,7 @@ describe('useIsExpanded', () => {
           ],
         } as unknown as ContentItemModel,
       ],
-    };
+    } as unknown as ContentItemModel;
 
     const { result } = renderHook(() =>
       useIsExpanded({ item, routingBasePath: mockRoutingBasePath }),
@@ -102,6 +124,9 @@ describe('useIsExpanded', () => {
     mockUseLocation.mockReturnValue({
       pathname: '/docs/user%20profile',
       hash: '',
+      state: undefined,
+      key: '',
+      search: '',
     });
 
     const item: ContentItemModel = {
@@ -121,13 +146,16 @@ describe('useIsExpanded', () => {
     mockUseLocation.mockReturnValue({
       pathname: '/docs/users',
       hash: '',
+      state: undefined,
+      key: '',
+      search: '',
     });
 
     const item: ContentItemModel = {
       type: 'tag',
       href: '/pets',
       items: [{ type: 'operation', href: '/pets/list', items: [] } as unknown as ContentItemModel],
-    };
+    } as unknown as ContentItemModel;
 
     const { result } = renderHook(() =>
       useIsExpanded({ item, routingBasePath: mockRoutingBasePath }),

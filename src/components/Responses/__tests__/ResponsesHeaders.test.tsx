@@ -1,19 +1,19 @@
 import { render } from '@testing-library/react';
 
-import { ResponseHeaders } from '../ResponseHeaders';
-import { PropertiesTable } from '../../common';
+import { ResponseHeaders } from '../ResponseHeaders.js';
+import { PropertiesTable } from '../../common/index.js';
 
-jest.mock('../../common', () => ({
-  PropertiesTable: jest.fn(() => <div data-testid="properties-table" />),
+vi.mock('../../common', () => ({
+  PropertiesTable: vi.fn(() => <div data-testid="properties-table" />),
 }));
 
-jest.mock('../../PropertyDetails', () => ({
-  Field: jest.fn(() => <div data-testid="property-details" />),
+vi.mock('../../PropertyDetails', () => ({
+  Field: vi.fn(() => <div data-testid="property-details" />),
 }));
 
 describe('ResponseHeaders', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders nothing if headers are not defined', () => {

@@ -13,7 +13,6 @@ export * from './session-storage.js';
 export * from './local-storage.js';
 export * from './parameters.js';
 export * from './string.js';
-export * from './test-utils.js';
 export * from './compose.js';
 export * from './saveTextBeforeHeading.js';
 export * from './path.js';

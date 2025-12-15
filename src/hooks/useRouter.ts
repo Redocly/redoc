@@ -12,6 +12,10 @@ const RouterComponent: Dictionary<ComponentType<PropsWithChildren>, RouterType> 
 interface RouterProps {
   basename?: string;
   location?: string;
+  future?: {
+    v7_startTransition: boolean;
+    v7_relativeSplatPath: boolean;
+  };
 }
 
 export const useRouter = (router: RouterType, basePath: string) => {

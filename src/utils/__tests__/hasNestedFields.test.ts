@@ -1,5 +1,5 @@
-import { hasNestedFields } from '../hasNestedFields';
-import type { SchemaModel, FieldModel } from '../../models/types';
+import { hasNestedFields } from '../hasNestedFields.js';
+import type { SchemaModel, FieldModel } from '../../models/types.js';
 
 const createMockField = (isPrimitive: boolean, isCircular: boolean = false): FieldModel => ({
   schema: {

@@ -137,6 +137,7 @@ function convertOpenAPIDocs2Sidebar(data: {
           hasActiveSubItem,
           modified: true,
           deprecated: item.deprecated,
+          isAdditionalOperation: item.isAdditionalOperation,
         });
         break;
       case 'section':

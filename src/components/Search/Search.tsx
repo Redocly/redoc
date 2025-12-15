@@ -1,7 +1,7 @@
 import type { OpenAPIParser } from '../../services/OpenAPIParser.js';
 import type { ContentItemModel } from '../../models/types.js';
 
-import { useSearchDialog } from '@redocly/theme/core/openapi';
+import { useSearchDialog, SearchSessionProvider } from '@redocly/theme/core/openapi';
 
 import { SearchDialog, SearchTrigger } from './index.js';
 import { useSearch } from '../../hooks/useSearch.js';
@@ -13,7 +13,7 @@ export type SearchProps = {
   parser: OpenAPIParser;
 };
 
-export function Search({ flatItems, parser }: SearchProps) {
+function SearchContent({ flatItems, parser }: SearchProps) {
   const telemetry = useTelemetry();
   const { isOpen, onOpen, onClose } = useSearchDialog();
   const { search, isReady } = useSearch(flatItems, parser);
@@ -29,6 +29,14 @@ export function Search({ flatItems, parser }: SearchProps) {
       />
       {isOpen && <SearchDialog onClose={onClose} search={search} isReady={isReady} />}
     </SearchWrapper>
+  );
+}
+
+export function Search(props: SearchProps) {
+  return (
+    <SearchSessionProvider>
+      <SearchContent {...props} />
+    </SearchSessionProvider>
   );
 }
 

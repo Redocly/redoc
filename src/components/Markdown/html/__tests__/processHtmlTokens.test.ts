@@ -4,7 +4,7 @@ import React from 'react';
 
 import { html } from '@redocly/theme/markdoc/tags/html';
 
-import { processHtmlTokens } from '../processHtmlTokens';
+import { processHtmlTokens } from '../processHtmlTokens.js';
 
 const tokenizer = new markdoc.Tokenizer({
   html: true,

@@ -1,42 +1,45 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useAtom } from 'jotai';
 import { LayoutVariant } from '@redocly/config';
+import { vi } from 'vitest';
+
+import type { Mock } from 'vitest';
 
 import { SidebarActions } from '../SidebarActions.js';
 import * as useIsMobileModule from '../../../hooks/useIsMobile.js';
 import * as useTelemetryModule from '../../../hooks/useTelemetry.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtom: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtom: vi.fn(),
 }));
 
-jest.mock('../../../hooks/useIsMobile.js', () => ({
-  useIsMobile: jest.fn(),
+vi.mock('../../../hooks/useIsMobile.js', () => ({
+  useIsMobile: vi.fn(),
 }));
 
-jest.mock('../../../hooks/useTelemetry.js', () => ({
-  useTelemetry: jest.fn(),
+vi.mock('../../../hooks/useTelemetry.js', () => ({
+  useTelemetry: vi.fn(),
 }));
 
-const useAtomMock = useAtom as jest.Mock;
-const useIsMobileMock = useIsMobileModule.useIsMobile as jest.Mock;
-const useTelemetryMock = useTelemetryModule.useTelemetry as jest.Mock;
+const useAtomMock = useAtom as Mock;
+const useIsMobileMock = useIsMobileModule.useIsMobile as Mock;
+const useTelemetryMock = useTelemetryModule.useTelemetry as Mock;
 
 describe('SidebarActions', () => {
-  const setLayout = jest.fn();
-  const setSidebarCollapsed = jest.fn();
-  const setIsSidebarOpened = jest.fn();
+  const setLayout = vi.fn();
+  const setSidebarCollapsed = vi.fn();
+  const setIsSidebarOpened = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Clean up any dark mode class that might be left from previous tests
     document.documentElement.classList.remove('dark');
 
     // Set up default mocks
     useIsMobileMock.mockReturnValue(false);
     useTelemetryMock.mockReturnValue({
-      sendChangeLayoutButtonClickedMessage: jest.fn(),
+      sendChangeLayoutButtonClickedMessage: vi.fn(),
     });
   });
 
@@ -86,7 +89,7 @@ describe('SidebarActions', () => {
         btn.querySelector('[data-component-name="icons/SidePanelOpenIcon/SidePanelOpenIcon"]'),
     );
 
-    fireEvent.click(collapseButton);
+    fireEvent.click(collapseButton as Element);
 
     expect(setIsSidebarOpened).toHaveBeenCalledWith(false);
     expect(setSidebarCollapsed).toHaveBeenCalledWith(true);
@@ -104,7 +107,7 @@ describe('SidebarActions', () => {
     const viewModeElement =
       document.querySelector('[data-component-name*="HorizontalViewIcon"]') ||
       document.querySelector('[data-component-name*="VerticalViewIcon"]');
-    fireEvent.click(viewModeElement);
+    fireEvent.click(viewModeElement as Element);
 
     expect(setLayout).toHaveBeenCalledWith(LayoutVariant.THREE_PANEL);
   });

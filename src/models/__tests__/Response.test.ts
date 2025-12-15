@@ -1,11 +1,11 @@
 import { parseYaml } from '@redocly/openapi-core';
 import { outdent } from 'outdent';
 
-import type { OpenAPIDefinition } from '../../types';
-import type { OperationModel } from '../types';
+import type { OpenAPIDefinition } from '../../types/index.js';
+import type { OperationModel } from '../types.js';
 
-import { getResponse } from '../response';
-import { normalizeOptions, OpenAPIParser } from '../../services';
+import { getResponse } from '../response.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
 
 const opts = normalizeOptions({});
 describe('Models', () => {

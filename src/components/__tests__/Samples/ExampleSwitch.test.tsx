@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 
-import { ExampleSwitch } from '../../Samples';
-import { exampleXML, examples } from '../mocks/examples';
+import { ExampleSwitch } from '../../Samples/index.js';
+import { exampleXML, examples } from '../mocks/examples.js';
 
 describe('ExampleSwitch', () => {
   const exampleKey = 'cat';

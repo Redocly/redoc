@@ -1,13 +1,108 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Example component render component with \`externalValue\` 1`] = `
-.c9 {
-  height: 16px;
-  width: 16px;
+exports[`Example component > render component with \`externalValue\` 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
-.c9 path {
-  fill: currentColor;
+.c0 > div {
+  border: none;
+  margin: 0;
+}
+
+.c0 pre {
+  contain: content;
+  overflow-x: auto;
+  position: relative;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.c0 .code-block-header {
+  border-bottom: 0;
+  padding-right: var(--spacing-sm);
+}.c1 {
+  border: 1px solid var(--border-color-secondary);
+  border-radius: var(--border-radius);
+  background-color: var(--code-block-bg-color);
+  margin: 0 0 var(--spacing-sm);
+  --md-pre-margin: 0;
+}
+
+.c2 {
+  display: grid;
+  position: relative;
+}
+
+.c3 {
+  display: grid;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--code-block-controls-font-size);
+  font-family: var(--code-block-controls-font-family);
+  background-color: var(--code-block-controls-bg-color);
+  padding: var(--code-block-controls-padding);
+  border-bottom: var(--code-block-controls-border);
+  line-height: var(--line-height-lg);
+  min-height: var(--control-height-base);
+  grid-template-columns: 1fr auto;
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  width: auto;
+  border: none;
+  background-color: transparent;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: right;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  -webkit-box-pack: end;
+  -webkit-justify-content: end;
+  -ms-flex-pack: end;
+  justify-content: end;
+}
+
+.c5 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c6 {
+  display: contents;
+}
+
+.c7 {
+  --button-icon-size: 16px;
+  --button-icon-padding: 3px;
+  --button-backdrop-filter: blur(8px);
 }
 
 .c8 {
@@ -87,6 +182,19 @@ exports[`Example component render component with \`externalValue\` 1`] = `
   color: var(--button-content-color-disabled);
   border-color: var(--button-border-color-disabled);
   border-width: var(--button-border-width-disabled);
+}
+
+.c9 {
+  height: 16px;
+  width: 16px;
+}
+
+.c9 path {
+  fill: currentColor;
+}
+
+.c10 {
+  color: var(--code-block-tokens-default-color);
 }
 
 .c11.c11 {
@@ -359,11 +467,7 @@ exports[`Example component render component with \`externalValue\` 1`] = `
   content: '\\ea0c';
 }
 
-pre.c10 {
-  color: var(--code-block-tokens-default-color);
-}
-
-.c11 .token.comment {
+pre.c11 .token.comment {
   color: var(--code-block-tokens-comment-color);
 }
 
@@ -487,115 +591,11 @@ pre.c10 {
   color: var(--code-block-tokens-function-color);
 }
 
-.c5 {
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c6 {
-  display: contents;
-}
-
-.c3 {
-  display: grid;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--code-block-controls-font-size);
-  font-family: var(--code-block-controls-font-family);
-  background-color: var(--code-block-controls-bg-color);
-  padding: var(--code-block-controls-padding);
-  border-bottom: var(--code-block-controls-border);
-  line-height: var(--line-height-lg);
-  min-height: var(--control-height-base);
-  grid-template-columns: 1fr auto;
-  z-index: 1;
-  position: absolute;
-  right: 0;
-  width: auto;
-  border: none;
-  background-color: transparent;
-  grid-template-columns: 1fr;
-  margin: 0;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  text-align: right;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  gap: var(--spacing-xxs);
-  -webkit-box-pack: end;
-  -webkit-justify-content: end;
-  -ms-flex-pack: end;
-  justify-content: end;
-}
-
-.c7 {
-  --button-icon-size: 16px;
-  --button-icon-padding: 3px;
-  --button-backdrop-filter: blur(8px);
-}
-
-.c2 {
-  display: grid;
-  position: relative;
-}
-
-.c1 {
-  border: 1px solid var(--border-color-secondary);
-  border-radius: var(--border-radius);
-  background-color: var(--code-block-bg-color);
-  margin: 0 0 var(--spacing-sm);
-  --md-pre-margin: 0;
-}
-
 .c12 {
   position: relative;
 }
 
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
 
-.c0 > div {
-  border: none;
-  margin: 0;
-}
-
-.c0 pre {
-  contain: content;
-  overflow-x: auto;
-  position: relative;
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-}
-
-.c0 .code-block-header {
-  border-bottom: 0;
-  padding-right: var(--spacing-sm);
-}
 
 <div>
   <div
@@ -672,14 +672,89 @@ pre.c10 {
 </div>
 `;
 
-exports[`Example component render component without error when \`externalValue\` is pdf file 1`] = `
-.c9 {
-  height: 16px;
-  width: 16px;
+exports[`Example component > render component without error when \`externalValue\` is pdf file 1`] = `
+.c0 {
+  border: 1px solid var(--border-color-secondary);
+  border-radius: var(--border-radius);
+  background-color: var(--code-block-bg-color);
+  margin: 0 0 var(--spacing-sm);
+  --md-pre-margin: 0;
 }
 
-.c9 path {
-  fill: currentColor;
+.c1 {
+  border: none;
+  margin: 0;
+}
+
+.c1 .code-block-header {
+  border-bottom: 0;
+  padding-right: var(--spacing-sm);
+}.c2 {
+  display: grid;
+  position: relative;
+}
+
+.c3 {
+  display: grid;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--code-block-controls-font-size);
+  font-family: var(--code-block-controls-font-family);
+  background-color: var(--code-block-controls-bg-color);
+  padding: var(--code-block-controls-padding);
+  border-bottom: var(--code-block-controls-border);
+  line-height: var(--line-height-lg);
+  min-height: var(--control-height-base);
+  grid-template-columns: 1fr auto;
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  width: auto;
+  border: none;
+  background-color: transparent;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: right;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  -webkit-box-pack: end;
+  -webkit-justify-content: end;
+  -ms-flex-pack: end;
+  justify-content: end;
+}
+
+.c5 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c6 {
+  display: contents;
+}
+
+.c7 {
+  --button-icon-size: 16px;
+  --button-icon-padding: 3px;
+  --button-backdrop-filter: blur(8px);
 }
 
 .c8 {
@@ -759,6 +834,19 @@ exports[`Example component render component without error when \`externalValue\`
   color: var(--button-content-color-disabled);
   border-color: var(--button-border-color-disabled);
   border-width: var(--button-border-width-disabled);
+}
+
+.c9 {
+  height: 16px;
+  width: 16px;
+}
+
+.c9 path {
+  fill: currentColor;
+}
+
+.c10 {
+  color: var(--code-block-tokens-default-color);
 }
 
 .c11.c11 {
@@ -1031,11 +1119,7 @@ exports[`Example component render component without error when \`externalValue\`
   content: '\\ea0c';
 }
 
-pre.c10 {
-  color: var(--code-block-tokens-default-color);
-}
-
-.c11 .token.comment {
+pre.c11 .token.comment {
   color: var(--code-block-tokens-comment-color);
 }
 
@@ -1159,91 +1243,7 @@ pre.c10 {
   color: var(--code-block-tokens-function-color);
 }
 
-.c5 {
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
 
-.c6 {
-  display: contents;
-}
-
-.c3 {
-  display: grid;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--code-block-controls-font-size);
-  font-family: var(--code-block-controls-font-family);
-  background-color: var(--code-block-controls-bg-color);
-  padding: var(--code-block-controls-padding);
-  border-bottom: var(--code-block-controls-border);
-  line-height: var(--line-height-lg);
-  min-height: var(--control-height-base);
-  grid-template-columns: 1fr auto;
-  z-index: 1;
-  position: absolute;
-  right: 0;
-  width: auto;
-  border: none;
-  background-color: transparent;
-  grid-template-columns: 1fr;
-  margin: 0;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  text-align: right;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  gap: var(--spacing-xxs);
-  -webkit-box-pack: end;
-  -webkit-justify-content: end;
-  -ms-flex-pack: end;
-  justify-content: end;
-}
-
-.c7 {
-  --button-icon-size: 16px;
-  --button-icon-padding: 3px;
-  --button-backdrop-filter: blur(8px);
-}
-
-.c2 {
-  display: grid;
-  position: relative;
-}
-
-.c0 {
-  border: 1px solid var(--border-color-secondary);
-  border-radius: var(--border-radius);
-  background-color: var(--code-block-bg-color);
-  margin: 0 0 var(--spacing-sm);
-  --md-pre-margin: 0;
-}
-
-.c1 {
-  border: none;
-  margin: 0;
-}
-
-.c1 .code-block-header {
-  border-bottom: 0;
-  padding-right: var(--spacing-sm);
-}
 
 <div>
   <div

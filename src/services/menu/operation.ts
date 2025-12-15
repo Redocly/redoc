@@ -34,6 +34,7 @@ export function getOperationsItems(
       httpVerb: operationDefinition.httpVerb,
       path: operationDefinition.pathName,
       items: [],
+      isAdditionalOperation: operationDefinition.isAdditionalOperation,
       isWebhook: operationDefinition.isWebhook,
       operationId: operationDefinition.operationId,
       badges: operationDefinition['x-badges'] || [],
@@ -49,7 +50,11 @@ export function getOperationsItems(
   }
 
   return [
-    ...operations.sort((a, b) => Number(a.deprecated) - Number(b.deprecated)),
+    ...operations.sort(
+      (a, b) =>
+        Number(a.deprecated) - Number(b.deprecated) ||
+        Number(a.isAdditionalOperation) - Number(b.isAdditionalOperation),
+    ),
     ...webhooks.sort((a, b) => Number(a.deprecated) - Number(b.deprecated)), // webhooks must be in the end for adding separator
   ];
 }

@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 
-import { AnimatedChevronButton } from '../AnimatedChevronButton';
+import { AnimatedChevronButton } from '../AnimatedChevronButton.js';
 
 describe('AnimatedChevronButton', () => {
   it('should render without crashing', () => {

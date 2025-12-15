@@ -2,7 +2,7 @@ import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { loadAndBundleDefinition } from '../loadAndBundleSpec';
+import { loadAndBundleDefinition } from '../loadAndBundleSpec.js';
 
 describe('#loadAndBundleDefinition', () => {
   it('should load and bundle spec petstore.yaml', async () => {

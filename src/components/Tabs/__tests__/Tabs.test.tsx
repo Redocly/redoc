@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 
-import { Tabs } from '../Tabs';
-import { useTabsState } from '../useTabsState';
+import { Tabs } from '../Tabs.js';
+import { useTabsState } from '../useTabsState.js';
 
 describe('Tabs', () => {
   const TestComponent = () => {

@@ -1,4 +1,4 @@
-import { isMobile } from '../isMobile';
+import { isMobile } from '../isMobile.js';
 
 describe('isMobile', () => {
   it('should return true for mobile user agent', () => {

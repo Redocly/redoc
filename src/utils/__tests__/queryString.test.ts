@@ -1,4 +1,4 @@
-import { queryString } from '../queryString';
+import { queryString } from '../queryString.js';
 
 describe('QueryString', () => {
   describe('parse', () => {

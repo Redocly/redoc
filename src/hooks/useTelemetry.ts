@@ -12,6 +12,8 @@ import type {
   SearchInputResetButtonClickedMessage,
   SearchOpenedMessage,
   SearchResultClickedMessage,
+  ViewSecurityDetailsClickedMessage,
+  ViewSecurityDetailsClosedMessage,
 } from '@redocly/redoc-opentelemetry';
 import type { Options, OpenAPIParser } from '../services/index.js';
 import type { OpenAPISecurityScheme } from '../types/open-api.js';
@@ -81,6 +83,8 @@ export function useTelemetry() {
       sendSearchResultClickedMessage: () => {},
       sendSearchInputResetButtonClickedMessage: () => {},
       sendSearchOpenedMessage: () => {},
+      sendViewSecurityDetailsClickedMessage: () => {},
+      sendViewSecurityDetailsClosedMessage: () => {},
     };
   }
 
@@ -108,5 +112,11 @@ export function useTelemetry() {
       redocTelemetry.sendEvent('redoc_ce.search.opened', data),
     sendSearchResultClickedMessage: (data: EventPayload<SearchResultClickedMessage['type']>) =>
       redocTelemetry.sendEvent('redoc_ce.search.result.clicked', data),
+    sendViewSecurityDetailsClickedMessage: (
+      data: EventPayload<ViewSecurityDetailsClickedMessage['type']>,
+    ) => redocTelemetry.sendEvent('redoc_ce.view_security_details.clicked', data),
+    sendViewSecurityDetailsClosedMessage: (
+      data: EventPayload<ViewSecurityDetailsClosedMessage['type']>,
+    ) => redocTelemetry.sendEvent('redoc_ce.view_security_details.closed', data),
   };
 }

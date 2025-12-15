@@ -1,11 +1,11 @@
-import * as outdent from 'outdent';
+import outdent from 'outdent';
 import { parseYaml } from '@redocly/openapi-core';
 
-import type { OperationModel } from '../types';
+import type { OperationModel } from '../types.js';
 
-import { getSchema } from '../schema';
-import { normalizeOptions, OpenAPIParser } from '../../services';
-import { circularDetailsPrinter, printSchema } from './helpers';
+import { getSchema } from '../schema.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import { circularDetailsPrinter, printSchema } from './helpers.js';
 
 const options = normalizeOptions({});
 const deps = { operation: { pointer: 'testSchemaCircular' } as OperationModel };
@@ -699,6 +699,48 @@ describe('Models', () => {
                 Bar ->
                   type: <string>
         `);
+    });
+    test('should use titles in oneOf schemas and should not be recursive', () => {
+      const spec = parseYaml(outdent`
+      openapi: 3.1.0
+      components:
+        schemas:
+          OneOfTitle:
+            oneOf:
+                - $ref: "#/components/schemas/Foo"
+                - $ref: "#/components/schemas/Bar"
+          Foo:
+            title: Foo Title
+            type: object
+            description: test Foo description
+            properties:
+              type:
+                type: string
+          Bar:
+            title: Bar Title
+            type: object
+            description: test Bar description
+            properties:
+              type:
+                type: string
+      `) as any;
+
+      parser = new OpenAPIParser(spec, undefined, options);
+      const schema = getSchema({
+        parser,
+        schemaOrRef: spec.components.schemas.OneOfTitle,
+        pointer: '#/components/schemas/OneOfTitle',
+        options,
+        deps,
+      });
+
+      expect(printSchema(schema, circularDetailsPrinter)).toMatchInlineSnapshot(`
+        oneOf
+          Foo Title ->
+            type: <string>
+          Bar Title ->
+            type: <string>
+      `);
     });
   });
 });

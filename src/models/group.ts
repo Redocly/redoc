@@ -14,7 +14,10 @@ export function getTagOrGroup(
   parent?: GroupModel,
 ): GroupModel {
   let id: string;
-  if (parent?.id && (type === 'schema' || type === 'mcp')) {
+  if (
+    parent?.id &&
+    (type === 'schema' || type === 'tool' || type === 'rsrc' || type === 'prompt')
+  ) {
     // handle schemas ids similar to how it is done for operations
     id = joinWithSeparator(parent.id, safeSlugify(tagOrGroup.name));
   } else {

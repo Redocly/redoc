@@ -85,7 +85,8 @@ export default tseslint.config(
           devDependencies: [
             '**/playwright/**',
             '**/vite.config.ts',
-            '**/setupTests.ts',
+            '**/vitest.config.ts',
+            '**/vitest.setup.ts',
             '**/__tests__/**/*.{ts,tsx}',
             '**/benchmarks/*.ts',
             '**/__mocks__/**/*.{ts,tsx}',

@@ -1,4 +1,4 @@
-import { alphabeticallyByProp } from '../sort';
+import { alphabeticallyByProp } from '../sort.js';
 
 describe('alphabeticallyByProp', () => {
   test('should sort objects by property in ascending order', () => {

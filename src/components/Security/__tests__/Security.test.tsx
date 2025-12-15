@@ -1,16 +1,16 @@
 import { act, fireEvent, render } from '@testing-library/react';
 // import { act } from 'react-dom/test-utils'; // For async act
 
-import type { SecurityRequirement } from '../../../models';
+import type { SecurityRequirement } from '../../../models/index.js';
 
-import { Security } from '../Security';
+import { Security } from '../Security.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(() => ({ options: { hideSecuritySection: false } })),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(() => ({ options: { hideSecuritySection: false } })),
 }));
-jest.mock('../SecurityModal', () => ({
-  SecurityModal: jest.fn(() => <div>Mocked SecurityModal</div>),
+vi.mock('../SecurityModal', async () => ({
+  SecurityModal: vi.fn(() => <div>Mocked SecurityModal</div>),
 }));
 
 describe('Security Component', () => {

@@ -26,6 +26,7 @@ export function getSchema({
   pointer,
   options,
   isChild = false,
+  isDefaultMapping = false,
   baseRefsStack = [],
   deps,
   absolutePointer,
@@ -35,6 +36,7 @@ export function getSchema({
   pointer: string;
   options: Options;
   isChild?: boolean;
+  isDefaultMapping?: boolean;
   baseRefsStack?: string[];
   deps: Deps;
   absolutePointer?: string;
@@ -54,6 +56,7 @@ export function getSchema({
     operationPointer: deps.operation?.pointer || absolutePointer || '',
     schemaOrRef,
     isChild,
+    isDefaultMapping,
     typePrefix: '',
     pointer: schemaPointer,
     absolutePointer,
@@ -289,13 +292,9 @@ function initDiscriminator({
 
   const mapping = discriminator?.mapping || {};
 
-  // Defines if the mapping is exhaustive. This avoids having references
-  // that overlap with the mapping entries
-  let isLimitedToMapping = discriminator?.['x-explicitMappingOnly'] || false;
-  // if there are no mappings, assume non-exhaustive
-  if (Object.keys(mapping).length === 0) {
-    isLimitedToMapping = false;
-  }
+  // When explicit mappings are defined, use only those mappings.
+  const isLimitedToMapping =
+    discriminator?.['x-explicitMappingOnly'] ?? Object.keys(mapping).length > 0;
 
   const explicitInvertedMapping = {};
   for (const name in mapping) {
@@ -313,7 +312,7 @@ function initDiscriminator({
     ? { ...explicitInvertedMapping }
     : { ...implicitInvertedMapping, ...explicitInvertedMapping };
 
-  let refs: Array<{ $ref; name }> = [];
+  let refs: Array<{ $ref; name; isDefaultMapping?: boolean }> = [];
 
   for (const $ref of Object.keys(invertedMapping)) {
     const names = invertedMapping[$ref];
@@ -326,6 +325,28 @@ function initDiscriminator({
     }
   }
 
+  if (discriminator?.defaultMapping) {
+    const defaultRefIdx = refs.findIndex(
+      (ref) => ref.name === JsonPointer.baseName(discriminator.defaultMapping),
+    );
+    const defaultMappingKey = 'Default mapping';
+
+    // if the default mapping added to refs from implicitInvertedMapping, update it to the default mapping key
+    if (~defaultRefIdx) {
+      refs[defaultRefIdx] = {
+        $ref: discriminator.defaultMapping,
+        name: defaultMappingKey,
+        isDefaultMapping: true,
+      };
+    } else {
+      refs.push({
+        $ref: discriminator.defaultMapping,
+        name: defaultMappingKey,
+        isDefaultMapping: true,
+      });
+    }
+  }
+
   // Make the listing respects the mapping
   // in case a mapping is defined, the user usually wants to have the order shown
   // as it was defined in the yaml. This will sort the names given the provided
@@ -334,9 +355,17 @@ function initDiscriminator({
   // - If a name is among the mapping, promote it to first
   // - Names among the mapping are sorted by their order in the mapping
   // - Names outside the mapping are sorted alphabetically
+  // - Default mapping is always last
   const names = Object.keys(mapping);
   if (names.length !== 0) {
     refs = refs.sort((left, right) => {
+      if (left.isDefaultMapping && !right.isDefaultMapping) {
+        return 1;
+      }
+      if (!left.isDefaultMapping && right.isDefaultMapping) {
+        return -1;
+      }
+
       const indexLeft = names.indexOf(left.name);
       const indexRight = names.indexOf(right.name);
 
@@ -355,13 +384,14 @@ function initDiscriminator({
     });
   }
 
-  const oneOf = refs.map(({ $ref, name }, index) => {
+  const oneOf = refs.map(({ $ref, name, isDefaultMapping }, index) => {
     const innerSchema = getSchema({
       parser,
       schemaOrRef: { $ref },
       pointer: $ref,
       options,
       isChild: true,
+      isDefaultMapping,
       baseRefsStack: refsStack.slice(0, -1),
       deps: {
         ...deps,
@@ -374,6 +404,7 @@ function initDiscriminator({
     innerSchema.title = name;
     return innerSchema;
   });
+
   return {
     oneOf,
     discriminatorProp,

@@ -33,8 +33,6 @@ function FieldDetailsComponent({
 
   const rawDefault = field.in === 'header'; // having quotes around header field default values is confusing and inappropriate
 
-  const shouldHideDescription = schema.oneOfType || schema.rawSchema?.allOf?.[0];
-
   const renderedExamples = useMemo(() => {
     if (example !== undefined || examples !== undefined) {
       if (examples !== undefined) {
@@ -95,7 +93,7 @@ function FieldDetailsComponent({
       {schema.isComplex && (
         <RecursiveLabel>{translate('openapi.complex', 'Complex')}</RecursiveLabel>
       )}
-      {!shouldHideDescription && <StyledDescription source={description} />}
+      <StyledDescription source={description} />
       <FieldDetail
         raw={rawDefault}
         type="default"

@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import type { SecurityRequirement } from '../../../models';
+import type { SecurityRequirement } from '../../../models/index.js';
 
-import { SecurityButton } from '../SecurityButton';
+import { SecurityButton } from '../SecurityButton.js';
 
 describe('SecurityButton Component', () => {
   const securities = [
@@ -46,7 +46,7 @@ describe('SecurityButton Component', () => {
   });
 
   it('calls the onClick callback when the button is clicked', () => {
-    const onClickMock = jest.fn();
+    const onClickMock = vi.fn();
     const { getByRole } = render(<SecurityButton securities={securities} onClick={onClickMock} />);
 
     fireEvent.click(getByRole('button', { name: 'View details' }));

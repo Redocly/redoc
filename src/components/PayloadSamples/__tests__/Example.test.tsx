@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import * as Jotai from 'jotai';
 
-import type { OpenAPIDefinition, OpenAPIExample } from '../../../types';
+import type { OpenAPIDefinition, OpenAPIExample } from '../../../types/index.js';
 
-import { Example } from '../Example';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getExamples } from '../../../models';
+import { Example } from '../Example.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getExamples } from '../../../models/index.js';
 import testDefinition from './fixtures/mediaTypeUrlencoded.json';
 
 describe('Example component', () => {
@@ -23,7 +23,7 @@ describe('Example component', () => {
     });
     const { container } = render(
       <Jotai.Provider>
-        <Example example={example} mimeType={example.mime} onCopyClick={jest.fn()} />
+        <Example example={example} mimeType={example.mime} onCopyClick={vi.fn()} />
       </Jotai.Provider>,
     );
 
@@ -42,7 +42,7 @@ describe('Example component', () => {
 
     const { container } = render(
       <Jotai.Provider>
-        <Example example={example} mimeType={example.mime} onCopyClick={jest.fn()} />
+        <Example example={example} mimeType={example.mime} onCopyClick={vi.fn()} />
       </Jotai.Provider>,
     );
 

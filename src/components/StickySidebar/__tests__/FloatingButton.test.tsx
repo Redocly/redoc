@@ -1,25 +1,28 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useAtom } from 'jotai';
-import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
+
+import type { Mock } from 'vitest';
 
 import * as useIsMobile from '../../../hooks/useIsMobile';
 import { FloatingButton } from '../FloatingButton.js';
+import { TestMemoryRouter } from '../../../testProviders.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtom: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtom: vi.fn(),
 }));
 
-jest.mock('../../../hooks/useIsMobile');
+vi.mock('../../../hooks/useIsMobile');
 
-const useAtomMock = useAtom as jest.Mock;
-const useIsMobileMock = jest.spyOn(useIsMobile, 'useIsMobile');
+const useAtomMock = useAtom as Mock;
+const useIsMobileMock = vi.spyOn(useIsMobile, 'useIsMobile');
 
 describe('FloatingButton', () => {
-  const setIsSidebarOpened = jest.fn();
+  const setIsSidebarOpened = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render button', () => {
@@ -27,9 +30,9 @@ describe('FloatingButton', () => {
     useIsMobileMock.mockReturnValue(false);
 
     render(
-      <MemoryRouter>
+      <TestMemoryRouter>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
     expect(screen.getByTestId('floating-button')).toBeInTheDocument();
   });
@@ -39,9 +42,9 @@ describe('FloatingButton', () => {
     useIsMobileMock.mockReturnValue(false);
 
     render(
-      <MemoryRouter>
+      <TestMemoryRouter>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     fireEvent.click(screen.getByTestId('floating-button'));
@@ -53,17 +56,17 @@ describe('FloatingButton', () => {
     useIsMobileMock.mockReturnValue(true);
 
     const { rerender } = render(
-      <MemoryRouter initialEntries={['/']}>
+      <TestMemoryRouter initialEntries={['/']}>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     expect(setIsSidebarOpened).toHaveBeenCalledWith(false);
 
     rerender(
-      <MemoryRouter initialEntries={['/new-path']}>
+      <TestMemoryRouter initialEntries={['/new-path']}>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     expect(setIsSidebarOpened).toHaveBeenCalledWith(false);
@@ -74,15 +77,15 @@ describe('FloatingButton', () => {
     useIsMobileMock.mockReturnValue(false);
 
     const { rerender } = render(
-      <MemoryRouter initialEntries={['/']}>
+      <TestMemoryRouter initialEntries={['/']}>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     rerender(
-      <MemoryRouter initialEntries={['/new-path']}>
+      <TestMemoryRouter initialEntries={['/new-path']}>
         <FloatingButton />
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     expect(setIsSidebarOpened).not.toHaveBeenCalled();

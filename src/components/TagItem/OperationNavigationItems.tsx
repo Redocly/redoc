@@ -3,6 +3,8 @@ import { memo } from 'react';
 import type { TFunction } from '@redocly/theme/core/openapi';
 import type { OperationsNavigationProps } from './types.js';
 
+import { getOperationColor } from '@redocly/theme/core/openapi';
+
 import { joinWithSeparator } from '../../services/index.js';
 import { encodeBackSlashes } from '../../utils/index.js';
 import { HttpVerb, NavigationBadge } from '../common/index.js';
@@ -26,9 +28,14 @@ function OperationNavigationItemsComponent({
     <>
       <Heading>{title}</Heading>
       {items.map((item) => {
-        const { id, href, deprecated, badges } = item;
+        const { id, href, deprecated, badges, isAdditionalOperation } = item;
         const title = item.type === 'operation' ? item.path : item.name;
         const httpVerb = item.type === 'operation' ? item.httpVerb : item.type;
+        const httpColor = getOperationColor({
+          isAdditionalOperation,
+          deprecated,
+          httpVerb,
+        });
 
         return (
           <Item
@@ -38,7 +45,7 @@ function OperationNavigationItemsComponent({
             onClick={() => onClick(joinWithSeparator(routingBasePath, encodeBackSlashes(href)))}
           >
             <span>
-              <HttpVerb color={deprecated ? 'http-deprecated' : httpVerb}>{httpVerb}</HttpVerb>
+              <HttpVerb color={httpColor}>{httpVerb}</HttpVerb>
               <Path>{title}</Path>
               {deprecated && (
                 <NavigationBadge deprecated>

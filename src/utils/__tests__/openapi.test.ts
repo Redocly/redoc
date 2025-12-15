@@ -1,12 +1,13 @@
+import type { MockInstance } from 'vitest';
 import type {
   OpenAPIParameter,
   OpenAPIParameterLocation,
   OpenAPIParameterStyle,
   OpenAPIMediaType,
   OpenAPIDefinition,
-} from '../../types';
-import type { ExtendedOpenAPIOperation } from '../../services';
-import type { FieldModel, OperationModel } from '../../models/types';
+} from '../../types/index.js';
+import type { ExtendedOpenAPIOperation } from '../../services/index.js';
+import type { FieldModel, OperationModel } from '../../models/types.js';
 
 import {
   detectType,
@@ -23,11 +24,11 @@ import {
   humanizeNumberRange,
   getDefinitionName,
   serializeQueryParameter,
-} from '../';
-import { getField } from '../../models';
-import { OpenAPIParser } from '../../services/OpenAPIParser';
-import { getContentWithLegacyExamples } from '../openapi';
-import { normalizeOptions } from '../../services';
+} from '../index.js';
+import { getField } from '../../models/index.js';
+import { OpenAPIParser } from '../../services/OpenAPIParser.js';
+import { getContentWithLegacyExamples } from '../openapi.js';
+import { normalizeOptions } from '../../services/index.js';
 
 describe('Utils', () => {
   describe('openapi getStatusCode', () => {
@@ -434,8 +435,8 @@ describe('Utils', () => {
 
     it('should remove query string and hash from url', () => {
       const originalWindow = { ...window };
-      const windowSpy = jest.spyOn(global, 'window', 'get') as jest.SpyInstance<
-        Window & typeof globalThis
+      const windowSpy = vi.spyOn(global, 'window', 'get') as unknown as MockInstance<
+        () => Window & typeof globalThis
       >;
       windowSpy.mockImplementation(
         () =>

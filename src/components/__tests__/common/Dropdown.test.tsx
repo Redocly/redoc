@@ -1,16 +1,16 @@
 import { render, fireEvent } from '@testing-library/react';
 
-import { Select, SimpleSelect } from '../../common/Select';
+import { Select, SimpleSelect } from '../../common/Select/index.js';
 
 describe('Select component', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const options = [
     { idx: 0, title: 'First option', value: 'option1' },
     { idx: 1, title: 'Second option', value: 'option2' },
   ];
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('render Select component correctly', () => {

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
+exports[`Models > Schema > should hoist oneOfs when mergin allOf 1`] = `
 {
   "absolutePointer": "",
   "oneOf": [
@@ -150,7 +150,7 @@ exports[`Models Schema should hoist oneOfs when mergin allOf 1`] = `
 }
 `;
 
-exports[`Models Schema should not crash on self-referencing array in allOf 1`] = `
+exports[`Models > Schema > should not crash on self-referencing array in allOf 1`] = `
 {
   "absolutePointer": "#/components/schemas/Array",
   "allOf": undefined,

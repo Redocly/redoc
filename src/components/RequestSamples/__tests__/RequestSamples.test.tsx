@@ -1,43 +1,55 @@
 import { render, waitFor } from '@testing-library/react';
 import * as Jotai from 'jotai/index';
 
-import type { OpenAPIDefinition } from '../../../types';
-import type { OperationModel } from '../../../models';
+import type { OpenAPIDefinition } from '../../../types/index.js';
+import type { OperationModel } from '../../../models/index.js';
 
-import { RequestSamples } from '../RequestSamples';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getMediaContent, getOperation } from '../../../models';
-import { withTestProviders } from '../../../testProviders';
+import * as useCodeSamplesModule from '../useCodeSamples.js';
+
+import { RequestSamples } from '../RequestSamples.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getMediaContent, getOperation } from '../../../models/index.js';
+import { withTestProviders } from '../../../testProviders.js';
 import petStore from './fixtures/petstore.json';
+import type { ExtendedOpenAPIOperation } from '../../../services/index.js';
+
 import definition from './fixtures/operationDefinition.json';
 import {
   languageAtom,
-} from '../../../jotai/app';
-import { globalStoreAtom } from '../../../jotai/store';
+} from '../../../jotai/app.js';
+import { globalStoreAtom } from '../../../jotai/store.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn((atom) => {
-    if (atom === languageAtom) {
-      return {
-        activeLanguage: 'python',
-        languages: ['python', 'javascript'],
-      };
-    }
-    return jest.requireActual('jotai').useAtomValue(atom);
-  }),
-  useAtom: jest.fn((atom) => {
-    if (atom === languageAtom) {
-      return [
-        {
+vi.mock('jotai', async () => {
+  const actual = await vi.importActual<typeof Jotai>('jotai');
+  return {
+    ...actual,
+    useAtomValue: vi.fn((atom) => {
+      if (atom === languageAtom) {
+        return {
           activeLanguage: 'python',
           languages: ['python', 'javascript'],
-        },
-        jest.fn(),
-      ];
-    }
-    return jest.requireActual('jotai').useAtom(atom);
-  }),
+        };
+      }
+      return actual.useAtomValue(atom);
+    }),
+    useAtom: vi.fn((atom) => {
+      if (atom === languageAtom) {
+        return [
+          {
+            activeLanguage: 'python',
+            languages: ['python', 'javascript'],
+          },
+          vi.fn(),
+        ];
+      }
+      return actual.useAtom(atom);
+    }),
+  };
+});
+
+vi.mock('@redocly/theme/core/openapi', async () => ({
+  ...(await vi.importActual('@redocly/theme/core/openapi')),
+  getOperationColor: vi.fn(() => 'blue'),
 }));
 
 describe('Components', () => {
@@ -45,7 +57,7 @@ describe('Components', () => {
     let operation: OperationModel;
     const options = normalizeOptions({});
 
-    const parser = new OpenAPIParser(petStore as OpenAPIDefinition, undefined, options);
+    const parser = new OpenAPIParser(petStore as unknown as OpenAPIDefinition, undefined, options);
 
     const info = {
       'application/json': {
@@ -92,7 +104,13 @@ describe('Components', () => {
       },
     };
     test('should renders correctly without mimeType selector', () => {
-      operation = getOperation(parser, definition, undefined, options, '');
+      operation = getOperation(
+        parser,
+        definition as unknown as ExtendedOpenAPIOperation,
+        undefined,
+        options,
+        '',
+      );
       // @ts-ignore
       operation.requestBody.content.mediaTypes = operation.requestBody?.content?.mediaTypes.filter(
         (m) => m.name === 'application/json',
@@ -118,20 +136,20 @@ describe('Components', () => {
     });
 
     test('should renders correctly with empty languages', async () => {
-      jest.spyOn(Jotai, 'useAtom').mockImplementation((atom) => {
+      vi.spyOn(Jotai, 'useAtom').mockImplementation((atom) => {
         if (atom === languageAtom) {
           return [
             {
               activeLanguage: undefined,
               languages: [],
             },
-            jest.fn(),
-          ];
+            vi.fn(),
+          ] as unknown as ReturnType<typeof Jotai.useAtom>;
         }
-        return jest.requireActual('jotai').useAtom(atom);
+        return [{}, vi.fn()] as unknown as ReturnType<typeof Jotai.useAtom>;
       });
 
-      jest.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
+      vi.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
         if (atom === languageAtom) {
           return {
             activeLanguage: undefined,
@@ -143,7 +161,7 @@ describe('Components', () => {
         return {};
       });
 
-      jest.spyOn(require('../useCodeSamples'), 'useCodeSamples').mockReturnValue({
+      vi.spyOn(useCodeSamplesModule, 'useCodeSamples').mockReturnValue({
         samples: [], // Empty samples array
       });
 
@@ -153,7 +171,13 @@ describe('Components', () => {
         },
       });
 
-      operation = getOperation(parser, definition, undefined, optionsWithEmptyLanguages, '');
+      operation = getOperation(
+        parser,
+        definition as unknown as ExtendedOpenAPIOperation,
+        undefined,
+        optionsWithEmptyLanguages,
+        '',
+      );
       const PROPS = {
         operation,
         content: getMediaContent({

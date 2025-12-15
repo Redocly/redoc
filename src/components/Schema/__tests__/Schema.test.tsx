@@ -1,13 +1,13 @@
 import { act, fireEvent, render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 
-import type { OpenAPIDefinition } from '../../../types';
-import type { OperationModel } from '../../../models';
+import type { OpenAPIDefinition } from '../../../types/index.js';
+import type { OperationModel } from '../../../models/index.js';
 
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getSchema } from '../../../models';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getSchema } from '../../../models/index.js';
 import oneOfWithDiscriminator from './fixtures/oneOfWithDiscriminator.json';
-import { Schema } from '../Schema';
+import { Schema } from '../Schema.js';
+import { TestBrowserRouter } from '../../../testProviders.js';
 
 const options = normalizeOptions({});
 describe('SchemaView', () => {
@@ -33,7 +33,7 @@ describe('SchemaView', () => {
       });
 
       const { getByText } = render(<Schema schema={schema} />, {
-        wrapper: BrowserRouter,
+        wrapper: TestBrowserRouter,
       });
       expect(getByText('Shape')).toBeInTheDocument();
 

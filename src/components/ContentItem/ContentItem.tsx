@@ -38,7 +38,9 @@ const ContentComponentMap: Record<
   section: SectionItem,
   schema: (props) => <TagItem {...props} item={props.item as GroupModel} isExpanded={true} />,
   operation: OperationItem,
-  mcp: (props) => <TagItem {...props} item={props.item as GroupModel} isExpanded={true} />,
+  tool: (props) => <TagItem {...props} item={props.item as GroupModel} isExpanded={true} />,
+  rsrc: (props) => <TagItem {...props} item={props.item as GroupModel} isExpanded={true} />,
+  prompt: (props) => <TagItem {...props} item={props.item as GroupModel} isExpanded={true} />,
   root: ApiInfo,
 };
 

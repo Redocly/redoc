@@ -1,0 +1,68 @@
+{
+  "openapi": "3.2.0",
+  "info": {
+    "title": "Discriminator with Default Mapping",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "required": ["type"],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "cat": "#/components/schemas/Cat",
+            "dog": "#/components/schemas/Dog"
+          },
+          "defaultMapping": "#/components/schemas/GenericPet"
+        },
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Cat": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          }
+        ],
+        "properties": {
+          "meow": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Dog": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          }
+        ],
+        "properties": {
+          "bark": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GenericPet": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          }
+        ],
+        "properties": {
+          "species": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

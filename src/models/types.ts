@@ -101,6 +101,7 @@ export type MediaTypeModel = {
   isRequestType: boolean;
   onlyRequiredInSamples: boolean;
   operation: OperationModel;
+  examplesPointer?: string;
 };
 
 export type MediaContentModel = {
@@ -186,6 +187,7 @@ export type OperationModel = {
   extensions: GenericObject;
   isCallback: boolean;
   isWebhook: boolean;
+  isAdditionalOperation: boolean;
   isEvent: boolean;
   callbackId: string;
   requestBody?: RequestBodyModel;
@@ -217,6 +219,7 @@ export type GroupModel = {
   isSchema?: boolean;
   type: MenuItemGroupType;
   deprecated?: boolean;
+  isAdditionalOperation?: boolean;
   badges?: OpenAPIXBadges[];
 
   items: ContentItemModel[];
@@ -242,6 +245,7 @@ export type OperationMenuItem = {
   httpVerb: string;
   path: string;
   isWebhook: boolean;
+  isAdditionalOperation: boolean;
   operationId?: string;
   badges?: OpenAPIXBadges[];
 };
@@ -283,6 +287,7 @@ export type SchemaModel = {
   oneOf?: SchemaModel[];
   oneOfType: string;
   discriminatorProp?: string;
+  isDefaultMapping?: boolean;
 
   rawSchema: OpenAPISchema;
   schema: MergedOpenAPISchema;

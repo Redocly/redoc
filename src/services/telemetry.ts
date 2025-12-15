@@ -1,6 +1,17 @@
-const OTEL_TRACES_URL = 'https://otel.cloud.redocly.com/v1/traces'; // Prod: 'https://otel.cloud.redocly.com/v1/traces';
+const OTEL_TRACES_URL = 'https://otel.blueharvest.cloud/v1/traces'; // Prod: 'https://otel.cloud.redocly.com/v1/traces';
 
 import type { EventType, EventPayload } from '@redocly/redoc-opentelemetry';
+
+type OtlpPrimitive =
+  | { stringValue: string }
+  | { boolValue: boolean }
+  | { intValue: number }
+  | { doubleValue: number };
+
+type OtlpValue =
+  | OtlpPrimitive
+  | { arrayValue: { values: OtlpValue[] } }
+  | { kvlistValue: { values: { key: string; value: OtlpValue }[] } };
 
 class RedocTelemetry {
   private sessionId: string = '';
@@ -62,37 +73,83 @@ class RedocTelemetry {
   }
 
   private dataToCloudEventData(data: EventPayload<EventType>) {
-    const cloudEventData = Object.entries(data || {}).map(([key, value]) => {
-      switch (typeof value) {
-        case 'number':
-          return {
-            key: `cloudevents.event_data.${key}`,
-            value: { intValue: value },
-          };
-        case 'object':
-          return {
-            key: `cloudevents.event_data.${key}`,
-            value: { objValue: JSON.stringify(value) },
-          };
-        case 'string':
-          return {
-            key: `cloudevents.event_data.${key}`,
-            value: { stringValue: value.toString() },
-          };
-        case 'boolean':
-          return {
-            key: `cloudevents.event_data.${key}`,
-            value: { booleanValue: value.toString() },
-          };
-        default:
-          return {
-            key: `cloudevents.event_data.${key}`,
-            value: { stringValue: value ? value.toString() : 'unknown_value' },
-          };
-      }
-    });
+    if (!data) {
+      return [];
+    }
 
-    return cloudEventData;
+    return Object.entries(data)
+      .map(([key, value]) => {
+        const otlpValue = this.toOtlpValue(value);
+
+        if (!otlpValue) {
+          return null;
+        }
+
+        return {
+          key: `cloudevents.event_data.${key}`,
+          value: otlpValue,
+        };
+      })
+      .filter((attribute): attribute is { key: string; value: OtlpValue } => attribute !== null);
+  }
+
+  private toOtlpValue(value: unknown): OtlpValue | null {
+    if (value === undefined) {
+      return null;
+    }
+
+    if (value === null) {
+      return { stringValue: 'null' };
+    }
+
+    if (typeof value === 'number') {
+      if (!Number.isFinite(value)) {
+        return { stringValue: value.toString() };
+      }
+
+      return Number.isInteger(value) ? { intValue: value } : { doubleValue: value };
+    }
+
+    if (typeof value === 'boolean') {
+      return { boolValue: value };
+    }
+
+    if (typeof value === 'string') {
+      return { stringValue: value };
+    }
+
+    if (Array.isArray(value)) {
+      const values = value
+        .map((item) => this.toOtlpValue(item))
+        .filter((item): item is OtlpValue => item !== null);
+
+      return { arrayValue: { values } };
+    }
+
+    if (typeof value === 'object') {
+      if (Object.prototype.toString.call(value) !== '[object Object]') {
+        return { stringValue: String(value) };
+      }
+
+      const entries = Object.entries(value as Record<string, unknown>)
+        .map(([key, nestedValue]) => {
+          const otlpValue = this.toOtlpValue(nestedValue);
+
+          if (!otlpValue) {
+            return null;
+          }
+
+          return {
+            key,
+            value: otlpValue,
+          };
+        })
+        .filter((entry): entry is { key: string; value: OtlpValue } => entry !== null);
+
+      return { kvlistValue: { values: entries } };
+    }
+
+    return { stringValue: String(value) };
   }
 }
 

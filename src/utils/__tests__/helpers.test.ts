@@ -8,7 +8,7 @@ import {
   isLastInArray,
   isLastProperty,
   getValueFromMdParsedExtension,
-} from '../helpers';
+} from '../helpers.js';
 
 describe('Utils', () => {
   describe('helpers', () => {

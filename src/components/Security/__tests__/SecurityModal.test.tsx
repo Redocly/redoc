@@ -1,8 +1,8 @@
 import { render, fireEvent, act } from '@testing-library/react';
 
-import type { ExtendedOpenAPISecurityScheme, SecurityRequirement } from '../../../models';
+import type { ExtendedOpenAPISecurityScheme, SecurityRequirement } from '../../../models/index.js';
 
-import { SecurityModal } from '../SecurityModal';
+import { SecurityModal } from '../SecurityModal.js';
 
 describe('SecurityModal Component', () => {
   const securities = [
@@ -122,7 +122,7 @@ describe('SecurityModal Component', () => {
   });
 
   it('calls onClose callback when the Close button is clicked', () => {
-    const onCloseMock = jest.fn();
+    const onCloseMock = vi.fn();
     const { getByTestId } = render(<SecurityModal securities={securities} onClose={onCloseMock} />);
 
     fireEvent.click(getByTestId('close'));

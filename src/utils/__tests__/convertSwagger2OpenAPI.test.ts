@@ -1,18 +1,18 @@
-import { jest } from '@jest/globals';
+import { vi, type Mocked } from 'vitest';
 import swagger2openapi from 'swagger2openapi';
 
 import type { OpenAPIDefinition } from '../../types/index.js';
 
-import { convertSwagger2OpenAPI } from '../convertSwagger2OpenAPI';
+import { convertSwagger2OpenAPI } from '../convertSwagger2OpenAPI.js';
 
 // Mock the swagger2openapi module
-jest.mock('swagger2openapi');
+vi.mock('swagger2openapi');
 
-const mockSwagger2OpenAPI = swagger2openapi as jest.Mocked<typeof swagger2openapi>;
+const mockSwagger2OpenAPI = swagger2openapi as Mocked<typeof swagger2openapi>;
 
 describe('convertSwagger2OpenAPI', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should convert a valid Swagger 2.0 spec to OpenAPI 3.0', async () => {
@@ -54,9 +54,9 @@ describe('convertSwagger2OpenAPI', () => {
       },
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);
@@ -87,9 +87,9 @@ describe('convertSwagger2OpenAPI', () => {
       paths: {},
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     await convertSwagger2OpenAPI(swaggerSpec);
@@ -140,9 +140,9 @@ describe('convertSwagger2OpenAPI', () => {
       },
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     await convertSwagger2OpenAPI(swaggerSpec);
@@ -166,9 +166,9 @@ describe('convertSwagger2OpenAPI', () => {
 
     const conversionError = new Error('Invalid Swagger specification');
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(conversionError, null);
-      return undefined as any;
+      return undefined as never;
     });
 
     await expect(convertSwagger2OpenAPI(swaggerSpec)).rejects.toThrow(
@@ -192,9 +192,9 @@ describe('convertSwagger2OpenAPI', () => {
       paths: {},
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, null);
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);
@@ -212,9 +212,9 @@ describe('convertSwagger2OpenAPI', () => {
       paths: {},
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { someOtherProperty: 'value' });
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);
@@ -391,9 +391,9 @@ describe('convertSwagger2OpenAPI', () => {
       },
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);
@@ -418,9 +418,9 @@ describe('convertSwagger2OpenAPI', () => {
       paths: {},
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);
@@ -452,9 +452,9 @@ describe('convertSwagger2OpenAPI', () => {
       paths: {},
     };
 
-    mockSwagger2OpenAPI.convertObj.mockImplementation((spec, options, callback) => {
+    mockSwagger2OpenAPI.convertObj.mockImplementation((_spec, _options, callback) => {
       callback(null, { openapi: expectedOpenAPISpec });
-      return undefined as any;
+      return undefined as never;
     });
 
     const result = await convertSwagger2OpenAPI(swaggerSpec);

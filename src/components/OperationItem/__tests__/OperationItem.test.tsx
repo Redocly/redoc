@@ -1,18 +1,18 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 
-import type { OperationMenuItem } from '../../../models';
+import type { OperationMenuItem } from '../../../models/index.js';
 
-import { OperationItem } from '../OperationItem';
-import { normalizeOptions } from '../../../services';
+import { OperationItem } from '../OperationItem.js';
+import { normalizeOptions } from '../../../services/index.js';
 import spec from './fixtures/petstore.json';
 import definition from './fixtures/operationDefinition.json';
-import { globalStoreAtom } from '../../../jotai/store';
-import { MockIntersectionObserver } from './__mocks__/mock-intersection-observer';
+import { globalStoreAtom } from '../../../jotai/store.js';
+import { MockIntersectionObserver } from './__mocks__/mock-intersection-observer.js';
+import { TestBrowserRouter } from '../../../testProviders.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn((a) => {
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn((a) => {
     if (a === globalStoreAtom) {
       return {
         parser: {
@@ -27,7 +27,7 @@ jest.mock('jotai', () => ({
     }
     return {};
   }),
-  useAtom: jest.fn(() => {
+  useAtom: vi.fn(() => {
     return [
       {
         activeOneOf: { '/paths/~1pet/post': 0 },
@@ -36,7 +36,7 @@ jest.mock('jotai', () => ({
         response: { expandedFields: {} },
         activeLanguage: 'curl',
       },
-      jest.fn(),
+      vi.fn(),
     ];
   }),
 }));
@@ -58,7 +58,7 @@ describe('OperationItem', () => {
         }
       />,
       {
-        wrapper: BrowserRouter,
+        wrapper: TestBrowserRouter,
       },
     );
 

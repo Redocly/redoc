@@ -1,4 +1,4 @@
-import { joinWithSeparator } from '../helpers';
+import { joinWithSeparator } from '../helpers.js';
 
 describe('History helpers', () => {
   describe('joinWithSeparator', () => {

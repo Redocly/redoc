@@ -1,10 +1,11 @@
-import { debugTime } from '../debug';
+import type { MockInstance } from 'vitest';
+import { debugTime } from '../debug.js';
 
 describe('debug', () => {
-  let spy: jest.SpyInstance;
+  let spy: MockInstance;
 
   beforeEach(() => {
-    spy = jest.spyOn(console, 'time');
+    spy = vi.spyOn(console, 'time');
   });
 
   afterEach(() => {

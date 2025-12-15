@@ -3,11 +3,6 @@ import type { FieldModel } from '../../models/index.js';
 import { encodeBackSlashes, queryString } from '../../utils/index.js';
 import { getActiveMediaType } from '../../models/mediaContent.js';
 
-export function isSameHash(a: string, b: string): boolean {
-  return a === b || '#' + a === b || a === '#' + b;
-}
-
-// TODO: Add tests
 function getContentTypeName(field: FieldModel, activeMimeName?: string) {
   // param in "query" | "header" | "path" | "cookie" - no need for content type in link
   if (field.in) {

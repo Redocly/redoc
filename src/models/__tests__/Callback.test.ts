@@ -1,12 +1,16 @@
-import { getCallback } from '../callback';
-import { normalizeOptions, OpenAPIParser } from '../../services';
+import { getCallback } from '../callback.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import spec from './fixtures/callback.json';
 
 const opts = normalizeOptions({});
 
 describe('Models', () => {
   describe('CallbackModel', () => {
-    const spec = require('./fixtures/callback.json');
-    const parser = new OpenAPIParser(spec, undefined, opts);
+    const parser = new OpenAPIParser(
+      spec as unknown as ConstructorParameters<typeof OpenAPIParser>[0],
+      undefined,
+      opts,
+    );
 
     test('basic callback details', () => {
       const callback = getCallback(

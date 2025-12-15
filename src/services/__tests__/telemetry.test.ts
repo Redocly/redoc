@@ -1,9 +1,9 @@
 import type { EventType } from '@redocly/redoc-opentelemetry';
 
 describe('RedocTelemetry', () => {
-  const mockFetch = jest.fn();
-  const mockRandomUUID = jest.fn();
-  const mockGetRandomValues = jest.fn();
+  const mockFetch = vi.fn();
+  const mockRandomUUID = vi.fn();
+  const mockGetRandomValues = vi.fn();
 
   beforeAll(() => {
     global.fetch = mockFetch;
@@ -18,9 +18,9 @@ describe('RedocTelemetry', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // A new instance is needed to clear session ID for each test
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it('should send an event with the correct structure', async () => {
@@ -47,7 +47,7 @@ describe('RedocTelemetry', () => {
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
     const fetchCall = mockFetch.mock.calls[0];
-    expect(fetchCall[0]).toBe('https://otel.cloud.redocly.com/v1/traces');
+    expect(fetchCall[0]).toBe('https://otel.blueharvest.cloud/v1/traces');
     expect(fetchCall[1].method).toBe('POST');
     expect(fetchCall[1].headers['Content-Type']).toBe('application/json');
 
@@ -67,15 +67,24 @@ describe('RedocTelemetry', () => {
     });
     expect(spanAttributes).toContainEqual({
       key: 'cloudevents.event_data.booleanValue',
-      value: { booleanValue: 'true' },
+      value: { boolValue: true },
     });
     expect(spanAttributes).toContainEqual({
       key: 'cloudevents.event_data.objectValue',
-      value: { objValue: '{"key":"value"}' },
+      value: {
+        kvlistValue: {
+          values: [
+            {
+              key: 'key',
+              value: { stringValue: 'value' },
+            },
+          ],
+        },
+      },
     });
     expect(spanAttributes).toContainEqual({
       key: 'cloudevents.event_data.nullValue',
-      value: { objValue: 'null' },
+      value: { stringValue: 'null' },
     });
 
     const resourceAttributes = body.resourceSpans[0].resource.attributes;
@@ -83,6 +92,93 @@ describe('RedocTelemetry', () => {
       key: 'session_id',
       value: { stringValue: 'ses_test-session-uuid' },
     });
+  });
+
+  it('should convert complex payloads to OTLP values', async () => {
+    mockRandomUUID.mockReturnValue('complex-session-uuid');
+    mockGetRandomValues.mockImplementation((arr) => {
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = i;
+      }
+      return arr;
+    });
+
+    const { redocTelemetry: redocTelemetryInstance } = await import('../telemetry');
+
+    await redocTelemetryInstance.sendEvent(
+      'complex_event' as EventType,
+      {
+        arrayValue: ['alpha', 5, true, null, { foo: 'bar' }],
+        nestedObject: { innerNumber: 1.5, innerArray: [1, 2], innerObject: { baz: false } },
+        shouldIgnore: undefined,
+      } as any,
+    );
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+    const spanAttributes = body.resourceSpans[0].scopeSpans[0].spans[0].attributes;
+
+    expect(spanAttributes).toContainEqual({
+      key: 'cloudevents.event_data.arrayValue',
+      value: {
+        arrayValue: {
+          values: [
+            { stringValue: 'alpha' },
+            { intValue: 5 },
+            { boolValue: true },
+            { stringValue: 'null' },
+            {
+              kvlistValue: {
+                values: [
+                  {
+                    key: 'foo',
+                    value: { stringValue: 'bar' },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    expect(spanAttributes).toContainEqual({
+      key: 'cloudevents.event_data.nestedObject',
+      value: {
+        kvlistValue: {
+          values: [
+            {
+              key: 'innerNumber',
+              value: { doubleValue: 1.5 },
+            },
+            {
+              key: 'innerArray',
+              value: {
+                arrayValue: {
+                  values: [{ intValue: 1 }, { intValue: 2 }],
+                },
+              },
+            },
+            {
+              key: 'innerObject',
+              value: {
+                kvlistValue: {
+                  values: [
+                    {
+                      key: 'baz',
+                      value: { boolValue: false },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    const attributeKeys = spanAttributes.map((attribute: { key: string }) => attribute.key);
+    expect(attributeKeys).not.toContain('cloudevents.event_data.shouldIgnore');
   });
 
   it('should generate and reuse session ID', async () => {

@@ -1,0 +1,62 @@
+{
+  "openapi": "3.2.0",
+  "info": {
+    "title": "Discriminator with Ordered Mapping and Default",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Vehicle": {
+        "type": "object",
+        "required": ["type"],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "truck": "#/components/schemas/Truck",
+            "bike": "#/components/schemas/Bike",
+            "car": "#/components/schemas/Car"
+          },
+          "defaultMapping": "#/components/schemas/GenericVehicle"
+        },
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Truck": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vehicle"
+          }
+        ]
+      },
+      "Bike": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vehicle"
+          }
+        ]
+      },
+      "Car": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vehicle"
+          }
+        ]
+      },
+      "GenericVehicle": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Vehicle"
+          }
+        ]
+      }
+    }
+  }
+}

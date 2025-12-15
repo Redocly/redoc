@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from '@jest/globals';
-import { MemoryRouter } from 'react-router-dom';
 
-import { McpTool } from '../McpTool';
-import { withTestProviders } from '../../../testProviders';
+import { McpTool } from '../McpTool.js';
+import { withTestProviders, TestMemoryRouter } from '../../../testProviders.js';
 import mcpData from './fixtures/mcp-tools.json';
 
 const spec = {
@@ -24,9 +22,9 @@ describe('McpTool', () => {
   it('should render mcp tool with input and output schema', () => {
     render(
       withTestProviders(
-        <MemoryRouter>
-          <McpTool toolName="test-tool" id="test-tool" />
-        </MemoryRouter>,
+        <TestMemoryRouter>
+          <McpTool name="test-tool" id="test-tool" />
+        </TestMemoryRouter>,
         {
           definition: spec as any,
           options: {} as any,
@@ -45,9 +43,9 @@ describe('McpTool', () => {
   it('should render a message if tool not found', () => {
     render(
       withTestProviders(
-        <MemoryRouter>
-          <McpTool toolName="not-found" id="not-found" />
-        </MemoryRouter>,
+        <TestMemoryRouter>
+          <McpTool name="not-found" id="not-found" />
+        </TestMemoryRouter>,
         {
           definition: spec as any,
           options: {} as any,
@@ -81,9 +79,9 @@ describe('McpTool', () => {
     };
     render(
       withTestProviders(
-        <MemoryRouter>
-          <McpTool toolName="test-tool-no-output" id="test-tool-no-output" />
-        </MemoryRouter>,
+        <TestMemoryRouter>
+          <McpTool name="test-tool-no-output" id="test-tool-no-output" />
+        </TestMemoryRouter>,
         {
           definition: specWithoutOutput as any,
           options: {} as any,

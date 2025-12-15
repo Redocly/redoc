@@ -13,7 +13,7 @@ runs:
       id: playwright-version
       shell: bash
       run: |
-        echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies["@playwright/test"]' package.json)" >> $GITHUB_OUTPUT
+        echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies[\"@playwright/test\"]' package.json)" >> $GITHUB_OUTPUT
     - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       name: Check if Playwright browser is cached
       id: playwright-cache
@@ -25,8 +25,7 @@ runs:
       shell: bash
       run: |
         echo "Installing Playwright in root"
-        echo "Installing @playwright/test@${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }} (no-save)"
-        npm install -D @playwright/test@${{ steps.playwright-version.outputs.PLAYWRIGHT_VERSION }} --no-save
+        npm install @playwright/test
         npx playwright install --with-deps
     - name: ✅ Finished Playwright setup
       shell: bash

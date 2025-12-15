@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
 import * as Jotai from 'jotai';
-import { MemoryRouter } from 'react-router-dom';
 
-import type { OperationModel } from '../../../models';
+import type { OperationModel } from '../../../models/index.js';
 
-import { ResponseDetails } from '../ResponseDetails';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getField, getMediaContent } from '../../../models';
-import { globalOptionsAtom, globalStoreAtom } from '../../../jotai/store';
-import { activeMimeNameAtom } from '../../../jotai/app';
+import { ResponseDetails } from '../ResponseDetails.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getField, getMediaContent } from '../../../models/index.js';
+import { globalOptionsAtom, globalStoreAtom } from '../../../jotai/store.js';
+import { activeMimeNameAtom } from '../../../jotai/app.js';
+import { TestMemoryRouter } from '../../../testProviders.js';
 
 const info = {
   'application/json': {
@@ -86,8 +86,8 @@ const response = {
       { operation: {} as OperationModel },
     ),
   ],
-  toggle: jest.fn(),
-  expand: jest.fn(),
+  toggle: vi.fn(),
+  expand: vi.fn(),
   content: getMediaContent({
     parser,
     info,
@@ -97,27 +97,27 @@ const response = {
   }),
 };
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
 describe('ResponseDetails component', () => {
-  jest.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
+  vi.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
     if (atom === globalOptionsAtom) {
       return options;
     }
 
     if (atom === globalStoreAtom) return { options, parser };
-    if (atom === activeMimeNameAtom) return ['application/json', jest.fn()];
+    if (atom === activeMimeNameAtom) return ['application/json', vi.fn()];
     return {};
   });
 
   it('should renders correctly', () => {
     const { container } = render(
-      <MemoryRouter>
-        <ResponseDetails response={response} operationPointer="" operationId=" " />
-      </MemoryRouter>,
+      <TestMemoryRouter>
+        <ResponseDetails response={response} operationId=" " />
+      </TestMemoryRouter>,
     );
     expect(container.childNodes.length).toEqual(5);
   });
@@ -125,13 +125,9 @@ describe('ResponseDetails component', () => {
   it('should render description as markdown', () => {
     const expectedTags = ['p'];
     const { container } = render(
-      <MemoryRouter>
-        <ResponseDetails
-          response={{ ...response, headers: [] }}
-          operationPointer=""
-          operationId=""
-        />
-      </MemoryRouter>,
+      <TestMemoryRouter>
+        <ResponseDetails response={{ ...response, headers: [] }} operationId="" />
+      </TestMemoryRouter>,
     );
     const markdownContainer = container.querySelector('.redoc-markdown');
 

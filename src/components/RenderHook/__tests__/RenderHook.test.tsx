@@ -2,7 +2,7 @@
 
 import { render } from '@testing-library/react';
 
-import { RenderHook } from '../RenderHook';
+import { RenderHook } from '../RenderHook.js';
 
 describe('RenderHook', () => {
   it('should render correctly', () => {

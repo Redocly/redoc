@@ -1,14 +1,18 @@
-import type { OperationModel } from '..';
+import type { OperationModel } from '../index.js';
 
-import { getField } from '../field';
-import { normalizeOptions, OpenAPIParser } from '../../services';
+import { getField } from '../field.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import spec from './fixtures/fields.json';
 
 const opts = normalizeOptions({});
 const deps = { operation: { pointer: 'testFieldModel' } as OperationModel };
 describe('Models', () => {
   describe('FieldModel', () => {
-    const spec = require('./fixtures/fields.json');
-    const parser = new OpenAPIParser(spec, undefined, opts);
+    const parser = new OpenAPIParser(
+      spec as unknown as ConstructorParameters<typeof OpenAPIParser>[0],
+      undefined,
+      opts,
+    );
 
     test('basic field details', () => {
       const field = getField(

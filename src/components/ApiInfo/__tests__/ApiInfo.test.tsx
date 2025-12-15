@@ -1,25 +1,26 @@
 import util from 'util';
 import { render } from '@testing-library/react';
 import * as Jotai from 'jotai';
-import { BrowserRouter } from 'react-router-dom';
+import { LayoutVariant } from '@redocly/config';
 
-import type { OpenAPIInfo } from '../../../types';
-import type { GroupModel } from '../../../models';
+import type { OpenAPIInfo } from '../../../types/index.js';
+import type { GroupModel } from '../../../models/index.js';
 
-import { ApiInfo } from '../ApiInfo';
+import { ApiInfo } from '../ApiInfo.js';
+import { TestBrowserRouter } from '../../../testProviders.js';
 
 Object.defineProperty(global, 'TextEncoder', {
   value: util.TextEncoder,
 });
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
 describe('ApiInfo', () => {
   it('ApiInfo renders correctly', () => {
-    jest.spyOn(Jotai, 'useAtomValue').mockReturnValue({
+    vi.spyOn(Jotai, 'useAtomValue').mockReturnValue({
       parser: {
         definition: {
           info: {
@@ -36,6 +37,7 @@ describe('ApiInfo', () => {
     });
     const result = render(
       <ApiInfo
+        layout={LayoutVariant.THREE_PANEL}
         item={
           {
             infoDefinition: {
@@ -49,7 +51,7 @@ describe('ApiInfo', () => {
         }
       />,
       {
-        wrapper: BrowserRouter,
+        wrapper: TestBrowserRouter,
       },
     );
 

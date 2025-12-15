@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`#loadAndBundleDefinition should load And Bundle Spec openapi-3-1.yaml 1`] = `
+exports[`#loadAndBundleDefinition > should load And Bundle Spec openapi-3-1.yaml 1`] = `
 {
   "components": {
     "examples": {
@@ -1959,7 +1959,7 @@ culpa qui officia deserunt mollit anim id est laborum.
 }
 `;
 
-exports[`#loadAndBundleDefinition should load and bundle spec petstore.yaml 1`] = `
+exports[`#loadAndBundleDefinition > should load and bundle spec petstore.yaml 1`] = `
 {
   "components": {
     "examples": {
@@ -4013,7 +4013,7 @@ Some Item
 }
 `;
 
-exports[`#loadAndBundleDefinition should load and bundle spec rebilly.yaml 1`] = `
+exports[`#loadAndBundleDefinition > should load and bundle spec rebilly.yaml 1`] = `
 {
   "components": {
     "examples": {

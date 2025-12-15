@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 
-import { Items } from '../Items';
+import type { ContentItemModel } from '../../../models/index.js';
 
-jest.mock('../../ContentItem', () => ({
+import { Items } from '../Items.js';
+import { TestMemoryRouter } from '../../../testProviders.js';
+
+vi.mock('../../ContentItem', () => ({
   ContentItem: ({ children, item }: any) => (
     <div data-testid={`content-item-${item.id}`}>
       {item.title}
@@ -12,7 +14,7 @@ jest.mock('../../ContentItem', () => ({
   ),
 }));
 
-jest.mock('../VirtualList', () => ({
+vi.mock('../VirtualList', () => ({
   VirtualList: ({ items }: any) => (
     <div data-testid="virtual-list">
       {items.map((item: any) => (
@@ -25,25 +27,25 @@ jest.mock('../VirtualList', () => ({
 const mockItems = [
   { id: '1', title: 'Item 1', type: 'group', items: [] },
   { id: '2', title: 'Item 2', type: 'group', items: [] },
-];
+] as unknown as ContentItemModel[];
 
 const mockMixedTypeItems = Array.from({ length: 16 }, (_, i) => ({
   id: `mixed-${i}`,
   title: `Item ${i}`,
   type: i % 2 === 0 ? 'operation' : 'schema',
   items: [],
-}));
+})) as unknown as ContentItemModel[];
 
 const mockOperationItems = Array.from({ length: 16 }, (_, i) => ({
   id: `op-${i}`,
   title: `Operation ${i}`,
   type: 'operation',
   items: [],
-}));
+})) as unknown as ContentItemModel[];
 
 describe('Items', () => {
   const renderWithRouter = (component: React.ReactElement) => {
-    return render(<MemoryRouter>{component}</MemoryRouter>);
+    return render(<TestMemoryRouter>{component}</TestMemoryRouter>);
   };
 
   it('renders null when items array is empty', () => {
@@ -81,7 +83,7 @@ describe('Items', () => {
         type: 'group',
         items: [{ id: '1-1', title: 'Child', type: 'group', items: [] }],
       },
-    ];
+    ] as unknown as ContentItemModel[];
 
     renderWithRouter(<Items items={nestedItems} routingBasePath="/docs" />);
 

@@ -70,6 +70,7 @@ export function getOperation(
     operationId: operationDefinition.operationId,
     path: operationDefinition.pathName,
     isWebhook,
+    isAdditionalOperation: operationDefinition.isAdditionalOperation,
     isCallback: Boolean(callback?.isCallback),
     isEvent: callback?.isCallback || isWebhook,
     name: getOperationName(operationDefinition),

@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 
-import type { OpenAPIDefinition } from '../../../types';
+import type { OpenAPIDefinition } from '../../../types/index.js';
 
-import { StoreProvider } from '../Providers';
+import { StoreProvider } from '../Providers.js';
 
 describe('ProStoreProvider', () => {
   test('StoreProvider should run onInit hook', async () => {

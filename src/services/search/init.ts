@@ -153,6 +153,7 @@ const addOperation = (operation: OperationModel): SearchDocument => {
     text: stripFormatting(removeMarkdownLinks(operation.description || '')),
     httpMethod: operation.httpVerb,
     httpPath: operation.path,
+    isAdditionalOperation: operation.isAdditionalOperation,
     deprecated: operation.deprecated,
     security: operation.security
       .map((s) => s.schemes.map((scheme) => scheme.id))

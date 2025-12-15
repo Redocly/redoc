@@ -1,11 +1,11 @@
 import { parseYaml } from '@redocly/openapi-core';
 import { outdent } from 'outdent';
 
-import type { OpenAPIDefinition } from '../../types';
-import type { OperationModel } from '../types';
+import type { OpenAPIDefinition } from '../../types/index.js';
+import type { OperationModel } from '../types.js';
 
-import { getRequestBody } from '../request';
-import { normalizeOptions, OpenAPIParser } from '../../services';
+import { getRequestBody } from '../request.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
 
 const opts = normalizeOptions({});
 describe('request', () => {
@@ -23,14 +23,14 @@ describe('request', () => {
     });
 
     test('should work with default props', () => {
-      const consoleError = jest.spyOn(global.console, 'error');
+      const consoleError = vi.spyOn(global.console, 'error');
       const req = getRequestBody(props);
       expect(consoleError).not.toHaveBeenCalled();
       expect(req).toEqual({ description: '', required: undefined });
     });
 
     test('should work with set required', () => {
-      const consoleError = jest.spyOn(global.console, 'error');
+      const consoleError = vi.spyOn(global.console, 'error');
       props.infoOrRef.required = false;
       const req = getRequestBody(props);
       expect(consoleError).not.toHaveBeenCalled();

@@ -1,19 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import * as Jotai from 'jotai';
-import { describe, it, expect, jest } from '@jest/globals';
+import { vi } from 'vitest';
 
-import { ServerList } from '../ServerList';
-import { normalizeOptions } from '../../../services';
+import { ServerList } from '../ServerList.js';
+import { normalizeOptions } from '../../../services/index.js';
 
-import type { OpenAPIServer } from '../../../types';
+import type { OpenAPIServer } from '../../../types/index.js';
 
-jest.mock('jotai', () => ({
-  ...(jest.requireActual('jotai') as object),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
 describe('ServerList component', () => {
-  jest.spyOn(Jotai, 'useAtomValue').mockReturnValue(normalizeOptions({}));
+  vi.spyOn(Jotai, 'useAtomValue').mockReturnValue(normalizeOptions({}));
   const servers = [
     {
       url: 'http://petstore.swagger.io/v2',
@@ -29,7 +29,7 @@ describe('ServerList component', () => {
       name: 'Stage server',
     },
   ];
-  const translateMock = jest.fn().mockImplementation((_, defaultValue) => defaultValue);
+  const translateMock = vi.fn().mockImplementation((_, defaultValue) => defaultValue);
   it('should render copy button', () => {
     render(<ServerList servers={servers} path="/pet" translate={translateMock} />);
 

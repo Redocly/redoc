@@ -1,22 +1,25 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { act } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { act, type ReactElement } from 'react';
 
-import type { ContentItemModel } from '../../../models/types';
+import type { ContentItemModel } from '../../../models/types.js';
 
-import { VirtualList } from '../VirtualList';
+import { VirtualList } from '../VirtualList.js';
+import { TestMemoryRouter } from '../../../testProviders.js';
 
 const mockItems: ContentItemModel[] = [
-  { href: '/item1', title: 'Item 1' },
-  { href: '/item2', title: 'Item 2' },
-  { href: '/item3', title: 'Item 3' },
-  { href: '/item4', title: 'Item 4' },
-  { href: '/item5', title: 'Item 5' },
+  { href: '/item1', title: 'Item 1' } as unknown as ContentItemModel,
+  { href: '/item2', title: 'Item 2' } as unknown as ContentItemModel,
+  { href: '/item3', title: 'Item 3' } as unknown as ContentItemModel,
+  { href: '/item4', title: 'Item 4' } as unknown as ContentItemModel,
+  { href: '/item5', title: 'Item 5' } as unknown as ContentItemModel,
 ];
 
 const renderItem = (item: ContentItemModel) => (
   <div key={item.href} data-testid={item.href.replace('/', '')}>
-    {item.title}
+    {typeof (item as any).title === 'string'
+      ? String((item as any).title)
+      : String((item as any).name)}
   </div>
 );
 
@@ -24,27 +27,27 @@ const renderWithRouter = (
   initialPath: string,
   props: {
     items: ContentItemModel[];
-    renderItem: (item: ContentItemModel) => JSX.Element;
+    renderItem: (item: ContentItemModel) => ReactElement;
     routingBasePath: string;
   },
 ) => {
   return render(
-    <MemoryRouter initialEntries={[initialPath]}>
+    <TestMemoryRouter initialEntries={[initialPath]}>
       <Routes>
         <Route path="*" element={<VirtualList {...props} />} />
       </Routes>
-    </MemoryRouter>,
+    </TestMemoryRouter>,
   );
 };
 
 describe('VirtualList', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.clearAllTimers();
-    jest.useRealTimers();
+    vi.clearAllTimers();
+    vi.useRealTimers();
   });
 
   it('should render empty list when no items provided', () => {
@@ -121,7 +124,7 @@ describe('VirtualList', () => {
     expect(screen.getByTestId('item4')).toBeInTheDocument();
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     expect(screen.getByTestId('item1')).toBeInTheDocument();
@@ -151,20 +154,20 @@ describe('VirtualList', () => {
     });
 
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     const initialRenderCount = screen.getAllByTestId(/item/).length;
 
     rerender(
-      <MemoryRouter initialEntries={['/item3']}>
+      <TestMemoryRouter initialEntries={['/item3']}>
         <Routes>
           <Route
             path="*"
             element={<VirtualList items={mockItems} renderItem={renderItem} routingBasePath="/" />}
           />
         </Routes>
-      </MemoryRouter>,
+      </TestMemoryRouter>,
     );
 
     expect(screen.getAllByTestId(/item/).length).toBe(initialRenderCount);
@@ -181,7 +184,7 @@ describe('VirtualList', () => {
 
     expect(() => {
       act(() => {
-        jest.runAllTimers();
+        vi.runAllTimers();
       });
     }).not.toThrow();
   });

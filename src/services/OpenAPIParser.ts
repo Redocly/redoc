@@ -135,13 +135,11 @@ export class OpenAPIParser {
   }
 
   mergeRefs<T>(ref: OpenAPIRef, resolved: T, mergeAsAllOf: boolean): T {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { $ref, ...rest } = ref;
     const keys = Object.keys(rest);
     if (keys.length === 0) {
-      return {
-        ...resolved,
-        $ref,
-      };
+      return resolved;
     }
     if (
       mergeAsAllOf &&
@@ -250,6 +248,7 @@ export class OpenAPIParser {
         };
       })
       .filter(Boolean) as Array<{
+      $ref?: string;
       schema: MergedOpenAPISchema;
       refsStack: string[];
       absolutePointer: string;
@@ -257,7 +256,7 @@ export class OpenAPIParser {
 
     for (const [
       index,
-      { schema: subSchema, refsStack: subRefsStack, absolutePointer },
+      { $ref: itemRef, schema: subSchema, refsStack: subRefsStack, absolutePointer },
     ] of allOfSchemas.entries()) {
       const {
         type,
@@ -359,7 +358,7 @@ export class OpenAPIParser {
       // TODO: do more intelligent merge
       receiver = {
         ...receiver,
-        title: receiver.title || title,
+        title: itemRef && title ? title : receiver.title || title,
         description: receiver.description || description,
         readOnly: !isUndefined(receiver.readOnly) ? receiver.readOnly : readOnly,
         writeOnly: !isUndefined(receiver.writeOnly) ? receiver.writeOnly : writeOnly,

@@ -18,17 +18,24 @@ function ExampleComponent({ mediaType, mediaContent, renderSample }: ExampleProp
   const telemetry = useTelemetry();
   const pointer = mediaType.operation.pointer;
   const [operation, setOperation] = useAtom(operationStore(pointer));
-  const examples = mediaType.examples || {};
+  const examples = mediaType.examples || mediaType.formExamples || {};
   const examplesKeys = Object.keys(examples);
   const setActivateExampleName = useActivateExample(mediaContent);
 
-  const { exampleKey } = useExampleKey(mediaType.operation, examples);
-
+  const { exampleKey: activeExampleKey } = useExampleKey(mediaType.operation, examples);
+  const exampleKey =
+    examplesKeys[
+      operation.activeOneOf[mediaType?.examplesPointer || mediaType.operation.pointer]
+    ] || activeExampleKey;
   if (!examplesKeys.length || examplesKeys.length === 1) {
     return renderSample();
   }
 
   const handleExampleChange = (key: string) => {
+    const pointer =
+      mediaType.examplesPointer && mediaType.examplesPointer.startsWith(mediaType.operation.pointer)
+        ? mediaType.examplesPointer
+        : mediaType.operation.pointer;
     telemetry.sendExamplesSwitcherClickedMessage({
       exampleNumber: examplesKeys.indexOf(key),
       totalExamples: examplesKeys.length,
@@ -36,7 +43,7 @@ function ExampleComponent({ mediaType, mediaContent, renderSample }: ExampleProp
     setOperation({
       ...operation,
       activeExampleName: key,
-      activeOneOf: { [pointer]: examplesKeys.indexOf(key) },
+      activeOneOf: { ...operation.activeOneOf, [pointer]: examplesKeys.indexOf(key) },
       requestValues: { body: null },
     });
     setActivateExampleName(key);

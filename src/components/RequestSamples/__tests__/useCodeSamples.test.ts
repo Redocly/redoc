@@ -1,37 +1,45 @@
-import { jest, describe, test, expect } from '@jest/globals';
+import { vi } from 'vitest';
 import * as Jotai from 'jotai/index';
 
-import type { OpenAPIDefinition } from '../../../types';
+import type { OpenAPIDefinition } from '../../../types/index.js';
 
-import { getOperation } from '../../../models';
+import { getOperation } from '../../../models/index.js';
+import type { ExtendedOpenAPIOperation } from '../../../services/index.js';
+
 import definition from './fixtures/operationDefinition.json';
-import { useCodeSamples } from '../useCodeSamples';
-import { replaceCircularJson } from '../../../models/__tests__/helpers';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
+import { useCodeSamples } from '../useCodeSamples.js';
+import { replaceCircularJson } from '../../../models/__tests__/helpers.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
 import petStore from './fixtures/petstore.json';
-import { globalStoreAtom } from '../../../jotai/store';
+import { globalStoreAtom } from '../../../jotai/store.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
-jest.mock('../../../hooks/useTranslate', () => ({
-  useTranslate: jest.fn(),
+vi.mock('../../../hooks/useTranslate', () => ({
+  useTranslate: vi.fn(),
 }));
 
-jest.mock('@redocly/theme/ext/configure', () => ({
+vi.mock('@redocly/theme/ext/configure', () => ({
   __esModule: true,
-  configure: jest.fn(),
+  configure: vi.fn(),
 }));
 
 describe('useCodeSamples', () => {
   const options = normalizeOptions({});
-  const parser = new OpenAPIParser(petStore as OpenAPIDefinition, undefined, options);
+  const parser = new OpenAPIParser(petStore as unknown as OpenAPIDefinition, undefined, options);
 
   test('should return all codeSamples', () => {
-    const operation = getOperation(parser, definition, undefined, options, '');
-    jest.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
+    const operation = getOperation(
+      parser,
+      definition as unknown as ExtendedOpenAPIOperation,
+      undefined,
+      options,
+      '',
+    );
+    vi.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
       if (atom === globalStoreAtom) return { options, parser };
       return {};
     });
@@ -50,8 +58,14 @@ describe('useCodeSamples', () => {
       },
     });
 
-    const operation = getOperation(parser, definition, undefined, options, '');
-    jest.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
+    const operation = getOperation(
+      parser,
+      definition as unknown as ExtendedOpenAPIOperation,
+      undefined,
+      options,
+      '',
+    );
+    vi.spyOn(Jotai, 'useAtomValue').mockImplementation((atom) => {
       if (atom === globalStoreAtom) return { options, parser };
       return {};
     });

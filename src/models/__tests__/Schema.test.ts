@@ -1,14 +1,34 @@
-/* eslint @typescript-eslint/no-var-requires: 0 */
 import { parseYaml } from '@redocly/openapi-core';
 import { outdent } from 'outdent';
 
-import type { OperationModel, SchemaModel } from '../types';
+import type { OperationModel, SchemaModel } from '../types.js';
 
-import { getMediaType } from '../mediaType';
-import { getField } from '../field';
-import { normalizeOptions, OpenAPIParser } from '../../services';
-import { enumDetailsPrinter, printSchema } from './helpers';
-import { getSchema } from '../schema';
+import { getMediaType } from '../mediaType.js';
+import { getField } from '../field.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import { enumDetailsPrinter, printSchema } from './helpers.js';
+import { getSchema } from '../schema.js';
+
+// Fixture imports
+import nestedEnumDescriptionSpec from './fixtures/nestedEnumDescroptionSample.json';
+import discriminatorSpec from './fixtures/discriminator.json';
+import discriminatorWithDefaultMappingSpec from './fixtures/discriminator-with-default-mapping.json';
+import discriminatorDefaultOnlySpec from './fixtures/discriminator-default-only.json';
+import discriminatorOrderedWithDefaultSpec from './fixtures/discriminator-ordered-with-default.json';
+import oneOfTitlesSpec from './fixtures/oneOfTitles.json';
+import conditionalSchemaSpec from './fixtures/3.1/conditionalSchema.json';
+import conditionalFieldSpec from './fixtures/3.1/conditionalField.json';
+import patternPropertiesSpec from './fixtures/3.1/patternProperties.json';
+import prefixItemsSpec from './fixtures/3.1/prefixItems.json';
+import arrayItemsSpec from './fixtures/arrayItems.json';
+import fieldsSpec from './fixtures/fields.json';
+import type { OpenAPIDefinition, OpenAPISchema } from '../../types/index.js';
+
+// Map for test.each fixtures
+const fixtureMap: Record<string, unknown> = {
+  './fixtures/3.1/prefixItems.json': prefixItemsSpec,
+  './fixtures/arrayItems.json': arrayItemsSpec,
+};
 
 const options = normalizeOptions({});
 const deps = { operation: { pointer: 'testSchema' } as OperationModel };
@@ -17,9 +37,9 @@ describe('Models', () => {
     let parser;
 
     test('parsing nested x-enumDescription', () => {
-      const spec = require('./fixtures/nestedEnumDescroptionSample.json');
+      const spec = nestedEnumDescriptionSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, options);
-      const testSchema = spec.components.schemas.Test;
+      const testSchema = spec.components?.schemas?.Test as OpenAPISchema;
       const schemaModel = getSchema({
         parser,
         schemaOrRef: testSchema,
@@ -29,12 +49,12 @@ describe('Models', () => {
       });
 
       expect(schemaModel['x-enumDescriptions']).toStrictEqual(
-        testSchema.items['x-enumDescriptions'],
+        testSchema?.items?.['x-enumDescriptions'],
       );
     });
 
     test('discriminator with one field', () => {
-      const spec = require('./fixtures/discriminator.json');
+      const spec = discriminatorSpec;
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
@@ -47,12 +67,64 @@ describe('Models', () => {
       expect(schema.discriminatorProp).toEqual('type');
     });
 
-    test('oneOf/allOf titles', () => {
-      const spec = require('./fixtures/oneOfTitles.json');
+    test('discriminator with defaultMapping adds it as last item', () => {
+      const spec = discriminatorWithDefaultMappingSpec;
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Test,
+        schemaOrRef: spec.components.schemas.Pet,
+        pointer: '#/components/schemas/Pet',
+        options,
+        deps,
+      });
+      expect(schema.oneOf).toHaveLength(3);
+      expect(schema.oneOf?.[0].isDefaultMapping).toBe(false);
+      expect(schema.oneOf?.[0].title).toBe('cat');
+      expect(schema.oneOf?.[1].isDefaultMapping).toBe(false);
+      expect(schema.oneOf?.[1].title).toBe('dog');
+      expect(schema.oneOf?.[2].isDefaultMapping).toBe(true);
+      expect(schema.oneOf?.[2].title).toBe('Default mapping');
+    });
+
+    test('discriminator with only defaultMapping (no mapping)', () => {
+      const spec = discriminatorDefaultOnlySpec;
+      parser = new OpenAPIParser(spec, undefined, options);
+      const schema = getSchema({
+        parser,
+        schemaOrRef: spec.components.schemas.Animal,
+        pointer: '#/components/schemas/Animal',
+        options,
+        deps,
+      });
+      expect(schema.oneOf).toHaveLength(1);
+      expect(schema.oneOf?.[0].isDefaultMapping).toBe(true);
+      expect(schema.oneOf?.[0].title).toBe('Default mapping');
+    });
+
+    test('discriminator defaultMapping order preserved after sorting', () => {
+      const spec = discriminatorOrderedWithDefaultSpec;
+      parser = new OpenAPIParser(spec, undefined, options);
+      const schema = getSchema({
+        parser,
+        schemaOrRef: spec.components.schemas.Vehicle,
+        pointer: '#/components/schemas/Vehicle',
+        options,
+        deps,
+      });
+      expect(schema.oneOf).toHaveLength(4);
+      expect(schema.oneOf?.[0].title).toBe('truck');
+      expect(schema.oneOf?.[1].title).toBe('bike');
+      expect(schema.oneOf?.[2].title).toBe('car');
+      expect(schema.oneOf?.[3].title).toBe('Default mapping');
+      expect(schema.oneOf?.[3].isDefaultMapping).toBe(true);
+    });
+
+    test('oneOf/allOf titles', () => {
+      const spec = oneOfTitlesSpec as unknown as OpenAPIDefinition;
+      parser = new OpenAPIParser(spec, undefined, options);
+      const schema = getSchema({
+        parser,
+        schemaOrRef: spec.components?.schemas?.Test as OpenAPISchema,
         pointer: '',
         options,
         deps,
@@ -81,14 +153,14 @@ describe('Models', () => {
     });
 
     test('oneOf/allOf titles with hideSchemaTitles', () => {
-      const spec = require('./fixtures/oneOfTitles.json');
+      const spec = oneOfTitlesSpec as unknown as OpenAPIDefinition;
       const options = normalizeOptions({
         hideSchemaTitles: true,
       });
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Test,
+        schemaOrRef: spec.components?.schemas?.Test as OpenAPISchema,
         pointer: '',
         options,
         deps,
@@ -113,11 +185,11 @@ describe('Models', () => {
     });
 
     test('oneOf/allOf schema complex displayType', () => {
-      const spec = require('./fixtures/oneOfTitles.json');
+      const spec = oneOfTitlesSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.WithArray,
+        schemaOrRef: spec.components?.schemas?.WithArray as OpenAPISchema,
         pointer: '',
         options,
         deps,
@@ -126,50 +198,115 @@ describe('Models', () => {
       expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
 
-    test('oneOf titles should not be overridden by parent schema title', () => {
-      const spec = {
-        openapi: '3.1.0',
-        components: {
-          schemas: {
-            Parent: {
-              title: 'Parent',
-              type: 'object',
-              oneOf: [
-                { $ref: '#/components/schemas/Child1' },
-                { $ref: '#/components/schemas/Child2' },
-              ],
-            },
-            Child1: {
-              title: 'Child1',
-              type: 'object',
-            },
-            Child2: {
-              type: 'object',
-            },
-          },
-        },
-      };
+    test('oneOf/anyOf with pure $ref should NOT be marked as circular', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.1.0
+        components:
+          schemas:
+            ContactObject:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+            Customer:
+              type: object
+              properties:
+                primaryAddressOneOf:
+                  description: Customer's primary address
+                  oneOf:
+                    - $ref: '#/components/schemas/ContactObject'
+                    - type: 'null'
+                primaryAddressAnyOf:
+                  description: Customer's primary address
+                  anyOf:
+                    - $ref: '#/components/schemas/ContactObject'
+                    - type: 'null'
+      `) as unknown as OpenAPIDefinition;
 
       parser = new OpenAPIParser(spec, undefined, options);
 
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Parent,
-        pointer: '',
+        schemaOrRef: spec.components?.schemas?.Customer as OpenAPISchema,
+        pointer: '#/components/schemas/Customer',
         options,
         deps,
       });
 
-      expect(schema.oneOf?.[0].rawSchema.allOf[0].title).toBe('Child1');
-      expect(schema.oneOf?.[1].rawSchema.allOf[0].title).toBe('Child2');
+      expect(schema.isCircular).toBe(false);
+
+      const oneOfField = schema.fields?.find((f) => f.name === 'primaryAddressOneOf');
+      expect(oneOfField).toBeDefined();
+      expect(oneOfField?.schema.oneOf).toBeDefined();
+      expect(oneOfField?.schema.oneOf?.length).toBe(2);
+
+      oneOfField?.schema.oneOf?.forEach((variant) => {
+        expect(variant.isCircular).toBe(false);
+      });
+
+      const anyOfField = schema.fields?.find((f) => f.name === 'primaryAddressAnyOf');
+      expect(anyOfField).toBeDefined();
+      expect(anyOfField?.schema.oneOf).toBeDefined();
+      expect(anyOfField?.schema.oneOf?.length).toBe(2);
+
+      anyOfField?.schema.oneOf?.forEach((variant) => {
+        expect(variant.isCircular).toBe(false);
+      });
+    });
+
+    test('oneOf/anyOf with circular reference should be detected', () => {
+      const spec = parseYaml(outdent`
+        openapi: 3.1.0
+        components:
+          schemas:
+            TreeNode:
+              type: object
+              properties:
+                value:
+                  type: string
+                nextOneOf:
+                  oneOf:
+                    - $ref: '#/components/schemas/TreeNode'
+                    - type: 'null'
+                nextAnyOf:
+                  anyOf:
+                    - $ref: '#/components/schemas/TreeNode'
+                    - type: 'null'
+      `) as unknown as OpenAPIDefinition;
+
+      parser = new OpenAPIParser(spec, undefined, options);
+
+      const schema = getSchema({
+        parser,
+        schemaOrRef: spec.components?.schemas?.TreeNode as OpenAPISchema,
+        pointer: '#/components/schemas/TreeNode',
+        options,
+        deps,
+      });
+
+      const oneOfField = schema.fields?.find((f) => f.name === 'nextOneOf');
+      expect(oneOfField).toBeDefined();
+      expect(oneOfField?.schema.oneOf).toBeDefined();
+
+      const oneOfCircularVariant = oneOfField?.schema.oneOf?.find((v) => v.isCircular);
+      expect(oneOfCircularVariant).toBeDefined();
+
+      const anyOfField = schema.fields?.find((f) => f.name === 'nextAnyOf');
+      expect(anyOfField).toBeDefined();
+      expect(anyOfField?.schema.oneOf).toBeDefined();
+
+      const anyOfCircularVariant = anyOfField?.schema.oneOf?.find((v) => v.isCircular);
+      expect(anyOfCircularVariant).toBeDefined();
     });
 
     test('schemaDefinition should resolve schema with conditional operators', () => {
-      const spec = require('./fixtures/3.1/conditionalSchema.json');
+      const spec = conditionalSchemaSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Test,
+        schemaOrRef: spec.components?.schemas?.Test as OpenAPISchema,
         pointer: '',
         options,
         deps,
@@ -184,11 +321,11 @@ describe('Models', () => {
     });
 
     test('schemaDefinition should resolve field with conditional operators', () => {
-      const spec = require('./fixtures/3.1/conditionalField.json');
+      const spec = conditionalFieldSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, options);
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Test,
+        schemaOrRef: spec.components?.schemas?.Test as OpenAPISchema,
         pointer: '',
         options,
         deps,
@@ -203,16 +340,16 @@ describe('Models', () => {
     });
 
     test('schemaDefinition should resolve patternProperties', () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => {});
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-      const spec = require('./fixtures/3.1/patternProperties.json');
+      const spec = patternPropertiesSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, {
         ...options,
         sortRequiredPropsFirst: true,
       });
       const schema = getSchema({
         parser,
-        schemaOrRef: spec.components.schemas.Patterns,
+        schemaOrRef: spec.components?.schemas?.Patterns as OpenAPISchema,
         pointer: '',
         options: {
           ...options,
@@ -250,11 +387,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems without additional items',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case1,
+            schemaOrRef: spec.components?.schemas?.Case1 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -272,11 +409,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems with additional items',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case2,
+            schemaOrRef: spec.components?.schemas?.Case2 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -295,11 +432,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems with additional items with $ref',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case3,
+            schemaOrRef: spec.components?.schemas?.Case3 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -319,11 +456,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems with additional schema items',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case4,
+            schemaOrRef: spec.components?.schemas?.Case4 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -342,11 +479,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems with additional array items',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case5,
+            schemaOrRef: spec.components?.schemas?.Case5 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -370,11 +507,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve prefixItems with additional array items',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case6,
+            schemaOrRef: spec.components?.schemas?.Case6 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -392,11 +529,11 @@ describe('Models', () => {
       test.each(eachArray)(
         'schemaDefinition should resolve items with boolean type',
         (specFixture) => {
-          const spec = require(specFixture);
+          const spec = fixtureMap[specFixture] as unknown as OpenAPIDefinition;
           const parser = new OpenAPIParser(spec, undefined, options);
           const schema = getSchema({
             parser,
-            schemaOrRef: spec.components.schemas.Case7,
+            schemaOrRef: spec.components?.schemas?.Case7 as OpenAPISchema,
             pointer: '',
             options,
             deps,
@@ -412,7 +549,7 @@ describe('Models', () => {
     });
 
     test('content example should be override the example provided by the schema', () => {
-      const spec = require('./fixtures/fields.json');
+      const spec = fieldsSpec as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, options);
       const field = getField(
         parser,
@@ -828,6 +965,73 @@ describe('Models', () => {
         minItems: <any>
         maxItems: <any>"
       `);
+    });
+
+    test('oneOf child titles should not be overridden by parent schema title via $ref', () => {
+      const spec = {
+        openapi: '3.1.0',
+        components: {
+          schemas: {
+            DocumentMetadata: {
+              type: 'object',
+              properties: {
+                entityMetadata: {
+                  $ref: '#/components/schemas/EntityMetadata',
+                },
+              },
+            },
+            EntityMetadata: {
+              title: 'EntityMetadata',
+              description: 'Metadata for associated entity of document.',
+              type: 'object',
+              oneOf: [
+                { $ref: '#/components/schemas/PnrMetadataWrapper' },
+                { $ref: '#/components/schemas/EventMetadataWrapper' },
+              ],
+            },
+            PnrMetadataWrapper: {
+              type: 'object',
+              title: 'PnrMetadataWrapper',
+              properties: {
+                pnrMetadata: {
+                  type: 'string',
+                },
+              },
+            },
+            EventMetadataWrapper: {
+              type: 'object',
+              title: 'EventMetadataWrapper',
+              properties: {
+                eventMetadata: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
+      } as unknown as OpenAPIDefinition;
+
+      parser = new OpenAPIParser(spec, undefined, options);
+
+      const documentSchema = getSchema({
+        parser,
+        schemaOrRef: spec.components?.schemas?.DocumentMetadata as OpenAPISchema,
+        pointer: '#/components/schemas/DocumentMetadata',
+        options,
+        deps,
+      });
+
+      const entityMetadataField = documentSchema.fields?.find((f) => f.name === 'entityMetadata');
+
+      expect(entityMetadataField).toBeDefined();
+      expect(entityMetadataField?.schema.oneOf).toBeDefined();
+      expect(entityMetadataField?.schema.oneOf).toHaveLength(2);
+
+      expect(entityMetadataField?.schema.oneOf?.[0].title).toBe('PnrMetadataWrapper');
+      expect(entityMetadataField?.schema.oneOf?.[1].title).toBe('EventMetadataWrapper');
+
+      expect(entityMetadataField?.schema.oneOf?.[0].title).not.toBe('EntityMetadata');
+      expect(entityMetadataField?.schema.oneOf?.[1].title).not.toBe('EntityMetadata');
     });
   });
 });

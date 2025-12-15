@@ -1,4 +1,4 @@
-import { querySelector, html2Str, IS_BROWSER } from '../dom';
+import { querySelector, html2Str, IS_BROWSER } from '../dom.js';
 
 describe('DOM utils', () => {
   describe('querySelector', () => {
@@ -54,13 +54,13 @@ describe('DOM utils', () => {
     let parent: HTMLElement;
     let child: HTMLElement;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       parent = document.createElement('div');
       child = document.createElement('div');
       parent.appendChild(child);
       document.body.appendChild(parent);
 
-      jest.spyOn(window, 'getComputedStyle').mockReturnValue({
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue({
         getPropertyValue: (prop: string) => {
           if (prop === 'border-top-width') return '10';
           if (prop === 'border-left-width') return '10';
@@ -82,11 +82,11 @@ describe('DOM utils', () => {
         offsetLeft: { value: 150, configurable: true },
         clientHeight: { value: 50, configurable: true },
         clientWidth: { value: 50, configurable: true },
-        scrollIntoView: { value: jest.fn(), configurable: true },
+        scrollIntoView: { value: vi.fn(), configurable: true },
       });
 
       if (typeof Element.prototype.scrollIntoViewIfNeeded !== 'function') {
-        require('../dom');
+        await import('../dom');
       }
     });
 
@@ -94,7 +94,7 @@ describe('DOM utils', () => {
       if (parent.parentNode) {
         parent.parentNode.removeChild(parent);
       }
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it('should center the element when over top and centerIfNeeded is true', () => {

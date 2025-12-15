@@ -1,6 +1,14 @@
-import { urlParse, getUrlDirname } from '../url';
+import { urlParse, getUrlDirname } from '../url.js';
 
 describe('url utils', () => {
+  const originalConsoleError = console.error;
+  beforeEach(() => {
+    console.error = vi.fn();
+  });
+  afterEach(() => {
+    console.error = originalConsoleError;
+  });
+
   describe('urlParse', () => {
     it('should parse valid URLs', () => {
       const result = urlParse('https://example.com/path');

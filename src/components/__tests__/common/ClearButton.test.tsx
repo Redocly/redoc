@@ -1,10 +1,11 @@
+import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ClearButton } from '../../common/ClearButton';
+import { ClearButton } from '../../common/ClearButton/index.js';
 
 describe('ClearButton component', () => {
-  const handleClear = jest.fn();
+  const handleClear = vi.fn();
 
   it('render component correctly', () => {
     const { container } = render(<ClearButton handleClear={handleClear} />);

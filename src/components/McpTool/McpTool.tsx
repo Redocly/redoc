@@ -19,18 +19,18 @@ import { Security } from '../Security/Security.js';
 import { styled } from '../../styled-components.js';
 
 interface McpToolProps {
-  toolName: string;
+  name: string;
   id: string;
 }
 
-function McpToolComponent({ toolName, id }: McpToolProps) {
+function McpToolComponent({ name, id }: McpToolProps) {
   const { parser } = useAtomValue(globalStoreAtom);
   const translate = useTranslate();
 
   const tool = useMemo(() => {
     const tools = parser.definition['x-mcp']?.tools || [];
-    return tools.find((t: any) => t.name === toolName);
-  }, [parser, toolName]);
+    return tools.find((t: any) => t.name === name);
+  }, [parser, name]);
 
   const securityModel = useMemo(() => {
     if (!tool) {
@@ -40,7 +40,7 @@ function McpToolComponent({ toolName, id }: McpToolProps) {
   }, [parser, tool]);
 
   if (!tool) {
-    return <div>Tool not found: {toolName}</div>;
+    return <div>Tool not found: {name}</div>;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { getTypographyCssRulesByComponentName } from '../theme-helpers';
+import { getTypographyCssRulesByComponentName } from '../theme-helpers.js';
 
 describe('getTypographyCssRulesByComponentName', () => {
   it('should return object with defined css variable for component', () => {

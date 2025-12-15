@@ -69,7 +69,8 @@ function generateExamples({
         schema.discriminatorProp &&
         typeof sample === 'object' &&
         sample &&
-        sample[schema.discriminatorProp] // handle case with readOnly with discriminator
+        sample[schema.discriminatorProp] && // handle case with readOnly with discriminator
+        !subSchema.isDefaultMapping
       ) {
         sample[schema.discriminatorProp] = subSchema.title;
       }
@@ -148,6 +149,7 @@ export function getMediaType(
 ): MediaTypeModel {
   let examples;
   let formExamples;
+  let examplesPointer;
   const schema =
     info.schema &&
     getSchema({
@@ -192,7 +194,9 @@ export function getMediaType(
           format: isXmlLike(name) ? 'xml' : 'json',
         },
       });
+      examplesPointer = schema?.pointer;
     } else if (isFormUrlEncoded(name) || isMultipartFormData(name)) {
+      examplesPointer = schema?.pointer;
       formExamples = generateExamples({
         parser,
         info,
@@ -209,6 +213,7 @@ export function getMediaType(
   return {
     examples,
     schema,
+    examplesPointer,
     name,
     isRequestType,
     formExamples,

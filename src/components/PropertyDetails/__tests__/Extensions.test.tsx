@@ -1,18 +1,18 @@
 import { render } from '@testing-library/react';
 import * as Jotai from 'jotai';
 
-import { Extensions } from '../Extensions';
-import { normalizeOptions } from '../../../services';
+import { Extensions } from '../Extensions.js';
+import { normalizeOptions } from '../../../services/index.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
 describe('Components', () => {
   describe('Extensions', () => {
     it('Extensions label renders correctly', () => {
-      jest.spyOn(Jotai, 'useAtomValue').mockReturnValue(
+      vi.spyOn(Jotai, 'useAtomValue').mockReturnValue(
         normalizeOptions({
           showExtensions: true,
         }),

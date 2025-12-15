@@ -1,18 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Select component render Select component correctly 1`] = `
-.c1 {
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  height: 16px;
-  width: 16px;
-}
-
-.c1 path {
-  fill: currentColor;
-}
-
+exports[`Select component > render Select component correctly 1`] = `
 .c0 {
   box-sizing: border-box;
   outline: none;
@@ -87,6 +75,18 @@ exports[`Select component render Select component correctly 1`] = `
   box-shadow: none;
 }
 
+.c1 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+.c1 path {
+  fill: currentColor;
+}
+
 .c2 {
   position: absolute;
   right: 10px;
@@ -130,19 +130,7 @@ exports[`Select component render Select component correctly 1`] = `
 </div>
 `;
 
-exports[`Select component render SimpleSelect dark variant correctly 1`] = `
-.c2 {
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  height: 16px;
-  width: 16px;
-}
-
-.c2 path {
-  fill: currentColor;
-}
-
+exports[`Select component > render SimpleSelect dark variant correctly 1`] = `
 .c0 {
   box-sizing: border-box;
   outline: none;
@@ -238,6 +226,18 @@ exports[`Select component render SimpleSelect dark variant correctly 1`] = `
 .c1 label:hover,
 .c1 label:focus-within {
   box-shadow: none;
+}
+
+.c2 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+
+.c2 path {
+  fill: currentColor;
 }
 
 .c3 {

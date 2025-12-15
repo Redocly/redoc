@@ -1,14 +1,14 @@
 import { act, render } from '@testing-library/react';
 
 import type { ReactElement } from 'react';
-import type { SelectProps } from '../../common';
-import type { OperationModel } from '../../../models';
+import type { SelectProps } from '../../common/index.js';
+import type { OperationModel } from '../../../models/index.js';
 
-import { MediaTypesSwitch } from '../MediaTypesSwitch';
-import { getOperation } from '../../../models';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
+import { MediaTypesSwitch } from '../MediaTypesSwitch.js';
+import { getOperation } from '../../../models/index.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
 import testDefinition from './fixtures/test-definition.json';
-import { withTestProviders } from '../../../testProviders';
+import { withTestProviders } from '../../../testProviders.js';
 
 describe('Components', () => {
   describe('MediaTypesSwitch', () => {
@@ -25,6 +25,7 @@ describe('Components', () => {
           pathParameters: [],
           pathServers: [],
           isWebhook: false,
+          isAdditionalOperation: false,
           ...testDefinition.paths['/test'].get,
         },
         undefined,
@@ -34,8 +35,8 @@ describe('Components', () => {
     });
 
     test('renders with default media type by default', () => {
-      const childrenFn = jest.fn((mimeType) => <>children: {mimeType.name}</>);
-      const renderSelectFn = jest.fn<ReactElement | null, [SelectProps]>(() => null);
+      const childrenFn = vi.fn((mimeType) => <>children: {mimeType.name}</>);
+      const renderSelectFn = vi.fn<(props: SelectProps) => ReactElement | null>(() => null);
 
       const { getByText } = render(
         withTestProviders(
@@ -55,8 +56,8 @@ describe('Components', () => {
     });
 
     test('withLabel renders label', () => {
-      const childrenFn = jest.fn((mimeType) => <>children: {mimeType.name}</>);
-      const renderSelectFn = jest.fn(() => <>dropdown</>);
+      const childrenFn = vi.fn((mimeType) => <>children: {mimeType.name}</>);
+      const renderSelectFn = vi.fn(() => <>dropdown</>);
 
       const { getByText } = render(
         withTestProviders(
@@ -75,8 +76,10 @@ describe('Components', () => {
     });
 
     test('should try to restore scroll on switch', async () => {
-      const childrenFn = jest.fn((mimeType) => <>children: {mimeType.name}</>);
-      const renderSelectFn = jest.fn<ReactElement | null, [SelectProps]>(() => <>dropdown</>);
+      const childrenFn = vi.fn((mimeType) => <>children: {mimeType.name}</>);
+      const renderSelectFn = vi.fn<(props: SelectProps) => ReactElement | null>(() => (
+        <>dropdown</>
+      ));
 
       const { findByText, container } = render(
         withTestProviders(
@@ -92,17 +95,20 @@ describe('Components', () => {
       );
 
       // Create a mock implementation of window.scrollBy
-      const scrollByMock = jest.fn();
+      const scrollByMock = vi.fn();
       Object.defineProperty(window, 'scrollBy', { value: scrollByMock });
 
-      const rectMock = jest.fn(() => {
+      const rectMock = vi.fn(() => {
         return (rectMock.mock.calls.length > 1 ? { y: 150 } : { y: 100 }) as unknown as DOMRect;
       });
 
-      jest.spyOn(container.firstElementChild, 'getBoundingClientRect').mockImplementation(rectMock);
+      vi.spyOn(container?.firstElementChild as Element, 'getBoundingClientRect').mockImplementation(
+        rectMock,
+      );
 
       act(() => {
-        renderSelectFn.mock.calls[0][0].onChange(renderSelectFn.mock.calls[0][0].options[1]);
+        const selectProps = renderSelectFn.mock.calls[0][0];
+        selectProps.onChange(selectProps.options[1]);
       });
 
       await findByText('children: application/xml');
@@ -114,8 +120,8 @@ describe('Components', () => {
     });
 
     test('should not throw and render null for empty media types', () => {
-      const childrenFn = jest.fn((mimeType) => <>children: {mimeType.name}</>);
-      const renderSelectFn = jest.fn(() => null);
+      const childrenFn = vi.fn((mimeType) => <>children: {mimeType.name}</>);
+      const renderSelectFn = vi.fn(() => null);
 
       const { container } = render(
         withTestProviders(

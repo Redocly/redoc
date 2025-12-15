@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { ViewNested } from '../ViewNested';
+import { ViewNested } from '../ViewNested.js';
 
 describe('ViewNested', () => {
   it('should render nested array content directly without show properties button', () => {

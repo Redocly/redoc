@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Models Schema schemaDefinition should resolve field with conditional operators 1`] = `
+exports[`Models > Schema > schemaDefinition should resolve field with conditional operators 1`] = `
 {
   "absolutePointer": "/properties/test",
   "allOf": undefined,
@@ -36,7 +36,7 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 }
 `;
 
-exports[`Models Schema schemaDefinition should resolve field with conditional operators 2`] = `
+exports[`Models > Schema > schemaDefinition should resolve field with conditional operators 2`] = `
 {
   "absolutePointer": "/1",
   "allOf": undefined,
@@ -74,7 +74,7 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 }
 `;
 
-exports[`Models Schema schemaDefinition should resolve schema with conditional operators 1`] = `
+exports[`Models > Schema > schemaDefinition should resolve schema with conditional operators 1`] = `
 {
   "absolutePointer": "/2",
   "allOf": undefined,
@@ -129,7 +129,7 @@ exports[`Models Schema schemaDefinition should resolve schema with conditional o
 }
 `;
 
-exports[`Models Schema schemaDefinition should resolve schema with conditional operators 2`] = `
+exports[`Models > Schema > schemaDefinition should resolve schema with conditional operators 2`] = `
 {
   "absolutePointer": "/1",
   "allOf": undefined,

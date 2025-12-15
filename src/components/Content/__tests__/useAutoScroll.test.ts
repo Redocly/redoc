@@ -1,30 +1,39 @@
 import { renderHook } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 
-import { jest, describe, beforeEach, test, expect, afterEach } from '@jest/globals';
+import { vi, type Mock, type MockedFunction } from 'vitest';
 
-import { useAutoScroll } from '../useAutoScroll';
+import { useAutoScroll } from '../useAutoScroll.js';
 
-jest.mock('react-router-dom', () => ({
-  useLocation: jest.fn(),
+vi.mock('react-router-dom', () => ({
+  useLocation: vi.fn(),
 }));
 
-jest.mock('@redocly/theme', () => ({
-  IS_BROWSER: true,
-  useActiveSectionId: jest.fn(() => '/test'),
+vi.mock('lodash.throttle', () => ({
+  default: (fn) => fn,
 }));
+
+vi.mock('@redocly/theme', async () => {
+  const actual = await vi.importActual('@redocly/theme');
+  return {
+    ...actual,
+    IS_BROWSER: true,
+    useActiveSectionId: vi.fn(() => '/test'),
+  };
+});
 
 describe('useAutoScroll', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.useFakeTimers();
+    vi.clearAllMocks();
 
-    (useAutoScroll as any).initialPageLoad = true;
+    (useAutoScroll as unknown as { initialPageLoad: boolean }).initialPageLoad = true;
 
-    window.history.replaceState = jest.fn();
-    window.scrollTo = jest.fn();
+    window.history.replaceState = vi.fn();
+    window.scrollTo = vi.fn();
 
-    document.getElementById = jest.fn() as jest.MockedFunction<typeof document.getElementById>;
-    document.querySelector = jest.fn() as jest.MockedFunction<typeof document.querySelector>;
+    document.getElementById = vi.fn() as MockedFunction<typeof document.getElementById>;
+    document.querySelector = vi.fn() as MockedFunction<typeof document.querySelector>;
 
     Object.defineProperty(window, 'location', {
       value: { pathname: '', hash: '' },
@@ -33,7 +42,8 @@ describe('useAutoScroll', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   test('should processing without toLowerCase', () => {
@@ -44,7 +54,7 @@ describe('useAutoScroll', () => {
       key: '',
       search: '',
     };
-    (useLocation as jest.Mock).mockReturnValue(mockLocation);
+    (useLocation as Mock).mockReturnValue(mockLocation);
 
     renderHook(() => useAutoScroll('/'));
 
@@ -59,7 +69,7 @@ describe('useAutoScroll', () => {
       key: '',
       search: '',
     };
-    (useLocation as jest.Mock).mockReturnValue(mockLocation);
+    (useLocation as Mock).mockReturnValue(mockLocation);
 
     renderHook(() => useAutoScroll('/'));
 
@@ -74,7 +84,7 @@ describe('useAutoScroll', () => {
       key: '',
       search: '',
     };
-    (useLocation as jest.Mock).mockReturnValue(mockLocation);
+    (useLocation as Mock).mockReturnValue(mockLocation);
 
     renderHook(() => useAutoScroll('/'));
 
@@ -82,7 +92,7 @@ describe('useAutoScroll', () => {
   });
 
   test('should scroll element into view when found', () => {
-    const mockElement = { scrollIntoView: jest.fn() };
+    const mockElement = { scrollIntoView: vi.fn() };
     const mockLocation = {
       pathname: '/test',
       hash: '#TestHash',
@@ -90,8 +100,8 @@ describe('useAutoScroll', () => {
       key: '',
       search: '',
     };
-    (useLocation as jest.Mock).mockReturnValue(mockLocation);
-    (document.getElementById as jest.Mock).mockReturnValue(mockElement);
+    (useLocation as Mock).mockReturnValue(mockLocation);
+    (document.getElementById as Mock).mockReturnValue(mockElement);
 
     renderHook(() => useAutoScroll('/'));
 

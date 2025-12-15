@@ -32,7 +32,21 @@ function OneOfSchemaComponent({
   const [store, setOperationStore] = useAtom(operationStore(schema.operationPointer));
   const oneOfIdxLocation = useOneOfLocationIdx(oneOf, oneOfLevel);
 
-  const activeOneOfIdx = oneOfIdxLocation === -1 ? 0 : oneOfIdxLocation;
+  const options = oneOf.map((subSchema, idx) => ({
+    label: subSchema.title || subSchema.typePrefix + subSchema.displayType,
+    value: idx,
+  }));
+  const activeExampleNameIndex = options.findIndex(
+    (option) => option.label === store.activeExampleName,
+  );
+
+  const activeOneOfIdx =
+    oneOfIdxLocation === -1
+      ? activeExampleNameIndex !== -1
+        ? activeExampleNameIndex
+        : 0
+      : oneOfIdxLocation;
+
   const activeSchemaIndex =
     store.activeOneOf?.[schema.pointer] !== undefined
       ? store.activeOneOf[schema.pointer]
@@ -42,11 +56,6 @@ function OneOfSchemaComponent({
   if (!activeSchema) {
     return null;
   }
-
-  const options = oneOf.map((subSchema, idx) => ({
-    label: subSchema.title || subSchema.typePrefix + subSchema.displayType,
-    value: idx,
-  }));
 
   const handleChange = (value: number) => {
     onChange?.({

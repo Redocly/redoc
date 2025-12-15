@@ -54,5 +54,6 @@
     }
   ],
   "pathServers": null,
-  "isWebhook": false
+  "isWebhook": false,
+  "isAdditionalOperation": false
 }

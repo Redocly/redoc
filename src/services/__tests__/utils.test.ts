@@ -3,7 +3,7 @@ import {
   normalizeMimeType,
   unescapeServerVariables,
   arrayMergeStrategy,
-} from '../utils';
+} from '../utils.js';
 
 describe('services utils', () => {
   test('isSameMime should equal mime', () => {

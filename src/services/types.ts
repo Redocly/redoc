@@ -27,7 +27,7 @@ export type ExternalLinkSeparator = {
   separatorLine?: boolean;
 };
 
-export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema' | 'mcp';
+export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema' | 'tool' | 'rsrc' | 'prompt';
 export type MenuItemType = MenuItemGroupType | 'operation';
 
 /** Generic interface for MenuItems */
@@ -40,6 +40,7 @@ export interface IMenuItem {
   items: IMenuItem[];
   parent?: IMenuItem;
   deprecated?: boolean;
+  isAdditionalOperation?: boolean;
   type: MenuItemType;
   isSchema?: boolean;
   httpVerb?: string;
@@ -62,6 +63,7 @@ export type ExtendedOpenAPIOperation = {
   pathParameters: Array<Referenced<OpenAPIParameter>>;
   pathServers: Array<OpenAPIServer> | undefined;
   isWebhook: boolean;
+  isAdditionalOperation: boolean;
   defaultSampleName?: string | false;
 } & OpenAPIOperation;
 

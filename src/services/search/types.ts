@@ -9,6 +9,7 @@ export type SearchDocument = {
   path?: string[];
   httpMethod?: string;
   httpPath?: string | string[];
+  isAdditionalOperation?: boolean;
   deprecated?: boolean;
   security?: string[];
   parameters?: OperationParameter[];

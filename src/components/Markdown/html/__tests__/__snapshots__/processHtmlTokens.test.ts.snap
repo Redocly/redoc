@@ -1,190 +1,60 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`processHtmlTokens should process block and inline html tokens 1`] = `
-{
-  "$$typeof": Symbol(react.transitional.element),
-  "_owner": null,
-  "_store": {},
-  "key": null,
-  "props": {
-    "children": [
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": "Heading",
-        },
-        "type": "h1",
-      },
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": {
-            "$$typeof": Symbol(react.transitional.element),
-            "_owner": null,
-            "_store": {},
-            "key": null,
-            "props": {
-              "children": [
-                "Inline ",
-                {
-                  "$$typeof": Symbol(react.transitional.element),
-                  "_owner": null,
-                  "_store": {},
-                  "key": null,
-                  "props": {
-                    "children": "bold",
-                  },
-                  "type": "strong",
-                },
-                " text",
-              ],
-            },
-            "type": "p",
-          },
-          "id": "22",
-        },
-        "type": "div",
-      },
-    ],
-  },
-  "type": "article",
-}
+exports[`processHtmlTokens > should process block and inline html tokens 1`] = `
+<article>
+  <h1>
+    Heading
+  </h1>
+  <div
+    id="22"
+  >
+    <p>
+      Inline 
+      <strong>
+        bold
+      </strong>
+       text
+    </p>
+  </div>
+</article>
 `;
 
-exports[`processHtmlTokens should process inline html tokens 1`] = `
-{
-  "$$typeof": Symbol(react.transitional.element),
-  "_owner": null,
-  "_store": {},
-  "key": null,
-  "props": {
-    "children": [
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": [
-            "Inline ",
-            {
-              "$$typeof": Symbol(react.transitional.element),
-              "_owner": null,
-              "_store": {},
-              "key": null,
-              "props": {
-                "children": "bold",
-              },
-              "type": "strong",
-            },
-            " text",
-          ],
-        },
-        "type": "p",
-      },
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": "Heading",
-        },
-        "type": "h1",
-      },
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": [
-            "Inline ",
-            {
-              "$$typeof": Symbol(react.transitional.element),
-              "_owner": null,
-              "_store": {},
-              "key": null,
-              "props": {
-                "children": "bold",
-              },
-              "type": "strong",
-            },
-            " text",
-          ],
-        },
-        "type": "p",
-      },
-    ],
-  },
-  "type": "article",
-}
+exports[`processHtmlTokens > should process inline html tokens 1`] = `
+<article>
+  <p>
+    Inline 
+    <strong>
+      bold
+    </strong>
+     text
+  </p>
+  <h1>
+    Heading
+  </h1>
+  <p>
+    Inline 
+    <strong>
+      bold
+    </strong>
+     text
+  </p>
+</article>
 `;
 
-exports[`processHtmlTokens should report unclosed errors 1`] = `
-{
-  "$$typeof": Symbol(react.transitional.element),
-  "_owner": null,
-  "_store": {},
-  "key": null,
-  "props": {
-    "children": [
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": {
-            "$$typeof": Symbol(react.transitional.element),
-            "_owner": null,
-            "_store": {},
-            "key": null,
-            "props": {
-              "children": " inline",
-            },
-            "type": "span",
-          },
-        },
-        "type": "p",
-      },
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": "Heading",
-        },
-        "type": "h1",
-      },
-      {
-        "$$typeof": Symbol(react.transitional.element),
-        "_owner": null,
-        "_store": {},
-        "key": null,
-        "props": {
-          "children": {
-            "$$typeof": Symbol(react.transitional.element),
-            "_owner": null,
-            "_store": {},
-            "key": null,
-            "props": {
-              "children": "bold",
-            },
-            "type": "p",
-          },
-        },
-        "type": "strong",
-      },
-    ],
-  },
-  "type": "article",
-}
+exports[`processHtmlTokens > should report unclosed errors 1`] = `
+<article>
+  <p>
+    <span>
+       inline
+    </span>
+  </p>
+  <h1>
+    Heading
+  </h1>
+  <strong>
+    <p>
+      bold
+    </p>
+  </strong>
+</article>
 `;

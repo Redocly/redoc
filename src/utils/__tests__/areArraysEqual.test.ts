@@ -1,4 +1,4 @@
-import { areArraysEqual } from '../areArraysEqual';
+import { areArraysEqual } from '../areArraysEqual.js';
 
 describe('areArraysEqual', () => {
   it('should return true for two empty arrays', () => {

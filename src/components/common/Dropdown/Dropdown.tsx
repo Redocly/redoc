@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import type { SelectOption } from '@redocly/theme/core/openapi';
+import type { SegmentedOption } from '@redocly/theme/core/openapi';
 
 import { Dropdown as DropdownTheme } from '@redocly/theme/components/Dropdown/Dropdown';
 import { CheckmarkIcon } from '@redocly/theme/icons/CheckmarkIcon/CheckmarkIcon';
@@ -15,8 +15,8 @@ import { useTranslate } from '../../../hooks/index.js';
 
 export interface DropdownProps<T> {
   value: T;
-  onChange: ({ label, value }: SelectOption<T>) => void;
-  options: SelectOption<T>[];
+  onChange: ({ label, value }: SegmentedOption<T>) => void;
+  options: SegmentedOption<T>[];
   className?: string;
   triggerVariant?: 'ghost' | 'outlined';
   triggerSize?: string;
@@ -35,7 +35,7 @@ function DropdownComponent<T>({
   const [searchValue, setSearchValue] = useState('');
   const translate = useTranslate();
 
-  const activeLabel = options.find((opt) => opt.value === value)?.label;
+  const activeOption = options.find((opt) => opt.value === value);
 
   const filteredOptions = useMemo(
     () =>
@@ -45,7 +45,7 @@ function DropdownComponent<T>({
     [options, searchValue],
   );
 
-  if (options.length === 1) return <Title>{activeLabel}</Title>;
+  if (options.length === 1) return <Title>{activeOption?.element || activeOption?.label}</Title>;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -55,15 +55,18 @@ function DropdownComponent<T>({
     if (!withSearch) {
       return (
         <>
-          {options.map((opt) => (
-            <StyledDropdownMenuItem
-              key={opt.label}
-              active={opt.value === value}
-              onAction={() => onChange(opt)}
-              suffix={opt.value === value && <StyledCheckmarkIcon />}
-            >
-              {opt.label}
-            </StyledDropdownMenuItem>
+          {options.map((opt, index) => (
+            <React.Fragment key={index}>
+              {opt.divider}
+              <StyledDropdownMenuItem
+                key={opt.label}
+                active={opt.value === value}
+                onAction={() => onChange(opt)}
+                suffix={opt.value === value && <StyledCheckmarkIcon />}
+              >
+                {opt.element || opt.label}
+              </StyledDropdownMenuItem>
+            </React.Fragment>
           ))}
         </>
       );
@@ -91,15 +94,18 @@ function DropdownComponent<T>({
         />
         <ScrollableContainer>
           {filteredOptions.length ? (
-            filteredOptions.map((opt) => (
-              <StyledDropdownMenuItem
-                key={opt.label}
-                active={opt.value === value}
-                onAction={() => onChange(opt)}
-                suffix={opt.value === value && <StyledCheckmarkIcon />}
-              >
-                {opt.label}
-              </StyledDropdownMenuItem>
+            filteredOptions.map((opt, index) => (
+              <React.Fragment key={index}>
+                {opt.divider}
+                <StyledDropdownMenuItem
+                  key={opt.label}
+                  active={opt.value === value}
+                  onAction={() => onChange(opt)}
+                  suffix={opt.value === value && <StyledCheckmarkIcon />}
+                >
+                  {opt.element || opt.label}
+                </StyledDropdownMenuItem>
+              </React.Fragment>
             ))
           ) : (
             <StyledNoResultsDropdownMenuItem
@@ -116,7 +122,7 @@ function DropdownComponent<T>({
       className={className}
       trigger={
         <Button variant={triggerVariant} size={triggerSize} type="button">
-          {activeLabel}
+          {activeOption?.element || activeOption?.label}
         </Button>
       }
       withArrow

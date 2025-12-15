@@ -1,4 +1,4 @@
-import { replaceVariables } from '../replaceVariables';
+import { replaceVariables } from '../replaceVariables.js';
 
 describe('replaceVariables', () => {
   test('should return the same URL when there are no variables', () => {

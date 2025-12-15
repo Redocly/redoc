@@ -1,14 +1,15 @@
-import type { Deps, OperationModel } from '../../../models';
+import type { Deps, OperationModel } from '../../../models/index.js';
 
-import { generateDeepLink } from '../LinkToField';
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getField } from '../../../models';
+import { generateDeepLink } from '../LinkToField.js';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getField } from '../../../models/index.js';
 import spec from './fixtures/simpleOpenAPI.json';
+import type { OpenAPIDefinition } from '../../../types/index.js';
 
 const options = normalizeOptions({});
 
 describe('generateDeepLink', () => {
-  const parser = new OpenAPIParser(spec, undefined, options);
+  const parser = new OpenAPIParser(spec as unknown as OpenAPIDefinition, undefined, options);
   const deps = {
     type: 'request',
     operation: {

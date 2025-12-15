@@ -1,6 +1,6 @@
-import { toLocalStorage, fromLocalStorage } from '../local-storage';
+import { toLocalStorage, fromLocalStorage } from '../local-storage.js';
 
-jest.mock('@redocly/theme/core/openapi', () => ({
+vi.mock('@redocly/theme/core/openapi', () => ({
   IS_BROWSER: true,
 }));
 
@@ -12,10 +12,10 @@ describe('local-storage', () => {
 
     Object.defineProperty(window, 'localStorage', {
       value: {
-        setItem: jest.fn((key: string, value: string) => {
+        setItem: vi.fn((key: string, value: string) => {
           mockLocalStorage[key] = value;
         }),
-        getItem: jest.fn((key: string) => {
+        getItem: vi.fn((key: string) => {
           return mockLocalStorage[key] || null;
         }),
       },
@@ -24,7 +24,7 @@ describe('local-storage', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('toLocalStorage', () => {

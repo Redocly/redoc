@@ -1,4 +1,4 @@
-import { isHostAllowed } from '../check';
+import { isHostAllowed } from '../check.js';
 
 describe('license check', () => {
   test('isHostAllowed should work properly', () => {

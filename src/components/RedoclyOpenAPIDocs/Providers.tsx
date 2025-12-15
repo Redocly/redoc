@@ -127,7 +127,11 @@ export const StoreProvider = memo(
       store.set(globalStoreAtom, globalStoreValue);
 
       store.sub(appStore, () => undefined); // force mount so init data is read from storage
-      store.set(layoutAtom, globalStoreValue.options?.layout || LayoutVariant.THREE_PANEL); // set layout atom to update appStore atom with correct layout value
+      // Set layout from withState (portal) or options (local), with correct priority
+      store.set(
+        layoutAtom,
+        withState?.layout || globalStoreValue.options?.layout || LayoutVariant.THREE_PANEL,
+      ); // set layout atom to update appStore atom with correct layout value
       store.set(routerAtom, router || 'hash');
       store.set(disableTelemetryAtom, disableTelemetry || false);
       store.set(telemetryAtom, { data: undefined, status: 'initializing' });

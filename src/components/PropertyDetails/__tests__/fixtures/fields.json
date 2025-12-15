@@ -4,6 +4,7 @@
     "version": "1.0",
     "title": "Foo"
   },
+  "paths": {},
   "components": {
     "primitiveSchema": {
       "schema": {

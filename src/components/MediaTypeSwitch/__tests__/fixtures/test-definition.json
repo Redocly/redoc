@@ -10,5 +10,5 @@
       }
     }
   },
-  "components": { "securitySchemes": { "test": { "type": "apiKey" } } }
+  "components": {}
 }

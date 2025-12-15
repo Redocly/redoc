@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`simplifyAstStructure should handle empty AST 1`] = `
+exports[`simplifyAstStructure > should handle empty AST 1`] = `
 Node {
   "$$mdtype": "Node",
   "annotations": [],
@@ -14,7 +14,7 @@ Node {
 }
 `;
 
-exports[`simplifyAstStructure should remove location from AST nodes 1`] = `
+exports[`simplifyAstStructure > should remove location from AST nodes 1`] = `
 [
   Node {
     "$$mdtype": "Node",
@@ -44,7 +44,7 @@ exports[`simplifyAstStructure should remove location from AST nodes 1`] = `
 ]
 `;
 
-exports[`simplifyAstStructure should return full AST when not a document node type 1`] = `
+exports[`simplifyAstStructure > should return full AST when not a document node type 1`] = `
 Node {
   "$$mdtype": "Node",
   "annotations": [],

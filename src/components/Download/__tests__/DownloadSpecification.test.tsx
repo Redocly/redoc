@@ -1,8 +1,8 @@
 import { render, renderHook } from '@testing-library/react';
 import util from 'util';
 
-import { DownloadSpecification } from '../DownloadSpecification';
-import { useDownloadInfo } from '../useDownloadInfo';
+import { DownloadSpecification } from '../DownloadSpecification.js';
+import { useDownloadInfo } from '../useDownloadInfo.js';
 
 Object.defineProperty(global, 'TextEncoder', {
   value: util.TextEncoder,
@@ -26,7 +26,7 @@ describe('DownloadSpecification', () => {
         downloadUrls,
       }),
     );
-    const downloadObjects = result.current;
+    const downloadObjects = result?.current ?? [];
     const { container } = render(<DownloadSpecification downloadObjects={downloadObjects} />);
 
     expect(container).toMatchSnapshot();
@@ -52,7 +52,7 @@ describe('DownloadSpecification', () => {
         downloadUrls,
       }),
     );
-    const downloadObjects = result.current;
+    const downloadObjects = result?.current ?? [];
 
     const { container } = render(<DownloadSpecification downloadObjects={downloadObjects} />);
 

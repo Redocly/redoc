@@ -1,6 +1,6 @@
 import { Node } from '@markdoc/markdoc';
 
-import { simplifyAstStructure } from '../simplifyAstStructure';
+import { simplifyAstStructure } from '../simplifyAstStructure.js';
 
 describe('simplifyAstStructure', () => {
   it('should remove location from AST nodes', () => {
@@ -28,9 +28,8 @@ describe('simplifyAstStructure', () => {
 
   it('should return full AST when not a document node type', () => {
     const mockAst = new Node('text', { content: 'Some text' });
-    const openapiNode = { title: 'API Documentation' };
 
-    const result = simplifyAstStructure(mockAst as any, openapiNode);
+    const result = simplifyAstStructure(mockAst as Node);
 
     expect(result).toMatchSnapshot();
   });

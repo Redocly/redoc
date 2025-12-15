@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 
-import { strikethroughText, safeSlugify } from '../string';
+import { strikethroughText, safeSlugify } from '../string.js';
 
 describe('string utils', () => {
   it('strikethroughText', () => {

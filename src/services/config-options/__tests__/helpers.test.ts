@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterAll, jest } from '@jest/globals';
+import { vi, type MockedFunction } from 'vitest';
 import {
   normalizeShowExtensions,
   normalizeScrollYOffset,
@@ -6,18 +6,18 @@ import {
 import { querySelector } from '../../../utils/dom.js';
 import { isNumeric } from '../../../utils/helpers.js';
 
-jest.mock('../../../utils/dom.js');
-jest.mock('../../../utils/helpers.js');
+vi.mock('../../../utils/dom.js');
+vi.mock('../../../utils/helpers.js');
 
-const mockQuerySelector = querySelector as jest.MockedFunction<typeof querySelector>;
-const mockIsNumeric = isNumeric as jest.MockedFunction<typeof isNumeric>;
+const mockQuerySelector = querySelector as MockedFunction<typeof querySelector>;
+const mockIsNumeric = isNumeric as unknown as MockedFunction<typeof isNumeric>;
 
 describe('helpers', () => {
   const originalConsoleWarn = console.warn;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    console.warn = jest.fn();
+    vi.clearAllMocks();
+    console.warn = vi.fn();
   });
 
   afterAll(() => {
@@ -85,8 +85,8 @@ describe('helpers', () => {
 
     it('should return function that returns element bottom for valid selector', () => {
       const mockElement = {
-        getBoundingClientRect: jest.fn().mockReturnValue({ bottom: 100 }),
-      } as any;
+        getBoundingClientRect: vi.fn().mockReturnValue({ bottom: 100 }),
+      } as unknown as Element;
 
       mockIsNumeric.mockReturnValue(false);
       mockQuerySelector.mockReturnValue(mockElement);
@@ -129,7 +129,7 @@ describe('helpers', () => {
     });
 
     it('should handle function that returns number', () => {
-      const mockFn = jest.fn<() => number>().mockReturnValue(120);
+      const mockFn = vi.fn<() => number>().mockReturnValue(120);
 
       const offsetFn = normalizeScrollYOffset(mockFn);
       const result = offsetFn();
@@ -139,9 +139,9 @@ describe('helpers', () => {
     });
 
     it('should warn when function returns non-number', () => {
-      const mockFn = jest.fn<() => unknown>().mockReturnValue('invalid');
+      const mockFn = vi.fn<() => unknown>().mockReturnValue('invalid');
 
-      const offsetFn = normalizeScrollYOffset(mockFn as any);
+      const offsetFn = normalizeScrollYOffset(mockFn as () => number);
       const result = offsetFn();
 
       expect(console.warn).toHaveBeenCalledWith(
@@ -151,7 +151,7 @@ describe('helpers', () => {
     });
 
     it('should return function that returns 0 for invalid value types', () => {
-      const offsetFn = normalizeScrollYOffset({} as any);
+      const offsetFn = normalizeScrollYOffset({} as unknown as number);
       const result = offsetFn();
 
       expect(console.warn).toHaveBeenCalledWith(

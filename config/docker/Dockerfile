@@ -5,7 +5,7 @@
 # npm i -g http-server
 # http-server -p 8000 --cors
 
-FROM node:22.20.0-alpine@sha256:dbcedd8aeab47fbc0f4dd4bffa55b7c3c729a707875968d467aaaea42d6225af AS build
+FROM node:24.11.1-alpine3.22@sha256:2867d550cf9d8bb50059a0fff528741f11a84d985c732e60e19e8e75c7239c43 AS build
 
 WORKDIR /build
 

@@ -10,11 +10,11 @@ import type {
   OpenAPISchema,
   OpenAPIServer,
   Referenced,
+  OpenAPIParameter,
 } from '../types/index.js';
 import type { ExtendedOpenAPIOperation, OpenAPIParser } from '../services/index.js';
 import type { FieldModel, GroupModel } from '../models/index.js';
 
-import { OpenAPIParameter } from '../types/index.js';
 import {
   deleteEmptyArrayItem,
   isArrayOfObjects,

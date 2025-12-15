@@ -1,9 +1,9 @@
-import type { OpenAPIDefinition } from '../../types';
-import type { OperationModel } from '..';
+import type { OpenAPIDefinition } from '../../types/index.js';
+import type { OperationModel } from '../index.js';
 
-import { getMediaContent } from '../mediaContent';
-import { normalizeOptions, OpenAPIParser } from '../../services';
-import { MediaTypes } from '../../constants';
+import { getMediaContent } from '../mediaContent.js';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import { MediaTypes } from '../../constants.js';
 
 const options = normalizeOptions({});
 const data = { operation: { pointer: 'testMediaContent' } as OperationModel };
@@ -25,7 +25,7 @@ describe('Models', () => {
     });
 
     test('should work with default arguments', () => {
-      const consoleError = jest.spyOn(global.console, 'error');
+      const consoleError = vi.spyOn(global.console, 'error');
       const mediaContentModel = getMediaContent({
         parser,
         info: {},

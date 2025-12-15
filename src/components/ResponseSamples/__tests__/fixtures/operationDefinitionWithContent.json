@@ -25,5 +25,12 @@
         }
       }
     }
-  }
+  },
+  "pointer": "#/paths/~1museum-hours/get",
+  "pathName": "/museum-hours",
+  "httpVerb": "get",
+  "pathParameters": [],
+  "pathServers": [],
+  "isWebhook": false,
+  "isAdditionalOperation": false
 }

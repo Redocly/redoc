@@ -5,6 +5,7 @@
     "title": "Swagger Petstore"
   },
   "tags": [{ "name": "pet2" }, { "name": "pet" }],
+  "paths": {},
   "webhooks": {
     "myWebhook": {
       "$ref": "#/components/pathItems/catsWebhook",

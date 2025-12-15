@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react';
 
-import type { OpenAPIDefinition } from '../../../types';
-import type { OperationModel } from '../../../models';
+import type { OpenAPIDefinition } from '../../../types/index.js';
+import type { OperationModel } from '../../../models/index.js';
 
-import { normalizeOptions, OpenAPIParser } from '../../../services';
-import { getMediaContent, getOperation } from '../../../models';
-import { withTestProviders } from '../../../testProviders';
-import { PayloadSamples } from '../PayloadSamples';
+import { normalizeOptions, OpenAPIParser } from '../../../services/index.js';
+import { getMediaContent, getOperation } from '../../../models/index.js';
+import { withTestProviders } from '../../../testProviders.js';
+import { PayloadSamples } from '../PayloadSamples.js';
 import testDefinition from './fixtures/mediaTypeUrlencoded.json';
 
 describe('PayloadSamples', () => {
@@ -15,7 +15,22 @@ describe('PayloadSamples', () => {
   const parser = new OpenAPIParser(testDefinition as OpenAPIDefinition, undefined, options);
 
   test('should renders correctly without example to application/x-www-form-urlencoded', async () => {
-    operation = getOperation(parser, testDefinition, undefined, options, 'tests');
+    operation = getOperation(
+      parser,
+      {
+        pointer: '#/paths/~1test/get',
+        pathName: '/test',
+        httpVerb: 'GET',
+        pathParameters: [],
+        pathServers: [],
+        isWebhook: false,
+        isAdditionalOperation: false,
+        ...testDefinition.paths['/test'].get,
+      },
+      undefined,
+      options,
+      'tests',
+    );
     const props = {
       operation,
       content: getMediaContent({
@@ -25,7 +40,7 @@ describe('PayloadSamples', () => {
         options,
         data: { operation },
       }),
-      onCopyClick: jest.fn(),
+      onCopyClick: vi.fn(),
     };
 
     const { container } = render(

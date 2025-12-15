@@ -1,5 +1,7 @@
 {
   "openapi": "2.0.0",
+  "info": { "version": "1.0", "title": "Test" },
+  "paths": {},
   "components": {
     "schemas": {
       "Pet": {

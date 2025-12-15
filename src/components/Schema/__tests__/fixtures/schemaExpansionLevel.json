@@ -1,6 +1,7 @@
 {
   "openapi": "3.0.0",
-  "info": {},
+  "info": { "version": "1.0", "title": "Test" },
+  "paths": {},
   "tags": [
     {
       "name": "pet_model",

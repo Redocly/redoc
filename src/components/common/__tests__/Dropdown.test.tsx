@@ -1,8 +1,8 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 
-import type { DropdownProps } from '../Dropdown';
+import type { DropdownProps } from '../Dropdown/index.js';
 
-import { Dropdown } from '../Dropdown';
+import { Dropdown } from '../Dropdown/index.js';
 
 describe('DropdownComponent', () => {
   const options = [
@@ -13,7 +13,7 @@ describe('DropdownComponent', () => {
 
   const value = 'option1';
 
-  const onChange = jest.fn();
+  const onChange = vi.fn();
 
   const defaultProps: DropdownProps<string> = {
     options,
@@ -23,7 +23,7 @@ describe('DropdownComponent', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders dropdown options correctly', () => {

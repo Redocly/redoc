@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 
-import { LanguageDropdown } from '../LanguageDropdown';
+import { LanguageDropdown } from '../LanguageDropdown.js';
 
 const mockSamples = [
   { key: 'js', title: 'JS', lang: 'js' },
@@ -9,7 +9,7 @@ const mockSamples = [
 
 const mockActiveTab = mockSamples[0].key;
 
-const mockOnChange = jest.fn();
+const mockOnChange = vi.fn();
 
 describe('LanguageDropdown', () => {
   test('LanguageDropdown renders correctly', () => {

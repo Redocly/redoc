@@ -1,25 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ApiInfo ApiInfo renders correctly 1`] = `
+exports[`ApiInfo > ApiInfo renders correctly 1`] = `
 {
   "asFragment": [Function],
-  "baseElement": .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  padding: var(--spacing-vertical) var(--panel-gap-horizontal);
-}
-
-.c1:empty {
-  display: none;
-}
-
-.c0 {
+  "baseElement": .c0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -35,7 +19,54 @@ exports[`ApiInfo ApiInfo renders correctly 1`] = `
   padding: 0;
 }
 
-.c2 {
+.c0 {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+
+@media print {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--spacing-vertical) var(--panel-gap-horizontal);
+}
+
+.c1:empty {
+  display: none;
+}
+
+.c1 {
+    width: 100%;
+    padding-left: calc(var(--panel-gap-horizontal) * 2);
+    padding-right: var(--panel-gap-horizontal);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media print {
+  .c1 {
+    width: 100%;
+    padding-top: var(--spacing-vertical);
+    padding-bottom: var(--spacing-vertical);
+  }
+}
+
+@media screen and (min-width:1280px) {
+  .c2 {
   color: var(--h1-text-color);
   margin: var(--h1-margin-top) 0 var(--h1-margin-bottom);
   font-size: var(--h1-font-size);
@@ -56,38 +87,7 @@ exports[`ApiInfo ApiInfo renders correctly 1`] = `
 }
 
 @media screen and (min-width:1280px) {
-  .c1 {
-    width: 100%;
-    padding-left: calc(var(--panel-gap-horizontal) * 2);
-    padding-right: var(--panel-gap-horizontal);
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-
-@media print {
-  .c1 {
-    width: 100%;
-    padding-top: var(--spacing-vertical);
-    padding-bottom: var(--spacing-vertical);
-  }
-}
-
-@media screen and (min-width:1280px) {
-  .c0 {
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-  }
-}
-
-@media print {
-  .c0 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  }
-}
+  
 
 <body>
     <div>
@@ -105,23 +105,7 @@ exports[`ApiInfo ApiInfo renders correctly 1`] = `
       </div>
     </div>
   </body>,
-  "container": .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  padding: var(--spacing-vertical) var(--panel-gap-horizontal);
-}
-
-.c1:empty {
-  display: none;
-}
-
-.c0 {
+  "container": .c0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,7 +121,54 @@ exports[`ApiInfo ApiInfo renders correctly 1`] = `
   padding: 0;
 }
 
-.c2 {
+.c0 {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+
+@media print {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--spacing-vertical) var(--panel-gap-horizontal);
+}
+
+.c1:empty {
+  display: none;
+}
+
+.c1 {
+    width: 100%;
+    padding-left: calc(var(--panel-gap-horizontal) * 2);
+    padding-right: var(--panel-gap-horizontal);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media print {
+  .c1 {
+    width: 100%;
+    padding-top: var(--spacing-vertical);
+    padding-bottom: var(--spacing-vertical);
+  }
+}
+
+@media screen and (min-width:1280px) {
+  .c2 {
   color: var(--h1-text-color);
   margin: var(--h1-margin-top) 0 var(--h1-margin-bottom);
   font-size: var(--h1-font-size);
@@ -158,38 +189,7 @@ exports[`ApiInfo ApiInfo renders correctly 1`] = `
 }
 
 @media screen and (min-width:1280px) {
-  .c1 {
-    width: 100%;
-    padding-left: calc(var(--panel-gap-horizontal) * 2);
-    padding-right: var(--panel-gap-horizontal);
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-
-@media print {
-  .c1 {
-    width: 100%;
-    padding-top: var(--spacing-vertical);
-    padding-bottom: var(--spacing-vertical);
-  }
-}
-
-@media screen and (min-width:1280px) {
-  .c0 {
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-  }
-}
-
-@media print {
-  .c0 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  }
-}
+  
 
 <div>
     <div

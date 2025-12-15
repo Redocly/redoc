@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAtom } from 'jotai';
 
-import type { SelectOption } from '@redocly/theme/core/openapi';
+import type { SegmentedOption } from '@redocly/theme/core/openapi';
 import type { SchemaModel } from '../../../models/index.js';
 
-import { Segmented } from '@redocly/theme/components/Segmented/Segmented';
 import { isUndefined } from '@redocly/theme/core/openapi';
+import { Segmented } from '@redocly/theme/components/Segmented/Segmented';
 
 import { Dropdown } from '../Dropdown/index.js';
 import { operationStore } from '../../../jotai/operation.js';
@@ -14,7 +14,7 @@ const LIMIT_FOR_SEGMENTED = 5;
 const ENABLE_SEARCH_THRESHOLD = 7;
 
 interface SchemaSelectionProps {
-  options: SelectOption<number>[];
+  options: SegmentedOption<number>[];
   onChange?: (idx: number) => void;
   pointer: string;
   schema: SchemaModel;

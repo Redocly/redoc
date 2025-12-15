@@ -1,4 +1,4 @@
-import { normalizePath } from '../path';
+import { normalizePath } from '../path.js';
 
 describe('path utils', () => {
   test('normalizePath should return correct path', () => {

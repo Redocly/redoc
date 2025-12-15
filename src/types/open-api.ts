@@ -89,6 +89,7 @@ export interface OpenAPIPath extends Partial<OpenAPIRef>, ParsedDescriptionWithS
   head?: OpenAPIOperation;
   patch?: OpenAPIOperation;
   trace?: OpenAPIOperation;
+  additionalOperations?: Record<string, OpenAPIOperation>;
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
 }
@@ -208,6 +209,7 @@ export interface OpenAPIDiscriminator {
   propertyName: string;
   mapping?: { [name: string]: string };
   'x-explicitMappingOnly'?: boolean;
+  defaultMapping?: string;
 }
 
 export interface OpenAPIMediaType {
@@ -403,6 +405,8 @@ export interface McpResource {
   description?: string;
   uri: string;
   mimeType: string;
+  blob?: string;
+  text?: string;
 
   security?: OpenAPISecurityRequirement[];
   tags?: string[];
@@ -414,10 +418,14 @@ export interface McpPrompt {
   title?: string;
   description: string;
   arguments: McpPromptArgument[];
+  security?: OpenAPISecurityRequirement[];
+  tags?: string[];
+  'x-badges'?: OpenAPIXBadges[];
 }
 
 export interface McpPromptArgument {
   name: string;
   description: string;
   required: boolean;
+  example?: string;
 }

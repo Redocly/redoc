@@ -3,19 +3,19 @@ import * as Jotai from 'jotai/index';
 
 import { html } from '@redocly/theme/markdoc/tags/html';
 
-import { normalizeOptions } from '../../../services';
-import { Markdown } from '../Markdown';
-import { withTestProviders } from '../../../testProviders';
+import { normalizeOptions } from '../../../services/index.js';
+import { Markdown } from '../Markdown.js';
+import { withTestProviders } from '../../../testProviders.js';
 
-jest.mock('jotai', () => ({
-  ...jest.requireActual('jotai'),
-  useAtomValue: jest.fn(),
+vi.mock('jotai', async () => ({
+  ...(await vi.importActual('jotai')),
+  useAtomValue: vi.fn(),
 }));
 
 describe('Components', () => {
   describe('Markdown', () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test('Markdown renders correctly', () => {
       const { getByText } = render(
@@ -34,11 +34,13 @@ describe('Components', () => {
             tags: {
               html: html.schema,
             },
+            nodes: {},
+            components: {},
           },
         },
       );
 
-      jest.spyOn(Jotai, 'useAtomValue').mockImplementation(() => {
+      vi.spyOn(Jotai, 'useAtomValue').mockImplementation(() => {
         return options;
       });
 

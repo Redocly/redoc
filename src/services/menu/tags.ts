@@ -22,7 +22,7 @@ import { getOperationsItems } from './operation.js';
 import { addMarkdownItems } from './markdown.js';
 import { joinWithSeparator } from '../history/helpers.js';
 
-const SUPPORTED_MCP_TYPES = ['tools']; // TODO: implement resources and prompts
+const SUPPORTED_MCP_TYPES = ['tools', 'resources', 'prompts']; // TODO: implement resources and prompts
 
 /**
  * Returns array of OperationsGroup items for the tags of the group or for all tags
@@ -188,12 +188,14 @@ function getTagRelatedMcp(
         const toolTags = tool.tags?.length ? tool.tags : defaultTags;
         if (toolTags.includes(tag.name)) {
           const id = joinWithSeparator(parent.id, safeSlugify(tool.name));
+          const prefix = type === 'tools' ? `Tool name: \`${tool.name}\`\n\n` : '';
+          const customType = type === 'tools' ? 'tool' : type === 'resources' ? 'rsrc' : 'prompt';
           const item = getTagOrGroup(
-            'mcp',
+            customType,
             {
               name: tool.name,
               'x-displayName': tool.title || tool.name,
-              description: `${tool.description || ''}\n{% mcp${typeName.slice(0, -1)} toolName="${tool.name}" id="${id}" /%}`,
+              description: `${prefix}${tool.description || ''}\n{% mcp${typeName.slice(0, -1)} name="${tool.name}" id="${id}" /%}`,
               isSchema: true,
               level: 2,
             } as OpenAPITag,
@@ -256,6 +258,54 @@ function getMcpTags(mcp: OpenAPIMcp, tags: TagsInfoMap) {
   }
 }
 
+export function processOperation(
+  parser: OpenAPIParser,
+  operationName: string,
+  operationInfo: any,
+  pathName: string,
+  path: any,
+  tags: TagsInfoMap,
+  isWebhook?: boolean,
+  isAdditionalOperation?: boolean,
+) {
+  if (path.$ref) {
+    const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+    getTags(parser, { [pathName]: resolvedPaths }, tags, isWebhook);
+    return;
+  }
+
+  let operationTags = operationInfo?.tags;
+
+  if (!operationTags || !operationTags.length) {
+    // empty tag for operations and default tag for webhooks
+    operationTags = isWebhook ? [DEFAULT_WEBHOOKS_TAG_NAME] : [''];
+  }
+
+  for (const tagName of operationTags) {
+    let tag = tags[tagName];
+    if (tag === undefined) {
+      tag = {
+        name: tagName,
+        operations: [],
+      };
+      tags[tagName] = tag;
+    }
+    if (tag['x-traitTag']) {
+      continue;
+    }
+    tag.operations.push({
+      ...operationInfo,
+      pathName,
+      pointer: JsonPointer.compile(['paths', pathName, operationName]),
+      httpVerb: operationName,
+      pathParameters: path.parameters || [],
+      pathServers: path.servers,
+      isWebhook: !!isWebhook,
+      isAdditionalOperation: !!isAdditionalOperation,
+    });
+  }
+}
+
 function getTags(
   parser: OpenAPIParser,
   paths: OpenAPIPaths,
@@ -265,41 +315,24 @@ function getTags(
   for (const pathName of Object.keys(paths || {})) {
     const path = paths[pathName];
     const operations = Object.keys(path).filter(isOperationName);
+
     for (const operationName of operations) {
       const operationInfo = path[operationName];
-      if (path.$ref) {
-        const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
-        getTags(parser, { [pathName]: resolvedPaths }, tags, isWebhook);
-        continue;
-      }
-      let operationTags = operationInfo?.tags;
+      processOperation(parser, operationName, operationInfo, pathName, path, tags, isWebhook);
+    }
 
-      if (!operationTags || !operationTags.length) {
-        // empty tag for operations and default tag for webhooks
-        operationTags = isWebhook ? [DEFAULT_WEBHOOKS_TAG_NAME] : [''];
-      }
-
-      for (const tagName of operationTags) {
-        let tag = tags[tagName];
-        if (tag === undefined) {
-          tag = {
-            name: tagName,
-            operations: [],
-          };
-          tags[tagName] = tag;
-        }
-        if (tag['x-traitTag']) {
-          continue;
-        }
-        tag.operations.push({
-          ...operationInfo,
+    if (path.additionalOperations) {
+      for (const [operationName, operationInfo] of Object.entries(path.additionalOperations)) {
+        processOperation(
+          parser,
+          operationName,
+          operationInfo,
           pathName,
-          pointer: JsonPointer.compile(['paths', pathName, operationName]),
-          httpVerb: operationName,
-          pathParameters: path.parameters || [],
-          pathServers: path.servers,
-          isWebhook: !!isWebhook,
-        });
+          path,
+          tags,
+          isWebhook,
+          true,
+        );
       }
     }
   }

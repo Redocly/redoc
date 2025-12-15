@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import { FieldDetail } from '../FieldDetail';
+import { FieldDetail } from '../FieldDetail.js';
 
 describe('FieldDetail', () => {
   const wrapper = (label: string, value?: string) =>

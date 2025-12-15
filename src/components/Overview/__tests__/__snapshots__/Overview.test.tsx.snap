@@ -1,13 +1,74 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Overview should render correctly with contact data but without a name 1`] = `
-.c9 {
-  height: 16px;
-  width: 16px;
+exports[`Overview > should render correctly with contact data but without a name 1`] = `
+.c0 > span {
+  border-bottom: 1px solid var(--border-color-secondary);
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
 }
 
-.c9 path {
-  fill: currentColor;
+.c0 > span:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-medium);
+}.c4 {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: var(--spacing-xs);
 }
 
 .c6 {
@@ -89,6 +150,15 @@ exports[`Overview should render correctly with contact data but without a name 1
   border-width: var(--button-border-width-disabled);
 }
 
+.c7 {
+  height: 16px;
+  width: 16px;
+}
+
+.c7 path {
+  fill: currentColor;
+}
+
 .c8 {
   position: relative;
   display: -webkit-box;
@@ -97,12 +167,12 @@ exports[`Overview should render correctly with contact data but without a name 1
   display: flex;
 }
 
-.c7 {
+.c9 {
   height: 16px;
   width: 16px;
 }
 
-.c7 path {
+.c9 path {
   fill: currentColor;
 }
 
@@ -115,77 +185,7 @@ exports[`Overview should render correctly with contact data but without a name 1
   fill: currentColor;
 }
 
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 0;
-  position: relative;
-  width: 100%;
-}
 
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  overflow: hidden;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.c4 {
-  margin: 0;
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.c0 > span {
-  border-bottom: 1px solid var(--border-color-secondary);
-  margin-bottom: var(--spacing-xs);
-  padding-bottom: var(--spacing-xs);
-}
-
-.c0 > span:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.c3 {
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  font-weight: var(--font-weight-medium);
-}
 
 <div>
   <div
@@ -319,14 +319,75 @@ exports[`Overview should render correctly with contact data but without a name 1
 </div>
 `;
 
-exports[`Overview should render correctly with full data 1`] = `
-.c9 {
-  height: 16px;
-  width: 16px;
+exports[`Overview > should render correctly with full data 1`] = `
+.c0 > span {
+  border-bottom: 1px solid var(--border-color-secondary);
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
 }
 
-.c9 path {
-  fill: currentColor;
+.c0 > span:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-medium);
+}.c4 {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: var(--spacing-xs);
 }
 
 .c6 {
@@ -408,6 +469,15 @@ exports[`Overview should render correctly with full data 1`] = `
   border-width: var(--button-border-width-disabled);
 }
 
+.c7 {
+  height: 16px;
+  width: 16px;
+}
+
+.c7 path {
+  fill: currentColor;
+}
+
 .c8 {
   position: relative;
   display: -webkit-box;
@@ -416,12 +486,12 @@ exports[`Overview should render correctly with full data 1`] = `
   display: flex;
 }
 
-.c7 {
+.c9 {
   height: 16px;
   width: 16px;
 }
 
-.c7 path {
+.c9 path {
   fill: currentColor;
 }
 
@@ -434,77 +504,7 @@ exports[`Overview should render correctly with full data 1`] = `
   fill: currentColor;
 }
 
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 0;
-  position: relative;
-  width: 100%;
-}
 
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  overflow: hidden;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.c4 {
-  margin: 0;
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.c0 > span {
-  border-bottom: 1px solid var(--border-color-secondary);
-  margin-bottom: var(--spacing-xs);
-  padding-bottom: var(--spacing-xs);
-}
-
-.c0 > span:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.c3 {
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  font-weight: var(--font-weight-medium);
-}
 
 <div>
   <div
@@ -729,7 +729,7 @@ exports[`Overview should render correctly with full data 1`] = `
 </div>
 `;
 
-exports[`Overview should render correctly with partial data 1`] = `
+exports[`Overview > should render correctly with partial data 1`] = `
 .c0 > span {
   border-bottom: 1px solid var(--border-color-secondary);
   margin-bottom: var(--spacing-xs);
@@ -749,7 +749,77 @@ exports[`Overview should render correctly with partial data 1`] = `
 </div>
 `;
 
-exports[`Overview should render license with name and url when identifier is not present 1`] = `
+exports[`Overview > should render license with name and url when identifier is not present 1`] = `
+.c0 > span {
+  border-bottom: 1px solid var(--border-color-secondary);
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+}
+
+.c0 > span:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-medium);
+}.c4 {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
 .c6 {
   width: auto;
   display: -webkit-inline-box;
@@ -838,77 +908,7 @@ exports[`Overview should render license with name and url when identifier is not
   fill: currentColor;
 }
 
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 0;
-  position: relative;
-  width: 100%;
-}
 
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  overflow: hidden;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.c4 {
-  margin: 0;
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.c0 > span {
-  border-bottom: 1px solid var(--border-color-secondary);
-  margin-bottom: var(--spacing-xs);
-  padding-bottom: var(--spacing-xs);
-}
-
-.c0 > span:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.c3 {
-  color: var(--text-color-secondary);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  font-weight: var(--font-weight-medium);
-}
 
 <div>
   <div

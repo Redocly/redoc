@@ -1,19 +1,25 @@
-import type { MediaContentModel, OperationModel, RequestBodyModel } from '../types';
-import type { XPayloadSample } from '../operation';
+import type { MediaContentModel, OperationModel, RequestBodyModel } from '../types.js';
+import type { XPayloadSample } from '../operation.js';
+import type { ExtendedOpenAPIOperation } from '../../services/index.js';
+import type { OpenAPIDefinition, OpenAPIRequestBody, Referenced } from '../../types/index.js';
 
-import { normalizeOptions, OpenAPIParser } from '../../services';
-import { getOperation } from '../operation';
-import { getRequestBody } from '../request';
-import spec from './fixtures/operation/petstore.json';
-import definition from './fixtures/operation/operationDefinition.json';
-import noRequestDefinition from './fixtures/operation/noRequestOperationDefinition.json';
-import { replaceCircularJson } from './helpers';
+import { normalizeOptions, OpenAPIParser } from '../../services/index.js';
+import { getOperation } from '../operation.js';
+import { getRequestBody } from '../request.js';
+import specFixture from './fixtures/operation/petstore.json';
+import definitionFixture from './fixtures/operation/operationDefinition.json';
+import noRequestDefinitionFixture from './fixtures/operation/noRequestOperationDefinition.json';
+import { replaceCircularJson } from './helpers.js';
 const options = normalizeOptions({});
 
 // Add mock at the top with other imports
-jest.mock('@redocly/theme', () => ({
-  ...jest.requireActual('@redocly/theme'),
+vi.mock('@redocly/theme', async () => ({
+  ...(await vi.importActual('@redocly/theme')),
 }));
+
+const spec = specFixture as unknown as OpenAPIDefinition;
+const definition = definitionFixture as unknown as ExtendedOpenAPIOperation;
+const noRequestDefinition = noRequestDefinitionFixture as unknown as ExtendedOpenAPIOperation;
 
 describe('Models', () => {
   describe('Operation', () => {
@@ -27,7 +33,7 @@ describe('Models', () => {
         operation = getOperation(parser, definition, undefined, options, 'test');
         requestBody = getRequestBody({
           parser,
-          infoOrRef: definition.requestBody,
+          infoOrRef: definition.requestBody as unknown as Referenced<OpenAPIRequestBody>,
           options,
           operation,
           isEvent: false,

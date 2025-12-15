@@ -1,4 +1,4 @@
-import { cycleColorsByLevel } from '../cycleColorsByLevel';
+import { cycleColorsByLevel } from '../cycleColorsByLevel.js';
 
 describe('fieldColorByLevel', () => {
   it('returns the correct color for a given level', () => {

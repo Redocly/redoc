@@ -1,38 +1,39 @@
+import type { Mock } from 'vitest';
 import { useAtom } from 'jotai/index';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { ExpandAllButton } from '../ExpandAllButton';
-import { useTranslate, useTelemetry } from '../../../hooks';
+import { ExpandAllButton } from '../ExpandAllButton.js';
+import { useTranslate, useTelemetry } from '../../../hooks/index.js';
 
 // Mock the dependencies
-jest.mock('jotai/index', () => ({
-  useAtom: jest.fn(),
-  atom: jest.fn(),
+vi.mock('jotai/index', () => ({
+  useAtom: vi.fn(),
+  atom: vi.fn(),
 }));
 
-jest.mock('../../../hooks', () => ({
-  useTranslate: jest.fn(),
-  useTelemetry: jest.fn(), // Add mock for useTelemetry
+vi.mock('../../../hooks', () => ({
+  useTranslate: vi.fn(),
+  useTelemetry: vi.fn(), // Add mock for useTelemetry
 }));
 
-jest.mock('@redocly/theme', () => ({
+vi.mock('@redocly/theme', () => ({
   Button: ({ children, ...props }) => <button {...props}>{children}</button>,
   MaximizeIcon: () => <span data-testid="maximize-icon" />,
 }));
 
 describe('ExpandAllButton', () => {
-  const mockSetOperationState = jest.fn();
-  const mockTranslate = jest.fn((key, defaultValue) => defaultValue);
-  const mockTelemetrySend = jest.fn();
+  const mockSetOperationState = vi.fn();
+  const mockTranslate = vi.fn((_key, defaultValue) => defaultValue);
+  const mockTelemetrySend = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (useAtom as jest.Mock).mockReturnValue([
+    vi.clearAllMocks();
+    (useAtom as Mock).mockReturnValue([
       { request: { expandedAll: false }, response: { expandedAll: false } },
       mockSetOperationState,
     ]);
-    (useTranslate as jest.Mock).mockReturnValue(mockTranslate);
-    (useTelemetry as jest.Mock).mockReturnValue({
+    (useTranslate as Mock).mockReturnValue(mockTranslate);
+    (useTelemetry as Mock).mockReturnValue({
       sendExpandCollapseAllClickedMessage: mockTelemetrySend,
     });
   });
@@ -56,7 +57,7 @@ describe('ExpandAllButton', () => {
   });
 
   it('displays correct text based on expanded state', () => {
-    (useAtom as jest.Mock).mockReturnValue([
+    (useAtom as Mock).mockReturnValue([
       { request: { expandedAll: true }, response: { expandedAll: false } },
       mockSetOperationState,
     ]);
