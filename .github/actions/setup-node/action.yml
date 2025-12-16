@@ -1,0 +1,21 @@
+name: Node setup
+description: Setup Node
+runs:
+  using: composite
+  steps:
+    - name: 🚀 Starting Node setup
+      shell: bash
+      run: |
+        echo -e "\033[32m----- setup Node started -----\033[0m"
+        echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+    - name: 📦 Install Node
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version: 24.11.1
+        cache: npm
+    - name: ✅ Finished Node setup
+      shell: bash
+      run: |
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        echo -e "\033[32m----- setup Node finished in ${DURATION}s -----\033[0m"

@@ -1,0 +1,143 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "components": {
+    "schemas": {
+      "Test": {
+        "type": "object",
+        "properties": {
+          "any": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              },
+              {
+                "$ref": "#/components/schemas/Base"
+              },
+              {
+                "$ref": "#/components/schemas/SpecificBase"
+              },
+              {
+                "$ref": "#/components/schemas/SpecificBase2"
+              }
+            ]
+          },
+          "one": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              },
+              {
+                "$ref": "#/components/schemas/Base"
+              },
+              {
+                "$ref": "#/components/schemas/SpecificBase"
+              },
+              {
+                "$ref": "#/components/schemas/SpecificBase2"
+              }
+            ]
+          },
+          "all": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              }
+            ]
+          }
+        }
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string"
+          }
+        }
+      },
+      "Base": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "base": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "SpecificBase": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Base"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "specific": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "required": ["specific"]
+      },
+      "SpecificBase2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Base"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "specific2": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "WithArray": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    }
+  }
+}

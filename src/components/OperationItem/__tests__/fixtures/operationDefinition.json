@@ -1,0 +1,25 @@
+{
+  "tags": ["pet"],
+  "summary": "Add a new pet to the store",
+  "description": "Add new pet to the store inventory.",
+  "operationId": "addPet",
+  "x-badges": [
+    {
+      "name": "Beta",
+      "position": "after",
+      "color": "#cccccc"
+    },
+    {
+      "name": "Alpha",
+      "position": "before",
+      "color": "black"
+    },
+    {
+      "name": "Gamma"
+    }
+  ],
+  "pathName": "/pet",
+  "pointer": "/paths/~1pet/post",
+  "httpVerb": "post",
+  "isWebhook": false
+}

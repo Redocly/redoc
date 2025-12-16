@@ -1,6 +1,6 @@
-import type { Omit } from './index';
+import type { Sample } from '../models';
 
-export interface OpenAPISpec {
+export interface OpenAPIDefinition {
   openapi: string;
   info: OpenAPIInfo;
   servers?: OpenAPIServer[];
@@ -9,11 +9,16 @@ export interface OpenAPISpec {
   security?: OpenAPISecurityRequirement[];
   tags?: OpenAPITag[];
   externalDocs?: OpenAPIExternalDocumentation;
-  'x-webhooks'?: OpenAPIPaths;
   webhooks?: OpenAPIPaths;
+  'x-mcp'?: OpenAPIMcp;
+  'x-webhooks'?: OpenAPIPaths;
+  'x-tagGroups'?: Array<{
+    name: string;
+    tags: Array<string>;
+  }>;
 }
 
-export interface OpenAPIInfo {
+export interface OpenAPIInfo extends ParsedDescriptionWithSummary {
   title: string;
   version: string;
 
@@ -22,15 +27,40 @@ export interface OpenAPIInfo {
   termsOfService?: string;
   contact?: OpenAPIContact;
   license?: OpenAPILicense;
+  externalDocs?: OpenAPIExternalDocumentation;
+  'x-logo'?: XLogo;
+  'x-metadata'?: XMetadata;
+  'x-seo'?: XSEO;
 }
 
-export interface OpenAPIServer {
+export interface XLogo {
+  url?: string;
+  backgroundColor?: string;
+  altText?: string;
+  href?: string;
+}
+
+export interface XMetadata {
+  apiId?: string;
+  [key: string]: unknown;
+}
+
+export interface XSEO {
+  title?: string;
+}
+
+export interface OpenAPIServer extends ParsedDescription {
   url: string;
   description?: string;
-  variables?: { [name: string]: OpenAPIServerVariable };
+  name?: string;
+  variables?: OpenAPIServerVariables;
 }
 
-export interface OpenAPIServerVariable {
+export interface OpenAPIServerVariables {
+  [name: string]: OpenAPIServerVariable;
+}
+
+export interface OpenAPIServerVariable extends ParsedDescription {
   enum?: string[];
   default: string;
   description?: string;
@@ -39,16 +69,16 @@ export interface OpenAPIServerVariable {
 export interface OpenAPIPaths {
   [path: string]: OpenAPIPath;
 }
-export interface OpenAPIRef {
-  'x-refsStack'?: string[];
+export interface OpenAPIRef extends ParsedDescriptionWithSummary {
   $ref: string;
+  'x-refsStack'?: string[];
   summary?: string;
   description?: string;
 }
 
-export type Referenced<T> = OpenAPIRef | T;
+export type Referenced<T> = T | OpenAPIRef;
 
-export interface OpenAPIPath {
+export interface OpenAPIPath extends Partial<OpenAPIRef>, ParsedDescriptionWithSummary {
   summary?: string;
   description?: string;
   get?: OpenAPIOperation;
@@ -59,14 +89,12 @@ export interface OpenAPIPath {
   head?: OpenAPIOperation;
   patch?: OpenAPIOperation;
   trace?: OpenAPIOperation;
+  additionalOperations?: Record<string, OpenAPIOperation>;
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
-  $ref?: string;
 }
 
-export interface OpenAPIXCodeSample {
-  lang: string;
-  label?: string;
+export interface OpenAPIXCodeSample extends Sample {
   source: string;
 }
 
@@ -76,7 +104,7 @@ export interface OpenAPIXBadges {
   position?: 'before' | 'after';
 }
 
-export interface OpenAPIOperation {
+export interface OpenAPIOperation extends ParsedDescriptionWithSummary {
   tags?: string[];
   summary?: string;
   description?: string;
@@ -90,11 +118,10 @@ export interface OpenAPIOperation {
   security?: OpenAPISecurityRequirement[];
   servers?: OpenAPIServer[];
   'x-codeSamples'?: OpenAPIXCodeSample[];
-  'x-code-samples'?: OpenAPIXCodeSample[]; // deprecated
   'x-badges'?: OpenAPIXBadges[];
 }
 
-export interface OpenAPIParameter {
+export interface OpenAPIParameter extends ParsedDescription {
   name: string;
   in?: OpenAPIParameterLocation;
   description?: string;
@@ -112,14 +139,22 @@ export interface OpenAPIParameter {
   const?: any;
 }
 
-export interface OpenAPIExample {
+export interface OpenAPIExample extends ParsedDescriptionWithSummary {
   value: any;
   summary?: string;
   description?: string;
   externalValue?: string;
 }
 
-export interface OpenAPISchema {
+export interface XMLObject {
+  name?: string;
+  namespace?: string;
+  prefix?: string;
+  attribute?: boolean;
+  wrapped?: boolean;
+}
+
+export interface OpenAPISchema extends ParsedDescription {
   $ref?: string;
   type?: string | string[];
   properties?: { [name: string]: OpenAPISchema };
@@ -158,22 +193,23 @@ export interface OpenAPISchema {
   minProperties?: number;
   enum?: any[];
   example?: any;
-
-  if?: OpenAPISchema;
-  else?: OpenAPISchema;
-  then?: OpenAPISchema;
   examples?: any[];
   const?: string;
   contentEncoding?: string;
   contentMediaType?: string;
+  if?: OpenAPISchema;
+  else?: OpenAPISchema;
+  then?: OpenAPISchema;
   prefixItems?: OpenAPISchema[];
   additionalItems?: OpenAPISchema | boolean;
+  xml?: XMLObject;
 }
 
 export interface OpenAPIDiscriminator {
   propertyName: string;
   mapping?: { [name: string]: string };
   'x-explicitMappingOnly'?: boolean;
+  defaultMapping?: string;
 }
 
 export interface OpenAPIMediaType {
@@ -201,24 +237,29 @@ export type OpenAPIParameterStyle =
   | 'pipeDelimited'
   | 'deepObject';
 
-export interface OpenAPIRequestBody {
+export interface OpenAPIRequestBody extends ParsedDescription {
+  $ref?: string;
   description?: string;
   required?: boolean;
-  content: { [mime: string]: OpenAPIMediaType };
+  content?: { [mime: string]: OpenAPIMediaType };
 
   'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
   'x-example'?: { [mime: string]: any };
 }
 
 export interface OpenAPIResponses {
-  [code: string]: Referenced<OpenAPIResponse>;
+  [code: string]: OpenAPIResponse;
 }
 
-export interface OpenAPIResponse
-  extends Pick<OpenAPIRequestBody, 'description' | 'x-examples' | 'x-example'> {
+export interface OpenAPIResponse extends ParsedDescription {
+  description?: string;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  links?: { [name: string]: Referenced<OpenAPILink> };
   content?: { [mime: string]: OpenAPIMediaType };
+  links?: { [name: string]: Referenced<OpenAPILink> };
+  $ref?: string;
+
+  'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
+  'x-example'?: { [mime: string]: any };
 }
 
 export interface OpenAPILink {
@@ -247,46 +288,61 @@ export interface OpenAPISecurityRequirement {
   [name: string]: string[];
 }
 
-export interface OpenAPISecurityScheme {
+export interface OpenAPISecurityScheme extends ParsedDescription {
   type: 'apiKey' | 'http' | 'oauth2' | 'openIdConnect';
   description?: string;
   name?: string;
   in?: 'query' | 'header' | 'cookie';
   scheme?: string;
   bearerFormat: string;
+  'x-defaultClientId'?: string;
+  deprecated?: boolean;
+  oauth2MetadataUrl?: string;
   flows: {
     implicit?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       authorizationUrl: string;
+      'x-defaultClientId'?: string;
+    };
+    deviceAuthorization?: {
+      deviceAuthorizationUrl: string;
+      scopes: Record<string, string>;
+      tokenUrl: string;
+      refreshUrl?: string;
+      'x-defaultClientId'?: string;
     };
     password?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       tokenUrl: string;
+      'x-defaultClientId'?: string;
     };
     clientCredentials?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       tokenUrl: string;
+      'x-defaultClientId'?: string;
     };
     authorizationCode?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
+      authorizationUrl: string;
       tokenUrl: string;
+      'x-defaultClientId'?: string;
     };
   };
   openIdConnectUrl?: string;
 }
 
-export interface OpenAPITag {
+export interface OpenAPITag extends ParsedDescription {
   name: string;
   description?: string;
   externalDocs?: OpenAPIExternalDocumentation;
   'x-displayName'?: string;
 }
 
-export interface OpenAPIExternalDocumentation {
+export interface OpenAPIExternalDocumentation extends ParsedDescription {
   description?: string;
   url: string;
 }
@@ -301,4 +357,75 @@ export interface OpenAPILicense {
   name: string;
   url?: string;
   identifier?: string;
+}
+
+export interface ParsedDocument extends OpenAPIDefinition {
+  swagger: unknown;
+}
+
+export interface ParsedDescription {
+  'x-parsed-md-description'?: GenericObject;
+}
+
+export interface ParsedDescriptionWithSummary extends ParsedDescription {
+  'x-parsed-md-summary'?: GenericObject;
+}
+
+export interface OpenAPIMcp {
+  protocolVersion: string;
+  capabilities: {
+    [key: string]:
+      | boolean
+      | {
+          listChanged?: boolean;
+          subscribe?: boolean;
+          [key: string]: unknown;
+        };
+  };
+  servers: OpenAPIServer[];
+  tools: McpTool[];
+  resources: McpResource[];
+  prompts: McpPrompt[];
+}
+
+export interface McpTool {
+  name: string;
+  title?: string;
+  description?: string;
+  inputSchema: OpenAPISchema;
+  outputSchema?: OpenAPISchema;
+  security?: OpenAPISecurityRequirement[];
+  tags?: string[];
+  'x-badges'?: OpenAPIXBadges[];
+}
+
+export interface McpResource {
+  name: string;
+  title?: string;
+  description?: string;
+  uri: string;
+  mimeType: string;
+  blob?: string;
+  text?: string;
+
+  security?: OpenAPISecurityRequirement[];
+  tags?: string[];
+  'x-badges'?: OpenAPIXBadges[];
+}
+
+export interface McpPrompt {
+  name: string;
+  title?: string;
+  description: string;
+  arguments: McpPromptArgument[];
+  security?: OpenAPISecurityRequirement[];
+  tags?: string[];
+  'x-badges'?: OpenAPIXBadges[];
+}
+
+export interface McpPromptArgument {
+  name: string;
+  description: string;
+  required: boolean;
+  example?: string;
 }

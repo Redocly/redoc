@@ -1,4 +1,4 @@
-# Official ReDoc Docker Image
+# Official Redoc Docker Image
 
 ## Usage
 
@@ -45,8 +45,9 @@ Another issue with OpenShift is that the default exposed port `80` cannot be use
 
 - `PAGE_TITLE` (default `"ReDoc"`) - page title
 - `PAGE_FAVICON` (default `"favicon.png"`) - URL to page favicon
-- `BASE_PATH` (optional) - prepend favicon & standalone bundle with this path
-- `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) - URL to spec
+- `BASE_PATH` (optional) - path prefix
+- `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) – URL to the spec (if mounted as a file inside the container and `BASE_PATH` is used, the spec should contain the prefix, e.g., for `"/v1/swagger.json"`)
+- `HOST` (default `localhost`) - nginx server_name
 - `PORT` (default `80`) - nginx port
 - `REDOC_OPTIONS` (optional) - [`<redoc>` tag attributes](https://github.com/Redocly/redoc#redoc-tag-attributes)
 

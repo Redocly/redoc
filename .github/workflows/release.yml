@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC
+      contents: write
+      pull-requests: write
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24.11.1
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: RomanHotsiy/changesets-action@v1
+        with:
+          publish: npm run release
+          commit: 'chore: 🔖 release new versions'
+          title: 'chore: 🔖 release new versions'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  dockerhub:
+    needs: [release]
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+      packages: write
+      actions: write
+    uses: ./.github/workflows/docker.yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  publish-cdn:
+    name: Publish to CDN
+    needs: [release]
+    if: needs.release.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Download all artifact
+        uses: actions/download-artifact@v4
+      - name: Publish to S3
+        run: npm run publish-cdn
+
+  invalidate-cache:
+    name: Clear cache
+    runs-on: ubuntu-latest
+    needs: [release, publish-cdn]
+    if: needs.release.outputs.published == 'true'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Invalidate cache
+        run: ./scripts/clear-cache.sh
+        shell: bash
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}

@@ -1,0 +1,126 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Foo"
+  },
+  "paths": {},
+  "components": {
+    "primitiveSchema": {
+      "schema": {
+        "type": "string"
+      }
+    },
+    "objectSchema": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "oneOfSchemaWithObjectSchema": {
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "anyOfSchemaWithDescription": {
+      "schema": {
+        "description": "This is a test anyOf schema with description",
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "A plain text value"
+          },
+          {
+            "type": "integer",
+            "description": "A number value"
+          }
+        ]
+      }
+    },
+    "arraySchema": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "arrayOfObjectsSchema": {
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "testProperties": {
+      "readOnlyInSchema": {
+        "schema": {
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "readOnlyInContent": {
+        "type": "object",
+        "readOnly": true,
+        "properties": {
+          "name": {
+            "readOnly": true,
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "writeOnlyInSchema": {
+        "schema": {
+          "type": "string",
+          "writeOnly": true
+        }
+      },
+      "fieldWithEnum": {
+        "type": "string",
+        "enum": ["foo", "bar"]
+      },
+      "fieldWithEnumDescription": {
+        "type": "string",
+        "enum": ["foo", "bar"],
+        "x-enumDescriptions": {
+          "foo": "Description foo",
+          "bar": "Description bar"
+        }
+      }
+    }
+  }
+}

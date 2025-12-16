@@ -1,115 +1,52 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { useAtomValue } from 'jotai';
+import { LayoutVariant } from '@redocly/config';
 
-import { AppStore } from '../../services/AppStore';
+import type { ReactElement } from 'react';
+import type { GroupModel } from '../../models/index.js';
 
-import { MiddlePanel, Row, Section } from '../../common-elements/';
-import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
-import { Markdown } from '../Markdown/Markdown';
-import { StyledMarkdownBlock } from '../Markdown/styled.elements';
-import {
-  ApiHeader,
-  DownloadButton,
-  InfoSpan,
-  InfoSpanBox,
-  InfoSpanBoxWrap,
-} from './styled.elements';
-import { l } from '../../services/Labels';
 
-export interface ApiInfoProps {
-  store: AppStore;
-}
+import { SamplesMiddlePanel, Row } from '../common/index.js';
+import { ExternalDocumentation } from '../ExternalDocumentation/index.js';
+import { Markdown } from '../Markdown/index.js';
+import { ApiHeader } from './styled.js';
+import { globalStoreAtom } from '../../jotai/store.js';
+import { saveTextBeforeHeading } from '../../utils/saveTextBeforeHeading.js';
+import { getValueFromMdParsedExtension } from '../../utils/helpers.js';
 
-@observer
-export class ApiInfo extends React.Component<ApiInfoProps> {
-  render() {
-    const { store } = this.props;
-    const { info, externalDocs } = store.spec;
-    const hideDownloadButtons = store.options.hideDownloadButtons;
+export function ApiInfo({
+  item,
+  layout,
+}: {
+  item: GroupModel;
+  layout: LayoutVariant;
+}): ReactElement | null {
+  const {
+    parser: { definition },
+  } = useAtomValue(globalStoreAtom);
+  const info = item.infoDefinition;
 
-    const downloadUrls = info.downloadUrls;
-    const downloadFileName = info.downloadFileName;
-    const license =
-      (info.license && (
-        <InfoSpan>
-          License:{' '}
-          {info.license.identifier ? (
-            info.license.identifier
-          ) : (
-            <a href={info.license.url}>{info.license.name}</a>
-          )}
-        </InfoSpan>
-      )) ||
-      null;
-
-    const website =
-      (info.contact && info.contact.url && (
-        <InfoSpan>
-          URL: <a href={info.contact.url}>{info.contact.url}</a>
-        </InfoSpan>
-      )) ||
-      null;
-
-    const email =
-      (info.contact && info.contact.email && (
-        <InfoSpan>
-          {info.contact.name || 'E-mail'}:{' '}
-          <a href={'mailto:' + info.contact.email}>{info.contact.email}</a>
-        </InfoSpan>
-      )) ||
-      null;
-
-    const terms =
-      (info.termsOfService && (
-        <InfoSpan>
-          <a href={info.termsOfService}>Terms of Service</a>
-        </InfoSpan>
-      )) ||
-      null;
-
-    const version = (info.version && <span>({info.version})</span>) || null;
-
-    return (
-      <Section>
-        <Row>
-          <MiddlePanel className="api-info">
-            <ApiHeader>
-              {info.title} {version}
-            </ApiHeader>
-            {!hideDownloadButtons && (
-              <p>
-                {l('downloadSpecification')}:
-                {downloadUrls?.map(({ title, url }) => {
-                  return (
-                    <DownloadButton
-                      download={downloadFileName || true}
-                      target="_blank"
-                      href={url}
-                      rel="noreferrer"
-                      key={url}
-                    >
-                      {title}
-                    </DownloadButton>
-                  );
-                })}
-              </p>
-            )}
-            <StyledMarkdownBlock>
-              {((info.license || info.contact || info.termsOfService) && (
-                <InfoSpanBoxWrap>
-                  <InfoSpanBox>
-                    {email} {website} {license} {terms}
-                  </InfoSpanBox>
-                </InfoSpanBoxWrap>
-              )) ||
-                null}
-            </StyledMarkdownBlock>
-            <Markdown source={store.spec.info.summary} data-role="redoc-summary" />
-            <Markdown source={store.spec.info.description} data-role="redoc-description" />
-            {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
-          </MiddlePanel>
-        </Row>
-      </Section>
-    );
+  if (!info) {
+    return null;
   }
+  const description = saveTextBeforeHeading(
+    getValueFromMdParsedExtension(info, 'description') || '',
+  );
+  const summary = getValueFromMdParsedExtension(info, 'summary') || undefined;
+
+  const externalDocs = definition?.externalDocs || info?.externalDocs;
+
+  const isStacked = layout === LayoutVariant.STACKED;
+
+  return (
+    <Row layout={layout}>
+      <SamplesMiddlePanel fullWidth className="api-info" isStacked={isStacked}>
+        <ApiHeader>
+          {(info.title || '') + (info.version ? ` (${info.version})` : '')}
+        </ApiHeader>
+        {summary && <Markdown source={summary} data-role="redoc-summary" />}
+        {description && <Markdown source={description} data-role="redoc-description" />}
+        {externalDocs && <ExternalDocumentation externalDocs={externalDocs} />}
+      </SamplesMiddlePanel>
+    </Row>
+  );
 }

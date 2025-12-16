@@ -1,0 +1,36 @@
+{
+  "responses": {
+    "200": {
+      "description": "Success.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/GetMuseumHoursResponse"
+          },
+          "examples": {
+            "default_example": {
+              "$ref": "#/components/examples/GetMuseumHoursResponseExample"
+            }
+          }
+        }
+      }
+    },
+    "404": {
+      "description": "Not Found.",
+      "content": {
+        "application/json": {
+          "application/problem+json": {
+            "$ref": "#/components/schemas/Error"
+          }
+        }
+      }
+    }
+  },
+  "pointer": "#/paths/~1museum-hours/get",
+  "pathName": "/museum-hours",
+  "httpVerb": "get",
+  "pathParameters": [],
+  "pathServers": [],
+  "isWebhook": false,
+  "isAdditionalOperation": false
+}

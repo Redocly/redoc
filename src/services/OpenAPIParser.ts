@@ -1,11 +1,12 @@
-import type { OpenAPIRef, OpenAPISchema, OpenAPISpec } from '../types';
-import { IS_BROWSER, getDefinitionName } from '../utils/';
-import { JsonPointer } from '../utils/JsonPointer';
+import type { OpenAPIRef, OpenAPISchema, OpenAPIDefinition } from '../types/index.js';
+import type { MergedOpenAPISchema } from './types.js';
+import type { Options } from './config-options/types.js';
 
-import { RedocNormalizedOptions } from './RedocNormalizedOptions';
-import type { MergedOpenAPISchema } from './types';
+import { IS_BROWSER, isObject, isString, isUndefined } from '@redocly/theme/core/openapi';
 
-const MAX_DEREF_DEPTH = 999; // prevent circular detection crashes by adding hard limit on deref depth
+import { tryDecodeURIComponent, getDefinitionName } from '../utils/index.js';
+import { JsonPointer } from '../utils/JsonPointer.js';
+import { normalizeOptions } from './config-options/normalizeOptions.js';
 
 /**
  * Loads and keeps spec. Provides raw spec operations
@@ -20,29 +21,31 @@ export function concatRefStacks(base: string[], stack?: string[]): string[] {
 }
 
 export class OpenAPIParser {
-  specUrl?: string;
-  spec: OpenAPISpec;
+  definitionUrl?: string;
+  definition: OpenAPIDefinition;
 
+  // private _refCounter: RefCounter = new RefCounter();
   private readonly allowMergeRefs: boolean = false;
 
   constructor(
-    spec: OpenAPISpec,
-    specUrl?: string,
-    private options: RedocNormalizedOptions = new RedocNormalizedOptions({}),
+    definition: OpenAPIDefinition,
+    definitionUrl?: string,
+    private options: Options & { versionId?: string } = normalizeOptions({}),
   ) {
-    this.validate(spec);
+    this.definition = Object.assign({}, definition);
+    this.validate(definition);
 
-    this.spec = spec;
-    this.allowMergeRefs = spec.openapi.startsWith('3.1');
+    this.definition = definition;
+    this.allowMergeRefs = definition.openapi.startsWith('3.1');
 
     const href = IS_BROWSER ? window.location.href : '';
-    if (typeof specUrl === 'string') {
-      this.specUrl = href ? new URL(specUrl, href).href : specUrl;
+    if (isString(definitionUrl)) {
+      this.definitionUrl = new URL(definitionUrl, href).href;
     }
   }
 
-  validate(spec: Record<string, any>): void {
-    if (spec.openapi === undefined) {
+  validate(spec: GenericObject): void {
+    if (isUndefined(spec.openapi)) {
       throw new Error('Document must be valid OpenAPI 3.0.0 definition');
     }
   }
@@ -50,18 +53,18 @@ export class OpenAPIParser {
   /**
    * get spec part by JsonPointer ($ref)
    */
-  byRef = <T = any>(ref: string): T | undefined => {
+  byRef = <T>(ref: string): T | undefined => {
     let res;
-    if (!this.spec) {
+    if (!this.definition) {
       return;
     }
     if (ref.charAt(0) !== '#') {
       ref = '#' + ref;
     }
-    ref = decodeURIComponent(ref);
+    ref = tryDecodeURIComponent(ref);
     try {
-      res = JsonPointer.get(this.spec, ref);
-    } catch (e) {
+      res = JsonPointer.get(this.definition, ref);
+    } catch {
       // do nothing
     }
     return res || {};
@@ -81,17 +84,25 @@ export class OpenAPIParser {
   /**
    * Resolve given reference object or return as is if it is not a reference
    * @param obj object to dereference
-   * @param forceCircular whether to dereference even if it is circular ref
+   * @param baseRefsStack
    * @param mergeAsAllOf
    */
   deref<T>(
     obj: OpenAPIRef | T,
     baseRefsStack: string[] = [],
     mergeAsAllOf = false,
+    level = 0,
   ): { resolved: T; refsStack: string[] } {
-    // this can be set by all of when it mergers props from different sources
+    // this can be set by all of when it merges props from different sources
     const objRefsStack = obj?.['x-refsStack'];
     baseRefsStack = concatRefStacks(baseRefsStack, objRefsStack);
+
+    if (level > 5) {
+      return {
+        resolved: Object.assign({}, obj, { 'x-complex': true }) as T,
+        refsStack: baseRefsStack,
+      };
+    }
 
     if (this.isRef(obj)) {
       const schemaName = getDefinitionName(obj.$ref);
@@ -104,19 +115,18 @@ export class OpenAPIParser {
         throw new Error(`Failed to resolve $ref "${obj.$ref}"`);
       }
 
-      let refsStack = baseRefsStack;
-      if (baseRefsStack.includes(obj.$ref) || baseRefsStack.length > MAX_DEREF_DEPTH) {
+      if (baseRefsStack.includes(obj.$ref)) {
         resolved = Object.assign({}, resolved, { 'x-circular-ref': true });
       } else if (this.isRef(resolved)) {
-        const res = this.deref(resolved, baseRefsStack, mergeAsAllOf);
-        refsStack = res.refsStack;
+        const res = this.deref(resolved, baseRefsStack, mergeAsAllOf, level);
         resolved = res.resolved;
       }
 
-      refsStack = pushRef(baseRefsStack, obj.$ref);
-      resolved = this.allowMergeRefs ? this.mergeRefs(obj, resolved, mergeAsAllOf) : resolved;
+      if (this.allowMergeRefs) {
+        resolved = this.mergeRefs(obj, resolved, mergeAsAllOf);
+      }
 
-      return { resolved, refsStack };
+      return { resolved, refsStack: pushRef(baseRefsStack, obj.$ref) };
     }
     return {
       resolved: obj,
@@ -134,7 +144,7 @@ export class OpenAPIParser {
     if (
       mergeAsAllOf &&
       keys.some(
-        k =>
+        (k) =>
           ![
             'description',
             'title',
@@ -143,6 +153,7 @@ export class OpenAPIParser {
             'x-parentRefs',
             'readOnly',
             'writeOnly',
+            'x-complex',
           ].includes(k),
       )
     ) {
@@ -153,7 +164,7 @@ export class OpenAPIParser {
     } else {
       // small optimization
       return {
-        ...(resolved as object),
+        ...(resolved as GenericObject),
         ...rest,
       } as T;
     }
@@ -163,69 +174,90 @@ export class OpenAPIParser {
    * Merge allOf constraints.
    * @param schema schema with allOF
    * @param $ref pointer of the schema
-   * @param forceCircular whether to dereference children even if it is a circular ref
-   * @param used$Refs
+   * @param refsStack
+   * @param absolutePointer
    */
   mergeAllOf(
     schema: MergedOpenAPISchema,
     $ref: string | undefined,
     refsStack: string[],
+    absolutePointer = '',
+    level = 0,
   ): MergedOpenAPISchema {
     if (schema['x-circular-ref']) {
       return schema;
     }
 
-    schema = this.hoistOneOfs(schema, refsStack);
+    schema = this.hoistOneOfs(schema);
 
     if (schema.allOf === undefined) {
-      return schema;
+      return { absolutePointer, ...schema };
     }
 
     let receiver: MergedOpenAPISchema = {
       ...schema,
       'x-parentRefs': [],
+      absolutePointer: JsonPointer.join(absolutePointer, ['allOf']),
       allOf: undefined,
-      title: schema.title || getDefinitionName($ref),
+      title: level === 0 ? schema.title || getDefinitionName($ref) : schema.title,
     };
 
     // avoid mutating inner objects
-    if (receiver.properties !== undefined && typeof receiver.properties === 'object') {
+    if (!isUndefined(receiver.properties) && isObject(receiver.properties)) {
       receiver.properties = { ...receiver.properties };
     }
-    if (receiver.items !== undefined && typeof receiver.items === 'object') {
+    if (!isUndefined(receiver.items) && isObject(receiver.items)) {
       receiver.items = { ...receiver.items };
     }
 
-    const allOfSchemas = uniqByPropIncludeMissing(
-      schema.allOf
-        .map((subSchema: OpenAPISchema) => {
-          const { resolved, refsStack: subRefsStack } = this.deref(subSchema, refsStack, true);
+    const allOfSchemas = schema.allOf
+      .map((subSchema: OpenAPISchema, index) => {
+        const { resolved, refsStack: subRefsStack } = this.deref(subSchema, refsStack, true, level);
 
-          const subRef = subSchema.$ref || undefined;
-          const subMerged = this.mergeAllOf(resolved, subRef, subRefsStack);
-          if (subMerged['x-circular-ref'] && subMerged.allOf) {
-            // if mergeAllOf is circular and still contains allOf, we should ignore it
-            return undefined;
-          }
-          if (subRef) {
-            // collect information for implicit descriminator lookup
-            receiver['x-parentRefs']?.push(...(subMerged['x-parentRefs'] || []), subRef);
-          }
+        const subRef = subSchema.$ref;
+        const subAbsolutePointer = subRef || JsonPointer.join(absolutePointer, [String(index)]);
+        if (resolved['x-complex']) {
           return {
             $ref: subRef,
             refsStack: pushRef(subRefsStack, subRef),
-            schema: subMerged,
+            schema: { 'x-complex': true },
+            absolutePointer: subAbsolutePointer,
           };
-        })
-        .filter(child => child !== undefined) as Array<{
-        schema: MergedOpenAPISchema;
-        refsStack: string[];
-        $ref?: string;
-      }>,
-      '$ref',
-    );
+        }
+        const subMerged = this.mergeAllOf(
+          resolved,
+          subRef,
+          subRefsStack,
+          subAbsolutePointer,
+          level + 1,
+        );
 
-    for (const { schema: subSchema, refsStack: subRefsStack } of allOfSchemas) {
+        if (subMerged['x-circular-ref'] && subMerged.allOf) {
+          // if mergeAllOf is circular and still contains allOf, we should ignore it
+          return undefined;
+        }
+        if (subRef) {
+          // collect information for implicit descriminator lookup
+          receiver['x-parentRefs']?.push(...(subMerged['x-parentRefs'] || []), subRef);
+        }
+        return {
+          $ref: subRef,
+          refsStack: pushRef(subRefsStack, subRef),
+          schema: subMerged,
+          absolutePointer: subAbsolutePointer,
+        };
+      })
+      .filter(Boolean) as Array<{
+      $ref?: string;
+      schema: MergedOpenAPISchema;
+      refsStack: string[];
+      absolutePointer: string;
+    }>;
+
+    for (const [
+      index,
+      { $ref: itemRef, schema: subSchema, refsStack: subRefsStack, absolutePointer },
+    ] of allOfSchemas.entries()) {
       const {
         type,
         enum: enumProperty,
@@ -239,14 +271,15 @@ export class OpenAPIParser {
         oneOf,
         anyOf,
         'x-circular-ref': isCircular,
+        'x-complex': isComplex,
         ...otherConstraints
-      } = subSchema;
-
-      if (receiver.type !== type && receiver.type !== undefined && type !== undefined) {
-        console.warn(`Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${type}"`);
+      } = subSchema || {};
+      if (receiver.type !== type && !isUndefined(receiver.type) && !isUndefined(type) && !level) {
+        // console.warn(`Incompatible types in allOf at "${$ref}": "${receiver.type}" and "${type}"`);
+        continue;
       }
 
-      if (type !== undefined) {
+      if (!isUndefined(type)) {
         if (Array.isArray(type) && Array.isArray(receiver.type)) {
           receiver.type = [...type, ...receiver.type];
         } else {
@@ -254,7 +287,7 @@ export class OpenAPIParser {
         }
       }
 
-      if (enumProperty !== undefined) {
+      if (!isUndefined(enumProperty)) {
         if (Array.isArray(enumProperty) && Array.isArray(receiver.enum)) {
           receiver.enum = Array.from(new Set([...enumProperty, ...receiver.enum]));
         } else {
@@ -262,34 +295,34 @@ export class OpenAPIParser {
         }
       }
 
-      if (properties !== undefined && typeof properties === 'object') {
+      if (!isUndefined(properties) && isObject(properties)) {
         receiver.properties = receiver.properties || {};
         for (const prop in properties) {
           const propRefsStack = concatRefStacks(subRefsStack, properties[prop]?.['x-refsStack']);
           if (!receiver.properties[prop]) {
             receiver.properties[prop] = {
               ...properties[prop],
+              absolutePointer: JsonPointer.join(absolutePointer, ['properties', prop]),
               'x-refsStack': propRefsStack,
             } as MergedOpenAPISchema;
           } else if (!isCircular) {
             // merge inner properties
             const mergedProp = this.mergeAllOf(
               {
-                allOf: [
-                  receiver.properties[prop],
-                  { ...properties[prop], 'x-refsStack': propRefsStack } as any,
-                ],
+                allOf: [receiver.properties[prop], properties[prop]],
                 'x-refsStack': propRefsStack,
               },
               $ref + '/properties/' + prop,
               propRefsStack,
+              JsonPointer.join(absolutePointer, ['allOf', String(index), 'properties', prop]),
+              level + 1,
             );
             receiver.properties[prop] = mergedProp;
           }
         }
       }
 
-      if (items !== undefined && !isCircular) {
+      if (!isUndefined(items) && !isCircular && !isComplex) {
         const receiverItems =
           typeof receiver.items === 'boolean'
             ? {}
@@ -305,17 +338,19 @@ export class OpenAPIParser {
           },
           $ref + '/items',
           subRefsStack,
+          '',
+          level + 1,
         );
       }
-      if (oneOf !== undefined) {
+      if (!isUndefined(oneOf)) {
         receiver.oneOf = oneOf;
       }
 
-      if (anyOf !== undefined) {
+      if (!isUndefined(anyOf)) {
         receiver.anyOf = anyOf;
       }
 
-      if (required !== undefined) {
+      if (Array.isArray(required)) {
         receiver.required = [...(receiver.required || []), ...required];
       }
 
@@ -323,11 +358,12 @@ export class OpenAPIParser {
       // TODO: do more intelligent merge
       receiver = {
         ...receiver,
-        title: receiver.title || title,
+        title: itemRef && title ? title : receiver.title || title,
         description: receiver.description || description,
-        readOnly: receiver.readOnly !== undefined ? receiver.readOnly : readOnly,
-        writeOnly: receiver.writeOnly !== undefined ? receiver.writeOnly : writeOnly,
+        readOnly: !isUndefined(receiver.readOnly) ? receiver.readOnly : readOnly,
+        writeOnly: !isUndefined(receiver.writeOnly) ? receiver.writeOnly : writeOnly,
         'x-circular-ref': receiver['x-circular-ref'] || isCircular,
+        'x-complex': receiver['x-complex'] || isComplex,
         ...otherConstraints,
       };
     }
@@ -342,13 +378,13 @@ export class OpenAPIParser {
    */
   findDerived($refs: string[]): Record<string, string[] | string> {
     const res: Record<string, string[]> = {};
-    const schemas = (this.spec.components && this.spec.components.schemas) || {};
+    const schemas = (this.definition.components && this.definition.components.schemas) || {};
     for (const defName in schemas) {
       const { resolved: def } = this.deref(schemas[defName]);
       if (
-        def.allOf !== undefined &&
+        !isUndefined(def.allOf) &&
         def.allOf.find(
-          (obj: OpenAPISchema) => obj.$ref !== undefined && $refs.indexOf(obj.$ref) > -1,
+          (obj: OpenAPISchema) => !isUndefined(obj.$ref) && $refs.indexOf(obj.$ref) > -1,
         )
       ) {
         res['#/components/schemas/' + defName] = [def['x-discriminator-value'] || defName];
@@ -357,12 +393,12 @@ export class OpenAPIParser {
     return res;
   }
 
-  private hoistOneOfs(schema: OpenAPISchema, refsStack: string[]) {
-    if (schema.allOf === undefined) {
+  private hoistOneOfs(schema: OpenAPISchema) {
+    if (isUndefined(schema.allOf)) {
       return schema;
     }
 
-    const allOf = schema.allOf;
+    const { allOf, ...restSchema } = schema;
     for (let i = 0; i < allOf.length; i++) {
       const { oneOf, ...sub } = allOf[i];
       if (!oneOf) {
@@ -373,10 +409,10 @@ export class OpenAPIParser {
         const afterAllOf = allOf.slice(i + 1);
         const siblingValues = Object.keys(sub).length > 0 ? [sub] : [];
         return {
+          ...restSchema,
           oneOf: oneOf.map((part: OpenAPISchema) => {
             return {
               allOf: [...beforeAllOf, ...siblingValues, part, ...afterAllOf],
-              'x-refsStack': refsStack,
             };
           }),
         };
@@ -385,16 +421,4 @@ export class OpenAPIParser {
 
     return schema;
   }
-}
-
-/**
- * Unique array by property, missing properties are included
- */
-function uniqByPropIncludeMissing<T extends object>(arr: T[], prop: keyof T): T[] {
-  const seen = new Set();
-  return arr.filter(item => {
-    const k = item[prop];
-    if (!k) return true;
-    return k && !seen.has(k) && seen.add(k);
-  });
 }

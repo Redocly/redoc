@@ -1,76 +1,75 @@
-import { OpenAPIParser } from '../OpenAPIParser';
-import { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-import { OpenAPIParameter, Referenced } from '../../types';
+import type { OpenAPIDefinition, OpenAPISchema } from '../../types/index.js';
 
-const opts = new RedocNormalizedOptions({});
+import { OpenAPIParser } from '../OpenAPIParser.js';
+import { normalizeOptions } from '../config-options/index.js';
+
+const opts = normalizeOptions({});
 
 describe('Models', () => {
   describe('Schema', () => {
     let parser;
 
-    test('should hoist oneOfs when mergin allOf', () => {
-      const spec = require('./fixtures/oneOfHoist.json');
+    test('should hoist oneOfs when mergin allOf', async () => {
+      const spec = (await import('./fixtures/oneOfHoist.json'))
+        .default as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, opts);
-      expect(parser.mergeAllOf(spec.components.schemas.test)).toMatchSnapshot();
+      expect(parser.mergeAllOf(spec.components?.schemas?.test)).toMatchSnapshot();
     });
 
-    test('should get schema name from named schema', () => {
-      const spec = require('./fixtures/mergeAllOf.json');
+    test('should not crash on self-referencing array in allOf', async () => {
+      const spec = (await import('./fixtures/allOfSelfReferencingArray.json'))
+        .default as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, opts);
-      const schema = parser.mergeAllOf(spec.components.schemas.Case1, '#/components/schemas/Case1');
+      expect(parser.mergeAllOf(spec.components?.schemas?.Test)).toMatchSnapshot();
+    });
+
+    test('should get schema name from named schema', async () => {
+      const spec = (await import('./fixtures/mergeAllOf.json'))
+        .default as unknown as OpenAPIDefinition;
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = parser.mergeAllOf(
+        spec.components?.schemas?.Case1,
+        '#/components/schemas/Case1',
+      );
       expect(schema.title).toEqual('Case1');
     });
 
-    test('should get schema name from first allOf', () => {
-      const spec = require('./fixtures/mergeAllOf.json');
+    test('should get schema name from first allOf', async () => {
+      const spec = (await import('./fixtures/mergeAllOf.json'))
+        .default as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, opts);
+      const Case2 = spec.components?.schemas?.Case2 as OpenAPISchema & {
+        properties: { a: OpenAPISchema };
+      };
       const schema = parser.mergeAllOf(
-        spec.components.schemas.Case2.properties.a,
+        Case2.properties.a,
         '#components/schemas/Case2/properties/a',
       );
       expect(schema.title).toEqual('Bar');
     });
 
-    test('should get schema name from named schema', () => {
-      const spec = require('./fixtures/mergeAllOf.json');
+    test('should get schema name from named schema in allOf', async () => {
+      const spec = (await import('./fixtures/mergeAllOf.json'))
+        .default as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, opts);
       const schema = parser.mergeAllOf(
-        spec.components.schemas.Case3.schemas.Foo,
+        (spec.components?.schemas?.Case3 as { schemas: { Foo: unknown } })?.schemas?.Foo,
         '#components/schemas/Case3/schemas/Foo',
       );
       expect(schema.title).toEqual('Foo');
     });
 
-    test('should merge oneOf to inside allOff', () => {
+    test('should merge oneOf to inside allOff', async () => {
       // TODO: should hoist
-      const spec = require('./fixtures/mergeAllOf.json');
+
+      const spec = (await import('./fixtures/mergeAllOf.json'))
+        .default as unknown as OpenAPIDefinition;
       parser = new OpenAPIParser(spec, undefined, opts);
-      const schema = parser.mergeAllOf(spec.components.schemas.Case4);
+      const schema = parser.mergeAllOf(spec.components?.schemas?.Case4);
       expect(schema.title).toEqual('Foo');
       expect(schema['x-parentRefs']).toHaveLength(1);
       expect(schema['x-parentRefs'][0]).toEqual('#/components/schemas/Ref');
       expect(schema.oneOf).toEqual([{ title: 'Bar' }, { title: 'Baz' }]);
-    });
-
-    test('should override description from $ref of the referenced component, when sibling description exists ', () => {
-      const spec = require('./fixtures/siblingRefDescription.json');
-      parser = new OpenAPIParser(spec, undefined, opts);
-      const schemaOrRef: Referenced<OpenAPIParameter> = {
-        $ref: '#/components/schemas/Test',
-        description: 'Overriden description',
-      };
-
-      expect(parser.deref(schemaOrRef)).toMatchSnapshot();
-    });
-
-    test('should correct resolve double $ref if no need sibling', () => {
-      const spec = require('./fixtures/3.1/schemaDefinition.json');
-      parser = new OpenAPIParser(spec, undefined, opts);
-      const schemaOrRef: Referenced<OpenAPIParameter> = {
-        $ref: '#/components/schemas/Parent',
-      };
-
-      expect(parser.deref(schemaOrRef, [], true)).toMatchSnapshot();
     });
   });
 });

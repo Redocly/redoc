@@ -1,0 +1,44 @@
+{
+  "protocolVersion": "1.0.0",
+  "capabilities": {
+    "tool_code_interpreter": true,
+    "tool_image_generation": false,
+    "experimental": {
+      "a": true
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/mcp"
+    }
+  ],
+  "tools": [
+    {
+      "name": "test-tool",
+      "description": "A test tool",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "inputProperty": {
+            "type": "string"
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "outputProperty": {
+            "type": "string"
+          }
+        }
+      },
+      "security": [
+        {
+          "apiKey": []
+        }
+      ]
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}

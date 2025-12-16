@@ -1,9 +1,15 @@
-import slugify from 'slugify';
+import type { OpenAPIServer } from '../types/open-api';
+
+import { isObject, isString } from '@redocly/theme/core/openapi';
+
+import { isNamedDefinition } from './openapi.js';
+import { JsonPointer } from './JsonPointer.js';
+import { urlParse } from './url.js';
 
 /**
  * Maps over array passing `isLast` bool to iterator as the second argument
  */
-export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolean) => P) {
+export function mapWithLast<T, P>(array: T[], iteratee: (item: T, isLast: boolean) => P): P[] {
   const res: P[] = [];
   for (let i = 0; i < array.length - 1; i++) {
     res.push(iteratee(array[i], false));
@@ -28,7 +34,7 @@ export function mapValues<T, P>(
 ): Record<string, P> {
   const res: { [key: string]: P } = {};
   for (const key in object) {
-    if (object.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
       res[key] = iteratee(object[key], key, object);
     }
   }
@@ -40,7 +46,7 @@ export function mapValues<T, P>(
  * @param collectionItems collection items
  * @param prop item property with child elements
  */
-export function flattenByProp<T extends object, P extends keyof T>(
+export function flattenByProp<T extends GenericObject, P extends keyof T>(
   collectionItems: T[],
   prop: P,
 ): T[] {
@@ -49,7 +55,7 @@ export function flattenByProp<T extends object, P extends keyof T>(
     for (const item of items) {
       res.push(item);
       if (item[prop]) {
-        iterate(item[prop] as any as T[]);
+        iterate(item[prop]);
       }
     }
   };
@@ -64,11 +70,11 @@ export function stripTrailingSlash(path: string): string {
   return path;
 }
 
-export function isNumeric(n: any): n is number {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+export function isNumeric(value: unknown): value is number {
+  return !isNaN(parseFloat(value as string)) && isFinite(value as number);
 }
 
-export function appendToMdHeading(md: string, heading: string, content: string) {
+export function appendToMdHeading(md: string, heading: string, content: string): string {
   // if  heading is already in md and append to the end of it
   const testRegex = new RegExp(`(^|\\n)#\\s?${heading}\\s*\\n`, 'i');
   const replaceRegex = new RegExp(`((\\n|^)#\\s*${heading}\\s*(\\n|$)(?:.|\\n)*?)(\\n#|$)`, 'i');
@@ -81,61 +87,19 @@ export function appendToMdHeading(md: string, heading: string, content: string) 
   }
 }
 
-export const mergeObjects = (target: any, ...sources: any[]): any => {
-  if (!sources.length) {
-    return target;
-  }
-  const source = sources.shift();
-  if (source === undefined) {
-    return target;
-  }
-
-  if (isMergebleObject(target) && isMergebleObject(source)) {
-    Object.keys(source).forEach((key: string) => {
-      if (Object.prototype.hasOwnProperty.call(source, key) && key !== '__proto__') {
-        if (isMergebleObject(source[key])) {
-          if (!target[key]) {
-            target[key] = {};
-          }
-          mergeObjects(target[key], source[key]);
-        } else {
-          target[key] = source[key];
-        }
-      }
-    });
-  }
-
-  return mergeObjects(target, ...sources);
+export const isArrayOfObjects = (items: unknown): items is [] => {
+  return Array.isArray(items) && items.some((item) => isObject(item));
 };
 
-export const isObject = (item: unknown): item is Record<string, unknown> => {
-  return item !== null && typeof item === 'object';
+export const deleteEmptyArrayItem = (items: unknown[]): unknown[] => {
+  return items.filter((item) => !!item);
 };
 
-const isMergebleObject = (item): boolean => {
-  return isObject(item) && !isArray(item);
+export const isMergeableObject = (item: unknown): boolean => {
+  return isObject(item) && !Array.isArray(item);
 };
 
-/**
- * slugify() returns empty string when failed to slugify.
- * so try to return minimum slugified-string with failed one which keeps original value
- * the regex codes are referenced with https://gist.github.com/mathewbyrne/1280286
- */
-export function safeSlugify(value: string): string {
-  return (
-    slugify(value) ||
-    value
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/&/g, '-and-') // Replace & with 'and'
-      .replace(/\--+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, '')
-  ); // Trim - from end of text
-}
-
-export function isAbsoluteUrl(url: string) {
+export function isAbsoluteUrl(url: string): boolean {
   return /(?:^[a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
 }
 
@@ -143,61 +107,42 @@ export function isAbsoluteUrl(url: string) {
  * simple resolve URL which doesn't break on strings with url fragments
  * e.g. resolveUrl('http://test.com:{port}', 'path') results in http://test.com:{port}/path
  */
-export function resolveUrl(url: string, to: string) {
+export function resolveUrl(url: string, to: string): string {
   let res;
   if (to.startsWith('//')) {
-    try {
-      res = `${new URL(url).protocol || 'https:'}${to}`;
-    } catch {
-      res = `https:${to}`;
-    }
+    res = `${urlParse(url, true)?.protocol || 'https:'}${to}`;
   } else if (isAbsoluteUrl(to)) {
     res = to;
   } else if (!to.startsWith('/')) {
     res = stripTrailingSlash(url) + '/' + to;
   } else {
-    try {
-      const urlObj = new URL(url);
-      urlObj.pathname = to;
-      res = urlObj.href;
-    } catch {
+    const parsedUrl = urlParse(url);
+    if (parsedUrl) {
+      parsedUrl.pathname = to;
+      res = parsedUrl.toString();
+    } else {
       res = to;
     }
   }
   return stripTrailingSlash(res);
 }
 
-export function getBasePath(serverUrl: string): string {
-  try {
-    return parseURL(serverUrl).pathname;
-  } catch (e) {
-    // when using with redoc-cli serverUrl can be empty resulting in crash
-    return serverUrl;
-  }
-}
-
-export function titleize(text: string) {
+export function titleize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export function removeQueryStringAndHash(serverUrl: string): string {
   try {
-    const url = parseURL(serverUrl);
+    if (!serverUrl) {
+      return '';
+    }
+    const url = new URL(serverUrl);
     url.search = '';
     url.hash = '';
     return url.toString();
-  } catch (e) {
+  } catch {
     // when using with redoc-cli serverUrl can be empty resulting in crash
     return serverUrl;
-  }
-}
-
-function parseURL(url: string) {
-  if (typeof URL === 'undefined') {
-    // node
-    return new (require('url').URL)(url);
-  } else {
-    return new URL(url);
   }
 }
 
@@ -208,14 +153,95 @@ export function escapeHTMLAttrChars(str: string): string {
 export function unescapeHTMLChars(str: string): string {
   return str
     .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"');
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&');
 }
 
-export function isArray(value: unknown): value is any[] {
-  return Array.isArray(value);
+export function sanitizeItemId(id: string): string {
+  // we probably need to replace other symbols too
+  return id && id.replace(/#/g, '_').toLowerCase();
 }
 
-export function isBoolean(value: unknown): value is boolean {
-  return typeof value === 'boolean';
+export function useSchemaTitle(pointer: string, title?: string): string {
+  return title || (isNamedDefinition(pointer) && JsonPointer.baseName(pointer)) || '';
+}
+
+export function get<T>(
+  object: GenericObject = {},
+  path: string | Array<string>,
+  defval?: T,
+): GenericObject {
+  if (typeof path === 'string') path = path.split('.');
+  return path.reduce((xs: GenericObject, x: string) => (xs && xs[x] ? xs[x] : defval), object);
+}
+
+export function joinStringFactory(separator: string): (...args: (string | undefined)[]) => string {
+  return (...args: (string | undefined)[]) => args.filter(Boolean).join(separator);
+}
+
+export const dottedString = joinStringFactory('.');
+
+
+export const normalizeText = (text?: string | GenericObject): string =>
+  isString(text) ? text : text?.raw;
+
+export const getValueFromMdParsedExtension = (
+  item: GenericObject,
+  key: 'description' | 'summary' | 'x-summary' | 'x-enumDescriptions',
+) => {
+  const value = item?.[`x-parsed-md-${key}`] || item?.[key];
+  if (!value) {
+    return;
+  }
+  if (!item?.[`x-parsed-md-${key}`] && key !== 'x-enumDescriptions') {
+    return item?.[key];
+  }
+  if (key !== 'x-enumDescriptions') {
+    return normalizeMarkdownValue(item, key);
+  }
+  let result = {};
+  for (const property in value) {
+    if (property.startsWith('x-parsed-md')) {
+      continue;
+    }
+    result[property] = value?.[`x-parsed-md-${property}`] || value?.[property];
+  }
+  if (Object.keys(result).length) {
+    return result;
+  }
+  return value;
+};
+
+export function getServerDisplayName(server: OpenAPIServer) {
+  return server.name || server.description;
+}
+
+// We need to normalize the value when running inside Realm which parses md to markdoc AST.
+// The value can be a string or an object with result property (which contains AST)
+function normalizeMarkdownValue(
+  item: GenericObject,
+  key: 'description' | 'summary' | 'x-summary' | 'x-enumDescriptions',
+): {
+  result: string;
+  raw: string;
+} {
+  const value = item?.[`x-parsed-md-${key}`] || item?.[key];
+  if (value?.raw) {
+    return value;
+  }
+
+  return {
+    result: value?.result || item?.[key]?.result || item?.[key],
+    raw: item?.[key],
+  };
+}
+
+export function isLastInArray(arr: Array<unknown>, index: number) {
+  return index === arr.length - 1;
+}
+
+export function isLastProperty(obj: object, key: string) {
+  const objectKeys = Object.keys(obj);
+
+  return objectKeys.indexOf(key) === objectKeys.length - 1;
 }

@@ -1,29 +1,9 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "target": "es5",
-    "noImplicitAny": false,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "sourceMap": true,
-    "declaration": true,
-    "noEmitHelpers": true,
-    "importHelpers": true,
-    "outDir": "lib",
-    "pretty": true,
-    "lib": ["es2015", "es2016", "es2017", "dom", "WebWorker.ImportScripts"],
-    "jsx": "react",
-    "types": ["webpack", "webpack-env", "jest"]
+    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
+    "resolveJsonModule": true
   },
-  "compileOnSave": false,
-  "exclude": ["node_modules", ".tmp", "lib", "e2e/**"],
-  "include": [
-    "./custom.d.ts",
-    "./demo/playground/hmr-playground.tsx",
-    "./src/**/*.ts?",
-    "demo/*.tsx",
-    "src/empty.js"
-  ]
+  "exclude": ["node_modules", "bundle", ".tmp", "lib", "redoc", "bin"],
+  "include": ["src", "src/**/*.json"]
 }

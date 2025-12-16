@@ -1,0 +1,50 @@
+{
+  "openapi": "2.0.0",
+  "info": { "version": "1.0", "title": "Test" },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "required": ["type"],
+        "discriminator": {
+          "propertyName": "type"
+        },
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Dog": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          }
+        ],
+        "properties": {
+          "packSize": {
+            "type": "number"
+          }
+        }
+      },
+      "Cat": {
+        "type": "object",
+        "deprecated": true,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pet"
+          },
+          {
+            "properties": {
+              "packSize": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

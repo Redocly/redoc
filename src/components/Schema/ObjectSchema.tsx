@@ -1,87 +1,100 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo } from 'react';
+import { useAtomValue } from 'jotai';
 
-import { SchemaModel } from '../../services/models';
+import type { ReactElement } from 'react';
+import type { ObjectSchemaProps } from './types.js';
 
-import { PropertiesTable, PropertiesTableCaption } from '../../common-elements/fields-layout';
-import { Field } from '../Fields/Field';
-import { DiscriminatorDropdown } from './DiscriminatorDropdown';
-import { SchemaProps } from './Schema';
+import { PropertiesTableCaption } from '../common/index.js';
+import { Discriminator } from '../Discriminator/index.js';
+import { globalOptionsAtom } from '../../jotai/store.js';
+import { PropertyDetails } from '../PropertyDetails/index.js';
+import { SubSchema } from './SubSchema.js';
+import { getExpandByDefault } from './helpers.js';
+import { useTranslate } from '../../hooks/index.js';
+import { ArrayClosingLabel, LabelValue } from '../common/styled.js';
 
-import { mapWithLast } from '../../utils';
-import { OptionsContext } from '../OptionsProvider';
+function ObjectSchemaComponent({
+  schema,
+  showTitle,
+  discriminator,
+  level,
+  skipWriteOnly,
+  skipReadOnly,
+  fieldParentsName,
+  expandable,
+  deepLink,
+  required,
+  disableDeepLinks,
+  shouldCloseArray,
+  oneOfLevel,
+  slug,
+  onOneOfChange,
+}: ObjectSchemaProps): ReactElement {
+  const { fields = [], title } = schema;
+  const translate = useTranslate();
+  const { schemasExpansionLevel } = useAtomValue(globalOptionsAtom);
 
-export interface ObjectSchemaProps extends SchemaProps {
-  discriminator?: {
-    fieldName: string;
-    parentSchema: SchemaModel;
-  };
-  fieldParentsName?: string[];
+  const filteredFields =
+    skipReadOnly || skipWriteOnly
+      ? fields.filter(
+          (item) =>
+            !((skipReadOnly && item.schema.readOnly) || (skipWriteOnly && item.schema.writeOnly)),
+        )
+      : fields;
+
+  const expandByDefault = getExpandByDefault({
+    required,
+    level,
+    schemasExpansionLevel,
+  });
+
+  return (
+    <SubSchema
+      expandable={expandable}
+      expandByDefault={expandByDefault}
+      level={level}
+      propertyLength={filteredFields.length}
+      deepLink={deepLink}
+      operationPointer={schema.operationPointer}
+    >
+      <>
+        {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
+        {filteredFields.map((field, index) => (
+          <PropertyDetails
+            key={field.name}
+            isFirst={index === 0}
+            field={field}
+            fieldParentsName={Number(level) > 1 ? fieldParentsName : []}
+            renderDiscriminatorSwitch={
+              discriminator?.fieldName === field.name && discriminator?.parentSchema
+                ? () => (
+                    <Discriminator
+                      parent={discriminator.parentSchema}
+                      onChange={discriminator?.onChange}
+                      activeOneOfIdx={discriminator.activeOneOfIdx}
+                      translate={translate}
+                    />
+                  )
+                : undefined
+            }
+            skipReadOnly={skipReadOnly}
+            skipWriteOnly={skipWriteOnly}
+            showTitle={showTitle}
+            level={level}
+            disableDeepLinks={disableDeepLinks}
+            oneOfLevel={oneOfLevel}
+            slug={slug}
+            onOneOfChange={onOneOfChange}
+          />
+        ))}
+      </>
+      {shouldCloseArray && (
+        <ArrayClosingLabel className="array-closing-label">
+          <LabelValue>]</LabelValue>
+        </ArrayClosingLabel>
+      )}
+    </SubSchema>
+  );
 }
 
-export const ObjectSchema = observer(
-  ({
-    schema: { fields = [], title },
-    showTitle,
-    discriminator,
-    skipReadOnly,
-    skipWriteOnly,
-    level,
-    fieldParentsName,
-  }: ObjectSchemaProps) => {
-    const { expandSingleSchemaField, showObjectSchemaExamples, schemasExpansionLevel } =
-      React.useContext(OptionsContext);
-
-    const filteredFields = React.useMemo(
-      () =>
-        skipReadOnly || skipWriteOnly
-          ? fields.filter(
-              item =>
-                !(
-                  (skipReadOnly && item.schema.readOnly) ||
-                  (skipWriteOnly && item.schema.writeOnly)
-                ),
-            )
-          : fields,
-      [skipReadOnly, skipWriteOnly, fields],
-    );
-
-    const expandByDefault =
-      (expandSingleSchemaField && filteredFields.length === 1) || schemasExpansionLevel >= level!;
-
-    return (
-      <PropertiesTable>
-        {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
-        <tbody>
-          {mapWithLast(filteredFields, (field, isLast) => {
-            return (
-              <Field
-                key={field.name}
-                isLast={isLast}
-                field={field}
-                expandByDefault={expandByDefault}
-                fieldParentsName={Number(level) > 1 ? fieldParentsName : []}
-                renderDiscriminatorSwitch={
-                  discriminator?.fieldName === field.name
-                    ? () => (
-                        <DiscriminatorDropdown
-                          parent={discriminator!.parentSchema}
-                          enumValues={field.schema.enum}
-                        />
-                      )
-                    : undefined
-                }
-                className={field.expanded ? 'expanded' : undefined}
-                showExamples={showObjectSchemaExamples}
-                skipReadOnly={skipReadOnly}
-                skipWriteOnly={skipWriteOnly}
-                showTitle={showTitle}
-                level={level}
-              />
-            );
-          })}
-        </tbody>
-      </PropertiesTable>
-    );
-  },
-);
+export const ObjectSchema = memo<ObjectSchemaProps>(ObjectSchemaComponent);

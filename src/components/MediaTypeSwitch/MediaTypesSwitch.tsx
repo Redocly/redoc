@@ -1,67 +1,103 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo, useCallback, useRef } from 'react';
+import { useAtom } from 'jotai';
 
-import { DropdownOption, DropdownProps } from '../../common-elements/Dropdown';
-import { MediaContentModel, MediaTypeModel, SchemaModel } from '../../services/models';
-import { DropdownLabel, DropdownWrapper } from '../PayloadSamples/styled.elements';
+import type { TFunction } from '@redocly/theme/core/openapi';
+import type { MutableRefObject, PropsWithChildren, ReactElement } from 'react';
+import type { SelectProps } from '../common/index.js';
+import type { MediaContentModel, MediaTypeModel } from '../../models/index.js';
 
-export interface MediaTypeChildProps {
-  schema: SchemaModel;
-  mime?: string;
-}
+import { SelectLabel, SelectWrapper } from '../PayloadSamples/index.js';
+import { Container } from '../common/index.js';
+import { activeMimeNameAtom } from '../../jotai/app.js';
+import { getActiveMediaType } from '../../models/index.js';
+import { useTranslate } from '../../hooks/index.js';
 
-export interface MediaTypesSwitchProps {
+interface MediaTypesSwitchProps {
   content?: MediaContentModel;
   withLabel?: boolean;
 
-  renderDropdown: (props: DropdownProps) => JSX.Element;
-  children: (activeMime: MediaTypeModel) => JSX.Element;
+  renderSelect: (props: SelectProps) => ReactElement | null;
+  children: (activeMime: MediaTypeModel) => ReactElement;
 }
 
-@observer
-export class MediaTypesSwitch extends React.Component<MediaTypesSwitchProps> {
-  switchMedia = ({ idx }: DropdownOption) => {
-    if (this.props.content && idx !== undefined) {
-      this.props.content.activate(idx);
-    }
-  };
-
-  render() {
-    const { content } = this.props;
-    if (!content || !content.mediaTypes || !content.mediaTypes.length) {
-      return null;
-    }
-    const activeMimeIdx = content.activeMimeIdx;
-
-    const options = content.mediaTypes.map((mime, idx) => {
-      return {
-        value: mime.name,
-        idx,
-      };
-    });
-
-    const Wrapper = ({ children }) =>
-      this.props.withLabel ? (
-        <DropdownWrapper>
-          <DropdownLabel>Content type</DropdownLabel>
-          {children}
-        </DropdownWrapper>
-      ) : (
-        children
-      );
-
-    return (
-      <>
-        <Wrapper>
-          {this.props.renderDropdown({
-            value: options[activeMimeIdx].value,
-            options,
-            onChange: this.switchMedia,
-            ariaLabel: 'Content type',
-          })}
-        </Wrapper>
-        {this.props.children(content.active)}
-      </>
-    );
+function Wrapper({
+  children,
+  withLabel,
+  innerRef,
+  translate,
+}: PropsWithChildren<{
+  withLabel?: boolean;
+  innerRef: MutableRefObject<HTMLDivElement | null>;
+  translate: TFunction;
+}>) {
+  if (!children) {
+    return null;
   }
+
+  return withLabel ? (
+    <SelectWrapper ref={innerRef}>
+      <SelectLabel>{translate('openapi.contentType', 'Content type')}</SelectLabel>
+      {children}
+    </SelectWrapper>
+  ) : (
+    <Container ref={innerRef}>{children}</Container>
+  );
 }
+
+function MediaTypesSwitchComponent({
+  content,
+  withLabel,
+  renderSelect,
+  children,
+}: MediaTypesSwitchProps): ReactElement | null {
+  const translate = useTranslate();
+  const [activeMimeName, setActiveMimeName] = useAtom(activeMimeNameAtom);
+
+  const switchMedia = useCallback(
+    ({ value }) => {
+      /* istanbul ignore next (this can never happen, just to make ts happy, this is callback) */
+      if (!content || !ref.current) return null;
+      const initialOffset = ref.current.getBoundingClientRect().y;
+      setActiveMimeName(value);
+
+      requestAnimationFrame(() => {
+        /* istanbul ignore next (this can never happen, just to make ts happy, this is callback) */
+        if (!ref.current || initialOffset == null) return;
+        const updatedOffset = ref.current.getBoundingClientRect().y;
+        window.scrollBy(0, updatedOffset - initialOffset); // TODO: refactor to use ScrollService (make it singleton)
+      });
+    },
+    [content, setActiveMimeName],
+  );
+
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  if (!content || !content.mediaTypes || !content.mediaTypes.length) {
+    return null;
+  }
+
+  const options = content.mediaTypes.map((mime, idx) => {
+    return {
+      value: mime.name,
+      idx,
+    };
+  });
+
+  const active = getActiveMediaType(content, activeMimeName);
+
+  return (
+    <>
+      <Wrapper innerRef={ref} withLabel={withLabel} translate={translate}>
+        {renderSelect({
+          value: active.name,
+          options,
+          onChange: switchMedia,
+          ariaLabel: 'Content type',
+        })}
+      </Wrapper>
+      {children(active)}
+    </>
+  );
+}
+
+export const MediaTypesSwitch = memo<MediaTypesSwitchProps>(MediaTypesSwitchComponent);

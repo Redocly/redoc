@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.0",
+  "info": { "version": "1.0", "title": "Foo" },
+  "paths": {
+    "/test": {
+      "get": {
+        "summary": "test",
+        "responses": { "200": {} },
+        "requestBody": { "content": { "application/json": {}, "application/xml": {} } }
+      }
+    }
+  },
+  "components": {}
+}

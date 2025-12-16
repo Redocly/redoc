@@ -1,4 +1,4 @@
-import { objectHas, objectSet } from '../object';
+import { objectHas, objectSet } from '../object.js';
 
 describe('object utils', () => {
   let obj;

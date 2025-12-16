@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`processHtmlTokens > should process block and inline html tokens 1`] = `
+<article>
+  <h1>
+    Heading
+  </h1>
+  <div
+    id="22"
+  >
+    <p>
+      Inline 
+      <strong>
+        bold
+      </strong>
+       text
+    </p>
+  </div>
+</article>
+`;
+
+exports[`processHtmlTokens > should process inline html tokens 1`] = `
+<article>
+  <p>
+    Inline 
+    <strong>
+      bold
+    </strong>
+     text
+  </p>
+  <h1>
+    Heading
+  </h1>
+  <p>
+    Inline 
+    <strong>
+      bold
+    </strong>
+     text
+  </p>
+</article>
+`;
+
+exports[`processHtmlTokens > should report unclosed errors 1`] = `
+<article>
+  <p>
+    <span>
+       inline
+    </span>
+  </p>
+  <h1>
+    Heading
+  </h1>
+  <strong>
+    <p>
+      bold
+    </p>
+  </strong>
+</article>
+`;

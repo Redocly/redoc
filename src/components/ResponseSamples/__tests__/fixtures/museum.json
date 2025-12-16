@@ -1,0 +1,179 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Redocly Museum API",
+    "description": "Imaginary, but delightful Museum API for interacting with museum services and information. Built with love by Redocly.",
+    "version": "1.1.0",
+    "termsOfService": "https://redocly.com/subscription-agreement/",
+    "contact": {
+      "email": "team@redocly.com",
+      "url": "https://redocly.com/docs/cli/"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/license/mit/"
+    },
+    "x-logo": {
+      "url": "https://redocly.github.io/redoc/museum-logo.png",
+      "altText": "Museum logo"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.fake-museum-example.com/v1.1"
+    }
+  ],
+  "security": [
+    {
+      "MuseumPlaceholderAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Operations",
+      "description": "Operational information about the museum."
+    }
+  ],
+  "paths": {
+    "/museum-hours": {
+      "get": {
+        "summary": "Get museum hours",
+        "description": "Get upcoming museum operating hours.",
+        "operationId": "getMuseumHours",
+        "tags": ["Operations"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/StartDate"
+          },
+          {
+            "$ref": "#/components/parameters/PaginationPage"
+          },
+          {
+            "$ref": "#/components/parameters/PaginationLimit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMuseumHoursResponse"
+                },
+                "examples": {
+                  "default_example": {
+                    "$ref": "#/components/examples/GetMuseumHoursResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Date": {
+        "type": "string",
+        "format": "date",
+        "example": "2023-10-29"
+      },
+      "GetMuseumHoursResponse": {
+        "description": "List of museum operating hours for consecutive days.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/MuseumDailyHours"
+        }
+      },
+      "MuseumDailyHours": {
+        "description": "Daily operating hours for the museum.",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "Date the operating hours apply to.",
+            "$ref": "#/components/schemas/Date",
+            "example": "2024-12-31"
+          },
+          "timeOpen": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):?([0-5]\\d)$",
+            "description": "Time the museum opens on a specific date. Uses 24 hour time format (`HH:mm`).",
+            "example": "09:00"
+          },
+          "timeClose": {
+            "description": "Time the museum closes on a specific date. Uses 24 hour time format (`HH:mm`).",
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):?([0-5]\\d)$",
+            "example": "18:00"
+          }
+        },
+        "required": ["date", "timeOpen", "timeClose"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "object"
+          },
+          "title": {
+            "type": "string",
+            "example": "Validation failed"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "MuseumPlaceholderAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "examples": {
+      "GetMuseumHoursResponseExample": {
+        "summary": "Get hours response",
+        "value": [
+          {
+            "date": "2023-09-11",
+            "timeOpen": "09:00",
+            "timeClose": "18:00"
+          }
+        ]
+      }
+    },
+    "parameters": {
+      "PaginationPage": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number to retrieve.",
+        "schema": {
+          "type": "integer",
+          "default": 1,
+          "example": 2
+        }
+      },
+      "PaginationLimit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Number of days per page.",
+        "schema": {
+          "type": "integer",
+          "default": 10,
+          "maximum": 30,
+          "example": 15
+        }
+      },
+      "StartDate": {
+        "name": "startDate",
+        "in": "query",
+        "description": "Starting date to retrieve future operating hours from. Defaults to today's date.",
+        "schema": {
+          "type": "string",
+          "format": "date",
+          "example": "2023-02-23"
+        }
+      }
+    }
+  }
+}

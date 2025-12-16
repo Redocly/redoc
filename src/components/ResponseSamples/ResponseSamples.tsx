@@ -1,50 +1,66 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo, useCallback } from 'react';
 
-import { OperationModel } from '../../services/models';
+import type { ReactElement } from 'react';
+import type { OperationModel, ResponseModel } from '../../models/index.js';
 
-import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
-import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
-import { l } from '../../services/Labels';
+import { PayloadSamples, StyledCodeBlock } from '../PayloadSamples/index.js';
+import { Summary } from './Summary.js';
+import { Tabs } from '../Tabs/index.js';
+import { CodeBlockPanel } from '../common/index.js';
+import { useTelemetry, useTranslate } from '../../hooks/index.js';
 
 export interface ResponseSamplesProps {
   operation: OperationModel;
+  activeResponseTab?: string;
+  onTabChange: (tab: string) => void;
 }
 
-@observer
-export class ResponseSamples extends React.Component<ResponseSamplesProps> {
-  operation: OperationModel;
+function ResponseSamplesComponent({
+  operation,
+  activeResponseTab,
+  onTabChange,
+}: ResponseSamplesProps): ReactElement | null {
+  const translate = useTranslate();
+  const telemetry = useTelemetry();
+  const responses = operation.responses.filter(
+    (response: ResponseModel): response is Required<ResponseModel> =>
+      response.content?.hasSample ?? false,
+  );
 
-  render() {
-    const { operation } = this.props;
-    const responses = operation.responses.filter(response => {
-      return response.content && response.content.hasSample;
-    });
+  const tabs = operation.responses.map(({ code }) => ({ key: code, title: code }));
+  const activeTab = tabs?.find(({ key }) => key === activeResponseTab) || tabs?.[0];
 
-    return (
-      (responses.length > 0 && (
-        <div>
-          <RightPanelHeader> {l('responseSamples')} </RightPanelHeader>
+  const handleCodeSampleCopy = useCallback(() => {
+    telemetry.sendCopyCodeSnippetClickedMessage({ snippetType: 'response' });
+  }, [telemetry]);
 
-          <Tabs defaultIndex={0}>
-            <TabList>
-              {responses.map(response => (
-                <Tab className={'tab-' + response.type} key={response.code}>
-                  {response.code}
-                </Tab>
-              ))}
-            </TabList>
-            {responses.map(response => (
-              <TabPanel key={response.code}>
-                <div>
-                  <PayloadSamples content={response.content!} />
-                </div>
-              </TabPanel>
-            ))}
-          </Tabs>
-        </div>
-      )) ||
-      null
-    );
+  if (!responses.length) {
+    return null;
   }
+
+  const renderSummary = () => {
+    return (
+      <Summary
+        tabs={<Tabs tabs={tabs} activeTab={activeTab} onChange={(tab) => onTabChange(tab.key)} />}
+      />
+    );
+  };
+
+  return (
+    <CodeBlockPanel className="panel-response-samples" header={renderSummary} isExpandable={false}>
+      {operation.responses.map((response) =>
+        response.code === activeTab.key ? (
+          <div key={response.code}>
+            {response?.content?.hasSample ? (
+              <PayloadSamples content={response.content} onCopyClick={handleCodeSampleCopy} />
+            ) : (
+              <StyledCodeBlock source={translate('openapi.noResponseContent', 'No content')} />
+            )}
+          </div>
+        ) : null,
+      )}
+    </CodeBlockPanel>
+  );
 }
+
+export const ResponseSamples = memo(ResponseSamplesComponent);

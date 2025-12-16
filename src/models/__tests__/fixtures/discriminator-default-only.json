@@ -1,0 +1,38 @@
+{
+  "openapi": "3.2.0",
+  "info": {
+    "title": "Discriminator with Only Default Mapping",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Animal": {
+        "type": "object",
+        "required": ["type"],
+        "discriminator": {
+          "propertyName": "type",
+          "defaultMapping": "#/components/schemas/GenericAnimal"
+        },
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "GenericAnimal": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          }
+        ],
+        "properties": {
+          "species": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

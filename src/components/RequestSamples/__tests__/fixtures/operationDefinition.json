@@ -1,0 +1,59 @@
+{
+  "tags": ["pet"],
+  "summary": "Add a new pet to the store",
+  "description": "Add new pet to the store inventory.",
+  "operationId": "addPet",
+  "responses": {
+    "405": {
+      "description": "Invalid input"
+    }
+  },
+  "security": [
+    {
+      "petstore_auth": ["write:pets", "read:pets"]
+    }
+  ],
+  "x-codeSamples": [
+    {
+      "lang": "C#",
+      "source": "PetStore.v1.Pet pet = new PetStore.v1.Pet();\npet.setApiKey(\"your api key\");\npet.petType = PetStore.v1.Pet.TYPE_DOG;\npet.name = \"Rex\";\n// set other fields\nPetStoreResponse response = pet.create();\nif (response.statusCode == HttpStatusCode.Created)\n{\n  // Successfully created\n}\nelse\n{\n  // Something wrong -- check response for errors\n  Console.WriteLine(response.getRawResponse());\n}\n"
+    },
+    {
+      "lang": "PHP",
+      "source": "$form = new \\PetStore\\Entities\\Pet();\n$form->setPetType(\"Dog\");\n$form->setName(\"Rex\");\n// set other fields\ntry {\n    $pet = $client->pets()->create($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
+    }
+  ],
+  "requestBody": {
+    "$ref": "#/components/requestBodies/Pet"
+  },
+  "pathName": "/pet",
+  "pointer": "/paths/~1pet/post",
+  "httpVerb": "post",
+  "pathParameters": [
+    {
+      "name": "Accept-Language",
+      "in": "header",
+      "description": "The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US",
+      "example": "en-US",
+      "required": false,
+      "schema": {
+        "type": "string",
+        "enum": ["en-AU", "uk-UA"],
+        "default": "en-AU"
+      }
+    },
+    {
+      "name": "cookieParam",
+      "in": "cookie",
+      "description": "Some cookie",
+      "required": true,
+      "schema": {
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  ],
+  "pathServers": null,
+  "isWebhook": false,
+  "isAdditionalOperation": false
+}

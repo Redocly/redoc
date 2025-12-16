@@ -1,4 +1,1 @@
-export * from './MenuItem';
-export * from './MenuItems';
-export * from './SideMenu';
-export * from './styled.elements';
+export { SideMenu } from './SideMenu.js';

@@ -1,69 +1,106 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo } from 'react';
+import { useAtom } from 'jotai';
 
-import {
-  OneOfButton as StyledOneOfButton,
-  OneOfLabel,
-  OneOfList,
-} from '../../common-elements/schema';
-import { Badge } from '../../common-elements/shelfs';
-import { SchemaModel } from '../../services/models';
-import { ConstraintsView } from '../Fields/FieldConstraints';
-import { Schema, SchemaProps } from './Schema';
+import type { ReactElement } from 'react';
+import type { OneOfChangeParams, SchemaProps } from './types.js';
+import type { SchemaModel } from '../../models/index.js';
 
-export interface OneOfButtonProps {
-  subSchema: SchemaModel;
-  idx: number;
-  schema: SchemaModel;
+import { StyledBadge, SelectionTitle } from '../common/index.js';
+import { Markdown } from '../Markdown/index.js';
+import { ConstraintsView } from '../common/ConstraintsView.js';
+import { Schema } from './Schema.js';
+import { operationStore } from '../../jotai/operation.js';
+import { SchemaSelection } from '../common/SchemaSelection/index.js';
+import { useOneOfLocationIdx } from './useOneOfLocationIdx.js';
+import { useTranslate } from '../../hooks/index.js';
+import { styled } from '../../styled-components.js';
+
+interface OneOfSchemaProps extends SchemaProps {
+  schema: SchemaModel & { oneOf: SchemaModel[] };
+  oneOfLevel?: number;
+  onChange?: (params: OneOfChangeParams) => void;
 }
 
-@observer
-export class OneOfButton extends React.Component<OneOfButtonProps> {
-  render() {
-    const { idx, schema, subSchema } = this.props;
-    return (
-      <StyledOneOfButton
-        $deprecated={subSchema.deprecated}
-        $active={idx === schema.activeOneOf}
-        onClick={this.activateOneOf}
-      >
-        {subSchema.title || subSchema.typePrefix + subSchema.displayType}
-      </StyledOneOfButton>
-    );
+function OneOfSchemaComponent({
+  schema: { oneOf },
+  schema,
+  onChange,
+  oneOfLevel = 1,
+  ...rest
+}: OneOfSchemaProps): ReactElement | null {
+  const translate = useTranslate();
+  const [store, setOperationStore] = useAtom(operationStore(schema.operationPointer));
+  const oneOfIdxLocation = useOneOfLocationIdx(oneOf, oneOfLevel);
+
+  const options = oneOf.map((subSchema, idx) => ({
+    label: subSchema.title || subSchema.typePrefix + subSchema.displayType,
+    value: idx,
+  }));
+  const activeExampleNameIndex = options.findIndex(
+    (option) => option.label === store.activeExampleName,
+  );
+
+  const activeOneOfIdx =
+    oneOfIdxLocation === -1
+      ? activeExampleNameIndex !== -1
+        ? activeExampleNameIndex
+        : 0
+      : oneOfIdxLocation;
+
+  const activeSchemaIndex =
+    store.activeOneOf?.[schema.pointer] !== undefined
+      ? store.activeOneOf[schema.pointer]
+      : activeOneOfIdx;
+  const activeSchema = oneOf[activeSchemaIndex];
+
+  if (!activeSchema) {
+    return null;
   }
 
-  activateOneOf = () => {
-    this.props.schema.activateOneOf(this.props.idx);
+  const handleChange = (value: number) => {
+    onChange?.({
+      pointer: schema.pointer,
+      index: value,
+    });
+
+    setOperationStore({
+      activeExampleName: schema.oneOf?.[value]?.title,
+      activeOneOf: { [schema.pointer]: value },
+      requestValues: { body: null },
+    });
   };
+
+  return (
+    <Wrapper>
+      <SelectionTitle>{schema.oneOfType}:</SelectionTitle>
+      <SchemaSelection
+        options={options}
+        onChange={handleChange}
+        pointer={schema.operationPointer}
+        schema={schema}
+        defaultOneOfIdx={activeOneOfIdx}
+      />
+      {activeSchema.deprecated && (
+        <StyledBadge deprecated>{translate('openapi.badges.deprecated', 'Deprecated')}</StyledBadge>
+      )}
+      {activeSchema.description && <StyledDescription source={activeSchema.description} />}
+      <ConstraintsView constraints={activeSchema.constraints} />
+      <Schema {...rest} schema={activeSchema} oneOfLevel={oneOfLevel + 1} />
+    </Wrapper>
+  );
 }
 
-@observer
-export class OneOfSchema extends React.Component<SchemaProps> {
-  render() {
-    const {
-      schema: { oneOf },
-      schema,
-    } = this.props;
+export const OneOfSchema = memo<OneOfSchemaProps>(OneOfSchemaComponent);
 
-    if (oneOf === undefined) {
-      return null;
-    }
-    const activeSchema = oneOf[schema.activeOneOf];
+const StyledDescription = styled(Markdown)`
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+`;
 
-    return (
-      <div>
-        <OneOfLabel> {schema.oneOfType} </OneOfLabel>
-        <OneOfList>
-          {oneOf.map((subSchema, idx) => (
-            <OneOfButton key={subSchema.pointer} schema={schema} subSchema={subSchema} idx={idx} />
-          ))}
-        </OneOfList>
-        <div>
-          {oneOf[schema.activeOneOf].deprecated && <Badge type="warning">Deprecated</Badge>}
-        </div>
-        <ConstraintsView constraints={activeSchema.constraints} />
-        <Schema {...this.props} schema={activeSchema} />
-      </div>
-    );
-  }
-}
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+`;

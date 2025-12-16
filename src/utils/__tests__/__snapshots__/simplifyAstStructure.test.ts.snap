@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`simplifyAstStructure > should handle empty AST 1`] = `
+Node {
+  "$$mdtype": "Node",
+  "annotations": [],
+  "attributes": {},
+  "children": [],
+  "errors": [],
+  "inline": false,
+  "lines": [],
+  "slots": {},
+  "type": "document",
+}
+`;
+
+exports[`simplifyAstStructure > should remove location from AST nodes 1`] = `
+[
+  Node {
+    "$$mdtype": "Node",
+    "annotations": [],
+    "attributes": {},
+    "children": [
+      Node {
+        "$$mdtype": "Node",
+        "annotations": [],
+        "attributes": {
+          "content": "Hello world",
+        },
+        "children": [],
+        "errors": [],
+        "inline": false,
+        "lines": [],
+        "slots": {},
+        "type": "text",
+      },
+    ],
+    "errors": [],
+    "inline": false,
+    "lines": [],
+    "slots": {},
+    "type": "paragraph",
+  },
+]
+`;
+
+exports[`simplifyAstStructure > should return full AST when not a document node type 1`] = `
+Node {
+  "$$mdtype": "Node",
+  "annotations": [],
+  "attributes": {
+    "content": "Some text",
+  },
+  "children": [],
+  "errors": [],
+  "inline": false,
+  "lines": [],
+  "slots": {},
+  "type": "text",
+}
+`;

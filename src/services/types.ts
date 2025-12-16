@@ -1,70 +1,59 @@
-import {
+import type { ReactElement } from 'react';
+import type { Node } from '@markdoc/markdoc';
+import type {
+  OpenAPIDefinition,
+  OpenAPIInfo,
   OpenAPIOperation,
   OpenAPIParameter,
   OpenAPISchema,
   OpenAPIServer,
   OpenAPITag,
   Referenced,
-} from '../types';
-import { AppStore } from './AppStore';
-import { GroupModel } from './models';
-import { OperationModel } from './models/Operation';
-import { RedocRawOptions } from './RedocNormalizedOptions';
+} from '../types/index.js';
+import type { OperationModel, Sample } from '../models';
 
-export interface StoreState {
-  menu: {
-    activeItemIdx: number;
-  };
-  spec: {
-    url?: string;
-    data: any;
-  };
-  searchIndex: any;
-  options: RedocRawOptions;
-}
+export type Normalized<T> = { [P in keyof T]-?: T[P] };
 
-export interface LabelsConfig {
-  enum: string;
-  enumSingleValue: string;
-  enumArray: string;
-  default: string;
-  deprecated: string;
-  example: string;
-  examples: string;
-  recursive: string;
-  arrayOf: string;
-  webhook: string;
-  const: string;
-  noResultsFound: string;
-  download: string;
-  downloadSpecification: string;
-  responses: string;
-  callbackResponses: string;
-  requestSamples: string;
-  responseSamples: string;
-}
+export type ExternalLink = ExternalLinkLink | ExternalLinkSeparator;
 
-export type LabelsConfigRaw = Partial<LabelsConfig>;
+export type ExternalLinkLink = {
+  label: string;
+  link: string;
+  target?: string;
+  separatorLine?: boolean;
+};
+export type ExternalLinkSeparator = {
+  separator?: string;
+  separatorLine?: boolean;
+};
 
-export interface MDXComponentMeta {
-  component: React.ComponentType;
-  propsSelector: (store?: AppStore) => any;
-  props?: object;
-}
+export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema' | 'tool' | 'rsrc' | 'prompt';
+export type MenuItemType = MenuItemGroupType | 'operation';
 
-export interface MarkdownHeading {
+/** Generic interface for MenuItems */
+export interface IMenuItem {
   id: string;
+  href: string;
   name: string;
-  level: number;
-  items?: MarkdownHeading[];
-  description?: string;
+  description?: string | GenericObject;
+  depth: number;
+  items: IMenuItem[];
+  parent?: IMenuItem;
+  deprecated?: boolean;
+  isAdditionalOperation?: boolean;
+  type: MenuItemType;
+  isSchema?: boolean;
+  httpVerb?: string;
+  isWebhook?: boolean;
+  path?: string;
+  definition?: OpenAPIDefinition;
 }
-
-export type ContentItemModel = GroupModel | OperationModel;
 
 export type TagInfo = OpenAPITag & {
   operations: ExtendedOpenAPIOperation[];
   used?: boolean;
+  schemaRendersInTag?: boolean;
+  isSchema?: boolean;
 };
 
 export type ExtendedOpenAPIOperation = {
@@ -74,6 +63,8 @@ export type ExtendedOpenAPIOperation = {
   pathParameters: Array<Referenced<OpenAPIParameter>>;
   pathServers: Array<OpenAPIServer> | undefined;
   isWebhook: boolean;
+  isAdditionalOperation: boolean;
+  defaultSampleName?: string | false;
 } & OpenAPIOperation;
 
 export type TagsInfoMap = Record<string, TagInfo>;
@@ -83,49 +74,59 @@ export interface TagGroup {
   tags: string[];
 }
 
-export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema';
-export type MenuItemType = MenuItemGroupType | 'operation';
-
-export interface IMenuItem {
-  id: string;
-  absoluteIdx?: number;
-  name: string;
-  sidebarLabel: string;
-  description?: string;
-  depth: number;
-  active: boolean;
-  expanded: boolean;
-  items: IMenuItem[];
-  parent?: IMenuItem;
-  deprecated?: boolean;
-  type: MenuItemType;
-
-  deactivate(): void;
-  activate(): void;
-
-  collapse(): void;
-  expand(): void;
-}
-
-export interface SearchDocument {
-  title: string;
-  description: string;
-  id: string;
-}
-
-export interface SearchResult<T = string> {
-  meta: T;
-  score: number;
-}
-
-export enum SideNavStyleEnum {
-  SummaryOnly = 'summary-only',
-  PathOnly = 'path-only',
-  IdOnly = 'id-only',
-}
-
 export type MergedOpenAPISchema = OpenAPISchema & {
   'x-refsStack'?: string[];
   'x-parentRefs'?: string[];
   'x-circular-ref'?: boolean;
+  'x-complex'?: boolean;
+  absolutePointer?: string;
+};
+
+export interface MarkdownHeading {
+  id: string;
+  name: string;
+  level: number;
+  items?: MarkdownHeading[];
+  description?: string | GenericObject;
+  ast?: Node[];
+}
+
+export type Unstable_ExternalCodeSample = Sample & {
+  get: (source: ExternalSource) => string;
+};
+
+export interface ExternalSource {
+  sample: Unstable_ExternalCodeSample;
+  operation: OperationModel;
+  exampleName?: string;
+  pathParams?: any;
+  properties?: any;
+}
+
+export interface HookRawHtml {
+  html: string;
+}
+
+type HookResult = ReactElement | HookRawHtml | null;
+
+export type HookConfig<T> = (props: T) => HookResult;
+export interface HooksConfig {
+  AfterApiTitle?: HookConfig<{ info: OpenAPIInfo }>;
+  BeforeOperation?: HookConfig<{ operation: OperationModel }>;
+  BeforeOperationSummary?: HookConfig<{ operation: OperationModel }>;
+  AfterOperationSummary?: HookConfig<{ operation: OperationModel }>;
+  AfterOperation?: HookConfig<{ operation: OperationModel }>;
+  onInit?: (args: { store: GenericObject }) => void;
+  replaceSecurityLink?: (args: { securityRequirementId: string }) => string;
+  sanitize?: (raw: string) => string;
+  MiddlePanelFooter?: HookConfig<undefined>;
+  MiddlePanelHeader?: HookConfig<undefined>;
+}
+
+export type ExtendedMenuItem = Omit<IMenuItem, 'type'> & {
+  type: MenuItemType | 'spec';
+  linkable?: boolean;
+  href?: string;
+  httpVerb?: string;
+  path?: string;
 };
