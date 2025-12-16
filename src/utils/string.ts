@@ -43,7 +43,7 @@ export function tryDecodeURIComponent(str: string): string {
   try {
     return decodeURIComponent(str);
   } catch (e) {
-    console.error(`Decoding failed: ${str}`, e);
+    console.error('Decoding failed: %s', str, e);
     return str;
   }
 }

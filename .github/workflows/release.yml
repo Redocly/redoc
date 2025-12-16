@@ -46,6 +46,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      actions: write
     uses: ./.github/workflows/docker.yml
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

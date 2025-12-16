@@ -58,7 +58,7 @@
     "list:licenses": "node ./scripts/list-licenses.js",
     "license:check": "npx license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;CC0-1.0;Python-2.0 ' --summary",
     "changeset": "npx @changesets/cli --",
-    "release": "npm run build && npm run changeset publish",
+    "release": "npm run build && npm run changeset publish --tag next",
     "publish-cdn": "scripts/publish-cdn.sh"
   },
   "peerDependencies": {

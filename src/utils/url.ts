@@ -9,7 +9,7 @@ export function urlParse(url: string, slashesDenoteHost = false): URL | null {
   try {
     return URL?.parse ? URL?.parse(processedUrl) : new URL(processedUrl);
   } catch (error) {
-    console.error(`Invalid URL: ${processedUrl}`, error);
+    console.error('Invalid URL: %s', processedUrl, error);
     return null;
   }
 }
