@@ -57,7 +57,7 @@ export default defineConfig(({ command, mode }) => {
       global: 'globalThis',
     },
     build: {
-      outDir: 'bundle',
+      outDir: 'bundles',
       emptyOutDir: false,
       lib: {
         entry: resolve(__dirname, isStandalone ? 'src/standalone.tsx' : 'src/index.ts'),
