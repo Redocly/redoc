@@ -9,11 +9,13 @@ FROM node:18-alpine
 
 RUN apk update && apk add --no-cache git
 
+# Enable corepack
+RUN corepack enable
+
 # Install dependencies
 WORKDIR /build
-COPY package.json package-lock.json /build/
-RUN npm ci --no-optional --ignore-scripts
-RUN npm explore esbuild -- npm run postinstall
+COPY package.json pnpm-lock.yaml /build/
+RUN pnpm install --frozen-lockfile --no-optional
 
 # copy only required for the build files
 COPY src /build/src
@@ -21,7 +23,7 @@ COPY webpack.config.ts tsconfig.json custom.d.ts  /build/
 COPY config/webpack-utils.ts /build/config/
 COPY typings/styled-patch.d.ts /build/typings/styled-patch.d.ts
 
-RUN npm run bundle:standalone
+RUN pnpm run bundle:standalone
 
 FROM nginx:alpine
 
