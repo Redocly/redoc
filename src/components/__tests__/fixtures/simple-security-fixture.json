@@ -23,6 +23,9 @@
           },
           {
             "petstore_auth": ["write:pets", "read:pets"]
+          },
+          {
+            "petstore_auth": ["update:pets"]
           }
         ]
       }
@@ -39,7 +42,8 @@
             "authorizationUrl": "http://petstore.swagger.io/api/oauth/dialog",
             "scopes": {
               "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
+              "read:pets": "read your pets",
+              "update:pets": "update your pets"
             }
           }
         }
