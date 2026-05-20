@@ -6,7 +6,7 @@ Hi! We're really excited that you are interested in contributing to Redoc. Befor
   - [Issue Reporting Guidelines](#issue-reporting-guidelines)
   - [Pull Request Guidelines](#pull-request-guidelines)
   - [Development Setup](#development-setup)
-    - [Commonly used NPM scripts](#commonly-used-npm-scripts)
+    - [Commonly used pnpm scripts](#commonly-used-pnpm-scripts)
   - [Project Structure](#project-structure)
 
 ## Issue Reporting Guidelines
@@ -17,58 +17,58 @@ Hi! We're really excited that you are interested in contributing to Redoc. Befor
 Before submitting a pull request, please make sure the following is done:
 
 1. Fork the repository and create your branch from main.
-2. Run `npm install` in the repository root.
+2. Run `pnpm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
-4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
-5. Format your code with prettier (`npm run prettier`).
+4. Ensure the test suite passes (`pnpm test`). Tip: `pnpm test -- --watch TestName` is helpful in development.
+5. Format your code with prettier (`pnpm run prettier`).
 
 ## Development Setup
 
-You need [Node.js](http://nodejs.org) at `v12.0.0+`.
+You need [Node.js](http://nodejs.org) at `v18.0.0+`.
 
 After cloning the repo, run:
 
 ```bash
-$ npm install # or npm
+pnpm install
 ```
 
-### Commonly used NPM scripts
+### Commonly used pnpm scripts
 
 ``` bash
 # dev-server, watch and auto reload playground
-$ npm start
+$ pnpm start
 
 # start playground app in production environment
-$ npm run start:prod
+$ pnpm run start:prod
 
 # runt tslint
-$ npm run lint
+$ pnpm run lint
 
 # try autofix tslint issues
-$ npm run lint -- --fix
+$ pnpm run lint -- --fix
 
 # run unit tests
-$ npm run unit
+$ pnpm run unit
 
 # run e2e tests
-$ npm run e2e
+$ pnpm run e2e
 # Make sure you have created bundle before running e2e test
-# E.g. run `npm run bundle` and wait for the finishing process.
+# E.g. run `pnpm run bundle` and wait for the finishing process.
 
 # open cypress UI to debug e2e test
-$ npm run cy:open
+$ pnpm run cy:open
 
 # run the unit tests (includes linting and license checks)
-$ npm test
+$ pnpm test
 
 # prepare bundles
-$ npm run bundle
+$ pnpm run bundle
 
 # format the code using prettier
-$ npm run prettier
+$ pnpm run prettier
 
 # auto-generate changelog
-$ npm run changelog
+$ pnpm run changelog
 ```
 
 There are some other scripts available in the `scripts` section of the `package.json` file.
