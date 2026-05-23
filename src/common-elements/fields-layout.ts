@@ -73,8 +73,8 @@ export const PropertyNameCell = styled(PropertyCell)`
   }
 
   ${({ kind }) =>
-    kind === 'patternProperties' &&
-    css`
+  kind === 'patternProperties' &&
+  css`
       > span.property-name {
         display: inline-table;
         white-space: break-spaces;
@@ -89,9 +89,9 @@ export const PropertyNameCell = styled(PropertyCell)`
     `}
 
   ${({ kind = '' }) =>
-    ['field', 'additionalProperties', 'patternProperties'].includes(kind)
-      ? ''
-      : 'font-style: italic'};
+  ['field', 'additionalProperties', 'patternProperties'].includes(kind)
+    ? ''
+    : 'font-style: italic'};
 
   ${extensionsHook('PropertyNameCell')};
 `;
@@ -151,7 +151,7 @@ export const PropertiesTable = styled.table`
   border-collapse: separate;
   border-radius: 3px;
   font-size: ${props => props.theme.typography.fontSize};
-
+  direction: ltr;
   border-spacing: 0;
   width: 100%;
 

@@ -16,16 +16,17 @@ const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
 const sanitize = (sanitize, html) => (sanitize ? dompurify.sanitize(html) : html);
 
 export function SanitizedMarkdownHTML({
-  inline,
-  compact,
-  ...rest
-}: StylingMarkdownProps & { html: string; className?: string; 'data-role'?: string }) {
+                                        inline,
+                                        compact,
+                                        ...rest
+                                      }: StylingMarkdownProps & { html: string; className?: string; 'data-role'?: string }) {
   const Wrap = inline ? StyledMarkdownSpan : StyledMarkdownBlock;
 
   return (
     <OptionsConsumer>
       {options => (
         <Wrap
+          style={{'direction':'rtl'}}
           className={'redoc-markdown ' + (rest.className || '')}
           dangerouslySetInnerHTML={{
             __html: sanitize(options.sanitize, rest.html),

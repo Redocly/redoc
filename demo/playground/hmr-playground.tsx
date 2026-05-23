@@ -9,7 +9,7 @@ const swagger = window.location.search.indexOf('swagger') > -1;
 const userUrl = window.location.search.match(/url=(.*)$/);
 
 const specUrl =
-  (userUrl && userUrl[1]) || (swagger ? 'museum.yaml' : big ? 'big-openapi.json' : 'museum.yaml');
+  (userUrl && userUrl[1]) || (swagger ? 'big-openapi.json' : big ? 'big-openapi.json' : 'big-openapi.json');
 
 const options: RedocRawOptions = {
   nativeScrollbars: false,

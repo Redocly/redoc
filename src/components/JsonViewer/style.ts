@@ -1,6 +1,10 @@
 import { css } from '../../styled-components';
 
 export const jsonStyles = css`
+  .redoc-json{
+     direction: ltr;
+  }
+
   .redoc-json code > .collapser {
     display: none;
     pointer-events: none;
