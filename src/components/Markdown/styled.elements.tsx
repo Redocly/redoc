@@ -35,6 +35,9 @@ export const StyledMarkdownBlock = styled(
     &:last-child {
       margin-bottom: 0;
     }
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   ${({ $compact }) =>

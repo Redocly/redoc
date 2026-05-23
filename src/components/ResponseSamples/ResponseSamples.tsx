@@ -6,6 +6,7 @@ import { OperationModel } from '../../services/models';
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { l } from '../../services/Labels';
+import { ResponseSamplesWrap } from './styled.elements';
 
 export interface ResponseSamplesProps {
   operation: OperationModel;
@@ -23,7 +24,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
 
     return (
       (responses.length > 0 && (
-        <div>
+        <ResponseSamplesWrap>
           <RightPanelHeader> {l('responseSamples')} </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
@@ -42,7 +43,7 @@ export class ResponseSamples extends React.Component<ResponseSamplesProps> {
               </TabPanel>
             ))}
           </Tabs>
-        </div>
+        </ResponseSamplesWrap>
       )) ||
       null
     );

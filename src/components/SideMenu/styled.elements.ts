@@ -183,7 +183,7 @@ export const RedocAttribution = styled.div`
     position: fixed;
     width: ${theme.sidebar.width};
     bottom: 0;
-    background: ${theme.sidebar.backgroundColor};
+    opacity: 0.5;
 
     a,
     a:visited,
