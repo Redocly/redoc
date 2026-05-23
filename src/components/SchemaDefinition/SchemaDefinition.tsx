@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Markdown } from '../Markdown/Markdown';
 import { DarkRightPanel, MiddlePanel, MimeLabel, Row, Section } from '../../common-elements';
 import { MediaTypeModel, OpenAPIParser, RedocNormalizedOptions } from '../../services';
 import styled from '../../styled-components';
@@ -15,6 +16,7 @@ export interface ObjectDescriptionProps {
   showReadOnly?: boolean;
   showWriteOnly?: boolean;
   showExample?: boolean;
+  showDescription?: boolean;
   parser: OpenAPIParser;
   options: RedocNormalizedOptions;
 }
@@ -54,11 +56,19 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
   }
 
   render() {
-    const { showReadOnly = true, showWriteOnly = false, showExample = true } = this.props;
+    const {
+      showReadOnly = true,
+      showWriteOnly = false,
+      showExample = true,
+      showDescription = false,
+    } = this.props;
     return (
       <Section>
         <Row>
           <MiddlePanel>
+            {showDescription && this.mediaModel.schema?.description && (
+              <Markdown source={this.mediaModel.schema.description} />
+            )}
             <Schema
               skipWriteOnly={!showWriteOnly}
               skipReadOnly={!showReadOnly}
