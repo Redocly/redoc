@@ -1,0 +1,40 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "Response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Data"
+          }
+        }
+      },
+      "Data": {
+        "type": "object",
+        "oneOf": [
+          { "$ref": "#/components/schemas/WithTitle" },
+          { "$ref": "#/components/schemas/NoTitle" },
+          {
+            "title": "InlineWithTitle",
+            "type": "object",
+            "properties": {
+              "inline": { "type": "string" }
+            }
+          }
+        ]
+      },
+      "WithTitle": {
+        "title": "ExplicitTitle",
+        "type": "object"
+      },
+      "NoTitle": {
+        "type": "object"
+      }
+    }
+  }
+}

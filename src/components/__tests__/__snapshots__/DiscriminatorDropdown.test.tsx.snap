@@ -300,7 +300,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Dog/properties/packSize",
                   "rawSchema": {
-                    "default": undefined,
                     "type": "number",
                   },
                   "readOnly": false,
@@ -309,7 +308,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Dog/properties/packSize",
                   ],
                   "schema": {
-                    "default": undefined,
                     "type": "number",
                   },
                   "title": "",
@@ -576,7 +574,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Dog/properties/type",
                   "rawSchema": {
-                    "default": undefined,
                     "type": "string",
                     "x-refsStack": [
                       "#/components/schemas/Dog",
@@ -593,7 +590,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Dog/properties/type",
                   ],
                   "schema": {
-                    "default": undefined,
                     "type": "string",
                     "x-refsStack": [
                       "#/components/schemas/Dog",
@@ -1164,7 +1160,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Cat/properties/type",
                   "rawSchema": {
-                    "default": undefined,
                     "type": "string",
                     "x-refsStack": [
                       "#/components/schemas/Cat",
@@ -1181,7 +1176,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Cat/properties/type",
                   ],
                   "schema": {
-                    "default": undefined,
                     "type": "string",
                     "x-refsStack": [
                       "#/components/schemas/Cat",
@@ -1452,7 +1446,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "pattern": undefined,
                   "pointer": "#/components/schemas/Cat/properties/packSize",
                   "rawSchema": {
-                    "default": undefined,
                     "type": "number",
                     "x-refsStack": [
                       "#/components/schemas/Cat",
@@ -1466,7 +1459,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "#/components/schemas/Cat/properties/packSize",
                   ],
                   "schema": {
-                    "default": undefined,
                     "type": "number",
                     "x-refsStack": [
                       "#/components/schemas/Cat",
@@ -2309,7 +2301,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/packSize",
             "rawSchema": {
-              "default": undefined,
               "type": "number",
             },
             "readOnly": false,
@@ -2318,7 +2309,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "#/components/schemas/Dog/properties/packSize",
             ],
             "schema": {
-              "default": undefined,
               "type": "number",
             },
             "title": "",
@@ -2585,7 +2575,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/type",
             "rawSchema": {
-              "default": undefined,
               "type": "string",
               "x-refsStack": [
                 "#/components/schemas/Dog",
@@ -2602,7 +2591,6 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "#/components/schemas/Dog/properties/type",
             ],
             "schema": {
-              "default": undefined,
               "type": "string",
               "x-refsStack": [
                 "#/components/schemas/Dog",
@@ -2945,7 +2933,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/packSize",
             "rawSchema": {
-              "default": undefined,
               "type": "number",
             },
             "readOnly": false,
@@ -2954,7 +2941,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "#/components/schemas/Dog/properties/packSize",
             ],
             "schema": {
-              "default": undefined,
               "type": "number",
             },
             "title": "",
@@ -3008,7 +2994,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
             "pattern": undefined,
             "pointer": "#/components/schemas/Dog/properties/type",
             "rawSchema": {
-              "default": undefined,
               "type": "string",
               "x-refsStack": [
                 "#/components/schemas/Dog",
@@ -3025,7 +3010,6 @@ exports[`Components SchemaView discriminator should correctly render discriminat
               "#/components/schemas/Dog/properties/type",
             ],
             "schema": {
-              "default": undefined,
               "type": "string",
               "x-refsStack": [
                 "#/components/schemas/Dog",
