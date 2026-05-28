@@ -128,7 +128,7 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.2.4",
     "webpack-node-externals": "^3.0.0",
-    "workerize-loader": "github:redocly/workerize-loader#webpack-5-dist"
+    "workerize-loader": "git+https://github.com/Redocly/workerize-loader.git#webpack-5-dist"
   },
   "peerDependencies": {
     "core-js": "^3.1.4",
