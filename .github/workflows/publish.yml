@@ -66,6 +66,9 @@ jobs:
     needs: [check-version]
     if: needs.check-version.outputs.changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
     steps:
       - uses: actions/setup-node@v3
         with:
