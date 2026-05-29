@@ -68,12 +68,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write
-      packages: read
+      contents: read
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14.x'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
       - uses: actions/checkout@v3
       - name: Download bundled artifacts
