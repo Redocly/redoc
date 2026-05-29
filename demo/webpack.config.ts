@@ -115,7 +115,7 @@ export default (env: { playground?: boolean; bench?: boolean } = {}) => ({
     webpackIgnore(/json-schema-ref-parser\/lib\/dereference\.js/),
     webpackIgnore(/^\.\/SearchWorker\.worker$/),
     new CopyWebpackPlugin({
-      patterns: ['demo/museum.yaml'],
+      patterns: ['demo/museum.yaml', 'demo/cafe.yaml'],
     }),
   ],
 });
