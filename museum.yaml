@@ -11,7 +11,7 @@ info:
     altText: Museum logo
   license:
     name: MIT
-    url: 'https://opensource.org/license/mit/'
+    url: 'https://opensource.org/license/mit/ '
 servers:
   - url: 'https://api.fake-museum-example.com/v1'
 paths:
@@ -20,12 +20,12 @@ paths:
       summary: Get museum hours
       description: Get upcoming museum operating hours
       operationId: getMuseumHours
+      tags:
+        - Operations
       x-badges:
         - name: 'Beta'
           position: before
           color: purple
-      tags:
-        - Operations
       parameters:
         - $ref: '#/components/parameters/StartDate'
         - $ref: '#/components/parameters/PaginationPage'
@@ -68,6 +68,9 @@ paths:
       summary: Create special event
       tags:
         - Events
+      x-badges:
+        - name: 'Alpha'
+          color: purple
       requestBody:
         required: true
         content:
@@ -96,6 +99,8 @@ paths:
       description: Return a list of upcoming special events at the museum.
       security: []
       operationId: listSpecialEvents
+      x-badges:
+        - name: 'Gamma'
       tags:
         - Events
       parameters:
@@ -304,6 +309,9 @@ components:
       enum:
         - event
         - general
+      x-enumDescriptions:
+        event: Special event ticket
+        general: General museum entry ticket
       example: event
     Date:
       type: string
@@ -771,6 +779,9 @@ x-tagGroups:
   - name: Purchases
     tags:
       - Tickets
+  - name: Entities
+    tags:
+      - Schemas
 
 security:
   - MuseumPlaceholderAuth: []
