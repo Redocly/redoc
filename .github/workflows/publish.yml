@@ -92,6 +92,8 @@ jobs:
         run: npm ci && npm run declarations
       - name: Publish to NPM
         run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-cdn:
     name: Publish to CDN
