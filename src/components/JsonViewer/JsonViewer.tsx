@@ -60,7 +60,10 @@ const Json = (props: JsonProps) => {
     for (const collapsed of Array.prototype.slice.call(elements)) {
       const parentNode = collapsed.parentNode as Element;
       parentNode.classList.remove('collapsed');
-      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'collapse');
+      const collapser = parentNode.querySelector('.collapser');
+      if (collapser) {
+        updateCollapserState(collapser, true);
+      }
     }
   };
 
@@ -72,42 +75,71 @@ const Json = (props: JsonProps) => {
     for (const expanded of elementsArr) {
       const parentNode = expanded.parentNode as Element;
       parentNode.classList.add('collapsed');
-      parentNode.querySelector('.collapser')!.setAttribute('aria-label', 'expand');
-    }
-  };
-
-  const collapseElement = (target: HTMLElement) => {
-    let collapsed;
-    if (target.className === 'collapser') {
-      collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
-      if (collapsed.parentElement.classList.contains('collapsed')) {
-        collapsed.parentElement.classList.remove('collapsed');
-        target.setAttribute('aria-label', 'collapse');
-      } else {
-        collapsed.parentElement.classList.add('collapsed');
-        target.setAttribute('aria-label', 'expand');
+      const collapser = parentNode.querySelector('.collapser');
+      if (collapser) {
+        updateCollapserState(collapser, false);
       }
     }
   };
 
-  const clickListener = React.useCallback((event: MouseEvent) => {
-    collapseElement(event.target as HTMLElement);
+  const updateCollapserState = React.useCallback((target: Element, expanded: boolean) => {
+    const collapsible = target.parentElement?.getElementsByClassName('collapsible')[0];
+    if (!collapsible) {
+      return;
+    }
+    const type = collapsible.classList.contains('array') ? 'array' : 'object';
+    target.setAttribute('aria-expanded', String(expanded));
+    target.setAttribute('aria-label', `${expanded ? 'collapse' : 'expand'} ${type}`);
   }, []);
 
-  const focusListener = React.useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+  const collapseElement = React.useCallback(
+    (target: HTMLElement) => {
+      let collapsed;
+      if (target.classList?.contains('collapser')) {
+        collapsed = target.parentElement!.getElementsByClassName('collapsible')[0];
+        if (!collapsed) {
+          return;
+        }
+        if (collapsed.parentElement.classList.contains('collapsed')) {
+          collapsed.parentElement.classList.remove('collapsed');
+          updateCollapserState(target, true);
+        } else {
+          collapsed.parentElement.classList.add('collapsed');
+          updateCollapserState(target, false);
+        }
+      }
+    },
+    [updateCollapserState],
+  );
+
+  const clickListener = React.useCallback(
+    (event: MouseEvent) => {
       collapseElement(event.target as HTMLElement);
-    }
-  }, []);
+    },
+    [collapseElement],
+  );
+
+  const keydownListener = React.useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        const target = event.target as HTMLElement;
+        if (target.classList?.contains('collapser')) {
+          event.preventDefault();
+          collapseElement(target);
+        }
+      }
+    },
+    [collapseElement],
+  );
 
   React.useEffect(() => {
     node?.addEventListener('click', clickListener);
-    node?.addEventListener('focus', focusListener);
+    node?.addEventListener('keydown', keydownListener);
     return () => {
       node?.removeEventListener('click', clickListener);
-      node?.removeEventListener('focus', focusListener);
+      node?.removeEventListener('keydown', keydownListener);
     };
-  }, [clickListener, focusListener, node]);
+  }, [clickListener, keydownListener, node]);
 
   return <CopyButtonWrapper data={props.data}>{renderInner}</CopyButtonWrapper>;
 };

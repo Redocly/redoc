@@ -25,14 +25,39 @@ describe('Components', () => {
     });
 
     test('should collapse/uncollapse', () => {
-      expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed by default
+      expect(component.html()).not.toContain('class="hoverable"'); // nested values are collapsed by default
+      expect(component.html()).toContain('aria-expanded="false"');
+
       const expandAll = component.find('div > button[children=" Expand all "]');
       expandAll.simulate('click');
-      expect(component.html()).toContain('class="hoverable"'); // all are collapsed
+      expect(component.html()).toContain('class="hoverable"'); // nested values are expanded
+      expect(component.html()).toContain('aria-expanded="true"');
 
       const collapseAll = component.find('div > button[children=" Collapse all "]');
       collapseAll.simulate('click');
-      expect(component.html()).not.toContain('class="hoverable"'); // all are collapsed
+      expect(component.html()).not.toContain('class="hoverable"'); // nested values are collapsed
+      expect(component.html()).toContain('aria-expanded="false"');
+    });
+
+    test('should toggle collapsible items with Enter', () => {
+      const collapser = component
+        .getDOMNode()
+        .querySelector('button.collapser[aria-label="expand object"]');
+
+      expect(collapser).not.toBeNull();
+
+      act(() => {
+        collapser!.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            key: 'Enter',
+            bubbles: true,
+          }),
+        );
+      });
+      component.update();
+
+      expect(component.html()).toContain('aria-label="collapse object"');
+      expect(component.html()).toContain('aria-expanded="true"');
     });
 
     test('should collapse/uncollapse', () => {

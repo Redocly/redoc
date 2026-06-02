@@ -130,15 +130,35 @@ Redoc uses the following [specification extensions](https://redocly.com/docs/api
 
 **The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch.**
 
-All the 2.x releases are deployed to npm and can be used with Redocly-cdn:
+All 2.x releases are deployed to npm and can be used with Redocly CDN:
 - particular release, for example, `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
 - `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
-Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
-- particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
-- `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
-- `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - points to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
+> **Note:** The 1.x CDN at `rebilly.github.io` is deprecated. Please use the latest 2.x releases from `cdn.redoc.ly`.
 
+## Troubleshooting
+
+### Common Issues
+
+**Q: My API documentation is not displaying correctly**
+- Ensure your OpenAPI spec is valid JSON or YAML and follows OpenAPI 3.0, 3.1, or Swagger 2.0 format
+- Check browser console for errors using Developer Tools (F12)
+- Verify that your `spec-url` points to a valid, accessible endpoint
+- For local files, ensure they're being served via a web server (not `file://`)
+
+**Q: Search is not working**
+- Confirm that `disableSearch` is not enabled in your Redoc configuration
+- Check that your search term meets the configured `minCharacterLengthToInitSearch` value
+
+**Q: Performance is slow with large OpenAPI specs**
+- Consider using the [Redocly CLI](https://redocly.com/docs/cli/) to split your spec into smaller, manageable files
+- Check the [configuration documentation](docs/config.md) for options such as `disableSearch` and `jsonSamplesExpandLevel`
+
+**Q: How do I customize the appearance?**
+- See the [configuration documentation](docs/config.md) for theming and customization options
+- For advanced customization, you can use the [React component](https://redocly.com/docs/redoc/quickstart/react/) with custom CSS
+
+For additional help, please check the [official documentation](https://redocly.com/docs/redoc/) or open an issue on [GitHub](https://github.com/Redocly/redoc/issues).
 
 ## Development
 see [CONTRIBUTING.md](.github/CONTRIBUTING.md)

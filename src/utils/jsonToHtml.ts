@@ -74,8 +74,10 @@ function valueToHTML(value, maxExpandLevel: number) {
 function arrayToHTML(json, maxExpandLevel: number) {
   const collapsed = level > maxExpandLevel ? 'collapsed' : '';
   let output = `<button class="collapser" aria-label="${
-    level > maxExpandLevel + 1 ? 'expand' : 'collapse'
-  }"></button>${punctuation('[')}<span class="ellipsis"></span><ul class="array collapsible">`;
+    collapsed ? 'expand array' : 'collapse array'
+  }" aria-expanded="${level <= maxExpandLevel}"></button>${punctuation(
+    '[',
+  )}<span class="ellipsis"></span><ul class="array collapsible">`;
   let hasContents = false;
   const length = json.length;
   for (let i = 0; i < length; i++) {
@@ -99,8 +101,10 @@ function objectToHTML(json, maxExpandLevel: number) {
   const keys = Object.keys(json);
   const length = keys.length;
   let output = `<button class="collapser" aria-label="${
-    level > maxExpandLevel + 1 ? 'expand' : 'collapse'
-  }"></button>${punctuation('{')}<span class="ellipsis"></span><ul class="obj collapsible">`;
+    collapsed ? 'expand object' : 'collapse object'
+  }" aria-expanded="${level <= maxExpandLevel}"></button>${punctuation(
+    '{',
+  )}<span class="ellipsis"></span><ul class="obj collapsible">`;
   let hasContents = false;
   for (let i = 0; i < length; i++) {
     const key = keys[i];
