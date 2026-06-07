@@ -70,9 +70,12 @@ export class ApiInfoModel implements OpenAPIInfo {
   }
 
   private getDownloadFileName(): string | undefined {
-    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl) {
-      return this.options.downloadFileName || 'openapi.json';
+    if (this.options.downloadFileName) {
+      return this.options.downloadFileName;
     }
-    return this.options.downloadFileName;
+
+    if (!this.parser.specUrl && !this.options.downloadDefinitionUrl && !this.options.downloadUrls) {
+      return 'openapi.json';
+    }
   }
 }
