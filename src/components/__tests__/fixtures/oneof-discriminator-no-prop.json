@@ -1,0 +1,39 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "PaymentInput": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "integer" }
+        },
+        "oneOf": [
+          { "$ref": "#/components/schemas/CardPaymentInput" },
+          { "$ref": "#/components/schemas/CashPaymentInput" }
+        ],
+        "required": ["amount"],
+        "discriminator": {
+          "propertyName": "__typename",
+          "mapping": {
+            "CardPayment": "#/components/schemas/CardPaymentInput",
+            "CashPayment": "#/components/schemas/CashPaymentInput"
+          }
+        }
+      },
+      "CardPaymentInput": {
+        "type": "object",
+        "properties": {
+          "last4": { "type": "string" }
+        },
+        "required": ["last4"]
+      },
+      "CashPaymentInput": {
+        "type": "object",
+        "properties": {
+          "tendered": { "type": "integer" }
+        },
+        "required": ["tendered"]
+      }
+    }
+  }
+}
