@@ -90,6 +90,11 @@ const Json = (props: JsonProps) => {
     const type = collapsible.classList.contains('array') ? 'array' : 'object';
     target.setAttribute('aria-expanded', String(expanded));
     target.setAttribute('aria-label', `${expanded ? 'collapse' : 'expand'} ${type}`);
+
+    const li = target.closest('li[role="treeitem"]');
+    if (li) {
+      li.setAttribute('aria-expanded', String(expanded));
+    }
   }, []);
 
   const collapseElement = React.useCallback(
@@ -121,7 +126,7 @@ const Json = (props: JsonProps) => {
 
   const keydownListener = React.useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' || event.key === ' ') {
         const target = event.target as HTMLElement;
         if (target.classList?.contains('collapser')) {
           event.preventDefault();

@@ -24,6 +24,18 @@ describe('Components', () => {
       expect(component.html()).toContain('class="redoc-json"');
     });
 
+    test('should have proper ARIA tree, treeitem, and group roles', () => {
+      expect(component.html()).toContain('role="tree"');
+      expect(component.html()).toContain('role="group"');
+      expect(component.html()).toContain('role="treeitem"');
+
+      // The parent li tag should have role="treeitem" and aria-expanded
+      const treeitem = component
+        .getDOMNode()
+        .querySelector('li[role="treeitem"][aria-expanded="false"]');
+      expect(treeitem).not.toBeNull();
+    });
+
     test('should collapse/uncollapse', () => {
       expect(component.html()).not.toContain('class="hoverable"'); // nested values are collapsed by default
       expect(component.html()).toContain('aria-expanded="false"');
@@ -50,6 +62,27 @@ describe('Components', () => {
         collapser!.dispatchEvent(
           new KeyboardEvent('keydown', {
             key: 'Enter',
+            bubbles: true,
+          }),
+        );
+      });
+      component.update();
+
+      expect(component.html()).toContain('aria-label="collapse object"');
+      expect(component.html()).toContain('aria-expanded="true"');
+    });
+
+    test('should toggle collapsible items with Space', () => {
+      const collapser = component
+        .getDOMNode()
+        .querySelector('button.collapser[aria-label="expand object"]');
+
+      expect(collapser).not.toBeNull();
+
+      act(() => {
+        collapser!.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            key: ' ',
             bubbles: true,
           }),
         );
