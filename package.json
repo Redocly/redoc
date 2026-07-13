@@ -161,7 +161,7 @@
     "url-template": "^2.0.8"
   },
   "overrides": {
-    "tmp": ">=0.2.4",
+    "tmp": ">=0.2.7",
     "handlebars": ">=4.7.9",
     "fast-xml-parser": ">=5.7.0"
   },
