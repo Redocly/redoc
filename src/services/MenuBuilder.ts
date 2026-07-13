@@ -229,7 +229,9 @@ export class MenuBuilder {
           getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
           continue;
         }
-        for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(path)) {
+        for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(
+          path,
+        )) {
           let operationTags = operationInfo?.tags;
 
           if (!operationTags || !operationTags.length) {

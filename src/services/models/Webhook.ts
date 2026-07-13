@@ -25,7 +25,9 @@ export class WebhookModel {
         continue;
       }
 
-      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(webhook)) {
+      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(
+        webhook,
+      )) {
         const operation = new OperationModel(
           parser,
           {

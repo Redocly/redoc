@@ -27,7 +27,9 @@ export class CallbackModel {
 
     for (const pathName of Object.keys(paths)) {
       const path = paths[pathName];
-      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(path)) {
+      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(
+        path,
+      )) {
         const operation = new OperationModel(
           parser,
           {
