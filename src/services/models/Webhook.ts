@@ -2,7 +2,7 @@ import type { OpenAPIPath, Referenced } from '../../types';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import { OperationModel } from './Operation';
 import type { RedocNormalizedOptions } from '../RedocNormalizedOptions';
-import { isOperationName } from '../..';
+import { getPathOperations, JsonPointer } from '../..';
 
 export class WebhookModel {
   operations: OperationModel[] = [];
@@ -19,20 +19,23 @@ export class WebhookModel {
   initWebhooks(parser: OpenAPIParser, webhooks: OpenAPIPath, options: RedocNormalizedOptions) {
     for (const webhookName of Object.keys(webhooks)) {
       const webhook = webhooks[webhookName];
-      const operations = Object.keys(webhook).filter(isOperationName);
-      for (const operationName of operations) {
-        const operationInfo = webhook[operationName];
-        if (webhook.$ref) {
-          const resolvedWebhook = parser.deref<OpenAPIPath>(webhook || {});
-          this.initWebhooks(parser, { [operationName]: resolvedWebhook }, options);
-        }
+      if (webhook.$ref) {
+        const resolvedWebhook = parser.deref<OpenAPIPath>(webhook || {});
+        this.initWebhooks(parser, { [webhookName]: resolvedWebhook }, options);
+        continue;
+      }
 
-        if (!operationInfo) continue;
+      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(webhook)) {
         const operation = new OperationModel(
           parser,
           {
             ...operationInfo,
+            pathName: webhookName,
+            pointer: JsonPointer.compile(['webhooks', webhookName, ...pointerPath]),
             httpVerb: operationName,
+            pathParameters: webhook.parameters || [],
+            pathServers: webhook.servers,
+            isWebhook: true,
           },
           undefined,
           options,

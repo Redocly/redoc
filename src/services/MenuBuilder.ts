@@ -1,5 +1,5 @@
 import type { OpenAPIPaths, OpenAPITag, OpenAPISchema } from '../types';
-import { isOperationName, JsonPointer, alphabeticallyByProp } from '../utils';
+import { getPathOperations, JsonPointer, alphabeticallyByProp } from '../utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { GroupModel, OperationModel } from './models';
 import type { OpenAPIParser } from './OpenAPIParser';
@@ -224,14 +224,12 @@ export class MenuBuilder {
     function getTags(parser: OpenAPIParser, paths: OpenAPIPaths, isWebhook?: boolean) {
       for (const pathName of Object.keys(paths)) {
         const path = paths[pathName];
-        const operations = Object.keys(path).filter(isOperationName);
-        for (const operationName of operations) {
-          const operationInfo = path[operationName];
-          if (path.$ref) {
-            const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
-            getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
-            continue;
-          }
+        if (path.$ref) {
+          const { resolved: resolvedPaths } = parser.deref<OpenAPIPaths>(path as OpenAPIPaths);
+          getTags(parser, { [pathName]: resolvedPaths }, isWebhook);
+          continue;
+        }
+        for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(path)) {
           let operationTags = operationInfo?.tags;
 
           if (!operationTags || !operationTags.length) {
@@ -254,7 +252,7 @@ export class MenuBuilder {
             tag.operations.push({
               ...operationInfo,
               pathName,
-              pointer: JsonPointer.compile(['paths', pathName, operationName]),
+              pointer: JsonPointer.compile(['paths', pathName, ...pointerPath]),
               httpVerb: operationName,
               pathParameters: path.parameters || [],
               pathServers: path.servers,

@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import { isOperationName, JsonPointer } from '../../utils';
+import { getPathOperations, JsonPointer } from '../../utils';
 import { OperationModel } from './Operation';
 import type { OpenAPIParser } from '../OpenAPIParser';
 import type { OpenAPICallback, Referenced } from '../../types';
@@ -27,19 +27,17 @@ export class CallbackModel {
 
     for (const pathName of Object.keys(paths)) {
       const path = paths[pathName];
-      const operations = Object.keys(path).filter(isOperationName);
-      for (const operationName of operations) {
-        const operationInfo = path[operationName];
-
+      for (const { operationName, operation: operationInfo, pointerPath } of getPathOperations(path)) {
         const operation = new OperationModel(
           parser,
           {
             ...operationInfo,
             pathName,
-            pointer: JsonPointer.compile([pointer, name, pathName, operationName]),
+            pointer: JsonPointer.compile([pointer, name, pathName, ...pointerPath]),
             httpVerb: operationName,
             pathParameters: path.parameters || [],
             pathServers: path.servers,
+            isWebhook: false,
           },
           undefined,
           options,
