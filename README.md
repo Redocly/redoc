@@ -73,20 +73,22 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
-## Redoc vs. Redocly API Reference
+## Redoc vs Redoc hosted
 
 Redoc is Redocly's community-edition product. Looking for something more?
-We also offer [hosted API reference documentation](https://redocly.com/docs/api-registry/guides/api-registry-quickstart/)
+We also offer [hosted Redoc](https://redocly.com/redoc)
 with additional features including:
 
 * Try-it console
 * Automated code samples
-* Pagination
-* Extra theme options
+* Fully custom styles
+* Mock server
+* AsyncAPI
+* GraphQl
 
 ### Documentation and resources
 
-- [Reference docs](https://redocly.com/docs/api-reference-docs/getting-started/) - we take care of the hosting
+- [Realm](https://redocly.com/docs/realm/) - we take care of the hosting
 - [Redoc](https://redocly.com/docs/redoc/) - detailed documentation for this open source project (also in the `docs/` folder)
 - [Command-line interface to bundle your docs into a web-ready HTML file](https://redocly.com/docs/cli/commands/build-docs/)
 - API linting, bundling, and much more with open source [Redocly CLI](https://redocly.com/docs/cli)
