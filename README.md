@@ -73,10 +73,10 @@ Add your own `spec-url` to the `<redoc>` tag; this attribute can also be a local
 
 Check out the [deployment documentation](./docs/deployment/intro.md) for more options, and detailed documentation for each.
 
-## Redoc vs Redoc hosted
+## Redoc vs hosted Redoc
 
 Redoc is Redocly's community-edition product. Looking for something more?
-We also offer [hosted Redoc](https://redocly.com/redoc)
+We also offer a [hosted Redoc](https://redocly.com/redoc)
 with additional features including:
 
 * Try-it console
@@ -84,7 +84,7 @@ with additional features including:
 * Fully custom styles
 * Mock server
 * AsyncAPI
-* GraphQl
+* GraphQL
 
 ### Documentation and resources
 
