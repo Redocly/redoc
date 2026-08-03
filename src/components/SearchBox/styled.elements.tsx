@@ -57,16 +57,16 @@ export const SearchIcon = styled((props: { className?: string }) => (
 
 export const SearchResultsBox = styled.div`
   padding: ${props => props.theme.spacing.unit}px 0;
-  background-color: ${({ theme }) => darken(0.05, theme.sidebar.backgroundColor)}};
+  background-color: ${({ theme }) => darken(0.05, theme.sidebar.backgroundColor)};
   color: ${props => props.theme.sidebar.textColor};
   min-height: 150px;
   max-height: 250px;
-  border-top: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)}};
-  border-bottom: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)}};
+  border-top: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)};
+  border-bottom: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)};
   margin-top: 10px;
   line-height: 1.4;
   font-size: 0.9em;
-  
+
   li {
     background-color: inherit;
   }
