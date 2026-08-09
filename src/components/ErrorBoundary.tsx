@@ -26,7 +26,7 @@ export class ErrorBoundary extends React.Component<
         <ErrorWrapper>
           <h1>Something went wrong...</h1>
           <small> {this.state.error.message} </small>
-          <p>
+          <p dir="auto">
             <details>
               <summary>Stack trace</summary>
               <pre>{this.state.error.stack}</pre>
