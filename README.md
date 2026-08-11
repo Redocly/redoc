@@ -8,7 +8,7 @@
     </picture>
   </a>
 
-  **[Learn what's coming in Redoc 3.0 →](https://redocly.com/redoc-ce)**
+  **[Learn what's coming in Redoc 3.x →](https://redocly.com/redoc-ce)**
 
 
 
