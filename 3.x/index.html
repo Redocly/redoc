@@ -1,0 +1,605 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>ReDoc Interactive Demo (next)</title>
+  <meta name="description" content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    nav.demo-nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      box-sizing: border-box;
+      background: white;
+      border-bottom: 1px solid #ededf2;
+      z-index: 10;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 22px;
+      color: #1a1c21;
+    }
+
+    .demo-nav .logo-wrapper {
+      display: flex;
+      align-items: center;
+      width: 150px;
+      flex-shrink: 0;
+    }
+    .demo-nav a.logo {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+    .demo-nav a.logo svg {
+      width: 21.8px;
+      height: 21.8px;
+    }
+    @media screen and (max-width: 950px) {
+      .demo-nav .logo-wrapper { width: auto; }
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      margin: 0 15px;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .spec-picker {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 464px;
+      border: 1px solid #ededf2;
+      border-radius: 8px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .combobox {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      background: #fbfbfc;
+      border-right: 1px solid #ededf2;
+      border-radius: 8px 0 0 8px;
+      box-sizing: border-box;
+    }
+    .combobox input {
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+      height: 32px;
+      border: none;
+      background: transparent;
+      padding: 0 4px 0 12px;
+      font-size: 14px;
+      line-height: 22px;
+      font-family: inherit;
+      color: #1a1c21;
+      outline: none;
+      border-radius: 8px 0 0 8px;
+    }
+    .combobox input::placeholder {
+      color: #9b9ca8;
+      opacity: 1;
+    }
+    .combobox .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      height: 32px;
+      width: 24px;
+      margin-right: 4px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+    .combobox .arrow svg { width: 12px; height: 12px; }
+    .combobox ul {
+      position: absolute;
+      left: -1px;
+      right: -1px;
+      top: calc(100% + 5px);
+      margin: 0;
+      padding: 4px;
+      list-style: none;
+      background: white;
+      border: 1px solid #ededf2;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(26, 28, 33, 0.1);
+      display: none;
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 20;
+    }
+    .combobox.open ul { display: block; }
+    .combobox li {
+      padding: 5px 8px;
+      font-size: 14px;
+      line-height: 22px;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .combobox li:hover { background: #f4f5f7; }
+
+    button.upload-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      padding: 8px;
+      box-sizing: border-box;
+      background: #fbfbfc;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+      outline: none;
+      color: #1a1c21;
+    }
+    button.upload-btn:hover { color: #0090ff; }
+    button.upload-btn svg { width: 10.5px; height: 12.25px; }
+    @media (max-width: 699px) {
+      button.upload-btn { display: none; }
+      .combobox { border-right: none; border-radius: 8px; }
+      .combobox input { border-radius: 8px 0 0 8px; }
+    }
+
+    .cors-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .cors-toggle input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      background: white;
+      border: 1px solid #b9bac4;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .cors-toggle input:checked {
+      border-color: #0090ff;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 7.93 6.32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.32307 6.14589L7.87354 0.379532C7.9972 0.224636 7.88315 0 7.69013 0H7.03873C6.89886 0 6.76557 0.0640488 6.67897 0.174897L5.99713 1.03865L2.96264 4.88273L1.24597 2.70758C1.20314 2.65321 1.14856 2.60924 1.08631 2.57899C1.02407 2.54873 0.955579 2.53297 0.886368 2.53289H0.234974C0.0390805 2.53289 -0.0703829 2.7587 0.0506755 2.91224L2.60318 6.14597C2.78677 6.37832 3.13905 6.37699 3.32307 6.14589Z' fill='%230090FF'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 8px 6.3px;
+    }
+    .cors-toggle label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 14px;
+      line-height: 22px;
+      color: #1a1c21;
+      cursor: pointer;
+    }
+    .cors-info {
+      display: flex;
+      align-items: center;
+      outline: none;
+      margin-left: -4px; /* design: 4px gap between label and icon vs 8px toggle gap */
+    }
+    .cors-info svg { width: 14px; height: 14px; }
+    @media screen and (max-width: 550px) {
+      .cors-toggle { display: none; }
+    }
+
+    [data-tooltip] { position: relative; }
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      box-sizing: border-box;
+      background: #22242b;
+      color: white;
+      border: 2px solid #3b3c45;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 24px 8px rgba(0, 0, 0, 0.04);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.15s ease;
+    }
+    [data-tooltip]::before {
+      content: '';
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      transform: translateX(-50%) rotate(45deg);
+      background: #22242b;
+      border-left: 2px solid #3b3c45;
+      border-top: 2px solid #3b3c45;
+      border-top-left-radius: 2px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 31;
+      transition: opacity 0.15s ease;
+    }
+    [data-tooltip]:hover::after,
+    [data-tooltip]:hover::before,
+    [data-tooltip]:focus-visible::after,
+    [data-tooltip]:focus-visible::before {
+      opacity: 1;
+      visibility: visible;
+    }
+    [data-tooltip].tooltip-wide::after {
+      white-space: normal;
+      width: 300px;
+    }
+
+    .demo-nav .github-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    #demo-loader {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 64px 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    #demo-loader.visible { display: flex; }
+    .demo-loader-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .demo-loader-icon svg {
+      width: 21px;
+      height: 21px;
+      animation: demo-loader-spin 1.5s linear infinite;
+    }
+    #demo-loader p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+      color: #1a1c21;
+    }
+    @keyframes demo-loader-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    redoc { display: block; }
+  </style>
+  <script>
+    // crypto.randomUUID is only available in secure contexts (HTTPS/localhost);
+    // polyfill it so the demo also works over plain HTTP on a LAN IP
+    if (window.crypto && !window.crypto.randomUUID) {
+      window.crypto.randomUUID = function () {
+        var bytes = window.crypto.getRandomValues(new Uint8Array(16));
+        bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+        bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 10
+        var hex = Array.prototype.map
+          .call(bytes, function (b) { return b.toString(16).padStart(2, '0'); })
+          .join('');
+        return (
+          hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) +
+          '-' + hex.slice(16, 20) + '-' + hex.slice(20)
+        );
+      };
+    }
+  </script>
+  <script src="redoc.standalone.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+</head>
+<body>
+  <nav class="demo-nav">
+    <div class="logo-wrapper">
+      <a href="." class="logo" aria-label="Redoc demo home">
+        <svg viewBox="0 0 21.8182 21.8182" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Redoc logo">
+          <path d="M16.8835 15.9588C19.7898 14.6506 21.8182 11.7315 21.8182 8.34588C21.8182 3.74361 18.0746 0 13.4723 0H3.21733C1.4446 0 0 1.4446 0 3.21733V18.6009C0 20.3736 1.4446 21.8182 3.21733 21.8182H18.1918C18.9695 21.8182 19.6364 21.3729 19.9325 20.6548C20.2308 19.9368 20.0732 19.1506 19.5256 18.6009L16.8835 15.9588ZM3.21733 1.30824H13.4723C17.3523 1.30824 20.5099 4.46591 20.5099 8.34588C20.5099 11.38 18.5774 13.9709 15.88 14.9531L6.24503 5.31605C6.12145 5.1946 5.95313 5.12429 5.78267 5.12429H3.21733C2.16477 5.12429 1.30824 4.26989 1.30824 3.2152C1.30824 2.16264 2.16477 1.30824 3.21733 1.30824ZM18.7244 20.1541C18.6903 20.2372 18.5497 20.5099 18.1918 20.5099H3.21733C2.16477 20.5099 1.30824 19.6534 1.30824 18.6009V5.80611C1.84304 6.20028 2.50568 6.43466 3.21733 6.43466H5.51207L18.6009 19.5234C18.8523 19.7791 18.7585 20.0689 18.7244 20.1541Z" fill="#1677FF"/>
+          <path d="M18.7244 20.1541C18.6903 20.2372 18.5497 20.5099 18.1918 20.5099H3.21733C2.16477 20.5099 1.30824 19.6534 1.30824 18.6009V5.80611C1.84304 6.20028 2.50568 6.43466 3.21733 6.43466H5.51207L18.6009 19.5234C18.8523 19.7791 18.7585 20.0689 18.7244 20.1541Z" fill="#1677FF"/>
+          <path d="M3.21733 1.30824H13.4723C17.3523 1.30824 20.5099 4.46591 20.5099 8.34588C20.5099 11.38 18.5774 13.9709 15.88 14.9531L6.24503 5.31605C6.12145 5.1946 5.95313 5.12429 5.78267 5.12429H3.21733C2.16477 5.12429 1.30824 4.26989 1.30824 3.2152C1.30824 2.16264 2.16477 1.30824 3.21733 1.30824Z" fill="#99CDFF"/>
+          <path d="M3.11716 14.0731H9.44529C9.8075 14.0731 10.0994 13.7812 10.0994 13.419C10.0994 13.0568 9.8075 12.7628 9.44529 12.7628H3.11716C2.75495 12.7628 2.46304 13.0568 2.46304 13.419C2.46304 13.7812 2.75495 14.0731 3.11716 14.0731Z" fill="#99CDFF"/>
+          <path d="M3.11716 11.4545H7.04401C7.40622 11.4545 7.70026 11.1626 7.70026 10.8004C7.70026 10.4382 7.40622 10.1463 7.04401 10.1463H3.11716C2.75495 10.1463 2.46304 10.4382 2.46304 10.8004C2.46304 11.1626 2.75495 11.4545 3.11716 11.4545Z" fill="#99CDFF"/>
+          <path d="M12.0639 15.3814H3.11716C2.75495 15.3814 2.46304 15.6733 2.46304 16.0355C2.46304 16.3977 2.75495 16.6918 3.11716 16.6918H12.0639C12.4261 16.6918 12.718 16.3977 12.718 16.0355C12.718 15.6733 12.424 15.3814 12.0639 15.3814Z" fill="#99CDFF"/>
+        </svg>
+      </a>
+    </div>
+    <div class="controls">
+      <div class="spec-picker">
+        <div class="combobox" id="combobox">
+          <input id="spec-input" placeholder="Paste a spec URL or upload a file" autocomplete="off" spellcheck="false" />
+          <button class="arrow" id="combobox-arrow" type="button" aria-label="Open examples list">
+            <svg viewBox="0 0 7.5 4.275" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3.75 4.275L0 0.525L0.525 0L3.75 3.225L6.975 0L7.5 0.525L3.75 4.275Z" fill="#3B3C45"/>
+            </svg>
+          </button>
+          <ul id="combobox-list"></ul>
+        </div>
+        <button class="upload-btn" id="upload-btn" type="button" aria-label="Upload file" data-tooltip="Upload file">
+          <svg viewBox="0 0 10.5 12.25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0.875 7L1.49187 7.61687L4.8125 4.30062V12.25H5.6875V4.30062L9.00813 7.61687L9.625 7L5.25 2.625L0.875 7Z" fill="currentColor"/>
+            <path d="M0.875 2.625V0.875H9.625V2.625H10.5V0.875C10.5 0.642936 10.4078 0.420376 10.2437 0.256281C10.0796 0.0921872 9.85706 0 9.625 0H0.875C0.642936 0 0.420376 0.0921872 0.256281 0.256281C0.0921873 0.420376 0 0.642936 0 0.875V2.625H0.875Z" fill="currentColor"/>
+          </svg>
+        </button>
+        <input type="file" id="upload-input" style="display: none" accept=".yaml,.yml,.json" />
+      </div>
+      <div class="cors-toggle">
+        <input id="cors_checkbox" type="checkbox" />
+        <label for="cors_checkbox">Cors</label>
+        <span class="cors-info tooltip-wide" tabindex="0"
+          data-tooltip="Loads specs from servers that block cross-origin requests, using a proxy. Turn this on if a URL fails to load."
+          aria-label="Loads specs from servers that block cross-origin requests, using a proxy. Turn this on if a URL fails to load.">
+          <svg viewBox="0 0 12.25 12.25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6.5625 8.75V5.25H4.8125V6.125H5.6875V8.75H4.375V9.625H7.875V8.75H6.5625Z" fill="#555761"/>
+            <path d="M6.125 2.625C5.99521 2.625 5.86833 2.66349 5.76041 2.7356C5.65249 2.80771 5.56838 2.9102 5.51871 3.03011C5.46904 3.15003 5.45604 3.28198 5.48136 3.40928C5.50668 3.53658 5.56919 3.65351 5.66097 3.74528C5.75274 3.83706 5.86967 3.89957 5.99697 3.92489C6.12427 3.95021 6.25622 3.93722 6.37614 3.88754C6.49605 3.83787 6.59854 3.75376 6.67065 3.64584C6.74276 3.53792 6.78125 3.41104 6.78125 3.28125C6.78125 3.10721 6.71211 2.94028 6.58904 2.81721C6.46597 2.69414 6.29904 2.625 6.125 2.625Z" fill="#555761"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M6.125 12.25C2.74251 12.25 0 9.50749 0 6.125C0 2.74251 2.74251 0 6.125 0C9.50749 0 12.25 2.74251 12.25 6.125C12.25 9.50749 9.50749 12.25 6.125 12.25ZM6.125 11.375C3.22576 11.375 0.875 9.02424 0.875 6.125C0.875 3.22576 3.22576 0.875 6.125 0.875C9.02424 0.875 11.375 3.22576 11.375 6.125C11.375 9.02424 9.02424 11.375 6.125 11.375Z" fill="#555761"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <div class="github-wrapper">
+      <iframe src="https://ghbtns.com/github-btn.html?user=Redocly&repo=redoc&type=star&count=true&size=large"
+        frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+    </div>
+  </nav>
+
+  <div id="demo-loader" role="status" aria-live="polite">
+    <span class="demo-loader-icon">
+      <svg viewBox="0 0 21.0009 21.0009" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4.27587 2.02587C3.41562 2.68601 2.65746 3.46944 2.02587 4.35087L3.22587 5.25087C3.77671 4.48694 4.43327 3.80513 5.17587 3.22587L4.27587 2.02587Z" fill="#1F7CFF"/>
+        <path d="M1.95087 7.72587L0.525873 7.27587C0.163595 8.31189 -0.0140989 9.40344 0.000873072 10.5009H1.50087C1.49783 9.55747 1.64986 8.61997 1.95087 7.72587Z" fill="#1F7CFF"/>
+        <path d="M0.525873 13.8009C0.873695 14.8467 1.37955 15.8331 2.02587 16.7259L3.22587 15.8259C2.68368 15.0667 2.25423 14.2331 1.95087 13.3509L0.525873 13.8009Z" fill="#1F7CFF"/>
+        <path d="M4.35087 18.9759C5.24362 19.6222 6.23005 20.1281 7.27587 20.4759L7.72587 19.0509C6.84368 18.7475 6.01003 18.3181 5.25087 17.7759L4.35087 18.9759Z" fill="#1F7CFF"/>
+        <path d="M7.27587 0.525873L7.72587 1.95087C8.61997 1.64986 9.55747 1.49783 10.5009 1.50087V0.000873072C9.40344 -0.0140989 8.31189 0.163595 7.27587 0.525873Z" fill="#1F7CFF"/>
+        <path d="M16.6509 18.9759C17.5343 18.3175 18.3175 17.5343 18.9759 16.6509L17.7759 15.7509C17.2181 16.5337 16.5337 17.2181 15.7509 17.7759L16.6509 18.9759Z" fill="#1F7CFF"/>
+        <path d="M19.0509 13.2759L20.4759 13.7259C20.8021 12.681 20.9789 11.5953 21.0009 10.5009H19.5009C19.5039 11.4443 19.3519 12.3818 19.0509 13.2759Z" fill="#1F7CFF"/>
+        <path d="M20.4009 7.20087C20.0531 6.15505 19.5472 5.16862 18.9009 4.27587L17.7009 5.17587C18.2431 5.93503 18.6725 6.76868 18.9759 7.65087L20.4009 7.20087Z" fill="#1F7CFF"/>
+        <path d="M16.5759 1.95087C15.6831 1.30455 14.6967 0.798695 13.6509 0.450873L13.2009 1.87587C14.0831 2.17923 14.9167 2.60868 15.6759 3.15087L16.5759 1.95087Z" fill="#1F7CFF"/>
+        <path d="M13.7259 20.4759L13.2759 19.0509C12.3818 19.3519 11.4443 19.5039 10.5009 19.5009V21.0009C11.5909 20.9359 12.6715 20.76 13.7259 20.4759Z" fill="#1F7CFF"/>
+      </svg>
+    </span>
+    <p>Loading..</p>
+  </div>
+  <div id="redoc-container"></div>
+
+  <script>
+    (function () {
+      var DEFAULT_SPEC = 'cafe.yaml';
+      var OPTIONS = [
+        { value: DEFAULT_SPEC, label: 'Cafe (OpenAPI 3.2)' },
+        { value: 'cafe-asyncapi.yaml', label: 'Cafe Events (AsyncAPI 3.0)' },
+        { value: 'cafe-kafka-asyncapi.yaml', label: 'Cafe Kafka Events (AsyncAPI 3.0)' },
+        { value: 'cafe.graphql', label: 'Cafe (GraphQL)' },
+        { value: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml', label: 'Instagram (OpenAPI 2.0)' },
+        { value: 'https://api.apis.guru/v2/specs/googleapis.com/calendar/v3/openapi.yaml', label: 'Google Calendar (OpenAPI 3.0)' },
+      ];
+
+      // Redoc 3's router rewrites the URL pathname via history.replaceState —
+      // on mount it sets '/', and after user interaction it writes the current
+      // operation slug as the path (e.g. '/admin.apps.approved'), both of which
+      // lose this page's path and 404 on reload. Pin the pathname: any history
+      // call targeting another path is converted into a hash route instead.
+      var PAGE_PATH = window.location.pathname;
+      ['pushState', 'replaceState'].forEach(function (name) {
+        var orig = window.history[name].bind(window.history);
+        window.history[name] = function (stateObj, title, url) {
+          if (url !== undefined && url !== null) {
+            var u = new URL(url, window.location.href);
+            if (u.origin === window.location.origin && u.pathname !== PAGE_PATH) {
+              var route = u.pathname.replace(/^\/+/, '');
+              url = PAGE_PATH + (u.search || window.location.search) + (u.hash || (route ? '#/' + route : '#/'));
+            }
+          }
+          return orig(stateObj, title, url);
+        };
+      });
+
+      var state = { spec: undefined, specUrl: DEFAULT_SPEC, cors: true };
+
+      var m = window.location.search.match(/url=([^&]+)/);
+      if (m) state.specUrl = decodeURIComponent(m[1]);
+      if (window.location.search.match(/[?&]nocors(&|#|$)/)) state.cors = false;
+
+      var input = document.getElementById('spec-input');
+      var combobox = document.getElementById('combobox');
+      var list = document.getElementById('combobox-list');
+      var corsCheckbox = document.getElementById('cors_checkbox');
+      var uploadBtn = document.getElementById('upload-btn');
+      var uploadInput = document.getElementById('upload-input');
+
+      OPTIONS.forEach(function (opt) {
+        var li = document.createElement('li');
+        li.textContent = opt.label;
+        li.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          combobox.classList.remove('open');
+          handleUrlChange(opt.value);
+        });
+        list.appendChild(li);
+      });
+
+      function updateQueryParam(search, name, value) {
+        var part = value === '' ? name : name + '=' + value;
+        var re = new RegExp('([?|&])' + name + '=?.*?(&|#|$)', 'i');
+        if (search.match(re)) {
+          if (value !== undefined) return search.replace(re, '$1' + part + '$2');
+          return search.replace(re, function (_, p1, p2) {
+            if (p2.indexOf('&') === 0) p2 = p2.substring(1);
+            return p1 === '&' ? p2 : p1 + p2;
+          });
+        }
+        if (value === undefined) return search;
+        var hash = '';
+        if (search.indexOf('#') !== -1) {
+          hash = search.replace(/.*#/, '#');
+          search = search.replace(/#.*/, '');
+        }
+        var sep = search.indexOf('?') !== -1 ? '&' : '?';
+        return search + sep + part + hash;
+      }
+
+      var loader = document.getElementById('demo-loader');
+      var loaderObserver;
+
+      function renderRedoc() {
+        // Redoc 3's router calls history.replaceState('/') on mount unless a hash
+        // is already present, which would wipe the /standalone path — keep one there
+        if (!window.location.hash) {
+          window.history.replaceState(undefined, '', window.location.pathname + window.location.search + '#/');
+        }
+        // Redoc.init mounts a fresh React root, so give it a fresh element each time
+        var old = document.getElementById('redoc-container');
+        var fresh = document.createElement('div');
+        fresh.id = 'redoc-container';
+        old.parentNode.replaceChild(fresh, old);
+
+        // show the loader until Redoc renders (or errors) into the container
+        if (loaderObserver) loaderObserver.disconnect();
+        loader.classList.add('visible');
+        loaderObserver = new MutationObserver(function () {
+          if (fresh.childElementCount > 0) {
+            loader.classList.remove('visible');
+            loaderObserver.disconnect();
+          }
+        });
+        loaderObserver.observe(fresh, { childList: true });
+
+        var specOrUrl;
+        if (state.spec) {
+          specOrUrl = state.spec;
+        } else {
+          // Redoc resolves relative spec URLs against the origin root, not this
+          // page's path — resolve them against the page URL ourselves
+          var absolute = new URL(state.specUrl, window.location.href);
+          specOrUrl = absolute.href;
+          if (state.specUrl !== DEFAULT_SPEC && state.cors && absolute.origin !== window.location.origin) {
+            specOrUrl = 'https://cors.redoc.ly/' + absolute.href;
+          }
+        }
+        Redoc.init(specOrUrl, { scrollYOffset: 'nav' }, fresh);
+      }
+
+      function handleUrlChange(url) {
+        state.spec = undefined;
+        state.specUrl = url;
+        input.value = url === DEFAULT_SPEC ? '' : url;
+        // new spec — reset the route to overview, keeping a hash so Redoc's
+        // router doesn't replace the path (see renderRedoc)
+        window.history.pushState(undefined, '', (updateQueryParam(location.search, 'url', url) || location.pathname) + '#/');
+        renderRedoc();
+      }
+
+      uploadBtn.addEventListener('click', function () { uploadInput.click(); });
+      uploadInput.addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            state.spec = jsyaml.load(reader.result);
+          } catch (err) {
+            alert('Could not parse the file as YAML/JSON: ' + err.message);
+            return;
+          }
+          state.specUrl = '';
+          input.value = file.name;
+          renderRedoc();
+        };
+        reader.readAsText(file);
+        uploadInput.value = '';
+      });
+
+      var comboboxArrow = document.getElementById('combobox-arrow');
+      // keep focus on the input so its blur handler (which closes the list
+      // after a delay) doesn't race with the toggle below
+      comboboxArrow.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      comboboxArrow.addEventListener('click', function () {
+        combobox.classList.toggle('open');
+        if (combobox.classList.contains('open')) input.focus();
+      });
+      input.addEventListener('focus', function () { combobox.classList.add('open'); });
+      input.addEventListener('blur', function () {
+        setTimeout(function () { combobox.classList.remove('open'); }, 150);
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && input.value.trim()) {
+          combobox.classList.remove('open');
+          input.blur();
+          handleUrlChange(input.value.trim());
+        }
+      });
+
+      corsCheckbox.checked = state.cors;
+      corsCheckbox.addEventListener('change', function (e) {
+        state.cors = e.currentTarget.checked;
+        window.history.pushState(
+          undefined, '',
+          (updateQueryParam(location.search, 'nocors', state.cors ? undefined : '') || location.pathname) + (location.hash || '#/')
+        );
+        if (!state.spec) renderRedoc();
+      });
+
+      input.value = state.specUrl === DEFAULT_SPEC ? '' : state.specUrl;
+      renderRedoc();
+    })();
+  </script>
+  <script>(function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    if (window.location.host === 'rebilly.github.io') {
+      ga('create', 'UA-81703547-1', 'auto');
+      ga('send', 'pageview');
+    }</script>
+</body>
+</html>

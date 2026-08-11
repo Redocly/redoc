@@ -1,0 +1,229 @@
+"""
+Redocly Cafe GraphQL API.
+
+Query the menu, place and track orders, and follow live order updates —
+the same cafe domain as the Redocly Cafe REST and event-driven APIs.
+"""
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+"An ISO 8601 date-time string, for example `2026-07-21T08:15:00Z`."
+scalar DateTime
+
+"A ULID-based identifier with an entity prefix, for example `ord_01h1s5z6vf2mm1mz3hevnn9va7`."
+scalar PrefixedID
+
+type Query {
+  "List menu items, optionally filtered by category or a text search."
+  menu(
+    "Only return items in this category."
+    category: MenuCategory
+    "Case-insensitive substring search over item names."
+    search: String
+    "Maximum number of items to return."
+    limit: Int = 20
+  ): [MenuItem!]!
+
+  "Fetch a single menu item by ID."
+  menuItem(id: PrefixedID!): MenuItem
+
+  "Fetch an order by ID."
+  order(id: PrefixedID!): Order
+
+  "Search menu items and orders in one query."
+  search(term: String!): [SearchResult!]!
+
+  "Revenue statistics for a reporting period."
+  revenue(period: RevenuePeriod! = TODAY): RevenueStatistics!
+
+  "Fetch the daily specials board."
+  specials: [MenuItem!]! @deprecated(reason: "Specials moved into `menu`; filter by the `SEASONAL` category instead.")
+}
+
+type Mutation {
+  "Place a new order for the given menu items."
+  placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+
+  "Move an order to a new status (staff only)."
+  updateOrderStatus(
+    orderId: PrefixedID!
+    status: OrderStatus!
+    "Optional reason, required when cancelling."
+    reason: String
+  ): Order!
+
+  "Add a new item to the menu (staff only)."
+  addMenuItem(input: AddMenuItemInput!): MenuItem!
+}
+
+type Subscription {
+  "Fires whenever the given order changes status."
+  orderStatusChanged(orderId: PrefixedID!): Order!
+
+  "Live feed of the pickup board: every order status change in the cafe."
+  boardUpdates: Order!
+}
+
+"Common fields for everything sold in the cafe."
+interface MenuItemInterface {
+  id: PrefixedID!
+  "Display name shown on the menu board."
+  name: String!
+  "Price in cents."
+  price: Int!
+  category: MenuCategory!
+  createdAt: DateTime!
+}
+
+"A drink prepared at the barista station."
+type Beverage implements MenuItemInterface {
+  id: PrefixedID!
+  name: String!
+  price: Int!
+  category: MenuCategory!
+  createdAt: DateTime!
+  "Serving volume in milliliters."
+  volume: Int!
+  "Whether the drink contains caffeine."
+  containsCaffeine: Boolean!
+  "Available milk options for this drink."
+  milkOptions: [MilkOption!]!
+}
+
+"A baked good or dessert from the pastry station."
+type Dessert implements MenuItemInterface {
+  id: PrefixedID!
+  name: String!
+  price: Int!
+  category: MenuCategory!
+  createdAt: DateTime!
+  "Weight in grams."
+  weight: Int!
+  "Allergens present in this item."
+  allergens: [Allergen!]!
+}
+
+"Anything that can appear on the menu."
+union MenuItem = Beverage | Dessert
+
+"A result from the combined search."
+union SearchResult = Beverage | Dessert | Order
+
+"A customer order."
+type Order {
+  id: PrefixedID!
+  "Name called out at the pickup counter."
+  customerName: String
+  status: OrderStatus!
+  "Total price in cents, including all lines."
+  totalPrice: Int!
+  lines: [OrderLine!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"One line of an order: a menu item and its quantity."
+type OrderLine {
+  item: MenuItem!
+  quantity: Int!
+  "Per-line discount in cents."
+  discount: Int
+  "Free-form preparation notes, for example \"extra hot\"."
+  notes: String
+}
+
+"Aggregated revenue for a reporting period."
+type RevenueStatistics {
+  period: RevenuePeriod!
+  "Gross revenue in cents."
+  totalRevenue: Int!
+  orderCount: Int!
+  "The best-selling menu item of the period, if any orders were placed."
+  topItem: MenuItem
+}
+
+"Result of placing an order."
+type PlaceOrderPayload {
+  order: Order!
+  "Estimated waiting time in seconds."
+  estimatedWaitSeconds: Int!
+}
+
+"Menu categorization."
+enum MenuCategory {
+  "Coffee, tea, and other drinks."
+  BEVERAGE
+  "Cakes, rolls, and pastries."
+  DESSERT
+  "Limited-time seasonal items."
+  SEASONAL
+}
+
+"Order lifecycle status."
+enum OrderStatus {
+  "Order accepted, waiting for the kitchen."
+  PLACED
+  "A station is working on the order."
+  PREPARING
+  "Ready on the pickup shelf."
+  READY
+  "Handed to the customer."
+  COMPLETED
+  "Cancelled before completion."
+  CANCELLED
+}
+
+"Milk choices for beverages."
+enum MilkOption {
+  WHOLE
+  SKIMMED
+  OAT
+  SOY
+  NONE
+}
+
+"Allergens tracked for desserts."
+enum Allergen {
+  GLUTEN
+  DAIRY
+  NUTS
+  EGGS
+  SOY
+}
+
+"Reporting periods for revenue statistics."
+enum RevenuePeriod {
+  TODAY
+  WEEK
+  MONTH
+}
+
+"Input for placing an order."
+input PlaceOrderInput {
+  "Name to call out at the pickup counter."
+  customerName: String
+  lines: [OrderLineInput!]!
+}
+
+"One requested order line."
+input OrderLineInput {
+  menuItemId: PrefixedID!
+  quantity: Int! = 1
+  "Free-form preparation notes."
+  notes: String
+}
+
+"Input for adding a menu item."
+input AddMenuItemInput {
+  name: String!
+  "Price in cents."
+  price: Int!
+  category: MenuCategory!
+  "Required for beverages: serving volume in milliliters."
+  volume: Int
+  "Required for desserts: weight in grams."
+  weight: Int
+}

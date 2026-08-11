@@ -1,0 +1,965 @@
+asyncapi: 3.0.0
+info:
+  title: Redocly Cafe Events
+  version: 2.0.0
+  description: >
+    Event-driven APIs for the **Redocly Cafe**, all in one AsyncAPI document.
+
+
+    The cafe runs on four messaging technologies, each shown here with its protocol-specific
+    bindings:
+
+
+    | Protocol | Used for |
+
+    |---|---|
+
+    | **Kafka** | Order lifecycle event stream |
+
+    | **AMQP (RabbitMQ)** | Kitchen work queues |
+
+    | **MQTT** | Espresso machine telemetry |
+
+    | **WebSocket** | Live pickup-board updates |
+
+
+    Events are correlated across systems by `orderId`.
+  termsOfService: https://redocly.com/subscription-agreement
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+    url: https://redocly.com/contact-us/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Redocly Cafe event catalog
+    url: https://redocly.com/docs
+  tags:
+    - name: orders
+      description: Order lifecycle events
+    - name: kitchen
+      description: Kitchen work queues
+    - name: telemetry
+      description: Machine telemetry
+    - name: live
+      description: Live displays
+defaultContentType: application/json
+servers:
+  production:
+    host: '{clusterHost}:9093'
+    protocol: kafka-secure
+    protocolVersion: 3.6.0
+    title: Cafe production cluster
+    summary: TLS + SASL/SCRAM production Kafka cluster
+    description: |
+      Production cluster used by all in-store services.
+      Requires SASL/SCRAM-SHA-512 credentials issued by the platform team.
+    variables:
+      clusterHost:
+        default: kafka.cafe.redocly.com
+        description: Bootstrap server hostname
+        enum:
+          - kafka.cafe.redocly.com
+          - kafka-staging.cafe.redocly.com
+    security:
+      - $ref: '#/components/securitySchemes/saslScram'
+    tags:
+      - name: production
+    bindings:
+      kafka:
+        schemaRegistryUrl: https://schema-registry.cafe.redocly.com
+        schemaRegistryVendor: confluent
+  rabbit:
+    host: rabbit.cafe.redocly.com:5671
+    protocol: amqps
+    protocolVersion: 0-9-1
+    title: Cafe RabbitMQ broker
+    summary: TLS RabbitMQ cluster in the back office
+    description: |
+      Three-node RabbitMQ cluster with quorum queues.
+      Applications authenticate with per-service usernames and passwords.
+    security:
+      - $ref: '#/components/securitySchemes/serviceLogin'
+  broker:
+    host: mqtt.cafe.redocly.com:8883
+    protocol: secure-mqtt
+    protocolVersion: '5'
+    title: Cafe MQTT broker
+    summary: TLS MQTT 5 broker for in-store devices
+    description: |
+      Devices authenticate with per-machine X.509 client certificates.
+      The broker retains the last telemetry message per topic so dashboards
+      get an immediate snapshot on subscribe.
+    security:
+      - $ref: '#/components/securitySchemes/deviceCert'
+    bindings:
+      mqtt:
+        clientId: cafe-maintenance-dashboard
+        cleanSession: false
+        lastWill:
+          topic: cafe/machines/offline
+          qos: 1
+          message: Machine disconnected unexpectedly.
+          retain: false
+        keepAlive: 60
+  live:
+    host: live.cafe.redocly.com
+    protocol: wss
+    title: Cafe live gateway
+    summary: WebSocket gateway for in-store displays and the customer app
+    description: |
+      Connections are authenticated with a short-lived bearer token passed in
+      the `token` query parameter. Idle connections are pinged every 30 seconds
+      and closed after two missed pongs.
+    security:
+      - $ref: '#/components/securitySchemes/liveToken'
+channels:
+  orderPlaced:
+    address: cafe.orders.placed
+    title: Order placed
+    description: A customer placed a new order at the register or via the app.
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+    bindings:
+      kafka:
+        topic: cafe.orders.placed
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 604800000
+  orderStatusChanged:
+    address: cafe.orders.status-changed
+    title: Order status changed
+    description: The kitchen or barista moved an order to a new status.
+    messages:
+      orderStatusChanged:
+        $ref: '#/components/messages/orderStatusChanged'
+    bindings:
+      kafka:
+        topic: cafe.orders.status-changed
+        partitions: 6
+        replicas: 3
+  prepTickets:
+    address: ticket.barista.normal
+    title: Barista preparation tickets
+    description: One ticket per drink line, routed to the barista station queue.
+    messages:
+      prepTicket:
+        $ref: '#/components/messages/prepTicket'
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: cafe.kitchen
+          type: topic
+          durable: true
+          autoDelete: false
+          vhost: /cafe
+  ticketCompleted:
+    address: kitchen.ticket-completed
+    title: Completed tickets
+    description: Queue consumed by the pickup counter to assemble finished orders.
+    messages:
+      ticketCompleted:
+        $ref: '#/components/messages/ticketCompleted'
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: kitchen.ticket-completed
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /cafe
+  machineTelemetry:
+    address: cafe/machines/{machineId}/telemetry
+    title: Machine telemetry
+    description: >-
+      Periodic measurements, published every 30 seconds while brewing is idle and every 5 seconds
+      during extraction.
+    parameters:
+      machineId:
+        $ref: '#/components/parameters/machineId'
+    messages:
+      telemetry:
+        $ref: '#/components/messages/telemetry'
+  machineAlerts:
+    address: cafe/machines/{machineId}/alerts
+    title: Machine alerts
+    description: Emergency conditions that require staff attention.
+    parameters:
+      machineId:
+        $ref: '#/components/parameters/machineId'
+    messages:
+      alert:
+        $ref: '#/components/messages/alert'
+  liveBoard:
+    address: /live
+    title: Live order board
+    description: Single bidirectional channel carrying snapshots, updates, and client subscriptions.
+    messages:
+      boardSnapshot:
+        $ref: '#/components/messages/boardSnapshot'
+      orderUpdate:
+        $ref: '#/components/messages/orderUpdate'
+      subscribeOrder:
+        $ref: '#/components/messages/subscribeOrder'
+    bindings:
+      ws:
+        method: GET
+        query:
+          type: object
+          required:
+            - token
+          properties:
+            token:
+              type: string
+              description: Short-lived bearer token issued by the auth service.
+            displayId:
+              type: string
+              description: Optional in-store display identifier for telemetry.
+        headers:
+          type: object
+          properties:
+            Sec-WebSocket-Protocol:
+              type: string
+              const: cafe.live.v1
+operations:
+  publishOrderPlaced:
+    action: send
+    channel:
+      $ref: '#/channels/orderPlaced'
+    title: Publish order placed
+    summary: Emitted by the point-of-sale service when checkout completes.
+    tags:
+      - name: orders
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-pos
+  consumeOrderStatusChanged:
+    action: receive
+    channel:
+      $ref: '#/channels/orderStatusChanged'
+    title: Consume order status changes
+    summary: Consumed by the customer app and the pickup-counter display.
+    description: |
+      Consumers must be idempotent: the producer uses at-least-once delivery,
+      so duplicate status events are possible.
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          enum:
+            - pickup-display
+            - customer-app
+            - loyalty-service
+  sendPrepTicket:
+    action: send
+    channel:
+      $ref: '#/channels/prepTickets'
+    title: Dispatch preparation ticket
+    summary: Sent by the order service, one message per station.
+    tags:
+      - name: kitchen
+    bindings:
+      amqp:
+        deliveryMode: 2
+        mandatory: true
+        cc:
+          - ticket.pastry.normal
+        priority: 5
+        timestamp: true
+        ack: true
+  receiveCompletedTickets:
+    action: receive
+    channel:
+      $ref: '#/channels/ticketCompleted'
+    title: Receive completed tickets
+    summary: Consumed by the pickup-counter service with manual acknowledgements.
+    description: |
+      Consumers use `prefetch=10` and acknowledge only after the ticket is
+      matched to its order. Unacknowledged tickets are redelivered to another
+      consumer after the channel closes.
+    bindings:
+      amqp:
+        ack: true
+  publishTelemetry:
+    action: send
+    channel:
+      $ref: '#/channels/machineTelemetry'
+    title: Publish telemetry
+    summary: Sent by the machine firmware on a fixed interval.
+    tags:
+      - name: telemetry
+    bindings:
+      mqtt:
+        qos: 0
+        retain: true
+  receiveAlerts:
+    action: receive
+    channel:
+      $ref: '#/channels/machineAlerts'
+    title: Receive machine alerts
+    summary: Consumed by the maintenance dashboard and the staff pager.
+    description: |
+      Alerts are published with QoS 2 (exactly once). Subscribers should
+      acknowledge promptly — the broker queues alerts for offline
+      subscribers with persistent sessions.
+    tags:
+      - name: alerts
+    bindings:
+      mqtt:
+        qos: 2
+        retain: false
+  receiveBoardUpdates:
+    action: receive
+    channel:
+      $ref: '#/channels/liveBoard'
+    title: Receive board updates
+    summary: Snapshot on connect, then incremental order updates.
+    description: |
+      Immediately after the connection is accepted the server sends one
+      `boardSnapshot`, then pushes `orderUpdate` messages as orders move
+      through the pipeline.
+    messages:
+      - $ref: '#/channels/liveBoard/messages/boardSnapshot'
+      - $ref: '#/channels/liveBoard/messages/orderUpdate'
+    tags:
+      - name: live-board
+  subscribeToOrder:
+    action: send
+    channel:
+      $ref: '#/channels/liveBoard'
+    title: Subscribe to one order
+    summary: Sent by the customer app to follow a single order.
+    messages:
+      - $ref: '#/channels/liveBoard/messages/subscribeOrder'
+components:
+  securitySchemes:
+    saslScram:
+      type: scramSha512
+      description: SASL/SCRAM-SHA-512 credentials issued per service.
+    serviceLogin:
+      type: userPassword
+      description: Per-service RabbitMQ username and password.
+    deviceCert:
+      type: X509
+      description: Per-machine client certificate issued during installation.
+    liveToken:
+      type: httpApiKey
+      name: token
+      in: query
+      description: Short-lived bearer token, valid for 15 minutes.
+  correlationIds:
+    orderCorrelation:
+      description: Correlates all events belonging to one order.
+      location: $message.header#/correlationId
+    ticketCorrelation:
+      description: Ties a ticket to its originating order.
+      location: $message.header#/orderId
+  messages:
+    orderPlaced:
+      name: OrderPlaced
+      title: Order placed
+      summary: A new order entered the system.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            format: ulid
+            description: Order-scoped correlation ID.
+          source:
+            type: string
+            description: Producing service.
+            enum:
+              - pos
+              - mobile-app
+              - kiosk
+      payload:
+        $ref: '#/components/schemas/orderPlacedPayload'
+      examples:
+        - name: espressoToGo
+          summary: Single espresso, paid by card
+          headers:
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            source: pos
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            customerName: Ada Lovelace
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Espresso
+                quantity: 1
+                unitPrice: 350
+            totalPrice: 350
+            placedAt: '2026-07-21T08:15:00Z'
+        - name: morningRush
+          summary: Large mobile-app order with a dessert
+          headers:
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            source: mobile-app
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            customerName: Grace Hopper
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Flat White
+                quantity: 2
+                unitPrice: 450
+              - menuItemId: prd_01khr487f7qm7p44xn427m43xd
+                name: Cinnamon Roll
+                quantity: 1
+                unitPrice: 400
+            totalPrice: 1300
+            placedAt: '2026-07-21T08:17:42Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+    orderStatusChanged:
+      name: OrderStatusChanged
+      title: Order status changed
+      summary: An order transitioned to a new lifecycle status.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            format: ulid
+      payload:
+        $ref: '#/components/schemas/orderStatusChangedPayload'
+      examples:
+        - name: readyForPickup
+          summary: Barista finished the drinks
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            previousStatus: preparing
+            status: ready
+            changedAt: '2026-07-21T08:19:10Z'
+        - name: cancelledByCustomer
+          summary: Customer cancelled before preparation started
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            previousStatus: placed
+            status: cancelled
+            reason: Customer cancelled in the app.
+            changedAt: '2026-07-21T08:18:03Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+    prepTicket:
+      name: PrepTicket
+      title: Preparation ticket
+      summary: A unit of kitchen work for a single station.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/ticketCorrelation'
+      headers:
+        type: object
+        properties:
+          orderId:
+            type: string
+            format: ulid
+            description: Originating order ID.
+          station:
+            type: string
+            enum:
+              - barista
+              - pastry
+      payload:
+        $ref: '#/components/schemas/prepTicketPayload'
+      examples:
+        - name: doubleOatLatte
+          summary: Drink ticket for the barista station
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+            items:
+              - name: Oat Latte
+                quantity: 2
+                notes: Extra hot, no foam.
+            priority: normal
+            dispatchedAt: '2026-07-21T08:15:02Z'
+        - name: rushCroissant
+          summary: High-priority pastry ticket for a waiting customer
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            station: pastry
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk2
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            station: pastry
+            items:
+              - name: Butter Croissant
+                quantity: 1
+                notes: Warmed up.
+            priority: rush
+            dispatchedAt: '2026-07-21T08:17:45Z'
+      bindings:
+        amqp:
+          contentEncoding: utf-8
+          messageType: cafe.prep-ticket
+    ticketCompleted:
+      name: TicketCompleted
+      title: Ticket completed
+      summary: A station finished all items on a ticket.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/ticketCorrelation'
+      headers:
+        type: object
+        properties:
+          orderId:
+            type: string
+            format: ulid
+      payload:
+        $ref: '#/components/schemas/ticketCompletedPayload'
+      examples:
+        - name: latteDone
+          summary: Barista completed the drink ticket
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+            completedAt: '2026-07-21T08:19:08Z'
+            preparationSeconds: 126
+    telemetry:
+      name: MachineTelemetry
+      title: Machine telemetry reading
+      summary: A point-in-time snapshot of machine health.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/telemetryPayload'
+      examples:
+        - name: idleReading
+          summary: Espresso machine idle between orders
+          payload:
+            machineId: esp-01
+            boilerTempCelsius: 93.4
+            pumpPressureBar: 0
+            shotsSinceService: 1289
+            waterLevelPercent: 82
+            status: idle
+            recordedAt: '2026-07-21T08:15:00Z'
+        - name: extractionReading
+          summary: Reading taken mid-extraction
+          payload:
+            machineId: esp-01
+            boilerTempCelsius: 94.1
+            pumpPressureBar: 9.2
+            shotsSinceService: 1290
+            waterLevelPercent: 81
+            status: brewing
+            recordedAt: '2026-07-21T08:15:35Z'
+    alert:
+      name: MachineAlert
+      title: Machine alert
+      summary: An emergency condition detected by the firmware.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/alertPayload'
+      examples:
+        - name: descaleRequired
+          summary: Scale buildup detected in the boiler
+          payload:
+            machineId: esp-02
+            severity: warning
+            code: DESCALE_REQUIRED
+            message: Boiler heat-up time exceeded threshold. Schedule descaling.
+            raisedAt: '2026-07-21T07:02:11Z'
+        - name: overPressure
+          summary: Pump pressure out of safe range
+          payload:
+            machineId: esp-01
+            severity: critical
+            code: OVER_PRESSURE
+            message: Pump pressure exceeded 12 bar. Machine stopped itself.
+            raisedAt: '2026-07-21T09:44:52Z'
+    boardSnapshot:
+      name: BoardSnapshot
+      title: Board snapshot
+      summary: Full state of the pickup board, sent once on connect.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/boardSnapshotPayload'
+      examples:
+        - name: morningBoard
+          summary: Two orders in progress, one ready
+          payload:
+            type: boardSnapshot
+            orders:
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Ada
+                status: ready
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+                customerName: Grace
+                status: preparing
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+                customerName: Alan
+                status: placed
+            snapshotAt: '2026-07-21T08:20:00Z'
+    orderUpdate:
+      name: OrderUpdate
+      title: Order update
+      summary: One order changed status.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/orderUpdatePayload'
+      examples:
+        - name: orderReady
+          summary: Order moved to the ready shelf
+          payload:
+            type: orderUpdate
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            customerName: Grace
+            status: ready
+            updatedAt: '2026-07-21T08:21:30Z'
+        - name: orderPickedUp
+          summary: Customer collected the order — remove it from the board
+          payload:
+            type: orderUpdate
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            customerName: Ada
+            status: completed
+            updatedAt: '2026-07-21T08:22:05Z'
+    subscribeOrder:
+      name: SubscribeOrder
+      title: Subscribe to order
+      summary: Client request to receive updates for a single order only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/subscribeOrderPayload'
+      examples:
+        - name: followMyOrder
+          summary: Customer app follows the order it just placed
+          payload:
+            type: subscribeOrder
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+  schemas:
+    orderPlacedPayload:
+      type: object
+      required:
+        - orderId
+        - items
+        - totalPrice
+        - placedAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+          description: Order ID, prefixed with `ord_`.
+        customerName:
+          type: string
+          description: Name to call out at the pickup counter.
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/orderLine'
+        totalPrice:
+          type: integer
+          description: Total order price in cents.
+          minimum: 0
+        placedAt:
+          type: string
+          format: date-time
+    orderLine:
+      type: object
+      required:
+        - menuItemId
+        - quantity
+        - unitPrice
+      properties:
+        menuItemId:
+          type: string
+          format: ulid
+          description: Menu item ID, prefixed with `prd_`.
+        name:
+          type: string
+          description: Menu item display name at the time of ordering.
+        quantity:
+          type: integer
+          minimum: 1
+        unitPrice:
+          type: integer
+          description: Price per unit in cents.
+          minimum: 0
+    orderStatusChangedPayload:
+      type: object
+      required:
+        - orderId
+        - status
+        - changedAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        previousStatus:
+          $ref: '#/components/schemas/orderStatus'
+        status:
+          $ref: '#/components/schemas/orderStatus'
+        reason:
+          type: string
+          description: Optional human-readable reason, set for cancellations.
+        changedAt:
+          type: string
+          format: date-time
+    orderStatus:
+      type: string
+      description: Order lifecycle status.
+      enum:
+        - placed
+        - preparing
+        - ready
+        - completed
+        - cancelled
+    prepTicketPayload:
+      type: object
+      required:
+        - ticketId
+        - orderId
+        - station
+        - items
+        - priority
+        - dispatchedAt
+      properties:
+        ticketId:
+          type: string
+          format: ulid
+          description: Ticket ID, prefixed with `tkt_`.
+        orderId:
+          type: string
+          format: ulid
+        station:
+          type: string
+          description: Kitchen station this ticket is routed to.
+          enum:
+            - barista
+            - pastry
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - name
+              - quantity
+            properties:
+              name:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+              notes:
+                type: string
+                description: Free-form preparation notes from the customer.
+        priority:
+          type: string
+          description: Queue priority. `rush` tickets jump ahead of `normal` ones.
+          enum:
+            - normal
+            - rush
+        dispatchedAt:
+          type: string
+          format: date-time
+    ticketCompletedPayload:
+      type: object
+      required:
+        - ticketId
+        - orderId
+        - station
+        - completedAt
+      properties:
+        ticketId:
+          type: string
+          format: ulid
+        orderId:
+          type: string
+          format: ulid
+        station:
+          type: string
+          enum:
+            - barista
+            - pastry
+        completedAt:
+          type: string
+          format: date-time
+        preparationSeconds:
+          type: integer
+          description: Time from dispatch to completion.
+          minimum: 0
+    telemetryPayload:
+      type: object
+      required:
+        - machineId
+        - boilerTempCelsius
+        - status
+        - recordedAt
+      properties:
+        machineId:
+          type: string
+        boilerTempCelsius:
+          type: number
+          description: Boiler temperature in °C.
+          minimum: 0
+          maximum: 150
+        pumpPressureBar:
+          type: number
+          description: Current pump pressure in bar.
+          minimum: 0
+          maximum: 15
+        shotsSinceService:
+          type: integer
+          description: Espresso shots pulled since the last service.
+          minimum: 0
+        waterLevelPercent:
+          type: integer
+          minimum: 0
+          maximum: 100
+        status:
+          type: string
+          enum:
+            - idle
+            - brewing
+            - steaming
+            - heating
+            - error
+        recordedAt:
+          type: string
+          format: date-time
+    alertPayload:
+      type: object
+      required:
+        - machineId
+        - severity
+        - code
+        - message
+        - raisedAt
+      properties:
+        machineId:
+          type: string
+        severity:
+          type: string
+          description: How urgently staff must react.
+          enum:
+            - info
+            - warning
+            - critical
+        code:
+          type: string
+          description: Machine-readable alert code.
+          enum:
+            - DESCALE_REQUIRED
+            - OVER_PRESSURE
+            - WATER_LOW
+            - BURR_WORN
+            - SENSOR_FAULT
+        message:
+          type: string
+          description: Human-readable explanation for the staff pager.
+        raisedAt:
+          type: string
+          format: date-time
+    boardSnapshotPayload:
+      type: object
+      required:
+        - type
+        - orders
+        - snapshotAt
+      properties:
+        type:
+          type: string
+          const: boardSnapshot
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/boardEntry'
+        snapshotAt:
+          type: string
+          format: date-time
+    orderUpdatePayload:
+      type: object
+      required:
+        - type
+        - orderId
+        - status
+        - updatedAt
+      properties:
+        type:
+          type: string
+          const: orderUpdate
+        orderId:
+          type: string
+          format: ulid
+        customerName:
+          type: string
+          description: First name shown on the pickup board.
+        status:
+          $ref: '#/components/schemas/boardStatus'
+        updatedAt:
+          type: string
+          format: date-time
+    subscribeOrderPayload:
+      type: object
+      required:
+        - type
+        - orderId
+      properties:
+        type:
+          type: string
+          const: subscribeOrder
+        orderId:
+          type: string
+          format: ulid
+          description: Order to follow. The server replies with the current state, then updates.
+    boardEntry:
+      type: object
+      required:
+        - orderId
+        - status
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        customerName:
+          type: string
+        status:
+          $ref: '#/components/schemas/boardStatus'
+    boardStatus:
+      type: string
+      description: Status shown on the pickup board.
+      enum:
+        - placed
+        - preparing
+        - ready
+        - completed
+        - cancelled
+  parameters:
+    machineId:
+      description: Machine identifier, printed on the service label (for example, `esp-01`).
+      enum:
+        - esp-01
+        - esp-02
+        - grinder-01

@@ -12,7 +12,7 @@
     `,mr=cr;function yr(e){return t=>{if(t.theme.extensionsHook)return t.theme.extensionsHook(e,t)}}const gr=mr.div`
   padding: 20px;
   color: red;
-`;class br extends n.Component{constructor(e){super(e),this.state={error:void 0}}componentDidCatch(e){return this.setState({error:e}),!1}render(){return this.state.error?n.createElement(gr,null,n.createElement("h1",null,"Something went wrong..."),n.createElement("small",null," ",this.state.error.message," "),n.createElement("p",null,n.createElement("details",null,n.createElement("summary",null,"Stack trace"),n.createElement("pre",null,this.state.error.stack))),n.createElement("small",null," ReDoc Version: ","2.5.3")," ",n.createElement("br",null),n.createElement("small",null," Commit: ","939d5a55")):n.createElement(n.Fragment,null,n.Children.only(this.props.children))}}const vr=dr`
+`;class br extends n.Component{constructor(e){super(e),this.state={error:void 0}}componentDidCatch(e){return this.setState({error:e}),!1}render(){return this.state.error?n.createElement(gr,null,n.createElement("h1",null,"Something went wrong..."),n.createElement("small",null," ",this.state.error.message," "),n.createElement("p",null,n.createElement("details",null,n.createElement("summary",null,"Stack trace"),n.createElement("pre",null,this.state.error.stack))),n.createElement("small",null," ReDoc Version: ","2.5.3")," ",n.createElement("br",null),n.createElement("small",null," Commit: ","ed30fc53")):n.createElement(n.Fragment,null,n.Children.only(this.props.children))}}const vr=dr`
   0% {
     transform: rotate(0deg); }
   100% {
