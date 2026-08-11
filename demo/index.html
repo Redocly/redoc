@@ -29,6 +29,71 @@
       redoc {
         display: block;
       }
+
+      .demo-banner {
+        position: sticky;
+        top: 0;
+        z-index: 11;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 8px;
+        background: #99cdff;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 22px;
+        color: #000;
+      }
+
+      .demo-banner[hidden] {
+        display: none;
+      }
+
+      /* Horizontal padding keeps the centered text clear of the absolutely
+         positioned close button on narrow viewports. */
+      .demo-banner p {
+        margin: 0;
+        padding: 0 30px;
+        text-align: center;
+      }
+
+      .demo-banner a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+      }
+
+      .demo-banner button {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        padding: 3px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #000;
+        cursor: pointer;
+      }
+
+      .demo-banner button:hover {
+        background: rgba(0, 0, 0, 0.08);
+      }
+
+      /* The demo nav is also sticky at the top, so offset it by the banner's height
+         to keep the banner visible while scrolling. The height is measured in JS
+         rather than hardcoded because the banner text wraps on narrow viewports. */
+      #container nav {
+        top: var(--demo-banner-height, 0px);
+      }
     </style>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
@@ -37,6 +102,51 @@
   </head>
 
   <body>
+    <div class="demo-banner" id="demo-banner">
+      <p>A new home for Redoc is on the way. <a href="3.x/">Take a look &rarr;</a></p>
+      <button type="button" id="demo-banner-close" aria-label="Dismiss banner">
+        <svg
+          width="8"
+          height="8"
+          viewBox="0 0 8 8"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M8 0.7L7.3 0L4 3.3L0.7 0L0 0.7L3.3 4L0 7.3L0.7 8L4 4.7L7.3 8L8 7.3L4.7 4L8 0.7Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      (function () {
+        var banner = document.getElementById('demo-banner');
+
+        // Dismissal is intentionally not persisted, so the banner returns on refresh.
+        function syncHeight() {
+          var height = banner.hidden ? 0 : banner.offsetHeight;
+          document.documentElement.style.setProperty('--demo-banner-height', height + 'px');
+        }
+
+        syncHeight();
+
+        if (window.ResizeObserver) {
+          new ResizeObserver(syncHeight).observe(banner);
+        } else {
+          window.addEventListener('resize', syncHeight);
+        }
+
+        document.getElementById('demo-banner-close').addEventListener('click', function () {
+          banner.hidden = true;
+          syncHeight();
+        });
+      })();
+    </script>
+
     <div id="container"></div>
 
     <script>
