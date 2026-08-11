@@ -1,5 +1,16 @@
 <div align="center">
-  <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/main//docs/images/redoc.png" width="400px" />
+
+  <a href="https://redocly.com/redoc-ce">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./docs/images/redoc-3-announcement-dark.gif">
+      <source media="(prefers-color-scheme: light)" srcset="./docs/images/redoc-3-announcement-light.gif">
+      <img alt="Redoc 3.0 is coming — one renderer for OpenAPI 3.2, AsyncAPI, GraphQL, and MCP" src="./docs/images/redoc-3-announcement-light.gif">
+    </picture>
+  </a>
+
+  **[Learn what's coming in Redoc 3.0 →](https://redocly.com/redoc-ce)**
+
+
 
 # Generate beautiful API documentation from OpenAPI
 
