@@ -49,7 +49,17 @@ export const ObjectSchema = observer(
     const expandByDefault =
       (expandSingleSchemaField && filteredFields.length === 1) || schemasExpansionLevel >= level!;
 
-    return (
+    // The discriminator dropdown is normally attached to the field row whose name
+    // matches the discriminator property. When the variant schemas don't declare that
+    // property (e.g. a `oneOf` + `discriminator` written without `allOf` inheritance, as
+    // commonly emitted by code generators), no field matches and the selector would
+    // silently disappear, leaving only the first variant visible. In that case render the
+    // dropdown standalone so the polymorphic variants stay switchable.
+    const hasDiscriminatorField =
+      !!discriminator && filteredFields.some(field => field.name === discriminator.fieldName);
+    const showStandaloneDiscriminator = !!discriminator && !hasDiscriminatorField;
+
+    const propertiesTable = (
       <PropertiesTable>
         {showTitle && <PropertiesTableCaption>{title}</PropertiesTableCaption>}
         <tbody>
@@ -82,6 +92,20 @@ export const ObjectSchema = observer(
           })}
         </tbody>
       </PropertiesTable>
+    );
+
+    if (!showStandaloneDiscriminator) {
+      return propertiesTable;
+    }
+
+    return (
+      <>
+        <DiscriminatorDropdown
+          parent={discriminator!.parentSchema}
+          enumValues={discriminator!.parentSchema.oneOf?.map(s => s.title) ?? []}
+        />
+        {propertiesTable}
+      </>
     );
   },
 );
