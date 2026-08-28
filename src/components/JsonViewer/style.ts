@@ -10,7 +10,10 @@ export const jsonStyles = css`
   font-size: ${props => props.theme.typography.code.fontSize};
 
   white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
+  border-radius: 4px;
   contain: content;
+  background-color: rgb(50, 63, 75);
+  padding: 10px;
   overflow-x: auto;
 
   .callback-function {

@@ -39,6 +39,9 @@ export const StyledPre = styled(PrismDiv).attrs({
   font-size: ${props => props.theme.typography.code.fontSize};
   overflow-x: auto;
   margin: 0;
-
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgb(50, 63, 75);
+  contain: content;
   white-space: ${({ theme }) => (theme.typography.code.wrap ? 'pre-wrap' : 'pre')};
 `;

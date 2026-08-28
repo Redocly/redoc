@@ -10,6 +10,7 @@ import { ObjectSchema } from './ObjectSchema';
 
 const PaddedSchema = styled.div`
   padding-left: ${({ theme }) => theme.spacing.unit * 2}px;
+  padding-top: ${({ theme }) => theme.spacing.unit * 2}px;
 `;
 
 export class ArraySchema extends React.PureComponent<SchemaProps> {

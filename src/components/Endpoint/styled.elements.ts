@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 export const OperationEndpointWrap = styled.div`
   cursor: pointer;
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 
 export const ServerRelativeURL = styled.span`
@@ -21,9 +21,8 @@ export const EndpointInfo = styled.button<{ $expanded?: boolean; $inverted?: boo
   text-align: left;
   cursor: pointer;
   padding: 10px 30px 10px ${props => (props.$inverted ? '10px' : '20px')};
-  border-radius: ${props => (props.$inverted ? '0' : '4px 4px 0 0')};
-  background-color: ${props =>
-    props.$inverted ? 'transparent' : props.theme.codeBlock.backgroundColor};
+  border-radius: ${props => (props.$inverted ? '0' : '4px')};
+  background-color: rgb(50, 63, 75);
   display: flex;
   white-space: nowrap;
   align-items: center;
@@ -54,6 +53,7 @@ export const HttpVerb = styled.span.attrs((props: { type: string; $compact?: boo
   text-transform: uppercase;
   font-family: ${props => props.theme.typography.headings.fontFamily};
   margin: 0;
+  border-radius: 16px;
 `;
 
 export const ServersOverlay = styled.div<{ $expanded: boolean }>`

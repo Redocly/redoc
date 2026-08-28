@@ -7,6 +7,7 @@ import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { OptionsContext } from '../OptionsProvider';
 import { l } from '../../services/Labels';
+import { RequestSamplesWrap } from './styled.elements';
 
 export interface RequestSamplesProps {
   operation: OperationModel;
@@ -26,7 +27,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     const hideTabList = samples.length === 1 ? this.context.hideSingleRequestSampleTab : false;
     return (
       (hasSamples && (
-        <div>
+        <RequestSamplesWrap>
           <RightPanelHeader> {l('requestSamples')} </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
@@ -49,7 +50,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
               </TabPanel>
             ))}
           </Tabs>
-        </div>
+        </RequestSamplesWrap>
       )) ||
       null
     );

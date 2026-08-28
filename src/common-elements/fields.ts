@@ -56,7 +56,7 @@ export const ClickablePropertyNameCell = styled(PropertyNameCell)`
 `;
 
 export const FieldLabel = styled.span`
-  vertical-align: middle;
+  vertical-align: top;
   font-size: ${({ theme }) => theme.typography.code.fontSize};
   line-height: 20px;
 `;
@@ -82,7 +82,6 @@ export const RequiredLabel = styled(FieldLabel).attrs({
   color: ${props => props.theme.schema.requireLabelColor};
   font-size: ${props => props.theme.schema.labelsTextSize};
   font-weight: normal;
-  margin-left: 20px;
   line-height: 1;
 `;
 

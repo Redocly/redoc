@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Code } from './styled.elements';
+import { Code, ResponseTitleWrap } from './styled.elements';
 import { ShelfIcon } from '../../common-elements';
 import { Markdown } from '../Markdown/Markdown';
 
@@ -16,7 +16,6 @@ export interface ResponseTitleProps {
 
 function ResponseTitleComponent({
   title,
-  type,
   empty,
   code,
   opened,
@@ -30,16 +29,18 @@ function ResponseTitleComponent({
       aria-expanded={opened}
       disabled={empty}
     >
+      <ResponseTitleWrap>
+        <Code>{code} </Code>
+        <Markdown compact={true} inline={true} source={title} />
+      </ResponseTitleWrap>
       {!empty && (
         <ShelfIcon
-          size={'1.5em'}
-          color={type}
+          size={'1.3em'}
+          color={'rgb(102, 102, 102)'}
           direction={opened ? 'down' : 'right'}
           float={'left'}
         />
       )}
-      <Code>{code} </Code>
-      <Markdown compact={true} inline={true} source={title} />
     </button>
   );
 }
