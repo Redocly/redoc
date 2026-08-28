@@ -84,7 +84,7 @@ function menuItemActive(
   }
 }
 
-export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
+export const MenuItemUl = styled.ul<{ $expanded: boolean; $root?: boolean }>`
   margin: 0;
   padding: 0;
 
@@ -96,7 +96,19 @@ export const MenuItemUl = styled.ul<{ $expanded: boolean }>`
     font-size: 0.929em;
   }
 
-  ${props => (props.$expanded ? '' : 'display: none;')};
+  ${props =>
+    props.$root
+      ? ''
+      : css`
+          overflow: hidden;
+          max-height: 0;
+          pointer-events: ${props.$expanded ? 'auto' : 'none'};
+          transition: max-height 0.2s ease-out;
+
+          @media (prefers-reduced-motion: reduce) {
+            transition: none;
+          }
+        `};
 `;
 
 export const MenuItemLi = styled.li<{ depth: number }>`
