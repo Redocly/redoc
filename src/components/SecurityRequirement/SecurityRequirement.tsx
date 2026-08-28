@@ -65,7 +65,7 @@ export function SecurityRequirements(props: SecurityRequirementsProps) {
               key={scheme.id}
               scheme={scheme}
               RequiredScopes={
-                <RequiredScopesRow scopes={getRequiredScopes(scheme.id, securities)} />
+                <RequiredScopesRow scopeSets={getRequiredScopeSets(scheme.id, securities)} />
               }
             />
           </SecurityDetailsStyle>
@@ -83,8 +83,8 @@ const LockIcon = () => (
   </svg>
 );
 
-function getRequiredScopes(id: string, securities: SecurityRequirementModel[]): string[] {
-  const allScopes: string[] = [];
+function getRequiredScopeSets(id: string, securities: SecurityRequirementModel[]): string[][] {
+  const allScopes: string[][] = [];
   let securitiesLength = securities.length;
 
   while (securitiesLength--) {
@@ -92,8 +92,8 @@ function getRequiredScopes(id: string, securities: SecurityRequirementModel[]): 
     let schemesLength = security.schemes.length;
     while (schemesLength--) {
       const scheme = security.schemes[schemesLength];
-      if (scheme.id === id && Array.isArray(scheme.scopes)) {
-        allScopes.push(...scheme.scopes);
+      if (scheme.id === id && Array.isArray(scheme.scopes) && scheme.scopes.length) {
+        allScopes.unshift(scheme.scopes);
       }
     }
   }
