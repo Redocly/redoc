@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { linksCss } from '../Markdown/styled.elements';
 import { media } from '../../styled-components';
-import { UnderlinedHeader } from '../../common-elements';
+import { UnderlinedHeaderAuth } from '../../common-elements';
 
 export const Header = styled.div`
   background-color: #e4e7eb;
@@ -93,7 +93,7 @@ export const SecuritiesColumn = styled.div<{ $expanded?: boolean }>`
   `}
 `;
 
-export const AuthHeader = styled(UnderlinedHeader)`
+export const AuthHeader = styled(UnderlinedHeaderAuth)`
   display: inline-block;
   margin: 0;
 `;
