@@ -447,6 +447,8 @@ function buildFields(
     const required =
       schema.required === undefined ? false : schema.required.indexOf(fieldName) > -1;
 
+    const defaultValue = field.default === undefined && defaults ? defaults[fieldName] : field.default;
+
     return new FieldModel(
       parser,
       {
@@ -454,7 +456,9 @@ function buildFields(
         required,
         schema: {
           ...field,
-          default: field.default === undefined && defaults ? defaults[fieldName] : field.default,
+          // Only include default if it has an actual value; adding `default: undefined`
+          // triggers allOf wrapping in OpenAPI 3.1's mergeRefs, breaking oneOf handling
+          ...(defaultValue !== undefined ? { default: defaultValue } : {}),
         },
       },
       $ref + '/properties/' + fieldName,

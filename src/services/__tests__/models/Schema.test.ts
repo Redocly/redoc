@@ -56,6 +56,20 @@ describe('Models', () => {
       expect(schema.displayType).toBe('(Array of strings or numbers) or string');
     });
 
+    test('oneOf titles: explicit, inferred from $ref, and inline with title', () => {
+      const spec = require('../fixtures/oneOf.json');
+      parser = new OpenAPIParser(spec, undefined, opts);
+      const schema = new SchemaModel(parser, spec.components.schemas.Response, '', opts);
+
+      const dataField = schema.fields?.find(f => f.name === 'data');
+      expect(dataField).toBeDefined();
+      expect(dataField!.schema.oneOf).toHaveLength(3);
+
+      expect(dataField!.schema.oneOf![0].title).toBe('ExplicitTitle');
+      expect(dataField!.schema.oneOf![1].title).toBe('NoTitle');
+      expect(dataField!.schema.oneOf![2].title).toBe('InlineWithTitle');
+    });
+
     test('schemaDefinition should resolve double ref', () => {
       const spec = require('../fixtures/3.1/schemaDefinition.json');
       parser = new OpenAPIParser(spec, undefined, opts);

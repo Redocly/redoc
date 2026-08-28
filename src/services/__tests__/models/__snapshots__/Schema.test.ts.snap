@@ -3,7 +3,6 @@
 exports[`Models Schema schemaDefinition should resolve field with conditional operators 1`] = `
 {
   "allOf": undefined,
-  "default": undefined,
   "description": undefined,
   "items": {
     "allOf": undefined,
@@ -31,7 +30,6 @@ exports[`Models Schema schemaDefinition should resolve field with conditional op
 exports[`Models Schema schemaDefinition should resolve field with conditional operators 2`] = `
 {
   "allOf": undefined,
-  "default": undefined,
   "description": undefined,
   "items": {
     "allOf": undefined,
