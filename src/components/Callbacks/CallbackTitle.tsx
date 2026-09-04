@@ -22,9 +22,13 @@ export const CallbackTitle = (props: CallbackTitleProps) => {
 
   return (
     <CallbackTitleWrapper className={className} onClick={onClick || undefined}>
-      <OperationBadgeStyled type={httpVerb}>{shortenHTTPVerb(httpVerb)}</OperationBadgeStyled>
+      <OperationBadgeStyled type={httpVerb} translate="no">
+        {shortenHTTPVerb(httpVerb)}
+      </OperationBadgeStyled>
       <ShelfIcon size={'1.5em'} direction={opened ? 'down' : 'right'} float={'left'} />
-      <CallbackName $deprecated={deprecated}>{name}</CallbackName>
+      <CallbackName $deprecated={deprecated} translate="no">
+        {name}
+      </CallbackName>
       {deprecated ? <Badge type="warning"> {l('deprecated')} </Badge> : null}
     </CallbackTitleWrapper>
   );

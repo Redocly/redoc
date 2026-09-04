@@ -18,7 +18,7 @@ export function SecurityDetails(props: SecuritySchemaProps) {
         <>
           <SecurityRow>
             <b>{titleize(scheme.apiKey.in || '')} parameter name: </b>
-            <code>{scheme.apiKey.name}</code>
+            <code translate="no">{scheme.apiKey.name}</code>
           </SecurityRow>
           {RequiredScopes}
         </>
@@ -26,13 +26,13 @@ export function SecurityDetails(props: SecuritySchemaProps) {
         <>
           <SecurityRow>
             <b>HTTP Authorization Scheme: </b>
-            <code>{scheme.http.scheme}</code>
+            <code translate="no">{scheme.http.scheme}</code>
           </SecurityRow>
           <SecurityRow>
             {scheme.http.scheme === 'bearer' && scheme.http.bearerFormat && (
               <>
                 <b>Bearer format: </b>
-                <code>{scheme.http.bearerFormat}</code>
+                <code translate="no">{scheme.http.bearerFormat}</code>
               </>
             )}
           </SecurityRow>
@@ -42,7 +42,7 @@ export function SecurityDetails(props: SecuritySchemaProps) {
         <>
           <SecurityRow>
             <b>Connect URL: </b>
-            <code>
+            <code translate="no">
               <a target="_blank" rel="noopener noreferrer" href={scheme.openId.connectUrl}>
                 {scheme.openId.connectUrl}
               </a>

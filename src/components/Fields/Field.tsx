@@ -80,12 +80,12 @@ export class Field extends React.Component<FieldProps> {
           onKeyPress={this.handleKeyPress}
           aria-label={`expand ${name}`}
         >
-          {!hidePropertiesPrefix &&
-            fieldParentsName.map(
-              name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
-            )}
-          <span className="property-name" translate="no">
-            {name}
+          <span translate="no">
+            {!hidePropertiesPrefix &&
+              fieldParentsName.map(
+                name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
+              )}
+            <span className="property-name">{name}</span>
           </span>
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
@@ -94,12 +94,12 @@ export class Field extends React.Component<FieldProps> {
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
         <PropertyBullet />
-        {!hidePropertiesPrefix &&
-          fieldParentsName.map(
-            name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
-          )}
-        <span className="property-name" translate="no">
-          {name}
+        <span translate="no">
+          {!hidePropertiesPrefix &&
+            fieldParentsName.map(
+              name => name + '.\u200B', // zero-width space, a special character is used for correct line breaking
+            )}
+          <span className="property-name">{name}</span>
         </span>
         {labels}
       </PropertyNameCell>

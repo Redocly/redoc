@@ -23,7 +23,6 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
        
       <span
         class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
-        translate="no"
       >
           
       </span>
@@ -93,7 +92,6 @@ exports[`FieldDetailsComponent renders correctly when default value is object in
        
       <span
         class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
-        translate="no"
       >
           
       </span>
@@ -163,7 +161,6 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
        
       <span
         class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
-        translate="no"
       >
           
       </span>
@@ -176,7 +173,6 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
          
         <span
           class="sc-kpDqfm sc-gFqAkR cGRfjn fYEICH"
-          translate="no"
         >
            &lt;= 128 characters 
         </span>

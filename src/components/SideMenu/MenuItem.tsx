@@ -117,11 +117,13 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
           </OperationBadge>
         ))}
       {item.isWebhook ? (
-        <OperationBadge type="hook">
+        <OperationBadge type="hook" translate={showWebhookVerb ? 'no' : undefined}>
           {showWebhookVerb ? item.httpVerb : l('webhook')}
         </OperationBadge>
       ) : (
-        <OperationBadge type={item.httpVerb}>{shortenHTTPVerb(item.httpVerb)}</OperationBadge>
+        <OperationBadge type={item.httpVerb} translate="no">
+          {shortenHTTPVerb(item.httpVerb)}
+        </OperationBadge>
       )}
       <MenuItemTitle tabIndex={0} width="calc(100% - 38px)">
         {item.sidebarLabel}

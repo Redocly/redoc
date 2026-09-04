@@ -130,9 +130,7 @@ export const ExampleValue = styled(FieldLabel).attrs({
 
 export const ExtensionValue = styled(ExampleValue)``;
 
-export const ConstraintItem = styled(FieldLabel).attrs({
-  translate: 'no',
-})`
+export const ConstraintItem = styled(FieldLabel)`
   border-radius: 2px;
   ${({ theme }) => `
     background-color: ${transparentize(0.95, theme.colors.primary.light)};

@@ -86,7 +86,9 @@ export const SimpleDropdown = styled(Dropdown)`
   }
 `;
 
-export const MimeLabel = styled.span`
+export const MimeLabel = styled.span.attrs({
+  translate: 'no',
+})`
   margin-left: 10px;
   text-transform: none;
   font-size: 0.929em;

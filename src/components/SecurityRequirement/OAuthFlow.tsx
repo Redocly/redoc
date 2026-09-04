@@ -18,12 +18,12 @@ export function OAuthFlowComponent(props: OAuthFlowProps) {
     <>
       <SecurityRow>
         <b>Flow type: </b>
-        <code>{type} </code>
+        <code translate="no">{type} </code>
       </SecurityRow>
       {(type === 'implicit' || type === 'authorizationCode') && (
         <SecurityRow>
           <strong> Authorization URL: </strong>
-          <code>
+          <code translate="no">
             <a target="_blank" rel="noopener noreferrer" href={(flow as any).authorizationUrl}>
               {(flow as any).authorizationUrl}
             </a>
@@ -33,13 +33,13 @@ export function OAuthFlowComponent(props: OAuthFlowProps) {
       {(type === 'password' || type === 'clientCredentials' || type === 'authorizationCode') && (
         <SecurityRow>
           <b> Token URL: </b>
-          <code>{(flow as any).tokenUrl}</code>
+          <code translate="no">{(flow as any).tokenUrl}</code>
         </SecurityRow>
       )}
       {flow!.refreshUrl && (
         <SecurityRow>
           <strong> Refresh URL: </strong>
-          <code>{flow!.refreshUrl}</code>
+          <code translate="no">{flow!.refreshUrl}</code>
         </SecurityRow>
       )}
       {!!scopesNames.length && (
@@ -52,7 +52,7 @@ export function OAuthFlowComponent(props: OAuthFlowProps) {
             <ul>
               {scopesNames.map(scope => (
                 <li key={scope}>
-                  <code>{scope}</code> -{' '}
+                  <code translate="no">{scope}</code> -{' '}
                   <Markdown
                     className={'redoc-markdown'}
                     inline={true}
