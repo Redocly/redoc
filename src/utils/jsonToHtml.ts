@@ -3,7 +3,7 @@ let level = 1;
 export function jsonToHTML(json, maxExpandLevel) {
   level = 1;
   let output = '';
-  output += '<div class="redoc-json">';
+  output += '<div class="redoc-json" translate="no">';
   output += '<code>';
   output += valueToHTML(json, maxExpandLevel);
   output += '</code>';
@@ -106,7 +106,8 @@ function objectToHTML(json, maxExpandLevel: number) {
     const key = keys[i];
     hasContents = true;
     output += '<li><div class="hoverable ' + collapsed + '">';
-    output += '<span class="property token string" translate="no">"' + htmlEncode(key) + '"</span>: ';
+    output +=
+      '<span class="property token string" translate="no">"' + htmlEncode(key) + '"</span>: ';
     output += valueToHTML(json[key], maxExpandLevel);
     if (i < length - 1) {
       output += punctuation(',');

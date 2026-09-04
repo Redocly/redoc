@@ -37,6 +37,7 @@ exports[`Components SchemaView OneOf deprecated should match snapshot 1`] = `
         />
         <span
           class="sc-Nxspf sc-gFAWRd cXxAXt dYzdDr"
+          translate="no"
         >
           string
         </span>
