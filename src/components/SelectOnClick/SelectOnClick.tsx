@@ -15,8 +15,15 @@ export class SelectOnClick extends React.PureComponent<React.PropsWithChildren<a
         ref={el => (this.child = el)}
         onClick={this.selectElement}
         onFocus={this.selectElement}
+        onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.selectElement();
+          }
+        }}
         tabIndex={0}
         role="button"
+        aria-label="Select all text"
       >
         {children}
       </div>

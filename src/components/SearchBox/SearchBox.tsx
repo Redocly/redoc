@@ -143,7 +143,22 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
 
     return (
       <SearchWrap role="search">
-        {this.state.term && <ClearIcon onClick={this.clear}>×</ClearIcon>}
+        {this.state.term && (
+          <ClearIcon
+            onClick={this.clear}
+            aria-label="Clear search"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.clear();
+              }
+            }}
+          >
+            ×
+          </ClearIcon>
+        )}
         <SearchIcon />
         <SearchInput
           value={this.state.term}
@@ -159,7 +174,13 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
               wheelPropagation: false,
             }}
           >
-            <SearchResultsBox data-role="search:results">
+            <SearchResultsBox
+              data-role="search:results"
+              role="menu"
+              aria-label={`Search results: ${results.length} result${
+                results.length !== 1 ? 's' : ''
+              } found`}
+            >
               {results.map((res, idx) => (
                 <MenuItem
                   item={Object.create(res.item, {
@@ -177,7 +198,9 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
           </PerfectScrollbarWrap>
         )}
         {this.state.term && this.state.noResults ? (
-          <SearchResultsBox data-role="search:results">{l('noResultsFound')}</SearchResultsBox>
+          <SearchResultsBox data-role="search:results" aria-live="polite">
+            {l('noResultsFound')}
+          </SearchResultsBox>
         ) : null}
       </SearchWrap>
     );
