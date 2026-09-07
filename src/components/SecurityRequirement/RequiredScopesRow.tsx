@@ -9,7 +9,7 @@ export const RequiredScopesRow = ({ scopes }: { scopes: string[] }): JSX.Element
       {scopes.map((scope, idx) => {
         return (
           <React.Fragment key={idx}>
-            <code>{scope}</code>{' '}
+            <code translate="no">{scope}</code>{' '}
           </React.Fragment>
         );
       })}

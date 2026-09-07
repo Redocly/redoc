@@ -65,7 +65,9 @@ export const TypePrefix = styled(FieldLabel)`
   color: ${props => transparentize(0.1, props.theme.schema.typeNameColor)};
 `;
 
-export const TypeName = styled(FieldLabel)`
+export const TypeName = styled(FieldLabel).attrs({
+  translate: 'no',
+})`
   color: ${props => props.theme.schema.typeNameColor};
 `;
 
@@ -95,7 +97,9 @@ export const RecursiveLabel = styled(FieldLabel)`
   font-size: 13px;
 `;
 
-export const PatternLabel = styled(FieldLabel)`
+export const PatternLabel = styled(FieldLabel).attrs({
+  translate: 'no',
+})`
   color: #0e7c86;
   font-family: ${props => props.theme.typography.code.fontFamily};
   font-size: 12px;
@@ -105,7 +109,9 @@ export const PatternLabel = styled(FieldLabel)`
   }
 `;
 
-export const ExampleValue = styled(FieldLabel)`
+export const ExampleValue = styled(FieldLabel).attrs({
+  translate: 'no',
+})`
   border-radius: 2px;
   word-break: break-word;
   ${({ theme }) => `

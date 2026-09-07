@@ -24,7 +24,9 @@ export const ScopeNameList = styled.ul`
   }
 `;
 
-export const ScopeName = styled.code`
+export const ScopeName = styled.code.attrs({
+  translate: 'no',
+})`
   font-size: ${props => props.theme.typography.code.fontSize};
   font-family: ${props => props.theme.typography.code.fontFamily};
   margin: 0 3px;

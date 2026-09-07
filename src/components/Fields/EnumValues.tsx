@@ -93,7 +93,7 @@ export class EnumValues extends React.PureComponent<EnumValuesProps, EnumValuesS
                     ({ description, value }) => {
                       return (
                         <tr key={value}>
-                          <td>{value}</td>
+                          <td translate="no">{value}</td>
                           <td>
                             <Markdown source={description} compact inline />
                           </td>

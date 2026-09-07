@@ -10,6 +10,7 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
     </span>
     <span
       class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+      translate="no"
     >
       array
     </span>
@@ -36,6 +37,7 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
      
     <span
       class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      translate="no"
     >
       []
     </span>
@@ -50,6 +52,7 @@ exports[`FieldDetailsComponent renders correctly 1`] = `
      
     <span
       class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      translate="no"
     >
       "example"
     </span>
@@ -76,6 +79,7 @@ exports[`FieldDetailsComponent renders correctly when default value is object in
     />
     <span
       class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+      translate="no"
     >
       object
     </span>
@@ -102,6 +106,7 @@ exports[`FieldDetailsComponent renders correctly when default value is object in
      
     <span
       class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      translate="no"
     >
       {"properties":{}}
     </span>
@@ -116,6 +121,7 @@ exports[`FieldDetailsComponent renders correctly when default value is object in
      
     <span
       class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      translate="no"
     >
       "example"
     </span>
@@ -142,6 +148,7 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
     />
     <span
       class="sc-kpDqfm sc-jlZhew cGRfjn dYtiIA"
+      translate="no"
     >
       Array of strings
     </span>
@@ -172,6 +179,7 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
       </span>
       <span
         class="sc-kpDqfm sc-eDPEul cGRfjn cCKYVD"
+        translate="no"
       >
         ^see regex[0-9]$
       </span>
@@ -188,6 +196,7 @@ exports[`FieldDetailsComponent renders correctly when field items have string ty
      
     <span
       class="sc-kpDqfm sc-eldPxv cGRfjn ehWiAn"
+      translate="no"
     >
       "example"
     </span>

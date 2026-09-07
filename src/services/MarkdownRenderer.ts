@@ -6,6 +6,16 @@ import type { MarkdownHeading, MDXComponentMeta } from './types';
 
 const renderer = new marked.Renderer();
 
+// Code in descriptions is still code: keep machine translators away from it while
+// leaving the surrounding prose translatable.
+const renderCode = renderer.code.bind(renderer);
+renderer.code = (...args: Parameters<typeof renderCode>) =>
+  `<div translate="no">${renderCode(...args)}</div>`;
+
+const renderCodespan = renderer.codespan.bind(renderer);
+renderer.codespan = (...args: Parameters<typeof renderCodespan>) =>
+  `<span translate="no">${renderCodespan(...args)}</span>`;
+
 marked.setOptions({
   renderer,
   highlight: (str, lang) => {

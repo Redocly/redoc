@@ -49,6 +49,8 @@ export const HeadersCaption = styled(UnderlinedHeader).attrs({
   caption-side: top;
 `;
 
-export const Code = styled.strong`
+export const Code = styled.strong.attrs({
+  translate: 'no',
+})`
   vertical-align: top;
 `;

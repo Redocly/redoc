@@ -50,10 +50,10 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
         {options => (
           <OperationEndpointWrap>
             <EndpointInfo onClick={this.toggle} $expanded={expanded} $inverted={inverted}>
-              <HttpVerb type={operation.httpVerb} $compact={this.props.compact}>
+              <HttpVerb type={operation.httpVerb} $compact={this.props.compact} translate="no">
                 {operation.httpVerb}
               </HttpVerb>
-              <ServerRelativeURL>{operation.path}</ServerRelativeURL>
+              <ServerRelativeURL translate="no">{operation.path}</ServerRelativeURL>
               <ShelfIcon
                 float={'right'}
                 color={inverted ? 'black' : 'white'}
@@ -73,7 +73,7 @@ export class Endpoint extends React.Component<EndpointProps, EndpointState> {
                     <Markdown source={server.description || ''} compact={true} />
                     <SelectOnClick>
                       <ServerUrl>
-                        <span>
+                        <span translate="no">
                           {hideHostname || options.hideHostname
                             ? basePath === '/'
                               ? ''

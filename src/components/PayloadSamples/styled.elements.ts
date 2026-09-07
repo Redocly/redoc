@@ -2,7 +2,9 @@ import { transparentize } from 'polished';
 import styled from '../../styled-components';
 import { Dropdown } from '../../common-elements/Dropdown';
 
-export const MimeLabel = styled.div`
+export const MimeLabel = styled.div.attrs({
+  translate: 'no',
+})`
   padding: 0.9em;
   background-color: ${({ theme }) => transparentize(0.6, theme.rightPanel.backgroundColor)};
   margin: 0 0 10px 0;
