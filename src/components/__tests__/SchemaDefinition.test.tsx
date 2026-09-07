@@ -22,6 +22,15 @@ describe('Components', () => {
         components: {
           schemas: {
             test: {
+              description: 'schema_description',
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                },
+              },
+            },
+            test_no_description: {
               type: 'object',
               properties: {
                 id: {
@@ -76,6 +85,69 @@ describe('Components', () => {
           ),
         );
         expect(component.html().includes('<code>')).toBe(false);
+      });
+    });
+
+    describe('Show description constraints', () => {
+      it('should hide the description as default', () => {
+        const component = shallow(
+          withTheme(
+            <SchemaDefinition
+              schemaRef="#/components/schemas/test"
+              parser={parser}
+              options={options}
+              showExample={false}
+            />,
+          ),
+        );
+        expect(component.html().includes('schema_description')).toBe(false);
+      });
+
+      it('should hide the description if `showDescription` is `false`', () => {
+        const component = shallow(
+          withTheme(
+            <SchemaDefinition
+              schemaRef="#/components/schemas/test"
+              parser={parser}
+              options={options}
+              showExample={false}
+              showDescription={false}
+            />,
+          ),
+        );
+        expect(component.html().includes('schema_description')).toBe(false);
+      });
+
+      it('should show the description if `showDescription` is `true`', () => {
+        const component = shallow(
+          withTheme(
+            <SchemaDefinition
+              schemaRef="#/components/schemas/test"
+              parser={parser}
+              options={options}
+              showExample={false}
+              showDescription={true}
+            />,
+          ),
+        );
+        expect(component.html().includes('schema_description')).toBe(true);
+      });
+
+      it('not to thrown error if `showDescription` is `true` and without description', () => {
+        const component = shallow(
+          withTheme(
+            <SchemaDefinition
+              schemaRef="#/components/schemas/test_no_description"
+              parser={parser}
+              options={options}
+              showExample={false}
+              showDescription={true}
+            />,
+          ),
+        );
+        expect(() => {
+          component.html();
+        }).not.toThrow();
       });
     });
   });
