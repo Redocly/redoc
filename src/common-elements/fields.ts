@@ -91,7 +91,7 @@ export const PropertyLabel = styled(RequiredLabel)`
 `;
 
 export const RecursiveLabel = styled(FieldLabel)`
-  color: ${({ theme }) => theme.colors.warning.main};
+  color: ${({ theme }) => theme.colors.warning.dark};
   font-size: 13px;
 `;
 

@@ -159,7 +159,7 @@ export class SearchBox extends React.PureComponent<SearchBoxProps, SearchBoxStat
               wheelPropagation: false,
             }}
           >
-            <SearchResultsBox data-role="search:results">
+            <SearchResultsBox as="ul" role="menu" data-role="search:results">
               {results.map((res, idx) => (
                 <MenuItem
                   item={Object.create(res.item, {

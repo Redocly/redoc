@@ -37,7 +37,7 @@ const ArrowIcon = styled(ArrowSvg)`
 `;
 
 const DropdownComponent = (props: DropdownProps): JSX.Element => {
-  const { options, onChange, placeholder, value = '', variant, className } = props;
+  const { options, onChange, placeholder, value = '', variant, className, ariaLabel } = props;
 
   const handleOnChange = event => {
     const { selectedIndex } = event.target;
@@ -48,7 +48,12 @@ const DropdownComponent = (props: DropdownProps): JSX.Element => {
   return (
     <div className={className}>
       <ArrowIcon variant={variant} />
-      <select onChange={handleOnChange} value={value} className="dropdown-select">
+      <select
+        onChange={handleOnChange}
+        value={value}
+        className="dropdown-select"
+        aria-label={ariaLabel}
+      >
         {placeholder && (
           <option disabled hidden value={placeholder}>
             {placeholder}

@@ -63,10 +63,11 @@ export const SearchResultsBox = styled.div`
   max-height: 250px;
   border-top: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)}};
   border-bottom: ${({ theme }) => darken(0.1, theme.sidebar.backgroundColor)}};
-  margin-top: 10px;
+  margin: 10px 0 0;
   line-height: 1.4;
   font-size: 0.9em;
-  
+  list-style: none;
+
   li {
     background-color: inherit;
   }

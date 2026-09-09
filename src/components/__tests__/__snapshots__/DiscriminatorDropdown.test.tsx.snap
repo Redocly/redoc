@@ -164,22 +164,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
-                            "tabTextColor": "#d41f1c",
+                            "tabTextColor": "#eb6d6b",
                           },
                           "info": {
-                            "backgroundColor": "rgba(135,206,235,0.1)",
-                            "color": "#87ceeb",
-                            "tabTextColor": "#87ceeb",
+                            "backgroundColor": "rgba(24,108,142,0.07)",
+                            "color": "#186c8e",
+                            "tabTextColor": "#30aadc",
                           },
                           "redirect": {
-                            "backgroundColor": "rgba(255,165,0,0.1)",
-                            "color": "#ffa500",
+                            "backgroundColor": "rgba(153,99,0,0.07)",
+                            "color": "#996300",
                             "tabTextColor": "#ffa500",
                           },
                           "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
-                            "tabTextColor": "#1d8127",
+                            "tabTextColor": "#33d143",
                           },
                         },
                         "success": {
@@ -194,7 +194,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "tonalOffset": 0.2,
                         "warning": {
-                          "contrastText": "#ffffff",
+                          "contrastText": "#000",
                           "dark": "#996300",
                           "light": "#ffc966",
                           "main": "#ffa500",
@@ -266,7 +266,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "typography": {
                         "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                          "color": "#e53935",
+                          "color": "#c62828",
                           "fontFamily": "Courier, monospace",
                           "fontSize": "13px",
                           "fontWeight": "400",
@@ -287,8 +287,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
-                          "hoverTextDecoration": "auto",
-                          "textDecoration": "auto",
+                          "hoverTextDecoration": "underline",
+                          "textDecoration": "underline",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -440,22 +440,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
-                            "tabTextColor": "#d41f1c",
+                            "tabTextColor": "#eb6d6b",
                           },
                           "info": {
-                            "backgroundColor": "rgba(135,206,235,0.1)",
-                            "color": "#87ceeb",
-                            "tabTextColor": "#87ceeb",
+                            "backgroundColor": "rgba(24,108,142,0.07)",
+                            "color": "#186c8e",
+                            "tabTextColor": "#30aadc",
                           },
                           "redirect": {
-                            "backgroundColor": "rgba(255,165,0,0.1)",
-                            "color": "#ffa500",
+                            "backgroundColor": "rgba(153,99,0,0.07)",
+                            "color": "#996300",
                             "tabTextColor": "#ffa500",
                           },
                           "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
-                            "tabTextColor": "#1d8127",
+                            "tabTextColor": "#33d143",
                           },
                         },
                         "success": {
@@ -470,7 +470,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "tonalOffset": 0.2,
                         "warning": {
-                          "contrastText": "#ffffff",
+                          "contrastText": "#000",
                           "dark": "#996300",
                           "light": "#ffc966",
                           "main": "#ffa500",
@@ -542,7 +542,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "typography": {
                         "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                          "color": "#e53935",
+                          "color": "#c62828",
                           "fontFamily": "Courier, monospace",
                           "fontSize": "13px",
                           "fontWeight": "400",
@@ -563,8 +563,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
-                          "hoverTextDecoration": "auto",
-                          "textDecoration": "auto",
+                          "hoverTextDecoration": "underline",
+                          "textDecoration": "underline",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -703,22 +703,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
-                      "tabTextColor": "#d41f1c",
+                      "tabTextColor": "#eb6d6b",
                     },
                     "info": {
-                      "backgroundColor": "rgba(135,206,235,0.1)",
-                      "color": "#87ceeb",
-                      "tabTextColor": "#87ceeb",
+                      "backgroundColor": "rgba(24,108,142,0.07)",
+                      "color": "#186c8e",
+                      "tabTextColor": "#30aadc",
                     },
                     "redirect": {
-                      "backgroundColor": "rgba(255,165,0,0.1)",
-                      "color": "#ffa500",
+                      "backgroundColor": "rgba(153,99,0,0.07)",
+                      "color": "#996300",
                       "tabTextColor": "#ffa500",
                     },
                     "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
-                      "tabTextColor": "#1d8127",
+                      "tabTextColor": "#33d143",
                     },
                   },
                   "success": {
@@ -733,7 +733,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "tonalOffset": 0.2,
                   "warning": {
-                    "contrastText": "#ffffff",
+                    "contrastText": "#000",
                     "dark": "#996300",
                     "light": "#ffc966",
                     "main": "#ffa500",
@@ -805,7 +805,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "typography": {
                   "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                    "color": "#e53935",
+                    "color": "#c62828",
                     "fontFamily": "Courier, monospace",
                     "fontSize": "13px",
                     "fontWeight": "400",
@@ -826,8 +826,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
-                    "hoverTextDecoration": "auto",
-                    "textDecoration": "auto",
+                    "hoverTextDecoration": "underline",
+                    "textDecoration": "underline",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -1028,22 +1028,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
-                            "tabTextColor": "#d41f1c",
+                            "tabTextColor": "#eb6d6b",
                           },
                           "info": {
-                            "backgroundColor": "rgba(135,206,235,0.1)",
-                            "color": "#87ceeb",
-                            "tabTextColor": "#87ceeb",
+                            "backgroundColor": "rgba(24,108,142,0.07)",
+                            "color": "#186c8e",
+                            "tabTextColor": "#30aadc",
                           },
                           "redirect": {
-                            "backgroundColor": "rgba(255,165,0,0.1)",
-                            "color": "#ffa500",
+                            "backgroundColor": "rgba(153,99,0,0.07)",
+                            "color": "#996300",
                             "tabTextColor": "#ffa500",
                           },
                           "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
-                            "tabTextColor": "#1d8127",
+                            "tabTextColor": "#33d143",
                           },
                         },
                         "success": {
@@ -1058,7 +1058,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "tonalOffset": 0.2,
                         "warning": {
-                          "contrastText": "#ffffff",
+                          "contrastText": "#000",
                           "dark": "#996300",
                           "light": "#ffc966",
                           "main": "#ffa500",
@@ -1130,7 +1130,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "typography": {
                         "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                          "color": "#e53935",
+                          "color": "#c62828",
                           "fontFamily": "Courier, monospace",
                           "fontSize": "13px",
                           "fontWeight": "400",
@@ -1151,8 +1151,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
-                          "hoverTextDecoration": "auto",
-                          "textDecoration": "auto",
+                          "hoverTextDecoration": "underline",
+                          "textDecoration": "underline",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -1316,22 +1316,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                           "error": {
                             "backgroundColor": "rgba(212,31,28,0.07)",
                             "color": "#d41f1c",
-                            "tabTextColor": "#d41f1c",
+                            "tabTextColor": "#eb6d6b",
                           },
                           "info": {
-                            "backgroundColor": "rgba(135,206,235,0.1)",
-                            "color": "#87ceeb",
-                            "tabTextColor": "#87ceeb",
+                            "backgroundColor": "rgba(24,108,142,0.07)",
+                            "color": "#186c8e",
+                            "tabTextColor": "#30aadc",
                           },
                           "redirect": {
-                            "backgroundColor": "rgba(255,165,0,0.1)",
-                            "color": "#ffa500",
+                            "backgroundColor": "rgba(153,99,0,0.07)",
+                            "color": "#996300",
                             "tabTextColor": "#ffa500",
                           },
                           "success": {
                             "backgroundColor": "rgba(29,129,39,0.07)",
                             "color": "#1d8127",
-                            "tabTextColor": "#1d8127",
+                            "tabTextColor": "#33d143",
                           },
                         },
                         "success": {
@@ -1346,7 +1346,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         },
                         "tonalOffset": 0.2,
                         "warning": {
-                          "contrastText": "#ffffff",
+                          "contrastText": "#000",
                           "dark": "#996300",
                           "light": "#ffc966",
                           "main": "#ffa500",
@@ -1418,7 +1418,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                       "typography": {
                         "code": {
                           "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                          "color": "#e53935",
+                          "color": "#c62828",
                           "fontFamily": "Courier, monospace",
                           "fontSize": "13px",
                           "fontWeight": "400",
@@ -1439,8 +1439,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                         "links": {
                           "color": "#32329f",
                           "hover": "#6868cf",
-                          "hoverTextDecoration": "auto",
-                          "textDecoration": "auto",
+                          "hoverTextDecoration": "underline",
+                          "textDecoration": "underline",
                           "visited": "#32329f",
                         },
                         "optimizeSpeed": true,
@@ -1575,22 +1575,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
-                      "tabTextColor": "#d41f1c",
+                      "tabTextColor": "#eb6d6b",
                     },
                     "info": {
-                      "backgroundColor": "rgba(135,206,235,0.1)",
-                      "color": "#87ceeb",
-                      "tabTextColor": "#87ceeb",
+                      "backgroundColor": "rgba(24,108,142,0.07)",
+                      "color": "#186c8e",
+                      "tabTextColor": "#30aadc",
                     },
                     "redirect": {
-                      "backgroundColor": "rgba(255,165,0,0.1)",
-                      "color": "#ffa500",
+                      "backgroundColor": "rgba(153,99,0,0.07)",
+                      "color": "#996300",
                       "tabTextColor": "#ffa500",
                     },
                     "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
-                      "tabTextColor": "#1d8127",
+                      "tabTextColor": "#33d143",
                     },
                   },
                   "success": {
@@ -1605,7 +1605,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "tonalOffset": 0.2,
                   "warning": {
-                    "contrastText": "#ffffff",
+                    "contrastText": "#000",
                     "dark": "#996300",
                     "light": "#ffc966",
                     "main": "#ffa500",
@@ -1677,7 +1677,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "typography": {
                   "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                    "color": "#e53935",
+                    "color": "#c62828",
                     "fontFamily": "Courier, monospace",
                     "fontSize": "13px",
                     "fontWeight": "400",
@@ -1698,8 +1698,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
-                    "hoverTextDecoration": "auto",
-                    "textDecoration": "auto",
+                    "hoverTextDecoration": "underline",
+                    "textDecoration": "underline",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -1859,22 +1859,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "error": {
                   "backgroundColor": "rgba(212,31,28,0.07)",
                   "color": "#d41f1c",
-                  "tabTextColor": "#d41f1c",
+                  "tabTextColor": "#eb6d6b",
                 },
                 "info": {
-                  "backgroundColor": "rgba(135,206,235,0.1)",
-                  "color": "#87ceeb",
-                  "tabTextColor": "#87ceeb",
+                  "backgroundColor": "rgba(24,108,142,0.07)",
+                  "color": "#186c8e",
+                  "tabTextColor": "#30aadc",
                 },
                 "redirect": {
-                  "backgroundColor": "rgba(255,165,0,0.1)",
-                  "color": "#ffa500",
+                  "backgroundColor": "rgba(153,99,0,0.07)",
+                  "color": "#996300",
                   "tabTextColor": "#ffa500",
                 },
                 "success": {
                   "backgroundColor": "rgba(29,129,39,0.07)",
                   "color": "#1d8127",
-                  "tabTextColor": "#1d8127",
+                  "tabTextColor": "#33d143",
                 },
               },
               "success": {
@@ -1889,7 +1889,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               },
               "tonalOffset": 0.2,
               "warning": {
-                "contrastText": "#ffffff",
+                "contrastText": "#000",
                 "dark": "#996300",
                 "light": "#ffc966",
                 "main": "#ffa500",
@@ -1961,7 +1961,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "typography": {
               "code": {
                 "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                "color": "#e53935",
+                "color": "#c62828",
                 "fontFamily": "Courier, monospace",
                 "fontSize": "13px",
                 "fontWeight": "400",
@@ -1982,8 +1982,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "links": {
                 "color": "#32329f",
                 "hover": "#6868cf",
-                "hoverTextDecoration": "auto",
-                "textDecoration": "auto",
+                "hoverTextDecoration": "underline",
+                "textDecoration": "underline",
                 "visited": "#32329f",
               },
               "optimizeSpeed": true,
@@ -2173,22 +2173,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
-                      "tabTextColor": "#d41f1c",
+                      "tabTextColor": "#eb6d6b",
                     },
                     "info": {
-                      "backgroundColor": "rgba(135,206,235,0.1)",
-                      "color": "#87ceeb",
-                      "tabTextColor": "#87ceeb",
+                      "backgroundColor": "rgba(24,108,142,0.07)",
+                      "color": "#186c8e",
+                      "tabTextColor": "#30aadc",
                     },
                     "redirect": {
-                      "backgroundColor": "rgba(255,165,0,0.1)",
-                      "color": "#ffa500",
+                      "backgroundColor": "rgba(153,99,0,0.07)",
+                      "color": "#996300",
                       "tabTextColor": "#ffa500",
                     },
                     "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
-                      "tabTextColor": "#1d8127",
+                      "tabTextColor": "#33d143",
                     },
                   },
                   "success": {
@@ -2203,7 +2203,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "tonalOffset": 0.2,
                   "warning": {
-                    "contrastText": "#ffffff",
+                    "contrastText": "#000",
                     "dark": "#996300",
                     "light": "#ffc966",
                     "main": "#ffa500",
@@ -2275,7 +2275,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "typography": {
                   "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                    "color": "#e53935",
+                    "color": "#c62828",
                     "fontFamily": "Courier, monospace",
                     "fontSize": "13px",
                     "fontWeight": "400",
@@ -2296,8 +2296,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
-                    "hoverTextDecoration": "auto",
-                    "textDecoration": "auto",
+                    "hoverTextDecoration": "underline",
+                    "textDecoration": "underline",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -2449,22 +2449,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                     "error": {
                       "backgroundColor": "rgba(212,31,28,0.07)",
                       "color": "#d41f1c",
-                      "tabTextColor": "#d41f1c",
+                      "tabTextColor": "#eb6d6b",
                     },
                     "info": {
-                      "backgroundColor": "rgba(135,206,235,0.1)",
-                      "color": "#87ceeb",
-                      "tabTextColor": "#87ceeb",
+                      "backgroundColor": "rgba(24,108,142,0.07)",
+                      "color": "#186c8e",
+                      "tabTextColor": "#30aadc",
                     },
                     "redirect": {
-                      "backgroundColor": "rgba(255,165,0,0.1)",
-                      "color": "#ffa500",
+                      "backgroundColor": "rgba(153,99,0,0.07)",
+                      "color": "#996300",
                       "tabTextColor": "#ffa500",
                     },
                     "success": {
                       "backgroundColor": "rgba(29,129,39,0.07)",
                       "color": "#1d8127",
-                      "tabTextColor": "#1d8127",
+                      "tabTextColor": "#33d143",
                     },
                   },
                   "success": {
@@ -2479,7 +2479,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   },
                   "tonalOffset": 0.2,
                   "warning": {
-                    "contrastText": "#ffffff",
+                    "contrastText": "#000",
                     "dark": "#996300",
                     "light": "#ffc966",
                     "main": "#ffa500",
@@ -2551,7 +2551,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                 "typography": {
                   "code": {
                     "backgroundColor": "rgba(38, 50, 56, 0.05)",
-                    "color": "#e53935",
+                    "color": "#c62828",
                     "fontFamily": "Courier, monospace",
                     "fontSize": "13px",
                     "fontWeight": "400",
@@ -2572,8 +2572,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
                   "links": {
                     "color": "#32329f",
                     "hover": "#6868cf",
-                    "hoverTextDecoration": "auto",
-                    "textDecoration": "auto",
+                    "hoverTextDecoration": "underline",
+                    "textDecoration": "underline",
                     "visited": "#32329f",
                   },
                   "optimizeSpeed": true,
@@ -2712,22 +2712,22 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
               "error": {
                 "backgroundColor": "rgba(212,31,28,0.07)",
                 "color": "#d41f1c",
-                "tabTextColor": "#d41f1c",
+                "tabTextColor": "#eb6d6b",
               },
               "info": {
-                "backgroundColor": "rgba(135,206,235,0.1)",
-                "color": "#87ceeb",
-                "tabTextColor": "#87ceeb",
+                "backgroundColor": "rgba(24,108,142,0.07)",
+                "color": "#186c8e",
+                "tabTextColor": "#30aadc",
               },
               "redirect": {
-                "backgroundColor": "rgba(255,165,0,0.1)",
-                "color": "#ffa500",
+                "backgroundColor": "rgba(153,99,0,0.07)",
+                "color": "#996300",
                 "tabTextColor": "#ffa500",
               },
               "success": {
                 "backgroundColor": "rgba(29,129,39,0.07)",
                 "color": "#1d8127",
-                "tabTextColor": "#1d8127",
+                "tabTextColor": "#33d143",
               },
             },
             "success": {
@@ -2742,7 +2742,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             },
             "tonalOffset": 0.2,
             "warning": {
-              "contrastText": "#ffffff",
+              "contrastText": "#000",
               "dark": "#996300",
               "light": "#ffc966",
               "main": "#ffa500",
@@ -2814,7 +2814,7 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
           "typography": {
             "code": {
               "backgroundColor": "rgba(38, 50, 56, 0.05)",
-              "color": "#e53935",
+              "color": "#c62828",
               "fontFamily": "Courier, monospace",
               "fontSize": "13px",
               "fontWeight": "400",
@@ -2835,8 +2835,8 @@ exports[`Components SchemaView discriminator should correctly render SchemaView 
             "links": {
               "color": "#32329f",
               "hover": "#6868cf",
-              "hoverTextDecoration": "auto",
-              "textDecoration": "auto",
+              "hoverTextDecoration": "underline",
+              "textDecoration": "underline",
               "visited": "#32329f",
             },
             "optimizeSpeed": true,

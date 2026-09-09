@@ -45,18 +45,30 @@ export const Tabs = styled(ReactTabs)`
 
       &.tab-success {
         color: ${props => props.theme.colors.responses.success.tabTextColor};
+        &.react-tabs__tab--selected {
+          color: ${props => props.theme.colors.responses.success.color};
+        }
       }
 
       &.tab-redirect {
         color: ${props => props.theme.colors.responses.redirect.tabTextColor};
+        &.react-tabs__tab--selected {
+          color: ${props => props.theme.colors.responses.redirect.color};
+        }
       }
 
       &.tab-info {
         color: ${props => props.theme.colors.responses.info.tabTextColor};
+        &.react-tabs__tab--selected {
+          color: ${props => props.theme.colors.responses.info.color};
+        }
       }
 
       &.tab-error {
         color: ${props => props.theme.colors.responses.error.tabTextColor};
+        &.react-tabs__tab--selected {
+          color: ${props => props.theme.colors.responses.error.color};
+        }
       }
     }
   }
