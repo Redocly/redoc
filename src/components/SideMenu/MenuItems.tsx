@@ -19,15 +19,10 @@ export interface MenuItemsProps {
 @observer
 export class MenuItems extends React.Component<MenuItemsProps> {
   render() {
-    const { items, root, className } = this.props;
+    const { items, className } = this.props;
     const expanded = this.props.expanded == null ? true : this.props.expanded;
     return (
-      <MenuItemUl
-        className={className}
-        style={this.props.style}
-        $expanded={expanded}
-        {...(root ? { role: 'menu' } : {})}
-      >
+      <MenuItemUl className={className} style={this.props.style} $expanded={expanded} role="menu">
         {items.map((item, idx) => (
           <MenuItem key={idx} item={item} onActivate={this.props.onActivate} />
         ))}

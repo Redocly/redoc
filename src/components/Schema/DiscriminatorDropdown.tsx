@@ -47,7 +47,7 @@ export class DiscriminatorDropdown extends React.Component<{
         value={activeValue}
         options={options}
         onChange={this.changeActiveChild}
-        ariaLabel="Example"
+        ariaLabel={parent.discriminatorProp}
       />
     );
   }

@@ -243,15 +243,15 @@ Change styles for the API documentation page. **Supported in Redoc CE 2.x**.
     * `fontFamily`: 'Courier, monospace'
     * `lineHeight`: # COMPUTED: typography.lineHeight
     * `fontWeight`: # COMPUTED: typography.fontWeightRegular
-    * `color`: '#e53935'
+    * `color`: '#c62828'
     * `backgroundColor`: 'rgba(38, 50, 56, 0.05)'
     * `wrap`: false # whether to break word for inline blocks (otherwise they can overflow)
   * `links`
     * `color`: # COMPUTED: colors.primary.main
     * `visited`: # COMPUTED: typography.links.color
     * `hover`: # COMPUTED: lighten(0.2 typography.links.color)
-    * `textDecoration`: 'auto'
-    * `hoverTextDecoration`: 'auto'
+    * `textDecoration`: 'underline'
+    * `hoverTextDecoration`: 'underline'
 * `sidebar`
   * `width`: '260px'
   * `backgroundColor`: '#fafafa'
