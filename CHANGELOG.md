@@ -1,13 +1,18 @@
-## [2.5.3](https://github.com/Redocly/redoc/compare/v2.5.1...v2.5.3) (2026-05-27)
+# [2.5.4](https://github.com/Redocly/redoc/compare/v2.5.3...v2.5.4) (2026-09-10)
+
+### Bug Fixes
+
+* Fix accessibility errors reported by pa11y ([#2837](https://github.com/Redocly/redoc/issues/2837)) ([1424bfd](https://github.com/Redocly/redoc/commit/1424bfd0100488a83f462f7047ae7372e2d10c9f))
+* Resolve js-yaml, fast-uri and brace-expansion vulnerabilities ([#2832](https://github.com/Redocly/redoc/issues/2832)) ([6188dc4](https://github.com/Redocly/redoc/commit/6188dc4a1c689de2ed3bdfb6061076d0a73bb949))
+* Bump dompurify from 3.4.6 to 3.4.13 ([#2824](https://github.com/Redocly/redoc/issues/2824)) ([616398b](https://github.com/Redocly/redoc/commit/616398b62bbd11dc5edad173c4520b754325b0bb))
 
 
-### Bug fixes
-
-* Fix vulnerabilities and prevent crash in openapi 3.2
+# [2.5.3](https://github.com/Redocly/redoc/compare/v2.5.1...v2.5.3) (2026-05-27)
 
 
 ### Bug Fixes
 
+* Fix vulnerabilities and prevent crash in openapi 3.2
 * Bumped `openapi-sampler` dependency to include the fix for `readOnly`/`writeOnly` handling in allOf.
 
 
