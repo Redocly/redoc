@@ -1,0 +1,65 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "AA",
+    "version": "1.0"
+  },
+  "paths": {
+    "/test": {
+      "get": {
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Box"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Measurement": {
+      "type": "object",
+      "description": "Reusable measurement type.",
+      "properties": {
+        "value": {
+          "format": "double",
+          "description": "The numeric value of the measurement.",
+          "type": "number"
+        },
+        "uom": {
+          "description": "The unit-of-measurement.  \r\ne.g. kg, m³",
+          "type": "string"
+        }
+      }
+    },
+    "Box": {
+      "type": "object",
+      "description": "Model which contains a reused type as a field e.g. a box with dimensions.",
+      "properties": {
+        "weight": {
+          "$ref": "#/definitions/Measurement",
+          "description": "The gross weight of the box and its contents (in kg)."
+        },
+        "volume": {
+          "$ref": "#/definitions/Measurement",
+          "description": "The volume of the box (in m3)."
+        },
+        "height": {
+          "$ref": "#/definitions/Measurement",
+          "description": "The height of the box (in mm)."
+        },
+        "width": {
+          "$ref": "#/definitions/Measurement",
+          "description": "The width of the box (in mm)."
+        },
+        "depth": {
+          "$ref": "#/definitions/Measurement",
+          "description": "The depth of the box (in mm)."
+        }
+      }
+    }
+  }
+}
