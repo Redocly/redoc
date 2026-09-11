@@ -7,6 +7,7 @@ import {
   OneOfList,
 } from '../../common-elements/schema';
 import { Badge } from '../../common-elements/shelfs';
+import { Markdown } from '../Markdown/Markdown';
 import { SchemaModel } from '../../services/models';
 import { ConstraintsView } from '../Fields/FieldConstraints';
 import { Schema, SchemaProps } from './Schema';
@@ -61,6 +62,9 @@ export class OneOfSchema extends React.Component<SchemaProps> {
         <div>
           {oneOf[schema.activeOneOf].deprecated && <Badge type="warning">Deprecated</Badge>}
         </div>
+        {activeSchema.type == 'object' && activeSchema.rawSchema.description && (
+          <Markdown source={activeSchema.rawSchema.description} />
+        )}
         <ConstraintsView constraints={activeSchema.constraints} />
         <Schema {...this.props} schema={activeSchema} />
       </div>
