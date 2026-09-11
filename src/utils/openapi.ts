@@ -7,7 +7,9 @@ import { OpenAPIParser } from '../services/OpenAPIParser';
 import {
   OpenAPIEncoding,
   OpenAPIMediaType,
+  OpenAPIOperation,
   OpenAPIParameter,
+  OpenAPIPath,
   OpenAPIParameterStyle,
   OpenAPIRequestBody,
   OpenAPIResponse,
@@ -58,11 +60,42 @@ const operationNames = {
   patch: true,
   delete: true,
   options: true,
-  $ref: true,
+  trace: true,
+  query: true,
 };
 
 export function isOperationName(key: string): boolean {
   return key in operationNames;
+}
+
+export interface PathOperation {
+  operationName: string;
+  operation: OpenAPIOperation;
+  pointerPath: string[];
+}
+
+export function getPathOperations(path: OpenAPIPath): PathOperation[] {
+  const operations = Object.keys(path)
+    .filter(isOperationName)
+    .map(operationName => ({
+      operationName,
+      operation: path[operationName],
+      pointerPath: [operationName],
+    }));
+
+  for (const operationName of Object.keys(path.additionalOperations || {})) {
+    if (isOperationName(operationName.toLowerCase())) {
+      continue;
+    }
+
+    operations.push({
+      operationName,
+      operation: path.additionalOperations![operationName],
+      pointerPath: ['additionalOperations', operationName],
+    });
+  }
+
+  return operations.filter(({ operation }) => !!operation);
 }
 
 export function getOperationSummary(operation: ExtendedOpenAPIOperation): string {
