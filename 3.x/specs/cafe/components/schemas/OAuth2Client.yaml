@@ -1,0 +1,59 @@
+type: object
+description: OAuth2 client registration response. Per RFC 7591, includes the client identifier, secret, timestamps, and all registered client metadata.
+properties:
+  clientId:
+    type: string
+    description: Client identifier issued by the authorization server.
+  clientSecret:
+    type: string
+    description: Client secret issued by the authorization server.
+  clientIdIssuedAt:
+    type: integer
+    format: int64
+    description: Time when the client_id is issued, represented as seconds since epoch (RFC7591).
+  clientSecretExpiresAt:
+    type: integer
+    format: int64
+    description: Time at which the client_secret expires, represented as seconds since epoch. 0 indicates the secret does not expire (RFC 7591).
+  name:
+    type: string
+    description: Client name (registered metadata).
+  redirectUris:
+    type: array
+    items:
+      type: string
+      format: uri
+    description: List of redirect URIs (registered metadata).
+  registrationClientUri:
+    type: string
+    format: uri
+    description: URL of the client configuration endpoint for managing this client registration (RFC 7592).
+  registrationAccessToken:
+    type: string
+    description: Access token to be used at the client configuration endpoint for managing this client registration (RFC 7592).
+  scopes:
+    type: array
+    items:
+      type: string
+      enum:
+        - menu:read
+        - menu:write
+        - orders:read
+        - orders:write
+        - revenue:read
+    description: List of scopes (registered metadata).
+  grantTypes:
+    type: array
+    items:
+      type: string
+      enum:
+        - authorization_code
+        - client_credentials
+    description: List of grant types (registered metadata).
+required:
+  - clientId
+  - clientSecret
+  - clientIdIssuedAt
+  - clientSecretExpiresAt
+  - registrationClientUri
+  - registrationAccessToken

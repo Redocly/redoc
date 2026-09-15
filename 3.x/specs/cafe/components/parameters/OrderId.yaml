@@ -1,0 +1,8 @@
+name: orderId
+in: path
+description: ID of the order to retrieve.
+required: true
+schema:
+  type: string
+  pattern: ^ord_[0-9abcdefghjkmnpqrstvwxyz]{26}$
+example: ord_01h1s5z6vf2mm1mz3hevnn9va7

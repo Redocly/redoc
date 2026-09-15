@@ -1,0 +1,32 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Client name.
+  redirectUris:
+    type: array
+    items:
+      type: string
+      format: uri
+    description: List of redirect URIs (optional, defaults to empty array).
+  scopes:
+    type: array
+    items:
+      type: string
+      enum:
+        - menu:read
+        - menu:write
+        - orders:read
+        - orders:write
+        - revenue:read
+    description: List of scopes.
+  grantTypes:
+    type: array
+    items:
+      type: string
+      enum:
+        - authorization_code
+        - client_credentials
+    description: List of grant types.
+required:
+  - name

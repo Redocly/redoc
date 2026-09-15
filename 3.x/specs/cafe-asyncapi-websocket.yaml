@@ -1,0 +1,226 @@
+asyncapi: 3.0.0
+
+info:
+  title: Redocly Cafe Live Order Board (WebSocket)
+  version: 1.1.0
+  description: |
+    Real-time feed behind the **Redocly Cafe** pickup-counter display and the
+    order-tracking screen in the customer app, served over WebSocket.
+
+    Clients open a single connection to `/live` and receive a snapshot of the
+    current board followed by incremental updates. Customers can also send a
+    `subscribeOrder` message to follow one specific order.
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Live board integration guide
+    url: https://redocly.com/docs
+  tags:
+    - name: live-board
+      description: Pickup counter display feed
+    - name: websocket
+      description: WebSocket transport
+
+defaultContentType: application/json
+
+servers:
+  live:
+    host: live.cafe.redocly.com
+    protocol: wss
+    title: Cafe live gateway
+    summary: WebSocket gateway for in-store displays and the customer app
+    description: |
+      Connections are authenticated with a short-lived bearer token passed in
+      the `token` query parameter. Idle connections are pinged every 30 seconds
+      and closed after two missed pongs.
+    security:
+      - $ref: '#/components/securitySchemes/liveToken'
+
+channels:
+  liveBoard:
+    address: /live
+    title: Live order board
+    description: Single bidirectional channel carrying snapshots, updates, and client subscriptions.
+    messages:
+      boardSnapshot:
+        $ref: '#/components/messages/boardSnapshot'
+      orderUpdate:
+        $ref: '#/components/messages/orderUpdate'
+      subscribeOrder:
+        $ref: '#/components/messages/subscribeOrder'
+    bindings:
+      ws:
+        method: GET
+        query:
+          type: object
+          required: [token]
+          properties:
+            token:
+              type: string
+              description: Short-lived bearer token issued by the auth service.
+            displayId:
+              type: string
+              description: Optional in-store display identifier for telemetry.
+        headers:
+          type: object
+          properties:
+            Sec-WebSocket-Protocol:
+              type: string
+              const: cafe.live.v1
+
+operations:
+  receiveBoardUpdates:
+    action: receive
+    channel:
+      $ref: '#/channels/liveBoard'
+    title: Receive board updates
+    summary: Snapshot on connect, then incremental order updates.
+    description: |
+      Immediately after the connection is accepted the server sends one
+      `boardSnapshot`, then pushes `orderUpdate` messages as orders move
+      through the pipeline.
+    messages:
+      - $ref: '#/channels/liveBoard/messages/boardSnapshot'
+      - $ref: '#/channels/liveBoard/messages/orderUpdate'
+    tags:
+      - name: live-board
+  subscribeToOrder:
+    action: send
+    channel:
+      $ref: '#/channels/liveBoard'
+    title: Subscribe to one order
+    summary: Sent by the customer app to follow a single order.
+    messages:
+      - $ref: '#/channels/liveBoard/messages/subscribeOrder'
+
+components:
+  securitySchemes:
+    liveToken:
+      type: httpApiKey
+      name: token
+      in: query
+      description: Short-lived bearer token, valid for 15 minutes.
+  messages:
+    boardSnapshot:
+      name: BoardSnapshot
+      title: Board snapshot
+      summary: Full state of the pickup board, sent once on connect.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/boardSnapshotPayload'
+      examples:
+        - name: morningBoard
+          summary: Two orders in progress, one ready
+          payload:
+            type: boardSnapshot
+            orders:
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Ada
+                status: ready
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+                customerName: Grace
+                status: preparing
+              - orderId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+                customerName: Alan
+                status: placed
+            snapshotAt: '2026-07-21T08:20:00Z'
+    orderUpdate:
+      name: OrderUpdate
+      title: Order update
+      summary: One order changed status.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/orderUpdatePayload'
+      examples:
+        - name: orderReady
+          summary: Order moved to the ready shelf
+          payload:
+            type: orderUpdate
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            customerName: Grace
+            status: ready
+            updatedAt: '2026-07-21T08:21:30Z'
+        - name: orderPickedUp
+          summary: Customer collected the order — remove it from the board
+          payload:
+            type: orderUpdate
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            customerName: Ada
+            status: completed
+            updatedAt: '2026-07-21T08:22:05Z'
+    subscribeOrder:
+      name: SubscribeOrder
+      title: Subscribe to order
+      summary: Client request to receive updates for a single order only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/subscribeOrderPayload'
+      examples:
+        - name: followMyOrder
+          summary: Customer app follows the order it just placed
+          payload:
+            type: subscribeOrder
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+  schemas:
+    boardSnapshotPayload:
+      type: object
+      required: [type, orders, snapshotAt]
+      properties:
+        type:
+          type: string
+          const: boardSnapshot
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/boardEntry'
+        snapshotAt:
+          type: string
+          format: date-time
+    orderUpdatePayload:
+      type: object
+      required: [type, orderId, status, updatedAt]
+      properties:
+        type:
+          type: string
+          const: orderUpdate
+        orderId:
+          type: string
+          format: ulid
+        customerName:
+          type: string
+          description: First name shown on the pickup board.
+        status:
+          $ref: '#/components/schemas/boardStatus'
+        updatedAt:
+          type: string
+          format: date-time
+    subscribeOrderPayload:
+      type: object
+      required: [type, orderId]
+      properties:
+        type:
+          type: string
+          const: subscribeOrder
+        orderId:
+          type: string
+          format: ulid
+          description: Order to follow. The server replies with the current state, then updates.
+    boardEntry:
+      type: object
+      required: [orderId, status]
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        customerName:
+          type: string
+        status:
+          $ref: '#/components/schemas/boardStatus'
+    boardStatus:
+      type: string
+      description: Status shown on the pickup board.
+      enum: [placed, preparing, ready, completed, cancelled]

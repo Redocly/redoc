@@ -1,0 +1,12 @@
+name: limit
+description: |
+  Use to return a number of results per page.
+  If there is more data, use in combination with `after` to page through the data.
+in: query
+required: false
+schema:
+  type: integer
+  minimum: 1
+  maximum: 100
+  default: 10
+example: 10

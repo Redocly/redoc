@@ -1,0 +1,16 @@
+name: filter
+description: |-
+  Filters the collection items using space-separated `field:value` pairs.
+  See each list endpoint for the specific fields it supports.
+
+  **Format:** `field1:value1 field2:value2`
+
+  **Supported operators:**
+  - `field:value` - Exact match
+  - `field:value1,value2` - Match any of the comma-separated values (OR)
+  - Time ranges (on date fields): Use `30d` (30 days), `7d` (7 days), `1h` (1 hour), etc.
+in: query
+required: false
+schema:
+  type: string
+example: orderId:ord_01h1s5z6vf2mm1mz3hevnn9va7

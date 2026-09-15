@@ -1,0 +1,7 @@
+type: string
+description: Order status.
+enum:
+  - placed
+  - preparing
+  - completed
+  - canceled

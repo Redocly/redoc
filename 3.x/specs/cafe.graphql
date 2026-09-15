@@ -40,7 +40,8 @@ type Query {
   revenue(period: RevenuePeriod! = TODAY): RevenueStatistics!
 
   "Fetch the daily specials board."
-  specials: [MenuItem!]! @deprecated(reason: "Specials moved into `menu`; filter by the `SEASONAL` category instead.")
+  specials: [MenuItem!]!
+    @deprecated(reason: "Specials moved into `menu`; filter by the `SEASONAL` category instead.")
 }
 
 type Mutation {

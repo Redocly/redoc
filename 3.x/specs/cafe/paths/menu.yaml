@@ -1,0 +1,106 @@
+get:
+  tags:
+    - Products
+  x-internal: false
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: List all menu items
+  description: Retrieve a collection of menu items with optional filtering and pagination.
+  operationId: listMenuItems
+  security: []
+  parameters:
+    - $ref: ../components/parameters/After.yaml
+    - $ref: ../components/parameters/Before.yaml
+    - $ref: ../components/parameters/Sort.yaml
+      description: |-
+        Sorts the collection by a single field. Prefix with `-` for descending order
+        (for example, `-price`); omit the prefix for ascending order (`price`).
+
+        **Sortable fields:** `name`, `price`, `createdAt`, `updatedAt`, `id`
+    - $ref: ../components/parameters/Filter.yaml
+      description: |-
+        Filters the collection items using space-separated `field:value` pairs.
+
+        **Filterable fields:** `name`, `category`, `price`, `createdAt`, `id`
+
+        **Format:** `field1:value1 field2:value2`
+
+        **Supported operators:**
+        - `field:value` - Exact match
+        - `field:value1,value2` - Match any of the comma-separated values (OR)
+        - Time ranges (on `createdAt`): Use `30d` (30 days), `7d` (7 days), `1h` (1 hour), etc.
+
+        **Examples:**
+        - `category:beverage` - Filter by a single category.
+        - `category:beverage,dessert` - Filter by multiple categories.
+        - `createdAt:7d` - Menu items created in the last 7 days.
+        - `name:Latte` - Filter by name.
+        - `category:beverage price:400` - Combine multiple filters.
+      example: category:beverage
+    - $ref: ../components/parameters/Search.yaml
+      description: |-
+        Performs a case-insensitive text search across the searchable fields, returning
+        items where any of them contain the search term as a substring.
+
+        **Searchable fields:** `name`, `photoTextDescription`
+    - $ref: ../components/parameters/Limit.yaml
+  responses:
+    '200':
+      description: Successful operation.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/MenuItemList.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+post:
+  tags:
+    - Products
+  x-internal: false
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: Create menu item
+  description: Create a new menu item.
+  operationId: createMenuItem
+  security:
+    - OAuth2:
+        - menu:write
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          $ref: ../components/schemas/MenuItem.yaml
+  responses:
+    '201':
+      description: Menu item created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/MenuItem.yaml
+          examples:
+            MenuItemResponse:
+              value:
+                id: 'prd_01khr487f7qm7p44xn427m43vb'
+                object: 'menuItem'
+                name: 'coffee'
+                price: 4000
+                category: beverage
+                createdAt: '2026-02-18T10:20:38.228Z'
+                updatedAt: '2026-02-18T10:20:38.228Z'
+                volume: 600
+                containsCaffeine: false
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '409':
+      $ref: ../components/responses/Conflict.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

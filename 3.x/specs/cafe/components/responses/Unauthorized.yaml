@@ -1,0 +1,5 @@
+description: Unauthorized - authorization required.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Error.yaml

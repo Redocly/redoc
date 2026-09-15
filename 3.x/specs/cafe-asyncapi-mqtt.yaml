@@ -1,0 +1,227 @@
+asyncapi: 3.0.0
+
+info:
+  title: Redocly Cafe Machine Telemetry (MQTT)
+  version: 1.0.3
+  description: |
+    IoT telemetry for the **Redocly Cafe** espresso machines and grinders,
+    transported over MQTT.
+
+    Each machine publishes periodic telemetry (boiler temperature, pressure,
+    shot counts) and emergency alerts. The maintenance dashboard subscribes to
+    both to schedule descaling and predict burr replacement.
+
+    Topics follow the pattern:
+
+    ```
+    cafe/machines/{machineId}/telemetry
+    cafe/machines/{machineId}/alerts
+    ```
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Machine maintenance runbook
+    url: https://redocly.com/docs
+  tags:
+    - name: telemetry
+      description: Periodic machine measurements
+    - name: alerts
+      description: Emergency machine alerts
+    - name: mqtt
+      description: MQTT transport
+
+defaultContentType: application/json
+
+servers:
+  broker:
+    host: mqtt.cafe.redocly.com:8883
+    protocol: secure-mqtt
+    protocolVersion: '5'
+    title: Cafe MQTT broker
+    summary: TLS MQTT 5 broker for in-store devices
+    description: |
+      Devices authenticate with per-machine X.509 client certificates.
+      The broker retains the last telemetry message per topic so dashboards
+      get an immediate snapshot on subscribe.
+    security:
+      - $ref: '#/components/securitySchemes/deviceCert'
+    bindings:
+      mqtt:
+        clientId: cafe-maintenance-dashboard
+        cleanSession: false
+        lastWill:
+          topic: cafe/machines/offline
+          qos: 1
+          message: Machine disconnected unexpectedly.
+          retain: false
+        keepAlive: 60
+
+channels:
+  machineTelemetry:
+    address: cafe/machines/{machineId}/telemetry
+    title: Machine telemetry
+    description: Periodic measurements, published every 30 seconds while brewing is idle and every 5 seconds during extraction.
+    parameters:
+      machineId:
+        $ref: '#/components/parameters/machineId'
+    messages:
+      telemetry:
+        $ref: '#/components/messages/telemetry'
+  machineAlerts:
+    address: cafe/machines/{machineId}/alerts
+    title: Machine alerts
+    description: Emergency conditions that require staff attention.
+    parameters:
+      machineId:
+        $ref: '#/components/parameters/machineId'
+    messages:
+      alert:
+        $ref: '#/components/messages/alert'
+
+operations:
+  publishTelemetry:
+    action: send
+    channel:
+      $ref: '#/channels/machineTelemetry'
+    title: Publish telemetry
+    summary: Sent by the machine firmware on a fixed interval.
+    tags:
+      - name: telemetry
+    bindings:
+      mqtt:
+        qos: 0
+        retain: true
+  receiveAlerts:
+    action: receive
+    channel:
+      $ref: '#/channels/machineAlerts'
+    title: Receive machine alerts
+    summary: Consumed by the maintenance dashboard and the staff pager.
+    description: |
+      Alerts are published with QoS 2 (exactly once). Subscribers should
+      acknowledge promptly — the broker queues alerts for offline
+      subscribers with persistent sessions.
+    tags:
+      - name: alerts
+    bindings:
+      mqtt:
+        qos: 2
+        retain: false
+
+components:
+  securitySchemes:
+    deviceCert:
+      type: X509
+      description: Per-machine client certificate issued during installation.
+  parameters:
+    machineId:
+      description: Machine identifier, printed on the service label (for example, `esp-01`).
+      enum: [esp-01, esp-02, grinder-01]
+  messages:
+    telemetry:
+      name: MachineTelemetry
+      title: Machine telemetry reading
+      summary: A point-in-time snapshot of machine health.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/telemetryPayload'
+      examples:
+        - name: idleReading
+          summary: Espresso machine idle between orders
+          payload:
+            machineId: esp-01
+            boilerTempCelsius: 93.4
+            pumpPressureBar: 0.0
+            shotsSinceService: 1289
+            waterLevelPercent: 82
+            status: idle
+            recordedAt: '2026-07-21T08:15:00Z'
+        - name: extractionReading
+          summary: Reading taken mid-extraction
+          payload:
+            machineId: esp-01
+            boilerTempCelsius: 94.1
+            pumpPressureBar: 9.2
+            shotsSinceService: 1290
+            waterLevelPercent: 81
+            status: brewing
+            recordedAt: '2026-07-21T08:15:35Z'
+    alert:
+      name: MachineAlert
+      title: Machine alert
+      summary: An emergency condition detected by the firmware.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/alertPayload'
+      examples:
+        - name: descaleRequired
+          summary: Scale buildup detected in the boiler
+          payload:
+            machineId: esp-02
+            severity: warning
+            code: DESCALE_REQUIRED
+            message: Boiler heat-up time exceeded threshold. Schedule descaling.
+            raisedAt: '2026-07-21T07:02:11Z'
+        - name: overPressure
+          summary: Pump pressure out of safe range
+          payload:
+            machineId: esp-01
+            severity: critical
+            code: OVER_PRESSURE
+            message: Pump pressure exceeded 12 bar. Machine stopped itself.
+            raisedAt: '2026-07-21T09:44:52Z'
+  schemas:
+    telemetryPayload:
+      type: object
+      required: [machineId, boilerTempCelsius, status, recordedAt]
+      properties:
+        machineId:
+          type: string
+        boilerTempCelsius:
+          type: number
+          description: Boiler temperature in °C.
+          minimum: 0
+          maximum: 150
+        pumpPressureBar:
+          type: number
+          description: Current pump pressure in bar.
+          minimum: 0
+          maximum: 15
+        shotsSinceService:
+          type: integer
+          description: Espresso shots pulled since the last service.
+          minimum: 0
+        waterLevelPercent:
+          type: integer
+          minimum: 0
+          maximum: 100
+        status:
+          type: string
+          enum: [idle, brewing, steaming, heating, error]
+        recordedAt:
+          type: string
+          format: date-time
+    alertPayload:
+      type: object
+      required: [machineId, severity, code, message, raisedAt]
+      properties:
+        machineId:
+          type: string
+        severity:
+          type: string
+          description: How urgently staff must react.
+          enum: [info, warning, critical]
+        code:
+          type: string
+          description: Machine-readable alert code.
+          enum: [DESCALE_REQUIRED, OVER_PRESSURE, WATER_LOW, BURR_WORN, SENSOR_FAULT]
+        message:
+          type: string
+          description: Human-readable explanation for the staff pager.
+        raisedAt:
+          type: string
+          format: date-time
