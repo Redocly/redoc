@@ -1,0 +1,1789 @@
+asyncapi: 3.0.0
+info:
+  title: Redocly Cafe Streams
+  version: 1.4.0
+  description: >
+    The **Redocly Cafe** event backbone, running entirely on Apache Kafka.
+
+
+    Every topic here is a multi-event stream: a single topic carries several
+    related event types, so consumers subscribe once and switch on the
+    `eventType` header. Pick a message from the selector on each operation to
+    see its headers, payload, and examples.
+
+
+    | Topic | Events | Key |
+
+    |---|---|---|
+
+    | `cafe.orders.v1` | 4 order lifecycle events | `orderId` |
+
+    | `cafe.payments.v1` | 3 payment events | `orderId` |
+
+    | `cafe.{storeId}.inventory.v1` | 2 stock events | `sku` |
+
+    | `cafe.loyalty.v1` | 2 loyalty events | `memberId` |
+
+    | `cafe.pricing.requests.v1` | quote requests (request/reply) | `quoteId` |
+
+    | `cafe.orders.v1.dlq` | poison messages | original key |
+
+
+    All events are correlated by the `correlationId` header, which carries the
+    `orderId` for order, payment, and pricing streams.
+  termsOfService: https://redocly.com/subscription-agreement
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+    url: https://redocly.com/contact-us/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Redocly Cafe event catalog
+    url: https://redocly.com/docs
+  tags:
+    - name: orders
+      description: Order lifecycle stream
+    - name: payments
+      description: Authorization, capture, and refund events
+    - name: inventory
+      description: Per-store stock movements
+    - name: loyalty
+      description: Points and reward redemptions
+    - name: pricing
+      description: Synchronous price quotes over Kafka request/reply
+    - name: operations
+      description: Dead-letter handling
+defaultContentType: application/json
+servers:
+  production:
+    host: '{clusterHost}:9093'
+    protocol: kafka-secure
+    protocolVersion: 3.6.0
+    title: Cafe production cluster
+    summary: TLS + SASL/SCRAM production Kafka cluster
+    description: |
+      Six-broker cluster spread across three availability zones.
+      Requires SASL/SCRAM-SHA-512 credentials issued by the platform team,
+      and a client truststore containing the internal CA.
+    variables:
+      clusterHost:
+        default: kafka.cafe.redocly.com
+        description: Bootstrap server hostname
+        enum:
+          - kafka.cafe.redocly.com
+          - kafka-eu.cafe.redocly.com
+    security:
+      - $ref: '#/components/securitySchemes/saslScram'
+    tags:
+      - name: production
+    bindings:
+      kafka:
+        schemaRegistryUrl: https://schema-registry.cafe.redocly.com
+        schemaRegistryVendor: confluent
+        bindingVersion: 0.5.0
+  staging:
+    host: kafka-staging.cafe.redocly.com:9092
+    protocol: kafka
+    protocolVersion: 3.6.0
+    title: Cafe staging cluster
+    summary: Single-broker cluster for integration tests
+    description: |
+      Plaintext listener, no authentication. Topics are recreated nightly,
+      so do not rely on retained data.
+    bindings:
+      kafka:
+        schemaRegistryUrl: https://schema-registry-staging.cafe.redocly.com
+        schemaRegistryVendor: confluent
+        bindingVersion: 0.5.0
+channels:
+  orders:
+    address: cafe.orders.v1
+    title: Order events
+    description: >-
+      The order lifecycle stream. Compacted by `orderId`, so replaying the topic
+      from the beginning rebuilds the current state of every order.
+    servers:
+      - $ref: '#/servers/production'
+      - $ref: '#/servers/staging'
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+      orderStatusChanged:
+        $ref: '#/components/messages/orderStatusChanged'
+      orderCancelled:
+        $ref: '#/components/messages/orderCancelled'
+      orderCompleted:
+        $ref: '#/components/messages/orderCompleted'
+    tags:
+      - name: orders
+    bindings:
+      kafka:
+        topic: cafe.orders.v1
+        partitions: 12
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - compact
+            - delete
+          retention.ms: 2592000000
+          retention.bytes: 10737418240
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: 0.5.0
+  payments:
+    address: cafe.payments.v1
+    title: Payment events
+    description: >-
+      Emitted by the payment service after the gateway confirms each state
+      transition. Never contains full card data — only the network token suffix.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      paymentAuthorized:
+        $ref: '#/components/messages/paymentAuthorized'
+      paymentCaptured:
+        $ref: '#/components/messages/paymentCaptured'
+      paymentRefunded:
+        $ref: '#/components/messages/paymentRefunded'
+    tags:
+      - name: payments
+    bindings:
+      kafka:
+        topic: cafe.payments.v1
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 15552000000
+        bindingVersion: 0.5.0
+  inventory:
+    address: cafe.{storeId}.inventory.v1
+    title: Inventory events
+    description: >-
+      One topic per store, so a busy flagship location cannot starve the others.
+      Keyed by SKU and compacted, giving each store a live stock snapshot.
+    parameters:
+      storeId:
+        $ref: '#/components/parameters/storeId'
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      stockLevelChanged:
+        $ref: '#/components/messages/stockLevelChanged'
+      stockDepleted:
+        $ref: '#/components/messages/stockDepleted'
+    tags:
+      - name: inventory
+    bindings:
+      kafka:
+        topic: cafe.{storeId}.inventory.v1
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - compact
+          segment.ms: 604800000
+        bindingVersion: 0.5.0
+  loyalty:
+    address: cafe.loyalty.v1
+    title: Loyalty events
+    description: Points accrual and reward redemptions for cafe members.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      pointsEarned:
+        $ref: '#/components/messages/pointsEarned'
+      rewardRedeemed:
+        $ref: '#/components/messages/rewardRedeemed'
+    tags:
+      - name: loyalty
+    bindings:
+      kafka:
+        topic: cafe.loyalty.v1
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 31536000000
+        bindingVersion: 0.5.0
+  priceQuoteRequests:
+    address: cafe.pricing.requests.v1
+    title: Price quote requests
+    description: >-
+      Request side of the Kafka request/reply pair used by the point-of-sale
+      terminals to price a basket before checkout.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      priceQuoteRequested:
+        $ref: '#/components/messages/priceQuoteRequested'
+    tags:
+      - name: pricing
+    bindings:
+      kafka:
+        topic: cafe.pricing.requests.v1
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 600000
+        bindingVersion: 0.5.0
+  priceQuoteReplies:
+    address: cafe.pricing.replies.v1
+    title: Price quote replies
+    description: >-
+      Reply side of the pricing exchange. The pricing service echoes the
+      `correlationId` header from the request so the caller can match responses.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      priceQuoteProvided:
+        $ref: '#/components/messages/priceQuoteProvided'
+      priceQuoteRejected:
+        $ref: '#/components/messages/priceQuoteRejected'
+    tags:
+      - name: pricing
+    bindings:
+      kafka:
+        topic: cafe.pricing.replies.v1
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 600000
+        bindingVersion: 0.5.0
+  ordersDeadLetter:
+    address: cafe.orders.v1.dlq
+    title: Order dead letters
+    description: >-
+      Messages the order consumers could not process after five attempts.
+      The original record is preserved verbatim so it can be replayed.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      deadLetter:
+        $ref: '#/components/messages/deadLetter'
+    tags:
+      - name: operations
+    bindings:
+      kafka:
+        topic: cafe.orders.v1.dlq
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy:
+            - delete
+          retention.ms: 1209600000
+        bindingVersion: 0.5.0
+operations:
+  publishOrderEvents:
+    action: send
+    channel:
+      $ref: '#/channels/orders'
+    title: Publish order events
+    summary: Produced by the order service on every lifecycle transition.
+    description: |
+      All four event types share the topic and the `orderId` partition key, so
+      a single order's events are strictly ordered.
+
+      Producers run with `acks=all`, `enable.idempotence=true`, and
+      `max.in.flight.requests.per.connection=5`.
+    tags:
+      - name: orders
+    messages:
+      - $ref: '#/channels/orders/messages/orderPlaced'
+      - $ref: '#/channels/orders/messages/orderStatusChanged'
+      - $ref: '#/channels/orders/messages/orderCancelled'
+      - $ref: '#/channels/orders/messages/orderCompleted'
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-order-service
+        bindingVersion: 0.5.0
+  consumeOrderEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/orders'
+    title: Consume order events
+    summary: Consumed by the pickup display, the customer app, and analytics.
+    description: |
+      Delivery is at-least-once, so consumers must be idempotent — deduplicate
+      on the `eventId` header. Records that fail five attempts are forwarded to
+      `cafe.orders.v1.dlq`.
+    tags:
+      - name: orders
+    messages:
+      - $ref: '#/channels/orders/messages/orderPlaced'
+      - $ref: '#/channels/orders/messages/orderStatusChanged'
+      - $ref: '#/channels/orders/messages/orderCompleted'
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          enum:
+            - pickup-display
+            - customer-app
+            - analytics-sink
+        clientId:
+          type: string
+          description: Consumer instance identifier, usually the pod name.
+        bindingVersion: 0.5.0
+  publishPaymentEvents:
+    action: send
+    channel:
+      $ref: '#/channels/payments'
+    title: Publish payment events
+    summary: Produced by the payment service once the gateway responds.
+    description: |
+      Written inside the same transaction as the payment ledger row, using
+      `transactional.id=cafe-payment-service-<instance>`, so consumers reading
+      with `isolation.level=read_committed` never observe a rolled-back payment.
+    tags:
+      - name: payments
+    messages:
+      - $ref: '#/channels/payments/messages/paymentAuthorized'
+      - $ref: '#/channels/payments/messages/paymentCaptured'
+      - $ref: '#/channels/payments/messages/paymentRefunded'
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-payment-service
+        bindingVersion: 0.5.0
+  consumePaymentEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/payments'
+    title: Consume payment events
+    summary: Consumed by the ledger reconciler and the finance export job.
+    tags:
+      - name: payments
+    messages:
+      - $ref: '#/channels/payments/messages/paymentCaptured'
+      - $ref: '#/channels/payments/messages/paymentRefunded'
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          enum:
+            - ledger-reconciler
+            - finance-export
+        bindingVersion: 0.5.0
+  consumeInventoryEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/inventory'
+    title: Consume inventory events
+    summary: Consumed by the menu service to hide sold-out items.
+    description: |
+      The menu service materializes the compacted topic into a local state
+      store, so a restart replays the topic instead of querying the inventory
+      database.
+    tags:
+      - name: inventory
+    messages:
+      - $ref: '#/channels/inventory/messages/stockLevelChanged'
+      - $ref: '#/channels/inventory/messages/stockDepleted'
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          const: menu-service
+        bindingVersion: 0.5.0
+  publishLoyaltyEvents:
+    action: send
+    channel:
+      $ref: '#/channels/loyalty'
+    title: Publish loyalty events
+    summary: Produced by the loyalty service after each qualifying order.
+    tags:
+      - name: loyalty
+    messages:
+      - $ref: '#/channels/loyalty/messages/pointsEarned'
+      - $ref: '#/channels/loyalty/messages/rewardRedeemed'
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-loyalty-service
+        bindingVersion: 0.5.0
+  requestPriceQuote:
+    action: send
+    channel:
+      $ref: '#/channels/priceQuoteRequests'
+    title: Request a price quote
+    summary: Sent by a point-of-sale terminal to price a basket.
+    description: |
+      Set the `replyTopic` header to `cafe.pricing.replies.v1` and keep the
+      `correlationId` — the pricing service echoes it on the reply. Terminals
+      time out after 2 seconds and fall back to the cached price list.
+    tags:
+      - name: pricing
+    messages:
+      - $ref: '#/channels/priceQuoteRequests/messages/priceQuoteRequested'
+    reply:
+      channel:
+        $ref: '#/channels/priceQuoteReplies'
+      messages:
+        - $ref: '#/channels/priceQuoteReplies/messages/priceQuoteProvided'
+        - $ref: '#/channels/priceQuoteReplies/messages/priceQuoteRejected'
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-pos-terminal
+        bindingVersion: 0.5.0
+  consumeDeadLetters:
+    action: receive
+    channel:
+      $ref: '#/channels/ordersDeadLetter'
+    title: Consume dead letters
+    summary: Consumed by the on-call replay tool.
+    description: |
+      Inspect `failure.reason` before replaying. Replays are published back to
+      `cafe.orders.v1` with the original key and an added `replayOf` header.
+    tags:
+      - name: operations
+    messages:
+      - $ref: '#/channels/ordersDeadLetter/messages/deadLetter'
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          const: dlq-replay-tool
+        bindingVersion: 0.5.0
+components:
+  securitySchemes:
+    saslScram:
+      type: scramSha512
+      description: SASL/SCRAM-SHA-512 credentials issued per service.
+  correlationIds:
+    orderCorrelation:
+      description: Correlates every event that belongs to one order.
+      location: $message.header#/correlationId
+    quoteCorrelation:
+      description: Ties a price quote reply back to its request.
+      location: $message.header#/correlationId
+    memberCorrelation:
+      description: Correlates loyalty activity for one member.
+      location: $message.header#/correlationId
+  parameters:
+    storeId:
+      description: Store identifier, printed on the till receipt.
+      default: sf-market-st
+      enum:
+        - sf-market-st
+        - sf-mission
+        - berlin-mitte
+      examples:
+        - sf-market-st
+  messages:
+    orderPlaced:
+      name: OrderPlaced
+      title: Order placed
+      summary: A customer checked out at the register or in the app.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: orders
+      headers:
+        $ref: '#/components/schemas/orderEventHeaders'
+      payload:
+        $ref: '#/components/schemas/orderPlacedPayload'
+      examples:
+        - name: espressoToGo
+          summary: Single espresso, paid by card
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz70
+            eventType: order.placed
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: pos
+            producedAt: '2026-07-21T08:15:00Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            storeId: sf-market-st
+            customerName: Ada Lovelace
+            channel: pos
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Espresso
+                quantity: 1
+                unitPrice: 350
+            totalPrice: 350
+            placedAt: '2026-07-21T08:15:00Z'
+        - name: morningRush
+          summary: Large mobile-app order with a pastry
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz71
+            eventType: order.placed
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            sourceService: mobile-app
+            producedAt: '2026-07-21T08:17:42Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            storeId: sf-market-st
+            customerName: Grace Hopper
+            channel: mobile-app
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Flat White
+                quantity: 2
+                unitPrice: 450
+              - menuItemId: prd_01khr487f7qm7p44xn427m43xd
+                name: Cinnamon Roll
+                quantity: 1
+                unitPrice: 400
+            totalPrice: 1300
+            placedAt: '2026-07-21T08:17:42Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+            examples:
+              - ord_01h1s5z6vf2mm1mz3hevnn9va7
+          schemaIdLocation: header
+          schemaIdPayloadEncoding: confluent
+          schemaLookupStrategy: TopicRecordNameStrategy
+          bindingVersion: 0.5.0
+    orderStatusChanged:
+      name: OrderStatusChanged
+      title: Order status changed
+      summary: The kitchen or barista moved an order to a new status.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: orders
+      headers:
+        $ref: '#/components/schemas/orderEventHeaders'
+      payload:
+        $ref: '#/components/schemas/orderStatusChangedPayload'
+      examples:
+        - name: nowPreparing
+          summary: Barista picked up the ticket
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz72
+            eventType: order.status-changed
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: kitchen
+            producedAt: '2026-07-21T08:16:04Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            previousStatus: placed
+            status: preparing
+            changedAt: '2026-07-21T08:16:04Z'
+        - name: readyForPickup
+          summary: Drinks are on the pickup shelf
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz73
+            eventType: order.status-changed
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: kitchen
+            producedAt: '2026-07-21T08:19:10Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            previousStatus: preparing
+            status: ready
+            changedAt: '2026-07-21T08:19:10Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          schemaIdLocation: header
+          bindingVersion: 0.5.0
+    orderCancelled:
+      name: OrderCancelled
+      title: Order cancelled
+      summary: The order was cancelled before it was handed over.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: orders
+      headers:
+        $ref: '#/components/schemas/orderEventHeaders'
+      payload:
+        $ref: '#/components/schemas/orderCancelledPayload'
+      examples:
+        - name: cancelledInApp
+          summary: Customer cancelled before preparation started
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz74
+            eventType: order.cancelled
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            sourceService: mobile-app
+            producedAt: '2026-07-21T08:18:03Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            cancelledBy: customer
+            reason: Customer cancelled in the app.
+            refundDue: true
+            refundAmount: 1300
+            cancelledAt: '2026-07-21T08:18:03Z'
+        - name: outOfStock
+          summary: Store cancelled after a key ingredient ran out
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz75
+            eventType: order.cancelled
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+            sourceService: kitchen
+            producedAt: '2026-07-21T08:20:41Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+            cancelledBy: store
+            reason: Oat milk unavailable and no substitution accepted.
+            refundDue: true
+            refundAmount: 900
+            cancelledAt: '2026-07-21T08:20:41Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          bindingVersion: 0.5.0
+    orderCompleted:
+      name: OrderCompleted
+      title: Order completed
+      summary: The customer collected the order — terminal event for the stream.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: orders
+      headers:
+        $ref: '#/components/schemas/orderEventHeaders'
+      payload:
+        $ref: '#/components/schemas/orderCompletedPayload'
+      examples:
+        - name: pickedUp
+          summary: Order collected two minutes after it was ready
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz76
+            eventType: order.completed
+            eventVersion: '1'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: pickup-counter
+            producedAt: '2026-07-21T08:22:05Z'
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            storeId: sf-market-st
+            totalPrice: 350
+            fulfilmentSeconds: 425
+            completedAt: '2026-07-21T08:22:05Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          bindingVersion: 0.5.0
+    paymentAuthorized:
+      name: PaymentAuthorized
+      title: Payment authorized
+      summary: The gateway placed a hold on the customer's funds.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: payments
+      headers:
+        $ref: '#/components/schemas/paymentEventHeaders'
+      payload:
+        $ref: '#/components/schemas/paymentAuthorizedPayload'
+      examples:
+        - name: cardHold
+          summary: Contactless card authorized for the full basket
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz80
+            eventType: payment.authorized
+            eventVersion: '2'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: payment-service
+            producedAt: '2026-07-21T08:15:01Z'
+          payload:
+            paymentId: pay_01h1s5z6vf2mm1mz3hevnn9pa1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            amount: 350
+            currency: USD
+            method: card
+            cardLast4: '4242'
+            authorizationCode: A1B2C3
+            authorizedAt: '2026-07-21T08:15:01Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          bindingVersion: 0.5.0
+    paymentCaptured:
+      name: PaymentCaptured
+      title: Payment captured
+      summary: Funds were captured once the order was handed over.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: payments
+      headers:
+        $ref: '#/components/schemas/paymentEventHeaders'
+      payload:
+        $ref: '#/components/schemas/paymentCapturedPayload'
+      examples:
+        - name: fullCapture
+          summary: Captured the full authorized amount
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz81
+            eventType: payment.captured
+            eventVersion: '2'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            sourceService: payment-service
+            producedAt: '2026-07-21T08:22:06Z'
+          payload:
+            paymentId: pay_01h1s5z6vf2mm1mz3hevnn9pa1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            capturedAmount: 350
+            currency: USD
+            tipAmount: 0
+            capturedAt: '2026-07-21T08:22:06Z'
+        - name: captureWithTip
+          summary: Customer added a tip at the terminal
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz82
+            eventType: payment.captured
+            eventVersion: '2'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            sourceService: payment-service
+            producedAt: '2026-07-21T08:24:12Z'
+          payload:
+            paymentId: pay_01h1s5z6vf2mm1mz3hevnn9pa2
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            capturedAmount: 1450
+            currency: USD
+            tipAmount: 150
+            capturedAt: '2026-07-21T08:24:12Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          bindingVersion: 0.5.0
+    paymentRefunded:
+      name: PaymentRefunded
+      title: Payment refunded
+      summary: Money was returned to the customer, in full or in part.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      tags:
+        - name: payments
+      headers:
+        $ref: '#/components/schemas/paymentEventHeaders'
+      payload:
+        $ref: '#/components/schemas/paymentRefundedPayload'
+      examples:
+        - name: fullRefund
+          summary: Cancelled order refunded in full
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz83
+            eventType: payment.refunded
+            eventVersion: '2'
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            sourceService: payment-service
+            producedAt: '2026-07-21T08:18:20Z'
+          payload:
+            paymentId: pay_01h1s5z6vf2mm1mz3hevnn9pa2
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            refundId: rfn_01h1s5z6vf2mm1mz3hevnn9rf1
+            refundedAmount: 1300
+            currency: USD
+            reason: order-cancelled
+            refundedAt: '2026-07-21T08:18:20Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+          bindingVersion: 0.5.0
+    stockLevelChanged:
+      name: StockLevelChanged
+      title: Stock level changed
+      summary: A SKU's on-hand quantity moved up or down.
+      contentType: application/json
+      tags:
+        - name: inventory
+      headers:
+        $ref: '#/components/schemas/inventoryEventHeaders'
+      payload:
+        $ref: '#/components/schemas/stockLevelChangedPayload'
+      examples:
+        - name: delivery
+          summary: Morning delivery booked in
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz90
+            eventType: inventory.stock-level-changed
+            eventVersion: '1'
+            storeId: sf-market-st
+            producedAt: '2026-07-21T06:02:00Z'
+          payload:
+            sku: MILK-OAT-1L
+            storeId: sf-market-st
+            previousQuantity: 4
+            quantity: 28
+            delta: 24
+            reason: delivery
+            recordedAt: '2026-07-21T06:02:00Z'
+        - name: consumption
+          summary: Two litres used during the morning rush
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz91
+            eventType: inventory.stock-level-changed
+            eventVersion: '1'
+            storeId: sf-market-st
+            producedAt: '2026-07-21T08:30:00Z'
+          payload:
+            sku: MILK-OAT-1L
+            storeId: sf-market-st
+            previousQuantity: 28
+            quantity: 26
+            delta: -2
+            reason: consumption
+            recordedAt: '2026-07-21T08:30:00Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the SKU.
+            examples:
+              - MILK-OAT-1L
+          bindingVersion: 0.5.0
+    stockDepleted:
+      name: StockDepleted
+      title: Stock depleted
+      summary: A SKU hit zero — the menu service hides it immediately.
+      contentType: application/json
+      tags:
+        - name: inventory
+      headers:
+        $ref: '#/components/schemas/inventoryEventHeaders'
+      payload:
+        $ref: '#/components/schemas/stockDepletedPayload'
+      examples:
+        - name: oatMilkOut
+          summary: Oat milk ran out mid-service
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yz92
+            eventType: inventory.stock-depleted
+            eventVersion: '1'
+            storeId: sf-mission
+            producedAt: '2026-07-21T11:47:30Z'
+          payload:
+            sku: MILK-OAT-1L
+            storeId: sf-mission
+            affectedMenuItemIds:
+              - prd_01khr487f7qm7p44xn427m43vb
+            expectedRestock: '2026-07-22T06:00:00Z'
+            depletedAt: '2026-07-21T11:47:30Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the SKU.
+          bindingVersion: 0.5.0
+    pointsEarned:
+      name: PointsEarned
+      title: Points earned
+      summary: A member earned loyalty points for a completed order.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/memberCorrelation'
+      tags:
+        - name: loyalty
+      headers:
+        $ref: '#/components/schemas/loyaltyEventHeaders'
+      payload:
+        $ref: '#/components/schemas/pointsEarnedPayload'
+      examples:
+        - name: standardAccrual
+          summary: One point per dollar spent
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yza0
+            eventType: loyalty.points-earned
+            eventVersion: '1'
+            correlationId: mbr_01h1s5z6vf2mm1mz3hevnn9mb1
+            producedAt: '2026-07-21T08:22:07Z'
+          payload:
+            memberId: mbr_01h1s5z6vf2mm1mz3hevnn9mb1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            points: 4
+            balanceAfter: 128
+            tier: gold
+            earnedAt: '2026-07-21T08:22:07Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the member ID.
+          bindingVersion: 0.5.0
+    rewardRedeemed:
+      name: RewardRedeemed
+      title: Reward redeemed
+      summary: A member exchanged points for a free item.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/memberCorrelation'
+      tags:
+        - name: loyalty
+      headers:
+        $ref: '#/components/schemas/loyaltyEventHeaders'
+      payload:
+        $ref: '#/components/schemas/rewardRedeemedPayload'
+      examples:
+        - name: freeLatte
+          summary: 100 points redeemed for a free latte
+          headers:
+            eventId: evt_01k2f7n8p9qr3st4uv5wx6yza1
+            eventType: loyalty.reward-redeemed
+            eventVersion: '1'
+            correlationId: mbr_01h1s5z6vf2mm1mz3hevnn9mb1
+            producedAt: '2026-07-22T09:04:19Z'
+          payload:
+            memberId: mbr_01h1s5z6vf2mm1mz3hevnn9mb1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vd4
+            rewardId: rwd_free_drink
+            pointsSpent: 100
+            balanceAfter: 28
+            redeemedAt: '2026-07-22T09:04:19Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the member ID.
+          bindingVersion: 0.5.0
+    priceQuoteRequested:
+      name: PriceQuoteRequested
+      title: Price quote requested
+      summary: A terminal asks the pricing service to price a basket.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/quoteCorrelation'
+      tags:
+        - name: pricing
+      headers:
+        $ref: '#/components/schemas/quoteRequestHeaders'
+      payload:
+        $ref: '#/components/schemas/priceQuoteRequestPayload'
+      examples:
+        - name: twoDrinks
+          summary: Two drinks with a member discount applied
+          headers:
+            correlationId: qte_01h1s5z6vf2mm1mz3hevnn9qt1
+            replyTopic: cafe.pricing.replies.v1
+            producedAt: '2026-07-21T08:14:58Z'
+          payload:
+            quoteId: qte_01h1s5z6vf2mm1mz3hevnn9qt1
+            storeId: sf-market-st
+            memberId: mbr_01h1s5z6vf2mm1mz3hevnn9mb1
+            lines:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                quantity: 2
+            requestedAt: '2026-07-21T08:14:58Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the quote ID.
+          bindingVersion: 0.5.0
+    priceQuoteProvided:
+      name: PriceQuoteProvided
+      title: Price quote provided
+      summary: The pricing service returned a priced basket.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/quoteCorrelation'
+      tags:
+        - name: pricing
+      headers:
+        $ref: '#/components/schemas/quoteReplyHeaders'
+      payload:
+        $ref: '#/components/schemas/priceQuoteProvidedPayload'
+      examples:
+        - name: discountApplied
+          summary: Gold member discount of 10%
+          headers:
+            correlationId: qte_01h1s5z6vf2mm1mz3hevnn9qt1
+            producedAt: '2026-07-21T08:14:58Z'
+          payload:
+            quoteId: qte_01h1s5z6vf2mm1mz3hevnn9qt1
+            subtotal: 900
+            discount: 90
+            tax: 71
+            total: 881
+            currency: USD
+            expiresAt: '2026-07-21T08:19:58Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the quote ID.
+          bindingVersion: 0.5.0
+    priceQuoteRejected:
+      name: PriceQuoteRejected
+      title: Price quote rejected
+      summary: The basket could not be priced.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/quoteCorrelation'
+      tags:
+        - name: pricing
+      headers:
+        $ref: '#/components/schemas/quoteReplyHeaders'
+      payload:
+        $ref: '#/components/schemas/priceQuoteRejectedPayload'
+      examples:
+        - name: unknownItem
+          summary: The basket referenced a retired menu item
+          headers:
+            correlationId: qte_01h1s5z6vf2mm1mz3hevnn9qt2
+            producedAt: '2026-07-21T08:16:12Z'
+          payload:
+            quoteId: qte_01h1s5z6vf2mm1mz3hevnn9qt2
+            code: UNKNOWN_MENU_ITEM
+            message: Menu item prd_01khr487f7qm7p44xn427m43zz is no longer sold.
+            rejectedAt: '2026-07-21T08:16:12Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the quote ID.
+          bindingVersion: 0.5.0
+    deadLetter:
+      name: DeadLetter
+      title: Dead letter
+      summary: An order event that could not be processed after five attempts.
+      contentType: application/json
+      tags:
+        - name: operations
+      headers:
+        $ref: '#/components/schemas/deadLetterHeaders'
+      payload:
+        $ref: '#/components/schemas/deadLetterPayload'
+      examples:
+        - name: schemaMismatch
+          summary: Payload failed schema validation on the consumer
+          headers:
+            failure.reason: SCHEMA_VALIDATION_FAILED
+            failure.attempts: 5
+            original.topic: cafe.orders.v1
+            original.partition: 7
+            original.offset: 918273
+            producedAt: '2026-07-21T08:31:44Z'
+          payload:
+            originalTopic: cafe.orders.v1
+            originalPartition: 7
+            originalOffset: 918273
+            originalKey: ord_01h1s5z6vf2mm1mz3hevnn9vc9
+            originalValue: '{"orderId":"ord_01h1s5z6vf2mm1mz3hevnn9vc9","status":"prepairing"}'
+            consumerGroup: pickup-display
+            error: '"prepairing" is not a valid order status.'
+            failedAt: '2026-07-21T08:31:44Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: The key of the original record, copied verbatim.
+          bindingVersion: 0.5.0
+  schemas:
+    orderEventHeaders:
+      type: object
+      description: Headers present on every message in `cafe.orders.v1`.
+      required:
+        - eventId
+        - eventType
+        - correlationId
+        - producedAt
+      properties:
+        eventId:
+          type: string
+          format: ulid
+          description: Unique event ID. Consumers deduplicate on this value.
+        eventType:
+          type: string
+          description: Discriminates the event types multiplexed on this topic.
+          enum:
+            - order.placed
+            - order.status-changed
+            - order.cancelled
+            - order.completed
+        eventVersion:
+          type: string
+          description: Schema version of the payload.
+          default: '1'
+        correlationId:
+          type: string
+          format: ulid
+          description: The order ID, shared by every event for this order.
+        sourceService:
+          type: string
+          description: Service that produced the event.
+          enum:
+            - pos
+            - mobile-app
+            - kiosk
+            - kitchen
+            - pickup-counter
+        producedAt:
+          type: string
+          format: date-time
+    paymentEventHeaders:
+      type: object
+      required:
+        - eventId
+        - eventType
+        - correlationId
+        - producedAt
+      properties:
+        eventId:
+          type: string
+          format: ulid
+        eventType:
+          type: string
+          enum:
+            - payment.authorized
+            - payment.captured
+            - payment.refunded
+        eventVersion:
+          type: string
+          default: '2'
+        correlationId:
+          type: string
+          format: ulid
+          description: The order ID this payment belongs to.
+        sourceService:
+          type: string
+          const: payment-service
+        producedAt:
+          type: string
+          format: date-time
+    inventoryEventHeaders:
+      type: object
+      required:
+        - eventId
+        - eventType
+        - storeId
+        - producedAt
+      properties:
+        eventId:
+          type: string
+          format: ulid
+        eventType:
+          type: string
+          enum:
+            - inventory.stock-level-changed
+            - inventory.stock-depleted
+        eventVersion:
+          type: string
+          default: '1'
+        storeId:
+          type: string
+          description: Store the reading came from.
+        producedAt:
+          type: string
+          format: date-time
+    loyaltyEventHeaders:
+      type: object
+      required:
+        - eventId
+        - eventType
+        - correlationId
+        - producedAt
+      properties:
+        eventId:
+          type: string
+          format: ulid
+        eventType:
+          type: string
+          enum:
+            - loyalty.points-earned
+            - loyalty.reward-redeemed
+        eventVersion:
+          type: string
+          default: '1'
+        correlationId:
+          type: string
+          format: ulid
+          description: The member ID.
+        producedAt:
+          type: string
+          format: date-time
+    quoteRequestHeaders:
+      type: object
+      required:
+        - correlationId
+        - replyTopic
+      properties:
+        correlationId:
+          type: string
+          format: ulid
+          description: Echoed on the reply so the caller can match it.
+        replyTopic:
+          type: string
+          description: Topic the pricing service publishes the reply to.
+          const: cafe.pricing.replies.v1
+        producedAt:
+          type: string
+          format: date-time
+    quoteReplyHeaders:
+      type: object
+      required:
+        - correlationId
+      properties:
+        correlationId:
+          type: string
+          format: ulid
+          description: Copied from the originating request.
+        producedAt:
+          type: string
+          format: date-time
+    deadLetterHeaders:
+      type: object
+      required:
+        - failure.reason
+        - original.topic
+      properties:
+        failure.reason:
+          type: string
+          enum:
+            - SCHEMA_VALIDATION_FAILED
+            - DESERIALIZATION_FAILED
+            - DOWNSTREAM_UNAVAILABLE
+            - UNKNOWN_EVENT_TYPE
+        failure.attempts:
+          type: integer
+          minimum: 1
+        original.topic:
+          type: string
+        original.partition:
+          type: integer
+          minimum: 0
+        original.offset:
+          type: integer
+          minimum: 0
+        producedAt:
+          type: string
+          format: date-time
+    orderPlacedPayload:
+      type: object
+      required:
+        - orderId
+        - storeId
+        - items
+        - totalPrice
+        - placedAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+          description: Order ID, prefixed with `ord_`.
+        storeId:
+          type: string
+          description: Store that took the order.
+        customerName:
+          type: string
+          description: Name called out at the pickup counter.
+        channel:
+          type: string
+          description: Where the order was taken.
+          enum:
+            - pos
+            - mobile-app
+            - kiosk
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/orderLine'
+        totalPrice:
+          type: integer
+          description: Total order price in cents.
+          minimum: 0
+        placedAt:
+          type: string
+          format: date-time
+    orderLine:
+      type: object
+      required:
+        - menuItemId
+        - quantity
+        - unitPrice
+      properties:
+        menuItemId:
+          type: string
+          format: ulid
+          description: Menu item ID, prefixed with `prd_`.
+        name:
+          type: string
+          description: Display name at the time of ordering.
+        quantity:
+          type: integer
+          minimum: 1
+        unitPrice:
+          type: integer
+          description: Price per unit in cents.
+          minimum: 0
+    orderStatusChangedPayload:
+      type: object
+      required:
+        - orderId
+        - status
+        - changedAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        previousStatus:
+          $ref: '#/components/schemas/orderStatus'
+        status:
+          $ref: '#/components/schemas/orderStatus'
+        changedAt:
+          type: string
+          format: date-time
+    orderStatus:
+      type: string
+      description: Order lifecycle status.
+      enum:
+        - placed
+        - preparing
+        - ready
+        - completed
+        - cancelled
+    orderCancelledPayload:
+      type: object
+      required:
+        - orderId
+        - cancelledBy
+        - cancelledAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        cancelledBy:
+          type: string
+          description: Who initiated the cancellation.
+          enum:
+            - customer
+            - store
+            - system
+        reason:
+          type: string
+          description: Human-readable explanation shown in the app.
+        refundDue:
+          type: boolean
+          description: Whether the payment service must issue a refund.
+        refundAmount:
+          type: integer
+          description: Amount to refund in cents. Absent when no payment was taken.
+          minimum: 0
+        cancelledAt:
+          type: string
+          format: date-time
+    orderCompletedPayload:
+      type: object
+      required:
+        - orderId
+        - storeId
+        - completedAt
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        storeId:
+          type: string
+        totalPrice:
+          type: integer
+          description: Final charged amount in cents.
+          minimum: 0
+        fulfilmentSeconds:
+          type: integer
+          description: Time from order placed to handover.
+          minimum: 0
+        completedAt:
+          type: string
+          format: date-time
+    paymentAuthorizedPayload:
+      type: object
+      required:
+        - paymentId
+        - orderId
+        - amount
+        - currency
+        - method
+        - authorizedAt
+      properties:
+        paymentId:
+          type: string
+          format: ulid
+          description: Payment ID, prefixed with `pay_`.
+        orderId:
+          type: string
+          format: ulid
+        amount:
+          type: integer
+          description: Authorized amount in cents.
+          minimum: 0
+        currency:
+          $ref: '#/components/schemas/currency'
+        method:
+          type: string
+          enum:
+            - card
+            - wallet
+            - cash
+            - loyalty-points
+        cardLast4:
+          type: string
+          description: Last four digits of the network token, for receipts only.
+          pattern: '^[0-9]{4}$'
+        authorizationCode:
+          type: string
+          description: Code returned by the acquirer.
+        authorizedAt:
+          type: string
+          format: date-time
+    paymentCapturedPayload:
+      type: object
+      required:
+        - paymentId
+        - orderId
+        - capturedAmount
+        - currency
+        - capturedAt
+      properties:
+        paymentId:
+          type: string
+          format: ulid
+        orderId:
+          type: string
+          format: ulid
+        capturedAmount:
+          type: integer
+          description: Captured amount in cents, including any tip.
+          minimum: 0
+        currency:
+          $ref: '#/components/schemas/currency'
+        tipAmount:
+          type: integer
+          description: Tip added at the terminal, in cents.
+          minimum: 0
+        capturedAt:
+          type: string
+          format: date-time
+    paymentRefundedPayload:
+      type: object
+      required:
+        - paymentId
+        - orderId
+        - refundId
+        - refundedAmount
+        - currency
+        - refundedAt
+      properties:
+        paymentId:
+          type: string
+          format: ulid
+        orderId:
+          type: string
+          format: ulid
+        refundId:
+          type: string
+          format: ulid
+          description: Refund ID, prefixed with `rfn_`.
+        refundedAmount:
+          type: integer
+          description: Refunded amount in cents.
+          minimum: 0
+        currency:
+          $ref: '#/components/schemas/currency'
+        reason:
+          type: string
+          enum:
+            - order-cancelled
+            - quality-complaint
+            - duplicate-charge
+            - goodwill
+        refundedAt:
+          type: string
+          format: date-time
+    currency:
+      type: string
+      description: ISO 4217 currency code.
+      enum:
+        - USD
+        - EUR
+        - GBP
+    stockLevelChangedPayload:
+      type: object
+      required:
+        - sku
+        - storeId
+        - quantity
+        - reason
+        - recordedAt
+      properties:
+        sku:
+          type: string
+          description: Stock keeping unit.
+        storeId:
+          type: string
+        previousQuantity:
+          type: integer
+          minimum: 0
+        quantity:
+          type: integer
+          description: On-hand quantity after the movement.
+          minimum: 0
+        delta:
+          type: integer
+          description: Signed change. Negative for consumption and waste.
+        reason:
+          type: string
+          enum:
+            - delivery
+            - consumption
+            - waste
+            - stocktake
+            - transfer
+        recordedAt:
+          type: string
+          format: date-time
+    stockDepletedPayload:
+      type: object
+      required:
+        - sku
+        - storeId
+        - depletedAt
+      properties:
+        sku:
+          type: string
+        storeId:
+          type: string
+        affectedMenuItemIds:
+          type: array
+          description: Menu items the menu service must hide.
+          items:
+            type: string
+            format: ulid
+        expectedRestock:
+          type: string
+          format: date-time
+          description: Next delivery that will restock this SKU, if known.
+        depletedAt:
+          type: string
+          format: date-time
+    pointsEarnedPayload:
+      type: object
+      required:
+        - memberId
+        - orderId
+        - points
+        - balanceAfter
+        - earnedAt
+      properties:
+        memberId:
+          type: string
+          format: ulid
+          description: Member ID, prefixed with `mbr_`.
+        orderId:
+          type: string
+          format: ulid
+        points:
+          type: integer
+          description: Points awarded for this order.
+          minimum: 0
+        balanceAfter:
+          type: integer
+          minimum: 0
+        tier:
+          $ref: '#/components/schemas/loyaltyTier'
+        earnedAt:
+          type: string
+          format: date-time
+    rewardRedeemedPayload:
+      type: object
+      required:
+        - memberId
+        - rewardId
+        - pointsSpent
+        - balanceAfter
+        - redeemedAt
+      properties:
+        memberId:
+          type: string
+          format: ulid
+        orderId:
+          type: string
+          format: ulid
+          description: Order the reward was applied to.
+        rewardId:
+          type: string
+          description: Catalog identifier of the redeemed reward.
+          enum:
+            - rwd_free_drink
+            - rwd_free_pastry
+            - rwd_double_shot
+        pointsSpent:
+          type: integer
+          minimum: 1
+        balanceAfter:
+          type: integer
+          minimum: 0
+        redeemedAt:
+          type: string
+          format: date-time
+    loyaltyTier:
+      type: string
+      description: Membership tier at the time of the event.
+      enum:
+        - bronze
+        - silver
+        - gold
+    priceQuoteRequestPayload:
+      type: object
+      required:
+        - quoteId
+        - storeId
+        - lines
+        - requestedAt
+      properties:
+        quoteId:
+          type: string
+          format: ulid
+          description: Quote ID, prefixed with `qte_`.
+        storeId:
+          type: string
+        memberId:
+          type: string
+          format: ulid
+          description: Present when the customer is signed in — unlocks tier pricing.
+        lines:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - menuItemId
+              - quantity
+            properties:
+              menuItemId:
+                type: string
+                format: ulid
+              quantity:
+                type: integer
+                minimum: 1
+        requestedAt:
+          type: string
+          format: date-time
+    priceQuoteProvidedPayload:
+      type: object
+      required:
+        - quoteId
+        - subtotal
+        - total
+        - currency
+        - expiresAt
+      properties:
+        quoteId:
+          type: string
+          format: ulid
+        subtotal:
+          type: integer
+          description: Sum of line prices before discount and tax, in cents.
+          minimum: 0
+        discount:
+          type: integer
+          description: Discount applied, in cents.
+          minimum: 0
+        tax:
+          type: integer
+          description: Tax charged, in cents.
+          minimum: 0
+        total:
+          type: integer
+          description: Amount to charge, in cents.
+          minimum: 0
+        currency:
+          $ref: '#/components/schemas/currency'
+        expiresAt:
+          type: string
+          format: date-time
+          description: Quotes are valid for five minutes.
+    priceQuoteRejectedPayload:
+      type: object
+      required:
+        - quoteId
+        - code
+        - message
+        - rejectedAt
+      properties:
+        quoteId:
+          type: string
+          format: ulid
+        code:
+          type: string
+          enum:
+            - UNKNOWN_MENU_ITEM
+            - STORE_CLOSED
+            - PRICE_LIST_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable explanation shown on the terminal.
+        rejectedAt:
+          type: string
+          format: date-time
+    deadLetterPayload:
+      type: object
+      required:
+        - originalTopic
+        - originalPartition
+        - originalOffset
+        - consumerGroup
+        - error
+        - failedAt
+      properties:
+        originalTopic:
+          type: string
+        originalPartition:
+          type: integer
+          minimum: 0
+        originalOffset:
+          type: integer
+          minimum: 0
+        originalKey:
+          type: string
+          description: Key of the failed record.
+        originalValue:
+          type: string
+          description: The failed record value, kept as a raw string so it can be replayed byte for byte.
+        consumerGroup:
+          type: string
+          description: Group that gave up on the record.
+        error:
+          type: string
+          description: Exception message from the final attempt.
+        failedAt:
+          type: string
+          format: date-time
