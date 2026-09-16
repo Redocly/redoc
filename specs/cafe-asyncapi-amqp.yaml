@@ -1,0 +1,261 @@
+asyncapi: 3.0.0
+
+info:
+  title: Redocly Cafe Kitchen Queue (AMQP)
+  version: 2.1.0
+  description: |
+    Work-queue messaging for the **Redocly Cafe** kitchen, built on RabbitMQ (AMQP 0-9-1).
+
+    When an order is placed, one *preparation ticket per station* is routed through the
+    `cafe.kitchen` topic exchange: espresso drinks go to the barista queue, food to the
+    pastry queue. Completed tickets are acknowledged back so the pickup counter can
+    assemble the order.
+
+    Routing keys follow:
+
+    ```
+    ticket.<station>.<priority>
+    ```
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Kitchen operations handbook
+    url: https://redocly.com/docs
+  tags:
+    - name: kitchen
+      description: Preparation ticket flow
+    - name: amqp
+      description: RabbitMQ transport
+
+defaultContentType: application/json
+
+servers:
+  rabbit:
+    host: rabbit.cafe.redocly.com:5671
+    protocol: amqps
+    protocolVersion: 0-9-1
+    title: Cafe RabbitMQ broker
+    summary: TLS RabbitMQ cluster in the back office
+    description: |
+      Three-node RabbitMQ cluster with quorum queues.
+      Applications authenticate with per-service usernames and passwords.
+    security:
+      - $ref: '#/components/securitySchemes/serviceLogin'
+
+channels:
+  prepTickets:
+    address: ticket.barista.normal
+    title: Barista preparation tickets
+    description: One ticket per drink line, routed to the barista station queue.
+    messages:
+      prepTicket:
+        $ref: '#/components/messages/prepTicket'
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: cafe.kitchen
+          type: topic
+          durable: true
+          autoDelete: false
+          vhost: /cafe
+  ticketCompleted:
+    address: kitchen.ticket-completed
+    title: Completed tickets
+    description: Queue consumed by the pickup counter to assemble finished orders.
+    messages:
+      ticketCompleted:
+        $ref: '#/components/messages/ticketCompleted'
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: kitchen.ticket-completed
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /cafe
+
+operations:
+  sendPrepTicket:
+    action: send
+    channel:
+      $ref: '#/channels/prepTickets'
+    title: Dispatch preparation ticket
+    summary: Sent by the order service, one message per station.
+    tags:
+      - name: kitchen
+    bindings:
+      amqp:
+        deliveryMode: 2
+        mandatory: true
+        cc: ['ticket.pastry.normal']
+        priority: 5
+        timestamp: true
+        ack: true
+  receiveCompletedTickets:
+    action: receive
+    channel:
+      $ref: '#/channels/ticketCompleted'
+    title: Receive completed tickets
+    summary: Consumed by the pickup-counter service with manual acknowledgements.
+    description: |
+      Consumers use `prefetch=10` and acknowledge only after the ticket is
+      matched to its order. Unacknowledged tickets are redelivered to another
+      consumer after the channel closes.
+    bindings:
+      amqp:
+        ack: true
+
+components:
+  securitySchemes:
+    serviceLogin:
+      type: userPassword
+      description: Per-service RabbitMQ username and password.
+  correlationIds:
+    ticketCorrelation:
+      description: Ties a ticket to its originating order.
+      location: $message.header#/orderId
+  messages:
+    prepTicket:
+      name: PrepTicket
+      title: Preparation ticket
+      summary: A unit of kitchen work for a single station.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/ticketCorrelation'
+      headers:
+        type: object
+        properties:
+          orderId:
+            type: string
+            format: ulid
+            description: Originating order ID.
+          station:
+            type: string
+            enum: [barista, pastry]
+      payload:
+        $ref: '#/components/schemas/prepTicketPayload'
+      examples:
+        - name: doubleOatLatte
+          summary: Drink ticket for the barista station
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+            items:
+              - name: Oat Latte
+                quantity: 2
+                notes: Extra hot, no foam.
+            priority: normal
+            dispatchedAt: '2026-07-21T08:15:02Z'
+        - name: rushCroissant
+          summary: High-priority pastry ticket for a waiting customer
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            station: pastry
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk2
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            station: pastry
+            items:
+              - name: Butter Croissant
+                quantity: 1
+                notes: Warmed up.
+            priority: rush
+            dispatchedAt: '2026-07-21T08:17:45Z'
+      bindings:
+        amqp:
+          contentEncoding: utf-8
+          messageType: cafe.prep-ticket
+    ticketCompleted:
+      name: TicketCompleted
+      title: Ticket completed
+      summary: A station finished all items on a ticket.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/ticketCorrelation'
+      headers:
+        type: object
+        properties:
+          orderId:
+            type: string
+            format: ulid
+      payload:
+        $ref: '#/components/schemas/ticketCompletedPayload'
+      examples:
+        - name: latteDone
+          summary: Barista completed the drink ticket
+          headers:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+          payload:
+            ticketId: tkt_01h1s5z6vf2mm1mz3hevnn9xk1
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            station: barista
+            completedAt: '2026-07-21T08:19:08Z'
+            preparationSeconds: 126
+  schemas:
+    prepTicketPayload:
+      type: object
+      required: [ticketId, orderId, station, items, priority, dispatchedAt]
+      properties:
+        ticketId:
+          type: string
+          format: ulid
+          description: Ticket ID, prefixed with `tkt_`.
+        orderId:
+          type: string
+          format: ulid
+        station:
+          type: string
+          description: Kitchen station this ticket is routed to.
+          enum: [barista, pastry]
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [name, quantity]
+            properties:
+              name:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+              notes:
+                type: string
+                description: Free-form preparation notes from the customer.
+        priority:
+          type: string
+          description: Queue priority. `rush` tickets jump ahead of `normal` ones.
+          enum: [normal, rush]
+        dispatchedAt:
+          type: string
+          format: date-time
+    ticketCompletedPayload:
+      type: object
+      required: [ticketId, orderId, station, completedAt]
+      properties:
+        ticketId:
+          type: string
+          format: ulid
+        orderId:
+          type: string
+          format: ulid
+        station:
+          type: string
+          enum: [barista, pastry]
+        completedAt:
+          type: string
+          format: date-time
+        preparationSeconds:
+          type: integer
+          description: Time from dispatch to completion.
+          minimum: 0

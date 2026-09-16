@@ -15,7 +15,7 @@ info:
     url: https://opensource.org/licenses/MIT
   termsOfService: https://redocly.com/subscription-agreement
 servers:
-  - url: https://cafe.cloud.redocly.com
+  - url: https://api.cafe.redocly.com
     description: Live server.
 tags:
   - name: Authorization
@@ -41,8 +41,62 @@ paths:
         - $ref: '#/components/parameters/After'
         - $ref: '#/components/parameters/Before'
         - $ref: '#/components/parameters/Sort'
+          description: >-
+            Sorts the collection by a single field. Prefix with `-` for
+            descending order
+
+            (for example, `-price`); omit the prefix for ascending order
+            (`price`).
+
+
+            **Sortable fields:** `name`, `price`, `createdAt`, `updatedAt`, `id`
+          example: '-price'
         - $ref: '#/components/parameters/Filter'
+          description: >-
+            Filters the collection items using space-separated `field:value`
+            pairs.
+
+
+            **Filterable fields:** `name`, `category`, `price`, `createdAt`,
+            `id`
+
+
+            **Format:** `field1:value1 field2:value2`
+
+
+            **Supported operators:**
+
+            - `field:value` - Exact match
+
+            - `field:value1,value2` - Match any of the comma-separated values
+            (OR)
+
+            - Time ranges (on `createdAt`): Use `30d` (30 days), `7d` (7 days),
+            `1h` (1 hour), etc.
+
+
+            **Examples:**
+
+            - `category:beverage` - Filter by a single category.
+
+            - `category:beverage,dessert` - Filter by multiple categories.
+
+            - `createdAt:7d` - Menu items created in the last 7 days.
+
+            - `name:Latte` - Filter by name.
+
+            - `category:beverage price:400` - Combine multiple filters.
+          example: category:beverage
         - $ref: '#/components/parameters/Search'
+          description: >-
+            Performs a case-insensitive text search across the searchable
+            fields, returning
+
+            items where any of them contain the search term as a substring.
+
+
+            **Searchable fields:** `name`, `photoTextDescription`
+          example: Latte
         - $ref: '#/components/parameters/Limit'
       responses:
         '200':
@@ -70,6 +124,24 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/MenuItem'
+            examples:
+              Beverage:
+                summary: Create a beverage
+                value:
+                  name: Cappuccino
+                  price: 4500
+                  category: beverage
+                  volume: 250
+                  containsCaffeine: true
+                  photoTextDescription: A hot cappuccino in a white ceramic cup.
+              Dessert:
+                summary: Create a dessert
+                value:
+                  name: Chocolate-Brownie
+                  price: 3500
+                  category: dessert
+                  calories: 420
+                  photoTextDescription: A rich chocolate brownie square dusted with cocoa.
       responses:
         '201':
           description: Menu item created successfully.
@@ -164,11 +236,67 @@ paths:
             - orders:read
       parameters:
         - $ref: '#/components/parameters/Filter'
+          description: >-
+            Filters the collection items using space-separated `field:value`
+            pairs.
+
+
+            **Filterable fields:** `customerName`, `status`, `totalPrice`,
+            `createdAt`, `id`
+
+
+            **Format:** `field1:value1 field2:value2`
+
+
+            **Supported operators:**
+
+            - `field:value` - Exact match
+
+            - `field:value1,value2` - Match any of the comma-separated values
+            (OR)
+
+            - Time ranges (on `createdAt`): Use `30d` (30 days), `7d` (7 days),
+            `1h` (1 hour), etc.
+
+
+            **Examples:**
+
+            - `status:placed` - Filter by a single status.
+
+            - `status:placed,completed` - Filter by multiple statuses.
+
+            - `createdAt:30d` - Orders created in the last 30 days.
+
+            - `id:ord_01h1s5z6vf2mm1mz3hevnn9va7` - Filter by a specific order
+            ID.
+
+            - `status:placed createdAt:7d` - Combine multiple filters.
+          example: status:placed
         - $ref: '#/components/parameters/Sort'
+          description: >-
+            Sorts the collection by a single field. Prefix with `-` for
+            descending order
+
+            (for example, `-createdAt`); omit the prefix for ascending order
+            (`createdAt`).
+
+
+            **Sortable fields:** `customerName`, `status`, `totalPrice`,
+            `createdAt`, `updatedAt`, `id`
+          example: '-createdAt'
         - $ref: '#/components/parameters/Limit'
         - $ref: '#/components/parameters/After'
         - $ref: '#/components/parameters/Before'
         - $ref: '#/components/parameters/Search'
+          description: >-
+            Performs a case-insensitive text search across the searchable
+            fields, returning
+
+            items where any of them contain the search term as a substring.
+
+
+            **Searchable fields:** `customerName`, `id`
+          example: John
       responses:
         '200':
           description: Successful operation.
@@ -191,8 +319,8 @@ paths:
       description: >
         Create a new order.
 
-        Order items cannot be changed - if they need to be updated, the order
-        should be canceled and a new one placed.
+        Order items cannot be changed - if they need to be updated, cancel the
+        order and place a new one.
       operationId: createOrder
       security:
         - OAuth2:
@@ -293,8 +421,8 @@ paths:
       description: >
         Update an existing order status.
 
-        Order items cannot be changed - if they need to be updated, the order
-        should be canceled and a new one placed.
+        Order items cannot be changed - if they need to be updated, cancel the
+        order and place a new one.
       operationId: updateOrder
       security:
         - OAuth2:
@@ -350,11 +478,9 @@ paths:
       tags:
         - Orders
       summary: Delete an order
-      description: >
+      description: |
         Delete the order.
-
-        To keep the order history, the order should be canceled instead of
-        deleted.
+        To keep the order history, cancel the order instead of deleting it.
       operationId: deleteOrder
       security:
         - OAuth2:
@@ -389,6 +515,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Filter'
           required: true
+          description: >-
+            Selects the order whose items to return, using a single
+            `orderId:<value>` pair
+
+            (for example, `orderId:ord_01h1s5z6vf2mm1mz3hevnn9va7`).
+
+
+            This filter is required and only the `orderId` field is supported.
+          example: orderId:ord_01h1s5z6vf2mm1mz3hevnn9va7
       responses:
         '200':
           description: Successful operation.
@@ -422,6 +557,8 @@ paths:
       operationId: getRevenue
       security:
         - ApiKey: []
+        - OAuth2:
+            - revenue:read
       parameters:
         - name: startDate
           in: query
@@ -433,8 +570,8 @@ paths:
             Defaults to 30 days ago if not provided.
           schema:
             type: string
-            format: date
-          example: '2026-01-01'
+            format: date-time
+          example: '2026-01-01T00:00:00Z'
         - name: endDate
           in: query
           required: false
@@ -445,8 +582,8 @@ paths:
             Defaults to current time if not provided.
           schema:
             type: string
-            format: date
-          example: '2026-01-31'
+            format: date-time
+          example: '2026-01-31T23:59:59Z'
       responses:
         '200':
           description: Revenue statistics retrieved successfully.
@@ -468,25 +605,73 @@ paths:
         - Authorization
       summary: Create OAuth2 client
       description: >
-        Register a new OAuth2 client for dynamic client registration.  This
-        endpoint implements the Dynamic Client Registration Protocol (RFC 7591),
-        using camelCase field names instead of the RFC's snake_case convention
-        (e.g., `redirectUris` instead of `redirect_uris`, `grantTypes` instead
-        of `grant_types`). The `name` field is required. Other fields are
-        optional. If not provided:
+        Register a new OAuth2 client, implementing the Dynamic Client
+        Registration Protocol (RFC 7591) with the standard snake_case metadata
+        names, so off-the-shelf DCR clients work without modification.
 
-        - `redirectUris` defaults to an empty array. Note: When using the
-        `authorization_code` grant type, 
-          `redirectUris` must be provided (per RFC 7591 Section 2).
-        - `scopes` defaults to all available scopes (menu:read, menu:write,
-        orders:read, orders:write) - `grantTypes` defaults to both supported
-        grant types (authorization_code, client_credentials)
+        Responses use only the standard snake_case names (RFC 7591 Section
+        3.2.1).
 
-        Returns the registered client information per RFC 7591, including:
 
-        - `clientId` and `clientSecret` (must be stored securely) -
-        `clientIdIssuedAt` and `clientSecretExpiresAt` timestamps - All
-        registered client metadata (name, redirectUris, scopes, grantTypes)
+        All fields are optional.
+
+        If not provided:
+
+
+        - `scope` defaults to all available scopes (`menu:read menu:write
+        orders:read orders:write revenue:read`)
+
+        - `grant_types` defaults to `authorization_code`, `client_credentials`,
+        and `refresh_token`
+
+        - `token_endpoint_auth_method` defaults to `client_secret_basic` (RFC
+        7591 Section 2); both supported methods are accepted at the token
+        endpoint regardless of the registered value
+
+
+        This server registers confidential clients only: every client is issued
+        a `client_secret`, and `token_endpoint_auth_method: none` (public
+        clients such as SPAs or mobile apps, RFC 7591 Section 2) is not
+        supported by design.
+
+
+        `redirect_uris` is required whenever the effective grant types include
+        `authorization_code` (RFC 7591 Section 2), including when `grant_types`
+        is omitted, since the default includes it.
+
+        Register with `grant_types: ["client_credentials"]` for a client that
+        needs no redirect URI.
+
+
+        Refresh token behavior follows the registered grant types: the token
+        endpoint returns a refresh token with `authorization_code` grant
+        responses only when the client registered the `refresh_token` grant
+        type.
+
+        The `client_credentials` grant never returns refresh tokens (RFC 6749
+        Section 4.4.3).
+
+        Those clients request a new access token with their own credentials
+        instead.
+
+
+        Returns the registered client information per RFC 7591 Section 3.2.1,
+        including:
+
+
+        - `client_id` and `client_secret` (must be stored securely)
+
+        - `client_id_issued_at` and `client_secret_expires_at` timestamps
+
+        - `registration_client_uri` and `registration_access_token` for managing
+        the registration (RFC 7592)
+
+        - All registered client metadata
+
+
+        Errors use the RFC 7591 Section 3.2.2 format: `400` with `error` set to
+        `invalid_redirect_uri` or `invalid_client_metadata` and a human-readable
+        `error_description`.
       operationId: registerOAuth2Client
       security: []
       requestBody:
@@ -495,6 +680,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegisterClientObject'
+            examples:
+              RegisterClientObject:
+                summary: Client credentials only
+                dataValue:
+                  client_name: auth
+                  scope: menu:read menu:write orders:read orders:write revenue:read
+                  grant_types:
+                    - client_credentials
+              RegisterClientForAuthorizationCode:
+                summary: Authorization code with refresh tokens (RFC 7591 names)
+                dataValue:
+                  client_name: pos-terminal
+                  redirect_uris:
+                    - https://api.cafe.redocly.com/callback
+                  scope: menu:read orders:read orders:write
+                  grant_types:
+                    - authorization_code
+                    - refresh_token
       responses:
         '201':
           description: OAuth2 client registered successfully.
@@ -503,11 +706,387 @@ paths:
               schema:
                 $ref: '#/components/schemas/OAuth2Client'
         '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/OAuth2BadRequest'
         '500':
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '#/components/responses/OAuth2ServerError'
+  /oauth2/register/{clientId}:
+    parameters:
+      - $ref: '#/components/parameters/OAuth2ClientId'
+    get:
+      tags:
+        - Authorization
+      summary: Retrieve OAuth2 client
+      description: >
+        Read the current registration of an OAuth2 client (RFC 7592 Section
+        2.1).
+
+        Authenticate with the `registration_access_token` returned at
+        registration, as a Bearer token in the `Authorization` header.
+
+        An invalid or missing token returns `401` without revealing whether the
+        client exists.
+      operationId: getOAuth2Client
+      security:
+        - RegistrationAccessToken: []
+      responses:
+        '200':
+          description: Current client registration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Client'
+        '401':
+          $ref: '#/components/responses/OAuth2Unauthorized'
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
+    put:
+      tags:
+        - Authorization
+      summary: Update OAuth2 client
+      description: >
+        Replace the registration metadata of an OAuth2 client (RFC 7592 Section
+        2.2).
+
+        Authenticate with the `registration_access_token` as a Bearer token.
+
+
+        This is a full replacement, not a merge: omitted metadata fields are
+        reset to their registration defaults.
+
+        The request must include `client_id` matching the client being updated
+        (RFC 7592 Section 2.2).
+
+        If `client_secret` is included it must match the current secret.
+
+        Credentials cannot be rotated through this endpoint.
+      operationId: updateOAuth2Client
+      security:
+        - RegistrationAccessToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClientObject'
+            examples:
+              UpdateClient:
+                dataValue:
+                  client_id: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+                  client_name: pos-terminal-v2
+                  redirect_uris:
+                    - https://api.cafe.redocly.com/callback
+                  scope: menu:read orders:read
+                  grant_types:
+                    - authorization_code
+                    - refresh_token
+      responses:
+        '200':
+          description: Updated client registration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Client'
+        '400':
+          $ref: '#/components/responses/OAuth2BadRequest'
+        '401':
+          $ref: '#/components/responses/OAuth2Unauthorized'
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
+    delete:
+      tags:
+        - Authorization
+      summary: Delete OAuth2 client
+      description: >
+        Deprovision an OAuth2 client (RFC 7592 Section 2.3).
+
+        Authenticate with the `registration_access_token` as a Bearer token.
+
+        Deleting a client also invalidates all of its tokens and pending
+        authorization codes.
+      operationId: deleteOAuth2Client
+      security:
+        - RegistrationAccessToken: []
+      responses:
+        '204':
+          description: Client registration deleted.
+        '401':
+          $ref: '#/components/responses/OAuth2Unauthorized'
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
+  /oauth2/token:
+    post:
+      tags:
+        - Authorization
+      summary: Create access token
+      description: >
+        OAuth2 token endpoint (RFC 6749 Section 3.2).
+
+        Supports the `authorization_code`, `client_credentials`, and
+        `refresh_token` grant types.
+
+
+        **Client authentication.**
+
+        Authenticate with HTTP Basic (`Authorization: Basic
+        base64(client_id:client_secret)`) or with `client_id` and
+        `client_secret` in the request body — not both at once (RFC 6749 Section
+        2.3.1).
+
+
+        **PKCE (RFC 7636).** 
+
+        When the authorization request included a `code_challenge`, the matching
+        `code_verifier` is required here.
+
+        A mismatch or a `code_verifier` for a code issued without a challenge is
+        rejected with `invalid_grant`.
+
+        `S256` and `plain` challenge methods are supported.
+
+
+        **Refresh tokens.**
+
+        Rotate on every use: a successful `refresh_token` grant retires the
+        presented token and returns a replacement.
+
+        Refresh tokens expire 30 days after issuance; rotation restarts that
+        window.
+
+        The `authorization_code` grant returns a refresh token only when the
+        client is registered for the `refresh_token` grant type.
+
+        The `client_credentials` grant never returns one (RFC 6749 Section
+        4.4.3).
+
+
+        **Scopes.**
+
+        `scope` is space-separated per RFC 6749 (comma-separated values are
+        additionally tolerated).
+
+        Must be a subset of the scopes previously granted (authorization code or
+        refresh token) or registered (client credentials).
+
+
+        Errors follow RFC 6749 Section 5.2: `400` (or `401` for
+        `invalid_client`) with the standard `error` codes such as
+        `invalid_grant`, `invalid_client`, `unauthorized_client`,
+        `unsupported_grant_type`, and `invalid_scope`.
+      operationId: createAccessToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - authorization_code
+                    - client_credentials
+                    - refresh_token
+                  description: The OAuth2 grant type.
+                client_id:
+                  type: string
+                  description: Client identifier. Omit when authenticating with HTTP Basic.
+                client_secret:
+                  type: string
+                  description: Client secret. Omit when authenticating with HTTP Basic.
+                code:
+                  type: string
+                  description: The authorization code (required for `authorization_code`).
+                redirect_uri:
+                  type: string
+                  format: uri
+                  description: >-
+                    Must match the redirect URI used in the authorization
+                    request. Required for `authorization_code`).
+                code_verifier:
+                  type: string
+                  minLength: 43
+                  maxLength: 128
+                  description: >-
+                    PKCE code verifier (RFC 7636) Required when the
+                    authorization request included a `code_challenge`.
+                refresh_token:
+                  type: string
+                  description: The refresh token. Required for `refresh_token`.
+                scope:
+                  type: string
+                  description: >-
+                    Space-separated scopes to request. Defaults to the
+                    previously granted or registered scopes.
+              required:
+                - grant_type
+            examples:
+              ClientCredentials:
+                summary: Client credentials grant
+                dataValue:
+                  grant_type: client_credentials
+                  client_id: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+                  client_secret: YOUR_CLIENT_SECRET
+                  scope: menu:read orders:read
+              AuthorizationCode:
+                summary: Authorization code exchange with PKCE
+                dataValue:
+                  grant_type: authorization_code
+                  client_id: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+                  client_secret: YOUR_CLIENT_SECRET
+                  code: AUTHORIZATION_CODE
+                  redirect_uri: https://api.cafe.redocly.com/callback
+                  code_verifier: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+              RefreshToken:
+                summary: Refresh token grant
+                dataValue:
+                  grant_type: refresh_token
+                  client_id: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+                  client_secret: YOUR_CLIENT_SECRET
+                  refresh_token: YOUR_REFRESH_TOKEN
+      responses:
+        '200':
+          description: >-
+            Token issued successfully. The response is not cacheable (it is
+            served with `Cache-Control` set to `no-store`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/OAuth2BadRequest'
+        '401':
+          $ref: '#/components/responses/OAuth2Unauthorized'
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
+  /oauth2/revoke:
+    post:
+      tags:
+        - Authorization
+      summary: Revoke token
+      description: >
+        OAuth2 token revocation endpoint (RFC 7009). Revokes an access or
+        refresh
+
+        token issued to the authenticated client. Access and refresh tokens
+        issued
+
+        together are revoked together.
+
+
+        Authenticate with HTTP Basic or with `client_id` and `client_secret` in
+        the
+
+        request body, the same as the token endpoint.
+
+
+        `token_type_hint` is an optional lookup optimization; both token types
+        are searched regardless.
+
+        Per RFC 7009 Section 2.2 the endpoint returns `200` even when the token
+        is unknown or already revoked.
+
+        It cannot be used to probe for valid tokens.
+      operationId: revokeToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: The access or refresh token to revoke.
+                token_type_hint:
+                  type: string
+                  enum:
+                    - access_token
+                    - refresh_token
+                  description: Optional hint about the token type.
+                client_id:
+                  type: string
+                  description: Client identifier. Omit when authenticating with HTTP Basic.
+                client_secret:
+                  type: string
+                  description: Client secret. Omit when authenticating with HTTP Basic.
+              required:
+                - token
+            examples:
+              RevokeAccessToken:
+                dataValue:
+                  token: YOUR_ACCESS_TOKEN
+                  token_type_hint: access_token
+                  client_id: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+                  client_secret: YOUR_CLIENT_SECRET
+      responses:
+        '200':
+          description: The token has been revoked or was already invalid.
+        '400':
+          $ref: '#/components/responses/OAuth2BadRequest'
+        '401':
+          $ref: '#/components/responses/OAuth2Unauthorized'
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
+  /.well-known/oauth-authorization-server:
+    get:
+      tags:
+        - Authorization
+      summary: Retrieve authorization server metadata
+      description: >
+        OAuth2 authorization server metadata (RFC 8414).
+
+        Lists the authorization, token, registration, and revocation endpoints
+        along with the supported scopes, grant types, client authentication
+        methods, and PKCE code challenge methods.
+
+        Clients can discover the server's capabilities instead of hard-coding
+        them.
+      operationId: getAuthorizationServerMetadata
+      security: []
+      responses:
+        '200':
+          description: Authorization server metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationServerMetadata'
+              examples:
+                Metadata:
+                  dataValue:
+                    issuer: https://api.cafe.redocly.com
+                    authorization_endpoint: https://api.cafe.redocly.com/oauth2/authorize
+                    token_endpoint: https://api.cafe.redocly.com/oauth2/token
+                    registration_endpoint: https://api.cafe.redocly.com/oauth2/register
+                    revocation_endpoint: https://api.cafe.redocly.com/oauth2/revoke
+                    scopes_supported:
+                      - menu:read
+                      - menu:write
+                      - orders:read
+                      - orders:write
+                      - revenue:read
+                    response_types_supported:
+                      - code
+                    response_modes_supported:
+                      - query
+                    grant_types_supported:
+                      - authorization_code
+                      - client_credentials
+                      - refresh_token
+                    token_endpoint_auth_methods_supported:
+                      - client_secret_basic
+                      - client_secret_post
+                    revocation_endpoint_auth_methods_supported:
+                      - client_secret_basic
+                      - client_secret_post
+                    code_challenge_methods_supported:
+                      - S256
+                      - plain
+                    authorization_response_iss_parameter_supported: true
+                    service_documentation: https://cafe.redocly.com/openapi/cafe
+        '500':
+          $ref: '#/components/responses/OAuth2ServerError'
 webhooks:
   order-notification:
     post:
@@ -534,49 +1113,105 @@ components:
   securitySchemes:
     OAuth2:
       type: oauth2
-      description: OAuth2 authorization for API access.
+      description: >
+        OAuth2 authorization for API access. The token endpoint accepts
+        `grant_type=authorization_code`, `grant_type=client_credentials`, and
+        `grant_type=refresh_token`.
+
+        Standard OAuth2 client libraries can drive these flows unmodified.
+
+        Server capabilities are discoverable from the [RFC 8414 metadata
+        endpoint](https://api.cafe.redocly.com/.well-known/oauth-authorization-server).
+
+
+        ### Protocol behavior
+
+
+        - **Errors follow RFC 6749 Section 5.2 and RFC 7591 Section 3.2.2.** The
+        OAuth2 endpoints return `{"error": ..., "error_description": ...}` with
+        the standard codes (`invalid_grant`, `invalid_client`,
+        `unsupported_grant_type`, `invalid_scope`, `invalid_client_metadata`,
+        ...). The rest of the API uses RFC 9457 problem+json.
+
+        - **Client authentication.** Both `client_secret_basic` (HTTP Basic per
+        RFC 6749 Section 2.3.1) and `client_secret_post` (credentials in the
+        form body) are accepted at the token and revocation endpoints, but not
+        both in one request.
+
+        - **PKCE (RFC 7636) is supported** for the authorization code flow with
+        the `S256` and `plain` challenge methods (`S256` recommended). When an
+        authorization request carries a `code_challenge`, the token exchange
+        requires the matching `code_verifier`.
+
+        - **Refresh tokens rotate on every use.** A successful refresh retires
+        the token presented and returns a replacement in `refresh_token`, as RFC
+        6749 Section 6 permits and RFC 9700 recommends. Store the new value; the
+        old one stops working. Refresh tokens expire 30 days after they are
+        issued, and rotation restarts that window. The authorization code flow
+        returns a refresh token only when the client is registered for the
+        `refresh_token` grant type; the client credentials flow returns none
+        (RFC 6749 Section 4.4.3).
+
+        - **Authorization responses carry `iss`** (RFC 9207) alongside `code`
+        and `state`.
+
+        - **Tokens can be revoked** at the [revocation
+        endpoint](https://api.cafe.redocly.com/oauth2/revoke) (RFC 7009), and
+        client registrations managed via RFC 7592 using the
+        `registration_access_token`.
+
+        - **`scope` accepts commas.** The space-delimited form required by RFC
+        6749 is always accepted and recommended; comma-separated values are
+        additionally tolerated.
+      oauth2MetadataUrl: https://api.cafe.redocly.com/.well-known/oauth-authorization-server
       flows:
         authorizationCode:
-          authorizationUrl: https://cafe.cloud.redocly.com/oauth2/authorize
-          tokenUrl: https://cafe.cloud.redocly.com/oauth2/token
+          authorizationUrl: https://api.cafe.redocly.com/oauth2/authorize
+          tokenUrl: https://api.cafe.redocly.com/oauth2/token
+          refreshUrl: https://api.cafe.redocly.com/oauth2/token
           scopes:
             menu:read: Read access to menu items and images
             menu:write: Write access to menu items (create, delete)
             orders:read: Read access to orders
             orders:write: Write access to orders (create, update, delete)
+            revenue:read: Read access to revenue statistics
         clientCredentials:
-          tokenUrl: https://cafe.cloud.redocly.com/oauth2/token
+          tokenUrl: https://api.cafe.redocly.com/oauth2/token
           scopes:
             menu:read: Read access to menu items and images
             menu:write: Write access to menu items (create, delete)
             orders:read: Read access to orders
             orders:write: Write access to orders (create, update, delete)
+            revenue:read: Read access to revenue statistics
     ApiKey:
       type: apiKey
       name: X-API-Key
       in: header
       description: API key for internal operations.
+    RegistrationAccessToken:
+      type: http
+      scheme: bearer
+      description: >-
+        Registration access token from the client registration response (RFC
+        7592), sent as a Bearer token to authenticate requests to the client
+        configuration endpoint (`/oauth2/register/{clientId}`).
   parameters:
     After:
       name: after
       in: query
       required: false
-      description: >-
-        Use the `endCursor` as a value for the `after` parameter to get the next
-        page.
+      description: Use the `nextPage` value as the `after` parameter to get the next page.
       schema:
         type: string
-      example: a25fgaksjf23la==
     Before:
       name: before
       in: query
       required: false
       description: >
-        Use the `startCursor` as a value for the `before` parameter to get the
-        next page.
+        Use the `previousPage` value as the `before` parameter to get the
+        previous page.
       schema:
         type: string
-      example: bfg23aksjf23zb1==
     Sort:
       name: sort
       description: |-
@@ -586,11 +1221,12 @@ components:
       required: false
       schema:
         type: string
-      example: '-name'
     Filter:
       name: filter
       description: >-
         Filters the collection items using space-separated `field:value` pairs.
+
+        See each list endpoint for the specific fields it supports.
 
 
         **Format:** `field1:value1 field2:value2`
@@ -598,58 +1234,37 @@ components:
 
         **Supported operators:**
 
-        - `field:value` - Exact match
+        - `field:value` - exact match
 
-        - `field:value1,value2` - Match any of the comma-separated values (OR)
+        - `field:value1,value2` - match any of the comma-separated values (OR)
 
-        - Time ranges: Use `30d` (30 days), `7d` (7 days), `1h` (1 hour), etc.
-
-
-        **Examples:**
-
-        - `status:placed` - Filter by single status.
-
-        - `status:placed,completed` - Filter by multiple statuses.
-
-        - `createdAt:30d` - Filter orders created in the last 30 days.
-
-        - `orderId:ord_01h1s5z6vf2mm1mz3hevnn9va7` - Filter by specific order
-        ID.
-
-        - `status:placed createdAt:7d` - Combine multiple filters.
+        - Time ranges (on date fields): use `30d` (30 days), `7d` (7 days), `1h`
+        (1 hour), etc.
       in: query
       required: false
       schema:
         type: string
-      example: orderId:ord_01h1s5z6vf2mm1mz3hevnn9va7
     Search:
       name: search
       in: query
       description: >-
-        Performs a case-insensitive text search across relevant fields in the
-        collection.
+        Performs a case-insensitive text search across the endpoint's searchable
+        fields,
 
+        returning items where any of those fields contain the search term as a
+        substring.
 
-        **Fields searched depend on the endpoint:**
-
-        - **Menu items:** `name`, `photoTextDescription`
-
-        - **Orders:** `customerName`, `id`
-
-
-        Returns items where any of the searchable fields contain the search term
-        as a substring.
+        See each list endpoint for the specific fields it searches.
       required: false
       schema:
         type: string
-      example: coffee
     Limit:
       name: limit
       description: >
-        Use to return a number of results per page.
+        Specify the number of results per page.
 
         If there is more data, use in combination with `after` to page through
-        the data.
+        all results.
       in: query
       required: false
       schema:
@@ -666,7 +1281,6 @@ components:
       schema:
         type: string
         pattern: ^prd_[0-9abcdefghjkmnpqrstvwxyz]{26}$
-      example: prd_01h1s5z6vf2mm1mz3hevnn9va7
     PhotoSize:
       name: photoSize
       in: query
@@ -688,19 +1302,27 @@ components:
         type: string
         pattern: ^ord_[0-9abcdefghjkmnpqrstvwxyz]{26}$
       example: ord_01h1s5z6vf2mm1mz3hevnn9va7
+    OAuth2ClientId:
+      name: clientId
+      in: path
+      required: true
+      description: The client identifier issued at registration.
+      schema:
+        type: string
+      example: client_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
   schemas:
     Page:
       type: object
       properties:
-        endCursor:
+        nextPage:
           type:
             - string
             - 'null'
           description: |-
             Use with the `after` query parameter to load the next page of data.
-            When `null`, there is no data.
+            When `null`, there is no next page.
             The cursor is opaque and internal structure is subject to change.
-        startCursor:
+        previousPage:
           type:
             - string
             - 'null'
@@ -708,32 +1330,19 @@ components:
             Use with the `before` query parameter to load the previous page of
             data.
 
-            When `null`, there is no data.
+            When `null`, there is no previous page.
 
             The cursor is opaque and internal structure is subject to change.
-        hasNextPage:
-          type: boolean
-          description: Indicates if there is a next page with items.
-        hasPrevPage:
-          type: boolean
-          description: Indicates if there is a previous page with items.
         limit:
           type: integer
           minimum: 1
           maximum: 100
           default: 10
           description: Value showing how many items are in the page limit.
-        total:
-          type: integer
-          description: Count of items across all pages.
-          minimum: 0
       required:
-        - endCursor
-        - startCursor
-        - hasNextPage
-        - hasPrevPage
+        - nextPage
+        - previousPage
         - limit
-        - total
     MenuBaseItem:
       type: object
       properties:
@@ -773,7 +1382,7 @@ components:
             - string
             - 'null'
           format: binary
-          description: Photo of the menu item. Must be a PNG image and less than 1MB.
+          description: Photo of the menu item. Must be a PNG image less than 1MB in size.
         photoUrl:
           readOnly: true
           type: string
@@ -881,7 +1490,7 @@ components:
             problem, e.g. by adding a fragment identifier or sub-path to the
             problem type.
 
-            May be used to locate the root of this problem in the source code.
+            Can be used to locate the root of this problem in the source code.
           example: /some/uri-reference#specific-occurrence-context
         details:
           description: Additional error details.
@@ -1057,11 +1666,11 @@ components:
           minimum: 0
         startDate:
           type: string
-          format: date
+          format: date-time
           description: Start date of the revenue calculation period.
         endDate:
           type: string
-          format: date
+          format: date-time
           description: End date of the revenue calculation period.
       required:
         - revenue
@@ -1073,107 +1682,348 @@ components:
         - canceledOrders
         - startDate
         - endDate
-    RegisterClientObject:
+    RegisterClientMetadata:
       type: object
+      description: >
+        Client registration metadata fields per RFC 7591 Section 2, shared by
+        both
+
+        registration variants.
       properties:
-        name:
+        client_name:
           type: string
-          description: Client name.
-        redirectUris:
-          type: array
-          items:
-            type: string
-            format: uri
-          description: List of redirect URIs (optional, defaults to empty array).
-        scopes:
-          type: array
-          items:
-            type: string
-            enum:
-              - menu:read
-              - menu:write
-              - orders:read
-              - orders:write
-          description: List of scopes.
-        grantTypes:
+          description: >-
+            Human-readable client name, displayed on the authorization consent
+            screen.
+        scope:
+          type: string
+          description: Space-separated list of scopes. Defaults to all available scopes.
+          default: menu:read menu:write orders:read orders:write revenue:read
+          pattern: >-
+            ^(menu:read|menu:write|orders:read|orders:write|revenue:read)(
+            (menu:read|menu:write|orders:read|orders:write|revenue:read))*$
+          example: menu:read orders:read orders:write
+        grant_types:
           type: array
           items:
             type: string
             enum:
               - authorization_code
               - client_credentials
-          description: List of grant types.
-      required:
-        - name
+              - refresh_token
+          default:
+            - authorization_code
+            - client_credentials
+            - refresh_token
+          description: >
+            Grant types the client may use.
+
+            A refresh token is issued with `authorization_code` grant responses
+            only when `refresh_token` is included here.
+
+            The `client_credentials` grant never returns one (RFC 6749 Section
+            4.4.3).
+        token_endpoint_auth_method:
+          type: string
+          enum:
+            - client_secret_basic
+            - client_secret_post
+          default: client_secret_basic
+          description: >
+            Requested client authentication method for the token endpoint,
+            registered as client metadata and echoed in registration responses.
+
+            Defaults to `client_secret_basic` (RFC 7591 Section 2).
+
+            The token and revocation endpoints accept both methods for every
+            client regardless.
+    RegisterClientAuthorizationCode:
+      title: authorization_code
+      description: >-
+        Effective grant types include `authorization_code` — explicitly, or by
+        default when `grant_types` is omitted. A non-empty `redirect_uris` is
+        required. Other grant types (`client_credentials`, `refresh_token`) can
+        be registered alongside.
+      allOf:
+        - type: object
+          required:
+            - redirect_uris
+          properties:
+            redirect_uris:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                format: uri
+              description: >
+                Redirect URIs for the `authorization_code` grant.
+
+                Compared with exact string matching at authorization time (RFC
+                6749 Section 3.1.2.3).
+        - $ref: '#/components/schemas/RegisterClientMetadata'
+    RegisterClientCredentials:
+      title: client_credentials
+      description: >-
+        `grant_types` is provided and does not include `authorization_code` —
+        typically machine-to-machine clients using `client_credentials`. No
+        redirect URI is needed.
+      allOf:
+        - $ref: '#/components/schemas/RegisterClientMetadata'
+        - type: object
+          required:
+            - grant_types
+          properties:
+            grant_types:
+              not:
+                contains:
+                  const: authorization_code
+    RegisterClientObject:
+      description: >
+        Client registration metadata per RFC 7591 Section 2, using the standard
+        snake_case field names.
+
+        All fields are optional, with one conditional exception.
+
+        `redirect_uris` is required whenever the effective grant types include
+        `authorization_code`.
+
+        This requirement still applies when `grant_types` is omitted:
+        `authorization_code` is part of the default (RFC 7591 Section 2).
+      anyOf:
+        - $ref: '#/components/schemas/RegisterClientAuthorizationCode'
+        - $ref: '#/components/schemas/RegisterClientCredentials'
     OAuth2Client:
       type: object
-      description: >-
-        OAuth2 client registration response. Per RFC 7591, includes the client
-        identifier, secret, timestamps, and all registered client metadata.
+      description: >
+        OAuth2 client information response per RFC 7591 Section 3.2.1, using the
+        standard snake_case field names.
+
+        Returned by the registration endpoint and the RFC 7592 client
+        configuration endpoint.
       properties:
-        clientId:
+        client_id:
           type: string
           description: Client identifier issued by the authorization server.
-        clientSecret:
+        client_secret:
           type: string
-          description: Client secret issued by the authorization server.
-        clientIdIssuedAt:
+          description: Client secret issued by the authorization server. Store it securely.
+        client_id_issued_at:
           type: integer
           format: int64
           description: >-
             Time when the client_id is issued, represented as seconds since
-            epoch (RFC7591).
-        clientSecretExpiresAt:
+            epoch (RFC 7591).
+        client_secret_expires_at:
           type: integer
           format: int64
           description: >-
             Time at which the client_secret expires, represented as seconds
-            since epoch. 0 indicates the secret does not expire (RFC 7591).
-        name:
-          type: string
-          description: Client name (registered metadata).
-        redirectUris:
-          type: array
-          items:
-            type: string
-            format: uri
-          description: List of redirect URIs (registered metadata).
-        registrationClientUri:
+            since epoch. `0` indicates the secret does not expire (RFC 7591).
+        registration_client_uri:
           type: string
           format: uri
           description: >-
             URL of the client configuration endpoint for managing this client
             registration (RFC 7592).
-        registrationAccessToken:
+        registration_access_token:
           type: string
           description: >-
-            Access token to be used at the client configuration endpoint for
-            managing this client registration (RFC 7592).
-        scopes:
+            Bearer token for the client configuration endpoint (RFC 7592). Store
+            it securely.
+        client_name:
+          type: string
+          description: >-
+            Client name (registered metadata). Omitted for clients registered
+            without a name.
+        redirect_uris:
           type: array
           items:
             type: string
-            enum:
-              - menu:read
-              - menu:write
-              - orders:read
-              - orders:write
-          description: List of scopes (registered metadata).
-        grantTypes:
+            format: uri
+          description: Registered redirect URIs.
+        grant_types:
           type: array
           items:
             type: string
             enum:
               - authorization_code
               - client_credentials
-          description: List of grant types (registered metadata).
+              - refresh_token
+          description: Registered grant types.
+        scope:
+          type: string
+          description: Space-separated registered scopes.
+        token_endpoint_auth_method:
+          type: string
+          enum:
+            - client_secret_basic
+            - client_secret_post
+          description: >
+            Registered token endpoint authentication method. Defaults to
+            `client_secret_basic` when not requested at registration (RFC 7591
+            Section 2).
+
+            The token and revocation endpoints accept both methods for every
+            client regardless.
       required:
-        - clientId
-        - clientSecret
-        - clientIdIssuedAt
-        - clientSecretExpiresAt
-        - registrationClientUri
-        - registrationAccessToken
+        - client_id
+        - client_secret
+        - client_id_issued_at
+        - client_secret_expires_at
+        - registration_client_uri
+        - registration_access_token
+        - redirect_uris
+        - grant_types
+        - scope
+        - token_endpoint_auth_method
+    OAuthError:
+      type: object
+      description: >
+        OAuth2 error response, as defined by RFC 6749 Section 5.2 (token
+        endpoint), RFC 7591 Section 3.2.2 (registration endpoint), and RFC 7009
+        (revocation endpoint).
+
+        The OAuth2 endpoints return this shape instead of the
+        `application/problem+json` format used by the rest of the API.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code.
+          enum:
+            - invalid_request
+            - invalid_client
+            - invalid_grant
+            - unauthorized_client
+            - unsupported_grant_type
+            - unsupported_response_type
+            - invalid_scope
+            - invalid_client_metadata
+            - invalid_redirect_uri
+            - invalid_token
+            - access_denied
+            - server_error
+        error_description:
+          type: string
+          description: Human-readable explanation of the error.
+      required:
+        - error
+    UpdateClientObject:
+      description: >
+        Client registration update request per RFC 7592 Section 2.2: the full
+        set of registration metadata, plus the required `client_id` of the
+        client being updated.
+
+        Omitted metadata fields are reset to their registration defaults.
+      allOf:
+        - $ref: '#/components/schemas/RegisterClientObject'
+        - type: object
+          required:
+            - client_id
+          properties:
+            client_id:
+              type: string
+              description: >-
+                Required (RFC 7592 Section 2.2). Must match the client being
+                updated. Credentials cannot be changed through this endpoint.
+            client_secret:
+              type: string
+              description: Optional. If present, must match the client's current secret.
+    TokenResponse:
+      type: object
+      description: Access token response per RFC 6749 Section 5.1.
+      properties:
+        access_token:
+          type: string
+          description: The issued access token (opaque string).
+        token_type:
+          type: string
+          description: Type of the issued token.
+          const: Bearer
+        expires_in:
+          type: integer
+          description: Access token lifetime in seconds.
+          example: 3600
+        refresh_token:
+          type: string
+          description: >
+            Refresh token, returned for the `authorization_code` grant when the
+            client is registered for the `refresh_token` grant type, and on
+            every refresh (tokens rotate on use).
+
+            Never returned for the `client_credentials` grant (RFC 6749 Section
+            4.4.3).
+        scope:
+          type: string
+          description: Space-separated scopes granted to the token.
+          example: menu:read orders:read
+      required:
+        - access_token
+        - token_type
+        - expires_in
+    AuthorizationServerMetadata:
+      type: object
+      description: OAuth2 authorization server metadata per RFC 8414.
+      properties:
+        issuer:
+          type: string
+          format: uri
+          description: The authorization server's issuer identifier.
+        authorization_endpoint:
+          type: string
+          format: uri
+        token_endpoint:
+          type: string
+          format: uri
+        registration_endpoint:
+          type: string
+          format: uri
+          description: Dynamic client registration endpoint (RFC 7591).
+        revocation_endpoint:
+          type: string
+          format: uri
+          description: Token revocation endpoint (RFC 7009).
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        revocation_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        code_challenge_methods_supported:
+          type: array
+          description: PKCE code challenge methods supported (RFC 7636).
+          items:
+            type: string
+        authorization_response_iss_parameter_supported:
+          type: boolean
+          description: >-
+            Whether authorization responses carry the `iss` parameter (RFC
+            9207).
+        service_documentation:
+          type: string
+          format: uri
+      required:
+        - issuer
+        - authorization_endpoint
+        - token_endpoint
+        - response_types_supported
     OrderNotification:
       type: object
       required:
@@ -1227,3 +2077,36 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Error'
+    OAuth2BadRequest:
+      description: |
+        OAuth2 error (RFC 6749 Section 5.2 / RFC 7591 Section 3.2.2).
+        The `error` field carries the standard OAuth2 error code.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    OAuth2ServerError:
+      description: Unexpected server error, reported with the `server_error` error code.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    OAuth2Unauthorized:
+      description: >
+        Client authentication failed (`error: invalid_client`, RFC 6749 Section
+        5.2) or the presented bearer token is invalid (`error: invalid_token`,
+        RFC 6750).
+
+        The response carries a `WWW-Authenticate` challenge naming the expected
+        authentication scheme.
+      headers:
+        WWW-Authenticate:
+          description: >-
+            Authentication challenge, for example: `Basic realm="redocly-cafe"`
+            or `Bearer realm="redocly-cafe", error="invalid_token"`.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
