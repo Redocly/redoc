@@ -1,0 +1,84 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  description: |
+    Demo API for cafe operators (not customers) to manage menus, orders, and revenue.
+    Create API credentials and try it yourself in a realistic OpenAPI workflow.
+  version: 1.0.0
+  contact:
+    email: team@redocly.com
+    url: https://redocly.com/contact-us/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://redocly.com/subscription-agreement
+servers:
+  - url: https://api.cafe.redocly.com
+    description: Live server.
+tags:
+  - name: Authorization
+    description: Create a client to demo the API.
+  - name: Products
+    description: Operations related to products.
+  - name: Orders
+    description: Order management operations.
+  - name: Statistics
+    description: Statistics operations.
+  - name: Health
+    description: Health check operations.
+    x-internal: true
+  - name: Admin
+    description: Internal admin operations.
+    x-internal: true
+paths:
+  /menu:
+    $ref: paths/menu.yaml
+  /menu/{menuItemId}:
+    $ref: paths/menu_{menuItemId}.yaml
+  /menu-item-images/{menuItemId}:
+    $ref: paths/menu-item-images_{menuItemId}.yaml
+  /orders:
+    $ref: paths/orders.yaml
+  /orders/{orderId}:
+    $ref: paths/orders_{orderId}.yaml
+  /order-items:
+    $ref: paths/order-items.yaml
+  /revenue:
+    $ref: paths/revenue.yaml
+  /oauth2/register:
+    $ref: paths/oauth2_register.yaml
+  /health:
+    $ref: paths/health.yaml
+  /clean-up:
+    $ref: paths/clean-up.yaml
+webhooks:
+  order-notification:
+    $ref: webhooks/order-notification.yaml
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth2 authorization for API access.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.cafe.redocly.com/oauth2/authorize
+          tokenUrl: https://api.cafe.redocly.com/oauth2/token
+          scopes:
+            menu:read: Read access to menu items and images
+            menu:write: Write access to menu items (create, delete)
+            orders:read: Read access to orders
+            orders:write: Write access to orders (create, update, delete)
+            revenue:read: Read access to revenue statistics
+        clientCredentials:
+          tokenUrl: https://api.cafe.redocly.com/oauth2/token
+          scopes:
+            menu:read: Read access to menu items and images
+            menu:write: Write access to menu items (create, delete)
+            orders:read: Read access to orders
+            orders:write: Write access to orders (create, update, delete)
+            revenue:read: Read access to revenue statistics
+    ApiKey:
+      type: apiKey
+      name: X-API-Key
+      in: header
+      description: API key for internal operations.

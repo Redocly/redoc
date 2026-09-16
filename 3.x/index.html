@@ -3,30 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>ReDoc Interactive Demo (next)</title>
-    <meta name="description" content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation" />
+    <meta
+      name="description"
+      content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation"
+    />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/redoc/3.x/favicon.svg" />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet" />
-    <script>
-      // crypto.randomUUID is only available in secure contexts (HTTPS/localhost);
-      // polyfill it so the demo also works over plain HTTP on a LAN IP
-      if (window.crypto && !window.crypto.randomUUID) {
-        window.crypto.randomUUID = function () {
-          var bytes = window.crypto.getRandomValues(new Uint8Array(16));
-          bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
-          bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 10
-          var hex = Array.prototype.map
-            .call(bytes, function (b) { return b.toString(16).padStart(2, '0'); })
-            .join('');
-          return (
-            hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) +
-            '-' + hex.slice(16, 20) + '-' + hex.slice(20)
-          );
-        };
-      }
-    </script>
-    <script type="module" crossorigin src="/redoc/3.x/assets/index-CHoJ-UB1.js"></script>
-    <link rel="stylesheet" crossorigin href="/redoc/3.x/assets/index-CY-_5M4R.css">
+    <script type="module" crossorigin src="/redoc/3.x/assets/index-BZn5sktg.js"></script>
+    <link rel="stylesheet" crossorigin href="/redoc/3.x/assets/index-5YXVxjRj.css">
   </head>
   <body>
     <div id="root"></div>

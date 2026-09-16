@@ -1,0 +1,293 @@
+asyncapi: 3.0.0
+
+info:
+  title: Redocly Cafe Order Events (Kafka)
+  version: 1.2.0
+  description: |
+    Event stream for the **Redocly Cafe** order lifecycle, published to Apache Kafka.
+
+    Every state change of an order — from the moment a customer places it at the
+    counter until the barista hands it over — is captured as an immutable event on
+    the `cafe.orders` topics. Downstream consumers include the kitchen display,
+    the loyalty service, and the revenue dashboard.
+
+    ## Topic naming
+
+    ```
+    cafe.orders.<event-type>
+    ```
+
+    Events are keyed by `orderId`, so all events for one order land on the same
+    partition and are consumed in order.
+  termsOfService: https://redocly.com/subscription-agreement
+  contact:
+    name: Redocly Cafe Platform Team
+    email: team@redocly.com
+    url: https://redocly.com/contact-us/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  externalDocs:
+    description: Redocly Cafe event catalog
+    url: https://redocly.com/docs
+  tags:
+    - name: orders
+      description: Order lifecycle events
+    - name: kafka
+      description: Apache Kafka messaging
+
+defaultContentType: application/json
+
+servers:
+  production:
+    host: '{clusterHost}:9093'
+    protocol: kafka-secure
+    protocolVersion: '3.6.0'
+    title: Cafe production cluster
+    summary: TLS + SASL/SCRAM production Kafka cluster
+    description: |
+      Production cluster used by all in-store services.
+      Requires SASL/SCRAM-SHA-512 credentials issued by the platform team.
+    variables:
+      clusterHost:
+        default: kafka.cafe.redocly.com
+        description: Bootstrap server hostname
+        enum:
+          - kafka.cafe.redocly.com
+          - kafka-staging.cafe.redocly.com
+    security:
+      - $ref: '#/components/securitySchemes/saslScram'
+    tags:
+      - name: production
+    bindings:
+      kafka:
+        schemaRegistryUrl: https://schema-registry.cafe.redocly.com
+        schemaRegistryVendor: confluent
+
+channels:
+  orderPlaced:
+    address: cafe.orders.placed
+    title: Order placed
+    description: A customer placed a new order at the register or via the app.
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+    bindings:
+      kafka:
+        topic: cafe.orders.placed
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete']
+          retention.ms: 604800000
+  orderStatusChanged:
+    address: cafe.orders.status-changed
+    title: Order status changed
+    description: The kitchen or barista moved an order to a new status.
+    messages:
+      orderStatusChanged:
+        $ref: '#/components/messages/orderStatusChanged'
+    bindings:
+      kafka:
+        topic: cafe.orders.status-changed
+        partitions: 6
+        replicas: 3
+
+operations:
+  publishOrderPlaced:
+    action: send
+    channel:
+      $ref: '#/channels/orderPlaced'
+    title: Publish order placed
+    summary: Emitted by the point-of-sale service when checkout completes.
+    tags:
+      - name: orders
+    bindings:
+      kafka:
+        clientId:
+          type: string
+          const: cafe-pos
+  consumeOrderStatusChanged:
+    action: receive
+    channel:
+      $ref: '#/channels/orderStatusChanged'
+    title: Consume order status changes
+    summary: Consumed by the customer app and the pickup-counter display.
+    description: |
+      Consumers must be idempotent: the producer uses at-least-once delivery,
+      so duplicate status events are possible.
+    bindings:
+      kafka:
+        groupId:
+          type: string
+          enum: ['pickup-display', 'customer-app', 'loyalty-service']
+
+components:
+  securitySchemes:
+    saslScram:
+      type: scramSha512
+      description: SASL/SCRAM-SHA-512 credentials issued per service.
+  correlationIds:
+    orderCorrelation:
+      description: Correlates all events belonging to one order.
+      location: $message.header#/correlationId
+  messages:
+    orderPlaced:
+      name: OrderPlaced
+      title: Order placed
+      summary: A new order entered the system.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            format: ulid
+            description: Order-scoped correlation ID.
+          source:
+            type: string
+            description: Producing service.
+            enum: [pos, mobile-app, kiosk]
+      payload:
+        $ref: '#/components/schemas/orderPlacedPayload'
+      examples:
+        - name: espressoToGo
+          summary: Single espresso, paid by card
+          headers:
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            source: pos
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            customerName: Ada Lovelace
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Espresso
+                quantity: 1
+                unitPrice: 350
+            totalPrice: 350
+            placedAt: '2026-07-21T08:15:00Z'
+        - name: morningRush
+          summary: Large mobile-app order with a dessert
+          headers:
+            correlationId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            source: mobile-app
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            customerName: Grace Hopper
+            items:
+              - menuItemId: prd_01khr487f7qm7p44xn427m43vb
+                name: Flat White
+                quantity: 2
+                unitPrice: 450
+              - menuItemId: prd_01khr487f7qm7p44xn427m43xd
+                name: Cinnamon Roll
+                quantity: 1
+                unitPrice: 400
+            totalPrice: 1300
+            placedAt: '2026-07-21T08:17:42Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+    orderStatusChanged:
+      name: OrderStatusChanged
+      title: Order status changed
+      summary: An order transitioned to a new lifecycle status.
+      contentType: application/json
+      correlationId:
+        $ref: '#/components/correlationIds/orderCorrelation'
+      headers:
+        type: object
+        properties:
+          correlationId:
+            type: string
+            format: ulid
+      payload:
+        $ref: '#/components/schemas/orderStatusChangedPayload'
+      examples:
+        - name: readyForPickup
+          summary: Barista finished the drinks
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9va7
+            previousStatus: preparing
+            status: ready
+            changedAt: '2026-07-21T08:19:10Z'
+        - name: cancelledByCustomer
+          summary: Customer cancelled before preparation started
+          payload:
+            orderId: ord_01h1s5z6vf2mm1mz3hevnn9vb2
+            previousStatus: placed
+            status: cancelled
+            reason: Customer cancelled in the app.
+            changedAt: '2026-07-21T08:18:03Z'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key — the order ID.
+  schemas:
+    orderPlacedPayload:
+      type: object
+      required: [orderId, items, totalPrice, placedAt]
+      properties:
+        orderId:
+          type: string
+          format: ulid
+          description: Order ID, prefixed with `ord_`.
+        customerName:
+          type: string
+          description: Name to call out at the pickup counter.
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/orderLine'
+        totalPrice:
+          type: integer
+          description: Total order price in cents.
+          minimum: 0
+        placedAt:
+          type: string
+          format: date-time
+    orderLine:
+      type: object
+      required: [menuItemId, quantity, unitPrice]
+      properties:
+        menuItemId:
+          type: string
+          format: ulid
+          description: Menu item ID, prefixed with `prd_`.
+        name:
+          type: string
+          description: Menu item display name at the time of ordering.
+        quantity:
+          type: integer
+          minimum: 1
+        unitPrice:
+          type: integer
+          description: Price per unit in cents.
+          minimum: 0
+    orderStatusChangedPayload:
+      type: object
+      required: [orderId, status, changedAt]
+      properties:
+        orderId:
+          type: string
+          format: ulid
+        previousStatus:
+          $ref: '#/components/schemas/orderStatus'
+        status:
+          $ref: '#/components/schemas/orderStatus'
+        reason:
+          type: string
+          description: Optional human-readable reason, set for cancellations.
+        changedAt:
+          type: string
+          format: date-time
+    orderStatus:
+      type: string
+      description: Order lifecycle status.
+      enum: [placed, preparing, ready, completed, cancelled]

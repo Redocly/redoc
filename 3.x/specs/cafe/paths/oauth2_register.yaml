@@ -1,0 +1,47 @@
+post:
+  tags:
+    - Authorization
+  x-internal: false
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: Create OAuth2 client
+  description: >
+    Register a new OAuth2 client for dynamic client registration. 
+    This endpoint implements the Dynamic Client Registration Protocol (RFC 7591), using camelCase field names instead of the RFC's snake_case convention (e.g., `redirectUris` instead of `redirect_uris`, `grantTypes` instead of `grant_types`).
+    The `name` field is required. Other fields are optional. If not provided:
+
+    - `redirectUris` defaults to an empty array. Note: When using the
+    `authorization_code` grant type, 
+      `redirectUris` must be provided (per RFC 7591 Section 2).
+    - `scopes` defaults to all available scopes (menu:read, menu:write,
+    orders:read, orders:write, revenue:read)
+    - `grantTypes` defaults to both supported grant types (authorization_code,
+    client_credentials)
+
+    Returns the registered client information per RFC 7591, including:
+
+    - `clientId` and `clientSecret` (must be stored securely)
+    - `clientIdIssuedAt` and `clientSecretExpiresAt` timestamps
+    - All registered client metadata (name, redirectUris, scopes, grantTypes)
+  operationId: registerOAuth2Client
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/RegisterClientObject.yaml
+  responses:
+    '201':
+      description: OAuth2 client registered successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OAuth2Client.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

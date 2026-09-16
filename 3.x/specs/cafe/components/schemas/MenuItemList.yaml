@@ -1,0 +1,16 @@
+type: object
+properties:
+  object:
+    type: string
+    const: list
+    description: Entity name.
+  page:
+    $ref: ./Page.yaml
+  items:
+    type: array
+    items:
+      $ref: ./MenuItem.yaml
+required:
+  - object
+  - page
+  - items

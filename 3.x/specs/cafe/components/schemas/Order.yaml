@@ -1,0 +1,72 @@
+type: object
+title: Order
+properties:
+  id:
+    description: Order ID. Unique identifier prefixed with `ord_`.
+    type: string
+    format: ulid
+    readOnly: true
+    pattern: ^ord_[0-9abcdefghjkmnpqrstvwxyz]{26}$
+    example: ord_01h1s5z6vf2mm1mz3hevnn9va7
+  object:
+    description: Entity name.
+    type: string
+    const: order
+    readOnly: true
+  customerName:
+    description: |
+      Name of the customer who placed the order.
+      Must start and end with a letter, and can contain letters, spaces, hyphens, and apostrophes (e.g., "John Doe", "Mary-Jane", "O'Brien").
+    type: string
+    pattern: ^[A-Za-z]+(?:[\s'-][A-Za-z]+)*$
+    minLength: 1
+    maxLength: 100
+  status:
+    allOf:
+      - $ref: ./OrderStatus.yaml
+    readOnly: true
+  totalPrice:
+    description: Total order price in cents.
+    type: integer
+    minimum: 0
+    readOnly: true
+  createdAt:
+    description: Created date.
+    type: string
+    format: date-time
+    readOnly: true
+  updatedAt:
+    description: Updated date.
+    type: string
+    format: date-time
+    readOnly: true
+  orderItems:
+    type: array
+    description: List of items to include in the order.
+    minItems: 1
+    items:
+      type: object
+      properties:
+        menuItemId:
+          type: string
+          format: ulid
+          description: ID of the menu item to add to the order.
+        quantity:
+          type: integer
+          minimum: 1
+          description: Quantity of the menu item.
+        discount:
+          type: integer
+          minimum: 0
+          description: Discount amount in cents (absolute value).
+          default: 0
+        comment:
+          type: string
+          maxLength: 500
+          description: Optional comment for the order item (e.g., "No sugar").
+      required:
+        - menuItemId
+        - quantity
+required:
+  - customerName
+  - orderItems
