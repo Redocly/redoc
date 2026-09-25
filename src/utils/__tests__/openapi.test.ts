@@ -63,12 +63,16 @@ describe('Utils', () => {
       expect(isOperationName('patch')).toEqual(true);
       expect(isOperationName('delete')).toEqual(true);
       expect(isOperationName('options')).toEqual(true);
+      expect(isOperationName('trace')).toEqual(true);
+      expect(isOperationName('query')).toEqual(true);
     });
 
     it('Should return `false` for incorrect HTTP verbs', () => {
       expect(isOperationName('properties')).toEqual(false);
       expect(isOperationName('x-name')).toEqual(false);
       expect(isOperationName('fix')).toEqual(false);
+      expect(isOperationName('list')).toEqual(false);
+      expect(isOperationName('copy')).toEqual(false);
     });
   });
 
