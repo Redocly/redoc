@@ -20,17 +20,19 @@ export const H1 = styled.h1`
   ${extensionsHook('H1')};
 `;
 
-export const H2 = styled.h2`
+export const H2 = styled.h2.attrs({ dir: 'auto' })`
   ${headerCommonMixin(2)};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0 0 20px;
+  text-align: justify;
 
   ${extensionsHook('H2')};
 `;
 
-export const H3 = styled.h2`
+export const H3 = styled.h2.attrs({ dir: 'auto' })`
   ${headerCommonMixin(3)};
   color: ${({ theme }) => theme.colors.text.primary};
+  text-align: justify;
 
   ${extensionsHook('H3')};
 `;

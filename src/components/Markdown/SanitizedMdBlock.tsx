@@ -9,6 +9,13 @@ import styled from 'styled-components';
 // Workaround for DOMPurify type issues (https://github.com/cure53/DOMPurify/issues/1034)
 const dompurify = DOMPurify['default'] as DOMPurify.DOMPurify;
 
+// Add dir="auto" to p and h2 elements for RTL support
+dompurify.addHook('afterSanitizeAttributes', (node) => {
+  if (node.tagName === 'P' || node.tagName === 'H2') {
+    node.setAttribute('dir', 'auto');
+  }
+});
+
 const StyledMarkdownSpan = styled(StyledMarkdownBlock)`
   display: inline;
 `;
