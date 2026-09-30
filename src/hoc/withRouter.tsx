@@ -1,27 +1,30 @@
+import { memo } from 'react';
+import { BrowserRouter, MemoryRouter, useInRouterContext } from 'react-router';
+
 import type { ComponentType, FC } from 'react';
-import type { RoutingProps } from './types.js';
 
-import { useRouter } from '../hooks/index.js';
-import { getDisplayName } from './utils.js';
+const FallbackRouter = typeof window !== 'undefined' ? BrowserRouter : MemoryRouter;
 
-export function withRouter<P extends RoutingProps>(
-  WrappedComponent: ComponentType<Omit<P, 'disableRouter'>>,
+export function withRouter<P extends { basePath: string }>(
+  WrappedComponent: ComponentType<P>,
 ): FC<P> {
-  const WithRouter = ({ disableRouter, ...props }: P) => {
-    const basePath = props.basePath ?? '/';
-    const routerType = props.router ?? 'hash';
-    const { Router, routerProps } = useRouter(routerType, basePath);
+  const WithRouter = memo((props: P) => {
+    const isInRouterContext = useInRouterContext();
 
-    return disableRouter ? (
-      <WrappedComponent {...props} />
-    ) : (
-      <Router {...routerProps} key={basePath}>
+    return !isInRouterContext ? (
+      <FallbackRouter>
         <WrappedComponent {...props} />
-      </Router>
+      </FallbackRouter>
+    ) : (
+      <WrappedComponent {...props} />
     );
-  };
+  });
 
   WithRouter.displayName = `WithRouter(${getDisplayName(WrappedComponent)})`;
 
   return WithRouter;
+}
+
+function getDisplayName<T>(WrappedComponent: ComponentType<T>) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'RedoclyApiDocs';
 }

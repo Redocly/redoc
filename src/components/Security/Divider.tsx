@@ -1,7 +1,10 @@
-import { styled } from '../../styled-components.js';
+import { styled } from 'styled-components';
+
+import type { ReactElement } from 'react';
+
 import { Tag } from './styled.js';
 
-export function Divider({ label }: { label: string }) {
+export function Divider({ label }: { label: string }): ReactElement {
   return (
     <Wrapper>
       <Tag className="tag-grey">{label}</Tag> <hr />
@@ -15,6 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   margin: var(--spacing-base) 0;
+
   hr {
     height: 1px;
     border: none;

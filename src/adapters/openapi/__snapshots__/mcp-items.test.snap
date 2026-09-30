@@ -1,0 +1,175 @@
+- type: link
+  label: echo
+  link: /docs/mcp/search/echo
+  routeSlug: /docs/mcp/search/echo
+  httpVerb: tool
+  content:
+    contentType: item
+    seo:
+      title: echo
+    meta:
+      name: echo
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: echo
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpTool
+            attributes:
+              name: echo
+              id: docs/mcp/search/echo
+- type: link
+  label: add
+  link: /docs/mcp/tools/add
+  routeSlug: /docs/mcp/tools/add
+  httpVerb: tool
+  content:
+    contentType: item
+    seo:
+      title: add
+    meta:
+      name: add
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: add
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpTool
+            attributes:
+              name: add
+              id: docs/mcp/tools/add
+- type: link
+  label: longRunningOperation
+  link: /docs/mcp/tools/longrunningoperation
+  routeSlug: /docs/mcp/tools/longrunningoperation
+  httpVerb: tool
+  content:
+    contentType: item
+    seo:
+      title: longRunningOperation
+    meta:
+      name: longRunningOperation
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: longRunningOperation
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpTool
+            attributes:
+              name: longRunningOperation
+              id: docs/mcp/tools/longRunningOperation
+- type: link
+  label: readme
+  link: /docs/mcp/resources/readme
+  routeSlug: /docs/mcp/resources/readme
+  httpVerb: rsrc
+  content:
+    contentType: item
+    seo:
+      title: readme
+    meta:
+      name: readme
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: readme
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpResource
+            attributes:
+              name: readme
+              id: docs/mcp/resources/readme
+- type: link
+  label: config
+  link: /docs/mcp/resources/config
+  routeSlug: /docs/mcp/resources/config
+  httpVerb: rsrc
+  content:
+    contentType: item
+    seo:
+      title: config
+    meta:
+      name: config
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: config
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpResource
+            attributes:
+              name: config
+              id: docs/mcp/resources/config
+- type: link
+  label: simple_prompt
+  link: /docs/mcp/prompts/simple_prompt
+  routeSlug: /docs/mcp/prompts/simple_prompt
+  httpVerb: prompt
+  content:
+    contentType: item
+    seo:
+      title: simple_prompt
+    meta:
+      name: simple_prompt
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: simple_prompt
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpPrompt
+            attributes:
+              name: simple_prompt
+              id: docs/mcp/prompts/simple_prompt
+- type: link
+  label: complex_prompt
+  link: /docs/mcp/prompts/complex_prompt
+  routeSlug: /docs/mcp/prompts/complex_prompt
+  httpVerb: prompt
+  content:
+    contentType: item
+    seo:
+      title: complex_prompt
+    meta:
+      name: complex_prompt
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: complex_prompt
+            showPageActions: true
+        panels: []
+      - nodeType: markdoc
+        content:
+          - tag: mcpPrompt
+            attributes:
+              name: complex_prompt
+              id: docs/mcp/prompts/complex_prompt

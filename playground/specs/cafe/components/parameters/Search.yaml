@@ -1,0 +1,10 @@
+name: search
+in: query
+description: |-
+  Performs a case-insensitive text search across the endpoint's searchable fields,
+  returning items where any of those fields contain the search term as a substring.
+  See each list endpoint for the specific fields it searches.
+required: false
+schema:
+  type: string
+example: coffee

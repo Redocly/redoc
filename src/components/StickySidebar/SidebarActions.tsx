@@ -1,103 +1,129 @@
 import { useAtom } from 'jotai';
+import { styled } from 'styled-components';
 import { LayoutVariant } from '@redocly/config';
-import { useCallback } from 'react';
 
+import { DEFAULT_COLOR_MODES } from '@redocly/theme/core/constants';
+
+import { Button } from '@redocly/theme/components/Button/Button';
+import { ColorModeIcon } from '@redocly/theme/components/ColorModeSwitcher/ColorModeIcon';
 import { SidebarActions as ThemeSidebarActions } from '@redocly/theme/components/SidebarActions/SidebarActions';
-import { ColorModeSwitcher as ThemeColorModeSwitcher } from '@redocly/theme/components/ColorModeSwitcher/ColorModeSwitcher';
 import { Tooltip } from '@redocly/theme/components/Tooltip/Tooltip';
 import { breakpoints } from '@redocly/theme/core/openapi';
 
-import { collapsedSidebarAtom, isSidebarOpenedAtom, layoutAtom } from '../../jotai/app.js';
-import { styled } from '../../styled-components.js';
-import RedoclyLogo from './Logo.js';
-import { useIsMobile } from '../../hooks/useIsMobile.js';
-import { useTelemetry } from '../../hooks/useTelemetry.js';
+import { collapsedSidebarAtom, colorModeAtom, layoutAtom } from '../../jotai/app.js';
+import { RESOURCES, useTelemetry } from '../../telemetry/index.js';
+import { RedoclyAttributionLogo } from './RedoclyAttributionLogo.js';
 
-export const SidebarActions = () => {
+/** Community edition: same controls plus the "API docs by Redocly" attribution. */
+export const SidebarActions = (): React.JSX.Element => {
   const [layout, setLayout] = useAtom(layoutAtom);
   const [collapsedSidebar, setSidebarCollapsed] = useAtom(collapsedSidebarAtom);
-  const [isSidebarOpened, setIsSidebarOpened] = useAtom(isSidebarOpenedAtom);
-  const isMobile = useIsMobile();
   const telemetry = useTelemetry();
-
-  const handleChangeCollapseSidebarClick = useCallback(() => {
-    if (isSidebarOpened) {
-      setIsSidebarOpened(false);
-    }
-    setSidebarCollapsed(!collapsedSidebar);
-  }, [collapsedSidebar, isSidebarOpened, setIsSidebarOpened, setSidebarCollapsed]);
-
-  const handleChangeViewClick = useCallback(() => {
-    const newLayout =
+  const switchLayout = (): void => {
+    const next =
       layout === LayoutVariant.STACKED ? LayoutVariant.THREE_PANEL : LayoutVariant.STACKED;
-    setLayout(newLayout);
-    telemetry.sendChangeLayoutButtonClickedMessage({ layoutType: newLayout });
-  }, [setLayout, telemetry, layout]);
-
+    telemetry.sendChangeLayoutClickedMessage([
+      { ...RESOURCES.changeLayoutButton, layoutType: next },
+    ]);
+    setLayout(next);
+  };
+  const toggleSidebar = (): void => {
+    const collapsed = !collapsedSidebar;
+    telemetry.sendSidebarCollapsedMessage([{ ...RESOURCES.sidebarCollapse, collapsed }]);
+    setSidebarCollapsed(collapsed);
+  };
+  const reportAttributionClick = (): void => {
+    telemetry.sendLogoClickedMessage([{ ...RESOURCES.redoclyAttribution }]);
+  };
   return (
-    <Wrapper collapsedSidebar={collapsedSidebar}>
-      <RedocAttribution collapsedSidebar={collapsedSidebar}>
-        <a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">
-          {collapsedSidebar && <RedoclyLogo />}
-          {!collapsedSidebar && (
+    <Wrapper $collapsedSidebar={collapsedSidebar}>
+      <RedocAttribution $collapsedSidebar={collapsedSidebar}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://redocly.com/redoc/"
+          onClick={reportAttributionClick}
+        >
+          {collapsedSidebar ? (
+            <RedoclyAttributionLogo />
+          ) : (
             <>
               <p>API docs by</p>
-              <RedoclyLogo full />
+              <RedoclyAttributionLogo full />
             </>
           )}
         </a>
       </RedocAttribution>
-      <Tooltip placement={collapsedSidebar ? 'right' : 'top'} tip="Toggle color mode">
-        <ColorModeSwitcher />
-      </Tooltip>
-      <ThemeSidebarActions
-        layout={layout}
-        onChangeViewClick={handleChangeViewClick}
-        hideCollapseSidebarButton={isMobile}
-        collapsedSidebar={collapsedSidebar}
-        onChangeCollapseSidebarClick={handleChangeCollapseSidebarClick}
-        isApiDocs={!isMobile}
-      />
+      <ActionsGroup $collapsedSidebar={collapsedSidebar}>
+        <ColorModeSwitcherButton collapsedSidebar={collapsedSidebar} />
+        <ThemeSidebarActions
+          layout={layout}
+          onChangeViewClick={switchLayout}
+          collapsedSidebar={collapsedSidebar}
+          onChangeCollapseSidebarClick={toggleSidebar}
+          isApiDocs={true}
+        />
+      </ActionsGroup>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div<{ collapsedSidebar: boolean }>`
+const Wrapper = styled.div<{ $collapsedSidebar: boolean }>`
   display: flex;
-  flex-direction: ${({ collapsedSidebar }) => (collapsedSidebar ? 'column' : 'row')};
+  flex-direction: ${({ $collapsedSidebar }) => ($collapsedSidebar ? 'column' : 'row')};
   align-items: center;
-  justify-content: space-around;
-  position: sticky;
+  justify-content: space-between;
   gap: var(--spacing-unit);
+  position: sticky;
   top: calc(100vh);
   padding: var(--spacing-sm) var(--spacing-md);
-
-  span {
-    display: inline-flex;
-  }
 `;
 
-const ColorModeSwitcher = styled(ThemeColorModeSwitcher)`
-  --button-icon-padding: var(--spacing-xxs) !important;
-  --button-border-width: 1px;
-  --button-border-style: solid;
-  --button-border-color: var(--border-color-primary) !important;
-  --button-bg-color: var(--bg-color) !important;
-  --button-bg-color-hover: var(--button-bg-color) !important;
-  --button-border-color-hover: var(--button-border-color) !important;
-  --button-border-radius: var(--border-radius) !important;
+const ColorModeSwitcherButton = ({
+  collapsedSidebar,
+}: {
+  collapsedSidebar: boolean;
+}): React.JSX.Element => {
+  const [colorMode, setColorMode] = useAtom(colorModeAtom);
+  const telemetry = useTelemetry();
+  const switchColorMode = (): void => {
+    const next =
+      colorMode === DEFAULT_COLOR_MODES.DARK ? DEFAULT_COLOR_MODES.LIGHT : DEFAULT_COLOR_MODES.DARK;
+    telemetry.sendColorModeSwitchedMessage([{ ...RESOURCES.colorMode, mode: next }]);
+    setColorMode(next);
+  };
+
+  return (
+    <Tooltip placement={collapsedSidebar ? 'right' : 'top'} tip="Switch color mode">
+      <Button
+        data-testid="color-mode-switcher"
+        onClick={switchColorMode}
+        aria-label={colorMode}
+        size="small"
+        variant="outlined"
+        icon={<ColorModeIcon mode={colorMode} />}
+      />
+    </Tooltip>
+  );
+};
+
+const ActionsGroup = styled.span<{ $collapsedSidebar: boolean }>`
+  display: inline-flex;
+  flex-direction: ${({ $collapsedSidebar }) => ($collapsedSidebar ? 'column' : 'row')};
+  align-items: center;
+  gap: var(--spacing-unit);
 `;
 
-export const RedocAttribution = styled.span<{ collapsedSidebar: boolean }>`
+const RedocAttribution = styled.span<{ $collapsedSidebar: boolean }>`
   text-align: center;
-  width: ${({ collapsedSidebar }) => (collapsedSidebar ? '24px' : 'auto')};
-  height: ${({ collapsedSidebar }) => (collapsedSidebar ? '24px' : 'auto')};
+  width: ${({ $collapsedSidebar }) => ($collapsedSidebar ? '24px' : 'auto')};
+  height: ${({ $collapsedSidebar }) => ($collapsedSidebar ? '24px' : 'auto')};
   display: inline-flex;
   justify-content: center;
   bottom: 0;
   background: var(--color-blue-1);
-  padding: ${({ collapsedSidebar }) => (collapsedSidebar ? '0px' : '2px 8px')};
-  margin-bottom: ${({ collapsedSidebar }) => (collapsedSidebar ? 'var(--spacing-unit);' : '0')};
+  padding: ${({ $collapsedSidebar }) => ($collapsedSidebar ? '0px' : '2px 8px')};
+  margin-bottom: ${({ $collapsedSidebar }) => ($collapsedSidebar ? 'var(--spacing-unit)' : '0')};
 
   border-radius: 21px;
   &:hover {
@@ -113,7 +139,8 @@ export const RedocAttribution = styled.span<{ collapsedSidebar: boolean }>`
     justify-content: center;
   }
   img {
-    height: ${({ collapsedSidebar }) => (collapsedSidebar ? '14px' : '12px')};
+    height: ${({ $collapsedSidebar }) => ($collapsedSidebar ? '14px' : '12px')};
+    user-select: none;
   }
   p {
     font-size: calc(var(--font-size-xl) / 2);

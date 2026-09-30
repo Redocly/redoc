@@ -1,0 +1,21 @@
+- type: separator
+  label: General
+  content:
+    contentType: separator
+    children: []
+    meta:
+      name: General
+- type: separator
+  label: Customer Management
+  content:
+    contentType: separator
+    children: []
+    meta:
+      name: Customer Management
+- type: separator
+  label: Models
+  content:
+    contentType: separator
+    children: []
+    meta:
+      name: Models

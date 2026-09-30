@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-  "mainEntryPointFilePath": "<projectFolder>/lib/index.d.ts",
+  "mainEntryPointFilePath": "<projectFolder>/typings/index.d.ts",
   "compiler": {
     "tsconfigFilePath": "<projectFolder>/tsconfig.json"
   },
@@ -12,7 +12,7 @@
   },
   "dtsRollup": {
     "enabled": true,
-    "untrimmedFilePath": "<projectFolder>/bundle/redoc.d.ts"
+    "untrimmedFilePath": "<projectFolder>/bundles/redoc.d.ts"
   },
   "tsdocMetadata": {
     "enabled": false

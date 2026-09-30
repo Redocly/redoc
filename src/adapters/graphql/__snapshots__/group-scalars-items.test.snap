@@ -1,0 +1,540 @@
+- type: group
+  label: Scalars
+  labelTranslationKey: scalars
+  link: docs/graphql/scalars
+  routeSlug: docs/graphql/scalars
+  items:
+    - type: link
+      label: Base64String
+      link: docs/graphql/scalars/base64string
+      routeSlug: docs/graphql/scalars/base64string
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: Base64String
+          position:
+            start:
+              lineNumber: 1433
+              column: 1
+            end:
+              lineNumber: 1437
+              column: 100
+        seo:
+          title: Base64String
+          description: A (potentially binary) string encoded using base64.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Base64String
+                showPageActions: true
+              - nodeType: markdoc
+                content: A (potentially binary) string encoded using base64.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Base64String
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Base64String
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/base64string
+            panels: []
+    - type: link
+      label: Date
+      link: docs/graphql/scalars/date
+      routeSlug: docs/graphql/scalars/date
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: Date
+          position:
+            start:
+              lineNumber: 6992
+              column: 1
+            end:
+              lineNumber: 6995
+              column: 8
+        seo:
+          title: Date
+          description: An ISO-8601 encoded date string.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Date
+                showPageActions: true
+              - nodeType: markdoc
+                content: An ISO-8601 encoded date string.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Date
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Date
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/date
+            panels: []
+    - type: link
+      label: DateTime
+      link: docs/graphql/scalars/datetime
+      routeSlug: docs/graphql/scalars/datetime
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: DateTime
+          position:
+            start:
+              lineNumber: 6997
+              column: 1
+            end:
+              lineNumber: 7000
+              column: 8
+        seo:
+          title: DateTime
+          description: An ISO-8601 encoded UTC date string.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: DateTime
+                showPageActions: true
+              - nodeType: markdoc
+                content: An ISO-8601 encoded UTC date string.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: DateTime
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: DateTime
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/datetime
+            panels: []
+    - type: link
+      label: GitObjectID
+      link: docs/graphql/scalars/gitobjectid
+      routeSlug: docs/graphql/scalars/gitobjectid
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: GitObjectID
+          position:
+            start:
+              lineNumber: 13533
+              column: 1
+            end:
+              lineNumber: 13536
+              column: 8
+        seo:
+          title: GitObjectID
+          description: A Git object ID.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitObjectID
+                showPageActions: true
+              - nodeType: markdoc
+                content: A Git object ID.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitObjectID
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitObjectID
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/gitobjectid
+            panels: []
+    - type: link
+      label: GitRefname
+      link: docs/graphql/scalars/gitrefname
+      routeSlug: docs/graphql/scalars/gitrefname
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: GitRefname
+          position:
+            start:
+              lineNumber: 13538
+              column: 1
+            end:
+              lineNumber: 13541
+              column: 60
+        seo:
+          title: GitRefname
+          description: A fully qualified reference name (e.g. `refs/heads/master`).
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitRefname
+                showPageActions: true
+              - nodeType: markdoc
+                content:
+                  - A fully qualified reference name (e.g. ).
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitRefname
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitRefname
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/gitrefname
+            panels: []
+    - type: link
+      label: GitSSHRemote
+      link: docs/graphql/scalars/gitsshremote
+      routeSlug: docs/graphql/scalars/gitsshremote
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: GitSSHRemote
+          position:
+            start:
+              lineNumber: 13543
+              column: 1
+            end:
+              lineNumber: 13546
+              column: 8
+        seo:
+          title: GitSSHRemote
+          description: Git SSH string
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitSSHRemote
+                showPageActions: true
+              - nodeType: markdoc
+                content: Git SSH string
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitSSHRemote
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitSSHRemote
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/gitsshremote
+            panels: []
+    - type: link
+      label: GitTimestamp
+      link: docs/graphql/scalars/gittimestamp
+      routeSlug: docs/graphql/scalars/gittimestamp
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: GitTimestamp
+          position:
+            start:
+              lineNumber: 13679
+              column: 1
+            end:
+              lineNumber: 13682
+              column: 8
+        seo:
+          title: GitTimestamp
+          description: An ISO-8601 encoded date string. Unlike the DateTime type, GitTimestamp is not converted in UTC.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitTimestamp
+                showPageActions: true
+              - nodeType: markdoc
+                content: An ISO-8601 encoded date string. Unlike the DateTime type, GitTimestamp is not converted in UTC.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitTimestamp
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitTimestamp
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/gittimestamp
+            panels: []
+    - type: link
+      label: HTML
+      link: docs/graphql/scalars/html
+      routeSlug: docs/graphql/scalars/html
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: HTML
+          position:
+            start:
+              lineNumber: 13730
+              column: 1
+            end:
+              lineNumber: 13733
+              column: 8
+        seo:
+          title: HTML
+          description: A string containing HTML code.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: HTML
+                showPageActions: true
+              - nodeType: markdoc
+                content: A string containing HTML code.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: HTML
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: HTML
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/html
+            panels: []
+    - type: link
+      label: PreciseDateTime
+      link: docs/graphql/scalars/precisedatetime
+      routeSlug: docs/graphql/scalars/precisedatetime
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: PreciseDateTime
+          position:
+            start:
+              lineNumber: 25078
+              column: 1
+            end:
+              lineNumber: 25081
+              column: 8
+        seo:
+          title: PreciseDateTime
+          description: An ISO-8601 encoded UTC date string with millisecond precision.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: PreciseDateTime
+                showPageActions: true
+              - nodeType: markdoc
+                content: An ISO-8601 encoded UTC date string with millisecond precision.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: PreciseDateTime
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: PreciseDateTime
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/precisedatetime
+            panels: []
+    - type: link
+      label: URI
+      link: docs/graphql/scalars/uri
+      routeSlug: docs/graphql/scalars/uri
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: URI
+          position:
+            start:
+              lineNumber: 41816
+              column: 1
+            end:
+              lineNumber: 41819
+              column: 8
+        seo:
+          title: URI
+          description: An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: URI
+                showPageActions: true
+              - nodeType: markdoc
+                content: An RFC 3986, RFC 3987, and RFC 6570 (level 4) compliant URI string.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: URI
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: URI
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/uri
+            panels: []
+    - type: link
+      label: X509Certificate
+      link: docs/graphql/scalars/x509certificate
+      routeSlug: docs/graphql/scalars/x509certificate
+      content:
+        contentType: item
+        itemVariant: scalar
+        meta:
+          name: X509Certificate
+          position:
+            start:
+              lineNumber: 46426
+              column: 1
+            end:
+              lineNumber: 46429
+              column: 8
+        seo:
+          title: X509Certificate
+          description: A valid x509 certificate string
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: X509Certificate
+                showPageActions: true
+              - nodeType: markdoc
+                content: A valid x509 certificate string
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: X509Certificate
+            panels:
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: X509Certificate
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /scalars/x509certificate
+            panels: []
+  content:
+    contentType: group
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Scalars
+            labelTranslationKey: scalars
+            showPageActions: true
+        panels:
+          - children:
+              - kind: group-items
+                title: Overview
+                titleTranslationKey: info.title
+                items:
+                  - title: Base64String
+                    summary: A (potentially binary) string encoded using base64…
+                    link: /scalars/base64string
+                    deprecated: false
+                  - title: Date
+                    summary: An ISO-8601 encoded date string.
+                    link: /scalars/date
+                    deprecated: false
+                  - title: DateTime
+                    summary: An ISO-8601 encoded UTC date string.
+                    link: /scalars/datetime
+                    deprecated: false
+                  - title: GitObjectID
+                    summary: A Git object ID.
+                    link: /scalars/gitobjectid
+                    deprecated: false
+                  - title: GitRefname
+                    summary: A fully qualified reference name (e.g. refs/heads/…
+                    link: /scalars/gitrefname
+                    deprecated: false
+                  - title: GitSSHRemote
+                    summary: Git SSH string
+                    link: /scalars/gitsshremote
+                    deprecated: false
+                  - title: GitTimestamp
+                    summary: An ISO-8601 encoded date string. Unlike the DateTi…
+                    link: /scalars/gittimestamp
+                    deprecated: false
+                  - title: HTML
+                    summary: A string containing HTML code.
+                    link: /scalars/html
+                    deprecated: false
+                  - title: PreciseDateTime
+                    summary: An ISO-8601 encoded UTC date string with milliseco…
+                    link: /scalars/precisedatetime
+                    deprecated: false
+                  - title: URI
+                    summary: An RFC 3986, RFC 3987, and RFC 6570 (level 4) comp…
+                    link: /scalars/uri
+                    deprecated: false
+                  - title: X509Certificate
+                    summary: A valid x509 certificate string
+                    link: /scalars/x509certificate
+                    deprecated: false

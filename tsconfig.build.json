@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "strict": false,
     "noEmit": false,
     "jsx": "react-jsx",
@@ -25,12 +24,12 @@
     "types": ["node"],
     "strictPropertyInitialization": false,
     "strictNullChecks": true,
-    "resolveJsonModule": false,
+    "resolveJsonModule": true,
     "rootDir": "src",
     "declaration": true,
-    "outDir": "lib",
+    "outDir": "typings",
     "composite": true,
-    "tsBuildInfoFile": "lib/.tsbuildinfo",
+    "tsBuildInfoFile": "typings/.tsbuildinfo",
     "isolatedModules": true,
     "noImplicitReturns": false,
     "noImplicitThis": true,
@@ -41,20 +40,18 @@
     "allowUnreachableCode": false,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "downlevelIteration": true,
     "sourceMap": true,
     "skipLibCheck": true
   },
   "compileOnSave": false,
   "exclude": [
     "node_modules",
-    "bundle",
+    "bundles",
     ".tmp",
-    "lib",
+    "typings",
     "redoc",
     "bin",
     "**/__tests__/**/*",
-    "src/testProviders.tsx",
     "vitest.setup.ts"
   ],
   "include": ["src"]

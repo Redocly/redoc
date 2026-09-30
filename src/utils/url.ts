@@ -1,37 +1,52 @@
-export function urlParse(url: string, slashesDenoteHost = false): URL | null {
-  // Handle slashesDenoteHost parameter
-  let processedUrl = url;
-  if (slashesDenoteHost && processedUrl.startsWith('//')) {
-    // When slashesDenoteHost is true, //example.com should be treated as having a host
-    // Add a dummy protocol to make it a valid URL
-    processedUrl = 'http:' + url;
+export function joinWithSeparator(base = '', path = '', sep = '/'): string {
+  if (base.endsWith(sep) && base !== sep) {
+    base = base.slice(0, -sep.length);
   }
-  try {
-    return URL?.parse ? URL?.parse(processedUrl) : new URL(processedUrl);
-  } catch (error) {
-    console.error('Invalid URL: %s', processedUrl, error);
-    return null;
+
+  if (path.startsWith(sep)) {
+    path = path.slice(sep.length);
   }
+
+  if (!base || !path || base === sep) {
+    return base + path;
+  }
+
+  return base + sep + path;
 }
 
-export function getUrlDirname(urlLikeString: string): string | undefined {
-  try {
-    const url = new URL(urlLikeString);
-    let pathname = url.pathname;
-
-    if (pathname.endsWith('/')) {
-      return url.origin + pathname;
-    }
-
-    const lastSlashIndex = pathname.lastIndexOf('/');
-    if (lastSlashIndex !== -1) {
-      pathname = pathname.substring(0, lastSlashIndex + 1);
-      return url.origin + pathname;
-    } else {
-      return url.origin + '/';
-    }
-  } catch (error) {
-    console.error(`Invalid URL: ${urlLikeString}`, error);
-    return;
+export function normalizePath(path: string): string {
+  if (path.length > 1 && path.endsWith('/')) {
+    path = path.slice(0, -1);
   }
+  if (!path.startsWith('/')) {
+    path = '/' + path;
+  }
+  return path;
+}
+
+export function stripLeadingSlash(path: string): string {
+  return path.startsWith('/') ? path.slice(1) : path;
+}
+
+/**
+ * The relative item slug used as the wrapper element id (e.g. `pet/getpetbyid`).
+ * Legacy openapi-docs stamped this id, and e2e/consumer locators depend on it.
+ */
+export function toElementId(itemPath: string, basePath: string): string | undefined {
+  return stripLeadingSlash(toRelativePath(itemPath, basePath)) || undefined;
+}
+
+export function toRelativePath(absolutePath: string, basePath: string): string {
+  if (!basePath) {
+    return absolutePath;
+  }
+  const normalizedAbsolute = normalizePath(absolutePath);
+  const normalizedBase = normalizePath(basePath);
+  if (normalizedAbsolute === normalizedBase) {
+    return '';
+  }
+  if (normalizedAbsolute.startsWith(normalizedBase + '/')) {
+    return normalizedAbsolute.slice(normalizedBase.length + 1);
+  }
+  return absolutePath;
 }

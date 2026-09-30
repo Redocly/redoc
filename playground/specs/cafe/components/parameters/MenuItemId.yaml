@@ -1,0 +1,8 @@
+name: menuItemId
+in: path
+description: ID of the menu item to retrieve.
+required: true
+schema:
+  type: string
+  pattern: ^prd_[0-9abcdefghjkmnpqrstvwxyz]{26}$
+example: prd_01h1s5z6vf2mm1mz3hevnn9va7

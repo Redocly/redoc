@@ -1,0 +1,2496 @@
+- label: Ride Requests Topic
+  type: group
+  link: docs/asyncapi/rides/topics/ride-requests
+  routeSlug: docs/asyncapi/rides/topics/ride-requests
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Ride Requests Topic
+      description: >-
+        Primary topic for all ride requests submitted by passengers through the WheelyFast mobile app. This critical
+        topic handles the initial request flow, including new ride requests and any subsequent cancellations before a
+        driver has been matched.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Ride Requests Topic
+      pointer: /channels/ride-requests
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Ride Requests Topic
+      description: |-
+        Primary topic for all ride requests submitted by passengers through the WheelyFast mobile app.
+        This critical topic handles the initial request flow, including new ride requests and any subsequent
+        cancellations before a driver has been matched.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Ride Requests Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: ride-requests-{region}
+          - nodeType: markdoc
+            content: Stream of passenger ride requests and cancellations events
+          - nodeType: markdoc
+            content: |-
+              Primary topic for all ride requests submitted by passengers through the WheelyFast mobile app.
+              This critical topic handles the initial request flow, including new ride requests and any subsequent
+              cancellations before a driver has been matched.
+          - nodeType: external-docs
+            url: https://developer.wheelyfast.io/docs/ride-requests
+            description: Documentation for ride request processing flow
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: region
+                in: path
+                schemaId: schema_0
+                description: Geographic region for the ride requests
+            pointer: channels/ride-requests/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: production
+                    url: kafka.wheelyfast.io:9092
+                    description: Production Kafka broker cluster
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Production WheelyFast Kafka Brokers
+                    summary: Main production messaging brokers for the WheelyFast platform
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                          - eu-central-1
+                      environment:
+                        description: Deployment environment
+                        default: production
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: ride-requests-{region}
+                  partitions: 10
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - delete
+                    retention.ms: 604800000
+                    retention.bytes: 1073741824
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: requestRide
+                label: Ride Request
+                summary: A passenger requests a new ride with pickup and destination locations
+                description: Core message that initiates the ride flow with all necessary details to match with a driver.
+                schemaId: components/messages/requestRide/payload
+                headerSchemaId: components/messages/requestRide/headers
+                exampleIds:
+                  - example_0
+                  - example_1
+                payload:
+                  $ref: '#/components/schemas/RideRequest'
+                payloadLabel: Value
+                headers:
+                  type: object
+                  properties:
+                    requestId:
+                      type: string
+                      format: uuid
+                      description: Unique identifier for tracking the request across services
+                    timestamp:
+                      type: string
+                      format: date-time
+                      description: Time when the request was generated
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/messages/ride-request
+                  description: Technical details about ride request payload structure
+              - name: cancelRideRequest
+                label: Ride Request Cancellation
+                summary: A passenger cancels a previously submitted ride request
+                description: Cancellation message for a ride that hasn't been accepted by a driver yet, including reason data.
+                schemaId: components/messages/cancelRideRequest/payload
+                payload:
+                  $ref: '#/components/schemas/RideRequestCancellation'
+                payloadLabel: Value
+            pointer: channels/ride-requests/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                exampleIds:
+                  - example_0
+                  - example_1
+                schemaId: components/messages/requestRide/payload
+                examples:
+                  - {}
+                  - {}
+                messagesByKey:
+                  requestRide:
+                    schemaId: components/messages/requestRide/payload
+                    exampleIds:
+                      - example_0
+                      - example_1
+                  cancelRideRequest:
+                    schemaId: components/messages/cancelRideRequest/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  requestRide:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Passenger ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_1
+                  cancelRideRequest:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Request ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_2
+  items:
+    - label: Produce Ride Request
+      type: link
+      link: docs/asyncapi/rides/topics/ride-requests/operations/publishriderequest
+      routeSlug: docs/asyncapi/rides/topics/ride-requests/operations/publishriderequest
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Ride Request
+          description: Produces event with pickup/dropoff locations and preferences. Starting point for the matching process.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Ride Request
+          pointer: /operations/publishRideRequest
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: ride-requests-{region}
+              partitions: 10
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                retention.ms: 604800000
+                retention.bytes: 1073741824
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Ride Request
+          description: Produces event with pickup/dropoff locations and preferences. Starting point for the matching process.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Publish
+              - nodeType: header
+                level: 5
+                label: Produce Ride Request
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Passenger app produces a new ride request event
+              - nodeType: markdoc
+                content: Produces event with pickup/dropoff locations and preferences. Starting point for the matching process.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-requests
+                messages:
+                  - name: requestRide
+                    label: Ride Request
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Passenger app client identifier
+                        default: passenger-app
+                      groupId:
+                        type: string
+                        description: Ride request producer group
+                        default: ride-request-producer
+                    groupIdSchemaId: schema_3
+                    clientIdSchemaId: schema_4
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-requests/operations/publishriderequest
+            panels: []
+        showDivider: true
+    - label: Produce Ride Cancellation
+      type: link
+      link: docs/asyncapi/rides/topics/ride-requests/operations/cancelriderequest
+      routeSlug: docs/asyncapi/rides/topics/ride-requests/operations/cancelriderequest
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Ride Cancellation
+          description: Allows cancellation of unmatched ride requests with reason tracking for analytics.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Ride Cancellation
+          pointer: /operations/cancelRideRequest
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: ride-requests-{region}
+              partitions: 10
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                retention.ms: 604800000
+                retention.bytes: 1073741824
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Ride Cancellation
+          description: Allows cancellation of unmatched ride requests with reason tracking for analytics.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 5
+                label: Produce Ride Cancellation
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Passenger produces a cancellation event before driver assignment
+              - nodeType: markdoc
+                content: Allows cancellation of unmatched ride requests with reason tracking for analytics.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-requests
+                messages:
+                  - name: cancelRideRequest
+                    label: Ride Request Cancellation
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Passenger app client identifier
+                        default: passenger-app
+                      groupId:
+                        type: string
+                        description: Ride cancellation producer group
+                        default: ride-cancellation-producer
+                    groupIdSchemaId: schema_5
+                    clientIdSchemaId: schema_4
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-requests/operations/cancelriderequest
+            panels: []
+        showDivider: true
+    - label: Consume Ride Requests
+      type: link
+      link: docs/asyncapi/rides/topics/ride-requests/operations/receiveriderequest
+      routeSlug: docs/asyncapi/rides/topics/ride-requests/operations/receiveriderequest
+      httpVerb: sub
+      badges: []
+      metadata:
+        seo:
+          title: Consume Ride Requests
+          description: >-
+            Core consumer service that processes request events to find optimal driver matches based on proximity and
+            other factors.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Consume Ride Requests
+          pointer: /operations/receiveRideRequest
+          protocolTag:
+            label: Sub
+            color: receive
+          action: receive
+          actionLabel: Subscribe
+          channelBindings:
+            kafka:
+              topic: ride-requests-{region}
+              partitions: 10
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                retention.ms: 604800000
+                retention.bytes: 1073741824
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Consume Ride Requests
+          description: >-
+            Core consumer service that processes request events to find optimal driver matches based on proximity and
+            other factors.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Subscribe
+              - nodeType: header
+                level: 5
+                label: Consume Ride Requests
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Sub
+                  color: receive
+              - nodeType: markdoc
+                content: Matching service consumes ride request events from topic
+              - nodeType: markdoc
+                content: >-
+                  Core consumer service that processes request events to find optimal driver matches based on proximity
+                  and other factors.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-requests
+                messages:
+                  - name: requestRide
+                    label: Ride Request
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Matching service client identifier
+                        default: matching-service
+                      groupId:
+                        type: string
+                        description: Matching service consumer group
+                        enum:
+                          - WheelyFast-Matcher
+                    groupIdSchemaId: schema_6
+                    clientIdSchemaId: schema_7
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-requests/operations/receiveriderequest
+            panels: []
+        showDivider: false
+- label: Ride Matching Topic
+  type: group
+  link: docs/asyncapi/rides/topics/ride-matches
+  routeSlug: docs/asyncapi/rides/topics/ride-matches
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Ride Matching Topic
+      description: >-
+        Critical topic handling the matching of passenger ride requests to available drivers. Contains both successful
+        matches and declined match events to enable proper ride assignment and provide insights into driver preferences
+        and matching efficiency.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Ride Matching Topic
+      pointer: /channels/ride-matches
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Ride Matching Topic
+      description: |-
+        Critical topic handling the matching of passenger ride requests to available drivers.
+        Contains both successful matches and declined match events to enable proper ride assignment
+        and provide insights into driver preferences and matching efficiency.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Ride Matching Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: ride-matches-{region}
+          - nodeType: markdoc
+            content: Event stream of ride-to-driver match events
+          - nodeType: markdoc
+            content: |-
+              Critical topic handling the matching of passenger ride requests to available drivers.
+              Contains both successful matches and declined match events to enable proper ride assignment
+              and provide insights into driver preferences and matching efficiency.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: region
+                in: path
+                schemaId: schema_8
+                description: Geographic region for the ride matches
+            pointer: channels/ride-matches/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: staging
+                    url: staging-kafka.wheelyfast.io:9092
+                    description: Staging Kafka broker cluster for pre-production testing
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Staging WheelyFast Kafka Brokers
+                    summary: Pre-production messaging brokers for testing and verification
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://staging-registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                      environment:
+                        description: Deployment environment
+                        default: staging
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: ride-matches-{region}
+                  partitions: 8
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - delete
+                      - compact
+                    retention.ms: 259200000
+                    retention.bytes: 536870912
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: driverMatch
+                label: Driver Match
+                summary: Notification of a successful match between driver and ride request
+                description: Contains details about the matched driver, vehicle, and estimated arrival time for the passenger.
+                schemaId: components/messages/driverMatch/payload
+                headerSchemaId: components/messages/driverMatch/headers
+                exampleIds:
+                  - example_2
+                  - example_3
+                payload:
+                  $ref: '#/components/schemas/DriverMatch'
+                payloadLabel: Value
+                headers:
+                  type: object
+                  properties:
+                    matchId:
+                      type: string
+                      format: uuid
+                      description: Unique identifier for this specific driver-to-ride match
+                    processingTimeMs:
+                      type: integer
+                      description: Time taken to compute the match in milliseconds
+                      example: 235
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/matching-algorithm
+                  description: Driver matching algorithm details
+              - name: matchDeclined
+                label: Match Declined
+                summary: Driver has declined a proposed ride match
+                description: Sent when a driver chooses not to accept a matched ride request, with decline reason.
+                schemaId: components/messages/matchDeclined/payload
+                payload:
+                  $ref: '#/components/schemas/MatchDeclined'
+                payloadLabel: Value
+            pointer: channels/ride-matches/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                exampleIds:
+                  - example_2
+                  - example_3
+                schemaId: components/messages/driverMatch/payload
+                examples:
+                  - {}
+                  - {}
+                messagesByKey:
+                  driverMatch:
+                    schemaId: components/messages/driverMatch/payload
+                    exampleIds:
+                      - example_2
+                      - example_3
+                  matchDeclined:
+                    schemaId: components/messages/matchDeclined/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  driverMatch:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Request ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_2
+                  matchDeclined:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Match ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_9
+  items:
+    - label: Produce Driver Match
+      type: link
+      link: docs/asyncapi/rides/topics/ride-matches/operations/publishdrivermatch
+      routeSlug: docs/asyncapi/rides/topics/ride-matches/operations/publishdrivermatch
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Driver Match
+          description: >-
+            Produces driver-to-passenger match events when optimal driver is identified. Critical connection point in
+            the ride lifecycle.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Driver Match
+          pointer: /operations/publishDriverMatch
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: ride-matches-{region}
+              partitions: 8
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                  - compact
+                retention.ms: 259200000
+                retention.bytes: 536870912
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Driver Match
+          description: >-
+            Produces driver-to-passenger match events when optimal driver is identified. Critical connection point in
+            the ride lifecycle.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Publish
+              - nodeType: header
+                level: 5
+                label: Produce Driver Match
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Matching service produces driver-passenger match events
+              - nodeType: markdoc
+                content: >-
+                  Produces driver-to-passenger match events when optimal driver is identified. Critical connection point
+                  in the ride lifecycle.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-matches
+                messages:
+                  - name: driverMatch
+                    label: Driver Match
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Matching service client identifier
+                        default: matching-service
+                      groupId:
+                        type: string
+                        description: Driver match producer group
+                        default: driver-match-producer
+                    groupIdSchemaId: schema_10
+                    clientIdSchemaId: schema_7
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-matches/operations/publishdrivermatch
+            panels: []
+        showDivider: true
+    - label: Consume Driver Match Events
+      type: link
+      link: docs/asyncapi/rides/topics/ride-matches/operations/receivedrivermatch
+      routeSlug: docs/asyncapi/rides/topics/ride-matches/operations/receivedrivermatch
+      httpVerb: sub
+      badges: []
+      metadata:
+        seo:
+          title: Consume Driver Match Events
+          description: >-
+            Displays ride details to driver for acceptance or rejection within set timeframe. Time-sensitive event
+            consumption for continuing ride flow.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Consume Driver Match Events
+          pointer: /operations/receiveDriverMatch
+          protocolTag:
+            label: Sub
+            color: receive
+          action: receive
+          actionLabel: Subscribe
+          channelBindings:
+            kafka:
+              topic: ride-matches-{region}
+              partitions: 8
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                  - compact
+                retention.ms: 259200000
+                retention.bytes: 536870912
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Consume Driver Match Events
+          description: >-
+            Displays ride details to driver for acceptance or rejection within set timeframe. Time-sensitive event
+            consumption for continuing ride flow.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Subscribe
+              - nodeType: header
+                level: 5
+                label: Consume Driver Match Events
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Sub
+                  color: receive
+              - nodeType: markdoc
+                content: Driver app consumes match events and presents ride opportunities
+              - nodeType: markdoc
+                content: >-
+                  Displays ride details to driver for acceptance or rejection within set timeframe. Time-sensitive event
+                  consumption for continuing ride flow.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-matches
+                messages:
+                  - name: driverMatch
+                    label: Driver Match
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Driver app client identifier
+                        default: driver-app
+                      groupId:
+                        type: string
+                        description: Driver match consumer group
+                        default: driver-match-consumer
+                    groupIdSchemaId: schema_11
+                    clientIdSchemaId: schema_12
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-matches/operations/receivedrivermatch
+            panels: []
+        showDivider: false
+- label: Ride Status Topic
+  type: group
+  link: docs/asyncapi/rides/topics/ride-status
+  routeSlug: docs/asyncapi/rides/topics/ride-status
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Ride Status Topic
+      description: >-
+        Comprehensive topic tracking the lifecycle of all rides from start to completion or cancellation. Critical for
+        tracking ride progress, generating metrics, and maintaining an audit trail of service delivery.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Ride Status Topic
+      pointer: /channels/ride-status
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Ride Status Topic
+      description: |-
+        Comprehensive topic tracking the lifecycle of all rides from start to completion or cancellation.
+        Critical for tracking ride progress, generating metrics, and maintaining an audit trail of service delivery.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Ride Status Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: ride-status-{environment}-{rideId}
+          - nodeType: markdoc
+            content: Event stream of status updates for all active rides
+          - nodeType: markdoc
+            content: >-
+              Comprehensive topic tracking the lifecycle of all rides from start to completion or cancellation.
+
+              Critical for tracking ride progress, generating metrics, and maintaining an audit trail of service
+              delivery.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: rideId
+                in: path
+                schemaId: schema_13
+                description: Unique identifier for a specific ride
+              - name: environment
+                in: path
+                schemaId: schema_14
+                description: Deployment environment for the ride status
+            pointer: channels/ride-status/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: production
+                    url: kafka.wheelyfast.io:9092
+                    description: Production Kafka broker cluster
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Production WheelyFast Kafka Brokers
+                    summary: Main production messaging brokers for the WheelyFast platform
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                          - eu-central-1
+                      environment:
+                        description: Deployment environment
+                        default: production
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: ride-status-{environment}-{rideId}
+                  partitions: 12
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - compact
+                    retention.ms: 1209600000
+                    retention.bytes: 2147483648
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: rideStarted
+                label: Ride Started
+                summary: Driver has started the ride with passenger onboard
+                description: >-
+                  Marks the official start of the metered ride when passenger is picked up. Includes start location and
+                  timestamp.
+                schemaId: components/messages/rideStarted/payload
+                payload:
+                  $ref: '#/components/schemas/RideStarted'
+                payloadLabel: Value
+              - name: rideCompleted
+                label: Ride Completed
+                summary: Driver has completed the ride at destination
+                description: Indicates successful ride completion with final details like route, duration, distance, and fare.
+                schemaId: components/messages/rideCompleted/payload
+                payload:
+                  $ref: '#/components/schemas/RideCompleted'
+                payloadLabel: Value
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/ride-completion
+                  description: Ride completion business rules
+              - name: rideCancelled
+                label: Ride Cancelled
+                summary: A ride in progress has been cancelled
+                description: >-
+                  Indicates a ride was cancelled after matching but before completion. Includes cancellation reason and
+                  any fees.
+                schemaId: components/messages/rideCancelled/payload
+                payload:
+                  $ref: '#/components/schemas/RideCancelled'
+                payloadLabel: Value
+            pointer: channels/ride-status/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                schemaId: components/messages/rideStarted/payload
+                examples: []
+                messagesByKey:
+                  rideStarted:
+                    schemaId: components/messages/rideStarted/payload
+                  rideCompleted:
+                    schemaId: components/messages/rideCompleted/payload
+                  rideCancelled:
+                    schemaId: components/messages/rideCancelled/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  rideStarted:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+                  rideCompleted:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+                  rideCancelled:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+  items:
+    - label: Produce Ride Completion
+      type: link
+      link: docs/asyncapi/rides/topics/ride-status/operations/publishridecompletion
+      routeSlug: docs/asyncapi/rides/topics/ride-status/operations/publishridecompletion
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Ride Completion
+          description: >-
+            Produces event with final ride details that triggers payment processing, ratings prompts, and driver
+            availability update.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Ride Completion
+          pointer: /operations/publishRideCompletion
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: ride-status-{environment}-{rideId}
+              partitions: 12
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - compact
+                retention.ms: 1209600000
+                retention.bytes: 2147483648
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Ride Completion
+          description: >-
+            Produces event with final ride details that triggers payment processing, ratings prompts, and driver
+            availability update.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Publish
+              - nodeType: header
+                level: 5
+                label: Produce Ride Completion
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Driver app produces completion event upon reaching destination
+              - nodeType: markdoc
+                content: >-
+                  Produces event with final ride details that triggers payment processing, ratings prompts, and driver
+                  availability update.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-status
+                messages:
+                  - name: rideCompleted
+                    label: Ride Completed
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Driver app client identifier
+                        default: driver-app
+                      groupId:
+                        type: string
+                        description: Ride completion producer group
+                        default: ride-completion-producer
+                    groupIdSchemaId: schema_16
+                    clientIdSchemaId: schema_12
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-status/operations/publishridecompletion
+            panels: []
+        showDivider: true
+    - label: Consume Ride Status Events
+      type: link
+      link: docs/asyncapi/rides/topics/ride-status/operations/receiveridestatus
+      routeSlug: docs/asyncapi/rides/topics/ride-status/operations/receiveridestatus
+      httpVerb: sub
+      badges: []
+      metadata:
+        seo:
+          title: Consume Ride Status Events
+          description: >-
+            Consumes ride lifecycle events for dashboards, analytics and monitoring. Provides complete system activity
+            view.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Consume Ride Status Events
+          pointer: /operations/receiveRideStatus
+          protocolTag:
+            label: Sub
+            color: receive
+          action: receive
+          actionLabel: Subscribe
+          channelBindings:
+            kafka:
+              topic: ride-status-{environment}-{rideId}
+              partitions: 12
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - compact
+                retention.ms: 1209600000
+                retention.bytes: 2147483648
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Consume Ride Status Events
+          description: >-
+            Consumes ride lifecycle events for dashboards, analytics and monitoring. Provides complete system activity
+            view.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Subscribe
+              - nodeType: header
+                level: 5
+                label: Consume Ride Status Events
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Sub
+                  color: receive
+              - nodeType: markdoc
+                content: Service consumes ride lifecycle events for analytics
+              - nodeType: markdoc
+                content: >-
+                  Consumes ride lifecycle events for dashboards, analytics and monitoring. Provides complete system
+                  activity view.
+              - nodeType: message-links
+                channelLink: /rides/topics/ride-status
+                messages:
+                  - name: rideStarted
+                    label: Ride Started
+                  - name: rideCompleted
+                    label: Ride Completed
+                  - name: rideCancelled
+                    label: Ride Cancelled
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Monitoring service client identifier
+                        default: monitoring-service
+                      groupId:
+                        type: string
+                        description: Ride monitoring consumer group
+                        enum:
+                          - WheelyFast-Monitor
+                    groupIdSchemaId: schema_17
+                    clientIdSchemaId: schema_18
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /rides/topics/ride-status/operations/receiveridestatus
+            panels: []
+        showDivider: false
+- label: Payment Processing Topic
+  type: group
+  link: docs/asyncapi/payments/topics/paymentsprocessing
+  routeSlug: docs/asyncapi/payments/topics/paymentsprocessing
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Payment Processing Topic
+      description: Topic for payment processing events including authorizations, completions, and failures.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Payment Processing Topic
+      pointer: /channels/paymentsProcessing
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Payment Processing Topic
+      description: Topic for payment processing events including authorizations, completions, and failures.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Payment Processing Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: payments-{transactionType}
+          - nodeType: markdoc
+            content: Event stream of payment transaction events
+          - nodeType: markdoc
+            content: Topic for payment processing events including authorizations, completions, and failures.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: transactionType
+                in: path
+                schemaId: schema_24
+                description: Type of payment transaction
+            pointer: channels/paymentsProcessing/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: production
+                    url: kafka.wheelyfast.io:9092
+                    description: Production Kafka broker cluster
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Production WheelyFast Kafka Brokers
+                    summary: Main production messaging brokers for the WheelyFast platform
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                          - eu-central-1
+                      environment:
+                        description: Deployment environment
+                        default: production
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: payments-{transactionType}
+                  partitions: 10
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - compact
+                    retention.ms: 2592000000
+                    retention.bytes: 2147483648
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: paymentAuthorized
+                label: Payment Authorized
+                summary: Pre-authorization hold placed on passenger's payment method
+                description: >-
+                  Confirms a payment method has been authorized before ride begins. Contains authorization details and
+                  amount.
+                schemaId: components/messages/paymentAuthorized/payload
+                payload:
+                  $ref: '#/components/schemas/PaymentAuthorized'
+                payloadLabel: Value
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/payments
+                  description: Payment processing flows
+              - name: paymentCompleted
+                label: Payment Completed
+                summary: Final payment has been successfully processed
+                description: >-
+                  Confirms successful charge to passenger's payment method. Includes final amount, tip, and transaction
+                  details.
+                schemaId: components/messages/paymentCompleted/payload
+                headerSchemaId: components/messages/paymentCompleted/headers
+                exampleIds:
+                  - example_6
+                  - example_7
+                payload:
+                  $ref: '#/components/schemas/PaymentCompleted'
+                payloadLabel: Value
+                headers:
+                  type: object
+                  properties:
+                    transactionId:
+                      type: string
+                      format: uuid
+                      description: Unique identifier for the payment transaction
+                    paymentGateway:
+                      type: string
+                      description: Payment processor that handled the transaction
+                      example: STRIPE
+              - name: paymentFailed
+                label: Payment Failed
+                summary: Payment processing failed with an error
+                description: Indicates a payment attempt was unsuccessful. Contains error code and details for resolution.
+                schemaId: components/messages/paymentFailed/payload
+                payload:
+                  $ref: '#/components/schemas/PaymentFailed'
+                payloadLabel: Value
+            pointer: channels/paymentsProcessing/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                exampleIds:
+                  - example_6
+                  - example_7
+                schemaId: components/messages/paymentAuthorized/payload
+                examples:
+                  - {}
+                  - {}
+                messagesByKey:
+                  paymentAuthorized:
+                    schemaId: components/messages/paymentAuthorized/payload
+                  paymentCompleted:
+                    schemaId: components/messages/paymentCompleted/payload
+                    exampleIds:
+                      - example_6
+                      - example_7
+                  paymentFailed:
+                    schemaId: components/messages/paymentFailed/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  paymentAuthorized:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+                  paymentCompleted:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+                  paymentFailed:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+  items:
+    - label: Produce Payment Authorization
+      type: link
+      link: docs/asyncapi/payments/topics/paymentsprocessing/operations/publishpaymentauthorization
+      routeSlug: docs/asyncapi/payments/topics/paymentsprocessing/operations/publishpaymentauthorization
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Payment Authorization
+          description: >-
+            Produces event when passenger payment method has sufficient funds before ride begins. Includes buffer amount
+            for route changes.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Payment Authorization
+          pointer: /operations/publishPaymentAuthorization
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: payments-{transactionType}
+              partitions: 10
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - compact
+                retention.ms: 2592000000
+                retention.bytes: 2147483648
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Payment Authorization
+          description: >-
+            Produces event when passenger payment method has sufficient funds before ride begins. Includes buffer amount
+            for route changes.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Publish
+              - nodeType: header
+                level: 5
+                label: Produce Payment Authorization
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Payment service produces authorization events at ride start
+              - nodeType: markdoc
+                content: >-
+                  Produces event when passenger payment method has sufficient funds before ride begins. Includes buffer
+                  amount for route changes.
+              - nodeType: message-links
+                channelLink: /payments/topics/paymentsprocessing
+                messages:
+                  - name: paymentAuthorized
+                    label: Payment Authorized
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Payment service client identifier
+                        default: payment-service
+                      groupId:
+                        type: string
+                        description: Payment authorization producer group
+                        default: payment-auth-producer
+                    groupIdSchemaId: schema_25
+                    clientIdSchemaId: schema_26
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /payments/topics/paymentsprocessing/operations/publishpaymentauthorization
+            panels: []
+        showDivider: true
+    - label: Consume Payment Completion Events
+      type: link
+      link: docs/asyncapi/payments/topics/paymentsprocessing/operations/processpaymentcompletion
+      routeSlug: docs/asyncapi/payments/topics/paymentsprocessing/operations/processpaymentcompletion
+      httpVerb: sub
+      badges: []
+      metadata:
+        seo:
+          title: Consume Payment Completion Events
+          description: >-
+            Consumes payment events for final processing, fee allocation, receipt generation, and financial
+            record-keeping.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Consume Payment Completion Events
+          pointer: /operations/processPaymentCompletion
+          protocolTag:
+            label: Sub
+            color: receive
+          action: receive
+          actionLabel: Subscribe
+          channelBindings:
+            kafka:
+              topic: payments-{transactionType}
+              partitions: 10
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - compact
+                retention.ms: 2592000000
+                retention.bytes: 2147483648
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Consume Payment Completion Events
+          description: >-
+            Consumes payment events for final processing, fee allocation, receipt generation, and financial
+            record-keeping.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Subscribe
+              - nodeType: header
+                level: 5
+                label: Consume Payment Completion Events
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Sub
+                  color: receive
+              - nodeType: markdoc
+                content: Financial system consumes successful payment transaction events
+              - nodeType: markdoc
+                content: >-
+                  Consumes payment events for final processing, fee allocation, receipt generation, and financial
+                  record-keeping.
+              - nodeType: message-links
+                channelLink: /payments/topics/paymentsprocessing
+                messages:
+                  - name: paymentCompleted
+                    label: Payment Completed
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Financial service client identifier
+                        default: financial-service
+                      groupId:
+                        type: string
+                        description: Payment processing consumer group
+                        default: payment-processor
+                    groupIdSchemaId: schema_27
+                    clientIdSchemaId: schema_28
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /payments/topics/paymentsprocessing/operations/processpaymentcompletion
+            panels: []
+        showDivider: false
+- label: Driver Notification Topic
+  type: group
+  link: docs/asyncapi/notifications/topics/driver-notifications
+  routeSlug: docs/asyncapi/notifications/topics/driver-notifications
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Driver Notification Topic
+      description: >-
+        Topic for delivering various types of notifications to drivers including nearby ride requests and surge pricing
+        alerts.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Driver Notification Topic
+      pointer: /channels/driver-notifications
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Driver Notification Topic
+      description: >-
+        Topic for delivering various types of notifications to drivers including nearby ride requests and surge pricing
+        alerts.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Driver Notification Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: driver-notifications-{priority}
+          - nodeType: markdoc
+            content: Event stream of notifications directed to drivers
+          - nodeType: markdoc
+            content: >-
+              Topic for delivering various types of notifications to drivers including nearby ride requests and surge
+              pricing alerts.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: priority
+                in: path
+                schemaId: schema_30
+                description: Priority level of the notification
+            pointer: channels/driver-notifications/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: staging
+                    url: staging-kafka.wheelyfast.io:9092
+                    description: Staging Kafka broker cluster for pre-production testing
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Staging WheelyFast Kafka Brokers
+                    summary: Pre-production messaging brokers for testing and verification
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://staging-registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                      environment:
+                        description: Deployment environment
+                        default: staging
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: driver-notifications-{priority}
+                  partitions: 10
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - delete
+                    retention.ms: 86400000
+                    retention.bytes: 536870912
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: nearbyRideRequest
+                label: Nearby Ride Request
+                summary: Alert to driver about a ride request in their vicinity
+                description: >-
+                  Notifies available drivers of nearby requests that need matching. Includes distance and potential
+                  earnings.
+                schemaId: components/messages/nearbyRideRequest/payload
+                payload:
+                  $ref: '#/components/schemas/NearbyRideRequest'
+                payloadLabel: Value
+              - name: highDemandNotification
+                label: High Demand Notification
+                summary: Alert about surge pricing areas with high demand
+                description: >-
+                  Informs drivers about high-demand areas with surge pricing. Helps optimize driver positioning for
+                  better earnings.
+                schemaId: components/messages/highDemandNotification/payload
+                payload:
+                  $ref: '#/components/schemas/HighDemandNotification'
+                payloadLabel: Value
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/surge-pricing
+                  description: Surge pricing algorithm documentation
+            pointer: channels/driver-notifications/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                schemaId: components/messages/nearbyRideRequest/payload
+                examples: []
+                messagesByKey:
+                  nearbyRideRequest:
+                    schemaId: components/messages/nearbyRideRequest/payload
+                  highDemandNotification:
+                    schemaId: components/messages/highDemandNotification/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  nearbyRideRequest:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Driver ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_20
+                  highDemandNotification:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Area ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_31
+- label: Passenger Notification Topic
+  type: group
+  link: docs/asyncapi/notifications/topics/passenger-notifications
+  routeSlug: docs/asyncapi/notifications/topics/passenger-notifications
+  badges: []
+  httpVerb: topic
+  metadata:
+    seo:
+      title: Passenger Notification Topic
+      description: >-
+        Topic for delivering various types of notifications to passengers including driver arrivals and promotional
+        offers.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Passenger Notification Topic
+      pointer: /channels/passenger-notifications
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Passenger Notification Topic
+      description: >-
+        Topic for delivering various types of notifications to passengers including driver arrivals and promotional
+        offers.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Passenger Notification Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: passenger-notifications-{type}
+          - nodeType: markdoc
+            content: Event stream of notifications directed to passengers
+          - nodeType: markdoc
+            content: >-
+              Topic for delivering various types of notifications to passengers including driver arrivals and
+              promotional offers.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: type
+                in: path
+                schemaId: schema_32
+                description: Type of notification being sent
+            pointer: channels/passenger-notifications/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: staging
+                    url: staging-kafka.wheelyfast.io:9092
+                    description: Staging Kafka broker cluster for pre-production testing
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Staging WheelyFast Kafka Brokers
+                    summary: Pre-production messaging brokers for testing and verification
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://staging-registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                      environment:
+                        description: Deployment environment
+                        default: staging
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: passenger-notifications-{type}
+                  partitions: 10
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - delete
+                    retention.ms: 86400000
+                    retention.bytes: 536870912
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: driverArrival
+                label: Driver Arrival Notification
+                summary: Alert that driver is approaching pickup location
+                description: >-
+                  Notifies passenger that their driver is arriving at the pickup point. Includes current location and
+                  ETA.
+                schemaId: components/messages/driverArrival/payload
+                payload:
+                  $ref: '#/components/schemas/DriverArrival'
+                payloadLabel: Value
+              - name: promotionNotification
+                label: Promotion Notification
+                summary: Marketing message about available promotions or discounts
+                description: >-
+                  Delivers targeted promotional offers to passengers. Includes discount details and expiration
+                  information.
+                schemaId: components/messages/promotionNotification/payload
+                headerSchemaId: components/messages/promotionNotification/headers
+                exampleIds:
+                  - example_8
+                  - example_9
+                payload:
+                  $ref: '#/components/schemas/PromotionNotification'
+                payloadLabel: Value
+                headers:
+                  type: object
+                  properties:
+                    campaignId:
+                      type: string
+                      description: Unique identifier for the marketing campaign
+                    marketingChannel:
+                      type: string
+                      enum:
+                        - IN_APP
+                        - PUSH
+                        - EMAIL
+                        - SMS
+                      description: Delivery channel for the promotion
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/promotions
+                  description: Promotion targeting documentation
+            pointer: channels/passenger-notifications/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                exampleIds:
+                  - example_8
+                  - example_9
+                schemaId: components/messages/driverArrival/payload
+                examples:
+                  - {}
+                  - {}
+                messagesByKey:
+                  driverArrival:
+                    schemaId: components/messages/driverArrival/payload
+                  promotionNotification:
+                    schemaId: components/messages/promotionNotification/payload
+                    exampleIds:
+                      - example_8
+                      - example_9
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  driverArrival:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Passenger ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_1
+                  promotionNotification:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Passenger ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_1
+- label: Driver Location Topic
+  type: group
+  link: docs/asyncapi/topics/driver-location
+  routeSlug: docs/asyncapi/topics/driver-location
+  httpVerb: topic
+  badges: []
+  metadata:
+    seo:
+      title: Driver Location Topic
+      description: >-
+        High-volume topic tracking the real-time location of all active drivers in the WheelyFast network. This data
+        powers the matching algorithm, ETA calculations, and map visualizations.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: Driver Location Topic
+      pointer: /channels/driver-location
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: Driver Location Topic
+      description: >-
+        High-volume topic tracking the real-time location of all active drivers in the WheelyFast network. This data
+        powers the matching algorithm, ETA calculations, and map visualizations.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Driver Location Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: driver-location-{driverId}
+          - nodeType: markdoc
+            content: Real-time event stream of driver location coordinates
+          - nodeType: markdoc
+            content: >-
+              High-volume topic tracking the real-time location of all active drivers in the WheelyFast network. This
+              data powers the matching algorithm, ETA calculations, and map visualizations.
+          - nodeType: external-docs
+            url: https://developer.wheelyfast.io/docs/location-tracking
+            description: Technical details about location data processing
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: driverId
+                in: path
+                schemaId: schema_19
+                description: Unique identifier for a specific driver
+            pointer: channels/driver-location/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: staging
+                    url: staging-kafka.wheelyfast.io:9092
+                    description: Staging Kafka broker cluster for pre-production testing
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Staging WheelyFast Kafka Brokers
+                    summary: Pre-production messaging brokers for testing and verification
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://staging-registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                      environment:
+                        description: Deployment environment
+                        default: staging
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: driver-location-{driverId}
+                  partitions: 20
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - delete
+                    retention.ms: 43200000
+                    retention.bytes: 1073741824
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: locationUpdate
+                label: Driver Location Update
+                summary: Real-time update of driver's current location
+                description: >-
+                  High-frequency GPS position updates sent by driver app. Critical for ETA calculations and ride
+                  tracking.
+                schemaId: components/messages/locationUpdate/payload
+                headerSchemaId: components/messages/locationUpdate/headers
+                exampleIds:
+                  - example_4
+                  - example_5
+                payload:
+                  $ref: '#/components/schemas/LocationUpdate'
+                payloadLabel: Value
+                headers:
+                  type: object
+                  properties:
+                    deviceId:
+                      type: string
+                      description: Unique identifier for the device sending the location
+                    accuracyMeters:
+                      type: number
+                      format: float
+                      description: GPS accuracy in meters
+                      example: 5.2
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/location-tracking
+                  description: Location tracking technical specifications
+              - name: driverStatusChange
+                label: Driver Status Change
+                summary: Driver has changed their availability status
+                description: >-
+                  Indicates a driver has changed status between online, offline, busy, or on break. Affects matching
+                  availability.
+                schemaId: components/messages/driverStatusChange/payload
+                payload:
+                  $ref: '#/components/schemas/DriverStatusChange'
+                payloadLabel: Value
+            pointer: channels/driver-location/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                exampleIds:
+                  - example_4
+                  - example_5
+                schemaId: components/messages/locationUpdate/payload
+                examples:
+                  - {}
+                  - {}
+                messagesByKey:
+                  locationUpdate:
+                    schemaId: components/messages/locationUpdate/payload
+                    exampleIds:
+                      - example_4
+                      - example_5
+                  driverStatusChange:
+                    schemaId: components/messages/driverStatusChange/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  locationUpdate:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Driver ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_20
+                  driverStatusChange:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Driver ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_20
+  items:
+    - label: Produce Location Updates
+      type: link
+      link: docs/asyncapi/topics/driver-location/operations/publishlocationupdates
+      routeSlug: docs/asyncapi/topics/driver-location/operations/publishlocationupdates
+      httpVerb: pub
+      badges: []
+      metadata:
+        seo:
+          title: Produce Location Updates
+          description: >-
+            High-volume event production that powers ETA calculations and ride matching algorithms. Critical for
+            real-time map displays.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Produce Location Updates
+          pointer: /operations/publishLocationUpdates
+          protocolTag:
+            label: Pub
+            color: send
+          action: send
+          actionLabel: Publish
+          channelBindings:
+            kafka:
+              topic: driver-location-{driverId}
+              partitions: 20
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                retention.ms: 43200000
+                retention.bytes: 1073741824
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Produce Location Updates
+          description: >-
+            High-volume event production that powers ETA calculations and ride matching algorithms. Critical for
+            real-time map displays.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Publish
+              - nodeType: header
+                level: 5
+                label: Produce Location Updates
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Pub
+                  color: send
+              - nodeType: markdoc
+                content: Driver app produces real-time location data events
+              - nodeType: markdoc
+                content: >-
+                  High-volume event production that powers ETA calculations and ride matching algorithms. Critical for
+                  real-time map displays.
+              - nodeType: message-links
+                channelLink: /topics/driver-location
+                messages:
+                  - name: locationUpdate
+                    label: Driver Location Update
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Driver app client identifier
+                        default: driver-app
+                      groupId:
+                        type: string
+                        description: Location updates producer group
+                        default: location-update-producer
+                    groupIdSchemaId: schema_21
+                    clientIdSchemaId: schema_12
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /topics/driver-location/operations/publishlocationupdates
+            panels: []
+        showDivider: true
+    - label: Consume Location Data
+      type: link
+      link: docs/asyncapi/topics/driver-location/operations/consumelocationupdates
+      routeSlug: docs/asyncapi/topics/driver-location/operations/consumelocationupdates
+      httpVerb: sub
+      badges: []
+      metadata:
+        seo:
+          title: Consume Location Data
+          description: >-
+            Maintains real-time driver location database for fast matching and accurate ETA calculations. Must process
+            thousands of location events per second.
+      content:
+        contentType: item
+        itemVariant: channelOperation
+        meta:
+          name: Consume Location Data
+          pointer: /operations/consumeLocationUpdates
+          protocolTag:
+            label: Sub
+            color: receive
+          action: receive
+          actionLabel: Subscribe
+          channelBindings:
+            kafka:
+              topic: driver-location-{driverId}
+              partitions: 20
+              replicas: 3
+              topicConfiguration:
+                cleanup.policy:
+                  - delete
+                retention.ms: 43200000
+                retention.bytes: 1073741824
+                delete.retention.ms: 86400000
+                max.message.bytes: 1048576
+              bindingVersion: 0.4.0
+        seo:
+          title: Consume Location Data
+          description: >-
+            Maintains real-time driver location database for fast matching and accurate ETA calculations. Must process
+            thousands of location events per second.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Subscribe
+              - nodeType: header
+                level: 5
+                label: Consume Location Data
+                badges: []
+                showPageActions: true
+                protocolTag:
+                  label: Sub
+                  color: receive
+              - nodeType: markdoc
+                content: Matching service consumes the event stream of driver locations
+              - nodeType: markdoc
+                content: >-
+                  Maintains real-time driver location database for fast matching and accurate ETA calculations. Must
+                  process thousands of location events per second.
+              - nodeType: message-links
+                channelLink: /topics/driver-location
+                messages:
+                  - name: locationUpdate
+                    label: Driver Location Update
+            panels:
+              - title: Operation configuration
+                children:
+                  - kind: operation-binding
+                    bindingKey: kafka
+                    bindingValue:
+                      bindingVersion: 0.4.0
+                      clientId:
+                        type: string
+                        description: Location processing service client identifier
+                        default: location-processor
+                      groupId:
+                        type: string
+                        description: Location data consumer group
+                        default: location-consumer
+                    groupIdSchemaId: schema_22
+                    clientIdSchemaId: schema_23
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /topics/driver-location/operations/consumelocationupdates
+            panels: []
+        showDivider: false
+- label: User Ratings Topic
+  type: group
+  link: docs/asyncapi/topics/ratings
+  routeSlug: docs/asyncapi/topics/ratings
+  httpVerb: topic
+  badges: []
+  metadata:
+    seo:
+      title: User Ratings Topic
+      description: Topic for collecting and processing user experience ratings submitted by drivers and passengers.
+  content:
+    contentType: item
+    itemVariant: channel
+    meta:
+      name: User Ratings Topic
+      pointer: /channels/ratings
+      protocolTag:
+        label: Topic
+        color: topic
+    seo:
+      title: User Ratings Topic
+      description: Topic for collecting and processing user experience ratings submitted by drivers and passengers.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: User Ratings Topic
+            showPageActions: true
+            protocolTag:
+              label: Topic
+              color: topic
+          - nodeType: channel-address
+            address: ratings-{ratingDirection}
+          - nodeType: markdoc
+            content: Event stream of driver and passenger ratings
+          - nodeType: markdoc
+            content: Topic for collecting and processing user experience ratings submitted by drivers and passengers.
+          - nodeType: header
+            level: 4
+            label: Parameters
+            labelTranslationKey: parameters
+            deepLinkSuffix: parameters
+          - nodeType: item-content
+            variant: parameters
+            parameters:
+              - name: ratingDirection
+                in: path
+                schemaId: schema_29
+                description: Direction of the rating (driver->passenger or passenger->driver)
+            pointer: channels/ratings/parameters
+        panels:
+          - children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: production
+                    url: kafka.wheelyfast.io:9092
+                    description: Production Kafka broker cluster
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Production WheelyFast Kafka Brokers
+                    summary: Main production messaging brokers for the WheelyFast platform
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                          - eu-central-1
+                      environment:
+                        description: Deployment environment
+                        default: production
+          - title: Topic configuration
+            children:
+              - kind: channel-binding
+                panelLabel: Topic configuration
+                bindingKey: kafka
+                bindingValue:
+                  topic: ratings-{ratingDirection}
+                  partitions: 6
+                  replicas: 3
+                  topicConfiguration:
+                    cleanup.policy:
+                      - compact
+                    retention.ms: 7776000000
+                    retention.bytes: 1073741824
+                    delete.retention.ms: 86400000
+                    max.message.bytes: 1048576
+                  bindingVersion: 0.4.0
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Messages
+            labelTranslationKey: messages
+            deepLinkSuffix: messages
+          - nodeType: item-content
+            variant: messages
+            messages:
+              - name: driverRating
+                label: Driver Rating
+                summary: Passenger has submitted a rating for their driver
+                description: >-
+                  Post-ride feedback from passenger about driver performance. Contains star rating and optional feedback
+                  categories.
+                schemaId: components/messages/driverRating/payload
+                payload:
+                  $ref: '#/components/schemas/DriverRating'
+                payloadLabel: Value
+                externalDocs:
+                  url: https://developer.wheelyfast.io/docs/ratings
+                  description: Rating system documentation
+              - name: passengerRating
+                label: Passenger Rating
+                summary: Driver has submitted a rating for their passenger
+                description: Post-ride feedback from driver about passenger behavior. Contains star rating and optional comments.
+                schemaId: components/messages/passengerRating/payload
+                payload:
+                  $ref: '#/components/schemas/PassengerRating'
+                payloadLabel: Value
+            pointer: channels/ratings/messages
+        panels:
+          - children:
+              - kind: payload
+                panelLabel: Value
+                schemaId: components/messages/driverRating/payload
+                examples: []
+                messagesByKey:
+                  driverRating:
+                    schemaId: components/messages/driverRating/payload
+                  passengerRating:
+                    schemaId: components/messages/passengerRating/payload
+          - title: Message configuration
+            children:
+              - kind: message-binding
+                bindingsByMessageKey:
+                  driverRating:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15
+                  passengerRating:
+                    bindingKey: kafka
+                    bindingValue:
+                      key:
+                        type: string
+                        description: Ride ID
+                      schemaIdLocation: value
+                      schemaIdPayloadEncoding: confluent
+                      bindingVersion: 0.4.0
+                    keySchemaId: schema_15

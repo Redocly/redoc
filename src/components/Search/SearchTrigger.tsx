@@ -1,25 +1,27 @@
 import { useState, useEffect } from 'react';
+import { styled } from 'styled-components';
 
 import type { JSX } from 'react';
 
 import { Button } from '@redocly/theme/components/Button/Button';
 import { SearchIcon } from '@redocly/theme/icons/SearchIcon/SearchIcon';
 
-import { styled } from '../../styled-components.js';
-import { useTranslate } from '../../hooks/index.js';
+import { useTranslate } from '../../hooks/useTranslate.js';
 
 export type SearchTriggerProps = {
   onClick: () => void;
+  onIntent?: () => void;
+  isReady: boolean;
   className?: string;
   variant?: 'button' | 'input';
-  isReady: boolean;
 };
 
 export function SearchTrigger({
   onClick,
+  onIntent,
+  isReady,
   className,
   variant = 'input',
-  isReady,
 }: SearchTriggerProps): JSX.Element {
   const translate = useTranslate();
   const [isMac, setIsMac] = useState(false);
@@ -30,7 +32,12 @@ export function SearchTrigger({
   }, []);
 
   return (
-    <SearchTriggerWrapper onClick={onClick} className={className} data-testid="search-trigger">
+    <SearchTriggerWrapper
+      onClick={onClick}
+      onPointerEnter={onIntent}
+      className={className}
+      data-testid="search-trigger"
+    >
       {variant === 'button' ? (
         <SearchTriggerButton
           variant="text"
@@ -47,7 +54,7 @@ export function SearchTrigger({
               {isMac ? '⌘K' : 'Ctrl+K'}
             </>
           ) : (
-            <span>{translate('openapi.loading', 'Loading...')}</span>
+            <span>{translate('loading', 'Loading...')}</span>
           )}
         </SearchTriggerInput>
       )}
@@ -59,6 +66,7 @@ const SearchTriggerWrapper = styled.div`
   color: var(--search-trigger-color);
   line-height: var(--search-trigger-line-height);
   flex-grow: 1;
+  cursor: pointer;
 
   svg {
     width: var(--search-trigger-icon-size);

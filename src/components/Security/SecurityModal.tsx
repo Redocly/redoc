@@ -1,111 +1,66 @@
-import { Fragment, useState, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import type { ReactElement } from 'react';
-import type { SecurityRequirement } from '../../models/index.js';
+import type { SecurityRequirements } from './types.js';
 
-import { useOutsideClick, useFocusTrap } from '@redocly/theme/core/openapi';
-import { Button } from '@redocly/theme/components/Button/Button';
-import { SecurityIcon } from '@redocly/theme/icons/SecurityIcon/SecurityIcon';
 import { Segmented } from '@redocly/theme/components/Segmented/Segmented';
+import { SecurityIcon } from '@redocly/theme/icons/SecurityIcon/SecurityIcon';
 import { CloseIcon } from '@redocly/theme/icons/CloseIcon/CloseIcon';
-import { Typography } from '@redocly/theme/components/Typography/Typography';
 
-import { SecurityFlow } from './SecurityFlow.js';
+import { SecurityFlowDetail } from './SecurityFlowDetail.js';
 import { Divider } from './Divider.js';
-import { useTranslate } from '../../hooks/index.js';
-import { styled } from '../../styled-components.js';
+import { CloseButton, ModalBackground, ModalTitle, ModalWrapper } from './styled.js';
+import { useModalDismiss } from '../../hooks/useModalDismiss.js';
+import { useSpecTranslate } from '../../hooks/useTranslate.js';
+import { IS_BROWSER } from '../../utils/environments.js';
 
-interface SecurityModalProps {
-  securities: SecurityRequirement[];
+export function SecurityModal({
+  requirements,
+  onClose,
+}: {
+  requirements: SecurityRequirements;
   onClose: () => void;
-}
-
-export function SecurityModal({ securities, onClose }: SecurityModalProps): ReactElement {
-  const translate = useTranslate();
-  const [selectedSecurityScheme, setSelectedSecurityScheme] = useState(0);
+}): ReactElement {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
+  const translate = useSpecTranslate();
 
-  const { schemes } = securities[selectedSecurityScheme] || {};
+  useModalDismiss(modalRef, onClose);
 
-  useOutsideClick(modalRef, onClose);
-  useFocusTrap(modalRef);
+  const activeRequirement = requirements[selectedIndex] || requirements[0];
 
-  const options = securities.map(({ schemes }, index) => ({
-    label: schemes.map(({ id }) => id).join(' and '),
-    value: index,
-  }));
-
-  return (
-    <StyledBackground>
-      <Wrapper ref={modalRef} tabIndex={0}>
-        <Close onClick={onClose} data-testid="close" variant="ghost" icon={<CloseIcon />} />
-        <Title>
+  const modal = (
+    <ModalBackground>
+      <ModalWrapper ref={modalRef} tabIndex={0}>
+        <CloseButton onClick={onClose} variant="ghost" icon={<CloseIcon />} />
+        <ModalTitle>
           <SecurityIcon size="24px" />
-          {translate('openapi.security', 'Security')}
-        </Title>
-        <Segmented
-          value={selectedSecurityScheme}
-          onChange={({ value }) => setSelectedSecurityScheme(value)}
-          options={options}
-        />
-        {schemes.map((scheme, index) => (
-          <Fragment key={scheme.id}>
-            <SecurityFlow {...scheme} securities={securities} />
-            {index !== schemes.length - 1 && <Divider label="and" />}
+          {translate('security', 'Security')}
+        </ModalTitle>
+        {requirements.length > 1 && (
+          <Segmented
+            value={selectedIndex}
+            onChange={({ value }) => setSelectedIndex(value)}
+            options={requirements.map((req, index) => ({
+              label: req.schemes.map((s) => s.name).join(' and '),
+              value: index,
+            }))}
+          />
+        )}
+        {activeRequirement.schemes.map((scheme, index) => (
+          <Fragment key={scheme.name}>
+            <SecurityFlowDetail scheme={scheme} />
+            {index !== activeRequirement.schemes.length - 1 && <Divider label="and" />}
           </Fragment>
         ))}
-      </Wrapper>
-    </StyledBackground>
+      </ModalWrapper>
+    </ModalBackground>
   );
+
+  if (IS_BROWSER) {
+    return createPortal(modal, document.body);
+  }
+
+  return modal;
 }
-
-const Wrapper = styled.div`
-  background: var(--bg-color);
-  box-shadow: var(--bg-raised-shadow);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  width: 720px;
-  max-width: 100%;
-  height: auto;
-  max-height: 600px;
-  overflow-y: scroll;
-  left: 50%;
-  top: 100px;
-  transform: translateX(-50%);
-  .tag-grey span {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-  }
-`;
-
-const StyledBackground = styled.div`
-  background: var(--bg-color-modal-overlay);
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--z-index-popover);
-  left: 0;
-  top: 0;
-  pointer-events: auto;
-`;
-
-const Close = styled(Button)`
-  position: absolute;
-  right: var(--spacing-md);
-  top: var(--spacing-md);
-`;
-
-const Title = styled(Typography)`
-  display: flex;
-  align-items: center;
-  font-size: var(--h4-font-size);
-  font-weight: var(--h4-font-weight);
-  margin-bottom: var(--spacing-lg);
-  svg {
-    margin-right: var(--spacing-xs);
-  }
-`;

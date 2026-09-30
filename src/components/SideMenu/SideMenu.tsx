@@ -1,25 +1,25 @@
 import { memo } from 'react';
-import { useAtomValue } from 'jotai';
+import { styled } from 'styled-components';
 
 import type { ReactElement } from 'react';
-import type { ExtendedMenuItem, IMenuItem } from '../../services/index.js';
+import type { ApiItem } from '../../types/store.js';
 
 import { Menu } from '@redocly/theme/components/Menu/Menu';
 
-import { useMenuItems } from './hooks/useMenuItems.js';
-import { styled } from '../../styled-components.js';
-import { globalOptionsAtom } from '../../jotai/store.js';
+import { useMenuItems } from './useMenuItems.js';
+import { useSidebarItemTelemetry } from '../../telemetry/index.js';
 
-interface SideMenuProps {
-  items: (ExtendedMenuItem & IMenuItem)[];
+type SideMenuProps = {
+  items: ApiItem[];
   className?: string;
-}
+};
 
 const SideMenuComponent = ({ items, className }: SideMenuProps): ReactElement => {
-  const { routingBasePath } = useAtomValue(globalOptionsAtom);
-  const menuItems = useMenuItems({ items, routingBasePath });
+  const menuItems = useMenuItems({ items });
+  const onMenuClick = useSidebarItemTelemetry();
+
   return (
-    <MenuWrapper className={className}>
+    <MenuWrapper className={className} onClick={onMenuClick}>
       <Menu items={menuItems} />
     </MenuWrapper>
   );
@@ -27,6 +27,7 @@ const SideMenuComponent = ({ items, className }: SideMenuProps): ReactElement =>
 
 export const SideMenu = memo<SideMenuProps>(SideMenuComponent);
 
-export const MenuWrapper = styled.div`
-  overflow: auto;
+const MenuWrapper = styled.div`
+  flex: 1;
+  overflow-y: auto;
 `;

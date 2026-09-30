@@ -1,5 +1,9 @@
-export { RedoclyOpenAPIDocsStandalone as RedocStandalone } from './components/RedoclyOpenAPIDocs/RedoclyOpenAPIDocsStandalone.js';
-export type { RedoclyOpenAPIDocsStandaloneProps as RedocStandaloneProps } from './components/RedoclyOpenAPIDocs/types.js';
-export { convertSwagger2OpenAPI } from './utils/convertSwagger2OpenAPI.js';
+export { RedocStandalone, prepareApiDocs } from './RedocStandalone.js';
+export type { RedocStandaloneProps } from './RedocStandalone.js';
+export { RedoclyApiDocsStandalone } from './RedoclyApiDocsStandalone.js';
+export type { RedoclyApiDocsStandaloneProps } from './RedoclyApiDocsStandalone.js';
+export { convertSwagger2OpenAPI } from './adapters/utils/convertSwagger2OpenAPI.js';
+export { logoFromSpec } from './utils/x-logo.js';
 export { ServerStyleSheet } from 'styled-components';
-export { RedoclyOpenAPIDocs as Redoc } from './components/RedoclyOpenAPIDocs/RedoclyOpenAPIDocs.js';
+export { RedoclyApiDocs as Redoc } from './RedoclyApiDocs.js';
+export type { RedoclyApiDocsProps as RedocProps } from './RedoclyApiDocs.js';

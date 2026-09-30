@@ -1,4 +1,4 @@
-import { IS_BROWSER } from './dom.js';
+import { IS_BROWSER } from './environments.js';
 
 export function toSessionStorage(key: string, value: string): void {
   if (IS_BROWSER) {
@@ -8,5 +8,5 @@ export function toSessionStorage(key: string, value: string): void {
 
 export function fromSessionStorage<T extends string>(key: string): T {
   if (!IS_BROWSER) return '' as T;
-  return <T>(window.sessionStorage.getItem('redoc.' + key) || '');
+  return (window.sessionStorage.getItem('redoc.' + key) || '') as T;
 }

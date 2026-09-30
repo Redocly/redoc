@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Health
+  security: []
+  summary: Get health status
+  description: Check the health of the API.
+  operationId: getHealth
+  x-internal: true
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  responses:
+    '200':
+      description: OK.
+      content:
+        text/plain:
+          schema:
+            type: string
+          example: OK
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

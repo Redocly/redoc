@@ -1,0 +1,51 @@
+type: object
+description: Revenue statistics for a given date range.
+properties:
+  revenue:
+    type: number
+    format: float
+    description: Total revenue in cents from completed orders.
+    minimum: 0
+  averageOrderAmount:
+    type: number
+    format: float
+    description: Average order amount in cents (calculated from completed orders only).
+    minimum: 0
+  totalOrders:
+    type: integer
+    description: Total number of orders (all statuses) in the date range.
+    minimum: 0
+  placedOrders:
+    type: integer
+    description: Number of placed orders.
+    minimum: 0
+  preparingOrders:
+    type: integer
+    description: Number of preparing orders.
+    minimum: 0
+  completedOrders:
+    type: integer
+    description: Number of completed orders.
+    minimum: 0
+  canceledOrders:
+    type: integer
+    description: Number of canceled orders.
+    minimum: 0
+  startDate:
+    type: string
+    format: date
+    description: Start date of the revenue calculation period.
+  endDate:
+    type: string
+    format: date
+    description: End date of the revenue calculation period.
+required:
+  - revenue
+  - averageOrderAmount
+  - totalOrders
+  - placedOrders
+  - preparingOrders
+  - completedOrders
+  - canceledOrders
+  - startDate
+  - endDate

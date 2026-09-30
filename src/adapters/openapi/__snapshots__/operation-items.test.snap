@@ -1,0 +1,3699 @@
+- label: Add a new coffee to the store
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/addmenuitem
+  routeSlug: /docs/openapi/menu/addmenuitem
+  metadata:
+    seo:
+      title: Add a new coffee to the store
+      description: Add new menu item to the cafe inventory.
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: addMenuItem
+      name: Add a new coffee to the store
+      isWebhook: false
+      pointer: /paths/~1menu/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Add a new coffee to the store
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Add new menu item to the cafe inventory.
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: cookies
+            label: Cookies
+            labelTranslationKey: cookie
+            parameters:
+              - name: cookieParam
+                in: cookie
+                schemaId: schema_0
+                description: Some cookie
+                required: true
+            pointer: /paths/~1menu/post/parameters
+          - nodeType: item-content
+            variant: headers
+            label: Headers
+            labelTranslationKey: header
+            parameters:
+              - name: Accept-Language
+                in: header
+                schemaId: schema_1
+                description: The **preferred** language for messages. See [supported locales](https://example.com/locales).
+                example: en-US
+            pointer: /paths/~1menu/post/parameters
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+              - application/xml
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/MenuItem
+              application/xml:
+                schemaId: schema_2
+            schemaId: components/schemas/MenuItem
+            pointer: /paths/~1menu/post/requestBody
+            description: Menu item object that needs to be added to the cafe
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /menu
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header:
+                      - name: Accept-Language
+                        in: header
+                        required: false
+                        example: en-US
+                        schemaId: schema_1
+                    cookie:
+                      - name: cookieParam
+                        in: cookie
+                        required: true
+                        schemaId: schema_0
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/MenuItem
+                    application/xml:
+                      schemaId: schema_2
+                  responseCodes:
+                    - '405'
+                  pointer: /menu
+                  href: menu/addmenuitem
+                  openApiOperationId: addMenuItem
+                  summary: Add a new coffee to the store
+                definitionSamples:
+                  - lang: C#
+                    source: |
+                      Cafe.v1.MenuItem item = new Cafe.v1.MenuItem();
+                      item.setApiKey("your api key");
+                      item.itemType = Cafe.v1.MenuItem.TYPE_COFFEE;
+                      item.name = "Cappuccino";
+                      // set other fields
+                      CafeResponse response = item.create();
+                      if (response.statusCode == HttpStatusCode.Created)
+                      {
+                        // Successfully created
+                      }
+                      else
+                      {
+                        // Something wrong -- check response for errors
+                        Console.WriteLine(response.getRawResponse());
+                      }
+                  - lang: PHP
+                    source: |
+                      $form = new \Cafe\Entities\MenuItem();
+                      $form->setItemType("Coffee");
+                      $form->setName("Cappuccino");
+                      // set other fields
+                      try {
+                          $item = $client->menu()->create($form);
+                      } catch (UnprocessableEntityException $e) {
+                          var_dump($e->getErrors());
+                      }
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/MenuItem
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/MenuItem
+                  application/xml:
+                    schemaId: schema_2
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '405'
+                description: Invalid input
+            pointer: /paths/~1menu/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/addmenuitem
+        panels: []
+  httpPath: /menu
+- label: Update an existing menu item
+  deprecated: false
+  httpVerb: put
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/updatemenuitem
+  routeSlug: /docs/openapi/menu/updatemenuitem
+  metadata:
+    seo:
+      title: Update an existing menu item
+      description: Update an existing menu item
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: updateMenuItem
+      name: Update an existing menu item
+      isWebhook: false
+      pointer: /paths/~1menu/put
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Update an existing menu item
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: cookies
+            label: Cookies
+            labelTranslationKey: cookie
+            parameters:
+              - name: cookieParam
+                in: cookie
+                schemaId: schema_0
+                description: Some cookie
+                required: true
+            pointer: /paths/~1menu/put/parameters
+          - nodeType: item-content
+            variant: headers
+            label: Headers
+            labelTranslationKey: header
+            parameters:
+              - name: Accept-Language
+                in: header
+                schemaId: schema_1
+                description: The **preferred** language for messages. See [supported locales](https://example.com/locales).
+                example: en-US
+            pointer: /paths/~1menu/put/parameters
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+              - application/xml
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/MenuItem
+              application/xml:
+                schemaId: schema_2
+            schemaId: components/schemas/MenuItem
+            pointer: /paths/~1menu/put/requestBody
+            description: Menu item object that needs to be added to the cafe
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: PUT
+                  path: /menu
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header:
+                      - name: Accept-Language
+                        in: header
+                        required: false
+                        example: en-US
+                        schemaId: schema_1
+                    cookie:
+                      - name: cookieParam
+                        in: cookie
+                        required: true
+                        schemaId: schema_0
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/MenuItem
+                    application/xml:
+                      schemaId: schema_2
+                  responseCodes:
+                    - '201'
+                    - '400'
+                    - '404'
+                    - '405'
+                  pointer: /menu
+                  href: menu/updatemenuitem
+                  openApiOperationId: updateMenuItem
+                  summary: Update an existing menu item
+                definitionSamples:
+                  - lang: PHP
+                    source: |
+                      $form = new \Cafe\Entities\MenuItem();
+                      $form->setItemId(1);
+                      $form->setItemType("Coffee");
+                      $form->setName("Cappuccino");
+                      // set other fields
+                      try {
+                          $item = $client->menu()->update($form);
+                      } catch (UnprocessableEntityException $e) {
+                          var_dump($e->getErrors());
+                      }
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/MenuItem
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/MenuItem
+                  application/xml:
+                    schemaId: schema_2
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '201'
+                description: OK
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/Patterns
+                schemaId: components/schemas/Patterns
+              - code: '400'
+                description: Invalid ID supplied
+              - code: '404'
+                description: Menu item not found
+              - code: '405'
+                description: Validation exception
+            pointer: /paths/~1menu/put/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '201'
+                    schemaId: components/schemas/Patterns
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/Patterns
+                  - code: '400'
+                  - code: '404'
+                  - code: '405'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/updatemenuitem
+        panels: []
+  httpPath: /menu
+- label: Find menu item by ID
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/getmenuitembyid
+  routeSlug: /docs/openapi/menu/getmenuitembyid
+  metadata:
+    seo:
+      title: Find menu item by ID
+      description: Returns a single menu item
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: getMenuItemById
+      name: Find menu item by ID
+      isWebhook: false
+      pointer: /paths/~1menu~1{itemId}/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Find menu item by ID
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Returns a single menu item
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: api_key
+                    scopes: []
+                    type: apiKey
+                    in: header
+                    paramName: api_key
+                    description:
+                      - For this sample, you can use the api key  to test the authorization filters.
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: itemId
+                in: path
+                schemaId: schema_0
+                description: ID of menu item to return
+                required: true
+                deprecated: true
+            pointer: /paths/~1menu~1{itemId}/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /menu/{itemId}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: itemId
+                        in: path
+                        required: true
+                        schemaId: schema_0
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: api_key
+                          type: apiKey
+                          name: api_key
+                          in: header
+                      scopes: []
+                  responseCodes:
+                    - '200'
+                    - '400'
+                    - '404'
+                  pointer: /menu/{itemId}
+                  href: menu/getmenuitembyid
+                  openApiOperationId: getMenuItemById
+                  summary: Find menu item by ID
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/MenuItem
+                  application/xml:
+                    schemaId: components/schemas/MenuItem
+                schemaId: components/schemas/MenuItem
+              - code: '400'
+                description: Invalid ID supplied
+              - code: '404'
+                description: Menu item not found
+            pointer: /paths/~1menu~1{itemId}/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: components/schemas/MenuItem
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/MenuItem
+                      application/xml:
+                        schemaId: components/schemas/MenuItem
+                  - code: '400'
+                  - code: '404'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/getmenuitembyid
+        panels: []
+  httpPath: /menu/{itemId}
+- label: Updates a menu item in the cafe with form data
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/updatemenuitemwithform
+  routeSlug: /docs/openapi/menu/updatemenuitemwithform
+  metadata:
+    seo:
+      title: Updates a menu item in the cafe with form data
+      description: Updates a menu item in the cafe with form data
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: updateMenuItemWithForm
+      name: Updates a menu item in the cafe with form data
+      isWebhook: false
+      pointer: /paths/~1menu~1{itemId}/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Updates a menu item in the cafe with form data
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: itemId
+                in: path
+                schemaId: schema_0
+                description: ID of menu item that needs to be updated
+                required: true
+            pointer: /paths/~1menu~1{itemId}/post/parameters
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            mediaTypes:
+              - application/x-www-form-urlencoded
+            mediaTypeSchemas:
+              application/x-www-form-urlencoded:
+                schemaId: schema_3
+            schemaId: schema_3
+            pointer: /paths/~1menu~1{itemId}/post/requestBody
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /menu/{itemId}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: itemId
+                        in: path
+                        required: true
+                        schemaId: schema_0
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  requestBody:
+                    application/x-www-form-urlencoded:
+                      schemaId: schema_3
+                  responseCodes:
+                    - '405'
+                  pointer: /menu/{itemId}
+                  href: menu/updatemenuitemwithform
+                  openApiOperationId: updateMenuItemWithForm
+                  summary: Updates a menu item in the cafe with form data
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: schema_3
+                mediaTypes:
+                  - application/x-www-form-urlencoded
+                mediaTypeSchemas:
+                  application/x-www-form-urlencoded:
+                    schemaId: schema_3
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '405'
+                description: Invalid input
+            pointer: /paths/~1menu~1{itemId}/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/updatemenuitemwithform
+        panels: []
+  httpPath: /menu/{itemId}
+- label: Deletes a menu item
+  deprecated: false
+  httpVerb: delete
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/deletemenuitem
+  routeSlug: /docs/openapi/menu/deletemenuitem
+  metadata:
+    seo:
+      title: Deletes a menu item
+      description: Deletes a menu item
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: deleteMenuItem
+      name: Deletes a menu item
+      isWebhook: false
+      pointer: /paths/~1menu~1{itemId}/delete
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Deletes a menu item
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: itemId
+                in: path
+                schemaId: schema_0
+                description: Menu item id to delete
+                required: true
+            pointer: /paths/~1menu~1{itemId}/delete/parameters
+          - nodeType: item-content
+            variant: headers
+            label: Headers
+            labelTranslationKey: header
+            parameters:
+              - name: api_key
+                in: header
+                schemaId: schema_4
+                example: Bearer <TOKEN>
+            pointer: /paths/~1menu~1{itemId}/delete/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: DELETE
+                  path: /menu/{itemId}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: itemId
+                        in: path
+                        required: true
+                        schemaId: schema_0
+                    query: []
+                    querystring: []
+                    header:
+                      - name: api_key
+                        in: header
+                        required: false
+                        example: Bearer <TOKEN>
+                        schemaId: schema_4
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  responseCodes:
+                    - '400'
+                  pointer: /menu/{itemId}
+                  href: menu/deletemenuitem
+                  openApiOperationId: deleteMenuItem
+                  summary: Deletes a menu item
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '400'
+                description: Invalid menu item value
+            pointer: /paths/~1menu~1{itemId}/delete/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/deletemenuitem
+        panels: []
+  httpPath: /menu/{itemId}
+- label: uploads an image
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/uploadfile
+  routeSlug: /docs/openapi/menu/uploadfile
+  metadata:
+    seo:
+      title: uploads an image
+      description: uploads an image
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: uploadFile
+      name: uploads an image
+      isWebhook: false
+      pointer: /paths/~1menu~1{itemId}~1uploadImage/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: uploads an image
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: itemId
+                in: path
+                schemaId: schema_0
+                description: ID of menu item to update
+                required: true
+            pointer: /paths/~1menu~1{itemId}~1uploadImage/post/parameters
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            mediaTypes:
+              - application/octet-stream
+            mediaTypeSchemas:
+              application/octet-stream:
+                schemaId: schema_5
+            schemaId: schema_5
+            pointer: /paths/~1menu~1{itemId}~1uploadImage/post/requestBody
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /menu/{itemId}/uploadImage
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: itemId
+                        in: path
+                        required: true
+                        schemaId: schema_0
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  requestBody:
+                    application/octet-stream:
+                      schemaId: schema_5
+                  responseCodes:
+                    - '200'
+                  pointer: /menu/{itemId}/uploadImage
+                  href: menu/uploadfile
+                  openApiOperationId: uploadFile
+                  summary: uploads an image
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: schema_5
+                mediaTypes:
+                  - application/octet-stream
+                mediaTypeSchemas:
+                  application/octet-stream:
+                    schemaId: schema_5
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/ApiResponse
+                schemaId: components/schemas/ApiResponse
+            pointer: /paths/~1menu~1{itemId}~1uploadImage/post/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: components/schemas/ApiResponse
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/ApiResponse
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/uploadfile
+        panels: []
+  httpPath: /menu/{itemId}/uploadImage
+- label: Finds Menu Items by status
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/findmenuitemsbystatus
+  routeSlug: /docs/openapi/menu/findmenuitemsbystatus
+  metadata:
+    seo:
+      title: Finds Menu Items by status
+      description: Multiple status values can be provided with comma separated strings
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: findMenuItemsByStatus
+      name: Finds Menu Items by status
+      isWebhook: false
+      pointer: /paths/~1menu~1findByStatus/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Finds Menu Items by status
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Multiple status values can be provided with comma separated strings
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: query
+            label: Query
+            labelTranslationKey: query
+            parameters:
+              - name: status
+                in: query
+                schemaId: schema_6
+                description: Status values that need to be considered for filter
+                required: true
+            pointer: /paths/~1menu~1findByStatus/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /menu/findByStatus
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query:
+                      - name: status
+                        in: query
+                        required: true
+                        schemaId: schema_6
+                        style: form
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  responseCodes:
+                    - '200'
+                    - '400'
+                  pointer: /menu/findByStatus
+                  href: menu/findmenuitemsbystatus
+                  openApiOperationId: findMenuItemsByStatus
+                  summary: Finds Menu Items by status
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_7
+                  application/xml:
+                    schemaId: schema_7
+                schemaId: schema_7
+              - code: '400'
+                description: Invalid status value
+            pointer: /paths/~1menu~1findByStatus/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: schema_7
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_7
+                      application/xml:
+                        schemaId: schema_7
+                  - code: '400'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/findmenuitemsbystatus
+        panels: []
+  httpPath: /menu/findByStatus
+- label: Finds Menu Items by tags
+  deprecated: true
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/menu/findmenuitemsbytags
+  routeSlug: /docs/openapi/menu/findmenuitemsbytags
+  metadata:
+    seo:
+      title: Finds Menu Items by tags
+      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: findMenuItemsByTags
+      name: Finds Menu Items by tags
+      deprecated: true
+      isWebhook: false
+      pointer: /paths/~1menu~1findByTags/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Finds Menu Items by tags
+            isWebhook: false
+            deprecated: true
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: cafe_auth
+                    scopes:
+                      - write:menu
+                      - read:menu
+                    type: oauth2
+                    description: |
+                      Get access to data while protecting your account credentials.
+                      OAuth2 is also a safer and more secure way to give you access.
+                    flows:
+                      implicit:
+                        authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                        scopes:
+                          write:menu: modify menu items in your account
+                          read:menu: read your menu items
+          - nodeType: item-content
+            variant: query
+            label: Query
+            labelTranslationKey: query
+            parameters:
+              - name: tags
+                in: query
+                schemaId: schema_8
+                description: Tags to filter by
+                required: true
+            pointer: /paths/~1menu~1findByTags/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /menu/findByTags
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query:
+                      - name: tags
+                        in: query
+                        required: true
+                        schemaId: schema_8
+                        style: form
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: cafe_auth
+                          type: oauth2
+                          flows:
+                            implicit:
+                              authorizationUrl: http://cafe-api.example.com/api/oauth/dialog
+                              scopes:
+                                write:menu: modify menu items in your account
+                                read:menu: read your menu items
+                      scopes:
+                        - write:menu
+                        - read:menu
+                  responseCodes:
+                    - '200'
+                    - '400'
+                  pointer: /menu/findByTags
+                  href: menu/findmenuitemsbytags
+                  openApiOperationId: findMenuItemsByTags
+                  summary: Finds Menu Items by tags
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_7
+                  application/xml:
+                    schemaId: schema_7
+                schemaId: schema_7
+              - code: '400'
+                description: Invalid tag value
+            pointer: /paths/~1menu~1findByTags/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: schema_7
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_7
+                      application/xml:
+                        schemaId: schema_7
+                  - code: '400'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /menu/findmenuitemsbytags
+        panels: []
+  httpPath: /menu/findByTags
+- label: Returns menu item inventory by status
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/cafe/getinventory
+  routeSlug: /docs/openapi/cafe/getinventory
+  metadata:
+    seo:
+      title: Returns menu item inventory by status
+      description: Returns a map of status codes to quantities
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: getInventory
+      name: Returns menu item inventory by status
+      isWebhook: false
+      pointer: /paths/~1cafe~1inventory/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Returns menu item inventory by status
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Returns a map of status codes to quantities
+          - nodeType: security
+            requirements:
+              - schemes:
+                  - name: api_key
+                    scopes: []
+                    type: apiKey
+                    in: header
+                    paramName: api_key
+                    description:
+                      - For this sample, you can use the api key  to test the authorization filters.
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /cafe/inventory
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security:
+                    - schemes:
+                        - id: api_key
+                          type: apiKey
+                          name: api_key
+                          in: header
+                      scopes: []
+                  responseCodes:
+                    - '200'
+                  pointer: /cafe/inventory
+                  href: cafe/getinventory
+                  openApiOperationId: getInventory
+                  summary: Returns menu item inventory by status
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_9
+                schemaId: schema_9
+            pointer: /paths/~1cafe~1inventory/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: schema_9
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_9
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /cafe/getinventory
+        panels: []
+  httpPath: /cafe/inventory
+- label: Place an order for menu items
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/cafe/placeorder
+  routeSlug: /docs/openapi/cafe/placeorder
+  metadata:
+    seo:
+      title: Place an order for menu items
+      description: Place an order for menu items
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: placeOrder
+      name: Place an order for menu items
+      isWebhook: false
+      pointer: /paths/~1cafe~1order/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Place an order for menu items
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/Order
+            schemaId: components/schemas/Order
+            pointer: /paths/~1cafe~1order/post/requestBody
+            description: order placed for purchasing menu items
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /cafe/order
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/Order
+                  responseCodes:
+                    - '200'
+                    - '400'
+                  pointer: /cafe/order
+                  href: cafe/placeorder
+                  openApiOperationId: placeOrder
+                  summary: Place an order for menu items
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/Order
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/Order
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/Order
+                  application/xml:
+                    schemaId: components/schemas/Order
+                schemaId: components/schemas/Order
+              - code: '400'
+                description: Invalid Order
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    exampleIds:
+                      - paths/~1cafe~1order/post/responses/400/content/application~1json/example
+                exampleIds:
+                  - paths/~1cafe~1order/post/responses/400/content/application~1json/example
+            pointer: /paths/~1cafe~1order/post/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: components/schemas/Order
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/Order
+                      application/xml:
+                        schemaId: components/schemas/Order
+                  - code: '400'
+                    exampleIds:
+                      - paths/~1cafe~1order/post/responses/400/content/application~1json/example
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        exampleIds:
+                          - paths/~1cafe~1order/post/responses/400/content/application~1json/example
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /cafe/placeorder
+        panels: []
+  httpPath: /cafe/order
+- label: Find purchase order by ID
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/cafe/getorderbyid
+  routeSlug: /docs/openapi/cafe/getorderbyid
+  metadata:
+    seo:
+      title: Find purchase order by ID
+      description: For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: getOrderById
+      name: Find purchase order by ID
+      isWebhook: false
+      pointer: /paths/~1cafe~1order~1{orderId}/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Find purchase order by ID
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content:
+              - For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: orderId
+                in: path
+                schemaId: schema_10
+                description: ID of order that needs to be fetched
+                required: true
+            pointer: /paths/~1cafe~1order~1{orderId}/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /cafe/order/{orderId}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: orderId
+                        in: path
+                        required: true
+                        schemaId: schema_10
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - '200'
+                    - '400'
+                    - '404'
+                  pointer: /cafe/order/{orderId}
+                  href: cafe/getorderbyid
+                  openApiOperationId: getOrderById
+                  summary: Find purchase order by ID
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/Order
+                  application/xml:
+                    schemaId: components/schemas/Order
+                schemaId: components/schemas/Order
+              - code: '400'
+                description: Invalid ID supplied
+              - code: '404'
+                description: Order not found
+            pointer: /paths/~1cafe~1order~1{orderId}/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: components/schemas/Order
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/Order
+                      application/xml:
+                        schemaId: components/schemas/Order
+                  - code: '400'
+                  - code: '404'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /cafe/getorderbyid
+        panels: []
+  httpPath: /cafe/order/{orderId}
+- label: Delete purchase order by ID
+  deprecated: false
+  httpVerb: delete
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/cafe/deleteorder
+  routeSlug: /docs/openapi/cafe/deleteorder
+  metadata:
+    seo:
+      title: Delete purchase order by ID
+      description: >-
+        For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API
+        errors
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: deleteOrder
+      name: Delete purchase order by ID
+      isWebhook: false
+      pointer: /paths/~1cafe~1order~1{orderId}/delete
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Delete purchase order by ID
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content:
+              - >-
+                For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate
+                API errors
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: orderId
+                in: path
+                schemaId: schema_11
+                description: ID of the order that needs to be deleted
+                required: true
+            pointer: /paths/~1cafe~1order~1{orderId}/delete/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: DELETE
+                  path: /cafe/order/{orderId}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: orderId
+                        in: path
+                        required: true
+                        schemaId: schema_11
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - '400'
+                    - '404'
+                  pointer: /cafe/order/{orderId}
+                  href: cafe/deleteorder
+                  openApiOperationId: deleteOrder
+                  summary: Delete purchase order by ID
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '400'
+                description: Invalid ID supplied
+              - code: '404'
+                description: Order not found
+            pointer: /paths/~1cafe~1order~1{orderId}/delete/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /cafe/deleteorder
+        panels: []
+  httpPath: /cafe/order/{orderId}
+- label: Subscribe to the Cafe events
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/cafe/paths/~1cafe~1subscribe/post
+  routeSlug: /docs/openapi/cafe/paths/~1cafe~1subscribe/post
+  metadata:
+    seo:
+      title: Subscribe to the Cafe events
+      description: Add subscription for cafe events
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      name: Subscribe to the Cafe events
+      isWebhook: false
+      pointer: /paths/~1cafe~1subscribe/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Subscribe to the Cafe events
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Add subscription for cafe events
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: schema_12
+            schemaId: schema_12
+            pointer: /paths/~1cafe~1subscribe/post/requestBody
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /cafe/subscribe
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: schema_12
+                  responseCodes:
+                    - '200'
+                    - '201'
+                  pointer: /cafe/subscribe
+                  href: cafe/paths/~1cafe~1subscribe/post
+                  summary: Subscribe to the Cafe events
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: schema_12
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_12
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: Successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_13
+                schemaId: schema_13
+              - code: '201'
+                description: Subscription added
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_14
+                schemaId: schema_14
+            pointer: /paths/~1cafe~1subscribe/post/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: schema_13
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_13
+                  - code: '201'
+                    schemaId: schema_14
+                    mediaTypes:
+                      - application/json
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_14
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Callbacks
+            labelTranslationKey: callbacks
+            deepLinkSuffix: callbacks
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: item-content
+            variant: callback
+            callback:
+              httpVerb: post
+              pathName: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+              summary: Order in Progress (Summary)
+              description: A callback triggered every time an Order is updated status to "inProgress" (Description)
+              callbackName: orderInProgress
+              callbackId: orderInProgress/post
+              externalDocs:
+                url: https://more-details.com/demo
+                description: Find out more
+              contentChildren:
+                - nodeType: item-content
+                  variant: body
+                  label: Request Body
+                  labelTranslationKey: body
+                  isEvent: true
+                  mediaTypes:
+                    - application/json
+                    - application/xml
+                  mediaTypeSchemas:
+                    application/json:
+                      schemaId: schema_15
+                    application/xml:
+                      schemaId: schema_16
+                      exampleIds:
+                        - >-
+                          paths/~1cafe~1subscribe/post/callbacks/orderInProgress/post/requestBody/content/application~1xml/example
+                  schemaId: schema_15
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderInProgress/post/requestBody
+                - nodeType: item-content
+                  variant: responses
+                  responses:
+                    - code: '200'
+                      description: Callback successfully processed and no retries will be performed
+                      mediaType: application/json
+                      mediaTypes:
+                        - application/json
+                      mediaTypeContent:
+                        application/json:
+                          schemaId: schema_17
+                      schemaId: schema_17
+                    - code: '299'
+                      description: Response for cancelling subscription
+                    - code: '500'
+                      description: Callback processing failed and retries will be performed
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderInProgress/post/responses
+            pointer: /paths/~1cafe~1subscribe/post/callbacks
+        panels:
+          - children:
+              - kind: callback-payload
+                callbackName: orderInProgress/post
+                path: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+                httpVerb: post
+                servers:
+                  - url: //callback-url.path-level/v1
+                    description: Path level server 1
+                  - url: //callback-url.path-level/v2
+                    description: Path level server 2
+                definitionSamples:
+                  - lang: C#
+                    source: |
+                      Cafe.v1.MenuItem item = new Cafe.v1.MenuItem();
+                      item.setApiKey("your api key");
+                      item.itemType = Cafe.v1.MenuItem.TYPE_COFFEE;
+                      item.name = "Cappuccino";
+                      // set other fields
+                      CafeResponse response = item.create();
+                      if (response.statusCode == HttpStatusCode.Created)
+                      {
+                        // Successfully created
+                      }
+                      else
+                      {
+                        // Something wrong -- check response for errors
+                        Console.WriteLine(response.getRawResponse());
+                      }
+                  - lang: PHP
+                    source: |
+                      $form = new \Cafe\Entities\MenuItem();
+                      $form->setItemType("Coffee");
+                      $form->setName("Cappuccino");
+                      // set other fields
+                      try {
+                          $item = $client->menu()->create($form);
+                      } catch (UnprocessableEntityException $e) {
+                          var_dump($e->getErrors());
+                      }
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_15
+                  application/xml:
+                    schemaId: schema_16
+                    exampleIds:
+                      - >-
+                        paths/~1cafe~1subscribe/post/callbacks/orderInProgress/post/requestBody/content/application~1xml/example
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: item-content
+            variant: callback
+            callback:
+              httpVerb: put
+              pathName: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+              description: Order in Progress (Only Description)
+              callbackName: orderInProgress
+              callbackId: orderInProgress/put
+              contentChildren:
+                - nodeType: item-content
+                  variant: body
+                  label: Request Body
+                  labelTranslationKey: body
+                  isEvent: true
+                  mediaTypes:
+                    - application/json
+                    - application/xml
+                  mediaTypeSchemas:
+                    application/json:
+                      schemaId: schema_15
+                    application/xml:
+                      schemaId: schema_16
+                      exampleIds:
+                        - >-
+                          paths/~1cafe~1subscribe/post/callbacks/orderInProgress/put/requestBody/content/application~1xml/example
+                  schemaId: schema_15
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderInProgress/put/requestBody
+                - nodeType: item-content
+                  variant: responses
+                  responses:
+                    - code: '200'
+                      description: Callback successfully processed and no retries will be performed
+                      mediaType: application/json
+                      mediaTypes:
+                        - application/json
+                      mediaTypeContent:
+                        application/json:
+                          schemaId: schema_17
+                      schemaId: schema_17
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderInProgress/put/responses
+            pointer: /paths/~1cafe~1subscribe/post/callbacks
+        panels:
+          - children:
+              - kind: callback-payload
+                callbackName: orderInProgress/put
+                path: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+                httpVerb: put
+                servers:
+                  - url: //callback-url.operation-level/v1
+                    description: Operation level server 1 (Operation override)
+                  - url: //callback-url.operation-level/v2
+                    description: Operation level server 2 (Operation override)
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_15
+                  application/xml:
+                    schemaId: schema_16
+                    exampleIds:
+                      - >-
+                        paths/~1cafe~1subscribe/post/callbacks/orderInProgress/put/requestBody/content/application~1xml/example
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: item-content
+            variant: callback
+            callback:
+              httpVerb: post
+              pathName: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+              description: |
+                Very long description
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum.
+              callbackName: orderShipped
+              callbackId: orderShipped/post
+              contentChildren:
+                - nodeType: item-content
+                  variant: body
+                  label: Request Body
+                  labelTranslationKey: body
+                  isEvent: true
+                  mediaTypes:
+                    - application/json
+                  mediaTypeSchemas:
+                    application/json:
+                      schemaId: schema_18
+                  schemaId: schema_18
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderShipped/post/requestBody
+                - nodeType: item-content
+                  variant: responses
+                  responses:
+                    - code: '200'
+                      description: Callback successfully processed and no retries will be performed
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderShipped/post/responses
+            pointer: /paths/~1cafe~1subscribe/post/callbacks
+        panels:
+          - children:
+              - kind: callback-payload
+                callbackName: orderShipped/post
+                path: '{$request.body#/callbackUrl}?event={$request.body#/eventName}'
+                httpVerb: post
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_18
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: item-content
+            variant: callback
+            callback:
+              httpVerb: post
+              pathName: http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}
+              summary: Order delivered
+              description: A callback triggered every time an Order is delivered to the recipient
+              deprecated: true
+              callbackName: orderDelivered
+              callbackId: orderDelivered/post
+              contentChildren:
+                - nodeType: item-content
+                  variant: body
+                  label: Request Body
+                  labelTranslationKey: body
+                  isEvent: true
+                  mediaTypes:
+                    - application/json
+                  mediaTypeSchemas:
+                    application/json:
+                      schemaId: schema_19
+                  schemaId: schema_19
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderDelivered/post/requestBody
+                - nodeType: item-content
+                  variant: responses
+                  responses:
+                    - code: '200'
+                      description: Callback successfully processed and no retries will be performed
+                  pointer: /paths/~1cafe~1subscribe/post/callbacks/orderDelivered/post/responses
+            pointer: /paths/~1cafe~1subscribe/post/callbacks
+        panels:
+          - children:
+              - kind: callback-payload
+                callbackName: orderDelivered/post
+                path: http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}
+                httpVerb: post
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_19
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /cafe/paths/~1cafe~1subscribe/post
+        panels: []
+  httpPath: /cafe/subscribe
+- label: New menu item
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: true
+  type: link
+  link: /docs/openapi/webhooks/newmenuitem
+  routeSlug: /docs/openapi/webhooks/newmenuitem
+  metadata:
+    seo:
+      title: New menu item
+      description: Information about a new menu item in the system
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: newMenuItem
+      name: New menu item
+      isWebhook: true
+      pointer: /paths/newMenuItem/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: New menu item
+            isWebhook: true
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Information about a new menu item in the system
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            isEvent: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/MenuItem
+            schemaId: components/schemas/MenuItem
+            pointer: /paths/newMenuItem/post/requestBody
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: webhook
+                  method: POST
+                  path: newMenuItem
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/MenuItem
+                  responseCodes:
+                    - '200'
+                  pointer: newMenuItem
+                  href: webhooks/newmenuitem
+                  openApiOperationId: newMenuItem
+                  summary: New menu item
+                isWebhook: true
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/MenuItem
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/MenuItem
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: Return a 200 status to indicate that the data was received successfully
+            pointer: /paths/newMenuItem/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /webhooks/newmenuitem
+        panels: []
+  httpPath: newMenuItem
+- label: Get a coffee details after update
+  deprecated: false
+  httpVerb: put
+  isAdditionalOperation: false
+  isWebhook: true
+  type: link
+  link: /docs/openapi/webhooks/updatedcoffee
+  routeSlug: /docs/openapi/webhooks/updatedcoffee
+  metadata:
+    seo:
+      title: Get a coffee details after update
+      description: Get a coffee details after update
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: updatedCoffee
+      name: Get a coffee details after update
+      isWebhook: true
+      pointer: /paths/myWebhook/put
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Get a coffee details after update
+            isWebhook: true
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Get a coffee details after update
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            isEvent: true
+            mediaTypes:
+              - multipart/form-data
+            mediaTypeSchemas:
+              multipart/form-data:
+                schemaId: components/schemas/Coffee
+            schemaId: components/schemas/Coffee
+            pointer: /paths/myWebhook/put/requestBody
+            description: Information about coffee in the system
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: webhook
+                  method: PUT
+                  path: myWebhook
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    multipart/form-data:
+                      schemaId: components/schemas/Coffee
+                  responseCodes:
+                    - '200'
+                  pointer: myWebhook
+                  href: webhooks/updatedcoffee
+                  openApiOperationId: updatedCoffee
+                  summary: Get a coffee details after update
+                isWebhook: true
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/Coffee
+                mediaTypes:
+                  - multipart/form-data
+                mediaTypeSchemas:
+                  multipart/form-data:
+                    schemaId: components/schemas/Coffee
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: update Coffee details
+            pointer: /paths/myWebhook/put/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /webhooks/updatedcoffee
+        panels: []
+  httpPath: myWebhook
+- label: Create new coffee
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: true
+  type: link
+  link: /docs/openapi/webhooks/createdcoffee
+  routeSlug: /docs/openapi/webhooks/createdcoffee
+  metadata:
+    seo:
+      title: Create new coffee
+      description: Info about new coffee
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: createdCoffee
+      name: Create new coffee
+      isWebhook: true
+      pointer: /paths/myWebhook/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Create new coffee
+            isWebhook: true
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: Info about new coffee
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            isEvent: true
+            mediaTypes:
+              - multipart/form-data
+            mediaTypeSchemas:
+              multipart/form-data:
+                schemaId: components/schemas/Coffee
+            schemaId: components/schemas/Coffee
+            pointer: /paths/myWebhook/post/requestBody
+            description: Information about coffee in the system
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: webhook
+                  method: POST
+                  path: myWebhook
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    multipart/form-data:
+                      schemaId: components/schemas/Coffee
+                  responseCodes:
+                    - '200'
+                  pointer: myWebhook
+                  href: webhooks/createdcoffee
+                  openApiOperationId: createdCoffee
+                  summary: Create new coffee
+                isWebhook: true
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/Coffee
+                mediaTypes:
+                  - multipart/form-data
+                mediaTypeSchemas:
+                  multipart/form-data:
+                    schemaId: components/schemas/Coffee
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: create Coffee details
+            pointer: /paths/myWebhook/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /webhooks/createdcoffee
+        panels: []
+  httpPath: myWebhook
+- label: Create customer
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/createcustomer
+  routeSlug: /docs/openapi/customer/createcustomer
+  metadata:
+    seo:
+      title: Create customer
+      description: This can only be done by the logged in user.
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: createCustomer
+      name: Create customer
+      isWebhook: false
+      pointer: /paths/~1customer/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Create customer
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: This can only be done by the logged in user.
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/Customer
+            schemaId: components/schemas/Customer
+            pointer: /paths/~1customer/post/requestBody
+            description: Created customer object
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /customer
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/Customer
+                  responseCodes:
+                    - default
+                  pointer: /customer
+                  href: customer/createcustomer
+                  openApiOperationId: createCustomer
+                  summary: Create customer
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/Customer
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/Customer
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: default
+                description: successful operation
+            pointer: /paths/~1customer/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/createcustomer
+        panels: []
+  httpPath: /customer
+- label: Get customer by username
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/getcustomerbyname
+  routeSlug: /docs/openapi/customer/getcustomerbyname
+  metadata:
+    seo:
+      title: Get customer by username
+      description: Get customer by username
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: getCustomerByName
+      name: Get customer by username
+      isWebhook: false
+      pointer: /paths/~1customer~1{username}/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Get customer by username
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: username
+                in: path
+                schemaId: schema_4
+                description: 'The name that needs to be fetched. Use user1 for testing. '
+                required: true
+            pointer: /paths/~1customer~1{username}/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /customer/{username}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: username
+                        in: path
+                        required: true
+                        schemaId: schema_4
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - '200'
+                    - '400'
+                    - '404'
+                  pointer: /customer/{username}
+                  href: customer/getcustomerbyname
+                  openApiOperationId: getCustomerByName
+                  summary: Get customer by username
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                mediaTypeContent:
+                  application/json:
+                    schemaId: components/schemas/Customer
+                  application/xml:
+                    schemaId: components/schemas/Customer
+                schemaId: components/schemas/Customer
+              - code: '400'
+                description: Invalid username supplied
+              - code: '404'
+                description: Customer not found
+            pointer: /paths/~1customer~1{username}/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: components/schemas/Customer
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: components/schemas/Customer
+                      application/xml:
+                        schemaId: components/schemas/Customer
+                  - code: '400'
+                  - code: '404'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/getcustomerbyname
+        panels: []
+  httpPath: /customer/{username}
+- label: Updated customer
+  deprecated: false
+  httpVerb: put
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/updatecustomer
+  routeSlug: /docs/openapi/customer/updatecustomer
+  metadata:
+    seo:
+      title: Updated customer
+      description: This can only be done by the logged in user.
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: updateCustomer
+      name: Updated customer
+      isWebhook: false
+      pointer: /paths/~1customer~1{username}/put
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Updated customer
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: This can only be done by the logged in user.
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: username
+                in: path
+                schemaId: schema_4
+                description: name that need to be deleted
+                required: true
+            pointer: /paths/~1customer~1{username}/put/parameters
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: components/schemas/Customer
+            schemaId: components/schemas/Customer
+            pointer: /paths/~1customer~1{username}/put/requestBody
+            description: Updated customer object
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: PUT
+                  path: /customer/{username}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: username
+                        in: path
+                        required: true
+                        schemaId: schema_4
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: components/schemas/Customer
+                  responseCodes:
+                    - '400'
+                    - '404'
+                  pointer: /customer/{username}
+                  href: customer/updatecustomer
+                  openApiOperationId: updateCustomer
+                  summary: Updated customer
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: components/schemas/Customer
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: components/schemas/Customer
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '400'
+                description: Invalid customer supplied
+              - code: '404'
+                description: Customer not found
+            pointer: /paths/~1customer~1{username}/put/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/updatecustomer
+        panels: []
+  httpPath: /customer/{username}
+- label: Delete customer
+  deprecated: false
+  httpVerb: delete
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/deletecustomer
+  routeSlug: /docs/openapi/customer/deletecustomer
+  metadata:
+    seo:
+      title: Delete customer
+      description: This can only be done by the logged in user.
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: deleteCustomer
+      name: Delete customer
+      isWebhook: false
+      pointer: /paths/~1customer~1{username}/delete
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Delete customer
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: markdoc
+            content: This can only be done by the logged in user.
+          - nodeType: item-content
+            variant: path
+            label: Path
+            labelTranslationKey: path
+            parameters:
+              - name: username
+                in: path
+                schemaId: schema_4
+                description: The name that needs to be deleted
+                required: true
+            pointer: /paths/~1customer~1{username}/delete/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: DELETE
+                  path: /customer/{username}
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path:
+                      - name: username
+                        in: path
+                        required: true
+                        schemaId: schema_4
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - '400'
+                    - '404'
+                  pointer: /customer/{username}
+                  href: customer/deletecustomer
+                  openApiOperationId: deleteCustomer
+                  summary: Delete customer
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '400'
+                description: Invalid username supplied
+              - code: '404'
+                description: Customer not found
+            pointer: /paths/~1customer~1{username}/delete/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/deletecustomer
+        panels: []
+  httpPath: /customer/{username}
+- label: Creates list of customers with given input array
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/createcustomerswitharrayinput
+  routeSlug: /docs/openapi/customer/createcustomerswitharrayinput
+  metadata:
+    seo:
+      title: Creates list of customers with given input array
+      description: Creates list of customers with given input array
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: createCustomersWithArrayInput
+      name: Creates list of customers with given input array
+      isWebhook: false
+      pointer: /paths/~1customer~1createWithArray/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Creates list of customers with given input array
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: schema_20
+            schemaId: schema_20
+            pointer: /paths/~1customer~1createWithArray/post/requestBody
+            description: List of customer object
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /customer/createWithArray
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: schema_20
+                  responseCodes:
+                    - default
+                  pointer: /customer/createWithArray
+                  href: customer/createcustomerswitharrayinput
+                  openApiOperationId: createCustomersWithArrayInput
+                  summary: Creates list of customers with given input array
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: schema_20
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_20
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: default
+                description: successful operation
+            pointer: /paths/~1customer~1createWithArray/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/createcustomerswitharrayinput
+        panels: []
+  httpPath: /customer/createWithArray
+- label: Creates list of customers with given input array
+  deprecated: false
+  httpVerb: post
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/createcustomerswithlistinput
+  routeSlug: /docs/openapi/customer/createcustomerswithlistinput
+  metadata:
+    seo:
+      title: Creates list of customers with given input array
+      description: Creates list of customers with given input array
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: createCustomersWithListInput
+      name: Creates list of customers with given input array
+      isWebhook: false
+      pointer: /paths/~1customer~1createWithList/post
+      hasSamples: true
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Creates list of customers with given input array
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: item-content
+            variant: body
+            label: Request Body
+            labelTranslationKey: body
+            required: true
+            mediaTypes:
+              - application/json
+            mediaTypeSchemas:
+              application/json:
+                schemaId: schema_20
+            schemaId: schema_20
+            pointer: /paths/~1customer~1createWithList/post/requestBody
+            description: List of customer object
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: POST
+                  path: /customer/createWithList
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  requestBody:
+                    application/json:
+                      schemaId: schema_20
+                  responseCodes:
+                    - default
+                  pointer: /customer/createWithList
+                  href: customer/createcustomerswithlistinput
+                  openApiOperationId: createCustomersWithListInput
+                  summary: Creates list of customers with given input array
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                schemaId: schema_20
+                mediaTypes:
+                  - application/json
+                mediaTypeSchemas:
+                  application/json:
+                    schemaId: schema_20
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: default
+                description: successful operation
+            pointer: /paths/~1customer~1createWithList/post/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/createcustomerswithlistinput
+        panels: []
+  httpPath: /customer/createWithList
+- label: Logs customer into the system
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/logincustomer
+  routeSlug: /docs/openapi/customer/logincustomer
+  metadata:
+    seo:
+      title: Logs customer into the system
+      description: Logs customer into the system
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: loginCustomer
+      name: Logs customer into the system
+      isWebhook: false
+      pointer: /paths/~1customer~1login/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Logs customer into the system
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: item-content
+            variant: query
+            label: Query
+            labelTranslationKey: query
+            parameters:
+              - name: username
+                in: query
+                schemaId: schema_4
+                description: The customer name for login
+                required: true
+              - name: password
+                in: query
+                schemaId: schema_4
+                description: The password for login in clear text
+                required: true
+            pointer: /paths/~1customer~1login/get/parameters
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /customer/login
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query:
+                      - name: username
+                        in: query
+                        required: true
+                        schemaId: schema_4
+                      - name: password
+                        in: query
+                        required: true
+                        schemaId: schema_4
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - '200'
+                    - '400'
+                  pointer: /customer/login
+                  href: customer/logincustomer
+                  openApiOperationId: loginCustomer
+                  summary: Logs customer into the system
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: '200'
+                description: successful operation
+                mediaType: application/json
+                mediaTypes:
+                  - application/json
+                  - application/xml
+                  - text/plain
+                mediaTypeContent:
+                  application/json:
+                    schemaId: schema_4
+                    exampleIds:
+                      - paths/~1customer~1login/get/responses/200/content/application~1json/examples/response
+                  application/xml:
+                    schemaId: schema_4
+                    exampleIds:
+                      - paths/~1customer~1login/get/responses/200/content/application~1xml/examples/response
+                  text/plain:
+                    exampleIds:
+                      - paths/~1customer~1login/get/responses/200/content/text~1plain/examples/response
+                schemaId: schema_4
+                exampleIds:
+                  - paths/~1customer~1login/get/responses/200/content/application~1json/examples/response
+                headers:
+                  X-Rate-Limit:
+                    description: calls per hour allowed by the customer
+                    schema:
+                      type: integer
+                      format: int32
+                  X-Expires-After:
+                    description: date in UTC when token expires
+                    schema:
+                      type: string
+                      format: date-time
+                headerSchemaId: schema_21
+              - code: '400'
+                description: Invalid username/password supplied
+            pointer: /paths/~1customer~1login/get/responses
+        panels:
+          - children:
+              - kind: response
+                responseCodes:
+                  - code: '200'
+                    schemaId: schema_4
+                    exampleIds:
+                      - paths/~1customer~1login/get/responses/200/content/application~1json/examples/response
+                    mediaTypes:
+                      - application/json
+                      - application/xml
+                      - text/plain
+                    mediaTypeContent:
+                      application/json:
+                        schemaId: schema_4
+                        exampleIds:
+                          - paths/~1customer~1login/get/responses/200/content/application~1json/examples/response
+                      application/xml:
+                        schemaId: schema_4
+                        exampleIds:
+                          - paths/~1customer~1login/get/responses/200/content/application~1xml/examples/response
+                      text/plain:
+                        exampleIds:
+                          - paths/~1customer~1login/get/responses/200/content/text~1plain/examples/response
+                  - code: '400'
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/logincustomer
+        panels: []
+  httpPath: /customer/login
+- label: Logs out current logged in customer session
+  deprecated: false
+  httpVerb: get
+  isAdditionalOperation: false
+  isWebhook: false
+  type: link
+  link: /docs/openapi/customer/logoutcustomer
+  routeSlug: /docs/openapi/customer/logoutcustomer
+  metadata:
+    seo:
+      title: Logs out current logged in customer session
+      description: Logs out current logged in customer session
+  content:
+    contentType: item
+    itemVariant: httpItem
+    meta:
+      sourceId: logoutCustomer
+      name: Logs out current logged in customer session
+      isWebhook: false
+      pointer: /paths/~1customer~1logout/get
+      hasSamples: false
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Logs out current logged in customer session
+            isWebhook: false
+            showPageActions: true
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Request
+            labelTranslationKey: request
+            deepLinkSuffix: request
+          - nodeType: empty-message
+            label: No request data
+            labelTranslationKey: noRequestData
+        panels:
+          - children:
+              - kind: code-sample
+                source:
+                  kind: code-sample
+                  operationType: http
+                  method: GET
+                  path: /customer/logout
+                  servers:
+                    - url: //cafe-api.example.com/v2
+                      description: Default server
+                    - url: //cafe-api.example.com/sandbox
+                      description: Sandbox server
+                  parameters:
+                    path: []
+                    query: []
+                    querystring: []
+                    header: []
+                    cookie: []
+                  security: []
+                  responseCodes:
+                    - default
+                  pointer: /customer/logout
+                  href: customer/logoutcustomer
+                  openApiOperationId: logoutCustomer
+                  summary: Logs out current logged in customer session
+                isWebhook: false
+                hideReplay: false
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 4
+            label: Responses
+            labelTranslationKey: responses
+            deepLinkSuffix: responses
+          - nodeType: item-content
+            variant: responses
+            responses:
+              - code: default
+                description: successful operation
+            pointer: /paths/~1customer~1logout/get/responses
+        panels: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /customer/logoutcustomer
+        panels: []
+  httpPath: /customer/logout

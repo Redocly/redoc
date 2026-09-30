@@ -1,0 +1,124 @@
+- type: link
+  label: WheelyFast - Ride Sharing Platform
+  link: docs/asyncapi
+  routeSlug: docs/asyncapi
+  content:
+    contentType: overview
+    children:
+      - nodeType: container
+        panels:
+          - title: Download AsyncAPI description
+            titleTranslationKey: download.description.title
+            children:
+              - kind: download
+                label: Test Server
+                url: https://example.com/asyncapi/schema.yaml
+              - kind: download
+                label: Test Server 2
+                url: https://example.com/asyncapi/schema.yaml
+          - title: Overview
+            titleTranslationKey: info.title
+            children:
+              - kind: externallink
+                title: URL
+                titleTranslationKey: info.contact.url
+                label: https://wheelyfast.io/support
+                url: https://wheelyfast.io/support
+              - kind: email
+                title: WheelyFast API Support
+                email: api@wheelyfast.io
+                label: api@wheelyfast.io
+                withCopyButton: true
+                copyContent: api@wheelyfast.io
+              - kind: externallink
+                title: License
+                titleTranslationKey: info.license
+                label: Apache 2.0
+                url: https://www.apache.org/licenses/LICENSE-2.0.html
+              - kind: externallink
+                label: Terms of Service
+                labelTranslationKey: info.termsOfService
+                url: https://wheelyfast.io/terms
+          - title: Brokers
+            children:
+              - kind: brokers
+                panelLabel: Brokers
+                brokers:
+                  - name: production
+                    url: kafka.wheelyfast.io:9092
+                    description: Production Kafka broker cluster
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                          - eu-central-1
+                      environment:
+                        description: Deployment environment
+                        default: production
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Production WheelyFast Kafka Brokers
+                    summary: Main production messaging brokers for the WheelyFast platform
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+                  - name: staging
+                    url: staging-kafka.wheelyfast.io:9092
+                    description: Staging Kafka broker cluster for pre-production testing
+                    variables:
+                      region:
+                        description: Geographic region for the broker cluster
+                        default: us-east-1
+                        enum:
+                          - us-east-1
+                          - us-west-2
+                      environment:
+                        description: Deployment environment
+                        default: staging
+                    protocol: kafka
+                    protocolVersion: 2.6.0
+                    pathname: /
+                    title: Staging WheelyFast Kafka Brokers
+                    summary: Pre-production messaging brokers for testing and verification
+                    bindings:
+                      kafka:
+                        schemaRegistryUrl: https://staging-registry.wheelyfast.io
+                        schemaRegistryVendor: confluent
+        children:
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: header
+                showPageActions: true
+                level: 1
+                label: WheelyFast - Ride Sharing Platform 1.0.0
+              - nodeType: overview-section-wrapper
+                children:
+                  - nodeType: markdoc
+                    content: >-
+                      WheelyFast is a real-time ride sharing service that seamlessly connects passengers with nearby
+                      drivers through an event-driven architecture. Our platform processes ride requests, driver
+                      location updates, payment transactions, and service notifications to provide a reliable and
+                      efficient transportation experience.
+                sectionId: docs/asyncapi
+              - nodeType: external-docs
+                url: https://developer.wheelyfast.io/docs
+                description: Find more information about the WheelyFast API
+            sectionId: docs/asyncapi
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: markdoc
+                content:
+                  - 'Key features of our platform:'
+                  - >-
+                    Request rides anytime, anywhere with real-time matching 🚗Track driver location and ride progress in
+                    real-time 🗺️Process secure payments automatically when rides complete 💳Rate drivers and provide
+                    feedback on your experience ⭐Receive promotions and special offers through notifications 📱
+                  - >-
+                    This AsyncAPI specification documents the event topics that power our distributed microservices
+                    ecosystem built on Kafka.
+            sectionId: 'docs/asyncapi/section/key-features-of-our-platform:'

@@ -7,19 +7,24 @@
 Serve remote spec by URL:
 
     docker run -it --rm -p 80:80 \
-      -e SPEC_URL='http://localhost:8000/swagger.yaml' redocly/redoc
+      -e SPEC_URL='http://localhost:8000/openapi.yaml' redocly/redoc
 
 Serve local file:
 
     docker run -it --rm -p 80:80 \
-      -v $(pwd)/demo/swagger.yaml:/usr/share/nginx/html/swagger.yaml \
-      -e SPEC_URL=swagger.yaml redocly/redoc
+      -v $(pwd)/openapi.yaml:/usr/share/nginx/html/openapi.yaml \
+      -e SPEC_URL=openapi.yaml redocly/redoc
 
 Serve local file and watch for updates:
 
     docker run -it --rm -p 80:80 \
-      -v $(pwd)/demo/:/usr/share/nginx/html/swagger/ \
-      -e SPEC_URL=swagger/swagger.yaml redocly/redoc
+      -v $(pwd)/specs/:/usr/share/nginx/html/specs/ \
+      -e SPEC_URL=specs/openapi.yaml redocly/redoc
+
+Serve an AsyncAPI or GraphQL definition (Redoc renders OpenAPI, AsyncAPI, and GraphQL).
+
+    docker run -it --rm -p 80:80 \
+      -e SPEC_URL='http://localhost:8000/asyncapi.yaml' redocly/redoc
 
 ### OpenShift
 
@@ -45,12 +50,12 @@ Another issue with OpenShift is that the default exposed port `80` cannot be use
 
 - `PAGE_TITLE` (default `"ReDoc"`) - page title
 - `PAGE_FAVICON` (default `"favicon.png"`) - URL to page favicon
-- `BASE_PATH` (optional) - path prefix
-- `SPEC_URL` (default `"http://petstore.swagger.io/v2/swagger.json"`) – URL to the spec (if mounted as a file inside the container and `BASE_PATH` is used, the spec should contain the prefix, e.g., for `"/v1/swagger.json"`)
+- `BASE_PATH` (optional) - path prefix, e.g. `docs` serves the page at `/docs`
+- `SPEC_URL` (default `"https://cdn.redocly.com/redoc/museum-api.yaml"`) – URL to the API definition (if mounted as a file inside the container and `BASE_PATH` is used, the URL should contain the prefix, e.g. `"/v1/openapi.yaml"`)
 - `HOST` (default `localhost`) - nginx server_name
 - `PORT` (default `80`) - nginx port
-- `REDOC_OPTIONS` (optional) - [`<redoc>` tag attributes](https://github.com/Redocly/redoc#redoc-tag-attributes)
+- `REDOC_OPTIONS` (optional) - `<redoc>` tag attributes, e.g. `router="history"` (routing is hash-based by default; with `router="history"` under `BASE_PATH` the image adds `base-path` for you)
 
 ## Build
 
-    docker build -t redocly/redoc .
+    docker build -t redocly/redoc -f config/docker/Dockerfile .

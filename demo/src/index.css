@@ -1,0 +1,370 @@
+:root {
+  --demo-nav-bg: #ffffff;
+  --demo-border: #ededf2;
+  --demo-text: #1a1c21;
+  --demo-muted: #9b9ca8;
+  --demo-surface: #fbfbfc;
+  --demo-popup-bg: #ffffff;
+  --demo-hover: #f4f5f7;
+  --demo-checkbox-bg: #ffffff;
+  --demo-checkbox-border: #b9bac4;
+}
+html.dark {
+  --demo-nav-bg: #22242b;
+  --demo-border: #3b3c45;
+  --demo-text: #fbfbfc;
+  --demo-muted: #9b9ca8;
+  --demo-surface: #2b2d36;
+  --demo-popup-bg: #2b2d36;
+  --demo-hover: #383a44;
+  --demo-checkbox-bg: #2b2d36;
+  --demo-checkbox-border: #4a4c57;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--demo-surface);
+  color: var(--demo-text);
+}
+
+.demo-error {
+  margin: 0;
+  padding: 64px 24px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--demo-text);
+}
+
+nav.demo-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--demo-nav-bg);
+  border-bottom: 1px solid var(--demo-border);
+  z-index: 10;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--demo-text);
+}
+
+.demo-nav .logo-wrapper {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  flex-shrink: 0;
+}
+.demo-nav a.logo {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+.demo-nav a.logo svg {
+  width: 21.8px;
+  height: 21.8px;
+}
+@media screen and (max-width: 950px) {
+  .demo-nav .logo-wrapper {
+    width: auto;
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  margin: 0 15px;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.spec-picker {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 464px;
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+  position: relative;
+}
+
+.combobox {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background: var(--demo-surface);
+  border-right: 1px solid var(--demo-border);
+  border-radius: 8px 0 0 8px;
+  box-sizing: border-box;
+}
+.combobox input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 32px;
+  border: none;
+  background: transparent;
+  padding: 0 4px 0 12px;
+  font-size: 14px;
+  line-height: 22px;
+  font-family: inherit;
+  color: var(--demo-text);
+  outline: none;
+  border-radius: 8px 0 0 8px;
+}
+.combobox input::placeholder {
+  color: var(--demo-muted);
+  opacity: 1;
+}
+.combobox .arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 32px;
+  width: 24px;
+  margin-right: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+.combobox .arrow svg {
+  width: 12px;
+  height: 12px;
+}
+.combobox ul {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: calc(100% + 5px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--demo-popup-bg);
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(26, 28, 33, 0.1);
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 20;
+}
+.combobox.open ul {
+  display: block;
+}
+.combobox li {
+  padding: 5px 8px;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.combobox li:hover,
+.combobox li[aria-selected='true'] {
+  background: var(--demo-hover);
+}
+
+button.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  padding: 8px;
+  box-sizing: border-box;
+  background: var(--demo-surface);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  outline: none;
+  color: var(--demo-text);
+}
+button.upload-btn:hover {
+  color: #0090ff;
+}
+button.upload-btn svg {
+  width: 10.5px;
+  height: 12.25px;
+}
+@media (max-width: 699px) {
+  button.upload-btn {
+    display: none;
+  }
+  .combobox {
+    border-right: none;
+    border-radius: 8px;
+  }
+}
+
+.cors-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cors-toggle input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  background: var(--demo-checkbox-bg);
+  border: 1px solid var(--demo-checkbox-border);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cors-toggle input:checked {
+  border-color: #0090ff;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 7.93 6.32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.32307 6.14589L7.87354 0.379532C7.9972 0.224636 7.88315 0 7.69013 0H7.03873C6.89886 0 6.76557 0.0640488 6.67897 0.174897L5.99713 1.03865L2.96264 4.88273L1.24597 2.70758C1.20314 2.65321 1.14856 2.60924 1.08631 2.57899C1.02407 2.54873 0.955579 2.53297 0.886368 2.53289H0.234974C0.0390805 2.53289 -0.0703829 2.7587 0.0506755 2.91224L2.60318 6.14597C2.78677 6.37832 3.13905 6.37699 3.32307 6.14589Z' fill='%230090FF'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 8px 6.3px;
+}
+.cors-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--demo-text);
+  cursor: pointer;
+}
+.cors-info {
+  display: flex;
+  align-items: center;
+  outline: none;
+  margin-left: -4px;
+}
+.cors-info svg {
+  width: 14px;
+  height: 14px;
+}
+@media screen and (max-width: 550px) {
+  .cors-toggle {
+    display: none;
+  }
+}
+
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  background: #22242b;
+  color: white;
+  border: 2px solid #3b3c45;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  white-space: nowrap;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 8px 24px 8px rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 30;
+  transition: opacity 0.15s ease;
+}
+[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  background: #22242b;
+  border-left: 2px solid #3b3c45;
+  border-top: 2px solid #3b3c45;
+  border-top-left-radius: 2px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 31;
+  transition: opacity 0.15s ease;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:hover::before,
+[data-tooltip]:focus-visible::after,
+[data-tooltip]:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+}
+[data-tooltip].tooltip-wide::after {
+  white-space: normal;
+  width: 300px;
+}
+
+.demo-nav .github-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.demo-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.demo-loader-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-loader-icon svg {
+  width: 21px;
+  height: 21px;
+  animation: demo-loader-spin 1.5s linear infinite;
+}
+.demo-loader p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--demo-text);
+}
+@keyframes demo-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html.dark .github-wrapper iframe {
+  filter: invert(0.867) hue-rotate(180deg);
+}

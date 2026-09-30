@@ -1,0 +1,24 @@
+delete:
+  tags:
+    - Admin
+  x-internal: true
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: Delete all data and reseed the cafe API
+  description: |
+    Reset the cafe database to a clean state and reseed the default menu items.
+    This operation removes all OAuth2 clients, authorization codes, and tokens, deletes every order and order item, clears the menu (beverages and desserts), and then recreates the seed menu items with their photos.
+    Intended for internal use to reset the demo environment. Requires the admin API key.
+  operationId: cleanUpCafe
+  security:
+    - ApiKey: []
+  responses:
+    '204':
+      description: Cafe cleaned up and reseeded successfully.
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

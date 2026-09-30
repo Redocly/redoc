@@ -1,4 +1,4 @@
-import { styled } from '../../styled-components.js';
+import { styled } from 'styled-components';
 
 export const Icon = () => (
   <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,6 +19,6 @@ export const Icon = () => (
   </svg>
 );
 
-export const NodeJSIcon = styled(Icon).attrs(() => ({
-  'data-component-name': 'icons/NodeJSIcon',
-}))``;
+export const NodeJSIcon = styled(Icon)({
+  dataComponentName: 'icons/NodeJSIcon',
+});

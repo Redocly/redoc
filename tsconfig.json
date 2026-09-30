@@ -4,6 +4,6 @@
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "bundle", ".tmp", "lib", "redoc", "bin"],
+  "exclude": ["node_modules", "bundles", ".tmp", "typings", "redoc", "bin", "**/__tests__/**/*"],
   "include": ["src", "src/**/*.json"]
 }

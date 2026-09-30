@@ -1,0 +1,155 @@
+- type: link
+  label: Cafe API
+  link: docs/openapi
+  routeSlug: docs/openapi
+  content:
+    contentType: overview
+    meta:
+      name: Cafe API
+    children:
+      - nodeType: container
+        panels:
+          - title: Download OpenAPI description
+            titleTranslationKey: download.description.title
+            children:
+              - kind: download
+                label: Test Server
+                url: https://example.com/openapi/schema.yaml
+              - kind: download
+                label: Test Server 2
+                url: https://example.com/openapi/schema.yaml
+          - title: Overview
+            titleTranslationKey: info.title
+            children:
+              - kind: externallink
+                title: URL
+                titleTranslationKey: info.contact.url
+                label: https://github.com/Redocly/redoc
+                url: https://github.com/Redocly/redoc
+              - kind: email
+                title: API Support
+                email: apiteam@cafe-api.example.com
+                label: apiteam@cafe-api.example.com
+                withCopyButton: true
+                copyContent: apiteam@cafe-api.example.com
+              - kind: externallink
+                title: License
+                titleTranslationKey: info.license
+                label: Apache 2.0
+                url: http://www.apache.org/licenses/LICENSE-2.0.html
+              - kind: externallink
+                label: Terms of Service
+                labelTranslationKey: info.termsOfService
+                url: http://swagger.io/terms/
+          - title: Languages
+            titleTranslationKey: languages.title
+            children:
+              - kind: languages
+                options:
+                  - key: curl
+                    title: curl
+                    lang: curl
+                  - key: javascript
+                    title: JavaScript
+                    lang: JavaScript
+                  - key: node
+                    title: Node.js
+                    lang: Node.js
+                  - key: python
+                    title: Python
+                    lang: Python
+                  - key: java
+                    title: Java
+                    lang: Java
+                  - key: csharp
+                    title: C#
+                    lang: C#
+                  - key: php
+                    title: PHP
+                    lang: PHP
+                  - key: go
+                    title: Go
+                    lang: Go
+                  - key: ruby
+                    title: Ruby
+                    lang: Ruby
+                  - key: r
+                    title: R
+                    lang: R
+                  - key: payload
+                    title: Payload
+                    lang: Payload
+          - title: Servers
+            titleTranslationKey: servers.title
+            children:
+              - kind: servers
+                servers:
+                  - url: //cafe-api.example.com/v2
+                    description: Default server
+                  - url: //cafe-api.example.com/sandbox
+                    description: Sandbox server
+                mode: default
+        children:
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: header
+                level: 1
+                label: Cafe API (1.0.0)
+                showPageActions: true
+              - nodeType: markdoc
+                content: My lovely Cafe API
+              - nodeType: overview-section-wrapper
+                children:
+                  - nodeType: markdoc
+                    content:
+                      - >-
+                        This is a sample Cafe API server. You can find out more about OpenAPI at
+                        https://www.openapis.org/. For this sample, you can use the api key  to test the authorization
+                        filters.
+                sectionId: docs/openapi
+              - nodeType: external-docs
+                url: https://github.com/Rebilly/generator-openapi-repo
+                description: Find out how to create Github repo for your OpenAPI spec.
+            sectionId: docs/openapi
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: markdoc
+                content:
+                  - Introduction
+                  - >-
+                    This API is documented in OpenAPI format and is designed to demonstrate a modern cafe management
+                    system with menu items, orders, and customer management. It was extended to illustrate features of
+                    generator-openapi-repo tool and ReDoc documentation. In addition to standard OpenAPI syntax we use a
+                    few vendor extensions.
+            sectionId: docs/openapi/section/introduction
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: markdoc
+                content:
+                  - OpenAPI Specification
+                  - >-
+                    This API is documented in OpenAPI format and is designed to demonstrate a modern cafe management
+                    system with menu items, orders, and customer management. It was extended to illustrate features of
+                    generator-openapi-repo tool and ReDoc documentation. In addition to standard OpenAPI syntax we use a
+                    few vendor extensions.
+            sectionId: docs/openapi/section/openapi-specification
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: markdoc
+                content:
+                  - Cross-Origin Resource Sharing
+                  - >-
+                    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  W3C spec. And
+                    that allows cross-domain communication from the browser. All responses have a wildcard same-origin
+                    which makes them completely public and accessible to everyone, including any code on any site.
+            sectionId: docs/openapi/section/cross-origin-resource-sharing
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: markdoc
+                content:
+                  - Authentication
+                  - 'Cafe API offers two forms of authentication:'
+                  - >-
+                    API Key OAuth2 OAuth2 - an open protocol to allow secure authorization in a simple and standard
+                    method from web, mobile and desktop applications.
+            sectionId: docs/openapi/section/authentication

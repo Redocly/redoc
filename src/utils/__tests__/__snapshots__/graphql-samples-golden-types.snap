@@ -1,0 +1,320 @@
+{
+  "User@depth1": {
+    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+    "name": "Example String",
+    "balance": 40,
+    "isActive": true,
+    "createdAt": "Example Custom Scalar",
+    "status": "ACTIVE",
+    "pet": {
+      "__typename": "Dog"
+    },
+    "matrix": [
+      [
+        40
+      ]
+    ],
+    "friends": {
+      "__typename": "FriendsConnection"
+    }
+  },
+  "User@depth2": {
+    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+    "name": "Example String",
+    "balance": 40,
+    "isActive": true,
+    "createdAt": "Example Custom Scalar",
+    "status": "ACTIVE",
+    "pet": {
+      "name": "Example String",
+      "barkVolume": 40
+    },
+    "matrix": [
+      [
+        40
+      ]
+    ],
+    "friends": {
+      "edges": [
+        {
+          "node": {
+            "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+            "name": "Example String",
+            "balance": 40,
+            "isActive": true,
+            "createdAt": "Example Custom Scalar",
+            "status": "ACTIVE",
+            "pet": {
+              "__typename": "Dog"
+            },
+            "matrix": [
+              [
+                40
+              ]
+            ],
+            "friends": {
+              "__typename": "FriendsConnection"
+            }
+          },
+          "cursor": "Example String"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "name": "Example String",
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "__typename": "Dog"
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "__typename": "FriendsConnection"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "Example String"
+      },
+      "totalCount": 40
+    }
+  },
+  "Pet@depth1": {
+    "name": "Example String",
+    "barkVolume": 40
+  },
+  "Pet@depth2": {
+    "name": "Example String",
+    "barkVolume": 40
+  },
+  "Status@depth1": "ACTIVE",
+  "Status@depth2": "ACTIVE",
+  "UserFilter@depth1": {
+    "name": "Example String",
+    "statuses": [
+      "ACTIVE"
+    ],
+    "joinedAfter": "Example Custom Scalar"
+  },
+  "UserFilter@depth2": {
+    "name": "Example String",
+    "statuses": [
+      "ACTIVE"
+    ],
+    "joinedAfter": "Example Custom Scalar"
+  },
+  "DateTime@depth1": "Example Custom Scalar",
+  "DateTime@depth2": "Example Custom Scalar",
+  "FriendsConnection@depth1": {
+    "edges": [
+      {
+        "node": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "name": "Example String",
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "__typename": "Dog"
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "__typename": "FriendsConnection"
+          }
+        },
+        "cursor": "Example String"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+        "name": "Example String",
+        "balance": 40,
+        "isActive": true,
+        "createdAt": "Example Custom Scalar",
+        "status": "ACTIVE",
+        "pet": {
+          "__typename": "Dog"
+        },
+        "matrix": [
+          [
+            40
+          ]
+        ],
+        "friends": {
+          "__typename": "FriendsConnection"
+        }
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": true,
+      "endCursor": "Example String"
+    },
+    "totalCount": 40
+  },
+  "FriendsConnection@depth2": {
+    "edges": [
+      {
+        "node": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "name": "Example String",
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "name": "Example String",
+            "barkVolume": 40
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "edges": [
+              {
+                "node": {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "__typename": "Dog"
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "__typename": "FriendsConnection"
+                  }
+                },
+                "cursor": "Example String"
+              }
+            ],
+            "nodes": [
+              {
+                "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                "name": "Example String",
+                "balance": 40,
+                "isActive": true,
+                "createdAt": "Example Custom Scalar",
+                "status": "ACTIVE",
+                "pet": {
+                  "__typename": "Dog"
+                },
+                "matrix": [
+                  [
+                    40
+                  ]
+                ],
+                "friends": {
+                  "__typename": "FriendsConnection"
+                }
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": true,
+              "endCursor": "Example String"
+            },
+            "totalCount": 40
+          }
+        },
+        "cursor": "Example String"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+        "name": "Example String",
+        "balance": 40,
+        "isActive": true,
+        "createdAt": "Example Custom Scalar",
+        "status": "ACTIVE",
+        "pet": {
+          "name": "Example String",
+          "barkVolume": 40
+        },
+        "matrix": [
+          [
+            40
+          ]
+        ],
+        "friends": {
+          "edges": [
+            {
+              "node": {
+                "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                "name": "Example String",
+                "balance": 40,
+                "isActive": true,
+                "createdAt": "Example Custom Scalar",
+                "status": "ACTIVE",
+                "pet": {
+                  "__typename": "Dog"
+                },
+                "matrix": [
+                  [
+                    40
+                  ]
+                ],
+                "friends": {
+                  "__typename": "FriendsConnection"
+                }
+              },
+              "cursor": "Example String"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+              "name": "Example String",
+              "balance": 40,
+              "isActive": true,
+              "createdAt": "Example Custom Scalar",
+              "status": "ACTIVE",
+              "pet": {
+                "__typename": "Dog"
+              },
+              "matrix": [
+                [
+                  40
+                ]
+              ],
+              "friends": {
+                "__typename": "FriendsConnection"
+              }
+            }
+          ],
+          "pageInfo": {
+            "hasNextPage": true,
+            "endCursor": "Example String"
+          },
+          "totalCount": 40
+        }
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": true,
+      "endCursor": "Example String"
+    },
+    "totalCount": 40
+  }
+}

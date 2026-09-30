@@ -1,33 +1,121 @@
-import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
+import { useSetAtom } from 'jotai';
+import { styled } from 'styled-components';
 
 import type { SearchItemData } from '../../services/search/types.js';
 
-import { breakpoints, useModalScrollLock, useDialogHotKeys } from '@redocly/theme/core/openapi';
+import {
+  breakpoints,
+  useModalScrollLock,
+  useDialogHotKeys,
+  SearchSessionContext,
+} from '@redocly/theme/core/openapi';
+import { SEARCH_DEBOUNCE_TIME_MS } from '@redocly/theme/core/constants';
 import { SearchInput } from '@redocly/theme/components/Search/SearchInput';
 import { SearchItem } from '@redocly/theme/components/Search/SearchItem';
 import { SearchShortcut } from '@redocly/theme/components/Search/SearchShortcut';
 import { Button } from '@redocly/theme/components/Button/Button';
 
-import { styled } from '../../styled-components.js';
-import { useTelemetry } from '../../hooks/useTelemetry.js';
+import { RESOURCES, uiResource, useTelemetry } from '../../telemetry/index.js';
+import { markNavigationCauseAtom } from '../../jotai/telemetry.js';
 
 export type SearchDialogProps = {
   onClose: () => void;
-  search: (query: string) => SearchItemData[];
+  search: (query: string) => SearchItemData[] | Promise<SearchItemData[]>;
   isReady: boolean;
 };
 
+function countWords(query: string): number {
+  const trimmed = query.trim();
+  return trimmed ? trimmed.split(/\s+/).length : 0;
+}
+
 export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
   const telemetry = useTelemetry();
+  const markNavigationCause = useSetAtom(markNavigationCauseAtom);
+  const searchSessionId = useContext(SearchSessionContext)?.searchSessionId;
+  const lastReportedQueryRef = useRef<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<SearchItemData[]>([]);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
   useEffect(() => {
-    setSearchResults(query ? search(query) : []);
-  }, [query, search]);
+    if (!query) {
+      setDebouncedQuery('');
+      return;
+    }
+    const timer = setTimeout(() => setDebouncedQuery(query), SEARCH_DEBOUNCE_TIME_MS);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const [results, setResults] = useState<{ query: string; items: SearchItemData[] }>({
+    query: '',
+    items: [],
+  });
+  const isSearching = !!query && results.query !== query;
+  const searchResults = isSearching ? [] : results.items;
+  useEffect(() => {
+    if (!debouncedQuery) {
+      setResults({ query: '', items: [] });
+      lastReportedQueryRef.current = null;
+      return;
+    }
+    let stale = false;
+    void Promise.resolve(search(debouncedQuery)).then((items) => {
+      if (stale) return;
+      setResults({ query: debouncedQuery, items });
+      if (isReady && lastReportedQueryRef.current !== debouncedQuery) {
+        lastReportedQueryRef.current = debouncedQuery;
+        telemetry.sendSearchQueryMessage([
+          {
+            ...RESOURCES.searchQuery,
+            resultCount: items.length,
+            wordCount: countWords(debouncedQuery),
+            ...(searchSessionId ? { searchSessionId } : {}),
+          },
+        ]);
+      }
+    });
+    return () => {
+      stale = true;
+    };
+  }, [debouncedQuery, search, isReady, telemetry, searchSessionId]);
+
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  useEffect(() => {
+    if (activeIndex < 0) {
+      searchInputRef.current?.focus();
+      return;
+    }
+    const rows = resultsRef.current?.querySelectorAll<HTMLAnchorElement>(':scope > a');
+    rows?.[activeIndex]?.focus();
+  }, [activeIndex]);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+      if (!searchResults.length) return;
+      event.preventDefault();
+
+      setActiveIndex((current) => {
+        const next = current + (event.key === 'ArrowDown' ? 1 : -1);
+        return Math.max(-1, Math.min(next, searchResults.length - 1));
+      });
+    },
+    [searchResults.length],
+  );
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -52,6 +140,7 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
   const searchDialogContent = (
     <SearchOverlay
       onClick={handleOverlayClick}
+      onKeyDown={handleKeyDown}
       className="overlay"
       ref={modalRef}
       data-testid="search-dialog"
@@ -62,8 +151,13 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
             value={query}
             onChange={(value) => {
               setQuery(value);
+              setActiveIndex(-1);
               if (value === '') {
-                return telemetry.sendSearchInputResetButtonClickedMessage();
+                return telemetry.sendSearchInputResetClickedMessage([
+                  {
+                    ...RESOURCES.searchInputResetButton,
+                  },
+                ]);
               }
             }}
             placeholder="Search docs..."
@@ -74,21 +168,28 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
             data-testid="search-input"
           />
         </SearchDialogHeader>
-        <SearchDialogBody>
+        <SearchDialogBody ref={resultsRef}>
           {query ? (
-            searchResults.length ? (
+            isSearching ? (
+              <SearchMessage data-testid="search-message">Searching...</SearchMessage>
+            ) : searchResults.length ? (
               searchResults.map((item, index) => {
                 return (
                   <SearchItem
                     key={index}
-                    item={item}
+                    item={index === activeIndex ? { ...item, active: true } : item}
                     onClick={() => {
-                      telemetry.sendSearchResultClickedMessage({
-                        wordCount: query.split(' ').length.toString(),
-                        url: item.document.url,
-                        totalResults: searchResults.length.toString(),
-                        index: index.toString(),
-                      });
+                      telemetry.sendSearchResultClickedMessage([
+                        {
+                          ...uiResource('search', `searchResultItem_${index}`),
+                          wordCount: countWords(query),
+                          totalResults: searchResults.length,
+                          index,
+                          ...(item.document.kind ? { kind: item.document.kind } : {}),
+                          ...(searchSessionId ? { searchSessionId } : {}),
+                        },
+                      ]);
+                      markNavigationCause('search');
                       onClose();
                     }}
                     data-testid="search-item"
@@ -109,7 +210,7 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
           <SearchShortcuts>
             <SearchShortcut
               data-translation-key="search.keys.navigate"
-              combination="Tab"
+              combination="↑↓"
               text="to navigate"
             />
             <SearchShortcut
@@ -215,7 +316,7 @@ const SearchMessage = styled.div`
   line-height: var(--search-message-line-height);
   color: var(--search-message-text-color);
   gap: var(--search-message-gap);
-  padding: var(--search-message-padding);
+  padding: var(--search-message-padding, var(--spacing-md));
 `;
 
 const SearchDialogFooter = styled.footer`

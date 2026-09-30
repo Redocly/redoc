@@ -1,0 +1,1752 @@
+- type: link
+  label: Assignee
+  link: docs/graphql/unions/assignee
+  routeSlug: docs/graphql/unions/assignee
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: Assignee
+      position:
+        start:
+          lineNumber: 1096
+          column: 1
+        end:
+          lineNumber: 1106
+          column: 5
+    seo:
+      title: Assignee
+      description: Types that can be assigned to issues.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Assignee
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be assigned to issues.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: Assignee
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Bot
+              - Mannequin
+              - Organization
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: Assignee
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/assignee
+        panels: []
+- type: link
+  label: AuditEntryActor
+  link: docs/graphql/unions/auditentryactor
+  routeSlug: docs/graphql/unions/auditentryactor
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: AuditEntryActor
+      position:
+        start:
+          lineNumber: 1184
+          column: 1
+        end:
+          lineNumber: 1187
+          column: 46
+    seo:
+      title: AuditEntryActor
+      description: Types that can initiate an audit log event.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: AuditEntryActor
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can initiate an audit log event.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: AuditEntryActor
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Bot
+              - Organization
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: AuditEntryActor
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/auditentryactor
+        panels: []
+- type: link
+  label: Closer
+  link: docs/graphql/unions/closer
+  routeSlug: docs/graphql/unions/closer
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: Closer
+      position:
+        start:
+          lineNumber: 3358
+          column: 1
+        end:
+          lineNumber: 3361
+          column: 25
+    seo:
+      title: Closer
+      description: The object which triggered a `ClosedEvent`.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Closer
+            showPageActions: true
+          - nodeType: markdoc
+            content:
+              - The object which triggered a .
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: Closer
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Commit
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: Closer
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/closer
+        panels: []
+- type: link
+  label: CreatedIssueOrRestrictedContribution
+  link: docs/graphql/unions/createdissueorrestrictedcontribution
+  routeSlug: docs/graphql/unions/createdissueorrestrictedcontribution
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: CreatedIssueOrRestrictedContribution
+      position:
+        start:
+          lineNumber: 6681
+          column: 1
+        end:
+          lineNumber: 6684
+          column: 73
+    seo:
+      title: CreatedIssueOrRestrictedContribution
+      description: Represents either a issue the viewer can access or a restricted contribution.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: CreatedIssueOrRestrictedContribution
+            showPageActions: true
+          - nodeType: markdoc
+            content: Represents either a issue the viewer can access or a restricted contribution.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: CreatedIssueOrRestrictedContribution
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - CreatedIssueContribution
+              - RestrictedContribution
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: CreatedIssueOrRestrictedContribution
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/createdissueorrestrictedcontribution
+        panels: []
+- type: link
+  label: CreatedPullRequestOrRestrictedContribution
+  link: docs/graphql/unions/createdpullrequestorrestrictedcontribution
+  routeSlug: docs/graphql/unions/createdpullrequestorrestrictedcontribution
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: CreatedPullRequestOrRestrictedContribution
+      position:
+        start:
+          lineNumber: 6763
+          column: 1
+        end:
+          lineNumber: 6768
+          column: 5
+    seo:
+      title: CreatedPullRequestOrRestrictedContribution
+      description: Represents either a pull request the viewer can access or a restricted contribution.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: CreatedPullRequestOrRestrictedContribution
+            showPageActions: true
+          - nodeType: markdoc
+            content: Represents either a pull request the viewer can access or a restricted contribution.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: CreatedPullRequestOrRestrictedContribution
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - CreatedPullRequestContribution
+              - RestrictedContribution
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: CreatedPullRequestOrRestrictedContribution
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/createdpullrequestorrestrictedcontribution
+        panels: []
+- type: link
+  label: CreatedRepositoryOrRestrictedContribution
+  link: docs/graphql/unions/createdrepositoryorrestrictedcontribution
+  routeSlug: docs/graphql/unions/createdrepositoryorrestrictedcontribution
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: CreatedRepositoryOrRestrictedContribution
+      position:
+        start:
+          lineNumber: 6934
+          column: 1
+        end:
+          lineNumber: 6939
+          column: 5
+    seo:
+      title: CreatedRepositoryOrRestrictedContribution
+      description: Represents either a repository the viewer can access or a restricted contribution.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: CreatedRepositoryOrRestrictedContribution
+            showPageActions: true
+          - nodeType: markdoc
+            content: Represents either a repository the viewer can access or a restricted contribution.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: CreatedRepositoryOrRestrictedContribution
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - CreatedRepositoryContribution
+              - RestrictedContribution
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: CreatedRepositoryOrRestrictedContribution
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/createdrepositoryorrestrictedcontribution
+        panels: []
+- type: link
+  label: DeploymentReviewer
+  link: docs/graphql/unions/deploymentreviewer
+  routeSlug: docs/graphql/unions/deploymentreviewer
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: DeploymentReviewer
+      position:
+        start:
+          lineNumber: 8426
+          column: 1
+        end:
+          lineNumber: 8429
+          column: 35
+    seo:
+      title: DeploymentReviewer
+      description: Users and teams.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: DeploymentReviewer
+            showPageActions: true
+          - nodeType: markdoc
+            content: Users and teams.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: DeploymentReviewer
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Team
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: DeploymentReviewer
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/deploymentreviewer
+        panels: []
+- type: link
+  label: EnterpriseMember
+  link: docs/graphql/unions/enterprisemember
+  routeSlug: docs/graphql/unions/enterprisemember
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: EnterpriseMember
+      position:
+        start:
+          lineNumber: 10210
+          column: 1
+        end:
+          lineNumber: 10213
+          column: 50
+    seo:
+      title: EnterpriseMember
+      description: An object that is a member of an enterprise.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: EnterpriseMember
+            showPageActions: true
+          - nodeType: markdoc
+            content: An object that is a member of an enterprise.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: EnterpriseMember
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - EnterpriseUserAccount
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: EnterpriseMember
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/enterprisemember
+        panels: []
+- type: link
+  label: IpAllowListOwner
+  link: docs/graphql/unions/ipallowlistowner
+  routeSlug: docs/graphql/unions/ipallowlistowner
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: IpAllowListOwner
+      position:
+        start:
+          lineNumber: 14099
+          column: 1
+        end:
+          lineNumber: 14102
+          column: 45
+    seo:
+      title: IpAllowListOwner
+      description: Types that can own an IP allow list.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: IpAllowListOwner
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can own an IP allow list.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: IpAllowListOwner
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - App
+              - Enterprise
+              - Organization
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: IpAllowListOwner
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/ipallowlistowner
+        panels: []
+- type: link
+  label: IssueOrPullRequest
+  link: docs/graphql/unions/issueorpullrequest
+  routeSlug: docs/graphql/unions/issueorpullrequest
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: IssueOrPullRequest
+      position:
+        start:
+          lineNumber: 14968
+          column: 1
+        end:
+          lineNumber: 14971
+          column: 36
+    seo:
+      title: IssueOrPullRequest
+      description: Used for return value of Repository.issueOrPullRequest.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: IssueOrPullRequest
+            showPageActions: true
+          - nodeType: markdoc
+            content: Used for return value of Repository.issueOrPullRequest.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: IssueOrPullRequest
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Issue
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: IssueOrPullRequest
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/issueorpullrequest
+        panels: []
+- type: link
+  label: IssueTimelineItem
+  link: docs/graphql/unions/issuetimelineitem
+  routeSlug: docs/graphql/unions/issuetimelineitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: IssueTimelineItem
+      position:
+        start:
+          lineNumber: 15073
+          column: 1
+        end:
+          lineNumber: 15095
+          column: 5
+    seo:
+      title: IssueTimelineItem
+      description: An item in an issue timeline
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: IssueTimelineItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: An item in an issue timeline
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: IssueTimelineItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - AssignedEvent
+              - ClosedEvent
+              - Commit
+              - CrossReferencedEvent
+              - DemilestonedEvent
+              - IssueComment
+              - LabeledEvent
+              - LockedEvent
+              - MilestonedEvent
+              - ReferencedEvent
+              - RenamedTitleEvent
+              - ReopenedEvent
+              - SubscribedEvent
+              - TransferredEvent
+              - UnassignedEvent
+              - UnlabeledEvent
+              - UnlockedEvent
+              - UnsubscribedEvent
+              - UserBlockedEvent
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: IssueTimelineItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/issuetimelineitem
+        panels: []
+- type: link
+  label: IssueTimelineItems
+  link: docs/graphql/unions/issuetimelineitems
+  routeSlug: docs/graphql/unions/issuetimelineitems
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: IssueTimelineItems
+      position:
+        start:
+          lineNumber: 15112
+          column: 1
+        end:
+          lineNumber: 15145
+          column: 5
+    seo:
+      title: IssueTimelineItems
+      description: An item in an issue timeline
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: IssueTimelineItems
+            showPageActions: true
+          - nodeType: markdoc
+            content: An item in an issue timeline
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: IssueTimelineItems
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - AddedToProjectEvent
+              - AssignedEvent
+              - ClosedEvent
+              - CommentDeletedEvent
+              - ConnectedEvent
+              - ConvertedNoteToIssueEvent
+              - CrossReferencedEvent
+              - DemilestonedEvent
+              - DisconnectedEvent
+              - IssueComment
+              - LabeledEvent
+              - LockedEvent
+              - MarkedAsDuplicateEvent
+              - MentionedEvent
+              - MilestonedEvent
+              - MovedColumnsInProjectEvent
+              - PinnedEvent
+              - ReferencedEvent
+              - RemovedFromProjectEvent
+              - RenamedTitleEvent
+              - ReopenedEvent
+              - SubscribedEvent
+              - TransferredEvent
+              - UnassignedEvent
+              - UnlabeledEvent
+              - UnlockedEvent
+              - UnmarkedAsDuplicateEvent
+              - UnpinnedEvent
+              - UnsubscribedEvent
+              - UserBlockedEvent
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: IssueTimelineItems
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/issuetimelineitems
+        panels: []
+- type: link
+  label: MilestoneItem
+  link: docs/graphql/unions/milestoneitem
+  routeSlug: docs/graphql/unions/milestoneitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: MilestoneItem
+      position:
+        start:
+          lineNumber: 17363
+          column: 1
+        end:
+          lineNumber: 17366
+          column: 31
+    seo:
+      title: MilestoneItem
+      description: Types that can be inside a Milestone.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: MilestoneItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be inside a Milestone.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: MilestoneItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Issue
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: MilestoneItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/milestoneitem
+        panels: []
+- type: link
+  label: OrgRestoreMemberAuditEntryMembership
+  link: docs/graphql/unions/orgrestorememberauditentrymembership
+  routeSlug: docs/graphql/unions/orgrestorememberauditentrymembership
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: OrgRestoreMemberAuditEntryMembership
+      position:
+        start:
+          lineNumber: 21877
+          column: 1
+        end:
+          lineNumber: 21883
+          column: 5
+    seo:
+      title: OrgRestoreMemberAuditEntryMembership
+      description: Types of memberships that can be restored for an Organization member.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: OrgRestoreMemberAuditEntryMembership
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types of memberships that can be restored for an Organization member.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: OrgRestoreMemberAuditEntryMembership
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - OrgRestoreMemberMembershipOrganizationAuditEntryData
+              - OrgRestoreMemberMembershipRepositoryAuditEntryData
+              - OrgRestoreMemberMembershipTeamAuditEntryData
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: OrgRestoreMemberAuditEntryMembership
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/orgrestorememberauditentrymembership
+        panels: []
+- type: link
+  label: OrganizationAuditEntry
+  link: docs/graphql/unions/organizationauditentry
+  routeSlug: docs/graphql/unions/organizationauditentry
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: OrganizationAuditEntry
+      position:
+        start:
+          lineNumber: 23568
+          column: 1
+        end:
+          lineNumber: 23629
+          column: 5
+    seo:
+      title: OrganizationAuditEntry
+      description: An audit entry in an organization audit log.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: OrganizationAuditEntry
+            showPageActions: true
+          - nodeType: markdoc
+            content: An audit entry in an organization audit log.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: OrganizationAuditEntry
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - MembersCanDeleteReposClearAuditEntry
+              - MembersCanDeleteReposDisableAuditEntry
+              - MembersCanDeleteReposEnableAuditEntry
+              - OauthApplicationCreateAuditEntry
+              - OrgAddBillingManagerAuditEntry
+              - OrgAddMemberAuditEntry
+              - OrgBlockUserAuditEntry
+              - OrgConfigDisableCollaboratorsOnlyAuditEntry
+              - OrgConfigEnableCollaboratorsOnlyAuditEntry
+              - OrgCreateAuditEntry
+              - OrgDisableOauthAppRestrictionsAuditEntry
+              - OrgDisableSamlAuditEntry
+              - OrgDisableTwoFactorRequirementAuditEntry
+              - OrgEnableOauthAppRestrictionsAuditEntry
+              - OrgEnableSamlAuditEntry
+              - OrgEnableTwoFactorRequirementAuditEntry
+              - OrgInviteMemberAuditEntry
+              - OrgInviteToBusinessAuditEntry
+              - OrgOauthAppAccessApprovedAuditEntry
+              - OrgOauthAppAccessDeniedAuditEntry
+              - OrgOauthAppAccessRequestedAuditEntry
+              - OrgRemoveBillingManagerAuditEntry
+              - OrgRemoveMemberAuditEntry
+              - OrgRemoveOutsideCollaboratorAuditEntry
+              - OrgRestoreMemberAuditEntry
+              - OrgUnblockUserAuditEntry
+              - OrgUpdateDefaultRepositoryPermissionAuditEntry
+              - OrgUpdateMemberAuditEntry
+              - OrgUpdateMemberRepositoryCreationPermissionAuditEntry
+              - OrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+              - PrivateRepositoryForkingDisableAuditEntry
+              - PrivateRepositoryForkingEnableAuditEntry
+              - RepoAccessAuditEntry
+              - RepoAddMemberAuditEntry
+              - RepoAddTopicAuditEntry
+              - RepoArchivedAuditEntry
+              - RepoChangeMergeSettingAuditEntry
+              - RepoConfigDisableAnonymousGitAccessAuditEntry
+              - RepoConfigDisableCollaboratorsOnlyAuditEntry
+              - RepoConfigDisableContributorsOnlyAuditEntry
+              - RepoConfigDisableSockpuppetDisallowedAuditEntry
+              - RepoConfigEnableAnonymousGitAccessAuditEntry
+              - RepoConfigEnableCollaboratorsOnlyAuditEntry
+              - RepoConfigEnableContributorsOnlyAuditEntry
+              - RepoConfigEnableSockpuppetDisallowedAuditEntry
+              - RepoConfigLockAnonymousGitAccessAuditEntry
+              - RepoConfigUnlockAnonymousGitAccessAuditEntry
+              - RepoCreateAuditEntry
+              - RepoDestroyAuditEntry
+              - RepoRemoveMemberAuditEntry
+              - RepoRemoveTopicAuditEntry
+              - RepositoryVisibilityChangeDisableAuditEntry
+              - RepositoryVisibilityChangeEnableAuditEntry
+              - TeamAddMemberAuditEntry
+              - TeamAddRepositoryAuditEntry
+              - TeamChangeParentTeamAuditEntry
+              - TeamRemoveMemberAuditEntry
+              - TeamRemoveRepositoryAuditEntry
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: OrganizationAuditEntry
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/organizationauditentry
+        panels: []
+- type: link
+  label: PermissionGranter
+  link: docs/graphql/unions/permissiongranter
+  routeSlug: docs/graphql/unions/permissiongranter
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: PermissionGranter
+      position:
+        start:
+          lineNumber: 24690
+          column: 1
+        end:
+          lineNumber: 24693
+          column: 55
+    seo:
+      title: PermissionGranter
+      description: Types that can grant permissions on a repository to a user
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: PermissionGranter
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can grant permissions on a repository to a user
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: PermissionGranter
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Organization
+              - Repository
+              - Team
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: PermissionGranter
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/permissiongranter
+        panels: []
+- type: link
+  label: PinnableItem
+  link: docs/graphql/unions/pinnableitem
+  routeSlug: docs/graphql/unions/pinnableitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: PinnableItem
+      position:
+        start:
+          lineNumber: 24745
+          column: 1
+        end:
+          lineNumber: 24748
+          column: 29
+    seo:
+      title: PinnableItem
+      description: Types that can be pinned to a profile page.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: PinnableItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be pinned to a profile page.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: PinnableItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Gist
+              - Repository
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: PinnableItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/pinnableitem
+        panels: []
+- type: link
+  label: ProjectCardItem
+  link: docs/graphql/unions/projectcarditem
+  routeSlug: docs/graphql/unions/projectcarditem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: ProjectCardItem
+      position:
+        start:
+          lineNumber: 25770
+          column: 1
+        end:
+          lineNumber: 25773
+          column: 33
+    seo:
+      title: ProjectCardItem
+      description: Types that can be inside Project Cards.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: ProjectCardItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be inside Project Cards.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: ProjectCardItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Issue
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: ProjectCardItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/projectcarditem
+        panels: []
+- type: link
+  label: PullRequestTimelineItem
+  link: docs/graphql/unions/pullrequesttimelineitem
+  routeSlug: docs/graphql/unions/pullrequesttimelineitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: PullRequestTimelineItem
+      position:
+        start:
+          lineNumber: 28409
+          column: 1
+        end:
+          lineNumber: 28445
+          column: 5
+    seo:
+      title: PullRequestTimelineItem
+      description: An item in a pull request timeline
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: PullRequestTimelineItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: An item in a pull request timeline
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: PullRequestTimelineItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - AssignedEvent
+              - BaseRefDeletedEvent
+              - BaseRefForcePushedEvent
+              - ClosedEvent
+              - Commit
+              - CommitCommentThread
+              - CrossReferencedEvent
+              - DemilestonedEvent
+              - DeployedEvent
+              - DeploymentEnvironmentChangedEvent
+              - HeadRefDeletedEvent
+              - HeadRefForcePushedEvent
+              - HeadRefRestoredEvent
+              - IssueComment
+              - LabeledEvent
+              - LockedEvent
+              - MergedEvent
+              - MilestonedEvent
+              - PullRequestReview
+              - PullRequestReviewComment
+              - PullRequestReviewThread
+              - ReferencedEvent
+              - RenamedTitleEvent
+              - ReopenedEvent
+              - ReviewDismissedEvent
+              - ReviewRequestRemovedEvent
+              - ReviewRequestedEvent
+              - SubscribedEvent
+              - UnassignedEvent
+              - UnlabeledEvent
+              - UnlockedEvent
+              - UnsubscribedEvent
+              - UserBlockedEvent
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: PullRequestTimelineItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/pullrequesttimelineitem
+        panels: []
+- type: link
+  label: PullRequestTimelineItems
+  link: docs/graphql/unions/pullrequesttimelineitems
+  routeSlug: docs/graphql/unions/pullrequesttimelineitems
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: PullRequestTimelineItems
+      position:
+        start:
+          lineNumber: 28462
+          column: 1
+        end:
+          lineNumber: 28520
+          column: 5
+    seo:
+      title: PullRequestTimelineItems
+      description: An item in a pull request timeline
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: PullRequestTimelineItems
+            showPageActions: true
+          - nodeType: markdoc
+            content: An item in a pull request timeline
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: PullRequestTimelineItems
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - AddedToProjectEvent
+              - AssignedEvent
+              - AutoMergeDisabledEvent
+              - AutoMergeEnabledEvent
+              - AutoRebaseEnabledEvent
+              - AutoSquashEnabledEvent
+              - AutomaticBaseChangeFailedEvent
+              - AutomaticBaseChangeSucceededEvent
+              - BaseRefChangedEvent
+              - BaseRefDeletedEvent
+              - BaseRefForcePushedEvent
+              - ClosedEvent
+              - CommentDeletedEvent
+              - ConnectedEvent
+              - ConvertToDraftEvent
+              - ConvertedNoteToIssueEvent
+              - CrossReferencedEvent
+              - DemilestonedEvent
+              - DeployedEvent
+              - DeploymentEnvironmentChangedEvent
+              - DisconnectedEvent
+              - HeadRefDeletedEvent
+              - HeadRefForcePushedEvent
+              - HeadRefRestoredEvent
+              - IssueComment
+              - LabeledEvent
+              - LockedEvent
+              - MarkedAsDuplicateEvent
+              - MentionedEvent
+              - MergedEvent
+              - MilestonedEvent
+              - MovedColumnsInProjectEvent
+              - PinnedEvent
+              - PullRequestCommit
+              - PullRequestCommitCommentThread
+              - PullRequestReview
+              - PullRequestReviewThread
+              - PullRequestRevisionMarker
+              - ReadyForReviewEvent
+              - ReferencedEvent
+              - RemovedFromProjectEvent
+              - RenamedTitleEvent
+              - ReopenedEvent
+              - ReviewDismissedEvent
+              - ReviewRequestRemovedEvent
+              - ReviewRequestedEvent
+              - SubscribedEvent
+              - TransferredEvent
+              - UnassignedEvent
+              - UnlabeledEvent
+              - UnlockedEvent
+              - UnmarkedAsDuplicateEvent
+              - UnpinnedEvent
+              - UnsubscribedEvent
+              - UserBlockedEvent
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: PullRequestTimelineItems
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/pullrequesttimelineitems
+        panels: []
+- type: link
+  label: PushAllowanceActor
+  link: docs/graphql/unions/pushallowanceactor
+  routeSlug: docs/graphql/unions/pushallowanceactor
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: PushAllowanceActor
+      position:
+        start:
+          lineNumber: 28920
+          column: 1
+        end:
+          lineNumber: 28923
+          column: 41
+    seo:
+      title: PushAllowanceActor
+      description: Types that can be an actor.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: PushAllowanceActor
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be an actor.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: PushAllowanceActor
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - App
+              - Team
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: PushAllowanceActor
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/pushallowanceactor
+        panels: []
+- type: link
+  label: Reactor
+  link: docs/graphql/unions/reactor
+  routeSlug: docs/graphql/unions/reactor
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: Reactor
+      position:
+        start:
+          lineNumber: 29914
+          column: 1
+        end:
+          lineNumber: 29917
+          column: 50
+    seo:
+      title: Reactor
+      description: Types that can be assigned to reactions.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Reactor
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be assigned to reactions.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: Reactor
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Bot
+              - Mannequin
+              - Organization
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: Reactor
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/reactor
+        panels: []
+- type: link
+  label: ReferencedSubject
+  link: docs/graphql/unions/referencedsubject
+  routeSlug: docs/graphql/unions/referencedsubject
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: ReferencedSubject
+      position:
+        start:
+          lineNumber: 30277
+          column: 1
+        end:
+          lineNumber: 30280
+          column: 35
+    seo:
+      title: ReferencedSubject
+      description: Any referencable object
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: ReferencedSubject
+            showPageActions: true
+          - nodeType: markdoc
+            content: Any referencable object
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: ReferencedSubject
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Issue
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: ReferencedSubject
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/referencedsubject
+        panels: []
+- type: link
+  label: RenamedTitleSubject
+  link: docs/graphql/unions/renamedtitlesubject
+  routeSlug: docs/graphql/unions/renamedtitlesubject
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: RenamedTitleSubject
+      position:
+        start:
+          lineNumber: 31196
+          column: 1
+        end:
+          lineNumber: 31199
+          column: 37
+    seo:
+      title: RenamedTitleSubject
+      description: An object which has a renamable title
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: RenamedTitleSubject
+            showPageActions: true
+          - nodeType: markdoc
+            content: An object which has a renamable title
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: RenamedTitleSubject
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Issue
+              - PullRequest
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: RenamedTitleSubject
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/renamedtitlesubject
+        panels: []
+- type: link
+  label: RequestedReviewer
+  link: docs/graphql/unions/requestedreviewer
+  routeSlug: docs/graphql/unions/requestedreviewer
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: RequestedReviewer
+      position:
+        start:
+          lineNumber: 36366
+          column: 1
+        end:
+          lineNumber: 36369
+          column: 46
+    seo:
+      title: RequestedReviewer
+      description: Types that can be requested reviewers.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: RequestedReviewer
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be requested reviewers.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: RequestedReviewer
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Mannequin
+              - Team
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: RequestedReviewer
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/requestedreviewer
+        panels: []
+- type: link
+  label: ReviewDismissalAllowanceActor
+  link: docs/graphql/unions/reviewdismissalallowanceactor
+  routeSlug: docs/graphql/unions/reviewdismissalallowanceactor
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: ReviewDismissalAllowanceActor
+      position:
+        start:
+          lineNumber: 36504
+          column: 1
+        end:
+          lineNumber: 36507
+          column: 46
+    seo:
+      title: ReviewDismissalAllowanceActor
+      description: Types that can be an actor.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: ReviewDismissalAllowanceActor
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be an actor.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: ReviewDismissalAllowanceActor
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Team
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: ReviewDismissalAllowanceActor
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/reviewdismissalallowanceactor
+        panels: []
+- type: link
+  label: SearchResultItem
+  link: docs/graphql/unions/searchresultitem
+  routeSlug: docs/graphql/unions/searchresultitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: SearchResultItem
+      position:
+        start:
+          lineNumber: 36895
+          column: 1
+        end:
+          lineNumber: 36906
+          column: 5
+    seo:
+      title: SearchResultItem
+      description: The results of a search.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: SearchResultItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: The results of a search.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: SearchResultItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - App
+              - Discussion
+              - Issue
+              - MarketplaceListing
+              - Organization
+              - PullRequest
+              - Repository
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: SearchResultItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/searchresultitem
+        panels: []
+- type: link
+  label: Sponsor
+  link: docs/graphql/unions/sponsor
+  routeSlug: docs/graphql/unions/sponsor
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: Sponsor
+      position:
+        start:
+          lineNumber: 37691
+          column: 1
+        end:
+          lineNumber: 37694
+          column: 32
+    seo:
+      title: Sponsor
+      description: Entities that can sponsor others via GitHub Sponsors
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Sponsor
+            showPageActions: true
+          - nodeType: markdoc
+            content: Entities that can sponsor others via GitHub Sponsors
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: Sponsor
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Organization
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: Sponsor
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/sponsor
+        panels: []
+- type: link
+  label: SponsorableItem
+  link: docs/graphql/unions/sponsorableitem
+  routeSlug: docs/graphql/unions/sponsorableitem
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: SponsorableItem
+      position:
+        start:
+          lineNumber: 38026
+          column: 1
+        end:
+          lineNumber: 38029
+          column: 40
+    seo:
+      title: SponsorableItem
+      description: Entities that can be sponsored via GitHub Sponsors
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: SponsorableItem
+            showPageActions: true
+          - nodeType: markdoc
+            content: Entities that can be sponsored via GitHub Sponsors
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: SponsorableItem
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Organization
+              - User
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: SponsorableItem
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/sponsorableitem
+        panels: []
+- type: link
+  label: StatusCheckRollupContext
+  link: docs/graphql/unions/statuscheckrollupcontext
+  routeSlug: docs/graphql/unions/statuscheckrollupcontext
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: StatusCheckRollupContext
+      position:
+        start:
+          lineNumber: 39081
+          column: 1
+        end:
+          lineNumber: 39084
+          column: 45
+    seo:
+      title: StatusCheckRollupContext
+      description: Types that can be inside a StatusCheckRollup context.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: StatusCheckRollupContext
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can be inside a StatusCheckRollup context.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: StatusCheckRollupContext
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - CheckRun
+              - StatusContext
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: StatusCheckRollupContext
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/statuscheckrollupcontext
+        panels: []
+- type: link
+  label: VerifiableDomainOwner
+  link: docs/graphql/unions/verifiabledomainowner
+  routeSlug: docs/graphql/unions/verifiabledomainowner
+  content:
+    contentType: item
+    itemVariant: union
+    meta:
+      name: VerifiableDomainOwner
+      position:
+        start:
+          lineNumber: 46229
+          column: 1
+        end:
+          lineNumber: 46232
+          column: 44
+    seo:
+      title: VerifiableDomainOwner
+      description: Types that can own a verifiable domain.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: VerifiableDomainOwner
+            showPageActions: true
+          - nodeType: markdoc
+            content: Types that can own a verifiable domain.
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: VerifiableDomainOwner
+          - nodeType: item-content
+            variant: possible-types
+            label: Possible types
+            labelTranslationKey: possibleTypes
+            graphqlTypeNames:
+              - Enterprise
+              - Organization
+        panels:
+          - title: Referenced in
+            titleTranslationKey: referenced
+            children:
+              - kind: references
+                graphqlTypeName: VerifiableDomainOwner
+                references: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /unions/verifiabledomainowner
+        panels: []

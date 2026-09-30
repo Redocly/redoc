@@ -1,39 +1,14 @@
-import '@testing-library/jest-dom';
+import * as matchers from '@testing-library/jest-dom/matchers';
+import { randomUUID } from 'node:crypto';
 import { styleSheetSerializer } from 'jest-styled-components/serializer';
 import { vi, expect } from 'vitest';
-import { randomUUID } from 'node:crypto';
 
-const sortedStyleSheetSerializer: Parameters<typeof expect.addSnapshotSerializer>[0] = {
-  test: styleSheetSerializer.test,
-  serialize(val, config, indentation, depth, refs, printer): string {
-    const result = styleSheetSerializer.serialize(val, config, indentation, depth, refs, printer);
-    if (typeof result !== 'string') return result;
+import yamlSnapshotSerializer from './src/adapters/__tests__/snapshot-serializer.js';
 
-    const cssEndIndex = result.lastIndexOf('\n\n<');
-    if (cssEndIndex === -1) return result;
+expect.extend(matchers);
+expect.addSnapshotSerializer(styleSheetSerializer);
+expect.addSnapshotSerializer(yamlSnapshotSerializer);
 
-    const cssBlock = result.slice(0, cssEndIndex);
-    const htmlBlock = result.slice(cssEndIndex);
-    const sortedCss = cssBlock
-      .split(/(?=\.c\d+)/g)
-      .filter(Boolean)
-      .sort((a, b) => {
-        const aMatch = a.match(/^\.c(\d+)/);
-        const bMatch = b.match(/^\.c(\d+)/);
-        if (aMatch && bMatch) {
-          return parseInt(aMatch[1], 10) - parseInt(bMatch[1], 10);
-        }
-        return a.localeCompare(b);
-      })
-      .join('');
-
-    return sortedCss + htmlBlock;
-  },
-};
-
-expect.addSnapshotSerializer(sortedStyleSheetSerializer);
-
-// Simple fetch mock using vi.fn()
 global.fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
@@ -46,13 +21,11 @@ global.fetch = vi.fn(() =>
 
 window.scrollTo = vi.fn();
 
+global.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as unknown as typeof ResizeObserver;
+
 window.crypto.randomUUID = randomUUID as () => `${string}-${string}-${string}-${string}-${string}`;
 global.structuredClone = (val) => JSON.parse(JSON.stringify(val));
-
-// Ensure window is defined for React 19 state updates
-if (typeof window !== 'undefined' && !window.document) {
-  Object.defineProperty(window, 'document', {
-    value: global.document,
-    writable: true,
-  });
-}

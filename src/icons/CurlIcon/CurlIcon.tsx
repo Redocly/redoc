@@ -1,4 +1,4 @@
-import { styled } from '../../styled-components.js';
+import { styled } from 'styled-components';
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -37,12 +37,9 @@ export const Icon = (props: IconProps) => (
   </svg>
 );
 
-export const CurlIcon = styled(Icon).attrs<IconProps>(
-  () =>
-    ({
-      'data-component-name': 'icons/CurlIcon',
-    }) as IconProps,
-)<IconProps>`
+export const CurlIcon = styled(Icon)<IconProps>`
+  datacomponentname: icons/CurlIcon;
+
   .path-primary {
     fill: #0c544c;
   }

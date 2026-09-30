@@ -12,6 +12,7 @@ Hi! We're really excited that you are interested in contributing to Redoc. Befor
 ## Issue Reporting Guidelines
 - Before filing a new issue, try to make sure your problem doesn’t already exist.
 - The best way to get your bug fixed is to provide a reduced test case.
+- Follow the issue template and include a reproducible example.
 
 ## Pull Request Guidelines
 Before submitting a pull request, please make sure the following is done:
@@ -19,12 +20,12 @@ Before submitting a pull request, please make sure the following is done:
 1. Fork the repository and create your branch from main.
 2. Run `npm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
-4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
-5. Lint your code with eslint (`npm run lint`).
+4. Ensure the test suite passes (`npm test`). Tip: `npm run unit:watch` is helpful in development.
+5. Lint your code with [oxlint](https://oxc.rs/docs/guide/usage/linter) (`npm run lint`).
 
 ## Development Setup
 
-You need [Node.js](http://nodejs.org) at `Node LTS+`.
+You need [Node.js](http://nodejs.org) `>=22` and npm `>=10`.
 
 After cloning the repo, run:
 
@@ -38,24 +39,25 @@ $ npm install # or npm
 # dev-server, watch and auto reload playground
 $ npm start
 
-# run tslint
+# run oxlint
 $ npm run lint
 
-# try autofix tslint issues
+# try autofix oxlint issues
 $ npm run lint:fix
 
 # run unit tests
 $ npm run unit
 
-# run e2e tests
+# run e2e tests (builds the library, standalone bundle, and e2e hosts first)
 $ npm run e2e
-# Make sure you have created bundle before running e2e test
-# E.g. run `npm run build` and wait for the finishing process.
 
-# open Playwright UI to debug e2e test
+# open Playwright UI to debug e2e tests (requires a prior `npm run e2e` build)
 $ npm run e2e:ui
 
-# run the unit tests (includes linting and license checks)
+# build and smoke-test every project in examples/ against the local build (needs Docker)
+$ npm run test:examples
+
+# run the full check suite (lint, typecheck, unit, e2e tests)
 $ npm test
 
 # prepare bundles
@@ -67,20 +69,18 @@ There are some other scripts available in the `scripts` section of the `package.
 
 ## Project Structure
 
-- **`examples`**: contains project demos
+- **`examples`**: runnable projects embedding Redoc in different stacks, each smoke-tested in CI (see its README)
 
 - **`playground`**: HMR Playground used in development
 
-- **`docs`**: contains extra docs (linked from README.md)
-
-- **`playwright`**: contains e2e tests. The e2e tests are written and run with [Playwright](https://playwright.dev/).
+- **`e2e`**: contains e2e tests, written and run with [Playwright](https://playwright.dev/)
 
 - **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [Jotai](https://github.com/pmndrs/jotai)
 
   - **`src/components`**: contains main visual components
-  - **`src/services`**: contains different services used by Redoc including Jotai stores
-  - **`src/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
+  - **`src/adapters`**: builds the rendered docs tree from OpenAPI, AsyncAPI, and GraphQL definitions
+  - **`src/services`**: contains different services used by Redoc
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions
-  - **`src/jotai`**: - contains Jotai store files
-  - **`src/hooks`**: - contains global react hooks for application
+  - **`src/jotai`**: contains Jotai store files
+  - **`src/hooks`**: contains global react hooks for application

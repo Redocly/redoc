@@ -3,14 +3,33 @@ bin
 stats.json
 scripts/*.pem
 scripts/*.pem.pub
-lib/
-bundle/
+typings/
+bundles/
 coverage/
 .DS_Store
 
 licenses-list.json
+redoc.sourcemaps.tar.gz
+report.test-timing.json
 cli-zip
 /test-results/
 /playwright-report/
 /blob-report/
-/playwright/.cache/
+/e2e/playwright/.cache/
+
+# Artifacts the e2e run generates inside the suite; the suite itself is committed.
+/e2e/dist/
+/e2e/playwright/ce/bundles/
+/e2e/playwright/ce/specs/
+/e2e/playwright/ce/react/
+
+# Examples: per-example installs and the local Redoc tarball the harness drops in.
+/examples/*/node_modules/
+/examples/*/dist/
+/examples/*/redoc.tgz
+/examples/*/target/
+/examples/*/.next/
+/examples/*/.angular/
+/examples/*/__pycache__/
+/examples/*/bin/
+/examples/*/obj/

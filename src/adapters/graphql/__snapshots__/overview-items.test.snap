@@ -1,0 +1,55 @@
+- type: link
+  label: Test GraphQL Schema
+  link: docs/graphql
+  routeSlug: docs/graphql
+  content:
+    contentType: overview
+    seo:
+      title: Test GraphQL Schema
+      description: This is a test GraphQL schema
+    children:
+      - nodeType: container
+        panels:
+          - title: Download GraphQL schema
+            titleTranslationKey: download.description.title
+            children:
+              - kind: download
+                label: Test Server
+                url: https://example.com/graphql
+              - kind: download
+                label: Test Server 2
+                url: https://example.com/graphql
+              - kind: download
+                label: Test Server 3
+                url: https://example.com/graphql
+          - title: Overview
+            titleTranslationKey: info.title
+            children:
+              - kind: email
+                title: Test Contact
+                email: test@example.com
+                label: test@example.com
+                withCopyButton: true
+                copyContent: test@example.com
+              - kind: externallink
+                title: License
+                titleTranslationKey: info.license
+                label: Test License
+                url: https://example.com/license
+              - kind: externallink
+                label: Terms of Service
+                labelTranslationKey: info.termsOfService
+                url: https://example.com/terms
+        children:
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: header
+                level: 1
+                showPageActions: true
+                label: Test GraphQL Schema (1.0.0)
+              - nodeType: overview-section-wrapper
+                children:
+                  - nodeType: markdoc
+                    content: This is a test GraphQL schema
+                sectionId: docs/graphql
+            sectionId: docs/graphql

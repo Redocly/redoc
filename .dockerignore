@@ -5,4 +5,5 @@
 !package-lock.json
 !vite.config.ts
 !tsconfig.json
+!tsconfig.build.json
 !config/

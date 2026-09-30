@@ -1,0 +1,426 @@
+openapi: 3.1.0
+info:
+  title: Search Cases API
+  version: 1.0.0
+  x-metadata:
+    owner: Ledger platform guild
+    tier: gold-lane
+  contact:
+    name: Checklist maintainers
+    email: checklist@search-cases.local
+  license:
+    name: Checklist Public License
+    url: https://search-cases.local/license
+  termsOfService: https://search-cases.local/terms-of-service
+  description: |
+    One deliberately unique sentence per indexed part. Every sentence in this file is a
+    search query in SEARCH-CASES.md; do not reuse wording between fields.
+tags:
+  - name: Orders
+    description: Order lifecycle endpoints.
+  - name: Warehouses
+    description: Warehouse endpoints.
+  - name: Agents
+    description: MCP surface.
+
+x-mcp:
+  capabilities:
+    tools: {}
+    resources: {}
+    prompts: {}
+  tools:
+    - name: lookupOrder
+      description: Finds an order by its ledger identifier for an agent
+      inputSchema:
+        type: object
+        required: [orderId]
+        properties:
+          orderId:
+            type: string
+            description: Ledger identifier the agent supplies when looking up
+      outputSchema:
+        type: object
+        properties:
+          eta:
+            type: string
+            description: Estimated delivery time returned to the agent
+  resources:
+    - name: catalog
+      uri: cases://catalog
+      mimeType: application/json
+      description: Read-only snapshot of the product catalog for agents
+  prompts:
+    - name: draftApology
+      description: Draft an apology message for a late order
+      arguments:
+        - name: tone
+          description: Voice of the apology, formal or casual
+          required: true
+
+servers:
+  - url: https://{region}.search-cases.local/v1
+    description: Production gateway answering the checklist calls
+    variables:
+      region:
+        default: eu-west-1
+        enum: [eu-west-1, us-east-1]
+        description: Region that answers the gateway call
+
+paths:
+  /orders:
+    post:
+      tags: [Orders]
+      operationId: placeOrder
+      summary: Place an order
+      security:
+        - LedgerKey: []
+      description: |
+        Creates an order from the current cart.
+
+        ## Idempotency keys
+
+        Repeat a request safely with the same key and the ledger stores it once.
+
+        ## Rate limits
+
+        Bursts above the quota are rejected until the window resets.
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          schema:
+            type: string
+          description: Header token that lets the kiosk retry a submission
+        - name: shopperSession
+          in: cookie
+          schema:
+            type: string
+          description: Cookie proving the shopper is present in the store
+        - name: dryRun
+          in: query
+          schema:
+            type: boolean
+          description: Validate the payload without persisting anything.
+        - name: daysPerPage
+          in: query
+          schema:
+            type: integer
+          description: Number of days per page.
+        - name: specialInstructions
+          in: query
+          schema:
+            type: string
+          description: Special handling instructions for the courier.
+        - name: eventDate
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Date of the event.
+        - name: displayName
+          in: query
+          schema:
+            type: string
+          description: Name shown on the receipt.
+        - name: eventName
+          in: query
+          schema:
+            type: string
+          description: Name of the special event.
+        - name: arrivalNote
+          in: query
+          schema:
+            type: string
+          description: Driver has left a note for the passenger
+        - name: departureNote
+          in: query
+          schema:
+            type: string
+          description: Passenger has left a note for the driver
+      requestBody:
+        required: true
+        description: Cart snapshot the ledger turns into an order
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+            examples:
+              corporateCard:
+                summary: Corporate card checkout
+                value:
+                  callbackUrl: https://example.com/hooks
+              bankTransfer:
+                summary: Bank transfer at the kiosk
+                value:
+                  callbackUrl: https://example.com/hooks
+      callbacks:
+        onStatusChange:
+          '{$request.body#/callbackUrl}':
+            post:
+              summary: Status change notification
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        newStatus:
+                          type: string
+                          description: Status the order moved into when the callback fired
+              responses:
+                '200':
+                  description: Callback acknowledged by the merchant
+      responses:
+        '201':
+          description: Order accepted into the ledger
+          headers:
+            X-Rate-Limit-Remaining:
+              schema:
+                type: integer
+              description: Requests left in the current window
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                acceptedOrder:
+                  summary: Ledger receipt for an accepted order
+                  value:
+                    id: o-1
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                legacyXmlReceipt:
+                  summary: Legacy XML receipt for the kiosk printer
+                  value: '<order/>'
+        '404':
+          description: The order was never placed or has been purged
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+    get:
+      tags: [Orders]
+      operationId: listOrders
+      summary: List orders
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/OrderStatus'
+          description: Only return orders in this lifecycle status.
+      responses:
+        '200':
+          description: Orders in the ledger
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+  /orders/{orderId}:
+    get:
+      tags: [Orders]
+      operationId: getOrder
+      summary: Get an order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identifier of the order to fetch from the ledger
+      responses:
+        '200':
+          description: The order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    delete:
+      tags: [Orders]
+      operationId: cancelOrder
+      deprecated: true
+      summary: Cancel an order
+      description: Cancels an order that has not been packed yet.
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cancelled
+  /warehouses:
+    get:
+      tags: [Warehouses]
+      operationId: listWarehouses
+      summary: List warehouses
+      responses:
+        '200':
+          description: All warehouses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+
+webhooks:
+  parcelDelivered:
+    post:
+      tags: [Orders]
+      summary: Parcel delivered notification
+      description: Sent to the merchant once the courier hands over the parcel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signedBy:
+                  type: string
+                  description: Person who signed for the parcel at the door
+      responses:
+        '200':
+          description: Merchant acknowledged the delivery
+
+components:
+  securitySchemes:
+    LedgerKey:
+      type: apiKey
+      in: header
+      name: X-Ledger-Key
+      description: Tenant key issued by the ledger administrators
+  schemas:
+    OrderStatus:
+      type: string
+      description: Lifecycle status of an order.
+      enum: [PLACED, PACKED, SHIPPED]
+    OrderInput:
+      type: object
+      required: [items]
+      properties:
+        couponCode:
+          type: string
+          description: Promotional coupon applied at checkout
+        currency:
+          type: string
+          description: Settlement currency of the order.
+          example: EUR
+        callbackUrl:
+          type: string
+          format: uri
+          description: Merchant endpoint that receives status callbacks.
+        docsUrl:
+          type: string
+          description: See the [integration guide](https://example.com/guide) for details
+        problemType:
+          type: string
+          description: Problem type in the form of a <a href="https://example.com/problem">URI reference</a>
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        shipping:
+          type: object
+          properties:
+            address:
+              type: object
+              properties:
+                postalCode:
+                  type: string
+                  description: Postal code used for delivery routing
+        payment:
+          $ref: '#/components/schemas/Payment'
+        metadata:
+          type: object
+          description: Arbitrary key value pairs attached by the merchant
+          additionalProperties:
+            type: string
+    OrderItem:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Stock keeping unit of the line item.
+        quantity:
+          type: integer
+          description: Units of the item in this line.
+    Payment:
+      type: object
+      discriminator:
+        propertyName: method
+        mapping:
+          card: '#/components/schemas/CardPayment'
+          bank: '#/components/schemas/BankPayment'
+          voucher: '#/components/schemas/VoucherPayment'
+      oneOf:
+        - $ref: '#/components/schemas/CardPayment'
+        - $ref: '#/components/schemas/BankPayment'
+        - $ref: '#/components/schemas/VoucherPayment'
+    CardPayment:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          enum: [card]
+        last4:
+          type: string
+          description: Final four digits of the card number
+    BankPayment:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          enum: [bank]
+        iban:
+          type: string
+          description: International bank account number of the payer
+    VoucherPayment:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          const: voucher
+        serial:
+          type: string
+          description: Serial printed on the prepaid slip
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        trackingNumber:
+          type: string
+          description: Carrier tracking number assigned after dispatch
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Moment the ledger accepted the order
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Problem type URI.
+        detail:
+          type: string
+          description: Human readable explanation of the failure.
+    Warehouse:
+      type: object
+      description: A fulfilment site.
+      properties:
+        code:
+          type: string
+          description: Short code of the fulfilment site.
+        capacityPallets:
+          type: integer
+          description: Maximum number of pallets the warehouse holds

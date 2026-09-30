@@ -6,7 +6,8 @@ const jsonOutput = execSync('npm run license:check -- --json').toString();
 const packages = JSON.parse(jsonOutput.split('\n').slice(4).join('\n'));
 
 const res = {
-  packageVersion: JSON.parse(readFileSync('../package.json', 'utf8')).version,
+  packageVersion: JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+    .version,
   packages: [],
 };
 
