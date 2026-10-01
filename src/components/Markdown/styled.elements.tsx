@@ -56,7 +56,7 @@ export const StyledMarkdownBlock = styled(
 
   h1 {
     ${headerCommonMixin(1)};
-    color: ${props => props.theme.colors.primary.main};
+    color: ${props => props.theme.colors.text.primary};
     margin-top: 0;
   }
 
