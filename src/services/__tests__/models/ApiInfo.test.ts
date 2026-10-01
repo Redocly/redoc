@@ -130,7 +130,7 @@ describe('Models', () => {
       expect(info.downloadFileName).toEqual('test.yaml');
     });
 
-    test('should correctly populate download link', () => {
+    test('should correctly populate custom download link without forcing a file name', () => {
       parser.spec = {
         openapi: '3.0.0',
         info: {
@@ -150,7 +150,7 @@ describe('Models', () => {
           },
         ]
       `);
-      expect(info.downloadFileName).toMatchInlineSnapshot(`"openapi.json"`);
+      expect(info.downloadFileName).toMatchInlineSnapshot(`undefined`);
     });
 
     test('should correctly populate download link and download file name', () => {
@@ -188,7 +188,7 @@ describe('Models', () => {
           },
         ]
       `);
-      expect(info2.downloadFileName).toMatchInlineSnapshot(`"openapi.json"`);
+      expect(info2.downloadFileName).toMatchInlineSnapshot(`undefined`);
     });
   });
 });
