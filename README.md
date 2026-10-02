@@ -1,4 +1,19 @@
 <div align="center">
+<<<<<<< HEAD
+=======
+
+  <a href="https://redocly.com/redoc-ce">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./docs/images/redoc-3-announcement-dark.gif">
+      <source media="(prefers-color-scheme: light)" srcset="./docs/images/redoc-3-announcement-light.gif">
+      <img alt="Redoc 3.0 is coming — one renderer for OpenAPI 3.2, AsyncAPI, GraphQL, and MCP" src="./docs/images/redoc-3-announcement-light.gif">
+    </picture>
+  </a>
+
+  **[Learn what's coming in Redoc 3.x →](https://redocly.com/redoc-ce)**
+
+
+>>>>>>> origin
 
   <a href="https://redocly.com/redoc-ce">
     <picture>
@@ -100,14 +115,23 @@ import { RedocStandalone } from 'redoc';
 
 Check out the [deployment documentation](https://redocly.com/docs/redoc/v3.x/deployment/intro) for more options, and detailed documentation for each.
 
+<<<<<<< HEAD
 ## Redoc vs. hosted Redoc
 
 Redoc is Redocly's community-edition product. Looking for something more?
 We also offer [Redoc](https://redocly.com/redoc)
 with support for specifications like SOAP and additional features including:
+=======
+## Redoc vs hosted Redoc
+
+Redoc is Redocly's community-edition product. Looking for something more?
+We also offer a [hosted Redoc](https://redocly.com/redoc)
+with additional features including:
+>>>>>>> origin
 
 * Try-it panel (Replay)
 * Automated code samples
+<<<<<<< HEAD
 * Mock server
 * Feedback widgets
 * Role-based access control
@@ -118,6 +142,17 @@ with support for specifications like SOAP and additional features including:
 
 - [Realm + Reunite](https://redocly.com/docs/realm) - we take care of the hosting, which includes everything you need for documentation.
 - [Redoc](https://redocly.com/docs/redoc/v3.x) - detailed documentation for this open source project
+=======
+* Fully custom styles
+* Mock server
+* AsyncAPI
+* GraphQL
+
+### Documentation and resources
+
+- [Realm](https://redocly.com/docs/realm/) - we take care of the hosting
+- [Redoc](https://redocly.com/docs/redoc/) - detailed documentation for this open source project (also in the `docs/` folder)
+>>>>>>> origin
 - [Command-line interface to bundle your docs into a web-ready HTML file](https://redocly.com/docs/cli/commands/build-docs/)
 - API linting, bundling, and much more with open source [Redocly CLI](https://redocly.com/docs/cli)
 
