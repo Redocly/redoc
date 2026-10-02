@@ -1,0 +1,10 @@
+discriminator:
+  propertyName: category
+  mapping:
+    beverage: ./Beverage.yaml
+    dessert: ./Dessert.yaml
+oneOf:
+  - $ref: ./Beverage.yaml
+  - $ref: ./Dessert.yaml
+required:
+  - category

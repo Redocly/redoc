@@ -1,0 +1,35 @@
+name: Playwright setup
+description: Setup Playwright
+
+runs:
+  using: composite
+  steps:
+    - name: 🚀 Starting Playwright setup
+      shell: bash
+      run: |
+        echo -e "\033[32m----- setup Playwright started -----\033[0m"
+        echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+    - name: Get Playwright version
+      id: playwright-version
+      shell: bash
+      run: |
+        echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies[\"@playwright/test\"]' package.json)" >> $GITHUB_OUTPUT
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      name: Check if Playwright browser is cached
+      id: playwright-cache
+      with:
+        path: ${{ runner.os == 'Windows' && 'C:\Users\runneradmin\AppData\Local\ms-playwright' || runner.os == 'Linux' && '~/.cache/ms-playwright' || runner.os == 'macOS' && '~/Library/Caches/ms-playwright' || '' }}
+        key: ${{ runner.os }}-Playwright-${{steps.playwright-version.outputs.PLAYWRIGHT_VERSION}}
+    - name: 📦 Install Playwright browser if not cached
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        echo "Installing Playwright in root"
+        npm install @playwright/test
+        npx playwright install --with-deps
+    - name: ✅ Finished Playwright setup
+      shell: bash
+      run: |
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        echo -e "\033[32m----- setup Playwright finished in ${DURATION}s -----\033[0m"

@@ -12,6 +12,7 @@ Hi! We're really excited that you are interested in contributing to Redoc. Befor
 ## Issue Reporting Guidelines
 - Before filing a new issue, try to make sure your problem doesn’t already exist.
 - The best way to get your bug fixed is to provide a reduced test case.
+- Follow the issue template and include a reproducible example.
 
 ## Pull Request Guidelines
 Before submitting a pull request, please make sure the following is done:
@@ -19,12 +20,12 @@ Before submitting a pull request, please make sure the following is done:
 1. Fork the repository and create your branch from main.
 2. Run `npm install` in the repository root.
 3. If you’ve fixed a bug or added code that should be tested, add tests!
-4. Ensure the test suite passes (`npm test`). Tip: `npm test -- --watch TestName` is helpful in development.
-5. Format your code with prettier (`npm run prettier`).
+4. Ensure the test suite passes (`npm test`). Tip: `npm run unit:watch` is helpful in development.
+5. Lint your code with [oxlint](https://oxc.rs/docs/guide/usage/linter) (`npm run lint`).
 
 ## Development Setup
 
-You need [Node.js](http://nodejs.org) at `v12.0.0+`.
+You need [Node.js](http://nodejs.org) `>=22` and npm `>=10`.
 
 After cloning the repo, run:
 
@@ -38,61 +39,48 @@ $ npm install # or npm
 # dev-server, watch and auto reload playground
 $ npm start
 
-# start playground app in production environment
-$ npm run start:prod
-
-# runt tslint
+# run oxlint
 $ npm run lint
 
-# try autofix tslint issues
-$ npm run lint -- --fix
+# try autofix oxlint issues
+$ npm run lint:fix
 
 # run unit tests
 $ npm run unit
 
-# run e2e tests
+# run e2e tests (builds the library, standalone bundle, and e2e hosts first)
 $ npm run e2e
-# Make sure you have created bundle before running e2e test
-# E.g. run `npm run bundle` and wait for the finishing process.
 
-# open cypress UI to debug e2e test
-$ npm run cy:open
+# open Playwright UI to debug e2e tests (requires a prior `npm run e2e` build)
+$ npm run e2e:ui
 
-# run the unit tests (includes linting and license checks)
+# build and smoke-test every project in examples/ against the local build (needs Docker)
+$ npm run test:examples
+
+# run the full check suite (lint, typecheck, unit, e2e tests)
 $ npm test
 
 # prepare bundles
-$ npm run bundle
+$ npm run build
 
-# format the code using prettier
-$ npm run prettier
-
-# auto-generate changelog
-$ npm run changelog
 ```
 
 There are some other scripts available in the `scripts` section of the `package.json` file.
 
 ## Project Structure
 
-- **`benchmark`**: contains basic perf benchmark. Not fully ready yet
+- **`examples`**: runnable projects embedding Redoc in different stacks, each smoke-tested in CI (see its README)
 
-- **`demo`**: contains project demo with demo specs and HMR playground used in development
+- **`playground`**: HMR Playground used in development
 
-  - `demo/playground`: HMR Playground used in development
+- **`e2e`**: contains e2e tests, written and run with [Playwright](https://playwright.dev/)
 
-- **`docs`**: contains extra docs (linked from README.md)
+- **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [Jotai](https://github.com/pmndrs/jotai)
 
-- **`e2e`**: contains e2e tests. The e2e tests are written and run with [Cypress](https://www.cypress.io/).
-
-
-- **`src`**: contains the source code. The codebase is written in Typescript. CSS styles are managed with [Styled components](https://www.styled-components.com/). State is managed by [MobX](https://github.com/mobxjs/mobx)
-
-  - **`src/common-elements`**: contains common Styled elements or components used in multiple places
   - **`src/components`**: contains main visual components
-  - **`src/services`**: contains different services used by Redoc including MobX stores
-  - **`src/services/models`**: contains classes for OpenAPI entities (e.g. Response, Operations, etc)
+  - **`src/adapters`**: builds the rendered docs tree from OpenAPI, AsyncAPI, and GraphQL definitions
+  - **`src/services`**: contains different services used by Redoc
   - **`src/types`**: contains extra typescript typings including OpenAPI doc typings
   - **`src/utils`**: utility functions
-  - **`src/styled-components.ts`**: - reexports styled-components with proper typescript annotations using theme
-  - **`src/theme.ts`**: - default theme (colors, fonts, etc) used by all the components
+  - **`src/jotai`**: contains Jotai store files
+  - **`src/hooks`**: contains global react hooks for application

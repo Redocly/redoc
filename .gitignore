@@ -1,39 +1,35 @@
-### Linux ###
-*~
-
-# KDE directory preferences
-.directory
-# OS X folder attributes
+node_modules
+bin
+stats.json
+scripts/*.pem
+scripts/*.pem.pub
+typings/
+bundles/
+coverage/
 .DS_Store
 
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
+licenses-list.json
+redoc.sourcemaps.tar.gz
+report.test-timing.json
+cli-zip
+/test-results/
+/playwright-report/
+/blob-report/
+/e2e/playwright/.cache/
 
-demo/dist/
+# Artifacts the e2e run generates inside the suite; the suite itself is committed.
+/e2e/dist/
+/e2e/playwright/ce/bundles/
+/e2e/playwright/ce/specs/
+/e2e/playwright/ce/react/
 
-### Node ###
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Dependency directory
-# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
-node_modules
-
-lib/
-stats.json
-cypress/
-bundles/
-typings/*
-!typings/styled-patch.d.ts
-
-/benchmark/revisions
-
-/coverage
-.ghpages-tmp
-stats.json
-yarn.lock
-.idea
-.vscode
-.eslintcache
+# Examples: per-example installs and the local Redoc tarball the harness drops in.
+/examples/*/node_modules/
+/examples/*/dist/
+/examples/*/redoc.tgz
+/examples/*/target/
+/examples/*/.next/
+/examples/*/.angular/
+/examples/*/__pycache__/
+/examples/*/bin/
+/examples/*/obj/

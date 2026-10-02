@@ -1,0 +1,14 @@
+name: Get version from package.json
+description: Get version from package.json
+outputs:
+  value:
+    description: "Version from package.json"
+    value: ${{ steps.package_version.outputs.value }}
+runs:
+  using: composite
+  steps:
+    - name: Get version
+      shell: bash
+      id: package_version 
+      run: |
+        echo "value=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"

@@ -1,0 +1,33 @@
+name: Examples
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Free disk space for the example images
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24.21.0
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts --no-fund
+      - name: Prepare Playwright
+        uses: ./.github/actions/setup-playwright
+      - name: Build Redoc
+        run: npm run build
+      - name: Build and smoke-test every example
+        run: npm run test:examples

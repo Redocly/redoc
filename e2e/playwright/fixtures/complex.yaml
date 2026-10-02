@@ -1,0 +1,1995 @@
+openapi: 3.1.0
+info:
+  version: '3.0'
+  title: Test labels API
+  description: test
+paths:
+  /v3/datarequests/get_by_id:
+    post:
+      summary: Get the details of Data Request
+      description: test
+      operationId: getDetailsOfDataRequest
+      parameters:
+        - in: header
+          name: version
+          description: Version number of...
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: Unique ID
+                  example: example_id_123
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StaticDataRequest'
+                  - $ref: '#/components/schemas/CustomDataRequest'
+servers:
+  - url: https://api.example.com
+    description: Production
+components:
+  schemas:
+    AddVehicleAction:
+      title: Add Vehicle
+      type: object
+      description: Add vehicle in...
+      required:
+        - add_vehicles
+      properties:
+        policy_number:
+          description: Policy number for...
+          type: string
+        add_vehicles:
+          type: array
+          description: Vehicles that need...
+          items:
+            required:
+              - type
+              - vin
+              - ownership_type
+              - first_owner
+              - registered_owner_name
+              - registered_state
+              - is_customized
+              - primary_usage
+              - estimated_annual_mileage
+              - safety_restraint_device
+              - anti_theft_device
+              - transaction_date
+              - parked_address
+              - ownership
+            properties:
+              type:
+                type: string
+                description: Type of vehicle
+                enum:
+                  - PRIVATE_PASSENGER
+              vin:
+                type: string
+                description: Vehicle Identification Number
+              ownership_type:
+                type: string
+                description: Ownership type of...
+                enum:
+                  - SELF_OR_SPOUSE
+                  - CO_OWNED
+                  - FINANCED
+                  - LEASED
+              first_owner:
+                type: boolean
+                description: Indicates whether owner...
+              registered_owner_name:
+                type: string
+                description: Name of registered...
+              registered_co_owner_name:
+                type: string
+                description: Name of registered...
+              registered_state:
+                type: string
+                description: 2-letter state code...
+                enum:
+                  - AL
+                  - AK
+                  - AZ
+                  - AR
+                  - AS
+                  - CA
+                  - CO
+                  - CT
+                  - DE
+                  - DC
+                  - FM
+                  - FL
+                  - GA
+                  - GU
+                  - HI
+                  - ID
+                  - IL
+                  - IN
+                  - IA
+                  - KS
+                  - KY
+                  - LA
+                  - ME
+                  - MH
+                  - MD
+                  - MA
+                  - MI
+                  - MN
+                  - MS
+                  - MO
+                  - MT
+                  - NE
+                  - NV
+                  - NH
+                  - NJ
+                  - NM
+                  - NY
+                  - NC
+                  - ND
+                  - MP
+                  - OH
+                  - OK
+                  - OR
+                  - PW
+                  - PA
+                  - PR
+                  - RI
+                  - SC
+                  - SD
+                  - TN
+                  - TX
+                  - UT
+                  - VT
+                  - VA
+                  - VI
+                  - WA
+                  - WV
+                  - WI
+                  - WY
+              is_customized:
+                type: boolean
+                description: Indicates whether vehicle...
+              primary_usage:
+                type: string
+                description: Primary use of...
+                enum:
+                  - COMMUTE
+                  - SCHOOL
+                  - PERSONAL
+              days_driven_per_week:
+                type: number
+                description: Number of days...
+              miles_driven_each_way:
+                type: number
+                description: No. of miles...
+              estimated_annual_mileage:
+                type: number
+                description: Estimated annual mileage...
+              safety_restraint_device:
+                type: string
+                description: Safety restraint device...
+                enum:
+                  - NO_RESTRAIN
+                  - AUTOMATIC_SEAT_BELTS
+                  - DRIVER_SIDE_AIR_BAG
+                  - FULL_FRONT_AIR_BAG
+              anti_theft_device:
+                type: string
+                description: Anti-theft device details...
+                enum:
+                  - UNKNOWN
+                  - NONE
+                  - ALARM_ONLY_AND_ACTIVE_DISABLING
+                  - VRS
+                  - VRS_AND_ALARM_OR_ACTIVE_DISABLING
+                  - VRS_AND_PASSIVE_DISABLING
+                  - PASSIVE_DISABLING
+              transaction_date:
+                type: string
+                format: MM/DD/YYYY
+                description: Vehicle purchase or...
+              parked_address:
+                type: object
+                description: Address where vehicle...
+                required:
+                  - addr1
+                  - city
+                  - state
+                  - zipcode
+                properties:
+                  addr1:
+                    type: string
+                    description: Address Line 1
+                  addr2:
+                    type: string
+                    description: Address Line 2
+                  city:
+                    type: string
+                    description: City
+                  state:
+                    type: string
+                    description: State
+                  zipcode:
+                    type: string
+                    description: Zipcode
+                  country:
+                    type: object
+                    description: Country details
+                    properties:
+                      name:
+                        type: string
+                        description: Country name
+                      a2_code:
+                        type: string
+                        description: Alpha-2 code of...
+              replace_vehicle:
+                type: object
+                description: Vehicle that need...
+                required:
+                  - vin
+                  - reason
+                properties:
+                  vin:
+                    type: string
+                    description: Vehicle Identification Number
+                  make:
+                    type: string
+                    description: Make of the...
+                  model:
+                    type: string
+                    description: Model of the...
+                  year:
+                    type: integer
+                    description: Year when the...
+                  reason:
+                    type: string
+                    description: Reason for replacing...
+                    enum:
+                      - SOLD
+                      - EXCHANGE
+                      - LOST
+                      - LEASED_VEHICLE_TURNED_IN
+        add_interested_parties:
+          type: array
+          description: Interested parties that...
+          items:
+            required:
+              - vin
+              - name
+              - address
+              - type
+            properties:
+              vin:
+                type: string
+                description: Vehicle Identification Number
+              name:
+                type: string
+                description: Interested party name
+              address:
+                type: object
+                description: Interested party address
+                required:
+                  - addr1
+                  - city
+                  - state
+                  - zipcode
+                properties:
+                  addr1:
+                    type: string
+                    description: Address Line 1
+                  addr2:
+                    type: string
+                    description: Address Line 2
+                  city:
+                    type: string
+                    description: City
+                  state:
+                    type: string
+                    description: State
+                  zipcode:
+                    type: string
+                    description: Zipcode
+                  country:
+                    type: object
+                    description: Country details
+                    properties:
+                      name:
+                        type: string
+                        description: Country name
+                      a2_code:
+                        type: string
+                        description: Alpha-2 code of...
+              type:
+                type: string
+                enum:
+                  - LIEN_HOLDER
+                  - SERVICING_AGENT
+                  - LOSS_PAYEE
+                  - CONTRACTOR
+                  - NAMED_ADDITIONAL_INSURED
+                  - OTHER
+              loan_lease_start_date:
+                type: string
+                format: MM/DD/YYYY
+                description: Loan or Lease...
+              loan_lease_duration:
+                type: number
+                description: Loan or Lease...
+    datarequest_manual_upload_source_data_type:
+      title: source_data_type
+      type: object
+      required:
+        - source_data_type
+      properties:
+        source_data_type:
+          type: string
+          description: The type of...
+          enum:
+            - TRANSCRIPT_FILE
+            - PAYSTUB_FILE
+            - AUTO_INSURANCE_POLICY
+            - HOME_INSURANCE_POLICY
+            - RENTERS_INSURANCE_POLICY
+            - INSURANCE_CARD
+            - PROCEEDS_1099_B
+            - TWN_EDR
+            - W2_FILE
+            - STUDENT_ID_CARD
+            - FORM_1099_MISC
+            - FORM_1099_NEC
+            - FORM_1099_B
+            - FORM_1099_CONSOLIDATED
+            - FORM_1099_INT
+            - FORM_1099_DIV
+            - FORM_1099_OID
+            - FORM_1098
+        min_count:
+          type: integer
+          description: Minimum documents required
+          default: 1
+        max_count:
+          type: integer
+          description: Maximum documents required
+          default: 1
+    link:
+      title: Item Object
+      type: object
+      properties:
+        id:
+          description: Unique ID of...
+          type: string
+          readOnly: true
+        uri:
+          type: string
+          format: scheme:[//authority]/path
+          description: URI of the...
+          readOnly: true
+        expires_at:
+          description: UTC Timestamp at...
+          type: number
+          readOnly: true
+        email_notification:
+          type: boolean
+          description: Boolean indicating whether...
+          readOnly: true
+        sms_notification:
+          type: boolean
+          description: Boolean indicating whether...
+          readOnly: true
+        status:
+          description: Status of the...
+          type: string
+          enum:
+            - ACTIVE
+            - USED
+            - EXPIRED
+          readOnly: true
+        expiry_reason:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Reason code for...
+              enum:
+                - NO_MATCH_FOUND
+                - INSUFFICIENT_CREDENTIALS
+                - LINK_TIMEOUT
+                - DATA_NOT_AVAILABLE
+                - EXPIRATION_REQUESTED
+            description:
+              type: string
+              description: Reason details for...
+              maxLength: 127
+          description: Reason for expiring...
+        created_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+        updated_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+    Updated:
+      title: DataRequestUpdated
+      type: object
+      description: The attributes in...
+      properties:
+        autorun_services:
+          type: boolean
+          description: Whether the services...
+        third_party_requester:
+          type: string
+          description: Optional name of...
+    LinkGenerated:
+      title: LinkGenerated
+      type: object
+      properties:
+        uri:
+          type: string
+          description: URI of the...
+        expires_at:
+          type: number
+          description: Timestamp at which...
+    NotifyUser:
+      title: NotifyUser
+      type: object
+      properties:
+        email_notification:
+          type: string
+          description: Whether send email...
+        sms_notification:
+          type: string
+          description: Whether send sms...
+        additional_message:
+          type: string
+          maxLength: 1000
+          description: Additional message that...
+    LinkExtended:
+      title: LinkExtended
+      type: object
+      properties:
+        expires_at:
+          type: string
+          description: Timestamp in milliseconds...
+    LinkExpired:
+      title: LinkExpired
+      type: object
+      properties:
+        code:
+          type: string
+          description: Reason code for...
+        description:
+          type: string
+          description: Reason details for...
+    LinkAccessed:
+      title: LinkAccessed
+      type: object
+      properties:
+        uri:
+          type: string
+          description: URI of the...
+    DatasourceClassified:
+      title: DatasourceClassified
+      type: object
+      properties:
+        datasource_id:
+          type: string
+          description: Unique ID of...
+    LoginAttempted:
+      title: LoginAttempted
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    InvalidCredentials:
+      title: InvalidCredentials
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    DatasourceConnected:
+      title: DatasourceConnected
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    ItemCreated:
+      title: ItemCreated
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: Unique ID of...
+    ItemProcessed:
+      title: ItemProcessed
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: Unique ID of...
+    ItemUnprocessable:
+      title: ItemUnprocessable
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: Unique ID of...
+    ExtractionComplete:
+      title: ExtractionComplete
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    ExtractionIncomplete:
+      title: ExtractionIncomplete
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    UserInterventionRequired:
+      title: UserInterventionRequired
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    ReportRequested:
+      title: ReportRequested
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          description: Unique ID of...
+    ReportCompleted:
+      title: ReportCompleted
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          description: Unique ID of...
+    ReportError:
+      title: ReportError
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          description: Unique ID of...
+    refreshInitiated:
+      title: RefreshInitiated
+      type: object
+      properties:
+        refresh_id:
+          type: string
+          description: Unique ID of...
+    refreshFailed:
+      title: RefreshFailed
+      type: object
+      properties:
+        refresh_id:
+          type: string
+          description: Unique ID of...
+    consentUpdated:
+      title: ConsentUpdated
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of...
+          examples:
+            - cs_wf325dgfhhj
+        description:
+          description: Description of consent
+          type: string
+        accepted:
+          description: Boolean value indicating...
+          type: boolean
+          examples:
+            - true
+        recorded_at:
+          type: integer
+          description: Timestamp at which...
+          examples:
+            - 1696675463535
+    SessionLoggedOut:
+      title: SessionLoggedOut
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Unique ID of...
+    StaticDataRequest:
+      title: Pre-configured
+      type: object
+      description: Pre-configured Data Request
+      required:
+        - individual_id
+        - type
+      properties:
+        id:
+          type: string
+          description: Unique ID of...
+          readOnly: true
+        individual_id:
+          type: string
+          description: Unique ID of...
+          example: example_id_123
+        type:
+          type: string
+          description: Type of the...
+          enum:
+            - ACADEMIC_SUMMARY
+            - ENROLLMENT_STATUS
+            - EMPLOYMENT_SUMMARY
+            - INCOME_SUMMARY
+            - HOME_INSURANCE_DETAILS
+            - AUTO_INSURANCE_DETAILS
+            - RENTERS_INSURANCE_DETAILS
+            - INCOME_EMPLOYMENT_DETAILS
+            - REALIZED_GAINS
+        actions:
+          type: array
+          readOnly: true
+          description: List of actions...
+          items:
+            required:
+              - type
+            properties:
+              type:
+                type: string
+                description: Type of action....
+                enum:
+                  - ADD_VEHICLE
+                x-enumDescriptions:
+                  ADD_VEHICLE: >-
+                    Use this action to add Vehicle to existing auto insurance
+                    policy
+              details:
+                type: object
+                description: Action details. Mandatory...
+                $ref: '#/components/schemas/AddVehicleAction'
+        source_data_types:
+          type: object
+          readOnly: true
+          description: Details of source...
+          properties:
+            direct_connections:
+              type: array
+              description: List of source...
+              items:
+                type: string
+                enum:
+                  - EMPLOYMENT
+                  - INCOME
+                  - AUTO_INSURANCE
+                  - HOME_INSURANCE
+                  - RENTERS_INSURANCE
+                  - EDUCATION
+                  - PROCEEDS_1099_B
+                  - TRANSCRIPT_FILE
+                  - PAYSTUB_FILE
+                  - AUTO_INSURANCE_POLICY
+                  - HOME_INSURANCE_POLICY
+                  - RENTERS_INSURANCE_POLICY
+                  - INSURANCE_CARD
+                  - TWN_EDR
+                  - W2_FILE
+                  - STUDENT_ID_CARD
+                  - UNINSURED_MOTORIST_FORM
+                  - AUTO_INSURANCE_CLAIM
+                  - POLICY_DETAILS
+                  - POLICY_LISTING
+                  - VEHICLE_LISTING
+                  - VEHICLE_DETAILS
+                  - FORM_1099_B
+                  - FORM_1099_CONSOLIDATED
+                  - FORM_1099_INT
+                  - FORM_1099_DIV
+                  - FORM_1099_OID
+                  - FORM_1099_MISC
+                  - FORM_1099_NEC
+                  - FORM_1098
+                  - UNINSURED_MOTORIST_FORM
+                  - AUTO_INSURANCE_CLAIM
+            manual_uploads:
+              description: Manual Upload
+
+              oneOf:
+                - title: or
+                  type: object
+                  description: OR operator for...
+                  properties:
+                    $or:
+                      type: array
+                      description: Required any one...
+                      items:
+                        anyOf:
+                          - title: and
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $and:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - title: or
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $or:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - $ref: >-
+                              #/components/schemas/datarequest_manual_upload_source_data_type
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+                - title: and
+                  type: object
+                  description: OR operator for...
+                  properties:
+                    $and:
+                      type: array
+                      items:
+                        anyOf:
+                          - title: and
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $and:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - title: or
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $or:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - $ref: >-
+                              #/components/schemas/datarequest_manual_upload_source_data_type
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+                - title: source_data_type
+                  description: The source_data_type for...
+                  properties:
+                    source_data_type:
+                      type: string
+                      description: The type of...
+                      enum:
+                        - TRANSCRIPT_FILE
+                        - PAYSTUB_FILE
+                        - AUTO_INSURANCE_POLICY
+                        - HOME_INSURANCE_POLICY
+                        - RENTERS_INSURANCE_POLICY
+                        - INSURANCE_CARD
+                        - PROCEEDS_1099_B
+                        - TWN_EDR
+                        - W2_FILE
+                        - STUDENT_ID_CARD
+                        - FORM_1099_B
+                        - FORM_1099_CONSOLIDATED
+                        - FORM_1099_INT
+                        - FORM_1099_DIV
+                        - FORM_1099_OID
+                        - FORM_1098
+                    min_count:
+                      type: integer
+                      description: Minimum documents required
+                      default: 1
+                    max_count:
+                      type: integer
+                      description: Maximum documents required
+                      default: 1
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+        experience_id:
+          readOnly: true
+          description: Experience Id of...
+          type: string
+        created_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+        updated_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+        third_party_requester:
+          type: string
+          maxLength: 1023
+          default: null
+          description: Optional name of...
+        requester_name:
+          type: string
+          maxLength: 1023
+          description: Your display name....
+        requester_logo_url:
+          type: string
+          description: URL of the...
+        requester_logo_uri:
+          type: string
+          description: URI for the...
+        processing_config:
+          type: object
+          description: Processing configuration for...
+          properties:
+            max_latency:
+              type: integer
+              default: -1
+              description: The maximum allowable...
+        datasource:
+          type: object
+          description: Pre-identified Datasource details...
+          properties:
+            id:
+              type: string
+              description: Unique ID of...
+            display_name:
+              type: string
+              maxLength: 127
+              description: Name of the...
+            enable_override:
+              type: boolean
+              description: Override widget deeplink...
+              default: true
+            connection_method:
+              type: string
+              readOnly: true
+              enum:
+                - DIRECT_CONNECTION
+                - MANUAL_UPLOAD
+              description: Connection method using...
+            last_connected_at:
+              type: number
+              readOnly: true
+              description: Timestamp (milliseconds) at...
+            last_connection_status:
+              type: string
+              readOnly: true
+              enum:
+                - NOT_CONNECTED
+                - CONNECTED
+              description: Status of last...
+        enable_direct_connection:
+          type: boolean
+          description: Whether to enable...
+        enable_manual_upload:
+          type: boolean
+          description: Whether to enable...
+        show_connect_method_options:
+          type: boolean
+          description: When multiple connect...
+        countries:
+          type: array
+          items:
+            type: string
+            enum:
+              - US
+              - CA
+          description: Pre-identified country code....
+        request_details:
+          type: object
+          default: null
+          description: Details of the...
+          properties:
+            datasource:
+              type: object
+              deprecated: true
+              description: Pre-identified Datasource details...
+              properties:
+                id:
+                  type: string
+                  description: Unique ID of...
+                display_name:
+                  type: string
+                  maxLength: 127
+                  description: Name of the...
+            countries:
+              type: array
+              deprecated: true
+              items:
+                type: string
+                enum:
+                  - US
+                  - CA
+              description: Pre-identified country code....
+            enable_manual_upload:
+              type: boolean
+              deprecated: true
+              description: Whether to enable...
+            enable_datasource_override:
+              type: boolean
+              deprecated: true
+              description: Override widget deeplink...
+            show_connect_method_options:
+              type: boolean
+              deprecated: true
+              description: When multiple connect...
+            student_type:
+              type: string
+              description: Type of the...
+              enum:
+                - CURRENT_STUDENT
+                - ALUMNI
+            employment_status:
+              type: string
+              description: Pre-identified employment status...
+              enum:
+                - CURRENT
+                - FORMER
+            employment_type:
+              type: string
+              description: Type of the...
+              enum:
+                - EMPLOYEE
+                - GIG_WORKER
+                - CONTRACTOR
+            tax_year:
+              type: number
+              example: 1994
+              description: An annual accounting...
+            earnings_period_type:
+              type: string
+              description: Earnings period type....
+              enum:
+                - CURRENT
+                - HISTORIC
+            get_yearly_earnings:
+              type: boolean
+              description: Include yearly earnings...
+            enable_bank_income:
+              type: boolean
+              description: Whether to enable...
+            use_legacy_insurance:
+              type: boolean
+              default: false
+              description: Flag to support...
+            institution_type:
+              type: array
+              items:
+                type: string
+              description: Datasource categories for...
+        reports:
+          type: array
+          readOnly: true
+          description: List of reports...
+          items:
+            type: object
+            properties:
+              uri:
+                type: string
+                description: The type of...
+                enum:
+                  - m1_report://EMPLOYMENT_SUMMARY
+                  - m1_report://INCOME_SUMMARY
+                  - m1_report://INCOME_EMPLOYMENT_DETAILS
+                  - m1_report://INSURANCE_DETAILS
+                  - m1_report://INSURANCE_STATUS
+                  - m1_report://ACADEMIC_SUMMARY
+                  - m1_report://ENROLLMENT_STATUS
+                  - m1_report://REALIZED_GAINS
+              params:
+                type: object
+                description: Parameters for the...
+              metadata:
+                type: object
+                description: metadata can be...
+        delivery_details:
+          type: array
+          description: List of endpoints...
+          items:
+            required:
+              - event_type
+              - url
+            properties:
+              event_type:
+                type: string
+                description: Event for which...
+                enum:
+                  - datarequest.items_available
+                  - datarequest.items_processed
+                  - datarequest.no_items
+                  - datarequest.report_available
+                  - datarequest.report_error
+                  - datarequest.acquisition_completed
+                  - datarequest.updates_available
+                  - datarequest.refresh_failed
+                  - datasource.connected
+                  - transaction.processed
+                  - unprocessable.entity
+                  - session.rejected
+                  - session.terminated
+                  - session.no_login
+                  - item.created
+                  - item.processed
+                  - item.unavailable
+              url:
+                description: URL to which...
+                type: string
+                format: url
+              headers:
+                type: object
+                description: Additional http headers...
+                example:
+                  content-type: application/json
+              x_auth_token_credentials:
+                description: Example will generate...
+                type: object
+                required:
+                  - token_type
+                  - http_method
+                  - url
+                properties:
+                  token_type:
+                    type: string
+                    description: Type of token
+                    enum:
+                      - JWT
+                  http_method:
+                    type: string
+                    description: Type of HTTP...
+                    enum:
+                      - POST
+                  url:
+                    type: string
+                    format: url
+                    description: Endpoint url to...
+                    examples:
+                      - https://example.com/generate_token
+                  key_id:
+                    type: string
+                    description: Unique ID of...
+                  headers:
+                    type: object
+                    description: Request body headers...
+                  data:
+                    type: object
+                    description: Data that we...
+                  response_token_path:
+                    type: string
+                    description: Path from response...
+                    examples:
+                      - access_token.token
+        refresh_policy:
+          type: object
+          description: Refresh Policy details...
+          properties:
+            enabled:
+              type: boolean
+              description: Indicates whether auto-refresh...
+            schedule:
+              oneOf:
+                - title: Daily
+                  type: object
+                  required:
+                    - frequency
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                - title: Weekly
+                  type: object
+                  required:
+                    - frequency
+                    - by_weekday
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                    by_weekday:
+                      type: array
+                      description: List of days...
+                      items:
+                        type: string
+                        enum:
+                          - SU
+                          - MO
+                          - TU
+                          - WE
+                          - TH
+                          - FR
+                          - SA
+                - title: Monthly
+                  type: object
+                  required:
+                    - frequency
+                    - by_monthday
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                    by_monthday:
+                      type: array
+                      description: List of days...
+                      items:
+                        type: number
+            effective_date:
+              type: number
+              description: Timestamp (milliseconds) when...
+            end_date:
+              type: number
+              description: Timestamp (milliseconds) when...
+            last_refresh_at:
+              type: number
+              description: Timestamp (milliseconds) when...
+              readOnly: true
+            next_refresh_at:
+              type: number
+              description: Timestamp (milliseconds) when...
+              readOnly: true
+        consent:
+          type: object
+          description: Consent details for...
+          readOnly: true
+          properties:
+            id:
+              type: string
+              description: Unique ID of...
+              examples:
+                - cs_wf325dgfhhj
+            description:
+              description: Description of consent
+              type: string
+            recorded_at:
+              type: integer
+              description: Timestamp at which...
+              examples:
+                - 1696675463535
+        invitation_links:
+          type: array
+          description: List of invitation...
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/link'
+        last_activity_type:
+          type: string
+          description: Last activity recorded...
+          enum:
+            - CREATED
+            - INVITATION_CREATED
+            - AVAILABLE
+            - COMPLETE
+            - FAILED
+          readOnly: true
+        last_activity_at:
+          type: number
+          description: Timestamp at which...
+          readOnly: true
+        event_logs:
+          type: array
+          description: Events generated for...
+
+          readOnly: true
+          items:
+            properties:
+              type:
+                type: string
+                description: Events relating to...
+                enum:
+                  - DATAREQUEST_CREATED
+                  - DATAREQUEST_UPDATED
+                  - DATAREQUEST_LINK_GENERATED
+                  - DATAREQUEST_IGNORED
+                  - NOTIFY_USER_REQUESTED
+                  - DATAREQUEST_LINK_EXTENDED
+                  - DATAREQUEST_LINK_EXPIRED
+                  - DATAREQUEST_LINK_ACCESSED
+                  - DATAREQUEST_LINK_USED
+                  - WIDGET_INITIATED
+                  - DATASOURCE_CLASSIFIED
+                  - LOGIN_ATTEMPTED
+                  - INVALID_CREDENTIALS
+                  - DATASOURCE_CONNECTED
+                  - INSUFFICIENT_CREDENTIALS
+                  - ITEM_CREATED
+                  - ITEM_PROCESSED
+                  - ITEM_UNPROCESSABLE
+                  - ITEMS_AVAILABLE
+                  - NO_ITEMS
+                  - USER_INTERVENTION_REQUIRED
+                  - DATASOURCE_NOT_FOUND
+                  - PLAID_INITIATED
+                  - PLAID_CONNECTION_SUCCESSFUL
+                  - PLAID_CONNECTION_UNSUCCESSFUL
+                  - REPORT_REQUESTED
+                  - REPORT_AVAILABLE
+                  - REPORT_ERROR
+                  - UPDATES_AVAILABLE
+                  - REFRESH_INITIATED
+                  - REFRESH_FAILED
+                  - CONSENT_REGISTERED
+                  - CONSENT_DEREGISTER
+                  - SESSION_TERMINATED
+                  - SESSION_LOGGED_OUT
+              created_at:
+                readOnly: true
+                description: Timestamp at which...
+                type: number
+              details:
+                default: null
+                description: Data Request event...
+                oneOf:
+                  - $ref: '#/components/schemas/Updated'
+                  - $ref: '#/components/schemas/LinkGenerated'
+                  - $ref: '#/components/schemas/NotifyUser'
+                  - $ref: '#/components/schemas/LinkExtended'
+                  - $ref: '#/components/schemas/LinkExpired'
+                  - $ref: '#/components/schemas/LinkAccessed'
+                  - $ref: '#/components/schemas/DatasourceClassified'
+                  - $ref: '#/components/schemas/LoginAttempted'
+                  - $ref: '#/components/schemas/InvalidCredentials'
+                  - $ref: '#/components/schemas/DatasourceConnected'
+                  - $ref: '#/components/schemas/ItemCreated'
+                  - $ref: '#/components/schemas/ItemProcessed'
+                  - $ref: '#/components/schemas/ItemUnprocessable'
+                  - $ref: '#/components/schemas/ExtractionComplete'
+                  - $ref: '#/components/schemas/ExtractionIncomplete'
+                  - $ref: '#/components/schemas/UserInterventionRequired'
+                  - $ref: '#/components/schemas/ReportRequested'
+                  - $ref: '#/components/schemas/ReportCompleted'
+                  - $ref: '#/components/schemas/ReportError'
+                  - $ref: '#/components/schemas/refreshInitiated'
+                  - $ref: '#/components/schemas/refreshFailed'
+                  - $ref: '#/components/schemas/consentUpdated'
+                  - $ref: '#/components/schemas/SessionLoggedOut'
+    CustomDataRequest:
+      title: Custom
+      description: Custom Data Request
+      type: object
+      required:
+        - individual_id
+        - type
+        - experience_id
+      properties:
+        id:
+          type: string
+          description: Unique ID of...
+          readOnly: true
+        individual_id:
+          type: string
+          description: Unique ID of...
+          example: example_id_123
+        type:
+          type: string
+          description: Type of the...
+          enum:
+            - CUSTOM
+        actions:
+          type: array
+          description: List of actions...
+          items:
+            required:
+              - type
+            properties:
+              type:
+                type: string
+                description: Type of action....
+                enum:
+                  - ADD_VEHICLE
+                x-enumDescriptions:
+                  ADD_VEHICLE: >-
+                    Use this action to add Vehicle to existing auto insurance
+                    policy
+              details:
+                type: object
+                description: Action details. Mandatory...
+                $ref: '#/components/schemas/AddVehicleAction'
+        source_data_types:
+          type: object
+          description: Details of source...
+          properties:
+            direct_connections:
+              type: array
+              description: List of source...
+              items:
+                type: string
+                enum:
+                  - EMPLOYMENT
+                  - INCOME
+                  - AUTO_INSURANCE
+                  - HOME_INSURANCE
+                  - RENTERS_INSURANCE
+                  - EDUCATION
+                  - PROCEEDS_1099_B
+                  - TRANSCRIPT_FILE
+                  - PAYSTUB_FILE
+                  - AUTO_INSURANCE_POLICY
+                  - HOME_INSURANCE_POLICY
+                  - RENTERS_INSURANCE_POLICY
+                  - INSURANCE_CARD
+                  - TWN_EDR
+                  - W2_FILE
+                  - STUDENT_ID_CARD
+                  - UNINSURED_MOTORIST_FORM
+                  - AUTO_INSURANCE_CLAIM
+                  - POLICY_DETAILS
+                  - POLICY_LISTING
+                  - VEHICLE_LISTING
+                  - VEHICLE_DETAILS
+                  - FORM_1099_B
+                  - FORM_1099_CONSOLIDATED
+                  - FORM_1099_INT
+                  - FORM_1099_DIV
+                  - FORM_1099_OID
+                  - FORM_1099_MISC
+                  - FORM_1099_NEC
+                  - FORM_1098
+                  - UNINSURED_MOTORIST_FORM
+                  - AUTO_INSURANCE_CLAIM
+            manual_uploads:
+              description: Configuration for the...
+                the user to upload.
+              oneOf:
+                - title: or
+                  type: object
+                  description: OR operator for...
+                  properties:
+                    $or:
+                      type: array
+                      description: Required any one...
+                      items:
+                        anyOf:
+                          - title: and
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $and:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - title: or
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $or:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - $ref: >-
+                              #/components/schemas/datarequest_manual_upload_source_data_type
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+                - title: and
+                  type: object
+                  description: AND operator for...
+                  properties:
+                    $and:
+                      type: array
+                      items:
+                        anyOf:
+                          - title: and
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $and:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - title: or
+                            type: object
+                            description: Required all to...
+                            properties:
+                              $or:
+                                type: array
+                                items:
+                                  $ref: >-
+                                    #/components/schemas/datarequest_manual_upload_source_data_type
+                          - $ref: >-
+                              #/components/schemas/datarequest_manual_upload_source_data_type
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+                - title: source_data_type
+                  description: The source_data_type for...
+                  properties:
+                    source_data_type:
+                      type: string
+                      description: The type of...
+                      enum:
+                        - TRANSCRIPT_FILE
+                        - PAYSTUB_FILE
+                        - AUTO_INSURANCE_POLICY
+                        - HOME_INSURANCE_POLICY
+                        - RENTERS_INSURANCE_POLICY
+                        - INSURANCE_CARD
+                        - PROCEEDS_1099_B
+                        - TWN_EDR
+                        - W2_FILE
+                        - STUDENT_ID_CARD
+                        - FORM_1099_B
+                        - FORM_1099_CONSOLIDATED
+                        - FORM_1099_INT
+                        - FORM_1099_DIV
+                        - FORM_1099_OID
+                        - FORM_1099_MISC
+                        - FORM_1099_NEC
+                        - FORM_1098
+                    min_count:
+                      type: integer
+                      description: Minimum documents required
+                      default: 1
+                    max_count:
+                      type: integer
+                      description: Maximum documents required
+                      default: 1
+                    media_types:
+                      type: array
+                      description: Specifies the allowed...
+                      items:
+                        type: string
+                        enum:
+                          - application/pdf
+                          - image/pdf
+                          - image/jpeg
+                          - image/jpg
+                          - image/png
+                          - image/tif
+                          - image/tiff
+                          - image/bmp
+        experience_id:
+          description: Experience Id of...
+          type: string
+        created_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+        updated_at:
+          description: Timestamp at which...
+          type: number
+          readOnly: true
+        third_party_requester:
+          type: string
+          maxLength: 1023
+          default: null
+          description: Optional name of...
+        requester_name:
+          type: string
+          maxLength: 1023
+          description: Your display name....
+        requester_logo_url:
+          type: string
+          description: URL of the...
+        requester_logo_uri:
+          type: string
+          description: URI for the...
+        processing_config:
+          type: object
+          description: Processing configuration for...
+          properties:
+            max_latency:
+              type: integer
+              default: -1
+              description: The maximum allowable...
+        datasource:
+          type: object
+          description: Pre-identified Datasource details...
+          properties:
+            id:
+              type: string
+              description: Unique ID of...
+            display_name:
+              type: string
+              maxLength: 127
+              description: Name of the...
+            enable_override:
+              type: boolean
+              description: Override widget deeplink...
+              default: true
+            connection_method:
+              type: string
+              readOnly: true
+              enum:
+                - DIRECT_CONNECTION
+                - MANUAL_UPLOAD
+              description: Connection method using...
+            last_connected_at:
+              type: number
+              readOnly: true
+              description: Timestamp (milliseconds) at...
+            last_connection_status:
+              type: string
+              readOnly: true
+              enum:
+                - NOT_CONNECTED
+                - CONNECTED
+              description: Status of last...
+        enable_direct_connection:
+          type: boolean
+          description: Whether to enable...
+        enable_manual_upload:
+          type: boolean
+          description: Whether to enable...
+        show_connect_method_options:
+          type: boolean
+          description: When multiple connect...
+        countries:
+          type: array
+          items:
+            type: string
+            enum:
+              - US
+              - CA
+          description: Pre-identified country code....
+        request_details:
+          type: object
+          default: null
+          description: Details of the...
+          properties:
+            datasource:
+              type: object
+              deprecated: true
+              description: Pre-identified Datasource details...
+              properties:
+                id:
+                  type: string
+                  description: Unique ID of...
+                display_name:
+                  type: string
+                  maxLength: 127
+                  description: Name of the...
+            countries:
+              type: array
+              deprecated: true
+              items:
+                type: string
+                enum:
+                  - US
+                  - CA
+              description: Pre-identified country code....
+            enable_manual_upload:
+              type: boolean
+              deprecated: true
+              description: Whether to enable...
+            enable_datasource_override:
+              type: boolean
+              deprecated: true
+              description: Override widget deeplink...
+            show_connect_method_options:
+              type: boolean
+              deprecated: true
+              description: When multiple connect...
+            student_type:
+              type: string
+              description: Type of the...
+              enum:
+                - CURRENT_STUDENT
+                - ALUMNI
+            employment_status:
+              type: string
+              description: Pre-identified employment status...
+              enum:
+                - CURRENT
+                - FORMER
+            employment_type:
+              type: string
+              description: Type of the...
+              enum:
+                - EMPLOYEE
+                - GIG_WORKER
+                - CONTRACTOR
+            tax_year:
+              type: number
+              example: 1994
+              description: An annual accounting...
+            earnings_period_type:
+              type: string
+              description: Earnings period type....
+              enum:
+                - CURRENT
+                - HISTORIC
+            get_yearly_earnings:
+              type: boolean
+              description: Include yearly earnings...
+            enable_bank_income:
+              type: boolean
+              description: Whether to enable...
+            use_legacy_insurance:
+              type: boolean
+              default: false
+              description: Flag to support...
+            institution_type:
+              type: array
+              items:
+                type: string
+              description: Datasource categories for...
+        reports:
+          type: array
+          description: List of reports...
+          items:
+            type: object
+            properties:
+              uri:
+                type: string
+                description: The type of...
+                enum:
+                  - m1_report://EMPLOYMENT_SUMMARY
+                  - m1_report://INCOME_SUMMARY
+                  - m1_report://INCOME_EMPLOYMENT_DETAILS
+                  - m1_report://INSURANCE_DETAILS
+                  - m1_report://INSURANCE_STATUS
+                  - m1_report://ACADEMIC_SUMMARY
+                  - m1_report://ENROLLMENT_STATUS
+                  - m1_report://REALIZED_GAINS
+              params:
+                type: object
+                description: Parameters for the...
+              metadata:
+                type: object
+                description: metadata can be...
+        delivery_details:
+          type: array
+          description: List of endpoints...
+          items:
+            required:
+              - event_type
+              - url
+            properties:
+              event_type:
+                type: string
+                description: Event for which...
+                enum:
+                  - datarequest.items_available
+                  - datarequest.items_processed
+                  - datarequest.no_items
+                  - datarequest.report_available
+                  - datarequest.report_error
+                  - datarequest.acquisition_completed
+                  - datarequest.updates_available
+                  - datarequest.refresh_failed
+                  - datasource.connected
+                  - transaction.processed
+                  - unprocessable.entity
+                  - session.rejected
+                  - session.terminated
+                  - session.no_login
+                  - item.created
+                  - item.processed
+                  - item.unavailable
+              url:
+                description: URL to which...
+                type: string
+                format: url
+              headers:
+                type: object
+                description: Additional http headers...
+                example:
+                  content-type: application/json
+              x_auth_token_credentials:
+                description: Example will generate...
+                type: object
+                required:
+                  - token_type
+                  - http_method
+                  - url
+                properties:
+                  token_type:
+                    type: string
+                    description: Type of token
+                    enum:
+                      - JWT
+                  http_method:
+                    type: string
+                    description: Type of HTTP...
+                    enum:
+                      - POST
+                  url:
+                    type: string
+                    format: url
+                    description: Endpoint url to...
+                    examples:
+                      - https://example.com/generate_token
+                  key_id:
+                    type: string
+                    description: Unique ID of...
+                  headers:
+                    type: object
+                    description: Request body headers...
+                  data:
+                    type: object
+                    description: Data that we...
+                  response_token_path:
+                    type: string
+                    description: Path from response...
+                    examples:
+                      - access_token.token
+        refresh_policy:
+          type: object
+          description: Refresh Policy details...
+          properties:
+            enabled:
+              type: boolean
+              description: Indicates whether auto-refresh...
+            schedule:
+              oneOf:
+                - title: Daily
+                  type: object
+                  required:
+                    - frequency
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                - title: Weekly
+                  type: object
+                  required:
+                    - frequency
+                    - by_weekday
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                    by_weekday:
+                      type: array
+                      description: List of days...
+                      items:
+                        type: string
+                        enum:
+                          - SU
+                          - MO
+                          - TU
+                          - WE
+                          - TH
+                          - FR
+                          - SA
+                - title: Monthly
+                  type: object
+                  required:
+                    - frequency
+                    - by_monthday
+                  description: Refresh schedule to...
+                  properties:
+                    frequency:
+                      type: string
+                      description: Type of recurrence
+                      enum:
+                        - DAILY
+                        - WEEKLY
+                        - MONTHLY
+                    by_monthday:
+                      type: array
+                      description: List of days...
+                      items:
+                        type: number
+            effective_date:
+              type: number
+              description: Timestamp (milliseconds) when...
+            end_date:
+              type: number
+              description: Timestamp (milliseconds) when...
+            last_refresh_at:
+              type: number
+              description: Timestamp (milliseconds) when...
+              readOnly: true
+            next_refresh_at:
+              type: number
+              description: Timestamp (milliseconds) when...
+              readOnly: true
+        consent:
+          type: object
+          description: Consent details for...
+          readOnly: true
+          properties:
+            id:
+              type: string
+              description: Unique ID of...
+              examples:
+                - cs_wf325dgfhhj
+            description:
+              description: Description of consent
+              type: string
+            recorded_at:
+              type: integer
+              description: Timestamp at which...
+              examples:
+                - 1696675463535
+        invitation_links:
+          type: array
+          description: List of invitation...
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/link'
+        last_activity_type:
+          type: string
+          description: Last activity recorded...
+          enum:
+            - CREATED
+            - INVITATION_CREATED
+            - AVAILABLE
+            - COMPLETE
+            - FAILED
+          readOnly: true
+        last_activity_at:
+          type: number
+          description: Timestamp at which...
+          readOnly: true
+        event_logs:
+          type: array
+          description: Events generated for...
+            describing the meaning of each of the events for a Data Request
+
+          readOnly: true
+          items:
+            properties:
+              type:
+                type: string
+                description: Events relating to...
+                enum:
+                  - DATAREQUEST_CREATED
+                  - DATAREQUEST_UPDATED
+                  - DATAREQUEST_LINK_GENERATED
+                  - DATAREQUEST_IGNORED
+                  - NOTIFY_USER_REQUESTED
+                  - DATAREQUEST_LINK_EXTENDED
+                  - DATAREQUEST_LINK_EXPIRED
+                  - DATAREQUEST_LINK_ACCESSED
+                  - DATAREQUEST_LINK_USED
+                  - WIDGET_INITIATED
+                  - DATASOURCE_CLASSIFIED
+                  - LOGIN_ATTEMPTED
+                  - INVALID_CREDENTIALS
+                  - DATASOURCE_CONNECTED
+                  - INSUFFICIENT_CREDENTIALS
+                  - ITEM_CREATED
+                  - ITEM_PROCESSED
+                  - ITEM_UNPROCESSABLE
+                  - ITEMS_AVAILABLE
+                  - NO_ITEMS
+                  - USER_INTERVENTION_REQUIRED
+                  - DATASOURCE_NOT_FOUND
+                  - PLAID_INITIATED
+                  - PLAID_CONNECTION_SUCCESSFUL
+                  - PLAID_CONNECTION_UNSUCCESSFUL
+                  - REPORT_REQUESTED
+                  - REPORT_AVAILABLE
+                  - REPORT_ERROR
+                  - UPDATES_AVAILABLE
+                  - REFRESH_INITIATED
+                  - REFRESH_FAILED
+                  - CONSENT_REGISTERED
+                  - CONSENT_DEREGISTER
+                  - SESSION_TERMINATED
+                  - SESSION_LOGGED_OUT
+              created_at:
+                readOnly: true
+                description: Timestamp at which...
+                type: number
+              details:
+                default: null
+                description: Data Request event...
+                oneOf:
+                  - $ref: '#/components/schemas/Updated'
+                  - $ref: '#/components/schemas/LinkGenerated'
+                  - $ref: '#/components/schemas/NotifyUser'
+                  - $ref: '#/components/schemas/LinkExtended'
+                  - $ref: '#/components/schemas/LinkExpired'
+                  - $ref: '#/components/schemas/LinkAccessed'
+                  - $ref: '#/components/schemas/DatasourceClassified'
+                  - $ref: '#/components/schemas/LoginAttempted'
+                  - $ref: '#/components/schemas/InvalidCredentials'
+                  - $ref: '#/components/schemas/DatasourceConnected'
+                  - $ref: '#/components/schemas/ItemCreated'
+                  - $ref: '#/components/schemas/ItemProcessed'
+                  - $ref: '#/components/schemas/ItemUnprocessable'
+                  - $ref: '#/components/schemas/ExtractionComplete'
+                  - $ref: '#/components/schemas/ExtractionIncomplete'
+                  - $ref: '#/components/schemas/UserInterventionRequired'
+                  - $ref: '#/components/schemas/ReportRequested'
+                  - $ref: '#/components/schemas/ReportCompleted'
+                  - $ref: '#/components/schemas/ReportError'
+                  - $ref: '#/components/schemas/refreshInitiated'
+                  - $ref: '#/components/schemas/refreshFailed'
+                  - $ref: '#/components/schemas/consentUpdated'
+                  - $ref: '#/components/schemas/SessionLoggedOut'
+
+security: []

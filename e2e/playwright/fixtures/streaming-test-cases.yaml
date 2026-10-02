@@ -1,0 +1,1490 @@
+openapi: 3.2.0
+info:
+  title: Streaming Content Types Test Cases API
+  version: 1.0.0
+  description: |
+    Comprehensive test cases for streaming content types:
+    - application/jsonl (JSON Lines)
+    - application/json-seq (JSON Sequence)
+    - text/event-stream (Server-Sent Events)
+    - multipart/mixed (Multipart Mixed)
+
+    Each streaming type includes three example patterns:
+    1. Inline examples (examples defined in schema properties)
+    2. Schema-only (no examples, relying on sample generation)
+    3. Custom examples (examples referenced from external files)
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  # ============================================
+  # JSONL (JSON Lines) Section
+  # ============================================
+
+  /jsonl/inline-example/base:
+    get:
+      summary: JSONL base object with inline examples
+      operationId: jsonlInlineExampleBase
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Base object with inline examples
+          content:
+            application/jsonl:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: user_123
+                  name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    format: email
+                    example: john.doe@example.com
+                  active:
+                    type: boolean
+                    example: true
+                required:
+                  - id
+                  - name
+                  - email
+
+  /jsonl/inline-example/array:
+    get:
+      summary: JSONL array with inline examples
+      operationId: jsonlInlineExampleArray
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Array of objects with inline examples
+          content:
+            application/jsonl:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                      example: op_001
+                    status:
+                      type: string
+                      enum: [success, failed]
+                      example: success
+                    resourceId:
+                      type: string
+                      example: user_789
+                    createdAt:
+                      type: string
+                      format: date-time
+                      example: '2024-01-15T11:00:00Z'
+                  required:
+                    - operationId
+                    - status
+
+  /jsonl/inline-example/complex:
+    get:
+      summary: JSONL complex nested object with inline examples
+      operationId: jsonlInlineExampleComplex
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Complex nested structure with inline examples
+          content:
+            application/jsonl:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexUserData'
+
+  /jsonl/inline-example/oneof:
+    get:
+      summary: JSONL oneOf polymorphic objects with inline examples
+      operationId: jsonlInlineExampleOneOf
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Polymorphic objects with inline examples
+          content:
+            application/jsonl:
+              itemSchema:
+                oneOf:
+                  - $ref: '#/components/schemas/UserCreated'
+                  - $ref: '#/components/schemas/UserUpdated'
+                  - $ref: '#/components/schemas/UserDeleted'
+
+  /jsonl/schema-only/base:
+    get:
+      summary: JSONL base object (schema-only, no examples)
+      operationId: jsonlSchemaOnlyBase
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Base object without examples
+          content:
+            application/jsonl:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  active:
+                    type: boolean
+                required:
+                  - id
+                  - name
+                  - email
+
+  /jsonl/schema-only/array:
+    get:
+      summary: JSONL array (schema-only, no examples)
+      operationId: jsonlSchemaOnlyArray
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Array of objects without examples
+          content:
+            application/jsonl:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                    status:
+                      type: string
+                      enum: [success, failed]
+                    resourceId:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                  required:
+                    - operationId
+                    - status
+
+  /jsonl/schema-only/complex:
+    get:
+      summary: JSONL complex nested (schema-only, no examples)
+      operationId: jsonlSchemaOnlyComplex
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Complex nested structure without examples
+          content:
+            application/jsonl:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexUserDataNoExamples'
+
+  /jsonl/custom-example/base:
+    get:
+      summary: JSONL base object with custom example file
+      operationId: jsonlCustomExampleBase
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Base object with custom example
+          content:
+            application/jsonl:
+              example:
+                $ref: '../examples/jsonl-custom-example.jsonl'
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  active:
+                    type: boolean
+                required:
+                  - id
+                  - name
+                  - email
+
+  /jsonl/custom-example/array:
+    get:
+      summary: JSONL array with custom example file
+      operationId: jsonlCustomExampleArray
+      tags:
+        - JSONL
+      responses:
+        '200':
+          description: Array with custom example
+          content:
+            application/jsonl:
+              example:
+                $ref: '../examples/jsonl-custom-example.jsonl'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                    status:
+                      type: string
+                      enum: [success, failed]
+                    resourceId:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                  required:
+                    - operationId
+                    - status
+
+  # ============================================
+  # JSON-Seq (JSON Sequence) Section
+  # ============================================
+
+  /jsonseq/inline-example/base:
+    get:
+      summary: JSON-Seq base object with inline examples
+      operationId: jsonseqInlineExampleBase
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Base object with inline examples
+          content:
+            application/json-seq:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: event_456
+                  type:
+                    type: string
+                    example: notification
+                  message:
+                    type: string
+                    example: User profile updated
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: '2024-01-15T12:00:00Z'
+                required:
+                  - id
+                  - type
+                  - message
+
+  /jsonseq/inline-example/array:
+    get:
+      summary: JSON-Seq array with inline examples
+      operationId: jsonseqInlineExampleArray
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Array of objects with inline examples
+          content:
+            application/json-seq:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                      example: op_001
+                    status:
+                      type: string
+                      enum: [success, failed]
+                      example: success
+                    resourceId:
+                      type: string
+                      example: user_789
+                    createdAt:
+                      type: string
+                      format: date-time
+                      example: '2024-01-15T11:00:00Z'
+                  required:
+                    - operationId
+                    - status
+
+  /jsonseq/inline-example/complex:
+    get:
+      summary: JSON-Seq complex nested with inline examples
+      operationId: jsonseqInlineExampleComplex
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Complex nested structure with inline examples
+          content:
+            application/json-seq:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexEventData'
+
+  /jsonseq/inline-example/oneof:
+    get:
+      summary: JSON-Seq oneOf polymorphic with inline examples
+      operationId: jsonseqInlineExampleOneOf
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Polymorphic objects with inline examples
+          content:
+            application/json-seq:
+              itemSchema:
+                oneOf:
+                  - $ref: '#/components/schemas/EventCreated'
+                  - $ref: '#/components/schemas/EventUpdated'
+                  - $ref: '#/components/schemas/EventDeleted'
+
+  /jsonseq/schema-only/base:
+    get:
+      summary: JSON-Seq base object (schema-only, no examples)
+      operationId: jsonseqSchemaOnlyBase
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Base object without examples
+          content:
+            application/json-seq:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  message:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                required:
+                  - id
+                  - type
+                  - message
+
+  /jsonseq/schema-only/array:
+    get:
+      summary: JSON-Seq array (schema-only, no examples)
+      operationId: jsonseqSchemaOnlyArray
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Array of objects without examples
+          content:
+            application/json-seq:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                    status:
+                      type: string
+                      enum: [success, failed]
+                    resourceId:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                  required:
+                    - operationId
+                    - status
+
+  /jsonseq/schema-only/complex:
+    get:
+      summary: JSON-Seq complex nested (schema-only, no examples)
+      operationId: jsonseqSchemaOnlyComplex
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Complex nested structure without examples
+          content:
+            application/json-seq:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexEventDataNoExamples'
+
+  /jsonseq/custom-example/base:
+    get:
+      summary: JSON-Seq base object with custom example file
+      operationId: jsonseqCustomExampleBase
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Base object with custom example
+          content:
+            application/json-seq:
+              example:
+                $ref: '../examples/jsonseq-custom-example.jsonseq'
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                  message:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                required:
+                  - id
+                  - type
+                  - message
+
+  /jsonseq/custom-example/array:
+    get:
+      summary: JSON-Seq array with custom example file
+      operationId: jsonseqCustomExampleArray
+      tags:
+        - JSON-Seq
+      responses:
+        '200':
+          description: Array with custom example
+          content:
+            application/json-seq:
+              example:
+                $ref: '../examples/jsonseq-custom-example.jsonseq'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    operationId:
+                      type: string
+                    status:
+                      type: string
+                      enum: [success, failed]
+                    resourceId:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                  required:
+                    - operationId
+                    - status
+
+  # ============================================
+  # SSE (Server-Sent Events) Section
+  # ============================================
+
+  /sse/inline-example/base:
+    get:
+      summary: SSE base event with inline examples
+      operationId: sseInlineExampleBase
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Base event with inline examples
+          content:
+            text/event-stream:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: evt_001
+                  event:
+                    type: string
+                    example: message
+                  data:
+                    type: string
+                    example: '{"message": "Hello World", "user": "john"}'
+                  retry:
+                    type: integer
+                    example: 3000
+                required:
+                  - id
+                  - event
+                  - data
+
+  /sse/inline-example/complex:
+    get:
+      summary: SSE complex nested event with inline examples
+      operationId: sseInlineExampleComplex
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Complex nested event structure with inline examples
+          content:
+            text/event-stream:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexSSEEvent'
+
+  /sse/inline-example/oneof:
+    get:
+      summary: SSE oneOf polymorphic events with inline examples
+      operationId: sseInlineExampleOneOf
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Polymorphic events with inline examples
+          content:
+            text/event-stream:
+              itemSchema:
+                oneOf:
+                  - $ref: '#/components/schemas/SSEEventType1'
+                  - $ref: '#/components/schemas/SSEEventType2'
+                  - $ref: '#/components/schemas/SSEEventType3'
+
+  /sse/schema-only/base:
+    get:
+      summary: SSE base event (schema-only, no examples)
+      operationId: sseSchemaOnlyBase
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Base event without examples
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  event:
+                    type: string
+                  data:
+                    type: string
+                  retry:
+                    type: integer
+                required:
+                  - id
+                  - event
+                  - data
+
+  /sse/schema-only/complex:
+    get:
+      summary: SSE complex nested (schema-only, no examples)
+      operationId: sseSchemaOnlyComplex
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Complex nested event structure without examples
+          content:
+            text/event-stream:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexSSEEventNoExamples'
+
+  /sse/custom-example/base:
+    get:
+      summary: SSE base event with custom example file
+      operationId: sseCustomExampleBase
+      tags:
+        - SSE
+      responses:
+        '200':
+          description: Base event with custom example
+          content:
+            text/event-stream:
+              example:
+                $ref: '../examples/sse-custom-example.txt'
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  event:
+                    type: string
+                  data:
+                    type: string
+                  retry:
+                    type: integer
+                required:
+                  - id
+                  - event
+                  - data
+
+  # ============================================
+  # Multipart/Mixed Section
+  # ============================================
+
+  /multipart/inline-example/base:
+    get:
+      summary: Multipart/Mixed base object with inline examples
+      operationId: multipartInlineExampleBase
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Base object with inline examples
+          content:
+            multipart/mixed:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: doc_001
+                  title:
+                    type: string
+                    example: Sample Document
+                  content:
+                    type: string
+                    example: This is sample content
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2024-01-15T10:00:00Z'
+                required:
+                  - id
+                  - title
+
+  /multipart/inline-example/array:
+    get:
+      summary: Multipart/Mixed array with inline examples (demonstrates array normalization)
+      operationId: multipartInlineExampleArray
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Array of objects with inline examples - demonstrates array normalization fix
+          content:
+            multipart/mixed:
+              schema:
+                type: array
+                prefixItems:
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                        example: op_001
+                      status:
+                        type: string
+                        enum: [success, failed]
+                        example: success
+                      resourceId:
+                        type: string
+                        example: user_789
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: '2024-01-15T11:00:00Z'
+                    required:
+                      - operationId
+                      - status
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                        example: op_002
+                      status:
+                        type: string
+                        enum: [success, failed]
+                        example: success
+                      updatedFields:
+                        type: array
+                        items:
+                          type: string
+                        example: [email]
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: '2024-01-15T11:00:05Z'
+                    required:
+                      - operationId
+                      - status
+
+  /multipart/inline-example/complex:
+    get:
+      summary: Multipart/Mixed complex nested with inline examples
+      operationId: multipartInlineExampleComplex
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Complex nested structure with inline examples
+          content:
+            multipart/mixed:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexMultipartData'
+
+  /multipart/inline-example/oneof:
+    get:
+      summary: Multipart/Mixed oneOf polymorphic objects with inline examples
+      operationId: multipartInlineExampleOneOf
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Polymorphic objects with inline examples
+          content:
+            multipart/mixed:
+              itemSchema:
+                oneOf:
+                  - $ref: '#/components/schemas/UserCreated'
+                  - $ref: '#/components/schemas/UserUpdated'
+                  - $ref: '#/components/schemas/UserDeleted'
+
+  /multipart/inline-example/mixed-types:
+    get:
+      summary: Multipart/Mixed with JSON and binary with inline examples
+      operationId: multipartInlineExampleMixedTypes
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Mixed content types with inline examples
+          content:
+            multipart/mixed:
+              schema:
+                type: array
+                prefixItems:
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          documentId:
+                            type: string
+                            example: doc_123
+                          title:
+                            type: string
+                            example: Report.pdf
+                          size:
+                            type: integer
+                            example: 1024000
+                        required:
+                          - documentId
+                          - title
+                  - type: string
+                    format: binary
+                    contentMediaType: application/pdf
+                    description: PDF document content
+
+  /multipart/schema-only/base:
+    get:
+      summary: Multipart/Mixed base object (schema-only, no examples)
+      operationId: multipartSchemaOnlyBase
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Base object without examples
+          content:
+            multipart/mixed:
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                required:
+                  - id
+                  - title
+
+  /multipart/schema-only/array:
+    get:
+      summary: Multipart/Mixed array (schema-only, no examples) - demonstrates array normalization
+      operationId: multipartSchemaOnlyArray
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Array of objects without examples - demonstrates array normalization fix
+          content:
+            multipart/mixed:
+              schema:
+                type: array
+                prefixItems:
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                      status:
+                        type: string
+                        enum: [success, failed]
+                      resourceId:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                    required:
+                      - operationId
+                      - status
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                      status:
+                        type: string
+                        enum: [success, failed]
+                      updatedFields:
+                        type: array
+                        items:
+                          type: string
+                      updatedAt:
+                        type: string
+                        format: date-time
+                    required:
+                      - operationId
+                      - status
+
+  /multipart/schema-only/complex:
+    get:
+      summary: Multipart/Mixed complex nested (schema-only, no examples)
+      operationId: multipartSchemaOnlyComplex
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Complex nested structure without examples
+          content:
+            multipart/mixed:
+              itemSchema:
+                $ref: '#/components/schemas/ComplexMultipartDataNoExamples'
+
+  /multipart/custom-example/base:
+    get:
+      summary: Multipart/Mixed base object with custom example file
+      operationId: multipartCustomExampleBase
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Base object with custom example
+          content:
+            multipart/mixed:
+              example:
+                $ref: '../examples/multipart-custom-example.txt'
+              itemSchema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                required:
+                  - id
+                  - title
+
+  /multipart/custom-example/array:
+    get:
+      summary: Multipart/Mixed array with custom example file
+      operationId: multipartCustomExampleArray
+      tags:
+        - Multipart/Mixed
+      responses:
+        '200':
+          description: Array with custom example
+          content:
+            multipart/mixed:
+              example:
+                $ref: '../examples/multipart-custom-example.txt'
+              schema:
+                type: array
+                prefixItems:
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                      status:
+                        type: string
+                        enum: [success, failed]
+                      resourceId:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                    required:
+                      - operationId
+                      - status
+                  - type: object
+                    properties:
+                      operationId:
+                        type: string
+                      status:
+                        type: string
+                        enum: [success, failed]
+                      updatedFields:
+                        type: array
+                        items:
+                          type: string
+                      updatedAt:
+                        type: string
+                        format: date-time
+                    required:
+                      - operationId
+                      - status
+
+components:
+  schemas:
+    # Complex schemas with examples
+    ComplexUserData:
+      type: object
+      description: Complex nested user data structure
+      properties:
+        id:
+          type: string
+          example: user_123
+        profile:
+          type: object
+          properties:
+            name:
+              type: string
+              example: John Doe
+            email:
+              type: string
+              format: email
+              example: john.doe@example.com
+            preferences:
+              type: object
+              properties:
+                theme:
+                  type: string
+                  enum: [light, dark]
+                  example: dark
+                notifications:
+                  type: object
+                  properties:
+                    email:
+                      type: boolean
+                      example: true
+                    push:
+                      type: boolean
+                      example: false
+        metadata:
+          type: object
+          properties:
+            tags:
+              type: array
+              items:
+                type: string
+              example: [premium, verified]
+            createdAt:
+              type: string
+              format: date-time
+              example: '2024-01-15T10:00:00Z'
+      required:
+        - id
+        - profile
+
+    ComplexUserDataNoExamples:
+      type: object
+      description: Complex nested user data structure without examples
+      properties:
+        id:
+          type: string
+        profile:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+            preferences:
+              type: object
+              properties:
+                theme:
+                  type: string
+                  enum: [light, dark]
+                notifications:
+                  type: object
+                  properties:
+                    email:
+                      type: boolean
+                    push:
+                      type: boolean
+        metadata:
+          type: object
+          properties:
+            tags:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+              format: date-time
+      required:
+        - id
+        - profile
+
+    UserCreated:
+      type: object
+      description: User created event
+      properties:
+        type:
+          type: string
+          enum: [user_created]
+          example: user_created
+        userId:
+          type: string
+          example: user_123
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T10:00:00Z'
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: John Doe
+            email:
+              type: string
+              example: john@example.com
+      required:
+        - type
+        - userId
+        - timestamp
+
+    UserUpdated:
+      type: object
+      description: User updated event
+      properties:
+        type:
+          type: string
+          enum: [user_updated]
+          example: user_updated
+        userId:
+          type: string
+          example: user_123
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T11:00:00Z'
+        changes:
+          type: array
+          items:
+            type: string
+          example: [email, name]
+      required:
+        - type
+        - userId
+        - timestamp
+
+    UserDeleted:
+      type: object
+      description: User deleted event
+      properties:
+        type:
+          type: string
+          enum: [user_deleted]
+          example: user_deleted
+        userId:
+          type: string
+          example: user_123
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T12:00:00Z'
+      required:
+        - type
+        - userId
+        - timestamp
+
+    ComplexEventData:
+      type: object
+      description: Complex nested event data structure
+      properties:
+        id:
+          type: string
+          example: evt_456
+        type:
+          type: string
+          example: complex_event
+        payload:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: user_789
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      action:
+                        type: string
+                        example: login
+                      timestamp:
+                        type: string
+                        format: date-time
+                        example: '2024-01-15T10:00:00Z'
+            context:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+                  example: sess_abc123
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    ip: 192.168.1.1
+                    userAgent: Mozilla/5.0
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T12:00:00Z'
+      required:
+        - id
+        - type
+        - payload
+
+    ComplexEventDataNoExamples:
+      type: object
+      description: Complex nested event data structure without examples
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        payload:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                actions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      action:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+            context:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: string
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - payload
+
+    EventCreated:
+      type: object
+      description: Event created notification
+      properties:
+        type:
+          type: string
+          enum: [event_created]
+          example: event_created
+        eventId:
+          type: string
+          example: evt_001
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T10:00:00Z'
+      required:
+        - type
+        - eventId
+        - timestamp
+
+    EventUpdated:
+      type: object
+      description: Event updated notification
+      properties:
+        type:
+          type: string
+          enum: [event_updated]
+          example: event_updated
+        eventId:
+          type: string
+          example: evt_001
+        changes:
+          type: array
+          items:
+            type: string
+          example: [status, priority]
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T11:00:00Z'
+      required:
+        - type
+        - eventId
+        - timestamp
+
+    EventDeleted:
+      type: object
+      description: Event deleted notification
+      properties:
+        type:
+          type: string
+          enum: [event_deleted]
+          example: event_deleted
+        eventId:
+          type: string
+          example: evt_001
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-01-15T12:00:00Z'
+      required:
+        - type
+        - eventId
+        - timestamp
+
+    ComplexSSEEvent:
+      type: object
+      description: Complex SSE event structure
+      properties:
+        id:
+          type: string
+          example: evt_complex_001
+        event:
+          type: string
+          example: user_action
+        data:
+          type: string
+          example: '{"userId":"123","action":"login","session":{"id":"sess_abc","duration":3600},"metadata":{"ip":"192.168.1.1","userAgent":"Mozilla/5.0"}}'
+        retry:
+          type: integer
+          example: 5000
+      required:
+        - id
+        - event
+        - data
+
+    ComplexSSEEventNoExamples:
+      type: object
+      description: Complex SSE event structure without examples
+      properties:
+        id:
+          type: string
+        event:
+          type: string
+        data:
+          type: string
+        retry:
+          type: integer
+      required:
+        - id
+        - event
+        - data
+
+    SSEEventType1:
+      type: object
+      description: SSE event type 1
+      properties:
+        id:
+          type: string
+          example: sse_001
+        event:
+          type: string
+          enum: [type1]
+          example: type1
+        data:
+          type: string
+          example: '{"action":"created","resource":"user"}'
+        retry:
+          type: integer
+          example: 3000
+      required:
+        - id
+        - event
+        - data
+
+    SSEEventType2:
+      type: object
+      description: SSE event type 2
+      properties:
+        id:
+          type: string
+          example: sse_002
+        event:
+          type: string
+          enum: [type2]
+          example: type2
+        data:
+          type: string
+          example: '{"action":"updated","resource":"order"}'
+        retry:
+          type: integer
+          example: 3000
+      required:
+        - id
+        - event
+        - data
+
+    SSEEventType3:
+      type: object
+      description: SSE event type 3
+      properties:
+        id:
+          type: string
+          example: sse_003
+        event:
+          type: string
+          enum: [type3]
+          example: type3
+        data:
+          type: string
+          example: '{"action":"deleted","resource":"comment"}'
+        retry:
+          type: integer
+          example: 3000
+      required:
+        - id
+        - event
+        - data
+
+    ComplexMultipartData:
+      type: object
+      description: Complex nested multipart data structure
+      properties:
+        id:
+          type: string
+          example: doc_123
+        metadata:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Complex Document
+            tags:
+              type: array
+              items:
+                type: string
+              example: [important, draft]
+            author:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Jane Smith
+                email:
+                  type: string
+                  example: jane@example.com
+        content:
+          type: object
+          properties:
+            sections:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: Section 1
+                  text:
+                    type: string
+                    example: Section content here
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filename:
+                          type: string
+                          example: attachment.pdf
+                        size:
+                          type: integer
+                          example: 1024
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-01-15T10:00:00Z'
+      required:
+        - id
+        - metadata
+
+    ComplexMultipartDataNoExamples:
+      type: object
+      description: Complex nested multipart data structure without examples
+      properties:
+        id:
+          type: string
+        metadata:
+          type: object
+          properties:
+            title:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            author:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+        content:
+          type: object
+          properties:
+            sections:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  text:
+                    type: string
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filename:
+                          type: string
+                        size:
+                          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - metadata

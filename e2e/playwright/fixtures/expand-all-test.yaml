@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Expand All button — coverage cases
+  version: 1.0.0
+  description: |
+    Three operations exercising the Request Expand-all button's gating
+    rules (hasNestedFields + cross-section OR with parameters).
+
+tags:
+  - name: Expand
+    description: Cases gating the Expand-all button.
+
+paths:
+  /primitive-body:
+    post:
+      tags: [Expand]
+      summary: Primitive body
+      operationId: primitiveBody
+      description: All-primitive body — button must NOT appear.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                age: { type: integer }
+      responses:
+        '200':
+          description: OK
+
+  /nested-body:
+    post:
+      tags: [Expand]
+      summary: Nested body
+      operationId: nestedBody
+      description: Body has a nested object field — button MUST appear.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: { type: string }
+                address:
+                  type: object
+                  properties:
+                    street: { type: string }
+                    city: { type: string }
+      responses:
+        '200':
+          description: OK
+
+  /multi-key-param-and-body:
+    post:
+      tags: [Expand]
+      summary: Multi-key
+      operationId: multikey
+      description: |
+        Two sections under one header — verifies Expand-all toggles all
+        registered keys, not only the first.
+      parameters:
+        - name: filter
+          in: query
+          schema:
+            type: object
+            properties:
+              criteria:
+                type: object
+                properties:
+                  cityCode: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: object
+                  properties:
+                    timestamp: { type: string }
+      responses:
+        '200':
+          description: OK

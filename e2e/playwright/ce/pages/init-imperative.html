@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redoc CE — init()</title>
+  </head>
+  <body style="margin: 0">
+    <!-- `init()` cases via `?case=`; no `<redoc spec-url>`, so `autoInit()` is a no-op. -->
+    <redoc></redoc>
+
+    <script type="module">
+      import { init } from '/bundles/redoc.standalone.js';
+
+      window.__events = [];
+
+      const CASES = {
+        events: () =>
+          init('/fixtures/code-samples.yaml', {
+            events: {
+              codeSamplesLanguageSwitch: (event) => window.__events.push(event),
+              codeSamplesCopy: (event) => window.__events.push(event),
+              panelToggle: (event) => window.__events.push(event),
+              targetServerSwitch: (event) => window.__events.push(event),
+            },
+          }),
+
+        'bad-definition': () => init('/fixtures/broken.yaml'),
+      };
+
+      const name = new URLSearchParams(window.location.search).get('case') ?? 'events';
+
+      try {
+        await CASES[name]();
+      } catch (error) {
+        window.__initError = error.message;
+      }
+    </script>
+  </body>
+</html>

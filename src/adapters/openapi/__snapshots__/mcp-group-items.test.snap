@@ -1,0 +1,407 @@
+- type: group
+  label: Search
+  link: docs/mcp/search
+  routeSlug: docs/mcp/search
+  items:
+    - type: link
+      label: echo
+      link: /docs/mcp/search/echo
+      routeSlug: /docs/mcp/search/echo
+      httpVerb: tool
+      content:
+        contentType: item
+        seo:
+          title: echo
+        meta:
+          name: echo
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: echo
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpTool
+                attributes:
+                  name: echo
+                  id: docs/mcp/search/echo
+    - label: Search for events
+      deprecated: false
+      httpVerb: get
+      isAdditionalOperation: false
+      isWebhook: false
+      type: link
+      link: /docs/mcp/search/searchevents
+      routeSlug: /docs/mcp/search/searchevents
+      metadata:
+        seo:
+          title: Search for events
+          description: Search for events
+      content:
+        contentType: item
+        itemVariant: httpItem
+        meta:
+          sourceId: searchEvents
+          name: Search for events
+          isWebhook: false
+          pointer: /paths/~1events/get
+          hasSamples: false
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Search for events
+                isWebhook: false
+                showPageActions: true
+            panels: []
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Request
+                labelTranslationKey: request
+                deepLinkSuffix: request
+              - nodeType: empty-message
+                label: No request data
+                labelTranslationKey: noRequestData
+            panels:
+              - children:
+                  - kind: code-sample
+                    source:
+                      kind: code-sample
+                      operationType: http
+                      method: GET
+                      path: /events
+                      servers:
+                        - url: http://localhost:3001/mcp
+                      parameters:
+                        path: []
+                        query: []
+                        querystring: []
+                        header: []
+                        cookie: []
+                      security: []
+                      responseCodes:
+                        - '200'
+                      pointer: /events
+                      href: search/searchevents
+                      openApiOperationId: searchEvents
+                      summary: Search for events
+                    isWebhook: false
+                    hideReplay: false
+                    servers:
+                      - url: http://localhost:3001/mcp
+                    examples: []
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 4
+                label: Responses
+                labelTranslationKey: responses
+                deepLinkSuffix: responses
+              - nodeType: item-content
+                variant: responses
+                responses:
+                  - code: '200'
+                    description: ok
+                pointer: /paths/~1events/get/responses
+            panels: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /search/searchevents
+            panels: []
+      httpPath: /events
+  content:
+    contentType: group
+    meta:
+      name: Search
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Search
+            showPageActions: true
+          - nodeType: markdoc
+            content: Search-related operations and tools
+        panels:
+          - children:
+              - kind: group-items
+                title: Operations
+                titleTranslationKey: operations
+                items:
+                  - title: /events
+                    summary: Search for events
+                    prefix:
+                      name: get
+                      color: get
+                    badges: []
+                    link: /search/searchevents
+                    deprecated: false
+              - kind: group-items
+                title: MCP Tools
+                titleTranslationKey: openapi.mcp.tools
+                items:
+                  - title: echo
+                    prefix:
+                      name: tool
+                      color: tool
+                    link: /search/echo
+                    deprecated: false
+- type: group
+  label: Tools
+  link: docs/mcp/tools
+  routeSlug: docs/mcp/tools
+  items:
+    - type: link
+      label: add
+      link: /docs/mcp/tools/add
+      routeSlug: /docs/mcp/tools/add
+      httpVerb: tool
+      content:
+        contentType: item
+        seo:
+          title: add
+        meta:
+          name: add
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: add
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpTool
+                attributes:
+                  name: add
+                  id: docs/mcp/tools/add
+    - type: link
+      label: longRunningOperation
+      link: /docs/mcp/tools/longrunningoperation
+      routeSlug: /docs/mcp/tools/longrunningoperation
+      httpVerb: tool
+      content:
+        contentType: item
+        seo:
+          title: longRunningOperation
+        meta:
+          name: longRunningOperation
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: longRunningOperation
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpTool
+                attributes:
+                  name: longRunningOperation
+                  id: docs/mcp/tools/longRunningOperation
+  content:
+    contentType: group
+    meta:
+      name: Tools
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Tools
+            showPageActions: true
+        panels:
+          - children:
+              - kind: group-items
+                title: MCP Tools
+                titleTranslationKey: openapi.mcp.tools
+                items:
+                  - title: add
+                    prefix:
+                      name: tool
+                      color: tool
+                    link: /tools/add
+                    deprecated: false
+                  - title: longRunningOperation
+                    prefix:
+                      name: tool
+                      color: tool
+                    link: /tools/longrunningoperation
+                    deprecated: false
+- type: group
+  label: Resources
+  link: docs/mcp/resources
+  routeSlug: docs/mcp/resources
+  items:
+    - type: link
+      label: readme
+      link: /docs/mcp/resources/readme
+      routeSlug: /docs/mcp/resources/readme
+      httpVerb: rsrc
+      content:
+        contentType: item
+        seo:
+          title: readme
+        meta:
+          name: readme
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: readme
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpResource
+                attributes:
+                  name: readme
+                  id: docs/mcp/resources/readme
+    - type: link
+      label: config
+      link: /docs/mcp/resources/config
+      routeSlug: /docs/mcp/resources/config
+      httpVerb: rsrc
+      content:
+        contentType: item
+        seo:
+          title: config
+        meta:
+          name: config
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: config
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpResource
+                attributes:
+                  name: config
+                  id: docs/mcp/resources/config
+  content:
+    contentType: group
+    meta:
+      name: Resources
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Resources
+            showPageActions: true
+        panels:
+          - children:
+              - kind: group-items
+                title: MCP Resources
+                titleTranslationKey: openapi.mcp.resources
+                items:
+                  - title: readme
+                    prefix:
+                      name: rsrc
+                      color: rsrc
+                    link: /resources/readme
+                    deprecated: false
+                  - title: config
+                    prefix:
+                      name: rsrc
+                      color: rsrc
+                    link: /resources/config
+                    deprecated: false
+- type: group
+  label: Prompts
+  link: docs/mcp/prompts
+  routeSlug: docs/mcp/prompts
+  items:
+    - type: link
+      label: simple_prompt
+      link: /docs/mcp/prompts/simple_prompt
+      routeSlug: /docs/mcp/prompts/simple_prompt
+      httpVerb: prompt
+      content:
+        contentType: item
+        seo:
+          title: simple_prompt
+        meta:
+          name: simple_prompt
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: simple_prompt
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpPrompt
+                attributes:
+                  name: simple_prompt
+                  id: docs/mcp/prompts/simple_prompt
+    - type: link
+      label: complex_prompt
+      link: /docs/mcp/prompts/complex_prompt
+      routeSlug: /docs/mcp/prompts/complex_prompt
+      httpVerb: prompt
+      content:
+        contentType: item
+        seo:
+          title: complex_prompt
+        meta:
+          name: complex_prompt
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: complex_prompt
+                showPageActions: true
+            panels: []
+          - nodeType: markdoc
+            content:
+              - tag: mcpPrompt
+                attributes:
+                  name: complex_prompt
+                  id: docs/mcp/prompts/complex_prompt
+  content:
+    contentType: group
+    meta:
+      name: Prompts
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Prompts
+            showPageActions: true
+        panels:
+          - children:
+              - kind: group-items
+                title: MCP Prompts
+                titleTranslationKey: openapi.mcp.prompts
+                items:
+                  - title: simple_prompt
+                    prefix:
+                      name: prompt
+                      color: prompt
+                    link: /prompts/simple_prompt
+                    deprecated: false
+                  - title: complex_prompt
+                    prefix:
+                      name: prompt
+                      color: prompt
+                    link: /prompts/complex_prompt
+                    deprecated: false

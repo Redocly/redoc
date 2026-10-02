@@ -1,0 +1,27 @@
+name: Tests e2e
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24.21.0
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts --no-fund
+      - name: Prepare Playwright
+        uses: ./.github/actions/setup-playwright
+      - name: Run e2e tests
+        run: npm run e2e

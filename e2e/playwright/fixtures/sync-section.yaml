@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  title: Sync Section Test
+  description: Sync section test
+  version: ''
+  contact: {}
+servers:
+  - url: https://test.prod.com
+    description: Production environment
+paths:
+  '/oidc/token':
+    post:
+      tags:
+        - sync
+      operationId: getAccessToken
+      summary: Get client access token
+      description: Some description
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - '$ref': '#/components/schemas/Identity Verification'
+                - '$ref': '#/components/schemas/Fraud Prevention'
+                - '$ref': '#/components/schemas/A+ Services'
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+                - '$ref': '#/components/schemas/Identity Verification'
+                - '$ref': '#/components/schemas/Fraud Prevention'
+                - '$ref': '#/components/schemas/A+ Services'
+      responses:
+        '200':
+          description: Access token successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: The access token issued by the authorization server
+                  token_type:
+                    type: string
+                    description: Returned as Bearer
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    description: Expiration time of the access token in seconds
+                    default: 3600
+                    example: 3600
+                  scope:
+                    type: string
+                    description: Scope of the access token
+                required:
+                  - access_token
+                  - token_type
+                  - expires_in
+                  - scope
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BadRequestHttpError'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/InternalServerHttpError'
+components:
+  schemas:
+    Identity Verification:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: Client identifier
+        client_secret:
+          type: string
+          description: Client secret
+        grant_type:
+          type: string
+          enum:
+            - client_credentials
+          description: Should be set to client_credentials.
+        resource:
+          type: string
+          enum:
+            - https://verify.identity.security
+          description: URI of the resource the request is attempting to access.
+      required:
+        - client_id
+        - client_secret
+        - grant_type
+      example:
+        client_id: YOUR_CLIENT_ID
+        client_secret: YOUR_CLIENT_SECRET
+        grant_type: client_credentials
+        resource: https://verify.identity.security
+    Fraud Prevention:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: Client identifier
+        client_secret:
+          type: string
+          description: Client secret
+        grant_type:
+          type: string
+          enum:
+            - client_credentials
+          description: Should be set to client_credentials.
+        resource:
+          type: string
+          enum:
+            - https://risk.identity.security
+          description: URI of the resource the request is attempting to access.
+      required:
+        - client_id
+        - client_secret
+        - grant_type
+      example:
+        client_id: YOUR_CLIENT_ID
+        client_secret: YOUR_CLIENT_SECRET
+        grant_type: client_credentials
+        resource: https://risk.identity.security
+    A+ Services:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: Client identifier
+        client_secret:
+          type: string
+          description: Client secret
+        grant_type:
+          type: string
+          enum:
+            - client_credentials
+          description: Grant type must be client_credentials.
+        resource:
+          type: string
+          description: URI of the resource the request is attempting to access.
+      required:
+        - client_id
+        - client_secret
+        - grant_type
+      example:
+        client_id: YOUR_CLIENT_ID
+        client_secret: YOUR_CLIENT_SECRET
+        grant_type: client_credentials
+    BadRequestHttpError:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          example: Bad request
+        error_code:
+          type: number
+          readOnly: true
+          example: 400
+      required:
+        - message
+        - error_code
+    InternalServerHttpError:
+      type: object
+      properties:
+        message:
+          type: string
+          readOnly: true
+          example: Something went wrong - Internal server error
+        error_code:
+          type: number
+          readOnly: true
+          example: 500
+      required:
+        - message
+        - error_code
+tags: []
+security: []

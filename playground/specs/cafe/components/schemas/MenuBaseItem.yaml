@@ -1,0 +1,55 @@
+type: object
+properties:
+  createdAt:
+    description: Created date.
+    type: string
+    format: date-time
+    readOnly: true
+  updatedAt:
+    description: Updated date.
+    type: string
+    format: date-time
+    readOnly: true
+  id:
+    description: Menu item ID. Unique identifier prefixed with `prd_`.
+    type: string
+    readOnly: true
+    pattern: ^prd_[0-9abcdefghjkmnpqrstvwxyz]{26}$
+    example: prd_01h1s5z6vf2mm1mz3hevnn9va7
+  object:
+    description: Entity name.
+    type: string
+    const: menuItem
+    readOnly: true
+  name:
+    description: Menu item name.
+    type: string
+    minLength: 1
+    maxLength: 50
+  price:
+    description: Price in cents.
+    type: integer
+    minimum: 0
+  photo:
+    writeOnly: true
+    type:
+      - string
+      - 'null'
+    format: binary
+    description: Photo of the menu item. Must be a PNG image and less than 1MB.
+  photoUrl:
+    readOnly: true
+    type: string
+    format: uri
+    description: Photo URL of the menu item.
+  photoTextDescription:
+    type:
+      - string
+      - 'null'
+required:
+  - id
+  - name
+  - price
+  - createdAt
+  - updatedAt
+  - object

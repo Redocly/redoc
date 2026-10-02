@@ -1,0 +1,100 @@
+- type: link
+  label: commentAdded
+  link: docs/graphql/subscriptions/commentadded
+  routeSlug: docs/graphql/subscriptions/commentadded
+  content:
+    contentType: item
+    itemVariant: subscription
+    meta:
+      name: commentAdded
+      returnType: RateLimit
+      deprecated: false
+      position:
+        start:
+          lineNumber: 29548
+          column: 3
+        end:
+          lineNumber: 29556
+          column: 5
+    seo:
+      title: commentAdded
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: commentAdded
+            showPageActions: true
+            graphqlReturnType: RateLimit
+            graphqlArgs:
+              - name: postID
+            graphqlDeprecated: false
+            graphqlOperationType: subscription
+          - nodeType: item-content
+            variant: requires-scopes
+            graphqlTypeName: commentAdded
+            graphqlFieldName: commentAdded
+            graphqlOperationType: subscription
+          - nodeType: item-content
+            variant: graphql-args
+            label: Arguments
+            labelTranslationKey: arguments.label
+            graphqlTypeName: commentAdded
+            graphqlFieldName: commentAdded
+            graphqlOperationType: subscription
+            graphqlSchema:
+              - name: postID
+                type: ID!
+                description: Parameters for commentAdded
+          - nodeType: item-content
+            variant: return-type
+            label: Return type
+            labelTranslationKey: returnTypes.label
+            schemaId: types/RateLimit
+            graphqlTypeName: RateLimit
+            graphqlOperationType: subscription
+            graphqlFieldName: commentAdded
+            graphqlSchema:
+              type: RateLimit
+              description: Represents the client's rate limit.
+              fields:
+                - name: cost
+                  type: Int!
+                  description: The point cost for the current query counting against the rate limit.
+                - name: limit
+                  type: Int!
+                  description: The maximum number of points the client is permitted to consume in a 60 minute window.
+                - name: nodeCount
+                  type: Int!
+                  description: The maximum number of nodes this query may return
+                - name: remaining
+                  type: Int!
+                  description: The number of points remaining in the current rate limit window.
+                - name: resetAt
+                  type: DateTime!
+                  description: The time at which the current rate limit window resets in UTC epoch seconds.
+                - name: used
+                  type: Int!
+                  description: The number of points used in the current rate limit window.
+        panels:
+          - children:
+              - kind: graphql-query
+                graphqlOperationData:
+                  operationType: subscription
+                  operationName: commentAdded
+                  typeName: RateLimit
+                schemaId: types/RateLimit
+                examples: []
+          - children:
+              - kind: graphql-response
+                graphqlOperationData:
+                  operationType: subscription
+                  operationName: commentAdded
+                  typeName: RateLimit
+                schemaId: types/RateLimit
+                examples: []
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /subscriptions/commentadded
+        panels: []

@@ -1,55 +1,33 @@
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import { memo } from 'react';
+import { styled } from 'styled-components';
 
-import { MenuStore } from '../../services';
-import type { IMenuItem } from '../../services';
-import { OptionsContext } from '../OptionsProvider';
-import { MenuItems } from './MenuItems';
+import type { ReactElement } from 'react';
+import type { ApiItem } from '../../types/store.js';
 
-import { PerfectScrollbarWrap } from '../../common-elements/perfect-scrollbar';
-import { RedocAttribution } from './styled.elements';
-import RedoclyLogo from './Logo';
+import { Menu } from '@redocly/theme/components/Menu/Menu';
 
-@observer
-export class SideMenu extends React.Component<{ menu: MenuStore; className?: string }> {
-  static contextType = OptionsContext;
-  declare context: React.ContextType<typeof OptionsContext>;
-  private _updateScroll?: () => void;
+import { useMenuItems } from './useMenuItems.js';
+import { useSidebarItemTelemetry } from '../../telemetry/index.js';
 
-  render() {
-    const store = this.props.menu;
-    return (
-      <PerfectScrollbarWrap
-        updateFn={this.saveScrollUpdate}
-        className={this.props.className}
-        options={{
-          wheelPropagation: false,
-        }}
-      >
-        <MenuItems items={store.items} onActivate={this.activate} root={true} />
-        <RedocAttribution>
-          <a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">
-            <RedoclyLogo />
-            API docs by Redocly
-          </a>
-        </RedocAttribution>
-      </PerfectScrollbarWrap>
-    );
-  }
+type SideMenuProps = {
+  items: ApiItem[];
+  className?: string;
+};
 
-  activate = (item: IMenuItem) => {
-    if (item && item.active && this.context.menuToggle) {
-      return item.expanded ? item.collapse() : item.expand();
-    }
-    this.props.menu.activateAndScroll(item, true);
-    setTimeout(() => {
-      if (this._updateScroll) {
-        this._updateScroll();
-      }
-    });
-  };
+const SideMenuComponent = ({ items, className }: SideMenuProps): ReactElement => {
+  const menuItems = useMenuItems({ items });
+  const onMenuClick = useSidebarItemTelemetry();
 
-  private saveScrollUpdate = upd => {
-    this._updateScroll = upd;
-  };
-}
+  return (
+    <MenuWrapper className={className} onClick={onMenuClick}>
+      <Menu items={menuItems} />
+    </MenuWrapper>
+  );
+};
+
+export const SideMenu = memo<SideMenuProps>(SideMenuComponent);
+
+const MenuWrapper = styled.div`
+  flex: 1;
+  overflow-y: auto;
+`;

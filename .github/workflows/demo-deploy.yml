@@ -1,0 +1,141 @@
+name: Deploy Demo
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  DEMO_DEPLOY_BRANCH: demo-deploy-3x
+  PAGES_DIR: pages
+
+jobs:
+  deploy-demo:
+    name: Build Demo and Open gh-pages PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 24.21.0
+          cache: 'npm'
+      - name: Resolve Version
+        id: source
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Install Dependencies
+        run: npm ci --no-fund
+
+      - name: Build Standalone Bundle
+        run: |
+          npm run build:standalone
+          npm run minify
+          SIZE=$(wc -c < bundles/redoc.standalone.js)
+          echo "redoc.standalone.js: $SIZE bytes"
+          if [ "$SIZE" -lt 1000000 ] || [ "$SIZE" -gt 8000000 ]; then
+            echo "::error::Minified bundle is $SIZE bytes, outside the expected 1-8 MB range - refusing to deploy"
+            exit 1
+          fi
+
+      - name: Build Demo App
+        run: |
+          cd demo
+          cp ../bundles/redoc.standalone.js public/redoc.standalone.js
+          npm install --no-audit --no-fund
+          npm run lint
+          npm run build
+          ASSET=$(grep -o 'assets/index[^"]*\.js' dist/index.html | head -1)
+          if [ -z "$ASSET" ] || [ ! -f "dist/$ASSET" ]; then
+            echo "::error::dist/index.html does not reference an existing hashed JS asset"
+            exit 1
+          fi
+          if [ ! -f dist/404.html ] || [ ! -f dist/redoc.standalone.js ]; then
+            echo "::error::dist is missing 404.html or redoc.standalone.js"
+            exit 1
+          fi
+
+      - name: Checkout Pages Branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: gh-pages
+          path: ${{ env.PAGES_DIR }}
+
+      - name: Update 3.x Demo
+        run: |
+          cd ${{ env.PAGES_DIR }}
+          git switch -c ${{ env.DEMO_DEPLOY_BRANCH }}
+          rm -rf 3.x
+          mkdir 3.x
+          cp -a "$GITHUB_WORKSPACE/demo/dist/." 3.x/
+          cp 3.x/404.html 404.html
+
+      - name: Check for Changes
+        id: check
+        run: |
+          cd ${{ env.PAGES_DIR }}
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit. Skipping deploy."
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Force Push
+        if: steps.check.outputs.no_changes == 'false'
+        run: |
+          cd ${{ env.PAGES_DIR }}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          {
+            echo "chore: update 3.x demo to ${{ steps.source.outputs.version }} [demo-deploy]"
+            echo ""
+            echo "Source: ${{ github.sha }}"
+          } > /tmp/commit_msg.txt
+          git commit -F /tmp/commit_msg.txt
+          git push -f origin ${{ env.DEMO_DEPLOY_BRANCH }}
+
+      - name: Open Pull Request
+        if: steps.check.outputs.no_changes == 'false'
+        run: |
+          cd ${{ env.PAGES_DIR }}
+          PR_NUMBER=$(gh pr view ${{ env.DEMO_DEPLOY_BRANCH }} --json number,state -q 'select(.state == "OPEN") | .number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ]; then
+            echo "PR #$PR_NUMBER already exists and is open. Updating..."
+            gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER" -X PATCH -f title="$PR_TITLE" -f body="$PR_BODY" --silent
+            echo "View it here: https://github.com/${{ github.repository }}/pull/$PR_NUMBER"
+          else
+            echo "Creating new PR..."
+            gh pr create \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY" \
+              --base gh-pages \
+              --head ${{ env.DEMO_DEPLOY_BRANCH }}
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_TITLE: 'chore: update 3.x demo to ${{ steps.source.outputs.version }} [demo-deploy]'
+          PR_BODY: |
+            ## Automated 3.x Demo Update
+
+            Freshly built demo app and `redoc.standalone.js` for the `3.x/` directory.
+
+            ### Details
+            - **Source Commit**: ${{ github.sha }}
+            - **Engine Version**: ${{ steps.source.outputs.version }}
+
+            Merging this PR deploys it. The root `404.html` (site-wide SPA fallback)
+            is refreshed from the demo build.
+
+            ### Review checklist
+            - [ ] `3.x/index.html` and the root `404.html` reference the same hashed `assets/index-*.js`
+            - [ ] Demo works locally: check out this branch and serve the repo root
+
+            ---
+            *This is an automated PR created by the demo deploy workflow.*

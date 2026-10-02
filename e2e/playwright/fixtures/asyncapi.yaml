@@ -1,0 +1,1895 @@
+asyncapi: 3.0.0
+info:
+  title: WheelyFast - Ride Sharing Platform
+  version: 1.0.0
+  description: |-
+    WheelyFast is a real-time ride sharing service that seamlessly connects passengers with nearby drivers through an event-driven architecture. Our platform processes ride requests, driver location updates, payment transactions, and service notifications to provide a reliable and efficient transportation experience.
+
+    ### Key features of our platform:
+
+    * Request rides anytime, anywhere with real-time matching 🚗
+    * Track driver location and ride progress in real-time 🗺️
+    * Process secure payments automatically when rides complete 💳
+    * Rate drivers and provide feedback on your experience ⭐
+    * Receive promotions and special offers through notifications 📱
+
+    This AsyncAPI specification documents the event topics that power our distributed microservices ecosystem built on Kafka.
+  termsOfService: https://wheelyfast.io/terms
+  contact:
+    name: WheelyFast API Support
+    url: https://wheelyfast.io/support
+    email: api@wheelyfast.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  externalDocs:
+    description: Find more information about the WheelyFast API
+    url: https://developer.wheelyfast.io/docs
+
+servers:
+  production:
+    host: kafka.wheelyfast.io:9092
+    protocol: kafka
+    description: Production Kafka broker cluster
+    protocolVersion: '2.6.0'
+    pathname: /
+    title: Production WheelyFast Kafka Brokers
+    summary: Main production messaging brokers for the WheelyFast platform
+    variables:
+      region:
+        description: Geographic region for the broker cluster
+        default: us-east-1
+        enum:
+          - us-east-1
+          - us-west-2
+          - eu-central-1
+      environment:
+        description: Deployment environment
+        default: production
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://registry.wheelyfast.io'
+        schemaRegistryVendor: 'confluent'
+
+  staging:
+    host: staging-kafka.wheelyfast.io:9092
+    protocol: kafka
+    description: Staging Kafka broker cluster for pre-production testing
+    protocolVersion: '2.6.0'
+    pathname: /
+    title: Staging WheelyFast Kafka Brokers
+    summary: Pre-production messaging brokers for testing and verification
+    variables:
+      region:
+        description: Geographic region for the broker cluster
+        default: us-east-1
+        enum:
+          - us-east-1
+          - us-west-2
+      environment:
+        description: Deployment environment
+        default: staging
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://staging-registry.wheelyfast.io'
+        schemaRegistryVendor: 'confluent'
+
+channels:
+  ride-requests:
+    address: ride-requests-{region}
+    title: Ride Requests Topic
+    summary: Stream of passenger ride requests and cancellations events
+    description: |-
+      Primary topic for all ride requests submitted by passengers through the WheelyFast mobile app.
+      This critical topic handles the initial request flow, including new ride requests and any subsequent
+      cancellations before a driver has been matched.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Rides
+    messages:
+      requestRide:
+        $ref: '#/components/messages/requestRide'
+      cancelRideRequest:
+        $ref: '#/components/messages/cancelRideRequest'
+    bindings:
+      kafka:
+        topic: 'ride-requests-{region}'
+        partitions: 10
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete']
+          retention.ms: 604800000
+          retention.bytes: 1073741824
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      region:
+        description: Geographic region for the ride requests
+        enum: [na, eu, apac, latam]
+        default: na
+    externalDocs:
+      description: Documentation for ride request processing flow
+      url: https://developer.wheelyfast.io/docs/ride-requests
+
+  ride-matches:
+    address: ride-matches-{region}
+    title: Ride Matching Topic
+    summary: Event stream of ride-to-driver match events
+    description: |-
+      Critical topic handling the matching of passenger ride requests to available drivers.
+      Contains both successful matches and declined match events to enable proper ride assignment
+      and provide insights into driver preferences and matching efficiency.
+    servers:
+      - $ref: '#/servers/staging'
+    tags:
+      - name: Rides
+    messages:
+      driverMatch:
+        $ref: '#/components/messages/driverMatch'
+      matchDeclined:
+        $ref: '#/components/messages/matchDeclined'
+    bindings:
+      kafka:
+        topic: 'ride-matches-{region}'
+        partitions: 8
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete', 'compact']
+          retention.ms: 259200000
+          retention.bytes: 536870912
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      region:
+        description: Geographic region for the ride matches
+        enum: [na, eu, apac, latam]
+        default: na
+
+  ride-status:
+    address: ride-status-{environment}-{rideId}
+    title: Ride Status Topic
+    summary: Event stream of status updates for all active rides
+    description: |-
+      Comprehensive topic tracking the lifecycle of all rides from start to completion or cancellation.
+      Critical for tracking ride progress, generating metrics, and maintaining an audit trail of service delivery.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Rides
+    messages:
+      rideStarted:
+        $ref: '#/components/messages/rideStarted'
+      rideCompleted:
+        $ref: '#/components/messages/rideCompleted'
+      rideCancelled:
+        $ref: '#/components/messages/rideCancelled'
+    bindings:
+      kafka:
+        topic: 'ride-status-{environment}-{rideId}'
+        partitions: 12
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['compact']
+          retention.ms: 1209600000
+          retention.bytes: 2147483648
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      rideId:
+        description: Unique identifier for a specific ride
+      environment:
+        description: Deployment environment for the ride status
+        enum: [prod, dev, test]
+        default: prod
+
+  driver-location:
+    address: driver-location-{driverId}
+    title: Driver Location Topic
+    summary: Real-time event stream of driver location coordinates
+    description: High-volume topic tracking the real-time location of all active drivers in the WheelyFast network. This data powers the matching algorithm, ETA calculations, and map visualizations.
+    servers:
+      - $ref: '#/servers/staging'
+    messages:
+      locationUpdate:
+        $ref: '#/components/messages/locationUpdate'
+      driverStatusChange:
+        $ref: '#/components/messages/driverStatusChange'
+    bindings:
+      kafka:
+        topic: 'driver-location-{driverId}'
+        partitions: 20
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete']
+          retention.ms: 43200000
+          retention.bytes: 1073741824
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    externalDocs:
+      description: Technical details about location data processing
+      url: https://developer.wheelyfast.io/docs/location-tracking
+    parameters:
+      driverId:
+        description: Unique identifier for a specific driver
+
+  paymentsProcessing:
+    address: payments-{transactionType}
+    title: Payment Processing Topic
+    summary: Event stream of payment transaction events
+    description: Topic for payment processing events including authorizations, completions, and failures.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Payments
+    messages:
+      paymentAuthorized:
+        $ref: '#/components/messages/paymentAuthorized'
+      paymentCompleted:
+        $ref: '#/components/messages/paymentCompleted'
+      paymentFailed:
+        $ref: '#/components/messages/paymentFailed'
+    bindings:
+      kafka:
+        topic: 'payments-{transactionType}'
+        partitions: 10
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['compact']
+          retention.ms: 2592000000
+          retention.bytes: 2147483648
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      transactionType:
+        description: Type of payment transaction
+        enum: [auth, complete, refund]
+        default: complete
+
+  ratings:
+    address: ratings-{ratingDirection}
+    title: User Ratings Topic
+    summary: Event stream of driver and passenger ratings
+    description: Topic for collecting and processing user experience ratings submitted by drivers and passengers.
+    servers:
+      - $ref: '#/servers/production'
+    messages:
+      driverRating:
+        $ref: '#/components/messages/driverRating'
+      passengerRating:
+        $ref: '#/components/messages/passengerRating'
+    bindings:
+      kafka:
+        topic: 'ratings-{ratingDirection}'
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['compact']
+          retention.ms: 7776000000
+          retention.bytes: 1073741824
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      ratingDirection:
+        description: Direction of the rating (driver->passenger or passenger->driver)
+        enum: [to-driver, to-passenger]
+        default: to-driver
+
+  driver-notifications:
+    address: driver-notifications-{priority}
+    title: Driver Notification Topic
+    summary: Event stream of notifications directed to drivers
+    description: Topic for delivering various types of notifications to drivers including nearby ride requests and surge pricing alerts.
+    servers:
+      - $ref: '#/servers/staging'
+    tags:
+      - name: Notifications
+    messages:
+      nearbyRideRequest:
+        $ref: '#/components/messages/nearbyRideRequest'
+      highDemandNotification:
+        $ref: '#/components/messages/highDemandNotification'
+    bindings:
+      kafka:
+        topic: 'driver-notifications-{priority}'
+        partitions: 10
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete']
+          retention.ms: 86400000
+          retention.bytes: 536870912
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      priority:
+        description: Priority level of the notification
+        enum: [high, normal, low]
+        default: normal
+
+  passenger-notifications:
+    address: passenger-notifications-{type}
+    title: Passenger Notification Topic
+    summary: Event stream of notifications directed to passengers
+    description: Topic for delivering various types of notifications to passengers including driver arrivals and promotional offers.
+    servers:
+      - $ref: '#/servers/staging'
+    tags:
+      - name: Notifications
+    messages:
+      driverArrival:
+        $ref: '#/components/messages/driverArrival'
+      promotionNotification:
+        $ref: '#/components/messages/promotionNotification'
+    bindings:
+      kafka:
+        topic: 'passenger-notifications-{type}'
+        partitions: 10
+        replicas: 3
+        topicConfiguration:
+          cleanup.policy: ['delete']
+          retention.ms: 86400000
+          retention.bytes: 536870912
+          delete.retention.ms: 86400000
+          max.message.bytes: 1048576
+        bindingVersion: '0.4.0'
+    parameters:
+      type:
+        description: Type of notification being sent
+        enum: [service, marketing, safety]
+        default: service
+
+operations:
+  publishRideRequest:
+    action: send
+    channel:
+      $ref: '#/channels/ride-requests'
+    messages:
+      - $ref: '#/channels/ride-requests/messages/requestRide'
+    title: Produce Ride Request
+    summary: Passenger app produces a new ride request event
+    description: Produces event with pickup/dropoff locations and preferences. Starting point for the matching process.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Passenger app client identifier
+          default: 'passenger-app'
+        groupId:
+          type: string
+          description: Ride request producer group
+          default: 'ride-request-producer'
+
+  cancelRideRequest:
+    action: send
+    channel:
+      $ref: '#/channels/ride-requests'
+    messages:
+      - $ref: '#/channels/ride-requests/messages/cancelRideRequest'
+    title: Produce Ride Cancellation
+    summary: Passenger produces a cancellation event before driver assignment
+    description: Allows cancellation of unmatched ride requests with reason tracking for analytics.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Passenger app client identifier
+          default: 'passenger-app'
+        groupId:
+          type: string
+          description: Ride cancellation producer group
+          default: 'ride-cancellation-producer'
+
+  receiveRideRequest:
+    action: receive
+    channel:
+      $ref: '#/channels/ride-requests'
+    messages:
+      - $ref: '#/channels/ride-requests/messages/requestRide'
+    title: Consume Ride Requests
+    summary: Matching service consumes ride request events from topic
+    description: Core consumer service that processes request events to find optimal driver matches based on proximity and other factors.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Matching service client identifier
+          default: 'matching-service'
+        groupId:
+          type: string
+          description: Matching service consumer group
+          enum: ['WheelyFast-Matcher']
+
+  publishDriverMatch:
+    action: send
+    channel:
+      $ref: '#/channels/ride-matches'
+    messages:
+      - $ref: '#/channels/ride-matches/messages/driverMatch'
+    title: Produce Driver Match
+    summary: Matching service produces driver-passenger match events
+    description: Produces driver-to-passenger match events when optimal driver is identified. Critical connection point in the ride lifecycle.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Matching service client identifier
+          default: 'matching-service'
+        groupId:
+          type: string
+          description: Driver match producer group
+          default: 'driver-match-producer'
+
+  receiveDriverMatch:
+    action: receive
+    channel:
+      $ref: '#/channels/ride-matches'
+    messages:
+      - $ref: '#/channels/ride-matches/messages/driverMatch'
+    title: Consume Driver Match Events
+    summary: Driver app consumes match events and presents ride opportunities
+    description: Displays ride details to driver for acceptance or rejection within set timeframe. Time-sensitive event consumption for continuing ride flow.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Driver app client identifier
+          default: 'driver-app'
+        groupId:
+          type: string
+          description: Driver match consumer group
+          default: 'driver-match-consumer'
+
+  publishLocationUpdates:
+    action: send
+    channel:
+      $ref: '#/channels/driver-location'
+    messages:
+      - $ref: '#/channels/driver-location/messages/locationUpdate'
+    title: Produce Location Updates
+    summary: Driver app produces real-time location data events
+    description: High-volume event production that powers ETA calculations and ride matching algorithms. Critical for real-time map displays.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Driver app client identifier
+          default: 'driver-app'
+        groupId:
+          type: string
+          description: Location updates producer group
+          default: 'location-update-producer'
+
+  consumeLocationUpdates:
+    action: receive
+    channel:
+      $ref: '#/channels/driver-location'
+    messages:
+      - $ref: '#/channels/driver-location/messages/locationUpdate'
+    title: Consume Location Data
+    summary: Matching service consumes the event stream of driver locations
+    description: Maintains real-time driver location database for fast matching and accurate ETA calculations. Must process thousands of location events per second.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Location processing service client identifier
+          default: 'location-processor'
+        groupId:
+          type: string
+          description: Location data consumer group
+          default: 'location-consumer'
+
+  publishRideCompletion:
+    action: send
+    channel:
+      $ref: '#/channels/ride-status'
+    messages:
+      - $ref: '#/channels/ride-status/messages/rideCompleted'
+    title: Produce Ride Completion
+    summary: Driver app produces completion event upon reaching destination
+    description: Produces event with final ride details that triggers payment processing, ratings prompts, and driver availability update.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Driver app client identifier
+          default: 'driver-app'
+        groupId:
+          type: string
+          description: Ride completion producer group
+          default: 'ride-completion-producer'
+
+  receiveRideStatus:
+    action: receive
+    channel:
+      $ref: '#/channels/ride-status'
+    messages:
+      - $ref: '#/channels/ride-status/messages/rideStarted'
+      - $ref: '#/channels/ride-status/messages/rideCompleted'
+      - $ref: '#/channels/ride-status/messages/rideCancelled'
+    title: Consume Ride Status Events
+    summary: Service consumes ride lifecycle events for analytics
+    description: Consumes ride lifecycle events for dashboards, analytics and monitoring. Provides complete system activity view.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Monitoring service client identifier
+          default: 'monitoring-service'
+        groupId:
+          type: string
+          description: Ride monitoring consumer group
+          enum: ['WheelyFast-Monitor']
+
+  publishPaymentAuthorization:
+    action: send
+    channel:
+      $ref: '#/channels/paymentsProcessing'
+    messages:
+      - $ref: '#/components/messages/paymentAuthorized'
+    title: Produce Payment Authorization
+    summary: Payment service produces authorization events at ride start
+    description: Produces event when passenger payment method has sufficient funds before ride begins. Includes buffer amount for route changes.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Payment service client identifier
+          default: 'payment-service'
+        groupId:
+          type: string
+          description: Payment authorization producer group
+          default: 'payment-auth-producer'
+
+  processPaymentCompletion:
+    action: receive
+    channel:
+      $ref: '#/channels/paymentsProcessing'
+    messages:
+      - $ref: '#/channels/paymentsProcessing/messages/paymentCompleted'
+    title: Consume Payment Completion Events
+    summary: Financial system consumes successful payment transaction events
+    description: Consumes payment events for final processing, fee allocation, receipt generation, and financial record-keeping.
+    bindings:
+      kafka:
+        bindingVersion: '0.4.0'
+        clientId:
+          type: string
+          description: Financial service client identifier
+          default: 'financial-service'
+        groupId:
+          type: string
+          description: Payment processing consumer group
+          default: 'payment-processor'
+
+components:
+  messages:
+    requestRide:
+      name: requestRide
+      title: Ride Request
+      summary: A passenger requests a new ride with pickup and destination locations
+      description: Core message that initiates the ride flow with all necessary details to match with a driver.
+      headers:
+        type: object
+        properties:
+          requestId:
+            type: string
+            format: uuid
+            description: Unique identifier for tracking the request across services
+          timestamp:
+            type: string
+            format: date-time
+            description: Time when the request was generated
+      payload:
+        $ref: '#/components/schemas/RideRequest'
+      examples:
+        - name: standard-ride-request
+          summary: Example of a typical ride request for a standard vehicle
+          headers:
+            requestId: 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+            timestamp: '2023-05-15T17:32:28Z'
+          payload:
+            requestId: 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+            passengerId: 'user-123456'
+            pickupLocation:
+              latitude: 40.712776
+              longitude: -74.005974
+              address: '350 5th Ave, New York, NY 10118'
+              city: 'New York'
+              state: 'NY'
+              postalCode: '10118'
+              country: 'USA'
+            dropoffLocation:
+              latitude: 40.758896
+              longitude: -73.985130
+              address: '20 W 34th St, New York, NY 10001'
+              city: 'New York'
+              state: 'NY'
+              postalCode: '10001'
+              country: 'USA'
+            requestTime: '2023-05-15T17:32:28Z'
+            estimatedDistance: 3.2
+            estimatedDuration: 840
+            rideType: 'STANDARD'
+            specialRequests: ['LUGGAGE', 'WHEELCHAIR_ACCESSIBLE']
+        - name: premium-airport-ride
+          summary: Example of a premium ride request to the airport
+          headers:
+            requestId: 'a6c51ef8-9d37-42c7-8411-85d1d99203f0'
+            timestamp: '2023-06-20T04:15:12Z'
+          payload:
+            requestId: 'a6c51ef8-9d37-42c7-8411-85d1d99203f0'
+            passengerId: 'user-789012'
+            pickupLocation:
+              latitude: 40.762190
+              longitude: -73.983556
+              address: '123 Park Avenue, New York, NY 10065'
+              city: 'New York'
+              state: 'NY'
+              postalCode: '10065'
+              country: 'USA'
+            dropoffLocation:
+              latitude: 40.641311
+              longitude: -73.778139
+              address: 'JFK Airport Terminal 4, Jamaica, NY 11430'
+              city: 'New York'
+              state: 'NY'
+              postalCode: '11430'
+              country: 'USA'
+            requestTime: '2023-06-20T04:15:12Z'
+            estimatedDistance: 21.7
+            estimatedDuration: 2280
+            rideType: 'PREMIUM'
+            specialRequests: ['EXTRA_LUGGAGE', 'MEET_AND_GREET']
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Passenger ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Technical details about ride request payload structure
+        url: https://developer.wheelyfast.io/docs/messages/ride-request
+
+    cancelRideRequest:
+      name: cancelRideRequest
+      title: Ride Request Cancellation
+      summary: A passenger cancels a previously submitted ride request
+      description: Cancellation message for a ride that hasn't been accepted by a driver yet, including reason data.
+      payload:
+        $ref: '#/components/schemas/RideRequestCancellation'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Request ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    driverMatch:
+      name: driverMatch
+      title: Driver Match
+      summary: Notification of a successful match between driver and ride request
+      description: Contains details about the matched driver, vehicle, and estimated arrival time for the passenger.
+      headers:
+        type: object
+        properties:
+          matchId:
+            type: string
+            format: uuid
+            description: Unique identifier for this specific driver-to-ride match
+          processingTimeMs:
+            type: integer
+            description: Time taken to compute the match in milliseconds
+            example: 235
+      payload:
+        $ref: '#/components/schemas/DriverMatch'
+      examples:
+        - name: quick-match-nearby-driver
+          summary: Example of a ride match with a driver very close to pickup
+          headers:
+            matchId: '58de8714-4dc5-4275-8f32-71a8c4b4ca3a'
+            processingTimeMs: 187
+          payload:
+            matchId: '58de8714-4dc5-4275-8f32-71a8c4b4ca3a'
+            requestId: 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+            driverId: 'driver-456789'
+            estimatedArrival: '2023-05-15T17:38:45Z'
+            driverLocation:
+              latitude: 40.711945
+              longitude: -74.007719
+              address: '80 Chambers St, New York, NY 10007'
+            driverRating: 4.87
+            vehicleDetails:
+              make: 'Toyota'
+              model: 'Camry'
+              year: 2021
+              color: 'Silver'
+              licensePlate: 'ABC1234'
+              vehicleType: 'SEDAN'
+        - name: busy-peak-time-match
+          summary: Example of a match during high-demand period with longer wait time
+          headers:
+            matchId: 'ce529c6d-afb3-49b0-89f9-318a4ce5d45f'
+            processingTimeMs: 358
+          payload:
+            matchId: 'ce529c6d-afb3-49b0-89f9-318a4ce5d45f'
+            requestId: 'a6c51ef8-9d37-42c7-8411-85d1d99203f0'
+            driverId: 'driver-505050'
+            estimatedArrival: '2023-06-20T04:28:30Z'
+            driverLocation:
+              latitude: 40.751154
+              longitude: -73.989208
+              address: '350 W 31st St, New York, NY 10001'
+            driverRating: 4.92
+            vehicleDetails:
+              make: 'Cadillac'
+              model: 'Escalade'
+              year: 2022
+              color: 'Black'
+              licensePlate: 'LUX5678'
+              vehicleType: 'LUXURY'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Request ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Driver matching algorithm details
+        url: https://developer.wheelyfast.io/docs/matching-algorithm
+
+    matchDeclined:
+      name: matchDeclined
+      title: Match Declined
+      summary: Driver has declined a proposed ride match
+      description: Sent when a driver chooses not to accept a matched ride request, with decline reason.
+      payload:
+        $ref: '#/components/schemas/MatchDeclined'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Match ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    rideStarted:
+      name: rideStarted
+      title: Ride Started
+      summary: Driver has started the ride with passenger onboard
+      description: Marks the official start of the metered ride when passenger is picked up. Includes start location and timestamp.
+      payload:
+        $ref: '#/components/schemas/RideStarted'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    rideCompleted:
+      name: rideCompleted
+      title: Ride Completed
+      summary: Driver has completed the ride at destination
+      description: Indicates successful ride completion with final details like route, duration, distance, and fare.
+      payload:
+        $ref: '#/components/schemas/RideCompleted'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Ride completion business rules
+        url: https://developer.wheelyfast.io/docs/ride-completion
+
+    rideCancelled:
+      name: rideCancelled
+      title: Ride Cancelled
+      summary: A ride in progress has been cancelled
+      description: Indicates a ride was cancelled after matching but before completion. Includes cancellation reason and any fees.
+      payload:
+        $ref: '#/components/schemas/RideCancelled'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    locationUpdate:
+      name: locationUpdate
+      title: Driver Location Update
+      summary: Real-time update of driver's current location
+      description: High-frequency GPS position updates sent by driver app. Critical for ETA calculations and ride tracking.
+      headers:
+        type: object
+        properties:
+          deviceId:
+            type: string
+            description: Unique identifier for the device sending the location
+          accuracyMeters:
+            type: number
+            format: float
+            description: GPS accuracy in meters
+            example: 5.2
+      payload:
+        $ref: '#/components/schemas/LocationUpdate'
+      examples:
+        - name: active-ride-location-update
+          summary: Example of a location update from a driver during an active ride
+          headers:
+            deviceId: 'iphone-12-pro-XYZ789'
+            accuracyMeters: 3.8
+          payload:
+            driverId: 'driver-456789'
+            location:
+              latitude: 40.735657
+              longitude: -73.990319
+            timestamp: '2023-05-15T18:12:34Z'
+            heading: 270.5
+            speed: 28.4
+            rideId: 'ride-abcdef123456'
+        - name: available-driver-location-update
+          summary: Example of a location update from an available driver not on a ride
+          headers:
+            deviceId: 'samsung-galaxy-s22-ABC123'
+            accuracyMeters: 4.2
+          payload:
+            driverId: 'driver-987654'
+            location:
+              latitude: 40.758000
+              longitude: -73.975544
+            timestamp: '2023-06-22T13:45:21Z'
+            heading: 180.0
+            speed: 15.7
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Driver ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Location tracking technical specifications
+        url: https://developer.wheelyfast.io/docs/location-tracking
+
+    driverStatusChange:
+      name: driverStatusChange
+      title: Driver Status Change
+      summary: Driver has changed their availability status
+      description: Indicates a driver has changed status between online, offline, busy, or on break. Affects matching availability.
+      payload:
+        $ref: '#/components/schemas/DriverStatusChange'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Driver ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    paymentAuthorized:
+      name: paymentAuthorized
+      title: Payment Authorized
+      summary: Pre-authorization hold placed on passenger's payment method
+      description: Confirms a payment method has been authorized before ride begins. Contains authorization details and amount.
+      payload:
+        $ref: '#/components/schemas/PaymentAuthorized'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Payment processing flows
+        url: https://developer.wheelyfast.io/docs/payments
+
+    paymentCompleted:
+      name: paymentCompleted
+      title: Payment Completed
+      summary: Final payment has been successfully processed
+      description: Confirms successful charge to passenger's payment method. Includes final amount, tip, and transaction details.
+      headers:
+        type: object
+        properties:
+          transactionId:
+            type: string
+            format: uuid
+            description: Unique identifier for the payment transaction
+          paymentGateway:
+            type: string
+            description: Payment processor that handled the transaction
+            example: 'STRIPE'
+      payload:
+        $ref: '#/components/schemas/PaymentCompleted'
+      examples:
+        - name: standard-ride-payment
+          summary: Example of a payment for a typical short ride
+          headers:
+            transactionId: '742d7173-9eeb-4fbf-8c64-d7f5a56e0f15'
+            paymentGateway: 'STRIPE'
+          payload:
+            rideId: 'ride-abcdef123456'
+            passengerId: 'user-123456'
+            paymentMethodId: 'pm_card_visa_4242'
+            transactionId: '742d7173-9eeb-4fbf-8c64-d7f5a56e0f15'
+            finalAmount:
+              amount: 18.75
+              currency: 'USD'
+              breakdown:
+                baseFare: 10.00
+                distanceFee: 6.25
+                timeFee: 1.50
+                surge: 0.00
+                tax: 0.50
+                serviceFee: 0.50
+            timestamp: '2023-05-15T18:45:12Z'
+            tip:
+              amount: 3.75
+              currency: 'USD'
+        - name: long-distance-premium-payment
+          summary: Example of a payment for a premium long-distance ride with high tip
+          headers:
+            transactionId: '9b35f071-d5c0-4487-b76a-1e79e7e5ccc8'
+            paymentGateway: 'PAYPAL'
+          payload:
+            rideId: 'ride-zyx987654321'
+            passengerId: 'user-789012'
+            paymentMethodId: 'paypal_account_12345'
+            transactionId: '9b35f071-d5c0-4487-b76a-1e79e7e5ccc8'
+            finalAmount:
+              amount: 87.50
+              currency: 'USD'
+              breakdown:
+                baseFare: 20.00
+                distanceFee: 48.00
+                timeFee: 12.50
+                surge: 1.5
+                tax: 3.00
+                serviceFee: 2.50
+            timestamp: '2023-06-20T06:12:45Z'
+            tip:
+              amount: 17.50
+              currency: 'USD'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    paymentFailed:
+      name: paymentFailed
+      title: Payment Failed
+      summary: Payment processing failed with an error
+      description: Indicates a payment attempt was unsuccessful. Contains error code and details for resolution.
+      payload:
+        $ref: '#/components/schemas/PaymentFailed'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    driverRating:
+      name: driverRating
+      title: Driver Rating
+      summary: Passenger has submitted a rating for their driver
+      description: Post-ride feedback from passenger about driver performance. Contains star rating and optional feedback categories.
+      payload:
+        $ref: '#/components/schemas/DriverRating'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Rating system documentation
+        url: https://developer.wheelyfast.io/docs/ratings
+
+    passengerRating:
+      name: passengerRating
+      title: Passenger Rating
+      summary: Driver has submitted a rating for their passenger
+      description: Post-ride feedback from driver about passenger behavior. Contains star rating and optional comments.
+      payload:
+        $ref: '#/components/schemas/PassengerRating'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Ride ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    nearbyRideRequest:
+      name: nearbyRideRequest
+      title: Nearby Ride Request
+      summary: Alert to driver about a ride request in their vicinity
+      description: Notifies available drivers of nearby requests that need matching. Includes distance and potential earnings.
+      payload:
+        $ref: '#/components/schemas/NearbyRideRequest'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Driver ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    highDemandNotification:
+      name: highDemandNotification
+      title: High Demand Notification
+      summary: Alert about surge pricing areas with high demand
+      description: Informs drivers about high-demand areas with surge pricing. Helps optimize driver positioning for better earnings.
+      payload:
+        $ref: '#/components/schemas/HighDemandNotification'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Area ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Surge pricing algorithm documentation
+        url: https://developer.wheelyfast.io/docs/surge-pricing
+
+    driverArrival:
+      name: driverArrival
+      title: Driver Arrival Notification
+      summary: Alert that driver is approaching pickup location
+      description: Notifies passenger that their driver is arriving at the pickup point. Includes current location and ETA.
+      payload:
+        $ref: '#/components/schemas/DriverArrival'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Passenger ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+
+    promotionNotification:
+      name: promotionNotification
+      title: Promotion Notification
+      summary: Marketing message about available promotions or discounts
+      description: Delivers targeted promotional offers to passengers. Includes discount details and expiration information.
+      headers:
+        type: object
+        properties:
+          campaignId:
+            type: string
+            description: Unique identifier for the marketing campaign
+          marketingChannel:
+            type: string
+            enum: ['IN_APP', 'PUSH', 'EMAIL', 'SMS']
+            description: Delivery channel for the promotion
+      payload:
+        $ref: '#/components/schemas/PromotionNotification'
+      examples:
+        - name: weekend-discount-promo
+          summary: Example of a weekend discount promotion for loyal customers
+          headers:
+            campaignId: 'weekend-special-2023-05'
+            marketingChannel: 'PUSH'
+          payload:
+            promotionId: 'promo-123456'
+            passengerId: 'user-123456'
+            title: 'Weekend Special: 25% Off Your Next Ride!'
+            description: 'Thank you for being a loyal WheelyFast customer! Enjoy 25% off your next ride this weekend. Limited time offer.'
+            discountPercentage: 25.0
+            validUntil: '2023-05-21T23:59:59Z'
+            promoCode: 'WEEKEND25'
+        - name: new-area-launch-promo
+          summary: Example of a flat-rate discount for service launch in a new area
+          headers:
+            campaignId: 'brooklyn-launch-2023'
+            marketingChannel: 'EMAIL'
+          payload:
+            promotionId: 'promo-789012'
+            passengerId: 'user-789012'
+            title: 'WheelyFast Now in Brooklyn - $10 Off Your First Ride!'
+            description: "We're excited to announce that WheelyFast is now available in Brooklyn! To celebrate, enjoy $10 off your first ride in the area."
+            discountAmount:
+              amount: 10.00
+              currency: 'USD'
+            validUntil: '2023-07-31T23:59:59Z'
+            promoCode: 'BROOKLYN10'
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Passenger ID
+          schemaIdLocation: 'value'
+          schemaIdPayloadEncoding: 'confluent'
+          bindingVersion: '0.4.0'
+      externalDocs:
+        description: Promotion targeting documentation
+        url: https://developer.wheelyfast.io/docs/promotions
+
+  schemas:
+    RideRequest:
+      type: object
+      required:
+        - requestId
+        - passengerId
+        - pickupLocation
+        - dropoffLocation
+        - requestTime
+      properties:
+        requestId:
+          type: string
+          format: uuid
+          description: Unique identifier for this specific ride request
+        passengerId:
+          type: string
+          description: Identifier of the passenger who initiated the request
+        pickupLocation:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates and address details for passenger pickup
+        dropoffLocation:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates and address details for passenger destination
+        requestTime:
+          type: string
+          format: date-time
+          description: Timestamp when the ride request was submitted by the passenger
+        estimatedDistance:
+          type: number
+          format: float
+          description: Predicted distance of the ride in kilometers
+        estimatedDuration:
+          type: integer
+          format: int32
+          description: Predicted duration of the ride in seconds
+        rideType:
+          type: string
+          enum: [STANDARD, PREMIUM, XL, ELECTRIC]
+          description: Category of vehicle requested by the passenger
+        specialRequests:
+          type: array
+          items:
+            type: string
+          description: Additional accommodations or services requested by the passenger
+
+    RideRequestCancellation:
+      type: object
+      required:
+        - requestId
+        - passengerId
+        - cancellationTime
+        - reason
+      properties:
+        requestId:
+          type: string
+          format: uuid
+          description: Unique identifier of the original ride request being cancelled
+        passengerId:
+          type: string
+          description: Identifier of the passenger who initiated the cancellation
+        cancellationTime:
+          type: string
+          format: date-time
+          description: Timestamp when the cancellation was submitted
+        reason:
+          type: string
+          enum: [CHANGED_MIND, DRIVER_DELAY, FOUND_ALTERNATIVE, OTHER]
+          description: Standardized category for the cancellation reason
+        reasonDetails:
+          type: string
+          description: Additional free-form text explaining the cancellation reason
+
+    DriverMatch:
+      type: object
+      required:
+        - matchId
+        - requestId
+        - driverId
+        - estimatedArrival
+      properties:
+        matchId:
+          type: string
+          format: uuid
+          description: Unique identifier for this specific driver-to-ride match
+        requestId:
+          type: string
+          format: uuid
+          description: Reference to the original ride request this match fulfills
+        driverId:
+          type: string
+          description: Identifier of the driver who was matched to the request
+        estimatedArrival:
+          type: string
+          format: date-time
+          description: Expected time when the driver will arrive at the pickup location
+        driverLocation:
+          $ref: '#/components/schemas/Location'
+          description: Current geographic coordinates of the driver at time of matching
+        driverRating:
+          type: number
+          format: float
+          description: Average rating of the driver on a 1-5 scale
+        vehicleDetails:
+          $ref: '#/components/schemas/VehicleDetails'
+          description: Information about the driver's vehicle make, model, and identifiers
+
+    MatchDeclined:
+      type: object
+      required:
+        - matchId
+        - driverId
+        - declineTime
+        - reason
+      properties:
+        matchId:
+          type: string
+          format: uuid
+          description: Unique identifier of the match that was declined
+        driverId:
+          type: string
+          description: Identifier of the driver who declined the match
+        declineTime:
+          type: string
+          format: date-time
+          description: Timestamp when the driver declined the match
+        reason:
+          type: string
+          enum: [DISTANCE_TOO_FAR, DESTINATION_UNDESIRABLE, TRAFFIC, END_OF_SHIFT, OTHER]
+          description: Standardized category for why the match was declined
+
+    RideStarted:
+      type: object
+      required:
+        - rideId
+        - requestId
+        - driverId
+        - passengerId
+        - startTime
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier for the ongoing ride
+        requestId:
+          type: string
+          format: uuid
+          description: Reference to the original ride request
+        driverId:
+          type: string
+          description: Identifier of the driver providing the ride
+        passengerId:
+          type: string
+          description: Identifier of the passenger receiving the ride
+        startTime:
+          type: string
+          format: date-time
+          description: Timestamp when the ride officially began
+        startLocation:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates where the ride was initiated
+
+    RideCompleted:
+      type: object
+      required:
+        - rideId
+        - driverId
+        - passengerId
+        - completionTime
+        - finalFare
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier for the completed ride
+        driverId:
+          type: string
+          description: Identifier of the driver who provided the ride
+        passengerId:
+          type: string
+          description: Identifier of the passenger who received the ride
+        completionTime:
+          type: string
+          format: date-time
+          description: Timestamp when the ride was marked as complete
+        endLocation:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates where the ride ended
+        finalFare:
+          $ref: '#/components/schemas/Fare'
+          description: Complete fare details including amount, currency, and breakdown
+        route:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+          description: Series of geographic coordinates showing the full ride path
+        actualDistance:
+          type: number
+          format: float
+          description: Total distance covered during the ride in kilometers
+        actualDuration:
+          type: integer
+          format: int32
+          description: Total time from ride start to completion in seconds
+
+    RideCancelled:
+      type: object
+      required:
+        - rideId
+        - cancelledBy
+        - cancellationTime
+        - reason
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride that was cancelled
+        cancelledBy:
+          type: string
+          enum: [PASSENGER, DRIVER, SYSTEM]
+          description: Who initiated the cancellation of the active ride
+        cancellerId:
+          type: string
+          description: Specific identifier of the person or system that cancelled the ride
+        cancellationTime:
+          type: string
+          format: date-time
+          description: Timestamp when the ride was cancelled
+        reason:
+          type: string
+          description: Explanation for why the ride was cancelled
+        cancellationFee:
+          $ref: '#/components/schemas/Fare'
+          description: Fee charged to the passenger for cancelling the ride, if applicable
+
+    LocationUpdate:
+      type: object
+      required:
+        - driverId
+        - location
+        - timestamp
+      properties:
+        driverId:
+          type: string
+          description: Identifier of the driver whose location is being updated
+        location:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates of the driver's current position
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the location data was captured by the device
+        heading:
+          type: number
+          format: float
+          description: Direction of travel in degrees (0-359, where 0 is north)
+        speed:
+          type: number
+          format: float
+          description: Current speed in kilometers per hour
+        rideId:
+          type: string
+          format: uuid
+          description: Identifier of the active ride associated with this location update, if applicable
+
+    PromotionNotification:
+      type: object
+      required:
+        - promotionId
+        - passengerId
+        - title
+        - description
+        - validUntil
+      properties:
+        promotionId:
+          type: string
+          description: Unique identifier for this specific promotional offer
+        passengerId:
+          type: string
+          description: Identifier of the passenger receiving the promotion
+        title:
+          type: string
+          description: Short headline for the promotional offer
+        description:
+          type: string
+          description: Detailed explanation of the promotion and its benefits
+        discountAmount:
+          $ref: '#/components/schemas/Fare'
+          description: Fixed monetary discount provided by this promotion
+        discountPercentage:
+          type: number
+          format: float
+          description: Percentage discount provided by this promotion
+        validUntil:
+          type: string
+          format: date-time
+          description: Expiration date and time for the promotional offer
+        promoCode:
+          type: string
+          description: Code that the passenger must enter to redeem the promotion
+
+    Location:
+      type: object
+      required:
+        - latitude
+        - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+          description: North-south position coordinate (in decimal degrees)
+        longitude:
+          type: number
+          format: double
+          description: East-west position coordinate (in decimal degrees)
+        address:
+          type: string
+          description: Street address in human-readable format
+        city:
+          type: string
+          description: City or municipality name
+        state:
+          type: string
+          description: State, province, or administrative region
+        postalCode:
+          type: string
+          description: Postal or ZIP code
+        country:
+          type: string
+          description: Country name or ISO country code
+
+    VehicleDetails:
+      type: object
+      required:
+        - make
+        - model
+        - color
+        - licensePlate
+      properties:
+        make:
+          type: string
+          description: Vehicle manufacturer brand
+        model:
+          type: string
+          description: Specific model name of the vehicle
+        year:
+          type: integer
+          description: Manufacturing year of the vehicle
+        color:
+          type: string
+          description: Primary color of the vehicle exterior
+        licensePlate:
+          type: string
+          description: Vehicle registration plate number
+        vehicleType:
+          type: string
+          enum: [SEDAN, SUV, VAN, LUXURY]
+          description: Classification of vehicle size and type
+
+    Fare:
+      type: object
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          type: number
+          format: float
+        currency:
+          type: string
+        breakdown:
+          type: object
+          properties:
+            baseFare:
+              type: number
+              format: float
+            distanceFee:
+              type: number
+              format: float
+            timeFee:
+              type: number
+              format: float
+            surge:
+              type: number
+              format: float
+            tax:
+              type: number
+              format: float
+            serviceFee:
+              type: number
+              format: float
+
+    DriverStatusChange:
+      type: object
+      required:
+        - driverId
+        - status
+        - timestamp
+      properties:
+        driverId:
+          type: string
+          description: Unique identifier of the driver whose status is changing
+        status:
+          type: string
+          enum: [ONLINE, OFFLINE, BUSY, ON_BREAK]
+          description: Current availability state of the driver
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the status change occurred
+        location:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates of the driver when status was updated
+        plannedShiftEnd:
+          type: string
+          format: date-time
+          description: Expected time when the driver plans to end their shift
+
+    PaymentAuthorized:
+      type: object
+      required:
+        - rideId
+        - passengerId
+        - paymentMethodId
+        - authorizedAmount
+        - timestamp
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride this payment authorization is for
+        passengerId:
+          type: string
+          description: Identifier of the passenger whose payment method is being authorized
+        paymentMethodId:
+          type: string
+          description: Identifier of the specific payment method being used
+        authorizationId:
+          type: string
+          description: Unique reference for this payment authorization from the payment processor
+        authorizedAmount:
+          $ref: '#/components/schemas/Fare'
+          description: Maximum amount that has been pre-authorized for this ride
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the payment authorization was processed
+
+    PaymentCompleted:
+      type: object
+      required:
+        - rideId
+        - passengerId
+        - paymentMethodId
+        - transactionId
+        - finalAmount
+        - timestamp
+        - tip
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride this payment is for
+        passengerId:
+          type: string
+          description: Identifier of the passenger who made the payment
+        paymentMethodId:
+          type: string
+          description: Identifier of the specific payment method used
+        transactionId:
+          type: string
+          format: uuid
+          description: Unique reference for this payment transaction from the payment processor
+        finalAmount:
+          $ref: '#/components/schemas/Fare'
+          description: Total amount charged for the completed ride
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the payment was successfully processed
+        tip:
+          $ref: '#/components/schemas/Fare'
+          description: Optional gratuity amount added by the passenger
+
+    PaymentFailed:
+      type: object
+      required:
+        - rideId
+        - passengerId
+        - paymentMethodId
+        - errorCode
+        - timestamp
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride for which payment failed
+        passengerId:
+          type: string
+          description: Identifier of the passenger whose payment could not be processed
+        paymentMethodId:
+          type: string
+          description: Identifier of the payment method that failed
+        errorCode:
+          type: string
+          description: Standardized error code from the payment processor
+        errorMessage:
+          type: string
+          description: Human-readable description of the payment failure
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the payment failure occurred
+        attemptedAmount:
+          $ref: '#/components/schemas/Fare'
+          description: Amount that the system attempted to charge
+
+    DriverRating:
+      type: object
+      required:
+        - rideId
+        - driverId
+        - passengerId
+        - rating
+        - timestamp
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride that was rated
+        driverId:
+          type: string
+          description: Identifier of the driver who was rated
+        passengerId:
+          type: string
+          description: Identifier of the passenger who submitted the rating
+        rating:
+          type: object
+          required:
+            - value
+            - type
+          properties:
+            value:
+              type: integer
+              minimum: 1
+              maximum: 5
+              description: Numeric rating from 1 (poor) to 5 (excellent)
+            type:
+              oneOf:
+                - type: object
+                  required:
+                    - userType
+                    - behaviorMetrics
+                  properties:
+                    userType:
+                      type: string
+                      enum: [DRIVER, PASSENGER]
+                      description: Type of user being rated
+                    behaviorMetrics:
+                      type: object
+                      properties:
+                        punctuality:
+                          type: integer
+                          minimum: 1
+                          maximum: 5
+                        communication:
+                          type: integer
+                          minimum: 1
+                          maximum: 5
+                        courtesy:
+                          type: integer
+                          minimum: 1
+                          maximum: 5
+                    additionalNotes:
+                      type: string
+                      description: Specific notes about user behavior
+                - type: null
+            timestamp:
+              type: string
+              format: date-time
+              description: When the rating was submitted
+            feedback:
+              type: string
+              description: Optional detailed feedback about the rating
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the rating was submitted
+        comment:
+          type: string
+          description: Optional text feedback provided with the rating
+        categories:
+          type: array
+          items:
+            type: string
+            enum: [CLEANLINESS, COURTESY, DRIVING, TIMELINESS, CONVERSATION]
+          description: Specific aspects of the service that the passenger rated positively
+
+    PassengerRating:
+      type: object
+      required:
+        - rideId
+        - driverId
+        - passengerId
+        - rating
+        - timestamp
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride that was rated
+        driverId:
+          type: string
+          description: Identifier of the driver who submitted the rating
+        passengerId:
+          type: string
+          description: Identifier of the passenger who was rated
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Numeric rating from 1 (poor) to 5 (excellent)
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the rating was submitted
+        comment:
+          type: string
+          description: Optional text feedback provided with the rating
+        categories:
+          type: array
+          items:
+            type: string
+            enum: [PUNCTUALITY, COURTESY, CLEANLINESS, COMMUNICATION]
+          description: Specific aspects of the passenger's behavior that the driver rated positively
+
+    NearbyRideRequest:
+      type: object
+      required:
+        - driverId
+        - requestId
+        - pickupLocation
+        - estimatedDistance
+        - estimatedEarnings
+      properties:
+        driverId:
+          type: string
+          description: Identifier of the driver receiving this nearby ride opportunity
+        requestId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride request that needs a driver
+        pickupLocation:
+          $ref: '#/components/schemas/Location'
+          description: Geographic coordinates where the passenger is waiting
+        estimatedDistance:
+          type: number
+          format: float
+          description: Distance in kilometers from driver's current location to pickup point
+        estimatedEarnings:
+          $ref: '#/components/schemas/Fare'
+          description: Projected earnings the driver would make from accepting this ride
+        expirationTime:
+          type: string
+          format: date-time
+          description: Time after which this ride request offer is no longer valid
+
+    HighDemandNotification:
+      type: object
+      required:
+        - areaId
+        - multiplier
+        - timestamp
+      properties:
+        areaId:
+          type: string
+          description: Identifier for the geographic area with high demand
+        centerLocation:
+          $ref: '#/components/schemas/Location'
+          description: Central coordinates of the high-demand area
+        radius:
+          type: number
+          format: float
+          description: Size of the high-demand zone in kilometers from center point
+        multiplier:
+          type: number
+          format: float
+          description: Surge pricing multiplier currently in effect
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when this high demand notification was generated
+        estimatedDuration:
+          type: integer
+          format: int32
+          description: Expected duration of the high demand period in minutes
+
+    DriverArrival:
+      type: object
+      required:
+        - rideId
+        - passengerId
+        - driverId
+        - estimatedArrivalTime
+      properties:
+        rideId:
+          type: string
+          format: uuid
+          description: Unique identifier of the ride that the driver is arriving for
+        passengerId:
+          type: string
+          description: Identifier of the passenger waiting for pickup
+        driverId:
+          type: string
+          description: Identifier of the driver approaching the pickup location
+        estimatedArrivalTime:
+          type: string
+          format: date-time
+          description: Projected time when the driver will reach the pickup location
+        driverLocation:
+          $ref: '#/components/schemas/Location'
+          description: Current geographic coordinates of the driver
+        distance:
+          type: number
+          format: float
+          description: Remaining distance to pickup point in kilometers
+
+  tags:
+    Notifications:
+      name: Notifications
+      description: Real-time notification events delivered to drivers and passengers for service updates, promotions, and ride status changes
+    Payments:
+      name: Payments
+      description: Financial transaction events including payment authorization, processing, completion, and failure handling
+    Rides:
+      name: Rides
+      description: Core ride lifecycle events from initial request through matching, status updates, completion, and post-ride feedback

@@ -1,52 +1,76 @@
-import type { Source, Document } from '@redocly/openapi-core';
-// eslint-disable-next-line import/no-internal-modules
-import type { ResolvedConfig } from '@redocly/openapi-core/lib/config';
+import { createEmptyRedoclyConfig } from '@redocly/openapi-core/lib/bundle-oas';
+import { bundle, type Document } from '@redocly/openapi-core';
 
-// eslint-disable-next-line import/no-internal-modules
-import { bundle } from '@redocly/openapi-core/lib/bundle';
-// eslint-disable-next-line import/no-internal-modules
-import { Config } from '@redocly/openapi-core/lib/config/config';
+import type { RedocConfig } from '@redocly/config';
+import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
 
-/* tslint:disable-next-line:no-implicit-dependencies */
-import { convertObj } from 'swagger2openapi';
-import { OpenAPISpec } from '../types';
-import { IS_BROWSER } from './dom';
+import { IS_BROWSER } from '@redocly/theme/core/openapi';
 
-export async function loadAndBundleSpec(specUrlOrObject: object | string): Promise<OpenAPISpec> {
-  const config = new Config({} as ResolvedConfig);
-  const bundleOpts = {
+import { convertSwagger2OpenAPI } from '../adapters/utils/convertSwagger2OpenAPI.js';
+import { DefinitionLoadError, errorMessage } from './definitionLoadError.js';
+
+export async function loadOpenapiConfig(): Promise<RedocConfig> {
+  try {
+    const config = createEmptyRedoclyConfig();
+    return (config?.resolvedConfig.openapi || {}) as RedocConfig;
+  } catch {
+    return {} as RedocConfig;
+  }
+}
+
+export async function loadAndBundleDefinition(
+  specUrlOrObject: Record<string, unknown> | string,
+): Promise<OpenAPIDefinition> {
+  const config = createEmptyRedoclyConfig();
+
+  const bundleOpts: Parameters<typeof bundle>[0] = {
     config,
-    base: IS_BROWSER ? window.location.href : process.cwd(),
+    base: IS_BROWSER
+      ? window.location.origin
+      : typeof (globalThis as unknown as { process: { cwd: () => string } }).process !== 'undefined'
+        ? (globalThis as unknown as { process: { cwd: () => string } }).process.cwd()
+        : '',
   };
 
+  let lastStatus: number | undefined;
   if (IS_BROWSER) {
-    config.resolve.http.customFetch = global.fetch;
+    const browserFetch = (globalThis as unknown as { fetch: typeof fetch }).fetch;
+    const trackedFetch = async (...args: Parameters<typeof fetch>): Promise<Response> => {
+      const response = await browserFetch(...args);
+      lastStatus = response.status;
+      return response;
+    };
+    config.resolve.http.customFetch = trackedFetch as typeof config.resolve.http.customFetch;
   }
 
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
-    bundleOpts['doc'] = {
-      source: { absoluteRef: '' } as Source,
-      parsed: specUrlOrObject,
-    } as Document;
+    bundleOpts.doc = createParsedDocument(specUrlOrObject) as unknown as Document;
   } else {
-    bundleOpts['ref'] = specUrlOrObject;
+    bundleOpts.ref = specUrlOrObject;
   }
 
-  const {
-    bundle: { parsed },
-  } = await bundle(bundleOpts);
+  let parsed: ParsedDocument;
+  try {
+    ({
+      bundle: { parsed },
+    } = (await bundle(bundleOpts)) as { bundle: { parsed: ParsedDocument } });
+  } catch (error) {
+    const message = errorMessage(error);
+    const stage =
+      lastStatus !== undefined && lastStatus >= 400
+        ? 'fetch'
+        : /yaml|json|parse|unexpected token/i.test(message)
+          ? 'parse'
+          : 'bundle';
+    throw new DefinitionLoadError(stage, message, lastStatus);
+  }
+
   return parsed.swagger !== undefined ? convertSwagger2OpenAPI(parsed) : parsed;
 }
 
-export function convertSwagger2OpenAPI(spec: any): Promise<OpenAPISpec> {
-  console.warn('[ReDoc Compatibility mode]: Converting OpenAPI 2.0 to OpenAPI 3.0');
-  return new Promise<OpenAPISpec>((resolve, reject) =>
-    convertObj(spec, { patch: true, warnOnly: true, text: '{}', anchors: true }, (err, res) => {
-      // TODO: log any warnings
-      if (err) {
-        return reject(err);
-      }
-      resolve(res && (res.openapi as any));
-    }),
-  );
+function createParsedDocument(specUrlOrObject: Record<string, unknown> | string) {
+  return {
+    source: { absoluteRef: '' },
+    parsed: specUrlOrObject,
+  };
 }

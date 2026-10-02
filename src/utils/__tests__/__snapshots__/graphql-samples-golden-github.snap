@@ -1,0 +1,114 @@
+{
+  "query.codeOfConduct": {
+    "querySingleLine": "query codeOfConduct($key: String!) {\n  codeOfConduct(key: $key) {\n    body\n    id\n    key\n    name\n    resourcePath\n    url\n  }\n}",
+    "queryMultiline": "query codeOfConduct(\n  $key: String!\n) {\n  codeOfConduct(\n    key: $key\n  ) {\n    body\n    id\n    key\n    name\n    resourcePath\n    url\n  }\n}",
+    "variables": {
+      "key": "Example String"
+    },
+    "response": {
+      "data": {
+        "body": "Example String",
+        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+        "key": "Example String",
+        "name": "Example String",
+        "resourcePath": "Example Custom Scalar",
+        "url": "Example Custom Scalar"
+      }
+    }
+  },
+  "query.meta": {
+    "querySingleLine": "query meta {\n  meta {\n    gitHubServicesSha\n    gitIpAddresses\n    hookIpAddresses\n    importerIpAddresses\n    isPasswordAuthenticationVerifiable\n    pagesIpAddresses\n  }\n}",
+    "queryMultiline": "query meta {\n  meta {\n    gitHubServicesSha\n    gitIpAddresses\n    hookIpAddresses\n    importerIpAddresses\n    isPasswordAuthenticationVerifiable\n    pagesIpAddresses\n  }\n}",
+    "variables": {},
+    "response": {
+      "data": {
+        "gitHubServicesSha": "Example Custom Scalar",
+        "gitIpAddresses": [
+          "Example String"
+        ],
+        "hookIpAddresses": [
+          "Example String"
+        ],
+        "importerIpAddresses": [
+          "Example String"
+        ],
+        "isPasswordAuthenticationVerifiable": true,
+        "pagesIpAddresses": [
+          "Example String"
+        ]
+      }
+    }
+  },
+  "query.node": {
+    "querySingleLine": "query node($id: ID!) {\n  node(id: $id) {\n    id\n  }\n}",
+    "queryMultiline": "query node(\n  $id: ID!\n) {\n  node(\n    id: $id\n  ) {\n    id\n  }\n}",
+    "variables": {
+      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+    },
+    "response": {
+      "data": {
+        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+      }
+    }
+  },
+  "query.rateLimit": {
+    "querySingleLine": "query rateLimit($dryRun: Boolean) {\n  rateLimit(dryRun: $dryRun) {\n    cost\n    limit\n    nodeCount\n    remaining\n    resetAt\n    used\n  }\n}",
+    "queryMultiline": "query rateLimit(\n  $dryRun: Boolean\n) {\n  rateLimit(\n    dryRun: $dryRun\n  ) {\n    cost\n    limit\n    nodeCount\n    remaining\n    resetAt\n    used\n  }\n}",
+    "variables": {
+      "dryRun": true
+    },
+    "response": {
+      "data": {
+        "cost": 40,
+        "limit": 40,
+        "nodeCount": 40,
+        "remaining": 40,
+        "resetAt": "Example Custom Scalar",
+        "used": 40
+      }
+    }
+  },
+  "mutation.addComment": {
+    "querySingleLine": "mutation addComment($input: AddCommentInput!) {\n  addComment(input: $input) {\n    clientMutationId\n    commentEdge {\n      __typename\n      # ...IssueCommentEdgeFragment\n    }\n    subject {\n      __typename\n      # ...NodeFragment\n    }\n    timelineEdge {\n      __typename\n      # ...IssueTimelineItemEdgeFragment\n    }\n  }\n}",
+    "queryMultiline": "mutation addComment(\n  $input: AddCommentInput!\n) {\n  addComment(\n    input: $input\n  ) {\n    clientMutationId\n    commentEdge {\n      __typename\n      # ...IssueCommentEdgeFragment\n    }\n    subject {\n      __typename\n      # ...NodeFragment\n    }\n    timelineEdge {\n      __typename\n      # ...IssueTimelineItemEdgeFragment\n    }\n  }\n}",
+    "variables": {
+      "input": {
+        "body": "Example String",
+        "clientMutationId": "Example String",
+        "subjectId": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+      }
+    },
+    "response": {
+      "data": {
+        "clientMutationId": "Example String",
+        "commentEdge": {
+          "__typename": "IssueCommentEdge"
+        },
+        "subject": {
+          "__typename": "Node"
+        },
+        "timelineEdge": {
+          "__typename": "IssueTimelineItemEdge"
+        }
+      }
+    }
+  },
+  "mutation.deleteIssue": {
+    "querySingleLine": "mutation deleteIssue($input: DeleteIssueInput!) {\n  deleteIssue(input: $input) {\n    clientMutationId\n    repository {\n      __typename\n      # ...RepositoryFragment\n    }\n  }\n}",
+    "queryMultiline": "mutation deleteIssue(\n  $input: DeleteIssueInput!\n) {\n  deleteIssue(\n    input: $input\n  ) {\n    clientMutationId\n    repository {\n      __typename\n      # ...RepositoryFragment\n    }\n  }\n}",
+    "variables": {
+      "input": {
+        "clientMutationId": "Example String",
+        "issueId": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+      }
+    },
+    "response": {
+      "data": {
+        "clientMutationId": "Example String",
+        "repository": {
+          "__typename": "Repository"
+        }
+      }
+    }
+  }
+}

@@ -1,12 +1,9 @@
 *
 !src/
-!config
-!demo/favicon.png
-
-!custom.d.ts
-!typings/styled-patch.d.ts
-!tsconfig.json
-!webpack.config.ts
-
+!scripts/
 !package.json
 !package-lock.json
+!vite.config.ts
+!tsconfig.json
+!tsconfig.build.json
+!config/

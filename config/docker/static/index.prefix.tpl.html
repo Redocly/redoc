@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${PAGE_TITLE}</title>
+    <link rel="icon" href="/${BASE_PATH}/${PAGE_FAVICON}" />
+    <link rel="stylesheet" href="/${BASE_PATH}/${STYLES_FILE}" />
+  </head>
+
+  <body>
+    <redoc spec-url="${SPEC_URL}" type-of-usage="docker" ${REDOC_OPTIONS}></redoc>
+    <script type="module" src="/${BASE_PATH}/${BUNDLE_FILE}"></script>
+  </body>
+</html>

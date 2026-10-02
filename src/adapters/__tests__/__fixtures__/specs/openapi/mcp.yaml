@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: MCP Everything Server
+  description: >
+    MCP server exercising tools, resources, and prompts with both default
+    and explicit tag grouping.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001/mcp
+tags:
+  - name: Search
+    description: Search-related operations and tools
+paths:
+  /events:
+    get:
+      tags:
+        - Search
+      operationId: searchEvents
+      summary: Search for events
+      responses:
+        '200':
+          description: ok
+x-mcp:
+  capabilities:
+    logging: {}
+    prompts: {}
+    resources:
+      subscribe: true
+    tools: {}
+  tools:
+    - name: echo
+      description: Echoes back the input
+      tags:
+        - Search
+      inputSchema:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Message to echo
+        required:
+          - message
+    - name: add
+      description: Adds two numbers
+      inputSchema:
+        type: object
+        properties:
+          a:
+            type: number
+          b:
+            type: number
+        required:
+          - a
+          - b
+    - name: longRunningOperation
+      description: Demonstrates a long running operation with progress updates
+      inputSchema:
+        type: object
+        properties:
+          duration:
+            type: number
+            default: 10
+          steps:
+            type: number
+            default: 5
+  resources:
+    - name: readme
+      uri: test://static/resource/readme
+      mimeType: text/plain
+      text: 'This is the readme resource'
+    - name: config
+      uri: test://static/resource/config
+      mimeType: application/json
+  prompts:
+    - name: simple_prompt
+      description: A prompt without arguments
+    - name: complex_prompt
+      description: A prompt with arguments
+      arguments:
+        - name: temperature
+          description: Temperature setting
+          required: true
+        - name: style
+          description: Output style
+          required: false

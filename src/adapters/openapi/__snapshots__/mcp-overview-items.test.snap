@@ -1,0 +1,104 @@
+- type: link
+  label: MCP Everything Server
+  link: docs/mcp
+  routeSlug: docs/mcp
+  content:
+    contentType: overview
+    meta:
+      name: MCP Everything Server
+    children:
+      - nodeType: container
+        panels:
+          - title: Overview
+            titleTranslationKey: info.title
+            children: []
+          - title: Languages
+            titleTranslationKey: languages.title
+            children:
+              - kind: languages
+                options:
+                  - key: curl
+                    title: curl
+                    lang: curl
+                  - key: javascript
+                    title: JavaScript
+                    lang: JavaScript
+                  - key: node
+                    title: Node.js
+                    lang: Node.js
+                  - key: python
+                    title: Python
+                    lang: Python
+                  - key: java
+                    title: Java
+                    lang: Java
+                  - key: csharp
+                    title: C#
+                    lang: C#
+                  - key: php
+                    title: PHP
+                    lang: PHP
+                  - key: go
+                    title: Go
+                    lang: Go
+                  - key: ruby
+                    title: Ruby
+                    lang: Ruby
+                  - key: r
+                    title: R
+                    lang: R
+                  - key: payload
+                    title: Payload
+                    lang: Payload
+          - title: MCP server
+            titleTranslationKey: mcp.title
+            children:
+              - kind: tags
+                title: Capabilities
+                titleTranslationKey: mcp.capabilities
+                tags:
+                  - text: logging
+                    color: green
+                    icon: checkmark
+                  - text: prompts
+                    color: green
+                    icon: checkmark
+                  - text: resources
+                    color: green
+                    icon: checkmark
+                  - text: tools
+                    color: green
+                    icon: checkmark
+              - kind: externallink
+                title: Endpoint
+                titleTranslationKey: mcp.endpoint
+                label: http://localhost:3001/mcp
+                url: http://localhost:3001/mcp
+                withCopyButton: true
+                copyContent: http://localhost:3001/mcp
+              - kind: connect-mcp-button
+                title: Connect
+                actions:
+                  - mcp-cursor
+                  - mcp-vscode
+                mcpUrl: http://localhost:3001/mcp
+          - title: Servers
+            titleTranslationKey: servers.title
+            children:
+              - kind: servers
+                servers:
+                  - url: http://localhost:3001/mcp
+                mode: default
+        children:
+          - nodeType: overview-section-wrapper
+            children:
+              - nodeType: header
+                level: 1
+                label: MCP Everything Server (1.0.0)
+                showPageActions: true
+              - nodeType: overview-section-wrapper
+                children:
+                  - nodeType: markdoc
+                    content: MCP server exercising tools, resources, and prompts with both default and explicit tag grouping.
+                sectionId: docs/mcp
+            sectionId: docs/mcp

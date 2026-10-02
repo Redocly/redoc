@@ -1,0 +1,135 @@
+asyncapi: '3.0.0'
+info:
+  title: Smoke AMQP API
+  version: 1.0.0
+  description: Minimal AMQP fixture used by AsyncAPI e2e tests.
+
+servers:
+  production:
+    host: amqp.example.com
+    protocol: amqp
+    protocolVersion: '0-9-1'
+    description: Production broker.
+
+channels:
+  orderPlacedExchange:
+    address: order.placed
+    title: Order Placed Exchange
+    summary: Topic exchange that fans out order placement events.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Orders
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+    bindings:
+      amqp:
+        is: routingKey
+        exchange:
+          name: order.placed
+          type: topic
+          durable: true
+          autoDelete: false
+          vhost: /
+
+  fulfillmentQueue:
+    address: fulfillment.queue
+    title: Fulfillment Queue
+    summary: Durable queue consumed by the fulfillment service.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Orders
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: fulfillment.queue
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+
+  analyticsQueue:
+    address: analytics.queue
+    title: Analytics Queue
+    summary: Queue consumed by the analytics pipeline.
+    servers:
+      - $ref: '#/servers/production'
+    tags:
+      - name: Orders
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+    bindings:
+      amqp:
+        is: queue
+        queue:
+          name: analytics.queue
+          durable: true
+          exclusive: false
+          autoDelete: false
+          vhost: /
+
+operations:
+  publishOrderPlaced:
+    action: send
+    channel:
+      $ref: '#/channels/orderPlacedExchange'
+    title: Publish Order Placed
+    summary: Order service publishes new order events to the exchange.
+    messages:
+      - $ref: '#/channels/orderPlacedExchange/messages/orderPlaced'
+
+  consumeOrderPlacedForFulfillment:
+    action: receive
+    channel:
+      $ref: '#/channels/fulfillmentQueue'
+    title: Consume Order Placed (fulfillment)
+    summary: Fulfillment service consumes order events bound to its queue.
+    messages:
+      - $ref: '#/channels/fulfillmentQueue/messages/orderPlaced'
+
+  consumeOrderPlacedForAnalytics:
+    action: receive
+    channel:
+      $ref: '#/channels/analyticsQueue'
+    title: Consume Order Placed (analytics)
+    summary: Analytics pipeline consumes order events bound to its queue.
+    messages:
+      - $ref: '#/channels/analyticsQueue/messages/orderPlaced'
+
+components:
+  messages:
+    orderPlaced:
+      name: orderPlaced
+      title: Order Placed
+      summary: Emitted whenever a customer places an order.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/Order'
+
+  schemas:
+    Order:
+      type: object
+      required: [orderId, customerId, total]
+      properties:
+        orderId:
+          type: string
+          format: uuid
+          description: Unique order identifier.
+        customerId:
+          type: string
+          description: Identifier of the customer who placed the order.
+        total:
+          type: number
+          format: float
+          description: Order total amount.
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          default: USD

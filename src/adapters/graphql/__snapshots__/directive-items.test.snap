@@ -1,0 +1,166 @@
+- type: link
+  label: '@preview'
+  link: docs/graphql/directives/preview
+  routeSlug: docs/graphql/directives/preview
+  content:
+    contentType: item
+    itemVariant: directive
+    meta:
+      name: preview
+      position:
+        start:
+          lineNumber: 1
+          column: 1
+        end:
+          lineNumber: 9
+          column: 120
+    seo:
+      title: '@preview'
+      description: Marks an element of a GraphQL schema as only available via a preview header
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: '@preview'
+            showPageActions: true
+          - nodeType: markdoc
+            content: Marks an element of a GraphQL schema as only available via a preview header
+          - nodeType: item-content
+            variant: graphql-args
+            label: Arguments
+            labelTranslationKey: arguments.label
+            graphqlTypeName: preview
+            graphqlSchema:
+              - name: toggledBy
+                type: String!
+                description: The identifier of the API preview that toggles this field.
+        panels:
+          - title: Locations
+            titleTranslationKey: locations
+            children:
+              - kind: locations
+                locations:
+                  - SCALAR
+                  - OBJECT
+                  - FIELD_DEFINITION
+                  - ARGUMENT_DEFINITION
+                  - INTERFACE
+                  - UNION
+                  - ENUM
+                  - ENUM_VALUE
+                  - INPUT_OBJECT
+                  - INPUT_FIELD_DEFINITION
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /directives/preview
+        panels: []
+- type: link
+  label: '@possibleTypes'
+  link: docs/graphql/directives/possibletypes
+  routeSlug: docs/graphql/directives/possibletypes
+  content:
+    contentType: item
+    itemVariant: directive
+    meta:
+      name: possibleTypes
+      position:
+        start:
+          lineNumber: 11
+          column: 1
+        end:
+          lineNumber: 24
+          column: 6
+    seo:
+      title: '@possibleTypes'
+      description: Defines what type of global IDs are accepted for a mutation argument of type ID.
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: '@possibleTypes'
+            showPageActions: true
+          - nodeType: markdoc
+            content: Defines what type of global IDs are accepted for a mutation argument of type ID.
+          - nodeType: item-content
+            variant: graphql-args
+            label: Arguments
+            labelTranslationKey: arguments.label
+            graphqlTypeName: possibleTypes
+            graphqlSchema:
+              - name: abstractType
+                type: String
+                description: Abstract type of accepted global ID
+              - name: concreteTypes
+                type: '[String!]!'
+                description: Accepted types of global IDs.
+        panels:
+          - title: Locations
+            titleTranslationKey: locations
+            children:
+              - kind: locations
+                locations:
+                  - INPUT_FIELD_DEFINITION
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /directives/possibletypes
+        panels: []
+- type: link
+  label: '@requiresScopes'
+  link: docs/graphql/directives/requiresscopes
+  routeSlug: docs/graphql/directives/requiresscopes
+  content:
+    contentType: item
+    itemVariant: directive
+    meta:
+      name: requiresScopes
+      position:
+        start:
+          lineNumber: 26
+          column: 1
+        end:
+          lineNumber: 28
+          column: 135
+    seo:
+      title: '@requiresScopes'
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: '@requiresScopes'
+            showPageActions: true
+          - nodeType: item-content
+            variant: graphql-args
+            label: Arguments
+            labelTranslationKey: arguments.label
+            graphqlTypeName: requiresScopes
+            graphqlSchema:
+              - name: scopes
+                type: '[[String!]!]!'
+                description: []
+        panels:
+          - title: Locations
+            titleTranslationKey: locations
+            children:
+              - kind: locations
+                locations:
+                  - OBJECT
+                  - FIELD_DEFINITION
+                  - QUERY
+                  - MUTATION
+                  - SUBSCRIPTION
+                  - INTERFACE
+                  - UNION
+                  - INPUT_OBJECT
+                  - INPUT_FIELD_DEFINITION
+                  - ENUM
+                  - SCALAR
+      - nodeType: container
+        children:
+          - nodeType: feedback
+            pageSlug: /directives/requiresscopes
+        panels: []

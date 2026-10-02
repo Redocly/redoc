@@ -1,0 +1,4452 @@
+- type: group
+  label: Interfaces
+  labelTranslationKey: interfaces
+  link: docs/graphql/interfaces
+  routeSlug: docs/graphql/interfaces
+  items:
+    - type: link
+      label: Actor
+      link: docs/graphql/interfaces/actor
+      routeSlug: docs/graphql/interfaces/actor
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Actor
+          position:
+            start:
+              lineNumber: 118
+              column: 1
+            end:
+              lineNumber: 152
+              column: 1
+        seo:
+          title: Actor
+          description: Represents an object which can take actions on GitHub. Typically a User or Bot.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Actor
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an object which can take actions on GitHub. Typically a User or Bot.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Actor
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Actor
+                graphqlTypeName: Actor
+                graphqlSchema:
+                  - name: avatarUrl
+                    type: URI!
+                    description: A URL pointing to the actor's public avatar.
+                    deprecated: false
+                    args:
+                      - name: size
+                        type: Int
+                        description: The size of the resulting square image.
+                  - name: login
+                    type: String!
+                    description: The username of the actor.
+                    deprecated: false
+                    args: []
+                  - name: resourcePath
+                    type: URI!
+                    description: The HTTP path for this actor.
+                    deprecated: false
+                    args: []
+                  - name: url
+                    type: URI!
+                    description: The HTTP URL for this actor.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Bot
+                  - EnterpriseUserAccount
+                  - Mannequin
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Actor
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Actor
+                      typeName: Actor
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Actor
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/actor
+            panels: []
+    - type: link
+      label: Assignable
+      link: docs/graphql/interfaces/assignable
+      routeSlug: docs/graphql/interfaces/assignable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Assignable
+          position:
+            start:
+              lineNumber: 1032
+              column: 1
+            end:
+              lineNumber: 1060
+              column: 1
+        seo:
+          title: Assignable
+          description: An object that can have users assigned to it.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Assignable
+                showPageActions: true
+              - nodeType: markdoc
+                content: An object that can have users assigned to it.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Assignable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Assignable
+                graphqlTypeName: Assignable
+                graphqlSchema:
+                  - name: assignees
+                    type: UserConnection!
+                    description: A list of Users assigned to this object.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Issue
+                  - PullRequest
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Assignable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Assignable
+                      typeName: Assignable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Assignable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/assignable
+            panels: []
+    - type: link
+      label: AuditEntry
+      link: docs/graphql/interfaces/auditentry
+      routeSlug: docs/graphql/interfaces/auditentry
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: AuditEntry
+          position:
+            start:
+              lineNumber: 1108
+              column: 1
+            end:
+              lineNumber: 1182
+              column: 1
+        seo:
+          title: AuditEntry
+          description: An entry in the audit log.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: AuditEntry
+                showPageActions: true
+              - nodeType: markdoc
+                content: An entry in the audit log.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: AuditEntry
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/AuditEntry
+                graphqlTypeName: AuditEntry
+                graphqlSchema:
+                  - name: action
+                    type: String!
+                    description: The action name
+                    deprecated: false
+                    args: []
+                  - name: actor
+                    type: AuditEntryActor
+                    description: The user who initiated the action
+                    deprecated: false
+                    args: []
+                  - name: actorIp
+                    type: String
+                    description: The IP address of the actor
+                    deprecated: false
+                    args: []
+                  - name: actorLocation
+                    type: ActorLocation
+                    description: A readable representation of the actor's location
+                    deprecated: false
+                    args: []
+                  - name: actorLogin
+                    type: String
+                    description: The username of the user who initiated the action
+                    deprecated: false
+                    args: []
+                  - name: actorResourcePath
+                    type: URI
+                    description: The HTTP path for the actor.
+                    deprecated: false
+                    args: []
+                  - name: actorUrl
+                    type: URI
+                    description: The HTTP URL for the actor.
+                    deprecated: false
+                    args: []
+                  - name: createdAt
+                    type: PreciseDateTime!
+                    description: The time the action was initiated
+                    deprecated: false
+                    args: []
+                  - name: operationType
+                    type: OperationType
+                    description: The corresponding operation type for the action
+                    deprecated: false
+                    args: []
+                  - name: user
+                    type: User
+                    description: The user affected by the action
+                    deprecated: false
+                    args: []
+                  - name: userLogin
+                    type: String
+                    description: For actions involving two users, the actor is the initiator and the user is the affected user.
+                    deprecated: false
+                    args: []
+                  - name: userResourcePath
+                    type: URI
+                    description: The HTTP path for the user.
+                    deprecated: false
+                    args: []
+                  - name: userUrl
+                    type: URI
+                    description: The HTTP URL for the user.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - MembersCanDeleteReposClearAuditEntry
+                  - MembersCanDeleteReposDisableAuditEntry
+                  - MembersCanDeleteReposEnableAuditEntry
+                  - OauthApplicationCreateAuditEntry
+                  - OrgAddBillingManagerAuditEntry
+                  - OrgAddMemberAuditEntry
+                  - OrgBlockUserAuditEntry
+                  - OrgConfigDisableCollaboratorsOnlyAuditEntry
+                  - OrgConfigEnableCollaboratorsOnlyAuditEntry
+                  - OrgCreateAuditEntry
+                  - OrgDisableOauthAppRestrictionsAuditEntry
+                  - OrgDisableSamlAuditEntry
+                  - OrgDisableTwoFactorRequirementAuditEntry
+                  - OrgEnableOauthAppRestrictionsAuditEntry
+                  - OrgEnableSamlAuditEntry
+                  - OrgEnableTwoFactorRequirementAuditEntry
+                  - OrgInviteMemberAuditEntry
+                  - OrgInviteToBusinessAuditEntry
+                  - OrgOauthAppAccessApprovedAuditEntry
+                  - OrgOauthAppAccessDeniedAuditEntry
+                  - OrgOauthAppAccessRequestedAuditEntry
+                  - OrgRemoveBillingManagerAuditEntry
+                  - OrgRemoveMemberAuditEntry
+                  - OrgRemoveOutsideCollaboratorAuditEntry
+                  - OrgRestoreMemberAuditEntry
+                  - OrgUnblockUserAuditEntry
+                  - OrgUpdateDefaultRepositoryPermissionAuditEntry
+                  - OrgUpdateMemberAuditEntry
+                  - OrgUpdateMemberRepositoryCreationPermissionAuditEntry
+                  - OrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+                  - PrivateRepositoryForkingDisableAuditEntry
+                  - PrivateRepositoryForkingEnableAuditEntry
+                  - RepoAccessAuditEntry
+                  - RepoAddMemberAuditEntry
+                  - RepoAddTopicAuditEntry
+                  - RepoArchivedAuditEntry
+                  - RepoChangeMergeSettingAuditEntry
+                  - RepoConfigDisableAnonymousGitAccessAuditEntry
+                  - RepoConfigDisableCollaboratorsOnlyAuditEntry
+                  - RepoConfigDisableContributorsOnlyAuditEntry
+                  - RepoConfigDisableSockpuppetDisallowedAuditEntry
+                  - RepoConfigEnableAnonymousGitAccessAuditEntry
+                  - RepoConfigEnableCollaboratorsOnlyAuditEntry
+                  - RepoConfigEnableContributorsOnlyAuditEntry
+                  - RepoConfigEnableSockpuppetDisallowedAuditEntry
+                  - RepoConfigLockAnonymousGitAccessAuditEntry
+                  - RepoConfigUnlockAnonymousGitAccessAuditEntry
+                  - RepoCreateAuditEntry
+                  - RepoDestroyAuditEntry
+                  - RepoRemoveMemberAuditEntry
+                  - RepoRemoveTopicAuditEntry
+                  - RepositoryVisibilityChangeDisableAuditEntry
+                  - RepositoryVisibilityChangeEnableAuditEntry
+                  - TeamAddMemberAuditEntry
+                  - TeamAddRepositoryAuditEntry
+                  - TeamChangeParentTeamAuditEntry
+                  - TeamRemoveMemberAuditEntry
+                  - TeamRemoveRepositoryAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/AuditEntry
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: AuditEntry
+                      typeName: AuditEntry
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: AuditEntry
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/auditentry
+            panels: []
+    - type: link
+      label: Closable
+      link: docs/graphql/interfaces/closable
+      routeSlug: docs/graphql/interfaces/closable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Closable
+          position:
+            start:
+              lineNumber: 3247
+              column: 1
+            end:
+              lineNumber: 3260
+              column: 1
+        seo:
+          title: Closable
+          description: An object that can be closed
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Closable
+                showPageActions: true
+              - nodeType: markdoc
+                content: An object that can be closed
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Closable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Closable
+                graphqlTypeName: Closable
+                graphqlSchema:
+                  - name: closed
+                    type: Boolean!
+                    description:
+                      - ' if the object is closed (definition of closed may depend on type)'
+                    deprecated: false
+                    args: []
+                  - name: closedAt
+                    type: DateTime
+                    description: Identifies the date and time when the object was closed.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Issue
+                  - Milestone
+                  - Project
+                  - PullRequest
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Closable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Closable
+                      typeName: Closable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Closable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/closable
+            panels: []
+    - type: link
+      label: Comment
+      link: docs/graphql/interfaces/comment
+      routeSlug: docs/graphql/interfaces/comment
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Comment
+          position:
+            start:
+              lineNumber: 3414
+              column: 1
+            end:
+              lineNumber: 3508
+              column: 1
+        seo:
+          title: Comment
+          description: Represents a comment.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Comment
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a comment.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Comment
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Comment
+                graphqlTypeName: Comment
+                graphqlSchema:
+                  - name: author
+                    type: Actor
+                    description: The actor who authored the comment.
+                    deprecated: false
+                    args: []
+                  - name: authorAssociation
+                    type: CommentAuthorAssociation!
+                    description: Author's association with the subject of the comment.
+                    deprecated: false
+                    args: []
+                  - name: body
+                    type: String!
+                    description: The body as Markdown.
+                    deprecated: false
+                    args: []
+                  - name: bodyHTML
+                    type: HTML!
+                    description: The body rendered to HTML.
+                    deprecated: false
+                    args: []
+                  - name: bodyText
+                    type: String!
+                    description: The body rendered to text.
+                    deprecated: false
+                    args: []
+                  - name: createdAt
+                    type: DateTime!
+                    description: Identifies the date and time when the object was created.
+                    deprecated: false
+                    args: []
+                  - name: createdViaEmail
+                    type: Boolean!
+                    description: Check if this comment was created via an email reply.
+                    deprecated: false
+                    args: []
+                  - name: editor
+                    type: Actor
+                    description: The actor who edited the comment.
+                    deprecated: false
+                    args: []
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: includesCreatedEdit
+                    type: Boolean!
+                    description: Check if this comment was edited and includes an edit with the creation data
+                    deprecated: false
+                    args: []
+                  - name: lastEditedAt
+                    type: DateTime
+                    description: The moment the editor made the last edit
+                    deprecated: false
+                    args: []
+                  - name: publishedAt
+                    type: DateTime
+                    description: Identifies when the comment was published at.
+                    deprecated: false
+                    args: []
+                  - name: updatedAt
+                    type: DateTime!
+                    description: Identifies the date and time when the object was last updated.
+                    deprecated: false
+                    args: []
+                  - name: userContentEdits
+                    type: UserContentEditConnection
+                    description: A list of edits to this content.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                  - name: viewerDidAuthor
+                    type: Boolean!
+                    description: Did the viewer author this comment.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - Discussion
+                  - DiscussionComment
+                  - GistComment
+                  - Issue
+                  - IssueComment
+                  - PullRequest
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Comment
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Comment
+                      typeName: Comment
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Comment
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/comment
+            panels: []
+    - type: link
+      label: Contribution
+      link: docs/graphql/interfaces/contribution
+      routeSlug: docs/graphql/interfaces/contribution
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Contribution
+          position:
+            start:
+              lineNumber: 4643
+              column: 1
+            end:
+              lineNumber: 4673
+              column: 1
+        seo:
+          title: Contribution
+          description: Represents a contribution a user made on GitHub, such as opening an issue.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Contribution
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a contribution a user made on GitHub, such as opening an issue.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Contribution
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Contribution
+                graphqlTypeName: Contribution
+                graphqlSchema:
+                  - name: isRestricted
+                    type: Boolean!
+                    description: |-
+                      Whether this contribution is associated with a record you do not have access to. For
+                      example, your own 'first issue' contribution may have been made on a repository you can no
+                      longer access.
+                    deprecated: false
+                    args: []
+                  - name: occurredAt
+                    type: DateTime!
+                    description: When this contribution was made.
+                    deprecated: false
+                    args: []
+                  - name: resourcePath
+                    type: URI!
+                    description: The HTTP path for this contribution.
+                    deprecated: false
+                    args: []
+                  - name: url
+                    type: URI!
+                    description: The HTTP URL for this contribution.
+                    deprecated: false
+                    args: []
+                  - name: user
+                    type: User!
+                    description: The user who made this contribution.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CreatedCommitContribution
+                  - CreatedIssueContribution
+                  - CreatedPullRequestContribution
+                  - CreatedPullRequestReviewContribution
+                  - CreatedRepositoryContribution
+                  - JoinedGitHubContribution
+                  - RestrictedContribution
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Contribution
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Contribution
+                      typeName: Contribution
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Contribution
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/contribution
+            panels: []
+    - type: link
+      label: Deletable
+      link: docs/graphql/interfaces/deletable
+      routeSlug: docs/graphql/interfaces/deletable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Deletable
+          position:
+            start:
+              lineNumber: 7067
+              column: 1
+            end:
+              lineNumber: 7075
+              column: 1
+        seo:
+          title: Deletable
+          description: Entities that can be deleted.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Deletable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that can be deleted.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Deletable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Deletable
+                graphqlTypeName: Deletable
+                graphqlSchema:
+                  - name: viewerCanDelete
+                    type: Boolean!
+                    description: Check if the current viewer can delete this object.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - Discussion
+                  - DiscussionComment
+                  - GistComment
+                  - IssueComment
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Deletable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Deletable
+                      typeName: Deletable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Deletable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/deletable
+            panels: []
+    - type: link
+      label: EnterpriseAuditEntryData
+      link: docs/graphql/interfaces/enterpriseauditentrydata
+      routeSlug: docs/graphql/interfaces/enterpriseauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: EnterpriseAuditEntryData
+          position:
+            start:
+              lineNumber: 9983
+              column: 1
+            end:
+              lineNumber: 10001
+              column: 1
+        seo:
+          title: EnterpriseAuditEntryData
+          description: Metadata for an audit entry containing enterprise account information.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: EnterpriseAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content: Metadata for an audit entry containing enterprise account information.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: EnterpriseAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/EnterpriseAuditEntryData
+                graphqlTypeName: EnterpriseAuditEntryData
+                graphqlSchema:
+                  - name: enterpriseResourcePath
+                    type: URI
+                    description: The HTTP path for this enterprise.
+                    deprecated: false
+                    args: []
+                  - name: enterpriseSlug
+                    type: String
+                    description: The slug of the enterprise.
+                    deprecated: false
+                    args: []
+                  - name: enterpriseUrl
+                    type: URI
+                    description: The HTTP URL for this enterprise.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - MembersCanDeleteReposClearAuditEntry
+                  - MembersCanDeleteReposDisableAuditEntry
+                  - MembersCanDeleteReposEnableAuditEntry
+                  - OrgInviteToBusinessAuditEntry
+                  - PrivateRepositoryForkingDisableAuditEntry
+                  - PrivateRepositoryForkingEnableAuditEntry
+                  - RepositoryVisibilityChangeDisableAuditEntry
+                  - RepositoryVisibilityChangeEnableAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/EnterpriseAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: EnterpriseAuditEntryData
+                      typeName: EnterpriseAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: EnterpriseAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/enterpriseauditentrydata
+            panels: []
+    - type: link
+      label: GitObject
+      link: docs/graphql/interfaces/gitobject
+      routeSlug: docs/graphql/interfaces/gitobject
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: GitObject
+          position:
+            start:
+              lineNumber: 13502
+              column: 1
+            end:
+              lineNumber: 13531
+              column: 1
+        seo:
+          title: GitObject
+          description: Represents a Git object.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitObject
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a Git object.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitObject
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/GitObject
+                graphqlTypeName: GitObject
+                graphqlSchema:
+                  - name: abbreviatedOid
+                    type: String!
+                    description: An abbreviated version of the Git object ID
+                    deprecated: false
+                    args: []
+                  - name: commitResourcePath
+                    type: URI!
+                    description: The HTTP path for this Git object
+                    deprecated: false
+                    args: []
+                  - name: commitUrl
+                    type: URI!
+                    description: The HTTP URL for this Git object
+                    deprecated: false
+                    args: []
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: oid
+                    type: GitObjectID!
+                    description: The Git object ID
+                    deprecated: false
+                    args: []
+                  - name: repository
+                    type: Repository!
+                    description: The Repository the Git object belongs to
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Blob
+                  - Commit
+                  - Tag
+                  - Tree
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/GitObject
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: GitObject
+                      typeName: GitObject
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitObject
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/gitobject
+            panels: []
+    - type: link
+      label: GitSignature
+      link: docs/graphql/interfaces/gitsignature
+      routeSlug: docs/graphql/interfaces/gitsignature
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: GitSignature
+          position:
+            start:
+              lineNumber: 13548
+              column: 1
+            end:
+              lineNumber: 13587
+              column: 1
+        seo:
+          title: GitSignature
+          description: Information about a signature (GPG or S/MIME) on a Commit or Tag.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: GitSignature
+                showPageActions: true
+              - nodeType: markdoc
+                content: Information about a signature (GPG or S/MIME) on a Commit or Tag.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: GitSignature
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/GitSignature
+                graphqlTypeName: GitSignature
+                graphqlSchema:
+                  - name: email
+                    type: String!
+                    description: Email used to sign this object.
+                    deprecated: false
+                    args: []
+                  - name: isValid
+                    type: Boolean!
+                    description: True if the signature is valid and verified by GitHub.
+                    deprecated: false
+                    args: []
+                  - name: payload
+                    type: String!
+                    description: Payload for GPG signing object. Raw ODB object without the signature header.
+                    deprecated: false
+                    args: []
+                  - name: signature
+                    type: String!
+                    description: ASCII-armored signature header from object.
+                    deprecated: false
+                    args: []
+                  - name: signer
+                    type: User
+                    description: GitHub user corresponding to the email signing this commit.
+                    deprecated: false
+                    args: []
+                  - name: state
+                    type: GitSignatureState!
+                    description:
+                      - >-
+                        The state of this signature.  if signature is valid and verified by GitHub, otherwise represents
+                        reason why signature is considered invalid.
+                    deprecated: false
+                    args: []
+                  - name: wasSignedByGitHub
+                    type: Boolean!
+                    description: True if the signature was made with GitHub's signing key.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - GpgSignature
+                  - SmimeSignature
+                  - UnknownSignature
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/GitSignature
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: GitSignature
+                      typeName: GitSignature
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: GitSignature
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/gitsignature
+            panels: []
+    - type: link
+      label: HovercardContext
+      link: docs/graphql/interfaces/hovercardcontext
+      routeSlug: docs/graphql/interfaces/hovercardcontext
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: HovercardContext
+          position:
+            start:
+              lineNumber: 13833
+              column: 1
+            end:
+              lineNumber: 13846
+              column: 1
+        seo:
+          title: HovercardContext
+          description: An individual line of a hovercard
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: HovercardContext
+                showPageActions: true
+              - nodeType: markdoc
+                content: An individual line of a hovercard
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: HovercardContext
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/HovercardContext
+                graphqlTypeName: HovercardContext
+                graphqlSchema:
+                  - name: message
+                    type: String!
+                    description: A string describing this context
+                    deprecated: false
+                    args: []
+                  - name: octicon
+                    type: String!
+                    description: An octicon to accompany this context
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - GenericHovercardContext
+                  - OrganizationTeamsHovercardContext
+                  - OrganizationsHovercardContext
+                  - ReviewStatusHovercardContext
+                  - ViewerHovercardContext
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/HovercardContext
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: HovercardContext
+                      typeName: HovercardContext
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: HovercardContext
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/hovercardcontext
+            panels: []
+    - type: link
+      label: Labelable
+      link: docs/graphql/interfaces/labelable
+      routeSlug: docs/graphql/interfaces/labelable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Labelable
+          position:
+            start:
+              lineNumber: 15605
+              column: 1
+            end:
+              lineNumber: 15638
+              column: 1
+        seo:
+          title: Labelable
+          description: An object that can have labels assigned to it.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Labelable
+                showPageActions: true
+              - nodeType: markdoc
+                content: An object that can have labels assigned to it.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Labelable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Labelable
+                graphqlTypeName: Labelable
+                graphqlSchema:
+                  - name: labels
+                    type: LabelConnection
+                    description: A list of labels associated with the object.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: LabelOrder
+                        description: Ordering options for labels returned from the connection.
+                        defaultValue:
+                          direction: ASC
+                          field: CREATED_AT
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Discussion
+                  - Issue
+                  - PullRequest
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Labelable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Labelable
+                      typeName: Labelable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Labelable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/labelable
+            panels: []
+    - type: link
+      label: Lockable
+      link: docs/graphql/interfaces/lockable
+      routeSlug: docs/graphql/interfaces/lockable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Lockable
+          position:
+            start:
+              lineNumber: 15952
+              column: 1
+            end:
+              lineNumber: 15965
+              column: 1
+        seo:
+          title: Lockable
+          description: An object that can be locked.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Lockable
+                showPageActions: true
+              - nodeType: markdoc
+                content: An object that can be locked.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Lockable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Lockable
+                graphqlTypeName: Lockable
+                graphqlSchema:
+                  - name: activeLockReason
+                    type: LockReason
+                    description: Reason that the conversation was locked.
+                    deprecated: false
+                    args: []
+                  - name: locked
+                    type: Boolean!
+                    description:
+                      - ' if the object is locked'
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Discussion
+                  - Issue
+                  - PullRequest
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Lockable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Lockable
+                      typeName: Lockable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Lockable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/lockable
+            panels: []
+    - type: link
+      label: MemberStatusable
+      link: docs/graphql/interfaces/memberstatusable
+      routeSlug: docs/graphql/interfaces/memberstatusable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: MemberStatusable
+          position:
+            start:
+              lineNumber: 16554
+              column: 1
+            end:
+              lineNumber: 16587
+              column: 1
+        seo:
+          title: MemberStatusable
+          description: Entities that have members who can set status messages.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: MemberStatusable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that have members who can set status messages.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: MemberStatusable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/MemberStatusable
+                graphqlTypeName: MemberStatusable
+                graphqlSchema:
+                  - name: memberStatuses
+                    type: UserStatusConnection!
+                    description: >-
+                      Get the status messages members of this entity have set that are either public or visible only to
+                      the organization.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: UserStatusOrder
+                        description: Ordering options for user statuses returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: UPDATED_AT
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - Team
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/MemberStatusable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: MemberStatusable
+                      typeName: MemberStatusable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: MemberStatusable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/memberstatusable
+            panels: []
+    - type: link
+      label: Minimizable
+      link: docs/graphql/interfaces/minimizable
+      routeSlug: docs/graphql/interfaces/minimizable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Minimizable
+          position:
+            start:
+              lineNumber: 17449
+              column: 1
+            end:
+              lineNumber: 17467
+              column: 1
+        seo:
+          title: Minimizable
+          description: Entities that can be minimized.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Minimizable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that can be minimized.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Minimizable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Minimizable
+                graphqlTypeName: Minimizable
+                graphqlSchema:
+                  - name: isMinimized
+                    type: Boolean!
+                    description: Returns whether or not a comment has been minimized.
+                    deprecated: false
+                    args: []
+                  - name: minimizedReason
+                    type: String
+                    description: Returns why the comment was minimized.
+                    deprecated: false
+                    args: []
+                  - name: viewerCanMinimize
+                    type: Boolean!
+                    description: Check if the current viewer can minimize this object.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - DiscussionComment
+                  - GistComment
+                  - IssueComment
+                  - PullRequestReviewComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Minimizable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Minimizable
+                      typeName: Minimizable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Minimizable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/minimizable
+            panels: []
+    - type: link
+      label: Node
+      link: docs/graphql/interfaces/node
+      routeSlug: docs/graphql/interfaces/node
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Node
+          position:
+            start:
+              lineNumber: 19346
+              column: 1
+            end:
+              lineNumber: 19354
+              column: 1
+        seo:
+          title: Node
+          description: An object with an ID.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Node
+                showPageActions: true
+              - nodeType: markdoc
+                content: An object with an ID.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Node
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Node
+                graphqlTypeName: Node
+                graphqlSchema:
+                  - name: id
+                    type: ID!
+                    description: ID of the object.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - AddedToProjectEvent
+                  - App
+                  - AssignedEvent
+                  - AutoMergeDisabledEvent
+                  - AutoMergeEnabledEvent
+                  - AutoRebaseEnabledEvent
+                  - AutoSquashEnabledEvent
+                  - AutomaticBaseChangeFailedEvent
+                  - AutomaticBaseChangeSucceededEvent
+                  - BaseRefChangedEvent
+                  - BaseRefDeletedEvent
+                  - BaseRefForcePushedEvent
+                  - Blob
+                  - Bot
+                  - BranchProtectionRule
+                  - CWE
+                  - CheckRun
+                  - CheckSuite
+                  - ClosedEvent
+                  - CodeOfConduct
+                  - CommentDeletedEvent
+                  - Commit
+                  - CommitComment
+                  - CommitCommentThread
+                  - ConnectedEvent
+                  - ConvertToDraftEvent
+                  - ConvertedNoteToIssueEvent
+                  - CrossReferencedEvent
+                  - DemilestonedEvent
+                  - DependencyGraphManifest
+                  - DeployKey
+                  - DeployedEvent
+                  - Deployment
+                  - DeploymentEnvironmentChangedEvent
+                  - DeploymentReview
+                  - DeploymentStatus
+                  - DisconnectedEvent
+                  - Discussion
+                  - DiscussionCategory
+                  - DiscussionComment
+                  - Enterprise
+                  - EnterpriseAdministratorInvitation
+                  - EnterpriseIdentityProvider
+                  - EnterpriseRepositoryInfo
+                  - EnterpriseServerInstallation
+                  - EnterpriseServerUserAccount
+                  - EnterpriseServerUserAccountEmail
+                  - EnterpriseServerUserAccountsUpload
+                  - EnterpriseUserAccount
+                  - Environment
+                  - ExternalIdentity
+                  - Gist
+                  - GistComment
+                  - HeadRefDeletedEvent
+                  - HeadRefForcePushedEvent
+                  - HeadRefRestoredEvent
+                  - IpAllowListEntry
+                  - Issue
+                  - IssueComment
+                  - Label
+                  - LabeledEvent
+                  - Language
+                  - License
+                  - LockedEvent
+                  - Mannequin
+                  - MarkedAsDuplicateEvent
+                  - MarketplaceCategory
+                  - MarketplaceListing
+                  - MembersCanDeleteReposClearAuditEntry
+                  - MembersCanDeleteReposDisableAuditEntry
+                  - MembersCanDeleteReposEnableAuditEntry
+                  - MentionedEvent
+                  - MergedEvent
+                  - Milestone
+                  - MilestonedEvent
+                  - MovedColumnsInProjectEvent
+                  - OauthApplicationCreateAuditEntry
+                  - OrgAddBillingManagerAuditEntry
+                  - OrgAddMemberAuditEntry
+                  - OrgBlockUserAuditEntry
+                  - OrgConfigDisableCollaboratorsOnlyAuditEntry
+                  - OrgConfigEnableCollaboratorsOnlyAuditEntry
+                  - OrgCreateAuditEntry
+                  - OrgDisableOauthAppRestrictionsAuditEntry
+                  - OrgDisableSamlAuditEntry
+                  - OrgDisableTwoFactorRequirementAuditEntry
+                  - OrgEnableOauthAppRestrictionsAuditEntry
+                  - OrgEnableSamlAuditEntry
+                  - OrgEnableTwoFactorRequirementAuditEntry
+                  - OrgInviteMemberAuditEntry
+                  - OrgInviteToBusinessAuditEntry
+                  - OrgOauthAppAccessApprovedAuditEntry
+                  - OrgOauthAppAccessDeniedAuditEntry
+                  - OrgOauthAppAccessRequestedAuditEntry
+                  - OrgRemoveBillingManagerAuditEntry
+                  - OrgRemoveMemberAuditEntry
+                  - OrgRemoveOutsideCollaboratorAuditEntry
+                  - OrgRestoreMemberAuditEntry
+                  - OrgUnblockUserAuditEntry
+                  - OrgUpdateDefaultRepositoryPermissionAuditEntry
+                  - OrgUpdateMemberAuditEntry
+                  - OrgUpdateMemberRepositoryCreationPermissionAuditEntry
+                  - OrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+                  - Organization
+                  - OrganizationIdentityProvider
+                  - OrganizationInvitation
+                  - Package
+                  - PackageFile
+                  - PackageTag
+                  - PackageVersion
+                  - PinnedDiscussion
+                  - PinnedEvent
+                  - PinnedIssue
+                  - PrivateRepositoryForkingDisableAuditEntry
+                  - PrivateRepositoryForkingEnableAuditEntry
+                  - Project
+                  - ProjectCard
+                  - ProjectColumn
+                  - PublicKey
+                  - PullRequest
+                  - PullRequestCommit
+                  - PullRequestCommitCommentThread
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - PullRequestReviewThread
+                  - Push
+                  - PushAllowance
+                  - Reaction
+                  - ReadyForReviewEvent
+                  - Ref
+                  - ReferencedEvent
+                  - Release
+                  - ReleaseAsset
+                  - RemovedFromProjectEvent
+                  - RenamedTitleEvent
+                  - ReopenedEvent
+                  - RepoAccessAuditEntry
+                  - RepoAddMemberAuditEntry
+                  - RepoAddTopicAuditEntry
+                  - RepoArchivedAuditEntry
+                  - RepoChangeMergeSettingAuditEntry
+                  - RepoConfigDisableAnonymousGitAccessAuditEntry
+                  - RepoConfigDisableCollaboratorsOnlyAuditEntry
+                  - RepoConfigDisableContributorsOnlyAuditEntry
+                  - RepoConfigDisableSockpuppetDisallowedAuditEntry
+                  - RepoConfigEnableAnonymousGitAccessAuditEntry
+                  - RepoConfigEnableCollaboratorsOnlyAuditEntry
+                  - RepoConfigEnableContributorsOnlyAuditEntry
+                  - RepoConfigEnableSockpuppetDisallowedAuditEntry
+                  - RepoConfigLockAnonymousGitAccessAuditEntry
+                  - RepoConfigUnlockAnonymousGitAccessAuditEntry
+                  - RepoCreateAuditEntry
+                  - RepoDestroyAuditEntry
+                  - RepoRemoveMemberAuditEntry
+                  - RepoRemoveTopicAuditEntry
+                  - Repository
+                  - RepositoryInvitation
+                  - RepositoryTopic
+                  - RepositoryVisibilityChangeDisableAuditEntry
+                  - RepositoryVisibilityChangeEnableAuditEntry
+                  - RepositoryVulnerabilityAlert
+                  - ReviewDismissalAllowance
+                  - ReviewDismissedEvent
+                  - ReviewRequest
+                  - ReviewRequestRemovedEvent
+                  - ReviewRequestedEvent
+                  - SavedReply
+                  - SecurityAdvisory
+                  - SponsorsActivity
+                  - SponsorsListing
+                  - SponsorsTier
+                  - Sponsorship
+                  - SponsorshipNewsletter
+                  - Status
+                  - StatusCheckRollup
+                  - StatusContext
+                  - SubscribedEvent
+                  - Tag
+                  - Team
+                  - TeamAddMemberAuditEntry
+                  - TeamAddRepositoryAuditEntry
+                  - TeamChangeParentTeamAuditEntry
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+                  - TeamRemoveMemberAuditEntry
+                  - TeamRemoveRepositoryAuditEntry
+                  - Topic
+                  - TransferredEvent
+                  - Tree
+                  - UnassignedEvent
+                  - UnlabeledEvent
+                  - UnlockedEvent
+                  - UnmarkedAsDuplicateEvent
+                  - UnpinnedEvent
+                  - UnsubscribedEvent
+                  - User
+                  - UserBlockedEvent
+                  - UserContentEdit
+                  - UserStatus
+                  - VerifiableDomain
+                  - Workflow
+                  - WorkflowRun
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Node
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Node
+                      typeName: Node
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Node
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/node
+            panels: []
+    - type: link
+      label: OauthApplicationAuditEntryData
+      link: docs/graphql/interfaces/oauthapplicationauditentrydata
+      routeSlug: docs/graphql/interfaces/oauthapplicationauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: OauthApplicationAuditEntryData
+          position:
+            start:
+              lineNumber: 19371
+              column: 1
+            end:
+              lineNumber: 19389
+              column: 1
+        seo:
+          title: OauthApplicationAuditEntryData
+          description: Metadata for an audit entry with action oauth_application.*
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: OauthApplicationAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content:
+                  - Metadata for an audit entry with action oauth_application.*
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: OauthApplicationAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/OauthApplicationAuditEntryData
+                graphqlTypeName: OauthApplicationAuditEntryData
+                graphqlSchema:
+                  - name: oauthApplicationName
+                    type: String
+                    description: The name of the OAuth Application.
+                    deprecated: false
+                    args: []
+                  - name: oauthApplicationResourcePath
+                    type: URI
+                    description: The HTTP path for the OAuth Application
+                    deprecated: false
+                    args: []
+                  - name: oauthApplicationUrl
+                    type: URI
+                    description: The HTTP URL for the OAuth Application
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - OauthApplicationCreateAuditEntry
+                  - OrgOauthAppAccessApprovedAuditEntry
+                  - OrgOauthAppAccessDeniedAuditEntry
+                  - OrgOauthAppAccessRequestedAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/OauthApplicationAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: OauthApplicationAuditEntryData
+                      typeName: OauthApplicationAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: OauthApplicationAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/oauthapplicationauditentrydata
+            panels: []
+    - type: link
+      label: OrganizationAuditEntryData
+      link: docs/graphql/interfaces/organizationauditentrydata
+      routeSlug: docs/graphql/interfaces/organizationauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: OrganizationAuditEntryData
+          position:
+            start:
+              lineNumber: 23656
+              column: 1
+            end:
+              lineNumber: 23679
+              column: 1
+        seo:
+          title: OrganizationAuditEntryData
+          description: Metadata for an audit entry with action org.*
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: OrganizationAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content:
+                  - Metadata for an audit entry with action org.*
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: OrganizationAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/OrganizationAuditEntryData
+                graphqlTypeName: OrganizationAuditEntryData
+                graphqlSchema:
+                  - name: organization
+                    type: Organization
+                    description: The Organization associated with the Audit Entry.
+                    deprecated: false
+                    args: []
+                  - name: organizationName
+                    type: String
+                    description: The name of the Organization.
+                    deprecated: false
+                    args: []
+                  - name: organizationResourcePath
+                    type: URI
+                    description: The HTTP path for the organization
+                    deprecated: false
+                    args: []
+                  - name: organizationUrl
+                    type: URI
+                    description: The HTTP URL for the organization
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - MembersCanDeleteReposClearAuditEntry
+                  - MembersCanDeleteReposDisableAuditEntry
+                  - MembersCanDeleteReposEnableAuditEntry
+                  - OauthApplicationCreateAuditEntry
+                  - OrgAddBillingManagerAuditEntry
+                  - OrgAddMemberAuditEntry
+                  - OrgBlockUserAuditEntry
+                  - OrgConfigDisableCollaboratorsOnlyAuditEntry
+                  - OrgConfigEnableCollaboratorsOnlyAuditEntry
+                  - OrgCreateAuditEntry
+                  - OrgDisableOauthAppRestrictionsAuditEntry
+                  - OrgDisableSamlAuditEntry
+                  - OrgDisableTwoFactorRequirementAuditEntry
+                  - OrgEnableOauthAppRestrictionsAuditEntry
+                  - OrgEnableSamlAuditEntry
+                  - OrgEnableTwoFactorRequirementAuditEntry
+                  - OrgInviteMemberAuditEntry
+                  - OrgInviteToBusinessAuditEntry
+                  - OrgOauthAppAccessApprovedAuditEntry
+                  - OrgOauthAppAccessDeniedAuditEntry
+                  - OrgOauthAppAccessRequestedAuditEntry
+                  - OrgRemoveBillingManagerAuditEntry
+                  - OrgRemoveMemberAuditEntry
+                  - OrgRemoveOutsideCollaboratorAuditEntry
+                  - OrgRestoreMemberAuditEntry
+                  - OrgRestoreMemberMembershipOrganizationAuditEntryData
+                  - OrgUnblockUserAuditEntry
+                  - OrgUpdateDefaultRepositoryPermissionAuditEntry
+                  - OrgUpdateMemberAuditEntry
+                  - OrgUpdateMemberRepositoryCreationPermissionAuditEntry
+                  - OrgUpdateMemberRepositoryInvitationPermissionAuditEntry
+                  - PrivateRepositoryForkingDisableAuditEntry
+                  - PrivateRepositoryForkingEnableAuditEntry
+                  - RepoAccessAuditEntry
+                  - RepoAddMemberAuditEntry
+                  - RepoAddTopicAuditEntry
+                  - RepoArchivedAuditEntry
+                  - RepoChangeMergeSettingAuditEntry
+                  - RepoConfigDisableAnonymousGitAccessAuditEntry
+                  - RepoConfigDisableCollaboratorsOnlyAuditEntry
+                  - RepoConfigDisableContributorsOnlyAuditEntry
+                  - RepoConfigDisableSockpuppetDisallowedAuditEntry
+                  - RepoConfigEnableAnonymousGitAccessAuditEntry
+                  - RepoConfigEnableCollaboratorsOnlyAuditEntry
+                  - RepoConfigEnableContributorsOnlyAuditEntry
+                  - RepoConfigEnableSockpuppetDisallowedAuditEntry
+                  - RepoConfigLockAnonymousGitAccessAuditEntry
+                  - RepoConfigUnlockAnonymousGitAccessAuditEntry
+                  - RepoCreateAuditEntry
+                  - RepoDestroyAuditEntry
+                  - RepoRemoveMemberAuditEntry
+                  - RepoRemoveTopicAuditEntry
+                  - RepositoryVisibilityChangeDisableAuditEntry
+                  - RepositoryVisibilityChangeEnableAuditEntry
+                  - TeamAddMemberAuditEntry
+                  - TeamAddRepositoryAuditEntry
+                  - TeamChangeParentTeamAuditEntry
+                  - TeamRemoveMemberAuditEntry
+                  - TeamRemoveRepositoryAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/OrganizationAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: OrganizationAuditEntryData
+                      typeName: OrganizationAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: OrganizationAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/organizationauditentrydata
+            panels: []
+    - type: link
+      label: PackageOwner
+      link: docs/graphql/interfaces/packageowner
+      routeSlug: docs/graphql/interfaces/packageowner
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: PackageOwner
+          position:
+            start:
+              lineNumber: 24392
+              column: 1
+            end:
+              lineNumber: 24442
+              column: 1
+        seo:
+          title: PackageOwner
+          description: Represents an owner of a package.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: PackageOwner
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an owner of a package.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: PackageOwner
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/PackageOwner
+                graphqlTypeName: PackageOwner
+                graphqlSchema:
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: packages
+                    type: PackageConnection!
+                    description: A list of packages under the owner.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: names
+                        type: '[String]'
+                        description: Find packages by their names.
+                      - name: orderBy
+                        type: PackageOrder
+                        description: Ordering of the returned packages.
+                        defaultValue:
+                          direction: DESC
+                          field: CREATED_AT
+                      - name: packageType
+                        type: PackageType
+                        description: Filter registry package by type.
+                      - name: repositoryId
+                        type: ID
+                        description: Find packages in a repository by ID.
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - Repository
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/PackageOwner
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: PackageOwner
+                      typeName: PackageOwner
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: PackageOwner
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/packageowner
+            panels: []
+    - type: link
+      label: ProfileOwner
+      link: docs/graphql/interfaces/profileowner
+      routeSlug: docs/graphql/interfaces/profileowner
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: ProfileOwner
+          position:
+            start:
+              lineNumber: 25373
+              column: 1
+            end:
+              lineNumber: 25488
+              column: 1
+        seo:
+          title: ProfileOwner
+          description: Represents any entity on GitHub that has a profile page.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: ProfileOwner
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents any entity on GitHub that has a profile page.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: ProfileOwner
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/ProfileOwner
+                graphqlTypeName: ProfileOwner
+                graphqlSchema:
+                  - name: anyPinnableItems
+                    type: Boolean!
+                    description: Determine if this repository owner has any items that can be pinned to their profile.
+                    deprecated: false
+                    args:
+                      - name: type
+                        type: PinnableItemType
+                        description: Filter to only a particular kind of pinnable item.
+                  - name: email
+                    type: String
+                    description: The public profile email.
+                    deprecated: false
+                    args: []
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: itemShowcase
+                    type: ProfileItemShowcase!
+                    description: |-
+                      Showcases a selection of repositories and gists that the profile owner has
+                      either curated or that have been selected automatically based on popularity.
+                    deprecated: false
+                    args: []
+                  - name: location
+                    type: String
+                    description: The public profile location.
+                    deprecated: false
+                    args: []
+                  - name: login
+                    type: String!
+                    description: The username used to login.
+                    deprecated: false
+                    args: []
+                  - name: name
+                    type: String
+                    description: The public profile name.
+                    deprecated: false
+                    args: []
+                  - name: pinnableItems
+                    type: PinnableItemConnection!
+                    description: A list of repositories and gists this profile owner can pin to their profile.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: types
+                        type: '[PinnableItemType!]'
+                        description: Filter the types of pinnable items that are returned.
+                  - name: pinnedItems
+                    type: PinnableItemConnection!
+                    description: A list of repositories and gists this profile owner has pinned to their profile
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: types
+                        type: '[PinnableItemType!]'
+                        description: Filter the types of pinned items that are returned.
+                  - name: pinnedItemsRemaining
+                    type: Int!
+                    description: Returns how many more items this profile owner can pin to their profile.
+                    deprecated: false
+                    args: []
+                  - name: viewerCanChangePinnedItems
+                    type: Boolean!
+                    description: Can the viewer pin repositories and gists to the profile?
+                    deprecated: false
+                    args: []
+                  - name: websiteUrl
+                    type: URI
+                    description: The public profile website URL.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/ProfileOwner
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: ProfileOwner
+                      typeName: ProfileOwner
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: ProfileOwner
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/profileowner
+            panels: []
+    - type: link
+      label: ProjectOwner
+      link: docs/graphql/interfaces/projectowner
+      routeSlug: docs/graphql/interfaces/projectowner
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: ProjectOwner
+          position:
+            start:
+              lineNumber: 26026
+              column: 1
+            end:
+              lineNumber: 26096
+              column: 1
+        seo:
+          title: ProjectOwner
+          description: Represents an owner of a Project.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: ProjectOwner
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an owner of a Project.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: ProjectOwner
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/ProjectOwner
+                graphqlTypeName: ProjectOwner
+                graphqlSchema:
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: project
+                    type: Project
+                    description: Find project by number.
+                    deprecated: false
+                    args:
+                      - name: number
+                        type: Int!
+                        description: The project number to find.
+                  - name: projects
+                    type: ProjectConnection!
+                    description: A list of projects under the owner.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: ProjectOrder
+                        description: Ordering options for projects returned from the connection
+                      - name: search
+                        type: String
+                        description: Query to search projects by, currently only searching by name.
+                      - name: states
+                        type: '[ProjectState!]'
+                        description: A list of states to filter the projects by.
+                  - name: projectsResourcePath
+                    type: URI!
+                    description: The HTTP path listing owners projects
+                    deprecated: false
+                    args: []
+                  - name: projectsUrl
+                    type: URI!
+                    description: The HTTP URL listing owners projects
+                    deprecated: false
+                    args: []
+                  - name: viewerCanCreateProjects
+                    type: Boolean!
+                    description: Can the current viewer create new projects on this owner.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - Repository
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/ProjectOwner
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: ProjectOwner
+                      typeName: ProjectOwner
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: ProjectOwner
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/projectowner
+            panels: []
+    - type: link
+      label: Reactable
+      link: docs/graphql/interfaces/reactable
+      routeSlug: docs/graphql/interfaces/reactable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Reactable
+          position:
+            start:
+              lineNumber: 29593
+              column: 1
+            end:
+              lineNumber: 29647
+              column: 1
+        seo:
+          title: Reactable
+          description: Represents a subject that can be reacted on.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Reactable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a subject that can be reacted on.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Reactable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Reactable
+                graphqlTypeName: Reactable
+                graphqlSchema:
+                  - name: databaseId
+                    type: Int
+                    description: Identifies the primary key from the database.
+                    deprecated: false
+                    args: []
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: reactionGroups
+                    type: '[ReactionGroup!]'
+                    description: A list of reactions grouped by content left on the subject.
+                    deprecated: false
+                    args: []
+                  - name: reactions
+                    type: ReactionConnection!
+                    description: A list of Reactions left on the Issue.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: content
+                        type: ReactionContent
+                        description: Allows filtering Reactions by emoji.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: ReactionOrder
+                        description: Allows specifying the order in which reactions are returned.
+                  - name: viewerCanReact
+                    type: Boolean!
+                    description: Can user react to this subject
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - Discussion
+                  - DiscussionComment
+                  - Issue
+                  - IssueComment
+                  - PullRequest
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - Release
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Reactable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Reactable
+                      typeName: Reactable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Reactable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/reactable
+            panels: []
+    - type: link
+      label: RepositoryAuditEntryData
+      link: docs/graphql/interfaces/repositoryauditentrydata
+      routeSlug: docs/graphql/interfaces/repositoryauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryAuditEntryData
+          position:
+            start:
+              lineNumber: 35054
+              column: 1
+            end:
+              lineNumber: 35077
+              column: 1
+        seo:
+          title: RepositoryAuditEntryData
+          description: Metadata for an audit entry with action repo.*
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content:
+                  - Metadata for an audit entry with action repo.*
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryAuditEntryData
+                graphqlTypeName: RepositoryAuditEntryData
+                graphqlSchema:
+                  - name: repository
+                    type: Repository
+                    description: The repository associated with the action
+                    deprecated: false
+                    args: []
+                  - name: repositoryName
+                    type: String
+                    description: The name of the repository
+                    deprecated: false
+                    args: []
+                  - name: repositoryResourcePath
+                    type: URI
+                    description: The HTTP path for the repository
+                    deprecated: false
+                    args: []
+                  - name: repositoryUrl
+                    type: URI
+                    description: The HTTP URL for the repository
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - OrgRestoreMemberMembershipRepositoryAuditEntryData
+                  - PrivateRepositoryForkingDisableAuditEntry
+                  - PrivateRepositoryForkingEnableAuditEntry
+                  - RepoAccessAuditEntry
+                  - RepoAddMemberAuditEntry
+                  - RepoAddTopicAuditEntry
+                  - RepoArchivedAuditEntry
+                  - RepoChangeMergeSettingAuditEntry
+                  - RepoConfigDisableAnonymousGitAccessAuditEntry
+                  - RepoConfigDisableCollaboratorsOnlyAuditEntry
+                  - RepoConfigDisableContributorsOnlyAuditEntry
+                  - RepoConfigDisableSockpuppetDisallowedAuditEntry
+                  - RepoConfigEnableAnonymousGitAccessAuditEntry
+                  - RepoConfigEnableCollaboratorsOnlyAuditEntry
+                  - RepoConfigEnableContributorsOnlyAuditEntry
+                  - RepoConfigEnableSockpuppetDisallowedAuditEntry
+                  - RepoConfigLockAnonymousGitAccessAuditEntry
+                  - RepoConfigUnlockAnonymousGitAccessAuditEntry
+                  - RepoCreateAuditEntry
+                  - RepoDestroyAuditEntry
+                  - RepoRemoveMemberAuditEntry
+                  - RepoRemoveTopicAuditEntry
+                  - TeamAddRepositoryAuditEntry
+                  - TeamRemoveRepositoryAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryAuditEntryData
+                      typeName: RepositoryAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositoryauditentrydata
+            panels: []
+    - type: link
+      label: RepositoryDiscussionAuthor
+      link: docs/graphql/interfaces/repositorydiscussionauthor
+      routeSlug: docs/graphql/interfaces/repositorydiscussionauthor
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryDiscussionAuthor
+          position:
+            start:
+              lineNumber: 35205
+              column: 1
+            end:
+              lineNumber: 35249
+              column: 1
+        seo:
+          title: RepositoryDiscussionAuthor
+          description: Represents an author of discussions in repositories.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryDiscussionAuthor
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an author of discussions in repositories.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryDiscussionAuthor
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryDiscussionAuthor
+                graphqlTypeName: RepositoryDiscussionAuthor
+                graphqlSchema:
+                  - name: repositoryDiscussions
+                    type: DiscussionConnection!
+                    description: Discussions this user has started.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: answered
+                        type: Boolean
+                        description: |-
+                          Filter discussions to only those that have been answered or not. Defaults to
+                          including both answered and unanswered discussions.
+                        defaultValue: null
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: DiscussionOrder
+                        description: Ordering options for discussions returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: CREATED_AT
+                      - name: repositoryId
+                        type: ID
+                        description: Filter discussions to only those in a specific repository.
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryDiscussionAuthor
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryDiscussionAuthor
+                      typeName: RepositoryDiscussionAuthor
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryDiscussionAuthor
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositorydiscussionauthor
+            panels: []
+    - type: link
+      label: RepositoryDiscussionCommentAuthor
+      link: docs/graphql/interfaces/repositorydiscussioncommentauthor
+      routeSlug: docs/graphql/interfaces/repositorydiscussioncommentauthor
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryDiscussionCommentAuthor
+          position:
+            start:
+              lineNumber: 35251
+              column: 1
+            end:
+              lineNumber: 35289
+              column: 1
+        seo:
+          title: RepositoryDiscussionCommentAuthor
+          description: Represents an author of discussion comments in repositories.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryDiscussionCommentAuthor
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an author of discussion comments in repositories.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryDiscussionCommentAuthor
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryDiscussionCommentAuthor
+                graphqlTypeName: RepositoryDiscussionCommentAuthor
+                graphqlSchema:
+                  - name: repositoryDiscussionComments
+                    type: DiscussionCommentConnection!
+                    description: Discussion comments this user has authored.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: onlyAnswers
+                        type: Boolean
+                        description: Filter discussion comments to only those that were marked as the answer
+                        defaultValue: false
+                      - name: repositoryId
+                        type: ID
+                        description: Filter discussion comments to only those in a specific repository.
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryDiscussionCommentAuthor
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryDiscussionCommentAuthor
+                      typeName: RepositoryDiscussionCommentAuthor
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryDiscussionCommentAuthor
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositorydiscussioncommentauthor
+            panels: []
+    - type: link
+      label: RepositoryInfo
+      link: docs/graphql/interfaces/repositoryinfo
+      routeSlug: docs/graphql/interfaces/repositoryinfo
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryInfo
+          position:
+            start:
+              lineNumber: 35306
+              column: 1
+            end:
+              lineNumber: 35459
+              column: 1
+        seo:
+          title: RepositoryInfo
+          description: A subset of repository info.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryInfo
+                showPageActions: true
+              - nodeType: markdoc
+                content: A subset of repository info.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryInfo
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryInfo
+                graphqlTypeName: RepositoryInfo
+                graphqlSchema:
+                  - name: createdAt
+                    type: DateTime!
+                    description: Identifies the date and time when the object was created.
+                    deprecated: false
+                    args: []
+                  - name: description
+                    type: String
+                    description: The description of the repository.
+                    deprecated: false
+                    args: []
+                  - name: descriptionHTML
+                    type: HTML!
+                    description: The description of the repository rendered to HTML.
+                    deprecated: false
+                    args: []
+                  - name: forkCount
+                    type: Int!
+                    description: Returns how many forks there are of this repository in the whole network.
+                    deprecated: false
+                    args: []
+                  - name: hasIssuesEnabled
+                    type: Boolean!
+                    description: Indicates if the repository has issues feature enabled.
+                    deprecated: false
+                    args: []
+                  - name: hasProjectsEnabled
+                    type: Boolean!
+                    description: Indicates if the repository has the Projects feature enabled.
+                    deprecated: false
+                    args: []
+                  - name: hasWikiEnabled
+                    type: Boolean!
+                    description: Indicates if the repository has wiki feature enabled.
+                    deprecated: false
+                    args: []
+                  - name: homepageUrl
+                    type: URI
+                    description: The repository's URL.
+                    deprecated: false
+                    args: []
+                  - name: isArchived
+                    type: Boolean!
+                    description: Indicates if the repository is unmaintained.
+                    deprecated: false
+                    args: []
+                  - name: isFork
+                    type: Boolean!
+                    description: Identifies if the repository is a fork.
+                    deprecated: false
+                    args: []
+                  - name: isInOrganization
+                    type: Boolean!
+                    description: >-
+                      Indicates if a repository is either owned by an organization, or is a private fork of an
+                      organization repository.
+                    deprecated: false
+                    args: []
+                  - name: isLocked
+                    type: Boolean!
+                    description: Indicates if the repository has been locked or not.
+                    deprecated: false
+                    args: []
+                  - name: isMirror
+                    type: Boolean!
+                    description: Identifies if the repository is a mirror.
+                    deprecated: false
+                    args: []
+                  - name: isPrivate
+                    type: Boolean!
+                    description: Identifies if the repository is private or internal.
+                    deprecated: false
+                    args: []
+                  - name: isTemplate
+                    type: Boolean!
+                    description: Identifies if the repository is a template that can be used to generate new repositories.
+                    deprecated: false
+                    args: []
+                  - name: licenseInfo
+                    type: License
+                    description: The license associated with the repository
+                    deprecated: false
+                    args: []
+                  - name: lockReason
+                    type: RepositoryLockReason
+                    description: The reason the repository has been locked.
+                    deprecated: false
+                    args: []
+                  - name: mirrorUrl
+                    type: URI
+                    description: The repository's original mirror URL.
+                    deprecated: false
+                    args: []
+                  - name: name
+                    type: String!
+                    description: The name of the repository.
+                    deprecated: false
+                    args: []
+                  - name: nameWithOwner
+                    type: String!
+                    description: The repository's name with owner.
+                    deprecated: false
+                    args: []
+                  - name: openGraphImageUrl
+                    type: URI!
+                    description: The image used to represent this repository in Open Graph data.
+                    deprecated: false
+                    args: []
+                  - name: owner
+                    type: RepositoryOwner!
+                    description: The User owner of the repository.
+                    deprecated: false
+                    args: []
+                  - name: pushedAt
+                    type: DateTime
+                    description: Identifies when the repository was last pushed to.
+                    deprecated: false
+                    args: []
+                  - name: resourcePath
+                    type: URI!
+                    description: The HTTP path for this repository
+                    deprecated: false
+                    args: []
+                  - name: shortDescriptionHTML
+                    type: HTML!
+                    description: A description of the repository, rendered to HTML without any links in it.
+                    deprecated: false
+                    args:
+                      - name: limit
+                        type: Int
+                        description: How many characters to return.
+                        defaultValue: 200
+                  - name: updatedAt
+                    type: DateTime!
+                    description: Identifies the date and time when the object was last updated.
+                    deprecated: false
+                    args: []
+                  - name: url
+                    type: URI!
+                    description: The HTTP URL for this repository
+                    deprecated: false
+                    args: []
+                  - name: usesCustomOpenGraphImage
+                    type: Boolean!
+                    description: >-
+                      Whether this repository has a custom image to use with Open Graph as opposed to being represented
+                      by the owner's avatar.
+                    deprecated: false
+                    args: []
+                  - name: visibility
+                    type: RepositoryVisibility!
+                    description: Indicates the repository's visibility level.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Repository
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryInfo
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryInfo
+                      typeName: RepositoryInfo
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryInfo
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositoryinfo
+            panels: []
+    - type: link
+      label: RepositoryNode
+      link: docs/graphql/interfaces/repositorynode
+      routeSlug: docs/graphql/interfaces/repositorynode
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryNode
+          position:
+            start:
+              lineNumber: 35690
+              column: 1
+            end:
+              lineNumber: 35698
+              column: 1
+        seo:
+          title: RepositoryNode
+          description: Represents a object that belongs to a repository.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryNode
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a object that belongs to a repository.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryNode
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryNode
+                graphqlTypeName: RepositoryNode
+                graphqlSchema:
+                  - name: repository
+                    type: Repository!
+                    description: The repository associated with this node.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - CommitCommentThread
+                  - Discussion
+                  - DiscussionCategory
+                  - Issue
+                  - IssueComment
+                  - PinnedDiscussion
+                  - PullRequest
+                  - PullRequestCommitCommentThread
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - RepositoryVulnerabilityAlert
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryNode
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryNode
+                      typeName: RepositoryNode
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryNode
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositorynode
+            panels: []
+    - type: link
+      label: RepositoryOwner
+      link: docs/graphql/interfaces/repositoryowner
+      routeSlug: docs/graphql/interfaces/repositoryowner
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RepositoryOwner
+          position:
+            start:
+              lineNumber: 35745
+              column: 1
+            end:
+              lineNumber: 35843
+              column: 1
+        seo:
+          title: RepositoryOwner
+          description: Represents an owner of a Repository.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RepositoryOwner
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents an owner of a Repository.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RepositoryOwner
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RepositoryOwner
+                graphqlTypeName: RepositoryOwner
+                graphqlSchema:
+                  - name: avatarUrl
+                    type: URI!
+                    description: A URL pointing to the owner's public avatar.
+                    deprecated: false
+                    args:
+                      - name: size
+                        type: Int
+                        description: The size of the resulting square image.
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: login
+                    type: String!
+                    description: The username used to login.
+                    deprecated: false
+                    args: []
+                  - name: repositories
+                    type: RepositoryConnection!
+                    description: A list of repositories that the user owns.
+                    deprecated: false
+                    args:
+                      - name: affiliations
+                        type: '[RepositoryAffiliation]'
+                        description: |-
+                          Array of viewer's affiliation options for repositories returned from the
+                          connection. For example, OWNER will include only repositories that the
+                          current viewer owns.
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: isFork
+                        type: Boolean
+                        description: If non-null, filters repositories according to whether they are forks of another repository
+                      - name: isLocked
+                        type: Boolean
+                        description: If non-null, filters repositories according to whether they have been locked
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: RepositoryOrder
+                        description: Ordering options for repositories returned from the connection
+                      - name: ownerAffiliations
+                        type: '[RepositoryAffiliation]'
+                        description: |-
+                          Array of owner's affiliation options for repositories returned from the
+                          connection. For example, OWNER will include only repositories that the
+                          organization or user being viewed owns.
+                        defaultValue:
+                          - OWNER
+                          - COLLABORATOR
+                      - name: privacy
+                        type: RepositoryPrivacy
+                        description: If non-null, filters repositories according to privacy
+                  - name: repository
+                    type: Repository
+                    description: Find Repository.
+                    deprecated: false
+                    args:
+                      - name: name
+                        type: String!
+                        description: Name of Repository to find.
+                  - name: resourcePath
+                    type: URI!
+                    description: The HTTP URL for the owner.
+                    deprecated: false
+                    args: []
+                  - name: url
+                    type: URI!
+                    description: The HTTP URL for the owner.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RepositoryOwner
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RepositoryOwner
+                      typeName: RepositoryOwner
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RepositoryOwner
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/repositoryowner
+            panels: []
+    - type: link
+      label: RequirableByPullRequest
+      link: docs/graphql/interfaces/requirablebypullrequest
+      routeSlug: docs/graphql/interfaces/requirablebypullrequest
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: RequirableByPullRequest
+          position:
+            start:
+              lineNumber: 36371
+              column: 1
+            end:
+              lineNumber: 36389
+              column: 1
+        seo:
+          title: RequirableByPullRequest
+          description: Represents a type that can be required by a pull request for merging.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: RequirableByPullRequest
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a type that can be required by a pull request for merging.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: RequirableByPullRequest
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/RequirableByPullRequest
+                graphqlTypeName: RequirableByPullRequest
+                graphqlSchema:
+                  - name: isRequired
+                    type: Boolean!
+                    description: Whether this is required to pass before merging for a specific pull request.
+                    deprecated: false
+                    args:
+                      - name: pullRequestId
+                        type: ID
+                        description: The id of the pull request this is required for
+                      - name: pullRequestNumber
+                        type: Int
+                        description: The number of the pull request this is required for
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CheckRun
+                  - StatusContext
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/RequirableByPullRequest
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: RequirableByPullRequest
+                      typeName: RequirableByPullRequest
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: RequirableByPullRequest
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/requirablebypullrequest
+            panels: []
+    - type: link
+      label: Sponsorable
+      link: docs/graphql/interfaces/sponsorable
+      routeSlug: docs/graphql/interfaces/sponsorable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Sponsorable
+          position:
+            start:
+              lineNumber: 37766
+              column: 1
+            end:
+              lineNumber: 38024
+              column: 1
+        seo:
+          title: Sponsorable
+          description: Entities that can be sponsored through GitHub Sponsors
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Sponsorable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that can be sponsored through GitHub Sponsors
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Sponsorable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Sponsorable
+                graphqlTypeName: Sponsorable
+                graphqlSchema:
+                  - name: estimatedNextSponsorsPayoutInCents
+                    type: Int!
+                    description: The estimated next GitHub Sponsors payout for this user/organization in cents (USD).
+                    deprecated: false
+                    args: []
+                  - name: hasSponsorsListing
+                    type: Boolean!
+                    description: True if this user/organization has a GitHub Sponsors listing.
+                    deprecated: false
+                    args: []
+                  - name: isSponsoredBy
+                    type: Boolean!
+                    description: Check if the given account is sponsoring this user/organization.
+                    deprecated: false
+                    args:
+                      - name: accountLogin
+                        type: String!
+                        description: The target account's login.
+                  - name: isSponsoringViewer
+                    type: Boolean!
+                    description: True if the viewer is sponsored by this user/organization.
+                    deprecated: false
+                    args: []
+                  - name: monthlyEstimatedSponsorsIncomeInCents
+                    type: Int!
+                    description: The estimated monthly GitHub Sponsors income for this user/organization in cents (USD).
+                    deprecated: false
+                    args: []
+                  - name: sponsoring
+                    type: SponsorConnection!
+                    description: List of users and organizations this entity is sponsoring.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorOrder
+                        description: Ordering options for the users and organizations returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: RELEVANCE
+                  - name: sponsors
+                    type: SponsorConnection!
+                    description: List of sponsors for this user or organization.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorOrder
+                        description: Ordering options for sponsors returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: RELEVANCE
+                      - name: tierId
+                        type: ID
+                        description: |-
+                          If given, will filter for sponsors at the given tier. Will only return
+                          sponsors whose tier the viewer is permitted to see.
+                  - name: sponsorsActivities
+                    type: SponsorsActivityConnection!
+                    description: Events involving this sponsorable, such as new sponsorships.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorsActivityOrder
+                        description: Ordering options for activity returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: TIMESTAMP
+                      - name: period
+                        type: SponsorsActivityPeriod
+                        description: Filter activities returned to only those that occurred in a given time range.
+                        defaultValue: MONTH
+                  - name: sponsorsListing
+                    type: SponsorsListing
+                    description: The GitHub Sponsors listing for this user or organization.
+                    deprecated: false
+                    args: []
+                  - name: sponsorshipForViewerAsSponsor
+                    type: Sponsorship
+                    description: |-
+                      The sponsorship from the viewer to this user/organization; that is, the
+                      sponsorship where you're the sponsor. Only returns a sponsorship if it is active.
+                    deprecated: false
+                    args: []
+                  - name: sponsorshipForViewerAsSponsorable
+                    type: Sponsorship
+                    description: |-
+                      The sponsorship from this user/organization to the viewer; that is, the
+                      sponsorship you're receiving. Only returns a sponsorship if it is active.
+                    deprecated: false
+                    args: []
+                  - name: sponsorshipNewsletters
+                    type: SponsorshipNewsletterConnection!
+                    description: List of sponsorship updates sent from this sponsorable to sponsors.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorshipNewsletterOrder
+                        description: Ordering options for sponsorship updates returned from the connection.
+                        defaultValue:
+                          direction: DESC
+                          field: CREATED_AT
+                  - name: sponsorshipsAsMaintainer
+                    type: SponsorshipConnection!
+                    description: This object's sponsorships as the maintainer.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: includePrivate
+                        type: Boolean
+                        description: Whether or not to include private sponsorships in the result set
+                        defaultValue: false
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorshipOrder
+                        description: |-
+                          Ordering options for sponsorships returned from this connection. If left
+                          blank, the sponsorships will be ordered based on relevancy to the viewer.
+                  - name: sponsorshipsAsSponsor
+                    type: SponsorshipConnection!
+                    description: This object's sponsorships as the sponsor.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: SponsorshipOrder
+                        description: |-
+                          Ordering options for sponsorships returned from this connection. If left
+                          blank, the sponsorships will be ordered based on relevancy to the viewer.
+                  - name: viewerCanSponsor
+                    type: Boolean!
+                    description: Whether or not the viewer is able to sponsor this user/organization.
+                    deprecated: false
+                    args: []
+                  - name: viewerIsSponsoring
+                    type: Boolean!
+                    description: True if the viewer is sponsoring this user/organization.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Organization
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Sponsorable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Sponsorable
+                      typeName: Sponsorable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Sponsorable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/sponsorable
+            panels: []
+    - type: link
+      label: Starrable
+      link: docs/graphql/interfaces/starrable
+      routeSlug: docs/graphql/interfaces/starrable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Starrable
+          position:
+            start:
+              lineNumber: 38891
+              column: 1
+            end:
+              lineNumber: 38936
+              column: 1
+        seo:
+          title: Starrable
+          description: Things that can be starred.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Starrable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Things that can be starred.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Starrable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Starrable
+                graphqlTypeName: Starrable
+                graphqlSchema:
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: stargazerCount
+                    type: Int!
+                    description: Returns a count of how many stargazers there are on this object
+                    deprecated: false
+                    args: []
+                  - name: stargazers
+                    type: StargazerConnection!
+                    description: A list of users who have starred this starrable.
+                    deprecated: false
+                    args:
+                      - name: after
+                        type: String
+                        description: Returns the elements in the list that come after the specified cursor.
+                      - name: before
+                        type: String
+                        description: Returns the elements in the list that come before the specified cursor.
+                      - name: first
+                        type: Int
+                        description:
+                          - Returns the first n elements from the list.
+                      - name: last
+                        type: Int
+                        description:
+                          - Returns the last n elements from the list.
+                      - name: orderBy
+                        type: StarOrder
+                        description: Order for connection
+                  - name: viewerHasStarred
+                    type: Boolean!
+                    description: Returns a boolean indicating whether the viewing user has starred this starrable.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Gist
+                  - Repository
+                  - Topic
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Starrable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Starrable
+                      typeName: Starrable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Starrable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/starrable
+            panels: []
+    - type: link
+      label: Subscribable
+      link: docs/graphql/interfaces/subscribable
+      routeSlug: docs/graphql/interfaces/subscribable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Subscribable
+          position:
+            start:
+              lineNumber: 39337
+              column: 1
+            end:
+              lineNumber: 39352
+              column: 1
+        seo:
+          title: Subscribable
+          description: Entities that can be subscribed to for web and email notifications.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Subscribable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that can be subscribed to for web and email notifications.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Subscribable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Subscribable
+                graphqlTypeName: Subscribable
+                graphqlSchema:
+                  - name: id
+                    type: ID!
+                    description: []
+                    deprecated: false
+                    args: []
+                  - name: viewerCanSubscribe
+                    type: Boolean!
+                    description: Check if the viewer is able to change their subscription status for the repository.
+                    deprecated: false
+                    args: []
+                  - name: viewerSubscription
+                    type: SubscriptionState
+                    description: Identifies if the viewer is watching, not watching, or ignoring the subscribable entity.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Commit
+                  - Discussion
+                  - Issue
+                  - PullRequest
+                  - Repository
+                  - Team
+                  - TeamDiscussion
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Subscribable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Subscribable
+                      typeName: Subscribable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Subscribable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/subscribable
+            panels: []
+    - type: link
+      label: TeamAuditEntryData
+      link: docs/graphql/interfaces/teamauditentrydata
+      routeSlug: docs/graphql/interfaces/teamauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: TeamAuditEntryData
+          position:
+            start:
+              lineNumber: 40135
+              column: 1
+            end:
+              lineNumber: 40158
+              column: 1
+        seo:
+          title: TeamAuditEntryData
+          description: Metadata for an audit entry with action team.*
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: TeamAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content:
+                  - Metadata for an audit entry with action team.*
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: TeamAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/TeamAuditEntryData
+                graphqlTypeName: TeamAuditEntryData
+                graphqlSchema:
+                  - name: team
+                    type: Team
+                    description: The team associated with the action
+                    deprecated: false
+                    args: []
+                  - name: teamName
+                    type: String
+                    description: The name of the team
+                    deprecated: false
+                    args: []
+                  - name: teamResourcePath
+                    type: URI
+                    description: The HTTP path for this team
+                    deprecated: false
+                    args: []
+                  - name: teamUrl
+                    type: URI
+                    description: The HTTP URL for this team
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - OrgRestoreMemberMembershipTeamAuditEntryData
+                  - TeamAddMemberAuditEntry
+                  - TeamAddRepositoryAuditEntry
+                  - TeamChangeParentTeamAuditEntry
+                  - TeamRemoveMemberAuditEntry
+                  - TeamRemoveRepositoryAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/TeamAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: TeamAuditEntryData
+                      typeName: TeamAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: TeamAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/teamauditentrydata
+            panels: []
+    - type: link
+      label: TopicAuditEntryData
+      link: docs/graphql/interfaces/topicauditentrydata
+      routeSlug: docs/graphql/interfaces/topicauditentrydata
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: TopicAuditEntryData
+          position:
+            start:
+              lineNumber: 41624
+              column: 1
+            end:
+              lineNumber: 41637
+              column: 1
+        seo:
+          title: TopicAuditEntryData
+          description: Metadata for an audit entry with a topic.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: TopicAuditEntryData
+                showPageActions: true
+              - nodeType: markdoc
+                content: Metadata for an audit entry with a topic.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: TopicAuditEntryData
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/TopicAuditEntryData
+                graphqlTypeName: TopicAuditEntryData
+                graphqlSchema:
+                  - name: topic
+                    type: Topic
+                    description: The name of the topic added to the repository
+                    deprecated: false
+                    args: []
+                  - name: topicName
+                    type: String
+                    description: The name of the topic added to the repository
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - RepoAddTopicAuditEntry
+                  - RepoRemoveTopicAuditEntry
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/TopicAuditEntryData
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: TopicAuditEntryData
+                      typeName: TopicAuditEntryData
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: TopicAuditEntryData
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/topicauditentrydata
+            panels: []
+    - type: link
+      label: UniformResourceLocatable
+      link: docs/graphql/interfaces/uniformresourcelocatable
+      routeSlug: docs/graphql/interfaces/uniformresourcelocatable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: UniformResourceLocatable
+          position:
+            start:
+              lineNumber: 41915
+              column: 1
+            end:
+              lineNumber: 41928
+              column: 1
+        seo:
+          title: UniformResourceLocatable
+          description: Represents a type that can be retrieved by a URL.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: UniformResourceLocatable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Represents a type that can be retrieved by a URL.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: UniformResourceLocatable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/UniformResourceLocatable
+                graphqlTypeName: UniformResourceLocatable
+                graphqlSchema:
+                  - name: resourcePath
+                    type: URI!
+                    description: The HTML path to this resource.
+                    deprecated: false
+                    args: []
+                  - name: url
+                    type: URI!
+                    description: The URL to this resource.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Bot
+                  - CheckRun
+                  - ClosedEvent
+                  - Commit
+                  - ConvertToDraftEvent
+                  - CrossReferencedEvent
+                  - Gist
+                  - Issue
+                  - Mannequin
+                  - MergedEvent
+                  - Milestone
+                  - Organization
+                  - PullRequest
+                  - PullRequestCommit
+                  - ReadyForReviewEvent
+                  - Release
+                  - Repository
+                  - RepositoryTopic
+                  - ReviewDismissedEvent
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+                  - User
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/UniformResourceLocatable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: UniformResourceLocatable
+                      typeName: UniformResourceLocatable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: UniformResourceLocatable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/uniformresourcelocatable
+            panels: []
+    - type: link
+      label: Updatable
+      link: docs/graphql/interfaces/updatable
+      routeSlug: docs/graphql/interfaces/updatable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Updatable
+          position:
+            start:
+              lineNumber: 42369
+              column: 1
+            end:
+              lineNumber: 42377
+              column: 1
+        seo:
+          title: Updatable
+          description: Entities that can be updated.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Updatable
+                showPageActions: true
+              - nodeType: markdoc
+                content: Entities that can be updated.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Updatable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Updatable
+                graphqlTypeName: Updatable
+                graphqlSchema:
+                  - name: viewerCanUpdate
+                    type: Boolean!
+                    description: Check if the current viewer can update this object.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - Discussion
+                  - DiscussionComment
+                  - GistComment
+                  - Issue
+                  - IssueComment
+                  - Project
+                  - PullRequest
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Updatable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Updatable
+                      typeName: Updatable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Updatable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/updatable
+            panels: []
+    - type: link
+      label: UpdatableComment
+      link: docs/graphql/interfaces/updatablecomment
+      routeSlug: docs/graphql/interfaces/updatablecomment
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: UpdatableComment
+          position:
+            start:
+              lineNumber: 42379
+              column: 1
+            end:
+              lineNumber: 42387
+              column: 1
+        seo:
+          title: UpdatableComment
+          description: Comments that can be updated.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: UpdatableComment
+                showPageActions: true
+              - nodeType: markdoc
+                content: Comments that can be updated.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: UpdatableComment
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/UpdatableComment
+                graphqlTypeName: UpdatableComment
+                graphqlSchema:
+                  - name: viewerCannotUpdateReasons
+                    type: '[CommentCannotUpdateReason!]!'
+                    description: Reasons why the current viewer can not update this comment.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - CommitComment
+                  - DiscussionComment
+                  - GistComment
+                  - Issue
+                  - IssueComment
+                  - PullRequest
+                  - PullRequestReview
+                  - PullRequestReviewComment
+                  - TeamDiscussion
+                  - TeamDiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/UpdatableComment
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: UpdatableComment
+                      typeName: UpdatableComment
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: UpdatableComment
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/updatablecomment
+            panels: []
+    - type: link
+      label: Votable
+      link: docs/graphql/interfaces/votable
+      routeSlug: docs/graphql/interfaces/votable
+      content:
+        contentType: item
+        itemVariant: interface
+        meta:
+          name: Votable
+          position:
+            start:
+              lineNumber: 46284
+              column: 1
+            end:
+              lineNumber: 46302
+              column: 1
+        seo:
+          title: Votable
+          description: A subject that may be upvoted.
+        children:
+          - nodeType: container
+            children:
+              - nodeType: header
+                level: 2
+                label: Votable
+                showPageActions: true
+              - nodeType: markdoc
+                content: A subject that may be upvoted.
+              - nodeType: item-content
+                variant: requires-scopes
+                graphqlTypeName: Votable
+              - nodeType: item-content
+                variant: graphql-fields
+                label: Fields
+                labelTranslationKey: fields
+                schemaId: types/Votable
+                graphqlTypeName: Votable
+                graphqlSchema:
+                  - name: upvoteCount
+                    type: Int!
+                    description: Number of upvotes that this subject has received.
+                    deprecated: false
+                    args: []
+                  - name: viewerCanUpvote
+                    type: Boolean!
+                    description: Whether or not the current user can add or remove an upvote on this subject.
+                    deprecated: false
+                    args: []
+                  - name: viewerHasUpvoted
+                    type: Boolean!
+                    description: Whether or not the current user has already upvoted this subject.
+                    deprecated: false
+                    args: []
+              - nodeType: item-content
+                variant: implemented-by
+                label: Implemented by
+                labelTranslationKey: implementedBy
+                graphqlTypeNames:
+                  - Discussion
+                  - DiscussionComment
+            panels:
+              - children:
+                  - kind: graphql-type-sample
+                    schemaId: types/Votable
+                    graphqlOperationData:
+                      operationType: query
+                      operationName: Votable
+                      typeName: Votable
+                    examples: []
+              - title: Referenced in
+                titleTranslationKey: referenced
+                children:
+                  - kind: references
+                    graphqlTypeName: Votable
+                    references: []
+          - nodeType: container
+            children:
+              - nodeType: feedback
+                pageSlug: /interfaces/votable
+            panels: []
+  content:
+    contentType: group
+    children:
+      - nodeType: container
+        children:
+          - nodeType: header
+            level: 2
+            label: Interfaces
+            labelTranslationKey: interfaces
+            showPageActions: true
+        panels:
+          - children:
+              - kind: group-items
+                title: Overview
+                titleTranslationKey: info.title
+                items:
+                  - title: Actor
+                    summary: Represents an object which can take actions on Git…
+                    link: /interfaces/actor
+                    deprecated: false
+                  - title: Assignable
+                    summary: An object that can have users assigned to it.
+                    link: /interfaces/assignable
+                    deprecated: false
+                  - title: AuditEntry
+                    summary: An entry in the audit log.
+                    link: /interfaces/auditentry
+                    deprecated: false
+                  - title: Closable
+                    summary: An object that can be closed
+                    link: /interfaces/closable
+                    deprecated: false
+                  - title: Comment
+                    summary: Represents a comment.
+                    link: /interfaces/comment
+                    deprecated: false
+                  - title: Contribution
+                    summary: Represents a contribution a user made on GitHub, s…
+                    link: /interfaces/contribution
+                    deprecated: false
+                  - title: Deletable
+                    summary: Entities that can be deleted.
+                    link: /interfaces/deletable
+                    deprecated: false
+                  - title: EnterpriseAuditEntryData
+                    summary: Metadata for an audit entry containing enterprise …
+                    link: /interfaces/enterpriseauditentrydata
+                    deprecated: false
+                  - title: GitObject
+                    summary: Represents a Git object.
+                    link: /interfaces/gitobject
+                    deprecated: false
+                  - title: GitSignature
+                    summary: Information about a signature (GPG or S/MIME) on a…
+                    link: /interfaces/gitsignature
+                    deprecated: false
+                  - title: HovercardContext
+                    summary: An individual line of a hovercard
+                    link: /interfaces/hovercardcontext
+                    deprecated: false
+                  - title: Labelable
+                    summary: An object that can have labels assigned to it.
+                    link: /interfaces/labelable
+                    deprecated: false
+                  - title: Lockable
+                    summary: An object that can be locked.
+                    link: /interfaces/lockable
+                    deprecated: false
+                  - title: MemberStatusable
+                    summary: Entities that have members who can set status mess…
+                    link: /interfaces/memberstatusable
+                    deprecated: false
+                  - title: Minimizable
+                    summary: Entities that can be minimized.
+                    link: /interfaces/minimizable
+                    deprecated: false
+                  - title: Node
+                    summary: An object with an ID.
+                    link: /interfaces/node
+                    deprecated: false
+                  - title: OauthApplicationAuditEntryData
+                    summary: Metadata for an audit entry with action oauth_appl…
+                    link: /interfaces/oauthapplicationauditentrydata
+                    deprecated: false
+                  - title: OrganizationAuditEntryData
+                    summary: Metadata for an audit entry with action org.*
+                    link: /interfaces/organizationauditentrydata
+                    deprecated: false
+                  - title: PackageOwner
+                    summary: Represents an owner of a package.
+                    link: /interfaces/packageowner
+                    deprecated: false
+                  - title: ProfileOwner
+                    summary: Represents any entity on GitHub that has a profile…
+                    link: /interfaces/profileowner
+                    deprecated: false
+                  - title: ProjectOwner
+                    summary: Represents an owner of a Project.
+                    link: /interfaces/projectowner
+                    deprecated: false
+                  - title: Reactable
+                    summary: Represents a subject that can be reacted on.
+                    link: /interfaces/reactable
+                    deprecated: false
+                  - title: RepositoryAuditEntryData
+                    summary: Metadata for an audit entry with action repo.*
+                    link: /interfaces/repositoryauditentrydata
+                    deprecated: false
+                  - title: RepositoryDiscussionAuthor
+                    summary: Represents an author of discussions in repositorie…
+                    link: /interfaces/repositorydiscussionauthor
+                    deprecated: false
+                  - title: RepositoryDiscussionCommentAuthor
+                    summary: Represents an author of discussion comments in rep…
+                    link: /interfaces/repositorydiscussioncommentauthor
+                    deprecated: false
+                  - title: RepositoryInfo
+                    summary: A subset of repository info.
+                    link: /interfaces/repositoryinfo
+                    deprecated: false
+                  - title: RepositoryNode
+                    summary: Represents a object that belongs to a repository.
+                    link: /interfaces/repositorynode
+                    deprecated: false
+                  - title: RepositoryOwner
+                    summary: Represents an owner of a Repository.
+                    link: /interfaces/repositoryowner
+                    deprecated: false
+                  - title: RequirableByPullRequest
+                    summary: Represents a type that can be required by a pull r…
+                    link: /interfaces/requirablebypullrequest
+                    deprecated: false
+                  - title: Sponsorable
+                    summary: Entities that can be sponsored through GitHub Spon…
+                    link: /interfaces/sponsorable
+                    deprecated: false
+                  - title: Starrable
+                    summary: Things that can be starred.
+                    link: /interfaces/starrable
+                    deprecated: false
+                  - title: Subscribable
+                    summary: Entities that can be subscribed to for web and ema…
+                    link: /interfaces/subscribable
+                    deprecated: false
+                  - title: TeamAuditEntryData
+                    summary: Metadata for an audit entry with action team.*
+                    link: /interfaces/teamauditentrydata
+                    deprecated: false
+                  - title: TopicAuditEntryData
+                    summary: Metadata for an audit entry with a topic.
+                    link: /interfaces/topicauditentrydata
+                    deprecated: false
+                  - title: UniformResourceLocatable
+                    summary: Represents a type that can be retrieved by a URL.
+                    link: /interfaces/uniformresourcelocatable
+                    deprecated: false
+                  - title: Updatable
+                    summary: Entities that can be updated.
+                    link: /interfaces/updatable
+                    deprecated: false
+                  - title: UpdatableComment
+                    summary: Comments that can be updated.
+                    link: /interfaces/updatablecomment
+                    deprecated: false
+                  - title: Votable
+                    summary: A subject that may be upvoted.
+                    link: /interfaces/votable
+                    deprecated: false

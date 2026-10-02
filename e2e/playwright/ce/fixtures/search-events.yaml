@@ -1,0 +1,143 @@
+asyncapi: 3.0.0
+info:
+  title: Search Cases Events
+  version: 1.0.0
+  description: AsyncAPI surface for the search checklist. Every sentence here is a query.
+
+defaultContentType: application/json
+
+servers:
+  broker:
+    host: broker.search-cases.local:9092
+    protocol: kafka
+    description: Kafka broker for the checklist events
+  staging:
+    host: staging-broker.search-cases.local:9092
+    protocol: kafka
+    variables:
+      region:
+        default: us-east-1
+        description: Geographic region for the rehearsal brokers
+    title: Staging Search Brokers
+    summary: Rehearsal cluster that receives every alert first
+    description: Mirrors the alert topics before they reach production.
+
+channels:
+  orders:
+    address: nexus.orders.{region}.order-lifecycle
+    title: Order Events Topic
+    description: Every lifecycle change of an order lands on this topic.
+    parameters:
+      region:
+        description: Deployment region the topic is partitioned by
+    messages:
+      orderPlaced:
+        $ref: '#/components/messages/orderPlaced'
+      orderShipped:
+        $ref: '#/components/messages/orderShipped'
+  alerts:
+    address: stock.alerts
+    title: Stock Alerts Topic
+    description: Low stock warnings per warehouse.
+    servers:
+      - $ref: '#/servers/staging'
+    messages:
+      stockAlert:
+        $ref: '#/components/messages/stockAlert'
+
+operations:
+  receiveOrderEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/orders'
+    title: Receive order events
+    summary: Consume placed and shipped events.
+    messages:
+      - $ref: '#/channels/orders/messages/orderPlaced'
+      - $ref: '#/channels/orders/messages/orderShipped'
+  receiveStockAlerts:
+    action: receive
+    channel:
+      $ref: '#/channels/alerts'
+    title: Receive stock alerts
+    messages:
+      - $ref: '#/channels/alerts/messages/stockAlert'
+
+components:
+  messages:
+    orderPlaced:
+      name: OrderPlaced
+      title: Order Placed
+      summary: Customer has confirmed an order for the courier
+      description: Emitted once the checkout completes and the order enters the ledger.
+      headers:
+        type: object
+        properties:
+          x-correlation-id:
+            type: string
+            description: Correlates every event of one order
+      payload:
+        type: object
+        required: [orderId, status]
+        properties:
+          orderId:
+            type: string
+            description: Identifier of the order this event belongs to.
+          status:
+            type: string
+            description: Lifecycle status carried by the event.
+            enum: [PLACED]
+          placedBy:
+            type: string
+            description: Account that placed the order at the kiosk
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: Partition key derived from the order identifier
+      examples:
+        - name: sundayKiosk
+          summary: Kiosk order captured on a Sunday morning
+          payload:
+            orderId: o-1
+            status: PLACED
+    orderShipped:
+      name: OrderShipped
+      title: Order Shipped
+      summary: Courier has confirmed an order for the customer
+      description: Emitted when the parcel leaves the warehouse dock.
+      payload:
+        type: object
+        required: [orderId, status]
+        properties:
+          orderId:
+            type: string
+            description: Identifier of the order this event belongs to.
+          status:
+            type: string
+            description: Lifecycle status carried by the event.
+            enum: [SHIPPED]
+          carrier:
+            type: string
+            description: Carrier that picked up the parcel
+          parcels:
+            type: array
+            items:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: Scan status of one parcel in the shipment
+    stockAlert:
+      name: StockAlert
+      title: Stock Alert
+      summary: A warehouse is running low on one item.
+      payload:
+        type: object
+        properties:
+          sku:
+            type: string
+            description: Stock keeping unit running low in the warehouse
+          remaining:
+            type: integer
+            description: Units left on the shelf when the alert fired

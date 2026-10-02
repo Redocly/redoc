@@ -1,0 +1,16 @@
+server {
+  listen       ${PORT};
+  server_name  ${HOST};
+
+  root /usr/share/nginx/html;
+
+  location / {
+    include /etc/nginx/handle_options.conf;
+    try_files /index.html =404;
+  }
+
+  location ~* ^/(.+\.[^/]+)$ {
+    include /etc/nginx/handle_options.conf;
+    try_files /$1 =404;
+  }
+}

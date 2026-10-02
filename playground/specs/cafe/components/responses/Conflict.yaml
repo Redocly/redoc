@@ -1,0 +1,5 @@
+description: Conflict - entity already exists.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Error.yaml

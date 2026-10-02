@@ -1,0 +1,27 @@
+server {
+  listen       ${PORT};
+  server_name  ${HOST};
+
+  root /usr/share/nginx/html;
+
+  location / {
+    include /etc/nginx/handle_options.conf;
+    return 404;
+  }
+
+  location = /${BASE_PATH} {
+    include /etc/nginx/handle_options.conf;
+    try_files /index.html =404;
+  }
+
+  location /${BASE_PATH}/ {
+    include /etc/nginx/handle_options.conf;
+    try_files /index.html =404;
+  }
+
+  location ~* ^/${BASE_PATH}/(.+\.[^/]+)$ {
+    include /etc/nginx/handle_options.conf;
+    alias  /usr/share/nginx/html/;
+    try_files /$1 =404;
+  }
+}

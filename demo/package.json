@@ -1,0 +1,27 @@
+{
+  "name": "redoc-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/sync-specs.mjs && vite",
+    "build": "node scripts/sync-specs.mjs && tsc && vite build && cp dist/index.html dist/404.html",
+    "lint": "oxlint --max-warnings=0",
+    "ts:check": "tsc",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "js-yaml": "^5.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxlint": "^1.75.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0"
+  }
+}

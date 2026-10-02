@@ -1,0 +1,126 @@
+get:
+  tags:
+    - Orders
+  x-internal: false
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: List all orders
+  description: Retrieve a collection of orders with optional filtering and pagination.
+  operationId: listOrders
+  security:
+    - OAuth2:
+        - orders:read
+  parameters:
+    - $ref: ../components/parameters/Filter.yaml
+      description: |-
+        Filters the collection items using space-separated `field:value` pairs.
+
+        **Filterable fields:** `customerName`, `status`, `totalPrice`, `createdAt`, `id`
+
+        **Format:** `field1:value1 field2:value2`
+
+        **Supported operators:**
+        - `field:value` - Exact match
+        - `field:value1,value2` - Match any of the comma-separated values (OR)
+        - Time ranges (on `createdAt`): Use `30d` (30 days), `7d` (7 days), `1h` (1 hour), etc.
+
+        **Examples:**
+        - `status:placed` - Filter by a single status.
+        - `status:placed,completed` - Filter by multiple statuses.
+        - `createdAt:30d` - Orders created in the last 30 days.
+        - `id:ord_01h1s5z6vf2mm1mz3hevnn9va7` - Filter by a specific order ID.
+        - `status:placed createdAt:7d` - Combine multiple filters.
+      example: status:placed
+    - $ref: ../components/parameters/Sort.yaml
+      description: |-
+        Sorts the collection by a single field. Prefix with `-` for descending order
+        (for example, `-createdAt`); omit the prefix for ascending order (`createdAt`).
+
+        **Sortable fields:** `customerName`, `status`, `totalPrice`, `createdAt`, `updatedAt`, `id`
+      example: '-createdAt'
+    - $ref: ../components/parameters/Limit.yaml
+    - $ref: ../components/parameters/After.yaml
+    - $ref: ../components/parameters/Before.yaml
+    - $ref: ../components/parameters/Search.yaml
+      description: |-
+        Performs a case-insensitive text search across the searchable fields, returning
+        items where any of them contain the search term as a substring.
+
+        **Searchable fields:** `customerName`, `id`
+      example: John
+  responses:
+    '200':
+      description: Successful operation.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OrderList.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+post:
+  tags:
+    - Orders
+  x-internal: false
+  x-catalogRelations:
+    - type: ownedBy
+      key: dark-side
+  summary: Create order
+  description: |
+    Create a new order.
+    Order items cannot be changed - if they need to be updated, the order should be canceled and a new one placed.
+  operationId: createOrder
+  security:
+    - OAuth2:
+        - orders:write
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Order.yaml
+        examples:
+          OrderRequest:
+            dataValue:
+              customerName: Mary Ann
+              orderItems:
+                - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                  quantity: 2
+                  comment: No sugar!
+                  discount: 0
+  responses:
+    '201':
+      description: Order placed successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Order.yaml
+          examples:
+            OrderResponse:
+              dataValue:
+                id: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Mary Ann
+                orderItems:
+                  - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                    quantity: 2
+                    comment: No sugar!
+                    discount: 0
+                object: order
+                status: placed
+                totalPrice: 200
+                createdAt: 2026-08-24T14:15:22Z
+                updatedAt: 2026-08-24T14:15:22Z
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
