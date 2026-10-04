@@ -1,3 +1,5 @@
+import { BigIntValue } from './preciseJson';
+
 let level = 1;
 
 export function jsonToHTML(json, maxExpandLevel) {
@@ -39,6 +41,9 @@ function valueToHTML(value, maxExpandLevel: number) {
   let output = '';
   if (value === undefined || value === null) {
     output += decorateWithSpan('null', 'token keyword');
+  } else if (value instanceof BigIntValue) {
+    // rendered from the source text: a double would have lost the low-order digits
+    output += decorateWithSpan(value.text, 'token number');
   } else if (value && value.constructor === Array) {
     level++;
     output += arrayToHTML(value, maxExpandLevel);

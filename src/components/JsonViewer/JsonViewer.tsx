@@ -5,6 +5,7 @@ import { SampleControls } from '../../common-elements';
 import { CopyButtonWrapper } from '../../common-elements/CopyButtonWrapper';
 import { PrismDiv } from '../../common-elements/PrismDiv';
 import { jsonToHTML } from '../../utils/jsonToHtml';
+import { BigIntValue } from '../../utils/preciseJson';
 import { OptionsContext } from '../OptionsProvider';
 import { jsonStyles } from './style';
 
@@ -25,7 +26,9 @@ const Json = (props: JsonProps) => {
   const renderInner = ({ renderCopyButton }) => {
     const showFoldingButtons =
       props.data &&
-      Object.values(props.data).some(value => typeof value === 'object' && value !== null);
+      Object.values(props.data).some(
+        value => typeof value === 'object' && value !== null && !(value instanceof BigIntValue),
+      );
 
     return (
       <JsonViewerWrap>
