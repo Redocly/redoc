@@ -76,7 +76,10 @@ export class FieldModel {
 
     let fieldSchema = info.schema;
     let serializationMime = '';
-    if (!fieldSchema && info.in && info.content) {
+    // Header objects (and any other non-parameter field) have no `in`, but their schema can
+    // still be described through `content`. Only fall back to `content` when no inline
+    // `schema` is present, so `schema` keeps precedence.
+    if (!fieldSchema && info.content) {
       serializationMime = Object.keys(info.content)[0];
       fieldSchema = info.content[serializationMime] && info.content[serializationMime].schema;
     }

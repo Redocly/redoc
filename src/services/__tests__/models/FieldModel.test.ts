@@ -107,5 +107,49 @@ describe('Models', () => {
 
       expect(field.name).toEqual('Test-Header');
     });
+
+    test('header schema should be taken from content when inline schema is absent', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: { type: 'string' },
+              },
+            },
+          },
+          name: 'Test-Header-With-Content',
+        },
+        '#/components/headers/Test-Header-With-Content',
+        opts,
+      );
+
+      // header objects have no `in`, but their schema can still come from `content`
+      expect(field.in).toBeUndefined();
+      expect(field.schema.type).toEqual('array');
+      expect(field.serializationMime).toEqual('application/json');
+    });
+
+    test('inline schema should win over content', () => {
+      const field = new FieldModel(
+        parser,
+        {
+          schema: { type: 'string' },
+          content: {
+            'application/json': {
+              schema: { type: 'array' },
+            },
+          },
+          name: 'Test-Header-With-Both',
+        },
+        '#/components/headers/Test-Header-With-Both',
+        opts,
+      );
+
+      expect(field.schema.type).toEqual('string');
+      expect(field.serializationMime).toBeUndefined();
+    });
   });
 });
