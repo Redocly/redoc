@@ -38,6 +38,7 @@ export interface RedocRawOptions {
   sideNavStyle?: SideNavStyleEnum;
   hideSingleRequestSampleTab?: boolean | string;
   hideRequestPayloadSample?: boolean;
+  hideGeneratedSamples?: boolean | string;
   menuToggle?: boolean | string;
   jsonSampleExpandLevel?: number | string | 'all'; // remove in next major release
   jsonSamplesExpandLevel?: number | string | 'all';
@@ -248,6 +249,7 @@ export class RedocNormalizedOptions {
   sideNavStyle: SideNavStyleEnum;
   hideSingleRequestSampleTab: boolean;
   hideRequestPayloadSample: boolean;
+  hideGeneratedSamples: boolean;
   menuToggle: boolean;
   jsonSamplesExpandLevel: number;
   enumSkipQuotes: boolean;
@@ -325,6 +327,7 @@ export class RedocNormalizedOptions {
     this.sideNavStyle = RedocNormalizedOptions.normalizeSideNavStyle(raw.sideNavStyle);
     this.hideSingleRequestSampleTab = argValueToBoolean(raw.hideSingleRequestSampleTab);
     this.hideRequestPayloadSample = argValueToBoolean(raw.hideRequestPayloadSample);
+    this.hideGeneratedSamples = argValueToBoolean(raw.hideGeneratedSamples);
     this.menuToggle = argValueToBoolean(raw.menuToggle, true);
     this.jsonSamplesExpandLevel = RedocNormalizedOptions.normalizeJsonSampleExpandLevel(
       raw.jsonSamplesExpandLevel || raw.jsonSampleExpandLevel,
