@@ -311,6 +311,58 @@ describe('Models', () => {
       `);
     });
     describe('enum values', () => {
+      function createSchemaModel(schema: Record<string, unknown>) {
+        const parser = new OpenAPIParser(
+          {
+            openapi: '3.0.0',
+            info: { title: 'Enum extension test', version: '1.0.0' },
+            paths: {},
+          } as any,
+          undefined,
+          opts,
+        );
+        return new SchemaModel(parser, schema as any, '#/components/schemas/Test', opts);
+      }
+
+      test('uses x-extensible-enum values as display enums', () => {
+        const model = createSchemaModel({
+          type: 'string',
+          'x-extensible-enum': ['open', 'closed'],
+        });
+
+        expect(model.enum).toEqual(['open', 'closed']);
+        expect(printSchema(model, enumDetailsPrinter)).toContain('enum: [open,closed]');
+      });
+
+      test('uses other x-*-enum extension values', () => {
+        const model = createSchemaModel({
+          type: 'string',
+          'x-acme-status-enum': ['ready', 'closed'],
+        });
+
+        expect(model.enum).toEqual(['ready', 'closed']);
+        expect(printSchema(model, enumDetailsPrinter)).toContain('enum: [ready,closed]');
+      });
+
+      test('uses enum extensions declared on array items', () => {
+        const model = createSchemaModel({
+          type: 'array',
+          items: { type: 'string', 'x-extensible-enum': ['fast', 'slow'] },
+        });
+
+        expect(model.enum).toEqual(['fast', 'slow']);
+        expect(printSchema(model, enumDetailsPrinter)).toContain('enum: [fast,slow]');
+      });
+
+      test('prefers the standard enum when both forms are present', () => {
+        const model = createSchemaModel({
+          type: 'string',
+          enum: ['stable'],
+          'x-extensible-enum': ['preview'],
+        });
+
+        expect(model.enum).toEqual(['stable']);
+      });
       test('should get correct fields enum fields without duplication', () => {
         const spec = parseYaml(outdent`
           openapi: 3.0.0
