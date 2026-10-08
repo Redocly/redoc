@@ -122,7 +122,7 @@ export class SchemaModel {
     this.description = schema.description || '';
     this.type = schema.type || detectType(schema);
     this.format = schema.format;
-    this.enum = schema.enum || [];
+    this.enum = getSchemaEnum(schema);
     this['x-enumDescriptions'] = schema['x-enumDescriptions'];
     this.example = schema.example;
     this.examples = schema.examples;
@@ -597,6 +597,20 @@ function buildAdditionalItems({
   }
 
   return [];
+}
+
+function getSchemaEnum(schema: OpenAPISchema): any[] {
+  if (schema.enum !== undefined) {
+    return schema.enum;
+  }
+
+  const enumExtensions = Object.entries(schema).filter(
+    ([name, value]) => name.startsWith('x-') && name.endsWith('-enum') && Array.isArray(value),
+  );
+  const extensibleEnum = enumExtensions.find(([name]) => name === 'x-extensible-enum')?.[1];
+  const values = extensibleEnum ?? enumExtensions[0]?.[1];
+
+  return Array.isArray(values) ? values : [];
 }
 
 function getDiscriminator(schema: OpenAPISchema): OpenAPISchema['discriminator'] {
