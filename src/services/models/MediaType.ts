@@ -15,6 +15,7 @@ export class MediaTypeModel {
   isRequestType: boolean;
   onlyRequiredInSamples: boolean;
   generatedSamplesMaxDepth: number;
+  hideGeneratedSamples: boolean;
 
   /**
    * @param isRequestType needed to know if skipe RO/RW fields in objects
@@ -31,6 +32,7 @@ export class MediaTypeModel {
     this.schema = info.schema && new SchemaModel(parser, info.schema, '', options);
     this.onlyRequiredInSamples = options.onlyRequiredInSamples;
     this.generatedSamplesMaxDepth = options.generatedSamplesMaxDepth;
+    this.hideGeneratedSamples = options.hideGeneratedSamples;
     if (info.examples !== undefined) {
       this.examples = mapValues(
         info.examples,
@@ -51,6 +53,10 @@ export class MediaTypeModel {
   }
 
   generateExample(parser: OpenAPIParser, info: OpenAPIMediaType) {
+    if (this.hideGeneratedSamples) {
+      return;
+    }
+
     const samplerOptions = {
       skipReadOnly: this.isRequestType,
       skipWriteOnly: !this.isRequestType,

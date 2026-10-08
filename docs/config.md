@@ -145,6 +145,12 @@ If set to `true`, the protocol and hostname are not shown in the operation defin
 
 Hides request payload examples.
 
+### hideGeneratedSamples
+
+If set to `true`, examples that ReDoc generates from the schema are not shown. Examples set
+in the OpenAPI document via `example` or `examples` are still shown. Use this when the
+schema does not describe a realistic payload and the generated value is misleading.
+
 ### hideOneOfDescription
 
 If set to `true`, the description for `oneOf`/`anyOf` object is not shown in the schema.
