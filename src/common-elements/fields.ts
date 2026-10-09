@@ -90,6 +90,18 @@ export const PropertyLabel = styled(RequiredLabel)`
   color: ${props => props.theme.colors.primary.light};
 `;
 
+/**
+ * Media type a field is serialized with, derived from the key of the `content`
+ * mapping the field's schema comes from (e.g. `application/json`).
+ */
+export const MediaTypeLabel = styled.div`
+  color: ${props => props.theme.colors.primary.light};
+  font-family: ${props => props.theme.typography.code.fontFamily};
+  font-size: ${props => props.theme.schema.labelsTextSize};
+  line-height: 20px;
+  white-space: normal;
+`;
+
 export const RecursiveLabel = styled(FieldLabel)`
   color: ${({ theme }) => theme.colors.warning.dark};
   font-size: 13px;

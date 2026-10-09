@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import {
   ClickablePropertyNameCell,
+  MediaTypeLabel,
   PropertyLabel,
   RequiredLabel,
 } from '../../common-elements/fields';
@@ -56,10 +57,17 @@ export class Field extends React.Component<FieldProps> {
   render() {
     const { hidePropertiesPrefix } = this.context;
     const { className = '', field, isLast, expandByDefault, fieldParentsName = [] } = this.props;
-    const { name, deprecated, required, kind } = field;
+    const { name, deprecated, required, kind, serializationMime } = field;
     const withSubSchema = !field.schema.isPrimitive && !field.schema.isCircular;
 
     const expanded = field.expanded === undefined ? expandByDefault : field.expanded;
+
+    // Content type the field is serialized with, taken from the `content` mapping key.
+    const mediaTypeLabel =
+      serializationMime !== undefined ? (
+        <MediaTypeLabel>{serializationMime}</MediaTypeLabel>
+      ) : null;
+
     const labels = (
       <>
         {kind === 'additionalProperties' && <PropertyLabel>additional property</PropertyLabel>}
@@ -88,6 +96,7 @@ export class Field extends React.Component<FieldProps> {
           <ShelfIcon direction={expanded ? 'down' : 'right'} />
         </button>
         {labels}
+        {mediaTypeLabel}
       </ClickablePropertyNameCell>
     ) : (
       <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
@@ -98,6 +107,7 @@ export class Field extends React.Component<FieldProps> {
           )}
         <span className="property-name">{name}</span>
         {labels}
+        {mediaTypeLabel}
       </PropertyNameCell>
     );
 
