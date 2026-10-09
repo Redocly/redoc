@@ -1,4 +1,5 @@
 import type { OpenAPIEncoding, OpenAPIExample, Referenced } from '../../types';
+import { parseJsonPreservingBigInts } from '../../utils/preciseJson';
 import { isFormUrlEncoded, isJsonLike, urlFormEncodePayload } from '../../utils/openapi';
 import type { OpenAPIParser } from '../OpenAPIParser';
 
@@ -46,7 +47,7 @@ export class ExampleModel {
 
         if (isJsonLike(mimeType)) {
           try {
-            return JSON.parse(txt);
+            return parseJsonPreservingBigInts(txt);
           } catch (e) {
             return txt;
           }
