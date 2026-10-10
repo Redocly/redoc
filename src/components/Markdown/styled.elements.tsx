@@ -32,6 +32,8 @@ export const StyledMarkdownBlock = styled(
   line-height: ${props => props.theme.typography.lineHeight};
 
   p {
+    text-align: justify;
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -63,6 +65,7 @@ export const StyledMarkdownBlock = styled(
   h2 {
     ${headerCommonMixin(2)};
     color: ${props => props.theme.colors.text.primary};
+    text-align: justify;
   }
 
   code {

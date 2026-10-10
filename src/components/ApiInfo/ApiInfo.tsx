@@ -77,7 +77,7 @@ export class ApiInfo extends React.Component<ApiInfoProps> {
               {info.title} {version}
             </ApiHeader>
             {!hideDownloadButtons && (
-              <p>
+              <p dir="auto">
                 {l('downloadSpecification')}:
                 {downloadUrls?.map(({ title, url }) => {
                   return (
