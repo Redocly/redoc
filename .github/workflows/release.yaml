@@ -30,6 +30,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      # The changesets action takes the GitHub Release notes from the CHANGELOG heading that
+      # equals the version; without one it posts the whole file and fails after npm publish.
+      - name: Check CHANGELOG entry
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          grep -qxF "# $VERSION" CHANGELOG.md || {
+            echo "::error file=CHANGELOG.md::Add a '# $VERSION' heading with the release notes"
+            exit 1
+          }
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: RomanHotsiy/changesets-action@v1

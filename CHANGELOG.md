@@ -1,3 +1,14 @@
+# 3.0.0-rc.3
+
+### Features
+
+- Improve code for major release candidate.
+
+### Chores
+
+- Bump `@redocly/openapi-core` to 2.62.1, `@redocly/config` to 0.65.0 and `@redocly/theme` to 0.70.0.
+- Replace `prismjs` with `@tanstack/highlight` and `swagger2openapi` with a built-in Swagger 2.0 converter.
+
 # [2.5.4](https://github.com/Redocly/redoc/compare/v2.5.3...v2.5.4) (2026-09-10)
 
 ### Bug Fixes
